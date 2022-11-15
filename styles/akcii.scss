@@ -4,7 +4,7 @@
     box-shadow: none;
 }
 .dopText{
-    @include fonsNew(1rem, $Ubuntu);
+    @include fonsNew(1rem, $Roboto);
     column-count: 1;
     column-gap: 20px;
     -moz-column-count: 1;
@@ -38,7 +38,7 @@
     }
     
     & h1, h2{
-        @include fonsNew(2rem, $Ubuntu);
+        @include fonsNew(2rem, $Roboto);
         text-align: center;
         margin-bottom: 20px!important;
     }
@@ -64,12 +64,12 @@
             padding-left: 34px!important;
         }
         & h1{
-            @include fonsNew(1.7rem, $Ubuntu);
+            @include fonsNew(1.7rem, $Roboto);
             text-align: center;
         }
     }
     & .dopText{
-        @include fonsNew(1rem, $Ubuntu);
+        @include fonsNew(1rem, $Roboto);
         column-count: 1;
         column-gap: 20px;
         -moz-column-count: 1;
@@ -99,14 +99,14 @@
 .modalActii:not(.OpenItemPC):not(.OpenItemPCSet){
     & h6, h2{
         text-align: center;
-        @include fonsNew(1.6rem, $Ubuntu);
+        @include fonsNew(1.6rem, $Roboto);
         font-weight: 600;
     }
     & .modalActiiContent{
         //padding-top: 0!important;
         & *{
-            @include fonsNew(1rem, $Ubuntu);
-            font-weight: 300;
+            @include fonsNew(1rem, $Roboto);
+            font-weight: 400;
         }
     }
     & .MuiDialog-paper{
@@ -115,7 +115,7 @@
         overflow: visible;
     }
     & .AkciiActivePromo{
-        @include fonsNew(1rem, $Ubuntu);
+        @include fonsNew(1rem, $Roboto);
         background-color: $colorMain;
         color: #fff;
     }
@@ -123,12 +123,12 @@
 .modalActii.OpenItemPC{
     & h6{
         text-align: center;
-        @include fonsNew(1.6rem, $Ubuntu);
+        @include fonsNew(1.6rem, $Roboto);
     }
     & .modalActiiContent{
         padding: 0!important;
         & span:not(.dopItemName):not(.ItemDesc):not(.ModalItemOther), p:not(.dopItemName):not(.ItemDesc), b:not(.dopItemName):not(.ItemDesc){
-            @include fonsNew(1rem, $Ubuntu);
+            @include fonsNew(1rem, $Roboto);
         }
     }
     & .modalActiiContentNew{
