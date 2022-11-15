@@ -10,10 +10,8 @@ import '../styles/footer.scss'
 
 
 
-//pm2 delete test-app-new && rm -rf test-app-new
-//git clone https://github.com/vito3315/test-app-new.git && cd test-app-new
-//npm install && npm run build
-//pm2 start npm --name "test-app-new" -- start
+//pm2 delete test-app-new && rm -rf test-app-new && git clone https://github.com/vito3315/test-app-new.git && cd test-app-new
+//npm install && npm run build && pm2 start npm --name "test-app-new" -- start
 
 function MyApp({ Component, pageProps }) {
   return <Component {...pageProps} />

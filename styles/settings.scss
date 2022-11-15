@@ -5,7 +5,7 @@ $Ubuntu: 'Ubuntu';
 $colorMain: #CC0033;
 $colorText: #525252;
 
-@mixin fonsNew($size: 1rem, $family: $Ubuntu) {
+@mixin fonsNew($size: 1rem, $family: $Roboto) {
     font-size: $size;
     font-family: $family!important;
     color: $colorText;
