@@ -3,8 +3,6 @@ import Head from 'next/head'
 import Script from 'next/script'
 import Image from 'next/image';
 
-import { Roboto } from '@next/font/google'
-
 import Grid from '@mui/material/Grid';
 
 import Button from '@mui/material/Button';
@@ -28,12 +26,6 @@ import { Footer } from '../../components/footer.js';
 import { IconClose } from '../../components/elements.js'
 
 const queryString = require('query-string');
-
-const roboto = Roboto({
-  weight: ['100', '300', '400', '500', '700', '900'],
-  subsets: ['sans-serif'],
-  variable: '--inter-font',
-})
 
 export default class Akcii extends React.Component {
   constructor(props) {
@@ -268,7 +260,7 @@ export default class Akcii extends React.Component {
   render() {
     //<FontAwesomeIcon icon={faTimes} style={{ fontSize: '1.8rem', color: '#e5e5e5' }} />
     return (
-      <div className={roboto.variable}>
+      <div>
         <Header />
 
         <Grid container className="Actii mainContainer MuiGrid-spacing-xs-3">
