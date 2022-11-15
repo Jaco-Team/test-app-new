@@ -1,0 +1,91 @@
+@import "./settings";
+
+.modalCity{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: #fff;
+    padding: 30px 60px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @media (max-width: 800px){
+        width: calc(100% - 40px);
+        padding: 10px 20px;
+    }
+    & .loginIMG{
+        height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        & > img{
+          height: 100%;
+          width: auto;
+        }
+    }
+    & .loginHeader{
+        height: 60px;
+        margin-bottom: 60px;
+        display: flex;
+        align-items: flex-end;
+        & h2{
+            @include fonsNew(2rem, $Roboto);
+            font-weight: 500;
+        }
+    }
+    & a:not(.active){
+        width: 100%;
+        height: 60px;
+        border-radius: 120px;
+        background-color: #fff;
+        border: 1px solid #F9BC23;
+        cursor: pointer;
+        text-decoration: none;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        &:hover{
+            background-color: #fdf8ed;
+        }
+        &:target{
+            background-color: #f9ebce;
+        }
+    }
+    & a.active{
+        width: 75%;
+        height: 60px;
+        border-radius: 120px;
+        background-color: #F9BC23;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        text-decoration: none;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+        }
+        &:hover{
+            background-color: #e1b242;
+        }
+        &:target{
+            background-color: #cf9f37;
+        }
+    }
+    & a:last-child{
+        margin-bottom: 100px;
+    }
+    & a:not(:last-child){
+        margin-bottom: 40px;
+    }
+  }

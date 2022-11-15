@@ -1,0 +1,53 @@
+@import "./settings";
+
+.footer{
+    padding: 24px 16px;
+    margin-top: auto;
+    background-color: $colorMain;
+    width: 100%;
+    display: flex;
+    flex-wrap: wrap;
+    box-sizing: border-box;
+    & .copy{
+        align-content: flex-end;
+        display: grid;
+        & > h1{
+            @include fonsNew(1rem, $Roboto);
+            font-weight: 400;
+            color: #fff!important;
+        }
+    }
+    & p{
+        @include fonsNew(1rem, $Roboto);
+        color: #fff;
+        padding: 4px 0px;
+    }
+    & svg{
+        fill: #fff;
+        width: 30px;
+        height: 30px;
+        padding: 10px;
+    }
+    @media (max-width: 1024px){
+        padding-bottom: 56px!important;
+        margin-bottom: 20px!important;
+    }
+    & .mainContainer {
+        @media (min-width: 1280px) {
+            margin-left: 8.35% !important; 
+        }
+        @media (min-width: 960px) {
+            margin-left: 8.35% !important; 
+            flex-grow: 0;
+            max-width: 83.333333%;
+            flex-basis: 83.333333%;
+        }
+    }
+    & .socIcons{
+        display: flex;
+        justify-content: flex-end;
+        @media (max-width: 800px){
+            display: block;
+        }
+    }
+}

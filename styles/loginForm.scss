@@ -1,0 +1,912 @@
+@import "./settings";
+
+.class123{
+    & > div{
+        box-shadow: none!important;
+        border: 0 !important;
+        outline: none !important;
+    }
+}
+.modalLoginError{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: #fff;
+    padding: 50px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @media (max-width: 800px){
+        width: calc(100% - 40px);
+        padding: 10px 20px;
+    }
+    & img{
+        height: 100%;
+        width: auto;
+    }
+    & .InnerBorder{
+        border: 1px solid $colorMain;
+        border-radius: 10px;
+        padding: 20px;
+    }
+    & .loginHeader{
+        height: 60px;
+        margin-bottom: 50px;
+        margin-top: 50px;
+        text-align: center;
+        & h2{
+            @include fonsNew(2rem, $Roboto);
+            font-weight: 500;
+        }
+    }
+    & .loginSubHeader1{
+        margin-bottom: 30px;
+        text-align: center;
+        & span{
+            @include fonsNew(1rem, $Roboto);
+            font-weight: 400;
+        }
+    }
+    & .loginSubHeader2{
+        margin-bottom: 80px;
+        text-align: center;
+        & span{
+            @include fonsNew(1rem, $Roboto);
+            font-weight: 400;
+        }
+    }
+}
+.modalLoginFinish{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: #fff;
+    padding: 30px 80px;
+    padding-bottom: 70px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @media (max-width: 800px){
+        width: calc(100% - 40px);
+        padding: 10px 20px;
+    }
+    & img{
+        height: 100%;
+        width: auto;
+    }
+    & .loginIMG{
+        height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    & .loginHeader{
+        height: 60px;
+        margin-bottom: 50px;
+        display: flex;
+        align-items: flex-end;
+        & h2{
+            @include fonsNew(2rem, $Roboto);
+            font-weight: 500;
+        }
+    }
+    & .loginSubHeader1{
+        height: 80px;
+        margin-bottom: 30px;
+        text-align: center;
+        & span{
+            @include fonsNew(1.2rem, $Roboto);
+            font-weight: 500;
+        }
+    }
+    & .loginSubHeader2{
+        height: 60px;
+        margin-bottom: 40px;
+        text-align: center;
+        & span{
+            @include fonsNew(1rem, $Roboto);
+            font-weight: 400;
+        }
+        & a{
+            color: $colorText!important;
+        }
+    }
+    & .loginLogin{
+        width: 75%;
+        height: 60px;
+        border-radius: 120px;
+        background-color: #F9BC23;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        text-decoration: none;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+        }
+        &:hover{
+            background-color: #e1b242;
+        }
+        &:target{
+            background-color: #cf9f37;
+        }
+    }
+    & .loginCreate{
+        width: 75%;
+        height: 60px;
+        border-radius: 120px;
+        background-color: #fff;
+        border: 1px solid #F9BC23;
+        cursor: pointer;
+        text-decoration: none;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        &:hover{
+            background-color: #fdf8ed;
+        }
+        &:target{
+            background-color: #f9ebce;
+        }
+    }
+    & .loginErr{
+        height: 40px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        & > span{
+            @include fonsNew(0.9rem, $Roboto);
+            font-weight: 300;
+            color: $colorMain
+        }
+    }
+}
+.modalLoginSMSCode{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: #F9BC23;
+    padding-left: 55px;
+    padding-right: 55px;
+    padding-bottom: 50px;
+    padding-top: 30px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @media (max-width: 800px){
+        width: calc(100% - 40px);
+        padding: 10px 20px;
+    }
+    & img{
+        height: 100%;
+        width: auto;
+    }
+    & .loginIMG{
+        height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    & .loginHeader{
+        height: 60px;
+        display: flex;
+        align-items: flex-end;
+        & h2{
+            @include fonsNew(2rem, $Roboto);
+            font-weight: 500;
+        }
+    }
+    & .loginSubHeader{
+        height: 105px;
+        display: flex;
+        flex-direction: column;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 400;
+            text-align: center;
+        }
+    }
+    & .loginAutCodeOther{
+        margin-bottom: 30px;
+        & > div{
+            display: flex;
+            flex-direction: row;
+            & input {
+                width: 88px;
+                height: 88px;
+                padding: 0;
+                text-align: center;
+                margin-right: 12px;
+                text-transform: uppercase;
+                @include fonsNew(2rem, $Roboto);
+                font-weight: 400;
+                border: 1px solid #fff;
+                border-radius: 20px;
+                background: #fff;
+                background-clip: padding-box;
+                &:focus {
+                    appearance: none;
+                    outline: 0;
+                }
+            }
+        }
+    }
+    & .loginAutCode{
+        & > div{
+            display: flex;
+            flex-direction: row;
+            & input {
+                width: 88px;
+                height: 88px;
+                padding: 0;
+                text-align: center;
+                margin-right: 12px;
+                text-transform: uppercase;
+                @include fonsNew(2rem, $Roboto);
+                font-weight: 400;
+                border: 1px solid #fff;
+                border-radius: 20px;
+                background: #fff;
+                background-clip: padding-box;
+                &:focus {
+                    appearance: none;
+                    outline: 0;
+                }
+            }
+        }
+    }
+    & .loginTimer{
+        height: 50px;
+        margin-bottom: 40px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 300;
+            text-align: center;
+        }
+    }
+    & .loginSend.disabled{
+        width: 75%;
+        height: 60px;
+        border-radius: 120px;
+        background-color: #a17300;
+        margin-bottom: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    & .loginSend:not(.disabled){
+        width: 75%;
+        height: 60px;
+        border-radius: 120px;
+        background-color: #684f00;
+        margin-bottom: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+            color: #fff;
+        }
+        &:hover{
+            background-color: #453306;
+        }
+        &:target, :focus{
+            background-color: #2E2103;
+        }
+    }
+    & .loginPrev{
+        width: 100%;
+        height: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 300;
+            cursor: pointer;
+        }
+    }
+    & .loginTimerSend{
+        width: 75%;
+        height: 58px;
+        border-radius: 120px;
+        background-color: #F9BC23;
+        border: 1px solid #fff;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+            color: #fff;
+        }
+        &:hover{
+            background-color: #e1b242;
+        }
+        &:target, :focus{
+            background-color: #cf9f37;
+        }
+    }
+    & .loginErr{
+        height: 40px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        & > span{
+            @include fonsNew(0.9rem, $Roboto);
+            font-weight: 300;
+            color: $colorMain
+        }
+    }
+}
+.modalLoginCreateNew{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background-color: #F9BC23;
+    width: 400px;
+    padding: 30px 80px;
+    padding-bottom: 70px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @media (max-width: 800px){
+        width: calc(100% - 40px);
+        padding: 10px 20px;
+    }
+    & img{
+        height: 100%;
+        width: auto;
+    }
+    & .loginIMG{
+        height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+    }
+    & .loginHeader{
+        height: 60px;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: flex-end;
+        & h2{
+            @include fonsNew(2rem, $Roboto);
+            font-weight: 500;
+        }
+    }
+    & .inputLogin{
+        width: 100%;
+        height: 60px;
+        & .Mui-focused .MuiOutlinedInput-notchedOutline{
+            border-color: transparent!important;
+        }
+        & input{
+            height: 100%;
+            padding: 0;
+            width: 100%;
+            padding-left: 20px;
+            background-color: #fff;
+            border-radius: 40px;
+            letter-spacing: 1px;
+        }
+        & fieldset{
+            border-color: transparent!important;
+            border-width: 0px;
+        }
+        & > div{
+            border-radius: 40px;
+            height: 100%;
+        }
+        & label, span, input{
+            @include fonsNew(1.5rem, $Roboto);
+            font-weight: 400;
+        }
+    }
+    & .loginSubHeader{
+        height: 80px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+        & span{
+            @include fonsNew(0.75rem, $Roboto);
+            font-weight: 400;
+            text-align: center;
+        }
+    }
+    & .loginLogin{
+        width: 75%;
+        height: 60px;
+        border-radius: 120px;
+        background-color: #684a00;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+            color: #fff;
+        }
+        &:hover{
+            background-color: #453306;
+        }
+        &:target{
+            background-color: #2e2103;
+        }
+    }
+    & .loginCreate{
+        width: 75%;
+        height: 60px;
+        border-radius: 120px;
+        background-color: #F9BC23;
+        border: 1px solid #fff;
+        cursor: pointer;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        &:hover{
+            background-color: #ffcf56;
+        }
+        &:target{
+            background-color: #ffd97a;
+        }
+    }
+    & .loginErr{
+        height: 40px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        & > span{
+            @include fonsNew(0.9rem, $Roboto);
+            font-weight: 300;
+            color: $colorMain
+        }
+    }
+}
+.modalLoginReset{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: #fff;
+    padding: 30px 80px;
+    padding-bottom: 70px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @media (max-width: 800px){
+        width: calc(100% - 40px);
+        padding: 10px 20px;
+    }
+    & img{
+        height: 100%;
+        width: auto;
+    }
+    & .inputLogin{
+        width: 100%;
+        height: 60px;
+        & .Mui-focused .MuiOutlinedInput-notchedOutline{
+            border-width: 0px!important;
+        }
+        & fieldset{
+            border-width: 0px!important;
+        }
+        & input{
+            height: 100%;
+            padding: 0;
+            width: 100%;
+            padding-left: 20px;
+            letter-spacing: 1px;
+            border-radius: 40px;
+            border: 1px solid #BDBCBC!important;
+        }
+        & > div{
+            border-radius: 40px;
+            height: 100%;
+        }
+        & label, span, input{
+            @include fonsNew(1.5rem, $Roboto);
+            font-weight: 400;
+        }
+    }
+    & .loginIMG{
+        height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        & > img{
+            height: 100%;
+        }
+    }
+    & .loginHeader{
+        height: 60px;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: flex-end;
+        & h2{
+            @include fonsNew(2rem, $Roboto);
+            font-weight: 500;
+        }
+    }
+    & .loginLogin{
+        width: 75%;
+        height: 60px;
+        border-radius: 120px;
+        background-color: #F9BC23;
+        margin-bottom: 30px;
+        margin-top: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+        }
+        &:hover{
+            background-color: #e1b242;
+        }
+        &:target{
+            background-color: #cf9f37;
+        }
+    }
+    & .loginCreate{
+        width: 75%;
+        height: 60px;
+        border-radius: 120px;
+        background-color: #fff;
+        border: 1px solid #F9BC23;
+        cursor: pointer;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        &:hover{
+            background-color: #fdf8ed;
+        }
+        &:target{
+            background-color: #f9ebce;
+        }
+    }
+    & .loginErr{
+        height: 40px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        & > span{
+            @include fonsNew(0.9rem, $Roboto);
+            font-weight: 300;
+            color: $colorMain
+        }
+    }
+}
+.modalLoginCreate{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: #fff;
+    padding: 30px 80px;
+    padding-bottom: 70px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @media (max-width: 800px){
+        width: calc(100% - 40px);
+        padding: 10px 20px;
+    }
+    & img{
+        height: 100%;
+        width: auto;
+    }
+    & .inputLogin{
+        width: 100%;
+        height: 60px;
+        & .Mui-focused .MuiOutlinedInput-notchedOutline{
+            border-width: 0px!important;
+        }
+        & fieldset{
+            border-width: 0px!important;
+        }
+        & input{
+            height: 100%;
+            padding: 0;
+            width: 100%;
+            padding-left: 20px;
+            letter-spacing: 1px;
+            border-radius: 40px;
+            border: 1px solid #BDBCBC!important;
+        }
+        & > div{
+            border-radius: 40px;
+            height: 100%;
+        }
+        & label, span, input{
+            @include fonsNew(1.5rem, $Roboto);
+            font-weight: 400;
+        }
+    }
+    & .loginIMG{
+        height: 90px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        & > img{
+            height: 100%;
+        }
+    }
+    & .loginHeader{
+        height: 60px;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: flex-end;
+        & h2{
+            @include fonsNew(2rem, $Roboto);
+            font-weight: 500;
+        }
+    }
+    & .loginLogin{
+        width: 75%;
+        height: 60px;
+        border-radius: 120px;
+        background-color: #F9BC23;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+        }
+        &:hover{
+            background-color: #e1b242;
+        }
+        &:target{
+            background-color: #cf9f37;
+        }
+    }
+    & .loginCreate{
+        width: 75%;
+        height: 60px;
+        border-radius: 120px;
+        background-color: #fff;
+        border: 1px solid #F9BC23;
+        cursor: pointer;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        &:hover{
+            background-color: #fdf8ed;
+        }
+        &:target{
+            background-color: #f9ebce;
+        }
+    }
+    & .loginErr{
+        height: 40px;
+        margin-top: 10px;
+        margin-bottom: 60px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        & > span{
+            @include fonsNew(0.9rem, $Roboto);
+            font-weight: 300;
+            color: $colorMain
+        }
+    }
+}
+.modalLoginStart{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 400px;
+    background-color: #fff;
+    padding: 30px 80px;
+    border-radius: 40px;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    @media (max-width: 800px){
+        width: calc(100% - 40px);
+        padding: 10px 20px;
+    }
+    & .inputLogin:first-child{
+        margin-bottom: 30px;
+    }
+    & .inputLogin{
+        width: 100%;
+        height: 60px;
+        & .Mui-focused .MuiOutlinedInput-notchedOutline{
+            border-width: 0px!important;
+        }
+        & fieldset{
+            border-width: 0px!important;
+        }
+        & input{
+            height: 100%;
+            padding: 0;
+            width: 100%;
+            padding-left: 20px;
+            letter-spacing: 1px;
+            border-radius: 40px;
+            border: 1px solid #BDBCBC!important;
+        }
+        & > div{
+            border-radius: 40px;
+            height: 100%;
+        }
+        & label, span, input{
+            @include fonsNew(1.5rem, $Roboto);
+            font-weight: 400;
+        }
+    }
+    & .loginIMG{
+        @media (max-width: 600px){
+            display: none;
+        }
+        @media (min-width: 600px){
+            height: 90px;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            & > img{
+                height: 100%;
+                width: auto;
+            }
+        }
+    }
+    & .loginHeader{
+        height: 60px;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: flex-end;
+        & h2{
+            @include fonsNew(2rem, $Roboto);
+            font-weight: 500;
+        }
+    }
+    & .loginLosePWD{
+        height: 80px;
+        display: flex;
+        align-items: center;
+        & span{
+            @include fonsNew(0.825rem, $Roboto);
+            font-weight: 300;
+            cursor: pointer;
+        }
+    }
+    & .loginLogin{
+        width: 75%;
+        height: 60px;
+        border-radius: 120px;
+        background-color: #F9BC23;
+        margin-bottom: 30px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+        }
+        &:hover{
+            background-color: #e1b242;
+        }
+        &:target{
+            background-color: #cf9f37;
+        }
+    }
+    & .loginCreate{
+        width: 75%;
+        height: 60px;
+        border-radius: 120px;
+        background-color: #fff;
+        border: 1px solid #F9BC23;
+        cursor: pointer;
+        & span{
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+            width: 100%;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+        }
+        &:hover{
+            background-color: #fdf8ed;
+        }
+        &:target{
+            background-color: #f9ebce;
+        }
+    }
+    & .loginSMS{
+        height: 40px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        & span{
+            @include fonsNew(0.825rem, $Roboto);
+            font-weight: 300;
+            cursor: pointer;
+        }
+    }
+    & .loginErr{
+        height: 40px;
+        margin-top: 10px;
+        margin-bottom: 10px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        & > span{
+            @include fonsNew(0.9rem, $Roboto);
+            font-weight: 300;
+            color: $colorMain
+        }
+    }
+}

@@ -1,0 +1,101 @@
+@import "./settings";
+
+.MuiAccordionSummary-content span{
+    padding: 0!important;
+}
+.Contact{
+    margin-top: 64px!important;
+    @media (min-width: 800px) {
+        margin-top: 140px!important;
+    }
+    & h1{
+        @include fonsNew(2rem, $Ubuntu);
+    }
+    & h2{
+        @include fonsNew(1.3rem, $Ubuntu);
+    }
+    & span, h2, a{
+        padding-left: 12px;
+        padding-right: 12px;
+    }
+    & span, a{
+        @include fonsNew(0.9rem, $Ubuntu);
+        width: max-content;
+        text-decoration: none;
+        @media (max-width: 500px) {
+            @include fonsNew(1rem, $Ubuntu);
+        }
+    }
+    & .p20{
+        padding-bottom: 20px;
+    }
+    & > div:first-child{
+        text-align: center;
+    }
+    & > div:not(:first-child):not(:last-child){
+        display: flex;
+        flex-direction: column;
+    }
+    .Accordion{
+        padding-left: 12px;
+        padding-right: 12px;
+        & .MuiAccordionSummary-content{
+            width: 100%;
+            display: block;
+        }
+        & > div{
+            box-shadow: none!important;
+            & > div{
+                padding: 0;
+            }
+        }
+        & .AccordionDesc{
+            & b, span{
+                @include fonsNew(0.8rem, $Ubuntu);
+            }
+        }
+        & .MuiTouchRipple-root{
+            display: none;
+        }
+    }
+    @media (min-width: 960px) {
+        margin-left: 8.35% !important; 
+        flex-grow: 0;
+        max-width: 83.333333%;
+        flex-basis: 83.333333%;
+    }
+    @media (max-width: 960px) {
+        margin: -24px!important;
+        margin-top: 64px!important;
+        & > div{
+            padding-left: 34px!important;
+        }
+        & h1{
+            @include fonsNew(1.7rem, $Ubuntu);
+            text-align: center;
+        }
+    }
+}
+
+#ForMap{
+    min-height: 400px;
+    height: 40%;
+    width: calc(100% - 104px);
+    @media (max-width: 960px) {
+        margin-bottom: 40px;
+        margin-left: 12px;
+        margin-right: 12px;
+    }
+}
+.my-hint{
+    width: 220px;
+    @include fonsNew(0.9rem, $Ubuntu);
+    display: inline-block;
+    position: relative;
+    left: -120px;
+    top: 10px;
+    color: #fff;
+    background-color: #000;
+    border-radius: 5px;
+    padding: 16px;
+}
