@@ -9,21 +9,21 @@
         margin-top: 140px!important;
     }
     & h1{
-        @include fonsNew(2rem, $Ubuntu);
+        @include fonsNew(2rem, $Roboto);
     }
     & h2{
-        @include fonsNew(1.3rem, $Ubuntu);
+        @include fonsNew(1.3rem, $Roboto);
     }
     & span, h2, a{
         padding-left: 12px;
         padding-right: 12px;
     }
     & span, a{
-        @include fonsNew(0.9rem, $Ubuntu);
+        @include fonsNew(0.9rem, $Roboto);
         width: max-content;
         text-decoration: none;
         @media (max-width: 500px) {
-            @include fonsNew(1rem, $Ubuntu);
+            @include fonsNew(1rem, $Roboto);
         }
     }
     & .p20{
@@ -51,7 +51,7 @@
         }
         & .AccordionDesc{
             & b, span{
-                @include fonsNew(0.8rem, $Ubuntu);
+                @include fonsNew(0.8rem, $Roboto);
             }
         }
         & .MuiTouchRipple-root{
@@ -71,7 +71,7 @@
             padding-left: 34px!important;
         }
         & h1{
-            @include fonsNew(1.7rem, $Ubuntu);
+            @include fonsNew(1.7rem, $Roboto);
             text-align: center;
         }
     }
@@ -89,7 +89,7 @@
 }
 .my-hint{
     width: 220px;
-    @include fonsNew(0.9rem, $Ubuntu);
+    @include fonsNew(0.9rem, $Roboto);
     display: inline-block;
     position: relative;
     left: -120px;
