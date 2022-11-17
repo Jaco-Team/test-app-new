@@ -26,6 +26,7 @@ import { Header } from '../../components/header.js';
 import { Footer } from '../../components/footer.js';
 
 import { IconClose } from '../../components/elements.js'
+import config from '../../components/config.js';
 
 const queryString = require('query-string');
 
@@ -35,21 +36,25 @@ const roboto = Roboto({
   variable: '--inter-font',
 })
 
+const this_module = 'akcii';
+
 export default class Akcii extends React.Component {
   constructor(props) {
       super(props);
       
-      this.state = {      
+      this.state = {    
           actii: [],
           pre_actii: [1, 2, 3, 4],  
           is_load: false,
           showItem: null,
           openDialog: false,
-          title: '',
-          description: '',
+
+          page: this.props.data1 ? this.props.data1.page : null,
+          title: this.props.data1 ? this.props.data1.page.title : '',
+          description: this.props.data1 ? this.props.data1.page.description : '',
+
           city: this.props.data1 ? this.props.data1.city : '',
           city_name: this.props.city,
-          page: this.props.data ? this.props.data.page : null,
           openMSG: false,
           statusMSG: false,
           textMSG: '',
@@ -65,7 +70,7 @@ export default class Akcii extends React.Component {
     
     data.type = method; 
 
-    return fetch('https://jacochef.ru/api/site/site_fast.php', {
+    return fetch(config.urlApi+this_module, {
       method: 'POST',
       headers: {
           'Content-Type':'application/x-www-form-urlencoded'},
@@ -121,10 +126,10 @@ export default class Akcii extends React.Component {
       city_id: this.state.city
     };
 
-    const json = await this.getData('get_my_actii_web_fast', data);
+    const json = await this.getData('get_actii', data);
 
     this.setState({ 
-      actii: json.actii,  
+      actii: json,  
       is_load: true,
     });
 
@@ -134,7 +139,7 @@ export default class Akcii extends React.Component {
       if( hash.length > 0 && hash.indexOf('act_') > 0 ){
           let act = hash.split('&')[0];
           let act_id = act.split('act_')[1];
-          let this_item = json.actii.find( (item) => item.id == act_id );
+          let this_item = json.find( (item) => item.id == act_id );
           
           this.openDialog(this_item);
       }
@@ -189,7 +194,7 @@ export default class Akcii extends React.Component {
       act_id: item.id
     };
 
-    const json = await this.getData('get_one_actii_web_fast', data);
+    const json = await this.getData('get_one_actii', data);
 
     let state = {  },
         title = '',
@@ -198,7 +203,7 @@ export default class Akcii extends React.Component {
     window.history.pushState(state, title, url)
     
     this.setState({
-      showItem: json.item,
+      showItem: json,
       openDialog: true
     })
   }
@@ -365,7 +370,7 @@ export async function getServerSideProps({ req, res, query }) {
     page: 'akcii' 
   };
 
-  let res1 = await fetch('https://jacochef.ru/api/site/site_fast.php', {
+  let res1 = await fetch(config.urlApi+this_module, {
     method: 'POST',
     headers: {
       'Content-Type':'application/x-www-form-urlencoded'},
