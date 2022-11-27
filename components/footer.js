@@ -6,8 +6,11 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
+import config from './config.js';
+
 const queryString = require('query-string');
 
+const this_module = 'contacts';
 
 import { VKIcon, OdnIcon, TGIcon } from './elements';
 
@@ -24,13 +27,9 @@ export class Footer extends React.Component{
     }
     
     getData = (method, data = {}) => {
-        this.setState({
-          is_load: true,
-        });
-        
         data.type = method; 
     
-        return fetch('https://jacochef.ru/api/site/site_fast.php', {
+        return fetch(config.urlApi+this_module, {
           method: 'POST',
           headers: {
               'Content-Type':'application/x-www-form-urlencoded'},
@@ -38,12 +37,6 @@ export class Footer extends React.Component{
         })
           .then((res) => res.json())
           .then((json) => {
-            setTimeout(() => {
-              this.setState({
-                //is_load: false,
-              });
-            }, 300);
-    
             return json;
           })
           .catch((err) => {
@@ -60,10 +53,10 @@ export class Footer extends React.Component{
       
         const json = await this.getData('get_page_info', data);
 
-        console.log( json.soc_link )
+        console.log( 'footer', json )
 
         this.setState({
-            soc_link: json.soc_link,
+            soc_link: json.page,
             is_load: true
         });
     }

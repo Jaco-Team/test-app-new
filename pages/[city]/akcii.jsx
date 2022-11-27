@@ -1,9 +1,6 @@
 import React from 'react';
 import Head from 'next/head'
-import Script from 'next/script'
 import Image from 'next/image';
-
-import { Roboto } from '@next/font/google'
 
 import Grid from '@mui/material/Grid';
 
@@ -12,9 +9,6 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 
-//import { FontAwesomeIcon } from '@fortawesome/react-fontawesome'
-//import { faTimes } from '@fortawesome/free-solid-svg-icons'
-
 import Dialog from '@mui/material/Dialog';
 import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
@@ -22,21 +16,86 @@ import DialogTitle from '@mui/material/DialogTitle';
 
 import Snackbar from '@mui/material/Snackbar';
 
+import Box from '@mui/material/Box';
+import Backdrop from '@mui/material/Backdrop';
+
 import { Header } from '../../components/header.js';
 import { Footer } from '../../components/footer.js';
 
-import { IconClose } from '../../components/elements.js'
+import { IconClose, Fade, roboto } from '../../components/elements.js'
 import config from '../../components/config.js';
 
 const queryString = require('query-string');
 
-const roboto = Roboto({
-  weight: ['100', '300', '400', '500', '700', '900'],
-  subsets: ['sans-serif'],
-  variable: '--inter-font',
-})
-
 const this_module = 'akcii';
+
+class AkciiModal extends React.Component{
+  shouldComponentUpdate(nextProps){
+    return (nextProps.showItem !== this.props.showItem || nextProps.openDialog !== this.props.openDialog);
+  }
+
+  render(){
+    const { closeDialog, openDialog, activePromo, showItem } = this.props;
+    
+    return (
+      <Dialog 
+        onClose={closeDialog.bind(this)} 
+        className={"modalActii "+roboto.variable} 
+        open={openDialog}
+        BackdropComponent={Backdrop}
+        BackdropProps={{
+            timeout: 500,
+        }}
+      >
+        <Fade in={openDialog}>
+          <Box>
+            <IconButton style={{ position: 'absolute', top: -43, right: 10 }} onClick={closeDialog.bind(this)}>
+              <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
+            </IconButton>
+
+            <DialogTitle style={{ margin: 0, padding: 8 }}>
+              { showItem ? showItem.promo_title : ''}
+            </DialogTitle>
+              
+            <DialogContent className="modalActiiContent">
+              { showItem ?
+                <div dangerouslySetInnerHTML={{__html: showItem.text}} />
+                  :
+                null
+              }
+            </DialogContent>
+
+            {showItem && showItem.promo.length > 0 ?
+              <DialogActions style={{ justifyContent: 'center', padding: '15px 0px' }}>
+                <ButtonGroup disableElevation={true} disableRipple={true} variant="contained">
+                  <Button variant="contained" className="AkciiActivePromo" onClick={activePromo.bind(this, showItem.info, showItem.promo)}>Применить промокод</Button>
+                </ButtonGroup>
+              </DialogActions>
+                :
+              null
+            }
+          </Box>
+        </Fade>
+      </Dialog>
+    )
+  }
+}
+
+class AkciiItem extends React.Component{
+  shouldComponentUpdate(nextProps){
+    return nextProps.item !== this.props.item;
+  }
+
+  render(){
+    const { openDialog, item } = this.props;
+    
+    return (
+      <Grid item xs={12} sm={6} md={4} xl={3} onClick={openDialog.bind(this, item)}>
+        <Image alt={item.promo_title} src={"https://storage.yandexcloud.net/site-aktii/"+item.img_new+"750х750.jpg"} width={750} height={750} priority={true} />
+      </Grid>
+    )
+  }
+}
 
 export default class Akcii extends React.Component {
   constructor(props) {
@@ -44,7 +103,7 @@ export default class Akcii extends React.Component {
       
       this.state = {    
           actii: [],
-          pre_actii: [1, 2, 3, 4],  
+          pre_actii: [1, 2, 3, 4, 5, 6, 7, 8],  
           is_load: false,
           showItem: null,
           openDialog: false,
@@ -64,10 +123,6 @@ export default class Akcii extends React.Component {
   }
   
   getData = (method, data = {}) => {
-    this.setState({
-      //is_load: true,
-    });
-    
     data.type = method; 
 
     return fetch(config.urlApi+this_module, {
@@ -78,12 +133,6 @@ export default class Akcii extends React.Component {
     })
       .then((res) => res.json())
       .then((json) => {
-        setTimeout(() => {
-          this.setState({
-            //is_load: false,
-          });
-        }, 300);
-
         return json;
       })
       .catch((err) => {
@@ -91,36 +140,6 @@ export default class Akcii extends React.Component {
       });
   };
 
-  /*static fetchData(propsData) {
-      let data = {
-          type: 'get_page_info', 
-          city_id: get_city(propsData),
-          page: 'akcii' 
-      };
-      
-      return axios({
-          method: 'POST',
-          url: config.urlApi,
-          headers: { 'content-type': 'application/x-www-form-urlencoded' },
-          data: queryString.stringify(data)
-      }).then(response => {
-          if(response['status'] === 200){
-              var json = response['data'];
-              
-              return {
-                  title: json.page.title,
-                  description: json.page.description,
-                  page: json.page,
-                  cats: json.cats,
-                  allItems: json.allItems,
-                  all: json
-              }
-          } 
-      }).catch(function (error) {
-          console.log(error);
-      });
-  }*/
-  
   async componentDidMount(){
     let data = {
       city_id: this.state.city
@@ -210,36 +229,14 @@ export default class Akcii extends React.Component {
 
   closeDialog(){
       
-      let state = {  },
-          title = '',
-          url = window.location.pathname;
-
-      window.history.pushState(state, title, url)
-      
-      this.setState({
-          showItem: null,
-          openDialog: false
-      })
-  }
-  
-  openDialog_(item){
-    console.log( 'openDialog' )
-
-    /*let allItems = itemsStore.getAllItems();
-    
-    item.items.map((act_item, key) => {
-      item.items[key]['item'] = allItems.find( (item) => item.id == act_item.item_id );
-    })*/
-    
     let state = {  },
         title = '',
-        url = window.location.pathname+'?act_'+item.id;
+        url = window.location.pathname;
 
     window.history.pushState(state, title, url)
     
     this.setState({
-      showItem: item,
-      openDialog: true
+      openDialog: false
     })
   }
   
@@ -271,10 +268,9 @@ export default class Akcii extends React.Component {
   }
   
   render() {
-    //<FontAwesomeIcon icon={faTimes} style={{ fontSize: '1.8rem', color: '#e5e5e5' }} />
     return (
       <div className={roboto.variable}>
-        <Header />
+        <Header city={this.state.city} />
 
         <Grid container className="Actii mainContainer MuiGrid-spacing-xs-3">
                   
@@ -311,47 +307,25 @@ export default class Akcii extends React.Component {
                 )
                   :
                 this.state.actii.map((item, key) =>
-                  <Grid item xs={12} sm={6} md={4} xl={3} key={key} onClick={this.openDialog.bind(this, item)}>
-                    <Image alt={item.promo_title} src={"https://storage.yandexcloud.net/site-aktii/"+item.img_new+"750х750.jpg"} width={750} height={750} priority={true} />
-                  </Grid>
+                  <AkciiItem 
+                    key={item.id}
+                    openDialog={this.openDialog.bind(this)}
+                    item={item}
+                  />
                 )
               }
 
             </Grid>
           </Grid>
 
-          
-          <Dialog onClose={this.closeDialog.bind(this)} className={"modalActii "+roboto.variable} open={this.state.openDialog}>
-
-            <IconButton style={{ position: 'absolute', top: -43, right: 10 }} onClick={this.closeDialog.bind(this)}>
-              <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
-            </IconButton>
-
-            <DialogTitle style={{ margin: 0, padding: 8 }}>
-              { this.state.showItem ? this.state.showItem.promo_title : ''}
-            </DialogTitle>
-              
-            <DialogContent className="modalActiiContent">
-              { this.state.showItem ?
-                <div dangerouslySetInnerHTML={{__html: this.state.showItem.text}} />
-                  :
-                null
-              }
-            </DialogContent>
-
-            {this.state.showItem && this.state.showItem.promo.length > 0 ?
-              <DialogActions style={{ justifyContent: 'center', padding: '15px 0px' }}>
-                <ButtonGroup disableElevation={true} disableRipple={true} variant="contained" onClick={this.activePromo.bind(this, this.state.showItem.info, this.state.showItem.promo)}>
-                  <Button variant="contained" className="AkciiActivePromo">Применить промокод</Button>
-                </ButtonGroup>
-              </DialogActions>
-                :
-              null
-            }
-          </Dialog>
-              
-
-        
+          { !this.state.is_load ? null :
+            <AkciiModal 
+              closeDialog={this.closeDialog.bind(this)}
+              activePromo={this.activePromo.bind(this)}
+              openDialog={this.state.openDialog}
+              showItem={this.state.showItem}
+            />
+          }
 
         </Grid>
 

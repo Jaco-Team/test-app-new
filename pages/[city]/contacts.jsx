@@ -10,6 +10,12 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+import { roboto } from '../../components/elements.js'
+
+const this_module = 'contacts';
+
+import config from '../../components/config.js';
+
 import { Header } from '../../components/header.js';
 import { Footer } from '../../components/footer.js';
 
@@ -72,6 +78,7 @@ export default class Contacts extends React.Component{
     this.state = {      
       points: [],  
       unic_point: [],
+
       page: this.props.data1 ? this.props.data1.page : null,
       title: this.props.data1 ? this.props.data1.page.title : '',
       description: this.props.data1 ? this.props.data1.page.description : '',
@@ -85,13 +92,9 @@ export default class Contacts extends React.Component{
   }
 
   getData = (method, data = {}) => {
-    this.setState({
-      is_load: true,
-    });
-    
     data.type = method; 
 
-    return fetch('https://jacochef.ru/api/site/site_fast.php', {
+    return fetch(config.urlApi+this_module, {
       method: 'POST',
       headers: {
           'Content-Type':'application/x-www-form-urlencoded'},
@@ -99,12 +102,6 @@ export default class Contacts extends React.Component{
     })
       .then((res) => res.json())
       .then((json) => {
-        setTimeout(() => {
-          this.setState({
-            is_load: false,
-          });
-        }, 300);
-
         return json;
       })
       .catch((err) => {
@@ -125,8 +122,6 @@ export default class Contacts extends React.Component{
     };
 
     const json = await this.getData('get_addr_zone_web', data);
-
-    console.log( 'json', json )
 
     let points_zone = [];
     
@@ -215,8 +210,8 @@ export default class Contacts extends React.Component{
 
   render(){
     return (
-      <div>
-        <Header />
+      <div className={roboto.variable}>
+        <Header city={this.state.city} />
 
         <Grid container className="Contact mainContainer MuiGrid-spacing-xs-3">
                   
@@ -231,6 +226,7 @@ export default class Contacts extends React.Component{
           <Grid item xs={12}>
             <Typography variant="h5" component="h1">Контакты</Typography>
           </Grid>
+          
           <Grid item lg={4} md={4} xl={4} sm={12} xs={12} className="mainContainer">
             <Typography variant="h5" component="h2">Режим работы</Typography>
             <Typography variant="h5" component="span" className="p20">Работаем ежедневно с 10:00 до 21:30</Typography>
@@ -250,6 +246,7 @@ export default class Contacts extends React.Component{
         </Grid>
 
         <Footer cityName={this.state.city} />
+
       </div>
     )
   }
@@ -263,7 +260,7 @@ export async function getServerSideProps({ req, res, query }) {
   };
 
 
-  let res1 = await fetch('https://jacochef.ru/api/site/site_fast.php', {
+  let res1 = await fetch(config.urlApi+this_module, {
     method: 'POST',
     headers: {
       'Content-Type':'application/x-www-form-urlencoded'},
@@ -272,6 +269,8 @@ export async function getServerSideProps({ req, res, query }) {
   
   const data1 = await res1.json()
   
+  console.log( 'page', data1 )
+
   data1['city'] = query.city;
 
   return { props: { data1 } }

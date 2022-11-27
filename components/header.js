@@ -1,6 +1,6 @@
 import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
-import Box from '@mui/material/Box';
+//import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 
 import Link from 'next/link'
@@ -11,12 +11,16 @@ import JacoLogo from '../public/jaco-logo.png'
 import { ModalCity } from './cityForm.js'
 import { ModalLogin } from './loginForm.js'
 
+import { roboto } from './elements.js'
+
 export class Header extends React.Component{
     is_load = false;
 
     constructor(props) {
         super(props);
         
+        console.log( this.props )
+
         if( this.props && this.props.data ){
             this.is_load = true;
 
@@ -52,7 +56,11 @@ export class Header extends React.Component{
             soc_link: null,
             openDrawer: false,
             anchorEl: null,
-            cityNameRu: this.props.data ? this.props.data.all.other.cats.this_city_name_ru && this.props.data.all.other.cats.this_city_name_ru.length > 0 ? this.props.data.all.other.cats.this_city_name_ru : 'Город' : 'Город'
+            cityNameRu: this.props.data ? this.props.data.all.other.cats.this_city_name_ru && this.props.data.all.other.cats.this_city_name_ru.length > 0 ? this.props.data.all.other.cats.this_city_name_ru : 'Город' : 'Город',
+
+
+
+            city: this.props.city
         };
     }
 
@@ -109,11 +117,11 @@ export class Header extends React.Component{
 
     render(){
         return (
-            <Box>
+            <div className={roboto.variable}>
                 <AppBar position="fixed" className='headerNew' id='headerNew' elevation={2} sx={{ display: { xs: 'none', md: 'block' } }}>
                     <Toolbar>
                         <div style={{ width: '4.51%' }} />
-                        <Link href={"/"} style={{ width: '14.8%' }}>
+                        <Link href={"/"+this.state.city} style={{ width: '14.8%' }}>
                             <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true} />
                         </Link> 
                         <div style={{ width: '2.53%' }} />
@@ -161,7 +169,7 @@ export class Header extends React.Component{
                         </React.Fragment>
                                             
 
-                        <Link href={"/"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }}>
+                        <Link href={"/"+this.state.city+"/akcii"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }}>
                             <span className={'headerCat'}>Акции</span>
                         </Link>
                         <div style={{ width: '0.36%' }} />
@@ -183,7 +191,7 @@ export class Header extends React.Component{
                         <ModalLogin isOpen={this.state.openLoginNew} close={this.closeLogin.bind(this)} />
                     </>
                 }
-            </Box>
+            </div>
         )
     }
 }

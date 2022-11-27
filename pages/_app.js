@@ -12,7 +12,9 @@ import '../styles/footer.scss'
 //npm install && npm run build && pm2 start npm --name "test-app-new" -- start
 
 function MyApp({ Component, pageProps }) {
-  return <Component {...pageProps} />
+  return (
+    <Component {...pageProps} />
+  )
 }
 
 export default MyApp

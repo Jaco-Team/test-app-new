@@ -3,7 +3,12 @@ import React from 'react';
 import ButtonGroup from '@mui/material/ButtonGroup';
 import Button from '@mui/material/Button';
 
+import PropTypes from 'prop-types';
+import { useSpring, animated } from '@react-spring/web';
+
 import TextField from '@mui/material/TextField';
+
+import { Roboto } from '@next/font/google'
 
 export function IconRuble(props) {
     return (
@@ -168,3 +173,40 @@ export class MyTextInput extends React.PureComponent {
       )
     }
 }
+
+export const Fade = React.forwardRef(function Fade(props, ref) {
+  const { in: open, children, onEnter, onExited, ...other } = props;
+  const style = useSpring({
+    from: { opacity: 0 },
+    to: { opacity: open ? 1 : 0 },
+    onStart: () => {
+      if (open && onEnter) {
+        onEnter();
+      }
+    },
+    onRest: () => {
+      if (!open && onExited) {
+        onExited();
+      }
+    },
+  });
+
+  return (
+    <animated.div ref={ref} style={style} {...other}>
+      {children}
+    </animated.div>
+  );
+});
+
+Fade.propTypes = {
+  children: PropTypes.element,
+  in: PropTypes.bool.isRequired,
+  onEnter: PropTypes.func,
+  onExited: PropTypes.func,
+};
+
+export const roboto = Roboto({
+  weight: ['100', '300', '400', '500', '700', '900'],
+  subsets: ['sans-serif'],
+  variable: '--inter-font',
+})
