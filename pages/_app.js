@@ -2,6 +2,7 @@ import '../styles/globals.scss'
 
 import '../styles/akcii.scss'
 import '../styles/contacts.scss'
+import '../styles/about.scss'
 
 import '../styles/cityForm.scss'
 import '../styles/loginForm.scss'

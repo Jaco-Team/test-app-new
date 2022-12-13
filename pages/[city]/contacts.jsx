@@ -269,8 +269,6 @@ export async function getServerSideProps({ req, res, query }) {
   
   const data1 = await res1.json()
   
-  console.log( 'page', data1 )
-
   data1['city'] = query.city;
 
   return { props: { data1 } }

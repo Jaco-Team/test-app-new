@@ -19,8 +19,6 @@ export class Header extends React.Component{
     constructor(props) {
         super(props);
         
-        console.log( this.props )
-
         if( this.props && this.props.data ){
             this.is_load = true;
 

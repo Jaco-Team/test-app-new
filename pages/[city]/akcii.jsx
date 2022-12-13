@@ -90,7 +90,7 @@ class AkciiItem extends React.Component{
     const { openDialog, item } = this.props;
     
     return (
-      <Grid item xs={12} sm={6} md={4} xl={3} onClick={openDialog.bind(this, item)}>
+      <Grid item xs={12} sm={6} md={4} xl={4} onClick={openDialog.bind(this, item)}>
         <Image alt={item.promo_title} src={"https://storage.yandexcloud.net/site-aktii/"+item.img_new+"750х750.jpg"} width={750} height={750} priority={true} />
       </Grid>
     )
@@ -301,7 +301,7 @@ export default class Akcii extends React.Component {
 
               {this.state.is_load === false ?
                 this.state.pre_actii.map((item, key) =>
-                  <Grid item xs={12} sm={6} md={4} xl={3} key={key}>
+                  <Grid item xs={12} sm={6} md={4} xl={4} key={key}>
                     <div style={{ width: '100%', height: 400, backgroundColor: '#e5e5e5', borderRadius: 25 }} />
                   </Grid>
                 )

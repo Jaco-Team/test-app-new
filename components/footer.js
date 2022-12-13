@@ -53,8 +53,6 @@ export class Footer extends React.Component{
       
         const json = await this.getData('get_page_info', data);
 
-        console.log( 'footer', json )
-
         this.setState({
             soc_link: json.page,
             is_load: true
