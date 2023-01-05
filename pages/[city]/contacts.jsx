@@ -213,7 +213,7 @@ export default class Contacts extends React.Component{
       <div className={roboto.variable}>
         <Header city={this.state.city} />
 
-        <Grid container className="Contact mainContainer MuiGrid-spacing-xs-3">
+        <Grid container spacing={3} className="Contact mainContainer">
                   
           <Head>
             <title>{this.state.title}</title>

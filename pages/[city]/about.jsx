@@ -46,7 +46,7 @@ export default class About extends React.Component{
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <Grid container className="PAGEabout MuiGrid-spacing-xs-3">
+        <Grid container spacing={3} className="PAGEabout">
           
           <Grid item xs={12} style={{ paddingBottom: 15 }}>
             <Typography variant="h5" component="h1">{ this.state.page ? this.state.page.page_h : '' }</Typography>

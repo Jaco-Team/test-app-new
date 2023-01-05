@@ -61,17 +61,18 @@
     @media (min-width: 960px) {
         margin-left: 8.35% !important; 
         flex-grow: 0;
-        max-width: 83.333333%;
+        max-width: 83.333333%; 
         flex-basis: 83.333333%;
     }
     @media (max-width: 960px) {
-        margin: -24px!important;
         margin-top: 64px!important;
+        margin-bottom: 64px;
         & > div{
-            padding-left: 34px!important;
+            margin-left: 0px;
+            width: calc(100% - 24px);
         }
         & h1{
-            @include fonsNew(1.7rem, $Roboto);
+            @include fonsNew(1.7rem, var(--inter-font));
             text-align: center;
         }
     }
