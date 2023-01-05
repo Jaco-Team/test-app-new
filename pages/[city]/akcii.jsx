@@ -272,7 +272,7 @@ export default class Akcii extends React.Component {
       <div className={roboto.variable}>
         <Header city={this.state.city} />
 
-        <Grid container className="Actii mainContainer MuiGrid-spacing-xs-3">
+        <Grid container spacing={3} className="Actii mainContainer">
                   
           <Head>
             <title>{this.state.title}</title>

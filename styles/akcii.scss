@@ -58,10 +58,13 @@
         flex-basis: 83.333333%;
     }
     @media (max-width: 960px) {
-        margin: -24px!important;
+        //margin: -24px!important;
         margin-top: 64px!important;
-        & > div{
-            padding-left: 34px!important;
+        margin-bottom: 64px;
+        & > div > div{
+            margin-left: 0px;
+            width: calc(100% - 24px);
+            //padding-left: 34px!important;
         }
         & h1{
             @include fonsNew(1.7rem, var(--inter-font));
