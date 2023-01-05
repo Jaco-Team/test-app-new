@@ -15,7 +15,7 @@ import { Footer } from '../../components/footer.js';
 
 import queryString from 'query-string';
 
-export default class About extends React.Component{
+export default class PolitikaKonfidencialnosti extends React.Component{
   constructor(props) {
     super(props);
     
@@ -46,7 +46,7 @@ export default class About extends React.Component{
           <link rel="icon" href="/favicon.ico" />
         </Head>
 
-        <Grid container className="PAGEabout MuiGrid-spacing-xs-3">
+        <Grid container className="PAGEpolitic MuiGrid-spacing-xs-3">
           
           <Grid item xs={12} style={{ paddingBottom: 15 }}>
             <Typography variant="h5" component="h1">{ this.state.page ? this.state.page.page_h : '' }</Typography>
@@ -71,7 +71,7 @@ export async function getServerSideProps({ req, res, query }) {
   let data = {
     type: 'get_page_info', 
     city_id: query.city,
-    page: 'about' 
+    page: 'politika-konfidencialnosti' 
   };
 
   let res1 = await fetch(config.urlApi+this_module, {

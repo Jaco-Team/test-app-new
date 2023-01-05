@@ -1,0 +1,42 @@
+@import "./settings";
+
+.PAGEpublick{
+    margin-top: 64px!important;
+    @media (min-width: 800px) {
+        margin-top: 140px!important;
+        margin-bottom: 140px!important;
+    }
+
+    & h1{
+        @include fonsNew(2rem, var(--inter-font));
+        text-align: center;
+        width: 100%;
+        font-weight: 600;
+    }
+    & h2{
+        @include fonsNew(1.3rem, var(--inter-font));
+    }
+    & .mainContainer{
+        padding-top: 0!important; 
+        padding-bottom: 36px!important;
+    }
+    @media (min-width: 960px) {
+        margin-left: 8.35% !important; 
+        flex-grow: 0;
+        max-width: 83.333333%;
+        flex-basis: 83.333333%;
+    }
+    @media (max-width: 960px) {
+        margin-left: 24px !important;
+        margin-top: 64px !important;
+        width: calc(100% - 48px);
+        & h1{
+            @include fonsNew(1.3rem, var(--inter-font));
+            text-align: center;
+        }
+    }
+    & p, li{
+        @include fonsNew(1rem, var(--inter-font));
+    }
+     
+}

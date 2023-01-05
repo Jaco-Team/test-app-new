@@ -25,7 +25,7 @@ import { Footer } from '../../components/footer.js';
 import { IconClose, Fade, roboto } from '../../components/elements.js'
 import config from '../../components/config.js';
 
-const queryString = require('query-string');
+import queryString from 'query-string';
 
 const this_module = 'akcii';
 

@@ -44,7 +44,7 @@ export class Header extends React.Component{
             openCity: false,
             cityName: this.props.city ? this.props.city : '',
             testData: [1, 2, 3, 4],
-            cityList: this.props.data ? this.props.data.all.other.cats.city_list : [{ link: 'samara', name: 'Самара' }, { link: 'togliatty', name: 'Тольятти' }],
+            cityList: this.props.data ? this.props.data.all.other.cats.city_list : [{ link: 'samara', name: 'Самара' }, { link: 'togliatti', name: 'Тольятти' }],
             
             openLoginNew: false,
             
@@ -68,6 +68,12 @@ export class Header extends React.Component{
         })
     }
     
+    componentDidMount(){
+        this.setState({
+            is_load_new: true
+        })
+    }
+
     closeCity(){
         this.setState({
             openCity: false
@@ -173,7 +179,7 @@ export class Header extends React.Component{
                         <div style={{ width: '0.36%' }} />
 
                         
-                        <Link href={"/"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }} onClick={this.openLogin.bind(this)}><span className={'headerCat'}>Профиль</span></Link>
+                        <Link href={"/"+this.state.city+"/profile"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }} onClick={this.openLogin.bind(this)}><span className={'headerCat'}>Профиль</span></Link>
                                 
 
                         <div style={{ width: '3.25%' }} />
@@ -183,7 +189,7 @@ export class Header extends React.Component{
                     </Toolbar>
                 </AppBar>
 
-                { !this.is_load ? null :
+                { !this.state.is_load_new ? null :
                     <>
                         <ModalCity isOpen={this.state.openCity} close={this.closeCity.bind(this)} cityList={this.state.cityList} cityName={this.state.cityName} />
                         <ModalLogin isOpen={this.state.openLoginNew} close={this.closeLogin.bind(this)} />

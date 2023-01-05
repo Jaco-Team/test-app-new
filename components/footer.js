@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 
 import config from './config.js';
 
-const queryString = require('query-string');
+import queryString from 'query-string';
 
 const this_module = 'contacts';
 

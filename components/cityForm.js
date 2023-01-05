@@ -17,6 +17,8 @@ import { useSpring, animated } from '@react-spring/web';
 import AccountIcon from '../public/account-icon-240x240.png'
 import { IconClose } from './elements.js'
 
+import { roboto } from './elements.js'
+
 const Fade = React.forwardRef(function Fade(props, ref) {
     const { in: open, children, onEnter, onExited, ...other } = props;
     const style = useSpring({
@@ -70,14 +72,14 @@ export class ModalCity extends React.Component{
     }
 
     chooseCity(city){
-        /*setTimeout(()=>{ 
-            itemsStore.saveCartData([]); 
-            localStorage.setItem('myCity', city)
-            this.props.close();
-            window.location.reload(); 
-        }, 300)*/
-
         this.props.close();
+
+        setTimeout(()=>{ 
+            //itemsStore.saveCartData([]); 
+            //localStorage.setItem('myCity', city)
+            //this.props.close();
+            window.location.reload(); 
+        }, 300)
     }
 
     getNewLink(city){
@@ -103,7 +105,7 @@ export class ModalCity extends React.Component{
             >
                 <Fade in={this.props.isOpen}>
                     
-                    <Box className='modalCity'>
+                    <Box className={'modalCity '+roboto.variable}>
 
                         <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.props.close}>
                             <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />

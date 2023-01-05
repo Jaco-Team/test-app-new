@@ -1,0 +1,238 @@
+@import "./settings";
+
+.MuiSnackbarContent-root.MuiPaper-elevation6{
+    box-shadow: none;
+}
+.Profile{
+    margin-top: 64px!important;
+    @media (min-width: 800px) {
+        margin-top: 140px!important;
+        margin-bottom: 140px!important;
+    }
+    
+    & h1, h2{
+        @include fonsNew(2rem, $Roboto);
+        text-align: center;
+        margin-bottom: 20px!important;
+    }
+    & img{
+        border-radius: 25px;
+        width: 100%;
+        height: auto;
+    }
+    & .mainContainer{
+        padding-top: 0!important; 
+        padding-bottom: 36px!important; ;
+    }
+    @media (min-width: 960px) {
+        margin-left: 8.35% !important; 
+        flex-grow: 0;
+        max-width: 83.333333%;
+        flex-basis: 83.333333%;
+    }
+    @media (max-width: 960px) {
+        margin: -24px!important;
+        margin-top: 64px!important;
+        & > div{
+            padding-left: 34px!important;
+        }
+        & h1{
+            @include fonsNew(1.7rem, $Roboto);
+            text-align: center;
+        }
+        & .Tabs > div{
+            padding-left: 12px;
+            width: 100%;
+        }
+    }
+    
+    & span.MuiTabs-indicator{
+        background-color: $colorMain;
+    }
+    & button.MuiButtonBase-root.MuiTab-root{
+        @media (max-width: 960px) {
+            @include fonsNew(1rem, $Roboto);
+        }
+        @media (min-width: 961px) {
+            @include fonsNew(1.2rem, $Roboto);
+        }
+        font-weight: 400;
+        text-transform: capitalize;
+        padding-bottom: 5px;
+    }
+
+    & .TablePromoPc{
+        & th, td{
+            @include fonsNew(1.1rem, $Roboto);
+        }
+        & td:first-child{
+            color: $colorMain;
+            cursor: pointer;
+        }
+    }
+    & .TablePromoMobile{
+        & .PromoName, .PromoDate, .PromoText{
+            @include fonsNew(1.1rem, $Roboto);
+        }
+        & td{
+            padding-left: 0;
+            padding-right: 0;
+        }
+        & button{
+            @include fonsNew(1.1rem, $Roboto);
+            color: $colorMain;
+            background-color: #fff;
+            border: 2px solid $colorMain;
+            border-radius: 10px;
+            box-shadow: none;
+            max-height: 42px;
+        }
+    }
+
+    & .TableOrders{
+        width: 100%;
+        & .tbody{
+            & > div{
+                padding: 15px 0;
+                border-bottom: 1px solid #e5e5e5;
+            }
+            & > div > div:first-child{
+                display: flex;
+                flex-direction: row;
+                align-items: center;
+                justify-content: space-around;
+                & span{
+                    text-align: center;
+                }
+            }
+            & span{
+                @include fonsNew(1rem, $Roboto);
+            }
+        }
+        & .thead{
+            display: flex;
+            flex-direction: row;
+            justify-content: space-around;
+            border-bottom: 2px solid #e5e5e5;
+            & span{
+                @include fonsNew(1rem, $Roboto);
+                font-weight: bold;
+                text-align: center;
+                padding: 10px 0;
+            }
+        }
+
+        & .boxSteps{
+            width: 100%;
+            padding-top: 10px;
+            & > div:first-child{
+                display: flex;
+                flex-direction: row;
+                position: relative;
+                justify-content: center;
+                align-items: center;
+                & > div:not(.active){
+                    background-color: #e5e5e5;
+                    border: 1px solid #bababa;
+                    display: flex;
+                    justify-content: center;
+                    width: 100%;
+                    text-align: center;
+                    white-space: nowrap;
+                    & > span{
+                        @include fonsNew(1rem, $Roboto);
+                        padding: 5px 10px;
+                        @media (max-width: 960px) {
+                            @include fonsNew(0.7rem, $Roboto);
+                        }
+                    }
+                }
+                & > div.active{
+                    background-color: $colorMain;
+                    border: 1px solid $colorMain;
+                    display: flex;
+                    justify-content: center;
+                    width: 100%;
+                    text-align: center;
+                    white-space: nowrap;
+                    & > span{
+                        @include fonsNew(1rem, $Roboto);
+                        color: #fff!important;
+                        padding: 5px 10px;
+                        @media (max-width: 960px) {
+                            @include fonsNew(0.7rem, $Roboto);
+                        }
+                    }
+                }
+                & > div:first-child{
+                    border-top-left-radius: 6px;
+                    border-bottom-left-radius: 6px;
+                }
+                & > div:last-child{
+                    border-top-right-radius: 6px;
+                    border-bottom-right-radius: 6px;
+                }
+            }
+            & > div:last-child{
+                display: flex;
+                flex-direction: row; 
+                justify-content: center; 
+                align-items: center; 
+                padding-top: 10px;
+                & > span{
+                    @include fonsNew(1rem, $Roboto);
+                    text-align: center;
+                }
+            }
+        }
+    }
+
+    & .TableUserForm{
+        @media (min-width: 961px) {
+            width: 70%;
+            margin-left: 15%;
+        }
+    }
+}
+.modalActii:not(.OpenItemPC):not(.OpenItemPCSet){
+    & h6, h2{
+        text-align: center;
+        @include fonsNew(1.6rem, $Roboto);
+        font-weight: 600;
+    }
+    & .modalActiiContent{
+        //padding-top: 0!important;
+        & *{
+            @include fonsNew(1rem, $Roboto);
+            font-weight: 400;
+        }
+    }
+    & .MuiDialog-paper{
+        margin: 12px!important;
+        border-radius: 25px;
+        overflow: visible;
+    }
+    & .AkciiActivePromo{
+        @include fonsNew(1rem, $Roboto);
+        background-color: $colorMain;
+        color: #fff;
+    }
+}
+.modalActii.OpenItemPC{
+    & h6{
+        text-align: center;
+        @include fonsNew(1.6rem, $Roboto);
+    }
+    & .modalActiiContent{
+        padding: 0!important;
+        & span:not(.dopItemName):not(.ItemDesc):not(.ModalItemOther), p:not(.dopItemName):not(.ItemDesc), b:not(.dopItemName):not(.ItemDesc){
+            @include fonsNew(1rem, $Roboto);
+        }
+    }
+    & .modalActiiContentNew{
+        padding: 0!important;
+    }
+    & .MuiDialog-paper{
+        margin: 12px!important;
+    }
+}

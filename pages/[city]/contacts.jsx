@@ -19,7 +19,7 @@ import config from '../../components/config.js';
 import { Header } from '../../components/header.js';
 import { Footer } from '../../components/footer.js';
 
-const queryString = require('query-string');
+import queryString from 'query-string';
 
 function ControlledAccordions(props) {
   const [expanded, setExpanded] = React.useState(false);

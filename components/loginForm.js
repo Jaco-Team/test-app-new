@@ -22,6 +22,10 @@ import { IconClose, MyTextInput } from './elements.js'
 
 import AuthCode from 'react-auth-code-input';
 
+import { roboto } from './elements.js'
+import config from './config.js';
+import queryString from 'query-string';
+
 const Fade = React.forwardRef(function Fade(props, ref) {
     const { in: open, children, onEnter, onExited, ...other } = props;
     const style = useSpring({
@@ -52,6 +56,8 @@ Fade.propTypes = {
     onEnter: PropTypes.func,
     onExited: PropTypes.func,
 };
+
+const this_module = 'auth';
 
 export class ModalLogin extends React.Component{
     sms1 = false;
@@ -132,15 +138,15 @@ export class ModalLogin extends React.Component{
     }
 
     getData = (method, data = {}, is_load = true) => {
+        data.type = method;
+
         if( is_load == true ){
             this.setState({
                 is_load: true
             })
         }
         
-        data.type = method;
-
-        return fetch(config.urlApi, {
+        return fetch(config.urlApi+this_module, {
           method: 'POST',
           headers: {
             'Content-Type':'application/x-www-form-urlencoded'},
@@ -254,6 +260,7 @@ export class ModalLogin extends React.Component{
                 errTitle: '',
                 errText1: '',
                 errText2: '',
+                is_sms: res.is_sms
             })
 
             itemsStore.setToken( res.token, res.name ); 
@@ -263,11 +270,16 @@ export class ModalLogin extends React.Component{
         }
     }
 
-    async createProfileFetch(number, token){
+    async createProfileFetch(number, token = ''){
         let data = {
             number: number,
             token: token 
         };
+
+        console.log( { 
+            fromType: this.state.typeLogin,
+            typeLogin: 'loginSMSCode'
+        } )
 
         this.setState({ 
             fromType: this.state.typeLogin,
@@ -325,11 +337,9 @@ export class ModalLogin extends React.Component{
 
             let number = this.state.loginLogin;
             
-            grecaptcha.ready(() => {
-                grecaptcha.execute('6LdhWpIdAAAAAA4eceqTfNH242EGuIleuWAGQ2su', {action: 'submit'}).then( (token) => {
-                    this.createProfileFetch(number, token);
-                });
-            });
+            
+            this.createProfileFetch(number);
+                
         }
     }
 
@@ -378,6 +388,7 @@ export class ModalLogin extends React.Component{
                 errTitle: '',
                 errText1: '',
                 errText2: '',
+                is_sms: res.is_sms
             })
 
             itemsStore.setToken( res.token, res.name ); 
@@ -406,12 +417,17 @@ export class ModalLogin extends React.Component{
         })
     }
 
-    async sendsmsNewLoginFetch(token){
+    async sendsmsNewLoginFetch(token = ''){
         let data = {
             number: this.state.loginLogin,
             pwd: this.state.newPassword,
             token: token 
         };
+
+        console.log( { 
+            fromType: this.state.typeLogin,
+            typeLogin: 'loginSMSCode'
+        } )
 
         this.setState({ 
             fromType: this.state.typeLogin,
@@ -428,15 +444,15 @@ export class ModalLogin extends React.Component{
             }
         }, 1000);
 
-        let json = await this.getData('sendsmsrp', data);
+        let res = await this.getData('sendsmsrp', data);
 
-        if( json['st'] ){
+        if( res['st'] === true ){
             this.setState({ 
                 errPhone: '',
                 errTitle: '',
                 errText1: '',
                 errText2: '',
-                is_sms: res.is_sms ?? false
+                is_sms: res.is_sms
             })
         }else{
             if( res.type == 'modal' ){
@@ -465,11 +481,7 @@ export class ModalLogin extends React.Component{
         if( this.sms1 == false ){
             this.sms1 = true;
             
-            grecaptcha.ready(() => {
-                grecaptcha.execute('6LdhWpIdAAAAAA4eceqTfNH242EGuIleuWAGQ2su', {action: 'submit'}).then( (token) => {
-                    this.sendsmsNewLoginFetch(token);
-                });
-            });
+            this.sendsmsNewLoginFetch();
         }
     }
 
@@ -484,258 +496,259 @@ export class ModalLogin extends React.Component{
                     timeout: 500,
                 }}
                 className="class123"
-                
             >
                 <Fade in={this.props.isOpen}>
-                    
+                    <Box className={roboto.variable}>
 
-                    { this.state.typeLogin != 'start' ? null :
-                        <Box className='modalLoginStart'>
+                        { this.state.typeLogin != 'start' ? null :
+                            <div className={'modalLoginStart '+roboto.variable}>
 
-                            <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.close.bind(this)}>
-                                <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
-                            </IconButton>
+                                <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.close.bind(this)}>
+                                    <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
+                                </IconButton>
 
-                            <div className='loginIMG'>
-                                <Image alt="Аккаунт" src={AccountIcon} width={180} height={180} />
-                            </div>
-
-                            <div className='loginHeader'>
-                                <Typography component="h2">Мой аккаунт</Typography>
-                            </div>
-                            
-                            <MyTextInput type={"phone"} placeholder="Телефон" value={ this.state.loginLogin } func={ this.changeData.bind(this, 'loginLogin') } onKeyDown={this.checkLoginKey.bind(this, 1)} className="inputLogin" />
-
-                            <div className='loginErr'>
-                                <Typography component="span">{this.state.errPhone}</Typography>
-                            </div>
-
-                            <MyTextInput type={"password"} placeholder="Пароль" value={ this.state.pwdLogin } func={ this.changeData.bind(this, 'pwdLogin') } onKeyDown={this.checkLoginKey.bind(this, 1)} className="inputLogin" />
-
-                            <div className='loginLosePWD'>
-                                <Typography component="span" onClick={ () => { this.setState({ fromType: this.state.typeLogin, typeLogin: 'resetPWD' }) } }>Забыли пароль ?</Typography>
-                            </div>
-
-                            <div className='loginLogin' onClick={this.logIn.bind(this)}>
-                                <Typography component="span">Войти</Typography>
-                            </div>
-
-                            <div className='loginCreate' onClick={ () => { this.setState({ fromType: this.state.typeLogin, typeLogin: 'create' }); this.gen_password(); } }>
-                                <Typography component="span">Создать новый аккаунт</Typography>
-                            </div>
-
-                            <div className='loginSMS'>
-                                <Typography component="span" onClick={ () => { this.setState({ fromType: this.state.typeLogin, typeLogin: 'loginSMS' }) } }>Войти по смс</Typography>
-                            </div>
-                            
-                        </Box>
-                    }
-                    { this.state.typeLogin != 'loginSMS' ? null :
-                        <Box className='modalLoginCreate'>
-                            <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.close.bind(this)}>
-                                <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
-                            </IconButton>
-
-                            <div className='loginIMG'>
-                                <Image alt="Аккаунт" src={AccountIcon} width={180} height={180} />
-                            </div>
-
-                            <div className='loginHeader'>
-                                <Typography component="h2">Вход по СМС</Typography>
-                            </div>
-                            
-                            <MyTextInput type={"phone"} placeholder="Телефон" value={ this.state.loginLogin } func={ this.changeData.bind(this, 'loginLogin') } onKeyDown={this.checkLoginKey.bind(this, 2)} className="inputLogin" style={{ marginBottom: 0 }} />
-                            
-                            <div className='loginErr'>
-                                <Typography component="span">{this.state.errPhone}</Typography>
-                            </div>
-
-                            <div className='loginLogin' onClick={this.sendSMS.bind(this)}>
-                                <Typography component="span">Получить код</Typography>
-                            </div>
-                            
-                            <div className='loginCreate' onClick={ () => { this.setState({ fromType: this.state.typeLogin, typeLogin: 'start' }) } }>
-                                <Typography component="span">У меня есть аккаунт</Typography>
-                            </div>
-                        </Box>
-                    }
-                    { this.state.typeLogin != 'loginSMSCode' ? null :
-                        <Box className='modalLoginSMSCode'>
-                            <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.close.bind(this)}>
-                                <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
-                            </IconButton>
-
-                            <div className='loginIMG'>
-                                <Image alt="Аккаунт" src={TrippleDop} width={180} height={180} />
-                            </div>
-
-                            <div className='loginHeader'>
-                                <Typography component="h2">Проверим телефон ?</Typography>
-                            </div>
-
-                            { this.state.is_sms ? null :
-                                <div className='loginSubHeader'>
-                                    <Typography component="span">Сейчас мы вам позвоним.</Typography>
-                                    <Typography component="span">Введите последние 4 цифры номера.</Typography>
+                                <div className='loginIMG'>
+                                    <Image alt="Аккаунт" src={AccountIcon} width={180} height={180} />
                                 </div>
-                            }
 
-                            { !this.state.is_sms ? null :
-                                <div className='loginSubHeader'>
-                                    <Typography component="span">Введите 4 цифры из смс.</Typography>
-                                </div>
-                            }
-                            
-                            <div className={this.state.timerSMS > 0 ? 'loginAutCode' : 'loginAutCodeOther'}>
-                                <AuthCode autoFocus={true} allowedCharacters='numeric' length="4" onChange={ this.changeCode.bind(this) } />
-                            </div>
-
-                            <div className='loginErr'>
-                                <Typography component="span">{this.state.errPhone}</Typography>
-                            </div>
-
-                            { this.state.timerSMS > 0 ?
-                                <div className='loginTimer'>
-                                    <Typography component="span">Повторно отправить можно через {this.state.timerSMSTime}</Typography>
-                                </div>
-                                    :
-                                <div className='loginTimerSend' onClick={this.sendSMS.bind(this)}>
-                                    <Typography component="span">Отправить код еще раз</Typography>
-                                </div>
-                            }
-                            
-                            <div className={'loginSend ' + (this.state.checkCode.length == 4 ? '' : 'disabled') } onClick={this.checkCode.bind(this)}>
-                                <Typography component="span">Отправить</Typography>
-                            </div>
-                            
-                            <div className='loginPrev'>
-                                <Typography component="span" onClick={ () => { this.setState({ typeLogin: this.state.fromType }) } }>Изменить номер телефона</Typography>
-                            </div>
-                        </Box>
-                    }
-                    { this.state.typeLogin != 'resetPWD' ? null :
-                        <Box className='modalLoginReset'>
-                            <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.close.bind(this)}>
-                                <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
-                            </IconButton>
-
-                            <div className='loginIMG'>
-                                <Image alt="Аккаунт" src={AccountIcon} width={180} height={180} />
-                            </div>
-
-                            <div className='loginHeader'>
-                                <Typography component="h2">Восстановление пароля</Typography>
-                            </div>
-                            
-                            <MyTextInput type={"phone"} placeholder="Телефон" value={ this.state.loginLogin } func={ this.changeData.bind(this, 'loginLogin') } onKeyDown={this.checkLoginKey.bind(this, 4)} className="inputLogin" />
-                            
-                            <div className='loginErr'>
-                                <Typography component="span">{this.state.errPhone}</Typography>
-                            </div>
-
-                            <MyTextInput type={"password"} placeholder="Придумай пароль" value={ this.state.newPassword } func={ this.changeData.bind(this, 'newPassword') } onKeyDown={this.checkLoginKey.bind(this, 4)} className="inputLogin" />
-
-                            <div className='loginLogin' onClick={this.sendsmsNewLogin.bind(this)}>
-                                <Typography component="span">Сменить пароль</Typography>
-                            </div>
-                            
-                            <div className='loginCreate' onClick={ () => { this.setState({ fromType: this.state.typeLogin, typeLogin: 'start' }) } }>
-                                <Typography component="span">У меня есть аккаунт</Typography>
-                            </div>
-                        </Box>
-                    }
-                    { this.state.typeLogin != 'create' ? null :
-                        <Box className='modalLoginCreateNew'>
-                            <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.close.bind(this)}>
-                                <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
-                            </IconButton>
-
-                            <div className='loginIMG'>
-                                <Image alt="Аккаунт" src={AccountIconWhite} width={180} height={180} />
-                            </div>
-
-                            <div className='loginHeader'>
-                                <Typography component="h2">Новый аккаунт</Typography>
-                            </div>
-                            
-                            <MyTextInput type={"phone"} placeholder="Телефон" value={ this.state.loginLogin } func={ this.changeData.bind(this, 'loginLogin') } onKeyDown={this.checkLoginKey.bind(this, 4)} className="inputLogin" />
-
-                            <div className='loginErr'>
-                                <Typography component="span">{this.state.errPhone}</Typography>
-                            </div>
-
-                            <MyTextInput type={"password"} placeholder="Придумайте пароль" value={ this.state.newPassword } func={ this.changeData.bind(this, 'newPassword') } onKeyDown={this.checkLoginKey.bind(this, 4)} className="inputLogin" />
-
-                            <div className='loginSubHeader'>
-                                <Typography component="span">Надежный пароль - строчные и заглавные буквы, цифры и символы.</Typography>
-                                <Typography component="span">Например: {this.state.genPwd}</Typography>
-                            </div>
-
-                            <div className='loginErrText'>
-                                <Typography component="span"></Typography>
-                            </div>
-
-                            <div className='loginLogin' onClick={this.sendsmsNewLogin.bind(this)}>
-                                <Typography component="span">Создать аккаунт</Typography>
-                            </div>
-                            
-                            <div className='loginCreate' onClick={ () => { this.setState({ fromType: this.state.typeLogin, typeLogin: 'start' }) } }>
-                                <Typography component="span">У меня есть аккаунт</Typography>
-                            </div>
-                        </Box>
-                    }
-                    { this.state.typeLogin != 'finish' ? null :
-                        <Box className='modalLoginFinish'>
-                            <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.close.bind(this)}>
-                                <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
-                            </IconButton>
-
-                            <div className='loginIMG'>
-                                <Image alt="Аккаунт" src={Like} width={180} height={180} />
-                            </div>
-
-                            <div className='loginHeader'>
-                                <Typography component="h2">Добро пожаловать</Typography>
-                            </div>
-                            
-                            <div className='loginSubHeader1'>
-                                <Typography component="span">Теперь вы можете легко оформить онлайн-заказ с доставкой или забрать его самостоятельно из любого нашего кафе.</Typography>
-                            </div>
-
-                            <div className='loginSubHeader2'>
-                                <Typography component="span"><Link to={'/samara/profile'} exact={ true } onClick={ this.close.bind(this) }>Укажите в профиле</Link> день рождения и мы заренее пришлём вам промокод на приятный подарок.</Typography>
-                            </div>
-
-                            <Link to={'/samara/'} exact={ true } className='loginLogin' onClick={ this.close.bind(this) }>
-                                <Typography component="span">Перейти в меню</Typography>
-                            </Link>
-                            
-                            <Link to={'/samara/cart'} exact={ true } className='loginCreate' onClick={ this.close.bind(this) }>
-                                <Typography component="span">Открыть корзину</Typography>
-                            </Link>
-                        </Box>
-                    }
-                    { this.state.typeLogin != 'error' ? null :
-                        <Box className='modalLoginError'>
-                            <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.close.bind(this)}>
-                                <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
-                            </IconButton>
-
-                            <div className='InnerBorder'>
                                 <div className='loginHeader'>
-                                    <Typography component="h2">{this.state.errTitle}</Typography>
+                                    <Typography component="h2">Мой аккаунт</Typography>
+                                </div>
+                                
+                                <MyTextInput type={"phone"} placeholder="Телефон" value={ this.state.loginLogin } func={ this.changeData.bind(this, 'loginLogin') } onKeyDown={this.checkLoginKey.bind(this, 1)} className="inputLogin" />
+
+                                <div className='loginErr'>
+                                    <Typography component="span">{this.state.errPhone}</Typography>
+                                </div>
+
+                                <MyTextInput type={"password"} placeholder="Пароль" value={ this.state.pwdLogin } func={ this.changeData.bind(this, 'pwdLogin') } onKeyDown={this.checkLoginKey.bind(this, 1)} className="inputLogin" />
+
+                                <div className='loginLosePWD'>
+                                    <Typography component="span" onClick={ () => { this.setState({ fromType: this.state.typeLogin, typeLogin: 'resetPWD' }) } }>Забыли пароль ?</Typography>
+                                </div>
+
+                                <div className='loginLogin' onClick={this.logIn.bind(this)}>
+                                    <Typography component="span">Войти</Typography>
+                                </div>
+
+                                <div className='loginCreate' onClick={ () => { this.setState({ fromType: this.state.typeLogin, typeLogin: 'create' }); this.gen_password(); } }>
+                                    <Typography component="span">Создать новый аккаунт</Typography>
+                                </div>
+
+                                <div className='loginSMS'>
+                                    <Typography component="span" onClick={ () => { this.setState({ fromType: this.state.typeLogin, typeLogin: 'loginSMS' }) } }>Войти по смс</Typography>
+                                </div>
+                                
+                            </div>
+                        }
+                        { this.state.typeLogin != 'loginSMS' ? null :
+                            <div className={'modalLoginCreate '+roboto.variable}>
+                                <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.close.bind(this)}>
+                                    <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
+                                </IconButton>
+
+                                <div className='loginIMG'>
+                                    <Image alt="Аккаунт" src={AccountIcon} width={180} height={180} />
+                                </div>
+
+                                <div className='loginHeader'>
+                                    <Typography component="h2">Вход по СМС</Typography>
+                                </div>
+                                
+                                <MyTextInput type={"phone"} placeholder="Телефон" value={ this.state.loginLogin } func={ this.changeData.bind(this, 'loginLogin') } onKeyDown={this.checkLoginKey.bind(this, 2)} className="inputLogin" style={{ marginBottom: 0 }} />
+                                
+                                <div className='loginErr'>
+                                    <Typography component="span">{this.state.errPhone}</Typography>
+                                </div>
+
+                                <div className='loginLogin' onClick={this.sendSMS.bind(this)}>
+                                    <Typography component="span">Получить код</Typography>
+                                </div>
+                                
+                                <div className='loginCreate' onClick={ () => { this.setState({ fromType: this.state.typeLogin, typeLogin: 'start' }) } }>
+                                    <Typography component="span">У меня есть аккаунт</Typography>
+                                </div>
+                            </div>
+                        }
+                        { this.state.typeLogin != 'loginSMSCode' ? null :
+                            <div className={'modalLoginSMSCode '+roboto.variable}>
+                                <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.close.bind(this)}>
+                                    <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
+                                </IconButton>
+
+                                <div className='loginIMG'>
+                                    <Image alt="Аккаунт" src={TrippleDop} width={180} height={180} />
+                                </div>
+
+                                <div className='loginHeader'>
+                                    <Typography component="h2">Проверим телефон ?</Typography>
+                                </div>
+
+                                { this.state.is_sms === true ? null :
+                                    <div className='loginSubHeader'>
+                                        <Typography component="span">Сейчас мы вам позвоним.</Typography>
+                                        <Typography component="span">Введите последние 4 цифры номера.</Typography>
+                                    </div>
+                                }
+
+                                { this.state.is_sms === false ? null :
+                                    <div className='loginSubHeader'>
+                                        <Typography component="span">Введите 4 цифры из смс.</Typography>
+                                    </div>
+                                }
+                                
+                                <div className={this.state.timerSMS > 0 ? 'loginAutCode' : 'loginAutCodeOther'}>
+                                    <AuthCode autoFocus={true} allowedCharacters='numeric' length="4" onChange={ this.changeCode.bind(this) } />
+                                </div>
+
+                                <div className='loginErr'>
+                                    <Typography component="span">{this.state.errPhone}</Typography>
+                                </div>
+
+                                { this.state.timerSMS > 0 ?
+                                    <div className='loginTimer'>
+                                        <Typography component="span">Повторно отправить можно через {this.state.timerSMSTime}</Typography>
+                                    </div>
+                                        :
+                                    <div className='loginTimerSend' onClick={this.sendSMS.bind(this)}>
+                                        <Typography component="span">Отправить код еще раз</Typography>
+                                    </div>
+                                }
+                                
+                                <div className={'loginSend ' + (this.state.checkCode.length == 4 ? '' : 'disabled') } onClick={this.checkCode.bind(this)}>
+                                    <Typography component="span">Отправить</Typography>
+                                </div>
+                                
+                                <div className='loginPrev'>
+                                    <Typography component="span" onClick={ () => { this.setState({ typeLogin: this.state.fromType }) } }>Изменить номер телефона</Typography>
+                                </div>
+                            </div>
+                        }
+                        { this.state.typeLogin != 'resetPWD' ? null :
+                            <div className={'modalLoginReset '+roboto.variable}>
+                                <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.close.bind(this)}>
+                                    <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
+                                </IconButton>
+
+                                <div className='loginIMG'>
+                                    <Image alt="Аккаунт" src={AccountIcon} width={180} height={180} />
+                                </div>
+
+                                <div className='loginHeader'>
+                                    <Typography component="h2">Восстановление пароля</Typography>
+                                </div>
+                                
+                                <MyTextInput type={"phone"} placeholder="Телефон" value={ this.state.loginLogin } func={ this.changeData.bind(this, 'loginLogin') } onKeyDown={this.checkLoginKey.bind(this, 4)} className="inputLogin" />
+                                
+                                <div className='loginErr'>
+                                    <Typography component="span">{this.state.errPhone}</Typography>
+                                </div>
+
+                                <MyTextInput type={"password"} placeholder="Придумай пароль" value={ this.state.newPassword } func={ this.changeData.bind(this, 'newPassword') } onKeyDown={this.checkLoginKey.bind(this, 4)} className="inputLogin" />
+
+                                <div className='loginLogin' onClick={this.sendsmsNewLogin.bind(this)}>
+                                    <Typography component="span">Сменить пароль</Typography>
+                                </div>
+                                
+                                <div className='loginCreate' onClick={ () => { this.setState({ fromType: this.state.typeLogin, typeLogin: 'start' }) } }>
+                                    <Typography component="span">У меня есть аккаунт</Typography>
+                                </div>
+                            </div>
+                        }
+                        { this.state.typeLogin != 'create' ? null :
+                            <div className={'modalLoginCreateNew '+roboto.variable}>
+                                <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.close.bind(this)}>
+                                    <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
+                                </IconButton>
+
+                                <div className='loginIMG'>
+                                    <Image alt="Аккаунт" src={AccountIconWhite} width={180} height={180} />
+                                </div>
+
+                                <div className='loginHeader'>
+                                    <Typography component="h2">Новый аккаунт</Typography>
+                                </div>
+                                
+                                <MyTextInput type={"phone"} placeholder="Телефон" value={ this.state.loginLogin } func={ this.changeData.bind(this, 'loginLogin') } onKeyDown={this.checkLoginKey.bind(this, 4)} className="inputLogin" />
+
+                                <div className='loginErr'>
+                                    <Typography component="span">{this.state.errPhone}</Typography>
+                                </div>
+
+                                <MyTextInput type={"password"} placeholder="Придумайте пароль" value={ this.state.newPassword } func={ this.changeData.bind(this, 'newPassword') } onKeyDown={this.checkLoginKey.bind(this, 4)} className="inputLogin" />
+
+                                <div className='loginSubHeader'>
+                                    <Typography component="span">Надежный пароль - строчные и заглавные буквы, цифры и символы.</Typography>
+                                    <Typography component="span">Например: {this.state.genPwd}</Typography>
+                                </div>
+
+                                <div className='loginErrText'>
+                                    <Typography component="span"></Typography>
+                                </div>
+
+                                <div className='loginLogin' onClick={this.sendsmsNewLogin.bind(this)}>
+                                    <Typography component="span">Создать аккаунт</Typography>
+                                </div>
+                                
+                                <div className='loginCreate' onClick={ () => { this.setState({ fromType: this.state.typeLogin, typeLogin: 'start' }) } }>
+                                    <Typography component="span">У меня есть аккаунт</Typography>
+                                </div>
+                            </div>
+                        }
+                        { this.state.typeLogin != 'finish' ? null :
+                            <div className={'modalLoginFinish '+roboto.variable}>
+                                <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.close.bind(this)}>
+                                    <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
+                                </IconButton>
+
+                                <div className='loginIMG'>
+                                    <Image alt="Аккаунт" src={Like} width={180} height={180} />
+                                </div>
+
+                                <div className='loginHeader'>
+                                    <Typography component="h2">Добро пожаловать</Typography>
                                 </div>
                                 
                                 <div className='loginSubHeader1'>
-                                    <Typography component="span">{this.state.errText1}</Typography>
+                                    <Typography component="span">Теперь вы можете легко оформить онлайн-заказ с доставкой или забрать его самостоятельно из любого нашего кафе.</Typography>
                                 </div>
 
                                 <div className='loginSubHeader2'>
-                                    <Typography component="span">{this.state.errText2}</Typography>
+                                    <Typography component="span"><Link to={'/samara/profile'} exact={ true } onClick={ this.close.bind(this) }>Укажите в профиле</Link> день рождения и мы заренее пришлём вам промокод на приятный подарок.</Typography>
+                                </div>
+
+                                <Link to={'/samara/'} exact={ true } className='loginLogin' onClick={ this.close.bind(this) }>
+                                    <Typography component="span">Перейти в меню</Typography>
+                                </Link>
+                                
+                                <Link to={'/samara/cart'} exact={ true } className='loginCreate' onClick={ this.close.bind(this) }>
+                                    <Typography component="span">Открыть корзину</Typography>
+                                </Link>
+                            </div>
+                        }
+                        { this.state.typeLogin != 'error' ? null :
+                            <div className={'modalLoginError '+roboto.variable}>
+                                <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={this.close.bind(this)}>
+                                    <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
+                                </IconButton>
+
+                                <div className='InnerBorder'>
+                                    <div className='loginHeader'>
+                                        <Typography component="h2">{this.state.errTitle}</Typography>
+                                    </div>
+                                    
+                                    <div className='loginSubHeader1'>
+                                        <Typography component="span">{this.state.errText1}</Typography>
+                                    </div>
+
+                                    <div className='loginSubHeader2'>
+                                        <Typography component="span">{this.state.errText2}</Typography>
+                                    </div>
                                 </div>
                             </div>
-                        </Box>
-                    }
+                        }
+
+                    </Box>
                 </Fade>
             </Modal>
         )
