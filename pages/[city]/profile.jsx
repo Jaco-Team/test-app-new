@@ -17,8 +17,6 @@ import DialogActions from '@mui/material/DialogActions';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
 
-import Snackbar from '@mui/material/Snackbar';
-
 import Box from '@mui/material/Box';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -26,7 +24,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Header } from '../../components/header.js';
 import { Footer } from '../../components/footer.js';
 
-import { IconClose, IconRuble, MyTextInput, MyCheckBox, Fade, roboto } from '../../components/elements.js'
+import { IconClose, IconRuble, MyTextInput, MyCheckBox, MySelect, MyAlert, Fade, roboto } from '../../components/elements.js'
 import config from '../../components/config.js';
 
 import queryString from 'query-string';
@@ -38,10 +36,8 @@ import Tab from '@mui/material/Tab';
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
-import TableContainer from '@mui/material/TableContainer';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
-import Paper from '@mui/material/Paper';
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -73,7 +69,6 @@ function a11yProps(index) {
     'aria-controls': `simple-tabpanel-${index}`,
   };
 }
-
 
 const this_module = 'profile';
 
@@ -202,7 +197,7 @@ class ProfilePromosTable extends React.Component{
 
 class ProfileOrdersTable extends React.Component{
   render(){
-    const { order_list } = this.props;
+    const { order_list, openOrder } = this.props;
 
     return (
       <div className="TableOrders">
@@ -214,7 +209,7 @@ class ProfileOrdersTable extends React.Component{
         </div>
         <div className="tbody">
           {order_list.map((item, key) => 
-            <div key={key}>
+            <div key={key} onClick={openOrder.bind(this, item.order_id, item.point_id)}>
               <div>
                 <Typography variant="h5" component="span" style={{ flex: 1 }}>{item.order_id}</Typography>
                 <Typography variant="h5" component="span" style={{ flex: 3 }}>{item.date_time_new}</Typography>
@@ -253,31 +248,131 @@ class ProfileOrdersTable extends React.Component{
   }
 }
 
+class ProfileUserTable extends React.Component{
+  constructor(props) {
+    super(props);
+    
+    this.state = {    
+      arr_m: [ 
+        {name: 'Января', id: 1},
+        {name: 'Февраля', id: 2},
+        {name: 'Марта', id: 3},
+        {name: 'Апреля', id: 4},
+        {name: 'Мая', id: 5},
+        {name: 'Июня', id: 6},
+        {name: 'Июля', id: 7},
+        {name: 'Августа', id: 8},
+        {name: 'Сентября', id: 9},
+        {name: 'Октября', id: 10},
+        {name: 'Ноября', id: 11},
+        {name: 'Декабря', id: 12}
+      ],
+
+      arr_d: [],
+    };
+  }
+
+  shouldComponentUpdate(nextProps){
+    return nextProps.user !== this.props.user;
+  }
+
+  componentDidMount(){
+    let arr_d = [];
+
+    for(let i = 1; i <= 31; i ++){
+      if( i < 10 ){
+        arr_d.push({
+          name: '0'+i,
+          id: i
+        })
+      }else{
+        arr_d.push({
+          name: i,
+          id: i
+        })
+      }
+    }
+
+    this.setState({
+      arr_d: arr_d
+    })
+  }
+
+  render(){
+    const { user, changeUserData, saveUserData } = this.props;
+
+    return (
+      <Grid container spacing={3} className="TableUserForm">
+
+        <Grid item xs={12} sm={6}>
+          <MyTextInput label={'Имя'} value={ user?.name ?? '' } func={ changeUserData.bind(this, 'name') } onBlur={saveUserData.bind(this)} />
+        </Grid>
+        <Grid item xs={12} sm={6}>
+          <MyTextInput label={'Номер телефона'} value={ user?.login ?? '' } func={ changeUserData.bind(this, 'login') } readOnly={true} />
+        </Grid>
+
+        { (user?.date_bir ?? '').length > 0 ? null :
+          <>
+            <Grid item xs={12} sm={2}>
+              <MySelect label={'День рождения'} value={ user?.date_bir_d ?? '' } data={this.state.arr_d} func={ changeUserData.bind(this, 'date_bir_d') } />
+            </Grid>
+            <Grid item xs={12} sm={4}>
+              <MySelect label={'Месяц'} value={ user?.date_bir_m ?? '' } data={this.state.arr_m} func={ changeUserData.bind(this, 'date_bir_m') } />
+            </Grid>
+          </>
+        }
+        
+        { (user?.date_bir ?? '').length == 0 ? null :
+          <Grid item xs={12} sm={6}>
+            <MyTextInput label={'День рождения'} value={ user?.date_bir ?? '' } func={ changeUserData.bind(this, 'date_bir') } readOnly={true} />
+          </Grid>
+        }
+        <Grid item xs={12} sm={6}>
+          <MyTextInput label={'E-mail'} value={ user?.mail ?? '' } func={ changeUserData.bind(this, 'mail') } onBlur={saveUserData.bind(this)} />
+        </Grid>
+
+        <Grid item xs={12} sm={6}>
+          <MyCheckBox label={'Получать сообщения с акциями'} value={ parseInt(user?.spam ?? 1) == 1 ? true : false } func={ changeUserData.bind(this, 'spam') } />
+        </Grid>
+
+      </Grid>
+    )
+  }
+}
+
 export default class Profile extends React.Component {
   constructor(props) {
-      super(props);
+    super(props);
+    
+    this.state = {    
+      is_load: false,
       
-      this.state = {    
-          is_load: false,
-          
-          page: this.props.data1 ? this.props.data1.page : null,
-          title: this.props.data1 ? this.props.data1.page.title : '',
-          description: this.props.data1 ? this.props.data1.page.description : '',
+      cats: this.props.data1?.cats ?? [],
+      city_list: this.props.data1?.cities ?? [],
 
-          city: this.props.data1 ? this.props.data1.city : '',
-          city_name: this.props.city,
+      page: this.props.data1 ? this.props.data1.page : null,
+      title: this.props.data1 ? this.props.data1.page.title : '',
+      description: this.props.data1 ? this.props.data1.page.description : '',
 
-          openMSG: false,
-          statusMSG: false,
-          textMSG: '',
+      city: this.props.data1 ? this.props.data1.city : '',
+      city_name: this.props.city,
 
-          activeTab: 1,
-          promo_list: [],
-          order_list: [],
-          user: null,
+      openMSG: false,
+      statusMSG: false,
+      textMSG: '',
 
-          
-      };
+      activeTab: 1,
+      promo_list: [],
+      order_list: [],
+      user: null,
+
+      openAlert: false,
+      err_status: true,
+      err_text: '',
+
+      openDialog: false,
+      showOrder: null
+    };
       
       //itemsStore.setCity(this.props.city);
   }
@@ -313,7 +408,7 @@ export default class Profile extends React.Component {
         }, 500 )
         console.log(err);
       });
-  };
+  }
 
   componentDidMount(){
     if( parseInt(this.state.activeTab) == 0 ){
@@ -404,6 +499,72 @@ export default class Profile extends React.Component {
     this.setState({
       user: user
     })
+
+    if( type == 'spam' ){
+      setTimeout( () => {
+        this.saveUserData()
+      }, 200 )
+    }
+
+    if( user?.date_bir_m > 0 && user?.date_bir_d > 0 ){
+      setTimeout( () => {
+        this.saveUserData(true)
+      }, 200 )
+    }
+  }
+
+  async saveUserData(reload = false){
+
+    let data = {
+      city_id: this.state.city,
+      user_id: 'ODk4NzkzNDAzOTEtXy0xNzYyMg',
+      user: JSON.stringify(this.state.user)
+    };
+
+    let res = await this.getData('update_user', data);
+
+    setTimeout( () => {
+      this.setState({
+        openAlert: true,
+        err_status: true,
+        err_text: 'Данные успешно сохранены',
+      });
+
+      if( reload === true ){
+        this.getUserInfo();
+      }
+    }, 300 )
+    
+  }
+
+  closeDialog(){
+    this.setState({
+      openDialog: false
+    })
+  }
+
+  closeOrder(){
+    
+  }
+
+  repeatOrder(){
+
+  }
+
+  async openOrder(order_id, point_id){
+    let data = {
+      city_id: this.state.city,
+      user_id: 'ODk4NzkzNDAzOTEtXy0xNzYyMg',
+      order_id: order_id,
+      point_id: point_id
+    };
+
+    let res = await this.getData('get_order', data);
+
+    this.setState({
+      showOrder: res,
+      openDialog: true
+    })
   }
 
   render() {
@@ -413,7 +574,13 @@ export default class Profile extends React.Component {
           <CircularProgress color="inherit" />
         </Backdrop>
 
-        <Header city={this.state.city} />
+        <MyAlert 
+          isOpen={this.state.openAlert} 
+          onClose={() => this.setState({ openAlert: false }) } 
+          status={this.state.err_status} 
+          text={this.state.err_text} />
+
+        <Header city={this.state.city} cats={this.state.cats} city_list={this.state.city_list} active_page={this_module} />
 
         <Grid container className="Profile mainContainer MuiGrid-spacing-xs-3">
                   
@@ -440,35 +607,80 @@ export default class Profile extends React.Component {
                 <ProfilePromosTable promo_list={this.state.promo_list} activePromo={this.activePromo.bind(this)} />
               </TabPanel>
               <TabPanel value={this.state.activeTab} index={1} className="Tabs">
-                <ProfileOrdersTable order_list={this.state.order_list} />
+                <ProfileOrdersTable order_list={this.state.order_list} openOrder={this.openOrder.bind(this)} />
               </TabPanel>
               <TabPanel value={this.state.activeTab} index={2} className="Tabs">
-                <Grid container spacing={3} className="TableUserForm">
-
-                  <Grid item xs={12} sm={6}>
-                    <MyTextInput label={'Имя'} value={ this.state.user?.name ?? '' } func={ this.changeUserData.bind(this, 'name') } />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <MyTextInput label={'Номер телефона'} value={ this.state.user?.login ?? '' } func={ this.changeUserData.bind(this, 'login') } disabled={true} />
-                  </Grid>
-
-                  <Grid item xs={12} sm={6}>
-                    <MyTextInput label={'День рождения'} value={ this.state.user?.date_bir ?? '' } func={ this.changeUserData.bind(this, 'date_bir') } disabled={true} />
-                  </Grid>
-                  <Grid item xs={12} sm={6}>
-                    <MyTextInput label={'E-mail'} value={ this.state.user?.mail ?? '' } func={ this.changeUserData.bind(this, 'mail') } />
-                  </Grid>
-
-                  <Grid item xs={12} sm={6}>
-                    <MyCheckBox label={'Получать сообщения с акциями'} value={ parseInt(this.state.user?.spam ?? 1) == 1 ? true : false } func={ this.changeUserData.bind(this, 'spam') } />
-                  </Grid>
-
-                </Grid>
+                <ProfileUserTable user={this.state.user} changeUserData={this.changeUserData.bind(this)} saveUserData={this.saveUserData.bind(this)} />
               </TabPanel>
             </Box>
           </Grid>
 
         </Grid>
+
+        <Dialog 
+          onClose={this.closeDialog.bind(this)} 
+          className={"showOrderDialog "+roboto.variable}
+          open={this.state.openDialog}
+          fullWidth={true}
+        >
+          <DialogTitle style={{ margin: 0, padding: 8 }}>
+            <Typography variant="h6" component="h6">Заказ {this.state.showOrder?.order.order_id}</Typography>
+          
+            <IconButton aria-label="close" style={{ position: 'absolute', top: 0, right: 0, color: '#000' }} onClick={this.closeDialog.bind(this)}>
+              <CloseIcon />
+            </IconButton>
+          </DialogTitle>
+          
+          <DialogContent className="showOrderDialogContent">
+            <Typography variant="h6" component="span">{this.state.showOrder?.order.type_order}: {this.state.showOrder?.order.type_order_addr_new}</Typography>
+            <Typography variant="h6" component="span">{this.state.showOrder?.order.time_order_name}: {this.state.showOrder?.order.time_order}</Typography>
+            <Typography variant="h6" component="span">Статус заказа: {this.state.showOrder?.order.this_status_order}</Typography>
+            { parseInt(this.state.showOrder?.order.is_preorder) == 1 ? null :
+              <Typography variant="h6" component="span">{this.state.showOrder?.order.text_time}{this.state.showOrder?.order.time_to_client}</Typography>
+            }
+            { this.state.showOrder?.order.promo_name == null || this.state.showOrder?.order.promo_name.length == 0 ? null :
+              <Typography variant="h6" component="span">Промокод: {this.state.showOrder?.order.promo_name}</Typography>
+            }
+            { this.state.showOrder?.order.promo_name == null || this.state.showOrder?.order.promo_name.length == 0 ? null :
+              <Typography variant="h6" component="span" className="noSpace">{this.state.showOrder?.order.promo_text}</Typography>
+            }
+            { this.state.showOrder?.order.sdacha == null || this.state.showOrder?.order.sdacha.length == 0 || this.state.showOrder?.order.sdacha == 0 ? null :
+              <Typography variant="h6" component="span">Сдача с: {this.state.showOrder?.order.sdacha}</Typography>
+            }
+            <Typography variant="h5" component="span" className="CardPriceItem">Сумма закза: {this.state.showOrder?.order.sum_order}<IconRuble style={{ width: 12, height: 12, fill: '#525252', marginBottom: -1 }} /></Typography>
+              
+            <Table className="tableOrderCheck" size='small'>
+              <TableBody>
+                {this.state.showOrder?.order_items.map((item, key) =>
+                  <TableRow key={key}>
+                    <TableCell>{item.name}</TableCell>
+                    <TableCell>{item.count}</TableCell>
+                  </TableRow>
+                )}
+              </TableBody>
+            </Table>
+  
+          </DialogContent>
+          
+          { parseInt( this.state.showOrder?.order.is_delete ) == 0 && parseInt( this.state.showOrder?.order.status_order ) !== 6 ? 
+            <DialogActions style={{ justifyContent: 'flex-end', padding: '15px 0px' }}>
+              <ButtonGroup disableElevation={true} disableRipple={true} variant="contained" className="BtnBorderOther" style={{ marginRight: 24 }}>
+                <Button variant="contained" className="BtnCardMain CardInCardItem" onClick={ this.closeOrder.bind(this, this.state.showOrder?.order.order_id, this.state.showOrder?.order.point_id) }>Отменить заказ</Button>
+              </ButtonGroup>
+            </DialogActions>
+              :
+            null
+          }
+          { parseInt( this.state.showOrder?.order.is_delete ) == 1 || parseInt( this.state.showOrder?.order.status_order ) == 6 ? 
+            <DialogActions style={{ justifyContent: 'flex-end', padding: '15px 0px' }}>
+              <ButtonGroup disableElevation={true} disableRipple={true} variant="contained" className="BtnBorderOther" style={{ marginRight: 24 }}>
+                <Button variant="contained" className="BtnCardMain CardInCardItem" onClick={ this.repeatOrder.bind(this, this.state.showOrder?.order.order_id, this.state.showOrder?.order.point_id) }>Повторить заказ</Button>
+              </ButtonGroup>
+            </DialogActions>
+              :
+            null
+          }
+        </Dialog>
 
         { this.state.city == '' ? null :
           <Footer cityName={this.state.city} />

@@ -79,6 +79,9 @@ export default class Contacts extends React.Component{
       points: [],  
       unic_point: [],
 
+      cats: this.props.data1?.cats ?? [],
+      city_list: this.props.data1?.cities ?? [],
+
       page: this.props.data1 ? this.props.data1.page : null,
       title: this.props.data1 ? this.props.data1.page.title : '',
       description: this.props.data1 ? this.props.data1.page.description : '',
@@ -211,7 +214,7 @@ export default class Contacts extends React.Component{
   render(){
     return (
       <div className={roboto.variable}>
-        <Header city={this.state.city} />
+        <Header city={this.state.city} cats={this.state.cats} city_list={this.state.city_list} active_page={this_module} />
 
         <Grid container spacing={3} className="Contact mainContainer">
                   

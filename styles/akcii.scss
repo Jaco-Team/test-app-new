@@ -100,10 +100,11 @@
 .modalActii:not(.OpenItemPC):not(.OpenItemPCSet){
     & h6, h2{
         text-align: center;
-        @include fonsNew(1.6rem, var(--inter-font));
+        @include fonsNew(1.2rem, var(--inter-font));
         font-weight: 600;
     }
     & .modalActiiContent{
+        overflow: auto;
         //padding-top: 0!important;
         & *{
             @include fonsNew(1rem, var(--inter-font));

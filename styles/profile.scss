@@ -194,45 +194,28 @@
         }
     }
 }
-.modalActii:not(.OpenItemPC):not(.OpenItemPCSet){
-    & h6, h2{
-        text-align: center;
-        @include fonsNew(1.6rem, $Roboto);
-        font-weight: 600;
-    }
-    & .modalActiiContent{
-        //padding-top: 0!important;
-        & *{
-            @include fonsNew(1rem, $Roboto);
-            font-weight: 400;
-        }
-    }
-    & .MuiDialog-paper{
-        margin: 12px!important;
-        border-radius: 25px;
-        overflow: visible;
-    }
-    & .AkciiActivePromo{
-        @include fonsNew(1rem, $Roboto);
-        background-color: $colorMain;
-        color: #fff;
-    }
-}
-.modalActii.OpenItemPC{
+.showOrderDialog{
     & h6{
+        @include fonsNew(1.3rem, $Roboto);
         text-align: center;
-        @include fonsNew(1.6rem, $Roboto);
     }
-    & .modalActiiContent{
-        padding: 0!important;
-        & span:not(.dopItemName):not(.ItemDesc):not(.ModalItemOther), p:not(.dopItemName):not(.ItemDesc), b:not(.dopItemName):not(.ItemDesc){
+    & .showOrderDialogContent{
+        display: flex;
+        flex-direction: column;
+        padding-bottom: 20px;
+        & > span{
+            @include fonsNew(1rem, $Roboto);
+            padding: 6px 0px;
+        }
+        & > span.noSpace{
+            padding: 0px;
+            margin-top: -10px;
+        }
+        & table span{
             @include fonsNew(1rem, $Roboto);
         }
     }
-    & .modalActiiContentNew{
-        padding: 0!important;
-    }
-    & .MuiDialog-paper{
-        margin: 12px!important;
+    & .tableOrderCheck td{
+        @include fonsNew(1rem, $Roboto);
     }
 }

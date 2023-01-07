@@ -19,6 +19,8 @@ export class Header extends React.Component{
     constructor(props) {
         super(props);
         
+        console.log( 'header', this.props )
+
         if( this.props && this.props.data ){
             this.is_load = true;
 
@@ -32,19 +34,21 @@ export class Header extends React.Component{
             itemsStore.setCity(this.props.city)*/
         }
         
+        const this_city = this.props.city_list.find( city => city.link == this.props.city );
+
         this.state = {      
             this_link: this.props.this_link ? this.props.this_link : '',
             categoryItemsNew: this.props.data ? this.props.data.all.other.cats.main_cat : [],
             
             categoryItems: this.props.data ? this.props.data.all.other.cats.arr : [],
             cartItems: [],
-            activePage: '',
+            
             is_load: false,
             is_load_new: false,
             openCity: false,
             cityName: this.props.city ? this.props.city : '',
             testData: [1, 2, 3, 4],
-            cityList: this.props.data ? this.props.data.all.other.cats.city_list : [{ link: 'samara', name: 'Самара' }, { link: 'togliatti', name: 'Тольятти' }],
+            cityList: this.props.city_list,
             
             openLoginNew: false,
             
@@ -54,11 +58,13 @@ export class Header extends React.Component{
             soc_link: null,
             openDrawer: false,
             anchorEl: null,
-            cityNameRu: this.props.data ? this.props.data.all.other.cats.this_city_name_ru && this.props.data.all.other.cats.this_city_name_ru.length > 0 ? this.props.data.all.other.cats.this_city_name_ru : 'Город' : 'Город',
+            cityNameRu: this_city?.name ?? 'Город',
 
 
 
-            city: this.props.city
+            city: this.props.city,
+            catList: this.props.cats,
+            activePage: this.props.active_page,
         };
     }
 
@@ -131,55 +137,28 @@ export class Header extends React.Component{
                         <div style={{ width: '2.53%' }} />
 
                         <a style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }} onClick={this.openCity.bind(this)}>
-                            <span className={'headerCat'}>Город</span>
+                            <span className={'headerCat text-focus-in'}>{this.state.cityNameRu}</span>
                         </a>
                         <div style={{ width: '0.36%' }} />
 
-                        <React.Fragment>
-                            <Link href={"/"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }}>
-                                <span className={'headerCat'}>Роллы</span>
-                            </Link> 
-                            <div style={{ width: '0.36%' }} />
-                        </React.Fragment>
-                        <React.Fragment>
-                            <Link href={"/"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }}>
-                                <span className={'headerCat'}>Пицца</span>
-                            </Link> 
-                            <div style={{ width: '0.36%' }} />
-                        </React.Fragment>
-                        <React.Fragment>
-                            <Link href={"/"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }}>
-                                <span className={'headerCat'}>Закуски</span>
-                            </Link> 
-                            <div style={{ width: '0.36%' }} />
-                        </React.Fragment>
-                        <React.Fragment>
-                            <Link href={"/"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }}>
-                                <span className={'headerCat'}>Паста</span>
-                            </Link> 
-                            <div style={{ width: '0.36%' }} />
-                        </React.Fragment>
-                        <React.Fragment>
-                            <Link href={"/"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }}>
-                                <span className={'headerCat'}>Напитки</span>
-                            </Link> 
-                            <div style={{ width: '0.36%' }} />
-                        </React.Fragment>
-                        <React.Fragment>
-                            <Link href={"/"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }}>
-                                <span className={'headerCat'}>Соусы</span>
-                            </Link> 
-                            <div style={{ width: '0.36%' }} />
-                        </React.Fragment>
-                                            
-
+                        { this.state.catList.map( (item, key) =>
+                            <React.Fragment key={key}>
+                                <Link href={"/"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }}>
+                                    <span className={'headerCat text-focus-in'}>{item.name}</span>
+                                </Link> 
+                                <div style={{ width: '0.36%' }} />
+                            </React.Fragment>
+                        ) }
+                        
                         <Link href={"/"+this.state.city+"/akcii"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }}>
-                            <span className={'headerCat'}>Акции</span>
+                            <span className={this.state.activePage == 'akcii' ? 'headerCat activeCat text-focus-in' : 'headerCat text-focus-in'}>Акции</span>
                         </Link>
                         <div style={{ width: '0.36%' }} />
 
                         
-                        <Link href={"/"+this.state.city+"/profile"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }} onClick={this.openLogin.bind(this)}><span className={'headerCat'}>Профиль</span></Link>
+                        <Link href={"/"+this.state.city+"/profile"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }} onClick={this.openLogin.bind(this)}>
+                            <span className={this.state.activePage == 'profile' ? 'headerCat activeCat text-focus-in' : 'headerCat text-focus-in'}>Профиль</span>
+                        </Link>
                                 
 
                         <div style={{ width: '3.25%' }} />

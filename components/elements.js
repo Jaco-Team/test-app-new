@@ -7,7 +7,14 @@ import TextField from '@mui/material/TextField';
 
 import FormGroup from '@mui/material/FormGroup';
 import FormControlLabel from '@mui/material/FormControlLabel';
+import InputLabel from '@mui/material/InputLabel';
+import MenuItem from '@mui/material/MenuItem';
+import FormControl from '@mui/material/FormControl';
+import Select from '@mui/material/Select';
 import Checkbox from '@mui/material/Checkbox';
+
+import Snackbar from '@mui/material/Snackbar';
+import MuiAlert from '@mui/material/Alert';
 
 import { Roboto } from '@next/font/google'
 
@@ -155,6 +162,9 @@ export class MyTextInput extends React.PureComponent {
   render(){
     return (
       <TextField 
+        InputProps={{
+          readOnly: this.props.readOnly ? this.props.readOnly : false,
+        }}
         label={this.props.label}
         placeholder={this.props.placeholder}
         value={this.props.value}
@@ -195,6 +205,59 @@ export class MyCheckBox extends React.PureComponent {
           label={this.props.label}
         />
       </FormGroup>
+    )
+  }
+}
+
+export class MySelect extends React.PureComponent {
+  constructor(props) {
+    super(props);
+  }
+  
+  render(){
+    return (
+      <FormControl fullWidth variant="outlined" size="small">
+        <InputLabel>{this.props.label}</InputLabel>
+        <Select
+          value={this.props.value}
+          label={this.props.label}
+          disabled={ this.props.disabled || this.props.disabled === true ? true : false }
+          onChange={ this.props.func }
+          multiple={ this.props.multiple && this.props.multiple === true ? true : false }
+        >
+          { this.props.data.map( (item, key) =>
+            <MenuItem key={key} value={item.id}>{item.name}</MenuItem>
+          ) }
+        </Select>
+      </FormControl>
+    )
+  }
+}
+
+const Alert = React.forwardRef(function Alert(props, ref) {
+  return <MuiAlert elevation={6} ref={ref} variant="filled" {...props} />;
+});
+
+export class MyAlert extends React.Component {
+  render(){
+    return (
+      <Snackbar 
+        open={this.props.isOpen} 
+        autoHideDuration={5000}
+        anchorOrigin={{  
+          vertical: 'top',
+          horizontal: 'center', 
+        }}
+        onClose={this.props.onClose}
+      >
+        <Alert 
+          onClose={this.props.onClose} 
+          severity={ this.props.status ? "success" : "error" } 
+          sx={{ width: '100%' }}
+        >
+          { this.props.status ? this.props.text ? this.props.text : 'Данные успешно сохранены!' : this.props.text } 
+        </Alert>
+      </Snackbar>
     )
   }
 }

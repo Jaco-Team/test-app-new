@@ -44,25 +44,21 @@ class AkciiModal extends React.Component{
         open={openDialog}
         BackdropComponent={Backdrop}
         BackdropProps={{
-            timeout: 500,
+          timeout: 500,
         }}
       >
-        <Fade in={openDialog}>
+        <Fade in={openDialog} style={{ overflow: 'auto' }}>
           <Box>
             <IconButton style={{ position: 'absolute', top: -43, right: 10 }} onClick={closeDialog.bind(this)}>
               <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
             </IconButton>
 
             <DialogTitle style={{ margin: 0, padding: 8 }}>
-              { showItem ? showItem.promo_title : ''}
-            </DialogTitle>
+              {showItem?.promo_title ?? ''}
+            </DialogTitle> 
               
             <DialogContent className="modalActiiContent">
-              { showItem ?
-                <div dangerouslySetInnerHTML={{__html: showItem.text}} />
-                  :
-                null
-              }
+              <div dangerouslySetInnerHTML={{__html: showItem?.text ?? ''}} />
             </DialogContent>
 
             {showItem && showItem.promo.length > 0 ?
@@ -114,6 +110,9 @@ export default class Akcii extends React.Component {
 
           city: this.props.data1 ? this.props.data1.city : '',
           city_name: this.props.city,
+          cats: this.props.data1?.cats ?? [],
+          city_list: this.props.data1?.cities ?? [],
+
           openMSG: false,
           statusMSG: false,
           textMSG: '',
@@ -270,7 +269,7 @@ export default class Akcii extends React.Component {
   render() {
     return (
       <div className={roboto.variable}>
-        <Header city={this.state.city} />
+        <Header city={this.state.city} cats={this.state.cats} city_list={this.state.city_list} active_page={this_module} />
 
         <Grid container spacing={3} className="Actii mainContainer">
                   
