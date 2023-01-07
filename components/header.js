@@ -19,8 +19,6 @@ export class Header extends React.Component{
     constructor(props) {
         super(props);
         
-        console.log( 'header', this.props )
-
         if( this.props && this.props.data ){
             this.is_load = true;
 
@@ -34,7 +32,7 @@ export class Header extends React.Component{
             itemsStore.setCity(this.props.city)*/
         }
         
-        const this_city = this.props.city_list.find( city => city.link == this.props.city );
+        let this_city = this.props?.city_list.find( city => city.link == this.props.city );
 
         this.state = {      
             this_link: this.props.this_link ? this.props.this_link : '',

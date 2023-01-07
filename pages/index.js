@@ -13,7 +13,8 @@ export default function Home() {
         <link rel="icon" href="/favicon.ico" />
       </Head>
 
-      <Header />
+      <Header city={'samara'} cats={[]} city_list={[]} active_page={''} />
+
 
       <ul style={{ marginTop: 200 }}>
         
