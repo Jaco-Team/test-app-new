@@ -3,52 +3,18 @@ import React from 'react';
 import Link from 'next/link'
 import Image from 'next/image';
 
-import Backdrop from '@mui/material/Backdrop';
-
 import Box from '@mui/material/Box';
 import IconButton from '@mui/material/IconButton';
 
 import Typography from '@mui/material/Typography';
 
 import Modal from '@mui/material/Modal';
-import PropTypes from 'prop-types';
-import { useSpring, animated } from '@react-spring/web';
 
 import AccountIcon from '../public/account-icon-240x240.png'
-import { IconClose } from './elements.js'
 
-import { roboto } from './elements.js'
-
-const Fade = React.forwardRef(function Fade(props, ref) {
-    const { in: open, children, onEnter, onExited, ...other } = props;
-    const style = useSpring({
-      from: { opacity: 0 },
-      to: { opacity: open ? 1 : 0 },
-      onStart: () => {
-        if (open && onEnter) {
-          onEnter();
-        }
-      },
-      onRest: () => {
-        if (!open && onExited) {
-          onExited();
-        }
-      },
-    });
-  
-    return (
-      <animated.div ref={ref} style={style} {...other}>
-        {children}
-      </animated.div>
-    );
-});
-
-Fade.propTypes = {
-    children: PropTypes.element,
-    in: PropTypes.bool.isRequired,
-    onEnter: PropTypes.func,
-    onExited: PropTypes.func,
-};
+import { Fade } from '../ui/Fade.js'
+import { IconClose } from '../ui/Icons.js'
+import { roboto } from '../ui/Font.js'
 
 export class ModalCity extends React.Component{
     constructor(props) {
@@ -75,9 +41,6 @@ export class ModalCity extends React.Component{
         this.props.close();
 
         setTimeout(()=>{ 
-            //itemsStore.saveCartData([]); 
-            //localStorage.setItem('myCity', city)
-            //this.props.close();
             window.location.reload(); 
         }, 300)
     }
@@ -97,10 +60,6 @@ export class ModalCity extends React.Component{
                 open={this.props.isOpen}
                 onClose={this.props.close}
                 closeAfterTransition
-                BackdropComponent={Backdrop}
-                BackdropProps={{
-                    timeout: 500,
-                }}
                 className="class123"
             >
                 <Fade in={this.props.isOpen}>

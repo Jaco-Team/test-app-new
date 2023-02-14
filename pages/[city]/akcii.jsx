@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import Head from 'next/head'
 import Image from 'next/image';
 
@@ -22,10 +22,15 @@ import Backdrop from '@mui/material/Backdrop';
 import { Header } from '../../components/header.js';
 import { Footer } from '../../components/footer.js';
 
-import { IconClose, Fade, roboto } from '../../components/elements.js'
-import config from '../../components/config.js';
+import { roboto } from '../../ui/Font.js'
+import { IconClose } from '../../ui/Icons.js'
+import { Fade } from '../../ui/Fade.js'
 
-import queryString from 'query-string';
+import { api } from '../../components/api.js';
+
+import { useAkciiStore } from '../../components/store.js';
+
+import ActiiPage from '../../modules/akcii/page.js';
 
 const this_module = 'akcii';
 
@@ -93,7 +98,32 @@ class AkciiItem extends React.Component{
   }
 }
 
-export default class Akcii extends React.Component {
+export default function Akcii(props) {
+
+  const { city, cats, cities, page } = props.data1;
+
+  const getData = useAkciiStore( state => state.getData );
+  
+  useEffect(() => {
+    getData(this_module, city);
+
+    console.log( 'load' )
+  }, [getData]);
+
+  
+
+  return (
+    <div className={roboto.variable}>
+      <Header city={city} cats={cats} city_list={cities} active_page={this_module} />
+
+      <ActiiPage page={page} city={city} />
+      
+      <Footer cityName={city} />
+    </div>
+  )
+}
+
+class Akcii_old extends React.Component {
   constructor(props) {
       super(props);
       
@@ -121,30 +151,13 @@ export default class Akcii extends React.Component {
       //itemsStore.setCity(this.props.city);
   }
   
-  getData = (method, data = {}) => {
-    data.type = method; 
-
-    return fetch(config.urlApi+this_module, {
-      method: 'POST',
-      headers: {
-          'Content-Type':'application/x-www-form-urlencoded'},
-      body: queryString.stringify(data)
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        return json;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
   async componentDidMount(){
     let data = {
+      type: 'get_actii',
       city_id: this.state.city
     };
 
-    const json = await this.getData('get_actii', data);
+    const json = await api(this_module, data);
 
     this.setState({ 
       actii: json,  
@@ -163,56 +176,17 @@ export default class Akcii extends React.Component {
       }
     }, 300);
 
-      /*if( document.querySelector('.activeCat') ){
-          document.querySelector('.activeCat').classList.remove('activeCat');
-      }*/
-      window.scrollTo(0, 0);
-      //itemsStore.setPage('actii');
-      
-      /*Actii.fetchData('/'+this.state.city_name).then( data => {
-          this.setState( {
-              title: data.page.title,
-              description: data.page.description,
-          } );
-      } );*/
-      
-      /*fetch(config.urlApi, {
-          method: 'POST',
-          headers: {
-              'Content-Type':'application/x-www-form-urlencoded'},
-          body: queryString.stringify({
-              type: 'get_my_actii_web', 
-              city_id: this.state.city_name
-          })
-      }).then(res => res.json()).then(json => {
-          
-          this.setState({ 
-              actii: json.actii,  
-              is_load: true,
-          });
-          
-          setTimeout(() => {
-              let hash = window.location.search;
-              
-              if( hash.length > 0 && hash.indexOf('act_') > 0 ){
-                  let act = hash.split('&')[0];
-                  let act_id = act.split('act_')[1];
-                  let this_item = json.actii.find( (item) => item.id == act_id );
-                  
-                  this.openDialog(this_item);
-              }
-          }, 300);
-      })
-      .catch(err => { });*/
+    window.scrollTo(0, 0);
   }
   
   async openDialog(item){
     let data = {
+      type: 'get_one_actii',
       city_id: this.state.city,
       act_id: item.id
     };
 
-    const json = await this.getData('get_one_actii', data);
+    const json = await api(this_module, data);
 
     let state = {  },
         title = '',
@@ -298,21 +272,13 @@ export default class Akcii extends React.Component {
           <Grid item xs={12}>
             <Grid container spacing={3}>
 
-              {this.state.is_load === false ?
-                this.state.pre_actii.map((item, key) =>
-                  <Grid item xs={12} sm={6} md={4} xl={4} key={key}>
-                    <div style={{ width: '100%', height: 400, backgroundColor: '#e5e5e5', borderRadius: 25 }} />
-                  </Grid>
-                )
-                  :
-                this.state.actii.map((item, key) =>
-                  <AkciiItem 
-                    key={item.id}
-                    openDialog={this.openDialog.bind(this)}
-                    item={item}
-                  />
-                )
-              }
+              {this.state.actii.map((item, key) =>
+                <AkciiItem 
+                  key={item.id}
+                  openDialog={this.openDialog.bind(this)}
+                  item={item}
+                />
+              )}
 
             </Grid>
           </Grid>
@@ -343,15 +309,8 @@ export async function getServerSideProps({ req, res, query }) {
     page: 'akcii' 
   };
 
-  let res1 = await fetch(config.urlApi+this_module, {
-    method: 'POST',
-    headers: {
-      'Content-Type':'application/x-www-form-urlencoded'},
-    body: queryString.stringify(data)
-  })
-  
-  const data1 = await res1.json()
-  
+  const data1 = await api(this_module, data);
+
   data1['city'] = query.city;
 
   return { props: { data1 } }

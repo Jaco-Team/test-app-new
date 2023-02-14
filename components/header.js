@@ -2,16 +2,24 @@ import * as React from 'react';
 import AppBar from '@mui/material/AppBar';
 //import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import List from '@mui/material/List';
+import ListItem from '@mui/material/ListItem';
 
 import Link from 'next/link'
 import Image from 'next/image';
 
 import JacoLogo from '../public/jaco-logo.png'
+import JacoLogoMini from '../public/Logomini.png'
 
 import { ModalCity } from './cityForm.js'
 import { ModalLogin } from './loginForm.js'
 
-import { roboto } from './elements.js'
+import { BurgerIcon } from '../ui/Icons.js'
+import { roboto } from '../ui/Font.js'
+
+import { autorun } from "mobx"
+import itemsStore from './items-store.js';
 
 export class Header extends React.Component{
     is_load = false;
@@ -58,8 +66,6 @@ export class Header extends React.Component{
             anchorEl: null,
             cityNameRu: this_city?.name ?? 'Город',
 
-
-
             city: this.props.city,
             catList: this.props.cats,
             activePage: this.props.active_page,
@@ -76,6 +82,12 @@ export class Header extends React.Component{
         this.setState({
             is_load_new: true
         })
+
+        autorun(() => {
+            this.setState({
+                token: itemsStore.getToken()
+            })
+        })
     }
 
     closeCity(){
@@ -84,32 +96,13 @@ export class Header extends React.Component{
         })
     }
 
-    openLogin(){
-        if( localStorage.getItem('token') && localStorage.getItem('token').length > 0 ){
-            fetch(config.urlApi, {
-                method: 'POST',
-                headers: {
-                    'Content-Type':'application/x-www-form-urlencoded'},
-                body: queryString.stringify({
-                    type: 'get_user_data', 
-                    user_id: localStorage.getItem('token')
-                })
-            }).then(res => res.json()).then(json => {
-                //itemsStore.setToken( localStorage.getItem('token'), json ); 
-                //itemsStore.setUserName(json);
+    openLogin(event){
+        event.preventDefault()
 
-                this.is_load = false;
-
-                this.setState({
-                    userName: json,
-                    token: localStorage.getItem('token')
-                })
-
-                if (typeof window !== 'undefined') {
-                    window.location.pathname = '/'+this.state.cityName+'/profile';
-                }
-            })
-            .catch(err => { });
+        if( this.state.token && this.state.token.length > 0 ){
+            if (typeof window !== 'undefined') {
+                window.location.pathname = '/'+this.state.cityName+'/profile';
+            }
         }else{
             this.setState({
                 openLoginNew: true
@@ -123,6 +116,12 @@ export class Header extends React.Component{
         })
     }
 
+    toggleDrawer(open){
+        this.setState({
+            openDrawer: open
+        })
+    };
+
     render(){
         return (
             <div className={roboto.variable}>
@@ -135,27 +134,27 @@ export class Header extends React.Component{
                         <div style={{ width: '2.53%' }} />
 
                         <a style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }} onClick={this.openCity.bind(this)}>
-                            <span className={'headerCat text-focus-in'}>{this.state.cityNameRu}</span>
+                            <span className={'headerCat'}>{this.state.cityNameRu}</span>
                         </a>
                         <div style={{ width: '0.36%' }} />
 
                         { this.state.catList.map( (item, key) =>
                             <React.Fragment key={key}>
                                 <Link href={"/"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }}>
-                                    <span className={'headerCat text-focus-in'}>{item.name}</span>
+                                    <span className={'headerCat'}>{item.name}</span>
                                 </Link> 
                                 <div style={{ width: '0.36%' }} />
                             </React.Fragment>
                         ) }
                         
                         <Link href={"/"+this.state.city+"/akcii"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }}>
-                            <span className={this.state.activePage == 'akcii' ? 'headerCat activeCat text-focus-in' : 'headerCat text-focus-in'}>Акции</span>
+                            <span className={this.state.activePage == 'akcii' ? 'headerCat activeCat' : 'headerCat'}>Акции</span>
                         </Link>
                         <div style={{ width: '0.36%' }} />
 
                         
-                        <Link href={"/"+this.state.city+"/profile"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }} onClick={this.openLogin.bind(this)}>
-                            <span className={this.state.activePage == 'profile' ? 'headerCat activeCat text-focus-in' : 'headerCat text-focus-in'}>Профиль</span>
+                        <Link href={"/"+this.state.city+"/profile"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }} onClick={this.openLogin.bind(this)} >
+                            <span className={this.state.activePage == 'profile' ? 'headerCat activeCat' : 'headerCat'}>Профиль</span>
                         </Link>
                                 
 
@@ -163,6 +162,48 @@ export class Header extends React.Component{
 
                         <div style={{ width: '4.51%' }} />
                         
+                    </Toolbar>
+                </AppBar>
+
+                <AppBar position="fixed" className='headerNewMobile' id='headerNewMobile' elevation={2} sx={{ display: { xs: 'block', md: 'none' } }}>
+                    <Toolbar>
+                        <Link href={"/"}>
+                            <Image alt="Жако доставка роллов и пиццы" src={JacoLogoMini} width={40} height={40} priority={true} />
+                        </Link> 
+
+                        <React.Fragment>
+                            <BurgerIcon onClick={this.toggleDrawer.bind(this, true)} style={{ padding: 20, marginRight: -20 }} />
+                            <SwipeableDrawer
+                                anchor={'right'}
+                                open={this.state.openDrawer}
+                                onClose={this.toggleDrawer.bind(this, false)}
+                                onOpen={this.toggleDrawer.bind(this, true)}
+                            >
+                                <List className={'LinkList '+roboto.variable}>
+                                    <ListItem disablePadding onClick={ () => { this.toggleDrawer(false); this.openCity(); } }>
+                                        <a>{this.state.cityNameRu}</a> 
+                                    </ListItem>
+                                    <ListItem disablePadding onClick={this.toggleDrawer.bind(this, false)}>
+                                        <Link href={"/"+this.state.city}>Меню</Link> 
+                                    </ListItem>
+                                    <ListItem disablePadding onClick={this.toggleDrawer.bind(this, false)}>
+                                        <Link href={"/"+this.state.city+"/akcii"}>Акции</Link> 
+                                    </ListItem>
+                                    { this.state.token.length == 0 ? 
+                                        <ListItem disablePadding onClick={ () => { this.toggleDrawer(false); this.openLogin(); } }>
+                                            <a>Профиль</a> 
+                                        </ListItem>
+                                            :
+                                        <ListItem disablePadding onClick={this.toggleDrawer.bind(this, false)}>
+                                            <Link href={"/"+this.state.city+"/profile"}>Профиль</Link> 
+                                        </ListItem>
+                                    }
+                                    <ListItem disablePadding onClick={this.toggleDrawer.bind(this, false)}>
+                                        <Link href={"/"+this.state.city+"/contacts"}>Контакты</Link> 
+                                    </ListItem>
+                                </List>
+                            </SwipeableDrawer>
+                        </React.Fragment>
                     </Toolbar>
                 </AppBar>
 

@@ -25,9 +25,9 @@ import { Header } from '../../components/header.js';
 import { Footer } from '../../components/footer.js';
 
 import { IconClose, IconRuble, MyTextInput, MyCheckBox, MySelect, MyAlert, Fade, roboto } from '../../components/elements.js'
-import config from '../../components/config.js';
+import itemsStore from '../../components/items-store.js';
 
-import queryString from 'query-string';
+import { api } from '../../components/api.js';
 
 import PropTypes from 'prop-types';
 import Tabs from '@mui/material/Tabs';
@@ -38,6 +38,8 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
+
+import { autorun } from "mobx"
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -364,6 +366,7 @@ export default class Profile extends React.Component {
       activeTab: 1,
       promo_list: [],
       order_list: [],
+      userToken: '',
       user: null,
 
       openAlert: false,
@@ -373,55 +376,30 @@ export default class Profile extends React.Component {
       openDialog: false,
       showOrder: null
     };
-      
-      //itemsStore.setCity(this.props.city);
   }
   
-  getData = (method, data = {}) => {
-    this.setState({
-      is_load: true
-    })
-
-    data.type = method; 
-
-    return fetch(config.urlApi+this_module, {
-      method: 'POST',
-      headers: {
-          'Content-Type':'application/x-www-form-urlencoded'},
-      body: queryString.stringify(data)
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        setTimeout( () => {
-          this.setState({
-            is_load: false
-          })
-        }, 500 )
-
-        return json;
-      })
-      .catch((err) => {
-        setTimeout( () => {
-          this.setState({
-            is_load: false
-          })
-        }, 500 )
-        console.log(err);
-      });
-  }
-
   componentDidMount(){
-    if( parseInt(this.state.activeTab) == 0 ){
-      this.getPromoList()
-    }
+    autorun(() => {
+      this.setState({
+        userToken: itemsStore.getToken()
+      })
 
-    if( parseInt(this.state.activeTab) == 1 ){
-      this.getOrderList()
-    }
+      setTimeout( () => {
+        if( parseInt(this.state.activeTab) == 0 ){
+          this.getPromoList()
+        }
+    
+        if( parseInt(this.state.activeTab) == 1 ){
+          this.getOrderList()
+        }
+    
+        if( parseInt(this.state.activeTab) == 2 ){
+          this.getUserInfo()
+        }
+      }, 300 )
+    })
 
-    if( parseInt(this.state.activeTab) == 2 ){
-      this.getUserInfo()
-    }
+    
   }
   
   changeTab(event, value){
@@ -444,11 +422,12 @@ export default class Profile extends React.Component {
   
   async getPromoList(){
     let data = {
+      type: 'get_my_promos',
       city_id: this.state.city,
-      user_id: 'ODk4NzkzNDAzOTEtXy0xNzYyMg'
+      user_id: this.state.userToken
     };
 
-    let res = await this.getData('get_my_promos', data);
+    let res = await api(this_module, data);
 
     this.setState({
       promo_list: res.promo_list
@@ -457,11 +436,12 @@ export default class Profile extends React.Component {
 
   async getOrderList(){
     let data = {
+      type: 'get_my_orders',
       city_id: this.state.city,
-      user_id: 'ODk4NzkzNDAzOTEtXy0xNzYyMg'
+      user_id: this.state.userToken
     };
 
-    let res = await this.getData('get_my_orders', data);
+    let res = await api(this_module, data);
 
     this.setState({
       order_list: res.order_list
@@ -470,11 +450,12 @@ export default class Profile extends React.Component {
 
   async getUserInfo(){
     let data = {
+      type: 'get_my_info',
       city_id: this.state.city,
-      user_id: 'ODk4NzkzNDAzOTEtXy0xNzYyMg'
+      user_id: this.state.userToken
     };
 
-    let res = await this.getData('get_my_info', data);
+    let res = await api(this_module, data);
 
     console.log( res )
 
@@ -516,12 +497,13 @@ export default class Profile extends React.Component {
   async saveUserData(reload = false){
 
     let data = {
+      type: 'update_user',
       city_id: this.state.city,
-      user_id: 'ODk4NzkzNDAzOTEtXy0xNzYyMg',
+      user_id: this.state.userToken,
       user: JSON.stringify(this.state.user)
     };
 
-    let res = await this.getData('update_user', data);
+    let res = await api(this_module, data);
 
     setTimeout( () => {
       this.setState({
@@ -553,13 +535,14 @@ export default class Profile extends React.Component {
 
   async openOrder(order_id, point_id){
     let data = {
+      type: 'get_order',
       city_id: this.state.city,
-      user_id: 'ODk4NzkzNDAzOTEtXy0xNzYyMg',
+      user_id: this.state.userToken,
       order_id: order_id,
       point_id: point_id
     };
 
-    let res = await this.getData('get_order', data);
+    let res = await api(this_module, data);
 
     this.setState({
       showOrder: res,
@@ -697,14 +680,7 @@ export async function getServerSideProps({ req, res, query }) {
     page: this_module
   };
 
-  let res1 = await fetch(config.urlApi+this_module, {
-    method: 'POST',
-    headers: {
-      'Content-Type':'application/x-www-form-urlencoded'},
-    body: queryString.stringify(data)
-  })
-  
-  const data1 = await res1.json()
+  const data1 = await api(this_module, data);
   
   data1['city'] = query.city;
 

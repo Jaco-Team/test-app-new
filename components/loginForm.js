@@ -18,13 +18,17 @@ import AccountIcon from '../public/account-icon-240x240.png'
 import AccountIconWhite from '../public/account-icon-240x240_white.png'
 import TrippleDop from '../public/tripple_dop.png'
 import Like from '../public/like.png'
-import { IconClose, MyTextInput } from './elements.js'
+
+import { IconClose } from '../ui/Icons.js'
+import MyTextInput from '../ui/MyTextInput.js'
 
 import AuthCode from 'react-auth-code-input';
 
-import { roboto } from './elements.js'
+import { roboto } from '../ui/Font.js'
 import config from './config.js';
 import queryString from 'query-string';
+
+import itemsStore from './items-store.js';
 
 const Fade = React.forwardRef(function Fade(props, ref) {
     const { in: open, children, onEnter, onExited, ...other } = props;
@@ -263,8 +267,7 @@ export class ModalLogin extends React.Component{
                 is_sms: res.is_sms
             })
 
-            itemsStore.setToken( res.token, res.name ); 
-            itemsStore.setUserName(res.name);
+            itemsStore.setToken( res.token );
 
             this.close();
         }
@@ -391,8 +394,7 @@ export class ModalLogin extends React.Component{
                 is_sms: res.is_sms
             })
 
-            itemsStore.setToken( res.token, res.name ); 
-            itemsStore.setUserName(res.name);
+            itemsStore.setToken( res.token );
 
             if( this.state.fromType == 'create' ){
                 this.setState({ 

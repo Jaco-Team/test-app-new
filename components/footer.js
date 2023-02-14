@@ -4,7 +4,6 @@ import Link from 'next/link'
 import Grid from '@mui/material/Grid';
 
 import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 
 import config from './config.js';
 
@@ -12,7 +11,7 @@ import queryString from 'query-string';
 
 const this_module = 'contacts';
 
-import { VKIcon, OdnIcon, TGIcon } from './elements';
+import { VKIcon, OdnIcon, TGIcon } from '../ui/Icons.js';
 
 export class Footer extends React.Component{
     constructor(props) {

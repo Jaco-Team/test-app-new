@@ -4,16 +4,14 @@ import Head from 'next/head'
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import { roboto } from '../../components/elements.js'
+import { roboto } from '../../ui/Font.js'
 
 const this_module = 'contacts';
 
-import config from '../../components/config.js';
+import { api } from '../../components/api.js';
 
 import { Header } from '../../components/header.js';
 import { Footer } from '../../components/footer.js';
-
-import queryString from 'query-string';
 
 export default class PublichnayaOferta extends React.Component{
   constructor(props) {
@@ -74,14 +72,7 @@ export async function getServerSideProps({ req, res, query }) {
     page: 'publichnaya-oferta' 
   };
 
-  let res1 = await fetch(config.urlApi+this_module, {
-    method: 'POST',
-    headers: {
-      'Content-Type':'application/x-www-form-urlencoded'},
-    body: queryString.stringify(data)
-  })
-
-  const data1 = await res1.json()
+  const data1 = await api(this_module, data);
   
   data1['city'] = query.city;
 
