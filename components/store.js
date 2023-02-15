@@ -2,12 +2,6 @@ import { create } from 'zustand'
 
 import { api } from './api.js';
 
-export const useBearStore = create((set) => ({
-  bears: 0,
-  increasePopulation: () => set((state) => ({ bears: state.bears + 1 })),
-  removeAllBears: () => set({ bears: 0 }),
-}))
-
 export const useContactStore = create((set) => ({
   myPoints: [],
   myUnicPoint: [],
@@ -86,6 +80,107 @@ export const useAkciiStore = create((set) => ({
     set({
       openAkcia: {},
       openModal: false
+    })
+  }
+}))
+
+export const useProfileStore = create((set) => ({
+  promoList: [],
+  orderList: [],
+  userInfo: {},
+  modalOrder: {},
+  openModal: false,
+  getPromoList: async (this_module, city, userToken) => {
+    let data = {
+      type: 'get_my_promos',
+      city_id: city,
+      user_id: userToken
+    };
+
+    let json = await api(this_module, data);
+
+    set({
+      promoList: json.promo_list
+    })
+  },
+  getOrderList: async (this_module, city, userToken) => {
+    let data = {
+      type: 'get_my_orders',
+      city_id: city,
+      user_id: userToken
+    };
+
+    let json = await api(this_module, data);
+
+    set({
+      orderList: json.order_list
+    })
+  },
+  getUserInfo: async (this_module, city, userToken) => {
+    let data = {
+      type: 'get_my_info',
+      city_id: city,
+      user_id: userToken
+    };
+
+    let json = await api(this_module, data);
+
+    set({
+      userInfo: json.user
+    })
+  },
+  setUser: (user) => {
+    set({
+      userInfo: user
+    })
+  },
+  updateUser: async (this_module, city, userToken, user) => {
+    let data = {
+      type: 'update_user',
+      city_id: city,
+      user_id: userToken,
+      user: JSON.stringify(user)
+    };
+
+    let json = await api(this_module, data);
+  },
+  getOrder: async (this_module, city, userToken, order_id, point_id) => {
+    let data = {
+      type: 'get_order',
+      city_id: city,
+      user_id: userToken,
+      order_id: order_id,
+      point_id: point_id
+    };
+
+    let json = await api(this_module, data);
+
+    set({
+      modalOrder: json,
+      openModal: true
+    })
+  },
+  closeOrder: () => {
+    set({
+      openModal: false,
+      modalOrder: {}
+    })
+  }
+}))
+
+export const useFooterStore = create((set) => ({
+  links: {},
+  getData: async (this_module, city) => {
+    let data = {
+      type: 'get_page_info',
+      city_id: city,
+      page: 'info'
+    };
+
+    const json = await api(this_module, data);
+
+    set({
+      links: json.page
     })
   }
 }))

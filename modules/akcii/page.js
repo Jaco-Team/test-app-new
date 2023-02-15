@@ -20,7 +20,6 @@ export default function AkciiPage(props){
   const [ textMSG, setTextMSG ] = useState('');
 
   const [ actiiList, setActiiList ] = useState([]);
-  //const [ actiaModal, setActiaModal ] = useState({});
 
   let { actii, openModal, getAktia } = useAkciiStore((state) => state)
 

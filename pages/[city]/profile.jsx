@@ -24,7 +24,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 import { Header } from '../../components/header.js';
 import { Footer } from '../../components/footer.js';
 
-import { IconClose, IconRuble, MyTextInput, MyCheckBox, MySelect, MyAlert, Fade, roboto } from '../../components/elements.js'
+//import { IconClose, IconRuble, MyTextInput, MyCheckBox, MySelect, MyAlert, Fade, roboto } from '../../components/elements.js'
 import itemsStore from '../../components/items-store.js';
 
 import { api } from '../../components/api.js';
@@ -39,7 +39,12 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
+import ProfilePage from '../../modules/profile/page.js';
+
 import { autorun } from "mobx"
+
+import { useProfileStore } from '../../components/store.js';
+import { roboto } from '../../ui/Font.js'
 
 function TabPanel(props) {
   const { children, value, index, ...other } = props;
@@ -342,7 +347,22 @@ class ProfileUserTable extends React.Component{
   }
 }
 
-export default class Profile extends React.Component {
+export default function Profile(props) {
+
+  const { city, cats, cities, page } = props.data1;
+  
+  return (
+    <div className={roboto.variable}>
+      <Header city={city} cats={cats} city_list={cities} active_page={this_module} />
+
+      <ProfilePage page={page} this_module={this_module} city={city} />
+
+      <Footer cityName={city} />
+    </div>
+  );
+}
+
+class Profile_ extends React.Component {
   constructor(props) {
     super(props);
     
