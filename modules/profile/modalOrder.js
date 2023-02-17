@@ -21,7 +21,7 @@ import { roboto } from '../../ui/Font.js'
 
 import { useProfileStore } from '../../components/store.js';
 
-export default function ModalOrder(props){
+export default function ModalOrder(){
 
   const { modalOrder, openModal, closeOrder } = useProfileStore( state => state );
 

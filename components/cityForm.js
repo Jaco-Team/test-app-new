@@ -16,6 +16,7 @@ import { Fade } from '../ui/Fade.js'
 import { IconClose } from '../ui/Icons.js'
 import { roboto } from '../ui/Font.js'
 
+
 export class ModalCity extends React.Component{
     constructor(props) {
         super(props);
@@ -58,7 +59,7 @@ export class ModalCity extends React.Component{
         return (
             <Modal
                 open={this.props.isOpen}
-                onClose={this.props.close}
+                onClose={this.props.close} 
                 closeAfterTransition
                 className="class123"
             >

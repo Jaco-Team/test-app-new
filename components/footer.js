@@ -9,7 +9,7 @@ import { useFooterStore } from './store.js';
 
 const this_module = 'contacts';
 
-export function Footer(props) {
+export default React.memo(function Footer(props) {
 
   const { cityName } = props;
   const { links, getData } = useFooterStore( state => state );
@@ -26,6 +26,8 @@ export function Footer(props) {
   }, [links]);
 
   //(this.state.page == 'cart' ? this.state.page : '')
+
+  console.log( 'load footer' )
 
   return (
     <footer className={"footer "}>
@@ -123,4 +125,4 @@ export function Footer(props) {
       </Grid>
     </footer>
   )
-}
+})

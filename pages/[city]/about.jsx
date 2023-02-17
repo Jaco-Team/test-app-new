@@ -1,69 +1,30 @@
 import React from 'react';
-import Head from 'next/head'
-
-import Grid from '@mui/material/Grid';
-import Typography from '@mui/material/Typography';
 
 import { roboto } from '../../ui/Font.js'
 
 const this_module = 'contacts';
 
-import { Header } from '../../components/header.js';
-import { Footer } from '../../components/footer.js';
+import Header from '../../components/header.js';
+import Footer from '../../components/footer.js';
+import PageText from '../../modules/pageText.js';
 
 import { api } from '../../components/api.js';
 
-export default class About extends React.Component{
-  constructor(props) {
-    super(props);
-    
-    this.state = {      
-      cats: this.props.data1?.cats ?? [],
-      city_list: this.props.data1?.cities ?? [],
+export default React.memo(function About(props) {
 
-      page: this.props.data1 ? this.props.data1.page : null,
-      title: this.props.data1 ? this.props.data1.page.title : '',
-      description: this.props.data1 ? this.props.data1.page.description : '',
-      
-      city: this.props.data1 ? this.props.data1.city : '',
-      city_name: this.props.city,
-      is_load: false,
-    };
-    
-    //itemsStore.setCity(this.props.city);
-  }
+  const { city, cats, cities, page } = props.data1;
 
-  render(){
-    return (
-      <div className={roboto.variable}>
-        <Header city={this.state.city} cats={this.state.cats} city_list={this.state.city_list} active_page={'other'} />
+  return (
+    <div className={roboto.variable}>
+      <Header city={city} cats={cats} city_list={cities} active_page={'other'} />
 
-        <Head>
-          <title>{this.state.title}</title>
-          <meta name="description" content={this.state.description} />
-          <link rel="icon" href="/favicon.ico" />
-        </Head>
+      <PageText page={page} className="PAGEabout" />
 
-        <Grid container spacing={3} className="PAGEabout">
-          
-          <Grid item xs={12} style={{ paddingBottom: 15 }}>
-            <Typography variant="h5" component="h1">{ this.state.page ? this.state.page.page_h : '' }</Typography>
-          </Grid>
+      <Footer cityName={city} />
 
-          { this.state.page && this.state.page.content ?
-            <Grid item xs={12} dangerouslySetInnerHTML={{__html: this.state.page.content}} />
-              :
-            null
-          }
-        
-        </Grid>
-
-        <Footer cityName={this.state.city} />
-
-      </div>
-    )
-  }
-}
+    </div>
+  )
+})
 
 export async function getServerSideProps({ req, res, query }) {
   let data = {

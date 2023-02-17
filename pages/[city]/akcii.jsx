@@ -19,8 +19,8 @@ import Snackbar from '@mui/material/Snackbar';
 import Box from '@mui/material/Box';
 import Backdrop from '@mui/material/Backdrop';
 
-import { Header } from '../../components/header.js';
-import { Footer } from '../../components/footer.js';
+import Header from '../../components/header.js';
+import Footer from '../../components/footer.js';
 
 import { roboto } from '../../ui/Font.js'
 import { IconClose } from '../../ui/Icons.js'
@@ -29,6 +29,7 @@ import { Fade } from '../../ui/Fade.js'
 import { api } from '../../components/api.js';
 
 import { useAkciiStore } from '../../components/store.js';
+import { useCitiesStore } from '../../components/store.js';
 
 import ActiiPage from '../../modules/akcii/page.js';
 
@@ -103,14 +104,21 @@ export default function Akcii(props) {
   const { city, cats, cities, page } = props.data1;
 
   const getData = useAkciiStore( state => state.getData );
-  
+  const { thisCity, setThisCity, setThisCityRu, setThisCityList } = useCitiesStore(state => state)
+
   useEffect(() => {
     getData(this_module, city);
 
     console.log( 'load' )
   }, [getData]);
 
-  
+  useEffect(() => {
+    if( thisCity != city ){
+      setThisCity(city);
+      setThisCityRu( cities.find( item => item.link == city )['name'] );
+      setThisCityList(cities)
+    }
+  }, [city, thisCity]);
 
   return (
     <div className={roboto.variable}>

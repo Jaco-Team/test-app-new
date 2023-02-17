@@ -184,3 +184,37 @@ export const useFooterStore = create((set) => ({
     })
   }
 }))
+
+export const useHeaderStore = create((set) => ({
+  activePage: '',
+  openCityModal: false,
+  setActivePage: () => {
+
+  },
+  setActiveModalCity: (active) => {
+    set({
+      openCityModal: active
+    })
+  }
+}))
+
+export const useCitiesStore = create((set) => ({
+  thisCity: '',
+  thisCityRu: '',
+  thisCityList: [],
+  setThisCity: (city) => {
+    set({
+      thisCity: city
+    })
+  },
+  setThisCityRu: (city) => {
+    set({
+      thisCityRu: city
+    })
+  },
+  setThisCityList: (cityList) => {
+    set({
+      thisCityList: cityList
+    })
+  }
+}))

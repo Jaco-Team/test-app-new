@@ -41,19 +41,21 @@ export default function AkciiPage(props){
     }
   }
 
-  setTimeout(() => {
-    let hash = window.location.search;
-    
-    if( hash.length > 0 && hash.indexOf('act_') > 0 && openModal == false ){
-      let act = hash.split('&')[0];
-      let act_id = act.split('act_')[1];
-      let this_item = actii.find( (item) => item.id == act_id );
+  if (typeof window != "undefined") {
+    setTimeout(() => {
+      let hash = window.location.search;
       
-      if(this_item && openModal == false){
-        openDialog(this_item.id);
+      if( hash.length > 0 && hash.indexOf('act_') > 0 && openModal == false ){
+        let act = hash.split('&')[0];
+        let act_id = act.split('act_')[1];
+        let this_item = actii.find( (item) => item.id == act_id );
+        
+        if(this_item && openModal == false){
+          openDialog(this_item.id);
+        }
       }
-    }
-  }, 300);
+    }, 300);
+  }
 
   return (
     <Grid container spacing={3} className="Actii mainContainer">

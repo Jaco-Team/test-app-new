@@ -19,8 +19,8 @@ import Snackbar from '@mui/material/Snackbar';
 import Box from '@mui/material/Box';
 import Backdrop from '@mui/material/Backdrop';
 
-import { Header } from '../../components/header.js';
-import { Footer } from '../../components/footer.js';
+import Header from '../../components/header.js';
+import Footer from '../../components/footer.js';
 
 import { roboto } from '../../ui/Font.js'
 import config from '../../components/config.js';

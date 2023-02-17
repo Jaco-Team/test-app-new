@@ -1,5 +1,12 @@
 @import "./settings";
 
+.modalOpenCity{
+    & .MuiDialog-paper{
+        margin: 12px!important;
+        border-radius: 25px;
+        overflow: visible;
+    }
+}
 .modalCity{
     position: absolute;
     top: 50%;
@@ -33,7 +40,7 @@
         align-items: flex-end;
         & h2{
             @include fonsNew(2rem, $Roboto);
-            font-weight: 500;
+            font-weight: 900;
         }
     }
     & a:not(.active){

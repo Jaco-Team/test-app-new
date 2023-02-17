@@ -1,6 +1,6 @@
-import * as React from 'react';
+import React, {useEffect, useState} from 'react';
+
 import AppBar from '@mui/material/AppBar';
-//import Box from '@mui/material/Box';
 import Toolbar from '@mui/material/Toolbar';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
@@ -12,16 +12,140 @@ import Image from 'next/image';
 import JacoLogo from '../public/jaco-logo.png'
 import JacoLogoMini from '../public/Logomini.png'
 
-import { ModalCity } from './cityForm.js'
 import { ModalLogin } from './loginForm.js'
 
 import { BurgerIcon } from '../ui/Icons.js'
 import { roboto } from '../ui/Font.js'
+import ModalCity from '../modules/header/modalCity.js'
+import { useHeaderStore } from './store.js';
+import { shallow } from 'zustand/shallow'
 
 import { autorun } from "mobx"
 import itemsStore from './items-store.js';
 
-export class Header extends React.Component{
+export default React.memo(function Header(props) {
+
+    const { city, city_list, cats, active_page } = props;
+    
+    const [ thisCity, setThisCity ] = useState('');
+    const [ thisCityRU, setThisCityRU ] = useState('');
+    const [ catList, setCatList ] = useState([]);
+    const [ activePage, setActivePage ] = useState([]);
+    const [ activeMenu, setActiveMenu ] = useState(false);
+    const [ token, setToken ] = useState('');
+
+    const { setActiveModalCity } = useHeaderStore( state => state, shallow );
+
+    useEffect(() => {
+        setThisCity(city);
+
+        setThisCityRU( city_list.find( item => item.link == city )['name'] )
+    }, [city]);
+
+    useEffect(() => {
+        setCatList(cats);
+    }, [cats]);
+
+    useEffect(() => {
+        setActivePage(active_page);
+    }, [active_page]);
+
+    console.log('load header')
+  
+    function openCity(){
+
+    }
+
+    return (
+        <div className={roboto.variable}>
+            <AppBar position="fixed" className='headerNew' id='headerNew' elevation={2} sx={{ display: { xs: 'none', md: 'block' } }}>
+                <Toolbar>
+                    <div style={{ width: '4.51%' }} />
+                    <Link href={"/"+city} style={{ width: '14.8%' }}>
+                        <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true} />
+                    </Link> 
+                    <div style={{ width: '2.53%' }} />
+
+                    <a style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }} onClick={ () => setActiveModalCity(true) }>
+                        <span className={'headerCat'}>{thisCityRU}</span>
+                    </a>
+                    <div style={{ width: '0.36%' }} />
+
+                    { catList.map( (item, key) =>
+                        <React.Fragment key={key}>
+                            <Link href={"/"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }}>
+                                <span className={'headerCat'}>{item.name}</span>
+                            </Link> 
+                            <div style={{ width: '0.36%' }} />
+                        </React.Fragment>
+                    ) }
+                    
+                    <Link href={"/"+city+"/akcii"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }}>
+                        <span className={activePage == 'akcii' ? 'headerCat activeCat' : 'headerCat'}>Акции</span>
+                    </Link>
+                    <div style={{ width: '0.36%' }} />
+
+                    
+                    <Link href={"/"+city+"/profile"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }} onClick={ () => openCity() } >
+                        <span className={activePage == 'profile' ? 'headerCat activeCat' : 'headerCat'}>Профиль</span>
+                    </Link>
+                            
+
+                    <div style={{ width: '3.25%' }} />
+
+                    <div style={{ width: '4.51%' }} />
+                    
+                </Toolbar>
+            </AppBar>
+
+            <AppBar position="fixed" className='headerNewMobile' id='headerNewMobile' elevation={2} sx={{ display: { xs: 'block', md: 'none' } }}>
+                <Toolbar>
+                    <Link href={"/"}>
+                        <Image alt="Жако доставка роллов и пиццы" src={JacoLogoMini} width={40} height={40} priority={true} />
+                    </Link> 
+
+                    <React.Fragment>
+                        <BurgerIcon onClick={ () => setActiveMenu(true) } style={{ padding: 20, marginRight: -20 }} />
+                        <SwipeableDrawer
+                            anchor={'right'}
+                            open={activeMenu}
+                            onClose={() => setActiveMenu(false)}
+                            onOpen={() => setActiveMenu(true)}
+                        >
+                            <List className={'LinkList '+roboto.variable}>
+                                <ListItem disablePadding onClick={ () => { setActiveModalCity(true); setActiveMenu(false); } }>
+                                    <a>{thisCityRU}</a> 
+                                </ListItem>
+                                <ListItem disablePadding onClick={ () => setActiveMenu(false) }>
+                                    <Link href={"/"+city}>Меню</Link> 
+                                </ListItem>
+                                <ListItem disablePadding onClick={ () => setActiveMenu(false) }>
+                                    <Link href={"/"+city+"/akcii"}>Акции</Link> 
+                                </ListItem>
+                                { token.length == 0 ? 
+                                    <ListItem disablePadding onClick={ () => setActiveMenu(false) }>
+                                        <a>Профиль</a> 
+                                    </ListItem>
+                                        :
+                                    <ListItem disablePadding onClick={ () => setActiveMenu(false) }>
+                                        <Link href={"/"+city+"/profile"}>Профиль</Link> 
+                                    </ListItem>
+                                }
+                                <ListItem disablePadding onClick={ () => setActiveMenu(false) }>
+                                    <Link href={"/"+city+"/contacts"}>Контакты</Link> 
+                                </ListItem>
+                            </List>
+                        </SwipeableDrawer>
+                    </React.Fragment>
+                </Toolbar>
+            </AppBar>
+
+            <ModalCity />
+        </div>
+    )
+})
+
+class Header_old extends React.Component{
     is_load = false;
 
     constructor(props) {
