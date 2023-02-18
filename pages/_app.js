@@ -20,8 +20,8 @@ import '../styles/footer.scss'
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { Provider } from 'mobx-react';
-import { itemsStoreNew as stores} from '../components/items-store.js';
+//import { Provider } from 'mobx-react';
+//import { itemsStoreNew as stores} from '../components/items-store.js';
 
 const theme = createTheme({
   palette: {
@@ -33,11 +33,11 @@ const theme = createTheme({
 
 function MyApp({ Component, pageProps }) {
   return (
-    <Provider { ...stores }>
+    
       <ThemeProvider theme={theme}>
         <Component {...pageProps} />
       </ThemeProvider>
-    </Provider>
+    
   )
 }
 

@@ -1,17 +1,15 @@
 import React, { useEffect } from 'react';
 
-const this_module = 'contacts';
-
 import { api } from '../../components/api.js';
 
-import { useContactStore } from '../../components/store.js';
-import { useCitiesStore } from '../../components/store.js';
+import { useContactStore, useCitiesStore } from '../../components/store.js';
 
 import { roboto } from '../../ui/Font.js'
 import Header from '../../components/header.js';
 import Footer from '../../components/footer.js';
 import ContactsPage from '../../modules/contacts/page.js';
 
+const this_module = 'contacts';
 
 export default function Contacts(props) {
 
@@ -24,7 +22,7 @@ export default function Contacts(props) {
     getData(this_module, city);
 
     console.log( 'load' )
-  }, [getData]);
+  }, [city, getData]);
 
   useEffect(() => {
     if( thisCity != city ){
@@ -32,7 +30,7 @@ export default function Contacts(props) {
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
     }
-  }, [city, thisCity]);
+  }, [city, cities, thisCity, setThisCity, setThisCityRu, setThisCityList]);
 
   return (
     <div className={roboto.variable}>

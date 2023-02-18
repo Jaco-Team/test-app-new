@@ -40,7 +40,7 @@ export default React.memo(function Header(props) {
         setThisCity(city);
 
         setThisCityRU( city_list.find( item => item.link == city )['name'] )
-    }, [city]);
+    }, [city, city_list]);
 
     useEffect(() => {
         setCatList(cats);

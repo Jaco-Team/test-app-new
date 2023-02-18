@@ -1,8 +1,6 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 import { roboto } from '../../ui/Font.js'
-
-const this_module = 'contacts';
 
 import { api } from '../../components/api.js';
 
@@ -10,9 +8,22 @@ import Header from '../../components/header.js';
 import Footer from '../../components/footer.js';
 import PageText from '../../modules/pageText.js';
 
+import { useCitiesStore } from '../../components/store.js';
+
+const this_module = 'contacts';
+
 export default React.memo(function Instpayorders(props) {
 
   const { city, cats, cities, page } = props.data1;
+  const { thisCity, setThisCity, setThisCityRu, setThisCityList } = useCitiesStore(state => state)
+
+  useEffect(() => {
+    if( thisCity != city ){
+      setThisCity(city);
+      setThisCityRu( cities.find( item => item.link == city )['name'] );
+      setThisCityList(cities)
+    }
+  }, [city, cities, thisCity, setThisCity, setThisCityRu, setThisCityList]);
 
   return (
     <div className={roboto.variable}>

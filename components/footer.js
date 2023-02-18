@@ -19,11 +19,11 @@ export default React.memo(function Footer(props) {
     if( JSON.stringify(links) === JSON.stringify({}) ){
       getData(this_module, cityName);
     }
-  }, [getData]);
+  }, [cityName, getData, links]);
 
   useEffect(() => {
     setLinks(links);
-  }, [links]);
+  }, [links, setLinks]);
 
   //(this.state.page == 'cart' ? this.state.page : '')
 
