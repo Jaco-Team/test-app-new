@@ -246,18 +246,11 @@ export class ModalLogin extends React.Component{
         let res = await this.getData('site_login', data);
 
         if( res.st === false ){
-            if( res.type == 'modal' ){
-                this.setState({
-                    typeLogin: 'error',
-                    errTitle: res.title,
-                    errText1: res.text1,
-                    errText2: res.text2,
-                });
-            }else{
+            
                 this.setState({
                     errPhone: res.text
                 });
-            }
+            
         }else{
             this.setState({ 
                 errPhone: '',

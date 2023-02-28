@@ -188,6 +188,11 @@ export const useFooterStore = create((set) => ({
 export const useHeaderStore = create((set) => ({
   activePage: '',
   openCityModal: false,
+  openAuthModal: false,
+
+  errTextAuth: '',
+  token: '',
+
   setActivePage: () => {
 
   },
@@ -195,6 +200,42 @@ export const useHeaderStore = create((set) => ({
     set({
       openCityModal: active
     })
+  },
+  setActiveModalAuth: (active) => {
+    set({
+      openAuthModal: active
+    })
+  },
+  setErrTextAuth: (text) => {
+    set({
+      errTextAuth: text
+    })
+  },
+  logIn: async (this_module, loginLogin, pwdLogin) => {
+    let data = {
+      type: 'site_login',
+      number: loginLogin,
+      pwd: pwdLogin 
+    };
+
+    let json = await api(this_module, data);
+
+    if( json.st === false ){
+      set({
+        errTextAuth: json.text
+      })    
+    }else{
+      set({
+        errTextAuth: '',
+        is_sms: json.is_sms,
+        token: json.token,
+        openAuthModal: false
+      });
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('token', json.token);
+      }
+    }
   }
 }))
 

@@ -16,11 +16,13 @@ import { Fade } from '../../ui/Fade.js'
 import { useHeaderStore } from '../../components/store.js';
 import { useCitiesStore } from '../../components/store.js';
 
+import { shallow } from 'zustand/shallow'
+
 export default React.memo(function ModalCity(){
   
   const [ modalOpen, setModalOpen ] = useState(false);
-  const { thisCity, thisCityList } = useCitiesStore( state => state );
-  const { openCityModal, setActiveModalCity } = useHeaderStore( state => state );
+  const [ thisCity, thisCityList ] = useCitiesStore( state => [ state.thisCity, state.thisCityList ], shallow );
+  const [ openCityModal, setActiveModalCity ] = useHeaderStore( state => [ state.openCityModal, state.setActiveModalCity ], shallow );
 
   function getNewLink(city){
     if (typeof window !== 'undefined') {
@@ -43,6 +45,8 @@ export default React.memo(function ModalCity(){
 
   useEffect( () => {
     setModalOpen(openCityModal);
+
+    console.log(' load ModalCity useEffect')
   }, [openCityModal] )
 
   return (
