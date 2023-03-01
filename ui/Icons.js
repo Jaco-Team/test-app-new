@@ -13,6 +13,7 @@ export function IconRuble(props) {
 export function VKIcon(props){
   return (
     <svg 
+      alt="vk_icon"
       style={ props.style }
       xmlns="http://www.w3.org/2000/svg" 
       viewBox="0 0 448 512"
@@ -25,6 +26,7 @@ export function VKIcon(props){
 export function OdnIcon(props){
   return (
     <svg 
+      alt="odn_icon"
       style={ props.style }
       xmlns="http://www.w3.org/2000/svg" 
       viewBox="0 0 448 512"
@@ -37,6 +39,7 @@ export function OdnIcon(props){
 export function TGIcon(props){
   return (
     <svg 
+      alt="tg_icon"
       xmlns="http://www.w3.org/2000/svg" 
       viewBox="0 0 496 512"
       style={ props.style }

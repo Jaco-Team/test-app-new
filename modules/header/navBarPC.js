@@ -28,7 +28,7 @@ export default React.memo(function NavBarPC(props){
       <Toolbar>
         <div style={{ width: '4.51%' }} />
         <Link href={"/"+city} style={{ width: '14.8%' }}>
-          <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={640} height={186} priority={true} />
+          <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true} />
         </Link> 
         <div style={{ width: '2.53%' }} />
 
