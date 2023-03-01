@@ -4,6 +4,7 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: ['storage.yandexcloud.net'],
+    minimumCacheTTL: 3600,
   },
   experimental: {
     fontLoaders: [

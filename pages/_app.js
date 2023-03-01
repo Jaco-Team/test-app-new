@@ -28,6 +28,10 @@ const theme = createTheme({
   },
 });
 
+export function reportWebVitals(metric) {
+  console.log(metric)
+}
+
 function MyApp({ Component, pageProps }) {
   return (
     <ThemeProvider theme={theme}>
