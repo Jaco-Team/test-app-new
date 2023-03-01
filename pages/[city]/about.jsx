@@ -7,7 +7,6 @@ import Footer from '../../components/footer.js';
 import PageText from '../../modules/pageText.js';
 
 import { useCitiesStore } from '../../components/store.js';
-
 import { api } from '../../components/api.js';
 
 const this_module = 'contacts';
@@ -15,7 +14,8 @@ const this_module = 'contacts';
 export default React.memo(function About(props) {
 
   const { city, cats, cities, page } = props.data1;
-  const { thisCity, setThisCity, setThisCityRu, setThisCityList } = useCitiesStore(state => state)
+  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
+    useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
   useEffect(() => {
     if( thisCity != city ){
@@ -23,7 +23,7 @@ export default React.memo(function About(props) {
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
     }
-  }, [city, cities, thisCity, setThisCity, setThisCityRu, setThisCityList]);
+  }, []);
 
   return (
     <div className={roboto.variable}>

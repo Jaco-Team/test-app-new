@@ -24,7 +24,7 @@ export default React.memo(function NavBarMobile(props){
   const [ activeMenu, setActiveMenu ] = useState(false);
   const [ token, setToken ] = useState('');
 
-  const { setActiveModalCity, setActiveModalAuth } = useHeaderStore( state => state, shallow );
+  const [ setActiveModalCity, setActiveModalAuth ] = useHeaderStore( state => [state.setActiveModalCity, state.setActiveModalAuth], shallow );
 
   console.log( 'render navbar mobile' )
 

@@ -16,12 +16,11 @@ export default function Contacts(props) {
   const { city, cats, cities, page } = props.data1;
   
   const getData = useContactStore( state => state.getData );
-  const { thisCity, setThisCity, setThisCityRu, setThisCityList } = useCitiesStore(state => state)
+  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
+    useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
   useEffect(() => {
     getData(this_module, city);
-
-    console.log( 'load' )
   }, [city, getData]);
 
   useEffect(() => {
@@ -30,7 +29,7 @@ export default function Contacts(props) {
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
     }
-  }, [city, cities, thisCity, setThisCity, setThisCityRu, setThisCityList]);
+  }, []);
 
   return (
     <div className={roboto.variable}>

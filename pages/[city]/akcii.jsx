@@ -4,11 +4,8 @@ import Header from '../../components/header.js';
 import Footer from '../../components/footer.js';
 
 import { roboto } from '../../ui/Font.js'
-
 import { api } from '../../components/api.js';
-
 import { useAkciiStore, useCitiesStore } from '../../components/store.js';
-
 import ActiiPage from '../../modules/akcii/page.js';
 
 const this_module = 'akcii';
@@ -18,13 +15,8 @@ export default function Akcii(props) {
   const { city, cats, cities, page } = props.data1;
 
   const getData = useAkciiStore( state => state.getData );
-  const { thisCity, setThisCity, setThisCityRu, setThisCityList } = useCitiesStore(state => state)
-
-  useEffect(() => {
-    getData(this_module, city);
-
-    console.log( 'load' )
-  }, [city, getData]);
+  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
+    useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
   useEffect(() => {
     if( thisCity != city ){
@@ -32,7 +24,9 @@ export default function Akcii(props) {
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
     }
-  }, [city, cities, thisCity, setThisCity, setThisCityRu, setThisCityList]);
+
+    getData(this_module, city);
+  }, []);
 
   return (
     <div className={roboto.variable}>

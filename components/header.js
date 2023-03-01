@@ -1,5 +1,7 @@
 import React from 'react';
 
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 import { roboto } from '../ui/Font.js'
 
 import ModalCity from '../modules/header/modalCity.js'
@@ -15,12 +17,18 @@ export default React.memo(function Header(props) {
 
     console.log('load header')
   
+    const matches = useMediaQuery('(min-width:600px)');
+
     return (
         <div className={roboto.variable}>
             
-            <NavBarPC city={city} cityRu={thisCityRU} catList={cats} active_page={active_page} />
+            { !matches ? null :
+                <NavBarPC city={city} cityRu={thisCityRU} catList={cats} active_page={active_page} />
+            }
 
-            <NavBarMobile city={city} cityRu={thisCityRU} />
+            { matches ? null :
+                <NavBarMobile city={city} cityRu={thisCityRU} />
+            }
 
             <ModalCity />
             <ModalAuth />

@@ -15,7 +15,7 @@ export default React.memo(function NavBarPC(props){
   
   const { city, cityRu, catList, active_page } = props;
 
-  const { setActiveModalCity, setActiveModalAuth } = useHeaderStore( state => state, shallow );
+  const [ setActiveModalCity, setActiveModalAuth ] = useHeaderStore( state => [state.setActiveModalCity, state.setActiveModalAuth], shallow );
 
   console.log( 'render navbar pc' )
 

@@ -59,6 +59,56 @@ function ControlledAccordions(props) {
   );
 }
 
+function loadMap(points, points_zone){
+  let myMap2;
+  
+  ymaps.ready(function () {
+
+    myMap2 = new ymaps.Map('ForMap', {
+      center: [ points[0]['xy_center_map']['latitude'], points[0]['xy_center_map']['longitude'] ],
+      zoom: 10.8
+    });
+      
+    let HintLayout = ymaps.templateLayoutFactory.createClass( 
+      "<div class='my-hint'>" +
+          "<b>{{ properties.address }}</b><br />" +
+          "Зона {{ properties.zone }}<br />" +
+          "График работы: c 10:00 до 21:30<br />" +
+          "Стоимость доставки: {{ properties.sum_div }} руб." +
+      "</div>"
+    );
+
+    points_zone.map((zone, key)=>{
+      myMap2.geoObjects.add(
+        new ymaps.Polygon([zone], {
+          address: points[ key ]['addr'], 
+          sum_div: points[ key ]['sum_div'], 
+          zone: points[ key ]['test'],
+        }, {
+          hintLayout: HintLayout,
+          fillColor: 'rgba(187, 0, 37, 0.25)',
+          strokeColor: 'rgb(187, 0, 37)',
+          strokeWidth: 5
+        })
+      );
+    })
+      
+    points.map(function(point){
+      myMap2.geoObjects.add(
+        new ymaps.Placemark( [point['xy_point']['latitude'], point['xy_point']['longitude']], 
+        {}, 
+        {
+          iconLayout: 'default#image',
+          iconImageHref: '/Favikon.png',
+          iconImageSize: [30, 30],
+          iconImageOffset: [-12, -24],
+          iconContentOffset: [15, 15],
+        })
+      )
+    })
+  })
+}
+
 export default function ContactsPage(props){
 
   const { page } = props;
@@ -66,57 +116,7 @@ export default function ContactsPage(props){
   const [ points, setPoints ] = useState([]);
   const [ unicPoint, setUnicPoints ] = useState([]);
 
-  let { myPoints, myUnicPoint, pointsZone } = useContactStore((state) => state)
-
-  function loadMap(points, points_zone){
-    let myMap2;
-    
-    ymaps.ready(function () {
-
-      myMap2 = new ymaps.Map('ForMap', {
-        center: [ points[0]['xy_center_map']['latitude'], points[0]['xy_center_map']['longitude'] ],
-        zoom: 10.8
-      });
-        
-      let HintLayout = ymaps.templateLayoutFactory.createClass( 
-        "<div class='my-hint'>" +
-            "<b>{{ properties.address }}</b><br />" +
-            "Зона {{ properties.zone }}<br />" +
-            "График работы: c 10:00 до 21:30<br />" +
-            "Стоимость доставки: {{ properties.sum_div }} руб." +
-        "</div>"
-      );
-  
-      points_zone.map((zone, key)=>{
-        myMap2.geoObjects.add(
-          new ymaps.Polygon([zone], {
-            address: points[ key ]['addr'], 
-            sum_div: points[ key ]['sum_div'], 
-            zone: points[ key ]['test'],
-          }, {
-            hintLayout: HintLayout,
-            fillColor: 'rgba(187, 0, 37, 0.25)',
-            strokeColor: 'rgb(187, 0, 37)',
-            strokeWidth: 5
-          })
-        );
-      })
-        
-      points.map(function(point){
-        myMap2.geoObjects.add(
-          new ymaps.Placemark( [point['xy_point']['latitude'], point['xy_point']['longitude']], 
-          {}, 
-          {
-            iconLayout: 'default#image',
-            iconImageHref: '/Favikon.png',
-            iconImageSize: [30, 30],
-            iconImageOffset: [-12, -24],
-            iconContentOffset: [15, 15],
-          })
-        )
-      })
-    })
-  }
+  let [ myPoints, myUnicPoint, pointsZone ] = useContactStore((state) => [state.myPoints, state.myUnicPoint, state.pointsZone])
 
   useEffect(() => {
     

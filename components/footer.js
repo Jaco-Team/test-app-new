@@ -12,7 +12,7 @@ const this_module = 'contacts';
 export default React.memo(function Footer(props) {
 
   const { cityName } = props;
-  const { links, getData } = useFooterStore( state => state );
+  const [ links, getData ] = useFooterStore( state => [state.links, state.getData] );
   const [ Links, setLinks ] = useState({});
 
   useEffect(() => {

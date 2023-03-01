@@ -2,9 +2,7 @@ import React, { useState, useEffect } from 'react';
 import Head from 'next/head'
 
 import Grid from '@mui/material/Grid';
-
 import Typography from '@mui/material/Typography';
-
 import Snackbar from '@mui/material/Snackbar';
 
 import { useAkciiStore } from '../../components/store.js';
@@ -21,7 +19,7 @@ export default function AkciiPage(props){
 
   const [ actiiList, setActiiList ] = useState([]);
 
-  let { actii, openModal, getAktia } = useAkciiStore((state) => state)
+  let [ actii, openModal, getAktia ] = useAkciiStore((state) => [state.actii, state.openModal, state.getAktia])
 
   useEffect(() => {
     setActiiList(actii)
@@ -41,21 +39,23 @@ export default function AkciiPage(props){
     }
   }
 
-  if (typeof window != "undefined") {
-    setTimeout(() => {
-      let hash = window.location.search;
-      
-      if( hash.length > 0 && hash.indexOf('act_') > 0 && openModal == false ){
-        let act = hash.split('&')[0];
-        let act_id = act.split('act_')[1];
-        let this_item = actii.find( (item) => item.id == act_id );
+  useEffect(() => {
+    if (typeof window != "undefined") {
+      setTimeout(() => {
+        let hash = window.location.search;
         
-        if(this_item && openModal == false){
-          openDialog(this_item.id);
+        if( hash.length > 0 && hash.indexOf('act_') > 0 && openModal == false ){
+          let act = hash.split('&')[0];
+          let act_id = act.split('act_')[1];
+          let this_item = actii.find( (item) => item.id == act_id );
+          
+          if(this_item && openModal == false){
+            openDialog(this_item.id);
+          }
         }
-      }
-    }, 300);
-  }
+      }, 300);
+    }
+  }, []);
 
   return (
     <Grid container spacing={3} className="Actii mainContainer">

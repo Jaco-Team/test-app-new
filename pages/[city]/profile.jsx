@@ -15,7 +15,8 @@ const this_module = 'profile';
 export default function Profile(props) {
 
   const { city, cats, cities, page } = props.data1;
-  const { thisCity, setThisCity, setThisCityRu, setThisCityList } = useCitiesStore(state => state)
+  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
+    useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
   useEffect(() => {
     if( thisCity != city ){
@@ -23,7 +24,7 @@ export default function Profile(props) {
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
     }
-  }, [city, cities, thisCity, setThisCity, setThisCityRu, setThisCityList]);
+  }, []);
 
   return (
     <div className={roboto.variable}>

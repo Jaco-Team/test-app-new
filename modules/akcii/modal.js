@@ -18,21 +18,19 @@ import { roboto } from '../../ui/Font.js'
 import { IconClose } from '../../ui/Icons.js'
 import { Fade } from '../../ui/Fade.js'
 
-export default React.memo(function AkciiModal(props){
-  console.log( 'render_modal' )
+export default React.memo(function AkciiModal(){
+  console.log( 'render_modal_actia' )
 
   //onClick={activePromo.bind(this, showItem.info, showItem.promo)}
   
   const [ actiaModal, setActiaModal ] = useState({});
   const [ modalOpen, setModalOpen ] = useState(false);
 
-  let { openAkcia, openModal, closeAktia } = useAkciiStore((state) => state)
+  let [ openAkcia, openModal, closeAktia ] = useAkciiStore((state) => [state.openAkcia, state.openModal, state.closeAktia])
 
   useEffect(() => {
     setActiaModal(openAkcia)
     setModalOpen(openModal);
-
-    console.log( 'load33', openAkcia, openAkcia != {} ? true : false )
   }, [openAkcia, openModal]);
 
   function closeDialog(){
@@ -49,13 +47,13 @@ export default React.memo(function AkciiModal(props){
     <Dialog 
       onClose={ () => closeDialog() } 
       className={"modalActii "+roboto.variable} 
-      open={ openModal }
+      open={ modalOpen }
       BackdropComponent={Backdrop}
       BackdropProps={{
         timeout: 500,
       }}
     >
-      <Fade in={ openModal } style={{ overflow: 'auto' }}>
+      <Fade in={ modalOpen } style={{ overflow: 'auto' }}>
         <Box>
           <IconButton style={{ position: 'absolute', top: -43, right: 10 }} onClick={ () => closeDialog() }>
             <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
