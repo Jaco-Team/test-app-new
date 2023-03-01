@@ -28,13 +28,13 @@ export default React.memo(function NavBarPC(props){
       <Toolbar>
         <div style={{ width: '4.51%' }} />
         <Link href={"/"+city} style={{ width: '14.8%' }}>
-          <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true} />
+          <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={640} height={186} priority={true} />
         </Link> 
         <div style={{ width: '2.53%' }} />
 
-        <a style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }} onClick={ () => setActiveModalCity(true) }>
+        <div style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }} onClick={ () => setActiveModalCity(true) }>
           <span className={'headerCat'}>{cityRu}</span>
-        </a>
+        </div>
         <div style={{ width: '0.36%' }} />
 
         { catList.map( (item, key) =>
