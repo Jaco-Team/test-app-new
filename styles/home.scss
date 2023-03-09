@@ -453,7 +453,7 @@
     max-width: 345px; 
     min-height: 300px;
     display: flex; 
-    flex-direction: column; 
+    flex-direction: column!important; 
     align-items: stretch;
     justify-content: space-between;
     &:hover img{
