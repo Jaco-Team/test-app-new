@@ -545,7 +545,7 @@
     }
     & .CardAction{
         flex-direction: column;
-        align-items: end!important;
+        align-items: flex-end!important;
         padding: 1.2vw!important;
         width: calc(100% - 2.4vw);
     }
@@ -559,7 +559,7 @@
             margin-top: auto;
             display: flex;
             flex-direction: row; 
-            align-items: end;
+            align-items: flex-end;
             justify-content: space-between;
             padding-top: 5px;
         }
