@@ -9,8 +9,11 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Backdrop from '@mui/material/Backdrop';
 
+import AuthCode from 'react-auth-code-input';
+
 import { roboto } from '../../ui/Font.js'
 import { IconClose } from '../../ui/Icons.js'
+import TrippleDop from '../../public/tripple_dop.png'
 import AccountIcon from '../../public/account-icon-240x240.png'
 import { Fade } from '../../ui/Fade.js'
 import MyTextInput from '../../ui/MyTextInput.js'
@@ -23,8 +26,6 @@ import { shallow } from 'zustand/shallow'
 
 export default React.memo(function ModalAuth(){
   
-  let timerId = null;
-
   const [ modalOpen, setModalOpen ] = useState(false);
   const [ typeLogin, setTypeLogin ] = useState('start');
   const [ fromType, setFromType ] = useState('start');
@@ -36,12 +37,15 @@ export default React.memo(function ModalAuth(){
 
   const [ loginLogin, setLoginLogin ] = useState('');
   const [ pwdLogin, setPwdLogin ] = useState('');
+  const [ checkCodeText, setCheckCodeText ] = useState('');
+  
   
 
   const [ thisCity, thisCityList ] = useCitiesStore( state => [state.thisCity, state.thisCityList], shallow );
   const [ openAuthModal, setActiveModalAuth, errTextAuth, setErrTextAuth, token, logIn ] = 
     useHeaderStore( state => [state.openAuthModal, state.setActiveModalAuth, state.errTextAuth, state.setErrTextAuth, state.token, state.logIn], shallow );
   
+  const [ is_sms ] = useHeaderStore( state => [ state.is_sms ], shallow );
 
   console.log(' load Modalauth')
 
@@ -101,7 +105,7 @@ export default React.memo(function ModalAuth(){
         //this.logIn();
       }
       if( parseInt(type) == 2 ){
-        //this.sendSMS();
+        sendSMS();
       }
 
       if( parseInt(type) == 3 ){
@@ -155,7 +159,15 @@ export default React.memo(function ModalAuth(){
     return date.toISOString().substr(14, 5);
   }
 
-  console.log('sendSMS 55 ', (timer))
+  useEffect( () => {
+    if( checkCodeText.length == 4 ){
+      checkCode();
+    }
+  }, [checkCodeText] )
+
+  function checkCode(){
+
+  }
 
   return (
     <Dialog 
@@ -241,6 +253,60 @@ export default React.memo(function ModalAuth(){
               </div>
             </div>
           }
+          { typeLogin != 'loginSMSCode' ? null :
+            <div className={'modalLoginSMSCode'}>
+              <IconButton style={{ position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent' }} onClick={() => closeModal()}>
+                <IconClose style={{ width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible' }} />
+              </IconButton>
+
+              <div className='loginIMG'>
+                <Image alt="Аккаунт" src={TrippleDop} width={180} height={180} />
+              </div>
+
+              <div className='loginHeader'>
+                <Typography component="h2">Проверим телефон ?</Typography>
+              </div>
+
+              { is_sms === true ? null :
+                <div className='loginSubHeader'>
+                  <Typography component="span">Сейчас мы вам позвоним.</Typography>
+                  <Typography component="span">Введите последние 4 цифры номера.</Typography>
+                </div>
+              }
+
+              { is_sms === false ? null :
+                <div className='loginSubHeader'>
+                  <Typography component="span">Введите 4 цифры из смс.</Typography>
+                </div>
+              }
+              
+              <div className={timer > 0 ? 'loginAutCode' : 'loginAutCodeOther'}>
+                <AuthCode autoFocus={true} allowedCharacters='numeric' length="4" onChange={ data => setCheckCodeText(data) } />
+              </div>
+
+              <div className='loginErr'>
+                <Typography component="span">{errTextAuth}</Typography>
+              </div>
+
+              { timer > 0 ?
+                <div className='loginTimer'>
+                  <Typography component="span">Повторно отправить можно через { toTime(timer) }</Typography>
+                </div>
+                  :
+                <div className='loginTimerSend' onClick={ () => sendSMS() }>
+                  <Typography component="span">Отправить код еще раз</Typography>
+                </div>
+              }
+              
+              <div className={'loginSend ' + (checkCodeText.length == 4 ? '' : 'disabled') } onClick={ () => checkCode() }>
+                <Typography component="span">Отправить</Typography>
+              </div>
+              
+              <div className='loginPrev'>
+                <Typography component="span" onClick={ () => { /*this.setState({ typeLogin: this.state.fromType })*/ } }>Изменить номер телефона</Typography>
+              </div>
+            </div>
+         }
           
         </Box>
       </Fade>

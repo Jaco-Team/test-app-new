@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 
+import dynamic from 'next/dynamic'
+
 import { roboto } from '../../ui/Font.js'
 
 import { api } from '../../components/api.js';
 
-import Header from '../../components/header.js';
-import Footer from '../../components/footer.js';
-import PageText from '../../modules/pageText.js';
+const DynamicHeader = dynamic(() => import('../../components/header.js'))
+const DynamicFooter = dynamic(() => import('../../components/footer.js'))
+const DynamicPage = dynamic(() => import('../../modules/pageText.js'))
 
 import { useCitiesStore } from '../../components/store.js';
 
@@ -28,11 +30,11 @@ export default React.memo(function PublichnayaOferta(props) {
 
   return (
     <div className={roboto.variable}>
-      <Header city={city} cats={cats} city_list={cities} active_page={'other'} />
+      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'other'} />
 
-      <PageText page={page} className="PAGEpublick MuiGrid-spacing-xs-3" />
+      <DynamicPage page={page} className="PAGEpublick MuiGrid-spacing-xs-3" />
 
-      <Footer cityName={city} />
+      <DynamicFooter cityName={city} />
     </div>
   )
 })

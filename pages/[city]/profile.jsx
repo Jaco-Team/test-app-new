@@ -1,11 +1,12 @@
 import React, { useEffect } from 'react';
 
-import Header from '../../components/header.js';
-import Footer from '../../components/footer.js';
+import dynamic from 'next/dynamic'
+
+const DynamicHeader = dynamic(() => import('../../components/header.js'))
+const DynamicFooter = dynamic(() => import('../../components/footer.js'))
+const DynamicPage = dynamic(() => import('../../modules/profile/page.js'))
 
 import { api } from '../../components/api.js';
-
-import ProfilePage from '../../modules/profile/page.js';
 
 import { useCitiesStore } from '../../components/store.js';
 import { roboto } from '../../ui/Font.js'
@@ -28,11 +29,11 @@ export default function Profile(props) {
 
   return (
     <div className={roboto.variable}>
-      <Header city={city} cats={cats} city_list={cities} active_page={this_module} />
+      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
-      <ProfilePage page={page} this_module={this_module} city={city} />
+      <DynamicPage page={page} this_module={this_module} city={city} />
 
-      <Footer cityName={city} />
+      <DynamicFooter cityName={city} />
     </div>
   );
 }

@@ -193,6 +193,12 @@ export const useHeaderStore = create((set) => ({
   errTextAuth: '',
   token: '',
 
+  errTitle: '',
+  errText1: '',
+  errText2: '',
+
+  is_sms: false,
+
   setActivePage: () => {
 
   },
@@ -236,6 +242,38 @@ export const useHeaderStore = create((set) => ({
         localStorage.setItem('token', json.token);
       }
     }
+  },
+  createProfile: async () => {
+    let data = {
+      type: 'create_profile',
+      number: number,
+      token: token 
+    };
+
+    let json = await this.getData('create_profile', data);
+
+    if( json['st'] === true ){
+      set({ 
+        errTextAuth: '',
+        errTitle: '',
+        errText1: '',
+        errText2: '',
+        is_sms: json.is_sms
+      })
+    }else{
+      if( json.type == 'modal' ){
+        set({
+          typeLogin: 'error',
+          errTitle: json.title,
+          errText1: json.text1,
+          errText2: json.text2,
+        });
+      }else{
+        set({
+          errTextAuth: json.text
+        });
+      }
+    }
   }
 }))
 
@@ -258,4 +296,33 @@ export const useCitiesStore = create((set) => ({
       thisCityList: cityList
     })
   }
+}))
+
+export const useHomeStore = create((set) => ({
+  bannerList: [],
+  CatsItems: [],
+  getBanners: async (this_module, city) => {
+    let data = {
+      type: 'get_banners',
+      city_id: city
+    };
+
+    const json = await api(this_module, data);
+    
+    set({
+      bannerList: json.banners
+    })
+  },
+  getItemsCat: async (this_module, city) => {
+    let data = {
+      type: 'get_items_cat',
+      city_id: city
+    };
+
+    const json = await api(this_module, data);
+    
+    set({
+      CatsItems: json.items
+    })
+  },
 }))

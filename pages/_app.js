@@ -8,6 +8,7 @@ import '../styles/politika-konfidencialnosti.scss'
 import '../styles/instpayorders.scss'
 import '../styles/jobs.scss'
 import '../styles/profile.scss'
+import '../styles/home.scss'
 
 
 import '../styles/cityForm.scss'
@@ -26,7 +27,14 @@ const theme = createTheme({
       main: '#CC0033',
     },
   },
-});
+  components: {
+    MuiButtonBase: {
+      defaultProps: {
+        disableRipple: true,
+      },
+    },
+  },
+})
 
 export function reportWebVitals(metric) {
   console.log(metric)

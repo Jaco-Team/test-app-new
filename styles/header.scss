@@ -20,8 +20,9 @@
     z-index: 1200!important;
     background-color: #fff!important;
     & img{
-        width: 100%;
-        height: auto;
+        width: auto;
+        height: 100%; 
+        max-width: 225px;
     }
     & > div{
         padding: 0px!important;

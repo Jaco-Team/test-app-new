@@ -1,65 +1,52 @@
-import React from 'react';
-import Head from 'next/head'
-import Image from 'next/image';
+import React, { useEffect } from 'react';
 
-import Grid from '@mui/material/Grid';
+import dynamic from 'next/dynamic'
 
-import Button from '@mui/material/Button';
-import ButtonGroup from '@mui/material/ButtonGroup';
-import IconButton from '@mui/material/IconButton';
-import Typography from '@mui/material/Typography';
-
-import Dialog from '@mui/material/Dialog';
-import DialogActions from '@mui/material/DialogActions';
-import DialogContent from '@mui/material/DialogContent';
-import DialogTitle from '@mui/material/DialogTitle';
-
-import Snackbar from '@mui/material/Snackbar';
-
-import Box from '@mui/material/Box';
-import Backdrop from '@mui/material/Backdrop';
-
-import Header from '../../components/header.js';
-import Footer from '../../components/footer.js';
+const DynamicHeader = dynamic(() => import('../../components/header.js'))
+const DynamicFooter = dynamic(() => import('../../components/footer.js'))
+const DynamicHomePage = dynamic(() => import('../../modules/home/page.js'))
 
 import { roboto } from '../../ui/Font.js'
-import config from '../../components/config.js';
+import { api } from '../../components/api.js';
 
-import queryString from 'query-string';
+import { useHomeStore, useCitiesStore } from '../../components/store.js';
 
 const this_module = 'home';
 
-import { Swiper, SwiperSlide } from 'swiper/react';
-import 'swiper/css';
+export default function Home(props) {
 
-class HomeBanners extends React.Component{
-  render(){
+  const { city, cats, cities, page } = props.data1;
 
-    let { banners } = this.props;
+  console.log( 'page', props.data1 )
 
-    return (
-      <Swiper
-        spaceBetween={50}
-        slidesPerView={1}
-        loop={true}
-        onSlideChange={() => console.log('slide change')}
-        onSwiper={(swiper) => console.log(swiper)}
-        style={{ width: '100%', marginTop: 100 }}
-      >
-        {banners.map( (item, key) =>
-          <SwiperSlide key={key}>
+  const [ getBanners, getItemsCat ] = useHomeStore( state => [ state.getBanners, state.getItemsCat ] );
+  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
+    useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
-            <Image alt={item.promo_title} src={"https://storage.yandexcloud.net/site-home-img/"+item.img_new+"3700х1000.jpg"} width={3700} height={1000} priority={true} style={{ width: '100%', height: 'auto' }} />
+  useEffect(() => {
+    if( thisCity != city ){
+      setThisCity(city);
+      setThisCityRu( cities.find( item => item.link == city )['name'] );
+      setThisCityList(cities)
+    }
 
-          </SwiperSlide>
-        )}
+    getBanners(this_module, city);
+    getItemsCat(this_module, city);
+  }, []);
+
+  return (
+    <div className={roboto.variable}>
+      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
+
+      <DynamicHomePage page={page} city={city} />
       
-      </Swiper>
-    )
-  }
+      <DynamicFooter cityName={city} />
+    </div>
+  )
 }
 
-export default class Akcii extends React.Component {
+/*
+class Akcii_old extends React.Component {
   constructor(props) {
       super(props);
       
@@ -128,7 +115,9 @@ export default class Akcii extends React.Component {
       <div className={roboto.variable}>
         <Header city={this.state.city} cats={this.state.cats} city_list={this.state.city_list} active_page={this_module} />
 
-        <HomeBanners banners={this.state.banners} />
+        { this.state.banners.length == 0 ? null : 
+          <Banners banners={this.state.banners} />
+        }
 
         <Grid container spacing={3} className="Actii mainContainer">
                   
@@ -168,7 +157,7 @@ export default class Akcii extends React.Component {
       </div>
     )
   }
-}
+}*/
 
 export async function getServerSideProps({ req, res, query }) {
   let data = {
@@ -177,15 +166,8 @@ export async function getServerSideProps({ req, res, query }) {
     page: '' 
   };
 
-  let res1 = await fetch(config.urlApi+this_module, {
-    method: 'POST',
-    headers: {
-      'Content-Type':'application/x-www-form-urlencoded'},
-    body: queryString.stringify(data)
-  })
-  
-  const data1 = await res1.json()
-  
+  const data1 = await api(this_module, data);
+
   data1['city'] = query.city;
 
   return { props: { data1 } }

@@ -1,12 +1,14 @@
 import React, { useEffect } from 'react';
 
-import Header from '../../components/header.js';
-import Footer from '../../components/footer.js';
+import dynamic from 'next/dynamic'
+
+const DynamicHeader = dynamic(() => import('../../components/header.js'))
+const DynamicFooter = dynamic(() => import('../../components/footer.js'))
+const DynamicPage = dynamic(() => import('../../modules/akcii/page.js'))
 
 import { roboto } from '../../ui/Font.js'
 import { api } from '../../components/api.js';
 import { useAkciiStore, useCitiesStore } from '../../components/store.js';
-import ActiiPage from '../../modules/akcii/page.js';
 
 const this_module = 'akcii';
 
@@ -30,11 +32,11 @@ export default function Akcii(props) {
 
   return (
     <div className={roboto.variable}>
-      <Header city={city} cats={cats} city_list={cities} active_page={this_module} />
+      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
-      <ActiiPage page={page} city={city} />
+      <DynamicPage page={page} city={city} />
       
-      <Footer cityName={city} />
+      <DynamicFooter cityName={city} />
     </div>
   )
 }
