@@ -185,7 +185,7 @@ export const useFooterStore = create((set) => ({
   }
 }))
 
-export const useHeaderStore = create((set) => ({
+export const useHeaderStore = create((set, get) => ({
   activePage: '',
   openCityModal: false,
   openAuthModal: false,
@@ -197,7 +197,164 @@ export const useHeaderStore = create((set) => ({
   errText1: '',
   errText2: '',
 
-  is_sms: false,
+  is_sms: true,
+
+  typeLogin: 'start',
+  loginLogin: '',
+  pwdLogin: '',
+  code: '',
+
+  navigate: (typeLogin) => {
+    set({
+      typeLogin
+    })
+  },
+
+  closeModalAuth: () => {
+    set({
+      openAuthModal: false,
+      typeLogin: 'start',
+      errTextAuth: '',
+      loginLogin: '',
+      pwdLogin: '',
+    })
+  },
+
+  changeLogin: (event) => {
+    let data = event.target.value;
+
+    console.log('changeLogin====>', event.target.value);
+
+    if(isNaN(data) && data != '+'){
+      return ;
+    }
+
+    if(parseInt(data[0]) == 9){
+      data = '8' + data;
+    }
+
+    if(data[0] == '+' && parseInt(data[1]) == '7'){
+      data = data.slice(2);
+      data = '8' + data;
+    }
+
+    if( parseInt(data[0]) == '7' ){
+      data = data.slice(1);
+      data = '8' + data;
+    }
+
+    data = data.split(' ').join('');
+    data = data.split('(').join('');
+    data = data.split(')').join('');
+    data = data.split('-').join('');
+    data = data.split('_').join('');
+
+    console.log('changeLogin===>', data);
+
+    set({
+      loginLogin: data,
+    })
+  },
+
+  setPwdLogin: (event) => {
+    set({
+      pwdLogin: event.target.value,
+    })
+  },
+
+  checkLoginKey: (type, event) => {
+    // console.log(type, event)
+
+    console.log('checkLoginKey====>', type, event)
+
+    if(parseInt(event.keyCode) == 13){
+      if(parseInt(type) == 1){
+        //this.logIn();
+      }
+      if(parseInt(type) == 2){
+        get().sendSMS();
+      }
+
+      if(parseInt(type) == 3){
+        //this.checkCode();
+      }
+
+      if(parseInt(type) == 4){
+        //this.sendsmsNewLogin();
+      }
+    }
+  },
+
+  sendSMS: () => {
+
+      get().navigate('loginSMSCode');
+
+      console.log('sendSMS')
+
+      get().createProfile();
+  },
+
+  toTime: (seconds) => {
+    let date = new Date(null);
+    date.setSeconds(seconds);
+    return date.toISOString().substring(14, 19);
+  },
+
+  changeCode: (code) =>{
+    set({
+      code,
+    })
+
+    if(code.length === 4){
+      get().checkCode();
+    }
+  },
+
+  checkCode: async () => {
+    const data = {
+        number: get().loginLogin,
+        cod: get().code, 
+    };
+
+    const res = await api('check_profile', data);
+
+    console.log('checkCode===>', res);
+
+    if(res.st === false){
+        if(res.type === 'modal'){
+          set({
+              typeLogin: 'error',
+              errTitle: res.title,
+              errText1: res.text1,
+              errText2: res.text2,
+            });
+        } else {
+            set({
+              errTextAuth: res.text
+            });
+        }
+
+    } else {
+        set({ 
+            errTextAuth: '',
+            errTitle: '',
+            errText1: '',
+            errText2: '',
+            });
+
+        // itemsStore.setToken( res.token, res.name ); 
+        // itemsStore.setUserName(res.name);
+
+        // if(this.state.fromType == 'create'){
+        //     setState({ 
+        //         fromType: this.state.typeLogin,
+        //         typeLogin: 'finish'
+        //     })
+        // } else {
+        //     this.close();
+        // }
+    }
+  },
 
   setActivePage: () => {
 
@@ -217,6 +374,7 @@ export const useHeaderStore = create((set) => ({
       errTextAuth: text
     })
   },
+
   logIn: async (this_module, loginLogin, pwdLogin) => {
     let data = {
       type: 'site_login',
@@ -243,16 +401,19 @@ export const useHeaderStore = create((set) => ({
       }
     }
   },
+
   createProfile: async () => {
-    let data = {
+    const data = {
       type: 'create_profile',
-      number: number,
-      token: token 
+      number: get().loginLogin,
+      // token: get().token,
     };
 
-    let json = await this.getData('create_profile', data);
+    const json = await api('create_profile', data);
 
-    if( json['st'] === true ){
+    console.log("createProfile=====>", json);
+
+    if(json.st){
       set({ 
         errTextAuth: '',
         errTitle: '',
@@ -274,7 +435,52 @@ export const useHeaderStore = create((set) => ({
         });
       }
     }
-  }
+  },
+
+  sendsmsNewLogin: async () => {
+    let data = {
+        number: get().loginLogin,
+        pwd: get().pwdLogin,
+        token: get().token,
+    };
+
+    get().navigate('loginSMSCode');
+
+    const json = await api('sendsmsrp', data);
+
+    console.log('sendsmsNewLogin ====>', json)
+
+    if( json['st'] ){
+        this.setState({ 
+            errTextAuth: '',
+            errTitle: '',
+            errText1: '',
+            errText2: '',
+            is_sms: json.is_sms ?? false
+        })
+    }else{
+        if( json.type == 'modal' ){
+            this.setState({
+                typeLogin: 'error',
+                errTitle: json.title,
+                errText1: json.text1,
+                errText2: json.text2,
+            });
+        }else{
+            this.setState({
+                errTextAuth: json.text
+            });
+        }
+    }
+    
+    // setTimeout( () => {
+    //     this.sms1 = false;
+    //     this.setState({
+    //         is_load_new: false
+    //     })
+    // }, 300 )
+}
+
 }))
 
 export const useCitiesStore = create((set) => ({

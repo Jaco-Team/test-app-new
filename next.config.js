@@ -11,9 +11,9 @@ const nextConfig = {
       { loader: 'next/font/google', options: { weight: ['100', '300', '400', '500', '700', '900'], subsets: ['latin'], variable: '--inter-font' } },
     ],
   },
-  compiler: {
-    removeConsole: true,
-  },
+  // compiler: {
+  //   removeConsole: true,
+  // },
 }
 
 module.exports = nextConfig

@@ -4,8 +4,8 @@ import mediaQuery from 'css-mediaquery';
 
 import { roboto } from '../ui/Font.js'
 
-import ModalCity from '../modules/header/modalCity.js'
-import ModalAuth from '../modules/header/modalAuth.js'
+import ModalCity from '../modules/header/modalCity.js';
+import ModalAuth from '../modules/header/modalAuth';
 import NavBarPC from '../modules/header/navBarPC.js';
 import NavBarMobile from '../modules/header/navBarMobile.js';
 
