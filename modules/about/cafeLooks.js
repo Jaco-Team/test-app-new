@@ -1,3 +1,4 @@
+import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -13,6 +14,27 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 export default function CafeLooks({ handleChangeExpanded }) {
   console.log('render CafeLooks');
 
+  const [ banners, setBanners ] = useState([]);
+  const [ banW, setBanW ] = useState(300);
+
+  const arr = [
+    "/about/photo_5395851810528411797_y (1).jpg",
+    "/about/Ленинградская вид на кассу.jpg",
+    "/about/Уборная на Ленинградской.jpg",
+    "/about/Куйбышева вид на кассу.jpg",
+    "/about/кафе на Цветном.jpg"
+  ];
+
+  useEffect( () => {
+    if( banners.length == 0 ){
+      let windowOuterWidth = window.outerWidth
+      windowOuterWidth = windowOuterWidth / 3;
+
+      setBanW(windowOuterWidth)
+      setBanners(arr);
+    }
+  }, [arr] )
+    
   return (
     <Grid item xs={12} style={{ paddingTop: 0, paddingBottom: 1 }}>
       <Accordion onClick={handleChangeExpanded}>
@@ -31,64 +53,25 @@ export default function CafeLooks({ handleChangeExpanded }) {
           </Grid>
           <Grid item xs={12}>
             <Swiper
-              spaceBetween={50}
-              slidesPerView={1}
+              //spaceBetween={50}
+              //slidesPerView={1}
               loop={false}
               // onSlideChange={() => console.log('slide change')}
               // onSwiper={(swiper) => console.log(swiper)}
-              style={{ width: '100%', height: 'auto' }}
+              style={{ width: banW, height: 'auto' }}
             >
-              <SwiperSlide>
-                <Image
-                  alt=''
-                  src="/about/photo_5395851810528411797_y (1).jpg"
-                  width={3700}
-                  height={1000}
-                  priority={true}
-                  style={{ width: '100%', height: 'auto' }}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  alt=''
-                  src="/about/Ленинградская вид на кассу.jpg"
-                  width={3700}
-                  height={1000}
-                  priority={true}
-                  style={{ width: '100%', height: 'auto' }}
-                />
-              </SwiperSlide>
-              
-              <SwiperSlide>
-                <Image
-                  alt=''
-                  src="/about/Уборная на Ленинградской.jpg"
-                  width={3700}
-                  height={1000}
-                  priority={true}
-                  style={{ width: '100%', height: 'auto' }}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  alt=''
-                  src="/about/Куйбышева вид на кассу.jpg"
-                  width={3700}
-                  height={1000}
-                  priority={true}
-                  style={{ width: '100%', height: 'auto' }}
-                />
-              </SwiperSlide>
-              <SwiperSlide>
-                <Image
-                  alt=''
-                  src="/about/кафе на Цветном.jpg"
-                  width={3700}
-                  height={1000}
-                  priority={true}
-                  style={{ width: '100%', height: 'auto' }}
-                />
-              </SwiperSlide>
+              {banners.map( (item, key) =>
+                <SwiperSlide key={key}>
+                  <Image
+                    alt=''
+                    src={item}
+                    width={banW}
+                    height={100}
+                    priority={true}
+                    style={{ width: banW, height: 'auto' }}
+                  />
+                </SwiperSlide>
+              )}
             </Swiper>
           </Grid>
         </AccordionDetails>
