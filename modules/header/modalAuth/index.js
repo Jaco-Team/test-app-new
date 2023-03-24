@@ -1,10 +1,15 @@
+import dynamic from 'next/dynamic';
+
 import { shallow } from 'zustand/shallow'
 import { useHeaderStore } from '@/components/store';
 
-import Start from './start';
-import LoginSMS from './loginSMS';
-import LoginSMSCode from './loginSMSCode';
-import ResetPWD from './resetPWD'
+const Start = dynamic(() => import('./start'));
+const LoginSMS = dynamic(() => import('./loginSMS'));
+const LoginSMSCode = dynamic(() => import('./loginSMSCode'));
+const ResetPWD = dynamic(() => import('./resetPWD'));
+const Create = dynamic(() => import('./create'));
+const Finish = dynamic(() => import('./finish'));
+const ModalAuthError = dynamic(() => import('./error'));
 
 import Dialog from '@mui/material/Dialog';
 import Box from '@mui/material/Box';
@@ -33,6 +38,9 @@ export default function ModalAuth() {
           {typeLogin === 'loginSMS' ?  <LoginSMS /> : null}
           {typeLogin === 'loginSMSCode' ?  <LoginSMSCode /> : null}
           {typeLogin === 'resetPWD' ?  <ResetPWD /> : null}
+          {typeLogin === 'create' ?  <Create /> : null}
+          {typeLogin === 'finish' ?  <Finish /> : null}
+          {typeLogin === 'error' ?  <ModalAuthError /> : null}
         </Box>
       </Fade>
     </Dialog>

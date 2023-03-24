@@ -19,7 +19,7 @@ export default React.memo(function Banners(){
     }
   }, [bannerList] )
 
-  //console.log( 'load_banners load_bannersload_banners' )
+  // console.log( 'load_banners load_bannersload_banners', bannerList )
 
   return (
     <Swiper

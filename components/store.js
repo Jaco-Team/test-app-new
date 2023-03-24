@@ -1,4 +1,4 @@
-import { create } from 'zustand'
+import { create } from 'zustand';
 
 import { api } from './api.js';
 
@@ -9,42 +9,42 @@ export const useContactStore = create((set) => ({
   getData: async (this_module, city) => {
     let data = {
       type: 'get_addr_zone_web',
-      city_id: city
+      city_id: city,
     };
 
     const json = await api(this_module, data);
     let points_zone = [];
 
-    json.map(function(point){
-      if(point['zone_origin'].length > 0){
-        points_zone.push( JSON.parse(point['zone_origin']) );
+    json.map(function (point) {
+      if (point['zone_origin'].length > 0) {
+        points_zone.push(JSON.parse(point['zone_origin']));
       }
-    })
-          
+    });
+
     let unic_point = [],
       check = false;
-    
-    json.map(function(point){
+
+    json.map(function (point) {
       check = false;
-      
-      unic_point.map(function(new_point){
-        if( parseInt(new_point.id) == parseInt(point.id) ){
+
+      unic_point.map(function (new_point) {
+        if (parseInt(new_point.id) == parseInt(point.id)) {
           check = true;
         }
-      })
-      
-      if( !check ){
-        unic_point.push(point)
+      });
+
+      if (!check) {
+        unic_point.push(point);
       }
-    })
+    });
 
     set({
-      myPoints: json, 
+      myPoints: json,
       myUnicPoint: unic_point,
-      pointsZone: points_zone
-    })
+      pointsZone: points_zone,
+    });
   },
-}))
+}));
 
 export const useAkciiStore = create((set) => ({
   actii: [],
@@ -53,36 +53,36 @@ export const useAkciiStore = create((set) => ({
   getData: async (this_module, city) => {
     let data = {
       type: 'get_actii',
-      city_id: city
+      city_id: city,
     };
 
     const json = await api(this_module, data);
-    
+
     set({
-      actii: json
-    })
+      actii: json,
+    });
   },
   getAktia: async (id, city) => {
     let data = {
       type: 'get_one_actii',
       city_id: city,
-      act_id: id
+      act_id: id,
     };
 
     const json = await api('akcii', data);
 
     set({
       openAkcia: json,
-      openModal: true
-    })
+      openModal: true,
+    });
   },
   closeAktia: () => {
     set({
       openAkcia: {},
-      openModal: false
-    })
-  }
-}))
+      openModal: false,
+    });
+  },
+}));
 
 export const useProfileStore = create((set) => ({
   promoList: [],
@@ -94,52 +94,52 @@ export const useProfileStore = create((set) => ({
     let data = {
       type: 'get_my_promos',
       city_id: city,
-      user_id: userToken
+      user_id: userToken,
     };
 
     let json = await api(this_module, data);
 
     set({
-      promoList: json.promo_list
-    })
+      promoList: json.promo_list,
+    });
   },
   getOrderList: async (this_module, city, userToken) => {
     let data = {
       type: 'get_my_orders',
       city_id: city,
-      user_id: userToken
+      user_id: userToken,
     };
 
     let json = await api(this_module, data);
 
     set({
-      orderList: json.order_list
-    })
+      orderList: json.order_list,
+    });
   },
   getUserInfo: async (this_module, city, userToken) => {
     let data = {
       type: 'get_my_info',
       city_id: city,
-      user_id: userToken
+      user_id: userToken,
     };
 
     let json = await api(this_module, data);
 
     set({
-      userInfo: json.user
-    })
+      userInfo: json.user,
+    });
   },
   setUser: (user) => {
     set({
-      userInfo: user
-    })
+      userInfo: user,
+    });
   },
   updateUser: async (this_module, city, userToken, user) => {
     let data = {
       type: 'update_user',
       city_id: city,
       user_id: userToken,
-      user: JSON.stringify(user)
+      user: JSON.stringify(user),
     };
 
     let json = await api(this_module, data);
@@ -150,23 +150,23 @@ export const useProfileStore = create((set) => ({
       city_id: city,
       user_id: userToken,
       order_id: order_id,
-      point_id: point_id
+      point_id: point_id,
     };
 
     let json = await api(this_module, data);
 
     set({
       modalOrder: json,
-      openModal: true
-    })
+      openModal: true,
+    });
   },
   closeOrder: () => {
     set({
       openModal: false,
-      modalOrder: {}
-    })
-  }
-}))
+      modalOrder: {},
+    });
+  },
+}));
 
 export const useFooterStore = create((set) => ({
   links: {},
@@ -174,16 +174,16 @@ export const useFooterStore = create((set) => ({
     let data = {
       type: 'get_page_info',
       city_id: city,
-      page: 'info'
+      page: 'info',
     };
 
     const json = await api(this_module, data);
 
     set({
-      links: json.page
-    })
-  }
-}))
+      links: json.page,
+    });
+  },
+}));
 
 export const useHeaderStore = create((set, get) => ({
   activePage: '',
@@ -200,45 +200,70 @@ export const useHeaderStore = create((set, get) => ({
   is_sms: true,
 
   typeLogin: 'start',
+  preTypeLogin: '',
   loginLogin: '',
   pwdLogin: '',
   code: '',
+  genPwd: '',
 
-  navigate: (typeLogin) => {
-    set({
-      typeLogin
-    })
+  setActivePage: () => {},
+
+  setActiveModalCity: (active) => {
+    set({ openCityModal: active });
   },
 
+  // открытие модального окна формы регистрации
+  setActiveModalAuth: (active) => {
+    set({ openAuthModal: active });
+  },
+  
+  // установление ошибки 
+  setErrTextAuth: (text) => {
+    set({ errTextAuth: text });
+  },
+
+  // навигация между форма при регистрации/логировании
+  navigate: (typeLogin) => {
+    if (typeLogin === 'create') {
+      get().gen_password();
+      set({ preTypeLogin: 'create' });
+    }
+
+    set({ typeLogin });
+  },
+
+  // закрытие форм в регистрации/логировании
   closeModalAuth: () => {
     set({
       openAuthModal: false,
-      typeLogin: 'start',
       errTextAuth: '',
+      typeLogin: 'start',
+      preTypeLogin: '',
       loginLogin: '',
       pwdLogin: '',
-    })
+      code: '',
+      genPwd: '',
+    });
   },
 
+  // изменение/введение логина/телефона
   changeLogin: (event) => {
     let data = event.target.value;
 
-    console.log('changeLogin====>', event.target.value);
-
-    if(isNaN(data) && data != '+'){
-      return ;
+    if (isNaN(data) && data != '+') {
+      return;
     }
 
-    if(parseInt(data[0]) == 9){
+    if (parseInt(data[0]) == 9) {
       data = '8' + data;
     }
 
-    if(data[0] == '+' && parseInt(data[1]) == '7'){
+    if (data[0] == '+' && parseInt(data[1]) == '7') {
       data = data.slice(2);
       data = '8' + data;
     }
 
-    if( parseInt(data[0]) == '7' ){
+    if (parseInt(data[0]) == '7') {
       data = data.slice(1);
       data = '8' + data;
     }
@@ -249,151 +274,135 @@ export const useHeaderStore = create((set, get) => ({
     data = data.split('-').join('');
     data = data.split('_').join('');
 
-    console.log('changeLogin===>', data);
-
-    set({
-      loginLogin: data,
-    })
+    if (data.length < 12) {
+      set({ loginLogin: data });
+    }
   },
 
+  // установление пароля при регистрации/логировании
   setPwdLogin: (event) => {
-    set({
-      pwdLogin: event.target.value,
-    })
+    set({ pwdLogin: event.target.value });
   },
 
+  // запуск функции при нажатии enter в зависимости от формы
   checkLoginKey: (type, event) => {
-    // console.log(type, event)
 
-    console.log('checkLoginKey====>', type, event)
-
-    if(parseInt(event.keyCode) == 13){
-      if(parseInt(type) == 1){
-        //this.logIn();
+    if (parseInt(event.keyCode) == 13) {
+      if (parseInt(type) == 1) {
+        get().logIn();
       }
-      if(parseInt(type) == 2){
+      if (parseInt(type) == 2) {
         get().sendSMS();
       }
 
-      if(parseInt(type) == 3){
-        //this.checkCode();
+      if (parseInt(type) == 3) {
+        get().checkCode();
       }
 
-      if(parseInt(type) == 4){
-        //this.sendsmsNewLogin();
+      if (parseInt(type) == 4) {
+        get().sendsmsNewLogin();
       }
     }
   },
 
+  // направление смс на указанный номер при регистарции/логировании
   sendSMS: () => {
+    get().navigate('loginSMSCode');
 
-      get().navigate('loginSMSCode');
-
-      console.log('sendSMS')
-
-      get().createProfile();
+    get().createProfile();
   },
 
+  // установление таймера 
   toTime: (seconds) => {
     let date = new Date(null);
     date.setSeconds(seconds);
     return date.toISOString().substring(14, 19);
   },
 
-  changeCode: (code) =>{
-    set({
-      code,
-    })
+  // изменение/введение 4-х значного номера подтверждения
+  changeCode: (code) => {
+    set({ code });
 
-    if(code.length === 4){
+    if (code.length === 4) {
       get().checkCode();
     }
   },
 
+  // генерация случаного пароля при регистарции
+  gen_password: () => {
+    let genPwd = '';
+    let symbols = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+?';
+    for (let i = 0; i < 10; i++) {
+      genPwd += symbols.charAt(Math.floor(Math.random() * symbols.length));
+    }
+
+    set({ genPwd });
+  },
+
+  // проверка логина, кода при регистрации/логировании
   checkCode: async () => {
     const data = {
-        number: get().loginLogin,
-        cod: get().code, 
+      type: 'check_profile',
+      number: get().loginLogin,
+      cod: get().code,
     };
 
-    const res = await api('check_profile', data);
+    const res = await api('auth', data);
 
-    console.log('checkCode===>', res);
-
-    if(res.st === false){
-        if(res.type === 'modal'){
-          set({
-              typeLogin: 'error',
-              errTitle: res.title,
-              errText1: res.text1,
-              errText2: res.text2,
-            });
-        } else {
-            set({
-              errTextAuth: res.text
-            });
-        }
-
+    if (res.st === false) {
+      if (res.type === 'modal') {
+        set({
+          typeLogin: 'error',
+          errTitle: res.title,
+          errText1: res.text1,
+          errText2: res.text2,
+        });
+      } else {
+        set({
+          errTextAuth: res.text,
+        });
+      }
     } else {
-        set({ 
-            errTextAuth: '',
-            errTitle: '',
-            errText1: '',
-            errText2: '',
-            });
+      set({
+        errTextAuth: '',
+        errTitle: '',
+        errText1: '',
+        errText2: '',
+      });
 
-        // itemsStore.setToken( res.token, res.name ); 
-        // itemsStore.setUserName(res.name);
+      // itemsStore.setToken( res.token, res.name );
+      // itemsStore.setUserName(res.name);
 
-        // if(this.state.fromType == 'create'){
-        //     setState({ 
-        //         fromType: this.state.typeLogin,
-        //         typeLogin: 'finish'
-        //     })
-        // } else {
-        //     this.close();
-        // }
+      if (get().preTypeLogin === 'create') {
+        set({
+          typeLogin: 'finish',
+        });
+      } else {
+        get().closeModalAuth();
+      }
     }
   },
 
-  setActivePage: () => {
-
-  },
-  setActiveModalCity: (active) => {
-    set({
-      openCityModal: active
-    })
-  },
-  setActiveModalAuth: (active) => {
-    set({
-      openAuthModal: active
-    })
-  },
-  setErrTextAuth: (text) => {
-    set({
-      errTextAuth: text
-    })
-  },
-
-  logIn: async (this_module, loginLogin, pwdLogin) => {
-    let data = {
+  //логирование в форме регистрации
+  logIn: async () => {
+    const data = {
       type: 'site_login',
-      number: loginLogin,
-      pwd: pwdLogin 
+      number: get().loginLogin,
+      pwd: get().pwdLogin,
     };
 
-    let json = await api(this_module, data);
+    const json = await api('auth', data);
 
-    if( json.st === false ){
+    if (json.st === false) {
       set({
-        errTextAuth: json.text
-      })    
-    }else{
+        errTextAuth: json.text,
+      });
+    } else {
       set({
         errTextAuth: '',
         is_sms: json.is_sms,
         token: json.token,
-        openAuthModal: false
+        openAuthModal: false,
       });
 
       if (typeof window !== 'undefined') {
@@ -402,86 +411,83 @@ export const useHeaderStore = create((set, get) => ({
     }
   },
 
+  // создание нового аккаунта
   createProfile: async () => {
     const data = {
       type: 'create_profile',
       number: get().loginLogin,
-      // token: get().token,
+      token: get().token,
     };
 
-    const json = await api('create_profile', data);
+    const json = await api('auth', data);
 
-    console.log("createProfile=====>", json);
-
-    if(json.st){
-      set({ 
+    if (json.st) {
+      set({
         errTextAuth: '',
         errTitle: '',
         errText1: '',
         errText2: '',
-        is_sms: json.is_sms
-      })
-    }else{
-      if( json.type == 'modal' ){
+        is_sms: json.is_sms,
+      });
+    } else {
+      if (json.type == 'modal') {
         set({
           typeLogin: 'error',
           errTitle: json.title,
           errText1: json.text1,
           errText2: json.text2,
         });
-      }else{
+      } else {
         set({
-          errTextAuth: json.text
+          errTextAuth: json.text,
         });
       }
     }
   },
 
+  // подтвреждение новой регистрации/изменения в существующий аккаунт
   sendsmsNewLogin: async () => {
-    let data = {
-        number: get().loginLogin,
-        pwd: get().pwdLogin,
-        token: get().token,
+    const data = {
+      type: 'sendsmsrp',
+      number: get().loginLogin,
+      pwd: get().pwdLogin,
+      token: get().token,
     };
 
     get().navigate('loginSMSCode');
 
-    const json = await api('sendsmsrp', data);
+    const json = await api('auth', data);
 
-    console.log('sendsmsNewLogin ====>', json)
-
-    if( json['st'] ){
-        this.setState({ 
-            errTextAuth: '',
-            errTitle: '',
-            errText1: '',
-            errText2: '',
-            is_sms: json.is_sms ?? false
-        })
-    }else{
-        if( json.type == 'modal' ){
-            this.setState({
-                typeLogin: 'error',
-                errTitle: json.title,
-                errText1: json.text1,
-                errText2: json.text2,
-            });
-        }else{
-            this.setState({
-                errTextAuth: json.text
-            });
-        }
+    if (json['st']) {
+      set({
+        errTextAuth: '',
+        errTitle: '',
+        errText1: '',
+        errText2: '',
+        is_sms: json.is_sms ?? false,
+      });
+    } else {
+      if (json.type == 'modal') {
+        set({
+          typeLogin: 'error',
+          errTitle: json.title,
+          errText1: json.text1,
+          errText2: json.text2,
+        });
+      } else {
+        set({
+          errTextAuth: json.text,
+        });
+      }
     }
-    
+
     // setTimeout( () => {
-    //     this.sms1 = false;
     //     this.setState({
     //         is_load_new: false
     //     })
     // }, 300 )
-}
-
-}))
+  },
+}));
 
 export const useCitiesStore = create((set) => ({
   thisCity: '',
@@ -489,20 +495,20 @@ export const useCitiesStore = create((set) => ({
   thisCityList: [],
   setThisCity: (city) => {
     set({
-      thisCity: city
-    })
+      thisCity: city,
+    });
   },
   setThisCityRu: (city) => {
     set({
-      thisCityRu: city
-    })
+      thisCityRu: city,
+    });
   },
   setThisCityList: (cityList) => {
     set({
-      thisCityList: cityList
-    })
-  }
-}))
+      thisCityList: cityList,
+    });
+  },
+}));
 
 export const useHomeStore = create((set) => ({
   bannerList: [],
@@ -510,25 +516,25 @@ export const useHomeStore = create((set) => ({
   getBanners: async (this_module, city) => {
     let data = {
       type: 'get_banners',
-      city_id: city
+      city_id: city,
     };
 
     const json = await api(this_module, data);
-    
+
     set({
-      bannerList: json.banners
-    })
+      bannerList: json.banners,
+    });
   },
   getItemsCat: async (this_module, city) => {
     let data = {
       type: 'get_items_cat',
-      city_id: city
+      city_id: city,
     };
 
     const json = await api(this_module, data);
-    
+
     set({
-      CatsItems: json.items
-    })
+      CatsItems: json.items,
+    });
   },
-}))
+}));

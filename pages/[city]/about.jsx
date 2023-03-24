@@ -6,7 +6,7 @@ import { roboto } from '../../ui/Font.js'
 
 const DynamicHeader = dynamic(() => import('../../components/header.js'))
 const DynamicFooter = dynamic(() => import('../../components/footer.js'))
-const DynamicPage = dynamic(() => import('../../modules/pageText.js'))
+const AboutPage = dynamic(() => import('@/modules/about'))
 
 import { useCitiesStore } from '../../components/store.js';
 import { api } from '../../components/api.js';
@@ -31,7 +31,7 @@ export default React.memo(function About(props) {
     <div className={roboto.variable}>
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'other'} />
 
-      <DynamicPage page={page} className="PAGEabout" />
+      <AboutPage />
 
       <DynamicFooter cityName={city} />
 
@@ -47,6 +47,8 @@ export async function getServerSideProps({ req, res, query }) {
   };
 
   const data1 = await api(this_module, data);
+
+  // console.log(data1)
   
   data1['city'] = query.city;
 

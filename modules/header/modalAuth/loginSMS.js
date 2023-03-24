@@ -31,7 +31,8 @@ export default function LoginSMS () {
     </div>
     
     <MyTextInput type={"phone"} placeholder="Телефон" value={loginLogin} 
-    func={event => changeLogin(event)} onKeyDown={event => checkLoginKey(1, event)} className="inputLogin" style={{ marginBottom: 0 }} />
+      func={event => changeLogin(event)} onKeyDown={event => checkLoginKey(2, event)} className="inputLogin" style={{ marginBottom: 0 }} 
+    />
     
     <div className='loginErr'>
       <Typography component="span">{errTextAuth}</Typography>

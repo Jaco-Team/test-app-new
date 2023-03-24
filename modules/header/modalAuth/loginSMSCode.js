@@ -13,48 +13,26 @@ import AuthCode from 'react-auth-code-input';
 export default function LoginSMSCode() {
   console.log('render LoginSMS');
 
-  const [
-    closeModalAuth,
-    errTextAuth,
-    changeCode,
-    sendSMS,
-    toTime,
-    checkCode,
-    code,
-    is_sms,
-    navigate,
-  ] = useHeaderStore(
-    (state) => [
-      state.closeModalAuth,
-      state.errTextAuth,
-      state.changeCode,
-      state.sendSMS,
-      state.toTime,
-      state.checkCode,
-      state.code,
-      state.is_sms,
-      state.navigate,
-    ],
-    shallow
-  );
+  const [closeModalAuth, errTextAuth, changeCode, sendSMS, toTime, checkCode, code, is_sms, navigate] = useHeaderStore(
+    (state) => [state.closeModalAuth, state.errTextAuth, state.changeCode, state.sendSMS, state.toTime,state.checkCode, state.code, state.is_sms, state.navigate], shallow);
 
-  const [time, setTime] = useState(89);
+  const [timer, setTimer] = useState(89);
 
   useEffect(() => {
     let interval;
     
-    if (time > 0) {
+    if (timer > 0) {
       interval = setInterval(() => {
-        setTime(time => time - 1);
+        setTimer(timer => timer - 1);
       }, 1000);
     } 
 
     return () => clearInterval(interval);
-  }, [time]);
+  }, [timer]);
 
   const reSendSMS = () => {
     sendSMS();
-    setTime(89);
+    setTimer(89);
   }
 
   return (
@@ -86,7 +64,7 @@ export default function LoginSMSCode() {
         </div>
       )}
 
-      <div className={time > 0 ? 'loginAutCode' : 'loginAutCodeOther'}>
+      <div className={timer > 0 ? 'loginAutCode' : 'loginAutCodeOther'}>
         <AuthCode autoFocus={true} allowedCharacters="numeric" length="4" onChange={(data) => changeCode(data)}/>
       </div>
 
@@ -94,9 +72,9 @@ export default function LoginSMSCode() {
         <Typography component="span">{errTextAuth}</Typography>
       </div>
 
-      {time > 0 ? (
+      {timer > 0 ? (
         <div className="loginTimer">
-          <Typography component="span">Повторно отправить можно через {toTime(time)}</Typography>
+          <Typography component="span">Повторно отправить можно через {toTime(timer)}</Typography>
         </div>
       ) : (
         <div className="loginTimerSend" onClick={reSendSMS}>
@@ -104,20 +82,12 @@ export default function LoginSMSCode() {
         </div>
       )}
 
-      <div
-        className={'loginSend ' + (code.length === 4 ? '' : 'disabled')}
-        onClick={checkCode}
-      >
+      <div className={'loginSend ' + (code.length === 4 ? '' : 'disabled')} onClick={checkCode}>
         <Typography component="span">Отправить</Typography>
       </div>
 
       <div className="loginPrev">
-        <Typography
-          component="span"
-          onClick={() => navigate('loginSMS')}
-        >
-          Изменить номер телефона
-        </Typography>
+        <Typography component="span" onClick={() => navigate('loginSMS')}>Изменить номер телефона</Typography>
       </div>
     </div>
   );

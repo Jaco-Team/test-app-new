@@ -31,21 +31,19 @@ export default function Start () {
         <Typography component="h2">Мой аккаунт</Typography>
       </div>
       
-      <MyTextInput type={"phone"} placeholder="Телефон" value={loginLogin} 
-      func={event => changeLogin(event)} onKeyDown={event => checkLoginKey(1, event)} className="inputLogin" />
+      <MyTextInput type={"phone"} placeholder="Телефон" value={loginLogin} func={event => changeLogin(event)} onKeyDown={event => checkLoginKey(1, event)} className="inputLogin" />
 
       <div className='loginErr'>
         <Typography component="span">{errTextAuth}</Typography>
       </div>
 
-      <MyTextInput type={"password"} placeholder="Пароль" value={pwdLogin} 
-      func={event => setPwdLogin(event)} onKeyDown={event => checkLoginKey(1, event)} className="inputLogin" />
+      <MyTextInput type={"password"} placeholder="Пароль" value={pwdLogin} func={event => setPwdLogin(event)} onKeyDown={event => checkLoginKey(1, event)} className="inputLogin" />
 
       <div className='loginLosePWD'>
         <Typography component="span" onClick={() => navigate('resetPWD')}>Забыли пароль ?</Typography>
       </div>
 
-      <div className='loginLogin' onClick={() => logIn('auth', loginLogin, pwdLogin)}>
+      <div className='loginLogin' onClick={logIn}>
         <Typography component="span">Войти</Typography>
       </div>
 

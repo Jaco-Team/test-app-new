@@ -11,62 +11,18 @@ import Typography from '@mui/material/Typography';
 export default function ResetPWD() {
   console.log('render ResetPWD');
 
-  const [
-    closeModalAuth,
-    errTextAuth,
-    navigate,
-    sendsmsNewLogin,
-    changeLogin,
-    setPwdLogin,
-    loginLogin,
-    pwdLogin,
-    checkLoginKey,
-  ] = useHeaderStore(
-    (state) => [
-      state.closeModalAuth,
-      state.errTextAuth,
-      state.navigate,
-      state.changeLogin,
-      state.setPwdLogin,
-      state.loginLogin,
-      state.pwdLogin,
-      state.checkLoginKey,
-      state.sendsmsNewLogin,
-    ],
-    shallow
-  );
-
-  console.log(loginLogin);
+  const [closeModalAuth, errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, sendsmsNewLogin] = useHeaderStore(
+    (state) => [state.closeModalAuth, state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, 
+      state.sendsmsNewLogin], shallow);
 
   return (
     <div className="modalLoginReset">
-      <IconButton
-        style={{
-          position: 'absolute',
-          top: -40,
-          left: 15,
-          backgroundColor: 'transparent',
-        }}
-        onClick={closeModalAuth}
-      >
-        <IconClose
-          style={{
-            width: 25,
-            height: 25,
-            fill: '#fff',
-            color: '#fff',
-            overflow: 'visible',
-          }}
-        />
+      <IconButton style={{position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent'}} onClick={closeModalAuth}>
+        <IconClose style={{width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible'}}/>
       </IconButton>
 
       <div className="loginIMG">
-        <Image
-          alt="Аккаунт"
-          src="/account-icon-240x240.png"
-          width={180}
-          height={180}
-        />
+        <Image alt="Аккаунт" src="/account-icon-240x240.png" width={180} height={180}/>
       </div>
 
       <div className="loginHeader">

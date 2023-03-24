@@ -2,6 +2,10 @@
 
 .PAGEabout{
     margin-top: 64px!important;
+
+    padding-left: 10%;
+    padding-right: 12%;
+    
     @media (min-width: 800px) {
         margin-top: 140px!important;
         margin-bottom: 140px!important;
@@ -9,7 +13,7 @@
 
     & h1{
         @include fonsNew(2rem, var(--inter-font));
-        text-align: center;
+        text-align: start;
         width: 100%;
         font-weight: 600;
     }
