@@ -4,16 +4,13 @@ const nextConfig = {
   swcMinify: true,
   images: {
     domains: ['storage.yandexcloud.net', 'cdnimg.jacofood.ru'],
-    minimumCacheTTL: 3600,
+    minimumCacheTTL: 86400,
   },
   experimental: {
     fontLoaders: [
       { loader: 'next/font/google', options: { weight: ['100', '300', '400', '500', '700', '900'], subsets: ['latin'], variable: '--inter-font' } },
     ],
   },
-  // compiler: {
-  //   removeConsole: true,
-  // },
 }
 
 module.exports = nextConfig

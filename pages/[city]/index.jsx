@@ -17,8 +17,6 @@ export default function Home(props) {
 
   const { city, cats, cities, page } = props.data1;
 
-  console.log( 'page', props.data1 )
-
   const [ getBanners, getItemsCat ] = useHomeStore( state => [ state.getBanners, state.getItemsCat ] );
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
@@ -160,6 +158,11 @@ class Akcii_old extends React.Component {
 }*/
 
 export async function getServerSideProps({ req, res, query }) {
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=86400, stale-while-revalidate=86400'
+  )
+
   let data = {
     type: 'get_page_info', 
     city_id: query.city,

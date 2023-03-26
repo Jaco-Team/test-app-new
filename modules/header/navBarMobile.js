@@ -26,14 +26,12 @@ export default React.memo(function NavBarMobile(props){
 
   const [ setActiveModalCity, setActiveModalAuth ] = useHeaderStore( state => [state.setActiveModalCity, state.setActiveModalAuth], shallow );
 
-  console.log( 'render navbar mobile' )
-
   if( city == '' ){
     return null;
   }
 
   return (
-    <AppBar position="fixed" className='headerNewMobile' id='headerNewMobile' elevation={2} sx={{ display: { xs: 'block', md: 'none' } }}>
+    <AppBar position="fixed" className='headerNewMobile' id='headerNewMobile' elevation={2}>
       <Toolbar>
         <Link href={"/"}>
           <Image alt="Жако доставка роллов и пиццы" src={JacoLogoMini} width={40} height={40} priority={true} />
