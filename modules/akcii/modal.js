@@ -19,8 +19,6 @@ import { IconClose } from '../../ui/Icons.js'
 import { Fade } from '../../ui/Fade.js'
 
 export default React.memo(function AkciiModal(){
-  console.log( 'render_modal_actia' )
-
   //onClick={activePromo.bind(this, showItem.info, showItem.promo)}
   
   const [ actiaModal, setActiaModal ] = useState({});

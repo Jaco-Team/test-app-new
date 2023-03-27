@@ -42,6 +42,11 @@ export default function Akcii(props) {
 }
 
 export async function getServerSideProps({ req, res, query }) {
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=86400, stale-while-revalidate=86400'
+  )
+  
   let data = {
     type: 'get_page_info', 
     city_id: query.city,

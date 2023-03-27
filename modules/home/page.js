@@ -8,23 +8,19 @@ import { useHomeStore } from '../../components/store.js';
 import Banners from './banners.js';
 import CardItems from './cardItems.js';
 
+import Meta from '@/components/meta.js';
+
 export default function HomePage(props){
 
   const { page, city } = props;
 
   return (
-    <>
+    <Meta title={page.title} description={page.description}>
 
       <Banners />
 
-      <Head>
-        <title>{page.title}</title>
-        <meta name="description" content={page.description} />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      
       <CardItems />
   
-    </>
+    </Meta>
   )
 }

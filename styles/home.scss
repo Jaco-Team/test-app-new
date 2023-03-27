@@ -551,6 +551,11 @@
     }
 }
 .CardItem_mobile{
+    display: flex;
+    flex-direction: row;
+    flex-wrap: nowrap;
+    padding-left: 0!important;
+
     & .SecondBox{
         display: flex;
         flex-direction: column;
@@ -635,26 +640,70 @@
         -webkit-box-orient: vertical;
         line-clamp: 3;
         box-orient: vertical;
+        @include fonsNew(0.875rem, var(--inter-font));
+        margin-bottom: 10px;
+        font-weight: 400; 
+        max-height: 60px;
     }
     & > div:first-child{
         display: flex;
         justify-content: center;
         align-items: center;
+        position: relative;
+        margin-right: 3%;
     }
+    & > div:last-child{
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        position: relative;
+        justify-content: flex-end;
+        & > .CardNameItem_{
+            @include fonsNew(1.0625rem, var(--inter-font));
+            font-weight: 500;
+            margin-bottom: 10px
+        }
+
+        & > .CardBageCount{
+            width: 148px;
+            height: 28px;
+            display: flex;
+            flex-direction: row; 
+            align-items: center; 
+            border: 1px solid #dadada;
+            border-radius: 10px; 
+            margin-bottom: 10px;
+            & > span:first-child{
+                flex: 3;
+                text-align: center;
+                border-right: 1px solid #dadada;
+                height: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                
+                    @include fonsNew(0.875rem, var(--inter-font));
+                    font-weight: 400;
+                    line-height: 0;
+                
+            }
+            & > span:last-child{
+                flex: 2; 
+                text-align: center;
+                height: 28px;
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                
+                    @include fonsNew(0.875rem, var(--inter-font));
+                    font-weight: 400;
+                    line-height: 0;
+                
+            }
+        }
+    }
+    
 } 
-/*#cat10 .CardItem_mobile img, 
-#cat13 .CardItem_mobile img, 
-#cat12 .CardItem_mobile img, 
-#cat9 .CardItem_mobile img, 
-#cat6 .CardItem_mobile img, 
-#cat7 .CardItem_mobile img{
-    margin-right: 10px;
-    left: -18%!important;
-    width: 130%!important;
-    display: block;
-    position: relative;
-    z-index: 1;
-}*/
 .alice-carousel{
     margin-top: 50px!important;
     height: max-content;
@@ -740,3 +789,170 @@
     width: 100%!important;
     height: auto!important;
 }
+
+.ModalItemButtonCart:not(.OPEN){
+    width: 100%;
+    border-radius: 40px;
+    @media (max-width: 1280px){
+        height: 30px; 
+        border: 1px solid #F9BC23;
+    }
+    @media (min-width: 1281px){
+        height: 60px; 
+        border: 2px solid #F9BC23;
+    }
+    & span{
+        @media (max-width: 1280px){
+            @include fonsNew(0.875rem, var(--inter-font));
+        }
+        @media (min-width: 1281px){
+            @include fonsNew(1.25rem, var(--inter-font));
+        }
+        font-weight: 500;
+        text-transform: initial;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+    }
+    &:hover{
+        background-color: #cf9f37;
+        border: 2px solid #F9BC23;
+    }
+    &:target{
+        background-color: #cf9f37;
+        border: 2px solid #F9BC23;
+    }
+    &:active{
+        background-color: #cf9f37;
+        border: 2px solid #F9BC23;
+    }
+}
+.ModalItemButtonCart.OPEN{
+    
+    @media (max-width: 1280px){
+        border: 1px solid #F9BC23;
+        height: 28px; 
+        background-color: rgba(249, 188, 35, 0.1)!important;
+    }
+    @media (min-width: 1281px){
+        border: 2px solid #F9BC23;
+        height: 56px;
+    }
+    
+    border-radius: 40px;
+    
+    display: flex;
+    justify-content: space-between; 
+    align-items: center;
+    & > .minus{
+        @media (max-width: 1280px){
+            @include fonsNew(0.875rem, var(--inter-font));
+
+            width: 28px; 
+            height: 28px;
+        }
+        @media (min-width: 1281px){
+            @include fonsNew(1.5rem, var(--inter-font));
+
+            width: 30px; 
+            height: 30px;
+
+            border: 1px solid #F9BC23;
+            background-color: #F9BC23;
+
+            border-radius: 40px;
+
+            &:hover{
+                background-color: #cf9f37;
+                border: 1px solid #cf9f37;
+            }
+            &:target{
+                background-color: #cf9f37;
+                border: 1px solid #cf9f37;
+            }
+            &:active{
+                background-color: #cf9f37;
+                border: 1px solid #cf9f37;
+            }
+        }
+        
+        padding: 0; 
+        margin-left: 13px;
+        font-weight: 400;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    & > .plus{
+        @media (max-width: 1280px){
+            @include fonsNew(0.875rem, var(--inter-font));
+            width: 28px; 
+            height: 28px;
+        }
+        @media (min-width: 1281px){
+            width: 40px; 
+            height: 40px;
+            @include fonsNew(2rem, var(--inter-font));
+            border: 1px solid #F9BC23;
+            background-color: #F9BC23; 
+            border-radius: 40px;
+
+            &:hover{
+                background-color: #cf9f37;
+                border: 1px solid #cf9f37;
+            }
+            &:target{
+                background-color: #cf9f37;
+                border: 1px solid #cf9f37;
+            }
+            &:active{
+                background-color: #cf9f37;
+                border: 1px solid #cf9f37;
+            }
+
+        }
+
+        padding: 0; 
+        margin-right: 10px; 
+        
+        font-weight: 400;
+        display: flex; 
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        cursor: pointer;
+    }
+    & > span{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        @media (max-width: 1280px){
+            @include fonsNew(0.875rem, var(--inter-font));
+        }
+        @media (min-width: 1281px){
+            @include fonsNew(1.25rem, var(--inter-font));
+        }
+
+        font-weight: 500;
+    }
+    & > div{
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        & > span{
+            @media (max-width: 1280px){
+                @include fonsNew(0.875rem, var(--inter-font));
+            }
+            @media (min-width: 1281px){
+                @include fonsNew(1.25rem, var(--inter-font));
+            }
+
+            font-weight: 500;
+        }
+    }
+    
+}
+    

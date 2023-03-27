@@ -2,27 +2,11 @@ import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
-
-
 import Grid from '@mui/material/Grid';
-
-import Card from '@mui/material/Card';
-import CardActions from '@mui/material/CardActions';
-import CardContent from '@mui/material/CardContent';
-
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
-import ButtonGroup from '@mui/material/ButtonGroup';
 
-
-
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
-
-import Dialog from '@mui/material/Dialog';
-import DialogTitle from '@mui/material/DialogTitle';
-import DialogContent from '@mui/material/DialogContent';
-
+import { IconRuble } from '@/ui/Icons.js';
 
 import { useHomeStore } from '../../components/store.js';
 import { shallow } from 'zustand/shallow'
@@ -46,6 +30,10 @@ export default React.memo(function CardItem(props){
 
   const widthCardInfo = parseInt( item.cat_id ) == 4 ? 230 : parseInt( item.cat_id ) == 5 || parseInt( item.cat_id ) == 6 || parseInt( item.cat_id ) == 7 || parseInt( item.cat_id ) == 15 ? 75 : 135;
 
+  const [ count, setCount ] = useState(0);
+
+  //console.log( 'render_item_pc' )
+
   return (
     <Grid item className='_PC_ CardItem' xs={12} sm={6} md={4} lg={3} xl={3} sx={{ display: { xs: 'none', sm: 'flex' } }} style={{ padding: '30px 16px', width: '100%' }}>
     
@@ -68,6 +56,23 @@ export default React.memo(function CardItem(props){
       <div style={{ height: 120, width: '100%', marginBottom: 10, textAlign: 'center', overflow: 'hidden' }}>
         <Typography component="span" className='hidddenText5'>{desc}</Typography>
       </div>
+
+      { count == 0 ?
+        <Button variant="outlined" className='ModalItemButtonCart' onClick={ () => { setCount( prev => prev + 1 ) } }>
+          <span>В корзину за { new Intl.NumberFormat('ru-RU').format(item.price)}</span>
+          <IconRuble style={{ width: 14, height: 14, fill: '#525252', marginLeft: 5, paddingBottom: 1  }} />
+        </Button>
+          :
+        <div variant="contained" className='ModalItemButtonCart OPEN'>
+          <button className='minus' onClick={ () => { setCount( prev => prev - 1 ) } }>–</button>
+          <div>
+            <span>{count} шт. на { new Intl.NumberFormat('ru-RU').format( parseInt(item.price) * parseInt(count) )}</span>
+            <IconRuble style={{ width: 14, height: 14, fill: '#525252', marginLeft: 5, paddingBottom: 1 }} />
+          </div>
+          <button className='plus' onClick={ () => { setCount( prev => prev + 1 ) } }>+</button>
+        </div>
+        
+      }
 
     </Grid>
   )

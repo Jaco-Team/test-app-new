@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-import Head from 'next/head'
 import Script from 'next/script'
 
 import Grid from '@mui/material/Grid';
@@ -10,7 +9,9 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
-import { useContactStore } from '../../components/store.js';
+import { useContactStore } from '@/components/store.js';
+
+import Meta from '@/components/meta.js';
 
 function ControlledAccordions(props) {
   const [expanded, setExpanded] = React.useState(false);
@@ -128,42 +129,36 @@ export default function ContactsPage(props){
         loadMap(myPoints, pointsZone);
       }
     }, 500);
-
-    console.log( 'load11', myPoints )
   }, [myPoints, myUnicPoint, pointsZone]);
 
   return (
-    <Grid container spacing={3} className="Contact mainContainer">
-                  
-      <Head>
-        <title>{page.title}</title>
-        <meta name="description" content={page.description} />
-        <link rel="icon" href="/favicon.ico" />
-      </Head>
-      
-      <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" />
+    <Meta title={page.title} description={page.description}>
+      <Grid container spacing={3} className="Contact mainContainer">
+                    
+        <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" />
 
-      <Grid item xs={12}>
-        <Typography variant="h5" component="h1">Контакты</Typography>
-      </Grid>
-      
-      <Grid item lg={4} md={4} xl={4} sm={12} xs={12} className="mainContainer">
-        <Typography variant="h5" component="h2">Режим работы</Typography>
-        <Typography variant="h5" component="span" className="p20">Работаем ежедневно с 10:00 до 21:30</Typography>
-        <Typography variant="h5" component="h2">Телефон контакт-центра:</Typography>
+        <Grid item xs={12}>
+          <Typography variant="h5" component="h1">Контакты</Typography>
+        </Grid>
+        
+        <Grid item lg={4} md={4} xl={4} sm={12} xs={12} className="mainContainer">
+          <Typography variant="h5" component="h2">Режим работы</Typography>
+          <Typography variant="h5" component="span" className="p20">Работаем ежедневно с 10:00 до 21:30</Typography>
+          <Typography variant="h5" component="h2">Телефон контакт-центра:</Typography>
 
-        {points[0] ?
-          <Typography variant="h5" component="a" className="p20" href={'tel:'+points[0].phone_new}>{points[0].phone}</Typography>
-            :
-          null
-        }
+          {points[0] ?
+            <Typography variant="h5" component="a" className="p20" href={'tel:'+points[0].phone_new}>{points[0].phone}</Typography>
+              :
+            null
+          }
 
-        <Typography variant="h5" component="h2">Адреса кафе:</Typography>
-        <ControlledAccordions points={unicPoint}/>
+          <Typography variant="h5" component="h2">Адреса кафе:</Typography>
+          <ControlledAccordions points={unicPoint}/>
+        </Grid>
+        <Grid item lg={8} md={8} xl={8} sm={12} xs={12} id="ForMap">
+          <div style={{ width: '100%', height: '100%', marginRight: 12, backgroundColor: '#e5e5e5' }} />    
+        </Grid>
       </Grid>
-      <Grid item lg={8} md={8} xl={8} sm={12} xs={12} id="ForMap">
-        <div style={{ width: '100%', height: '100%', marginRight: 12, backgroundColor: '#e5e5e5' }} />    
-      </Grid>
-    </Grid>
+    </Meta>
   )
 }
