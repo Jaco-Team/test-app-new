@@ -1,7 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import { useState } from 'react';
 import Image from 'next/image';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
+import { Autoplay, Scrollbar } from 'swiper';
 import 'swiper/css';
 
 import Grid from '@mui/material/Grid';
@@ -11,34 +12,43 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 
+const arrayImage = [
+  {
+    img: '/about/анастасия.jpg',
+    comment:
+      'Касса и кухня кафе на Ленинградской 47 (Тольятти), за кассой — Анастасия',
+  },
+  {
+    img: '/about/ленинградская.jpg',
+    comment: 'Интерьер кафе на Ленинградской 47 (Тольятти)',
+  },
+  {
+    img: '/about/уборная.jpg',
+    comment: 'Уборная на Ленинградской 47 (Тольятти)',
+  },
+  {
+    img: '/about/куйбышева.jpg',
+    comment: 'Интерьер кафе на Куйбышева 113 (Самара)',
+  },
+  {
+    img: '/about/цветной.jpg',
+    comment: 'Интерьер кафе на Цветном 1 (Тольятти)',
+  },
+];
+
 export default function CafeLooks({ handleChangeExpanded }) {
-  console.log('render CafeLooks');
 
-  const [ banners, setBanners ] = useState([]);
-  const [ banW, setBanW ] = useState(300);
+  const [expanded, setExpanded] = useState(false);
 
-  const arr = [
-    "/about/photo_5395851810528411797_y (1).jpg",
-    "/about/Ленинградская вид на кассу.jpg",
-    "/about/Уборная на Ленинградской.jpg",
-    "/about/Куйбышева вид на кассу.jpg",
-    "/about/кафе на Цветном.jpg"
-  ];
+  const changeExpanded = () => {
+    setExpanded(!expanded);
+    handleChangeExpanded();
+  };
 
-  useEffect( () => {
-    if( banners.length == 0 ){
-      let windowOuterWidth = window.outerWidth
-      windowOuterWidth = windowOuterWidth / 3;
-
-      setBanW(windowOuterWidth)
-      setBanners(arr);
-    }
-  }, [arr] )
-    
   return (
     <Grid item xs={12} style={{ paddingTop: 0, paddingBottom: 1 }}>
-      <Accordion onClick={handleChangeExpanded}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+      <Accordion expanded={expanded} style={{ width: '100%', height: 'auto' }}>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={changeExpanded}>
           <Typography variant="h2">Как выглядит кафе</Typography>
         </AccordionSummary>
         <AccordionDetails>
@@ -52,27 +62,35 @@ export default function CafeLooks({ handleChangeExpanded }) {
             </p>
           </Grid>
           <Grid item xs={12}>
-            <Swiper
-              //spaceBetween={50}
-              //slidesPerView={1}
-              loop={false}
-              // onSlideChange={() => console.log('slide change')}
-              // onSwiper={(swiper) => console.log(swiper)}
-              style={{ width: banW, height: 'auto' }}
-            >
-              {banners.map( (item, key) =>
-                <SwiperSlide key={key}>
-                  <Image
-                    alt=''
-                    src={item}
-                    width={banW}
-                    height={100}
-                    priority={true}
-                    style={{ width: banW, height: 'auto' }}
-                  />
-                </SwiperSlide>
-              )}
-            </Swiper>
+            {expanded && (
+              <Swiper
+                modules={[Autoplay, Scrollbar]}
+                spaceBetween={50}
+                slidesPerView={1}
+                loop={true}
+                autoplay={{delay: 4000, disableOnInteraction: false}}
+                scrollbar={{ draggable: true }}
+                style={{ width: '100%', height: 'auto' }}
+              >
+                {arrayImage.map((item, key) => (
+                  <SwiperSlide key={key}>
+                    <Image
+                      alt=""
+                      src={item.img}
+                      width={3700}
+                      height={1000}
+                      priority={true}
+                      style={{ width: '100%', height: 'auto' }}
+                    />
+                    <Grid item xs={12} display="flex" justifyContent="center">
+                      <p style={{ whiteSpace: 'normal', textAlign: 'center' }}>
+                        {item.comment}
+                      </p>
+                    </Grid>
+                  </SwiperSlide>
+                ))}
+              </Swiper>
+            )}
           </Grid>
         </AccordionDetails>
       </Accordion>

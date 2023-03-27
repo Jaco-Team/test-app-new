@@ -24,12 +24,7 @@ export default function AboutPage() {
   const handleChangeExpanded = () => [...document.querySelectorAll('[aria-expanded = true]')].forEach((element) => element.click());
 
   return (
-    <Grid
-      container
-      spacing={3}
-      className="PAGEabout"
-      style={{ paddingBottom: 15 }}
-    >
+    <Grid container spacing={3} className="PAGEabout" style={{ paddingBottom: 15 }}>
       <AboutUs />
       <ExcellentDishes handleChangeExpanded={handleChangeExpanded} />
       <AffordablePrices handleChangeExpanded={handleChangeExpanded} />

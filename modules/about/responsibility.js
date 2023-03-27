@@ -6,18 +6,14 @@ import AccordionSummary from '@mui/material/AccordionSummary';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import Typography from '@mui/material/Typography';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-// import Divider from '@mui/material/Divider';
 
-export default function Responsibility({handleChangeExpanded}) {
-  console.log('render Responsibility');
+export default function Responsibility({ handleChangeExpanded }) {
 
   return (
     <Grid item xs={12} style={{ paddingTop: 0, paddingBottom: 1 }}>
-      <Accordion onClick={handleChangeExpanded}>
-        <AccordionSummary expandIcon={<ExpandMoreIcon />}>
-          <Typography variant="h2">
-            Социальная и экологическая ответственность
-          </Typography>
+      <Accordion>
+        <AccordionSummary expandIcon={<ExpandMoreIcon />} onClick={handleChangeExpanded}>
+          <Typography variant="h2">Социальная и экологическая ответственность</Typography>
         </AccordionSummary>
         <AccordionDetails>
           <Grid item xs={12}>
@@ -35,8 +31,7 @@ export default function Responsibility({handleChangeExpanded}) {
               </span>
               <br />
               <span>
-                Мы поддерживаем спортивные мероприятия и участвуем в
-                субботниках.
+                Мы поддерживаем спортивные мероприятия и участвуем в субботниках.
               </span>
             </p>
           </Grid>
