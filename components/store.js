@@ -513,6 +513,8 @@ export const useCitiesStore = create((set) => ({
 export const useHomeStore = create((set) => ({
   bannerList: [],
   CatsItems: [],
+  openItem: null,
+  isOpenModal: false,
   getBanners: async (this_module, city) => {
     let data = {
       type: 'get_banners',
@@ -535,6 +537,20 @@ export const useHomeStore = create((set) => ({
 
     set({
       CatsItems: json.items,
+    });
+  },
+  getItem: async (this_module, city, item_id) => {
+    let data = {
+      type: 'get_item',
+      city_id: city,
+      item_id: item_id
+    };
+
+    const json = await api(this_module, data);
+
+    set({
+      isOpenModal: true,
+      openItem: json,
     });
   },
 }));

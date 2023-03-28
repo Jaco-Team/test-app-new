@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 
 import { IconRuble } from '@/ui/Icons.js';
 
-import { useHomeStore } from '../../components/store.js';
+import { useHomeStore, useCitiesStore } from '@/components/store.js';
 import { shallow } from 'zustand/shallow'
 
 export default React.memo(function CardItem(props){
@@ -32,12 +32,13 @@ export default React.memo(function CardItem(props){
 
   const [ count, setCount ] = useState(0);
 
-  //console.log( 'render_item_pc' )
+  const [ getItem ] = useHomeStore( state => [ state.getItem ], shallow );
+  const [ thisCity ] = useCitiesStore( state => [ state.thisCity ], shallow );
 
   return (
     <Grid item className='_PC_ CardItem' xs={12} sm={6} md={4} lg={3} xl={3} sx={{ display: { xs: 'none', sm: 'flex' } }} style={{ padding: '30px 16px', width: '100%' }}>
     
-      <Image alt={item.name} src={"https://cdnimg.jacofood.ru/"+item.img_app+"_1420x1420.jpg"} width={1420} height={1420} priority={true} />
+      <Image alt={item.name} src={"https://cdnimg.jacofood.ru/"+item.img_app+"_1420x1420.jpg"} width={1420} height={1420} priority={true} onClick={ () => getItem('home', thisCity, item.id) } />
 
       <Typography className="CardNameItem" variant="h5" component="h3" style={{ flex: 1 }}>{item.name}</Typography>
 

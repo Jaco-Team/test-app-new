@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 
 import { IconRuble } from '@/ui/Icons.js';
 
-import { useHomeStore } from '../../components/store.js';
+import { useHomeStore, useCitiesStore } from '@/components/store.js';
 import { shallow } from 'zustand/shallow'
 
 export default React.memo(function CardItemMobile(props){
@@ -30,11 +30,12 @@ export default React.memo(function CardItemMobile(props){
 
   const [ count, setCount ] = useState(0);
 
-  //console.log( 'render_item_mobile' )
+  const [ getItem ] = useHomeStore( state => [ state.getItem ], shallow );
+  const [ thisCity ] = useCitiesStore( state => [ state.thisCity ], shallow );
 
   return (
     <Grid item container xs={12} className="CardItem_mobile">
-      <Grid item>
+      <Grid item onClick={ () => getItem('home', thisCity, item.id) }>
         <Image alt={item.name} src={"https://cdnimg.jacofood.ru/"+item.img_app+"_1420x1420.jpg"} width={((GRID*3) + (2*20))} height={((GRID*3) + (2*20))} priority={true} />
       </Grid>
       <Grid item>

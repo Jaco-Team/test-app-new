@@ -22,6 +22,11 @@ export default function Home(props) {
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
   useEffect(() => {
+    setTimeout( () => {
+      window.scrollTo(0, 0);
+    }, 100 )
+    
+
     if( thisCity != city ){
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );
@@ -30,6 +35,8 @@ export default function Home(props) {
 
     getBanners(this_module, city);
     getItemsCat(this_module, city);
+
+    
   }, []);
 
   return (
