@@ -7,8 +7,8 @@
         margin-top: 140px!important;
         margin-bottom: 140px!important;
 
-        padding-left: 10%;
-        padding-right: 10%;
+        margin-left: 4.51%;
+        width: 56.32%;
     }
 
     
@@ -27,17 +27,17 @@
         padding-bottom: 36px!important;
     }
     @media (min-width: 960px) {
-        margin-left: 8.35% !important; 
-        flex-grow: 0;
-        max-width: 83.333333%;
-        flex-basis: 83.333333%;
+        //margin-left: 8.35% !important; 
+        //flex-grow: 0;
+        //max-width: 83.333333%;
+        //flex-basis: 83.333333%;
     }
 
     @media (max-width: 960px) {
         margin-top: 64px!important;
         margin-bottom: 64px; 
         margin-left: 0px;
-        //padding-left: 48px!important;
+        padding-left: 48px!important;
         width: calc(100% - 24px);
         
         & h1{

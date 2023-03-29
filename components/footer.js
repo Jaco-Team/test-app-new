@@ -33,18 +33,18 @@ export default React.memo(function Footer(props) {
           <Link href={ '/'+cityName+'/about' }>О Компании</Link>
           <Link href={ '/'+cityName+'/about' }>История компании</Link>
           <Link href={ '/'+cityName+'/about' }>Реквизиты</Link>
-          <Link href={ '/'+cityName+'/about' }>Контакты</Link>
+          <Link href={ '/'+cityName+'/contacts' }>Контакты</Link>
         </Grid>
         <Grid item lg={2} md={2} sm={2} xl={2} xs={12}>
           <Typography component="span">Документы</Typography>
           <Link href={ '/'+cityName+'/about' }>Калорийность, состав, БЖУ</Link>
-          <Link href={ '/'+cityName+'/about' }>Публичная оферта</Link>
-          <Link href={ '/'+cityName+'/about' }>Политика конфиденциальности</Link>
-          <Link href={ '/'+cityName+'/about' }>Правила оплаты</Link>
+          <Link href={ '/'+cityName+'/publichnaya-oferta' }>Публичная оферта</Link>
+          <Link href={ '/'+cityName+'/politika-konfidencialnosti' }>Политика конфиденциальности</Link>
+          <Link href={ '/'+cityName+'/instpayorders' }>Правила оплаты</Link>
         </Grid>
         <Grid item lg={2} md={2} sm={2} xl={2} xs={12}>
           <Typography component="span">Работа в жако</Typography>
-          <Link href={ '/'+cityName+'/about' }>Вакансии</Link>
+          <Link href={ '/'+cityName+'/jobs' }>Вакансии</Link>
           <Link href={ '/'+cityName+'/about' }>Анкета для работы в кафе</Link>
           <Link href={ '/'+cityName+'/about' }>Анкета для работы в Управляющей компании</Link>
           <Link href={ '/'+cityName+'/about' }>Анкета поставщика</Link>
