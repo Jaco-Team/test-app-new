@@ -76,7 +76,7 @@ export default React.memo(function NavBarPC(props){
         </Link>
         <div style={{ width: '0.36%' }} />
 
-        <Link href={"/"+city+"/profile"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }} onClick={ () => setActiveModalAuth(true) } >
+        <Link href={"/"+city+"/"} style={{ width: '7.22%', minWidth: 'max-content', textDecoration: 'none' }} onClick={ () => setActiveModalAuth(true) } >
           <span className={active_page == 'profile' ? 'headerCat activeCat' : 'headerCat'}>Профиль</span>
         </Link>
                 

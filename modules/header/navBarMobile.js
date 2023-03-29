@@ -61,7 +61,7 @@ export default React.memo(function NavBarMobile(props){
                 </ListItem>
                   :
                 <ListItem disablePadding onClick={ () => setActiveMenu(false) }>
-                  <Link href={"/"+city+"/profile"}>Профиль</Link> 
+                  <Link href={"/"+city+"/"}>Профиль</Link> 
                 </ListItem>
               }
               <ListItem disablePadding onClick={ () => setActiveMenu(false) }>
