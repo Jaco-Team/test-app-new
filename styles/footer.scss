@@ -1,53 +1,50 @@
 @import "./settings";
 
 .footer{
-    padding: 24px 16px;
-    margin-top: auto;
-    background-color: $colorMain;
-    width: 100%;
-    display: flex;
-    flex-wrap: wrap;
-    box-sizing: border-box;
-    & .copy{
-        align-content: flex-end;
-        display: grid;
-        & > h1{
-            @include fonsNew(1rem, $Roboto);
-            font-weight: 400;
-            color: #fff!important;
-        }
+    background-color: rgba(0, 0, 0, 0.07);
+    width: calc(100% - 9.02%);
+    padding-left: 4.51%;
+    padding-right: 4.51%;
+
+    & > div:first-child{
+        padding-top: 60px;
+        padding-bottom: 25px;
+        
     }
-    & p{
-        @include fonsNew(1rem, $Roboto);
-        color: #fff;
-        padding: 4px 0px;
+    & > div:last-child{
+        padding-bottom: 60px;
+    }
+    
+
+    & > div > div:not(:last-child){
+        display: flex;
+        flex-direction: column;
+    }
+    & > div > div:last-child{
+        display: flex;
+        flex-direction: row;
+        justify-content: flex-end;
+    }
+
+    & span:not(.copy){
+        @include fonsNew(0.925rem, $Roboto);
+        font-weight: 700;
+        padding: 15px 0px 15px 0px
+    }
+    & span.copy{
+        @include fonsNew(0.825rem, $Roboto);
+        font-weight: 400;
+    }
+    & a{
+        @include fonsNew(0.925rem, $Roboto);
+        font-weight: 300;
+        text-decoration: none;
+        padding: 15px 0px 15px 0px
     }
     & svg{
-        fill: #fff;
-        width: 30px;
-        height: 30px;
-        padding: 10px;
-    }
-    @media (max-width: 1024px){
-        padding-bottom: 56px!important;
-        //margin-bottom: 20px!important;
-    }
-    & .mainContainer {
-        @media (min-width: 1280px) {
-            margin-left: 8.35% !important; 
-        }
-        @media (min-width: 960px) {
-            margin-left: 8.35% !important; 
-            flex-grow: 0;
-            max-width: 83.333333%;
-            flex-basis: 83.333333%;
-        }
-    }
-    & .socIcons{
-        display: flex;
-        justify-content: flex-end;
-        @media (max-width: 800px){
-            display: block;
-        }
+        fill: rgba(145, 143, 144, 1);
+        width: 50px;
+        height: 50px;
+        padding: 0 30px;
     }
 }

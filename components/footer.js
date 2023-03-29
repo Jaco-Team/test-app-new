@@ -4,7 +4,7 @@ import Link from 'next/link'
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import { VKIcon, OdnIcon, TGIcon } from '../ui/Icons.js';
+import { NewVKIcon, OdnIcon, TGIcon } from '../ui/Icons.js';
 import { useFooterStore } from './store.js';
 
 const this_module = 'contacts';
@@ -25,104 +25,48 @@ export default React.memo(function Footer(props) {
     setLinks(links);
   }, [links, setLinks]);
 
-  //(this.state.page == 'cart' ? this.state.page : '')
-
-  console.log( 'load footer' )
-
   return (
-    <footer className={"footer "}>
-      <Grid container className="mainContainer">
-        <Grid item lg={3} md={3} sm={3} xl={3} xs={12} className="copy">
-          <Typography variant="body1" component="h1">© Жако 2017 - {new Date().getFullYear()}</Typography>
+    <footer className="footer">
+      <Grid container>
+        <Grid item lg={2} md={2} sm={2} xl={2} xs={12}>
+          <Typography component="span">Жако</Typography>
+          <Link href={ '/'+cityName+'/about' }>О Компании</Link>
+          <Link href={ '/'+cityName+'/about' }>История компании</Link>
+          <Link href={ '/'+cityName+'/about' }>Реквизиты</Link>
+          <Link href={ '/'+cityName+'/about' }>Контакты</Link>
         </Grid>
-        <Grid item lg={3} md={3} sm={3} xl={3} xs={12}>
-          <Link
-            href={ '/'+cityName+'/about' }
-            style={{ textDecoration: 'none' }}
-          >
-            <Typography variant="body1">О Компании</Typography>
-          </Link>
-          <Link
-            href={ '/'+cityName+'/jobs' }
-            style={{ textDecoration: 'none' }}
-          >
-            <Typography variant="body1">Вакансии</Typography>
-          </Link>
-          <Link
-            href={ '/'+cityName+'/publichnaya-oferta' }
-            style={{ textDecoration: 'none' }}
-          >
-            <Typography variant="body1">Публичная оферта</Typography>
-          </Link>
-
-          { Links !== {} && Links?.link_allergens ?
-            <Link
-              href={ Links.link_allergens }
-              target="_blank"
-              style={{ textDecoration: 'none' }}
-            >
-              <Typography variant="body1">Калорийность, состав и аллергены</Typography>
-            </Link>
-              :
-            null
-          }
+        <Grid item lg={2} md={2} sm={2} xl={2} xs={12}>
+          <Typography component="span">Документы</Typography>
+          <Link href={ '/'+cityName+'/about' }>Калорийность, состав, БЖУ</Link>
+          <Link href={ '/'+cityName+'/about' }>Публичная оферта</Link>
+          <Link href={ '/'+cityName+'/about' }>Политика конфиденциальности</Link>
+          <Link href={ '/'+cityName+'/about' }>Правила оплаты</Link>
         </Grid>
-        <Grid item lg={3} md={3} sm={3} xl={3} xs={12}>
-          <Link
-            href={ '/'+cityName+'/politika-konfidencialnosti' }
-            style={{ textDecoration: 'none' }}
-          >
-            <Typography variant="body1">Политика конфиденциальности</Typography>
-          </Link>
-          <Link
-            href={ '/'+cityName+'/contacts' }
-            style={{ textDecoration: 'none' }}
-          >
-            <Typography variant="body1">Доставка и контакты</Typography>
-          </Link>
-          <Link
-            href={ '/'+cityName+'/instpayorders' }
-            style={{ textDecoration: 'none' }}
-          >
-            <Typography variant="body1">Правила оплаты товаров</Typography>
-          </Link>
+        <Grid item lg={2} md={2} sm={2} xl={2} xs={12}>
+          <Typography component="span">Работа в жако</Typography>
+          <Link href={ '/'+cityName+'/about' }>Вакансии</Link>
+          <Link href={ '/'+cityName+'/about' }>Анкета для работы в кафе</Link>
+          <Link href={ '/'+cityName+'/about' }>Анкета для работы в Управляющей компании</Link>
+          <Link href={ '/'+cityName+'/about' }>Анкета поставщика</Link>
         </Grid>
-       
-          <Grid item lg={3} md={3} sm={3} xl={3} xs={12} className="socIcons">
-            { Links && Links.link_ok ?
-              <Link
-                href={ Links.link_ok }
-                target="_blank"
-                style={{ textDecoration: 'none' }}
-              >
-                <OdnIcon />
-              </Link>
-                :
-              null
-            }
-            { Links && Links.link_vk ?
-              <Link
-                href={ Links.link_vk }
-                target="_blank"
-                style={{ textDecoration: 'none' }}
-              >
-                <VKIcon />
-              </Link>
-                :
-              null
-            }
-            
-            <Link
-              href={ 'https://t.me/jacofood' }
-              target="_blank"
-              style={{ textDecoration: 'none' }}
-            >
-              <TGIcon />
-            </Link>
-                      
-          </Grid>
-            
+        <Grid item lg={2} md={2} sm={2} xl={2} xs={12}>
+          <Typography component="span">Франшиза</Typography>
+          <Link href={ '/'+cityName+'/about' }>Сайт франшизыи</Link>
+          <Link href={ '/'+cityName+'/about' }>Сайт для инвестиций</Link>
+        </Grid>
+        <Grid item lg={4} md={4} sm={4} xl={4} xs={12}>
+          <NewVKIcon />
+          <TGIcon />
+          <OdnIcon />
+        </Grid>
       </Grid>
+      <Grid container>
+        <Grid item xs={12}>
+          <Typography component="span" className='copy'>{new Date().getFullYear()} © ООО «Мистер Жако»</Typography>
+        </Grid>
+      </Grid>
+
+      
     </footer>
   )
 })
