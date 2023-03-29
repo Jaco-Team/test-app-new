@@ -10,7 +10,7 @@ const DynamicHeader = dynamic(() => import('../../components/header.js'))
 const DynamicFooter = dynamic(() => import('../../components/footer.js'))
 const DynamicPage = dynamic(() => import('../../modules/pageText.js'))
 
-import { useCitiesStore } from '../../components/store.js';
+import { useCitiesStore, useHeaderStore } from '../../components/store.js';
 
 const this_module = 'contacts';
 
@@ -20,19 +20,23 @@ export default React.memo(function Instpayorders(props) {
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
+  const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
+
   useEffect(() => {
     if( thisCity != city ){
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
     }
+
+    setActivePage('instpayorders')
   }, []);
 
   return (
     <div className={roboto.variable}>
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'other'} />
 
-      <DynamicPage page={page} className="PAGEpublick MuiGrid-spacing-xs-3" />
+      <DynamicPage page={page} className="PAGEpublick" />
 
       <DynamicFooter cityName={city} />
     </div>
@@ -55,10 +59,10 @@ export async function getServerSideProps({ req, res, query }) {
   
   data1['city'] = query.city;
 
-  data1.page.content = data1.page.content.replace(
+  /*data1.page.content = data1.page.content.replace(
     /<a href=\"\//g,
     '<a href="/'+query.city+'/'
-  );
+  );*/
 
   return { props: { data1 } }
 }

@@ -7,7 +7,7 @@ export default function AboutUs() {
 
   return (
     <Grid item xs={12} className={'about'}>
-      <Typography variant="h1">О нас</Typography>
+      <Typography variant="h1">Доставка превосходной еды и оптимизма</Typography>
     
       <p>
         Жако — сеть кафе с доставкой превосходной еды и оптимизма. 

@@ -8,7 +8,7 @@ const DynamicHeader = dynamic(() => import('../../components/header.js'))
 const DynamicFooter = dynamic(() => import('../../components/footer.js'))
 const AboutPage = dynamic(() => import('@/modules/about'))
 
-import { useCitiesStore } from '../../components/store.js';
+import { useCitiesStore, useHeaderStore } from '../../components/store.js';
 import { api } from '../../components/api.js';
 
 const this_module = 'contacts';
@@ -19,12 +19,16 @@ export default React.memo(function About(props) {
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
+  const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
+
   useEffect(() => {
     if( thisCity != city ){
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
     }
+
+    setActivePage('about')
   }, []);
 
   return (

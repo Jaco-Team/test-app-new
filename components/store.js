@@ -206,7 +206,9 @@ export const useHeaderStore = create((set, get) => ({
   code: '',
   genPwd: '',
 
-  setActivePage: () => {},
+  setActivePage: (page) => {
+    set({ activePage: page });
+  },
 
   setActiveModalCity: (active) => {
     set({ openCityModal: active });

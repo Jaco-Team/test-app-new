@@ -11,6 +11,8 @@
         padding-right: 10%;
     }
 
+    
+
     & h1{
         @include fonsNew(2rem, var(--inter-font));
         text-align: start;
@@ -35,6 +37,7 @@
         margin-top: 64px!important;
         margin-bottom: 64px; 
         margin-left: 0px;
+        //padding-left: 48px!important;
         width: calc(100% - 24px);
         
         & h1{

@@ -1,0 +1,49 @@
+@import "./settings";
+
+.DocsBreadcrumbs{
+    @media (max-width: 799px) {
+        display: none;
+    }
+    margin-top: 64px!important;
+    
+
+    @media (min-width: 800px) {
+        display: block;
+        margin-top: 140px!important;
+        margin-bottom: 140px!important;
+
+        margin-left: 5.78%;
+        margin-right: 4.51%;
+        width: 28.88%;
+    }
+
+    & > div{
+        width: 100%;
+        background-color: rgba(0, 0, 0, 0.07);
+        border-radius: 30px;
+        display: grid;
+
+        & > span{
+            @include fonsNew(0.925rem, var(--inter-font));
+            font-weight: 700;
+            padding: 40px 40px 0px 40px;
+        }
+        
+        & > ul{
+            padding: 0px 40px 20px 54px;
+            line-height: 30px;
+            & > li{
+                @include fonsNew(0.925rem, var(--inter-font));
+                font-weight: 400;
+                & > a.active{
+                    color: $colorMain;
+                    text-decoration: none;
+                }
+                & > a:not(.active){
+                    color: $colorText;
+                    text-decoration: none;
+                }
+            }
+        }
+    }
+}

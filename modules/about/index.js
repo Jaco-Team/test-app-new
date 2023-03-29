@@ -1,6 +1,7 @@
 import dynamic from 'next/dynamic';
 
 import Meta from '@/components/meta.js';
+import DocsBreadcrumbs from '@/components/docsBreadcrumbs.js';
 
 const AboutUs = dynamic(() => import('./aboutUs'));
 const ExcellentDishes = dynamic(() => import('./excellentDishes'));
@@ -22,6 +23,7 @@ export default function AboutPage( props ) {
 
   return (
     <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
+     
       <Grid container spacing={3} className="PAGEabout" style={{ paddingBottom: 15 }}>
 
         <AboutUs />
@@ -45,6 +47,7 @@ export default function AboutPage( props ) {
             </strong>
           </p>
         </Grid>
+        
       </Grid>
     </Meta>
   );
