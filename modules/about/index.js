@@ -1,7 +1,5 @@
 import dynamic from 'next/dynamic';
 
-import { useEffect } from 'react';
-
 import Meta from '@/components/meta.js';
 
 const AboutUs = dynamic(() => import('./aboutUs'));
@@ -16,22 +14,28 @@ const Cooperation = dynamic(() => import('./cooperation'));
 
 import Grid from '@mui/material/Grid';
 
-export default function AboutPage() {
+export default function AboutPage( props ) {
   
+  const { page, city } = props;
+
   const handleChangeExpanded = () => [...document.querySelectorAll('[aria-expanded = true]')].forEach((element) => element.click());
 
   return (
-    <Meta title={page.title} description={page.description}>
+    <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
       <Grid container spacing={3} className="PAGEabout" style={{ paddingBottom: 15 }}>
+
         <AboutUs />
-        <ExcellentDishes handleChangeExpanded={handleChangeExpanded} />
-        <AffordablePrices handleChangeExpanded={handleChangeExpanded} />
-        <CafeLooks handleChangeExpanded={handleChangeExpanded} />
-        <OrderTime handleChangeExpanded={handleChangeExpanded} />
-        <WeOptimism handleChangeExpanded={handleChangeExpanded} />
-        <Responsibility handleChangeExpanded={handleChangeExpanded} />
-        <Feedback handleChangeExpanded={handleChangeExpanded} />
-        <Cooperation handleChangeExpanded={handleChangeExpanded} />
+
+        <Grid item xs={12} style={{ paddingTop: 0, paddingBottom: 1 }}>
+          <ExcellentDishes handleChangeExpanded={handleChangeExpanded} />
+          <AffordablePrices handleChangeExpanded={handleChangeExpanded} />
+          <CafeLooks handleChangeExpanded={handleChangeExpanded} />
+          <OrderTime handleChangeExpanded={handleChangeExpanded} />
+          <WeOptimism handleChangeExpanded={handleChangeExpanded} />
+          <Responsibility handleChangeExpanded={handleChangeExpanded} />
+          <Feedback handleChangeExpanded={handleChangeExpanded} />
+          <Cooperation handleChangeExpanded={handleChangeExpanded} />
+        </Grid>
 
         <Grid item xs={12}>
           <p>

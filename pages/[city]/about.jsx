@@ -31,7 +31,7 @@ export default React.memo(function About(props) {
     <div className={roboto.variable}>
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'other'} />
 
-      <AboutPage />
+      <AboutPage page={page} city={city} />
 
       <DynamicFooter cityName={city} />
 
@@ -48,8 +48,6 @@ export async function getServerSideProps({ req, res, query }) {
 
   const data1 = await api(this_module, data);
 
-  // console.log(data1)
-  
   data1['city'] = query.city;
 
   data1.page.content = data1.page.content.replace(
