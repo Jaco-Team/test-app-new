@@ -4,10 +4,9 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 export default function AboutUs() {
-
   return (
     <Grid item xs={12} className={'about'}>
-      <Typography variant="h1">Доставка превосходной еды и оптимизма</Typography>
+      <Typography variant="h1">О нас</Typography>
     
       <p>
         Жако — сеть кафе с доставкой превосходной еды и оптимизма. 

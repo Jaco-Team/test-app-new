@@ -18,9 +18,7 @@ import Grid from '@mui/material/Grid';
 
 export default function AboutPage( props ) {
   
-  const { page, city } = props;
-
-  const handleChangeExpanded = () => [...document.querySelectorAll('[aria-expanded = true]')].forEach((element) => element.click());
+  const { page } = props;
 
   return (
     <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
@@ -28,18 +26,15 @@ export default function AboutPage( props ) {
         <Grid item className="PAGEabout" style={{ paddingBottom: 15 }}>
 
           <AboutUs />
-
-          <Grid item xs={12} style={{ paddingTop: 0, paddingBottom: 1 }}>
-            <ExcellentDishes handleChangeExpanded={handleChangeExpanded} />
-            <AffordablePrices handleChangeExpanded={handleChangeExpanded} />
-            <CafeLooks handleChangeExpanded={handleChangeExpanded} />
-            <OrderTime handleChangeExpanded={handleChangeExpanded} />
-            <WeOptimism handleChangeExpanded={handleChangeExpanded} />
-            <Responsibility handleChangeExpanded={handleChangeExpanded} />
-            <Feedback handleChangeExpanded={handleChangeExpanded} />
-            <Cooperation handleChangeExpanded={handleChangeExpanded} />
-          </Grid>
-
+          <ExcellentDishes />
+          <AffordablePrices />
+          <CafeLooks />
+          <OrderTime />
+          <WeOptimism />
+          <Responsibility />
+          <Feedback />
+          <Cooperation />
+          
           <Grid item xs={12}>
             <p>
               <strong>
