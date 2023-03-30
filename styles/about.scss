@@ -11,8 +11,6 @@
         width: 56.32%;
     }
 
-    
-
     & h1, h2{
         @include fonsNew(2rem, var(--inter-font));
         text-align: start;

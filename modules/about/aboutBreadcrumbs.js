@@ -1,15 +1,9 @@
 import React from 'react';
 
 import Grid from '@mui/material/Grid';
-import Link from 'next/link'
 import { Link as ScrollLink } from "react-scroll";
 
-import { useHeaderStore, useCitiesStore } from '@/components/store.js';
-
 export default function AboutBreadcrumbs() {
-
-  const [ thisCity ] = useCitiesStore(state => [ state.thisCity ]);
-  const [ activePage ] = useHeaderStore( state => [ state.activePage ] )
 
   return (
     <Grid item className="DocsBreadcrumbs" style={{ paddingBottom: 15 }}>
