@@ -24,7 +24,7 @@ export default function AboutPage( props ) {
 
   return (
     <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
-      <Grid container spacing={3}>
+      <Grid container spacing={3} style={{ width: '100%', margin: 0 }}>
         <Grid item className="PAGEabout" style={{ paddingBottom: 15 }}>
 
           <AboutUs />
