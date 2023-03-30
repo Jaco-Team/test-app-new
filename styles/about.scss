@@ -13,26 +13,26 @@
 
     
 
-    & h1{
+    & h1, h2{
         @include fonsNew(2rem, var(--inter-font));
         text-align: start;
         width: 100%;
         font-weight: 600;
+        padding-bottom: 20px;
+        
     }
     & h2{
-        @include fonsNew(1.1rem, var(--inter-font));
-    }
-    & .mainContainer{
-        padding-top: 0!important; 
-        padding-bottom: 36px!important;
-    }
-    @media (min-width: 960px) {
-        //margin-left: 8.35% !important; 
-        //flex-grow: 0;
-        //max-width: 83.333333%;
-        //flex-basis: 83.333333%;
+        padding-top: 10px;
     }
 
+    & img{
+        border-radius: 20px;
+    }
+    & a{
+        text-decoration: none;
+        color: $colorMain;
+    }
+    
     @media (max-width: 960px) {
         margin-top: 64px!important;
         margin-bottom: 64px; 
@@ -40,9 +40,8 @@
         padding-left: 48px!important;
         width: calc(100% - 24px);
         
-        & h1{
+        & h1, h2{
             @include fonsNew(1.7rem, var(--inter-font));
-            text-align: center;
         }
     }
     & .MyAccordion{
