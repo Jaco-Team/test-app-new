@@ -154,6 +154,7 @@ export default React.memo(function ModalCity() {
             // classes={{ paper: 'menu' }}
             keepMounted
             className={'menu'}
+            id={'chooseCityModal'}
             // style={{ width: '' }}
              anchorEl={anchorEl}
               open={open}
