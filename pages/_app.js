@@ -10,8 +10,9 @@ import '../styles/jobs.scss'
 import '../styles/profile.scss'
 import '../styles/home.scss'
 
+// import '../styles/cityForm.scss'
+import '../styles/header/cityForm.scss'
 
-import '../styles/cityForm.scss'
 import '../styles/loginForm.scss'
 import '../styles/header.scss'
 import '../styles/footer.scss'
