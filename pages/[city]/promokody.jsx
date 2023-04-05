@@ -2,18 +2,18 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-import { roboto } from '@/ui/Font.js'
-
 const DynamicHeader = dynamic(() => import('@/components/header.js'))
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
-const AboutPage = dynamic(() => import('@/modules/about'))
+const DynamicPage = dynamic(() => import('@/modules/profile/promokody/page.jsx'))
 
-import { useCitiesStore, useHeaderStore } from '@/components/store.js';
 import { api } from '@/components/api.js';
 
-const this_module = 'contacts';
+import { useCitiesStore, useHeaderStore } from '@/components/store.js';
+import { roboto } from '@/ui/Font.js'
 
-export default React.memo(function About(props) {
+const this_module = 'promokody';
+
+export default function Promokody(props) {
 
   const { city, cats, cities, page } = props.data1;
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
@@ -28,36 +28,35 @@ export default React.memo(function About(props) {
       setThisCityList(cities)
     }
 
-    setActivePage('about')
+    setActivePage(this_module)
   }, []);
 
   return (
     <div className={roboto.variable}>
-      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'other'} />
+      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
-      <AboutPage page={page} city={city} />
+      <DynamicPage page={page} this_module={this_module} city={city} />
 
       <DynamicFooter cityName={city} />
-
     </div>
-  )
-})
+  );
+}
 
 export async function getServerSideProps({ req, res, query }) {
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=86400, stale-while-revalidate=86400'
+  )
+  
   let data = {
     type: 'get_page_info', 
     city_id: query.city,
-    page: 'about' 
+    page: this_module
   };
 
   const data1 = await api(this_module, data);
-
+  
   data1['city'] = query.city;
-
-  data1.page.content = data1.page.content.replace(
-    /<a href=\"\//g,
-    '<a href="/'+query.city+'/'
-  );
 
   return { props: { data1 } }
 }

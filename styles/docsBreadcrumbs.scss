@@ -13,30 +13,34 @@
 
         margin-left: 5.78%!important;
         margin-right: 4.51%!important;
-        width: 28.88%!important;
+        width: 28.5%!important;
+        padding-left: 0px!important;
     }
 
     & > div{
         width: 100%;
         background-color: rgba(0, 0, 0, 0.07);
-        border-radius: 30px;
+        border-radius: 3vw;
         display: grid;
         position: sticky;
         top: 140px;
 
         & > span{
-            @include fonsNew(0.925rem, var(--inter-font));
+            @include fonsNew(1.14vw, var(--inter-font));
             font-weight: 700;
-            padding: 40px 40px 0px 40px;
+            padding: 10% 5% 0px 10%;
             text-transform: uppercase;
+            letter-spacing: -0.045vw;
         }
         
         & > ul{
-            padding: 0px 40px 20px 54px;
-            line-height: 30px;
+            padding: 3% 0% 10% 13%;
+            line-height: 1.8;
+            margin: 0;
             & > li{
-                @include fonsNew(0.925rem, var(--inter-font));
+                @include fonsNew(1.14vw, var(--inter-font));
                 font-weight: 400;
+                letter-spacing: -0.045vw;
                 & > a.active{
                     color: $colorMain;
                     text-decoration: none;

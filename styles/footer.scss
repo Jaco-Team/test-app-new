@@ -27,24 +27,27 @@
     }
 
     & span:not(.copy){
-        @include fonsNew(0.925rem, $Roboto);
+        @include fonsNew(1.2vw, $Roboto);
         font-weight: 700;
-        padding: 15px 0px 15px 0px
+        padding: 15px 0px 15px 0px;
+        text-transform: uppercase;
     }
     & span.copy{
-        @include fonsNew(0.825rem, $Roboto);
+        @include fonsNew(0.85vw, $Roboto);
         font-weight: 400;
+        letter-spacing: 0.00938em!important;
     }
     & a{
-        @include fonsNew(0.925rem, $Roboto);
+        @include fonsNew(1.1vw, $Roboto);
         font-weight: 300;
         text-decoration: none;
-        padding: 15px 0px 15px 0px
+        padding: 15px 0px 15px 0px;
+        line-height: 1.65;
     }
     & svg{
         fill: rgba(145, 143, 144, 1);
-        width: 50px;
-        height: 50px;
-        padding: 0 30px;
+        width: 3vw;
+        height: 3vw;
+        padding: 0 4%;
     }
 }
