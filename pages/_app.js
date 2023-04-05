@@ -7,13 +7,9 @@ import '../styles/publichnaya-oferta.scss'
 import '../styles/politika-konfidencialnosti.scss'
 import '../styles/instpayorders.scss'
 import '../styles/jobs.scss'
-
+import '../styles/profile.scss'
 import '../styles/home.scss'
 
-import '../styles/profile.scss'
-import '../styles/profile/promokody.scss'
-
-// import '../styles/cityForm.scss'
 import '../styles/header/cityForm.scss'
 
 import '../styles/loginForm.scss'

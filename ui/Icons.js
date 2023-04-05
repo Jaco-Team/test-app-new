@@ -1,7 +1,7 @@
 export function IconRuble(props) {
   return (
     <svg
-      style={ props.style }
+      style={props.style}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="-1 0 24 24"
     >
@@ -10,20 +10,20 @@ export function IconRuble(props) {
   );
 }
 
-export function VKIcon(props){
+export function VKIcon(props) {
   return (
-    <svg 
+    <svg
       alt="vk_icon"
-      style={ props.style }
-      xmlns="http://www.w3.org/2000/svg" 
+      style={props.style}
+      xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 448 512"
     >
-      <path d="M31.4907 63.4907C0 94.9813 0 145.671 0 247.04V264.96C0 366.329 0 417.019 31.4907 448.509C62.9813 480 113.671 480 215.04 480H232.96C334.329 480 385.019 480 416.509 448.509C448 417.019 448 366.329 448 264.96V247.04C448 145.671 448 94.9813 416.509 63.4907C385.019 32 334.329 32 232.96 32H215.04C113.671 32 62.9813 32 31.4907 63.4907ZM75.6 168.267H126.747C128.427 253.76 166.133 289.973 196 297.44V168.267H244.16V242C273.653 238.827 304.64 205.227 315.093 168.267H363.253C359.313 187.435 351.46 205.583 340.186 221.579C328.913 237.574 314.461 251.071 297.733 261.227C316.41 270.499 332.907 283.63 346.132 299.751C359.357 315.873 369.01 334.618 374.453 354.747H321.44C316.555 337.262 306.614 321.61 292.865 309.754C279.117 297.899 262.173 290.368 244.16 288.107V354.747H238.373C136.267 354.747 78.0267 284.747 75.6 168.267Z"/>
+      <path d="M31.4907 63.4907C0 94.9813 0 145.671 0 247.04V264.96C0 366.329 0 417.019 31.4907 448.509C62.9813 480 113.671 480 215.04 480H232.96C334.329 480 385.019 480 416.509 448.509C448 417.019 448 366.329 448 264.96V247.04C448 145.671 448 94.9813 416.509 63.4907C385.019 32 334.329 32 232.96 32H215.04C113.671 32 62.9813 32 31.4907 63.4907ZM75.6 168.267H126.747C128.427 253.76 166.133 289.973 196 297.44V168.267H244.16V242C273.653 238.827 304.64 205.227 315.093 168.267H363.253C359.313 187.435 351.46 205.583 340.186 221.579C328.913 237.574 314.461 251.071 297.733 261.227C316.41 270.499 332.907 283.63 346.132 299.751C359.357 315.873 369.01 334.618 374.453 354.747H321.44C316.555 337.262 306.614 321.61 292.865 309.754C279.117 297.899 262.173 290.368 244.16 288.107V354.747H238.373C136.267 354.747 78.0267 284.747 75.6 168.267Z" />
     </svg>
-  )
+  );
 }
 
-export function NewVKIcon(props){
+export function NewVKIcon(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -31,17 +31,17 @@ export function NewVKIcon(props){
       height="48"
       fill="none"
       viewBox="0 0 80 48"
-      style={ props.style }
+      style={props.style}
     >
       <path
         fill="#918F90"
         d="M76.11 47.327h-8.59c-3.28 0-4.238-2.596-10.072-8.434-5.1-4.92-7.279-5.558-8.558-5.558-1.72 0-2.242.487-2.242 2.942v7.72c0 2.109-.679 3.33-6.141 3.33-9.113 0-19.121-5.525-26.225-15.725C3.623 16.672.71 5.38.71 3.11c0-1.283.487-2.438 2.937-2.438h8.6c2.213 0 3.021.959 3.855 3.35C20.31 16.272 27.39 26.96 30.315 26.96c1.088 0 1.592-.504 1.592-3.267V11.018c-.325-5.816-3.413-6.304-3.413-8.366 0-.975.813-1.984 2.175-1.984h13.517c1.82 0 2.454.975 2.454 3.15V20.86c0 1.82.796 2.454 1.333 2.454 1.088 0 2-.633 4.013-2.633C58.178 13.76 62.544 3.1 62.544 3.1c.554-1.283 1.559-2.437 3.738-2.437h8.591c2.6 0 3.15 1.333 2.6 3.15-1.087 5.02-11.55 19.775-11.55 19.775-.925 1.458-1.283 2.175 0 3.817.913 1.279 3.917 3.829 5.913 6.204 3.687 4.146 6.462 7.654 7.246 10.075.716 2.42-.517 3.642-2.971 3.642z"
       ></path>
     </svg>
-  )
+  );
 }
 
-export function OdnIcon(props){
+export function OdnIcon(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -49,17 +49,17 @@ export function OdnIcon(props){
       height="76"
       fill="none"
       viewBox="0 0 46 76"
-      style={ props.style }
+      style={props.style}
     >
       <path
         fill="#918F90"
         d="M22.997 38.465c10.567 0 19.13-8.562 19.13-19.13C42.126 8.77 33.563.212 22.996.212 12.43.21 3.872 8.773 3.872 19.34c0 10.566 8.567 19.124 19.125 19.124zm0-28.537a9.409 9.409 0 110 18.817 9.409 9.409 0 010-18.817zm22.046 30.87c-1.08-2.166-4.07-3.97-8.046-.841-5.367 4.237-14 4.237-14 4.237s-8.63 0-14.004-4.237c-3.975-3.13-6.967-1.325-8.046.841-1.883 3.784.246 5.609 5.046 8.688 4.104 2.633 9.737 3.617 13.37 3.987l-3.037 3.038-11.27 11.27a4.383 4.383 0 000 6.2l.516.522a4.391 4.391 0 006.2 0l11.275-11.275 11.27 11.27a4.388 4.388 0 006.205 0l.517-.516a4.383 4.383 0 000-6.2L29.768 56.51l-3.05-3.046C30.36 53.09 35.935 52.103 40 49.49c4.8-3.083 6.93-4.908 5.042-8.692z"
       ></path>
     </svg>
-  )
+  );
 }
 
-export function TGIcon(props){
+export function TGIcon(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -67,23 +67,19 @@ export function TGIcon(props){
       height="58"
       fill="none"
       viewBox="0 0 70 58"
-      style={ props.style }
+      style={props.style}
     >
       <path
         fill="#918F90"
         d="M69.445 5.387L58.987 54.391c-.792 3.459-2.846 4.317-5.77 2.688l-15.93-11.667-7.688 7.346c-.85.846-1.562 1.55-3.204 1.55l1.146-16.121 29.525-26.512c1.288-1.138-.275-1.767-1.996-.63l-36.5 22.842L2.854 29c-3.417-1.059-3.48-3.4.712-5.026L65.033.441c2.85-1.062 5.341.63 4.412 4.946z"
       ></path>
     </svg>
-  )
+  );
 }
 
 export function IconInfoWhite() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 80 80"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 80 80">
       <circle cx="40" cy="40" r="39" stroke="#DADADA" strokeWidth="2"></circle>
       <path
         stroke="#DADADA"
@@ -98,11 +94,7 @@ export function IconInfoWhite() {
 
 export function IconInfoBlack() {
   return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      fill="none"
-      viewBox="0 0 80 80"
-    >
+    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 80 80">
       <circle cx="40" cy="40" r="40" fill="#000" fillOpacity="0.6"></circle>
       <path
         stroke="#fff"
@@ -117,17 +109,10 @@ export function IconInfoBlack() {
 
 export function IconClose(props) {
   return (
-    <svg
-      style={ props.style ? props.style : null }
-      xmlns="http://www.w3.org/2000/svg"
-      viewBox="0 0 64 64"
-    >
-      <path
-        stroke="#fff"
-        strokeLinecap="round"
-        strokeWidth="3"
-        d="M2 2l60 60M62 2L2 62"
-      ></path>
+    <svg style={props.style ? props.style : null} xmlns="http://www.w3.org/2000/svg" viewBox="0 0 64 64">
+      <svg viewBox="0 0 24 24" fill="none" xmlns="http://www.w3.org/2000/svg">
+        <path d="M16 8L8 16M8.00001 8L16 16" stroke="#fff" strokeWidth="1" strokeLinecap="round" strokeLinejoin="round"></path>
+      </svg>
     </svg>
   );
 }
@@ -146,17 +131,20 @@ export function BurgerIcon(props) {
         stroke="#B1B1B1"
         strokeLinecap="round"
         strokeWidth="3"
-        d="M1.5 1.5L28.5 1.5"></path>
+        d="M1.5 1.5L28.5 1.5"
+      ></path>
       <path
         stroke="#B1B1B1"
         strokeLinecap="round"
         strokeWidth="3"
-        d="M1.5 11.5L28.5 11.5"></path>
+        d="M1.5 11.5L28.5 11.5"
+      ></path>
       <path
         stroke="#B1B1B1"
         strokeLinecap="round"
         strokeWidth="3"
-        d="M1.5 21.5L28.5 21.5"></path>
+        d="M1.5 21.5L28.5 21.5"
+      ></path>
     </svg>
   );
 }
