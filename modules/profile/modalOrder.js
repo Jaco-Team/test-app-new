@@ -15,11 +15,11 @@ import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 
-import { IconRuble } from '../../ui/Icons.js';
+import { IconRuble } from '@/ui/Icons.js';
 import CloseIcon from '@mui/icons-material/Close';
-import { roboto } from '../../ui/Font.js'
+import { roboto } from '@/ui/Font.js'
 
-import { useProfileStore } from '../../components/store.js';
+import { useProfileStore } from '@/components/store.js';
 
 export default function ModalOrder(){
 

@@ -6,12 +6,12 @@ import Image from 'next/image';
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 
-import JacoLogo from '../../public/jaco-logo.png'
+import JacoLogo from '@/public/jaco-logo.png'
 import { shallow } from 'zustand/shallow'
 
 import { Link as ScrollLink } from "react-scroll";
 
-import { useHeaderStore } from '../../components/store.js';
+import { useHeaderStore } from '@/components/store.js';
 
 export default React.memo(function NavBarPC(props){
   

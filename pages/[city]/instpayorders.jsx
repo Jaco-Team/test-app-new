@@ -2,15 +2,13 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-import { roboto } from '../../ui/Font.js'
+import { roboto } from '@/ui/Font.js'
+import { api } from '@/components/api.js';
+import { useCitiesStore, useHeaderStore } from '@/components/store.js'; 
 
-import { api } from '../../components/api.js';
-
-const DynamicHeader = dynamic(() => import('../../components/header.js'))
-const DynamicFooter = dynamic(() => import('../../components/footer.js'))
-const DynamicPage = dynamic(() => import('../../modules/pageText.js'))
-
-import { useCitiesStore, useHeaderStore } from '../../components/store.js';
+const DynamicHeader = dynamic(() => import('@/components/header.js'))
+const DynamicFooter = dynamic(() => import('@/components/footer.js'))
+const DynamicPage = dynamic(() => import('@/modules/pageText.js'))
 
 const this_module = 'contacts';
 

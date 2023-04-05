@@ -7,7 +7,6 @@ const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const DynamicPage = dynamic(() => import('@/modules/profile/promokody/page.jsx'))
 
 import { api } from '@/components/api.js';
-
 import { useCitiesStore, useHeaderStore } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js'
 

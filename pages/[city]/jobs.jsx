@@ -2,15 +2,13 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-import { roboto } from '../../ui/Font.js'
+import { roboto } from '@/ui/Font.js'
+import { api } from '@/components/api.js';
+import { useCitiesStore, useHeaderStore } from '@/components/store.js';
 
-import { api } from '../../components/api.js';
-
-const DynamicHeader = dynamic(() => import('../../components/header.js'))
-const DynamicFooter = dynamic(() => import('../../components/footer.js'))
-const DynamicPage = dynamic(() => import('../../modules/pageText.js'))
-
-import { useCitiesStore } from '../../components/store.js';
+const DynamicHeader = dynamic(() => import('@/components/header.js'))
+const DynamicFooter = dynamic(() => import('@/components/footer.js'))
+const DynamicPage = dynamic(() => import('@/modules/pageText.js'))
 
 const this_module = 'contacts';
 
@@ -20,12 +18,16 @@ export default React.memo(function Jobs(props) {
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
+  const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
+
   useEffect(() => {
     if( thisCity != city ){
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
     }
+
+    setActivePage('jobs')
   }, []);
 
   return (

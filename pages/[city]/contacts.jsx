@@ -2,15 +2,13 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-const DynamicHeader = dynamic(() => import('../../components/header.js'))
-const DynamicFooter = dynamic(() => import('../../components/footer.js'))
-const DynamicPage = dynamic(() => import('../../modules/contacts/page.js'))
+const DynamicHeader = dynamic(() => import('@/components/header.js'))
+const DynamicFooter = dynamic(() => import('@/components/footer.js'))
+const DynamicPage = dynamic(() => import('@/modules/contacts/page.js'))
 
-import { api } from '../../components/api.js';
-
-import { useContactStore, useCitiesStore } from '../../components/store.js';
-
-import { roboto } from '../../ui/Font.js'
+import { api } from '@/components/api.js';
+import { useContactStore, useCitiesStore } from '@/components/store.js';
+import { roboto } from '@/ui/Font.js'
 
 const this_module = 'contacts';
 
@@ -22,6 +20,8 @@ export default function Contacts(props) {
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
+  const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
+
   useEffect(() => {
     getData(this_module, city);
   }, [city, getData]);
@@ -32,6 +32,8 @@ export default function Contacts(props) {
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
     }
+
+    setActivePage(this_module)
   }, []);
 
   return (

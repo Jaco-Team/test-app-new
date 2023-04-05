@@ -2,12 +2,11 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-import { roboto } from '@/ui/Font.js'
-
 const DynamicHeader = dynamic(() => import('@/components/header.js'))
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const AboutPage = dynamic(() => import('@/modules/about'))
 
+import { roboto } from '@/ui/Font.js'
 import { useCitiesStore, useHeaderStore } from '@/components/store.js';
 import { api } from '@/components/api.js';
 

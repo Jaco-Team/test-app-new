@@ -9,13 +9,13 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
-import { BurgerIcon } from '../../ui/Icons.js'
-import JacoLogoMini from '../../public/Logomini.png'
-import { roboto } from '../../ui/Font.js'
+import { BurgerIcon } from '@/ui/Icons.js'
+import JacoLogoMini from '@/public/Logomini.png'
+import { roboto } from '@/ui/Font.js'
 
 import { shallow } from 'zustand/shallow'
 
-import { useHeaderStore } from '../../components/store.js';
+import { useHeaderStore } from '@/components/store.js';
 
 export default React.memo(function NavBarMobile(props){
   

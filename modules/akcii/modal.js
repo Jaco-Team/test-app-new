@@ -12,11 +12,11 @@ import DialogTitle from '@mui/material/DialogTitle';
 import Box from '@mui/material/Box';
 import Backdrop from '@mui/material/Backdrop';
 
-import { useAkciiStore } from '../../components/store.js';
+import { useAkciiStore } from '@/components/store.js';
 
-import { roboto } from '../../ui/Font.js'
-import { IconClose } from '../../ui/Icons.js'
-import { Fade } from '../../ui/Fade.js'
+import { roboto } from '@/ui/Font.js'
+import { IconClose } from '@/ui/Icons.js'
+import { Fade } from '@/ui/Fade.js'
 
 export default React.memo(function AkciiModal(){
   //onClick={activePromo.bind(this, showItem.info, showItem.promo)}
