@@ -140,3 +140,12 @@
     }
   }
 }
+#chooseCityModal{
+  & div.MuiPaper-root.MuiMenu-paper{
+    border-radius: 20px;
+    width: 300px;
+    & ul{
+      padding: 0;
+    }
+  }
+}
