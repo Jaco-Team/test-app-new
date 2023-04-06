@@ -105,7 +105,7 @@ export const useProfileStore = create((set) => ({
   },
   getOrderList: async (this_module, city, userToken) => {
     let data = {
-      type: 'get_my_orders',
+      type: 'get_my_orders_new',
       city_id: city,
       user_id: userToken,
     };

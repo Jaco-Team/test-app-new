@@ -13,6 +13,7 @@ import '../styles/header/cityForm.scss'
 
 import '../styles/profile.scss'
 import '../styles/profile/promokody.scss'
+import '../styles/profile/zakazy.scss'
 
 import '../styles/loginForm.scss'
 import '../styles/header.scss'
