@@ -224,3 +224,66 @@ export function CloseIcon(props){
     </svg>
   );
 }
+
+export function MapPointIcon(props){
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="40"
+      height="53"
+      fill="none"
+      viewBox="0 0 40 53"
+      {...props}
+    >
+      <g clipPath="url(#clip0_819_6056)">
+        <path
+          fill="#000"
+          fillOpacity="0.2"
+          d="M40 20C40 8.957 31.043 0 20 0S0 8.957 0 20c0 15.236 20 32.825 20 32.825S40 33.768 40 20z"
+        ></path>
+        <path
+          fill="#fff"
+          d="M20.002 28.91c5.52 0 9.994-4.474 9.994-9.994s-4.474-9.994-9.994-9.994-9.994 4.474-9.994 9.994 4.474 9.994 9.994 9.994z"
+        ></path>
+      </g>
+      <defs>
+        <clipPath id="clip0_819_6056">
+          <path fill="#fff" d="M0 0H40V52.825H0z"></path>
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+
+export function BasketIcon(props){
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="44"
+      height="34"
+      fill="none"
+      viewBox="0 0 44 34"
+      {...props}
+    >
+      <path
+        stroke="#fff"
+        strokeLinejoin="round"
+        strokeWidth="3"
+        d="M35.677 31.762H8.314L2 14.672h39.991l-6.314 17.09z"
+      ></path>
+      <path
+        stroke="#fff"
+        strokeMiterlimit="10"
+        strokeWidth="3"
+        d="M4.438 20.695H39.57M6.625 25.828h30.75"
+      ></path>
+      <path
+        stroke="#fff"
+        strokeLinecap="round"
+        strokeMiterlimit="10"
+        strokeWidth="3"
+        d="M22 20.27V1.734"
+      ></path>
+    </svg>
+  );
+}

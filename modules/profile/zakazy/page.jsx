@@ -73,7 +73,6 @@ export default function ContactsPage(props){
                           <TableCell> 
                             <div>
                               { parseInt(order.is_delete) == 1 ? <CloseIcon /> : parseInt(order.type_status) == 5 ? <CheckIcon /> : <ReloadIcon /> }  {order.status_order}
-                            
                             </div>
                           </TableCell>
                           <TableCell>{order.order_id}</TableCell>
