@@ -210,18 +210,18 @@
     
 }
 
-.TEST123{
-  font-family: var(--inter-font);
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: #525252;
-}
+// .TEST123{
+//   font-family: var(--inter-font);
+//   font-size: 0.9rem;
+//   font-weight: 400;
+//   color: #525252;
+// }
 
-.hidddenText5{
-  font-family: var(--inter-font);
-  font-size: 0.925rem;
-  color: #525252;
-}
+// .hidddenText5{
+//   font-family: var(--inter-font);
+//   font-size: 0.925rem;
+//   color: #525252;
+// }
 
 .swiper-wrapper._h2_{
     height: auto!important;
@@ -432,107 +432,108 @@
     right: 0;
 }
 
-.CardItem{
-    max-width: 345px; 
-    min-height: 300px;
-    display: flex; 
-    flex-direction: column!important; 
-    align-items: stretch;
-    justify-content: space-between;
-    &:hover img{
-        transform: translate(0,5px);
-        -webkit-transform: translate(0,5px);
-        -o-transform: translate(0,5px);
-        -moz-transform: translate(0,5px);
+// .CardItem{
+//     max-width: 345px; 
+//     min-height: 300px;
+//     display: flex; 
+//     flex-direction: column!important; 
+//     align-items: stretch;
+//     justify-content: space-between;
+//     &:hover img{
+//         transform: translate(0,5px);
+//         -webkit-transform: translate(0,5px);
+//         -o-transform: translate(0,5px);
+//         -moz-transform: translate(0,5px);
         
-        transition: all 0.2s ease-in-out;
-        -webkit-transition: all 0.2s ease-in-out; /** Chrome & Safari **/
-        -moz-transition: all 0.2s ease-in-out; /** Firefox **/
-        -o-transition: all 0.2s ease-in-out; /** Opera **/
-    }
-    & > div:first-child{
-        padding: 0;
-    }
-    & img{
-        /*max-width: 100%;
-        width: auto;
-        padding: 0px 1.2vw;*/
-        width: 100%;
-        height: auto;
-    }
-    & .CardInfoItem{
-        @include fonsNew(0.7rem, var(--inter-font));
-        color: #666;
-        text-align: justify;
-    }
-    & .CardCountItem{
-        @include fonsNew(1rem, var(--inter-font));
-    }
-    & a{
-        color: #000;
-        text-decoration: none;
-    }
-    & .CardNameItem{
-        @include fonsNew(1.7rem, var(--inter-font));
-        font-weight: 500;
-        text-align: center;
-        color: #525252;
-    }
-    & .CardInfoWeiItem{
-        @include fonsNew(0.8rem, var(--inter-font));
-    }
-    & .CardPriceItem{
-        @include fonsNew(1.2rem, var(--inter-font));
-        display: flex;
-        align-items: flex-end;
-        font-weight: bold;
-        position: relative;
-        & > svg{
-            padding-bottom: 4px;
-            font-size: 1.2rem;
-            padding-left: 2px;
-        }
-    }
-    & .CardPriceItem_old{
-        @include fonsNew(1rem, var(--inter-font));
-        display: flex;
-        align-items: center;
-        font-weight: bold;
-        position: relative;
-        right: 10%;
-        color: #bbbdc0;
-        & > svg{
-            padding-bottom: 4px;
-            font-size: 1.2rem;
-            padding-left: 2px;
-            fill: #bbbdc0;
-        }
-    }
-    & .CardPriceItem_old:before {
-        border-bottom: 2px solid #bbbdc0;
-        position: absolute;
-        top: 0px;
-        content: "";
-        width: 60%;
-        right: 34px;
-        height: 50%;
-        transform: rotate(15deg);
-    }
-    & .CardInCardItem{
-        width: 100%;
-        text-align: center;
-        @include fonsNew(0.8rem, var(--inter-font));
-        fill: $colorMain;
-        border-radius: inherit!important;
-        text-transform: none;
-    }
-    & .CardAction{
-        flex-direction: column;
-        align-items: flex-end!important;
-        padding: 1.2vw!important;
-        width: calc(100% - 2.4vw);
-    }
-}
+//         transition: all 0.2s ease-in-out;
+//         -webkit-transition: all 0.2s ease-in-out; /** Chrome & Safari **/
+//         -moz-transition: all 0.2s ease-in-out; /** Firefox **/
+//         -o-transition: all 0.2s ease-in-out; /** Opera **/
+//     }
+//     & > div:first-child{
+//         padding: 0;
+//     }
+//     & img{
+//         /*max-width: 100%;
+//         width: auto;
+//         padding: 0px 1.2vw;*/
+//         width: 100%;
+//         height: auto;
+//     }
+//     & .CardInfoItem{
+//         @include fonsNew(0.7rem, var(--inter-font));
+//         color: #666;
+//         text-align: justify;
+//     }
+//     & .CardCountItem{
+//         @include fonsNew(1rem, var(--inter-font));
+//     }
+//     & a{
+//         color: #000;
+//         text-decoration: none;
+//     }
+//     & .CardNameItem{
+//         @include fonsNew(1.7rem, var(--inter-font));
+//         font-weight: 500;
+//         text-align: center;
+//         color: #525252;
+//     }
+//     & .CardInfoWeiItem{
+//         @include fonsNew(0.8rem, var(--inter-font));
+//     }
+//     & .CardPriceItem{
+//         @include fonsNew(1.2rem, var(--inter-font));
+//         display: flex;
+//         align-items: flex-end;
+//         font-weight: bold;
+//         position: relative;
+//         & > svg{
+//             padding-bottom: 4px;
+//             font-size: 1.2rem;
+//             padding-left: 2px;
+//         }
+//     }
+//     & .CardPriceItem_old{
+//         @include fonsNew(1rem, var(--inter-font));
+//         display: flex;
+//         align-items: center;
+//         font-weight: bold;
+//         position: relative;
+//         right: 10%;
+//         color: #bbbdc0;
+//         & > svg{
+//             padding-bottom: 4px;
+//             font-size: 1.2rem;
+//             padding-left: 2px;
+//             fill: #bbbdc0;
+//         }
+//     }
+//     & .CardPriceItem_old:before {
+//         border-bottom: 2px solid #bbbdc0;
+//         position: absolute;
+//         top: 0px;
+//         content: "";
+//         width: 60%;
+//         right: 34px;
+//         height: 50%;
+//         transform: rotate(15deg);
+//     }
+//     & .CardInCardItem{
+//         width: 100%;
+//         text-align: center;
+//         @include fonsNew(0.8rem, var(--inter-font));
+//         fill: $colorMain;
+//         border-radius: inherit!important;
+//         text-transform: none;
+//     }
+//     & .CardAction{
+//         flex-direction: column;
+//         align-items: flex-end!important;
+//         padding: 1.2vw!important;
+//         width: calc(100% - 2.4vw);
+//     }
+// }
+
 .CardItem_mobile{
     display: flex;
     flex-direction: row;
