@@ -1,0 +1,88 @@
+@import '../settings';
+
+.headerNew {
+  z-index: 1200 !important;
+  background-color: #fff !important;
+  
+  & img {
+    width: auto;
+    height: 100%;
+    max-width: 225px;
+  }
+  & > div {
+    padding: 0px !important;
+    margin: 0px !important;
+    @media (min-width: 0px) {
+      height: 100px;
+      min-height: 100px;
+    }
+    & .headerCat {
+      @include fonsNew(1.25rem, $Roboto);
+      font-weight: 400;
+      border-radius: 15px;
+      width: 100%;
+      height: 60px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      white-space: nowrap;
+      &:hover {
+        color: #dd1a32;
+        & p {
+          color: #dd1a32;
+        }
+      }
+      &:hover path {
+        stroke: #dd1a32;
+        fill: #dd1a32;
+      }
+      & p {
+        @include fonsNew(1.05rem, $Roboto);
+      }
+    }
+
+    & .activeCat path {
+      stroke: #dd1a32;
+      fill: #dd1a32;
+    }
+
+  }
+}
+
+#chooseHeaderCat {
+  & div.MuiPaper-root.MuiMenu-paper {
+    border-radius: 20px;
+    width: 12%;
+    background: #ececec;
+    box-shadow: 10px 10px 30px 5px rgba(0, 0, 0, 0.2);
+    & ul {
+      width: 100%;
+      & li {
+        width: 100%;
+        &:hover {
+          background-color: #ffffff;
+        }
+        & a {
+          width: 100%;
+          min-width: max-content;
+          text-decoration: none;
+          & span {
+            width: 100%;
+            display: block;
+            text-align: center;
+            @include fonsNew(1.05 rem, $Roboto);
+            font-weight: 400;
+            &:hover {
+              color: #dd1a32;
+            }
+          }
+        }
+      }
+    }
+    // @media (max-width: 800px) {
+    //   width: calc(100% - 100px);
+    //   margin-top: 60px;
+    // }
+  }
+}

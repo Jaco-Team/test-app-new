@@ -12,6 +12,7 @@ import '../styles/home.scss'
 import '../styles/home/homePC.scss'
 
 import '../styles/header/cityForm.scss'
+import '../styles/header/headerPC.scss'
 
 import '../styles/profile.scss'
 import '../styles/profile/promokody.scss'

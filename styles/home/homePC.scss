@@ -11,17 +11,17 @@
   align-items: stretch;
   justify-content: space-between;
 
-  &:hover img {
-    transform: translate(0, 5px);
-    -webkit-transform: translate(0, 5px);
-    -o-transform: translate(0, 5px);
-    -moz-transform: translate(0, 5px);
+  // &:hover img {
+  //   transform: translate(0, 5px);
+  //   -webkit-transform: translate(0, 5px);
+  //   -o-transform: translate(0, 5px);
+  //   -moz-transform: translate(0, 5px);
 
-    transition: all 0.2s ease-in-out;
-    -webkit-transition: all 0.2s ease-in-out; /** Chrome & Safari **/
-    -moz-transition: all 0.2s ease-in-out; /** Firefox **/
-    -o-transition: all 0.2s ease-in-out; /** Opera **/
-  }
+  //   transition: all 0.2s ease-in-out;
+  //   -webkit-transition: all 0.2s ease-in-out; /** Chrome & Safari **/
+  //   -moz-transition: all 0.2s ease-in-out; /** Firefox **/
+  //   -o-transition: all 0.2s ease-in-out; /** Opera **/
+  // }
   & > div:first-child {
     padding: 0;
   }
@@ -169,12 +169,10 @@
   background-color: #ffff;
 
   @media (max-width: 1280px) {
-    // border: 1px solid #cccccc;
-    height: 28px;
+    height: 30px;
   }
   @media (min-width: 1281px) {
-    // border: 2px solid #cccccc;
-    height: 56px;
+    height: 60px;
   }
 
   & > .minus {
