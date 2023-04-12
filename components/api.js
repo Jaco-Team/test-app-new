@@ -2,7 +2,7 @@
 import queryString from 'query-string';
 
 export function api(module = '', data = {}){
-  const urlApi = 'https://jacochef.ru/testv2/rest_api2/public/index.php/';
+  const urlApi = 'http://api.jacochef.ru/site/public/index.php/';
 
   return fetch(urlApi+module, {
     method: 'POST',
