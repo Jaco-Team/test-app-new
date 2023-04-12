@@ -3,42 +3,21 @@
 .MuiSnackbarContent-root.MuiPaper-elevation6{
     box-shadow: none;
 }
-.dopText{
-    @include fonsNew(1rem, var(--inter-font));
-    column-count: 1;
-    column-gap: 20px;
-    -moz-column-count: 1;
-    -moz-column-gap: 20px;
-    -webkit-column-count: 1;
-    -webkit-column-gap: 20px;
-    text-align: justify;
-    display: inline-block;
-    
-    @media (min-width: 601px){
-        column-count: 2;
-        column-gap: 20px;
-        -moz-column-count: 2;
-        -moz-column-gap: 20px;
-        -webkit-column-count: 2;
-        -webkit-column-gap: 20px;
-        text-align: justify;
-        display: inline-block!important;
-    }
-    & p{
-        padding: 0!important;
-        margin: 0!important;
-        break-inside: avoid;
-    }
-}
 .Actii{
     margin-top: 64px!important;
     @media (min-width: 800px) {
-        margin-top: 140px!important;
+        margin-top: 13vw!important;
         margin-bottom: 140px!important;
+
+        margin-left: 4.5%!important;
+        margin-right: 4.5%!important;
+        width: 91%!important;
+        padding-left: 0px!important;
     }
     
     & h1, h2{
-        @include fonsNew(2rem, var(--inter-font));
+        @include fontH1();
+        color: rgba(0, 0, 0, 0.8)!important;
         text-align: center;
         margin-bottom: 20px!important;
     }
@@ -51,64 +30,23 @@
         padding-top: 0!important; 
         padding-bottom: 36px!important; ;
     }
-    @media (min-width: 960px) {
-        margin-left: 8.35% !important; 
-        flex-grow: 0;
-        max-width: 83.333333%;
-        flex-basis: 83.333333%;
-    }
     @media (max-width: 960px) {
         margin-top: 64px!important;
-        margin-bottom: 64px;
-        & > div > div{
-            margin-left: 0px;
-            width: calc(100% - 24px);
-        }
-        & h1{
-            @include fonsNew(1.7rem, var(--inter-font));
-            text-align: center;
-        }
-    }
-    & .dopText{
-        @include fonsNew(1rem, var(--inter-font));
-        column-count: 1;
-        column-gap: 20px;
-        -moz-column-count: 1;
-        -moz-column-gap: 20px;
-        -webkit-column-count: 1;
-        -webkit-column-gap: 20px;
-        text-align: justify;
-        display: inline-block;
-        
-        @media (min-width: 601px){
-            column-count: 2;
-            column-gap: 20px;
-            -moz-column-count: 2;
-            -moz-column-gap: 20px;
-            -webkit-column-count: 2;
-            -webkit-column-gap: 20px;
-            text-align: justify;
-            display: inline-block!important;
-        }
-        & p{
-            padding: 0!important;
-            margin: 0!important;
-            break-inside: avoid;
-        }
+        margin-bottom: 64px; 
+        margin-left: 0px;
+        width: calc(100% - 24px);
     }
 }
-.modalActii:not(.OpenItemPC):not(.OpenItemPCSet){
+.modalActii{
     & h6, h2{
         text-align: center;
-        @include fonsNew(1.2rem, var(--inter-font));
-        font-weight: 600;
+        @include fontH2_custom();
     }
     & .modalActiiContent{
         overflow: auto;
         //padding-top: 0!important;
         & *{
-            @include fonsNew(1rem, var(--inter-font));
-            font-weight: 400;
+            @include font30_400();
         }
     }
     & .MuiDialog-paper{
@@ -120,23 +58,5 @@
         @include fonsNew(1rem, var(--inter-font));
         background-color: $colorMain;
         color: #fff;
-    }
-}
-.modalActii.OpenItemPC{
-    & h6{
-        text-align: center;
-        @include fonsNew(1.6rem, var(--inter-font));
-    }
-    & .modalActiiContent{
-        padding: 0!important;
-        & span:not(.dopItemName):not(.ItemDesc):not(.ModalItemOther), p:not(.dopItemName):not(.ItemDesc), b:not(.dopItemName):not(.ItemDesc){
-            @include fonsNew(1rem, var(--inter-font));
-        }
-    }
-    & .modalActiiContentNew{
-        padding: 0!important;
-    }
-    & .MuiDialog-paper{
-        margin: 12px!important;
     }
 }

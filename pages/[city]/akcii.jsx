@@ -8,7 +8,7 @@ const DynamicPage = dynamic(() => import('@/modules/akcii/page.js'))
 
 import { roboto } from '@/ui/Font.js'
 import { api } from '@/components/api.js';
-import { useAkciiStore, useCitiesStore } from '@/components/store.js';
+import { useAkciiStore, useCitiesStore, useHeaderStore } from '@/components/store.js';
 
 const this_module = 'akcii';
 

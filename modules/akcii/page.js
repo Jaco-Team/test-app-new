@@ -72,11 +72,11 @@ export default function AkciiPage(props){
           style={{ backgroundColor: statusMSG ? 'green' : '#BB0025', borderRadius: 4 }}
         />
 
-        <Grid item xs={12}>
+        <Grid item xs={12} style={{ paddingLeft: 0 }}>
           <Typography variant="h5" component="h1">Акции</Typography>
         </Grid>
 
-        <Grid item xs={12}>
+        <Grid item xs={12} style={{ paddingLeft: 0 }}>
           <Grid container spacing={3}>
 
             { actiiList.length > 0 ?

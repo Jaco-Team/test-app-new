@@ -6,7 +6,7 @@
 .Contact{
     margin-top: 64px!important;
     @media (min-width: 800px) {
-        margin-top: 140px!important;
+        margin-top: 13vw!important;
     }
     & h1{
         @include fonsNew(2rem, $Roboto);

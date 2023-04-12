@@ -1,5 +1,4 @@
 import React, { useState } from 'react';
-import { useRouter } from 'next/router';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -19,45 +18,89 @@ import {BurgerIcon, MapPointIcon, ProfileIcon, BasketIcon } from '@/ui/Icons.js'
 import { Link as ScrollLink } from 'react-scroll';
 
 import { useHeaderStore } from '@/components/store.js';
+import useScroll from './hook.js';
 
 let catList = [{id: '1', name: 'Роллы', link: 'rolly', count_2: '107', count: '0', list: [{id: '1', name: 'Сеты роллов'}, { id: '2', name: 'Фирменные' }, {id: '3', name: 'Жареные'}, 
 {id: '4', name: 'Запеченные'}, {id: '5', name: 'Классика'}]}, {id: '14', name: 'Пицца', link: 'pizza', count_2: '0', count: '12'}, {id: '15', name: 'Блюда', link: null, count_2: '0',
 count: '4', list: [{id: '5', name: 'Закуски', link: 'zakuski', count_2: '0', count: '9'}, {id: '7', name: 'Соусы', link: 'sousy', count_2: '0', count: '9'}, {id: '1', name: 'Салаты и фри', link: 'salat'}, {id: '2', name: 'Десерты', link: 'desert'}]}, {id: '6', name: 'Напитки', link: 'napitki', count_2: '0', count: '10'}];
 
-const burger = [{id: '1', name: 'О компании', link: 'about'}, {id: '2', name: 'Документы', link: ''}];
+const MenuBurger = React.memo(function MenuBurger({ anchorEl, city, isOpen, onClose }){
+  return(
+    <Menu id={'chooseHeaderDoc'} anchorEl={anchorEl} open={isOpen} onClose={ () => onClose() } anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} transformOrigin={{ vertical: 'top',  horizontal: 'center' }} autoFocus={false}>
+         
+      <MenuItem onClick={() => onClose()}>
+        <Link href={`/${city}/about`}>О компании</Link>
+      </MenuItem>
+      
+      <MenuItem onClick={() => onClose()}>
+        <Link href={`/${city}`}>Документы</Link>
+      </MenuItem>
+      
+    </Menu>
+  )
+})
+
+const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, chooseCat, list, active_page }){
+  return(
+    <Menu id={'chooseHeaderCat'} anchorEl={anchorEl} open={isOpen} onClose={onClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} transformOrigin={{ vertical: 'top',  horizontal: 'center' }} autoFocus={false}>
+      {list.map((cat, key) => (
+        <MenuItem key={key} onClick={onClose}>
+          {active_page === 'home' ? (
+            <ScrollLink
+              to={'cat' + cat.id}
+              spy={true}
+              isDynamic={true}
+              smooth={false}
+              offset={-100}
+            >
+              <span id={'link_' + cat.id}>{cat.name}</span>
+            </ScrollLink>
+          ) : (
+            <Link href={`/${city}`} onClick={() => chooseCat(cat.id)}>
+              <span>{cat.name}</span>
+            </Link>
+          )}
+        </MenuItem>
+      ))}
+    </Menu>
+  )
+})
 
 export default function NavBarPC(props) {
-  const { push } = useRouter();
+  useScroll();
 
-  /// const { city, cityRu, catList, active_page } = props;
+  //const { city, cityRu, catList, active_page } = props;
   const { city, cityRu, active_page } = props;
-
+  
   const [setActiveModalCity, setActiveModalAuth] = useHeaderStore((state) => [state.setActiveModalCity, state.setActiveModalAuth], shallow);
 
   if (city == '') return null;
 
   const [anchorEl, setAnchorEl] = useState(null);
-  const [list, setList] = useState([]);
-  const [scroll, setScroll] = useState(false);
+  const [isOpenburger, setIsOpenburger] = useState(false);
+  const [isOpenCat, setIsOpenCat] = useState(false);
 
-  const open = Boolean(anchorEl);
+  const [list, setList] = useState([]);
 
   const openMenu = (event, id) => {
-    if (id === 'burger') {
-      setScroll(false);
-      setList(burger);
-      setAnchorEl(event.currentTarget);
-    } else {
-      setScroll(true);
-      setAnchorEl(event.currentTarget);
-      catList.forEach((cat) => {
-        if (cat.id === id) {
-          cat.expanded = anchorEl ? false : true;
-          setList(cat.list);
-        }
-      });
-    }
+    setIsOpenCat(true)
+    setAnchorEl(event.currentTarget);
+    catList.forEach((cat) => {
+      if (cat.id === id) {
+        cat.expanded = anchorEl ? false : true;
+        setList(cat.list);
+      }
+    });
   };
+
+  function openMenuBurger(event){
+    setAnchorEl(event.currentTarget);
+    setIsOpenburger( true )
+  }
+
+  function closeMenuBurger(){
+    setIsOpenburger( false )
+  }
 
   const closeMenu = () => {
     setAnchorEl(null);
@@ -66,29 +109,32 @@ export default function NavBarPC(props) {
         cat.expanded = false;
       }
     });
-    setScroll(false);
     setList([]);
+    setIsOpenCat(false)
   };
 
-  const onProfile = () => {
-    push(`/${city}/profile`);
-    setActiveModalAuth(true);
+  function chooseCat(id){
+    localStorage.setItem('goTo', id)
+
+    closeMenu();
   }
 
   return (
-    <AppBar position="fixed" className="headerNew" id="headerNew" elevation={2} sx={{ display: { xs: 'none', md: 'block' } }}>
-      <Toolbar>
-        <div style={{ width: '4.51%' }} />
-        <Link href={'/' + city} style={{ width: '14.8%' }}>
-          <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true}/>
-        </Link>
+    <>
+      <AppBar position="fixed" className="headerNew" id="headerNew" elevation={2} sx={{ display: { xs: 'none', md: 'block' } }}>
+        <Toolbar>
+          <div style={{ width: '5.3%' }} />
+          <Link href={'/' + city} style={{ width: '18.4%' }}>
+            <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true}/>
+          </Link>
 
-        <div style={{width: '7%', minWidth: 'max-content'}} onClick={() => setActiveModalCity(true)}>
-          <span className='headerCat'>{cityRu}</span>
-        </div>
+          <div style={{width: '7%', minWidth: 'max-content'}} onClick={() => setActiveModalCity(true)}>
+            <span className='headerCat'>{cityRu}</span>
+          </div>
 
-        {active_page == 'home'
-          ? catList.map((item, key) =>
+          <div style={{ width: '2.2%' }} />
+
+          { catList.map((item, key) =>
               item.name === 'Пицца' || item.name === 'Напитки' ? (
                 <React.Fragment key={key}>
                   <ScrollLink style={{width: '5%', minWidth: 'max-content', textDecoration: 'none'}}
@@ -100,74 +146,56 @@ export default function NavBarPC(props) {
                   >
                     <span className="headerCat" id={'link_' + item.id}>{item.name}</span>
                   </ScrollLink>
+                  <div style={{ width: '2.2%' }} />
                 </React.Fragment>
               ) : (
                 <React.Fragment key={key}>
-                  <div style={{width: '5%', minWidth: 'max-content'}} onClick={(event) => openMenu(event, item.id)}>
-                    <span className="headerCat" style={{ color: item.expanded ? item.expanded ? '#dd1a32' : null : null }}>
-                      {item.name} {item.expanded ? item.expanded ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon /> : <KeyboardArrowDownIcon />}
+                  <div style={{width: '5%', minWidth: 'max-content', display: 'flex', flexDirection: 'row', alignItems: 'center', justifyContent: 'center'}} onClick={(event) => openMenu(event, item.id)}>
+                    <span className="headerCat">
+                      {item.name} {item.expanded ? item.expanded ? <KeyboardArrowUpIcon style={{ fill: '#525252', paddingTop: 3 }} /> : <KeyboardArrowDownIcon style={{ fill: '#525252', paddingTop: 3 }} /> : <KeyboardArrowDownIcon style={{ fill: '#525252', paddingTop: 3 }} />}
                     </span>
                   </div>
+                  <div style={{ width: '2.2%' }} />
                 </React.Fragment>
               )
             )
-          : catList.map((item, key) => (
-              <React.Fragment key={key}>
-                <Link href={'/' + city} style={{width: '5%', minWidth: 'max-content', textDecoration: 'none'}}
-                  onClick={() => {typeof window !== 'undefined' ? localStorage.setItem('goTo', item.id) : {}}}>
-                  <span className='headerCat'>{item.name}</span>
-                </Link>
-              </React.Fragment>
-            ))}
+          }
 
-        <div style={{ width: '20%' }} />
+          <div style={{ width: '7%' }} />
 
-        <div style={{ width: '2.5%' }} className={active_page === 'other' ? 'headerCat activeCat' : 'headerCat'} onClick={(event) => openMenu(event, 'burger')}>
-          <BurgerIcon style={{ width: 40, height: 20 }}/>
-        </div>
+          <div style={{ width: '2.5%' }} className={active_page === 'other' ? 'headerCat activeCat' : 'headerCat'} onClick={ (event) => openMenuBurger(event) }>
+            <BurgerIcon style={{ width: '2vw', height: '2vw' }}/>
+          </div>
 
-        <div style={{ width: '1%' }} />
+          <div style={{ width: '2.2%' }} />
 
-        <div style={{ width: '10%' }} className='headerCat'>
-          <MapPointIcon style={{ width: 40, height: 30 }}/>
-          <p>Адреса кафе</p>
-        </div>
+          <Link href={'/' + city + '/contacts'} style={{ width: '12%' }} className={active_page === 'contacts' ? 'headerCat activeCat' : 'headerCat'}>
+            <MapPointIcon style={{ width: '2vw', height: '2vw' }}/>
+            <p>Адреса кафе</p>
+          </Link>
 
-        <div style={{ width: '1.5%' }} />
+          <div style={{ width: '2.2%' }} />
 
-        <div style={{ width: '2.5%' }} className={active_page === 'profile' ? 'headerCat activeCat' : 'headerCat'} onClick={onProfile}>
-          <ProfileIcon style={{ height: 80 }}/>
-        </div>
+          
+          <Link href={'/' + city + '/zakazy'} style={{ width: '3.5%' }} className={active_page === 'profile' ? 'headerCat activeCat' : 'headerCat'}>
+            <ProfileIcon style={{ width: '4vw', height: '4vw' }}/>
+          </Link>
+          
+          <div style={{ width: '2.2%' }} />
 
-        <div style={{ width: '1%' }} />
+          <div style={{width: '6vw', backgroundColor: '#DD1A32', borderRadius: '45px', height: '3vw', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}}>
+            <BasketIcon style={{ width: '2vw', height: '2vw' }} />
+          </div>
 
-        <div style={{width: '100px', backgroundColor: '#DD1A32', borderRadius: '45px', height: '42px', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}}>
-          <BasketIcon style={{ width: 30, height: 18 }}/>
-        </div>
+          <div style={{ width: '5.3%' }} />
 
-        <Menu id={'chooseHeaderCat'} anchorEl={anchorEl} open={open} onClose={closeMenu} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} transformOrigin={{ vertical: 'top',  horizontal: 'center' }} autoFocus={false}>
-          {list.map((cat, key) => (
-            <MenuItem key={key} onClick={closeMenu}>
-              {scroll ? (
-                <ScrollLink
-                  to={'cat' + cat.id}
-                  spy={true}
-                  isDynamic={true}
-                  smooth={false}
-                  offset={-100}
-                  onClick={closeMenu}
-                >
-                  <span id={'link_' + cat.id}>{cat.name}</span>
-                </ScrollLink>
-              ) : (
-                <Link href={`/${city}/${cat.link}`} onClick={closeMenu}>
-                  <span>{cat.name}</span>
-                </Link>
-              )}
-            </MenuItem>
-          ))}
-        </Menu>
-      </Toolbar>
-    </AppBar>
+          <MenuCat anchorEl={anchorEl} isOpen={isOpenCat} onClose={closeMenu} chooseCat={chooseCat} city={city} list={list} active_page={active_page} />
+          <MenuBurger anchorEl={anchorEl} isOpen={isOpenburger} onClose={closeMenuBurger} city={city} />
+
+          
+        </Toolbar>
+      </AppBar>
+      <div className='blockShadow' />
+    </>
   );
 }

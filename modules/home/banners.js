@@ -38,7 +38,7 @@ export default React.memo(function Banners(){
       loop={true}
       //onSlideChange={() => console.log('slide change')}
       //onSwiper={(swiper) => console.log(swiper)}
-      style={{ width: '100%', marginTop: !matches ? 60 : 100 }}
+      style={{ width: '100%', marginTop: !matches ? 60 : '9vw' }}
     >
       {banners.map( (item, key) =>
         <SwiperSlide key={key}>

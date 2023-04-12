@@ -41,6 +41,16 @@ export default React.memo(function AkciiModal(){
     window.history.pushState(state, title, url)
   }
 
+  /*{actiaModal !== {} && actiaModal.promo && actiaModal?.promo.length > 0 ?
+            <DialogActions style={{ justifyContent: 'center', padding: '15px 0px' }}>
+              <ButtonGroup disableElevation={true} disableRipple={true} variant="contained">
+                <Button variant="contained" className="AkciiActivePromo" >Применить промокод</Button>
+              </ButtonGroup>
+            </DialogActions>
+              :
+            null
+          }*/
+
   return (
     <Dialog 
       onClose={ () => closeDialog() } 
@@ -65,15 +75,7 @@ export default React.memo(function AkciiModal(){
             <div dangerouslySetInnerHTML={{__html: actiaModal?.text ?? ''}} />
           </DialogContent>
 
-          {actiaModal !== {} && actiaModal.promo && actiaModal?.promo.length > 0 ?
-            <DialogActions style={{ justifyContent: 'center', padding: '15px 0px' }}>
-              <ButtonGroup disableElevation={true} disableRipple={true} variant="contained">
-                <Button variant="contained" className="AkciiActivePromo" >Применить промокод</Button>
-              </ButtonGroup>
-            </DialogActions>
-              :
-            null
-          }
+          
         </Box>
       </Fade>
     </Dialog>

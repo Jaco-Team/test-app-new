@@ -7,7 +7,7 @@ const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const DynamicPage = dynamic(() => import('@/modules/contacts/page.js'))
 
 import { api } from '@/components/api.js';
-import { useContactStore, useCitiesStore } from '@/components/store.js';
+import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js'
 
 const this_module = 'contacts';

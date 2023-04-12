@@ -5,7 +5,7 @@
     margin-top: 64px!important;
 
     @media (min-width: 800px) {
-        margin-top: 140px!important;
+        margin-top: 13vw!important;
         margin-bottom: 140px!important;
 
         margin-left: 4.5%!important;
@@ -14,10 +14,9 @@
     }
 
     & h1, h2{
-        @include fonsNew(2.6vw, var(--inter-font));
+        @include fontH1();
         text-align: start;
         width: 100%;
-        font-weight: 600;
         padding-bottom: 20px;
         color: rgba(0, 0, 0, 0.8)!important;
     }
@@ -29,13 +28,8 @@
     @media (max-width: 960px) {
         margin-top: 64px!important;
         margin-bottom: 64px; 
-        //margin-left: 0px;
         padding-left: 24px!important;
         width: calc(100% - 24px);
-        
-        & h1, h2{
-            @include fonsNew(1.7rem, var(--inter-font));
-        }
     }
 
     & > div:last-child{
@@ -68,11 +62,7 @@
         }
        
         .title{
-            @include fonsNew(1.73vw, var(--inter-font));
-            @media (max-width: 960px) {
-                @include fonsNew(1.73rem, var(--inter-font));
-            }
-            font-weight: 500;
+            @include font50_500();
             width: 65%;
             padding-left: 17.5%;
             padding-top: 8.3%;
@@ -80,44 +70,30 @@
         }
         
         & .text{
-            @include fonsNew(1vw, var(--inter-font));
-            @media (max-width: 960px) {
-                @include fonsNew(1rem, var(--inter-font));
-            }
-            font-weight: 400;
+            @include font30_400();
             margin-top: 5.5%;
             margin-left: 5%;
             margin-right: 5%;
             letter-spacing: 0.038vw;
         }
         & .endText{
-            @include fonsNew(1vw, var(--inter-font));
-            @media (max-width: 960px) {
-                @include fonsNew(1rem, var(--inter-font));
-            }
-            font-weight: 400;
+            @include font30_400();
             margin-top: 5.5%;
             margin-left: 5%;
             margin-right: 5%;
             letter-spacing: 0.038vw;
         }
         & .endDate{
-            @include fonsNew(1.7vw, var(--inter-font));
-            @media (max-width: 960px) {
-                @include fonsNew(1.7rem, var(--inter-font));
-            }
-            font-weight: 500;
+            @include font50_500();
             color: rgba(221, 26, 50, 1)!important;
             line-height: 1.3;
         }
         & .name{
-            @include fonsNew(1.73vw, var(--inter-font));
+            @include font50_500();
             @media (max-width: 960px) {
-                @include fonsNew(1.73rem, var(--inter-font));
                 height: 5.79vh;
                 border-radius: 1.3vh;
             }
-            font-weight: 500;
        
             background-color: rgba(233, 71, 35, 0.5);
             border-radius: 1.3vw;

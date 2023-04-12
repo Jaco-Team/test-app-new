@@ -8,7 +8,7 @@
     
     @media (min-width: 800px) {
         display: block;
-        margin-top: 140px!important;
+        margin-top: 15vw!important;
         margin-bottom: 140px!important;
 
         margin-left: 5.78%!important;
@@ -23,7 +23,7 @@
         border-radius: 3vw;
         display: grid;
         position: sticky;
-        top: 140px;
+        top: 180px;
 
         & > span{
             @include fonsNew(1.14vw, var(--inter-font));
