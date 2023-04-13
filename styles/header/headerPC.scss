@@ -27,7 +27,7 @@ html:not([data-scroll='0']) .blockShadow {
   z-index: 1200 !important;
   background-color: #fff !important;
   
-  box-shadow: none;
+  box-shadow: none!important;
   
   & a{
     text-decoration: none;
