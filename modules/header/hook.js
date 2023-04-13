@@ -20,10 +20,6 @@ function useScroll() {
   }
 
   useEffect(() => {
-
-    //костыль
-    document.documentElement.dataset.scroll = 0;
-
     window.addEventListener('scroll', debounce(storeScroll), { passive: true });
 
     return () => {
