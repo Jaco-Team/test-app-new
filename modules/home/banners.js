@@ -2,12 +2,8 @@ import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
-import { Navigation, Pagination, A11y, EffectCreative } from 'swiper';
+import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
-import SwiperCore, { Autoplay } from 'swiper';
-import { useSwiper } from 'swiper/react';
-
-//SwiperCore.use([Autoplay]);
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -24,34 +20,14 @@ export default React.memo(function Banners(){
 
   const matches = useMediaQuery('screen and (min-width: 40em)', { noSsr: false });
 
-
-
-  //console.log( 'swiper', swiper )
-
   const [ banners, setBanners ] = useState([]);
   const [ bannerList ] = useHomeStore( state => [ state.bannerList ], shallow );
 
-  const [ bannerW, setBannerW ] = useState(0);
-  const [ bannerH, setBannerH ] = useState(0);
-
-  const [my_swiper, set_my_swiper] = useState({});
-
   useEffect( () => {
     if( banners.length == 0 ){
-      let windowOuterWidth = window.outerWidth;
-
-      setBannerW(windowOuterWidth)
-      setBannerH( matches ? Math.round(windowOuterWidth / 3.7) : Math.round(windowOuterWidth / 2) )
-
       setBanners(bannerList);
     }
-
-    
   }, [bannerList] )
-
-  setTimeout( () => {
-    //my_swiper.slidePrev();
-  }, 10000 )
 
   if( banners.length == 0 ){
     return null
