@@ -1,15 +1,177 @@
 @import '../settings.scss';
 
-.CardItem {
-  border-radius: 40px;
-  border: 3px solid #ffffff;
-  max-width: 25%;
-  min-height: 300px;
+.CardItemPC.active{
+  & > div{
+    background-color: rgba(242, 242, 242, 0.5)!important;
+    & img {
+      z-index: -1!important;
+      position: relative!important;
+    }
+  }
+  
+}
 
+.CardItemPC {
+  min-height: 300px;
+  width: 100%;
   display: flex;
   flex-direction: column !important;
   align-items: stretch;
   justify-content: space-between;
+  
+
+  & > div{
+    background-color: #fff;
+    padding: 30px 16px;
+    border-radius: 1.3vw;
+
+    & img {
+      /*max-width: 100%;
+        width: auto;
+        padding: 0px 1.2vw;*/
+      width: 100%;
+      height: auto;
+      position: initial;
+    }
+  }
+  
+  & .CardNameItem {
+    @include font40_400();
+    text-align: center;
+    flex: 1;
+    margin-top: 0.3vw;
+  }
+  & .dop_text {
+    padding: 0;
+    height: 20px;
+    width: 66.67%;
+    margin-left: 16.665%;
+    display: flex;
+    flex-direction: row;
+    margin-top: 13px;
+    margin-bottom: 20px;
+
+    & .first_text {
+      @include font20_400();
+      height: 20px;
+      border-right: 1px solid #dadada;
+      flex: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+    & .second_text{
+      @include font20_400();
+      height: 20px;
+      border-right: 1px solid #dadada;
+      display: flex; 
+      align-items: center; 
+      justify-content: center;
+    }
+    & .third_text{
+      @include font20_400();
+      height: 20px;
+      flex: 3;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  .desc_text{
+    height: 5.9vw;
+    width: 100%;
+    text-align: center;
+    line-height: 1.5;
+    overflow: hidden;
+    @include font25_400();
+  }
+  .containerBTN{
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & > button{
+      width: 50%;
+      border-radius: 45px;
+
+      @media (max-width: 1280px) {
+        height: 30px;
+        border: 2px solid #cccccc;
+      }
+      @media (min-width: 1281px) {
+        height: 2.9vw;
+        border: 2px solid #cccccc;
+      }
+
+      @include font30_400();
+      text-transform: initial;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      white-space: nowrap;
+      
+      &:hover {
+        background-color: #f2f2f2;
+        border: 2px solid #cccccc;
+      }
+      &:target {
+        background-color: #f2f2f2;
+        border: 2px solid #cccccc;
+      }
+      &:active {
+        background-color: #f2f2f2;
+        border: 2px solid #cccccc;
+      }
+    }
+    & > div{
+      width: 50%;
+      border-radius: 45px;
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      background-color: #ffff;
+    
+      height: 2.9vw;
+      
+    
+      & > .minus {
+        padding: 0;
+        margin-left: 8px;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        cursor: pointer;
+        background-color: #f2f2f2;
+        border:none;
+    
+        @include font50_300();
+        width: 2vw;
+        height: 2vw;
+        border-radius: 40px;
+      }
+      & > .plus {
+        padding: 0;
+        margin-right: 8px;
+        display: flex;
+        justify-content: center;
+        align-content: center;
+        align-items: center;
+        cursor: pointer;
+        background-color: #f2f2f2;
+        border:none;
+    
+        @include font50_300();
+        width: 2vw;
+        height: 2vw;
+        border-radius: 40px;
+      }
+      & > span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include font40_400();
+      }
+    }
+  }
 
   // &:hover img {
   //   transform: translate(0, 5px);
@@ -22,221 +184,9 @@
   //   -moz-transition: all 0.2s ease-in-out; /** Firefox **/
   //   -o-transition: all 0.2s ease-in-out; /** Opera **/
   // }
-  & > div:first-child {
-    padding: 0;
-  }
-  & img {
-    /*max-width: 100%;
-      width: auto;
-      padding: 0px 1.2vw;*/
-    width: 100%;
-    height: auto;
-  }
-  & .CardInfoItem {
-    @include fonsNew(0.7rem, var(--inter-font));
-    color: #666;
-    text-align: justify;
-  }
-  & .CardCountItem {
-    @include fonsNew(1rem, var(--inter-font));
-  }
-  & a {
-    color: #000;
-    text-decoration: none;
-  }
-  & .CardNameItem {
-    @include fonsNew(1.7rem, var(--inter-font));
-    font-weight: 400;
-    text-align: center;
-    color: #333333;
-  }
-  & .CardInfoWeiItem {
-    @include fonsNew(0.8rem, var(--inter-font));
-  }
-  & .CardPriceItem {
-    @include fonsNew(1.2rem, var(--inter-font));
-    display: flex;
-    align-items: flex-end;
-    font-weight: bold;
-    position: relative;
-    & > svg {
-      padding-bottom: 4px;
-      font-size: 1.2rem;
-      padding-left: 2px;
-    }
-  }
-  & .CardPriceItem_old {
-    @include fonsNew(1rem, var(--inter-font));
-    display: flex;
-    align-items: center;
-    font-weight: bold;
-    position: relative;
-    right: 10%;
-    color: #bbbdc0;
-    & > svg {
-      padding-bottom: 4px;
-      font-size: 1.2rem;
-      padding-left: 2px;
-      fill: #bbbdc0;
-    }
-  }
-  & .CardPriceItem_old:before {
-    border-bottom: 2px solid #bbbdc0;
-    position: absolute;
-    top: 0px;
-    content: '';
-    width: 60%;
-    right: 34px;
-    height: 50%;
-    transform: rotate(15deg);
-  }
-  & .CardInCardItem {
-    width: 100%;
-    text-align: center;
-    @include fonsNew(0.8rem, var(--inter-font));
-    fill: $colorMain;
-    border-radius: inherit !important;
-    text-transform: none;
-  }
-  & .CardAction {
-    flex-direction: column;
-    align-items: flex-end !important;
-    padding: 1.2vw !important;
-    width: calc(100% - 2.4vw);
-  }
-}
 
-.TEST123 {
-  font-family: var(--inter-font);
-  font-size: 0.9rem;
-  font-weight: 400;
-  color: #666666;
-}
-
-.hidddenText5 {
-  font-family: var(--inter-font);
-  font-size: 0.925rem;
-  font-weight: 400;
-  color: #666666;
-}
-
-.ModalItemButtonCartPC:not(.openPC) {
-  width: 50%;
-  border-radius: 45px;
-  @media (max-width: 1280px) {
-    height: 30px;
-    border: 1px solid #cccccc;
-  }
-  @media (min-width: 1281px) {
-    height: 60px;
-    border: 2px solid #cccccc;
-  }
-  & span {
-    @media (max-width: 1280px) {
-      @include fonsNew(0.875rem, var(--inter-font));
-    }
-    @media (min-width: 1281px) {
-      @include fonsNew(1.25rem, var(--inter-font));
-    }
-    font-weight: 400;
-    text-transform: initial;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    white-space: nowrap;
-    color: #666666;
-  }
-  &:hover {
-    background-color: #f2f2f2;
-    border: 2px solid #cccccc;
-  }
-  &:target {
-    background-color: #f2f2f2;
-    border: 2px solid #cccccc;
-  }
-  &:active {
-    background-color: #f2f2f2;
-    border: 2px solid #cccccc;
-  }
 }
 
 .ModalItemButtonCartPC.openPC {
-  width: 50%;
-  border-radius: 45px;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  background-color: #ffff;
-
-  @media (max-width: 1280px) {
-    height: 30px;
-  }
-  @media (min-width: 1281px) {
-    height: 60px;
-  }
-
-  & > .minus {
-    padding: 0;
-    margin-left: 13px;
-    font-weight: 400;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    color: #333333;
-    background-color: #f2f2f2;
-    border:none;
-
-    @media (max-width: 1280px) {
-      @include fonsNew(0.875rem, var(--inter-font));
-
-      width: 28px;
-      height: 28px;
-    }
-    @media (min-width: 1281px) {
-      @include fonsNew(1.5rem, var(--inter-font));
-
-      width: 30px;
-      height: 30px;
-      border-radius: 40px;
-    }
-  }
-  & > .plus {
-    padding: 0;
-    margin-right: 10px;
-    font-weight: 400;
-    display: flex;
-    justify-content: center;
-    align-content: center;
-    align-items: center;
-    cursor: pointer;
-    color: #333333;
-    background-color: #f2f2f2;
-    border:none;
-
-    @media (max-width: 1280px) {
-      @include fonsNew(0.875rem, var(--inter-font));
-      width: 28px;
-      height: 28px;
-    }
-    @media (min-width: 1281px) {
-      width: 30px;
-      height: 30px;
-      @include fonsNew(2rem, var(--inter-font));
-      border:none;
-      border-radius: 40px;
-    }
-  }
-  & > span {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    font-weight: 400;
-    @media (max-width: 1280px) {
-      @include fonsNew(0.875rem, var(--inter-font));
-    }
-    @media (min-width: 1281px) {
-      @include fonsNew(1.25rem, var(--inter-font));
-    }
-  }
+  
 }

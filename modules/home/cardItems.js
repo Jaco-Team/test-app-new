@@ -109,7 +109,7 @@ export default React.memo(function CatItems(){
 
   return (
     cats.map((cat, key) => 
-      <Grid container spacing={2} key={key} name={"cat"+cat.main_id} id={"cat"+cat.id} sx={{ padding: { xs: '0px 5%', sm: '0px 20px' } }} style={{ margin: 0, flexWrap: 'wrap', width: '100%' }} className="MainItems mainContainer" >
+      <Grid container spacing={2} key={key} name={"cat"+cat.main_id} id={"cat"+cat.id} style={{ margin: 0, flexWrap: 'wrap', width: '100%', marginTop: 138 }} className="MainItems mainContainer" >
         {cat.items.map((it, k) => (
           <CardItemPc key={k} data={it} />
         ))}

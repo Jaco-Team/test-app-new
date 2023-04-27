@@ -739,9 +739,6 @@
     & > div{
         max-height: auto;
     }
-    @media (min-width: 1280px) {
-        margin-left: 5% !important; 
-    }
     @media (min-width: 960px){
         margin-left: 0;
         flex-grow: 0;
@@ -749,10 +746,10 @@
         flex-basis: 100%;
     }
     @media (min-width: 1280px) {
-        margin-left: 5% !important; 
+        margin-left: calc(5% - 16px) !important;
         flex-grow: 0;
-        max-width: 90%;
-        flex-basis: 90%;
+        max-width: calc(90% + 16px);
+        flex-basis: calc(90% + 16px);
     }
 }
 .itemMiniText{
