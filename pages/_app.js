@@ -1,12 +1,13 @@
 import '../styles/globals.scss'
 
 import '../styles/akcii.scss'
-import '../styles/contacts.scss'
 import '../styles/about.scss'
 import '../styles/publichnaya-oferta.scss'
 import '../styles/politika-konfidencialnosti.scss'
 import '../styles/instpayorders.scss'
 import '../styles/jobs.scss'
+
+import '../styles/contacts/contacts.scss'
 
 import '../styles/home.scss'
 import '../styles/home/homePC.scss'

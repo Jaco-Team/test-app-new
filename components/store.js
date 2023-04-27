@@ -2,17 +2,26 @@ import { create } from 'zustand';
 
 import { api } from './api.js';
 
-export const useContactStore = create((set) => ({
+export const useContactStore = create((set, get) => ({
   myPoints: [],
   myUnicPoint: [],
   pointsZone: [],
+  myMap2: null,
+  myAddr: [],
+  phone: '',
+  disable: true,
+
+  // получение данных для карты
   getData: async (this_module, city) => {
-    let data = {
+    set({ disable: true });
+
+    const data = {
       type: 'get_addr_zone_web',
       city_id: city,
     };
 
     const json = await api(this_module, data);
+    
     let points_zone = [];
 
     json.map(function (point) {
@@ -42,8 +51,258 @@ export const useContactStore = create((set) => ({
       myPoints: json,
       myUnicPoint: unic_point,
       pointsZone: points_zone,
+      phone: json[0].phone,
+      myAddr: json.filter((value, index, self) => index === self.findIndex((t) => t.addr === value.addr))
     });
+
+    get().loadMap(get().myPoints, get().pointsZone);
   },
+
+  // отрисовка карты по данным
+  loadMap: (points, points_zone) => {
+    
+    if (!get().myMap2) {
+    ymaps.ready().then((function () {
+  
+      get().myMap2 = new ymaps.Map('ForMap', {
+        center: [ points[0]['xy_center_map']['latitude'], points[0]['xy_center_map']['longitude'] ],
+        zoom: 11.5,
+        controls: ['geolocationControl', 'searchControl']
+      }, { suppressMapOpenBlock: true },
+      );
+
+      points_zone.map((zone, key)=>{
+        get().myMap2.geoObjects.add(
+          new ymaps.Polygon([zone], 
+            {
+              address: points[ key ]['addr'],
+              raion: points[ key ]['raion'],
+            }, 
+            {
+            fillColor: 'rgba(53, 178, 80, 0.15)',
+            strokeColor: '#35B250',
+            strokeWidth: 5,
+            hideIconOnBalloonOpen: false,
+          })
+        );
+      })
+        
+      points.map(function(point, key){
+        get().myMap2.geoObjects.add(
+          new ymaps.Placemark( [point['xy_point']['latitude'], point['xy_point']['longitude']], 
+          {
+            address: points[ key ]['addr'],
+            raion: points[ key ]['raion'],
+          }, {
+            iconLayout: 'default#image',
+            iconImageHref: '/Favikon.png',
+            iconImageSize: [50, 50],
+            iconImageOffset: [-12, -24],
+            hideIconOnBalloonOpen: false,
+          })
+      )
+      })
+
+      get().myMap2.geoObjects.events.add('click', get().changePointClick);
+      get().myMap2.events.add('click', get().changePointNotHover);
+
+    }))
+  }  else {
+    get().myMap2.destroy();
+    get().myMap2 = null;
+    get().loadMap(get().myPoints, get().pointsZone);
+  }
+  },
+
+  // изменение состояния точки по клику
+  changePointClick: (event) => {
+
+    get().myMap2.balloon.close();
+
+    ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Point"').setOptions({ iconLayout: 'default#image' });
+  
+    if(get().disable) {
+      ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ strokeColor: '#35B250', fillColor: 'rgba(53, 178, 80, 0.15)', fillOpacity: 1, strokeWidth: 5 });
+    } else {
+      ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
+    }
+
+    const img = ymaps.templateLayoutFactory.createClass( 
+      "<div class='my-img'>" +
+        "<img alt='' src='/Favikon.png' />" +
+      "</div>"
+    );
+
+    const balloonLayout = ymaps.templateLayoutFactory.createClass( 
+      "<div class='my-hint'>" +
+        "<img alt='' src='/about/fasad.jpg' /><br />" +
+        "<div>{{ properties.raion }}</div><br />" +
+        "<div>{{ properties.address }}</div><br />" +
+      "</div>"
+    );
+
+    const type = event.get('target').geometry.getType();
+
+    if(type === 'Polygon') {
+
+      if(get().disable) {
+        event.get('target').options.set({ strokeColor: '#DD1A32', fillColor: 'rgba(221, 26, 50, 0.15)', fillOpacity: 1, strokeWidth: 5 });
+      } else {
+        event.get('target').options.set({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
+      }
+
+      const points = ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Point"')
+
+      points.each(function(point) {
+
+      const res = event.get('target').geometry.contains(point.geometry.getCoordinates())
+
+        if(res) {
+          if(get().disable) {
+            point.options.set({ iconLayout: img, balloonLayout: balloonLayout })
+            point.balloon.open();
+          }
+        }
+      });
+    }
+
+    if(type === 'Point') {
+      event.get('target').options.set({ iconLayout: img, balloonLayout: balloonLayout })
+
+      const polygons = ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"')
+
+      polygons.each(function(polygon) {
+
+      const res = polygon.geometry.contains(event.get('target').geometry.getCoordinates())
+
+        if(res) {
+          if(get().disable) {
+            polygon.options.set({ strokeColor: '#DD1A32', fillColor: 'rgba(221, 26, 50, 0.15)', fillOpacity: 1, strokeWidth: 5 });
+          } else {
+            polygon.options.set({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
+          }
+        }
+      });
+    }
+  },
+
+  // изменение состояния карты/точек при клике вне точек
+  changePointNotHover: (event) => {
+    get().myMap2.balloon.close();
+
+    const type = event.get('target').getType();
+
+    if(type === 'yandex#map') {
+      ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Point"').setOptions({ iconLayout: 'default#image' });
+
+      if(get().disable) {
+        ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ strokeColor: '#35B250', fillColor: 'rgba(53, 178, 80, 0.15)', fillOpacity: 1,
+        strokeWidth: 5 });
+      } else {
+        ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
+      }
+    }
+
+    const myAddr = get().myAddr.map(addr => {
+        addr.color = null;
+        return addr;
+      }
+    );
+
+    set({ myAddr });
+  },
+
+  // показывать/не показывать границы зон доставки
+  disablePointsZone: () => {
+  
+    set({ disable: !get().disable });
+
+    if(get().disable) {
+      ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ strokeColor: '#35B250', fillColor: 'rgba(53, 178, 80, 0.15)', fillOpacity: 1,
+      strokeWidth: 5 });
+    } else {
+      ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
+    }
+  },
+
+  // выбор адреса точки
+  chooseAddr: (id) => {
+
+    get().myMap2.balloon.close();
+
+    ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Point"').setOptions({ iconLayout: 'default#image' });
+
+    if(get().disable) {
+      ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ strokeColor: '#35B250', fillColor: 'rgba(53, 178, 80, 0.15)', fillOpacity: 1,
+      strokeWidth: 5, balloonLayout: null });
+    } else {
+      ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
+    }
+
+    const addrHasColor = get().myAddr.find(addr => addr.id === id && addr.color === '#DD1A32');
+    
+    if(addrHasColor) {
+      
+      const myAddr = get().myAddr.map(addr => {
+        addr.color = null;
+        return addr;
+      });
+      
+      set({ myAddr });
+      
+      return;
+    }
+
+    let newAddr = '';
+
+    const myAddr = get().myAddr.map(addr => {
+      if (addr.id === id)  {
+        addr.color = '#DD1A32'
+        newAddr = addr.addr;
+        return addr;
+      } else {
+        addr.color = null;
+        return addr;
+      }
+    });
+
+    const img = ymaps.templateLayoutFactory.createClass( 
+      "<div class='my-img'>" +
+        "<img alt='' src='/Favikon.png' />" +
+      "</div>"
+    );
+
+    const balloonLayout = ymaps.templateLayoutFactory.createClass( 
+      "<div class='my-hint'>" +
+        "<img alt='' src='/about/fasad.jpg' /><br />" +
+        "<div>{{ properties.raion }}</div><br />" +
+        "<div>{{ properties.address }}</div><br />" +
+      "</div>"
+    );
+
+    const data = ymaps.geoQuery(get().myMap2.geoObjects);
+
+    data.each(function(item) {
+
+      const addr = item.properties._data.address;
+
+      if(addr === newAddr) {
+
+       if(get().disable) {
+         item.options.set({strokeColor: '#DD1A32', fillColor: 'rgba(221, 26, 50, 0.15)', fillOpacity: 1, strokeWidth: 5 });
+        } else {
+         item.options.set({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
+        }
+
+        item.options.set({ balloonLayout: balloonLayout, iconLayout: img });
+        item.balloon.open();
+
+      }
+    });
+
+    set({ myAddr });
+  }
+
 }));
 
 export const useAkciiStore = create((set) => ({
