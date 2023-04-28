@@ -4,8 +4,7 @@
   & > div{
     background-color: rgba(242, 242, 242, 0.5)!important;
     & img {
-      z-index: -1!important;
-      position: relative!important;
+      mix-blend-mode: multiply;
     }
   }
   
