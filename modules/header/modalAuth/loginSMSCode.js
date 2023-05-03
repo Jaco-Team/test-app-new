@@ -1,8 +1,7 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 import { shallow } from 'zustand/shallow';
 import { useHeaderStore } from '@/components/store';
 
-import Image from 'next/image';
 import { IconClose } from '@/ui/Icons';
 
 import IconButton from '@mui/material/IconButton';
@@ -11,83 +10,132 @@ import Typography from '@mui/material/Typography';
 import AuthCode from 'react-auth-code-input';
 
 export default function LoginSMSCode() {
-  console.log('render LoginSMS');
+  console.log('render LoginSMSCode');
 
-  const [closeModalAuth, errTextAuth, changeCode, sendSMS, toTime, checkCode, code, is_sms, navigate] = useHeaderStore(
-    (state) => [state.closeModalAuth, state.errTextAuth, state.changeCode, state.sendSMS, state.toTime,state.checkCode, state.code, state.is_sms, state.navigate], shallow);
+  const inputRef = useRef(null);
+
+  const [closeModalAuth, errTextAuth, changeCode, sendsmsNewLogin, toTime, checkCode, code, is_sms, navigate, loginLogin, clearCode, preTypeLogin, createProfile] = useHeaderStore(
+    (state) => [state.closeModalAuth, state.errTextAuth, state.changeCode, state.sendsmsNewLogin, state.toTime, state.checkCode, state.code, state.is_sms, state.navigate,
+      state.loginLogin, state.clearCode, state.preTypeLogin, state.createProfile], shallow);
+
 
   const [timer, setTimer] = useState(89);
 
   useEffect(() => {
     let interval;
-    
+
     if (timer > 0) {
       interval = setInterval(() => {
-        setTimer(timer => timer - 1);
+        setTimer((timer) => timer - 1);
       }, 1000);
-    } 
+    } else {
+      inputRef.current.clear();
+      clearCode();
+    }
 
     return () => clearInterval(interval);
   }, [timer]);
 
   const reSendSMS = () => {
-    sendSMS();
+    createProfile();
     setTimer(89);
-  }
+  };
+
+  const reCall = () => {
+    sendsmsNewLogin();
+    setTimer(89);
+  };
 
   return (
     <div className={'modalLoginSMSCode'}>
-      <IconButton style={{position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent'}} onClick={closeModalAuth}>
-        <IconClose style={{width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible'}}/>
+      <IconButton style={{ position: 'absolute', top: -50, left: 10, backgroundColor: 'transparent'}} onClick={closeModalAuth}>
+        <IconClose style={{ width: 35, height: 35, overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }}/>
       </IconButton>
 
-      <div className="loginIMG">
-        <picture>
-          <Image alt="Аккаунт" src='/tripple_dop.png' width={180} height={180} />
-        </picture>
-      </div>
+      {preTypeLogin === 'loginSMS' ? (
+        <>
+          <div className="loginHeader">
+            <Typography component="h2">{is_sms ? 'Проверочный код' : 'Телефон'}</Typography>
+          </div>
 
-      <div className="loginHeader">
-        <Typography component="h2">Проверим телефон ?</Typography>
-      </div>
-
-      {is_sms === true ? null : (
-        <div className="loginSubHeader">
-          <Typography component="span">Сейчас мы вам позвоним.</Typography>
-          <Typography component="span">Введите последние 4 цифры номера.</Typography>
-        </div>
-      )}
-
-      {is_sms === false ? null : (
-        <div className="loginSubHeader">
-          <Typography component="span">Введите 4 цифры из смс.</Typography>
-        </div>
-      )}
-
-      <div className={timer > 0 ? 'loginAutCode' : 'loginAutCodeOther'}>
-        <AuthCode autoFocus={true} allowedCharacters="numeric" length="4" onChange={(data) => changeCode(data)}/>
-      </div>
-
-      <div className="loginErr">
-        <Typography component="span">{errTextAuth}</Typography>
-      </div>
-
-      {timer > 0 ? (
-        <div className="loginTimer">
-          <Typography component="span">Повторно отправить можно через {toTime(timer)}</Typography>
-        </div>
+          <div className="loginSubHeader1">
+            <Typography component="span">{is_sms ? 'Отправили код на номер' : timer === 0 ? 'Мы не дозвонились по номеру' : 'Мы звоним по номеру'}</Typography>
+          </div>
+        </>
       ) : (
-        <div className="loginTimerSend" onClick={reSendSMS}>
-          <Typography component="span">Отправить код еще раз</Typography>
+        <>
+          <div className="loginHeader">
+            <Typography component="h2">{timer === 0 ? 'Телефон' : preTypeLogin === 'resetPWD' ? 'Телефон' : 'Регистрация'}</Typography>
+          </div>
+
+          <div className="loginSubHeader1">
+            <Typography component="span">{timer === 0 ? 'Мы не дозвонились по номеру' : 'Мы звоним по номеру'}</Typography>
+          </div>
+        </>
+      )}
+
+      <div className="loginSubHeader2">
+        <Typography component="span">{loginLogin}</Typography>
+      </div>
+
+      <div className="loginAutCode">
+        <AuthCode
+          allowedCharacters="numeric"
+          length="4"
+          onChange={(data) => changeCode(data)}
+          containerClassName={timer === 0 ? 'disable' : null}
+          inputClassName={code.length === 4 ? 'active' : null}
+          disabled={timer === 0 ? true : false}
+          ref={inputRef}
+        />
+      </div>
+
+      {is_sms && !errTextAuth && timer !== 0 ? (
+        <div className="loginSubHeader1">
+          <Typography component="span">Введите 4 цифры из смс</Typography>
+        </div>
+      ) : !is_sms && !errTextAuth && timer !== 0 ? (
+        <div className="loginSubHeader1">
+          <Typography component="span">Введите последние 4 цифры номера</Typography>
+        </div>
+      ) : errTextAuth ? (
+        <div className="loginErr">
+          <Typography component="span">{errTextAuth}</Typography>
+        </div>
+      ) : null}
+
+      {timer === 0 && preTypeLogin !== 'loginSMS' ? (
+        <>
+          <div className="loginSubHeader3" onClick={reCall}>
+            <Typography component="span">Позвонить еще раз</Typography>
+          </div>
+
+          <div
+            className="loginTimer"
+            style={{ textDecoration: 'underline', cursor: 'pointer' }}
+            onClick={() => navigate('loginSMS')}
+          >
+            <Typography component="span">Войти по СМС</Typography>
+          </div>
+        </>
+      ) : timer === 0 ? null : (
+        <div className="loginTimer">
+          <Typography component="span">{preTypeLogin === 'loginSMS' && is_sms ? 'Отправить повторно через ' : null}{toTime(timer)}</Typography>
         </div>
       )}
 
-      <div className={'loginSend ' + (code.length === 4 ? '' : 'disabled')} onClick={checkCode}>
+      {timer === 0 && preTypeLogin === 'loginSMS' ? <div style={{ minHeight: '140px' }}></div> : null}
+
+      <div
+        className="loginSend"
+        style={{ backgroundColor: code.length === 4 ? '#DD1A32' : timer === 0 ? preTypeLogin === 'loginSMS' ? '#DD1A32' : 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.2)'}}
+        onClick={timer === 0 || code.length < 4 ? timer === 0 && preTypeLogin === 'loginSMS' ? reSendSMS : null : checkCode}
+      >
         <Typography component="span">Отправить</Typography>
       </div>
 
       <div className="loginPrev">
-        <Typography component="span" onClick={() => navigate('loginSMS')}>Изменить номер телефона</Typography>
+        <Typography component="span" onClick={() => navigate(preTypeLogin)}>Изменить номер телефона</Typography>
       </div>
     </div>
   );

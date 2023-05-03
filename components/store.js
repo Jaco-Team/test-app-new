@@ -464,6 +464,13 @@ export const useHeaderStore = create((set, get) => ({
   pwdLogin: '',
   code: '',
   genPwd: '',
+  showPassword: false,
+  loading: false,
+
+  // показывать/скрывать пароль в форме авторизации
+  clickShowPassword: () => {
+    set({ showPassword: !get().showPassword });
+  },
 
   setActivePage: (page) => {
     set({ activePage: page });
@@ -473,7 +480,7 @@ export const useHeaderStore = create((set, get) => ({
     set({ openCityModal: active });
   },
 
-  // открытие модального окна формы регистрации
+  // открытие модального окна формы авторизации
   setActiveModalAuth: (active) => {
     set({ openAuthModal: active });
   },
@@ -483,17 +490,17 @@ export const useHeaderStore = create((set, get) => ({
     set({ errTextAuth: text });
   },
 
-  // навигация между форма при регистрации/логировании
+  // навигация между формами авторизации
   navigate: (typeLogin) => {
-    if (typeLogin === 'create') {
+
+    if (typeLogin === 'create' || typeLogin === 'resetPWD') {
       get().gen_password();
-      set({ preTypeLogin: 'create' });
     }
 
-    set({ typeLogin });
+    set({ typeLogin, errTextAuth: '', preTypeLogin: get().typeLogin });
   },
 
-  // закрытие форм в регистрации/логировании
+  // закрытие форм авторизации
   closeModalAuth: () => {
     set({
       openAuthModal: false,
@@ -504,6 +511,7 @@ export const useHeaderStore = create((set, get) => ({
       pwdLogin: '',
       code: '',
       genPwd: '',
+      showPassword: false,
     });
   },
 
@@ -540,12 +548,12 @@ export const useHeaderStore = create((set, get) => ({
     }
   },
 
-  // установление пароля при регистрации/логировании
+  // установление пароля при авторизации
   setPwdLogin: (event) => {
     set({ pwdLogin: event.target.value });
   },
 
-  // запуск функции при нажатии enter в зависимости от формы
+  // запуск функции при нажатии enter в зависимости от формы авторизации
   checkLoginKey: (type, event) => {
 
     if (parseInt(event.keyCode) == 13) {
@@ -553,24 +561,13 @@ export const useHeaderStore = create((set, get) => ({
         get().logIn();
       }
       if (parseInt(type) == 2) {
-        get().sendSMS();
+        get().createProfile();
       }
 
       if (parseInt(type) == 3) {
-        get().checkCode();
-      }
-
-      if (parseInt(type) == 4) {
         get().sendsmsNewLogin();
       }
     }
-  },
-
-  // направление смс на указанный номер при регистарции/логировании
-  sendSMS: () => {
-    get().navigate('loginSMSCode');
-
-    get().createProfile();
   },
 
   // установление таймера 
@@ -582,11 +579,21 @@ export const useHeaderStore = create((set, get) => ({
 
   // изменение/введение 4-х значного номера подтверждения
   changeCode: (code) => {
+
     set({ code });
+
+    if (code.length < 4) {
+      set({ errTextAuth: '' });
+    }
 
     if (code.length === 4) {
       get().checkCode();
     }
+  },
+
+  // сбрасывает/очищает поля ввода 4-х значного кода
+  clearCode: () => {
+    set({ code: '', errTextAuth: '' });
   },
 
   // генерация случаного пароля при регистарции
@@ -609,6 +616,8 @@ export const useHeaderStore = create((set, get) => ({
     };
 
     const res = await api('auth', data);
+
+    // console.log('checkCode ===>', res);
 
     if (res.st === false) {
       if (res.type === 'modal') {
@@ -646,6 +655,9 @@ export const useHeaderStore = create((set, get) => ({
 
   //логирование в форме регистрации
   logIn: async () => {
+
+    set({ loading: true });
+
     const data = {
       type: 'site_login',
       number: get().loginLogin,
@@ -657,6 +669,7 @@ export const useHeaderStore = create((set, get) => ({
     if (json.st === false) {
       set({
         errTextAuth: json.text,
+        loading: false,
       });
     } else {
       set({
@@ -664,6 +677,7 @@ export const useHeaderStore = create((set, get) => ({
         is_sms: json.is_sms,
         token: json.token,
         openAuthModal: false,
+        loading: false,
       });
 
       if (typeof window !== 'undefined') {
@@ -672,15 +686,17 @@ export const useHeaderStore = create((set, get) => ({
     }
   },
 
-  // создание нового аккаунта
+  // создание нового аккаунта или получения смс кода для действующего аккаунта
   createProfile: async () => {
     const data = {
       type: 'create_profile',
       number: get().loginLogin,
-      token: get().token,
+      // token: get().token,
     };
 
     const json = await api('auth', data);
+
+    // console.log('createProfile =====>', json);
 
     if (json.st) {
       set({
@@ -690,6 +706,9 @@ export const useHeaderStore = create((set, get) => ({
         errText2: '',
         is_sms: json.is_sms,
       });
+      if(get().typeLogin !== 'loginSMSCode') {
+        get().navigate('loginSMSCode');
+      }
     } else {
       if (json.type == 'modal') {
         set({
@@ -715,9 +734,9 @@ export const useHeaderStore = create((set, get) => ({
       token: get().token,
     };
 
-    get().navigate('loginSMSCode');
-
     const json = await api('auth', data);
+
+    // console.log('sendsmsNewLogin', json)
 
     if (json['st']) {
       set({
@@ -727,6 +746,9 @@ export const useHeaderStore = create((set, get) => ({
         errText2: '',
         is_sms: json.is_sms ?? false,
       });
+      if(get().typeLogin !== 'loginSMSCode') {
+        get().navigate('loginSMSCode');
+      }
     } else {
       if (json.type == 'modal') {
         set({

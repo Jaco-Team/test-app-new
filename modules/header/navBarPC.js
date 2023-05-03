@@ -177,7 +177,7 @@ export default function NavBarPC(props) {
           <div style={{ width: '2.2%' }} />
 
           
-          <Link href={'/' + city + '/zakazy'} style={{ width: '3.5%' }} className={active_page === 'profile' ? 'headerCat activeCat' : 'headerCat'}>
+          <Link href={'/' + city + '/zakazy'} style={{ width: '3.5%' }} className={active_page === 'profile' ? 'headerCat activeCat' : 'headerCat'} onClick={ () => setActiveModalAuth(true) }>
             <ProfileIcon style={{ width: '4vw', height: '4vw' }}/>
           </Link>
           

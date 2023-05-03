@@ -8,6 +8,7 @@ import '../styles/instpayorders.scss'
 import '../styles/jobs.scss'
 
 import '../styles/contacts/contacts.scss'
+import '../styles/header/loginForm.scss'
 
 import '../styles/home.scss'
 import '../styles/home/homePC.scss'
@@ -19,7 +20,7 @@ import '../styles/profile.scss'
 import '../styles/profile/promokody.scss'
 import '../styles/profile/zakazy.scss'
 
-import '../styles/loginForm.scss'
+// import '../styles/loginForm.scss'
 import '../styles/header.scss'
 import '../styles/footer.scss'
 import '../styles/docsBreadcrumbs.scss'
