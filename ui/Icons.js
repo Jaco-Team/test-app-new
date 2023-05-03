@@ -299,3 +299,73 @@ export function ProfileIcon(props) {
     </svg>
   )
 }
+
+export function ArrowIcon(props) { 
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="60"
+      height="60"
+      fill="none"
+      viewBox="0 0 60 60"
+      {...props}
+    >
+      <g clipPath="url(#clip0_818_442)">
+        <path
+          fill="#000"
+          fillOpacity="0.3"
+          d="M29.996 60.009C13.425 60.009-.01 46.575-.01 30.004-.009 13.434 13.425 0 29.996 0 46.566 0 60 13.433 60 30.004S46.567 60.01 29.996 60.01z"
+        ></path>
+        <path
+          stroke="#fff"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="3"
+          d="M33.754 17.5L21.248 30.006l12.506 12.498"
+        ></path>
+      </g>
+      <defs>
+        <clipPath id="clip0_818_442">
+          <path
+            fill="#fff"
+            d="M0 0H60V60H0z"
+            transform="matrix(-1 0 0 1 60 0)"
+          ></path>
+        </clipPath>
+      </defs>
+    </svg>
+  )
+}
+
+export function NextIcon(props) { 
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="60"
+      height="60"
+      fill="none"
+      viewBox="0 0 60 60"
+      {...props}
+    >
+      <g clipPath="url(#clip0_818_439)">
+        <path
+          fill="#000"
+          fillOpacity="0.3"
+          d="M30.004 60.009c16.571 0 30.005-13.434 30.005-30.005C60.009 13.434 46.575 0 30.004 0 13.434 0 0 13.433 0 30.004S13.433 60.01 30.004 60.01z"
+        ></path>
+        <path
+          stroke="#fff"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="3"
+          d="M26.246 17.5l12.506 12.506-12.506 12.498"
+        ></path>
+      </g>
+      <defs>
+        <clipPath id="clip0_818_439">
+          <path fill="#fff" d="M0 0H60V60H0z"></path>
+        </clipPath>
+      </defs>
+    </svg>
+  )
+}

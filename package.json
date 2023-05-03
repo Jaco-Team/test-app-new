@@ -12,7 +12,7 @@
     "@emotion/react": "^11.10.6",
     "@emotion/styled": "^11.10.6",
     "@mui/icons-material": "^5.11.16",
-    "@mui/material": "^5.12.0",
+    "@mui/material": "^5.12.2",
     "@mui/styled-engine-sc": "^5.12.0",
     "@react-spring/web": "^9.7.2",
     "css-mediaquery": "^0.1.2",
@@ -20,22 +20,22 @@
     "moment": "^2.29.4",
     "moment-locales-webpack-plugin": "^1.2.0",
     "moment-timezone-data-webpack-plugin": "^1.5.1",
-    "next": "13.3.0",
+    "next": "13.3.1",
     "query-string": "^8.1.0",
     "react": "18.2.0",
     "react-auth-code-input": "^3.2.1",
     "react-dom": "18.2.0",
     "react-scroll": "^1.8.9",
-    "sass": "^1.62.0",
-    "sharp": "^0.32.0",
-    "styled-components": "^5.3.9",
-    "swiper": "^9.2.0",
+    "sass": "^1.62.1",
+    "sharp": "^0.32.1",
+    "styled-components": "^5.3.10",
+    "swiper": "^9.2.4",
     "typescript": "^5.0.4",
     "ua-parser-js": "^1.0.35",
     "zustand": "^4.3.7"
   },
   "devDependencies": {
-    "eslint": "8.38.0",
-    "eslint-config-next": "13.3.0"
+    "eslint": "8.39.0",
+    "eslint-config-next": "13.3.1"
   }
 }
