@@ -13,9 +13,9 @@ export default function ModalAuthError() {
 
   return (
     <div className="modalLoginError">
-      <IconButton style={{position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent'}} onClick={closeModalAuth}>
-        <IconClose style={{width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible'}} />
-      </IconButton>
+        <IconButton style={{ position: 'absolute', top: -50, left: 10, backgroundColor: 'transparent' }} onClick={closeModalAuth}>
+          <IconClose style={{ width: 35, height: 35, overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }}/>
+        </IconButton>
 
       <div className="InnerBorder">
         <div className="loginHeader">

@@ -1,69 +1,80 @@
 import { shallow } from 'zustand/shallow';
 import { useHeaderStore } from '@/components/store';
 
-import Image from 'next/image';
 import MyTextInput from '@/ui/MyTextInput';
 import { IconClose } from '@/ui/Icons';
 
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
+import InputAdornment from '@mui/material/InputAdornment';
+import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
+import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 
 export default function Create() {
   console.log('render Create');
 
-  const [closeModalAuth, errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, genPwd, sendsmsNewLogin] = useHeaderStore(
-    (state) => [state.closeModalAuth, state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.genPwd,
-      state.sendsmsNewLogin], shallow);
+  const [closeModalAuth, errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, genPwd, sendsmsNewLogin, showPassword, clickShowPassword] = useHeaderStore((state) => [state.closeModalAuth, state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.genPwd,
+      state.sendsmsNewLogin, state.showPassword, state.clickShowPassword], shallow);
 
   return (
     <div className="modalLoginCreateNew">
-      <IconButton style={{position: 'absolute', top: -40, left: 15, backgroundColor: 'transparent'}} onClick={closeModalAuth}>
-        <IconClose style={{width: 25, height: 25, fill: '#fff', color: '#fff', overflow: 'visible'}}/>
+      <IconButton style={{ position: 'absolute', top: -50, left: 10, backgroundColor: 'transparent' }} onClick={closeModalAuth}>
+        <IconClose style={{ width: 35, height: 35, overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }}/>
       </IconButton>
 
-      <div className="loginIMG">
-        <Image alt="Аккаунт" src='/account-icon-240x240_white.png' width={180} height={180} />
-      </div>
-
       <div className="loginHeader">
-        <Typography component="h2">Новый аккаунт</Typography>
+        <Typography component="h2">Регистрация</Typography>
+      </div>
+
+      <div className="loginInfo">
+        <Typography component="h2">Укажите свой номер телефона</Typography>
       </div>
 
       <MyTextInput
-        type={'phone'}
-        placeholder="Телефон"
+        type="phone"
+        placeholder="телефон"
         value={loginLogin}
-        func={event => changeLogin(event)} onKeyDown={event => checkLoginKey(4, event)} 
+        func={(event) => changeLogin(event)}
+        onKeyDown={(event) => checkLoginKey(3, event)}
         className="inputLogin"
       />
-
-      <div className="loginErr">
-        <Typography component="span">{errTextAuth}</Typography>
-      </div>
 
       <MyTextInput
-        type={'password'}
-        placeholder="Придумайте пароль"
-        value={pwdLogin} 
-        func={event => setPwdLogin(event)} onKeyDown={event => checkLoginKey(4, event)}
+        type={showPassword ? 'text' : 'password'}
+        placeholder="придумайте пароль"
+        value={pwdLogin}
+        func={(event) => setPwdLogin(event)}
+        onKeyDown={(event) => checkLoginKey(3, event)}
         className="inputLogin"
+        inputAdornment={<InputAdornment position="end"><IconButton aria-label="toggle password visibility" onClick={clickShowPassword}>
+              {showPassword ? <VisibilityOutlinedIcon style={{ fill: 'rgba(0, 0, 0, 0.2)', height: '40px', width: '47px' }}/>
+              : <VisibilityOffOutlinedIcon style={{ fill: 'rgba(0, 0, 0, 0.2)', height: '40px', width: '47px' }}/>}
+            </IconButton></InputAdornment>}
       />
 
-      <div className="loginSubHeader">
-        <Typography component="span">Надежный пароль - строчные и заглавные буквы, цифры и символы.</Typography>
-        <Typography component="span">Например: {genPwd}</Typography>
-      </div>
+      {errTextAuth ? (
+        <div className="loginErr">
+          <Typography component="span">{errTextAuth}</Typography>
+        </div>
+      ) : (
+        <div className="loginSubHeader">
+          <Typography component="span">Надежный пароль - строчные и заглавные буквы, цифры и символы.</Typography>
+          <Typography component="span">Например: {genPwd}</Typography>
+        </div>
+      )}
 
-      <div className="loginErrText">
-        <Typography component="span"></Typography>
-      </div>
-
-      <div className="loginLogin" onClick={sendsmsNewLogin}>
-        <Typography component="span">Создать аккаунт</Typography>
+      <div className="loginLogin" onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? sendsmsNewLogin : null}
+        style={{ backgroundColor: loginLogin.length === 11 && pwdLogin.length > 1 ? '#DD1A32' : 'rgba(0, 0, 0, 0.2)' }}
+      >
+        <Typography component="span">Зарегистрироваться</Typography>
       </div>
 
       <div className="loginCreate" onClick={() => navigate('start')}>
         <Typography component="span">У меня есть аккаунт</Typography>
+      </div>
+
+      <div className="loginData">
+        <Typography component="span">Продолжая вы соглашаетесь со сбором и обработкой персональных данных и с пользовательским соглашением</Typography>
       </div>
     </div>
   );
