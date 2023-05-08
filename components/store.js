@@ -60,58 +60,57 @@ export const useContactStore = create((set, get) => ({
 
   // отрисовка карты по данным
   loadMap: (points, points_zone) => {
+    if(!get().myMap2){
+      ymaps.ready().then((function () {
     
-    if (!get().myMap2) {
-    ymaps.ready().then((function () {
-  
-      get().myMap2 = new ymaps.Map('ForMap', {
-        center: [ points[0]['xy_center_map']['latitude'], points[0]['xy_center_map']['longitude'] ],
-        zoom: 11.5,
-        controls: ['geolocationControl', 'searchControl']
-      }, { suppressMapOpenBlock: true },
-      );
+        get().myMap2 = new ymaps.Map('ForMap', {
+          center: [ points[0]['xy_center_map']['latitude'], points[0]['xy_center_map']['longitude'] ],
+          zoom: 11.5,
+          controls: ['geolocationControl', 'searchControl']
+        }, { suppressMapOpenBlock: true },
+        );
 
-      points_zone.map((zone, key)=>{
-        get().myMap2.geoObjects.add(
-          new ymaps.Polygon([zone], 
+        points_zone.map((zone, key)=>{
+          get().myMap2.geoObjects.add(
+            new ymaps.Polygon([zone], 
+              {
+                address: points[ key ]['addr'],
+                raion: points[ key ]['raion'],
+              }, 
+              {
+              fillColor: 'rgba(53, 178, 80, 0.15)',
+              strokeColor: '#35B250',
+              strokeWidth: 5,
+              hideIconOnBalloonOpen: false,
+            })
+          );
+        })
+          
+        points.map(function(point, key){
+          get().myMap2.geoObjects.add(
+            new ymaps.Placemark( [point['xy_point']['latitude'], point['xy_point']['longitude']], 
             {
               address: points[ key ]['addr'],
               raion: points[ key ]['raion'],
-            }, 
-            {
-            fillColor: 'rgba(53, 178, 80, 0.15)',
-            strokeColor: '#35B250',
-            strokeWidth: 5,
-            hideIconOnBalloonOpen: false,
-          })
-        );
-      })
-        
-      points.map(function(point, key){
-        get().myMap2.geoObjects.add(
-          new ymaps.Placemark( [point['xy_point']['latitude'], point['xy_point']['longitude']], 
-          {
-            address: points[ key ]['addr'],
-            raion: points[ key ]['raion'],
-          }, {
-            iconLayout: 'default#image',
-            iconImageHref: '/Favikon.png',
-            iconImageSize: [50, 50],
-            iconImageOffset: [-12, -24],
-            hideIconOnBalloonOpen: false,
-          })
-      )
-      })
+            }, {
+              iconLayout: 'default#image',
+              iconImageHref: '/Favikon.png',
+              iconImageSize: [50, 50],
+              iconImageOffset: [-12, -24],
+              hideIconOnBalloonOpen: false,
+            })
+        )
+        })
 
-      get().myMap2.geoObjects.events.add('click', get().changePointClick);
-      get().myMap2.events.add('click', get().changePointNotHover);
+        get().myMap2.geoObjects.events.add('click', get().changePointClick);
+        get().myMap2.events.add('click', get().changePointNotHover);
 
-    }))
-  }  else {
-    get().myMap2.destroy();
-    get().myMap2 = null;
-    get().loadMap(get().myPoints, get().pointsZone);
-  }
+      }))
+    }else{
+      get().myMap2.destroy();
+      get().myMap2 = null;
+      get().loadMap(get().myPoints, get().pointsZone);
+    }
   },
 
   // изменение состояния точки по клику

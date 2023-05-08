@@ -1,23 +1,20 @@
 import React, { useEffect } from 'react';
 
-import Script from 'next/script';
 import dynamic from 'next/dynamic'
+import { roboto } from '@/ui/Font.js'
+import { api } from '@/components/api.js';
+
+import { useCitiesStore, useHeaderStore } from '@/components/store.js';
 
 const DynamicHeader = dynamic(() => import('@/components/header.js'))
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
-const DynamicPage = dynamic(() => import('@/modules/contacts/page.js'))
-
-import { api } from '@/components/api.js';
-import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/store.js';
-import { roboto } from '@/ui/Font.js'
+const DynamicPage = dynamic(() => import('@/modules/pageText.js'))
 
 const this_module = 'contacts';
 
-export default function Contacts(props) {
+export default React.memo(function Legal(props) {
 
   const { city, cats, cities, page } = props.data1;
-  
-  const getData = useContactStore( state => state.getData );
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
@@ -30,21 +27,19 @@ export default function Contacts(props) {
       setThisCityList(cities)
     }
 
-    setActivePage(this_module)
+    setActivePage('legal')
   }, []);
 
   return (
     <div className={roboto.variable}>
-      <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" onLoad={() => { getData(this_module, city) }} />
+      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'other'} />
 
-      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
-
-      <DynamicPage page={page} />
+      <DynamicPage page={page} className="PAGELegal MuiGrid-spacing-xs-3" />
 
       <DynamicFooter cityName={city} />
     </div>
-  );
-}
+  )
+})
 
 export async function getServerSideProps({ req, res, query }) {
   res.setHeader(
@@ -55,11 +50,11 @@ export async function getServerSideProps({ req, res, query }) {
   let data = {
     type: 'get_page_info', 
     city_id: query.city,
-    page: 'contacts' 
+    page: 'legal' 
   };
 
   const data1 = await api(this_module, data);
-
+  
   data1['city'] = query.city;
 
   return { props: { data1 } }

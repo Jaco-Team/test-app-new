@@ -131,3 +131,14 @@ $colorText: #525252;
         @include fonsNew(1.4rem, var(--inter-font));
     }
 }
+
+@mixin font60_600() {
+    font-style: normal;
+    font-weight: 600;
+
+    @include fonsNew(2.2vw, var(--inter-font));
+
+    @media (max-width: 960px) {
+        @include fonsNew(2.2rem, var(--inter-font));
+    }
+}
