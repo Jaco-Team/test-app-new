@@ -4,6 +4,7 @@ import '../styles/akcii.scss'
 import '../styles/about.scss'
 import '../styles/publichnaya-oferta.scss'
 import '../styles/politika-konfidencialnosti.scss'
+import '../styles/legal.scss'
 import '../styles/instpayorders.scss'
 import '../styles/jobs.scss'
 

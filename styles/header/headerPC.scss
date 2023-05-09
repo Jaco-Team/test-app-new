@@ -11,6 +11,7 @@ html:not([data-scroll='0']) .blockShadow {
   background: linear-gradient(180deg, rgba(115, 115, 115, 0.1) 0%, rgba(83, 92, 84, 0) 100%);
   mix-blend-mode: multiply;
   transition: all 0.5s ease 0s;
+  z-index: 2;
 }
 
 .blockShadow{

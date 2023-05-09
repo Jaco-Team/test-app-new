@@ -1,6 +1,5 @@
 import React, { useState } from 'react';
 
-import Script from 'next/script';
 import Link from 'next/link';
 
 import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/store.js';
@@ -25,16 +24,18 @@ import FormControlLabel from '@mui/material/FormControlLabel';
 import Switch from '@mui/material/Switch';
 
 const IOSSwitch = styled((props) => (<Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />))(({ theme }) => ({
-  width: 70,
-  height: 30,
+  width: '4.2vw',
+  height: '2.1vw',
+  borderRadius: '2vw',
   padding: 0,
   '& .MuiSwitch-switchBase': {
     padding: 0,
-    margin: 2,
+    margin: '0.1vw',
     transitionDuration: '300ms',
     '&.Mui-checked': {
-      transform: 'translateX(40px)',
+      transform: 'translateX(2.1vw)',
       color: '#fff',
+      marginTop: '0.1vw',
       '& + .MuiSwitch-track': {
         backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#57DC35',
         opacity: 1,
@@ -43,6 +44,9 @@ const IOSSwitch = styled((props) => (<Switch focusVisibleClassName=".Mui-focusVi
       '&.Mui-disabled + .MuiSwitch-track': {
         opacity: 0.5,
       },
+    },
+    '& .MuiSwitch-thumb': {
+      boxShadow: 'none',
     },
     '&.Mui-focusVisible .MuiSwitch-thumb': {
       color: '#33cf4d',
@@ -59,9 +63,10 @@ const IOSSwitch = styled((props) => (<Switch focusVisibleClassName=".Mui-focusVi
     },
   },
   '& .MuiSwitch-thumb': {
+    //paddingTop: '0.1vw',
     boxSizing: 'border-box',
-    width: 26,
-    height: 26,
+    width: '1.9vw',
+    height: '1.9vw',
   },
   '& .MuiSwitch-track': {
     borderRadius: 36 / 2,
@@ -91,66 +96,63 @@ export default function ContactsPage(props) {
   const chooseCity = (id) => {
     const city = thisCityList.find((city) => city.id === id);
 
-    setThisCityRu(city.name);
-
     setAnchorEl(null);
 
+    setThisCityRu(city.name)
     getData(activePage, city.link);
   };
 
   return (
     <Meta title={page.title} description={page.description}>
-      <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" />
+      
+      <div className="Contact_">
+        <div className="Contact">
 
-      {!myAddr.length ? null : 
-      <Grid item lg={4} md={4} xl={4} sm={12} xs={12} className="Contact">
+          <Button className='chooseCity' onClick={openMenu} endIcon={<KeyboardArrowDownIcon />}>
+            <Typography variant="h5" component="span">{thisCityRu}</Typography>
+          </Button>
 
-        <Button className='chooseCity' onClick={openMenu} endIcon={<KeyboardArrowDownIcon />}>
-          <Typography variant="h5" component="span">{thisCityRu}</Typography>
-        </Button>
-
-        <Menu id='chooseCityContact' anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
-          {thisCityList.map((city, key) => (
-            <MenuItem key={key}>
-              <Link href={`/${city.link}/${activePage}`} onClick={() => chooseCity(city.id)}>
-                <span>{city.name}</span>
-              </Link>
-            </MenuItem>
-          ))}
-        </Menu>
-
-        <Grid item xs={12} sm={12} className="listAddrPoint">
-          <Typography variant="h5" component="h2">Адреса кафе:</Typography>
-          <List>
-            {myAddr.map((point, key) => (
-              <ListItemButton key={key} disableRipple={false} onClick={() => chooseAddr(point.id)}>
-                <MapPointIcon style={{ width: '2vw', height: '2vw' }} />
-                <ListItemText primary={<Typography style={{ color: point?.color ? point.color ? point.color : null : null }}>{point.addr}</Typography>}/>
-              </ListItemButton>
+          <Menu id='chooseCityContact' anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
+            {thisCityList.map((city, key) => (
+              <MenuItem key={key}>
+                <Link href={`/${city.link}/${activePage}`} onClick={() => chooseCity(city.id)}>{city.name}</Link>
+              </MenuItem>
             ))}
-          </List>
-          <Divider style={{ marginTop: 20, marginBottom: 40 }} />
+          </Menu>
+
+          <div className="listAddrPoint">
+            <Typography variant="h5" component="h2">Адреса кафе:</Typography>
+            <List>
+              {myAddr.map((point, key) => (
+                <ListItemButton key={key} disableRipple={false} onClick={() => chooseAddr(point.id)}>
+                  <MapPointIcon style={{ width: '2vw', height: '2.4vw' }} />
+                  <ListItemText primary={<Typography style={{ color: point?.color ? point.color ? point.color : null : null }}>{point.addr}</Typography>}/>
+                </ListItemButton>
+              ))}
+            </List>
+            <Divider />
+          </div>
+
+          <div className="listInfo">
+            <Typography variant="h5" component="span">Телефон для заказа</Typography>
+            <Typography variant="h5" component="h2">{phone}</Typography>
+            <Typography variant="h5" component="span">Работаем ежедневно</Typography>
+            <Typography variant="h5" component="h2">10:00 - 21:30</Typography>
+            <Divider />
+          </div>
+
+          <div className="switch">
+            <Typography variant="h5" component="span">Показать зону доставки</Typography>
+            <FormControlLabel control={<IOSSwitch checked={disable} onClick={disablePointsZone}/>}/>
+          </div>
+
+        </div>
+        
+
+        <Grid item xs={12} id="ForMap">
+          <div style={{ width: '100%', height: '100%', marginRight: 12, backgroundColor: '#e5e5e5' }}/>
         </Grid>
-
-        <Grid item xs={12} sm={12} className="listInfo">
-          <Typography variant="h5" component="span">Телефон для заказа</Typography>
-          <Typography variant="h5" component="h2">{phone}</Typography>
-          <Typography variant="h5" component="span">Работаем ежедневно</Typography>
-          <Typography variant="h5" component="h2">с 10:00 до 21:30</Typography>
-          <Divider style={{ marginTop: 40, marginBottom: 40 }} />
-        </Grid>
-
-        <Grid item xs={12} sm={12} className="switch">
-          <Typography variant="h5" component="span">Показать зону доставки</Typography>
-          <FormControlLabel control={<IOSSwitch checked={disable} onClick={disablePointsZone}/>}/>
-        </Grid>
-
-      </Grid>
-      }
-
-      <Grid item lg={8} md={8} xl={8} sm={12} xs={12} id="ForMap">
-        <div style={{ width: '100%', height: '100%', marginRight: 12, backgroundColor: '#e5e5e5' }}/>
-      </Grid>
+      </div>
     </Meta>
   );
 }

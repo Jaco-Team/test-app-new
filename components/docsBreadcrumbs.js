@@ -19,6 +19,7 @@ export default function DocsBreadcrumbs() {
             <li><Link className={ activePage == 'publichnaya-oferta' ? 'active' : '' } href={"/"+thisCity+"/publichnaya-oferta"}>Публичная оферта</Link></li>
             <li><Link className={ activePage == 'politika-konfidencialnosti' ? 'active' : '' } href={"/"+thisCity+"/politika-konfidencialnosti"}>Политика конфиденциальности</Link></li>
             <li><Link className={ activePage == 'instpayorders' ? 'active' : '' } href={"/"+thisCity+"/instpayorders"}>Правила оплаты</Link></li>
+            <li><Link className={ activePage == 'legal' ? 'active' : '' } href={"/"+thisCity+"/legal"}>Согласие на обработку персональных данных</Link></li>
             <li><Link className={ activePage == '' ? 'active' : '' } href={"/"+thisCity}>Калорийность, состав, БЖУ</Link></li>
           </ul>
         }
