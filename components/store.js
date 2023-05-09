@@ -793,11 +793,15 @@ export const useCitiesStore = create((set) => ({
   },
 }));
 
-export const useHomeStore = create((set) => ({
+export const useHomeStore = create((set, get) => ({
   bannerList: [],
   CatsItems: [],
   openItem: null,
   isOpenModal: false,
+  typeModal: 'start',
+  preTypeModal: '',
+  foodValue: false,
+
   getBanners: async (this_module, city) => {
     let data = {
       type: 'get_banners',
@@ -810,6 +814,7 @@ export const useHomeStore = create((set) => ({
       bannerList: json.banners,
     });
   },
+  
   getItemsCat: async (this_module, city) => {
     let data = {
       type: 'get_items_cat',
@@ -822,6 +827,8 @@ export const useHomeStore = create((set) => ({
       CatsItems: json.items,
     });
   },
+
+  // получение данных выбранного товара
   getItem: async (this_module, city, item_id) => {
     let data = {
       type: 'get_item',
@@ -836,4 +843,44 @@ export const useHomeStore = create((set) => ({
       openItem: json,
     });
   },
+
+  // закрытие модального окна товара на главной странице
+  closeModal: () => {
+    set({
+      isOpenModal: false,
+      typeModal: 'start',
+      foodValue: false,
+      preTypeModal: '',
+    });
+  },
+
+  // навигация между модальными окнами товара
+  navigate: (typeModal) => {
+    set({ typeModal, preTypeModal: get().typeModal });
+  },
+
+  // открытие/закрытие модального окна с БЖУ товара
+  openFoodValue: () => {
+
+    if(get().typeModal === 'value') {
+      get().navigate(get().preTypeModal)
+    } else {
+      get().navigate('value')
+    }
+
+    set({ foodValue: !get().foodValue });
+  },
+
+  // открытие/закрытие модального окна с составом сета товара
+  openSet: () => {
+
+    if(get().typeModal === 'set') {
+      get().navigate('start')
+    } else {
+      get().navigate('set')
+    }
+    
+    set({ foodValue: false });
+  }
+  
 }));

@@ -36,7 +36,7 @@ export default function CardItem(props){
   return (
     <Grid item className={'CardItemPC '+( count > 0 ? 'active' : '' )} xs={12} sm={6} md={4} lg={3} xl={3} sx={{ display: { xs: 'none', sm: 'flex' } }}>
       <div>
-        <Image alt={item.name} src={"https://cdnimg.jacofood.ru/"+item.img_app+"_1420x1420.jpg"} width={1420} height={1420} priority={true} onClick={ () => getItem('home', thisCity, item.id) }/>
+        <Image alt={item.name} src={"https://cdnimg.jacofood.ru/"+item.img_app+"_1420x1420.jpg"} width={1420} height={1420} priority={true} onClick={ () => getItem('home', thisCity, item.id) } style={{ cursor: 'pointer' }}/>
 
         <Typography className="CardNameItem" variant="h5" component="h3">{item.name}</Typography>
 

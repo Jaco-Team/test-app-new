@@ -322,7 +322,7 @@
       text-decoration: underline;
       display: flex;
       align-items: center;
-      justify-content: start;
+      justify-content: flex-start;
       text-align: center;
       @include font22_400();
       color: rgba(0, 0, 0, 0.8) !important;

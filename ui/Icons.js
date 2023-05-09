@@ -80,29 +80,34 @@ export function TGIcon(props) {
 export function IconInfoWhite() {
   return (
     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 80 80">
-      <circle cx="40" cy="40" r="39" stroke="#DADADA" strokeWidth="2"></circle>
+      <circle cx="40" cy="40" r="36" stroke="#cccccc" strokeWidth="6"></circle>
       <path
-        stroke="#DADADA"
+        stroke="#cccccc"
         strokeLinecap="round"
-        strokeWidth="4"
+        strokeWidth="6"
         d="M40 34L40 62"
       ></path>
-      <circle cx="40" cy="22.667" r="4" fill="#DADADA"></circle>
+      <circle cx="40" cy="22.667" r="4" fill="#cccccc"></circle>
     </svg>
   );
 }
 
-export function IconInfoBlack() {
+export function IconInfoRed() {
   return (
-    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 80 80">
-      <circle cx="40" cy="40" r="40" fill="#000" fillOpacity="0.6"></circle>
-      <path
-        stroke="#fff"
+    <svg xmlns="http://www.w3.org/2000/svg" fill='none' viewBox="0 0 80 80">
+      <circle cx="40" cy="40" r="36" 
+      fill='#ee8d99' 
+      fillOpacity="0.6" 
+      stroke='#DD1A32'
         strokeLinecap="round"
-        strokeWidth="4"
+        strokeWidth="6"></circle>
+      <path
+        stroke='#DD1A32'
+        strokeLinecap="round"
+        strokeWidth="6"
         d="M40 34L40 62"
       ></path>
-      <circle cx="40" cy="22.666" r="4" fill="#fff"></circle>
+      <circle cx="40" cy="22.666" r="4" fill='#DD1A32'></circle>
     </svg>
   );
 }
