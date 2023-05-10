@@ -9,134 +9,132 @@ body {
   margin-top: 9vw !important;
   min-height: 900px;
   height: 85%;
-}
-.Contact {
-  background: #ffffff;
-  box-shadow: 10px 20px 40px 15px rgba(0, 0, 0, 0.15);
-  border-radius: 2.8vw;
-  z-index: 1;
-  position: absolute;
-  top: 1.8vw;
-  right: 4.5vw;
-  //transform: translate(-50%, -50%);
-  width: 21.5vw;
-  display: flex;
-  flex-direction: column !important;
-  align-items: center;
-  padding: 2vw 3.7vw;
-  padding-bottom: 3.2vw;
-
-  
-
-  & button.chooseCity {
-    width: 100%;
-    height: 3.2vw;
-    border-radius: 120px;
-    white-space: nowrap;
-    box-sizing: border-box;
-    border: 2px solid rgba(0, 0, 0, 0.25);
-    text-transform: lowercase;
-    
+  & .Contact {
+    background: #ffffff;
+    box-shadow: 10px 20px 40px 15px rgba(0, 0, 0, 0.15);
+    border-radius: 2.8vw;
+    z-index: 1;
+    position: absolute;
+    top: 1.8vw;
+    right: 4.5vw;
+    width: 21.5vw;
     display: flex;
+    flex-direction: column !important;
     align-items: center;
-    justify-content: space-between;
-    cursor: pointer;
-    margin-top: 1.3vw;
-    & span {
-      @include font50_500();
-      padding-left: 1.5vw;
-      &:first-letter {
-        text-transform: uppercase;
-      }
-    }
-    & span:last-child{
-      padding-right: 1vw;
-      & svg{
+    padding: 2vw 3.7vw;
+    padding-bottom: 3.2vw;
+  
+    & button.chooseCity {
+      width: 100%;
+      height: 3.2vw;
+      border-radius: 120px;
+      white-space: nowrap;
+      box-sizing: border-box;
+      border: 2px solid rgba(0, 0, 0, 0.25);
+      text-transform: lowercase;
+      
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      margin-top: 1.3vw;
+      & span {
         @include font50_500();
+        padding-left: 1.5vw;
+        &:first-letter {
+          text-transform: uppercase;
+        }
+      }
+      & span:last-child{
+        padding-right: 1vw;
+        & svg{
+          @include font50_500();
+        }
+      }
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.05);
       }
     }
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.05);
-    }
-  }
-
-  & .listAddrPoint {
-    width: 100%;
-    margin-top: 2.5vw;
-
-    & h2 {
-      @include font30_400();
-    }
-
-    & svg.MapPointIcon path:first-child {
-      fill: $colorMain;
-      fill-opacity: 1;
-    }
-
-    & ul {
-      margin-top: 0.7vw;
-      & div {
-        padding-left: 0;
-        margin: 0.3vw 0;
+  
+    & .listAddrPoint {
+      width: 100%;
+      margin-top: 2.5vw;
+  
+      & h2 {
+        @include font30_400();
+      }
+  
+      & svg.MapPointIcon path:first-child {
+        fill: $colorMain;
+        fill-opacity: 1;
+      }
+  
+      & ul {
+        margin-top: 0.7vw;
         & div {
-          margin-left: 1vw;
-          & p {
-            @include font40_400();
-            &:hover {
-              color: $colorMain;
+          padding-left: 0;
+          margin: 0.3vw 0;
+          & div {
+            margin-left: 1vw;
+            & p {
+              @include font40_400();
+              &:hover {
+                color: $colorMain;
+              }
             }
           }
+          &:hover {
+            background-color: #ffffff;
+          }
         }
-        &:hover {
-          background-color: #ffffff;
-        }
+        
       }
-      
+      & hr{
+        height: 1px;
+        width: 100%;
+        background-color: #e5e5e5;
+        margin-top: 1.5vw;
+      }
     }
-    & hr{
-      height: 1px;
+  
+    & .listInfo {
       width: 100%;
-      background-color: #e5e5e5;
-      margin-top: 1.5vw;
+      align-items: flex-start;
+      margin-top: 2vw;
+      & span {
+        @include font30_400();
+        margin-bottom: 10px;
+        
+      }
+      & h2 {
+        @include font60_600();
+        margin-bottom: 1.1vw;
+        margin-top: 0.8vw;
+      }
+      & hr {
+        margin-top: 1.5vw;
+        margin-bottom: 1.5vw;
+        height: 1px;
+        background-color: #e5e5e5;
+      }
     }
-  }
-
-  & .listInfo {
-    width: 100%;
-    align-items: flex-start;
-    margin-top: 2vw;
-    & span {
-      @include font30_400();
-      margin-bottom: 10px;
-      
-    }
-    & h2 {
-      @include font60_600();
-      margin-bottom: 1.1vw;
-      margin-top: 0.8vw;
-    }
-    & hr {
-      margin-top: 1.5vw;
-      margin-bottom: 1.5vw;
-      height: 1px;
-      background-color: #e5e5e5;
-    }
-  }
-
-  & .switch {
-    width: 100%;
-    margin-top: 0.4vw;
-    display: flex;
-    flex-direction: row;
-    justify-content: space-between;
-    align-items: center;
-    padding: 0;
-
-    & > span{
-      @include font30_400();
+  
+    & .switch {
+      width: 100%;
+      margin-top: 0.4vw;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      padding: 0;
+  
+      & > span{
+        @include font30_400();
+      }
     }
   }
 }
+
 
 #ForMap {
   min-height: 900px;

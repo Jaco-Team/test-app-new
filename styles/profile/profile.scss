@@ -1,0 +1,275 @@
+
+@import "../settings";
+
+.Profile{ 
+    margin-top: 64px!important;
+
+    @media (min-width: 800px) {
+        margin-top: 13vw!important;
+        margin-bottom: 140px!important;
+
+        margin-left: 4.5%!important;
+        width: 56.35%!important;
+        padding-left: 0px!important;
+    }
+
+    & h1, h2{
+        @include fontH1();
+        text-align: start;
+        width: 100%;
+        padding-bottom: 20px;
+        color: rgba(0, 0, 0, 0.8)!important;
+    }
+    & .mainContainer{
+        padding-top: 0!important; 
+        padding-bottom: 36px!important; ;
+    }
+    
+    @media (max-width: 960px) {
+        margin-top: 64px!important;
+        margin-bottom: 64px; 
+        padding-left: 24px!important;
+        width: calc(100% - 24px);
+    }
+
+    
+
+    
+
+    & .main_data{
+        margin-top: 62px;
+        display: flex;
+        flex-direction: row;
+        & > div:first-child{
+            width: 25.8%;
+            margin-left: 5.2%;
+            & > div{
+                width: 10vw;
+                height: 10vw;
+                border-radius: 300px;
+                background-color: #6FBEF8;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                @include font110_400();
+                color: #fff;
+            }
+        }
+        & > div:last-child{
+            width: 69%;
+            display: flex;
+            flex-direction: row;
+            flex-wrap: wrap;
+            & > div{
+                width: 47%;   
+                display: flex;
+                align-items: center;
+                & .MuiInputBase-sizeSmall{
+                    height: 2.8vw;
+                    & > input{
+                        height: 2.8vw;
+                        padding-left: 1.3vw;
+                        @include font30_400();
+                    }
+                }
+
+                & fieldset{
+                    border-radius: 2.8vw;
+                    border-width: 3px;
+                }
+            }
+        }
+    }
+
+    & .check_data{
+        margin-top: 1.6vw;
+        & > div{
+            width: 69%;
+            margin-left: 31%;
+            & > div{
+                width: 100%;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                & > span{
+                    @include font30_400();
+                }
+                &:last-child{
+                    margin-top: 2.5vw;
+                }
+            }
+        }
+    }
+
+    & .date_data{
+        margin-top: 5.3vw;
+        display: flex;
+        flex-direction: row;
+        & > div:first-child{
+            width: 27.5%;
+            margin-right: 3.5%;
+            & > div{
+                width: calc(100% - 40px);
+                height: 7.5vw;
+                background-color: rgba(87, 220, 53, 0.3);
+                position: relative;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                &::after {
+                    content: "";
+                    position: absolute;
+                    left: 100%;
+                    top: 0px;
+                    border: 3.76vw solid transparent;
+                    border-left: 50px solid rgba(87, 220, 53, 0.3);
+                }
+                & > span{
+                    @include font30_400();
+                    padding: 0px 1.55vw;
+                    line-height: 1.4;
+                }
+            }
+        }
+        & > div:last-child{
+            width: 69%;
+            & > div{
+                width: 100%;   
+                
+            }
+            & > div:first-child{
+                @include font30_400();
+            }
+            & > div:last-child{
+                @include font22_400();
+                margin-top: 1vw;
+            }
+            & > div:not(:last-child):not(:first-child){
+                display: flex;
+                flex-direction: row;
+                margin-top: 1vw;
+                & .MuiInputBase-sizeSmall{
+                    height: 2.8vw;
+                    & > input{
+                        height: 2.8vw;
+                    }
+                }
+                & fieldset{
+                    border-radius: 2.8vw;
+                    border-width: 3px;
+                }
+
+                & > div:first-child{
+                    width: 15%;
+                    margin-right: 0.7vw;
+                }
+                & > div:last-child{
+                    width: 29%;
+                }
+            }
+        }
+    }
+
+    & .bank_table{
+        margin-top: 4vw;
+        & .headTable{
+            @include font40_500();
+        }
+        & .headAddTable{
+            padding-right: 0;
+            text-align: end;
+            & span{
+                @include font30_400();
+                border: 3px solid #e5e5e5;
+                padding: 0.8vw 3vw;
+                border-radius: 2vw;
+            }
+        }
+        & td{
+            @include font30_400();
+        }
+        & tr > th:first-child, tr > td:first-child{
+            padding-left: 0;
+        }
+        & tr > td:last-child{
+            padding-right: 0;
+            text-align: end;
+            width: 2.4vw;
+            & svg{
+                width: 2.2vw;
+                height: 2.2vw;
+                vertical-align: text-top;
+            }
+        }
+        .chooseCart{
+            text-align: end;
+            & span{
+                @include font30_400();
+                background-color: rgba(0, 0, 0, 0.05);
+                padding: 0.5vw 2vw;
+                border-radius: 2vw;
+            }
+        }
+        & thead th{
+            padding-bottom: 1.6vw;
+        }
+        & tbody tr{
+            height: 4.3vw;
+        }
+    }
+
+    & .addr_table{
+        margin-top: 5.5vw;
+        & .headTable{
+            @include font40_500();
+        }
+        & .headAddTable{
+            padding-right: 0;
+            text-align: end;
+            & span{
+                @include font30_400();
+                border: 3px solid #e5e5e5;
+                padding: 0.8vw 3vw;
+                border-radius: 2vw;
+            }
+        }
+        & td{
+            @include font30_400();
+        }
+        & tr > th:first-child, tr > td:first-child{
+            padding-left: 0;
+        }
+        & tr > td:last-child{
+            padding-right: 0;
+            text-align: end;
+            //width: 2.4vw;
+            & svg{
+                width: 2.2vw;
+                height: 2.2vw;
+                vertical-align: text-top;
+            }
+        }
+        .ChangeAddr{
+            text-align: end;
+            //width: 3vw;
+            & span{
+                @include font30_400();
+            }
+        }
+        .ChooseAddr{
+            text-align: end;
+            & span{
+                @include font30_400();
+                background-color: rgba(0, 0, 0, 0.05);
+                padding: 0.5vw 2vw;
+                border-radius: 2vw;
+            }
+        }
+        & thead th{
+            padding-bottom: 1.6vw;
+        }
+        & tbody tr{
+            height: 4.3vw;
+        }
+    }
+}

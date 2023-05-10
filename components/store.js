@@ -383,9 +383,11 @@ export const useProfileStore = create((set) => ({
 
     let json = await api(this_module, data);
 
-    set({
-      userInfo: json.user,
-    });
+    console.log( 'getUserInfo', json )
+
+    //set({
+      //userInfo: json.user,
+    //});
   },
   setUser: (user) => {
     set({
