@@ -1,13 +1,421 @@
 @import '../settings.scss';
 
-.CardItemPC.active{
-  & > div{
-    background-color: rgba(242, 242, 242, 0.5)!important;
+.modalOpenItem {
+  & .MuiDialog-paper {
+    border-radius: 40px;
+    overflow: visible;
+    margin: 0 !important;
+    width: calc(70.75% - 64px) !important;
+    max-width: none !important;
+    @media (max-width: 600px) {
+      width: 100% !important;
+      margin-top: 25% !important;
+    }
+  }
+}
+
+.pcItem {
+  @media (max-width: 600px) {
+    display: flex;
+  }
+  & .FirstMainItem {
+    width: 56.4%;
+    margin: 2% 2.25% 2% 4.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    position: relative;
+    @media (max-width: 600px) {
+      width: 100%;
+      margin: 2% 4.5% 2% 4.5%;
+    }
+  }
+  & .SecondMainItem {
+    width: 29%;
+    min-height: 400px;
+    padding-left: 2.25%;
+    margin-right: 5.5%;
+    margin-top: 6%;
+    margin-bottom: 6%;
+    justify-content: flex-start;
+    position: relative;
+    @media (max-width: 600px) {
+      width: 100%;
+      justify-content: center;
+      align-items: center;
+      text-align: center;
+    }
+
+    & div {
+      display: flex;
+      align-items: center;
+      padding: 0;
+      & .dop_text {
+        padding: 0;
+        height: 40px;
+        width: 75%;
+        display: flex;
+        align-items: center;
+        margin-top: 20px;
+        margin-bottom: 20px;
+        @media (max-width: 600px) {
+          width: 100%;
+          justify-content: center;
+          padding-left: 7%;
+        }
+
+        & .first_text {
+          @include font25_400();
+          height: 20px;
+          border-right: 1px solid #cccccc;
+          padding-right: 9%;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          text-decoration: underline;
+          color: #dd1a32 !important;
+          cursor: pointer;
+        }
+        & .second_text {
+          @include font25_400();
+          height: 20px;
+          border-right: 1px solid #cccccc;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+        }
+        & .third_text {
+          @include font25_400();
+          height: 20px;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+        }
+      }
+    }
+
+    .containerBTN {
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+      @media (max-width: 600px) {
+        justify-content: center;
+      }
+      & > button {
+        width: 85%;
+        border-radius: 45px;
+
+        @media (max-width: 600px) {
+          height: 50px;
+          border: 2px solid #cccccc;
+        }
+
+        // @media (max-width: 1280px) {
+        //   height: 30px;
+        // }
+        @media (min-width: 1281px) {
+          height: 2.9vw;
+          border: 2px solid #cccccc;
+        }
+
+        @include font30_400();
+        text-transform: initial;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+
+        &:hover {
+          background-color: #f2f2f2;
+          border: 2px solid #cccccc;
+        }
+        &:target {
+          background-color: #f2f2f2;
+          border: 2px solid #cccccc;
+        }
+        &:active {
+          background-color: #f2f2f2;
+          border: 2px solid #cccccc;
+        }
+      }
+      & > div {
+        width: 50%;
+        border-radius: 45px;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        background-color: #ffff;
+
+        height: 2.9vw;
+
+        @media (max-width: 600px) {
+          height: 5vw;
+          margin-top: 5%;
+        }
+
+        & > .minus {
+          padding: 0;
+          margin-left: 8px;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          cursor: pointer;
+          background-color: #f2f2f2 !important;
+          border: none;
+
+          @include font50_300();
+          width: 2vw;
+          height: 2vw;
+          border-radius: 40px;
+
+          @media (max-width: 600px) {
+            width: 10vw;
+            height: 10vw;
+            border-radius: 40px;
+          }
+        }
+        & > .plus {
+          padding: 0;
+          margin-right: 8px;
+          display: flex;
+          justify-content: center;
+          align-content: center;
+          align-items: center;
+          cursor: pointer;
+          background-color: #f2f2f2 !important;
+          border: none;
+
+          @include font50_300();
+          width: 2vw;
+          height: 2vw;
+          border-radius: 40px;
+
+          @media (max-width: 600px) {
+            width: 10vw;
+            height: 10vw;
+            border-radius: 40px;
+          }
+        }
+        & > span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          @include font40_400();
+        }
+      }
+    }
+  }
+
+  & .SetMainItem {
+    width: 56.4%;
+    margin: 2% 2.25% 2% 4.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 40px;
+    overflow-y: auto;
+    @media (max-width: 600px) {
+      width: 100%;
+      margin: 0;
+    }
+    & .ListSet {
+      @media (max-width: 600px) {
+        flex-grow: 1;
+      }
+      width: 100%;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      flex-direction: column;
+      overflow-y: auto;
+      height: 60vh;
+      &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+      }
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+      &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+      }
+    }
+    & .dop_text {
+      padding: 0;
+      height: 40px;
+      width: 75%;
+      display: flex;
+      align-items: center;
+      margin-top: 20px;
+      margin-bottom: 20px;
+
+      & .first_text {
+        @include font25_400();
+        height: 20px;
+        border-right: 1px solid #cccccc;
+        flex: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        text-decoration: underline;
+        color: #dd1a32 !important;
+        cursor: pointer;
+      }
+      & .second_text {
+        @include font25_400();
+        height: 20px;
+        border-right: 1px solid #cccccc;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex: 2;
+      }
+      & .third_text {
+        @include font25_400();
+        height: 20px;
+        flex: 3;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+    }
+  }
+  & .ValueMainItem {
+    width: 56.4%;
+    margin: 2% 2.25% 2% 4.5%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background: #ffffff;
+    border-radius: 40px;
+    overflow-y: auto;
+    @media (max-width: 600px) {
+      width: 100%;
+      margin: 0;
+    }
+    & .ListValue {
+      @media (max-width: 600px) {
+        flex-grow: 1;
+      }
+      width: 100%;
+      display: flex;
+      align-items: center;
+      flex-shrink: 0;
+      flex-direction: column;
+      overflow-y: auto;
+      height: 60vh;
+      &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.3);
+        border-radius: 10px;
+      }
+      &::-webkit-scrollbar {
+        width: 8px;
+      }
+      &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 10px;
+      }
+    }
+  }
+}
+
+.NewModal {
+  & .ModalItemTitle {
+    @include font50_500();
+    color: #000000cc !important;
+  }
+  & .ModalItemTitleSet {
+    @include font40_400();
+    color: rgba(0, 0, 0, 0.8);
+
+    @media (max-width: 600px) {
+      @include font25_400();
+    }
+  }
+  & .ModalItemTitleValue {
+    @include font22_400();
+    color: rgba(0, 0, 0, 0.8);
+    width: 70%;
+    @media (max-width: 600px) {
+      width: 90%;
+      font-size: 0.7rem !important;
+    }
+  }
+  & .ModalItemOtherValue {
+    @include font20_400();
+    color: rgba(0, 0, 0, 0.8);
+    @media (max-width: 600px) {
+      font-size: 0.7rem !important;
+    }
+  }
+  & .ModalItemOther {
+    @include font25_400();
+    color: rgba(0, 0, 0, 0.6);
+    @media (max-width: 600px) {
+      font-size: 0.7rem !important;
+    }
+  }
+  & .ModalItemDesc {
+    @include font30_400();
+    color: rgba(0, 0, 0, 0.6) !important;
+    @media (max-width: 600px) {
+      text-align: center;
+      min-height: 0 !important;
+    }
+  }
+  & .ModalItemNumber {
+    @include font25_400();
+    color: rgba(0, 0, 0, 0.6);
+  }
+}
+
+.MainItem {
+  & h1 {
+    @include font20_400();
+    font-weight: bold;
+    color: rgba(0, 0, 0, 0.8);
+    line-height: 1;
+    margin-top: 5px;
+  }
+  & h2 {
+    margin-bottom: 5%;
+  }
+  & > div:first-child {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+  }
+  & > div:last-child {
+    display: flex;
+    flex-direction: column;
+    @media (max-width: 600px) {
+      justify-content: flex-start;
+    }
+    & > div:last-child {
+      margin-top: auto;
+      @media (max-width: 600px) {
+        width: 100%;
+        margin-top: 0;
+      }
+    }
+  }
+  &:not(.MainItemMobile) img {
+    object-fit: contain;
+    image-rendering: auto;
+    width: 100%;
+    height: auto;
+  }
+}
+
+.CardItemPC.active {
+  & > div {
+    background-color: rgba(242, 242, 242, 0.5) !important;
     & img {
       mix-blend-mode: multiply;
     }
   }
-  
 }
 
 .CardItemPC {
@@ -17,9 +425,8 @@
   flex-direction: column !important;
   align-items: stretch;
   justify-content: space-between;
-  
 
-  & > div{
+  & > div {
     background-color: #fff;
     padding: 30px 16px;
     border-radius: 1.3vw;
@@ -33,7 +440,7 @@
       position: initial;
     }
   }
-  
+
   & .CardNameItem {
     @include font40_400();
     text-align: center;
@@ -59,15 +466,15 @@
       align-items: center;
       justify-content: center;
     }
-    & .second_text{
+    & .second_text {
       @include font20_400();
       height: 20px;
       border-right: 1px solid #dadada;
-      display: flex; 
-      align-items: center; 
+      display: flex;
+      align-items: center;
       justify-content: center;
     }
-    & .third_text{
+    & .third_text {
       @include font20_400();
       height: 20px;
       flex: 3;
@@ -76,7 +483,7 @@
       justify-content: center;
     }
   }
-  .desc_text{
+  .desc_text {
     height: 5.9vw;
     width: 100%;
     text-align: center;
@@ -84,11 +491,11 @@
     overflow: hidden;
     @include font25_400();
   }
-  .containerBTN{
+  .containerBTN {
     display: flex;
     align-items: center;
     justify-content: center;
-    & > button{
+    & > button {
       width: 50%;
       border-radius: 45px;
 
@@ -107,7 +514,7 @@
       align-items: center;
       justify-content: center;
       white-space: nowrap;
-      
+
       &:hover {
         background-color: #f2f2f2;
         border: 2px solid #cccccc;
@@ -121,17 +528,16 @@
         border: 2px solid #cccccc;
       }
     }
-    & > div{
+    & > div {
       width: 50%;
       border-radius: 45px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       background-color: #ffff;
-    
+
       height: 2.9vw;
-      
-    
+
       & > .minus {
         padding: 0;
         margin-left: 8px;
@@ -140,8 +546,8 @@
         align-items: center;
         cursor: pointer;
         background-color: #f2f2f2;
-        border:none;
-    
+        border: none;
+
         @include font50_300();
         width: 2vw;
         height: 2vw;
@@ -156,8 +562,8 @@
         align-items: center;
         cursor: pointer;
         background-color: #f2f2f2;
-        border:none;
-    
+        border: none;
+
         @include font50_300();
         width: 2vw;
         height: 2vw;
@@ -183,9 +589,7 @@
   //   -moz-transition: all 0.2s ease-in-out; /** Firefox **/
   //   -o-transition: all 0.2s ease-in-out; /** Opera **/
   // }
-
 }
 
-.ModalItemButtonCartPC.openPC {
-  
-}
+// .ModalItemButtonCartPC.openPC {
+// }
