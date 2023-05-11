@@ -17,9 +17,10 @@ import '../styles/home/homePC.scss'
 import '../styles/header/cityForm.scss'
 import '../styles/header/headerPC.scss'
 
-import '../styles/profile.scss'
+//import '../styles/profile.scss'
 import '../styles/profile/promokody.scss'
 import '../styles/profile/zakazy.scss'
+import '../styles/profile/profile.scss'
 
 // import '../styles/loginForm.scss'
 import '../styles/header.scss'

@@ -2,13 +2,14 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'))
-const DynamicFooter = dynamic(() => import('@/components/footer.js'))
-const DynamicPage = dynamic(() => import('@/modules/profile/profile/page.jsx'))
+const DynamicHeader = dynamic(() => import('../../components/header.js'))
+const DynamicFooter = dynamic(() => import('../../components/footer.js'))
+const DynamicPage = dynamic(() => import('../../modules/profile/page.js'))
 
-import { api } from '@/components/api.js';
-import { useCitiesStore, useHeaderStore } from '@/components/store.js';
-import { roboto } from '@/ui/Font.js'
+import { api } from '../../components/api.js';
+
+import { useCitiesStore } from '../../components/store.js';
+import { roboto } from '../../ui/Font.js'
 
 const this_module = 'profile';
 
@@ -18,16 +19,12 @@ export default function Profile(props) {
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
-  const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
-
   useEffect(() => {
     if( thisCity != city ){
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
     }
-
-    setActivePage(this_module)
   }, []);
 
   return (

@@ -231,6 +231,34 @@ export function CloseIcon(props){
   );
 }
 
+export function CloseIconMin(props){
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="60"
+      height="61"
+      fill="none"
+      viewBox="0 0 60 61"
+      {...props}
+    >
+      <path
+        stroke="#000"
+        strokeOpacity="0.3"
+        strokeWidth="3"
+        d="M58.5 30.016c0 15.74-12.76 28.5-28.5 28.5s-28.5-12.76-28.5-28.5 12.76-28.5 28.5-28.5 28.5 12.76 28.5 28.5z"
+      ></path>
+      <path
+        stroke="#000"
+        strokeLinecap="round"
+        strokeMiterlimit="10"
+        strokeOpacity="0.3"
+        strokeWidth="3"
+        d="M17.5 42.516l25-25M42.5 42.516l-25-25"
+      ></path>
+    </svg>
+  );
+}
+
 export function MapPointIcon(props){
   return (
     <svg
