@@ -8,6 +8,7 @@ import ModalCity from '../modules/header/modalCity.js';
 import ModalAuth from '../modules/header/modalAuth';
 import NavBarPC from '../modules/header/navBarPC.js';
 import NavBarMobile from '../modules/header/navBarMobile.js';
+import Basket from '../modules/header/basket.js';
 
 export default React.memo(function Header(props) {
     const { city, city_list, cats, active_page } = props;
@@ -29,6 +30,7 @@ export default React.memo(function Header(props) {
 
             <ModalCity />
             <ModalAuth />
+            <Basket />
 
         </div>
     )

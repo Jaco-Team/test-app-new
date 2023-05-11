@@ -72,7 +72,7 @@ export default function NavBarPC(props) {
   //const { city, cityRu, catList, active_page } = props;
   const { city, cityRu, active_page } = props;
   
-  const [setActiveModalCity, setActiveModalAuth] = useHeaderStore((state) => [state.setActiveModalCity, state.setActiveModalAuth], shallow);
+  const [setActiveModalCity, setActiveModalAuth, setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveModalCity, state.setActiveModalAuth, state.setActiveBasket, state.openBasket], shallow);
 
   if (city == '') return null;
 
@@ -119,9 +119,15 @@ export default function NavBarPC(props) {
     closeMenu();
   }
 
+  const closeBasket = () => {
+    if(openBasket) {
+      setActiveBasket(false);
+    }
+  }
+
   return (
     <>
-      <AppBar position="fixed" className="headerNew" id="headerNew" elevation={2} sx={{ display: { xs: 'none', md: 'block' } }}>
+      <AppBar position="fixed" className="headerNew" id="headerNew" elevation={2} sx={{ display: { xs: 'none', md: 'block' } }} onClick={closeBasket}>
         <Toolbar>
           <div style={{ width: '5.3%' }} />
           <Link href={'/' + city} style={{ width: '18.4%' }}>
@@ -183,7 +189,7 @@ export default function NavBarPC(props) {
           
           <div style={{ width: '2.2%' }} />
 
-          <div style={{width: '6vw', backgroundColor: '#DD1A32', borderRadius: '45px', height: '3vw', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}}>
+          <div style={{width: '6vw', backgroundColor: '#DD1A32', borderRadius: '45px', height: '3vw', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}} onClick={() => setActiveBasket(!openBasket)}>
             <BasketIcon style={{ width: '2vw', height: '2vw' }} />
           </div>
 

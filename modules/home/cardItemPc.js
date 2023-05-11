@@ -30,7 +30,7 @@ export default function CardItem(props){
 
   const [ count, setCount ] = useState(0);
 
-  const [ getItem ] = useHomeStore( state => [ state.getItem ], shallow );
+  const [ getItem, plus ] = useHomeStore( state => [ state.getItem, state.plus ], shallow );
   const [ thisCity ] = useCitiesStore( state => [ state.thisCity ], shallow );
 
   return (
@@ -55,8 +55,9 @@ export default function CardItem(props){
         
         <div className='desc_text'>{desc}</div>
 
-        {count == 0 ?
+        {count === 0 ?
           <div className='containerBTN'>
+            {/* <Button variant="outlined" className='ModalItemButtonCartPC' onClick={() => plus(() => item.id)}> */}
             <Button variant="outlined" className='ModalItemButtonCartPC' onClick={ () => { setCount( prev => prev + 1 ) } }>
               { new Intl.NumberFormat('ru-RU').format(item.price)} ₽
             </Button>
@@ -66,9 +67,17 @@ export default function CardItem(props){
             <div variant="contained">
               <button className='minus' onClick={ () => { setCount( prev => prev - 1 ) } }>–</button>
               <span>{count}</span>
+              {/* <span>{item.count}</span> */}
               <button className='plus' onClick={ () => { setCount( prev => prev + 1 ) } }>+</button>
+              {/* <button className='plus' onClick={() => plus(() => item.id)}>+</button> */}
             </div>
           </div>
+        //   :
+        //   <div className='containerBTN'>
+        //   <Button variant="outlined" className='ModalItemButtonCartPC' onClick={() => plus(item.id)}>
+        //     { new Intl.NumberFormat('ru-RU').format(item.price)} ₽
+        //   </Button>
+        // </div>
         }
     
       </div>

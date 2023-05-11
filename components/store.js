@@ -447,6 +447,8 @@ export const useHeaderStore = create((set, get) => ({
   activePage: '',
   openCityModal: false,
   openAuthModal: false,
+  openBasket: false,
+  targetBasket: null,
 
   errTextAuth: '',
   token: '',
@@ -769,6 +771,18 @@ export const useHeaderStore = create((set, get) => ({
     //     })
     // }, 300 )
   },
+
+  // открытие/закрытие корзины на главное странице
+  setActiveBasket: (active) => {
+
+    if(!active) {
+      set({ targetBasket: null, openBasket: active });
+    } else {
+      const anchorEl = document.getElementById('headerNew');
+      set({ targetBasket: anchorEl, openBasket: active });
+    }
+
+  }
 }));
 
 export const useCitiesStore = create((set) => ({
@@ -837,6 +851,8 @@ export const useHomeStore = create((set, get) => ({
 
     const json = await api(this_module, data);
 
+    console.log('getItem ===>', json);
+
     set({
       isOpenModal: true,
       openItem: json,
@@ -880,6 +896,31 @@ export const useHomeStore = create((set, get) => ({
     }
     
     set({ foodValue: false });
-  }
-  
+  },
+
+  // добавлять в товара для корзины
+  // plus: (id) => {
+
+  //   const CatsItems = get().CatsItems.map(cats => {
+
+  //     cats.items.map(item => {
+  //       if(item.id === id) {
+  //         item?.count ? item.count += 1 : item.count = 1;
+  //         return item;
+  //       }
+  //       return item;
+  //     })
+
+  //     return cats;
+  //   })
+
+  //   console.log('plus ===>', CatsItems)
+
+  //   set({
+  //     CatsItems,
+  //   });
+
+
+  // }
+
 }));
