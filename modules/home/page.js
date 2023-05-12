@@ -7,7 +7,7 @@ import React, { useState, useEffect } from 'react';
 
 import Banners from './banners.js';
 import CardItems from './cardItems.js';
-import ModalCardItem from './modalCardItem';
+import ModalCardItemPC from './modalCardItemPC.js';
 
 import Meta from '@/components/meta.js';
 
@@ -22,7 +22,7 @@ export default function HomePage(props){
 
       <CardItems />
 
-      <ModalCardItem />
+      <ModalCardItemPC />
   
     </Meta>
   )
