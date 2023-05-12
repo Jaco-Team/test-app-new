@@ -69,9 +69,15 @@ export default class MySwitch extends React.PureComponent {
   }
   
   render(){
-    //checked={true}
     return (
-      <FormControlLabel control={<IOSSwitch  onClick={ () => {} }/>}/>
+      <FormControlLabel 
+        control={
+          <IOSSwitch 
+            checked={this.props.checked} 
+            onClick={ this.props.onClick }
+          />
+        }
+      />
     )
   }
 }

@@ -17,6 +17,7 @@ export default class MyTextInput extends React.PureComponent {
           readOnly: this.props.readOnly ? this.props.readOnly : false,
           endAdornment: this.props.inputAdornment,
         }}
+        defaultValue={this.props.defaultValue}
         label={this.props.label}
         placeholder={this.props.placeholder}
         value={this.props.value}

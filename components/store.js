@@ -342,12 +342,14 @@ export const useAkciiStore = create((set) => ({
   },
 }));
 
-export const useProfileStore = create((set) => ({
+export const useProfileStore = create((set, get) => ({
   promoList: [],
   orderList: [],
   userInfo: {},
   modalOrder: {},
   openModal: false,
+  shortName: '',
+  streets: [],
   getPromoList: async (this_module, city, userToken) => {
     let data = {
       type: 'get_my_promos',
@@ -385,21 +387,24 @@ export const useProfileStore = create((set) => ({
 
     console.log( 'getUserInfo', json )
 
-    //set({
-      //userInfo: json.user,
-    //});
+    set({
+      shortName: json.user?.name.substring(0, 1) + json.user?.fam.substring(0, 1),
+      userInfo: json.user,
+      streets: json.streets
+    });
   },
   setUser: (user) => {
     set({
+      shortName: user?.name.substring(0, 1) + user?.fam.substring(0, 1),
       userInfo: user,
     });
   },
-  updateUser: async (this_module, city, userToken, user) => {
+  updateUser: async (this_module, city, userToken) => {
     let data = {
       type: 'update_user',
       city_id: city,
       user_id: userToken,
-      user: JSON.stringify(user),
+      user: JSON.stringify(get().userInfo),
     };
 
     let json = await api(this_module, data);
