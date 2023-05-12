@@ -858,11 +858,12 @@ export const useHomeStore = create((set, get) => ({
 
     const json = await api(this_module, data);
 
-    console.log('getItem ===>', json);
+    // console.log('getItem ===>', json);
 
     set({
       isOpenModal: true,
       openItem: json,
+      typeModal: 'start',
     });
   },
 
@@ -870,7 +871,6 @@ export const useHomeStore = create((set, get) => ({
   closeModal: () => {
     set({
       isOpenModal: false,
-      typeModal: 'start',
       foodValue: false,
       preTypeModal: '',
     });
