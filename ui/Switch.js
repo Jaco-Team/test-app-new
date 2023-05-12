@@ -71,6 +71,7 @@ export default class MySwitch extends React.PureComponent {
   render(){
     return (
       <FormControlLabel 
+        style={{ zIndex: 3 }}
         control={
           <IOSSwitch 
             checked={this.props.checked} 

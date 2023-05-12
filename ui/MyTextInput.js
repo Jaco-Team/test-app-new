@@ -31,7 +31,7 @@ export default class MyTextInput extends React.PureComponent {
         multiline={this.props.multiline ? this.props.multiline : false}
         maxRows={this.props.maxRows ? this.props.maxRows : 1}
         type={ this.props.type ? this.props.type : this.state.type }
-        style={{ width: '100%' }} 
+        style={{ width: '100%', zIndex: 3 }} 
         className={ this.props.className ? this.props.className : '' }
       />
     )

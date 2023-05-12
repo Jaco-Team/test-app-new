@@ -17,6 +17,7 @@ export default class MySelect extends React.PureComponent {
         <Select
           value={this.props.value}
           label={this.props.label}
+          style={{ width: '100%', zIndex: 3 }} 
           disabled={ this.props.disabled || this.props.disabled === true ? true : false }
           onChange={ this.props.func }
           multiple={ this.props.multiple && this.props.multiple === true ? true : false }

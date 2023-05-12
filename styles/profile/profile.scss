@@ -66,6 +66,7 @@
                 align-items: center;
                 & .MuiInputBase-sizeSmall{
                     height: 2.8vw;
+                    z-index: 3;
                     & > input{
                         height: 2.8vw;
                         padding-left: 1.3vw;
@@ -158,8 +159,7 @@
                         @include font30_400();
                     }
                     & > div{
-                        padding-left: 1.3vw;
-                        padding-right: 1.3vw;
+                        text-align: center;
                     }
                 }
                 & fieldset{
