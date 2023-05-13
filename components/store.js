@@ -878,7 +878,13 @@ export const useHomeStore = create((set, get) => ({
 
   // навигация между модальными окнами товара
   navigate: (typeModal) => {
-    set({ typeModal, preTypeModal: get().typeModal });
+
+    if(typeModal === 'start') {
+      set({ typeModal, preTypeModal: get().typeModal, foodValue: false });
+    } else {
+      set({ typeModal, preTypeModal: get().typeModal });
+    }
+    
   },
 
   // открытие/закрытие модального окна с БЖУ товара
@@ -886,11 +892,12 @@ export const useHomeStore = create((set, get) => ({
 
     if(get().typeModal === 'value') {
       get().navigate(get().preTypeModal)
+      set({ foodValue: false });
     } else {
-      get().navigate('value')
+      get().navigate('value');
+      set({ foodValue: true });
     }
 
-    set({ foodValue: !get().foodValue });
   },
 
   // открытие/закрытие модального окна с составом сета товара

@@ -21,18 +21,20 @@ import { roboto } from '@/ui/Font';
 export default function ModalCardItemPC() {
   console.log('render ModalCardItemPC');
 
-  const [isOpenModal, closeModal, typeModal, openItem, foodValue, openFoodValue, openSet] = useHomeStore((state) => [state.isOpenModal, state.closeModal, state.typeModal, 
-    state.openItem, state.foodValue, state.openFoodValue, state.openSet], shallow);
+  const [isOpenModal, closeModal, typeModal, openItem, foodValue, openFoodValue, openSet, navigate] = useHomeStore((state) => [state.isOpenModal, state.closeModal, state.typeModal, 
+    state.openItem, state.foodValue, state.openFoodValue, state.openSet, state.navigate], shallow);
 
   const [count, setCount] = useState(0);
 
   return (
     <Dialog
-      onClose={closeModal}
+      onClose={(event, reason) => reason === 'backdropClick' && typeModal !== 'start' ? navigate('start') : closeModal()}
       className={'modalCardItemPC ' + roboto.variable}
       open={isOpenModal}
       BackdropComponent={Backdrop}
       BackdropProps={{ timeout: 500 }}
+
+      hideBackdrop={true}
     >
       <DialogContent style={{ padding: 0, borderRadius: '40px', overflow: 'hidden', background: typeModal === 'start' ? '#FFFFFF' : '#E6E6E6' }}>
         <Box component="div" className="modalItemPC ModalFontPC">
