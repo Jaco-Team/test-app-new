@@ -14,7 +14,8 @@ html:not([data-scroll='0']) .blockShadow {
   );
   mix-blend-mode: multiply;
   transition: all 0.5s ease 0s;
-  z-index: 2;
+  //z-index: 2;
+  z-index: -1;
 }
 
 .blockShadow {
