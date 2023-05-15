@@ -183,7 +183,6 @@
           justify-content: flex-start;
           text-decoration: underline;
           color: #dd1a32 !important;
-          cursor: pointer;
         }
 
         & .second_text {
@@ -242,8 +241,6 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        background-color: #ffff;
-
         height: 2.9vw;
 
         & > .minus {
@@ -252,9 +249,8 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          cursor: pointer;
-          background-color: #f2f2f2 !important;
           border: none;
+          background-color: #E6E6E6;
 
           @include font50_300();
           width: 2vw;
@@ -268,9 +264,8 @@
           justify-content: center;
           align-content: center;
           align-items: center;
-          cursor: pointer;
-          background-color: #f2f2f2 !important;
           border: none;
+          background-color: #E6E6E6;
 
           @include font50_300();
           width: 2vw;

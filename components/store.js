@@ -819,7 +819,6 @@ export const useHomeStore = create((set, get) => ({
   openItem: null,
   isOpenModal: false,
   typeModal: 'start',
-  preTypeModal: '',
   foodValue: false,
 
   getBanners: async (this_module, city) => {
@@ -879,39 +878,27 @@ export const useHomeStore = create((set, get) => ({
   // навигация между модальными окнами товара
   navigate: (typeModal) => {
 
-    if(typeModal === 'start') {
-      set({ typeModal, preTypeModal: get().typeModal, foodValue: false });
+    if(typeModal === 'value') {
+      set({ typeModal, foodValue: true  });
     } else {
-      set({ typeModal, preTypeModal: get().typeModal });
-    }
-    
+      set({ typeModal, foodValue: false });
+    } 
   },
 
-  // открытие/закрытие модального окна с БЖУ товара
-  openFoodValue: () => {
+  // закрытие БЖУ/Cета товара
+  closeTypeModal: (event) => {
 
-    if(get().typeModal === 'value') {
-      get().navigate(get().preTypeModal)
-      set({ foodValue: false });
+    if(event.target.classList.contains("first_text") || !event.target.classList.value || 
+       event.target.classList.contains('MuiDialog-container') || event.target.classList.contains('minus') || 
+       event.target.classList.contains('plus')) {
+
+      return;
+
     } else {
-      get().navigate('value');
-      set({ foodValue: true });
+      get().navigate('start');
     }
-
   },
-
-  // открытие/закрытие модального окна с составом сета товара
-  openSet: () => {
-
-    if(get().typeModal === 'set') {
-      get().navigate('start')
-    } else {
-      get().navigate('set')
-    }
-    
-    set({ foodValue: false });
-  },
-
+ 
   // добавлять в товара для корзины
   // plus: (id) => {
 
