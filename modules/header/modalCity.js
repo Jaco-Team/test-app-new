@@ -58,7 +58,7 @@ export default function ModalCity() {
     >
       <Fade in={openCityModal} style={{ overflow: 'auto' }}>
         <Box className={'modalCity '}>
-          <IconButton style={{ position: 'absolute', top: -50, left: 10, backgroundColor: 'transparent' }} onClick={() => setActiveModalCity(false)}>
+          <IconButton style={{ position: 'absolute', top: -50, left: -8, backgroundColor: 'transparent' }} onClick={() => setActiveModalCity(false)}>
             <IconClose style={{ width: 35, height: 35, overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }} />
           </IconButton>
 
