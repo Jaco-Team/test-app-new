@@ -821,6 +821,9 @@ export const useHomeStore = create((set, get) => ({
   typeModal: 'start',
   foodValue: false,
 
+  openModalBanner: false,
+  banner: null,
+
   getBanners: async (this_module, city) => {
     let data = {
       type: 'get_banners',
@@ -828,6 +831,8 @@ export const useHomeStore = create((set, get) => ({
     };
 
     const json = await api(this_module, data);
+
+    console.log('getBanners ====>', json)
 
     set({
       bannerList: json.banners,
@@ -841,6 +846,8 @@ export const useHomeStore = create((set, get) => ({
     };
 
     const json = await api(this_module, data);
+
+    // console.log('getItemsCat ====>', json)
 
     set({
       CatsItems: json.items,
@@ -857,7 +864,7 @@ export const useHomeStore = create((set, get) => ({
 
     const json = await api(this_module, data);
 
-    // console.log('getItem ===>', json);
+    console.log('getItem ===>', json);
 
     set({
       isOpenModal: true,
@@ -871,7 +878,6 @@ export const useHomeStore = create((set, get) => ({
     set({
       isOpenModal: false,
       foodValue: false,
-      preTypeModal: '',
     });
   },
 
@@ -923,5 +929,20 @@ export const useHomeStore = create((set, get) => ({
 
 
   // }
+
+  // открытие/закрытие модального окна баннер на главное странице
+  setActiveBanner: (active, banner) => {
+
+    if(banner?.id === '84' || banner?.id === '80' || banner?.id === '48' || !banner) {
+      set({
+        banner,
+        openModalBanner: active,
+      });
+    } else {
+      return;
+    }
+
+  }
+
 
 }));
