@@ -9,13 +9,17 @@ const DynamicHomePage = dynamic(() => import('../../modules/home/page.js'))
 import { roboto } from '../../ui/Font.js'
 import { api } from '../../components/api.js';
 
-import { useHomeStore, useCitiesStore } from '../../components/store.js';
+import { useHomeStore, useCitiesStore, useCartStore } from '../../components/store.js';
+
+import { shallow } from 'zustand/shallow'
 
 const this_module = 'home';
 
 export default function Home(props) {
 
-  const { city, cats, cities, page } = props.data1;
+  const { city, cats, cities, page, all_items } = props.data1;
+
+  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems], shallow);
 
   const [ getBanners, getItemsCat ] = useHomeStore( state => [ state.getBanners, state.getItemsCat ] );
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
@@ -36,6 +40,9 @@ export default function Home(props) {
     getBanners(this_module, city);
     getItemsCat(this_module, city);
 
+    if( allItems.length == 0 ){
+      setAllItems(all_items)
+    }
     
   }, []);
 

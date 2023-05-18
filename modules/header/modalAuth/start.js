@@ -2,15 +2,13 @@ import { shallow } from 'zustand/shallow';
 import { useHeaderStore } from '@/components/store';
 
 import MyTextInput from '@/ui/MyTextInput';
-import { IconClose } from '@/ui/Icons';
+import { IconClose, YaIcon, EyeShow, EyeHide } from '@/ui/Icons';
 
 import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import InputAdornment from '@mui/material/InputAdornment';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 
 export default function Start() {
   console.log('render Start');
@@ -26,8 +24,8 @@ export default function Start() {
       </Backdrop>
 
       <div className="modalLoginStart">
-        <IconButton style={{ position: 'absolute', top: -50, left: 10, backgroundColor: 'transparent' }} onClick={closeModalAuth}>
-          <IconClose style={{ width: 35, height: 35, overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }}/>
+        <IconButton style={{ position: 'absolute', top: '-3.2vw', left: -8, backgroundColor: 'transparent' }} onClick={closeModalAuth}>
+          <IconClose style={{ width: '2.166vw', height: '2.166vw', overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }}/>
         </IconButton>
 
         <div className="loginHeader">
@@ -51,21 +49,21 @@ export default function Start() {
           onKeyDown={(event) => checkLoginKey(1, event)}
           className={!errTextAuth ? 'inputLogin' : 'inputLogin err'}
           inputAdornment={<InputAdornment position="end"><IconButton aria-label="toggle password visibility" onClick={clickShowPassword}>
-                {showPassword ? <VisibilityOutlinedIcon style={{ fill: 'rgba(0, 0, 0, 0.2)', height: '40px', width: '47px' }}/> :
-                  <VisibilityOffOutlinedIcon style={{ fill: 'rgba(0, 0, 0, 0.2)', height: '40px', width: '47px' }}/>
+                {showPassword ? <EyeShow style={{ height: '1.1vw', width: '1.81vw' }}/> :
+                  <EyeHide style={{ height: '1.1vw', width: '1.81vw' }}/>
                 }</IconButton></InputAdornment>
           }
         />
 
-        <div className="loginLosePWD" style={{ marginBottom: errTextAuth ? '15px' : '118px' }}>
+        <div className="loginLosePWD" style={{ marginBottom: '30px' }}>
           <Typography component="span" onClick={() => navigate('resetPWD')}>Забыли пароль?</Typography>
         </div>
 
-        {!errTextAuth ? null : (
-          <div className="loginErr">
-            <Typography component="span">{errTextAuth}</Typography>
-          </div>
-        )}
+        
+        <div className="loginErr" style={{ display: 'none' }}>
+          <Typography component="span">{errTextAuth}</Typography>
+        </div>
+      
         
         <div 
           className="loginLogin"
@@ -73,6 +71,18 @@ export default function Start() {
           style={{ backgroundColor: loginLogin.length === 11 && pwdLogin.length > 1 ? '#DD1A32' : 'rgba(0, 0, 0, 0.2)' }}
         >
           <Typography component="span">Войти</Typography>
+        </div>
+
+        <div className="loginOR">
+          <Typography component="span">или</Typography>
+        </div>
+
+        <div 
+          className="loginLoginYa"
+          onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? logIn : null}
+        >
+          <YaIcon />
+          <Typography component="span">Войти с Яндекс ID</Typography>
         </div>
 
         <div className="loginCreate" onClick={() => navigate('create')}>

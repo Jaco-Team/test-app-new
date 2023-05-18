@@ -4,6 +4,9 @@ import { useHeaderStore } from '@/components/store.js';
 
 import TablePC from './tablePC';
 
+import { roboto } from '@/ui/Font';
+import MyTextInput from '@/ui/MyTextInput';
+
 // import Link from 'next/link';
 
 import Popover from '@mui/material/Popover';
@@ -25,27 +28,26 @@ export default function BasketPC() {
     <div style={{ width: '12.27%', minWidth: 'max-content' }}>
       <Popover
         id="simple-popover"
-        open={openBasket}
+        open={openBasket} 
         anchorEl={targetBasket}
         onClose={() => setActiveBasket(null, false)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         style={{ zIndex: 1100 }}
         marginThreshold={0}
+        className={roboto.variable}
       >
         <div>
           <TablePC />
           <div className="SpacePromoRoot">
-            <Paper component="div" className="SpacePromo" elevation={0}>
-              <InputBase
-                // onBlur={this.checkPromo.bind(this)}
-                // value={promoName}
-                // onKeyDown={this.checkPromoKey.bind(this)}
-                // onChange={this.changePromo.bind(this)}
-                placeholder="Есть промокод"
-              />
-              {/* {promoText.length > 0 ? <div className={ promoST === true ? 'promoIndicator true' : 'promoIndicator false' } /> : null} */}
-            </Paper>
+            <MyTextInput
+              className="SpacePromo"
+              placeholder="Есть промокод"
+              value=""
+              label=""
+              func={ () => {} }
+            />
+            
 
             {/* {originPrice != allPrice && promoST === true ? <div className="DescPromoPrice">{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</div> : null}
 

@@ -402,3 +402,83 @@ export function NextIcon(props) {
     </svg>
   )
 }
+
+export function YaIcon(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="37"
+      height="36"
+      fill="none"
+      viewBox="0 0 37 36"
+      {...props}
+    >
+      <rect width="36" height="36" x="0.5" fill="#FC3F1D" rx="18"></rect>
+      <path
+        fill="#fff"
+        d="M21.035 28.819h3.761v-21.6h-5.47c-5.5 0-8.391 2.828-8.391 6.993 0 3.325 1.585 5.283 4.413 7.303l-4.91 7.304h4.07l5.47-8.174-1.895-1.274c-2.3-1.554-3.419-2.766-3.419-5.377 0-2.3 1.616-3.854 4.693-3.854h1.678V28.82z"
+      ></path>
+    </svg>
+  );
+}
+
+export function EyeShow(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="51"
+      height="30"
+      fill="none"
+      viewBox="0 0 51 30"
+      {...props}
+    >
+      <g clipPath="url(#clip0_1584_6928)">
+        <path
+          stroke="#000"
+          strokeMiterlimit="10"
+          strokeOpacity="0.2"
+          strokeWidth="3"
+          d="M25.272 1.219c-10.203 0-19.1 5.543-23.874 13.784 4.765 8.234 13.671 13.785 23.866 13.785 10.194 0 19.1-5.543 23.865-13.785C44.373 6.762 35.475 1.22 25.272 1.22z"
+        ></path>
+        <path
+          fill="#000"
+          fillOpacity="0.2"
+          d="M25.276 24.192a9.19 9.19 0 100-18.38 9.19 9.19 0 000 18.38z"
+        ></path>
+      </g>
+      <defs>
+        <clipPath id="clip0_1584_6928">
+          <path fill="#fff" d="M0 0H50.543V30H0z"></path>
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}
+
+export function EyeHide(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="51"
+      height="30"
+      fill="none"
+      viewBox="0 0 51 30"
+      {...props}
+    >
+      <g clipPath="url(#clip0_1590_7896)">
+        <path
+          stroke="#000"
+          strokeMiterlimit="10"
+          strokeOpacity="0.2"
+          strokeWidth="3"
+          d="M25.272 1.219c-10.203 0-19.1 5.543-23.874 13.784 4.765 8.234 13.671 13.785 23.866 13.785 10.194 0 19.1-5.543 23.865-13.785C44.373 6.762 35.475 1.22 25.272 1.22z"
+        ></path>
+      </g>
+      <defs>
+        <clipPath id="clip0_1590_7896">
+          <path fill="#fff" d="M0 0H50.543V30H0z"></path>
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}

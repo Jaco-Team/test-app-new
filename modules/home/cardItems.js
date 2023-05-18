@@ -37,7 +37,7 @@ export default React.memo(function CatItems(){
       if( localStorage.getItem('goTo') ){
         let hash = localStorage.getItem('goTo')
         
-        //localStorage.removeItem('goTo');
+        localStorage.removeItem('goTo');
         
         let offset = 100;
         
@@ -85,27 +85,6 @@ export default React.memo(function CatItems(){
       )                                 
     )
   }
-
-  let state_id = 0;
-  let state_count = 0;
-
-  function abc(main_id){
-    if( parseInt(main_id) == parseInt(state_id) ){
-      state_count ++;
-      return main_id+'_'+state_count;
-    }else{
-      state_count = 0;
-      state_id = main_id;
-      return main_id+'_'+state_count;
-    }
-  }
-
-
-  
-
-      //console.log( 'cats', cats )
-
-      
 
   return (
     cats.map((cat, key) => 

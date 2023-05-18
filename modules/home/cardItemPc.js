@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 
 import { IconRuble } from '@/ui/Icons.js';
 
-import { useHomeStore, useCitiesStore } from '@/components/store.js';
+import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.js';
 import { shallow } from 'zustand/shallow'
 
 export default function CardItem(props){
@@ -30,8 +30,9 @@ export default function CardItem(props){
 
   const [ count, setCount ] = useState(0);
 
-  const [ getItem, plus ] = useHomeStore( state => [ state.getItem, state.plus ], shallow );
+  const [ getItem ] = useHomeStore( state => [ state.getItem ], shallow );
   const [ thisCity ] = useCitiesStore( state => [ state.thisCity ], shallow );
+  const [ plus, minus ] = useCartStore( state => [ state.plus, state.minus ], shallow );
 
   return (
     <Grid item className={'CardItemPC '+( count > 0 ? 'active' : '' )} xs={12} sm={6} md={4} lg={3} xl={3} sx={{ display: { xs: 'none', sm: 'flex' } }}>
@@ -58,17 +59,17 @@ export default function CardItem(props){
         {count === 0 ?
           <div className='containerBTN'>
             {/* <Button variant="outlined" className='ModalItemButtonCartPC' onClick={() => plus(() => item.id)}> */}
-            <Button variant="outlined" className='ModalItemButtonCartPC' onClick={ () => { setCount( prev => prev + 1 ) } }>
+            <Button variant="outlined" className='ModalItemButtonCartPC' onClick={ () => plus(item.id) }>
               { new Intl.NumberFormat('ru-RU').format(item.price)} ₽
             </Button>
           </div>
             :
           <div className='containerBTN'>
             <div variant="contained">
-              <button className='minus' onClick={ () => { setCount( prev => prev - 1 ) } }>–</button>
+              <button className='minus' onClick={ () => minus(item.id) }>–</button>
               <span>{count}</span>
               {/* <span>{item.count}</span> */}
-              <button className='plus' onClick={ () => { setCount( prev => prev + 1 ) } }>+</button>
+              <button className='plus' onClick={ () => plus(item.id) }>+</button>
               {/* <button className='plus' onClick={() => plus(() => item.id)}>+</button> */}
             </div>
           </div>

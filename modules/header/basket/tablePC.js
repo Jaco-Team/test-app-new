@@ -113,7 +113,7 @@ const items3 = {
   info_weight_dop: '100 г',
 };
 
-const cartItems = [items, items2, items3];
+const cartItems = [items, items2, items3, items, items2, items3];
 
 export default function TablePC() {
   console.log('render Basket TablePC');

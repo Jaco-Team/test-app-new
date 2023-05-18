@@ -1,52 +1,47 @@
 @import '../settings';
 
 #simple-popover {
+  top: 8.6643vw;
+  & .MuiPaper-root.MuiPopover-paper{
+    top: 0!important;
+    max-height: 100%!important;
+  }
   &
     > div.MuiPaper-root.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded
     > div {
-    width: 700px;
+    width: 41.876vw;
     padding-bottom: 40px;
     padding-top: 20px;
-    padding-left: 20px;
-    padding-right: 30px;
+    padding-left: 2.89vw;
+    padding-right: 4.5126vw;
   }
   & .SpacePromoRoot {
     display: flex;
     flex-direction: row;
-    & .DescPromo {
-      width: calc(100% - 352px);
-      padding-left: 20px;
-      display: flex;
-      align-items: center;
-      & span {
-        @include fonsNew(0.95rem, $Roboto);
-        font-weight: 300;
-        line-height: 1;
-        color: #dd1932;
-      }
+    width: 21.661vw;
+    & input{
+        height: 3.72vw;
+        padding-left: 2.166vw;
+        padding-right: 2.166vw;
+        @include font40_500();
     }
-    & .DescPromoPrice {
-      width: calc(100% - 352px);
-      padding-left: 20px;
-      @include fonsNew(1.25rem, $Roboto);
-      font-weight: 500;
-      display: flex;
-      justify-content: flex-end;
-      align-items: center;
+    & fieldset{
+      border-radius: 3.72vw;
+      border-width: 2px;
     }
   }
 
   & .InCart {
     width: 100%;
-    margin-top: 20px;
+    margin-top: 2.888vw;
     & div.MuiButtonGroup-root.MuiButtonGroup-contained {
       width: 100%;
       & > button {
         width: 100%;
         background-color: #f9bc23;
         border-radius: 60px;
-        height: 60px;
-        @include font50_500();
+        height: 4.3323vw;
+        @include font40_500();
         text-transform: initial;
       }
       & > button:hover {
@@ -65,7 +60,7 @@
     & tbody {
       overflow-y: auto;
       overflow-x: hidden;
-      height: 450px;
+      height: 100%;
       display: table-caption;
       width: 100%;
       padding-right: 20px;
@@ -75,44 +70,42 @@
         padding-top: 5px;
         display: block;
         & img {
-          height: auto;
-          width: 100%;
+          height: 7.221vw;
+          width: 7.221vw;
         }
       }
     }
     & tfoot {
-      height: 60px;
       & > tr {
-        height: 60px;
-      }
-      & td:first-child {
-        @include font50_500();
-      }
-      & td:last-child {
-        & > div:not(.originPrice) {
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
+        height: 4.3322vw;
+        & td:first-child {
           @include font50_500();
         }
-        & > .originPrice {
-          display: flex;
-          justify-content: flex-end;
-          align-items: center;
-          @include fonsNew(1.25rem, $Roboto);
-          font-weight: 500;
-          color: rgba(27, 27, 31, 0.2) !important;
+        & td:last-child {
+          & > div:not(.originPrice) {
+            display: flex;
+            justify-content: flex-end;
+            @include font50_500();
+          }
+          & > .originPrice {
+            display: flex;
+            justify-content: flex-end;
+            align-items: center;
+            @include fonsNew(1.25rem, $Roboto);
+            font-weight: 500;
+            color: rgba(27, 27, 31, 0.2) !important;
 
-          & > span {
-            position: relative;
-            width: fit-content;
-            &:before {
-              border-bottom: 2px solid $colorMain;
-              position: absolute;
-              content: '';
-              width: 120%;
-              height: 50%;
-              left: -10%;
+            & > span {
+              position: relative;
+              width: fit-content;
+              &:before {
+                border-bottom: 2px solid $colorMain;
+                position: absolute;
+                content: '';
+                width: 120%;
+                height: 50%;
+                left: -10%;
+              }
             }
           }
         }
@@ -120,12 +113,12 @@
     }
 
     & .TableMiniName > span {
-      @include font40_400();
+      @include font40_500();
       text-transform: initial;
     }
     & .TableMiniPrice {
       text-align: center;
-      @include font40_400();
+      @include font40_500();
       display: flex;
       justify-content: flex-end;
       align-items: center;
@@ -167,95 +160,65 @@
       }
     }
   }
-  & .SpacePromo {
-    padding: 0px 10px 0px 20px;
-    display: flex;
-    align-items: center;
-    height: 58px;
-    border-radius: 60px;
-    border: 1px solid rgba(27, 27, 31, 0.1);
-    width: 300px;
-    & > div:first-child {
-      width: calc(100% - 27px);
-    }
-    & input {
-      @include font40_400();
-      color: rgba(27, 27, 31, 0.5);
-    }
-    & .promoIndicator {
-      width: 20px;
-      height: 20px;
-      border-radius: 60px;
-      margin: 0;
-      padding: 0;
-      background-color: transparent;
-      &.true {
-        background-color: rgb(118, 236, 63);
-      }
-      &.false {
-        background-color: rgb(221, 25, 50);
-      }
-    }
-  }
+  
   & div.MuiPaper-root.MuiPopover-paper {
     border-radius: 0;
   }
 }
 
 .MiniActionsCartButton {
-  width: 100%;
-  & > div {
-    width: 100%;
-    height: 48px;
-    border-radius: 60px;
-    border: 1px solid #f9bc23;
-    background-color: rgba(249,188,35,0.1) !important;
+  width: 10.8304vw;
+  height: 4.26vw;
+  border-radius: 300px;
+  border: 1px solid #f9bc23;
+  background-color: rgba(249,188,35,0.1) !important;
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  & > .minus {
+    width: 2.1661vw;
+    height: 2.1661vw;
+    padding: 0;
+    //padding-bottom: 0.1vw;
+    margin-left: 1.083vw;
+    @include font35_400();
     display: flex;
-    justify-content: space-between;
+    justify-content: center;
     align-items: center;
-    & > .minus {
-      width: 30px;
-      height: 30px;
-      padding: 0;
-      margin-left: 10px;
-      //padding-top: 0.9px;
-      @include font40_400();
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #f9bc23;
-      border: 1px solid #f9bc23;
-      border-radius: 60px;
-      cursor: pointer;
-    }
-    & > span {
-      @include font40_400();
-    }
-    & > .plus {
-      width: 38px;
-      height: 38px;
-      padding: 0;
-      margin-right: 6px;
-      @include font50_500();
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      background-color: #f9bc23;
-      border: 1px solid #f9bc23;
-      border-radius: 60px;
-      cursor: pointer;
-    }
-    & > button:hover {
-      background-color: #cf9f37;
-      border: 1px solid #cf9f37;
-    }
-    & > button:target {
-      background-color: #cf9f37;
-      border: 1px solid #cf9f37;
-    }
-    & > button:active {
-      background-color: #cf9f37;
-      border: 1px solid #cf9f37;
-    }
+    background-color: #f9bc23;
+    border: 1px solid #f9bc23;
+    border-radius: 60px;
+    cursor: pointer;
   }
+  & > span {
+    @include font40_500();
+  }
+  & > .plus {
+    width: 2.8881vw;
+    height: 2.8881vw;
+    padding: 0;
+    //padding-bottom: 0.25vw;
+    margin-right: 0.722vw;
+    @include font60_300();
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    background-color: #f9bc23;
+    border: 1px solid #f9bc23;
+    border-radius: 60px;
+    cursor: pointer;
+  }
+  & > button:hover {
+    background-color: #cf9f37;
+    border: 1px solid #cf9f37;
+  }
+  & > button:target {
+    background-color: #cf9f37;
+    border: 1px solid #cf9f37;
+  }
+  & > button:active {
+    background-color: #cf9f37;
+    border: 1px solid #cf9f37;
+  }
+  
 }

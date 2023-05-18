@@ -2,6 +2,59 @@ import { create } from 'zustand';
 
 import { api } from './api.js';
 
+export const useCartStore = create((set, get) => ({
+  items: [],
+  allItems: [],
+  setAllItems: (items) => {
+    set({
+      allItems: items
+    })
+  },
+  plus: (item_id) => {
+    let items = get().items;
+    let allItems = get().allItems;
+    let check = false;
+
+    items.map( (item, key) => {
+      if( parseInt(item.id) == parseInt(item_id) ){
+        items[ key ]['count'] ++;
+        check = true;
+      }
+    } )
+
+    if( !check ){
+      let item = allItems.find( item => parseInt(item.id) == parseInt(item_id) );
+
+      if( item ){
+        item.count = 1;
+        items.push(item);
+      }
+    }
+
+    console.log( 'items', items )
+
+    set({
+      items: items
+    })
+  },
+  minus: (item_id) => {
+    let items = get().items;
+    let check = false;
+
+    items.map( (item, key) => {
+      if( parseInt(item.id) == parseInt(item_id) ){
+        items[ key ]['count'] --;
+      }
+    } )
+
+    let newitems = items.filter( item => parseInt(item.count) > 0 );
+
+    set({
+      items: newitems
+    })
+  },
+}))
+
 export const useContactStore = create((set, get) => ({
   myPoints: [],
   myUnicPoint: [],

@@ -8,15 +8,19 @@ const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const DynamicPage = dynamic(() => import('@/modules/contacts/page.js'))
 
 import { api } from '@/components/api.js';
-import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/store.js';
+import { useContactStore, useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js'
+
+import { shallow } from 'zustand/shallow'
 
 const this_module = 'contacts';
 
 export default function Contacts(props) {
 
-  const { city, cats, cities, page } = props.data1;
+  const { city, cats, cities, page, all_items } = props.data1;
   
+  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems], shallow);
+
   const getData = useContactStore( state => state.getData );
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
@@ -28,6 +32,10 @@ export default function Contacts(props) {
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
+    }
+
+    if( allItems.length == 0 ){
+      setAllItems(all_items)
     }
 
     setActivePage(this_module)

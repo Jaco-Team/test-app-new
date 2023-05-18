@@ -15,24 +15,28 @@ export default function LoginSMS() {
 
   return (
     <div className="modalLoginCreate">
-      <IconButton style={{ position: 'absolute', top: -50, left: 10, backgroundColor: 'transparent' }} onClick={closeModalAuth}>
-        <IconClose style={{ width: 35, height: 35, overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }}/>
+      <IconButton style={{ position: 'absolute', top: '-3.2vw', left: -8, backgroundColor: 'transparent' }} onClick={closeModalAuth}>
+        <IconClose style={{ width: '2.166vw', height: '2.166vw', overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }}/>
       </IconButton>
 
       <div className="loginHeader">
         <Typography component="h2">Вход по СМС</Typography>
       </div>
 
-      <div style={{ marginBottom: errTextAuth ? '30px' : '128px', width: '100%' }}>
-        <MyTextInput
-          type="phone"
-          placeholder="Телефон"
-          value={loginLogin}
-          func={(event) => changeLogin(event)}
-          onKeyDown={(event) => checkLoginKey(2, event)}
-          className="inputLogin"
-        />
+      <div className="loginSubHeader">
+        <Typography component="h3">Укажите свой номер телефона</Typography>
       </div>
+
+      
+      <MyTextInput
+        type="phone"
+        placeholder="Телефон"
+        value={loginLogin}
+        func={(event) => changeLogin(event)}
+        onKeyDown={(event) => checkLoginKey(2, event)}
+        className="inputLogin"
+      />
+      
 
       {!errTextAuth ? null : (
         <div className="loginErr">

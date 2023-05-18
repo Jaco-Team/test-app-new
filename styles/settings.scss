@@ -3,7 +3,7 @@
 $Roboto: var(--inter-font);
 $Ubuntu: 'Ubuntu';
 $colorMain: #CC0033;
-$colorText: #525252;
+$colorText: rgba(0, 0, 0, 0.8);
 
 @mixin fonsNew($size: 1rem, $family: $Roboto) {
     font-size: $size;
@@ -99,6 +99,17 @@ $colorText: #525252;
     }
 }
 
+@mixin font35_400() {
+    font-style: normal;
+    font-weight: 400;
+
+    @include fonsNew(1.15vw, var(--inter-font));
+
+    @media (max-width: 960px) {
+        @include fonsNew(1.15rem, var(--inter-font));
+    }
+}
+
 @mixin font50_500() {
     font-style: normal;
     font-weight: 500;
@@ -140,6 +151,17 @@ $colorText: #525252;
 
     @media (max-width: 960px) {
         @include fonsNew(1.4rem, var(--inter-font));
+    }
+}
+
+@mixin font60_300() {
+    font-style: normal;
+    font-weight: 300;
+
+    @include fonsNew(2.2vw, var(--inter-font));
+
+    @media (max-width: 960px) {
+        @include fonsNew(2.2rem, var(--inter-font));
     }
 }
 

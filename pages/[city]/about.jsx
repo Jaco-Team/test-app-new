@@ -7,14 +7,19 @@ const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const AboutPage = dynamic(() => import('@/modules/about'))
 
 import { roboto } from '@/ui/Font.js'
-import { useCitiesStore, useHeaderStore } from '@/components/store.js';
+import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
 import { api } from '@/components/api.js';
+
+import { shallow } from 'zustand/shallow'
 
 const this_module = 'contacts';
 
 export default React.memo(function About(props) {
 
-  const { city, cats, cities, page } = props.data1;
+  const { city, cats, cities, page, all_items } = props.data1;
+
+  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems], shallow);
+
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
@@ -25,6 +30,10 @@ export default React.memo(function About(props) {
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
+    }
+
+    if( allItems.length == 0 ){
+      setAllItems(all_items)
     }
 
     setActivePage('about')
