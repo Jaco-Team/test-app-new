@@ -13,6 +13,7 @@ import '../styles/header/loginForm.scss'
 
 import '../styles/home.scss'
 import '../styles/home/homePC.scss'
+import '../styles/home/bannersPC.scss'
 
 import '../styles/header/cityForm.scss'
 import '../styles/header/headerPC.scss'
