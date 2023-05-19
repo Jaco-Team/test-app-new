@@ -58,8 +58,8 @@ export default function ModalCity() {
     >
       <Fade in={openCityModal} style={{ overflow: 'auto' }}>
         <Box className={'modalCity '}>
-          <IconButton style={{ position: 'absolute', top: -50, left: -8, backgroundColor: 'transparent' }} onClick={() => setActiveModalCity(false)}>
-            <IconClose style={{ width: 35, height: 35, overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }} />
+          <IconButton style={{ position: 'absolute', top: '-3.2vw', left: -8, backgroundColor: 'transparent' }} onClick={() => setActiveModalCity(false)}>
+            <IconClose style={{ width: '2.166vw', height: '2.166vw', overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }} />
           </IconButton>
 
           <div className="loginIMG">
@@ -82,7 +82,7 @@ export default function ModalCity() {
             <Typography variant="h5" component="span">Нет, выберу город</Typography>
           </Button>
 
-          <Menu id={'chooseCityModal'} anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
+          <Menu id={'chooseCityModal'} className={roboto.variable} anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
             {thisCityList.map((city, key) => <MenuItem key={key} onClick={() => chooseCity(city.id)}>{city.name}</MenuItem>)}
           </Menu>
         </Box>

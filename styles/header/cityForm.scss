@@ -15,7 +15,7 @@
   top: 50%;
   left: 50%;
   transform: translate(-50%, -50%);
-  width: 20.22vw;
+  width: 17.2891vw;
   background: linear-gradient(
     to bottom,
     #ededed 0%,
@@ -24,7 +24,7 @@
     #fff 100%
   );
   padding: 5.06vw 3.63vw 3.63vw 3.63vw;
-  border-radius: 1.83vw;
+  border-radius: 1.445vw;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -44,7 +44,7 @@
     }
   }
   & .loginHeader {
-    padding-top: 3.25vw;
+    padding-top: 3.973vw;
     display: flex;
     align-items: center;
     text-align: center;
@@ -65,7 +65,7 @@
     width: 100%;
     height: 2.89vw;
     border-radius: 120px;
-    background-color: #dd1a32;
+    background-color: $colorMain;;
     text-transform: lowercase;
     margin-bottom: 0.73vw;
     display: flex;
@@ -80,7 +80,7 @@
       }
     }
     &:hover {
-      background-color: #a91b2c;
+      background-color: $colorMain;;
     }
   }
   & button.chooseCity {
@@ -109,20 +109,21 @@
 
 #chooseCityModal {
   & div.MuiPaper-root.MuiMenu-paper {
-    border-radius: 20px;
-    width: 20.22vw;
+    border-radius: 0.723vw;
+    width: 17.2891vw;
     background: #ececec;
     box-shadow: 10px 10px 30px 5px rgba(0, 0, 0, 0.2);
     & ul {
       width: 100%;
+      padding: 0;
       & li {
         width: 100%;
+        height: 2.8883vw;
         justify-content: center;
-        @include fonsNew(1.25rem, $Roboto);
-        font-weight: 400;
+        @include font30_400();
         &:hover {
           background-color: #ffffff;
-          color: #dd1a32;
+          color: $colorMain;
         }
       }
     }

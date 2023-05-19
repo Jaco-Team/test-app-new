@@ -986,14 +986,16 @@ export const useHomeStore = create((set, get) => ({
   // открытие/закрытие модального окна баннер на главное странице
   setActiveBanner: (active, banner) => {
 
-    if(banner?.id === '84' || banner?.id === '80' || banner?.id === '48' || !banner) {
+    console.log( 'setActiveBanner', banner, active )
+
+    //if(banner?.id === '84' || banner?.id === '80' || banner?.id === '48' || !banner) {
       set({
         banner,
         openModalBanner: active,
       });
-    } else {
-      return;
-    }
+    //} else {
+    //  return;
+    //}
 
   }
 
