@@ -10,6 +10,13 @@
   }
 }
 
+.hidddenText5 {
+  -webkit-line-clamp: 5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
 .modalItemPC {
   & .FirstItem {
     width: 55%;
@@ -322,10 +329,42 @@
   width: 100%;
   display: flex;
   flex-direction: column !important;
-  align-items: stretch;
+  //align-items: stretch;
   justify-content: space-between;
 
+  //display: flex;
+    align-items: center;
+
   & > div {
+    @media (max-width: 679px) {
+      max-width: 100%;
+    }
+    @media (max-width: 999px) {
+      max-width: 268px;
+    }
+    @media (max-width: 1384px) {
+      max-width: 268px;
+    }
+    @media (min-width: 1385px) {
+      max-width: 568px;
+    }
+
+    @media only screen and (min-device-pixel-ratio: 2) {
+      @media (max-width: 679px) {
+        max-width: 100%;
+      }
+      @media (max-width: 999px) {
+        max-width: 568px;
+      }
+      @media (max-width: 1384px) {
+        max-width: 568px;
+      }
+      @media (min-width: 1385px) {
+        max-width: 568px;
+      }
+    }
+    
+
     background-color: #fff;
     padding: 30px 16px;
     border-radius: 1.3vw;
@@ -387,8 +426,12 @@
     width: 100%;
     text-align: center;
     line-height: 1.5;
-    overflow: hidden;
     @include font25_400();
+
+    -webkit-line-clamp: 5;
+    display: -webkit-box;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
   }
   .containerBTN {
     display: flex;
@@ -428,18 +471,18 @@
       }
     }
     & > div {
-      width: 50%;
-      border-radius: 45px;
+      width: 10.8305vw;
+      border-radius: 120px;
       display: flex;
       justify-content: space-between;
       align-items: center;
       background-color: #ffff;
 
-      height: 2.9vw;
+      height: 2.8883vw;
 
       & > .minus {
         padding: 0;
-        margin-left: 8px;
+        margin-left: 0.361vw;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -448,13 +491,13 @@
         border: none;
 
         @include font50_300();
-        width: 2vw;
-        height: 2vw;
-        border-radius: 40px;
+        width: 2.1661vw;
+        height: 2.1661vw;
+        border-radius: 120px;
       }
       & > .plus {
         padding: 0;
-        margin-right: 8px;
+        margin-right: 0.361vw;
         display: flex;
         justify-content: center;
         align-content: center;
@@ -464,9 +507,9 @@
         border: none;
 
         @include font50_300();
-        width: 2vw;
-        height: 2vw;
-        border-radius: 40px;
+        width: 2.1661vw;
+        height: 2.1661vw;
+        border-radius: 120px;
       }
       & > span {
         display: flex;

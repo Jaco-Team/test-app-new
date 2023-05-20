@@ -28,14 +28,14 @@ export default function CardItem(props){
 
   GRID = (width- 7*20) / 6;
 
-  const [ count, setCount ] = useState(0);
+  const [ count, setCount ] = useState(1);
 
   const [ getItem ] = useHomeStore( state => [ state.getItem ], shallow );
   const [ thisCity ] = useCitiesStore( state => [ state.thisCity ], shallow );
   const [ plus, minus ] = useCartStore( state => [ state.plus, state.minus ], shallow );
 
   return (
-    <Grid item className={'CardItemPC '+( count > 0 ? 'active' : '' )} xs={12} sm={6} md={4} lg={3} xl={3} sx={{ display: { xs: 'none', sm: 'flex' } }}>
+    <Grid item className={'CardItemPC '+( count > 0 ? 'active' : '' )} xs={12} sm={6} md={4} lg={3} sx={{ display: { xs: 'none', sm: 'flex' } }}>
       <div>
         <Image alt={item.name} src={"https://cdnimg.jacofood.ru/"+item.img_app+"_1420x1420.jpg"} width={1420} height={1420} priority={true} onClick={ () => getItem('home', thisCity, item.id) } style={{ cursor: 'pointer' }}/>
 

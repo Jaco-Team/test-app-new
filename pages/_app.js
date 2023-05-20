@@ -47,6 +47,18 @@ const theme = createTheme({
       },
     },
   },
+  breakpoints: {
+    values: {
+      xs: 0,
+      //sm: 600,
+      sm: 680,
+      //md: 900,
+      md: 1000,
+      //lg: 1200,
+      lg: 1385,
+      //xl: 1536,
+    },
+  },
 })
 
 export function reportWebVitals(metric) {
