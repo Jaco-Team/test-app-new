@@ -247,29 +247,34 @@ export default function ModalBannerPC() {
       open={openModalBanner}
       BackdropComponent={Backdrop}
       BackdropProps={{ timeout: 500 }}
+      scroll='body'
     >
-      <DialogContent style={{ padding: 0, borderRadius: '40px', overflow: 'hidden' }}>
+      <DialogContent style={{ padding: 0, overflow: 'hidden' }}>
         <Box component="div" className="BannerPC BannerFontPC">
-          <IconButton style={{ position: 'absolute', top: -5, left: -50, backgroundColor: 'transparent' }} onClick={() => setActiveBanner(false, null)}>
-            <IconClose style={{ width: 35, height: 35, overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }} />
+          <IconButton style={{ position: 'absolute', left: '-3vw', backgroundColor: 'transparent' }} onClick={() => setActiveBanner(false, null)}>
+            <IconClose style={{ width: '2.166vw', height: '2.166vw', overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }} />
           </IconButton>
 
           <Grid container justifyContent="center">
             <Grid className="ImgItem">
-              <Image alt={banner?.promo_title} src={ 'https://storage.yandexcloud.net/site-home-img/' + banner?.img_new + '3700х1000.jpg'} width={3700} height={1000} priority={true}
-              />
+              {/* <Image alt={banner?.promo_title} src={ 'https://storage.yandexcloud.net/site-home-img/' + banner?.img_new + '3700х1000.jpg'} width={3700} height={1000} priority={true}
+              /> */}
+              <div className="Item"
+                style={{ backgroundColor: banner?.id === '84' ? '#3faad8' : banner?.id === '80' ?  '#B570DF' : banner?.id === '48' ? '#F45773' : null}}
+              >
 
-              <div className="Group" style={{ justifyContent: banner?.id === '48' ? 'flex-start' : 'space-evenly' }}>
-                {banner?.id === '84' ? 
-                  <Button variant="contained" className="ItemOther">
-                    <span style={{color: '#B1B1B1', textDecoration: 'line-through', textDecorationColor: '#DD1A32', marginRight: 15 }}>1 330</span>1 125 ₽
-                  </Button>
-                 : banner?.id === '80' ? 
-                  <Button variant="contained" className="ItemOther">В корзину</Button>
-                 : null}
+                <div className="Group">
+                  {banner?.id === '84' ? 
+                    <Button variant="contained" className="ItemOther"><span>1 330</span>1 125 ₽</Button>
+                  : banner?.id === '80' ? 
+                    <Button variant="contained" className="ItemOther">В корзину</Button>
+                  : null}
 
-                <Typography className="Term ItemOther" variant="h5" component="span">Условия акции<KeyboardArrowUpIcon /></Typography>
+                  <Typography className="ItemOther" variant="h5" component="span">Условия акции<KeyboardArrowUpIcon /></Typography>
+                </div>
+
               </div>
+
             </Grid>
 
             <Grid className="DescItem">
@@ -286,12 +291,12 @@ export default function ModalBannerPC() {
 
                 <div className="List">
                   {item?.items?.map((item, key) => (
-                    <div key={key} style={{ marginBottom: '5%' }}>
+                    <div key={key}>
                       <div className="itemNumber">
                         <span className="ItemOther">{key + 1}.</span>
                       </div>
 
-                      <div style={{ width: '30%' }}>
+                      <div style={{ width: '12.44vw' }}>
                         <Image alt={item?.name} src={'https://cdnimg.jacofood.ru/' + item?.img_app + '_1420x1420.jpg'} width={1420} height={1420} priority={true}/>
                       </div>
 
@@ -306,20 +311,20 @@ export default function ModalBannerPC() {
 
               <Grid className="SecondItem">
                 {banner?.id === '84' ? 
-                  <Typography className="ItemTitle" variant="h5" component="span" style={{ marginBottom: '3%' }}>
+                  <Typography className="ItemTitle" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>
                     Пицца Пепперони и большой сет Атлантида из 4 роллов всего заманчивый{' '}
                     <span style={{ color: '#B1B1B1', textDecoration: 'line-through', textDecorationColor: '#DD1A32', cursor: 'pointer' }}>1 330</span>{' '}1 125 ₽
                   </Typography>
                 : 
-                  <Typography className="ItemTitle" variant="h5" component="span" style={{ marginBottom: '3%' }}>{item?.title}</Typography>
+                  <Typography className="ItemTitle" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>{item?.title}</Typography>
                 }
 
                 <Typography className="ItemSpan" variant="h5" component="span">{item?.for}</Typography>
 
-                <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '3%' }}>{item?.desk1}</Typography>
+                <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>{item?.desk1}</Typography>
 
                 {banner?.id === '48' ?
-                  <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '3%' }}>
+                  <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>
                     Подарок получают только те, кто{' '}
                     <span className='TextDecor'>указал дату родения в профиле</span>{' '}
                     в настройках аккаунта.
@@ -329,7 +334,7 @@ export default function ModalBannerPC() {
                 <Typography className="ItemSpan" variant="h5" component="span">{item?.how}</Typography>
 
                 {banner?.id === '84' ? 
-                  <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '3%' }}>
+                  <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>
                     Нажмите{' '}
                     <span className='TextDecor'>кнопку с ценой</span>{' '}
                     прямо на баннере или введите промокод{' '}
@@ -338,7 +343,7 @@ export default function ModalBannerPC() {
                   </Typography>
                  : 
                  banner?.id === '80' ?
-                  <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '3%' }}>
+                  <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>
                     Нажмите кнопку{' '}
                     <span className='TextDecor'>«В корзину»</span>{' '}
                     прямо на баннере или введите промокод{' '}
@@ -347,7 +352,7 @@ export default function ModalBannerPC() {
                   </Typography>
                  : 
                  banner?.id === '48' ? (
-                  <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '3%' }}>
+                  <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>
                     Важно: ввести её можно только один раз. Чтобы получить бесплатный ролл, нужно сделать заказ на сумму от 499 рублей.
                     Укажите промокод в{' '}
                     <span className='TextDecor'>специальном поле</span>{' '}

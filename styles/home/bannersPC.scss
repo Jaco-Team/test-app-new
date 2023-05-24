@@ -2,65 +2,86 @@
 
 .modalBannerPC {
   & .MuiDialog-paper {
-    border-radius: 40px;
+    border-radius: 1.444vw;
     overflow: visible;
-    margin: 0 !important;
-    width: calc(95% - 64px) !important;
+    margin: 8.7vw 0;
+    width: 91vw;
     max-width: none !important;
   }
 }
 
 .BannerPC {
   & .ImgItem {
-    position: relative;
-    
-    & img {
-      object-fit: contain;
-      image-rendering: auto;
-      width: 100%;
-      height: auto;
-      border-radius: 40px;
-    }
+    //position: relative;
 
-    & .Group {
-      z-index: 1;
-      position: absolute;
-      top: 88%;
-      left: 15%;
-      width: 25%;
-      transform: translate(-50%, -50%);
-      display: flex;
+    // & img {
+    //   object-fit: contain;
+    //   image-rendering: auto;
+    //   width: 100%;
+    //   height: auto;
+    //   border-radius: 1.444vw;
+    // }
 
-      & button {
-        background: #ffffff;
-        border-radius: 45px;
-        padding: 1% 11%;
-        cursor: pointer;
-      }
+    & .Item {
+      width: 91vw;
+      height: 28.89vw;
+      background-color: #3faad8;
+      border-radius: 1.444vw;
+      position: relative;
 
-      & span {
-        color: #ffffff;
+      & .Group {
+        z-index: 1;
+        position: absolute;
+        top: 25vw;
+        left: 20.289vw;
+        width: 31.047vw;
+        height: 4vw;
+        transform: translate(-50%, -50%);
         display: flex;
         align-items: center;
-        cursor: pointer;
+
+        & button {
+          background: #ffffff;
+          height: 2.888vw;
+          width: 14.441vw;
+          border-radius: 1.625vw;
+          cursor: pointer;
+          display: flex;
+          align-items: center;
+          margin-right: 2.167vw;
+
+          & span {
+            color: #b1b1b1;
+            text-decoration: line-through;
+            text-decoration-color: #dd1a32;
+            margin-right: 0.55vw;
+          }
+        }
+
+        & span {
+          color: #ffffff;
+          display: flex;
+          align-items: center;
+          cursor: pointer;
+        }
       }
     }
   }
 
   & .DescItem {
-    height: fit-content;
     display: flex;
-    margin: 3% 6%;
+    margin: 2.89vw 5.78vw 2.89vw 3.62vw;
     justify-content: space-between;
+    width: 100%;
 
     & .FirstItem {
-      width: 40%;
+      width: 35.4vw;
       display: flex;
       flex-direction: column;
 
       & .Title {
-        padding-left: 3%;
-        margin-bottom: 5%;
+        padding-left: 2.17vw;
+        margin-bottom: 1.1vw;
       }
 
       & .List {
@@ -69,6 +90,7 @@
 
         & div {
           display: flex;
+          margin-bottom: 0.75vw;
 
           & img {
             object-fit: contain;
@@ -78,25 +100,25 @@
           }
 
           .itemNumber {
-            width: 5%;
-            display: flex;
+            width: 3.1vw;
             flex-direction: column;
             justify-content: flex-start;
-            align-items: center;
+            align-items: flex-end;
+            padding-top: 1.1vw;
           }
 
           .itemDesc {
-            width: 65%;
+            width: 28vw;
             display: flex;
             justify-content: flex-start;
-            margin-left: 5%;
             flex-direction: column;
 
             & span {
-              height: 40%;
+              height: 4.36vw;
               text-align: left;
               display: flex;
               align-items: center;
+              padding-left: 1.444vw;
             }
           }
         }
@@ -104,7 +126,7 @@
     }
 
     & .SecondItem {
-      width: 50%;
+      width: 39vw;
       display: flex;
       flex-direction: column;
 
@@ -117,42 +139,36 @@
   }
 
   & .Line {
-    min-height: 4px;
-    width: 100px;
-    margin-bottom: 5%;
+    min-height: 0.38vw;
+    width: 5.45vw;
+    margin-bottom: 1.64vw;
     background: rgba(0, 0, 0, 0.2);
-    border-radius: 10px;
+    border-radius: 0.2vw;
   }
 }
 
 .BannerFontPC {
   & .ItemTitle {
     @include font50_500();
-    color: rgba(0, 0, 0, 0.8);
   }
 
   & .ItemName {
     @include font40_400();
-    color: rgba(0, 0, 0, 0.8);
   }
 
   & .ItemOther {
     @include font30_400();
-    color: rgba(0, 0, 0, 0.8);
   }
 
   & .ItemSpan {
     @include font40_500();
-    color: rgba(0, 0, 0, 0.8);
   }
 
   & .ItemDesk {
     @include font25_400();
-    color: rgba(0, 0, 0, 0.8);
   }
 
   & .ItemTime {
     @include font22_400();
-    color: rgba(0, 0, 0, 0.8);
   }
 }
