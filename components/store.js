@@ -957,45 +957,14 @@ export const useHomeStore = create((set, get) => ({
       get().navigate('start');
     }
   },
- 
-  // добавлять в товара для корзины
-  // plus: (id) => {
-
-  //   const CatsItems = get().CatsItems.map(cats => {
-
-  //     cats.items.map(item => {
-  //       if(item.id === id) {
-  //         item?.count ? item.count += 1 : item.count = 1;
-  //         return item;
-  //       }
-  //       return item;
-  //     })
-
-  //     return cats;
-  //   })
-
-  //   console.log('plus ===>', CatsItems)
-
-  //   set({
-  //     CatsItems,
-  //   });
-
-
-  // }
 
   // открытие/закрытие модального окна баннер на главное странице
   setActiveBanner: (active, banner) => {
 
-    console.log( 'setActiveBanner', banner, active )
-
-    //if(banner?.id === '84' || banner?.id === '80' || banner?.id === '48' || !banner) {
       set({
         banner,
         openModalBanner: active,
       });
-    //} else {
-    //  return;
-    //}
 
   }
 

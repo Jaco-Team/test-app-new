@@ -2,10 +2,10 @@
 
 .modalBannerPC {
   & .MuiDialog-paper {
-    border-radius: 1.444vw;
+    border-radius: 2.8881vw;
     overflow: visible;
     margin: 8.7vw 0;
-    width: 91vw;
+    width: 90.975vw;
     max-width: none !important;
   }
 }
@@ -23,10 +23,10 @@
     // }
 
     & .Item {
-      width: 91vw;
-      height: 28.89vw;
+      width: 90.975vw;
+      height: 28.881vw;
       background-color: #3faad8;
-      border-radius: 1.444vw;
+      border-radius: 2.8881vw;
       position: relative;
 
       & .Group {
@@ -42,7 +42,7 @@
 
         & button {
           background: #ffffff;
-          height: 2.888vw;
+          height: 2.8881vw;
           width: 14.441vw;
           border-radius: 1.625vw;
           cursor: pointer;
@@ -70,18 +70,18 @@
 
   & .DescItem {
     display: flex;
-    margin: 2.89vw 5.78vw 2.89vw 3.62vw;
+    margin: 2.8881vw 5.7762vw 2.8881vw 3.611vw;
     justify-content: space-between;
     width: 100%;
 
     & .FirstItem {
-      width: 35.4vw;
+      width: 35.3791vw;
       display: flex;
       flex-direction: column;
 
       & .Title {
-        padding-left: 2.17vw;
-        margin-bottom: 1.1vw;
+        padding-left: 2.1661vw;
+        margin-bottom: 1.0831vw;
       }
 
       & .List {
@@ -90,31 +90,35 @@
 
         & div {
           display: flex;
-          margin-bottom: 0.75vw;
-
-          & img {
-            object-fit: contain;
-            image-rendering: auto;
-            width: 100%;
-            height: auto;
-          }
+          margin-bottom: 0.7221vw;
 
           .itemNumber {
             width: 3.1vw;
             flex-direction: column;
             justify-content: flex-start;
             align-items: flex-end;
-            padding-top: 1.1vw;
+            padding-top: 1.0831vw;
+          }
+
+          .itemImg {
+            width: 11.0548vw;
+
+            & img {
+              object-fit: contain;
+              image-rendering: auto;
+              width: 100%;
+              height: auto;
+            }
           }
 
           .itemDesc {
-            width: 28vw;
+            width: 24.536vw;
             display: flex;
             justify-content: flex-start;
             flex-direction: column;
 
             & span {
-              height: 4.36vw;
+              height: 4.3322vw;
               text-align: left;
               display: flex;
               align-items: center;
@@ -126,7 +130,7 @@
     }
 
     & .SecondItem {
-      width: 39vw;
+      width: 38.9897vw;
       display: flex;
       flex-direction: column;
 
@@ -139,11 +143,11 @@
   }
 
   & .Line {
-    min-height: 0.38vw;
-    width: 5.45vw;
+    height: 0.3612vw;
+    width: 5.4157vw;
     margin-bottom: 1.64vw;
     background: rgba(0, 0, 0, 0.2);
-    border-radius: 0.2vw;
+    border-radius: 0.1805055vw;
   }
 }
 

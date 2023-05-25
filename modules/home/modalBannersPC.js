@@ -251,7 +251,7 @@ export default function ModalBannerPC() {
     >
       <DialogContent style={{ padding: 0, overflow: 'hidden' }}>
         <Box component="div" className="BannerPC BannerFontPC">
-          <IconButton style={{ position: 'absolute', left: '-3vw', backgroundColor: 'transparent' }} onClick={() => setActiveBanner(false, null)}>
+          <IconButton style={{ position: 'absolute', left: '-3.3vw', top: '-0.6vw', backgroundColor: 'transparent' }} onClick={() => setActiveBanner(false, null)}>
             <IconClose style={{ width: '2.166vw', height: '2.166vw', overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }} />
           </IconButton>
 
@@ -296,7 +296,7 @@ export default function ModalBannerPC() {
                         <span className="ItemOther">{key + 1}.</span>
                       </div>
 
-                      <div style={{ width: '12.44vw' }}>
+                      <div className="itemImg">
                         <Image alt={item?.name} src={'https://cdnimg.jacofood.ru/' + item?.img_app + '_1420x1420.jpg'} width={1420} height={1420} priority={true}/>
                       </div>
 
