@@ -223,24 +223,24 @@
 //   color: #525252;
 // }
 
-.swiper-scrollbar{
-    visibility: hidden;
-}
+// .swiper-scrollbar{
+//     visibility: hidden;
+// }
 
-.swiper-pagination{
-    bottom: -3px!important;
-    z-index: 3000!important;
-    position: relative!important;
-    & .swiper-pagination-bullet{
-        width: 1vw;
-        height: 1vw;
-        background: rgba(0, 0, 0, 0.1);
-        opacity: 1;
-    }
-    & .swiper-pagination-bullet-active{
-        background: rgba(0, 0, 0, 0.3);
-    }
-}
+// .swiper-pagination{
+//     bottom: -3px!important;
+//     z-index: 3000!important;
+//     position: relative!important;
+//     & .swiper-pagination-bullet{
+//         width: 0.72202166064982vw;
+//         height: 0.72202166064982vw;
+//         background: rgba(0, 0, 0, 0.1);
+//         opacity: 1;
+//     }
+//     & .swiper-pagination-bullet-active{
+//         background: rgba(0, 0, 0, 0.3);
+//     }
+// }
 
 .swiper-wrapper._h2_{
     height: auto!important;
@@ -401,23 +401,54 @@
     color: #fff;
     overflow: visible;
 }
+
+.swiper-slide {
+  cursor: pointer; 
+}
+
+.swiper-scrollbar{
+  visibility: hidden;
+}
+
+.swiper-pagination{
+  bottom: -3px!important;
+  z-index: 3000!important;
+  position: relative!important;
+  & .swiper-pagination-bullet{
+      width: 0.72202166064982vw;
+      height: 0.72202166064982vw;
+      background: rgba(0, 0, 0, 0.1);
+      opacity: 1;
+  }
+  & .swiper-pagination-bullet-active{
+      background: rgba(0, 0, 0, 0.3);
+  }
+}
+
 .swiper-button-prev{
-    width: 100px!important;
-    height: 100%!important;
-    top: 0!important;
-    z-index: 1!important;
-    position: absolute!important;
+  width: 60px!important;
+  height: 28.881vw!important;
+  top: 0!important;
+  left: 0!important;
+  padding-left: 1.444043vw!important;
+  z-index: 1!important;
+  position: absolute!important;
+  margin-top: 0!important;
 }
+
 .swiper-button-next{
-    width: 100px!important;
-    height: 100%!important;
-    top: 0!important;
-    right: 0!important;
-    z-index: 1!important;
-    position: absolute!important;
+  width: 60px!important;
+  height: 28.881vw!important;
+  top: 0!important;
+  right: 0!important;
+  padding-right: 1.444043vw!important;
+  z-index: 1!important;
+  position: absolute!important;
+  margin-top: 0!important;
 }
+
 .swiper-button-next:after, .swiper-button-prev:after{
-    color: transparent;
+  content: ''!important;
 }
 
 // .CardItem{

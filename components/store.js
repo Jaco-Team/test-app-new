@@ -876,6 +876,7 @@ export const useHomeStore = create((set, get) => ({
 
   openModalBanner: false,
   banner: null,
+  swiper: null,
 
   getBanners: async (this_module, city) => {
     let data = {
@@ -885,7 +886,7 @@ export const useHomeStore = create((set, get) => ({
 
     const json = await api(this_module, data);
 
-    console.log('getBanners ====>', json)
+    // console.log('getBanners ====>', json)
 
     set({
       bannerList: json.banners,
@@ -917,7 +918,7 @@ export const useHomeStore = create((set, get) => ({
 
     const json = await api(this_module, data);
 
-    console.log('getItem ===>', json);
+    //console.log('getItem ===>', json);
 
     set({
       isOpenModal: true,
@@ -959,12 +960,17 @@ export const useHomeStore = create((set, get) => ({
   },
 
   // открытие/закрытие модального окна баннер на главное странице
-  setActiveBanner: (active, banner) => {
+  setActiveBanner: (active, banner, swiper) => {
 
-      set({
-        banner,
-        openModalBanner: active,
-      });
+    if(swiper) set({ swiper });
+
+    if(active) {
+      get().swiper.autoplay.stop();
+    } else {
+      get().swiper.autoplay.start();
+    }
+    
+    set({ banner, openModalBanner: active });
 
   }
 
