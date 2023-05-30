@@ -1,137 +1,230 @@
 @import '../settings.scss';
 
+.css-iz3z40-MuiDialog-container:after {
+  height: 0;
+}
+
 .modalCardItemPC {
   & .MuiDialog-paper {
-    border-radius: 40px;
+    border-radius: 1.444045vw;
     overflow: visible;
-    margin: 0 !important;
-    width: calc(70.75% - 64px) !important;
+    margin: 0;
+    margin-top: 30.68591vw;
+    width: 70.7585vw;
     max-width: none !important;
   }
 }
 
-.hidddenText5 {
-  -webkit-line-clamp: 5;
-  display: -webkit-box;
-  -webkit-box-orient: vertical;
-  overflow: hidden;
-}
-
 .modalItemPC {
-  & .FirstItem {
-    width: 55%;
-    margin: 2% 2.5% 2% 4.5%;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+  & .ImgItem {
     position: relative;
-    overflow-y: hidden;
-    border-radius: 40px;
-    background: #ffffff;
-
-    height: 700px;
-
+    width: 44.7655vw;
+    height: 44.7655vw;
+    margin: 1.444045vw;
     & img {
       object-fit: contain;
       image-rendering: auto;
       width: 100%;
       height: auto;
     }
+  }
+
+  & .FirstItem {
+    position: relative;
+    overflow-y: hidden;
+    width: 47.6535vw;
+    height: 47.6535vw;
 
     & .Table {
       position: absolute;
       background: #ffffff;
+      width: 41.8777vw;
+      height: 44.7655vw;
+      margin: 2.888085vw;
+      border-top-left-radius: 1.444045vw;
+      border-top-right-radius: 1.444045vw;
 
       & .Title {
         display: flex;
         align-items: center;
         flex-direction: column;
-        height: 160px;
+        height: 5.0545vw;
+        margin-bottom: 0.72202vw;
 
         & div {
-          min-height: 4px;
-          width: 100px;
-          margin-bottom: 5%;
+          height: 0.3612vw;
+          width: 5.4157vw;
           background: rgba(0, 0, 0, 0.2);
-          border-radius: 10px;
+          border-radius: 0.1805055vw;
+          margin-top: 0.72202vw;
+          margin-bottom: 1.805055vw;
         }
 
         & h2 {
-          text-align: center;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          height: 2.1664vw;
         }
       }
 
       & .List {
-        height: 500px;
+        height: 100%;
         width: 100%;
         display: flex;
         align-items: center;
         flex-direction: column;
         overflow-y: auto;
 
-        & div {
-          width: 85%;
+        & .ValueTitle {
+          margin-bottom: 1.66065vw;
+          margin-top: 0.3249099vw;
+          width: 100%;
           display: flex;
+          align-items: center;
+          justify-content: center;
+          & h2 {
+            height: 2.1666vw;
+            width: 24.188vw;
+            text-align: center;
+          }
+        }
 
-          .itemNumber {
-            width: 5%;
+        & .SetItem {
+          display: flex;
+          padding: 1.444045vw 1.805055vw 1.444045vw 3.249096vw;
+          height: 8.6642599277978vw;
+
+          & .itemNumber {
+            width: 2.1661vw;
+            height: 1.0830324909747vw;
             display: flex;
             flex-direction: column;
-            justify-content: flex-start;
-            align-items: center;
+            align-items: flex-end;
+            margin-right: 0.72202vw;
           }
 
-          .itemDesc {
-            width: 65%;
-            display: flex;
-            justify-content: flex-start;
-            margin-left: 10%;
-            flex-direction: column;
-
-            & span {
-              margin-bottom: 3%;
-              text-align: left;
+          & .itemImg {
+            width: 8.6642599277978vw;
+            & img {
+              object-fit: contain;
+              image-rendering: auto;
+              width: 100%;
+              height: auto;
             }
           }
 
-          .itemValue {
-            width: 95%;
+          & .itemDesc {
+            width: 21.661vw;
+            display: flex;
+            justify-content: flex-start;
+            margin-left: 2.166065vw;
             flex-direction: column;
-            align-items: center;
-            border: 2px solid #b2b2b2;
-            border-radius: 20px;
-            margin-left: 5%;
 
-            .itemValueRow {
-              width: 100%;
-              justify-content: center;
+            & span {
+              display: flex;
               align-items: center;
+              height: 50%;
+              text-align: left;
+            }
+          }
+        }
+
+        & .ValueItem {
+          display: flex;
+          width: 100%;
+          height: 10.8307vw;
+
+          & .itemNumber {
+            width: 2.1661vw;
+            height: 1.0830324909747vw;
+            display: flex;
+            flex-direction: column;
+            align-items: flex-end;
+            margin-right: 1.444045vw;
+            margin-top: 1.444045vw;
+            padding-left: 1.805055vw;
+          }
+
+          & .itemValueColumn {
+            display: flex;
+            flex-direction: column;
+            width: 32.2745vw;
+            border: 3px solid #b2b2b2;
+            border-radius: 1.083032vw;
+
+            & .itemValueRowMain {
+              width: 100%;
+              display: flex;
+              align-items: center;
+              border-bottom: 3px solid #b2b2b2;
 
               & > div:first-child {
+                display: flex;
                 justify-content: flex-start;
                 text-align: left;
                 align-items: center;
-                padding: 5%;
-                border-right: 2px solid #b2b2b2;
+                border-right: 3px solid #b2b2b2;
+                width: 31.944vw;
+                height: 2.6726vw;
+                padding-left: 1.083034vw;
+                padding-top: 1.263537vw;
+                padding-bottom: 1.407944vw;
               }
 
               & > div:last-child {
+                width: 8.444vw;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                flex-direction: column;
+
+                & span {
+                  margin-bottom: 0.2166066vw;
+                }
+              }
+            }
+
+            & .itemValueRow {
+              width: 100%;
+              display: flex;
+              align-items: center;
+
+              & > div:first-child {
+                display: flex;
+                justify-content: flex-start;
+                text-align: left;
+                align-items: center;
+                border-right: 3px solid #b2b2b2;
+                width: 18.206vw;
+                height: 4.2245vw;
+                padding-left: 1.083034vw;
+                padding-top: 0.577616vw;
+                padding-bottom: 0.361012vw;
+                padding-right: 0.72202vw;
+              }
+
+              & > div:last-child {
+                width: 13.042vw;
+                display: flex;
                 justify-content: center;
                 align-items: center;
                 flex-direction: column;
 
                 & div {
+                  width: 10.8304vw;
                   display: flex;
                   flex-direction: row;
                   justify-content: space-between;
 
                   .dot {
                     content: '';
-                    border-bottom: 1px dotted #aaa;
+                    border-bottom: 2px dotted rgba(0, 0, 0, 0.8);
                     flex: 1;
-                    margin: 0 5%;
+                    margin: 0 0.541515vw;
                     align-items: flex-end;
-                    margin-bottom: 2%;
+                    margin-bottom: 0.2166066vw;
                   }
                 }
               }
@@ -139,52 +232,51 @@
           }
         }
 
+        &::-webkit-scrollbar {
+          width: 1.4440433212996vw;
+        }
+
         &::-webkit-scrollbar-thumb {
           background: rgba(0, 0, 0, 0.3);
-          border-radius: 10px;
+          border-right: solid 1.0830324909747vw #ffffff;
         }
-        &::-webkit-scrollbar {
-          width: 8px;
-        }
+
         &::-webkit-scrollbar-track {
           background: rgba(0, 0, 0, 0.2);
-          border-radius: 10px;
+          margin-bottom: 8.6642599277978vw;
+          border-right: solid 1.0830324909747vw #ffffff;
         }
       }
     }
   }
 
   & .SecondItem {
-    width: 32%;
-    min-height: 400px;
-    padding-left: 2.25%;
-    margin-right: 5.5%;
-    margin-top: 6%;
-    margin-bottom: 6%;
+    width: 20.217vw;
+    margin: 7.2202vw 2.888085vw 7.2202vw 0;
     position: relative;
 
-    & div {
+    & h1 {
+      margin-bottom: 0.72202vw;
+    }
+
+    & .dop {
       display: flex;
-      align-items: center;
-      padding: 0;
       justify-content: space-between;
       width: 100%;
+      margin-bottom: 1.444045vw;
+      height: 2.1666vw;
 
       & .dop_text {
         padding: 0;
-        height: 40px;
-        width: 75%;
+        width: 14.4405vw;
         display: flex;
         align-items: center;
         justify-content: flex-start;
-        margin-top: 20px;
-        margin-bottom: 20px;
 
         & .first_text {
           @include font25_400();
-          height: 20px;
-          border-right: 1px solid #cccccc;
-          padding-right: 10%;
+          border-right: 1px solid rgba(0, 0, 0, 0.6);
+          padding-right: 1.444045vw;
           display: flex;
           align-items: center;
           justify-content: flex-start;
@@ -194,8 +286,7 @@
 
         & .second_text {
           @include font25_400();
-          height: 20px;
-          border-right: 1px solid #cccccc;
+          border-right: 1px solid rgba(0, 0, 0, 0.6);
           display: flex;
           align-items: center;
           justify-content: flex-start;
@@ -203,25 +294,33 @@
 
         & .third_text {
           @include font25_400();
-          height: 20px;
           display: flex;
           align-items: center;
           justify-content: flex-start;
         }
       }
+
+      & .dop_icon {
+        width: 2.1661vw;
+        height: 2.1661vw;
+      }
+
+      & .desc {
+        width: 100%;
+      }
     }
 
     .containerBTN {
-      justify-content: flex-start;
+      width: 100%;
       position: absolute;
       bottom: 0;
 
       & > button {
-        width: 85%;
-        border-radius: 45px;
-        border: 2px solid rgba(0, 0, 0, 0.2);
-
-        height: 2.9vw;
+        width: 14.4405vw;
+        border-radius: 1.62455vw;
+        border: 3px solid rgba(0, 0, 0, 0.2);
+        color: rgba(0, 0, 0, 0.6) !important;
+        height: 2.8885vw;
 
         @include font30_400();
         display: flex;
@@ -243,41 +342,41 @@
         }
       }
       & > div {
-        width: 50%;
-        border-radius: 45px;
+        width: 10.8305vw;
+        border-radius: 1.62455vw;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 2.9vw;
+        height: 2.8885vw;
 
         & > .minus {
           padding: 0;
-          margin-left: 8px;
+          margin-left: 0.2888088vw;
           display: flex;
           justify-content: center;
           align-items: center;
           border: none;
-          background-color: #E6E6E6;
+          background-color: #e6e6e6;
 
           @include font50_300();
-          width: 2vw;
-          height: 2vw;
-          border-radius: 40px;
+          width: 2.1661vw;
+          height: 2.1661vw;
+          border-radius: 1.444045vw;
         }
         & > .plus {
           padding: 0;
-          margin-right: 8px;
+          margin-right: 0.2888088vw;
           display: flex;
           justify-content: center;
           align-content: center;
           align-items: center;
           border: none;
-          background-color: #E6E6E6;
+          background-color: #e6e6e6;
 
           @include font50_300();
-          width: 2vw;
-          height: 2vw;
-          border-radius: 40px;
+          width: 2.1661vw;
+          height: 2.1661vw;
+          border-radius: 1.444045vw;
         }
         & > span {
           display: flex;
@@ -292,20 +391,17 @@
 
 .ModalFontPC {
   & .ItemTitleStart {
-    @include font50_500();
-    color: #000000cc !important;
+    @include font50_400();
   }
   & .ItemTitleSet {
     @include font40_400();
-    color: rgba(0, 0, 0, 0.8);
   }
   & .ItemDesk {
     @include font25_400();
-    color: rgba(0, 0, 0, 0.6);
+    color: rgba(0, 0, 0, 0.6) !important;
   }
   & .ItemTitleValue {
     @include font22_400();
-    color: rgba(0, 0, 0, 0.8);
   }
   & .ItemDescStart {
     @include font30_400();
@@ -313,7 +409,12 @@
   }
 }
 
-
+.hidddenText5 {
+  -webkit-line-clamp: 5;
+  display: -webkit-box;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
 
 .CardItemPC.active {
   & > div {
@@ -333,7 +434,7 @@
   justify-content: space-between;
 
   //display: flex;
-    align-items: center;
+  align-items: center;
 
   & > div {
     @media (max-width: 679px) {
@@ -363,7 +464,6 @@
         max-width: 568px;
       }
     }
-    
 
     background-color: #fff;
     padding: 30px 16px;

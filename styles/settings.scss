@@ -121,6 +121,17 @@ $colorText: rgba(0, 0, 0, 0.8);
     }
 }
 
+@mixin font50_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @include fonsNew(1.73vw, var(--inter-font));
+
+  @media (max-width: 960px) {
+      @include fonsNew(1.73rem, var(--inter-font));
+  }
+}
+
 @mixin font50_300() {
     font-style: normal;
     font-weight: 300;
