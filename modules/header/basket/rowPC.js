@@ -1,10 +1,14 @@
 import { memo } from 'react';
 
 import Image from 'next/image';
-import ButtonGroup from '@mui/material/ButtonGroup';
 
-export default memo(function RowPC({ item, count, plus, minus }) {
+import { useCartStore } from '@/components/store.js';
+import { shallow } from 'zustand/shallow';
+
+export default memo(function RowPC({ item, count }) {
   console.log('render Basket RowPC');
+
+  const [minus, plus] = useCartStore((state) => [state.minus, state.plus], shallow);
 
   return (
     <tr>
@@ -28,8 +32,4 @@ export default memo(function RowPC({ item, count, plus, minus }) {
       </td>
     </tr>
   );
-}, arePropsEqual);
-
-function arePropsEqual(oldProps, newProps) {
-  return oldProps.count === newProps.count;
-}
+})

@@ -5,53 +5,59 @@ import { api } from './api.js';
 export const useCartStore = create((set, get) => ({
   items: [],
   allItems: [],
-  setAllItems: (items) => {
-    set({
-      allItems: items
-    })
+  itemsCount: 0,
+
+  // все товары сайта
+  setAllItems: (allItems) => {
+    set({ allItems })
   },
+  // добаление товара при выборе в карточке товара, модалке товара и корзине
   plus: (item_id) => {
-    let items = get().items;
-    let allItems = get().allItems;
     let check = false;
+    let items = get().items;
+    const allItems = get().allItems;
+    let itemsCount = get().itemsCount;
 
-    items.map( (item, key) => {
-      if( parseInt(item.id) == parseInt(item_id) ){
-        items[ key ]['count'] ++;
+    items = items.map((item) => {
+      if(item.id === item_id){
+        item.count++;
+        itemsCount++;
         check = true;
+        return item;
       }
-    } )
+      return item;
+    })
 
-    if( !check ){
-      let item = allItems.find( item => parseInt(item.id) == parseInt(item_id) );
-
-      if( item ){
+    if(!check){
+      const item = allItems.find(item => item.id === item_id);
+      if(item){
         item.count = 1;
-        items.push(item);
+        itemsCount++;
+        items = [...items,...[item]];
       }
     }
 
-    console.log( 'items', items )
+    //console.log('plus====>', items);
 
-    set({
-      items: items
-    })
+    set({ items, itemsCount });
+
   },
+  // удаление товара из карточки товара, модалки товара и корзины
   minus: (item_id) => {
     let items = get().items;
-    let check = false;
+    let itemsCount = get().itemsCount;
 
-    items.map( (item, key) => {
-      if( parseInt(item.id) == parseInt(item_id) ){
-        items[ key ]['count'] --;
+    items = items.reduce((newItems, item) => {
+      if(item.id === item_id){
+        item.count--;
+        itemsCount--;
       }
-    } )
+      return item.count ? newItems = [...newItems,...[item]] : newItems;
+    }, [])
+  
+    // console.log('minus====>', items);
 
-    let newitems = items.filter( item => parseInt(item.count) > 0 );
-
-    set({
-      items: newitems
-    })
+    set({ items, itemsCount });
   },
 }))
 
@@ -901,8 +907,6 @@ export const useHomeStore = create((set, get) => ({
 
     const json = await api(this_module, data);
 
-    // console.log('getItemsCat ====>', json)
-
     set({
       CatsItems: json.items,
     });
@@ -910,6 +914,7 @@ export const useHomeStore = create((set, get) => ({
 
   // получение данных выбранного товара
   getItem: async (this_module, city, item_id) => {
+
     let data = {
       type: 'get_item',
       city_id: city,
@@ -917,8 +922,6 @@ export const useHomeStore = create((set, get) => ({
     };
 
     const json = await api(this_module, data);
-
-    //console.log('getItem ===>', json);
 
     set({
       isOpenModal: true,
@@ -973,6 +976,5 @@ export const useHomeStore = create((set, get) => ({
     set({ banner, openModalBanner: active });
 
   }
-
 
 }));

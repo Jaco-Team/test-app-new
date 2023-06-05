@@ -54,6 +54,31 @@ html:not([data-scroll='0']) .blockShadow {
       min-height: 8.6643vw;
     }
 
+    & .basketCat {
+      width: 6.203vw;
+      background-color: #dd1a32;
+      border-radius: 1.62455vw;
+      height: 2.8886vw;
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+
+      & span {
+        @include font30_400();
+        color: #ffffff;
+        height: 1.444045vw;
+        width: 0.72204vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      & svg {
+        width: 1.444045vw;
+        height: 1.444045vw;
+      }
+    }
+
     & .headerCat {
       @include font40_400();
       border-radius: 15px;

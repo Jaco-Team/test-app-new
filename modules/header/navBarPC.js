@@ -13,12 +13,14 @@ import MenuItem from '@mui/material/MenuItem';
 import JacoLogo from '@/public/jaco-logo.png';
 import { shallow } from 'zustand/shallow';
 
-import {BurgerIcon, MapPointIcon, ProfileIcon, BasketIcon } from '@/ui/Icons.js';
+import {BurgerIcon, MapPointIcon, ProfileIcon } from '@/ui/Icons.js';
 
 import { Link as ScrollLink } from 'react-scroll';
 
 import { useHeaderStore } from '@/components/store.js';
 import useScroll from './hook.js';
+
+import BasketIconHeaderPC from './basket/basketIconHeaderPC.js';
 
 let catList = [{id: '1', name: 'Роллы', link: 'rolly', count_2: '107', count: '0', list: [{id: '1', name: 'Сеты роллов'}, { id: '2', name: 'Фирменные' }, {id: '3', name: 'Жареные'}, 
 {id: '4', name: 'Запеченные'}, {id: '5', name: 'Классика'}]}, {id: '14', name: 'Пицца', link: 'pizza', count_2: '0', count: '12'}, {id: '15', name: 'Блюда', link: null, count_2: '0',
@@ -67,9 +69,10 @@ const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, c
 })
 
 export default function NavBarPC(props) {
+  console.log('NavBarPC render');
+
   useScroll();
 
-  //const { city, cityRu, catList, active_page } = props;
   const { city, cityRu, active_page } = props;
   
   const [setActiveModalCity, setActiveModalAuth, setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveModalCity, state.setActiveModalAuth, state.setActiveBasket, state.openBasket], shallow);
@@ -79,7 +82,6 @@ export default function NavBarPC(props) {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isOpenburger, setIsOpenburger] = useState(false);
   const [isOpenCat, setIsOpenCat] = useState(false);
-
   const [list, setList] = useState([]);
 
   const openMenu = (event, id) => {
@@ -189,9 +191,7 @@ export default function NavBarPC(props) {
           
           <div style={{ width: '2.2%' }} />
 
-          <div style={{width: '6vw', backgroundColor: '#DD1A32', borderRadius: '45px', height: '3vw', display: 'flex', alignItems: 'center', justifyContent: 'center', cursor: 'pointer'}} onClick={() => setActiveBasket(!openBasket)}>
-            <BasketIcon style={{ width: '2vw', height: '2vw' }} />
-          </div>
+          <BasketIconHeaderPC />
 
           <div style={{ width: '5.3%' }} />
 

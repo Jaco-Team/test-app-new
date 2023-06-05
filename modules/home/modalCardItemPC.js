@@ -1,9 +1,9 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import Image from 'next/image';
 
 import { shallow } from 'zustand/shallow';
-import { useHomeStore } from '@/components/store';
+import { useHomeStore, useCartStore } from '@/components/store';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -25,7 +25,33 @@ export default function ModalCardItemPC() {
   const [isOpenModal, closeModal, typeModal, openItem, foodValue, navigate, closeTypeModal] = useHomeStore((state) => [state.isOpenModal, state.closeModal, state.typeModal,
       state.openItem, state.foodValue, state.navigate, state.closeTypeModal], shallow);
 
+  const [minus, plus] = useCartStore((state) => [state.minus, state.plus], shallow);
+
   const [count, setCount] = useState(0);
+  
+  useEffect( () => {
+
+    const items = useCartStore.getState().items;
+  
+    const findItems = items.find(it => it.id === openItem?.id)
+      
+    if(findItems) {
+      setCount(findItems.count)
+    } else {
+      setCount(0)
+    }
+    
+  }, [isOpenModal] )
+  
+    const changeCountPlus = (id) => {
+      setCount(count + 1);
+      plus(id);
+    };
+  
+    const changeCountMinus = (id) => {
+      setCount(count - 1);
+      minus(id);
+    };
 
   return (
     <Dialog
@@ -183,7 +209,7 @@ export default function ModalCardItemPC() {
 
               {count == 0 ? (
                 <div className="containerBTN">
-                  <Button variant="outlined" onClick={typeModal === 'start' ? () => setCount((prev) => prev + 1) : () => navigate('start')}
+                  <Button variant="outlined" onClick={typeModal === 'start' ? () => changeCountPlus(openItem.id) : () => navigate('start')}
                     disabled={typeModal === 'start' ? false : true}
                   >
                     {new Intl.NumberFormat('ru-RU').format(openItem?.price)} ₽
@@ -194,12 +220,12 @@ export default function ModalCardItemPC() {
                   <div style={{ backgroundColor: typeModal === 'start' ? '#ffff' : '#E6E6E6' }}
                     onClick={typeModal === 'start' ? null : () => navigate('start')}
                   >
-                    <button className="minus" onClick={typeModal === 'start' ? () => setCount((prev) => prev - 1) : () => navigate('start')}
+                    <button className="minus" onClick={typeModal === 'start' ? () => changeCountMinus(openItem.id) : () => navigate('start')}
                       style={{cursor: typeModal === 'start' ? 'pointer' : null}}>–</button>
 
                     <span>{count}</span>
 
-                    <button className="plus" onClick={typeModal === 'start' ? () => setCount((prev) => prev + 1) : () => navigate('start')}
+                    <button className="plus" onClick={typeModal === 'start' ? () => changeCountPlus(openItem.id) : () => navigate('start')}
                       style={{cursor: typeModal === 'start' ? 'pointer' : null}}>+</button>
                   </div>
                 </div>
