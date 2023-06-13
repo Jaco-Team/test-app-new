@@ -105,7 +105,14 @@ export default React.memo(function CatItems() {
       name={'cat' + cat.main_id}
       id={'cat' + cat.id}
       className='Container'
-      style={{ marginTop: key === 0 ? '1.4440433212996vw !important' : 0, marginBottom: cat === cats.at(-1) ? '10.108303249097vw !important' : 0}}
+      ref={(node) => {
+        if (node && key === 0) {
+          node.style.setProperty('margin-top', '1.4440433212996vw', 'important');
+        }
+        if (node && cat === cats.at(-1)) {
+          node.style.setProperty('margin-bottom', '10.108303249097vw', 'important');
+        }
+      }}
     >
       {cat.items.map((it, k) => (
         <CardItemPc key={k} index={k} item={it} count={it.count} />
