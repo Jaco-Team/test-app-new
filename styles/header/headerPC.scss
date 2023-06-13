@@ -111,6 +111,21 @@ html:not([data-scroll='0']) .blockShadow {
         @include font40_400();
         padding-left: 10px;
       }
+
+      & .activeProfileCat {
+        width: 2.8886vw;
+        height: 2.8886vw;
+        border-radius: 1.62455vw;
+        background: #6FBEF8; 
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        
+        & span {
+          @include font30_400();
+          color: #FFFFFF;
+        }
+      }
     }
   }
 }

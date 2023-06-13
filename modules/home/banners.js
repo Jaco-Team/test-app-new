@@ -34,7 +34,6 @@ export default React.memo(function Banners() {
   useEffect(() => {
     if (banners.length == 0) {
       const filterList = bannerList.filter((banner) => banner.id === '84' || banner.id === '80' || banner.id === '48');
-      // setBanners(bannerList);
       setBanners(filterList);
     }
   }, [bannerList]);

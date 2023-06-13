@@ -13,7 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 import JacoLogo from '@/public/jaco-logo.png';
 import { shallow } from 'zustand/shallow';
 
-import {BurgerIcon, MapPointIcon, ProfileIcon } from '@/ui/Icons.js';
+import {BurgerIcon, MapPointIcon } from '@/ui/Icons.js';
 
 import { Link as ScrollLink } from 'react-scroll';
 
@@ -21,6 +21,7 @@ import { useHeaderStore } from '@/components/store.js';
 import useScroll from './hook.js';
 
 import BasketIconHeaderPC from './basket/basketIconHeaderPC.js';
+import ProfileIconHeaderPC from './profile/profileIconHeaderPC.js';
 
 let catList = [{id: '1', name: 'Роллы', link: 'rolly', count_2: '107', count: '0', list: [{id: '1', name: 'Сеты роллов'}, { id: '2', name: 'Фирменные' }, {id: '3', name: 'Жареные'}, 
 {id: '4', name: 'Запеченные'}, {id: '5', name: 'Классика'}]}, {id: '14', name: 'Пицца', link: 'pizza', count_2: '0', count: '12'}, {id: '15', name: 'Блюда', link: null, count_2: '0',
@@ -75,7 +76,7 @@ export default function NavBarPC(props) {
 
   const { city, cityRu, active_page } = props;
   
-  const [setActiveModalCity, setActiveModalAuth, setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveModalCity, state.setActiveModalAuth, state.setActiveBasket, state.openBasket], shallow);
+  const [setActiveModalCity, setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveModalCity, state.setActiveBasket, state.openBasket], shallow);
 
   if (city == '') return null;
 
@@ -183,11 +184,8 @@ export default function NavBarPC(props) {
           </Link>
 
           <div style={{ width: '2.2%' }} />
-
           
-          <div href={'/' + city + '/zakazy'} style={{ width: '3.5%' }} className={active_page === 'profile' ? 'headerCat activeCat' : 'headerCat'} onClick={ () => setActiveModalAuth(true) }>
-            <ProfileIcon style={{ width: '4vw', height: '4vw' }}/>
-          </div>
+          <ProfileIconHeaderPC active_page={active_page}/>
           
           <div style={{ width: '2.2%' }} />
 

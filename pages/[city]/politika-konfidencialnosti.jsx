@@ -9,6 +9,7 @@ import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store
 const DynamicHeader = dynamic(() => import('@/components/header.js'))
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const DynamicPage = dynamic(() => import('@/modules/pageText.js'))
+const DynamicArrow = dynamic(() => import('@/components/arrow.js'))
 
 import { shallow } from 'zustand/shallow'
 
@@ -44,6 +45,8 @@ export default React.memo(function PolitikaKonfidencialnosti(props) {
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'other'} />
 
       <DynamicPage page={page} className="PAGEpolitic MuiGrid-spacing-xs-3" />
+
+      <DynamicArrow />
 
       <DynamicFooter cityName={city} />
     </div>

@@ -134,6 +134,8 @@
     & span {
       @include font30_400();
       color: #ffffff;
+
+      margin-right: 0.5vw;
     }
     & svg{
       width: 1.3vw;

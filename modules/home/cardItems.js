@@ -104,11 +104,11 @@ export default React.memo(function CatItems() {
       key={key}
       name={'cat' + cat.main_id}
       id={'cat' + cat.id}
-      style={{ margin: 0, flexWrap: 'wrap', width: '100%', marginTop: 138 }}
-      className="MainItems mainContainer"
+      className='Container'
+      style={{ marginTop: key === 0 ? '1.4440433212996vw' : 0, marginBottom: cat === cats.at(-1) ? '10.108303249097vw' : 0}}
     >
       {cat.items.map((it, k) => (
-        <CardItemPc key={k} data={it} count={it.count} />
+        <CardItemPc key={k} index={k} item={it} count={it.count} />
       ))}
     </Grid>
   ));

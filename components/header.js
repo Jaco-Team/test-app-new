@@ -18,7 +18,7 @@ export default React.memo(function Header(props) {
     const matches = useMediaQuery('screen and (min-width: 40em)', { noSsr: false });
 
     return (
-        <div className={roboto.variable}>
+        <div className={roboto.variable} style={{ overflow: 'auto' }}>
             
             { !matches ? null :
                 <NavBarPC city={city} cityRu={thisCityRU} catList={cats} active_page={active_page} />
@@ -31,7 +31,6 @@ export default React.memo(function Header(props) {
             <ModalCity />
             <ModalAuth />
             <BasketPC />
-
         </div>
     )
 })

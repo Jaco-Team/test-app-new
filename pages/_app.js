@@ -19,20 +19,21 @@ import '../styles/header/cityForm.scss'
 import '../styles/header/headerPC.scss'
 import '../styles/header/basketPC.scss'
 
-//import '../styles/profile.scss'
 import '../styles/profile/promokody.scss'
 import '../styles/profile/zakazy.scss'
 import '../styles/profile/profile.scss'
 
-// import '../styles/loginForm.scss'
 import '../styles/header.scss'
-import '../styles/footer.scss'
+import '../styles/arrow/arrow.scss'
+import '../styles/footer/footerPC.scss'
 import '../styles/docsBreadcrumbs.scss'
 
 //pm2 delete test-app-new && rm -rf test-app-new && git clone https://github.com/vito3315/test-app-new.git && cd test-app-new
 //npm install && npm run build && pm2 start npm --name "test-app-new" -- start
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
+
+import { SessionProvider } from "next-auth/react";
 
 const theme = createTheme({
   palette: {
@@ -65,10 +66,12 @@ export function reportWebVitals(metric) {
   console.log(metric)
 }
 
-function MyApp({ Component, pageProps }) {
+function MyApp({ Component, pageProps, session }) {
   return (
     <ThemeProvider theme={theme}>
-      <Component {...pageProps} />
+      <SessionProvider session={session}>
+        <Component {...pageProps} />
+      </SessionProvider>
     </ThemeProvider>
   )
 }

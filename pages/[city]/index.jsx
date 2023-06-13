@@ -2,14 +2,15 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-const DynamicHeader = dynamic(() => import('../../components/header.js'))
-const DynamicFooter = dynamic(() => import('../../components/footer.js'))
-const DynamicHomePage = dynamic(() => import('../../modules/home/page.js'))
+const DynamicHeader = dynamic(() => import('@/components/header.js'))
+const DynamicFooter = dynamic(() => import('@/components/footer.js'))
+const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'))
+const DynamicArrow = dynamic(() => import('@/components/arrow.js'))
 
-import { roboto } from '../../ui/Font.js'
-import { api } from '../../components/api.js';
+import { roboto } from '@/ui/Font.js'
+import { api } from '@/components/api.js';
 
-import { useHomeStore, useCitiesStore, useCartStore } from '../../components/store.js';
+import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.js';
 
 import { shallow } from 'zustand/shallow'
 
@@ -18,12 +19,11 @@ const this_module = 'home';
 export default function Home(props) {
 
   const { city, cats, cities, page, all_items } = props.data1;
-
+  
   const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems], shallow);
-
+  
   const [ getBanners, getItemsCat ] = useHomeStore( state => [ state.getBanners, state.getItemsCat ] );
-  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
-    useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
+  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
   useEffect(() => {
     setTimeout( () => {
@@ -50,8 +50,10 @@ export default function Home(props) {
     <div className={roboto.variable}>
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
-      <DynamicHomePage page={page} city={city} />
-      
+      <DynamicHomePage page={page} city={city}/>
+
+      <DynamicArrow />
+
       <DynamicFooter cityName={city} />
     </div>
   )
@@ -172,6 +174,7 @@ class Akcii_old extends React.Component {
 }*/
 
 export async function getServerSideProps({ req, res, query }) {
+
   res.setHeader(
     'Cache-Control',
     'public, s-maxage=86400, stale-while-revalidate=86400'

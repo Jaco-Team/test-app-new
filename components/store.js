@@ -6,6 +6,7 @@ export const useCartStore = create((set, get) => ({
   items: [],
   allItems: [],
   itemsCount: 0,
+  allPrice: 0,
 
   // все товары сайта
   setAllItems: (allItems) => {
@@ -39,7 +40,9 @@ export const useCartStore = create((set, get) => ({
 
     //console.log('plus====>', items);
 
-    set({ items, itemsCount });
+    const allPrice = items.reduce((all, it) => all + it.count * it.price, 0);
+
+    set({ items, itemsCount, allPrice });
 
   },
   // удаление товара из карточки товара, модалки товара и корзины
@@ -57,7 +60,9 @@ export const useCartStore = create((set, get) => ({
   
     // console.log('minus====>', items);
 
-    set({ items, itemsCount });
+    const allPrice = items.reduce((all, it) => all + it.count * it.price, 0);
+
+    set({ items, itemsCount, allPrice });
   },
 }))
 
@@ -494,6 +499,8 @@ export const useProfileStore = create((set, get) => ({
 
 export const useFooterStore = create((set) => ({
   links: {},
+  footerRef: null,
+
   getData: async (this_module, city) => {
     let data = {
       type: 'get_page_info',
@@ -507,6 +514,10 @@ export const useFooterStore = create((set) => ({
       links: json.page,
     });
   },
+
+  setFooterRef: (footerRef) => {
+    set({ footerRef })
+  }
 }));
 
 export const useHeaderStore = create((set, get) => ({
@@ -525,7 +536,10 @@ export const useHeaderStore = create((set, get) => ({
 
   is_sms: true,
 
-  typeLogin: 'start',
+  // typeLogin: 'start',
+  typeLogin: 'startTestAuth',
+  userName: '',
+
   preTypeLogin: '',
   loginLogin: '',
   pwdLogin: '',
@@ -572,7 +586,8 @@ export const useHeaderStore = create((set, get) => ({
     set({
       openAuthModal: false,
       errTextAuth: '',
-      typeLogin: 'start',
+      // typeLogin: 'start',
+      typeLogin: 'startTestAuth',
       preTypeLogin: '',
       loginLogin: '',
       pwdLogin: '',
@@ -848,6 +863,23 @@ export const useHeaderStore = create((set, get) => ({
       set({ targetBasket: anchorEl, openBasket: active });
     }
 
+  },
+
+  // тестовая аутенфикация
+  setActiveUser: (name) => {
+
+  let userName = '';
+  const nameSplit = name.split(' ');
+
+  if(nameSplit.length === 1) {
+    userName = nameSplit[0][0].toUpperCase() + nameSplit[0][1].toUpperCase()
+  } else {
+    userName = nameSplit[0][0].toUpperCase() + nameSplit[1][0].toUpperCase()
+  }
+
+  // console.log('setActiveUser ===>', userName);
+
+  set({ userName });
   }
 }));
 

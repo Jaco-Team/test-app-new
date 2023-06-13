@@ -9,20 +9,18 @@ import Button from '@mui/material/Button';
 import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.js';
 import { shallow } from 'zustand/shallow';
 
-export default memo(function CardItem(props) {
+export default memo(function CardItem({ item, count, index}) {
   console.log('CardItemPc render');
-
-  const item = props.data;
-  const count = props.count;
-
-  const desc = item.marc_desc.length > 0 ? item.marc_desc : item.tmp_desc;
 
   const [getItem] = useHomeStore((state) => [state.getItem], shallow);
   const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus], shallow);
 
   return (
-    <Grid item className={'CardItemPC ' + (count > 0 ? 'active' : '')} xs={12} sm={6} md={4} lg={3} sx={{ display: { xs: 'none', sm: 'flex' } }}>
+    <Grid item className={'CardItemPC ' + (count > 0 ? 'active' : '')}
+      style={{ marginRight: (index + 1) % 4 === 0 ? 0 : '1.4440433212996vw', marginBottom: count > 0 ? '1.4440433212996vw' : '2.8880866425993vw', height: count > 0 ? '35.740072202166vw' : '34.296028880866vw'}}
+      sx={{ display: { xs: 'none', sm: 'flex' } }}
+    >
       <div>
         <Image
           alt={item.name}
@@ -35,24 +33,28 @@ export default memo(function CardItem(props) {
         />
 
         <Typography className="CardNameItem" variant="h5" component="h3">{item.name}</Typography>
-
+        
         <div className="dop_text">
           {parseInt(item.cat_id) != 4 ? null : <span className="first_text">{item.count_part_new}</span>}
 
           {parseInt(item.cat_id) == 5 || parseInt(item.cat_id) == 6 || parseInt(item.cat_id) == 7 || parseInt(item.cat_id) == 15 ? null : (
-            <span className="second_text" style={{ flex: parseInt(item.cat_id) == 4 ? 2 : 3 }}>
+            <span className="second_text" 
+            style={{ flex: parseInt(item.cat_id) == 4 ? 2 : 0.2 }}
+            >
               {parseInt(item.cat_id) == 14 ? item.size_pizza : item.count_part}{' '}
               {parseInt(item.cat_id) == 14 ? 'см' : parseInt(item.cat_id) == 6 ? 'л' : 'шт.'}{' '}
             </span>
           )}
 
-          <span className="third_text">
+          <span className="third_text"  
+          style={{ flex: parseInt(item.cat_id) == 4 ? 3 : 0.2 }}
+          >
             {new Intl.NumberFormat('ru-RU').format(item.weight)}{' '}
             {parseInt(item.id) == 17 || parseInt(item.id) == 237 ? 'шт.' : parseInt(item.cat_id) == 6 ? 'л' : 'г'}
           </span>
         </div>
 
-        <div className="desc_text">{desc}</div>
+        <div className="desc_text">{item.marc_desc.length > 0 ? item.marc_desc : item.tmp_desc}</div>
 
         {count ? (
           <div className="containerBTN">

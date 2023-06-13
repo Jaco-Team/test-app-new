@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 const DynamicHeader = dynamic(() => import('@/components/header.js'))
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const DynamicPage = dynamic(() => import('@/modules/akcii/page.js'))
+const DynamicArrow = dynamic(() => import('@/components/arrow.js'))
 
 import { roboto } from '@/ui/Font.js'
 import { api } from '@/components/api.js';
@@ -48,6 +49,8 @@ export default function Akcii(props) {
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
       <DynamicPage page={page} city={city} />
+
+      <DynamicArrow />
       
       <DynamicFooter cityName={city} />
     </div>

@@ -5,6 +5,7 @@ import dynamic from 'next/dynamic'
 const DynamicHeader = dynamic(() => import('@/components/header.js'))
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const AboutPage = dynamic(() => import('@/modules/about'))
+const DynamicArrow = dynamic(() => import('@/components/arrow.js'))
 
 import { roboto } from '@/ui/Font.js'
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
@@ -44,6 +45,8 @@ export default React.memo(function About(props) {
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'other'} />
 
       <AboutPage page={page} city={city} />
+
+      <DynamicArrow />
 
       <DynamicFooter cityName={city} />
 

@@ -11,6 +11,8 @@ const Create = dynamic(() => import('./create'));
 const Finish = dynamic(() => import('./finish'));
 const ModalAuthError = dynamic(() => import('./error'));
 
+const StartTestAuth = dynamic(() => import('./startTestAuth'));
+
 import Dialog from '@mui/material/Dialog';
 import Box from '@mui/material/Box';
 import Backdrop from '@mui/material/Backdrop';
@@ -34,6 +36,8 @@ export default function ModalAuth() {
     >
       <Fade in={openAuthModal} style={{ overflow: 'auto' }}>
         <Box>
+          {typeLogin === 'startTestAuth' ?  <StartTestAuth /> : null}
+          
           {typeLogin === 'start' ?  <Start /> : null}
           {typeLogin === 'loginSMS' ?  <LoginSMS /> : null}
           {typeLogin === 'loginSMSCode' ?  <LoginSMSCode /> : null}
