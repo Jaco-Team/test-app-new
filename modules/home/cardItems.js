@@ -105,7 +105,7 @@ export default React.memo(function CatItems() {
       name={'cat' + cat.main_id}
       id={'cat' + cat.id}
       className='Container'
-      style={{ marginTop: key === 0 ? '1.4440433212996vw' : 0, marginBottom: cat === cats.at(-1) ? '10.108303249097vw' : 0}}
+      style={{ marginTop: key === 0 ? '1.4440433212996vw !important' : 0, marginBottom: cat === cats.at(-1) ? '10.108303249097vw !important' : 0}}
     >
       {cat.items.map((it, k) => (
         <CardItemPc key={k} index={k} item={it} count={it.count} />
