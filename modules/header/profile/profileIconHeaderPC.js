@@ -21,7 +21,7 @@ export default function ProfileIconHeaderPC({ active_page }) {
   
   useEffect(() => {
     if(session?.status === "authenticated") {
-      setActiveUser(session?.data.user.name);
+      setActiveUser(session.data.user.name ?? session.data.user.display_name);
     }
   }, [session]);
 

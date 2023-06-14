@@ -24,5 +24,34 @@ export const authConfig = {
       clientSecret: process.env.YANDEX_CLIENT_SECRET,
     }),
   ],
+  callbacks: {
+    async signIn({ user, account, profile, email, credentials }) {
+
+      console.log( 'calback singin', user, account, profile, email, credentials )
+
+      //const isAllowedToSignIn = true
+      //if (isAllowedToSignIn) {
+        return true
+      //} else {
+        // Return false to display a default error message
+      //  return false
+        // Or you can return a URL to redirect to:
+        // return '/unauthorized'
+      //}
+    },
+
+    async session({ session, user, token }) {
+      session.user = token.user;
+
+      return session;
+    },
+    async jwt({ token, user, account, profile, isNewUser }) {
+      if (profile) {
+        token.user = profile;
+      }
+
+      return token;
+    },
+  },
   secret: process.env.NEXTAUTH_SECRET
 };
