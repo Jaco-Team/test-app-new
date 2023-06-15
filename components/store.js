@@ -868,18 +868,21 @@ export const useHeaderStore = create((set, get) => ({
   // тестовая аутенфикация
   setActiveUser: (name) => {
 
-  let userName = '';
-  const nameSplit = name.split(' ');
+    console.log( name )
+    if( name ){
+      let userName = '';
+      const nameSplit = name.split(' ');
 
-  if(nameSplit.length === 1) {
-    userName = nameSplit[0][0].toUpperCase() + nameSplit[0][1].toUpperCase()
-  } else {
-    userName = nameSplit[0][0].toUpperCase() + nameSplit[1][0].toUpperCase()
-  }
+      if(nameSplit.length === 1) {
+        userName = nameSplit[0][0].toUpperCase() + nameSplit[0][1].toUpperCase()
+      } else {
+        userName = nameSplit[0][0].toUpperCase() + nameSplit[1][0].toUpperCase()
+      }
 
-  // console.log('setActiveUser ===>', userName);
+      // console.log('setActiveUser ===>', userName);
 
-  set({ userName });
+      set({ userName });
+    }
   }
 }));
 

@@ -33,7 +33,7 @@ export default function StartTestAuth() {
         </IconButton>
 
         <div className="loginHeader">
-          <Typography component="h2">Вход</Typography>
+          <Typography component="h2">Вход</Typography> 
         </div>
 
         <MyTextInput
@@ -88,7 +88,7 @@ export default function StartTestAuth() {
           <Typography component="span">Войти с</Typography>
           <GoogleIcon onClick={() =>  signIn("google", { callbackUrl: `http://localhost:3008/${thisCity}/zakazy` })}/> 
           <VKIconButton onClick={() =>  signIn("vk", { callbackUrl: `http://localhost:3008/${thisCity}/zakazy` })}/> 
-          <YaIcon onClick={() =>  signIn("yandex", { callbackUrl: `http://localhost:3008/${thisCity}/zakazy` })}/>
+          <YaIcon onClick={() =>  signIn("yandex", { callbackUrl: `http://localhost:3008/${thisCity}/zakazy`, scope: 'default_phone', response_type: 'code' })}/>
         </div>
 
         <div className="loginCreate" onClick={() => navigate('create')}>

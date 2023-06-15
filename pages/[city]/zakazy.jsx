@@ -13,6 +13,9 @@ import { roboto } from '@/ui/Font.js'
 
 import { shallow } from 'zustand/shallow'
 
+//import { authOptions } from '../api/auth/[...nextauth]'
+//import { getServerSession } from "next-auth/next"
+
 const this_module = 'zakazy';
 
 export default function Zakazy(props) {
@@ -54,6 +57,11 @@ export default function Zakazy(props) {
 }
 
 export async function getServerSideProps({ req, res, query }) {
+
+  //const session = await getServerSession(req, res, authOptions)
+
+  //console.log( 'pro session', session )
+
   res.setHeader(
     'Cache-Control',
     'public, s-maxage=86400, stale-while-revalidate=86400'
