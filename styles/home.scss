@@ -407,17 +407,21 @@
 }
 
 .swiper-scrollbar{
-  visibility: hidden;
+  display: none;
 }
 
 .swiper-pagination{
-  bottom: -0.72202166064982vw!important;
+  bottom: 0 !important;
+  top: 0 !important;
   z-index: 3000!important;
   position: relative!important;
-  height: 1.4440433212996vw;
+  margin-top: 0.72202166064982vw;
+  display: flex;
+  justify-content: center;
   & .swiper-pagination-bullet{
       width: 0.72202166064982vw;
       height: 0.72202166064982vw;
+      margin: 0 0.72202166064982vw 0 0 !important;
       background: rgba(0, 0, 0, 0.1);
       opacity: 1;
   }

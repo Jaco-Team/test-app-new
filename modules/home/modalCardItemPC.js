@@ -64,7 +64,7 @@ export default function ModalCardItemPC() {
     >
       <DialogContent style={{ padding: 0, borderRadius: '1.444045vw', overflow: 'hidden', background: typeModal === 'start' ? '#FFFFFF' : '#E6E6E6'}}>
         <Box component="div" className="modalItemPC ModalFontPC">
-          <IconButton style={{position: 'absolute', left: '-3.3vw', top: '-0.28vw', backgroundColor: 'transparent'}} onClick={closeModal}>
+          <IconButton style={{position: 'absolute', left: '-3.3vw', paddingTop: '0', backgroundColor: 'transparent'}} onClick={closeModal}>
             <IconClose style={{width: '2.1661vw', height: '2.1661vw', overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)'}}/>
           </IconButton>
 

@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic'
 const DynamicHeader = dynamic(() => import('@/components/header.js'))
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const DynamicPage = dynamic(() => import('@/modules/profile/profile/page.jsx'))
-const DynamicArrow = dynamic(() => import('@/components/arrow.js'))
 
 import { api } from '@/components/api.js';
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
@@ -45,8 +44,6 @@ export default function Profile(props) {
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
       <DynamicPage page={page} this_module={this_module} city={city} />
-
-      <DynamicArrow />
 
       <DynamicFooter cityName={city} />
     </div>

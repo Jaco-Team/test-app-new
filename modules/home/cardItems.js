@@ -107,10 +107,10 @@ export default React.memo(function CatItems() {
       className='Container'
       ref={(node) => {
         if (node && key === 0) {
-          node.style.setProperty('margin-top', '1.4440433212996vw', 'important');
+          node.style.setProperty('margin-top', '2.1660649819495vw', 'important');
         }
         if (node && cat === cats.at(-1)) {
-          node.style.setProperty('margin-bottom', '10.108303249097vw', 'important');
+          node.style.setProperty('margin-bottom', '2.1660649819495vw', 'important');
         }
       }}
     >

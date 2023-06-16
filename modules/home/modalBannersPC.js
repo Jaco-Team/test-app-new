@@ -251,7 +251,7 @@ export default function ModalBannerPC() {
     >
       <DialogContent style={{ padding: 0, overflow: 'hidden' }}>
         <Box component="div" className="BannerPC BannerFontPC">
-          <IconButton style={{ position: 'absolute', left: '-3.3vw', top: '-0.24vw', backgroundColor: 'transparent', zIndex: 50 }} onClick={() => setActiveBanner(false, null)}>
+          <IconButton style={{ position: 'absolute', left: '-3.3vw', paddingTop: '0', backgroundColor: 'transparent', zIndex: 50 }} onClick={() => setActiveBanner(false, null)}>
             <IconClose style={{ width: '2.166vw', height: '2.166vw', overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }} />
           </IconButton>
 

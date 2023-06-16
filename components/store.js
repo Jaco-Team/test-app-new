@@ -499,7 +499,6 @@ export const useProfileStore = create((set, get) => ({
 
 export const useFooterStore = create((set) => ({
   links: {},
-  footerRef: null,
 
   getData: async (this_module, city) => {
     let data = {
@@ -514,10 +513,6 @@ export const useFooterStore = create((set) => ({
       links: json.page,
     });
   },
-
-  setFooterRef: (footerRef) => {
-    set({ footerRef })
-  }
 }));
 
 export const useHeaderStore = create((set, get) => ({

@@ -24,7 +24,6 @@ import '../styles/profile/zakazy.scss'
 import '../styles/profile/profile.scss'
 
 import '../styles/header.scss'
-import '../styles/arrow/arrow.scss'
 import '../styles/footer/footerPC.scss'
 import '../styles/docsBreadcrumbs.scss'
 
