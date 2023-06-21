@@ -38,8 +38,8 @@
 }
 
 .css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
-  background: linear-gradient(transparent 30%, rgba(0, 0, 0, 0.5) 70%);
-  mix-blend-mode: multiply;
+  background: linear-gradient(transparent 30%, rgba(0, 0, 0, 0.5) 70%) !important;
+  mix-blend-mode: multiply !important;
 }
 
 .MuiDrawer-root.MuiDrawer-modal {
