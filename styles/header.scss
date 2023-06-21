@@ -143,36 +143,36 @@
         }
     }
 }
-@supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
-    .MuiDrawer-root.MuiDrawer-modal .MuiDrawer-paper{
-        min-width: 80%;
-        background-color: rgba(0, 0, 0, 0.9);
-    }
-}
-.MuiDrawer-root.MuiDrawer-modal{
-    & .MuiDrawer-paper{
-        min-width: 80%;
-        background-color: rgba(0, 0, 0, 0.6);
-        backdrop-filter: blur(15px);
-        -webkit-backdrop-filter: blur(15px);
+// @supports (-webkit-backdrop-filter: none) or (backdrop-filter: none) {
+//     .MuiDrawer-root.MuiDrawer-modal .MuiDrawer-paper{
+//         min-width: 80%;
+//         background-color: rgba(0, 0, 0, 0.9);
+//     }
+// }
+// .MuiDrawer-root.MuiDrawer-modal{
+//     & .MuiDrawer-paper{
+//         min-width: 80%;
+//         background-color: rgba(0, 0, 0, 0.6);
+//         backdrop-filter: blur(15px);
+//         -webkit-backdrop-filter: blur(15px);
 
-        -moz-backdrop-filter: blur(15px);
-        -o-backdrop-filter: blur(15px);
-        -ms-backdrop-filter: blur(15px);
-        & .LinkList li:first-child a{
-            margin-top: 70px;
-        }
-        & .LinkList a{
-            @include fonsNew(1.625rem, $Roboto);
-            color: #fff;
-            font-weight: bold;
-            width: 100%;
-            height: 60px;
-            display: flex;
-            align-items: center;
-            justify-content: flex-end;
-            text-decoration: none;
-            margin-right: 40px;
-        }
-    }
-}
+//         -moz-backdrop-filter: blur(15px);
+//         -o-backdrop-filter: blur(15px);
+//         -ms-backdrop-filter: blur(15px);
+//         & .LinkList li:first-child a{
+//             margin-top: 70px;
+//         }
+//         & .LinkList a{
+//             @include fonsNew(1.625rem, $Roboto);
+//             color: #fff;
+//             font-weight: bold;
+//             width: 100%;
+//             height: 60px;
+//             display: flex;
+//             align-items: center;
+//             justify-content: flex-end;
+//             text-decoration: none;
+//             margin-right: 40px;
+//         }
+//     }
+// }

@@ -1,124 +1,128 @@
-@charset "utf-8"; 
+@charset "utf-8";
 
 $Roboto: var(--inter-font);
 $Ubuntu: 'Ubuntu';
-$colorMain: #CC0033;
+$colorMain: #cc0033;
 $colorText: rgba(0, 0, 0, 0.8);
 
 @mixin fonsNew($size: 1rem, $family: $Roboto) {
-    font-size: $size;
-    font-family: $family!important;
-    color: $colorText;
+  font-size: $size;
+  font-family: $family !important;
+  color: $colorText;
 }
 
 @mixin fontH1() {
-    font-style: normal;
-    font-weight: 700;
+  font-style: normal;
+  font-weight: 700;
 
-    @include fonsNew(2.6vw, var(--inter-font));
+  @include fonsNew(2.6vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(1.7rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(1.7rem, var(--inter-font));
+  }
 }
 
 @mixin fontH2_custom() {
-    font-style: normal;
-    font-weight: 700;
+  font-style: normal;
+  font-weight: 700;
 
-    @include fonsNew(2vw, var(--inter-font));
+  @include fonsNew(2vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(1.2rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(1.2rem, var(--inter-font));
+  }
 }
 
 @mixin font20_400() {
-    font-style: normal;
-    font-weight: 400;
+  font-style: normal;
+  font-weight: 400;
 
-    @include fonsNew(0.7vw, var(--inter-font));
+  @include fonsNew(0.7vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(1rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(1rem, var(--inter-font));
+  }
 }
 
 @mixin font22_400() {
-    font-style: normal;
-    font-weight: 400;
+  font-style: normal;
+  font-weight: 400;
 
-    @include fonsNew(0.78vw, var(--inter-font));
+  @include fonsNew(0.78vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(1rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(1rem, var(--inter-font));
+  }
 }
 
 @mixin font22_400_() {
-    font-style: normal;
-    font-weight: 400;
+  font-style: normal;
+  font-weight: 400;
 
-    @include fonsNew(0.85vw, var(--inter-font));
+  @include fonsNew(0.85vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(1rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(1rem, var(--inter-font));
+  }
 }
 
 @mixin font25_400() {
-    font-style: normal;
-    font-weight: 400;
+  font-style: normal;
+  font-weight: 400;
 
-    @include fonsNew(0.9vw, var(--inter-font));
+  @include fonsNew(0.9vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(1rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(1rem, var(--inter-font));
+  }
 }
 
 @mixin font30_700() {
-    font-style: normal;
-    font-weight: 700;
+  font-style: normal;
+  font-weight: 700;
 
-    @include fonsNew(1vw, var(--inter-font));
+  @include fonsNew(1vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(1rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(1rem, var(--inter-font));
+  }
 }
 
 @mixin font30_400() {
-    font-style: normal;
-    font-weight: 400;
+  font-style: normal;
+  font-weight: 400;
 
-    @include fonsNew(1vw, var(--inter-font));
+  @include fonsNew(1vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(1rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(1rem, var(--inter-font));
+  }
 }
 
 @mixin font35_400() {
-    font-style: normal;
-    font-weight: 400;
+  font-style: normal;
+  font-weight: 400;
 
-    @include fonsNew(1.15vw, var(--inter-font));
+  @include fonsNew(1.15vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(1.15rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(1.15rem, var(--inter-font));
+  }
 }
 
 @mixin font50_500() {
-    font-style: normal;
-    font-weight: 500;
+  font-style: normal;
+  font-weight: 500;
 
-    @include fonsNew(1.73vw, var(--inter-font));
+  @include fonsNew(1.73vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(1.73rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(1.73rem, var(--inter-font));
+  }
+
+  @media (max-width: 73.125em) {
+    @include fonsNew(4.2735042735043vw, var(--inter-font));
+  }
 }
 
 @mixin font50_400() {
@@ -128,83 +132,87 @@ $colorText: rgba(0, 0, 0, 0.8);
   @include fonsNew(1.73vw, var(--inter-font));
 
   @media (max-width: 960px) {
-      @include fonsNew(1.73rem, var(--inter-font));
+    @include fonsNew(1.73rem, var(--inter-font));
   }
 }
 
 @mixin font50_300() {
-    font-style: normal;
-    font-weight: 300;
+  font-style: normal;
+  font-weight: 300;
 
-    @include fonsNew(1.73vw, var(--inter-font));
+  @include fonsNew(1.73vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(1.73rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(1.73rem, var(--inter-font));
+  }
 }
 
 @mixin font40_400() {
-    font-style: normal;
-    font-weight: 400;
+  font-style: normal;
+  font-weight: 400;
 
-    @include fonsNew(1.4vw, var(--inter-font));
+  @include fonsNew(1.4vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(1.4rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(1.4rem, var(--inter-font));
+  }
+
+  @media (max-width: 73.125em) {
+    @include fonsNew(3.4188034188034vw, var(--inter-font));
+  }
 }
 
 @mixin font40_500() {
-    font-style: normal;
-    font-weight: 500;
+  font-style: normal;
+  font-weight: 500;
 
-    @include fonsNew(1.4vw, var(--inter-font));
+  @include fonsNew(1.4vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(1.4rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(1.4rem, var(--inter-font));
+  }
 }
 
 @mixin font60_300() {
-    font-style: normal;
-    font-weight: 300;
+  font-style: normal;
+  font-weight: 300;
 
-    @include fonsNew(2.2vw, var(--inter-font));
+  @include fonsNew(2.2vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(2.2rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(2.2rem, var(--inter-font));
+  }
 }
 
 @mixin font60_600() {
-    font-style: normal;
-    font-weight: 600;
+  font-style: normal;
+  font-weight: 600;
 
-    @include fonsNew(2.2vw, var(--inter-font));
+  @include fonsNew(2.2vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(2.2rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(2.2rem, var(--inter-font));
+  }
 }
 
 @mixin font75_700() {
-    font-style: normal;
-    font-weight: 700;
+  font-style: normal;
+  font-weight: 700;
 
-    @include fonsNew(3vw, var(--inter-font));
+  @include fonsNew(3vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(3rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(3rem, var(--inter-font));
+  }
 }
 
 @mixin font110_400() {
-    font-style: normal;
-    font-weight: 400;
+  font-style: normal;
+  font-weight: 400;
 
-    @include fonsNew(4vw, var(--inter-font));
+  @include fonsNew(4vw, var(--inter-font));
 
-    @media (max-width: 960px) {
-        @include fonsNew(4rem, var(--inter-font));
-    }
+  @media (max-width: 960px) {
+    @include fonsNew(4rem, var(--inter-font));
+  }
 }

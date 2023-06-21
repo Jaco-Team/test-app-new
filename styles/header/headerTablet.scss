@@ -1,0 +1,189 @@
+@import '../settings';
+
+.headerTablet {
+  z-index: 1200 !important;
+  background-color: #fff !important;
+  box-shadow: none !important;
+  height: 17.094017094017vw;
+
+  & > div {
+    padding: 0 !important;
+    margin: 3.4188034188034vw 6.8376068376068vw !important;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & a {
+      text-decoration: none;
+      width: 42.735042735043vw;
+      height: 10.25641025641vw;
+
+      & img {
+        max-height: 100%;
+        max-width: 100%;
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    & svg {
+      height: 3.8461538461538vw;
+      width: 7.6923076923077vw;
+    }
+
+    & svg.BurgerActive path {
+      stroke: #dd1a32;
+    }
+  }
+}
+
+.css-i9fmh8-MuiBackdrop-root-MuiModal-backdrop {
+  background: linear-gradient(transparent 30%, rgba(0, 0, 0, 0.5) 70%);
+  mix-blend-mode: multiply;
+}
+
+.MuiDrawer-root.MuiDrawer-modal {
+  & .MuiDrawer-paper {
+    margin-top: 17.094017094017vw;
+    background-color: #ffffff;
+    height: 90.17094017094vw;
+    border-radius: 0 0 6.8376068376068vw 6.8376068376068vw;
+    border-top: 3px solid rgba(0, 0, 0, 0.2);
+    box-shadow: none;
+
+    & .LinkList {
+      height: 69.65811965812vw;
+      padding: 0;
+      margin: 6.8376068376068vw 10.683760683761vw 9.4017094017094vw 10.683760683761vw;
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center;
+
+      & li {
+        height: 13.931623931624vw;
+        border-bottom: 3px solid rgba(0, 0, 0, 0.2);
+        padding: 0;
+
+        & a {
+          width: 100%;
+          height: 100%;
+          cursor: pointer;
+          text-decoration: none;
+          display: flex;
+          align-items: center;
+
+          & div {
+            display: flex;
+            align-items: center;
+            margin-left: 5.1282051282051vw;
+
+            & div {
+              height: 7.6923076923077vw;
+              width: 6.8376068376068vw;
+              margin-left: 0;
+              margin-right: 5.1282051282051vw;
+              justify-content: center;
+            }
+
+            & span {
+              @include font50_500();
+              width: 46.153846153846vw;
+
+              @media (any-pointer: coarse) {
+                &:hover {
+                  color: #dd1a32 !important;
+                }
+              }
+              @media (any-pointer: fine) {
+                &:hover {
+                  color: #dd1a32 !important;
+                }
+              }
+              @media (any-pointer: none) {
+                &:hover {
+                  color: #dd1a32 !important;
+                }
+              }
+            }
+
+            & .count_profile {
+              width: 8.5470085470085vw;
+              height: 8.5470085470085vw;
+              border-radius: 8.5470085470085vw;
+              background: #dd1a32;
+              margin-left: 2.5641025641026vw;
+              margin-right: 0;
+
+              & span {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                @include font40_400();
+                color: #ffffff !important;
+              }
+            }
+          }
+
+          &:focus-visible {
+            outline: unset;
+          }
+
+          @media (any-pointer: coarse) {
+            &:hover {
+              background: rgba(0, 0, 0, 0.05);
+            }
+          }
+          @media (any-pointer: fine) {
+            &:hover {
+              background: rgba(0, 0, 0, 0.05);
+            }
+          }
+          @media (any-pointer: none) {
+            &:hover {
+              background: rgba(0, 0, 0, 0.05);
+            }
+          }
+        }
+      }
+    }
+
+    & .Line {
+      height: 0.85470085470085vw;
+      width: 12.820512820513vw;
+      background: rgba(0, 0, 0, 0.2);
+      border-radius: 0.42735042735043vw;
+      margin-bottom: 3.4188034188034vw;
+      margin: 0 auto;
+    }
+  }
+}
+
+/* как минимум один механизм ввода устройства включает в себя указывающее устройство ограниченной точности */
+// @media (any-pointer: coarse) {
+//   /* ... */
+// }
+/* как минимум один механизм ввода устройства включает в себя указывающее устройство высокой точности */
+// @media (any-pointer: fine) {
+//   /* ... */
+// }
+/* устройство не имеет указывающего устройства */
+// @media (any-pointer: none) {
+//   /* ... */
+// }
+// /* смартфоны, устройства с сенсорным экраном, с которым работают пальцами */
+// @media (hover: none) and (pointer: coarse) {
+//   /* ... */
+// }
+// /* устройства с сенсорным экраном, с которым работают стилусом */
+// @media (hover: none) and (pointer: fine) {
+//   /* ... */
+// }
+// /* контроллер Nintendo Wii, Microsoft Kinect */
+// @media (hover: hover) and (pointer: coarse) {
+//   /* ... */
+// }
+// /* мышь, тачпад */
+// @media (hover: hover) and (pointer: fine) {
+//   /* ... */
+// }

@@ -17,6 +17,7 @@ import '../styles/home/bannersPC.scss'
 
 import '../styles/header/cityForm.scss'
 import '../styles/header/headerPC.scss'
+import '../styles/header/headerTablet.scss'
 import '../styles/header/basketPC.scss'
 
 import '../styles/profile/promokody.scss'

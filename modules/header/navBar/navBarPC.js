@@ -18,10 +18,10 @@ import {BurgerIcon, MapPointIcon } from '@/ui/Icons.js';
 import { Link as ScrollLink } from 'react-scroll';
 
 import { useHeaderStore } from '@/components/store.js';
-import useScroll from './hook.js';
+import useScroll from '../hook.js';
 
-import BasketIconHeaderPC from './basket/basketIconHeaderPC.js';
-import ProfileIconHeaderPC from './profile/profileIconHeaderPC.js';
+import BasketIconHeaderPC from '../basket/basketIconHeaderPC.js';
+import ProfileIconHeaderPC from '../profile/profileIconHeaderPC.js';
 
 let catList = [{id: '1', name: 'Роллы', link: 'rolly', count_2: '107', count: '0', list: [{id: '1', name: 'Сеты роллов'}, { id: '2', name: 'Фирменные' }, {id: '3', name: 'Жареные'}, 
 {id: '4', name: 'Запеченные'}, {id: '5', name: 'Классика'}]}, {id: '14', name: 'Пицца', link: 'pizza', count_2: '0', count: '12'}, {id: '15', name: 'Блюда', link: null, count_2: '0',

@@ -37,7 +37,7 @@ export default React.memo(function NavBarMobile(props){
           <Image alt="Жако доставка роллов и пиццы" src={JacoLogoMini} width={40} height={40} priority={true} />
         </Link> 
 
-        <React.Fragment>
+        {/* <React.Fragment>
           <BurgerIcon onClick={ () => setActiveMenu(true) } style={{ padding: 20, marginRight: -20 }} />
           <SwipeableDrawer
             anchor={'right'}
@@ -69,7 +69,7 @@ export default React.memo(function NavBarMobile(props){
               </ListItem>
             </List>
           </SwipeableDrawer>
-        </React.Fragment>
+        </React.Fragment> */}
       </Toolbar>
     </AppBar>
   )
