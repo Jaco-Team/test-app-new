@@ -5,6 +5,9 @@ $Ubuntu: 'Ubuntu';
 $colorMain: #cc0033;
 $colorText: rgba(0, 0, 0, 0.8);
 
+$MyMaxWidth: 1170px;
+//$MyMaxWidth: 600px;
+
 @mixin fonsNew($size: 1rem, $family: $Roboto) {
   font-size: $size;
   font-family: $family !important;
@@ -116,11 +119,11 @@ $colorText: rgba(0, 0, 0, 0.8);
 
   @include fonsNew(1.73vw, var(--inter-font));
 
-  @media (max-width: 960px) {
-    @include fonsNew(1.73rem, var(--inter-font));
-  }
+  // @media (max-width: 960px) {
+  //   @include fonsNew(1.73rem, var(--inter-font));
+  // }
 
-  @media (max-width: 73.125em) {
+  @media (max-width: $MyMaxWidth) {
     @include fonsNew(4.2735042735043vw, var(--inter-font));
   }
 }
@@ -153,11 +156,11 @@ $colorText: rgba(0, 0, 0, 0.8);
 
   @include fonsNew(1.4vw, var(--inter-font));
 
-  @media (max-width: 960px) {
-    @include fonsNew(1.4rem, var(--inter-font));
-  }
+  // @media (max-width: 960px) {
+  //   @include fonsNew(1.4rem, var(--inter-font));
+  // }
 
-  @media (max-width: 73.125em) {
+  @media (max-width: $MyMaxWidth) {
     @include fonsNew(3.4188034188034vw, var(--inter-font));
   }
 }

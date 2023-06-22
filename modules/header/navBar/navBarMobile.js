@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import { useState, memo } from 'react';
 
-import Link from 'next/link'
+import Link from 'next/link';
 import Image from 'next/image';
 
 import AppBar from '@mui/material/AppBar';
@@ -9,68 +9,103 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
-import { BurgerIcon } from '@/ui/Icons.js'
-import JacoLogoMini from '@/public/Logomini.png'
-import { roboto } from '@/ui/Font.js'
+import { BurgerIconMobile, MenuIconMobile, AboutIconMobile, DocumentIconMobile } from '@/ui/Icons.js';
+import JacoLogo from '@/public/jaco-logo-mobile.png';
+import { roboto } from '@/ui/Font.js';
 
-import { shallow } from 'zustand/shallow'
+import { shallow } from 'zustand/shallow';
 
 import { useHeaderStore } from '@/components/store.js';
 
-export default React.memo(function NavBarMobile(props){
-  
+import BasketIconHeaderMobile from '../basket/basketIconHeaderMobile';
+import ProfileIconHeaderMobile from '../profile/profileIconHeaderMobile';
+
+export default memo(function NavBarMobile(props) {
+
+  console.log('NavBarMobile render');
+
   const { city, cityRu } = props;
 
-  const [ activeMenu, setActiveMenu ] = useState(false);
-  const [ token, setToken ] = useState('');
+  const [activeMenu, setActiveMenu] = useState(false);
 
-  const [ setActiveModalCity, setActiveModalAuth ] = useHeaderStore( state => [state.setActiveModalCity, state.setActiveModalAuth], shallow );
+  const [setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket], shallow);
 
-  if( city == '' ){
+  if (city == '') {
     return null;
   }
 
-  return (
-    <AppBar position="fixed" className='headerNewMobile' id='headerNewMobile' elevation={2}>
-      <Toolbar>
-        <Link href={"/"}>
-          <Image alt="Жако доставка роллов и пиццы" src={JacoLogoMini} width={40} height={40} priority={true} />
-        </Link> 
+  const close = () => {
+    if (openBasket) {
+      setActiveBasket(false);
+    }
 
-        {/* <React.Fragment>
-          <BurgerIcon onClick={ () => setActiveMenu(true) } style={{ padding: 20, marginRight: -20 }} />
+    if(activeMenu) {
+      setActiveMenu(false)
+    }
+
+  };
+
+  return (
+    <AppBar position="fixed" className="headerMobile" elevation={2} onClick={close}>
+      <Toolbar>
+        <Link href={`/${city}`}>
+          <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true}/>
+        </Link>
+
+        <>
+          <BurgerIconMobile onClick={() => setActiveMenu(true)} className={activeMenu ? 'BurgerActive' : null}/>
           <SwipeableDrawer
-            anchor={'right'}
+            anchor={'top'}
             open={activeMenu}
             onClose={() => setActiveMenu(false)}
             onOpen={() => setActiveMenu(true)}
           >
-            <List className={'LinkList '+roboto.variable}>
-              <ListItem disablePadding onClick={ () => { setActiveModalCity(true); setActiveMenu(false); } }>
-                <a>{cityRu}</a> 
+            <List className={'LinkList ' + roboto.variable}>
+              <ListItem onClick={() => setActiveMenu(false)}>
+                <Link href={'/' + city}>
+                  <div>
+                    <div>
+                      <MenuIconMobile />
+                    </div>
+                    <span>Меню</span>
+                  </div>
+                </Link>
               </ListItem>
-              <ListItem disablePadding onClick={ () => setActiveMenu(false) }>
-                <Link href={"/"+city}>Меню</Link> 
+
+              <ProfileIconHeaderMobile setActiveMenu={setActiveMenu} city={city}/>
+
+              <ListItem onClick={() => setActiveMenu(false)}>
+                <Link href={`/${city}/about`}>
+                  <div>
+                    <div>
+                      <AboutIconMobile />
+                    </div>
+                    <span>О компании</span>
+                  </div>
+                </Link>
               </ListItem>
-              <ListItem disablePadding onClick={ () => setActiveMenu(false) }>
-                <Link href={"/"+city+"/akcii"}>Акции</Link> 
+
+              <ListItem onClick={() => setActiveMenu(false)}>
+                <Link href={`/${city}`}>
+                  <div>
+                    <div>
+                      <DocumentIconMobile />
+                    </div>
+                    <span>Документы</span>
+                  </div>
+                </Link>
               </ListItem>
-              { token.length == 0 ? 
-                <ListItem disablePadding onClick={ () => { setActiveMenu(false); setActiveModalAuth(true); } }>
-                  <a>Профиль</a> 
-                </ListItem>
-                  :
-                <ListItem disablePadding onClick={ () => setActiveMenu(false) }>
-                  <Link href={"/"+city+"/"}>Профиль</Link> 
-                </ListItem>
-              }
-              <ListItem disablePadding onClick={ () => setActiveMenu(false) }>
-                <Link href={"/"+city+"/contacts"}>Контакты</Link> 
-              </ListItem>
+
+              <BasketIconHeaderMobile setActiveMenu={setActiveMenu}/>
+
             </List>
+
+            <div className="Line"></div>
+
           </SwipeableDrawer>
-        </React.Fragment> */}
+        </>
+
       </Toolbar>
     </AppBar>
-  )
-})
+  );
+});

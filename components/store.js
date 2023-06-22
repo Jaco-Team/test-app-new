@@ -543,6 +543,12 @@ export const useHeaderStore = create((set, get) => ({
   showPassword: false,
   loading: false,
 
+  matches: null,
+
+  setMatches: (matches) => {
+    set({ matches });
+  },
+
   // показывать/скрывать пароль в форме авторизации
   clickShowPassword: () => {
     set({ showPassword: !get().showPassword });

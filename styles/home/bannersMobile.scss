@@ -1,0 +1,32 @@
+@import '../settings.scss';
+
+.BannerMobile {
+  & .Item {
+    width: 93.162393162393vw;
+    margin: 17.094017094017vw 3.4188034188034vw 0 3.4188034188034vw;
+    height: 29.57264957265vw;
+    border-radius: 3.4188034188034vw;
+    background-color: #3faad8;
+  }
+
+  & .swiper-pagination {
+    bottom: 0 !important;
+    top: 0 !important;
+    z-index: 3000 !important;
+    position: relative !important;
+    margin-top: 1.7094017094017vw;
+    display: flex;
+    justify-content: center;
+    & .swiper-pagination-bullet {
+      width: 1.7094017094017vw;
+      height: 1.7094017094017vw;
+      background: rgba(0, 0, 0, 0.1);
+      margin-right: 1.7094017094017vw !important;
+      margin-left: 0 !important;
+      opacity: 1;
+    }
+    & .swiper-pagination-bullet-active {
+      background: rgba(0, 0, 0, 0.3);
+    }
+  }
+}

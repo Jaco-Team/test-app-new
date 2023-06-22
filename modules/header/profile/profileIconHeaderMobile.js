@@ -7,12 +7,12 @@ import { useSession } from 'next-auth/react';
 import { useHeaderStore } from '@/components/store.js';
 import { shallow } from 'zustand/shallow';
 
-import { ProfileIconTablet } from '@/ui/Icons.js';
+import { ProfileIconMobile } from '@/ui/Icons.js';
 
 import ListItem from '@mui/material/ListItem';
 
-export default function ProfileIconHeaderTablet({ setActiveMenu, city }) {
-  console.log('render ProfileIconHeaderTablet');
+export default function ProfileIconHeaderMobile({ setActiveMenu, city }) {
+  console.log('render ProfileIconHeaderMobile');
 
   const session = useSession();
 
@@ -31,7 +31,7 @@ export default function ProfileIconHeaderTablet({ setActiveMenu, city }) {
         <a>
           <div>
             <div>
-              <ProfileIconTablet />
+              <ProfileIconMobile />
             </div>
             <span>Профиль</span>
           </div>
@@ -42,7 +42,7 @@ export default function ProfileIconHeaderTablet({ setActiveMenu, city }) {
         <Link href={'/' + city + '/zakazy'}>
           <div>
             <div>
-              <ProfileIconTablet />
+              <ProfileIconMobile />
             </div>
             <span>Профиль</span>
             <div className="count_profile" style={{ background: '#6FBEF8' }}><span>{userName}</span></div>

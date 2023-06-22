@@ -14,10 +14,11 @@ import '../styles/header/loginForm.scss'
 import '../styles/home.scss'
 import '../styles/home/homePC.scss'
 import '../styles/home/bannersPC.scss'
+import '../styles/home/bannersMobile.scss'
 
 import '../styles/header/cityForm.scss'
 import '../styles/header/headerPC.scss'
-import '../styles/header/headerTablet.scss'
+import '../styles/header/headerMobile.scss'
 import '../styles/header/basketPC.scss'
 
 import '../styles/profile/promokody.scss'

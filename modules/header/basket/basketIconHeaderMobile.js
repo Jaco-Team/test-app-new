@@ -1,10 +1,10 @@
 import { useCartStore, useHeaderStore } from '@/components/store.js';
 import { shallow } from 'zustand/shallow';
-import { BasketIconTablet } from '@/ui/Icons.js';
+import { BasketIconMobile } from '@/ui/Icons.js';
 import ListItem from '@mui/material/ListItem';
 
-export default function BasketIconHeaderTablet({ setActiveMenu }) {
-  console.log('render BasketIconHeaderTablet');
+export default function BasketIconHeaderMobile({ setActiveMenu }) {
+  console.log('render BasketIconHeaderMobile');
 
   const [setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket], shallow);
 
@@ -14,7 +14,7 @@ export default function BasketIconHeaderTablet({ setActiveMenu }) {
     <ListItem onClick={() => { setActiveBasket(!openBasket); setActiveMenu(false) }}>
       <a>
         <div>
-          <div><BasketIconTablet /></div>
+          <div><BasketIconMobile /></div>
           <span>Корзина</span>
           {itemsCount ? <div className="count_profile"><span>{itemsCount}</span></div> : null}
         </div>

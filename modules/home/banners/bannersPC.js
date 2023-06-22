@@ -1,7 +1,5 @@
 import React, { useEffect, useState, useRef } from 'react';
 
-// import Image from 'next/image';
-
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -17,14 +15,11 @@ import 'swiper/css/pagination';
 
 import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
 
-import useMediaQuery from '@mui/material/useMediaQuery';
-
-import { useHomeStore } from '../../components/store.js';
+import { useHomeStore } from '../../../components/store.js';
 import { shallow } from 'zustand/shallow';
 
-export default React.memo(function Banners() {
-  console.log('Banners render')
-  const matches = useMediaQuery('screen and (min-width: 40em)', { noSsr: false });
+export default React.memo(function BannersPC() {
+  console.log('BannersPC render')
   
   const [banners, setBanners] = useState([]);
   const [bannerList, setActiveBanner] = useHomeStore((state) => [state.bannerList, state.setActiveBanner], shallow);
@@ -56,7 +51,8 @@ export default React.memo(function Banners() {
             nextEl: '.swiper-button-next',
           }}
           scrollbar={{ draggable: true }}
-          style={{width: !matches ? '100%' : '90.975vw', marginTop: !matches ? 60 : '8.66425vw', borderRadius: '2.8881vw'}}
+          // style={{width: !matches ? '100%' : '90.975vw', marginTop: !matches ? 60 : '8.66425vw', borderRadius: '2.8881vw'}}
+          style={{width: '90.975vw', marginTop: '8.66425vw', borderRadius: '2.8881vw'}}
           ref={swiperRef}
         >
 

@@ -582,7 +582,7 @@ export function ArrowUp(props) {
   );
 }
 
-export function BurgerIconTablet(props) {
+export function BurgerIconMobile(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -614,7 +614,7 @@ export function BurgerIconTablet(props) {
   );
 }
 
-export function MenuIconTablet(props) {
+export function MenuIconMobile(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -632,7 +632,7 @@ export function MenuIconTablet(props) {
   );
 }
 
-export function ProfileIconTablet(props) {
+export function ProfileIconMobile(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -650,7 +650,7 @@ export function ProfileIconTablet(props) {
   );
 }
 
-export function AboutIconTablet(props) {
+export function AboutIconMobile(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -668,7 +668,7 @@ export function AboutIconTablet(props) {
   );
 }
 
-export function DocumentIconTablet(props) {
+export function DocumentIconMobile(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
@@ -686,7 +686,7 @@ export function DocumentIconTablet(props) {
   );
 }
 
-export function BasketIconTablet(props) {
+export function BasketIconMobile(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

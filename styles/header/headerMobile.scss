@@ -1,6 +1,6 @@
 @import '../settings';
 
-.headerTablet {
+.headerMobile {
   z-index: 1200 !important;
   background-color: #fff !important;
   box-shadow: none !important;
@@ -42,13 +42,17 @@
   mix-blend-mode: multiply !important;
 }
 
+.MuiModal-root.MuiDrawer-root {
+  z-index: 1100;
+}
+
 .MuiDrawer-root.MuiDrawer-modal {
   & .MuiDrawer-paper {
     margin-top: 17.094017094017vw;
     background-color: #ffffff;
     height: 90.17094017094vw;
     border-radius: 0 0 6.8376068376068vw 6.8376068376068vw;
-    border-top: 3px solid rgba(0, 0, 0, 0.2);
+    border-top: 0.25641025641026vw solid rgba(0, 0, 0, 0.2);
     box-shadow: none;
 
     & .LinkList {
@@ -62,7 +66,7 @@
 
       & li {
         height: 13.931623931624vw;
-        border-bottom: 3px solid rgba(0, 0, 0, 0.2);
+        border-bottom: 0.25641025641026vw solid rgba(0, 0, 0, 0.2);
         padding: 0;
 
         & a {
@@ -76,13 +80,13 @@
           & div {
             display: flex;
             align-items: center;
-            margin-left: 5.1282051282051vw;
+            margin-left: 4.2735042735043vw;
 
             & div {
-              height: 7.6923076923077vw;
-              width: 6.8376068376068vw;
+              height: 8.5470085470085vw;
+              width: 8.5470085470085vw;
               margin-left: 0;
-              margin-right: 5.1282051282051vw;
+              margin-right: 4.2735042735043vw;
               justify-content: center;
             }
 
