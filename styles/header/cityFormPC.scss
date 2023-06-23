@@ -1,0 +1,134 @@
+@import '../settings.scss';
+
+.modalOpenCityPC {
+  & .MuiDialog-paper {
+    overflow: visible;
+    margin: 0 !important;
+    max-width: none !important;
+    border-radius: 1.4440433212996vw;
+    .MuiDialogContent-root {
+      padding: 0;
+      border-radius: 1.4440433212996vw;
+      background: linear-gradient(#ededed 0%, #ededed 25%, #fff 25%, #fff 100%);
+      width: 24.548736462094vw;
+      height: 28.880866425993vw;
+
+      .modalCityPC {
+        margin: 2.1660649819495vw 5.0541516245487vw 2.8880866425993vw
+          5.0541516245487vw;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & .closeButton {
+          position: absolute;
+          top: -2.8880866425993vw;
+          left: 0;
+          padding: 0;
+          margin: 0;
+
+          & svg {
+            width: 2.1660649819495vw;
+            height: 2.1660649819495vw;
+          }
+        }
+
+        & .loginIMG {
+          height: 7.2202166064982vw;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          & > img {
+            height: 100%;
+            width: auto;
+          }
+        }
+
+        & .loginHeader {
+          height: 2.1660649819495vw;
+          width: 100%;
+          margin-bottom: 0.72202166064982vw;
+          & span {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @include font40_400();
+          }
+        }
+
+        & .loginCity {
+          width: 18.050541516245vw;
+          display: flex;
+          justify-content: center;
+          & span {
+            line-height: 2.7075812274368vw;
+            @include font75_700();
+            text-align: center;
+            display: flex;
+            align-content: flex-end;
+            justify-content: center;
+            flex-wrap: wrap;
+          }
+        }
+
+        & .buttons {
+          padding: 0;
+          width: 14.440433212996vw;
+          height: 2.8880866425993vw;
+          border-radius: 1.4440433212996vw;
+          background-color: #dd1a32;
+          text-transform: lowercase;
+          margin-bottom: 0.72202166064982vw;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          & span {
+            @include font30_400();
+            color: #ffffff;
+            &:first-letter {
+              text-transform: uppercase;
+            }
+          }
+        }
+
+        & .choose {
+          border: 0.10830324909747vw solid rgba(0, 0, 0, 0.2);
+          white-space: nowrap;
+          margin-bottom: 0;
+          &:hover {
+            background-color: rgba(0, 0, 0, 0.05);
+          }
+          & span {
+            color: rgba(0, 0, 0, 0.8);
+          }
+        }
+      }
+    }
+  }
+}
+
+#chooseCityModal {
+  & div.MuiPaper-root.MuiMenu-paper {
+    border-radius: 0.72202166064982vw;
+    width: 14.440433212996vw;
+    background: #ececec;
+    box-shadow: 0.36101083032491vw 0.36101083032491vw 1.0830324909747vw
+      0.18050541516245vw rgba(0, 0, 0, 0.2);
+    & ul {
+      width: 100%;
+      padding: 0;
+      & li {
+        padding: 0;
+        width: 100%;
+        height: 2.8880866425993vw;
+        justify-content: center;
+        @include font30_400();
+        &:hover {
+          background-color: #ffffff;
+          color: #dd1a32;
+        }
+      }
+    }
+  }
+}

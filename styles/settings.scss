@@ -95,11 +95,11 @@ $MyMaxWidth: 1170px;
   font-style: normal;
   font-weight: 400;
 
-  @include fonsNew(1vw, var(--inter-font));
+  @include fonsNew(1.0830324909747vw, var(--inter-font));
 
-  @media (max-width: 960px) {
-    @include fonsNew(1rem, var(--inter-font));
-  }
+  // @media (max-width: 960px) {
+  //   @include fonsNew(1rem, var(--inter-font));
+  // }
 }
 
 @mixin font35_400() {
@@ -118,10 +118,6 @@ $MyMaxWidth: 1170px;
   font-weight: 500;
 
   @include fonsNew(1.73vw, var(--inter-font));
-
-  // @media (max-width: 960px) {
-  //   @include fonsNew(1.73rem, var(--inter-font));
-  // }
 
   @media (max-width: $MyMaxWidth) {
     @include fonsNew(4.2735042735043vw, var(--inter-font));
@@ -202,10 +198,10 @@ $MyMaxWidth: 1170px;
   font-style: normal;
   font-weight: 700;
 
-  @include fonsNew(3vw, var(--inter-font));
+  @include fonsNew(2.7075812274368vw, var(--inter-font));
 
-  @media (max-width: 960px) {
-    @include fonsNew(3rem, var(--inter-font));
+  @media (max-width: $MyMaxWidth) {
+    @include fonsNew(6.4102564102564vw, var(--inter-font));
   }
 }
 
@@ -217,5 +213,16 @@ $MyMaxWidth: 1170px;
 
   @media (max-width: 960px) {
     @include fonsNew(4rem, var(--inter-font));
+  }
+}
+
+@mixin font120_700() {
+  font-style: normal;
+  font-weight: 700;
+
+  //@include fonsNew(4vw, var(--inter-font));
+
+  @media (max-width: $MyMaxWidth) {
+    @include fonsNew(10.25641025641vw, var(--inter-font));
   }
 }
