@@ -4,9 +4,6 @@ import YandexProvider from 'next-auth/providers/yandex';
 
 import { api } from './api.js';
 
-console.log( 'process.env.NEXTAUTH_SECRET', process.env.NEXTAUTH_SECRET )
-console.log( 'process.env', process.env )
-
 export const authConfig = {
   providers: [
     GoogleProvider({

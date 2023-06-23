@@ -29,7 +29,7 @@ export default function ModalAuth() {
   return (
     <Dialog
       onClose={closeModalAuth}
-      className={'modalOpenCity ' + roboto.variable}
+      className={'modalOpenCityPC ' + roboto.variable}
       open={openAuthModal}
       BackdropComponent={Backdrop}
       BackdropProps={{timeout: 500}}
