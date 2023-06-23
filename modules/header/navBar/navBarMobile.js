@@ -9,7 +9,7 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
-import { BurgerIconMobile, MenuIconMobile, AboutIconMobile, DocumentIconMobile } from '@/ui/Icons.js';
+import { BurgerIconMobile, MenuIconMobile, AboutIconMobile, LocationIconMobile } from '@/ui/Icons.js';
 import JacoLogo from '@/public/jaco-logo-mobile.png';
 import { roboto } from '@/ui/Font.js';
 
@@ -20,15 +20,13 @@ import { useHeaderStore } from '@/components/store.js';
 import BasketIconHeaderMobile from '../basket/basketIconHeaderMobile';
 import ProfileIconHeaderMobile from '../profile/profileIconHeaderMobile';
 
-export default memo(function NavBarMobile(props) {
+export default memo(function NavBarMobile({ city, active_page }) {
 
   console.log('NavBarMobile render');
 
-  const { city, cityRu } = props;
-
   const [activeMenu, setActiveMenu] = useState(false);
 
-  const [setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket], shallow);
+  const [setActiveBasket, openBasket, setActiveModalCity] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity], shallow);
 
   if (city == '') {
     return null;
@@ -54,49 +52,51 @@ export default memo(function NavBarMobile(props) {
 
         <>
           <BurgerIconMobile onClick={() => setActiveMenu(true)} className={activeMenu ? 'BurgerActive' : null}/>
+
           <SwipeableDrawer
             anchor={'top'}
             open={activeMenu}
             onClose={() => setActiveMenu(false)}
             onOpen={() => setActiveMenu(true)}
+            id='headerMenuCat'
           >
             <List className={'LinkList ' + roboto.variable}>
               <ListItem onClick={() => setActiveMenu(false)}>
-                <Link href={'/' + city}>
+                <Link href={'/' + city} style={{background: active_page === 'home' ? 'rgba(0, 0, 0, 0.05)' : null}}>
                   <div>
                     <div>
                       <MenuIconMobile />
                     </div>
-                    <span>Меню</span>
+                    <span style={{color: active_page === 'home' ? ' #dd1a32' : null}}>Меню</span>
                   </div>
                 </Link>
               </ListItem>
 
-              <ProfileIconHeaderMobile setActiveMenu={setActiveMenu} city={city}/>
+              <ListItem onClick={() => { setActiveMenu(false); setActiveModalCity(true)}}>
+                <Link href={`/${city}/contacts`} style={{background: active_page === 'contacts' ? 'rgba(0, 0, 0, 0.05)' : null}}>
+                  <div>
+                    <div>
+                      <LocationIconMobile />
+                    </div>
+                    <span style={{color: active_page === 'contacts' ? ' #dd1a32' : null}}>Адреса</span>
+                  </div>
+                </Link>
+              </ListItem>
+
+              <ProfileIconHeaderMobile setActiveMenu={setActiveMenu} city={city} active_page={active_page}/>
 
               <ListItem onClick={() => setActiveMenu(false)}>
-                <Link href={`/${city}/about`}>
+                <Link href={`/${city}/about`} style={{background: active_page === 'other' ? 'rgba(0, 0, 0, 0.05)' : null}}>
                   <div>
                     <div>
                       <AboutIconMobile />
                     </div>
-                    <span>О компании</span>
+                    <span style={{color: active_page === 'other' ? ' #dd1a32' : null}}>О компании</span>
                   </div>
                 </Link>
               </ListItem>
 
-              <ListItem onClick={() => setActiveMenu(false)}>
-                <Link href={`/${city}`}>
-                  <div>
-                    <div>
-                      <DocumentIconMobile />
-                    </div>
-                    <span>Документы</span>
-                  </div>
-                </Link>
-              </ListItem>
-
-              <BasketIconHeaderMobile setActiveMenu={setActiveMenu}/>
+              <BasketIconHeaderMobile setActiveMenu={setActiveMenu} />
 
             </List>
 

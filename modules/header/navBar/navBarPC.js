@@ -69,12 +69,10 @@ const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, c
   )
 })
 
-export default function NavBarPC(props) {
+export default function NavBarPC({ city, cityRu, active_page }) {
   console.log('NavBarPC render');
 
   useScroll();
-
-  const { city, cityRu, active_page } = props;
   
   const [setActiveModalCity, setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveModalCity, state.setActiveBasket, state.openBasket], shallow);
 

@@ -1,0 +1,148 @@
+@import '../settings.scss';
+
+#modalCityMobileMain {
+  & .MuiDrawer-paper {
+    height: 123.07692307692vw;
+    border-radius: 6.8376068376068vw 6.8376068376068vw 0 0;
+    background: linear-gradient(#ededed 0%, #ededed 28%, #fff 28%, #fff 100%);
+    overflow: hidden;
+
+    .ContainerMain {
+      margin: 15.384615384615vw 22.222222222222vw 20.940170940171vw 22.222222222222vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      & .loginIMG {
+        height: 25.641025641026vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 5.1282051282051vw;
+        & img {
+          height: 100%;
+          width: auto;
+        }
+      }
+
+      & .loginHeader {
+        height: 10.25641025641vw;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        & span {
+          @include font50_500();
+        }
+      }
+
+      & .loginCity {
+        width: 93.162393162393vw;
+        display: flex;
+        justify-content: center;
+        & span {
+          line-height: 10.25641025641vw;
+          @include font120_700();
+          text-align: center;
+          display: flex;
+          align-content: center;
+          justify-content: center;
+          flex-wrap: wrap;
+        }
+      }
+
+      & .buttons {
+        padding: 0;
+        width: 55.555555555556vw;
+        height: 10.25641025641vw;
+        border-radius: 5.1282051282051vw;
+        background-color: #dd1a32;
+        text-transform: lowercase;
+        margin-bottom: 3.4188034188034vw;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        & span {
+          @include font50_500();
+          color: #ffffff !important;
+          &:first-letter {
+            text-transform: uppercase;
+          }
+        }
+      }
+
+      & .choose {
+        border: 0.25641025641026vw solid rgba(0, 0, 0, 0.2);
+        white-space: nowrap;
+        margin-bottom: 0;
+        background-color: #fff;
+        & span {
+          color: rgba(0, 0, 0, 0.8) !important;
+        }
+      }
+    }
+  }
+}
+
+#modalCityMobileList {
+  & .MuiDrawer-paper {
+    height: 112.82051282051vw;
+    border-radius: 6.8376068376068vw 6.8376068376068vw 0 0;
+    overflow: hidden;
+
+    .ContainerList {
+      margin: 3.4188034188034vw 10.683760683761vw 19.82905982906vw
+        10.683760683761vw;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      & .Line {
+        height: 0.85470085470085vw;
+        width: 12.820512820513vw;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: 0.42735042735043vw;
+        margin-bottom: 6.8376068376068vw;
+      }
+
+      & .loginHeader {
+        height: 10.25641025641vw;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: 2.2222222222222vw;
+        & span {
+          @include font75_700();
+        }
+      }
+
+      & ul {
+        width: 100%;
+        padding: 0;
+        & li {
+          height: 13.931623931624vw;
+          border-bottom: 0.25641025641026vw solid rgba(0, 0, 0, 0.2);
+          padding: 0;
+          & a {
+            width: 100%;
+            height: 100%;
+            cursor: pointer;
+            text-decoration: none;
+            & div {
+              margin-left: 3.4188034188034vw;
+              display: flex;
+              align-items: center;
+              height: 100%;
+
+              & span {
+                @include font50_500();
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

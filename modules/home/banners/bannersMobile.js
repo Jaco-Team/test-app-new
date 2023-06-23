@@ -44,7 +44,9 @@ export default React.memo(function BannersMobile() {
         ref={swiperRef}
       >
         {banners.map((item, key) => (
-          <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
+          <SwiperSlide key={key} dataswiperautoplay="2000" 
+          //onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}
+          >
             <div className="Item" style={{ backgroundColor: item.id === '84' ? '#3faad8' : item.id === '80' ? '#B570DF' : item.id === '48' ? '#F45773' : null}}></div>
           </SwiperSlide>
         ))}

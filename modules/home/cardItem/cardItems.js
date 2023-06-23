@@ -2,14 +2,14 @@ import React, { useEffect, useState } from 'react';
 
 import Grid from '@mui/material/Grid';
 
-import useMediaQuery from '@mui/material/useMediaQuery';
+// import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { useHomeStore, useCartStore } from '@/components/store.js';
+import { useHomeStore, useCartStore, useHeaderStore } from '@/components/store.js';
 import { shallow } from 'zustand/shallow';
 
-import CardItemPc from './cardItemPc.js';
+import CardItemPc from './cardItemPc';
 import CardItemMobile from './cardItemMobile.js';
-import useCheckCat from './hooks.js';
+import useCheckCat from '../hooks.js';
 
 import * as Scroll from 'react-scroll';
 
@@ -24,6 +24,8 @@ export default React.memo(function CatItems() {
 
   const [CatsItems] = useHomeStore((state) => [state.CatsItems], shallow);
   const [items] = useCartStore((state) => [state.items], shallow);
+
+  const [matches] = useHeaderStore((state) => [state.matches], shallow);
 
   let activeId = useCheckCat(CatsItems);
 
@@ -74,11 +76,31 @@ export default React.memo(function CatItems() {
     }, 300);
   }, []);
 
-  const matches = useMediaQuery('screen and (min-width: 40em)', { noSsr: true });
+  // const matches = useMediaQuery('screen and (min-width: 40em)', {
+  //   noSsr: true,
+  // });
 
   if (!cats.length) return <div style={{ height: 1000 }} />;
 
-  if (!matches) {
+  if (matches) {
+    return <div style={{ height: 1000 }} />
+    // cats.map((cat, key) => (
+    //   <Grid
+    //     container
+    //     spacing={2}
+    //     key={key}
+    //     name={'cat' + cat.main_id}
+    //     id={'cat' + cat.id}
+    //     sx={{ padding: { xs: '0px 5%', sm: '0px 20px' } }}
+    //     style={{ margin: 0, flexWrap: 'wrap', width: '100%' }}
+    //     className="MainItems mainContainer"
+    //   >
+    //     {cat.items.map((it, k) => (
+    //       <CardItemMobile key={k} data={it} />
+    //     ))}
+    //   </Grid>
+    // ));
+  } else {
     return cats.map((cat, key) => (
       <Grid
         container
@@ -86,37 +108,29 @@ export default React.memo(function CatItems() {
         key={key}
         name={'cat' + cat.main_id}
         id={'cat' + cat.id}
-        sx={{ padding: { xs: '0px 5%', sm: '0px 20px' } }}
-        style={{ margin: 0, flexWrap: 'wrap', width: '100%' }}
-        className="MainItems mainContainer"
+        className="Container"
+        ref={(node) => {
+          if (node && key === 0) {
+            node.style.setProperty(
+              'margin-top',
+              '2.1660649819495vw',
+              'important'
+            );
+          }
+          if (node && cat === cats.at(-1)) {
+            node.style.setProperty(
+              'margin-bottom',
+              '2.1660649819495vw',
+              'important'
+            );
+          }
+        }}
       >
         {cat.items.map((it, k) => (
-          <CardItemMobile key={k} data={it} />
+          <CardItemPc key={k} index={k} item={it} count={it.count} />
         ))}
       </Grid>
     ));
   }
 
-  return cats.map((cat, key) => (
-    <Grid
-      container
-      spacing={2}
-      key={key}
-      name={'cat' + cat.main_id}
-      id={'cat' + cat.id}
-      className='Container'
-      ref={(node) => {
-        if (node && key === 0) {
-          node.style.setProperty('margin-top', '2.1660649819495vw', 'important');
-        }
-        if (node && cat === cats.at(-1)) {
-          node.style.setProperty('margin-bottom', '2.1660649819495vw', 'important');
-        }
-      }}
-    >
-      {cat.items.map((it, k) => (
-        <CardItemPc key={k} index={k} item={it} count={it.count} />
-      ))}
-    </Grid>
-  ));
 });

@@ -4,7 +4,8 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { roboto } from '../ui/Font.js';
 
-import ModalCity from '../modules/header/modalCity.js';
+import ModalCityPC from '../modules/header/modalCity/modalCityPC.js';
+import ModalCityMobile from '../modules/header/modalCity/modalCityMobile.js';
 import ModalAuth from '../modules/header/modalAuth';
 import NavBarPC from '../modules/header/navBar/navBarPC.js';
 import NavBarMobile from '@/modules/header/navBar/navBarMobile.js';
@@ -13,8 +14,7 @@ import BasketPC from '../modules/header/basket/basketPC.js';
 import { useHeaderStore } from './store.js';
 import { shallow } from 'zustand/shallow';
 
-export default React.memo(function Header(props) {
-  const { city, city_list, cats, active_page } = props;
+export default React.memo(function Header({ city, city_list, cats, active_page }) {
 
   const thisCityRU = city_list.find((item) => item.link == city)['name'];
 
@@ -30,9 +30,18 @@ export default React.memo(function Header(props) {
   return (
     <div className={roboto.variable} style={{ overflow: 'auto' }}>
 
-      {matches ? <NavBarMobile city={city} cityRu={thisCityRU} /> : <NavBarPC city={city} cityRu={thisCityRU} catList={cats} active_page={active_page}/>}
+      {matches ?
+        <>
+          <NavBarMobile city={city} active_page={active_page}/>
+          <ModalCityMobile />
+        </>
+        :
+        <>
+          <NavBarPC city={city} cityRu={thisCityRU} catList={cats} active_page={active_page}/>
+          <ModalCityPC />
+        </>
+      }
 
-      <ModalCity />
       <ModalAuth />
       <BasketPC />
     </div>

@@ -6,6 +6,7 @@ import Image from 'next/image';
 
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
 import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Backdrop from '@mui/material/Backdrop';
@@ -13,14 +14,13 @@ import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import { roboto } from '@/ui/Font.js';
 import { IconClose } from '@/ui/Icons.js';
-import { Fade } from '@/ui/Fade.js';
-import { useHeaderStore } from '@/components/store.js';
-import { useCitiesStore } from '@/components/store.js';
+import { useHeaderStore, useCitiesStore } from '@/components/store.js';
 
-export default function ModalCity() {
+export default function ModalCityPC() {
 
   const { push } = useRouter();
 
@@ -48,37 +48,41 @@ export default function ModalCity() {
    
   }
 
+  // thisCityRu = 'Комсомольск-на-Амуре'
+
   return (
     <Dialog
       onClose={() => setActiveModalCity(false)}
-      className={'modalOpenCity ' + roboto.variable}
+      className={'modalOpenCityPC ' + roboto.variable}
       open={openCityModal}
-      BackdropComponent={Backdrop}
-      BackdropProps={{ timeout: 500 }}
+      slots={Backdrop}
+      slotProps={{ timeout: 500 }}
     >
-      <Fade in={openCityModal} style={{ overflow: 'auto' }}>
-        <Box className={'modalCity '}>
-          <IconButton style={{ position: 'absolute', top: '-3.2vw', left: -8, backgroundColor: 'transparent' }} onClick={() => setActiveModalCity(false)}>
-            <IconClose style={{ width: '2.166vw', height: '2.166vw', overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }} />
+      <DialogContent>
+        <Box component="div" className='modalCityPC'>
+          <IconButton className='closeButton' onClick={() => setActiveModalCity(false)}>
+            <IconClose/>
           </IconButton>
 
-          <div className="loginIMG">
+          <div className="loginIMG" style={{  marginBottom: thisCityRu.length > 12 ? '1.0830324909747vw' : '2.5270758122744vw' }}>
             <Image alt="Город" src="/Favikon.png" width={240} height={240} priority={true}/>
           </div>
 
           <div className="loginHeader">
-            <Typography component="h2">Вы в городе</Typography>
+            <Typography component="span">Вы в городе</Typography>
           </div>
 
-          <div className="loginCity">
-            <Typography component="h1">{thisCityRu}</Typography>
+          <div className="loginCity" style={{  marginBottom: thisCityRu.length > 12 ? '1.4440433212996vw' : '2.5270758122744vw', 
+            height: thisCityRu.length > 12 ? '4.6931407942238vw' : '2.1660649819495vw'}}>
+            <Typography component="span">{thisCityRu}</Typography>
           </div>
 
-          <Button className={'active'} onClick={() => setActiveModalCity(false)}>
+          <Button className='buttons'  onClick={() => setActiveModalCity(false)}>
             <Typography variant="h5" component="span">Да, верно</Typography>
           </Button>
 
-          <Button className={'chooseCity'} onClick={openMenu} endIcon={<KeyboardArrowDownIcon />}>
+          <Button className='buttons choose' onClick={openMenu} endIcon={open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />} 
+            style={{  backgroundColor: open ? 'rgba(0, 0, 0, 0.05)' : '#fff'}}>
             <Typography variant="h5" component="span">Нет, выберу город</Typography>
           </Button>
 
@@ -86,7 +90,7 @@ export default function ModalCity() {
             {thisCityList.map((city, key) => <MenuItem key={key} onClick={() => chooseCity(city.id)}>{city.name}</MenuItem>)}
           </Menu>
         </Box>
-      </Fade>
+      </DialogContent>
     </Dialog>
   );
 }
