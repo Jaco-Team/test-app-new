@@ -10,7 +10,7 @@ import Backdrop from '@mui/material/Backdrop';
 import InputAdornment from '@mui/material/InputAdornment';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { signIn } from 'next-auth/react';
+import { signIn, signOut } from 'next-auth/react';
 
 export default function StartTestAuth() {
   console.log('render StartTestAuth');
@@ -20,6 +20,8 @@ export default function StartTestAuth() {
       state.checkLoginKey, state.showPassword, state.clickShowPassword, state.loading], shallow);
 
   const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
+
+  const host = window.location.origin;
 
   return (
     <>
@@ -83,12 +85,12 @@ export default function StartTestAuth() {
 
         <div 
           className="loginLoginYa"
-          // onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? logIn : null}
+          // onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? logIn : null} 
         >
           <Typography component="span">Войти с</Typography>
-          <GoogleIcon onClick={() =>  signIn("google", { callbackUrl: `http://localhost:3008/${thisCity}/zakazy` })}/> 
-          <VKIconButton onClick={() =>  signIn("vk", { callbackUrl: `http://localhost:3008/${thisCity}/zakazy` })}/> 
-          <YaIcon onClick={() =>  signIn("yandex", { callbackUrl: `http://localhost:3008/${thisCity}/zakazy`, scope: 'default_phone', response_type: 'code' })}/>
+          <GoogleIcon onClick={() =>  signIn("google", { callbackUrl: `${host}/${thisCity}/zakazy` })}/> 
+          <VKIconButton onClick={() =>  signIn("vk", { callbackUrl: `${host}/${thisCity}/zakazy` })}/> 
+          <YaIcon onClick={() =>  signIn("yandex", { callbackUrl: `${host}/${thisCity}/zakazy`, scope: 'default_phone', response_type: 'code' })}/>
         </div>
 
         <div className="loginCreate" onClick={() => navigate('create')}>

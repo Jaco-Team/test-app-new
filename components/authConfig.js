@@ -2,6 +2,8 @@ import GoogleProvider from 'next-auth/providers/google';
 import VkProvider from 'next-auth/providers/vk';
 import YandexProvider from 'next-auth/providers/yandex';
 
+import { api } from './api.js';
+
 export const authConfig = {
   providers: [
     GoogleProvider({
@@ -23,25 +25,58 @@ export const authConfig = {
       clientId: process.env.YANDEX_CLIENT_ID,
       clientSecret: process.env.YANDEX_CLIENT_SECRET,
     }),
-  ],
+  ], 
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
 
-      console.log( 'calback singin', user, account, profile, email, credentials )
+      
+
+      //console.log( 'calback singin user', user )
+      //console.log( 'calback singin account', account )
+      //console.log( 'calback singin profile', profile )
+      //console.log( 'calback singin email', email )
+      //console.log( 'calback singin credentials', credentials )
+
+      //console.log( 'account.provider', account.provider )
+
+      if( account.provider == 'yandex' ){
+        const data = {
+          type: 'auth_yandex',
+          
+          name: profile.display_name,
+          email: profile.default_email,
+          birthday: profile.birthday,
+          number: profile.default_phone.number
+          
+        };
+    
+        const json = await api('auth', data);
+
+        profile.user_id = json?.id;
+
+        return json.st;
+      }
+
 
       //const isAllowedToSignIn = true
       //if (isAllowedToSignIn) {
-        return true
+        //return true
       //} else {
         // Return false to display a default error message
-      //  return false
+      return false
         // Or you can return a URL to redirect to:
         // return '/unauthorized'
       //}
     },
 
     async session({ session, user, token }) {
+
+      //console.log('session', session)
+      //console.log('user', user)
+      //console.log('token', token)
+
       session.user = token.user;
+      session.user_id = token.user.user_id;
 
       return session;
     },

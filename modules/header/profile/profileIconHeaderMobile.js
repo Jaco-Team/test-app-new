@@ -12,8 +12,6 @@ import { ProfileIconMobile } from '@/ui/Icons.js';
 import ListItem from '@mui/material/ListItem';
 
 export default function ProfileIconHeaderMobile({ setActiveMenu, city }) {
-  console.log('render ProfileIconHeaderMobile');
-
   const session = useSession();
 
   const [userName, setActiveUser, setActiveModalAuth] = useHeaderStore((state) => [state.userName, state.setActiveUser, state.setActiveModalAuth], shallow);

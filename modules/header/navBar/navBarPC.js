@@ -70,8 +70,6 @@ const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, c
 })
 
 export default function NavBarPC(props) {
-  console.log('NavBarPC render');
-
   useScroll();
 
   const { city, cityRu, active_page } = props;

@@ -10,11 +10,7 @@ import { shallow } from 'zustand/shallow';
 import { ProfileIcon } from '@/ui/Icons.js';
 
 export default function ProfileIconHeaderPC({ active_page }) {
-  console.log('render ProfileIconHeaderPC');
-
   const session = useSession();
-
-  console.log('ProfileIconHeaderPC ===>', session);
 
   const [userName, setActiveUser, setActiveModalAuth] = useHeaderStore((state) => [state.userName, state.setActiveUser, state.setActiveModalAuth], shallow);
   const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
