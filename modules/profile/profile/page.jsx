@@ -23,8 +23,7 @@ import Meta from '@/components/meta.js';
 
 import { useProfileStore } from '@/../components/store.js';
 
-import { signIn, signOut } from 'next-auth/react';
-import { useSession } from 'next-auth/react';
+import { useSession, signOut } from 'next-auth/react';
 
 export default function ProfilePage(props){
   const { page, this_module, city } = props;
@@ -124,8 +123,6 @@ export default function ProfilePage(props){
   }
 
   const host = window.location.origin;
-
-  console.log(`${host}/${city}/`)
 
   return (
     <Meta title={page.title} description={''}>
@@ -317,12 +314,12 @@ export default function ProfilePage(props){
               
               </TableBody>
             </Table>
-
-            <span onClick={ () => { signOut({callbackUrl: `${host}/${city}/`}) } }>Выйти</span>
-
           </Grid>
 
-                    
+          <Grid item xs={12} className="log_out">
+            <span>Удалить аккаунт</span>
+            <span onClick={ () => { signOut({callbackUrl: `${host}/${city}/`}) } }>Выйти</span>
+          </Grid>
 
         </Grid>
         <ProfileBreadcrumbs />
