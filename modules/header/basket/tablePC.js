@@ -4,8 +4,6 @@ import { shallow } from 'zustand/shallow';
 import RowPC from './rowPC';
 
 export default function TablePC() {
-  console.log('render Basket TablePC');
-
   const [items, allPrice] = useCartStore((state) => [state.items, state.allPrice], shallow);
 
   return (
