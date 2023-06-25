@@ -81,11 +81,9 @@ export default function ProfilePage(props){
 
   const [ getUserInfo, setUser, userInfo, streets, shortName, updateUser ] = useProfileStore( state => [ state.getUserInfo, state.setUser, state.userInfo, state.streets, state.shortName, state.updateUser ] );
 
-  console.log( 'my active session', session.data?.user_id )
-
   useEffect(() => {
-    if( session.data?.user_id ){
-      getUserInfo(this_module, city, session.data?.user_id);
+    if( session.data?.user?.user_id ){
+      getUserInfo(this_module, city, session.data?.user?.user_id);
     }
   }, [session]);
 
@@ -124,6 +122,10 @@ export default function ProfilePage(props){
       updateUser(this_module, city, session.data?.user_id);
     }
   }
+
+  const host = window.location.origin;
+
+  console.log(`${host}/${city}/`)
 
   return (
     <Meta title={page.title} description={''}>
@@ -316,7 +318,7 @@ export default function ProfilePage(props){
               </TableBody>
             </Table>
 
-            <span onClick={ () => { signOut({ callbackUrl: `http://localhost:3008/${city}/` }) } }>Выйти</span>
+            <span onClick={ () => { signOut({callbackUrl: `${host}/${city}/`}) } }>Выйти</span>
 
           </Grid>
 

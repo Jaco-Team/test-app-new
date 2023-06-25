@@ -21,8 +21,8 @@ export default function ContactsPage(props){
   const session = useSession();
 
   useEffect(() => {
-    if( session.data?.user_id ){
-      getOrderList(this_module, city, session.data?.user_id);
+    if( session.data?.user?.user_id ){
+      getOrderList(this_module, city, session.data?.user?.user_id);
     }
   }, [session]);
 

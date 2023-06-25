@@ -1,3 +1,5 @@
+import React, { useEffect } from 'react';
+
 import { shallow } from 'zustand/shallow';
 import { useHeaderStore, useCitiesStore } from '@/components/store';
 
@@ -11,9 +13,10 @@ import InputAdornment from '@mui/material/InputAdornment';
 import CircularProgress from '@mui/material/CircularProgress';
 
 import { signIn, signOut } from 'next-auth/react';
+import { useSession } from 'next-auth/react';
 
 export default function StartTestAuth() {
-  console.log('render StartTestAuth');
+  const session = useSession();
 
   const [closeModalAuth, logIn, errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, showPassword, clickShowPassword, loading] = useHeaderStore(
     (state) => [state.closeModalAuth, state.logIn, state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin,
@@ -22,6 +25,12 @@ export default function StartTestAuth() {
   const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
 
   const host = window.location.origin;
+
+  useEffect(() => {
+    if( session?.status == "authenticated" ){
+      closeModalAuth();
+    }
+  }, [session]);
 
   return (
     <>
@@ -73,7 +82,8 @@ export default function StartTestAuth() {
         
         <div 
           className="loginLogin"
-          onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? logIn : null}
+          //onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? logIn : null}
+          onClick={ () => signIn('credentials', { redirect: false, password: pwdLogin, login: loginLogin, callbackUrl: `${host}/${thisCity}/zakazy` }) }
           style={{ backgroundColor: loginLogin.length === 11 && pwdLogin.length > 1 ? '#DD1A32' : 'rgba(0, 0, 0, 0.2)' }}
         >
           <Typography component="span">Войти</Typography>

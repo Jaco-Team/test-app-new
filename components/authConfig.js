@@ -1,6 +1,7 @@
 import GoogleProvider from 'next-auth/providers/google';
 import VkProvider from 'next-auth/providers/vk';
 import YandexProvider from 'next-auth/providers/yandex';
+import CredentialsProvider from "next-auth/providers/credentials"
 
 import { api } from './api.js';
 
@@ -25,19 +26,42 @@ export const authConfig = {
       clientId: process.env.YANDEX_CLIENT_ID,
       clientSecret: process.env.YANDEX_CLIENT_SECRET,
     }),
+    CredentialsProvider({
+      name: "Credentials",
+      credentials: {
+        login: { label: "Username", type: "text", placeholder: "jsmith" },
+        password: { label: "Password", type: "password" }
+      },
+      async authorize(credentials, req) {
+        
+        const data = {
+          type: 'site_login',
+          
+          number: credentials.login,
+          pwd: credentials.password
+        };
+    
+        const json = await api('auth', data);
+
+        if( json.st === true ){
+          return {
+            id: json.id,
+            name: json.name,
+            email: "",
+            image: "",
+          }
+        }
+
+        return false;
+      }
+    })
   ], 
   callbacks: {
     async signIn({ user, account, profile, email, credentials }) {
 
-      
-
-      //console.log( 'calback singin user', user )
-      //console.log( 'calback singin account', account )
-      //console.log( 'calback singin profile', profile )
-      //console.log( 'calback singin email', email )
-      //console.log( 'calback singin credentials', credentials )
-
-      //console.log( 'account.provider', account.provider )
+      if( account.provider == 'credentials' ){
+        return true;
+      }
 
       if( account.provider == 'yandex' ){
         const data = {
@@ -47,7 +71,6 @@ export const authConfig = {
           email: profile.default_email,
           birthday: profile.birthday,
           number: profile.default_phone.number
-          
         };
     
         const json = await api('auth', data);
@@ -57,36 +80,27 @@ export const authConfig = {
         return json.st;
       }
 
-
-      //const isAllowedToSignIn = true
-      //if (isAllowedToSignIn) {
-        //return true
-      //} else {
-        // Return false to display a default error message
       return false
-        // Or you can return a URL to redirect to:
-        // return '/unauthorized'
-      //}
     },
-
+    
     async session({ session, user, token }) {
 
-      //console.log('session', session)
-      //console.log('user', user)
-      //console.log('token', token)
-
-      session.user = token.user;
-      session.user_id = token.user.user_id;
+      session.user.user_id = token?.user?.user_id ?? token.sub;
 
       return session;
     },
+    
     async jwt({ token, user, account, profile, isNewUser }) {
       if (profile) {
         token.user = profile;
       }
-
-      return token;
-    },
+      return token
+    }
+  },
+  session: {
+    jwt: true, 
+    // Seconds - How long until an idle session expires and is no longer valid.
+    //maxAge: 30 * 24 * 60 * 60, // 30 days
   },
   secret: process.env.NEXTAUTH_SECRET
 };
