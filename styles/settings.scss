@@ -51,10 +51,10 @@ $MyMaxWidth: 1170px;
   font-style: normal;
   font-weight: 400;
 
-  @include fonsNew(0.78vw, var(--inter-font));
+  @include fonsNew(0.7942238267148vw, var(--inter-font));
 
-  @media (max-width: 960px) {
-    @include fonsNew(1rem, var(--inter-font));
+  @media (max-width: $MyMaxWidth) {
+    @include fonsNew(1.8803418803419vw, var(--inter-font));
   }
 }
 
@@ -84,10 +84,10 @@ $MyMaxWidth: 1170px;
   font-style: normal;
   font-weight: 700;
 
-  @include fonsNew(1vw, var(--inter-font));
+  @include fonsNew(1.0830324909747vw, var(--inter-font));
 
-  @media (max-width: 960px) {
-    @include fonsNew(1rem, var(--inter-font));
+  @media (max-width: $MyMaxWidth) {
+    @include fonsNew(2.5641025641026vw, var(--inter-font));
   }
 }
 
@@ -97,9 +97,9 @@ $MyMaxWidth: 1170px;
 
   @include fonsNew(1.0830324909747vw, var(--inter-font));
 
-  // @media (max-width: 960px) {
-  //   @include fonsNew(1rem, var(--inter-font));
-  // }
+  @media (max-width: $MyMaxWidth) {
+    @include fonsNew(2.5641025641026vw, var(--inter-font));
+  }
 }
 
 @mixin font35_400() {

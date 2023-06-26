@@ -2,8 +2,6 @@ import React, { useEffect, useState } from 'react';
 
 import Grid from '@mui/material/Grid';
 
-// import useMediaQuery from '@mui/material/useMediaQuery';
-
 import { useHomeStore, useCartStore, useHeaderStore } from '@/components/store.js';
 import { shallow } from 'zustand/shallow';
 
@@ -24,7 +22,6 @@ export default React.memo(function CatItems() {
 
   const [CatsItems] = useHomeStore((state) => [state.CatsItems], shallow);
   const [items] = useCartStore((state) => [state.items], shallow);
-
   const [matches] = useHeaderStore((state) => [state.matches], shallow);
 
   let activeId = useCheckCat(CatsItems);
@@ -75,15 +72,11 @@ export default React.memo(function CatItems() {
       }
     }, 300);
   }, []);
-
-  // const matches = useMediaQuery('screen and (min-width: 40em)', {
-  //   noSsr: true,
-  // });
-
+  
   if (!cats.length) return <div style={{ height: 1000 }} />;
 
   if (matches) {
-    return <div style={{ height: 1000 }} />
+    return <div style={{ height: 3000 }} />
     // cats.map((cat, key) => (
     //   <Grid
     //     container
