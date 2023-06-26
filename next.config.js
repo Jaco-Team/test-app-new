@@ -9,6 +9,15 @@ const nextConfig = {
   experimental: {
     
   },
+  async redirects() {
+    return [
+      {
+        source: '/',
+        destination: '/togliatti',
+        permanent: false,
+      },
+    ]
+  },
 }
 
 module.exports = nextConfig

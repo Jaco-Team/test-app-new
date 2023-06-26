@@ -10,15 +10,21 @@ import Meta from '@/components/meta.js';
 
 import { useProfileStore } from '@/components/store.js';
 
+import { useSession } from 'next-auth/react';
+
 export default function ContactsPage(props){
 
   const { page, this_module, city } = props;
 
   const [ getOrderList, orderList ] = useProfileStore( state => [ state.getOrderList, state.orderList ] );
   
+  const session = useSession();
+
   useEffect(() => {
-    getOrderList(this_module, city, 'ODk4NzkzNDAzOTEtXy0xNzYyMg');
-  }, []);
+    if( session.data?.user?.user_id ){
+      getOrderList(this_module, city, session.data?.user?.user_id);
+    }
+  }, [session]);
 
   return (
     <Meta title={page.title} description={''}>

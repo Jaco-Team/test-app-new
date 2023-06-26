@@ -23,8 +23,12 @@ import Meta from '@/components/meta.js';
 
 import { useProfileStore } from '@/../components/store.js';
 
+import { useSession, signOut } from 'next-auth/react';
+
 export default function ProfilePage(props){
   const { page, this_module, city } = props;
+
+  const session = useSession();
 
   const { control, getValues, setValue } = useForm({
     defaultValues: {
@@ -50,8 +54,6 @@ export default function ProfilePage(props){
     {name: 'Ноября', id: 11},
     {name: 'Декабря', id: 12}
   ]);
-
-  
 
   if( arr_d.length == 0 ){
     
@@ -79,8 +81,10 @@ export default function ProfilePage(props){
   const [ getUserInfo, setUser, userInfo, streets, shortName, updateUser ] = useProfileStore( state => [ state.getUserInfo, state.setUser, state.userInfo, state.streets, state.shortName, state.updateUser ] );
 
   useEffect(() => {
-    getUserInfo(this_module, city, 'ODk4NzkzNDAzOTEtXy0xNzYyMg');
-  }, [getUserInfo]);
+    if( session.data?.user?.user_id ){
+      getUserInfo(this_module, city, session.data?.user?.user_id);
+    }
+  }, [session]);
 
   useEffect(() => {
     setValue("name", userInfo.name)
@@ -98,16 +102,14 @@ export default function ProfilePage(props){
 
     setUser(userInfo);
 
-    updateUser(this_module, city, 'ODk4NzkzNDAzOTEtXy0xNzYyMg');
+    updateUser(this_module, city, session.data?.user_id);
   }
 
   function changeOtherData(type, data){
     userInfo[ [type] ] = data === true ? 1 : 0;
 
-    console.log( type, data )
-
     setUser(userInfo);
-    updateUser(this_module, city, 'ODk4NzkzNDAzOTEtXy0xNzYyMg');
+    updateUser(this_module, city, session.data?.user_id);
   }  
 
   function changeUserData(data, value){
@@ -116,9 +118,11 @@ export default function ProfilePage(props){
     setUser(userInfo);
 
     if( userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ){
-      updateUser(this_module, city, 'ODk4NzkzNDAzOTEtXy0xNzYyMg');
+      updateUser(this_module, city, session.data?.user_id);
     }
   }
+
+  const host = window.location.origin;
 
   return (
     <Meta title={page.title} description={''}>
@@ -310,6 +314,11 @@ export default function ProfilePage(props){
               
               </TableBody>
             </Table>
+          </Grid>
+
+          <Grid item xs={12} className="log_out">
+            <span>Удалить аккаунт</span>
+            <span onClick={ () => { signOut({callbackUrl: `${host}/${city}/`}) } }>Выйти</span>
           </Grid>
 
         </Grid>

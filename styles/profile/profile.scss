@@ -290,4 +290,29 @@
             height: 4.3vw;
         }
     }
+
+    & .log_out{
+        padding-top: 5.1445vw;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        & span{
+            @include font30_400();
+            cursor: pointer;
+        }
+        & span:first-child{
+            text-decoration-line: underline;
+            color: $colorMain;
+        }
+        & span:last-child{
+            color: $colorMain;
+            border: 1px solid $colorMain;
+            border-radius: 40px;
+            width: 14.3685vw;
+            height: 2.816vw;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+        }
+    }
 }

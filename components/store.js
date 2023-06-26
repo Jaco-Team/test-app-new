@@ -437,14 +437,14 @@ export const useProfileStore = create((set, get) => ({
     let json = await api(this_module, data);
 
     set({
-      orderList: json.order_list,
+      orderList: json?.order_list,
     });
   },
-  getUserInfo: async (this_module, city, userToken) => {
+  getUserInfo: async (this_module, city, userID) => {
     let data = {
       type: 'get_my_info',
       city_id: city,
-      user_id: userToken,
+      user_id: userID,
     };
 
     let json = await api(this_module, data);

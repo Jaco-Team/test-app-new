@@ -126,6 +126,12 @@ export default function NavBarPC({ city, cityRu, active_page }) {
     }
   }
 
+  if( typeof window !== 'undefined' ){
+    if( !localStorage.getItem('setCity') ){
+      setActiveModalCity(true)
+    }
+  }
+
   return (
     <>
       <AppBar position="fixed" className="headerNew" id="headerNew" elevation={2} sx={{ display: { xs: 'none', md: 'block' } }} onClick={closeBasket}>
@@ -135,7 +141,7 @@ export default function NavBarPC({ city, cityRu, active_page }) {
             <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true}/>
           </Link>
 
-          <div style={{width: '7%', minWidth: 'max-content'}} onClick={() => setActiveModalCity(true)}>
+          <div style={{width: '7%', minWidth: 'max-content', display: 'none'}} onClick={() => setActiveModalCity(true)}>
             <span className='headerCat'>{cityRu}</span>
           </div>
 
@@ -168,7 +174,7 @@ export default function NavBarPC({ city, cityRu, active_page }) {
             )
           }
 
-          <div style={{ width: '7%' }} />
+          <div style={{ width: '14%' }} />
 
           <div style={{ width: '2.5%' }} className={active_page === 'other' ? 'headerCat activeCat' : 'headerCat'} onClick={ (event) => openMenuBurger(event) }>
             <BurgerIcon style={{ width: '2vw', height: '2vw' }}/>

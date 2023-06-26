@@ -1,3 +1,5 @@
+import React, { useEffect } from 'react';
+
 import { shallow } from 'zustand/shallow';
 import { useHeaderStore, useCitiesStore } from '@/components/store';
 
@@ -10,16 +12,24 @@ import Backdrop from '@mui/material/Backdrop';
 import InputAdornment from '@mui/material/InputAdornment';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { signIn } from 'next-auth/react';
+import { useSession, signIn } from 'next-auth/react';
 
 export default function StartTestAuth() {
-  console.log('render StartTestAuth');
+  const session = useSession();
 
   const [closeModalAuth, logIn, errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, showPassword, clickShowPassword, loading] = useHeaderStore(
     (state) => [state.closeModalAuth, state.logIn, state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin,
       state.checkLoginKey, state.showPassword, state.clickShowPassword, state.loading], shallow);
 
   const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
+
+  const host = window.location.origin;
+
+  useEffect(() => {
+    if( session?.status == "authenticated" ){
+      closeModalAuth();
+    }
+  }, [session]);
 
   return (
     <>
@@ -71,7 +81,8 @@ export default function StartTestAuth() {
         
         <div 
           className="loginLogin"
-          onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? logIn : null}
+          //onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? logIn : null}
+          onClick={ () => signIn('credentials', { redirect: false, password: pwdLogin, login: loginLogin, callbackUrl: `${host}/${thisCity}/zakazy` }) }
           style={{ backgroundColor: loginLogin.length === 11 && pwdLogin.length > 1 ? '#DD1A32' : 'rgba(0, 0, 0, 0.2)' }}
         >
           <Typography component="span">Войти</Typography>
@@ -83,12 +94,12 @@ export default function StartTestAuth() {
 
         <div 
           className="loginLoginYa"
-          // onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? logIn : null}
+          // onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? logIn : null} 
         >
           <Typography component="span">Войти с</Typography>
-          <GoogleIcon onClick={() =>  signIn("google", { callbackUrl: `http://localhost:3008/${thisCity}/zakazy` })}/> 
-          <VKIconButton onClick={() =>  signIn("vk", { callbackUrl: `http://localhost:3008/${thisCity}/zakazy` })}/> 
-          <YaIcon onClick={() =>  signIn("yandex", { callbackUrl: `http://localhost:3008/${thisCity}/zakazy`, scope: 'default_phone', response_type: 'code' })}/>
+          <GoogleIcon onClick={() =>  signIn("google", { callbackUrl: `${host}/${thisCity}/zakazy` })}/> 
+          <VKIconButton onClick={() =>  signIn("vk", { callbackUrl: `${host}/${thisCity}/zakazy` })}/> 
+          <YaIcon onClick={() =>  signIn("yandex", { callbackUrl: `${host}/${thisCity}/zakazy`, scope: 'default_phone', response_type: 'code' })}/>
         </div>
 
         <div className="loginCreate" onClick={() => navigate('create')}>

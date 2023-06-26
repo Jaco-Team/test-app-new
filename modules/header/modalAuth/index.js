@@ -22,14 +22,12 @@ import { roboto } from '@/ui/Font';
 
 export default function ModalAuth() {
 
-  console.log('render ModalAuth');
-
   const [openAuthModal, closeModalAuth, typeLogin] = useHeaderStore( state => [state.openAuthModal, state.closeModalAuth, state.typeLogin], shallow );
 
   return (
     <Dialog
       onClose={closeModalAuth}
-      className={'modalOpenCity ' + roboto.variable}
+      className={'modalOpenCityPC ' + roboto.variable}
       open={openAuthModal}
       BackdropComponent={Backdrop}
       BackdropProps={{timeout: 500}}
