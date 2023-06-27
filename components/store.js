@@ -1,5 +1,10 @@
 import { create } from 'zustand';
 
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
+
+var isoWeek = require('dayjs/plugin/isoWeek')
+
 import { api } from './api.js';
 
 export const useCartStore = create((set, get) => ({
@@ -8,11 +13,28 @@ export const useCartStore = create((set, get) => ({
   itemsCount: 0,
   allPrice: 0,
 
-  // все товары сайта
+  promoInfo: null,
+  checkPromo: null,
+  free_drive: 0,
+  itemsPromo: [],
+
+  //0 - доставка / 1 - самовывоз
+  typeOrder: 0,
+
+  //0 - обычный / 1 - пред
+  byTime: 0,
+  datePreOrder: '',
+  timePreOrder: '',
+
+  //адрес доставки
+  orderAddr: null,
+
+  //точка самовывоза
+  orderPic: 0,
+
   setAllItems: (allItems) => {
     set({ allItems })
   },
-  // добаление товара при выборе в карточке товара, модалке товара и корзине
   plus: (item_id) => {
     let check = false;
     let items = get().items;
@@ -38,14 +60,10 @@ export const useCartStore = create((set, get) => ({
       }
     }
 
-    //console.log('plus====>', items);
-
     const allPrice = items.reduce((all, it) => all + it.count * it.price, 0);
 
     set({ items, itemsCount, allPrice });
-
   },
-  // удаление товара из карточки товара, модалки товара и корзины
   minus: (item_id) => {
     let items = get().items;
     let itemsCount = get().itemsCount;
@@ -58,12 +76,492 @@ export const useCartStore = create((set, get) => ({
       return item.count ? newItems = [...newItems,...[item]] : newItems;
     }, [])
   
-    // console.log('minus====>', items);
-
     const allPrice = items.reduce((all, it) => all + it.count * it.price, 0);
 
     set({ items, itemsCount, allPrice });
   },
+
+  getInfoPromo: async (promoName, city) => {
+
+    if( promoName.length == 0 ){
+      set({
+        promoInfo: null,
+        checkPromo: null
+      })
+  
+      localStorage.removeItem('promo_name')
+    }else{
+      const data = {
+        type: 'get_promo',
+        city_id: city,
+        promo_name: promoName
+      };
+  
+      const json = await api('cart', data);
+  
+      console.log( json )
+  
+      set({
+        promoInfo: json
+      })
+  
+      localStorage.setItem('promo_name', promoName)
+
+      let res = get().promoCheck();
+
+      set({
+        checkPromo: res
+      })
+      console.log( 'res promo', res )
+    }
+
+    
+
+    /*fetch(config.urlApi, {
+      method: 'POST',
+      headers: {
+          'Content-Type':'application/x-www-form-urlencoded'},
+      body: queryString.stringify({
+          type: 'get_promo_web', 
+          city_id: itemsStore.getCity(),
+          promo_name: promoName
+      })
+    }).then(res => res.json()).then(json => {
+      itemsStore.setPromo( JSON.stringify(json), promoName );
+      let check_promo = itemsStore.checkPromo();
+              
+      //if( check_promo.st === false ){
+        //localStorage.removeItem('promo_name')
+      //}
+      
+      if( promoName.length == 0 ){
+        this.setPromoStatus('', null);
+      }else{
+        if( check_promo ){
+          this.setPromoStatus(check_promo.text, check_promo.st);
+        }else{
+          this.setPromoStatus('', null);
+        }
+      }
+    })*/
+  },
+  promoCheck(){
+    set({
+      free_drive: 0,
+      itemsPromo: []
+    })
+    
+    let tmp = 0,
+        allPrice = 0;
+        
+    let promo_info = get().promoInfo;
+    let my_cart = get().items;  
+    let allItems = get().allItems;
+      
+    tmp = 0;
+    allPrice = 0;
+    
+    if( allItems.length == 0 || !allItems ){
+      return ; 
+    }
+
+    let new_my_cart = [];
+      
+    my_cart.forEach( (el_cart, key_cart) => {
+      new_my_cart.push({
+        name: el_cart.name,
+        item_id: el_cart.item_id,
+        count: el_cart.count,
+        one_price: el_cart.one_price,
+        all_price: parseInt(el_cart.one_price) * parseInt(el_cart.count)
+      });
+    })
+    
+    my_cart = new_my_cart;  
+      
+    set({
+      items: my_cart
+    })
+      
+    let cart_new_promo = [];    
+    allPrice = my_cart.reduce( (sum, item) => sum + parseInt(item['all_price']), tmp );
+    
+    setTimeout( () => {
+      set({
+        allPrice: allPrice
+      })
+    }, 100 )
+
+    let type_order = 0,
+        point_id_dev = 0,
+        point_id_pic = 0;
+    
+    type_order = parseInt( get().typeOrder );
+    point_id_dev = get().orderAddr ? parseInt( get().orderAddr.point_id ) : 0;
+    point_id_pic = parseInt( get().orderPic );
+    
+    let this_date = '',
+        this_time = '',
+        this_dow = '';
+    
+    dayjs.extend(isoWeek)
+    
+    if( parseInt( get().byTime ) == 0 ){
+      this_date = dayjs(new Date()).format("YYYY-MM-DD");
+      this_time = dayjs(new Date()).format("HH:mm");
+      this_dow = dayjs(new Date()).isoWeekday();
+    }else{
+      this_date = dayjs( get().datePreOrder ).format("YYYY-MM-DD");
+      this_time = dayjs( get().timePreOrder ).format("HH:mm");
+      this_dow = parseInt( dayjs( get().datePreOrder ).isoWeekday() );
+    }
+
+    console.log( 'this_date', this_date )
+    console.log( 'this_time', this_time )
+    console.log( 'this_dow', this_dow )
+
+    
+
+    if( promo_info ){
+      if( promo_info.status_promo === false ){
+        return {
+          st: false,
+          text: 'Данный промокод не найден или уже активирован'
+        }
+      }
+      
+      if( promo_info.limits.date.min && promo_info.limits.date.max ){
+        if( this_date >= promo_info.limits.date.min && this_date <= promo_info.limits.date.max ){
+          
+        }else{
+          return {
+            st: false,
+            text: promo_info.promo_text.false
+          }
+        }
+      }
+      
+      if( promo_info.limits.time.min != 0 && promo_info.limits.time.max != 0 ){
+        if( this_time >= promo_info.limits.time.min && this_time <= promo_info.limits.time.max ){
+          
+        }else{
+          return {
+            st: false,
+            text: promo_info.promo_text.false
+          }
+        }
+      }
+      
+      if( promo_info.limits.point_id != 0 ){
+        if( (type_order == 0 && point_id_dev == promo_info.limits.point_id) || (type_order == 1 && point_id_pic == promo_info.limits.point_id) ){
+          
+        }else{
+          return {
+            st: false,
+            text: 'По данному адресу промокод не работает'
+          }
+        }
+      }
+      
+      if( promo_info.limits.summ.min != 0 || promo_info.limits.summ.max != 0 ){
+        if( allPrice >= promo_info.limits.summ.min && (promo_info.limits.summ.max >= allPrice || promo_info.limits.summ.max == 0) ){
+          
+        }else{
+          if( allPrice < promo_info.limits.summ.min ){
+            return {
+              st: false,
+              text: 'Суммы заказа не достаточно для активации промокода'
+            }
+          }
+
+          if( allPrice > promo_info.limits.summ.max ){
+            return {
+              st: false,
+              text: 'Сумма заказа больше, чем лимит промокода'
+            }
+          }
+        }
+      }
+      
+      if( promo_info.limits.dows ){
+        if( parseInt(promo_info.limits.dows[ this_dow ]) == 0 ){
+          return {
+            st: false,
+            text: 'Промокод не действует в этот день недели'
+          }
+        }
+      }
+      
+      if( promo_info.limits.type_order ){
+        if( 
+          parseInt( promo_info.limits.type_order ) == 1
+            || 
+          (parseInt( promo_info.limits.type_order ) == 3 && type_order == 0)  
+            || 
+          (parseInt( promo_info.limits.type_order ) == 2 && type_order == 1) ){
+          
+        }else{
+          if( parseInt( promo_info.limits.type_order ) == 1 ){
+            return {
+              st: false,
+              text: 'Промокод действует только на доставку'
+            }
+          }
+
+          if( parseInt( promo_info.limits.type_order ) == 2 ){
+            return {
+              st: false,
+              text: 'Промокод действует только на самовывоз'
+            }
+          }
+
+          if( parseInt( promo_info.limits.type_order ) == 3 ){
+            return {
+              st: false,
+              text: 'Промокод действует только в кафе'
+            }
+          }
+        }
+      }
+      
+      if( promo_info.limits.only_kassa ){
+        if( parseInt( promo_info.limits.only_kassa ) == 1 ){
+          return {
+            st: false,
+            text: 'Промокод действует только в кафе'
+          }
+        }
+      }
+      
+      if( promo_info.limits.items.length > 0 ){
+        let check = 0;
+        let this_item = null;
+        
+        promo_info.limits.items.map((need_item)=>{
+          this_item = new_my_cart.find( (item) => item.item_id == need_item );
+          
+          if( this_item ){
+            check ++;
+          }
+        })
+        
+        if( promo_info.limits.items.length != check ){
+          return {
+            st: false,
+            text: promo_info.promo_text.false
+          }
+        }
+      }
+      
+      set({
+        free_drive: parseInt(promo_info.limits.free_drive)
+      })
+
+      let all_price = 0,
+          count_sale = 0,
+          this_item = null;
+      
+      //скидка
+      if( parseInt(promo_info.promo_action) == 1 ){
+        //товары
+        if( parseInt(promo_info.sale.cat_sale) == 1 ){
+          count_sale = parseInt(promo_info.sale.count_sale);
+          
+          my_cart.forEach( (el_cart, key_cart) => {
+            this_item = allItems.find( (item) => item.id == el_cart.item_id );
+            
+            if( parseInt(this_item.type) != 3 && parseInt(this_item.type) != 4 ){
+              promo_info.sale.sale_action.forEach( (el_promo) => {
+                if( parseInt(el_cart.item_id) == parseInt(el_promo) ){
+                  
+                  if( parseInt(promo_info.sale.type_price) == 1 ){
+                    //рубли  
+                    
+                    if( count_sale > 0 ){
+                      all_price = (parseInt(el_cart.one_price) * parseInt(el_cart.count)) - parseInt(count_sale);
+                      
+                      if( all_price <= 0 ){
+                        all_price = 1;
+                      }
+                      
+                      count_sale -= (parseInt(el_cart.one_price) * parseInt(el_cart.count));
+                      
+                      my_cart[ key_cart ].new_one_price = parseInt(el_cart.one_price)
+                      my_cart[ key_cart ].all_price = all_price;
+                    }
+                  }else{
+                    //проценты  
+                    
+                    all_price = parseInt(el_cart.all_price) - ((parseInt(el_cart.all_price) / 100) * parseInt(count_sale));
+                    
+                    my_cart[ key_cart ].new_one_price = parseInt(el_cart.one_price)
+                    my_cart[ key_cart ].all_price = parseInt(all_price);
+                  }
+                }
+              })
+            }
+          })
+        }
+        
+        //категории
+        if( parseInt(promo_info.sale.cat_sale) == 2 ){
+          count_sale = parseInt(promo_info.sale.count_sale);
+          
+          my_cart.forEach( (el_cart, key_cart) => {
+            this_item = allItems.find( (item) => item.id == el_cart.item_id );
+            
+            if( parseInt(this_item.type) != 3 && parseInt(this_item.type) != 4 ){
+              promo_info.sale.sale_action.forEach( (el_promo) => {
+                if( parseInt(this_item.cat_id) == parseInt(el_promo) ){
+                  
+                  if( parseInt(promo_info.sale.type_price) == 1 ){
+                    //рубли  
+                    
+                    if( count_sale > 0 ){
+                      all_price = (parseInt(el_cart.one_price) * parseInt(el_cart.count)) - parseInt(count_sale);
+                      
+                      if( all_price <= 0 ){
+                        all_price = 1;
+                      }
+                      
+                      count_sale -= (parseInt(el_cart.one_price) * parseInt(el_cart.count));
+                      
+                      my_cart[ key_cart ].new_one_price = parseInt(el_cart.one_price)
+                      my_cart[ key_cart ].all_price = all_price;
+                    }
+                  }else{
+                    //проценты  
+
+                    all_price = parseInt(el_cart.all_price) - ((parseInt(el_cart.all_price) / 100) * parseInt(count_sale));
+                    
+                    my_cart[ key_cart ].new_one_price = parseInt(el_cart.one_price)
+                    my_cart[ key_cart ].all_price = parseInt(all_price);
+                  }
+                }
+              })
+            }
+          })
+        }
+        
+        //все кроме допов и напитков
+        if( parseInt(promo_info.sale.cat_sale) == 3 ){
+          count_sale = parseInt(promo_info.sale.count_sale);
+          
+          my_cart.forEach( (el_cart, key_cart) => {
+            this_item = allItems.find( (item) => item.id == el_cart.item_id );
+            
+            if( parseInt(this_item.type) != 3 && parseInt(this_item.type) != 4 ){
+              if( parseInt(promo_info.sale.type_price) == 1 ){
+                //рубли  
+                
+                if( count_sale > 0 ){
+                  all_price = (parseInt(el_cart.one_price) * parseInt(el_cart.count)) - parseInt(count_sale);
+                  
+                  if( all_price <= 0 ){
+                    all_price = 1;
+                  }
+                  
+                  count_sale -= (parseInt(el_cart.one_price) * parseInt(el_cart.count));
+                  
+                  my_cart[ key_cart ].new_one_price = parseInt(el_cart.one_price)
+                  my_cart[ key_cart ].all_price = all_price;
+                }
+              }else{
+                //проценты  
+
+                all_price = parseInt(el_cart.all_price) - ((parseInt(el_cart.all_price) / 100) * parseInt(count_sale));
+                
+                my_cart[ key_cart ].new_one_price = parseInt(el_cart.one_price)
+                my_cart[ key_cart ].all_price = parseInt(all_price);
+              }
+            }
+          })
+        }
+        
+        tmp = 0;
+        allPrice = 0;
+        
+        allPrice = my_cart.reduce( (sum, item) => sum + item['all_price'], tmp );
+        
+        set({
+          allPrice: allPrice,
+          items: my_cart
+        })
+
+        return {
+          st: true,
+          text: promo_info.promo_text.true
+        }
+      }
+      
+      //добавление товара
+      if( parseInt(promo_info.promo_action) == 2 ){
+        promo_info.items_add.forEach((el) => {
+          this_item = allItems.find( (item) => item.id == el.item_id );
+          
+          cart_new_promo.push({
+            item_id: el.item_id,
+            count: el.count,
+            one_price: this_item['price'],
+            all_price: el.price,
+            name: this_item['name'],
+          });
+        });
+        
+        tmp = 0;
+        allPrice = 0;
+        
+        allPrice = my_cart.reduce( (sum, item) => sum + parseInt(item['all_price']), tmp );
+        
+        tmp = 0;
+        
+        allPrice += cart_new_promo.reduce( (sum, item) => sum + parseInt(item['all_price']), tmp );
+        
+        set({
+          itemsPromo: cart_new_promo,
+          allPrice: allPrice
+        })
+      }
+      
+      //товар за цену
+      if( parseInt(promo_info.promo_action) == 3 ){
+        if( promo_info.items_on_price.length > 0 ){
+          my_cart.forEach( (el_cart, key_cart) => {
+            promo_info.items_on_price.forEach( (el_promo) => {
+              if( parseInt(el_cart.item_id) == parseInt(el_promo.id) ){
+                my_cart[ key_cart ].new_one_price = parseInt(el_promo.price)
+                my_cart[ key_cart ].all_price = parseInt(el_promo.price) * parseInt(el_cart.count)
+              }
+            });
+          });
+          
+          tmp = 0;
+          allPrice = 0;
+          
+          allPrice = my_cart.reduce( (sum, item) => sum + parseInt(item['all_price']), tmp );
+          
+          set({
+            allPrice: allPrice
+          })
+        }
+      }
+      
+      set({
+        items: my_cart
+      })
+      
+      return {
+        st: true,
+        text: promo_info.promo_text.true
+      }
+    }else{
+      return {
+        st: false,
+        text: promo_info.promo_text.false,
+        test: promo_info
+      }
+    }
+  }
 }))
 
 export const useContactStore = create((set, get) => ({

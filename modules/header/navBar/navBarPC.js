@@ -17,7 +17,7 @@ import {BurgerIcon, MapPointIcon } from '@/ui/Icons.js';
 
 import { Link as ScrollLink } from 'react-scroll';
 
-import { useHeaderStore } from '@/components/store.js';
+import { useHeaderStore, useCartStore } from '@/components/store.js';
 import useScroll from '../hook.js';
 
 import BasketIconHeaderPC from '../basket/basketIconHeaderPC.js';
@@ -70,11 +70,10 @@ const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, c
 })
 
 export default function NavBarPC({ city, cityRu, active_page }) {
-  console.log('NavBarPC render');
-
   useScroll();
   
   const [setActiveModalCity, setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveModalCity, state.setActiveBasket, state.openBasket], shallow);
+  const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ], shallow )
 
   if (city == '') return null;
 
@@ -129,6 +128,10 @@ export default function NavBarPC({ city, cityRu, active_page }) {
   if( typeof window !== 'undefined' ){
     if( !localStorage.getItem('setCity') ){
       setActiveModalCity(true)
+    }
+
+    if( localStorage.getItem('promo_name') ){
+      getInfoPromo(localStorage.getItem('promo_name'), city)
     }
   }
 

@@ -1,6 +1,7 @@
+import React, { useState, useEffect } from 'react';
 import { shallow } from 'zustand/shallow';
 
-import { useHeaderStore } from '@/components/store.js';
+import { useHeaderStore, useCartStore, useCitiesStore } from '@/components/store.js';
 
 import TablePC from './tablePC';
 
@@ -17,10 +18,21 @@ import ButtonGroup from '@mui/material/ButtonGroup';
 // import Typography from '@mui/material/Typography';
 
 export default function BasketPC() {
-  console.log('render BasketPC');
+  
+  const [ promo, setPromo ] = useState( '' );
+
+  useEffect( () => {
+    if( localStorage.getItem('promo_name') && localStorage.getItem('promo_name').length > 0 ){
+      setPromo( localStorage.getItem('promo_name') )
+    }
+  }, [] )
+
   // countCart  cartItems  promoST  originPrice allPrice promoName promoText - переменные
 
   // handleClick handleClose add minus checkPromo checkPromoKey - функции
+
+  const [ thisCity ] = useCitiesStore( state => [ state.thisCity ], shallow )
+  const [ getInfoPromo, checkPromo ] = useCartStore( state => [ state.getInfoPromo, state.checkPromo ], shallow )
 
   const [openBasket, setActiveBasket, targetBasket] = useHeaderStore((state) => [state.openBasket, state.setActiveBasket, state.targetBasket], shallow);
 
@@ -43,15 +55,15 @@ export default function BasketPC() {
             <MyTextInput
               className="SpacePromo"
               placeholder="Есть промокод"
-              value=""
+              value={promo}
               label=""
-              func={ () => {} }
+              onBlur={ () => getInfoPromo(promo, thisCity) }
+              func={ event => { setPromo(event.target.value) } }
             />
-            
+          </div>
 
-            {/* {originPrice != allPrice && promoST === true ? <div className="DescPromoPrice">{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</div> : null}
-
-            {promoText.length > 0 && promoST === false ? <div className="DescPromo"><Typography className="cat" variant="h5" component="span">{promoText}</Typography></div> : null} */}
+          <div className="DescPromo">
+            <span>{ checkPromo?.text }</span>
           </div>
 
           <div className="InCart">

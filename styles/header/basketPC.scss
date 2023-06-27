@@ -31,6 +31,15 @@
       border-width: 2px;
     }
   }
+  & .DescPromo{
+    padding-top: 2.888vw;
+    align-items: center;
+    display: flex;
+    padding-left: 0.4vw;
+    & span{
+      @include font40_400();
+    }
+  }
 
   & .InCart {
     width: 100%;

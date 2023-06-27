@@ -85,10 +85,6 @@ export const authConfig = {
     
     async session({ session, user, token }) {
 
-      console.log( 'token', token )
-      console.log( 'user', user )
-      console.log( 'session', session )
-
       session.user.token = token?.user?.token ?? token.sub;
 
       return session;
