@@ -81,8 +81,8 @@ export default function ProfilePage(props){
   const [ getUserInfo, setUser, userInfo, streets, shortName, updateUser ] = useProfileStore( state => [ state.getUserInfo, state.setUser, state.userInfo, state.streets, state.shortName, state.updateUser ] );
 
   useEffect(() => {
-    if( session.data?.user?.user_id ){
-      getUserInfo(this_module, city, session.data?.user?.user_id);
+    if( session.data?.user?.token ){
+      getUserInfo(this_module, city, session.data?.user?.token);
     }
   }, [session]);
 

@@ -21,8 +21,8 @@ export default function ContactsPage(props){
   const session = useSession();
 
   useEffect(() => {
-    if( session.data?.user?.user_id ){
-      getPromoList(this_module, city, session.data?.user?.user_id);
+    if( session.data?.user?.token ){
+      getPromoList(this_module, city, session.data?.user?.token);
     }
   }, [session]);
 

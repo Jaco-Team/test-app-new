@@ -45,7 +45,7 @@ export const authConfig = {
 
         if( json.st === true ){
           return {
-            id: json.id,
+            id: json.token,
             name: json.name,
             email: "",
             image: "",
@@ -75,7 +75,7 @@ export const authConfig = {
     
         const json = await api('auth', data);
 
-        profile.user_id = json?.id;
+        profile.token = json?.token;
 
         return json.st;
       }
@@ -85,7 +85,11 @@ export const authConfig = {
     
     async session({ session, user, token }) {
 
-      session.user.user_id = token?.user?.user_id ?? token.sub;
+      console.log( 'token', token )
+      console.log( 'user', user )
+      console.log( 'session', session )
+
+      session.user.token = token?.user?.token ?? token.sub;
 
       return session;
     },

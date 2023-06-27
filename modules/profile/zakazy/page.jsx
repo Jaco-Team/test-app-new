@@ -21,10 +21,12 @@ export default function ContactsPage(props){
   const session = useSession();
 
   useEffect(() => {
-    if( session.data?.user?.user_id ){
-      getOrderList(this_module, city, session.data?.user?.user_id);
+    if( session.data?.user?.token ){
+      getOrderList(this_module, city, session.data?.user?.token);
     }
   }, [session]);
+
+  console.log( 'session', session )
 
   return (
     <Meta title={page.title} description={''}>
