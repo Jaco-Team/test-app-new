@@ -122,7 +122,11 @@ export default function ProfilePage(props){
     }
   }
 
-  const host = window.location.origin;
+  let host = '';
+
+  if (typeof window !== "undefined") {
+    host = window.location.origin;
+  }
 
   return (
     <Meta title={page.title} description={''}>
