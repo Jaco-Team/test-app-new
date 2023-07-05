@@ -85,20 +85,24 @@ export default function ContactsPage(props) {
 
   const [getData, myAddr, phone, disablePointsZone, disable, chooseAddr] = useContactStore((state) => [state.getData, state.myAddr, state.phone, state.disablePointsZone, state.disable, state.chooseAddr], shallow);
 
-  const [activePage] = useHeaderStore((state) => [state.activePage], shallow);
+  const [activePage, setActiveModalCity] = useHeaderStore((state) => [state.activePage, state.setActiveModalCity], shallow);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
   const open = Boolean(anchorEl);
 
-  const openMenu = (event) => setAnchorEl(event.currentTarget);
+  const openMenu = (event) => {
 
-  const chooseCity = (id) => {
-    const city = thisCityList.find((city) => city.id === id);
+    setActiveModalCity(true); // временно, чтобы открыть модалку города
+
+    // setAnchorEl(event.currentTarget); // временно, чтобы открыть модалку города
+  }
+
+  const chooseCity = (city) => {
+    setThisCityRu(city.name)
 
     setAnchorEl(null);
 
-    setThisCityRu(city.name)
     getData(activePage, city.link);
   };
 
@@ -115,7 +119,7 @@ export default function ContactsPage(props) {
           <Menu id='chooseCityContact' anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
             {thisCityList.map((city, key) => (
               <MenuItem key={key}>
-                <Link href={`/${city.link}/${activePage}`} onClick={() => chooseCity(city.id)}>{city.name}</Link>
+                <Link href={`/${city.link}/${activePage}`} onClick={() => chooseCity(city)}>{city.name}</Link>
               </MenuItem>
             ))}
           </Menu>

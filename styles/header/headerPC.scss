@@ -1,64 +1,182 @@
 @import '../settings';
 
 html:not([data-scroll='0']) .blockShadow {
-  //box-shadow: 0px 3px 1px -2px rgba(0,0,0,0.2), 0px 2px 2px 0px rgba(0,0,0,0.14), 0px 1px 5px 0px rgba(0,0,0,0.12);
-
   width: 100%;
-  height: 50px;
+  height: 2.8880866425993vw;
   position: fixed;
-  top: 8.6643vw;
-  background: linear-gradient(
-    180deg,
-    rgba(115, 115, 115, 0.1) 0%,
-    rgba(83, 92, 84, 0) 100%
-  );
+  top: 8.6642599277978vw;
+  background: linear-gradient(180deg,rgba(115, 115, 115, 0.1) 0%, rgba(83, 92, 84, 0) 100%);
   mix-blend-mode: multiply;
   transition: all 0.5s ease 0s;
   z-index: 2;
-  //z-index: -1;
 }
 
 .blockShadow {
   width: 100%;
-  height: 0px;
+  height: 0;
   position: fixed;
-  top: 135px;
-  background: linear-gradient(
-    180deg,
-    rgba(115, 115, 115, 0.1) 0%,
-    rgba(83, 92, 84, 0) 100%
-  );
+  top: 4.8736462093863vw;
+  background: linear-gradient(180deg,rgba(115, 115, 115, 0.1) 0%, rgba(83, 92, 84, 0) 100%);
   mix-blend-mode: multiply;
   transition: all 0.1s ease 0s;
 }
 
 .headerNew {
+  position: fixed;
   z-index: 1200 !important;
   background-color: #fff !important;
-
+  height: 8.6642599277978vw;
   box-shadow: none !important;
 
   & a {
     text-decoration: none;
   }
-  & img {
-    width: 15vw;
-    height: auto;
-  }
-  & > div {
-    padding: 0px !important;
-    margin: 0px !important;
 
-    @media (min-width: 0px) {
-      height: 100px;
-      min-height: 8.6643vw;
+  & > div {
+    padding: 0 !important;
+    margin: 2.1660649819495vw 4.5126353790614vw 2.1660649819495vw 5.2346570397112vw;
+    display: flex;
+    align-items: center;
+
+    & .logoHeaderPC {
+      width: 18.050541516245vw;
+      height: 4.3321299638989vw;
+      margin-right: 0.72202166064982vw;
+
+      & img {
+        width: 100%;
+        height: auto;
+      }
+    }
+
+    & .headerCat {
+      width: 5.7761732851986vw;
+      height: 1.4440433212996vw;
+      margin-right: 1.4440433212996vw;
+      display: flex;
+      align-items: center;
+      justify-content: flex-start;
+
+      & span {
+        @include font40_400();
+        cursor: pointer;
+        white-space: nowrap;
+        display: flex;
+        text-align: center;
+
+        & svg {
+          width: 0.57761732851986vw;
+          height: 0.28880866425993vw;
+          margin-top: 0.72202166064982vw;
+          margin-left: 0.18050541516245vw;
+        }
+
+        &:hover {
+          color: #dd1a32;
+          & svg path {
+            stroke: #dd1a32;
+            stroke-opacity: 1;
+          }
+        }
+      }
+    }
+
+    & .burgerHeaderPC {
+      width: 2.1660649819495vw;
+      height: 1.0830324909747vw;
+      display: flex;
+      align-items: center;
+      margin-right: 2.1660649819495vw;
+
+      & svg {
+        width: 100%;
+        height: 100%;
+      }
+
+      &:hover {
+        & svg path {
+          stroke: #dd1a32;
+          stroke-opacity: 1;
+        }
+      }
+    }
+
+    & .mapHeaderPC {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      width: 8.7003610108303vw;
+      height: 1.913357400722vw;
+      margin-right: 2.8519855595668vw;
+
+      & svg {
+        width: 1.4440433212996vw;
+        height: 1.913357400722vw;
+      }
+
+      & p {
+        @include font30_400();
+      }
+
+      &:hover {
+        & svg path:first-child {
+          fill: #dd1a32;
+          fill-opacity: 1;
+        }
+        & p {
+          color: #dd1a32;
+        }
+      }
+    }
+
+    & .profileHeaderPC {
+      width: 2.8880866425993vw;
+      height: 2.8880866425993vw;
+      margin-right: 1.4440433212996vw;
+
+      & svg {
+        width: 100%;
+        height: 100%;
+
+        &:hover {
+          & path {
+            stroke: #dd1a32;
+            stroke-opacity: 1;
+          }
+
+          & g {
+            & g:nth-of-type(2) {
+              fill: #dd1a32;
+              fill-opacity: 1;
+            }
+          }
+        }
+      }
+    }
+
+    & .activeProfileCat {
+      width: 2.8880866425993vw;
+      height: 2.8880866425993vw;
+      border-radius: 2.8880866425993vw;
+      background: #6fbef8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: 1.4440433212996vw;
+
+      & a {
+        & span {
+          @include font30_400();
+          color: #ffffff;
+        }
+      }
     }
 
     & .basketCat {
-      width: 6.203vw;
+      width: 5.7761732851986vw;
       background-color: #dd1a32;
-      border-radius: 1.62455vw;
-      height: 2.8886vw;
+      border-radius: 1.6245487364621vw;
+      height: 2.8880866425993vw;
       display: flex;
       align-items: center;
       cursor: pointer;
@@ -66,104 +184,79 @@ html:not([data-scroll='0']) .blockShadow {
       & span {
         @include font30_400();
         color: #ffffff;
-        height: 1.444045vw;
-        width: 0.72204vw;
-        display: flex;
-        align-items: center;
-        justify-content: center;
+        width: 1.2635379061372vw;
+        text-align: center;
       }
 
       & svg {
-        width: 1.444045vw;
-        height: 1.444045vw;
+        width: 1.4440433212996vw;
+        height: 1.0830324909747vw;
       }
     }
 
-    & .headerCat {
-      @include font40_400();
-      border-radius: 15px;
-      width: 100%;
-      height: 60px;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      cursor: pointer;
-      white-space: nowrap;
-      &:hover {
-        color: $colorMain;
-        & p {
-          color: $colorMain;
-        }
-        & svg.MapPointIcon path:first-child {
-          fill: $colorMain;
-          fill-opacity: 1;
-        }
-        & svg:not(.MapPointIcon) path {
-          fill: $colorMain;
-          fill-opacity: 1;
-        }
-        & svg.BurgerIcon path {
-          stroke: $colorMain;
+    & .activeCat {
+      & span {
+        color: #dd1a32;
+        & svg path {
+          stroke: #dd1a32;
+          stroke-opacity: 1;
         }
       }
+    }
 
+    & .activeCatSvg {
+      & svg path {
+        stroke: #dd1a32;
+        stroke-opacity: 1;
+      }
+    }
+
+    & .activeCatMap {
+      & svg path:first-child {
+        fill: #dd1a32;
+        fill-opacity: 1;
+      }
       & p {
-        @include font40_400();
-        padding-left: 10px;
-      }
-
-      & .activeProfileCat {
-        width: 2.8886vw;
-        height: 2.8886vw;
-        border-radius: 1.62455vw;
-        background: #6FBEF8; 
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        
-        & span {
-          @include font30_400();
-          color: #FFFFFF;
-        }
+        color: #dd1a32;
       }
     }
   }
 }
 
-#chooseHeaderCat,
-#chooseHeaderDoc {
+#chooseHeaderCat {
   & div.MuiPaper-root.MuiMenu-paper {
-    border-radius: 10px;
-    width: 12%;
+    border-radius: 0.72202166064982vw;
+    width: 14.440433212996vw;
     background: #ececec;
-    box-shadow: 10px 10px 30px 5px rgba(0, 0, 0, 0.2);
+    box-shadow: 0.36101083032491vw 0.72202166064982vw 1.0830324909747vw 0.18050541516245vw rgba(0, 0, 0, 0.2);
+    margin-top: 1.4440433212996vw;
+
     & ul {
-      width: 100%;
       padding: 0;
+
       & li {
-        width: 100%;
+        padding: 0;
+        height: 2.8880866425993vw;
+
         &:hover {
           background-color: #ffffff;
         }
+
         & a {
           width: 100%;
-          min-width: max-content;
+          height: 100%;
           text-decoration: none;
+
           & span {
             width: 100%;
-            display: block;
-            text-align: center;
+            height: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
             @include font30_400();
             &:hover {
-              color: $colorMain;
+              color: #dd1a32;
             }
-          }
-
-          display: block;
-          text-align: center;
-          @include font30_400();
-          &:hover {
-            color: $colorMain;
           }
         }
       }

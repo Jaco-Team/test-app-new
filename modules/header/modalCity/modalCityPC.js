@@ -25,7 +25,6 @@ export default function ModalCityPC() {
   const { push } = useRouter();
 
   const [thisCityList, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu], shallow);
-
   const [openCityModal, setActiveModalCity] = useHeaderStore((state) => [state.openCityModal, state.setActiveModalCity], shallow);
 
   const [anchorEl, setAnchorEl] = useState(null);
@@ -34,19 +33,20 @@ export default function ModalCityPC() {
 
   const openMenu = (event) => setAnchorEl(event.currentTarget);
 
-  const chooseCity = (id) => {
-    
-    const city = thisCityList.find(city => city.id === id);
-    
-    push(`/${city.link}`);
-    
-    setThisCityRu(city.name);
-    
-    setAnchorEl(null);
-    
+  const rightCity = () => {
     setActiveModalCity(false);
-   
-  }
+    const city = thisCityList.find((city) => city.name === thisCityRu);
+    localStorage.setItem('setCity', JSON.stringify(city));
+    push(`/${city.link}`);
+  };
+
+  const chooseCity = (city) => {
+    localStorage.setItem('setCity', JSON.stringify(city));
+    setThisCityRu(city.name);
+    setAnchorEl(null);
+    setActiveModalCity(false);
+    push(`/${city.link}`);
+  };
 
   // thisCityRu = 'Комсомольск-на-Амуре'
 
@@ -77,7 +77,7 @@ export default function ModalCityPC() {
             <Typography component="span">{thisCityRu}</Typography>
           </div>
 
-          <Button className='buttons'  onClick={() => setActiveModalCity(false)}>
+          <Button className='buttons'  onClick={rightCity}>
             <Typography variant="h5" component="span">Да, верно</Typography>
           </Button>
 
@@ -87,7 +87,7 @@ export default function ModalCityPC() {
           </Button>
 
           <Menu id={'chooseCityModal'} className={roboto.variable} anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
-            {thisCityList.map((city, key) => <MenuItem key={key} onClick={() => chooseCity(city.id)}>{city.name}</MenuItem>)}
+            {thisCityList.map((city, key) => <MenuItem key={key} onClick={() => chooseCity(city)}>{city.name}</MenuItem>)}
           </Menu>
         </Box>
       </DialogContent>

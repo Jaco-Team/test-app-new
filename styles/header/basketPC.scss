@@ -1,235 +1,300 @@
 @import '../settings';
 
 #simple-popover {
-  top: 8.6643vw;
-  & .MuiPaper-root.MuiPopover-paper{
-    top: 0!important;
-    max-height: 100%!important;
+  z-index: 1100;
+  margin-top: 8.6642599277978vw;
+
+  & .MuiBackdrop-root.MuiModal-backdrop {
+    background: rgba(0, 0, 0, 0.6);
   }
+
+  & .MuiPaper-root.MuiPopover-paper {
+    top: 0 !important;
+    height: 100%;
+    max-height: 100% !important;
+    border-radius: 0;
+    width: 36.101083032491vw;
+    border-top: 0.072202166064982vw solid rgba(0, 0, 0, 0.2);
+    overflow: hidden;
+  }
+
   &
     > div.MuiPaper-root.MuiPopover-paper.MuiPaper-elevation8.MuiPaper-rounded
     > div {
-    width: 41.876vw;
-    height: calc(100vh - 8.6643vw * 1.46);
-    padding-bottom: 40px;
-    padding-top: 20px;
-    padding-left: 2.89vw;
-    padding-right: 4.5126vw;
-  }
-  & .SpacePromoRoot {
+    height: 100%;
     display: flex;
-    flex-direction: row;
-    width: 21.661vw;
-    & input{
-        height: 3.72vw;
-        padding-left: 2.166vw;
-        padding-right: 2.166vw;
-        @include font40_500();
-    }
-    & fieldset{
-      border-radius: 3.72vw;
-      border-width: 2px;
-    }
-  }
-  & .DescPromo{
-    padding-top: 2.888vw;
-    align-items: center;
-    display: flex;
-    padding-left: 0.4vw;
-    & span{
-      @include font40_400();
-    }
-  }
+    flex-direction: column;
+    overflow-y: auto;
 
-  & .InCart {
-    width: 100%;
-    margin-top: 2.888vw;
-    padding-bottom: 2.888vw;
-    & div.MuiButtonGroup-root.MuiButtonGroup-contained {
-      width: 100%;
-      & > button {
-        width: 100%;
-        background-color: #f9bc23;
-        border-radius: 60px;
-        height: 4.3323vw;
-        @include font40_500();
-        text-transform: initial;
-      }
-      & > button:hover {
-        background-color: #cf9f37;
-      }
-      & > button:target {
-        background-color: #cf9f37;
-      }
-      & > button:active {
-        background-color: #cf9f37;
-      }
+    &::-webkit-scrollbar {
+      width: 1.0830324909747vw;
     }
-  }
-  & .TableMini {
-    width: inherit;
-    & tbody {
-      overflow-y: auto;
-      overflow-x: hidden;
-      height: 100%;
-      display: table-caption;
-      width: 100%;
-      padding-right: 20px;
-      & tr {
-        border-bottom: 1px solid rgba(27, 27, 31, 0.1);
-        padding-bottom: 5px;
-        padding-top: 5px;
-        display: block;
-        & img {
-          height: 7.221vw;
-          width: 7.221vw;
-        }
-      }
+
+    &::-webkit-scrollbar-thumb {
+      background: #979696;
+      border-right: solid 0.72202166064982vw #ffffff;
     }
-    & tfoot {
-      & > tr {
-        height: 4.3322vw;
-        & td:first-child {
-          @include font50_500();
-        }
-        & td:last-child {
-          & > div:not(.originPrice) {
-            display: flex;
-            justify-content: flex-end;
-            @include font50_500();
+
+    &::-webkit-scrollbar-track {
+      margin-top: 1.4440433212996vw;
+      background: #d9d9d9;
+      border-right: solid 0.72202166064982vw #ffffff;
+    }
+
+    & .TableMini {
+      margin: 0.72202166064982vw 1.2635379061372vw 1.0830324909747vw 1.4440433212996vw;
+      border-spacing: 0;
+      display: flex;
+      flex-direction: column;
+
+      & tbody {
+        overflow: hidden;
+        display: flex;
+        flex-direction: column;
+
+        & tr {
+          //border-bottom: 0.072202166064982vw solid rgba(0, 0, 0, 0.1);
+          display: flex;
+          align-items: center;
+          padding: 0 0.72202166064982vw 0.72202166064982vw 0.72202166064982vw;
+          height: 5.7761732851986vw;
+
+          & img {
+            height: 5.7761732851986vw;
+            width: 5.7761732851986vw;
           }
-          & > .originPrice {
-            display: flex;
-            justify-content: flex-end;
-            align-items: center;
-            @include fonsNew(1.25rem, $Roboto);
-            font-weight: 500;
-            color: rgba(27, 27, 31, 0.2) !important;
+        }
 
-            & > span {
-              position: relative;
-              width: fit-content;
-              &:before {
-                border-bottom: 2px solid $colorMain;
-                position: absolute;
-                content: '';
-                width: 120%;
-                height: 50%;
-                left: -10%;
-              }
+        .dopText {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          padding: 0;
+          border: none;
+          height: 7.2202166064982vw;
+          background: rgba(0, 0, 0, 0.05);
+          border-radius: 0.72202166064982vw;
+          & td {
+            width: 70%;
+            @include font30_400();
+            text-align: center;
+          }
+        }
+      }
+
+      & .CellPic {
+        height: 5.7761732851986vw;
+        width: 5.7761732851986vw;
+        padding: 0;
+        margin-right: 1.4440433212996vw;
+      }
+
+      & .CellName {
+        width: 14.440433212996vw;
+        padding: 0;
+        display: flex;
+        flex-direction: column;
+        height: 4.6931407942238vw;
+        justify-content: space-between;
+        margin-right: 0.54151624548736vw;
+        & .spanName {
+          @include font30_400();
+          height: 2.8880866425993vw;
+          display: flex;
+          align-items: flex-end;
+        }
+        & .spanCount {
+          @include font30_400();
+          color: rgba(0, 0, 0, 0.4);
+          height: 1.4440433212996vw;
+          display: flex;
+          align-items: center;
+        }
+      }
+
+      & .CellButton {
+        width: 8.5198555956679vw;
+        height: 2.7436823104693vw;
+        padding: 0;
+        border-radius: 1.6245487364621vw;
+        border: 0.072202166064982vw solid rgba(0, 0, 0, 0.2);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+
+        & > .minus {
+          width: 2.1660649819495vw;
+          height: 2.1660649819495vw;
+          padding: 0;
+          margin-left: 0.36101083032491vw;
+          @include font35_400();
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: rgba(0, 0, 0, 0.07);
+          border-radius: 2.1660649819495vw;
+          cursor: pointer;
+          border: none;
+        }
+
+        & > span {
+          @include font40_400();
+        }
+
+        & > .plus {
+          width: 2.1660649819495vw;
+          height: 2.1660649819495vw;
+          padding: 0;
+          margin-right: 0.36101083032491vw;
+          @include font35_400();
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          background-color: rgba(0, 0, 0, 0.07);
+          border-radius: 2.1660649819495vw;
+          cursor: pointer;
+          border: none;
+        }
+      }
+
+      & tfoot {
+        margin: 1.4440433212996vw 0.72202166064982vw 1.0830324909747vw 1.0830324909747vw;
+
+        & tr {
+          height: 2.1660649819495vw;
+          display: flex;
+          justify-content: space-between;
+
+          & td:first-child {
+            @include font40_500();
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+          }
+
+          & td:last-child {
+            & > div {
+              justify-content: flex-end;
+              @include font50_500();
+              display: flex;
+              align-items: center;
             }
           }
         }
       }
     }
+  }
 
-    & .TableMiniName > span {
-      @include font40_500();
-      text-transform: initial;
+  & .SpacePromoRoot {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-left: 1.8050541516245vw;
+    margin-right: 1.985559566787vw;
+    height: 2.8880866425993vw;
+
+    & div:first-child {
+      width: 14.440433212996vw !important;
+
+      & .MuiInputBase-root.MuiOutlinedInput-root {
+        display: flex;
+        align-items: center;
+        height: 2.8880866425993vw;
+        border: none;
+        border-radius: 0;
+        padding: 0;
+
+        & .MuiInputAdornment-root {
+          width: 0.72202166064982vw;
+          height: 0.72202166064982vw;
+          margin-right: 1.0830324909747vw;
+          margin-left: 0;
+
+          & .circleInput {
+            width: 0.72202166064982vw !important;
+            height: 0.72202166064982vw;
+            border-radius: 0.72202166064982vw;
+            background: #76ec3f;
+          }
+        }
+
+        & input {
+          width: 12.996389891697vw;
+          margin-left: 1.4440433212996vw;
+          display: flex;
+          align-items: center;
+          padding: 0;
+          @include font30_400();
+          &::placeholder {
+            color: rgba(0, 0, 0, 0.4);
+          }
+        }
+        & fieldset {
+          border: 0.10830324909747vw solid rgba(0, 0, 0, 0.2);
+          border-radius: 1.4440433212996vw;
+          width: 14.223826714801vw;
+          height: 2.6714801444043vw;
+          padding: 0;
+          top: -0.10830324909747vw;
+        }
+      }
     }
-    & .TableMiniPrice {
-      text-align: center;
-      @include font40_500();
-      display: flex;
+
+    & div:last-child {
+      width: 10.830324909747vw;
       justify-content: flex-end;
+      @include font50_500();
+      display: flex;
       align-items: center;
     }
-    & .CellPic {
-      width: 17.2%;
+  }
+
+  & .DescPromo {
+    display: flex;
+    align-items: center;
+    margin: 0.36101083032491vw 2.7075812274368vw 1.0830324909747vw
+      2.5270758122744vw;
+    min-height: 1.4440433212996vw;
+    & span {
+      @include font22_400();
     }
-    & .CellName {
-      width: 32.8%;
-      padding-right: 10px;
-      padding-left: 10px;
-    }
-    & .CellButton {
-      width: 25.9%;
-    }
-    & .CellButtonPrize {
-      width: 43.1%;
-    }
-    & .CellPrice,
-    .CellPrice2 {
-      width: 17.2%;
-    }
-    & .CellPrice2 {
-      & > div:first-child {
-        width: 100%;
-        & > div {
-          position: relative;
-          width: fit-content;
-          color: rgba(27, 27, 31, 0.2) !important;
-          &::before {
-            border-bottom: 2px solid #cc0033;
-            position: absolute;
-            content: '';
-            width: 120%;
-            height: 50%;
-            left: -10%;
-          }
+  }
+
+  & .InCart {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 6.1371841155235vw;
+    & button {
+      text-transform: lowercase;
+      height: 2.8880866425993vw;
+      width: 20.216606498195vw;
+      background-color: #dd1a32;
+      border-radius: 1.4440433212996vw;
+      padding: 0;
+      & span {
+        @include font30_400();
+        color: #ffffff;
+        &:first-letter {
+          text-transform: uppercase;
         }
       }
     }
   }
-  
-  & div.MuiPaper-root.MuiPopover-paper {
-    border-radius: 0;
-  }
 }
 
-.MiniActionsCartButton {
-  width: 10.8304vw;
-  height: 4.26vw;
-  border-radius: 300px;
-  border: 1px solid #f9bc23;
-  background-color: rgba(249,188,35,0.1) !important;
-  display: flex;
-  justify-content: space-between;
-  align-items: center;
-  & > .minus {
-    width: 2.1661vw;
-    height: 2.1661vw;
-    padding: 0;
-    //padding-bottom: 0.1vw;
-    margin-left: 1.083vw;
-    @include font35_400();
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f9bc23;
-    border: 1px solid #f9bc23;
-    border-radius: 60px;
-    cursor: pointer;
-  }
-  & > span {
-    @include font40_500();
-  }
-  & > .plus {
-    width: 2.8881vw;
-    height: 2.8881vw;
-    padding: 0;
-    //padding-bottom: 0.25vw;
-    margin-right: 0.722vw;
-    @include font60_300();
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    background-color: #f9bc23;
-    border: 1px solid #f9bc23;
-    border-radius: 60px;
-    cursor: pointer;
-  }
-  & > button:hover {
-    background-color: #cf9f37;
-    border: 1px solid #cf9f37;
-  }
-  & > button:target {
-    background-color: #cf9f37;
-    border: 1px solid #cf9f37;
-  }
-  & > button:active {
-    background-color: #cf9f37;
-    border: 1px solid #cf9f37;
-  }
-  
+.blockShadowBasket {
+  right: 0;
+  top: 8.6642599277978vw;
+  z-index: 1150;
+  width: 36.101083032491vw;
+  height: 1.4440433212996vw;
+  position: fixed;
+  background: linear-gradient(
+    180deg,
+    rgba(115, 115, 115, 0.1) 0%,
+    rgba(83, 92, 84, 0) 100%
+  );
+  mix-blend-mode: multiply;
+  transition: all 0.1s ease 0s;
 }

@@ -35,6 +35,7 @@ export const useCartStore = create((set, get) => ({
   setAllItems: (allItems) => {
     set({ allItems })
   },
+
   plus: (item_id) => {
     let check = false;
     let items = get().items;
@@ -64,6 +65,7 @@ export const useCartStore = create((set, get) => ({
 
     set({ items, itemsCount, allPrice });
   },
+
   minus: (item_id) => {
     let items = get().items;
     let itemsCount = get().itemsCount;
@@ -90,6 +92,7 @@ export const useCartStore = create((set, get) => ({
       })
   
       localStorage.removeItem('promo_name')
+
     }else{
       const data = {
         type: 'get_promo',
@@ -99,7 +102,7 @@ export const useCartStore = create((set, get) => ({
   
       const json = await api('cart', data);
   
-      console.log( json )
+      console.log(json)
   
       set({
         promoInfo: json
@@ -112,7 +115,9 @@ export const useCartStore = create((set, get) => ({
       set({
         checkPromo: res
       })
+
       console.log( 'res promo', res )
+
     }
 
     
@@ -145,7 +150,8 @@ export const useCartStore = create((set, get) => ({
       }
     })*/
   },
-  promoCheck(){
+
+  promoCheck: () => {
     set({
       free_drive: 0,
       itemsPromo: []
@@ -178,6 +184,8 @@ export const useCartStore = create((set, get) => ({
     })
     
     my_cart = new_my_cart;  
+
+    console.log('promoCheck ==>', my_cart);
       
     set({
       items: my_cart
@@ -219,8 +227,6 @@ export const useCartStore = create((set, get) => ({
     console.log( 'this_date', this_date )
     console.log( 'this_time', this_time )
     console.log( 'this_dow', this_dow )
-
-    
 
     if( promo_info ){
       if( promo_info.status_promo === false ){
@@ -1354,7 +1360,7 @@ export const useHeaderStore = create((set, get) => ({
 
   // открытие/закрытие корзины на главное странице
   setActiveBasket: (active) => {
-
+    
     if(!active) {
       set({ targetBasket: null, openBasket: active });
     } else {

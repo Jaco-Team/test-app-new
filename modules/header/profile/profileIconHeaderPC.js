@@ -9,7 +9,7 @@ import { shallow } from 'zustand/shallow';
 
 import { ProfileIcon } from '@/ui/Icons.js';
 
-export default function ProfileIconHeaderPC({ active_page }) {
+export default function ProfileIconHeaderPC() {
   const session = useSession();
 
   const [userName, setActiveUser, setActiveModalAuth] = useHeaderStore((state) => [state.userName, state.setActiveUser, state.setActiveModalAuth], shallow);
@@ -22,12 +22,8 @@ export default function ProfileIconHeaderPC({ active_page }) {
   }, [session]);
 
   return (
-    <div style={{ width: '3.5%' }} className={active_page === 'profile' ? 'headerCat activeCat' : 'headerCat'} >
-       {userName ? (
-        <Link href={'/' + thisCity + '/zakazy'}  className='activeProfileCat'><span>{userName}</span></Link>
-      ) : (
-        <ProfileIcon style={{ width: '4vw', height: '4vw' }}  onClick={ () => setActiveModalAuth(true) }/>
-      )}
-  </div>
+    <div className={userName ? 'activeProfileCat' : 'profileHeaderPC'} >
+      {userName ? <Link href={'/' + thisCity + '/zakazy'}><span>{userName}</span></Link> : <ProfileIcon onClick={ () => setActiveModalAuth(true) }/>}
+    </div>
   );
 }

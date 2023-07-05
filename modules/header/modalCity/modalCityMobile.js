@@ -41,13 +41,14 @@ export default function ModalCityMobile() {
     setActiveModalCity(false);
     const city = thisCityList.find((city) => city.name === thisCityRu);
     localStorage.setItem('setCity', JSON.stringify(city));
-    //push(`/${city.link}`);
+    push(`/${city.link}`);
   };
 
   const chooseCity = (city) => {
     localStorage.setItem('setCity', JSON.stringify(city));
     setActiveList(false);
     setThisCityRu(city.name);
+    push(`/${city.link}`);
   };
 
   // thisCityRu = 'Комсомольск-на-Амуре'

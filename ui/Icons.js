@@ -177,38 +177,38 @@ export function IconClose(props) {
   );
 }
 
-export function BurgerIcon(props) {
-  return (
-    <svg
-      xmlns="http://www.w3.org/2000/svg"
-      width="30"
-      height="23"
-      fill="none"
-      viewBox="0 0 30 23"
-      className="BurgerIcon"
-      {...props}
-    >
-      <path
-        stroke="#B1B1B1"
-        strokeLinecap="round"
-        strokeWidth="3"
-        d="M1.5 1.5L28.5 1.5"
-      ></path>
-      <path
-        stroke="#B1B1B1"
-        strokeLinecap="round"
-        strokeWidth="3"
-        d="M1.5 11.5L28.5 11.5"
-      ></path>
-      <path
-        stroke="#B1B1B1"
-        strokeLinecap="round"
-        strokeWidth="3"
-        d="M1.5 21.5L28.5 21.5"
-      ></path>
-    </svg>
-  );
-}
+// export function BurgerIcon(props) {
+//   return (
+//     <svg
+//       xmlns="http://www.w3.org/2000/svg"
+//       width="30"
+//       height="23"
+//       fill="none"
+//       viewBox="0 0 30 23"
+//       className="BurgerIcon"
+//       {...props}
+//     >
+//       <path
+//         stroke="#B1B1B1"
+//         strokeLinecap="round"
+//         strokeWidth="3"
+//         d="M1.5 1.5L28.5 1.5"
+//       ></path>
+//       <path
+//         stroke="#B1B1B1"
+//         strokeLinecap="round"
+//         strokeWidth="3"
+//         d="M1.5 11.5L28.5 11.5"
+//       ></path>
+//       <path
+//         stroke="#B1B1B1"
+//         strokeLinecap="round"
+//         strokeWidth="3"
+//         d="M1.5 21.5L28.5 21.5"
+//       ></path>
+//     </svg>
+//   );
+// }
 
 export function ReloadIcon(props) {
   return (
@@ -322,7 +322,7 @@ export function MapPointIcon(props) {
       height="53"
       fill="none"
       viewBox="0 0 40 53"
-      className="MapPointIcon"
+      //className="MapPointIcon"
       {...props}
     >
       <g clipPath="url(#clip0_819_6056)">
@@ -382,22 +382,34 @@ export function BasketIcon(props) {
 export function ProfileIcon(props) {
   return (
     <svg
-      className="ProfileIcon"
-      width="50px"
-      height="50px"
-      viewBox="0 0 24 24"
-      fill="none"
       xmlns="http://www.w3.org/2000/svg"
+      width="80"
+      height="80"
+      fill="none"
+      viewBox="0 0 80 80"
       {...props}
     >
-      <path
-        d="M22 12C22 6.49 17.51 2 12 2C6.49 2 2 6.49 2 12C2 14.9 3.25 17.51 5.23 19.34C5.23 19.35 5.23 19.35 5.22 19.36C5.32 19.46 5.44 19.54 5.54 19.63C5.6 19.68 5.65 19.73 5.71 19.77C5.89 19.92 6.09 20.06 6.28 20.2C6.35 20.25 6.41 20.29 6.48 20.34C6.67 20.47 6.87 20.59 7.08 20.7C7.15 20.74 7.23 20.79 7.3 20.83C7.5 20.94 7.71 21.04 7.93 21.13C8.01 21.17 8.09 21.21 8.17 21.24C8.39 21.33 8.61 21.41 8.83 21.48C8.91 21.51 8.99 21.54 9.07 21.56C9.31 21.63 9.55 21.69 9.79 21.75C9.86 21.77 9.93 21.79 10.01 21.8C10.29 21.86 10.57 21.9 10.86 21.93C10.9 21.93 10.94 21.94 10.98 21.95C11.32 21.98 11.66 22 12 22C12.34 22 12.68 21.98 13.01 21.95C13.05 21.95 13.09 21.94 13.13 21.93C13.42 21.9 13.7 21.86 13.98 21.8C14.05 21.79 14.12 21.76 14.2 21.75C14.44 21.69 14.69 21.64 14.92 21.56C15 21.53 15.08 21.5 15.16 21.48C15.38 21.4 15.61 21.33 15.82 21.24C15.9 21.21 15.98 21.17 16.06 21.13C16.27 21.04 16.48 20.94 16.69 20.83C16.77 20.79 16.84 20.74 16.91 20.7C17.11 20.58 17.31 20.47 17.51 20.34C17.58 20.3 17.64 20.25 17.71 20.2C17.91 20.06 18.1 19.92 18.28 19.77C18.34 19.72 18.39 19.67 18.45 19.63C18.56 19.54 18.67 19.45 18.77 19.36C18.77 19.35 18.77 19.35 18.76 19.34C20.75 17.51 22 14.9 22 12ZM16.94 16.97C14.23 15.15 9.79 15.15 7.06 16.97C6.62 17.26 6.26 17.6 5.96 17.97C4.44 16.43 3.5 14.32 3.5 12C3.5 7.31 7.31 3.5 12 3.5C16.69 3.5 20.5 7.31 20.5 12C20.5 14.32 19.56 16.43 18.04 17.97C17.75 17.6 17.38 17.26 16.94 16.97Z"
-        fill="#B1B1B1"
-      />
-      <path
-        d="M12 6.92969C9.93 6.92969 8.25 8.60969 8.25 10.6797C8.25 12.7097 9.84 14.3597 11.95 14.4197C11.98 14.4197 12.02 14.4197 12.04 14.4197C12.06 14.4197 12.09 14.4197 12.11 14.4197C12.12 14.4197 12.13 14.4197 12.13 14.4197C14.15 14.3497 15.74 12.7097 15.75 10.6797C15.75 8.60969 14.07 6.92969 12 6.92969Z"
-        fill="#B1B1B1"
-      />
+      <g>
+        <g>
+          <g>
+            <path
+              fill="#fff"
+              d="M40 80c22.091 0 40-17.909 40-40S62.091 0 40 0 0 17.909 0 40s17.909 40 40 40z"
+            ></path>
+            <path
+              stroke="#000"
+              strokeMiterlimit="10"
+              strokeOpacity="0.3"
+              strokeWidth="3"
+              d="M78.5 40c0 21.263-17.237 38.5-38.5 38.5S1.5 61.263 1.5 40 18.737 1.5 40 1.5 78.5 18.737 78.5 40z"
+            ></path>
+          </g>
+          <g fill="#000" fillOpacity="0.3">
+            <path d="M62 51.938c0 6.074-9.851 14.3-22 14.3s-22-8.226-22-14.3c0-6.075 9.851-11 22-11s22 4.925 22 11z"></path>
+            <path d="M39.981 35.962c6.065 0 10.981-4.916 10.981-10.98 0-6.066-4.916-10.982-10.98-10.982C33.915 14 29 18.916 29 24.981c0 6.065 4.916 10.981 10.981 10.981z"></path>
+          </g>
+        </g>
+      </g>
     </svg>
   );
 }
@@ -760,6 +772,73 @@ export function LocationIconMobile(props) {
           fill="#DD1A32"
           d="M50.01 48.197c1.794 0 3.33-.641 4.606-1.924 1.277-1.283 1.915-2.822 1.915-4.616 0-1.794-.642-3.33-1.924-4.606-1.283-1.276-2.822-1.915-4.616-1.915-1.794 0-3.33.642-4.606 1.924-1.276 1.283-1.915 2.822-1.915 4.616 0 1.794.642 3.33 1.924 4.606 1.283 1.277 2.822 1.915 4.616 1.915zM50 84.559c9.13-8.135 16.006-15.857 20.63-23.165 4.623-7.307 6.935-13.606 6.935-18.894 0-8.314-2.655-15.125-7.963-20.434-5.31-5.31-11.843-7.964-19.602-7.964-7.758 0-14.292 2.655-19.6 7.964-5.31 5.31-7.964 12.12-7.964 20.434 0 5.288 2.35 11.587 7.052 18.894 4.7 7.308 11.538 15.03 20.513 23.165zm0 6.306c-10.86-9.433-18.956-18.19-24.29-26.27-5.334-8.08-8.001-15.444-8.001-22.095 0-10.096 3.25-18.141 9.752-24.135 6.5-5.993 14.014-8.99 22.54-8.99 8.525 0 16.039 2.997 22.54 8.99 6.5 5.994 9.751 14.039 9.751 24.135 0 6.65-2.667 14.016-8 22.095C68.956 72.675 60.86 81.432 50 90.865z"
         ></path>
+      </g>
+    </svg>
+  );
+}
+
+export function ArrowDownHeaderPC (props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="13"
+      fill="none"
+      viewBox="0 0 20 13"
+      {...props}
+    >
+      <path
+        stroke="#000"
+        strokeLinecap="round"
+        strokeMiterlimit="10"
+        strokeOpacity="0.3"
+        strokeWidth="3"
+        d="M18.059 2l-8 8-8-8"
+      ></path>
+    </svg>
+  );
+}
+
+export function ArrowUpHeaderPC(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="20"
+      height="13"
+      fill="none"
+      viewBox="0 0 20 13"
+      {...props}
+    >
+      <path
+        stroke="#DD1A32"
+        strokeLinecap="round"
+        strokeMiterlimit="10"
+        strokeWidth="3"
+        d="M2.059 11l8-8 8 8"
+      ></path>
+    </svg>
+  );
+}
+
+export function BurgerIconPC(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="60"
+      height="34"
+      fill="none"
+      viewBox="0 0 60 34"
+      {...props}
+    >
+      <g
+        stroke="#000"
+        strokeLinecap="round"
+        strokeOpacity="0.3"
+        strokeWidth="4"
+      >
+        <path d="M58 32L2 32"></path>
+        <path d="M58 17L2 17"></path>
+        <path d="M58 2L2 2"></path>
       </g>
     </svg>
   );
