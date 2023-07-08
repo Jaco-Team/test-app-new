@@ -34,7 +34,7 @@ export default React.memo(function CatItems() {
         item.count = 0;
         if (items.length) {
           items.map((it) => {
-            if (it.id === item.id) {
+            if (it.item_id === item.id) {
               item.count = it.count;
               return it;
             }
@@ -72,6 +72,8 @@ export default React.memo(function CatItems() {
       }
     }, 300);
   }, []);
+
+  // console.log(cats)
   
   if (!cats.length) return <div style={{ height: 1000 }} />;
 

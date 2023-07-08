@@ -61,12 +61,12 @@ export default memo(function CardItem({ item, count, index}) {
             <div variant="contained">
               <button className="minus" onClick={() => minus(item.id)}>–</button>
               <span>{count}</span>
-              <button className="plus" onClick={() => plus(item.id)}>+</button>
+              <button className="plus" onClick={() => plus(item.id, item.cat_id)}>+</button>
             </div>
           </div>
         ) : (
           <div className="containerBTN">
-            <Button variant="outlined" className="ModalItemButtonCartPC" onClick={() => plus(item.id)}>
+            <Button variant="outlined" className="ModalItemButtonCartPC" onClick={() => plus(item.id, item.cat_id)}>
               {new Intl.NumberFormat('ru-RU').format(item.price)} ₽
             </Button>
           </div>

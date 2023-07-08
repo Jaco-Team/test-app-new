@@ -97,19 +97,47 @@
         height: 4.6931407942238vw;
         justify-content: space-between;
         margin-right: 0.54151624548736vw;
+
         & .spanName {
           @include font30_400();
           height: 2.8880866425993vw;
           display: flex;
           align-items: flex-end;
         }
-        & .spanCount {
-          @include font30_400();
-          color: rgba(0, 0, 0, 0.4);
-          height: 1.4440433212996vw;
+
+        & div {
           display: flex;
-          align-items: center;
+
+          & .spanCount:not(.promoInfo) {
+            @include font30_400();
+            color: rgba(0, 0, 0, 0.4);
+            height: 1.4440433212996vw;
+            display: flex;
+            align-items: center;
+            margin-right: 0.72202166064982vw;
+          }
+
+          & .spanCount.promoInfo {
+            @include font30_400();
+            color: rgba(0, 0, 0, 0.4);
+            height: 1.4440433212996vw;
+            display: flex;
+            align-items: center;
+            margin-right: 0.72202166064982vw;
+            text-decoration-thickness: 0.10830324909747vw !important;
+            text-decoration: line-through;
+            text-decoration-color: rgba(221, 26, 50, 0.8);
+          }
+  
+          & .spanPromo {
+            @include font30_400();
+            color: #DD1A32;
+            height: 1.4440433212996vw;
+            display: flex;
+            align-items: center;
+          }
         }
+
       }
 
       & .CellButton {
@@ -131,7 +159,6 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          background-color: rgba(0, 0, 0, 0.07);
           border-radius: 2.1660649819495vw;
           cursor: pointer;
           border: none;
@@ -150,7 +177,6 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          background-color: rgba(0, 0, 0, 0.07);
           border-radius: 2.1660649819495vw;
           cursor: pointer;
           border: none;
@@ -173,11 +199,24 @@
           }
 
           & td:last-child {
-            & > div {
+            & > div:not(.promoInfo) {
               justify-content: flex-end;
               @include font50_500();
               display: flex;
               align-items: center;
+              height: 2.1660649819495vw;
+            }
+
+            & > div.promoInfo {
+              display: flex;
+              align-items: center;
+              justify-content: flex-end;
+              height: 2.1660649819495vw;
+              @include font40_500();
+              color: rgba(0, 0, 0, 0.40);
+              text-decoration-thickness: 0.10830324909747vw !important;
+              text-decoration: line-through;
+              text-decoration-color: rgba(221, 26, 50, 0.8);
             }
           }
         }
@@ -252,7 +291,7 @@
   & .DescPromo {
     display: flex;
     align-items: center;
-    margin: 0.36101083032491vw 2.7075812274368vw 1.0830324909747vw
+    margin: 0.36101083032491vw 2.1660649819495vw 1.0830324909747vw
       2.5270758122744vw;
     min-height: 1.4440433212996vw;
     & span {

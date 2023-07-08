@@ -33,7 +33,7 @@ export default function ModalCardItemPC() {
 
     const items = useCartStore.getState().items;
   
-    const findItems = items.find(it => it.id === openItem?.id)
+    const findItems = items.find(it => it.item_id === openItem?.id)
       
     if(findItems) {
       setCount(findItems.count)
@@ -45,7 +45,7 @@ export default function ModalCardItemPC() {
   
     const changeCountPlus = (id) => {
       setCount(count + 1);
-      plus(id);
+      plus(id, openItem?.cat_id);
     };
   
     const changeCountMinus = (id) => {
@@ -58,8 +58,8 @@ export default function ModalCardItemPC() {
       onClose={(event, reason) => reason === 'backdropClick' && typeModal === 'start' ? closeModal() : navigate('start')}
       className={'modalCardItemPC ' + roboto.variable}
       open={isOpenModal}
-      BackdropComponent={Backdrop}
-      BackdropProps={{ timeout: 500 }}
+      slots={Backdrop}
+      slotProps={{ timeout: 500 }}
       scroll="body"
     >
       <DialogContent style={{ padding: 0, borderRadius: '1.444045vw', overflow: 'hidden', background: typeModal === 'start' ? '#FFFFFF' : '#E6E6E6'}}>
