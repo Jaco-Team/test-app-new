@@ -9,9 +9,14 @@ import { api } from './api.js';
 
 export const useCartStore = create((set, get) => ({
   items: [],
+  itemsOnDops: [],
+  itemsOffDops: [],
+  itemsWithPromo: [],
+
   allItems: [],
   itemsCount: 0,
   allPrice: 0,
+  allPriceWithoutPromo: null, 
 
   promoInfo: null,
   checkPromo: null,
@@ -32,18 +37,71 @@ export const useCartStore = create((set, get) => ({
   //точка самовывоза
   orderPic: 0,
 
+  // найти добавляемый промо товар в корзине(items)
+  promoItemsFind: false,
+
+  // получения товара для корзины и добавление промоТовара в корзину если есть и разделение корзины на товары без допов и доп товары
+  getItems: () => {
+
+    const items = get().items;
+    const itemsWithPromo = get().itemsWithPromo;
+
+    const allItems = itemsWithPromo.length ? [...itemsWithPromo] : [...items];
+
+    const itemsOnDops = allItems.filter(item => item.cat_id === '7');
+
+    const itemsOffDops = allItems.filter(item => item.cat_id !== '7');
+
+    set({ itemsOffDops, itemsOnDops });
+
+  },
+
+  // установка данных для корзины если есть промик, в зависимости от промика
+  setDataPromoBasket: () => {
+
+    const items = get().items;
+    const promoInfo = get().promoInfo;
+    const itemsPromo = get().itemsPromo;
+
+    const itemsCount = items.reduce((all, item) => all + item.count, 0);
+    
+    if(promoInfo?.promo_action === '2') {
+      let itemsWithPromo = get().itemsWithPromo;
+      itemsWithPromo = [...items, ...itemsPromo];
+      const allPriceWithoutPromo = itemsWithPromo.reduce((all, it) => all + it.count * it.one_price, 0);
+      set({ itemsCount: itemsCount + promoInfo.items_add.length, itemsWithPromo, allPriceWithoutPromo });
+    } else {
+      set({ itemsCount: itemsCount, itemsWithPromo: [] });
+    }
+
+    if(promoInfo?.promo_action === '3') {
+      const promoId = promoInfo.items_on_price[0].id;
+      const promo = items.find(item => item.item_id === promoId);
+      if(promo) {
+        set({ promoItemsFind: true });
+      }
+    } else {
+      set({ promoItemsFind: false });
+    }
+
+    get().getItems();
+  },
+
+  // все товары которые есть на сайте
   setAllItems: (allItems) => {
     set({ allItems })
   },
 
-  plus: (item_id) => {
+  // добавления товара для корзины
+  plus: (item_id, cat_id) => {
     let check = false;
     let items = get().items;
     const allItems = get().allItems;
     let itemsCount = get().itemsCount;
+    const promoInfo = get().promoInfo;
 
     items = items.map((item) => {
-      if(item.id === item_id){
+      if(item.item_id === item_id){
         item.count++;
         itemsCount++;
         check = true;
@@ -57,101 +115,97 @@ export const useCartStore = create((set, get) => ({
       if(item){
         item.count = 1;
         itemsCount++;
+        item.item_id = item.id;
+        item.one_price = item.price;
+        item.cat_id = cat_id;
         items = [...items,...[item]];
       }
     }
 
-    const allPrice = items.reduce((all, it) => all + it.count * it.price, 0);
+    const allPriceWithoutPromo = items.reduce((all, it) => all + it.count * it.one_price, 0);
 
-    set({ items, itemsCount, allPrice });
+    set({ items, itemsCount, allPriceWithoutPromo });
+    
+    if(promoInfo) {
+      get().promoCheck();
+    } else {
+      get().getItems();
+    }
   },
 
+  // вычитание товара из корзины
   minus: (item_id) => {
     let items = get().items;
     let itemsCount = get().itemsCount;
+    const promoInfo = get().promoInfo;
 
     items = items.reduce((newItems, item) => {
-      if(item.id === item_id){
+      if(item.item_id === item_id){
         item.count--;
         itemsCount--;
       }
       return item.count ? newItems = [...newItems,...[item]] : newItems;
     }, [])
-  
-    const allPrice = items.reduce((all, it) => all + it.count * it.price, 0);
 
-    set({ items, itemsCount, allPrice });
+    const allPriceWithoutPromo = items.reduce((all, it) => all + it.count * it.one_price, 0);
+
+    set({ items, itemsCount, allPriceWithoutPromo });
+    
+    if(promoInfo) {
+      get().promoCheck();
+    } else {
+      get().getItems();
+    }
   },
 
+  // получения информации о промике из БД
   getInfoPromo: async (promoName, city) => {
-
+    
     if( promoName.length == 0 ){
       set({
         promoInfo: null,
-        checkPromo: null
+        checkPromo: null,
       })
-  
+      
       localStorage.removeItem('promo_name')
-
-    }else{
+      
+      get().setDataPromoBasket();
+      
+    } else {
+      
       const data = {
         type: 'get_promo',
         city_id: city,
         promo_name: promoName
       };
-  
+      
       const json = await api('cart', data);
-  
-      console.log(json)
-  
+      
+      //console.log('getInfoPromo ===>', json)
+
       set({
         promoInfo: json
       })
-  
+      
       localStorage.setItem('promo_name', promoName)
-
-      let res = get().promoCheck();
-
+      
+      const res = get().promoCheck();
+      
       set({
         checkPromo: res
       })
-
-      console.log( 'res promo', res )
-
-    }
-
-    
-
-    /*fetch(config.urlApi, {
-      method: 'POST',
-      headers: {
-          'Content-Type':'application/x-www-form-urlencoded'},
-      body: queryString.stringify({
-          type: 'get_promo_web', 
-          city_id: itemsStore.getCity(),
-          promo_name: promoName
-      })
-    }).then(res => res.json()).then(json => {
-      itemsStore.setPromo( JSON.stringify(json), promoName );
-      let check_promo = itemsStore.checkPromo();
-              
-      //if( check_promo.st === false ){
-        //localStorage.removeItem('promo_name')
-      //}
       
-      if( promoName.length == 0 ){
-        this.setPromoStatus('', null);
-      }else{
-        if( check_promo ){
-          this.setPromoStatus(check_promo.text, check_promo.st);
-        }else{
-          this.setPromoStatus('', null);
-        }
-      }
-    })*/
+      //console.log('getInfoPromo ===> res promo', res)
+      
+    }
+  
   },
 
+  // проверка промика
   promoCheck: () => {
+
+    get().setDataPromoBasket();
+
     set({
       free_drive: 0,
       itemsPromo: []
@@ -167,9 +221,7 @@ export const useCartStore = create((set, get) => ({
     tmp = 0;
     allPrice = 0;
     
-    if( allItems.length == 0 || !allItems ){
-      return ; 
-    }
+    if(!allItems.length || !allItems) return ; 
 
     let new_my_cart = [];
       
@@ -179,13 +231,13 @@ export const useCartStore = create((set, get) => ({
         item_id: el_cart.item_id,
         count: el_cart.count,
         one_price: el_cart.one_price,
-        all_price: parseInt(el_cart.one_price) * parseInt(el_cart.count)
+        all_price: parseInt(el_cart.one_price) * parseInt(el_cart.count),
+        img_app: el_cart.img_app,
+        cat_id: el_cart.cat_id,
       });
     })
     
     my_cart = new_my_cart;  
-
-    console.log('promoCheck ==>', my_cart);
       
     set({
       items: my_cart
@@ -224,9 +276,9 @@ export const useCartStore = create((set, get) => ({
       this_dow = parseInt( dayjs( get().datePreOrder ).isoWeekday() );
     }
 
-    console.log( 'this_date', this_date )
-    console.log( 'this_time', this_time )
-    console.log( 'this_dow', this_dow )
+    // console.log( 'this_date', this_date )
+    // console.log( 'this_time', this_time )
+    // console.log( 'this_dow', this_dow )
 
     if( promo_info ){
       if( promo_info.status_promo === false ){
@@ -479,6 +531,7 @@ export const useCartStore = create((set, get) => ({
                 
                 my_cart[ key_cart ].new_one_price = parseInt(el_cart.one_price)
                 my_cart[ key_cart ].all_price = parseInt(all_price);
+
               }
             }
           })
@@ -494,6 +547,8 @@ export const useCartStore = create((set, get) => ({
           items: my_cart
         })
 
+        get().setDataPromoBasket();
+
         return {
           st: true,
           text: promo_info.promo_text.true
@@ -502,6 +557,7 @@ export const useCartStore = create((set, get) => ({
       
       //добавление товара
       if( parseInt(promo_info.promo_action) == 2 ){
+
         promo_info.items_add.forEach((el) => {
           this_item = allItems.find( (item) => item.id == el.item_id );
           
@@ -511,6 +567,8 @@ export const useCartStore = create((set, get) => ({
             one_price: this_item['price'],
             all_price: el.price,
             name: this_item['name'],
+            img_app: this_item.img_app,
+            disabled: true,
           });
         });
         
@@ -555,12 +613,18 @@ export const useCartStore = create((set, get) => ({
       set({
         items: my_cart
       })
+
+      get().setDataPromoBasket();
       
       return {
         st: true,
         text: promo_info.promo_text.true
       }
+
     }else{
+
+      get().setDataPromoBasket();
+
       return {
         st: false,
         text: promo_info.promo_text.false,

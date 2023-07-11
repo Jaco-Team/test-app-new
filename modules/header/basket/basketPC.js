@@ -20,19 +20,15 @@ export default function BasketPC() {
   const [promo, setPromo] = useState('');
   const [scrollBasket, setScrollBasket] = useState(0);
 
+  const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
+  const [getInfoPromo, checkPromo, allPrice, promoInfo, promoItemsFind, itemsCount] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice, state.promoInfo, state.promoItemsFind, state.itemsCount], shallow);
+  const [openBasket, setActiveBasket, targetBasket] = useHeaderStore((state) => [state.openBasket, state.setActiveBasket, state.targetBasket], shallow);
+  
   useEffect(() => {
     if (localStorage.getItem('promo_name') && localStorage.getItem('promo_name').length > 0) {
       setPromo(localStorage.getItem('promo_name'));
     }
   }, []);
-
-  // countCart  cartItems  promoST  originPrice allPrice promoName promoText - переменные
-
-  // handleClick handleClose add minus checkPromo checkPromoKey - функции
-
-  const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
-  const [getInfoPromo, checkPromo, allPrice] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice], shallow);
-  const [openBasket, setActiveBasket, targetBasket] = useHeaderStore((state) => [state.openBasket, state.setActiveBasket, state.targetBasket], shallow);
 
   const listenScrollEvent = (event) => setScrollBasket(event.target.scrollTop);
 
@@ -62,15 +58,16 @@ export default function BasketPC() {
               func={(event) => setPromo(event.target.value)}
               inputAdornment={
                 <InputAdornment position="end">
-                  <div className="circleInput"></div>
+                  {promoInfo ? promoInfo.status_promo ? <div className="circleInput"></div> : <div className="circleInput" style={{ background: '#DD1A32' }}></div> : null}
                 </InputAdornment>
               }
             />
-            <div>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</div>
+            {promoInfo?.items_on_price?.length ? promoItemsFind ? <div>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</div> : null 
+              : promoInfo?.status_promo && itemsCount ? <div>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</div> : null}
           </div>
 
           <div className="DescPromo">
-            <span>{checkPromo?.text}</span>
+            <span style={{ color: promoInfo?.status_promo ? 'rgba(0, 0, 0, 0.80)' : '#DD1A32'}}>{checkPromo?.text}</span>
           </div>
 
           <div className="InCart">
@@ -87,6 +84,7 @@ export default function BasketPC() {
             </Button>
             {/* } */}
           </div>
+
         </div>
       </Popover>
       {scrollBasket ? <div className="blockShadowBasket" /> : null}

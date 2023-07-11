@@ -245,8 +245,8 @@ export default function ModalBannerPC() {
       onClose={() => setActiveBanner(false, null)}
       className={'modalBannerPC ' + roboto.variable}
       open={openModalBanner}
-      BackdropComponent={Backdrop}
-      BackdropProps={{ timeout: 500 }}
+      slots={Backdrop}
+      slotProps={{ timeout: 500 }}
       scroll='body'
     >
       <DialogContent style={{ padding: 0, overflow: 'hidden' }}>
