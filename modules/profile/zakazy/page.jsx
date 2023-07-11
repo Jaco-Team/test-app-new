@@ -4,6 +4,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import ProfileBreadcrumbs from '../profileBreadcrumbs.jsx';
+import ModalOrder from './modalOrder.jsx';
 import OrdersList from './ordersList.jsx';
 
 import Meta from '@/components/meta.js';
@@ -26,8 +27,6 @@ export default function ContactsPage(props){
     }
   }, [session]);
 
-  console.log( 'session', session )
-
   return (
     <Meta title={page.title} description={''}>
       <Grid container spacing={3} style={{ margin: 0, width: '100%' }}>
@@ -39,12 +38,13 @@ export default function ContactsPage(props){
 
           <Grid item xs={12}>
             { orderList.map( (year, ykey) =>
-              <OrdersList key={ykey} is_first={ykey == 0 ? true : false} year={year} />
+              <OrdersList key={ykey} is_first={ykey == 0 ? true : false} year={year} token={session.data?.user?.token} this_module={this_module} city={city} />
             ) }
           </Grid>
 
         </Grid>
         <ProfileBreadcrumbs />
+        <ModalOrder />
       </Grid>
     </Meta>
   )

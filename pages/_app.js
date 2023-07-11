@@ -25,11 +25,16 @@ import '../styles/header/basketPC.scss'
 import '../styles/profile/promokody.scss'
 import '../styles/profile/zakazy.scss'
 import '../styles/profile/profile.scss'
+import '../styles/profile/zakazy_modalOrder.scss'
 
 import '../styles/header.scss'
 import '../styles/footer/footerPC.scss'
 import '../styles/footer/footerMobile.scss'
 import '../styles/docsBreadcrumbs.scss'
+
+
+
+
 
 //pm2 delete test-app-new && rm -rf test-app-new && git clone https://github.com/vito3315/test-app-new.git && cd test-app-new
 //npm install && npm run build && pm2 start npm --name "test-app-new" -- start

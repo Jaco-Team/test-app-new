@@ -15,7 +15,19 @@ import TableRow from '@mui/material/TableRow';
 
 import OrderItem from './orderItem.jsx';
 
-export default React.memo(function OrdersList({year, is_first}){
+import { useProfileStore } from '@/components/store';
+import { shallow } from 'zustand/shallow';
+
+export default React.memo(function OrdersList({year, is_first, token, this_module, city}){
+
+  const [getOrder] = useProfileStore( state => [ state.getOrder ], shallow )
+
+  const template = {
+    token: token,
+    this_module: this_module,
+    city: city
+  };
+
   return (
     <Accordion defaultExpanded={ is_first }>
       <AccordionSummary
@@ -38,7 +50,7 @@ export default React.memo(function OrdersList({year, is_first}){
           </TableHead>
           <TableBody>
             {year.orders.map( (order, key) =>
-              <OrderItem key={key} order={order} />
+              <OrderItem key={key} order={order} template={template} getOrder={getOrder} />
             )}
           </TableBody>
         </Table>

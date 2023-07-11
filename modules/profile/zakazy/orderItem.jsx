@@ -9,7 +9,7 @@ function areEqual(prevProps, nextProps) {
   return parseInt(nextProps.order.is_delete) === parseInt(prevProps.order.is_delete) || parseInt(nextProps.order.type_status) === parseInt(prevProps.order.type_status);
 }
 
-export default React.memo(function OrderItem({order}){
+export default React.memo(function OrderItem({order, template, getOrder}){
   return (
     <TableRow>
       <TableCell> 
@@ -24,7 +24,7 @@ export default React.memo(function OrderItem({order}){
         { new Intl.NumberFormat('ru-RU').format(order.sum)} ₽
       </TableCell>
       <TableCell>
-        <span>Открыть</span>
+        <span onClick={ () => getOrder(template.this_module, template.city, template.token, order.order_id, order.point_id) }>Открыть</span>
       </TableCell>
     </TableRow> 
   )
