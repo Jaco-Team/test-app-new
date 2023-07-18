@@ -52,7 +52,7 @@ function ModalOrderStatusIcon({types}){
 }
 
 export default function ModalOrder() {
-  const [modalOrder, openModal, closeOrder] = useProfileStore( state => [ state.modalOrder, state.openModal, state.closeOrder ], shallow )
+  const [modalOrder, openModal, closeOrder, openModalDel] = useProfileStore( state => [ state.modalOrder, state.openModal, state.closeOrder, state.openModalDel ], shallow )
 
   const [ isShowAddr, setShowAddr ] = useState(true);
 
@@ -129,9 +129,15 @@ export default function ModalOrder() {
             </Grid>
 
             <Grid item xs={12} className='header_btn'>
-              <div>
-                <span>Отменить заказ</span>
-              </div>
+              { parseInt(modalOrder?.order?.status_order) > 0 && parseInt(modalOrder?.order?.status_order) < 6 && parseInt(modalOrder?.order?.is_delete) == 0 ? 
+                <div onClick={ () => openModalDel() }>
+                  <span>Отменить заказ</span>
+                </div>
+                  :
+                <div onClick={ () => openModalDel() }>
+                  <span>Повторить заказ</span>
+                </div>
+              }
             </Grid>
 
           </Grid>

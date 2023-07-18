@@ -26,6 +26,7 @@ import '../styles/profile/promokody.scss'
 import '../styles/profile/zakazy.scss'
 import '../styles/profile/profile.scss'
 import '../styles/profile/zakazy_modalOrder.scss'
+import '../styles/profile/zakazy_modalOrderDelete.scss'
 
 import '../styles/header.scss'
 import '../styles/footer/footerPC.scss'

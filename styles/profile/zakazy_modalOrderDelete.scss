@@ -1,0 +1,84 @@
+
+@import "../settings";
+
+.modalOrderDelPC {
+    & .container{
+        padding-left: $MyScale100;
+        padding-right: $MyScale100;
+    }
+    & .MuiDialog-paper {
+      border-radius: $MyScale40;
+      overflow: visible;
+      margin: 0;
+      width: $MyScale1000;
+      max-width: none !important;
+    }
+    & .MuiDialog-container{
+        display: flex;
+        align-items: flex-end;
+        justify-content: center;
+    }
+
+    & .header_status{
+        height: $MyScale120;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        margin-top: $MyScale80;
+        & > h1{
+            @include font50_500();
+        }
+    }
+    
+    & .header_text{
+        height: $MyScale120;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+        & > span{
+            @include font30_400();
+        }
+    }
+    & .header_table{
+        & span{
+            @include font30_400();
+            padding: $MyScale20 $MyScale40_8;
+        }
+        & > div.active{
+            background-color: rgba(0, 0, 0, 0.05);
+        }
+        & > div{
+            margin-top: $MyScale20;
+            height: $MyScale80;
+            border-radius: $MyScale40;
+            border: 2px solid rgba(0, 0, 0, 0.20);
+            display: flex;
+            align-items: center;
+            cursor: pointer;
+        }
+    }
+    
+    & .header_btn{
+        margin-top: $MyScale160;
+        margin-bottom: $MyScale160;
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        & > div{
+            height: $MyScale80;
+            width: $MyScale330;
+            border-radius: $MyScale40;
+            border: 3px solid $colorMain;
+            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            & > span{
+                @include font30_400();
+                color: $colorMain;
+            }
+        }
+    }
+  }

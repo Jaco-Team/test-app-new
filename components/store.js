@@ -980,6 +980,7 @@ export const useProfileStore = create((set, get) => ({
   userInfo: {},
   modalOrder: {},
   openModal: false,
+  openModalDelete: false,
   shortName: '',
   streets: [],
   getPromoList: async (this_module, city, userToken) => {
@@ -1063,6 +1064,16 @@ export const useProfileStore = create((set, get) => ({
       modalOrder: {},
     });
   },
+  openModalDel: () => {
+    set({
+      openModalDelete: true
+    })
+  },
+  closeModalDel: () => {
+    set({
+      openModalDelete: false
+    })
+  }
 }));
 
 export const useFooterStore = create((set) => ({

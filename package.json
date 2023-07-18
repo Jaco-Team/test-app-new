@@ -21,16 +21,16 @@
     "moment": "^2.29.4",
     "moment-locales-webpack-plugin": "^1.2.0",
     "moment-timezone-data-webpack-plugin": "^1.5.1",
-    "next": "13.4.9",
-    "next-auth": "^4.22.1",
+    "next": "13.4.10",
+    "next-auth": "^4.22.2",
     "query-string": "^8.1.0",
     "react": "18.2.0",
     "react-auth-code-input": "^3.2.1",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.45.1",
+    "react-hook-form": "^7.45.2",
     "react-scroll": "^1.8.9",
     "sass": "^1.63.6",
-    "sharp": "^0.32.2",
+    "sharp": "^0.32.3",
     "styled-components": "^5.3.11",
     "swiper": "^9.4.1",
     "typescript": "^5.1.6",
@@ -38,7 +38,7 @@
     "zustand": "^4.3.9"
   },
   "devDependencies": {
-    "eslint": "8.44.0",
-    "eslint-config-next": "13.4.9"
+    "eslint": "8.45.0",
+    "eslint-config-next": "13.4.10"
   }
 }

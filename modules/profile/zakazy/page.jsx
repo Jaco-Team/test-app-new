@@ -5,6 +5,7 @@ import Typography from '@mui/material/Typography';
 
 import ProfileBreadcrumbs from '../profileBreadcrumbs.jsx';
 import ModalOrder from './modalOrder.jsx';
+import ModalOrderDelete from './modalOrderDelete.jsx';
 import OrdersList from './ordersList.jsx';
 
 import Meta from '@/components/meta.js';
@@ -45,6 +46,7 @@ export default function ContactsPage(props){
         </Grid>
         <ProfileBreadcrumbs />
         <ModalOrder />
+        <ModalOrderDelete />
       </Grid>
     </Meta>
   )
