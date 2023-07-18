@@ -22,7 +22,7 @@
     "moment-locales-webpack-plugin": "^1.2.0",
     "moment-timezone-data-webpack-plugin": "^1.5.1",
     "next": "13.4.10",
-    "next-auth": "^4.22.2",
+    "next-auth": "^4.22.1",
     "query-string": "^8.1.0",
     "react": "18.2.0",
     "react-auth-code-input": "^3.2.1",

@@ -10,7 +10,7 @@ import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.j
 import { shallow } from 'zustand/shallow';
 
 export default memo(function CardItem({ item, count, index}) {
-  console.log('CardItemPc render');
+  //console.log('CardItemPc render');
 
   const [getItem] = useHomeStore((state) => [state.getItem], shallow);
   const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
