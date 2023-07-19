@@ -10,7 +10,7 @@ import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import { IconClose, SharpIcon, CalendarIcon, MyAddrLocationIcon, EyeHideNew, EyeShow, CartModalOrderIcon, CookModalOrderIcon, DeliveryModalOrderIcon, HomeModalOrderIcon, AddrDotsModalOrderIcon } from '@/ui/Icons';
+import { IconClose, SharpIcon, CalendarIcon, MyAddrLocationIcon, EyeHide_modalOrder, EyeShow_modalOrder, CartModalOrderIcon, CookModalOrderIcon, DeliveryModalOrderIcon, HomeModalOrderIcon, AddrDotsModalOrderIcon } from '@/ui/Icons';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import { roboto } from '@/ui/Font';
@@ -94,18 +94,22 @@ export default function ModalOrder() {
                     <MyAddrLocationIcon />
                   </div>
                   
-                  {isShowAddr ?
-                    <span className='order_city'>{modalOrder?.order?.city_name}, { modalOrder?.order?.street + ', ' + modalOrder?.order?.home + ', кв. ' + modalOrder?.order?.kv }</span>
-                      :
-                    <span className='order_city'>{modalOrder?.order?.city_name} <AddrDotsModalOrderIcon className="long" /></span>
-                  }
+                  <div className='order_city'>
+                    {isShowAddr ?
+                      <span>{modalOrder?.order?.city_name}, { modalOrder?.order?.street + ', ' + modalOrder?.order?.home + ', кв. ' + modalOrder?.order?.kv }</span>
+                        :
+                      <span>{modalOrder?.order?.city_name} <AddrDotsModalOrderIcon className="long" /></span>
+                    }
+                  </div>
                 </div>
 
-                {isShowAddr ?
-                  <EyeShow onClick={ () => {setShowAddr(false)} } />
-                    :
-                  <EyeHideNew onClick={ () => {setShowAddr(true)} } />
-                }
+                <div>
+                  {isShowAddr ?
+                    <EyeShow_modalOrder onClick={ () => {setShowAddr(false)} } />
+                      :
+                    <EyeHide_modalOrder onClick={ () => {setShowAddr(true)} } />
+                  }
+                </div>
               </div>
             </Grid>
 
