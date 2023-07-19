@@ -46,7 +46,7 @@ const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, c
   return(
     <Menu id='chooseHeaderCat' anchorEl={anchorEl} open={isOpen} onClose={onClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} transformOrigin={{ vertical: 'top',  horizontal: 'center' }} autoFocus={false}>
       {list.map((cat, key) => (
-        <MenuItem key={key} onClick={onClose}>
+        <MenuItem key={key}>
           {active_page === 'home' ? (
             <ScrollLink
               to={'cat' + cat.id}
@@ -54,6 +54,7 @@ const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, c
               isDynamic={true}
               smooth={false}
               offset={-100}
+              onClick={onClose}
             >
               <span id={'link_' + cat.id}>{cat.name}</span>
             </ScrollLink>
@@ -85,20 +86,25 @@ export default function NavBarPC({ city, active_page }) {
   const [list, setList] = useState([]);
 
   useEffect(() => {
-    if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
-      const city = JSON.parse(localStorage.getItem('setCity'));
+    if (typeof window !== "undefined") {
 
-      if (city.name !== thisCityRu) {
-        setThisCityRu(city.name);
+      if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
+        const city = JSON.parse(localStorage.getItem('setCity'));
 
-        push(`/${city.link}`);
+        if (city.name !== thisCityRu) {
+          setThisCityRu(city.name);
+
+          //push(`/${city.link}`);
+        }
+        
+      } else {
+        setActiveModalCity(true);
       }
-    } else {
-      setActiveModalCity(true);
-    }
 
-    if( localStorage.getItem('promo_name') ){
-      getInfoPromo(localStorage.getItem('promo_name'), city)
+      if( localStorage.getItem('promo_name') ){
+        getInfoPromo(localStorage.getItem('promo_name'), city)
+      }
+
     }
   }, []);
 
@@ -154,33 +160,34 @@ export default function NavBarPC({ city, active_page }) {
             <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={500} height={120} priority={true}/>
           </Link>
 
-          { catList.map((item, key) =>
-              item.name === 'Пицца' || item.name === 'Напитки' ? (
+          {catList.map((item, key) =>
+            item.name === 'Пицца' || item.name === 'Напитки' ? (
+              active_page === 'home' ? 
+                <ScrollLink
+                  key={key}
+                  className="headerCat"
+                  to={'cat' + item.id}
+                  spy={true}
+                  isDynamic={true}
+                  smooth={false}
+                  offset={-100}
+                  style={{marginRight: item.name === 'Пицца' ? 0 : '18.050541516245vw', width: item.name === 'Напитки' ? '7.2202166064982vw' : '5.7761732851986vw'}}
+                >
+                  <span id={'link_' + item.id}>{item.name}</span> 
+                </ScrollLink>
+                :
+                <Link href={`/${city}`} onClick={() => chooseCat(item.id)} key={key} className="headerCat"
+                  style={{marginRight: item.name === 'Пицца' ? 0 : '18.050541516245vw', width: item.name === 'Напитки' ? '7.2202166064982vw' : '5.7761732851986vw'}}
+                >
+                  <span>{item.name}</span>
+                </Link>
+                
+            ) : (
                 <React.Fragment key={key}>
-                  <ScrollLink 
-                    className="headerCat"
-                    to={'cat' + item.id}
-                    spy={true}
-                    isDynamic={true}
-                    smooth={false}
-                    offset={-100}
-                    style={{marginRight: item.name === 'Пицца' ? 0 : '18.050541516245vw', width: item.name === 'Напитки' ? '7.2202166064982vw' : '5.7761732851986vw'}}
-                  >
-                    {active_page === 'home' ? 
-                      <span id={'link_' + item.id}>{item.name}</span> 
-                      :
-                      <Link href={`/${city}`} onClick={() => chooseCat(item.id)}>
-                        <span>{item.name}</span>
-                      </Link>
-                    }
-                  </ScrollLink>
-                </React.Fragment>
-              ) : (
-                <React.Fragment key={key}>
-                  <div className={item.expanded ? item.expanded ? "headerCat activeCat" : 'headerCat' : 'headerCat'} onClick={(event) => openMenu(event, item.id)} 
+                  <div className={item?.expanded ? item.expanded ? "headerCat activeCat" : 'headerCat' : 'headerCat'} onClick={(event) => openMenu(event, item.id)} 
                     style={{ marginRight: '1.4440433212996vw'}}>
                     <span>
-                      {item.name} {item.expanded ? item.expanded ? <ArrowUpHeaderPC /> : <ArrowDownHeaderPC /> : <ArrowDownHeaderPC />}
+                      {item.name} {item?.expanded ? item.expanded ? <ArrowUpHeaderPC /> : <ArrowDownHeaderPC /> : <ArrowDownHeaderPC />}
                     </span>
                   </div>
                 </React.Fragment>
