@@ -90,24 +90,33 @@
             }
         }
         & > div:last-child{
-            height: $MyScale120;
+            min-height: $MyScale120;
             border-bottom: 4px solid rgba(0, 0, 0, 0.80);
             display: flex;
-            align-items: center;
+            //align-items: center;
             justify-content: space-between;
             & > svg{
                 margin-right: $MyScale40;
             }
+            & > div:last-child{
+                margin-top: $MyScale27;
+                & > svg{
+                    cursor: pointer;
+                }
+            }
             & > div{
                 display: flex;
-                align-items: center;
-                & > div{
+                //align-items: center;
+                & > div:not(.order_city){
                     width: $MyScale60!important;
                     height: $MyScale60!important;
                     margin-right: $MyScale11;
+                    margin-top: $MyScale27;
                 }
             }
             & .order_city{
+                padding-top: $MyScale37;
+                padding-bottom: $MyScale43;
                 //width: $MyScale200;
                 //margin-right: $MyScale49;
             }
@@ -144,6 +153,7 @@
                 & span:first-child{
                     width: $MyScale80;
                     text-align: center;
+                    align-self: baseline;
                 }
             }
             & span{
@@ -152,6 +162,7 @@
             & > span{
                 width: $MyScale140;
                 text-align: end;
+                align-self: baseline;
             }
             
         }
