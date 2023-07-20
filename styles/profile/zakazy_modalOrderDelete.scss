@@ -58,9 +58,16 @@
             cursor: pointer;
         }
     }
-    
+    & .header_custom_text{
+        margin-top: $MyScale23;
+        margin-bottom: $MyScale100;
+        & input{
+            @include font30_400();
+            height: $MyScale40;
+            padding: 0px $MyScale20 $MyScale20!important;
+        }
+    }
     & .header_btn{
-        margin-top: $MyScale160;
         margin-bottom: $MyScale160;
         display: flex;
         justify-content: space-between;

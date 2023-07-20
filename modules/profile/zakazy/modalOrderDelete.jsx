@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 
 import { shallow } from 'zustand/shallow';
 import { useProfileStore } from '@/components/store';
@@ -11,8 +11,10 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
 import { IconClose } from '@/ui/Icons';
-
+import MyTextInput from '@/ui/MyTextInput';
 import { roboto } from '@/ui/Font';
+
+import { useSession } from 'next-auth/react';
 
 const ans = [
   { id: 1, ans: 'Хочу отредактировать заказ' },
@@ -24,9 +26,17 @@ const ans = [
 ];
 
 export default function ModalOrderDelete() {
-  const [openModalDelete, closeModalDel] = useProfileStore( state => [ state.openModalDelete, state.closeModalDel ], shallow )
+  const [openModalDelete, closeModalDel, orderDel] = useProfileStore( state => [ state.openModalDelete, state.closeModalDel, state.orderDel ], shallow )
 
   const [ chooseType, setChooseType ] = useState(0);
+  const [ textDel, setTextDel ] = useState('');
+
+  const session = useSession();
+
+  useEffect( () => {
+    setTextDel('');
+    setChooseType(0);
+  }, [openModalDelete] )
 
   return (
     <Dialog
@@ -60,10 +70,12 @@ export default function ModalOrderDelete() {
               ) }
             </Grid>
 
-            
+            <Grid item xs={12} className='header_custom_text' style={{ visibility: chooseType == 6 ? 'visible' : 'hidden' }}>
+              <MyTextInput variant="standard" value={textDel} func={ e => setTextDel(e.target.value) } />
+            </Grid>
 
             <Grid item xs={12} className='header_btn'>
-              <div>
+              <div onClick={ () => orderDel( 'zakazy', session.data?.user?.token, chooseType == 6 ? textDel : ans[ chooseType ]['ans'] ) }>
                 <span>Отменить</span>
               </div>
                 
