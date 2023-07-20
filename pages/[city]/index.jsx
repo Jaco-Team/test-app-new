@@ -49,7 +49,7 @@ export default function Home(props) {
     <div className={roboto.variable}>
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
-      <DynamicHomePage page={page} city={city}/>
+      <DynamicHomePage page={page} city={city} />
 
       <DynamicFooter cityName={city} />
     </div>

@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { useState, memo, useEffect } from 'react';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -15,7 +15,7 @@ import { roboto } from '@/ui/Font.js';
 
 import { shallow } from 'zustand/shallow';
 
-import { useHeaderStore } from '@/components/store.js';
+import { useHeaderStore, useCitiesStore } from '@/components/store.js';
 
 import BasketIconHeaderMobile from '../basket/basketIconHeaderMobile';
 import ProfileIconHeaderMobile from '../profile/profileIconHeaderMobile';
@@ -27,10 +27,34 @@ export default memo(function NavBarMobile({ city, active_page }) {
   const [activeMenu, setActiveMenu] = useState(false);
 
   const [setActiveBasket, openBasket, setActiveModalCity] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity], shallow);
+  const [setThisCityRu, thisCityRu] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu], shallow);
 
   if (city == '') {
     return null;
   }
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+
+      if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
+        const city = JSON.parse(localStorage.getItem('setCity'));
+
+        if (city.name !== thisCityRu) {
+          setThisCityRu(city.name);
+
+          //push(`/${city.link}`);
+        }
+        
+      } else {
+        setActiveModalCity(true);
+      }
+
+      if( localStorage.getItem('promo_name') ){
+        getInfoPromo(localStorage.getItem('promo_name'), city)
+      }
+
+    }
+  }, []);
 
   const close = () => {
     if (openBasket) {

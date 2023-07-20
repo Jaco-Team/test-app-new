@@ -32,6 +32,20 @@ $MyScale1000: 36.1011vw;
 $MyMaxWidth: 1170px;
 //$MyMaxWidth: 600px;
 
+$MyScale3_mobile: 0.25641025641026vw;
+$MyScale20_mobile: 1.7094017094017vw;
+$MyScale40_mobile: 3.4188034188034vw;
+$MyScale50_mobile: 4.2735042735043vw;
+$MyScale55_mobile: 4.7008547008547vw;
+$MyScale80_mobile: 6.8376068376068vw;
+$MyScale100_mobile: 8.5470085470085vw;
+$MyScale140_mobile: 11.965811965812vw;
+$MyScale200_mobile: 17.094017094017vw;
+$MyScale244_mobile: 20.854700854701vw;
+$MyScale250_mobile: 21.367521367521vw;
+$MyScale400_mobile: 34.188034188034vw;
+$MyScale540_mobile: 46.153846153846vw;
+
 @mixin fonsNew($size: 1rem, $family: $Roboto) {
   font-size: $size;
   font-family: $family !important;

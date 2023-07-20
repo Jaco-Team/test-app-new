@@ -3,6 +3,7 @@ import BannersPC from './banners/bannersPC';
 import CardItems from './cardItem/cardItems.js';
 import ModalCardItemPC from './cardItem/modalCardItemPC.js';
 import ModalBannerPC from './banners/modalBannersPC';
+import MenuCatMobile from './menuCatMobile/menuCatMobile'
 
 import Meta from '@/components/meta.js';
 
@@ -16,13 +17,21 @@ export default function HomePage(props) {
 
   return (
     <Meta title={page.title} description={page.description}>
-      {matches ? <BannersMobile /> : <BannersPC />}
+      {matches ?
+      <>
+      <BannersMobile />
+      <MenuCatMobile city={city} />
+      </>
+      : 
+      <>
+      <BannersPC />
+      <ModalCardItemPC />
+      <ModalBannerPC />
+      </>
+      }
 
       <CardItems />
 
-      <ModalCardItemPC />
-
-      <ModalBannerPC />
     </Meta>
   );
 }

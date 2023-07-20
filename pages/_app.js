@@ -15,6 +15,7 @@ import '../styles/home.scss'
 import '../styles/home/homePC.scss'
 import '../styles/home/bannersPC.scss'
 import '../styles/home/bannersMobile.scss'
+import '../styles/home/menuCatMobile.scss'
 
 import '../styles/header/cityFormPC.scss'
 import '../styles/header/cityFormMobile.scss'
