@@ -10,12 +10,12 @@ import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import { IconClose, SharpIcon, CalendarIcon, MyAddrLocationIcon, EyeHide_modalOrder, EyeShow_modalOrder, CartModalOrderIcon, CookModalOrderIcon, DeliveryModalOrderIcon, HomeModalOrderIcon, AddrDotsModalOrderIcon } from '@/ui/Icons';
+import { IconClose, SharpIcon, CalendarIcon, MyAddrLocationIcon, EyeHide_modalOrder, EyeShow_modalOrder, CartModalOrderIcon, CookModalOrderIcon, DeliveryModalOrderIcon, HomeModalOrderIcon, AddrDotsModalOrderIcon, PicupModalOrderIcon } from '@/ui/Icons';
 import LinearProgress from '@mui/material/LinearProgress';
 
 import { roboto } from '@/ui/Font';
 
-function ModalOrderStatusIcon({types}){
+function ModalOrderStatusIconDelivery({types}){
   return (
     <Grid item xs={12} className='header_status_icon'>
       <div className={ parseInt(types?.type1) == 1 || parseInt(types?.type1) == 0 ? 'active' : '' }>
@@ -38,6 +38,42 @@ function ModalOrderStatusIcon({types}){
       
       <div className={ parseInt(types?.type3) == 1 || parseInt(types?.type3) == 0 ? 'active' : '' }>
         <DeliveryModalOrderIcon />
+      </div>
+      { parseInt(types?.type4) == 1 || parseInt(types?.type4) == -1 ?
+        <LinearProgress variant="determinate" className={parseInt(types?.type4) == -1 ? '' : 'active'} value={ parseInt(types?.type4) == 1 ? 100 : 0 } />
+          :
+        <LinearProgress />
+      }
+      <div className={ parseInt(types?.type4) == 1 || parseInt(types?.type4) == 0 ? 'active' : '' }>
+        <HomeModalOrderIcon />
+      </div>
+    </Grid>
+  )
+}
+
+function ModalOrderStatusIconPicup({types}){
+  return (
+    <Grid item xs={12} className='header_status_icon'>
+      <div className={ parseInt(types?.type1) == 1 || parseInt(types?.type1) == 0 ? 'active' : '' }>
+        <CartModalOrderIcon />
+      </div>
+      { parseInt(types?.type2) == 1 || parseInt(types?.type2) == -1 ?
+        <LinearProgress variant="determinate" className={parseInt(types?.type2) == -1 ? '' : 'active'} value={ parseInt(types?.type2) == 1 ? 100 : 0 } />
+          :
+        <LinearProgress />
+      }
+
+      <div className={ parseInt(types?.type2) == 1 || parseInt(types?.type2) == 0 ? 'active' : '' }>
+        <CookModalOrderIcon />
+      </div>
+      { parseInt(types?.type3) == 1 || parseInt(types?.type3) == -1 ?
+        <LinearProgress variant="determinate" className={parseInt(types?.type3) == -1 ? '' : 'active'} value={ parseInt(types?.type3) == 1 ? 100 : 0 } />
+          :
+        <LinearProgress />
+      }
+      
+      <div className={ parseInt(types?.type3) == 1 || parseInt(types?.type3) == 0 ? 'active' : '' }>
+        <PicupModalOrderIcon />
       </div>
       { parseInt(types?.type4) == 1 || parseInt(types?.type4) == -1 ?
         <LinearProgress variant="determinate" className={parseInt(types?.type4) == -1 ? '' : 'active'} value={ parseInt(types?.type4) == 1 ? 100 : 0 } />
@@ -79,7 +115,11 @@ export default function ModalOrder() {
               <Typography variant="h5" component="span">Доставим до {modalOrder?.order?.max_time_order}</Typography>
             </Grid>
 
-            <ModalOrderStatusIcon types={modalOrder?.order?.types} />
+            {modalOrder?.order?.type_order_ == '1' ?
+              <ModalOrderStatusIconDelivery types={modalOrder?.order?.types} />
+                :
+              <ModalOrderStatusIconPicup types={modalOrder?.order?.types} />
+            }
 
             <Grid item xs={12} className='header_addr_table'>
               <div >

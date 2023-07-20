@@ -961,3 +961,11 @@ export function AddrDotsModalOrderIcon(props){
   )
 }
 
+export function PicupModalOrderIcon(props){
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 70 70" fill="none" {...props}>
+      <path d="M12.5641 16.0748V12.7656H57.5536V16.0748H12.5641ZM12.9287 57.2783V39.5259H9.1875V36.2167L12.5641 21.5156H57.5088L60.8574 36.2167V39.5259H57.1161V57.2783H53.807V39.5259H39.6891V57.2783H12.9287ZM16.238 53.9691H36.3799V39.5259H16.238V53.9691Z" fill="white"/>
+    </svg>
+  )
+}
+
