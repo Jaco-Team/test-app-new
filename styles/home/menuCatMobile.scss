@@ -1,0 +1,98 @@
+@import '../settings.scss';
+
+.menuCatMobile {
+  flex-direction: column;
+  z-index: 1100 !important;
+  position: sticky;
+  top: $MyScale200_mobile;
+
+  .menuCat {
+    display: flex;
+    justify-content: space-between;
+    margin: $MyScale50_mobile $MyScale55_mobile 0 $MyScale55_mobile;
+    height: $MyScale100_mobile;
+
+    .Cat {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: $MyScale244_mobile;
+      border-radius: $MyScale20_mobile;
+      border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+
+      & span {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        @include font40_400();
+      }
+    }
+
+    .activeCat {
+      border: none;
+      width: $MyScale250_mobile;
+      background: #dd1a32;
+
+      & span {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        @include font40_400();
+        color: #fff !important;
+      }
+    }
+  }
+
+  .menuCatDopContainer {
+    width: 100%;
+    position: relative;
+    height: $MyScale140_mobile;
+
+    .menuCatDop {
+      width: 100%;
+      display: flex;
+      padding-top: $MyScale40_mobile;
+      height: $MyScale100_mobile;
+      position: absolute;
+      overflow-x: auto;
+      -ms-overflow-style: none;
+      overflow: -moz-scrollbars-none;
+      scrollbar-width: none;
+
+      &::-webkit-scrollbar {
+        width: 0;
+        height: 0;
+      }
+
+      .CatDop {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: $MyScale20_mobile;
+        border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+
+        & span {
+          display: flex;
+          align-items: center;
+          text-align: center;
+          @include font40_400();
+        }
+      }
+    }
+  }
+
+  .blockShadowMenuCatMobile {
+    right: 0;
+    z-index: 1150;
+    width: 100%;
+    height: $MyScale80_mobile;
+    position: fixed;
+    background: linear-gradient(
+      180deg,
+      rgba(115, 115, 115, 0.1) 0%,
+      rgba(83, 92, 84, 0) 100%
+    );
+    mix-blend-mode: multiply;
+    transition: all 0.1s ease 0s;
+  }
+}
