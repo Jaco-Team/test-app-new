@@ -990,6 +990,7 @@ export const useProfileStore = create((set, get) => ({
   openModalDelete: false,
   shortName: '',
   streets: [],
+  city: '',
   getPromoList: async (this_module, city, userToken) => {
     let data = {
       type: 'get_my_promos',
@@ -1014,6 +1015,7 @@ export const useProfileStore = create((set, get) => ({
 
     set({
       orderList: json?.order_list,
+      city: city
     });
   },
   getUserInfo: async (this_module, city, userID) => {
@@ -1080,6 +1082,24 @@ export const useProfileStore = create((set, get) => ({
     set({
       openModalDelete: false
     })
+  },
+  orderDel: async (this_module, userToken) => {
+    let data = {
+      type: 'close_order',
+      user_id: userToken,
+      order_id: get().modalOrder?.order?.order_id,
+      point_id: get().modalOrder?.order?.point_id
+    };
+
+    let json = await api(this_module, data);
+
+    console.log( json )
+
+    if( json.st === true ){
+      get().closeModalDel();
+      get().closeOrder();
+      get().getOrderList('zakazy', get().city, userToken);
+    }
   }
 }));
 

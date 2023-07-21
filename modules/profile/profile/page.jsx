@@ -144,7 +144,7 @@ export default function ProfilePage(props){
               </div>
             </div>
             <div>
-              <div style={{ marginTop: '0.1vw', marginRight: '6%' }}>
+              <div style={{ marginTop: '0.1vw' }}>
                 <Controller
                   control={control}
                   render={({ field: { onChange, onBlur, value } }) => (
@@ -172,7 +172,7 @@ export default function ProfilePage(props){
                   name="fam"
                 />
               </div>
-              <div style={{ marginTop: '-1.2vw', marginRight: '6%' }}>
+              <div style={{ marginTop: '-1.2vw' }}>
                 <Controller
                   control={control}
                   render={({ field: { onChange, onBlur, value } }) => (
@@ -250,7 +250,7 @@ export default function ProfilePage(props){
             </div>
           </Grid>
 
-          { false ? null :
+          { true ? null :
             <Grid item xs={12} className="bank_table">
               <Table>
                 <TableHead>
@@ -298,9 +298,9 @@ export default function ProfilePage(props){
                 <TableRow>
                   <TableCell colSpan={3} className="headTable">Мои адреса</TableCell>
                   <TableCell colSpan={2} className="headAddTable">
-                    <span>
-                      Добавить
-                    </span>
+                    <div>
+                      <span>Добавить</span>
+                    </div>
                   </TableCell>
                 </TableRow>
               </TableHead>
@@ -308,11 +308,11 @@ export default function ProfilePage(props){
                 
                 {streets.map( (item, key) =>
                   <TableRow key={key}>
-                    <TableCell style={{ width: '23%' }}>{item.city_name}</TableCell>
-                    <TableCell style={{ width: '65%' }}>{item.city_name_dop} {item.street}, д. {item.home}, кв. {item.kv}</TableCell>
-                    <TableCell style={{ width: '12%' }} className='ChooseAddr'></TableCell>
-                    <TableCell style={{ width: '1%' }} className='ChangeAddr'><span>Изменить</span></TableCell>
-                    <TableCell style={{ width: '0%', maxWidth: '2.2vw' }}><CloseIconMin /></TableCell>
+                    <TableCell>{item.city_name}</TableCell>
+                    <TableCell>{item.city_name_dop} {item.street}, д. {item.home}, кв. {item.kv}</TableCell>
+                    <TableCell className={ key == 2 ? 'ChooseAddr' : '' }>{ key == 2 ? <div>Основной</div> : false }</TableCell>
+                    <TableCell className='ChangeAddr'><span>Изменить</span></TableCell>
+                    <TableCell><CloseIconMin /></TableCell>
                   </TableRow> 
                 )}
               

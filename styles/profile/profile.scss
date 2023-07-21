@@ -37,16 +37,17 @@
     
 
     & .main_data{
-        margin-top: 62px;
+        margin-top: $MyScale80;
         display: flex;
         flex-direction: row;
         & > div:first-child{
-            width: 25.8%;
-            margin-left: 5.2%;
+            width: $MyScale280;
+            margin-left: $MyScale80;
+            margin-right: $MyScale120;
             & > div{
-                width: 10vw;
-                height: 10vw;
-                border-radius: 300px;
+                width: $MyScale280;
+                height: $MyScale280;
+                border-radius: $MyScale280;
                 background-color: #6FBEF8;
                 display: flex;
                 justify-content: center;
@@ -56,39 +57,47 @@
             }
         }
         & > div:last-child{
-            width: 69%;
+            width: $MyScale1080;
             display: flex;
             flex-direction: row;
             flex-wrap: wrap;
+            align-items: center;
+            & > div:nth-child(1), div:nth-child(3){
+                margin-right: $MyScale60;   
+            }
             & > div{
-                width: 47%;   
+                width: $MyScale510;
+                height: $MyScale80;
                 display: flex;
                 align-items: center;
                 & .MuiInputBase-sizeSmall{
-                    height: 2.8vw;
+                    height: $MyScale80;
                     z-index: 3;
                     & > input{
-                        height: 2.8vw;
-                        padding-left: 1.3vw;
+                        height: $MyScale80;
+                        padding-left: $MyScale40;
                         @include font30_400();
                     }
                 }
-
                 & fieldset{
-                    border-radius: 2.8vw;
-                    border-width: 3px;
+                    border-radius: $MyScale80;
+                    border-width: $MyScale3;
                 }
             }
         }
     }
 
     & .check_data{
-        margin-top: 1.6vw;
+        margin-top: $MyScale60;
         & > div{
-            width: 69%;
-            margin-left: 31%;
+            width: $MyScale1080;
+            margin-left: $MyScale480;
             & > div{
+                & > label{
+                    margin: 0;
+                }
                 width: 100%;
+                height: $MyScale80;
                 display: flex;
                 flex-direction: row;
                 justify-content: space-between;
@@ -97,22 +106,23 @@
                     @include font30_400();
                 }
                 &:last-child{
-                    margin-top: 2.5vw;
+                    margin-top: $MyScale20;
                 }
             }
         }
     }
 
     & .date_data{
-        margin-top: 5.3vw;
+        margin-top: $MyScale100;
         display: flex;
         flex-direction: row;
         & > div:first-child{
-            width: 27.5%;
-            margin-right: 3.5%;
+            width: $MyScale440;
+            margin-right: $MyScale40;
             & > div{
-                width: calc(100% - 40px);
-                height: 7.5vw;
+                width: $MyScale390;
+                height: $MyScale208;
+                margin-top: $MyScale20;
                 background-color: rgba(87, 220, 53, 0.3);
                 position: relative;
                 display: flex;
@@ -124,7 +134,7 @@
                     left: 100%;
                     top: 0px;
                     border: 3.76vw solid transparent;
-                    border-left: 50px solid rgba(87, 220, 53, 0.3);
+                    border-left: $MyScale50 solid rgba(87, 220, 53, 0.3);
                 }
                 & > span{
                     @include font30_400();
@@ -134,28 +144,32 @@
             }
         }
         & > div:last-child{
-            width: 69%;
+            width: $MyScale1080;
             & > div{
                 width: 100%;   
                 
             }
             & > div:first-child{
+                height: $MyScale80;
+                display: flex;
+                align-items: center;
                 @include font30_400();
             }
             & > div:last-child{
                 @include font22_400();
-                margin-top: 1vw;
+                margin-top: $MyScale20;
+                height: $MyScale60;
+                display: flex;
+                align-items: center;
             }
             & > div:not(:last-child):not(:first-child){
                 display: flex;
                 flex-direction: row;
-                margin-top: 1vw;
+                height: $MyScale80;
                 & .MuiInputBase-sizeSmall{
-                    height: 2.8vw;
+                    height: $MyScale80;
                     & > input{
-                        height: 2.8vw;
-                        padding-left: 1.3vw;
-                        padding-right: 1.3vw;
+                        height: $MyScale80;
                         @include font30_400();
                     }
                     & > div{
@@ -168,11 +182,35 @@
                 }
 
                 & > div:first-child{
-                    width: 15%;
-                    margin-right: 0.7vw;
+                    width: $MyScale160;
+                    height: $MyScale80;
+                    margin-right: $MyScale20;
+                    & .MuiSelect-select.MuiSelect-outlined.MuiInputBase-input{
+                        @include font30_400();
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    & svg{
+                        width: $MyScale60;
+                        height: $MyScale60;
+                        top: auto;
+                    }
                 }
                 & > div:last-child{
-                    width: 29%;
+                    width: $MyScale320;
+                    height: $MyScale80;
+                    & .MuiSelect-select.MuiSelect-outlined.MuiInputBase-input{
+                        @include font30_400();
+                        display: flex;
+                        justify-content: center;
+                        align-items: center;
+                    }
+                    & svg{
+                        width: $MyScale60;
+                        height: $MyScale60;
+                        top: auto;
+                    }
                 }
             }
         }
@@ -186,11 +224,17 @@
         & .headAddTable{
             padding-right: 0;
             text-align: end;
-            & span{
-                @include font30_400();
-                border: 3px solid #e5e5e5;
-                padding: 0.8vw 3vw;
+            & > div{
+                border: $MyScale3 solid #e5e5e5;
                 border-radius: 2vw;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: calc($MyScale300 - $MyScale3 * 2);
+                height: $MyScale80;
+                & span{
+                    @include font30_400();
+                }
             }
         }
         & td{
@@ -204,8 +248,8 @@
             text-align: end;
             width: 2.4vw;
             & svg{
-                width: 2.2vw;
-                height: 2.2vw;
+                width: $MyScale60!important;
+                height: $MyScale60!important;
                 vertical-align: text-top;
             }
         }
@@ -227,22 +271,55 @@
     }
 
     & .addr_table{
-        margin-top: 5.5vw;
+        margin-top: $MyScale100;
         & .headTable{
             @include font40_500();
         }
         & .headAddTable{
             padding-right: 0;
             text-align: end;
-            & span{
-                @include font30_400();
-                border: 3px solid #e5e5e5;
-                padding: 0.8vw 3vw;
-                border-radius: 2vw;
+            & > div{
+                border: $MyScale3 solid #e5e5e5;
+                border-radius: $MyScale40;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                width: calc($MyScale300 - $MyScale3 * 2);
+                height: calc($MyScale80 - $MyScale3 * 2);
+                cursor: pointer;
+                & span{
+                    @include font30_400();
+                }
             }
+            
         }
         & td{
             @include font30_400();
+        }
+        & tr > td:nth-child(1){
+            width: $MyScale300;
+            padding-right: $MyScale20;
+            padding-left: 0;
+        }
+        & tr > td:nth-child(2){
+            width: $MyScale720;
+            padding-right: $MyScale20;
+            padding-left: 0;
+        }
+        & tr > td:nth-child(3){
+            width: $MyScale240;
+            padding-right: $MyScale20;
+            padding-left: 0;
+        }
+        & tr > td:nth-child(4){
+            width: $MyScale160;
+            padding-right: $MyScale40;
+            padding-left: 0;
+        }
+        & tr > td:nth-child(5){
+            width: $MyScale60;
+            padding-right: 0;
+            padding-left: 0;
         }
         & tr > th:first-child, tr > td:first-child{
             padding-left: 0;
@@ -250,10 +327,9 @@
         & tr > td:last-child{
             padding-right: 0;
             text-align: end;
-            //width: 2.4vw;
             & svg{
-                width: 2.2vw;
-                height: 2.2vw;
+                width: $MyScale60!important;
+                height: $MyScale60!important;
                 vertical-align: text-top;
                 cursor: pointer;
                 &:hover > path{
@@ -264,7 +340,6 @@
         }
         .ChangeAddr{
             text-align: end;
-            //width: 3vw;
             & span{
                 @include font30_400();
                 cursor: pointer;
@@ -276,23 +351,31 @@
         }
         .ChooseAddr{
             text-align: end;
+            & > div{
+                height: $MyScale60;
+                width: $MyScale240;
+                border-radius: $MyScale30;
+                background: rgba(0, 0, 0, 0.05);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+            }
             & span{
                 @include font30_400();
-                background-color: rgba(0, 0, 0, 0.05);
-                padding: 0.5vw 2vw;
-                border-radius: 2vw;
             }
         }
         & thead th{
-            padding-bottom: 1.6vw;
+            padding-bottom: $MyScale23;
+            padding-top: 0;
+            height: $MyScale80;
         }
         & tbody tr{
-            height: 4.3vw;
+            height: $MyScale120;
         }
     }
 
     & .log_out{
-        padding-top: 5.1445vw;
+        padding-top: $MyScale160;
         display: flex;
         justify-content: space-between;
         align-items: center;
@@ -307,9 +390,9 @@
         & span:last-child{
             color: $colorMain;
             border: 1px solid $colorMain;
-            border-radius: 40px;
-            width: 14.3685vw;
-            height: 2.816vw;
+            border-radius: $MyScale40;
+            width: calc($MyScale400 - 2px);
+            height: calc($MyScale80 - 2px);
             display: flex;
             justify-content: center;
             align-items: center;
