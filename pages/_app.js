@@ -22,6 +22,7 @@ import '../styles/header/cityFormMobile.scss'
 import '../styles/header/headerPC.scss'
 import '../styles/header/headerMobile.scss'
 import '../styles/header/basketPC.scss'
+import '../styles/header/basketModalPC.scss'
 
 import '../styles/profile/promokody.scss'
 import '../styles/profile/zakazy.scss'

@@ -15,7 +15,7 @@ import { roboto } from '@/ui/Font.js';
 
 import { shallow } from 'zustand/shallow';
 
-import { useHeaderStore, useCitiesStore } from '@/components/store.js';
+import { useHeaderStore, useCitiesStore, useCartStore } from '@/components/store.js';
 
 import BasketIconHeaderMobile from '../basket/basketIconHeaderMobile';
 import ProfileIconHeaderMobile from '../profile/profileIconHeaderMobile';
@@ -28,6 +28,7 @@ export default memo(function NavBarMobile({ city, active_page }) {
 
   const [setActiveBasket, openBasket, setActiveModalCity] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity], shallow);
   const [setThisCityRu, thisCityRu] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu], shallow);
+  const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ], shallow )
 
   if (city == '') {
     return null;
