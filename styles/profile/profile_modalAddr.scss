@@ -1,0 +1,164 @@
+
+@import "../settings";
+
+.modalAddrPC {
+    & .MuiDialogContent-root{
+        padding: 0;
+    }
+    & .MuiDialog-paper {
+        border-radius: $MyScale40;
+        overflow: visible;
+        margin: 0;
+        width: $MyScale1960;
+        max-width: none !important;
+    }
+
+    & .MuiFormControl-root{
+        & input{
+            height: $MyScale40;
+            padding: $MyScale20;
+            padding-top: 0;
+            @include font30_400();
+        }
+        & .MuiInputBase-root::before{
+            border-width: $MyScale3;
+            border-color: rgba(0, 0, 0, 0.20);
+        }
+    }
+    & .container{
+        padding: 0;
+    }
+
+    & .mainGrid{
+        width: 100%;
+        display: flex;
+        flex-direction: row;
+
+        & > .map{
+            width: 50%;
+            overflow: hidden;
+            border-top-left-radius: $MyScale40;
+            border-bottom-left-radius: $MyScale40;
+        }
+        & > .form{
+            width: 50%;
+
+            & .nameAddr{
+                width: $MyScale680;
+                height: $MyScale120;
+                margin-top: $MyScale150;
+                margin-left: $MyScale170;
+                display: flex;
+                align-items: center;
+                & > span{
+                    @include font50_500();
+                    color: rgba(0, 0, 0, 0.40);
+                }
+                & > svg{
+                    width: $MyScale60;
+                    height: $MyScale60;
+                    margin-left: $MyScale30;
+                }
+            }
+
+            & .city{
+                margin-left: $MyScale150;
+                margin-top: $MyScale30;
+                width: $MyScale700;
+            }
+            & .street{
+                margin-left: $MyScale150;
+                margin-top: $MyScale60;
+                width: $MyScale700;
+            }
+            & .street_dop_3{
+                margin-left: $MyScale150;
+                margin-top: $MyScale60;
+                width: $MyScale700;
+                & > div{
+                    width: $MyScale220!important;
+                    &:nth-child(1){
+                        margin-right: $MyScale20;
+                    }
+                    &:nth-child(2){
+                        margin-right: $MyScale20;
+                    }
+                }
+            }
+            & .street_dop_2{
+                margin-left: $MyScale150;
+                margin-top: $MyScale60;
+                width: $MyScale700;
+                & > div{
+                    width: $MyScale340!important;
+                    &:nth-child(1){
+                        margin-right: $MyScale20;
+                    }
+                }
+            }
+            & .comment{
+                margin-left: $MyScale150;
+                margin-top: $MyScale60;
+                width: $MyScale700;
+            }
+            & .chooseMain{
+                margin-left: $MyScale150;
+                margin-top: $MyScale30;
+                padding-bottom: $MyScale30;
+                width: $MyScale700;
+                display: flex;
+                flex-direction: row;
+                justify-content: space-between;
+                align-items: center;
+                border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
+                & > label{
+                    margin-right: $MyScale20;
+                }
+                & > div{
+                    margin-left: $MyScale20;
+                    display: flex;
+                    flex-direction: row;
+                    align-items: center;
+                    & > span{
+                        @include font30_400();
+                        padding-right: $MyScale20;
+                    }
+                    & > div{
+                        width: $MyScale80;
+                        height: $MyScale80;
+                        background-color: rgba(0, 0, 0, 0.07);
+                        display: flex;
+                        align-items: center;
+                        justify-content: center;
+                        border-radius: $MyScale390;
+                        & > svg{
+                            width: $MyScale48;
+                            height: $MyScale48;
+                        }
+                    }
+                }
+            }
+            & .btnSave{
+                margin-left: $MyScale150;
+                margin-top: $MyScale130;
+                margin-bottom: $MyScale144;
+                & > div{
+                    width: $MyScale400;
+                    height: $MyScale80;
+                    background-color: $colorMain;
+                    border-radius: $MyScale40;
+                    display: flex;
+                    justify-content: center;
+                    align-items: center;
+                    & > span{
+                        @include font30_400();
+                        color: #fff;
+                    }
+                }
+            }
+        }
+    }
+
+    
+    
+}

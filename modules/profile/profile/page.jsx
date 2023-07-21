@@ -19,7 +19,8 @@ import MySelect from '@/../ui/MySelect.js';
 
 import { CloseIconMin } from '@/../ui/Icons.js';
 
-import Meta from '@/components/meta.js';
+import Meta from '@/components/meta.js'
+import ModalAddr from './modalAddr';
 
 import { useProfileStore } from '@/../components/store.js';
 
@@ -78,7 +79,7 @@ export default function ProfilePage(props){
     
   }
 
-  const [ getUserInfo, setUser, userInfo, streets, shortName, updateUser ] = useProfileStore( state => [ state.getUserInfo, state.setUser, state.userInfo, state.streets, state.shortName, state.updateUser ] );
+  const [ getUserInfo, setUser, userInfo, streets, shortName, updateUser, openModalAddr ] = useProfileStore( state => [ state.getUserInfo, state.setUser, state.userInfo, state.streets, state.shortName, state.updateUser, state.openModalAddr ] );
 
   useEffect(() => {
     if( session.data?.user?.token ){
@@ -298,7 +299,7 @@ export default function ProfilePage(props){
                 <TableRow>
                   <TableCell colSpan={3} className="headTable">Мои адреса</TableCell>
                   <TableCell colSpan={2} className="headAddTable">
-                    <div>
+                    <div className="headAddTable__" onClick={ () => openModalAddr() }>
                       <span>Добавить</span>
                     </div>
                   </TableCell>
@@ -327,7 +328,9 @@ export default function ProfilePage(props){
 
         </Grid>
         <ProfileBreadcrumbs />
+        <ModalAddr />
       </Grid>
+      
     </Meta>
   )
 }

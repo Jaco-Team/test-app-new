@@ -699,8 +699,7 @@ export const useContactStore = create((set, get) => ({
           center: [ points[0]['xy_center_map']['latitude'], points[0]['xy_center_map']['longitude'] ],
           zoom: 11.5,
           controls: ['geolocationControl', 'searchControl']
-        }, { suppressMapOpenBlock: true },
-        );
+        }, { suppressMapOpenBlock: true });
 
         points_zone.map((zone, key)=>{
           get().myMap2.geoObjects.add(
@@ -981,6 +980,7 @@ export const useProfileStore = create((set, get) => ({
   modalOrder: {},
   openModal: false,
   openModalDelete: false,
+  isOpenModalAddr: false,
   shortName: '',
   streets: [],
   city: '',
@@ -1075,6 +1075,30 @@ export const useProfileStore = create((set, get) => ({
     set({
       openModalDelete: false
     })
+  },
+  closeModalAddr: () => {
+    set({
+      isOpenModalAddr: false
+    })
+  },
+  openModalAddr: () => {
+    console.log('asd')
+    set({
+      isOpenModalAddr: true
+    })
+
+    setTimeout( () => {
+      ymaps.ready().then((function () {
+    
+        new ymaps.Map('map', {
+          center: [ 53.518271, 49.415377 ],
+          zoom: 11.5,
+          controls: []
+        }, { suppressMapOpenBlock: true });
+  
+      }))
+    }, 300 )
+    
   },
   orderDel: async (this_module, userToken) => {
     let data = {

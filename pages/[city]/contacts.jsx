@@ -1,6 +1,6 @@
 import React, { useEffect } from 'react';
 
-import Script from 'next/script';
+import Script from 'next/script'; 
 import dynamic from 'next/dynamic'
 
 const DynamicHeader = dynamic(() => import('@/components/header.js'))
