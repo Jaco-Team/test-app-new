@@ -14,7 +14,7 @@ import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
 import MyTextInput from '@/../ui/MyTextInput.js';
-import MySwitch from '@/../ui/Switch.js';
+import { SwitchIOS as MySwitch } from '@/../ui/MySwitch.js';
 import MySelect from '@/../ui/MySelect.js';
 
 import { CloseIconMin } from '@/../ui/Icons.js';

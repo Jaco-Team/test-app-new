@@ -40,6 +40,13 @@ export const useCartStore = create((set, get) => ({
   // найти добавляемый промо товар в корзине(items)
   promoItemsFind: false,
 
+  openModalBasket: false,
+
+  // модалка Корзины для оформления/оплаты заказа
+  setActiveModalBasket: (active) => {
+    set({ openModalBasket: active });
+  },
+
   // получения товара для корзины и добавление промоТовара в корзину если есть и разделение корзины на товары без допов и доп товары
   getItems: () => {
 

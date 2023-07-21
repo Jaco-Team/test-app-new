@@ -19,64 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 
-import { styled } from '@mui/material/styles';
-import FormControlLabel from '@mui/material/FormControlLabel';
-import Switch from '@mui/material/Switch';
-
-const IOSSwitch = styled((props) => (<Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />))(({ theme }) => ({
-  width: '4.2vw',
-  height: '2.1vw',
-  borderRadius: '2vw',
-  padding: 0,
-  '& .MuiSwitch-switchBase': {
-    padding: 0,
-    margin: '0.1vw',
-    transitionDuration: '300ms',
-    '&.Mui-checked': {
-      transform: 'translateX(2.1vw)',
-      color: '#fff',
-      marginTop: '0.1vw',
-      '& + .MuiSwitch-track': {
-        backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#57DC35',
-        opacity: 1,
-        border: 0,
-      },
-      '&.Mui-disabled + .MuiSwitch-track': {
-        opacity: 0.5,
-      },
-    },
-    '& .MuiSwitch-thumb': {
-      boxShadow: 'none',
-    },
-    '&.Mui-focusVisible .MuiSwitch-thumb': {
-      color: '#33cf4d',
-      border: '6px solid #fff',
-    },
-    '&.Mui-disabled .MuiSwitch-thumb': {
-      color:
-        theme.palette.mode === 'light'
-          ? theme.palette.grey[100]
-          : theme.palette.grey[600],
-    },
-    '&.Mui-disabled + .MuiSwitch-track': {
-      opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
-    },
-  },
-  '& .MuiSwitch-thumb': {
-    //paddingTop: '0.1vw',
-    boxSizing: 'border-box',
-    width: '1.9vw',
-    height: '1.9vw',
-  },
-  '& .MuiSwitch-track': {
-    borderRadius: 36 / 2,
-    backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
-    opacity: 1,
-    transition: theme.transitions.create(['background-color'], {
-      duration: 500,
-    }),
-  },
-}));
+import { SwitchIOS as MySwitch } from '@/../ui/MySwitch.js';
 
 export default function ContactsPage(props) {
   const { page } = props;
@@ -147,7 +90,7 @@ export default function ContactsPage(props) {
 
           <div className="switch">
             <Typography variant="h5" component="span">Показать зону доставки</Typography>
-            <FormControlLabel control={<IOSSwitch checked={disable} onClick={disablePointsZone}/>}/>
+            <MySwitch checked={disable} onClick={disablePointsZone}/>
           </div>
 
         </div>

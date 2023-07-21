@@ -21,7 +21,7 @@ export default function BasketPC() {
   const [scrollBasket, setScrollBasket] = useState(0);
 
   const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
-  const [getInfoPromo, checkPromo, allPrice, promoInfo, promoItemsFind, itemsCount] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice, state.promoInfo, state.promoItemsFind, state.itemsCount], shallow);
+  const [getInfoPromo, checkPromo, allPrice, promoInfo, promoItemsFind, itemsCount, setActiveModalBasket] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice, state.promoInfo, state.promoItemsFind, state.itemsCount, state.setActiveModalBasket], shallow);
   const [openBasket, setActiveBasket, targetBasket] = useHeaderStore((state) => [state.openBasket, state.setActiveBasket, state.targetBasket], shallow);
   
   useEffect(() => {
@@ -78,7 +78,9 @@ export default function BasketPC() {
              : */}
             <Button
               variant="contained"
+              disabled={!itemsCount}
               //onClick={this.props.openLogin}
+              onClick={() => { setActiveModalBasket(true); setActiveBasket(false)}}
             >
               <span>Оформить заказ</span>
             </Button>

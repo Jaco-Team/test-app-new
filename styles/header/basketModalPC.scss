@@ -1,0 +1,215 @@
+@import '../settings';
+
+.modalBasketMainPC {
+  .MuiDialog-paper {
+    overflow: visible;
+    margin: $MyScale50 0 !important;
+    max-width: none !important;
+    border-radius: $MyScale40;
+
+    .MuiDialogContent-root {
+      padding: 0;
+      border-radius: $MyScale40;
+      width: $MyScale1000;
+      height: $MyScale1542;
+      overflow: hidden;
+
+      .modalBasketPC {
+        .closeButtonBasketPC {
+          position: absolute;
+          left: -3.3vw;
+          padding: 0;
+          background-color: transparent;
+          top: 0;
+          svg {
+            width: $MyScale60;
+            height: $MyScale60;
+          }
+        }
+
+        .modalBasketContainer {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          justify-content: center;
+          margin: $MyScale80 $MyScale80 $MyScale160 $MyScale80;
+
+          .basketHeader {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: $MyScale120;
+            margin-bottom: $MyScale40;
+            span {
+              @include font50_500();
+              text-align: center;
+            }
+          }
+
+          .basketChoose {
+            width: $MyScale680;
+            height: $MyScale80;
+            border-radius: $MyScale40;
+            border: $MyScale2 solid rgba(0, 0, 0, 0.2);
+            padding: 0;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-bottom: $MyScale40;
+            &:hover {
+              background-color: #fff;
+            }
+
+            div {
+              display: flex;
+              align-items: center;
+              margin-left: $MyScale30;
+              text-transform: lowercase;
+
+              span:first-child {
+                width: $MyScale60;
+                height: $MyScale60;
+                margin-right: $MyScale20;
+                svg {
+                  width: $MyScale60;
+                  height: $MyScale60;
+                }
+              }
+
+              img {
+                margin-right: $MyScale20;
+                height: $MyScale40;
+                width: $MyScale49;
+              }
+
+              span:nth-child(2) {
+                height: $MyScale60;
+                line-height: $MyScale60;
+                @include font30_400();
+                margin-right: $MyScale10;
+                &:first-letter {
+                  text-transform: uppercase;
+                }
+              }
+
+              span:nth-child(3) {
+                color: rgba(0, 0, 0, 0.4) !important;
+                height: $MyScale60;
+                line-height: $MyScale60;
+                @include font30_400();
+                margin: 0;
+                &:first-letter {
+                  text-transform: uppercase;
+                }
+                svg {
+                  width: $MyScale75;
+                  height: $MyScale15;
+                }
+              }
+
+              span:nth-child(4) {
+                height: $MyScale60;
+                line-height: $MyScale60;
+                margin-right: $MyScale15;
+                @include font30_400();
+                svg {
+                  width: $MyScale75;
+                  height: $MyScale15;
+                }
+              }
+
+              span:nth-child(5) {
+                height: $MyScale60;
+                line-height: $MyScale60;
+                @include font30_400();
+                margin: 0;
+              }
+            }
+
+            span {
+              margin-right: $MyScale43;
+              svg {
+                width: $MyScale22;
+                height: $MyScale11;
+              }
+            }
+          }
+
+          .basketLine {
+            width: $MyScale920;
+            height: $MyScale2;
+            background: rgba(0, 0, 0, 0.1);
+          }
+
+          .basketDelivery {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            margin-top: $MyScale40;
+            width: 100%;
+            height: $MyScale60;
+            span {
+              @include font40_500();
+            }
+          }
+
+          .basketTotal {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            width: 100%;
+            height: $MyScale60;
+            span:first-child {
+              @include font40_500();
+            }
+            span:last-child {
+              @include font50_500();
+            }
+          }
+
+          .basketOrder {
+            width: $MyScale560;
+            height: $MyScale80;
+            border-radius: $MyScale40;
+            margin-top: $MyScale80;
+            padding: 0;
+            text-transform: lowercase;
+
+            span {
+              display: flex;
+              align-items: center;
+              text-align: center;
+              @include font30_400();
+              color: #fff;
+              text-transform: capitalize;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#basketChooseModal {
+  & div.MuiPaper-root.MuiMenu-paper {
+    margin-top: $MyScale20;
+    border-radius: $MyScale20;
+    width: $MyScale680;
+    background: #f2f2f2;
+    box-shadow: $MyScale10 $MyScale20 $MyScale30 $MyScale5 rgba(0, 0, 0, 0.2);
+    & ul {
+      width: 100%;
+      padding: 0;
+      & li {
+        padding: 0;
+        height: $MyScale100;
+        padding-left: $MyScale60;
+        @include font30_400();
+        &:hover {
+          background-color: #ffffff;
+          color: #dd1a32;
+        }
+      }
+    }
+  }
+}
