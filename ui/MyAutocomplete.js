@@ -66,7 +66,7 @@ export default function MyAutocomplete({data, placeholder, onChange}) {
         // Regular option
         return option.name;
       }}
-      renderOption={(props, option) => <li {...props}>{option.name}</li>}
+      renderOption={(props, option) => <li className='itemAutocomplited' {...props}>{option.name}</li>}
       freeSolo
       renderInput={(params) => (
         <TextField {...params} placeholder={placeholder} variant="standard" />

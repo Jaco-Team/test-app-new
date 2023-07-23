@@ -1,6 +1,33 @@
 
 @import "../settings";
 
+.MuiAutocomplete-popper{
+    max-height: $MyScale500;
+    width: $MyScale780!important;
+    border-radius: $MyScale20!important;
+    
+    margin-top: $MyScale20!important;
+    box-shadow: 0px $MyScale20 $MyScale40 $MyScale10 rgba(0, 0, 0, 0.25);
+
+    & .MuiPaper-root{
+        border-radius: $MyScale20!important;
+        background-color: transparent;
+        //margin-top: $MyScale20!important;
+    }
+    & .MuiAutocomplete-listbox{
+        padding: 0!important;
+        border-radius: $MyScale20!important;
+        background-color: #fff;
+    }
+}
+.MuiAutocomplete-option{
+    height: $MyScale100;
+    @include font30_400();
+    border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
+    margin-left: $MyScale40;
+    margin-right: $MyScale40;
+}
+
 .modalAddrPC {
     & .MuiDialogContent-root{
         padding: 0;
