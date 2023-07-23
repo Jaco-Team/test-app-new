@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import Grid from '@mui/material/Grid';
 
@@ -34,25 +34,39 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 import { roboto } from '@/ui/Font.js';
 import { IconClose, PencilModalAddrIcon, HomeModalAddrIcon } from '@/ui/Icons.js';
 import MyTextInput from '@/ui/MyTextInput';
+import MyAutocomplete from '@/ui/MyAutocomplete';
+
 
 import { useProfileStore } from '@/../components/store.js';
 
 import { useSession, signOut } from 'next-auth/react';
 
+const data1 = [
+  {id: 1, name: 'Льва Яшина'},
+  {id: 2, name: 'Улица Ворошилова'},
+];
+
 export default function ModalAddr(){
   //const { page, this_module, city } = props;
 
-  const [ isOpenModalAddr, closeModalAddr ] = useProfileStore( state => [ state.isOpenModalAddr, state.closeModalAddr ] );
+  const [ isOpenModalAddr, closeModalAddr, allStreets, checkStreet ] = useProfileStore( state => [ state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet ] );
+
+  const [ street, setStreet ] = useState('');
+  const [ home, setHome ] = useState('');
+  const [ pd, setPd ] = useState('');
+  const [ domophome, setDomophome ] = useState('');
+  const [ et, setEt ] = useState('');
+  const [ kv, setKv ] = useState('');
+  const [ comment, setComment ] = useState('');
+
+  
 
   useEffect(() => {
-    //setValue("name", userInfo.name)
-    //setValue("fam", userInfo.fam)
-    //setValue("login", userInfo.login)
-    //setValue("mail", userInfo.mail)
-    //console.error( 'render modal' )
-  }, []);
-
-  //console.error( 'render modal' )
+    if( street && street.length > 0 && home.length > 0 ){
+      console.log( street, home )
+      checkStreet(street, home)
+    }
+  }, [street, home]);
 
   return (
     <Dialog
@@ -80,19 +94,19 @@ export default function ModalAddr(){
                 <MyTextInput variant="standard" value={'Тольятти'} />
               </div>
               <div className='street'>
-                <MyTextInput variant="standard" value={''} placeholder={'Улица'} />
+                <MyAutocomplete placeholder={'Улица'} data={allStreets} onChange={ val => setStreet(val) } />
               </div>
               <div className='street_dop_3'>
-                <MyTextInput variant="standard" value={''} placeholder={'Дом'} />
-                <MyTextInput variant="standard" value={''} placeholder={'Подъезд'} />
-                <MyTextInput variant="standard" value={''} placeholder={'Домофон'} />
+                <MyTextInput variant="standard" value={home} placeholder={'Дом'} func={ e => setHome(e.target.value) } />
+                <MyTextInput variant="standard" value={pd} placeholder={'Подъезд'} func={ e => setPd(e.target.value) } />
+                <MyTextInput variant="standard" value={domophome} placeholder={'Домофон'} func={ e => setDomophome(e.target.value) } />
               </div>
               <div className='street_dop_2'>
-                <MyTextInput variant="standard" value={''} placeholder={'Этаж'} />
-                <MyTextInput variant="standard" value={''} placeholder={'Квартира'} />
+                <MyTextInput variant="standard" value={et} placeholder={'Этаж'} func={ e => setEt(e.target.value) } />
+                <MyTextInput variant="standard" value={kv} placeholder={'Квартира'} func={ e => setKv(e.target.value) } />
               </div>
               <div className='comment'>
-                <MyTextInput variant="standard" value={''} placeholder={'Комментарий курьеру'} />
+                <MyTextInput variant="standard" value={comment} placeholder={'Комментарий курьеру'} func={ e => setComment(e.target.value) } />
               </div>
               <div className='chooseMain'>
                 <div>

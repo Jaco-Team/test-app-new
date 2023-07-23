@@ -16,8 +16,8 @@
     & .MuiFormControl-root{
         & input{
             height: $MyScale40;
-            padding: $MyScale20;
-            padding-top: 0;
+            padding: $MyScale20!important;
+            padding-top: 0!important;
             @include font30_400();
         }
         & .MuiInputBase-root::before{

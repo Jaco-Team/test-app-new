@@ -990,7 +990,10 @@ export const useProfileStore = create((set, get) => ({
   isOpenModalAddr: false,
   shortName: '',
   streets: [],
+  allStreets: [],
   city: '',
+  thisMAP: null,
+  is_fetch: false,
   getPromoList: async (this_module, city, userToken) => {
     let data = {
       type: 'get_my_promos',
@@ -1002,6 +1005,7 @@ export const useProfileStore = create((set, get) => ({
 
     set({
       promoList: json.promo_list,
+      city: city
     });
   },
   getOrderList: async (this_module, city, userToken) => {
@@ -1032,7 +1036,8 @@ export const useProfileStore = create((set, get) => ({
     set({
       shortName: json.user?.name.substring(0, 1) + json.user?.fam.substring(0, 1),
       userInfo: json.user,
-      streets: json.streets
+      streets: json.streets,
+      city: city
     });
   },
   setUser: (user) => {
@@ -1088,17 +1093,24 @@ export const useProfileStore = create((set, get) => ({
       isOpenModalAddr: false
     })
   },
-  openModalAddr: () => {
-    console.log('asd')
+  openModalAddr: async () => {
+    let data = {
+      type: 'get_data_for_streets',
+      city_id: get().city,
+    };
+
+    let json = await api('profile', data);
+
     set({
-      isOpenModalAddr: true
+      isOpenModalAddr: true,
+      allStreets: json.streets
     })
 
     setTimeout( () => {
       ymaps.ready().then((function () {
     
-        new ymaps.Map('map', {
-          center: [ 53.518271, 49.415377 ],
+        get().thisMAP = new ymaps.Map('map', {
+          center: [ json.city_center[0], json.city_center[1] ],
           zoom: 11.5,
           controls: []
         }, { suppressMapOpenBlock: true });
@@ -1124,7 +1136,64 @@ export const useProfileStore = create((set, get) => ({
       get().closeOrder();
       get().getOrderList('zakazy', get().city, userToken);
     }
-  }
+  },
+  checkStreet: async(street, home) => {
+    if( get().is_fetch === true ){
+      setTimeout( () => {
+        get().checkStreet(street, home)
+      }, 300 )
+
+      return ;
+    }else{
+      set({
+        is_fetch: true
+      })
+    }
+
+    let data = {
+      type: 'check_street',
+      city_id: get().city,
+      street: street,
+      home: home
+    };
+
+    let json = await api('profile', data);
+
+    let objectManager = new ymaps.ObjectManager();
+
+    if( json?.addrs?.length == 1 ){
+      json.addrs = json?.addrs[0];
+
+      get().thisMAP.setCenter([json.addrs.xy_new.latitude, json.addrs.xy_new.longitude], 11);
+
+      let json2 = {
+        "type": "FeatureCollection",
+        "features": []
+      };
+
+      json2.features.push({
+        type: "Feature",
+        id: -1,
+        options: {
+          preset: 'islands#blackDotIcon', 
+          iconColor: 'black'
+        },
+        geometry: {
+          type: "Point",
+          coordinates: [ json.addrs.xy_new.latitude, json.addrs.xy_new.longitude ]
+        },
+      })
+
+      get().thisMAP.geoObjects.removeAll()
+          
+      objectManager.add(json2);
+      get().thisMAP.geoObjects.add(objectManager);
+    }
+
+    set({
+      is_fetch: false
+    })
+  },
 }));
 
 export const useFooterStore = create((set) => ({
