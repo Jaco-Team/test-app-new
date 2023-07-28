@@ -1,72 +1,86 @@
-import React, { useEffect, useState, useRef } from 'react';
-
-import Grid from '@mui/material/Grid';
-
-import { useForm, Controller } from "react-hook-form";
-
-import ProfileBreadcrumbs from '../profileBreadcrumbs.jsx';
-
-import Table from '@mui/material/Table';
-import TableBody from '@mui/material/TableBody';
-import TableCell from '@mui/material/TableCell';
-import TableHead from '@mui/material/TableHead';
-import TableRow from '@mui/material/TableRow';
+import React, { useEffect, useState } from 'react';
 
 import MySwitch from '@/../ui/Switch.js';
-import MySelect from '@/../ui/MySelect.js';
-
-import { CloseIconMin } from '@/../ui/Icons.js';
-
-import Meta from '@/components/meta.js';
 
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-import Typography from '@mui/material/Typography';
-import Box from '@mui/material/Box';
 import Backdrop from '@mui/material/Backdrop';
-import Button from '@mui/material/Button';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
-import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
-import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import { roboto } from '@/ui/Font.js';
 import { IconClose, PencilModalAddrIcon, HomeModalAddrIcon } from '@/ui/Icons.js';
 import MyTextInput from '@/ui/MyTextInput';
 import MyAutocomplete from '@/ui/MyAutocomplete';
-
+import MySelect from '@/ui/MySelect';
 
 import { useProfileStore } from '@/../components/store.js';
 
-import { useSession, signOut } from 'next-auth/react';
-
-const data1 = [
-  {id: 1, name: 'Льва Яшина'},
-  {id: 2, name: 'Улица Ворошилова'},
-];
+import { useSession } from 'next-auth/react';
 
 export default function ModalAddr(){
-  //const { page, this_module, city } = props;
+  const [ isOpenModalAddr, closeModalAddr, allStreets, checkStreet, saveNewAddr, infoAboutAddr, cityList, updateStreetList, active_city, updateAddr ] = 
+    useProfileStore( state => [ state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.cityList, state.updateStreetList, state.active_city, state.updateAddr ] );
 
-  const [ isOpenModalAddr, closeModalAddr, allStreets, checkStreet ] = useProfileStore( state => [ state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet ] );
+  const session = useSession();
 
   const [ street, setStreet ] = useState('');
+  const [ street_, setStreet_ ] = useState('');
   const [ home, setHome ] = useState('');
   const [ pd, setPd ] = useState('');
   const [ domophome, setDomophome ] = useState('');
   const [ et, setEt ] = useState('');
   const [ kv, setKv ] = useState('');
   const [ comment, setComment ] = useState('');
-
-  
+  const [ check, setCheck ] = useState(false);
+  const [ nameAddr, setNameAddr ] = useState('');
+  const [ cityID, setCityID ] = useState(active_city);
 
   useEffect(() => {
     if( street && street.length > 0 && home.length > 0 ){
-      console.log( street, home )
-      checkStreet(street, home)
+      checkStreet(street, home, cityID);
     }
   }, [street, home]);
+
+  useEffect( () => {
+
+    if( infoAboutAddr != null ){
+      setStreet_(infoAboutAddr.street);
+      setStreet(infoAboutAddr.street);
+      setHome(infoAboutAddr.home);
+      setPd(infoAboutAddr.pd);
+      setDomophome(infoAboutAddr.domophome);
+      setEt(infoAboutAddr.et);
+      setKv(infoAboutAddr.kv);
+      setComment(infoAboutAddr.comment);
+      setCheck( parseInt(infoAboutAddr.is_main) == 1 ? true : false )
+      setNameAddr(infoAboutAddr.name)
+      setCityID(infoAboutAddr.city_id);
+    }
+  }, [infoAboutAddr] )
+
+  useEffect( () => {
+    updateStreetList(cityID);
+  }, [cityID] )
+
+  useEffect( () => {
+    setCityID(active_city);
+  }, [active_city] )
+
+  useEffect(() => {
+    if( isOpenModalAddr == false ){
+      setStreet('');
+      setStreet_('')
+      setHome('');
+      setPd('');
+      setDomophome('');
+      setEt('');
+      setKv('');
+      setComment('');
+      setCheck(false)
+      setNameAddr('');
+      setCityID(active_city)
+    }
+  }, [isOpenModalAddr]);
 
   return (
     <Dialog
@@ -87,23 +101,22 @@ export default function ModalAddr(){
             <div className='form'>
 
               <div className='nameAddr'>
-                <span>Новый адрес</span>
-                <PencilModalAddrIcon />
+                <MyTextInput variant="standard" placeholder={'Новый адрес'} inputAdornment={ <PencilModalAddrIcon /> } value={nameAddr} func={ e => setNameAddr(e.target.value) } />
               </div>
               <div className='city'>
-                <MyTextInput variant="standard" value={'Тольятти'} />
+                <MySelect variant="standard" className="city" data={cityList} value={cityID} func={ e => setCityID(e.target.value) } />
               </div>
               <div className='street'>
-                <MyAutocomplete placeholder={'Улица'} data={allStreets} onChange={ val => setStreet(val) } />
+                <MyAutocomplete placeholder={'Улица'} className="city" data={allStreets} val={street_} onChange={ val => setStreet(val) } />
               </div>
               <div className='street_dop_3'>
                 <MyTextInput variant="standard" value={home} placeholder={'Дом'} func={ e => setHome(e.target.value) } />
-                <MyTextInput variant="standard" value={pd} placeholder={'Подъезд'} func={ e => setPd(e.target.value) } />
+                <MyTextInput variant="standard" value={pd} placeholder={'Подъезд'} type={'nember'} func={ e => setPd(e.target.value) } />
                 <MyTextInput variant="standard" value={domophome} placeholder={'Домофон'} func={ e => setDomophome(e.target.value) } />
               </div>
               <div className='street_dop_2'>
-                <MyTextInput variant="standard" value={et} placeholder={'Этаж'} func={ e => setEt(e.target.value) } />
-                <MyTextInput variant="standard" value={kv} placeholder={'Квартира'} func={ e => setKv(e.target.value) } />
+                <MyTextInput variant="standard" value={et} placeholder={'Этаж'} type={'nember'} func={ e => setEt(e.target.value) } />
+                <MyTextInput variant="standard" value={kv} placeholder={'Квартира'} type={'nember'} func={ e => setKv(e.target.value) } />
               </div>
               <div className='comment'>
                 <MyTextInput variant="standard" value={comment} placeholder={'Комментарий курьеру'} func={ e => setComment(e.target.value) } />
@@ -115,19 +128,17 @@ export default function ModalAddr(){
                     <HomeModalAddrIcon />
                   </div>
                 </div>
-                <MySwitch />
+                <MySwitch onClick={ (event) => { setCheck(event.target.checked) } } checked={check} />
               </div>
               <div className='btnSave'>
-                <div>
+                <div onClick={ () => { infoAboutAddr != null ? updateAddr(pd, domophome, et, kv, comment, session.data?.user?.token, check, nameAddr, cityID) : saveNewAddr(pd, domophome, et, kv, comment, session.data?.user?.token, check, nameAddr, cityID) } }>
                   <span>Сохранить</span>
                 </div>
               </div>
-            </div>
 
-            
+            </div>
           </div>
 
-          
         </div>
       </DialogContent>
     </Dialog>

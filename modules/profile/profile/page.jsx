@@ -79,7 +79,7 @@ export default function ProfilePage(props){
     
   }
 
-  const [ getUserInfo, setUser, userInfo, streets, shortName, updateUser, openModalAddr ] = useProfileStore( state => [ state.getUserInfo, state.setUser, state.userInfo, state.streets, state.shortName, state.updateUser, state.openModalAddr ] );
+  const [ getUserInfo, setUser, userInfo, streets, shortName, updateUser, openModalAddr, delAddr ] = useProfileStore( state => [ state.getUserInfo, state.setUser, state.userInfo, state.streets, state.shortName, state.updateUser, state.openModalAddr, state.delAddr ] );
 
   useEffect(() => {
     if( session.data?.user?.token ){
@@ -103,14 +103,14 @@ export default function ProfilePage(props){
 
     setUser(userInfo);
 
-    updateUser(this_module, city, session.data?.user_id);
+    updateUser(this_module, city, session.data?.user?.token);
   }
 
   function changeOtherData(type, data){
     userInfo[ [type] ] = data === true ? 1 : 0;
 
     setUser(userInfo);
-    updateUser(this_module, city, session.data?.user_id);
+    updateUser(this_module, city, session.data?.user?.token);
   }  
 
   function changeUserData(data, value){
@@ -119,7 +119,7 @@ export default function ProfilePage(props){
     setUser(userInfo);
 
     if( userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ){
-      updateUser(this_module, city, session.data?.user_id);
+      updateUser(this_module, city, session.data?.user?.token);
     }
   }
 
@@ -231,6 +231,7 @@ export default function ProfilePage(props){
                 <div>
                   <MySelect 
                     data={arr_d}
+                    className="date_d"
                     disabled={ userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ? true : false }
                     value={ userInfo?.date_bir_d ?? '' }
                     func={ (event) => changeUserData('date_bir_d', event.target.value) }
@@ -239,6 +240,7 @@ export default function ProfilePage(props){
                 <div>
                   <MySelect 
                     data={arr_m}
+                    className="date_m"
                     disabled={ userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ? true : false }
                     value={ userInfo?.date_bir_m ?? '' }
                     func={ (event) => changeUserData('date_bir_m', event.target.value) }
@@ -299,7 +301,7 @@ export default function ProfilePage(props){
                 <TableRow>
                   <TableCell colSpan={3} className="headTable">Мои адреса</TableCell>
                   <TableCell colSpan={2} className="headAddTable">
-                    <div className="headAddTable__" onClick={ () => openModalAddr() }>
+                    <div className="headAddTable__" onClick={ () => openModalAddr(0, city) }>
                       <span>Добавить</span>
                     </div>
                   </TableCell>
@@ -310,10 +312,10 @@ export default function ProfilePage(props){
                 {streets.map( (item, key) =>
                   <TableRow key={key}>
                     <TableCell>{item.city_name}</TableCell>
-                    <TableCell>{item.city_name_dop} {item.street}, д. {item.home}, кв. {item.kv}</TableCell>
-                    <TableCell className={ key == 2 ? 'ChooseAddr' : '' }>{ key == 2 ? <div>Основной</div> : false }</TableCell>
-                    <TableCell className='ChangeAddr'><span>Изменить</span></TableCell>
-                    <TableCell><CloseIconMin /></TableCell>
+                    <TableCell>{item.name_street}, д. {item.home}, кв. {item.kv}</TableCell>
+                    <TableCell className={ parseInt(item.is_main) == 1 ? 'ChooseAddr' : '' }>{ parseInt(item.is_main) == 1 ? <div>Основной</div> : false }</TableCell>
+                    <TableCell className='ChangeAddr'><span onClick={ () => openModalAddr(item.id, item.city) }>Изменить</span></TableCell>
+                    <TableCell><CloseIconMin onClick={ () => delAddr(item.id, session.data?.user?.token) } /></TableCell>
                   </TableRow> 
                 )}
               

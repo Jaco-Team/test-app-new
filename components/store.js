@@ -994,6 +994,11 @@ export const useProfileStore = create((set, get) => ({
   city: '',
   thisMAP: null,
   is_fetch: false,
+  chooseAddrStreet: {},
+  infoAboutAddr: null,
+  cityList: [],
+  is_fetch_save_new_addr: false,
+  active_city: 0,
   getPromoList: async (this_module, city, userToken) => {
     let data = {
       type: 'get_my_promos',
@@ -1030,8 +1035,6 @@ export const useProfileStore = create((set, get) => ({
     };
 
     let json = await api(this_module, data);
-
-    console.log( 'getUserInfo', json )
 
     set({
       shortName: json.user?.name.substring(0, 1) + json.user?.fam.substring(0, 1),
@@ -1093,31 +1096,47 @@ export const useProfileStore = create((set, get) => ({
       isOpenModalAddr: false
     })
   },
-  openModalAddr: async () => {
+  openModalAddr: async (id, city = '') => {
     let data = {
       type: 'get_data_for_streets',
-      city_id: get().city,
+      city_id: city,
+      street_id: id
     };
 
     let json = await api('profile', data);
 
     set({
       isOpenModalAddr: true,
-      allStreets: json.streets
+      allStreets: json.streets,
+      infoAboutAddr: json.this_info,
+      cityList: json.cities,
+      active_city: json.city
     })
 
-    setTimeout( () => {
-      ymaps.ready().then((function () {
-    
+    ymaps.ready().then((function () {
+  
+      if( parseInt( id ) > 0 ){
+        get().thisMAP = new ymaps.Map('map', {
+          center: [ json.this_info.xy[0], json.this_info.xy[1] ],
+          zoom: 11.5,
+          controls: []
+        }, { suppressMapOpenBlock: true });
+
+        get().setMapZone(json.zones, json.this_info.xy)
+
+        get().setAddrPoint(json.this_info.xy);
+
+      }else{
         get().thisMAP = new ymaps.Map('map', {
           center: [ json.city_center[0], json.city_center[1] ],
           zoom: 11.5,
           controls: []
         }, { suppressMapOpenBlock: true });
-  
-      }))
-    }, 300 )
-    
+
+        get().setMapZone(json.zones, json.city_center)
+      }
+
+    }))
   },
   orderDel: async (this_module, userToken) => {
     let data = {
@@ -1137,63 +1156,242 @@ export const useProfileStore = create((set, get) => ({
       get().getOrderList('zakazy', get().city, userToken);
     }
   },
-  checkStreet: async(street, home) => {
+  checkStreet: async(street, home, city_id) => {
     if( get().is_fetch === true ){
       setTimeout( () => {
-        get().checkStreet(street, home)
-      }, 300 )
+        get().checkStreet(street, home, city_id)
+      }, 500 )
 
       return ;
     }else{
       set({
-        is_fetch: true
+        is_fetch: true,
+        chooseAddrStreet: {}
       })
     }
 
     let data = {
       type: 'check_street',
-      city_id: get().city,
+      city_id: city_id,
       street: street,
       home: home
     };
 
     let json = await api('profile', data);
 
-    let objectManager = new ymaps.ObjectManager();
-
     if( json?.addrs?.length == 1 ){
       json.addrs = json?.addrs[0];
 
-      get().thisMAP.setCenter([json.addrs.xy_new.latitude, json.addrs.xy_new.longitude], 11);
-
-      let json2 = {
-        "type": "FeatureCollection",
-        "features": []
-      };
-
-      json2.features.push({
-        type: "Feature",
-        id: -1,
-        options: {
-          preset: 'islands#blackDotIcon', 
-          iconColor: 'black'
-        },
-        geometry: {
-          type: "Point",
-          coordinates: [ json.addrs.xy_new.latitude, json.addrs.xy_new.longitude ]
-        },
+      set({
+        chooseAddrStreet: json.addrs
       })
 
-      get().thisMAP.geoObjects.removeAll()
-          
-      objectManager.add(json2);
-      get().thisMAP.geoObjects.add(objectManager);
+      get().thisMAP.setCenter([json.addrs.xy_new.latitude, json.addrs.xy_new.longitude], 11);
+
+      get().delAddrPoint();
+
+      setTimeout( () => {
+        get().setAddrPoint(json.addrs.xy);
+      }, 300 )
+      
+    }else{
+      set({
+        chooseAddrStreet: {}
+      })
     }
 
     set({
       is_fetch: false
     })
   },
+  saveNewAddr: async(pd, domophome, et, kv, comment, token, is_main, nameAddr, city_id) => {
+
+    if( get().is_fetch_save_new_addr === true ){
+      return ;
+    }
+
+    if( get().is_fetch === true || get().chooseAddrStreet == {} ){
+      setTimeout( () => {
+        get().saveNewAddr(pd, domophome, et, kv, comment, token, is_main, nameAddr, city_id)
+      }, 455 )
+
+      return ;
+    }
+
+    set({
+      is_fetch_save_new_addr: true
+    })
+
+    let data = {
+      type: 'save_new_addr',
+      token: token,
+      city_id: city_id,
+      street: JSON.stringify( get().chooseAddrStreet ),
+      pd: pd,
+      domophome: domophome,
+      et: et,
+      kv: kv,
+      comment: comment,
+      is_main: is_main === true ? 1 : 0,
+      nameAddr: nameAddr
+    };
+
+    let json = await api('profile', data);
+
+    if( json.st === true ){
+      get().closeModalAddr();
+      get().getUserInfo('profile', get().city, token);
+    }
+
+    setTimeout( () => {
+      set({
+        is_fetch_save_new_addr: false
+      })
+    }, 500 )
+    
+  },
+  updateAddr: async(pd, domophome, et, kv, comment, token, is_main, nameAddr, city_id) => {
+
+    if( get().is_fetch_save_new_addr === true ){
+      return ;
+    }
+
+    if( get().is_fetch === true || get().chooseAddrStreet == {} ){
+      setTimeout( () => {
+        get().updateAddr(pd, domophome, et, kv, comment, token, is_main, nameAddr, city_id)
+      }, 455 )
+
+      return ;
+    }
+
+    if( get().chooseAddrStreet == {} ){
+      return ;
+    }
+
+    console.log( 'chooseAddrStreet', get().chooseAddrStreet )
+
+    set({
+      is_fetch_save_new_addr: true
+    })
+
+    let data = {
+      type: 'update_addr',
+      token: token,
+      city_id: city_id,
+      street: JSON.stringify( get().chooseAddrStreet ),
+      pd: pd,
+      domophome: domophome,
+      et: et,
+      kv: kv,
+      id: get().infoAboutAddr.id,
+      comment: comment,
+      is_main: is_main === true ? 1 : 0,
+      nameAddr: nameAddr
+    };
+
+    console.log( data )
+
+    let json = await api('profile', data);
+
+    if( json.st === true ){
+      get().closeModalAddr();
+      get().getUserInfo('profile', get().city, token);
+    }
+
+    setTimeout( () => {
+      set({
+        is_fetch_save_new_addr: false
+      })
+    }, 500 )
+    
+  },
+  delAddr: async(addr_id, token) => {
+    let data = {
+      type: 'del_my_addr',
+      city_id: get().city,
+      token: token,
+      addr_id: addr_id,
+    };
+
+    let json = await api('profile', data);
+
+    if( json.st === true ){
+      get().getUserInfo('profile', get().city, token);
+    }
+  },
+  updateStreetList: async(city_id) => {
+    if( city_id === null || city_id == '' ){
+      return ;
+    }
+
+    let data = {
+      type: 'get_city_street_zone',
+      city_id: city_id,
+    };
+
+    let json = await api('profile', data);
+
+    set({
+      allStreets: json.streets
+    })
+
+    get().setMapZone(json.zones, json.city_center)
+  },
+  setMapZone: (zones, city_center) => {
+    get().thisMAP.geoObjects.removeAll();
+
+    zones.map((zone, key)=>{
+      get().thisMAP.geoObjects.add(
+        new ymaps.Polygon([zone.zone], 
+          {
+            address: '',
+            raion: '',
+          }, 
+          {
+            fillColor: 'rgba(53, 178, 80, 0.15)',
+            strokeColor: '#35B250',
+            strokeWidth: 5,
+            hideIconOnBalloonOpen: false,
+          }
+        )
+      );
+    })
+
+    get().thisMAP.setCenter([city_center[0], city_center[1]], 11);
+  },
+  setAddrPoint: (point) => {
+    let objectManager = new ymaps.ObjectManager();
+
+    let json2 = {
+      "type": "FeatureCollection",
+      "features": []
+    };
+
+    json2.features.push({
+      type: "Feature",
+      id: -1,
+      options: {
+        preset: 'islands#blackDotIcon', 
+        iconColor: 'black'
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [ point[0], point[1] ]
+      },
+    })
+
+    objectManager.add(json2);
+    get().thisMAP.geoObjects.add(objectManager);
+  },
+  delAddrPoint: () => {
+    let geoObjects = get().thisMAP.geoObjects;
+
+    geoObjects.each(function (object) {
+      if( object['geometry'] === null ){
+        get().thisMAP.geoObjects.remove(object)
+      }
+    });
+  }
 }));
 
 export const useFooterStore = create((set) => ({

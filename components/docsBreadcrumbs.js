@@ -13,7 +13,10 @@ export default function DocsBreadcrumbs() {
   return (
     <Grid item className="DocsBreadcrumbs" style={{ paddingBottom: 15 }}>
       <div>
-        <span>Документы</span>
+        <div>
+          <span>Документы</span>
+        </div>
+        
         {thisCity.length == 0 ? null :
           <ul>
             <li><Link className={ activePage == 'publichnaya-oferta' ? 'active' : '' } href={"/"+thisCity+"/publichnaya-oferta"}>Публичная оферта</Link></li>

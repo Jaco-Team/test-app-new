@@ -1,12 +1,16 @@
-import React from 'react';
+import React, { useState, useEffect } from 'react';
 
 import TextField from '@mui/material/TextField';
 import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
 const filter = createFilterOptions();
 
-export default function MyAutocomplete({data, placeholder, onChange}) {
-  const [value, setValue] = React.useState(null);
+export default function MyAutocomplete({data, placeholder, onChange, val, className}) {
+  const [value, setValue] = useState(val);
+
+  useEffect( () => {
+    setValue(val)
+  }, [val] )
 
   return (
     <Autocomplete
@@ -22,16 +26,13 @@ export default function MyAutocomplete({data, placeholder, onChange}) {
           setValue({
             name: newValue.inputValue,
           });
-          onChange(newValue.inputValue,)
+          onChange(newValue.inputValue)
         } else {
           setValue(newValue);
           onChange(newValue)
         }
-
-        console.log( 'onChange' )
       }}
       onBlur={ (event, newValue) => {
-        console.log( 'onBlur', event.target.value )
         onChange(event.target.value)
       } }
       filterOptions={(options, params) => {

@@ -1,6 +1,31 @@
 
 @import "../settings";
 
+.MuiInputBase-root{
+    & div:focus{
+        background-color: #fff;
+    }
+}
+
+.city_menu{
+    & .MuiMenu-paper{
+        border-radius: $MyScale20!important;
+        margin-top: $MyScale20!important;
+        width: $MyScale780!important;
+
+        & ul{
+            padding: 0;
+            & > li{
+                height: $MyScale100;
+                @include font30_400();
+                border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
+                margin-left: $MyScale40;
+                margin-right: $MyScale40;
+            }
+        }
+    }
+}
+
 .MuiAutocomplete-popper{
     max-height: $MyScale500;
     width: $MyScale780!important;
@@ -39,9 +64,9 @@
         width: $MyScale1960;
         max-width: none !important;
     }
-
+    
     & .MuiFormControl-root{
-        & input{
+        & input, .MuiSelect-select{
             height: $MyScale40;
             padding: $MyScale20!important;
             padding-top: 0!important;
@@ -77,11 +102,24 @@
                 margin-left: $MyScale170;
                 display: flex;
                 align-items: center;
+                & .MuiInputBase-root{
+
+                }
+                & .MuiInputBase-root::before, .MuiInputBase-root::after{
+                    border-width: 0;
+                    height: 0;
+                }
+                & .MuiInputBase-root > input{
+                    height: $MyScale120;
+                    padding: $MyScale20!important;
+                    padding-top: 0!important;
+                    @include font50_500();
+                }
                 & > span{
                     @include font50_500();
                     color: rgba(0, 0, 0, 0.40);
                 }
-                & > svg{
+                & svg{
                     width: $MyScale60;
                     height: $MyScale60;
                     margin-left: $MyScale30;
@@ -177,6 +215,7 @@
                     display: flex;
                     justify-content: center;
                     align-items: center;
+                    cursor: pointer;
                     & > span{
                         @include font30_400();
                         color: #fff;

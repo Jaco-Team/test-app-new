@@ -13,7 +13,9 @@ export default function ProfileBreadcrumbs() {
   return (
     <Grid item className="DocsBreadcrumbs" style={{ paddingBottom: 15 }}>
       <div>
-        <span>Личный кабинет</span>
+        <div>
+          <span>Личный кабинет</span>
+        </div>
         { thisCity.length == 0 ? null :
           <ul>
             <li><Link href={"/"+thisCity+"/zakazy"} className={ activePage == 'zakazy' ? 'active' : '' }>История заказов</Link></li>

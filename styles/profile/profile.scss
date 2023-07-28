@@ -1,15 +1,59 @@
 
 @import "../settings";
 
+.date_d_menu{
+    & .MuiMenu-paper{
+        border-radius: $MyScale20!important;
+        margin-top: $MyScale20!important;
+        width: $MyScale240!important;
+
+        & ul{
+            padding: 0;
+            & > li{
+                height: $MyScale100;
+                width: $MyScale160;
+                @include font30_400();
+                text-align: center;
+                border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
+                margin-left: $MyScale40;
+                margin-right: $MyScale40;
+            }
+        }
+    }
+}
+.date_m_menu{
+    & .MuiMenu-paper{
+        border-radius: $MyScale20!important;
+        margin-top: $MyScale20!important;
+        width: $MyScale400!important;
+
+        & ul{
+            padding: 0;
+            & > li{
+                height: $MyScale100;
+                width: $MyScale320;
+                @include font30_400();
+                text-align: center;
+                border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
+                margin-left: $MyScale40;
+                margin-right: $MyScale40;
+            }
+        }
+    }
+}
+
 .Profile{ 
     margin-top: 64px!important;
+    z-index: 3;
+    mix-blend-mode: multiply;
 
     @media (min-width: 800px) {
-        margin-top: 13vw!important;
+        margin-top: $MyScale380!important;
         margin-bottom: 140px!important;
+        padding-top: 0px!important;
 
-        margin-left: 4.5%!important;
-        width: 56.35%!important;
+        margin-left: $MyScale125!important;
+        width: $MyScale1560!important;
         padding-left: 0px!important;
     }
 
@@ -32,7 +76,9 @@
         width: calc(100% - 24px);
     }
 
-    
+    & > div:first-child{
+        height: $MyScale100;
+    }
 
     
 
@@ -177,8 +223,8 @@
                     }
                 }
                 & fieldset{
-                    border-radius: 2.8vw;
-                    border-width: 3px;
+                    border-radius: $MyScale40;
+                    border-width: $MyScale3;
                 }
 
                 & > div:first-child{
