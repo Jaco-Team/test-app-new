@@ -20,11 +20,11 @@ export default function BasketIconHeaderPC() {
     <div className="basketCat" style={{ justifyContent: itemsCount ? 'space-evenly' : 'center' }} onClick={handlerOpenBasket}>
       {itemsCount ? (
         <>
-          <BasketIcon />
+          <BasketIcon className={'min'} />
           <span>{itemsCount}</span>
         </>
       ) : (
-          <BasketIcon />
+        <BasketIcon className={'max'} />
       )}
     </div>
   );

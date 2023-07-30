@@ -155,62 +155,65 @@ export default function NavBarPC({ city, active_page }) {
     <>
       <AppBar className="headerNew" id="headerNew" elevation={2} sx={{ display: { xs: 'none', md: 'block' } }} onClick={closeBasket}>
         <Toolbar>
+          <div>
+            <Link href={'/' + city} className="logoHeaderPC">
+              <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={500} height={120} priority={true}/>
+            </Link>
 
-          <Link href={'/' + city} className="logoHeaderPC">
-            <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={500} height={120} priority={true}/>
-          </Link>
-
-          {catList.map((item, key) =>
-            item.name === 'Пицца' || item.name === 'Напитки' ? (
-              active_page === 'home' ? 
-                <ScrollLink
-                  key={key}
-                  className="headerCat"
-                  to={'cat' + item.id}
-                  spy={true}
-                  isDynamic={true}
-                  smooth={false}
-                  offset={-100}
-                  style={{marginRight: item.name === 'Пицца' ? 0 : '18.050541516245vw', width: item.name === 'Напитки' ? '7.2202166064982vw' : '5.7761732851986vw'}}
-                >
-                  <span id={'link_' + item.id}>{item.name}</span> 
-                </ScrollLink>
-                :
-                <Link href={`/${city}`} onClick={() => chooseCat(item.id)} key={key} className="headerCat"
-                  style={{marginRight: item.name === 'Пицца' ? 0 : '18.050541516245vw', width: item.name === 'Напитки' ? '7.2202166064982vw' : '5.7761732851986vw'}}
-                >
-                  <span>{item.name}</span>
-                </Link>
-                
-            ) : (
-                <React.Fragment key={key}>
-                  <div className={item?.expanded ? item.expanded ? "headerCat activeCat" : 'headerCat' : 'headerCat'} onClick={(event) => openMenu(event, item.id)} 
-                    style={{ marginRight: '1.4440433212996vw'}}>
-                    <span>
-                      {item.name} {item?.expanded ? item.expanded ? <ArrowUpHeaderPC /> : <ArrowDownHeaderPC /> : <ArrowDownHeaderPC />}
-                    </span>
-                  </div>
-                </React.Fragment>
+            {catList.map((item, key) =>
+              item.name === 'Пицца' || item.name === 'Напитки' ? (
+                active_page === 'home' ? 
+                  <ScrollLink
+                    key={key}
+                    className={"headerCat "+ (key+1 == catList.length ? 'last' : '') }
+                    to={'cat' + item.id}
+                    spy={true}
+                    isDynamic={true}
+                    smooth={false}
+                    offset={-100}
+                    //style={{marginRight: item.name === 'Пицца' ? 0 : '18.050541516245vw', width: item.name === 'Напитки' ? '7.2202166064982vw' : '5.7761732851986vw'}}
+                  >
+                    <span id={'link_' + item.id}>{item.name}</span> 
+                  </ScrollLink>
+                  :
+                  <Link href={`/${city}`} onClick={() => chooseCat(item.id)} key={key} className={"headerCat "+ (key+1 == catList.length ? 'last' : '') }
+                    //style={{marginRight: item.name === 'Пицца' ? 0 : '18.050541516245vw', width: item.name === 'Напитки' ? '7.2202166064982vw' : '5.7761732851986vw'}}
+                  >
+                    <span>{item.name}</span>
+                  </Link>
+                  
+              ) : (
+                  <React.Fragment key={key}>
+                    <div className={item?.expanded ? item.expanded ? "headerCat activeCat" : 'headerCat' : 'headerCat'} onClick={(event) => openMenu(event, item.id)} 
+                      //style={{ marginRight: '1.4440433212996vw'}}
+                    >
+                      <span>
+                        {item.name} {item?.expanded ? item.expanded ? <ArrowUpHeaderPC /> : <ArrowDownHeaderPC /> : <ArrowDownHeaderPC />}
+                      </span>
+                    </div>
+                  </React.Fragment>
+                )
               )
-            )
-          }
-
-          <div className={active_page === 'other' || isOpenburger ? 'burgerHeaderPC activeCatSvg' : 'burgerHeaderPC'} onClick={ (event) => openMenuBurger(event) }>
-            <BurgerIconPC />
+            }
           </div>
 
-          <Link href={'/' + city + '/contacts'}  className={active_page === 'contacts' ? 'mapHeaderPC activeCatMap' : 'mapHeaderPC'}>
-            <MapPointIcon />
-            <p>Адреса кафе</p>
-          </Link>
-          
-          <ProfileIconHeaderPC />
+          <div>
+            <div className={active_page === 'other' || isOpenburger ? 'burgerHeaderPC activeCatSvg' : 'burgerHeaderPC'} onClick={ (event) => openMenuBurger(event) }>
+              <BurgerIconPC />
+            </div>
 
-          <BasketIconHeaderPC />
+            <Link href={'/' + city + '/contacts'}  className={active_page === 'contacts' ? 'mapHeaderPC activeCatMap' : 'mapHeaderPC'}>
+              <MapPointIcon />
+              <p>Адреса кафе</p>
+            </Link>
+            
+            <ProfileIconHeaderPC />
 
-          <MenuCat anchorEl={anchorEl} isOpen={isOpenCat} onClose={closeMenu} chooseCat={chooseCat} city={city} list={list} active_page={active_page} />
-          <MenuBurger anchorEl={anchorEl} isOpen={isOpenburger} onClose={closeMenuBurger} city={city} />
-          
+            <BasketIconHeaderPC />
+
+            <MenuCat anchorEl={anchorEl} isOpen={isOpenCat} onClose={closeMenu} chooseCat={chooseCat} city={city} list={list} active_page={active_page} />
+            <MenuBurger anchorEl={anchorEl} isOpen={isOpenburger} onClose={closeMenuBurger} city={city} />
+          </div>
         </Toolbar>
       </AppBar>
       <div className='blockShadow' />
