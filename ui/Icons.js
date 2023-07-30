@@ -632,21 +632,50 @@ export function ArrowUp(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="800"
-      height="800"
-      fill="#FFF"
-      viewBox="0 0 20 20"
+      width="170"
+      height="170"
+      fill="none"
+      viewBox="0 0 170 155"
       {...props}
     >
-      <g>
-        <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-          <g fill="#FFF" transform="translate(-100 -6639)">
-            <g transform="translate(56 160)">
-              <path d="M44 6489l1.393 1.435 7.607-7.607V6499h2v-16.172l7.586 7.586L64 6489l-10-10-10 10"></path>
-            </g>
-          </g>
-        </g>
-      </g>
+      
+        <circle cx="85" cy="78" r="60" fill="#DD1A32"></circle>
+      
+      <path
+        fill="#fff"
+        d="M80.773 108V64.168l-19.84 19.84L55 78l30-30 30 30-5.933 6.007-19.84-19.839V108h-8.454z"
+      ></path>
+      <defs>
+        <filter
+          id="filter0_d_819_6958"
+          width="170"
+          height="170"
+          x="0"
+          y="0"
+          colorInterpolationFilters="sRGB"
+          filterUnits="userSpaceOnUse"
+        >
+          <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
+          <feColorMatrix
+            in="SourceAlpha"
+            result="hardAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          ></feColorMatrix>
+          <feOffset dy="7"></feOffset>
+          <feGaussianBlur stdDeviation="12.5"></feGaussianBlur>
+          <feComposite in2="hardAlpha" operator="out"></feComposite>
+          <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
+          <feBlend
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_819_6958"
+          ></feBlend>
+          <feBlend
+            in="SourceGraphic"
+            in2="effect1_dropShadow_819_6958"
+            result="shape"
+          ></feBlend>
+        </filter>
+      </defs>
     </svg>
   );
 }

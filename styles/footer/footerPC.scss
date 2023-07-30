@@ -4,23 +4,26 @@
   width: 100%;
   background-color: rgba(0, 0, 0, 0.07);
   position: relative;
-  margin-top: 2.1660649819495vw !important;
+  margin-top: $MyScale50 !important;
   display: flex;
   flex-direction: column;
   align-items: center;
 
   & .ContainerPCFooter {
-    height: 28.880866425993vw;
-    margin: 3.2490974729242vw 4.5126353790614vw 4.3321299638989vw 4.5126353790614vw !important;
     display: flex;
     align-items: flex-start;
+
+    & .column:nth-child(4) {
+      margin-right: $MyScale210;
+    }
 
     & .column {
       display: flex;
       flex-direction: column;
-      width: 15.884476534296vw;
-      height: 21.660649819495vw;
-      margin-right: 1.4440433212996vw;
+      width: $MyScale440;
+      height: $MyScale600;
+      margin-right: $MyScale40;
+      margin-top: $MyScale120;
 
       & span {
         @include font30_700();
@@ -38,8 +41,8 @@
     }
 
     & .container {
-      height: 100%;
-      width: 15.523465703971vw;
+      margin-top: $MyScale90;
+      //height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -49,24 +52,38 @@
         width: 100%;
 
         & svg {
-          width: 3.6101083032491vw;
-          height: 3.6101083032491vw;
-          margin-right: 2.1660649819495vw;
+          width: $MyScale100;
+          height: $MyScale100;
+          margin-right: $MyScale60;
         }
       }
 
-      & .copy {
-        display: flex;
-        justify-content: flex-end;
+      
+    }
+  }
+  & .ContainerCopyFooter{
+    //height: $MyScale280;
+    width: 100%;
+    & div.copy {
+      margin-top: $MyScale50;
+      margin-bottom: $MyScale110;
+      height: $MyScale120;
+      margin-right: $MyScale125;
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+      & span{
         @include font22_400();
-        color: rgba(0, 0, 0, 0.4) !important;
+        color: rgba(0, 0, 0, 0.40);
+        position: unset;
       }
     }
   }
 
+  
+
   & .FooterLegal {
-    height: 8.6642599277978vw;
-    width: 56.317689530686vw;
+    width: $MyScale1560;
     background: #ffffff;
     box-shadow: 0vw -0.36101083032491vw 1.8050541516245vw 0px rgba(0, 0, 0, 0.05);
     border-radius: 1.4440433212996vw 1.4440433212996vw 0 0;
@@ -76,20 +93,17 @@
 
     & .containerLegal {
       display: flex;
-      justify-content: space-between;
       align-items: center;
-      margin: 1.4440433212996vw 2.8880866425993vw !important;
-
       & .text {
-        width: 36.101083032491vw;
-        height: 5.7761732851986vw;
-        @include font30_400();
-        position: relative;
+        width: $MyScale995;
+
+        margin-top: $MyScale80;
+        margin-bottom: $MyScale80;
+        margin-left: $MyScale120;
         p {
           margin: 0;
-          position: absolute;
-          top: 50%;
-          transform: translate(0, -50%);
+          @include font30_400();
+          line-height: $MyScale40;
           & .link {
             text-decoration: underline;
             color: rgba(221, 26, 50, 1);
@@ -98,10 +112,11 @@
       }
 
       & .buttonAccept {
-        width: 10.108303249097vw;
-        height: 2.8880866425993vw;
+        margin-left: $MyScale45;
+        width: $MyScale280;
+        height: $MyScale80;
         background: rgba(221, 26, 50, 1);
-        border-radius: 0.72202166064982vw;
+        border-radius: $MyScale20;
         display: flex;
         justify-content: center;
         align-items: center;
@@ -116,23 +131,22 @@
 
 .ArrowPC {
   z-index: 1000;
-  width: 4.3321299638989vw;
-  height: 4.3321299638989vw;
+  width: $MyScale120;
+  height: $MyScale120;
   background-color: rgba(221, 26, 50, 1);
-  border-radius: 4.3321299638989vw;
+  border-radius: $MyScale120;
   box-shadow: 0vw 0.25270758122744vw 0.90252707581227vw rgba(0, 0, 0, 0.25);
   cursor: pointer;
-  transition: all 0.5s ease 0s;
   display: flex;
   align-items: center;
   justify-content: center;
-  left: 91.15523465704vw;
+  left: $MyScale2525;
   position: sticky;
-  bottom: 2.1660649819495vw;
+  bottom: $MyScale60;
 
   & svg {
-    width: 2.1660649819495vw;
-    height: 2.1660649819495vw;
+    width: $MyScale120;
+    height: $MyScale120;
   }
 }
 

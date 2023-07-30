@@ -5,7 +5,7 @@
     margin-top: 64px!important;
     z-index: 3;
     mix-blend-mode: multiply;
-    
+
     @media (min-width: 800px) {
         margin-top: $MyScale380!important;
         margin-bottom: 140px!important;
@@ -20,14 +20,17 @@
         @include fontH1();
         text-align: start;
         width: 100%;
-        padding-bottom: 20px;
         color: rgba(0, 0, 0, 0.8)!important;
     }
     & .mainContainer{
         padding-top: 0!important; 
         padding-bottom: 36px!important; ;
     }
-    
+    & svg.MuiSvgIcon-root{
+        width: $MyScale40;
+        height: $MyScale40;
+    }
+
     @media (max-width: 960px) {
         margin-top: 64px!important;
         margin-bottom: 64px; 

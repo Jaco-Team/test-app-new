@@ -40,6 +40,21 @@ export default function ContactsPage(props){
             { promoList.map( (item, key) =>
               <PromoCard key={key} item={item} />   
             ) } 
+            { promoList.map( (item, key) =>
+              <PromoCard key={key} item={item} />   
+            ) } 
+            { promoList.map( (item, key) =>
+              <PromoCard key={key} item={item} />   
+            ) } 
+            { promoList.map( (item, key) =>
+              <PromoCard key={key} item={item} />   
+            ) } 
+            { promoList.map( (item, key) =>
+              <PromoCard key={key} item={item} />   
+            ) } 
+            { promoList.map( (item, key) =>
+              <PromoCard key={key} item={item} />   
+            ) } 
 
           </Grid>
 

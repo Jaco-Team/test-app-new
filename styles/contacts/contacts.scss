@@ -2,47 +2,52 @@
 
 .Contact_{
   position: relative;
-  margin-top: 9vw !important;
+  margin-top: $MyScale240!important;
   min-height: 900px;
   height: 85%;
+  z-index: 3;
+  mix-blend-mode: multiply;
+
   & .Contact {
     background: #ffffff;
-    box-shadow: 10px 20px 40px 15px rgba(0, 0, 0, 0.15);
-    border-radius: 2.8vw;
+    box-shadow: $MyScale10 $MyScale20 $MyScale40 $MyScale15 rgba(0, 0, 0, 0.15);
+    border-radius: $MyScale80;
     z-index: 1;
     position: absolute;
-    top: 1.8vw;
-    right: 4.5vw;
-    width: 21.5vw;
+    top: $MyScale60;
+    right: $MyScale125;
+    width: calc($MyScale800 - $MyScale100*2 );
     display: flex;
     flex-direction: column !important;
     align-items: center;
-    padding: 2vw 3.7vw;
-    padding-bottom: 3.2vw;
+    padding: $MyScale91;
+    padding-left: $MyScale100;
+    padding-right: $MyScale100;
+    padding-bottom: $MyScale72;
   
     & button.chooseCity {
       width: 100%;
-      height: 3.2vw;
-      border-radius: 120px;
+      height: $MyScale90;
+      border-radius: $MyScale45;
       white-space: nowrap;
       box-sizing: border-box;
-      border: 2px solid rgba(0, 0, 0, 0.25);
+      border: $MyScale2 solid rgba(0, 0, 0, 0.25);
       text-transform: lowercase;
       
       display: flex;
       align-items: center;
       justify-content: space-between;
       cursor: pointer;
-      margin-top: 1.3vw;
+      padding: 0;
       & span {
         @include font50_500();
-        padding-left: 1.5vw;
+        padding-left: $MyScale50;
         &:first-letter {
           text-transform: uppercase;
         }
       }
       & span:last-child{
-        padding-right: 1vw;
+        padding-right: $MyScale44;
         & svg{
           @include font50_500();
         }
@@ -54,10 +59,12 @@
   
     & .listAddrPoint {
       width: 100%;
-      margin-top: 2.5vw;
+      margin-top: $MyScale60;
   
       & h2 {
         @include font30_400();
+        height: $MyScale50;
+        line-height: $MyScale50;
       }
   
       & svg.MapPointIcon path:first-child {
@@ -66,12 +73,22 @@
       }
   
       & ul {
-        margin-top: 0.7vw;
-        & div {
-          padding-left: 0;
-          margin: 0.3vw 0;
-          & div {
-            margin-left: 1vw;
+        
+        & > div {
+          margin-top: $MyScale40;
+          padding: 0;
+          & svg{
+            width: $MyScale50;
+            height: $MyScale66;
+            & > g > path:first-child{
+              fill-opacity: 1;
+              fill: rgba(221, 30, 51, 1);
+            }
+          }
+          & > div {
+            margin-left: $MyScale40;
+            height: $MyScale60;
+            
             & p {
               @include font40_400();
               &:hover {
@@ -86,38 +103,42 @@
         
       }
       & hr{
-        height: 1px;
+        height: $MyScale2;
         width: 100%;
         background-color: #e5e5e5;
-        margin-top: 1.5vw;
+        margin-top: $MyScale80;
       }
     }
   
     & .listInfo {
       width: 100%;
       align-items: flex-start;
-      margin-top: 2vw;
+      margin-top: $MyScale50;
+      & *:nth-child(3) {
+        margin-top: $MyScale20;
+      }
       & span {
         @include font30_400();
-        margin-bottom: 10px;
-        
+        height: $MyScale50;
+        line-height: $MyScale50;
+        display: block;
       }
       & h2 {
-        @include font60_600();
-        margin-bottom: 1.1vw;
-        margin-top: 0.8vw;
+        @include font60_500();
+        height: $MyScale100;
+        line-height: $MyScale100;
       }
       & hr {
-        margin-top: 1.5vw;
-        margin-bottom: 1.5vw;
-        height: 1px;
+        margin-top: $MyScale40;
+        margin-bottom: $MyScale28;
+        height: $MyScale2;
         background-color: #e5e5e5;
       }
     }
   
     & .switch {
       width: 100%;
-      margin-top: 0.4vw;
+      height: $MyScale100;
       display: flex;
       flex-direction: row;
       justify-content: space-between;
@@ -133,7 +154,7 @@
 
 
 #ForMap {
-  min-height: 900px;
+  min-height: 100vh;
   @media (max-width: 960px) {
     margin-bottom: 40px;
     margin-left: 12px;
@@ -143,30 +164,49 @@
 
 .my-hint {
   position: absolute;
-  left: -140px;
-  top: 43px;
-  width: 17vw;
+  left: -$MyScale220;
+  top: 60px;
+  width: $MyScale500;
+  height: $MyScale380;
   background: #ffffff;
-  box-shadow: 5px 10px 30px rgba(0, 0, 0, 0.25);
-  border-radius: 1vw;
-  @include font22_400();
-  color: rgba(0, 0, 0, 0.8);
+  box-shadow: $MyScale5 $MyScale10 $MyScale30 rgba(0, 0, 0, 0.25);
+  border-radius: $MyScale30;
+  
   display: flex;
   align-items: center;
   justify-content: center;
   text-align: center;
   flex-direction: column;
-  padding: 16px;
-  line-height: 12px;
   & img {
-    width: 100%;
+    height: $MyScale220;
+    width: $MyScale440;
+    margin-left: $MyScale30;
+    margin-right: $MyScale30;
+    margin-top: $MyScale30;
+    margin-bottom: $MyScale20;
   }
+  & span{
+    @include font30_400();
+    margin-left: $MyScale50;
+    margin-right: $MyScale50;
+    margin-bottom: $MyScale30;
+    height: $MyScale80;
+    line-height: $MyScale40;
+  }
+  /*&::after {
+    content: "";
+    position: absolute;
+    //left: 100%;
+    top: 0px;
+    border: $MyScale70 solid transparent;
+    border-bottom: $MyScale140 solid rgba(87, 220, 53, 0.3);
+  }*/
 }
 
 .my-img {
   position: absolute;
-  left: -28px;
-  top: -24px;
+  left: -12px;
+  top: -20px;
   width: 65px;
   height: 65px;
   border-radius: 50%;
@@ -174,24 +214,35 @@
   align-items: center;
   justify-content: center;
   background-color: #da1a32;
+  transition-duration: 1s;
   & img {
-    width: 50px;
+    width: 55px;
+    transition-duration: 1s;
   }
 }
 
 #chooseCityContact {
   & div.MuiPaper-root.MuiMenu-paper {
-    border-radius: 10px;
-    width: 21.6vw;
-    background: #ececec;
-    box-shadow: 10px 10px 30px 5px rgba(0, 0, 0, 0.2);
+    border-radius: $MyScale20!important;
+    margin-top: $MyScale20!important;
+    width: $MyScale680!important;
+    box-shadow: $MyScale10 $MyScale10 $MyScale30 $MyScale5 rgba(0, 0, 0, 0.2);
+    right: $MyScale190;
+    left: auto!important;
     & ul {
-      width: 100%;
+      //width: 100%;
       padding: 0;
       & li {
-        width: 100%;
+        height: $MyScale100;
+        width: $MyScale600;
+        @include font30_400();
+        text-align: center;
+        border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
+        margin-left: $MyScale40;
+        margin-right: $MyScale40;
+        padding: 0;
         &:hover {
-          background-color: #ffffff;
+          //background-color: #ececec;
         }
         & a {
           width: 100%;

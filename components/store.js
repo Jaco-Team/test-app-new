@@ -733,8 +733,8 @@ export const useContactStore = create((set, get) => ({
             }, {
               iconLayout: 'default#image',
               iconImageHref: '/Favikon.png',
-              iconImageSize: [50, 50],
-              iconImageOffset: [-12, -24],
+              iconImageSize: [65, 65],
+              iconImageOffset: [-12, -20],
               hideIconOnBalloonOpen: false,
             })
         )
@@ -772,9 +772,8 @@ export const useContactStore = create((set, get) => ({
 
     const balloonLayout = ymaps.templateLayoutFactory.createClass( 
       "<div class='my-hint'>" +
-        "<img alt='' src='/about/fasad.jpg' /><br />" +
-        "<div>{{ properties.raion }}</div><br />" +
-        "<div>{{ properties.address }}</div><br />" +
+        "<img alt='' src='/about/fasad.jpg' />" +
+        "<span>{{ properties.raion }}, {{ properties.address }}</span>" +
       "</div>"
     );
 
@@ -911,9 +910,8 @@ export const useContactStore = create((set, get) => ({
 
     const balloonLayout = ymaps.templateLayoutFactory.createClass( 
       "<div class='my-hint'>" +
-        "<img alt='' src='/about/fasad.jpg' /><br />" +
-        "<div>{{ properties.raion }}</div><br />" +
-        "<div>{{ properties.address }}</div><br />" +
+        "<img alt='' src='/about/fasad.jpg' />" +
+        "<span>{{ properties.raion }}, {{ properties.address }}</span>" +
       "</div>"
     );
 

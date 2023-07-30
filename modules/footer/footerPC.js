@@ -56,7 +56,7 @@ export default React.memo(function FooterPC({ cityName }) {
             <Link href={'/' + cityName + '/about'}>Анкета для работы в Управляющей компании</Link>
             <Link href={'/' + cityName + '/about'}>Анкета поставщика</Link>
           </div>
-          <div className="column" style={{ marginRight: '7.5812274368231vw' }}>
+          <div className="column">
             <Typography component="span">Франшиза</Typography>
             <Link href={'/' + cityName + '/about'}>Сайт франшизы</Link>
             <Link href={'/' + cityName + '/about'}>Сайт для инвестиций</Link>
@@ -67,11 +67,17 @@ export default React.memo(function FooterPC({ cityName }) {
               <TGIcon />
               <OdnIcon style={{ marginRight: 0 }}/>
             </div>
-            <div className="copy">
-              <Typography component="span" className="copy">{new Date().getFullYear()} © ООО «Мистер Жако»</Typography>
-            </div>
+            
           </div>
         </div>
+        <div className="ContainerCopyFooter">
+          <div className="copy">
+            <Typography component="span" className="copy">{new Date().getFullYear()} © ООО «Мистер Жако»</Typography>
+          </div>
+        </div>
+        
+
+
         {cookie ? null : (
           <div className="FooterLegal">
             <div className="containerLegal">

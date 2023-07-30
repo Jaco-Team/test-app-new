@@ -28,7 +28,15 @@
         position: sticky;
         top: $MyScale300!important;
         
-
+        & > span{
+            margin-top: $MyScale80;
+            margin-left: $MyScale80;
+            margin-right: $MyScale80;
+            height: $MyScale40;
+            line-height: $MyScale40;
+            @include font30_700();
+            text-transform: uppercase;
+        }
         & > div{
             margin-top: $MyScale80;
             margin-left: $MyScale80;
@@ -44,11 +52,11 @@
             margin-left: $MyScale60;
             margin-right: $MyScale80;
             margin-top: $MyScale20;
-            margin-bottom: $MyScale20;
+            margin-bottom: $MyScale70;
             min-height: $MyScale300;
             padding-left: $MyScale45;
             & > li{
-                height: $MyScale60;
+                min-height: $MyScale60;
                 line-height: $MyScale60;
                 @include font30_400();
                 & > a{
