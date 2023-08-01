@@ -18,7 +18,7 @@ export default function MenuCatMobile({ city }) {
 
   if (city == '') return null;
 
-  const handleScroll = () => setScrollMenuCat(window.scrollY > 0);
+  const handleScroll = () => setScrollMenuCat(window.scrollY > 100);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
