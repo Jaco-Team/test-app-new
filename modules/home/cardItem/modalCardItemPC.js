@@ -20,7 +20,7 @@ import { IconClose, IconInfoRed, IconInfoWhite } from '@/ui/Icons';
 import { roboto } from '@/ui/Font';
 
 export default function ModalCardItemPC() {
-  console.log('render ModalCardItemPC');
+  //console.log('render ModalCardItemPC');
 
   const [isOpenModal, closeModal, typeModal, openItem, foodValue, navigate, closeTypeModal] = useHomeStore((state) => [state.isOpenModal, state.closeModal, state.typeModal,
       state.openItem, state.foodValue, state.navigate, state.closeTypeModal], shallow);

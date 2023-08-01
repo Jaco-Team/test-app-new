@@ -3,7 +3,7 @@ import { shallow } from 'zustand/shallow';
 import { BasketIcon } from '@/ui/Icons.js';
 
 export default function BasketIconHeaderPC() {
-  console.log('render BasketIconHeaderPC');
+  //console.log('render BasketIconHeaderPC');
 
   const [setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket], shallow);
   const [itemsCount, promoInfo, promoCheck] = useCartStore((state) => [state.itemsCount, state.promoInfo, state.promoCheck], shallow);

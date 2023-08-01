@@ -9,7 +9,7 @@ const dopText = {
 
 export default function TablePC() {
 
-  console.log('render Basket TablePC');
+  //console.log('render Basket TablePC');
 
   const [itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOnDops, itemsOffDops] = useCartStore((state) => [state.itemsCount, state.promoInfo, state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOnDops, state.itemsOffDops], shallow);
 

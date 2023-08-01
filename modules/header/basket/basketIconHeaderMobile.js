@@ -4,7 +4,7 @@ import { BasketIconMobile } from '@/ui/Icons.js';
 import ListItem from '@mui/material/ListItem';
 
 export default function BasketIconHeaderMobile({ setActiveMenu }) {
-  console.log('render BasketIconHeaderMobile');
+  //console.log('render BasketIconHeaderMobile');
 
   const [setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket], shallow);
 

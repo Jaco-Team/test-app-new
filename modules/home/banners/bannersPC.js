@@ -19,7 +19,7 @@ import { useHomeStore } from '../../../components/store.js';
 import { shallow } from 'zustand/shallow';
 
 export default React.memo(function BannersPC() {
-  console.log('BannersPC render')
+  //console.log('BannersPC render')
   
   const [banners, setBanners] = useState([]);
   const [bannerList, setActiveBanner] = useHomeStore((state) => [state.bannerList, state.setActiveBanner], shallow);

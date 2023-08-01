@@ -750,14 +750,14 @@
     & .alice-carousel__dots{
         margin: 15px 3px 5px!important;    
     }
-    & .alice-carousel__dots-item:not(.__custom):hover, .alice-carousel__dots-item:not(.__custom).__active {
-        background-color: $colorMain!important;
-        opacity: 1;
-    }
-    & .alice-carousel__dots-item:not(.__custom) {
-        background-color: $colorMain!important;
-        opacity: 0.5;
-    }
+    // & .alice-carousel__dots-item:not(.__custom):hover, .alice-carousel__dots-item:not(.__custom).__active {
+    //     background-color: $colorMain!important;
+    //     opacity: 1;
+    // }
+    // & .alice-carousel__dots-item:not(.__custom) {
+    //     background-color: $colorMain!important;
+    //     opacity: 0.5;
+    // }
 }
 .MainItems.mainContainer{
     & > div{

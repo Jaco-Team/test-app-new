@@ -62,6 +62,7 @@ export default function ModalCityMobile() {
         onOpen={() => setActiveModalCity(true)}
         id="modalCityMobileMain"
         className={roboto.variable}
+        disableSwipeToOpen
       >
         <div className="ContainerMain">
           <div className="loginIMG">
@@ -98,6 +99,7 @@ export default function ModalCityMobile() {
         onOpen={() => setActiveModalCity(true)}
         id="modalCityMobileList"
         className={roboto.variable}
+        disableSwipeToOpen
       >
         <div className="ContainerList">
           <div className="Line"></div>

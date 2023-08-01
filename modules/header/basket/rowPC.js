@@ -6,7 +6,7 @@ import { useCartStore } from '@/components/store.js';
 import { shallow } from 'zustand/shallow';
 
 export default memo(function RowPC({ item, count, last }) {
-  console.log('render Basket RowPC');
+  //('render Basket RowPC');
 
   const [minus, plus, promoInfo] = useCartStore((state) => [state.minus, state.plus, state.promoInfo], shallow);
 

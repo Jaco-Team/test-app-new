@@ -1,0 +1,1025 @@
+@import '../settings.scss';
+
+.ContainerCardItemMobile {
+  width: $MyScale1090_mobile;
+  flex-direction: column;
+  align-items: center;
+  margin-right: $MyScale40_mobile !important;
+  margin-left: $MyScale40_mobile !important;
+  margin-top: 0 !important;
+
+  & .CardItemMobile {
+    height: $MyScale500_mobile;
+    margin-top: $MyScale40_mobile !important;
+    margin-bottom: $MyScale40_mobile !important;
+    padding: 0 !important;
+
+    & .CardContainer {
+      background-color: #fff;
+      border-radius: $MyScale40_mobile;
+      mix-blend-mode: multiply;
+      display: flex;
+      width: 100%;
+      align-items: center;
+
+      & .CardImg {
+        width: $MyScale500_mobile;
+        height: $MyScale500_mobile;
+        margin-right: $MyScale40_mobile;
+        & img {
+          object-fit: contain;
+          image-rendering: auto;
+          width: 100%;
+          height: auto;
+        }
+      }
+
+      & .CardInfoItem {
+        flex-direction: column;
+        width: $MyScale525_mobile;
+        height: 100%;
+
+        & .CardNameItem {
+          height: $MyScale100_mobile;
+          @include font40_400();
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          margin-top: $MyScale40_mobile;
+          margin-bottom: $MyScale10_mobile;
+        }
+
+        & .dop_text {
+          padding: 0;
+          height: $MyScale40_mobile;
+          width: $MyScale400_mobile;
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          margin-bottom: $MyScale10_mobile;
+
+          & .first_text {
+            @include font20_400();
+            border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+          }
+          & .second_text {
+            @include font20_400();
+            border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
+            display: flex;
+            align-items: center;
+          }
+          & .third_text {
+            width: $MyScale100_mobile;
+            @include font20_400();
+            display: flex;
+            align-items: center;
+          }
+        }
+
+        .desc_text {
+          width: 100%;
+          height: $MyScale120_mobile;
+          margin-bottom: $MyScale40_mobile;
+          color: rgba(0, 0, 0, 0.6) !important;
+          @include font30_400();
+          -webkit-line-clamp: 5;
+          display: -webkit-box;
+          -webkit-box-orient: vertical;
+          overflow: hidden;
+        }
+
+        .containerBTNMobile {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+
+          & > button {
+            width: $MyScale390_mobile;
+            height: $MyScale90_mobile;
+            border-radius: $MyScale55_mobile;
+            border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+            color: rgba(0, 0, 0, 0.6) !important;
+            padding: 0;
+            @include font40_400();
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+          }
+
+          & > div {
+            width: $MyScale410_mobile;
+            height: $MyScale110_mobile;
+            border-radius: $MyScale55_mobile;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffff;
+
+            & > .minus {
+              padding: 0;
+              margin-left: $MyScale10_mobile;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              cursor: pointer;
+              background-color: rgba(0, 0, 0, 0.07);
+              border: none;
+              @include font55_400();
+              width: $MyScale90_mobile;
+              height: $MyScale90_mobile;
+              border-radius: $MyScale90_mobile;
+            }
+            & > .plus {
+              padding: 0;
+              margin-right: $MyScale10_mobile;
+              display: flex;
+              justify-content: center;
+              align-content: center;
+              align-items: center;
+              cursor: pointer;
+              background-color: rgba(0, 0, 0, 0.07);
+              border: none;
+              @include font75_300();
+              width: $MyScale90_mobile;
+              height: $MyScale90_mobile;
+              border-radius: $MyScale90_mobile;
+            }
+            & > span {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              @include font60_400();
+            }
+          }
+        }
+      }
+    }
+  }
+  & .LineCardItemMobile {
+    width: 100%;
+    height: $MyScale2_mobile;
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+.CardItemMobile.active {
+  & > div {
+    background-color: rgba(0, 0, 0, 0.05) !important;
+    & img {
+      mix-blend-mode: multiply;
+    }
+  }
+}
+
+#modalCardItemMobile {
+  & .MuiDrawer-paper {
+    max-height: calc(100% - $MyScale200_mobile);
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+    overflow: hidden;
+
+    & .containerLine {
+      background-color: #fff;
+      width: 90%;
+      position: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      margin-left: 5%;
+      margin-top: $MyScale40_mobile;
+
+      & .lineModalCardMobile {
+        width: $MyScale150_mobile;
+        min-height: $MyScale10_mobile;
+        border-radius: $MyScale5_mobile;
+        background: rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    & .ContainerModalCardMobile {
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      margin: $MyScale80_mobile $MyScale35_mobile 0 $MyScale80_mobile;
+      overflow-y: auto;
+
+      &::-webkit-scrollbar {
+        width: $MyScale45_mobile;
+      }
+
+      &::-webkit-scrollbar-thumb {
+        background: rgba(0, 0, 0, 0.3);
+        border-left: solid $MyScale35_mobile #ffffff;
+      }
+
+      &::-webkit-scrollbar-track {
+        background: rgba(0, 0, 0, 0.2);
+        margin-top: $MyScale40_mobile;
+        margin-bottom: $MyScale130_mobile;
+        border-left: solid $MyScale35_mobile #ffffff;
+      }
+
+      & .ItemModalCardMobile {
+        width: 100%;
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        margin-bottom: $MyScale80_mobile;
+
+        & .ItemContainer {
+          width: $MyScale1010_mobile;
+
+          & .blockShadowModalCardItem {
+            bottom: $MyScale180_mobile;
+            z-index: 3000;
+            width: 100%;
+            min-height: $MyScale240_mobile;
+            position: absolute;
+            background: linear-gradient(
+              180deg,
+              rgba(255, 255, 255, 0) 0%,
+              #fff 55.73%
+            );
+            mix-blend-mode: multiply;
+            transition: all 0.1s ease 0s;
+          }
+
+          & .ImgModalCardMobile {
+            width: $MyScale1010_mobile;
+            height: $MyScale1010_mobile;
+            margin-bottom: $MyScale20_mobile;
+            z-index: 60;
+            position: relative;
+
+            & img {
+              object-fit: contain;
+              image-rendering: auto;
+              width: 100%;
+              height: auto;
+            }
+          }
+
+          & .TitleModalCardMobile {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            margin-bottom: $MyScale20_mobile;
+
+            & span {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              text-align: center;
+              @include font70_400();
+            }
+          }
+
+          & .DopModalCardMobile {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            margin-bottom: $MyScale20_mobile;
+            height: $MyScale80_mobile;
+            position: relative;
+
+            & .dop_text {
+              width: 100%;
+              padding: 0;
+              height: $MyScale80_mobile;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              & .first_text {
+                @include font30_400();
+                border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
+                display: flex;
+                align-items: center;
+                justify-content: flex-start;
+                text-decoration: underline;
+                color: #dd1a32 !important;
+              }
+              & .second_text {
+                @include font30_400();
+                border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                width: $MyScale140_mobile;
+                color: rgba(0, 0, 0, 0.6) !important;
+              }
+              & .third_text {
+                width: $MyScale100_mobile;
+                @include font30_400();
+                display: flex;
+                align-items: center;
+                width: $MyScale140_mobile;
+                color: rgba(0, 0, 0, 0.6) !important;
+              }
+            }
+
+            & .dop_icon {
+              right: 0;
+              position: absolute;
+              width: $MyScale80_mobile;
+              height: $MyScale80_mobile;
+            }
+          }
+
+          & .DescModalCardMobile {
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            & span {
+              color: rgba(0, 0, 0, 0.6) !important;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              text-align: center;
+              @include font40_400();
+            }
+          }
+        }
+      }
+
+      & .blockShadowModalCardItem {
+        z-index: 50;
+        bottom: $MyScale360_mobile;
+        width: $MyScale1010_mobile;
+        min-height: $MyScale100_mobile;
+        position: absolute;
+        background: linear-gradient(
+          180deg,
+          rgba(255, 255, 255, 0) 0%,
+          #fff 55.73%
+        );
+      }
+
+      & .containerBTN_ModalMObile {
+        z-index: 70;
+        bottom: 0;
+        position: sticky;
+        background-color: #ffff;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: 100%;
+
+        & > button {
+          margin-bottom: $MyScale200_mobile;
+          width: $MyScale800_mobile;
+          height: $MyScale160_mobile;
+          border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+          border-radius: $MyScale80_mobile;
+          padding: 0;
+          @include font60_400();
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          white-space: nowrap;
+        }
+
+        & > div {
+          margin-bottom: $MyScale200_mobile;
+          width: $MyScale794_mobile;
+          height: $MyScale154_mobile;
+          border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+          border-radius: $MyScale80_mobile;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          background-color: #ffff;
+
+          & > .minus {
+            padding: 0;
+            margin-left: $MyScale20_mobile;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.07);
+            border: none;
+            @include font75_400();
+            width: $MyScale120_mobile;
+            height: $MyScale120_mobile;
+            border-radius: $MyScale120_mobile;
+          }
+          & > .plus {
+            padding: 0;
+            margin-right: $MyScale20_mobile;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            cursor: pointer;
+            background-color: rgba(0, 0, 0, 0.07);
+            border: none;
+            @include font100_300();
+            width: $MyScale120_mobile;
+            height: $MyScale120_mobile;
+            border-radius: $MyScale120_mobile;
+          }
+
+          & > span {
+            text-align: center;
+            @include font60_400();
+          }
+        }
+      }
+    }
+  }
+}
+
+#modalCardItemMobileSet {
+  & .MuiBackdrop-root.MuiModal-backdrop {
+    background: none;
+  }
+
+  & .MuiDrawer-paper {
+    max-height: calc(100% - $MyScale200_mobile);
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+    overflow: hidden;
+
+    & .ContainerModalCardMobileSet {
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      & .blockShadowModalCardItemSet {
+        top: $MyScale550_mobile;
+        z-index: 100;
+        width: 100%;
+        height: $MyScale80_mobile;
+        position: fixed;
+        background: linear-gradient(
+          180deg,
+          rgba(115, 115, 115, 0.1) 0%,
+          rgba(83, 92, 84, 0) 100%
+        );
+        mix-blend-mode: multiply;
+        transition: all 0.1s ease 0s;
+      }
+
+      & .lineModalCardMobileSet {
+        margin-top: $MyScale40_mobile;
+        margin-bottom: $MyScale70_mobile;
+        width: $MyScale150_mobile;
+        min-height: $MyScale10_mobile;
+        border-radius: $MyScale5_mobile;
+        background: rgba(0, 0, 0, 0.2);
+      }
+
+      & .TitleModalCardModileSet {
+        width: $MyScale1010_mobile;
+        height: $MyScale80_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: $MyScale30_mobile;
+
+        & span {
+          text-align: center;
+          @include font70_400();
+        }
+      }
+
+      & .dop_text {
+        width: 100%;
+        padding: 0;
+        min-height: $MyScale60_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: $MyScale60_mobile;
+
+        & .first_text {
+          @include font30_400();
+          border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          color: rgba(0, 0, 0, 0.6) !important;
+        }
+
+        & .second_text {
+          @include font30_400();
+          border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: $MyScale140_mobile;
+          color: rgba(0, 0, 0, 0.6) !important;
+        }
+
+        & .third_text {
+          width: $MyScale100_mobile;
+          @include font30_400();
+          display: flex;
+          align-items: center;
+          width: $MyScale140_mobile;
+          color: rgba(0, 0, 0, 0.6) !important;
+        }
+      }
+
+      & .lineModalCardMobileSet2 {
+        width: 100%;
+        min-height: $MyScale2_mobile;
+        background: rgba(0, 0, 0, 0.1);
+      }
+
+      & .ContainerSet {
+        overflow: hidden;
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        margin-left: $MyScale80_mobile;
+
+        & .ItemModalCardMobileSet {
+          overflow-y: auto;
+          display: flex;
+          align-items: flex-start;
+          flex-direction: column;
+
+          &::-webkit-scrollbar {
+            width: $MyScale45_mobile;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.3);
+            border-right: solid $MyScale35_mobile #ffffff;
+          }
+
+          &::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            margin-top: $MyScale40_mobile;
+            border-right: solid $MyScale35_mobile #ffffff;
+          }
+
+          & .ListSet {
+            width: $MyScale1000_mobile;
+            margin-right: $MyScale45_mobile;
+
+            & .SetItem {
+              display: flex;
+              height: $MyScale360_mobile;
+              margin-bottom: $MyScale20_mobile;
+
+              & .ImgSet {
+                width: $MyScale360_mobile;
+                height: $MyScale360_mobile;
+                margin-right: $MyScale40_mobile;
+
+                & img {
+                  object-fit: contain;
+                  image-rendering: auto;
+                  width: 100%;
+                  height: auto;
+                }
+              }
+
+              & .itemIndex {
+                margin-top: $MyScale55_mobile;
+                width: $MyScale40_mobile;
+                & span {
+                  @include font40_400();
+                }
+              }
+
+              & .itemDesc {
+                width: $MyScale560_mobile;
+                margin-top: $MyScale55_mobile;
+                margin-bottom: $MyScale55_mobile;
+                display: flex;
+                align-items: flex-start;
+                flex-direction: column;
+                justify-content: flex-start;
+
+                & span:first-child {
+                  width: 100%;
+                  height: $MyScale100_mobile;
+                  display: flex;
+                  align-items: center;
+                  @include font40_400();
+                  line-height: normal;
+                }
+
+                & .dop_text_set {
+                  display: flex;
+                  height: $MyScale40_mobile;
+                  width: $MyScale200_mobile;
+                  align-items: center;
+                  margin-bottom: $MyScale10_mobile;
+
+                  & span:first-child {
+                    width: $MyScale65_mobile;
+                    display: flex;
+                    align-items: center;
+                    height: $MyScale20_mobile;
+                    text-align: center;
+                    @include font20_400();
+                    color: rgba(0, 0, 0, 0.6) !important;
+                    border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
+                  }
+                  & span:last-child {
+                    width: $MyScale100_mobile;
+                    height: $MyScale20_mobile;
+                    display: flex;
+                    align-items: center;
+                    justify-content: center;
+                    @include font20_400();
+                    color: rgba(0, 0, 0, 0.6) !important;
+                  }
+                }
+
+                & span:last-child {
+                  width: 100%;
+                  height: $MyScale100_mobile;
+                  display: flex;
+                  align-items: center;
+                  @include font25_400();
+                  color: rgba(0, 0, 0, 0.6) !important;
+                  -webkit-line-clamp: 5;
+                  display: -webkit-box;
+                  -webkit-box-orient: vertical;
+                  overflow: hidden;
+                  line-height: $MyScale36_mobile;
+                }
+              }
+            }
+
+            & .SetDivider {
+              width: $MyScale1010_mobile;
+              height: $MyScale2_mobile;
+              background: rgba(0, 0, 0, 0.1);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+#modalCardItemMobileValue {
+  & .MuiDrawer-paper {
+    max-height: calc(100% - $MyScale200_mobile);
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+    overflow: hidden;
+
+    & .ContainerModalCardMobileValue {
+      overflow: hidden;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      & .blockShadowModalCardItemValue {
+        top: $MyScale550_mobile;
+        z-index: 100;
+        width: 100%;
+        height: $MyScale80_mobile;
+        position: fixed;
+        background: linear-gradient(
+          180deg,
+          rgba(115, 115, 115, 0.1) 0%,
+          rgba(83, 92, 84, 0) 100%
+        );
+        mix-blend-mode: multiply;
+        transition: all 0.1s ease 0s;
+      }
+
+      & .lineModalCardMobileValue {
+        margin-top: $MyScale40_mobile;
+        margin-bottom: $MyScale70_mobile;
+        width: $MyScale150_mobile;
+        min-height: $MyScale10_mobile;
+        border-radius: $MyScale5_mobile;
+        background: rgba(0, 0, 0, 0.2);
+      }
+
+      & .TitleModalCardModileValue {
+        width: $MyScale1010_mobile;
+        height: $MyScale80_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: $MyScale30_mobile;
+
+        & span {
+          text-align: center;
+          @include font70_400();
+        }
+      }
+
+      & .dop_text_value {
+        width: $MyScale1010_mobile;
+        padding: 0;
+        max-height: $MyScale60_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        & span {
+          text-align: center;
+          @include font30_400();
+          color: rgba(0, 0, 0, 0.6) !important;
+        }
+      }
+
+      & .lineModalCardMobileValue2 {
+        width: 100%;
+        min-height: $MyScale2_mobile;
+        background: rgba(0, 0, 0, 0.1);
+      }
+
+      & .ContainerValue {
+        overflow: hidden;
+        display: flex;
+        align-items: flex-start;
+        flex-direction: column;
+        margin-left: $MyScale80_mobile;
+
+        & .ItemModalCardMobileValue {
+          display: flex;
+          align-items: flex-start;
+          flex-direction: column;
+
+          &::-webkit-scrollbar {
+            width: $MyScale45_mobile;
+          }
+
+          &::-webkit-scrollbar-thumb {
+            background: rgba(0, 0, 0, 0.3);
+            border-right: solid $MyScale35_mobile #ffffff;
+          }
+
+          &::-webkit-scrollbar-track {
+            background: rgba(0, 0, 0, 0.2);
+            margin-top: $MyScale40_mobile;
+            border-right: solid $MyScale35_mobile #ffffff;
+          }
+
+          & .ListValue {
+            width: $MyScale1000_mobile;
+            margin-right: $MyScale45_mobile;
+
+            & .ValueItem {
+              display: flex;
+              height: $MyScale400_mobile;
+              margin-bottom: $MyScale40_mobile;
+
+              & .itemIndex {
+                margin-top: $MyScale35_mobile;
+                width: $MyScale40_mobile;
+                margin-right: $MyScale20_mobile;
+                & span {
+                  @include font40_400();
+                }
+              }
+
+              & .itemValueColumn {
+                display: flex;
+                flex-direction: column;
+                width: $MyScale934_mobile;
+                height: $MyScale394_mobile;
+                border: $MyScale3_mobile solid #b2b2b2;
+                border-radius: $MyScale30_mobile;
+
+                & .itemValueRowMain {
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                  border-bottom: $MyScale3_mobile solid #b2b2b2;
+
+                  & > div:first-child {
+                    border-right: $MyScale3_mobile solid #b2b2b2;
+                    padding-left: $MyScale30_mobile;
+                    padding-top: $MyScale35_mobile;
+                    padding-bottom: $MyScale36_mobile;
+                    padding-right: $MyScale37_mobile;
+                    & span {
+                      display: flex;
+                      justify-content: flex-start;
+                      text-align: left;
+                      align-items: center;
+                      width: $MyScale650_mobile;
+                      height: $MyScale80_mobile;
+                      @include font40_400();
+                      line-height: normal;
+                    }
+                  }
+
+                  & > div:last-child {
+                    width: $MyScale214_mobile;
+                    display: flex;
+                    flex-direction: column;
+
+                    & span:first-child {
+                      width: 100%;
+                      height: $MyScale60_mobile;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      @include font70_400();
+                      line-height: normal;
+                      margin-bottom: $MyScale6_mobile;
+                    }
+
+                    & span:last-child {
+                      width: 100%;
+                      height: $MyScale30_mobile;
+                      @include font30_400();
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      line-height: normal;
+                    }
+                  }
+                }
+              }
+
+              & .itemValueRow {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                height: $MyScale240_mobile;
+
+                & > div:first-child {
+                  border-right: $MyScale3_mobile solid #b2b2b2;
+                  padding-left: $MyScale27_mobile;
+                  padding-top: $MyScale16_mobile;
+                  padding-bottom: $MyScale16_mobile;
+                  padding-right: $MyScale17_mobile;
+                  height: $MyScale208_mobile;
+                  display: flex;
+                  justify-content: flex-start;
+                  text-align: left;
+                  & span {
+                    width: $MyScale490_mobile;
+                    @include font30_400();
+                    line-height: normal;
+                  }
+                }
+
+                & > div:last-child {
+                  width: $MyScale340_mobile;
+                  height: $MyScale120_mobile;
+                  display: flex;
+                  justify-content: center;
+                  flex-direction: column;
+                  padding-left: $MyScale30_mobile;
+                  padding-right: $MyScale30_mobile;
+                  padding-bottom: $MyScale107_mobile;
+
+                  & div {
+                    display: flex;
+                    justify-content: space-between;
+
+                    & span {
+                      @include font30_400();
+                    }
+
+                    .dot {
+                      content: '';
+                      border-bottom: $MyScale2_mobile dotted rgba(0, 0, 0, 0.8);
+                      flex: 0.88;
+                      align-items: flex-end;
+                      margin-bottom: $MyScale8_mobile;
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          & .ListValueOne {
+            width: $MyScale1010_mobile;
+
+            & .ValueItemOne {
+              display: flex;
+              height: $MyScale370_mobile;
+
+              & .itemValueColumn {
+                display: flex;
+                flex-direction: column;
+                width: $MyScale1004_mobile;
+                height: $MyScale364_mobile;
+                border: $MyScale3_mobile solid #b2b2b2;
+                border-radius: $MyScale30_mobile;
+
+                & .itemValueRowMain {
+                  width: 100%;
+                  display: flex;
+                  align-items: center;
+                  border-bottom: $MyScale3_mobile solid #b2b2b2;
+
+                  & > div:first-child {
+                    border-right: $MyScale3_mobile solid #b2b2b2;
+                    padding-left: $MyScale30_mobile;
+                    padding-top: $MyScale35_mobile;
+                    padding-bottom: $MyScale36_mobile;
+                    padding-right: $MyScale37_mobile;
+                    & span {
+                      display: flex;
+                      justify-content: flex-start;
+                      text-align: left;
+                      align-items: center;
+                      width: $MyScale650_mobile;
+                      height: $MyScale80_mobile;
+                      @include font40_400();
+                      line-height: normal;
+                    }
+                  }
+
+                  & > div:last-child {
+                    width: $MyScale282_mobile;
+                    display: flex;
+                    flex-direction: column;
+
+                    & span:first-child {
+                      width: 100%;
+                      height: $MyScale60_mobile;
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      @include font70_400();
+                      line-height: normal;
+                      margin-bottom: $MyScale6_mobile;
+                    }
+
+                    & span:last-child {
+                      width: 100%;
+                      height: $MyScale30_mobile;
+                      @include font30_400();
+                      display: flex;
+                      align-items: center;
+                      justify-content: center;
+                      line-height: normal;
+                    }
+                  }
+                }
+              }
+
+              & .itemValueRow {
+                width: 100%;
+                display: flex;
+                align-items: center;
+                height: $MyScale213_mobile;
+
+                & > div:first-child {
+                  border-right: $MyScale3_mobile solid #b2b2b2;
+                  padding-left: $MyScale27_mobile;
+                  padding-top: $MyScale13_mobile;
+                  padding-right: $MyScale17_mobile;
+                  height: $MyScale200_mobile;
+                  display: flex;
+                  justify-content: flex-start;
+                  text-align: left;
+                  & span {
+                    width: $MyScale550_mobile;
+                    @include font30_400();
+                    line-height: normal;
+                  }
+                }
+
+                & > div:last-child {
+                  width: $MyScale350_mobile;
+                  height: $MyScale120_mobile;
+                  display: flex;
+                  justify-content: flex-start;
+                  flex-direction: column;
+                  padding-left: $MyScale30_mobile;
+                  padding-right: $MyScale27_mobile;
+                  padding-bottom: $MyScale77_mobile;
+                  padding-top: $MyScale10_mobile;
+
+                  & div {
+                    display: flex;
+                    justify-content: space-between;
+
+                    & span {
+                      @include font30_400();
+                    }
+
+                    .dot {
+                      content: '';
+                      border-bottom: $MyScale2_mobile dotted rgba(0, 0, 0, 0.8);
+                      flex: 0.88;
+                      align-items: flex-end;
+                      margin-bottom: $MyScale8_mobile;
+                    }
+                  }
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

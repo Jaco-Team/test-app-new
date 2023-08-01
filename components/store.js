@@ -1526,6 +1526,10 @@ export const useHomeStore = create((set, get) => ({
   banner: null,
   swiper: null,
 
+  setActiveModalCardItemMobile: (active) => {
+    set({ isOpenModal: active });
+  },
+
   getBanners: async (this_module, city) => {
     let data = {
       type: 'get_banners',

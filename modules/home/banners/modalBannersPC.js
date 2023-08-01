@@ -229,7 +229,7 @@ const ban3 = {
 const banners = [ban1, ban2, ban3];
 
 export default function ModalBannerPC() {
-  console.log('render ModalBannerPC');
+  //console.log('render ModalBannerPC');
 
   const [setActiveBanner, openModalBanner, banner] = useHomeStore((state) => [state.setActiveBanner, state.openModalBanner, state.banner], shallow);
 

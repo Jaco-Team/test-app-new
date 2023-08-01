@@ -41,16 +41,16 @@
                 @include fonsNew(1.14vw, var(--inter-font));
                 font-weight: 400;
                 letter-spacing: -0.045vw;
-                & > a.active{
-                    color: $colorMain;
-                    text-decoration: none;
-                    cursor: pointer;
-                }
-                & > a:not(.active){
-                    color: $colorText;
-                    text-decoration: none;
-                    cursor: pointer;
-                }
+                // & > a.active{
+                //     color: $colorMain;
+                //     text-decoration: none;
+                //     cursor: pointer;
+                // }
+                // & > a:not(.active){
+                //     color: $colorText;
+                //     text-decoration: none;
+                //     cursor: pointer;
+                // }
             }
         }
     }

@@ -22,7 +22,7 @@ import ProfileIconHeaderMobile from '../profile/profileIconHeaderMobile';
 
 export default memo(function NavBarMobile({ city, active_page }) {
 
-  console.log('NavBarMobile render');
+  //console.log('NavBarMobile render');
 
   const [activeMenu, setActiveMenu] = useState(false);
 

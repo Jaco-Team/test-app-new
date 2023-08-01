@@ -15,7 +15,7 @@ import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
 
 export default function BasketPC() {
-  console.log('BasketPC render');
+  //console.log('BasketPC render');
 
   const [promo, setPromo] = useState('');
   const [scrollBasket, setScrollBasket] = useState(0);

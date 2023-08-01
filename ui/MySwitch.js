@@ -67,6 +67,10 @@ const BasketSwitch = styled(Switch)(({ theme }) => ({
   padding: 0,
   display: 'flex',
   borderRadius: '1.4440433212996vw',
+  fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+  fontSize: '1.0830324909747vw',
+  fontWeight: 400,
+  fontStyle: 'normal',
 
   '& .MuiButtonBase-root.MuiSwitch-switchBase': {
     padding: 0,
@@ -99,8 +103,6 @@ const BasketSwitch = styled(Switch)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'center',
-    fontSize: '1.0830324909747vw',
-    fontWeight: 400,
     '&:after': {
       content: "'Доставка'",
       color: '#fff',
@@ -114,8 +116,6 @@ const BasketSwitch = styled(Switch)(({ theme }) => ({
     display: 'flex',
     alignItems: 'center',
     justifyContent: 'space-around',
-    fontSize: '1.0830324909747vw',
-    fontWeight: 400,
     opacity: 1,
     backgroundColor: 'rgba(0, 0, 0, 0.05)',
     color: 'rgba(0, 0, 0, 0.80)',

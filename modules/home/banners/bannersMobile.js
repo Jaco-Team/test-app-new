@@ -13,7 +13,7 @@ import { useHomeStore } from '../../../components/store.js';
 import { shallow } from 'zustand/shallow';
 
 export default React.memo(function BannersMobile() {
-  console.log('BannersMobile render');
+  //console.log('BannersMobile render');
 
   const [banners, setBanners] = useState([]);
   const [bannerList, setActiveBanner] = useHomeStore((state) => [state.bannerList, state.setActiveBanner], shallow);

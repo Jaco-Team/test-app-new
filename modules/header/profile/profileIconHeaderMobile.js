@@ -12,7 +12,7 @@ import { ProfileIconMobile } from '@/ui/Icons.js';
 import ListItem from '@mui/material/ListItem';
 
 export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_page }) {
-  console.log('render ProfileIconHeaderMobile');
+  //console.log('render ProfileIconHeaderMobile');
 
   const session = useSession();
 

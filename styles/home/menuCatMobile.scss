@@ -5,6 +5,7 @@
   z-index: 1100 !important;
   position: sticky;
   top: $MyScale200_mobile;
+  background-color: #fff;
 
   .menuCat {
     display: flex;
@@ -46,13 +47,13 @@
   .menuCatDopContainer {
     width: 100%;
     position: relative;
-    height: $MyScale140_mobile;
+    height: $MyScale100_mobile;
+    margin-bottom: $MyScale50_mobile;
 
     .menuCatDop {
       width: 100%;
       display: flex;
-      padding-top: $MyScale40_mobile;
-      height: $MyScale100_mobile;
+      height: 100%;
       position: absolute;
       overflow-x: auto;
       -ms-overflow-style: none;
@@ -81,18 +82,19 @@
     }
   }
 
-  .blockShadowMenuCatMobile {
-    right: 0;
-    z-index: 1150;
-    width: 100%;
-    height: $MyScale80_mobile;
-    position: fixed;
-    background: linear-gradient(
-      180deg,
-      rgba(115, 115, 115, 0.1) 0%,
-      rgba(83, 92, 84, 0) 100%
-    );
-    mix-blend-mode: multiply;
-    transition: all 0.1s ease 0s;
-  }
+}
+
+.blockShadowMenuCatMobile {
+  z-index: 1150;
+  width: 100%;
+  height: $MyScale80_mobile;
+  margin-bottom: -$MyScale80_mobile;
+  position: sticky;
+  background: linear-gradient(
+    180deg,
+    rgba(115, 115, 115, 0.1) 0%,
+    rgba(83, 92, 84, 0) 100%
+  );
+  mix-blend-mode: multiply;
+  transition: all 0.1s ease 0s;
 }

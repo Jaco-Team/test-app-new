@@ -2,6 +2,7 @@ import BannersMobile from './banners/bannersMobile';
 import BannersPC from './banners/bannersPC';
 import CardItems from './cardItem/cardItems.js';
 import ModalCardItemPC from './cardItem/modalCardItemPC.js';
+import ModalCardItemMobile from './cardItem/modalCardItemMobile';
 import ModalBannerPC from './banners/modalBannersPC';
 import MenuCatMobile from './menuCatMobile/menuCatMobile'
 
@@ -21,6 +22,7 @@ export default function HomePage(props) {
       <>
       <BannersMobile />
       <MenuCatMobile city={city} />
+      <ModalCardItemMobile />
       </>
       : 
       <>
