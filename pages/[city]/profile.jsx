@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 
+import Script from 'next/script';
 import dynamic from 'next/dynamic'
 
 const DynamicHeader = dynamic(() => import('@/components/header.js'))
@@ -41,6 +42,8 @@ export default function Profile(props) {
 
   return (
     <div className={roboto.variable}>
+      <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" />
+      
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
       <DynamicPage page={page} this_module={this_module} city={city} />

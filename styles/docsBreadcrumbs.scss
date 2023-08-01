@@ -9,48 +9,68 @@
     @media (min-width: 800px) {
         display: block;
         //margin-top: 15vw!important;
-        margin-top: 10vw!important;
+        margin-top: $MyScale300!important;
         margin-bottom: 140px!important;
 
-        margin-left: 5.78%!important;
-        margin-right: 4.5%!important;
-        width: 28.87%!important;
+        padding-top: 0!important;
+
+        margin-left: $MyScale160!important;
+        margin-right: $MyScale125!important;
+        width: $MyScale800!important;
         padding-left: 0px!important;
     }
 
     & > div{
         width: 100%;
         background-color: rgba(0, 0, 0, 0.07);
-        border-radius: 3vw;
+        border-radius: $MyScale80!important;
         display: grid;
         position: sticky;
-        top: 180px;
-
+        top: $MyScale300!important;
+        
         & > span{
-            @include fonsNew(1.14vw, var(--inter-font));
-            font-weight: 700;
-            padding: 10% 5% 0px 10%;
+            margin-top: $MyScale80;
+            margin-left: $MyScale80;
+            margin-right: $MyScale80;
+            height: $MyScale40;
+            line-height: $MyScale40;
+            @include font30_700();
             text-transform: uppercase;
         }
+        & > div{
+            margin-top: $MyScale80;
+            margin-left: $MyScale80;
+            margin-right: $MyScale80;
+            height: $MyScale40;
+            & > span{
+                @include font30_700();
+                text-transform: uppercase;
+            }
+        } 
         
         & > ul{
-            padding: 3% 0% 10% 13%;
-            line-height: 1.8;
-            margin: 0;
+            margin-left: $MyScale60;
+            margin-right: $MyScale80;
+            margin-top: $MyScale20;
+            margin-bottom: $MyScale70;
+            min-height: $MyScale300;
+            padding-left: $MyScale45;
             & > li{
-                @include fonsNew(1.14vw, var(--inter-font));
-                font-weight: 400;
-                letter-spacing: -0.045vw;
-                // & > a.active{
-                //     color: $colorMain;
-                //     text-decoration: none;
-                //     cursor: pointer;
-                // }
-                // & > a:not(.active){
-                //     color: $colorText;
-                //     text-decoration: none;
-                //     cursor: pointer;
-                // }
+                min-height: $MyScale60;
+                line-height: $MyScale60;
+                @include font30_400();
+                & > a{
+                    @include font30_400();
+                    text-decoration: none;
+                    cursor: pointer;
+                }
+                & > a.active{
+                    color: $colorMain;
+                    
+                }
+                & > a:not(.active){
+                    color: $colorText;
+                }
             }
         }
     }

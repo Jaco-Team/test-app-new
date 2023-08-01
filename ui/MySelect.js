@@ -15,9 +15,13 @@ export default class MySelect extends React.PureComponent {
       <FormControl fullWidth variant="outlined" size="small">
         <InputLabel>{this.props.label}</InputLabel>
         <Select
+          MenuProps={{
+            className: this.props.className+'_menu'
+          }}
           value={this.props.value}
           label={this.props.label}
           style={{ width: '100%', zIndex: 3 }} 
+          variant={ this.props.variant ? this.props.variant : "outlined"  }
           disabled={ this.props.disabled || this.props.disabled === true ? true : false }
           onChange={ this.props.func }
           multiple={ this.props.multiple && this.props.multiple === true ? true : false }

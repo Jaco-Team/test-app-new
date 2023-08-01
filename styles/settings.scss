@@ -6,8 +6,8 @@ $colorMain: #cc0033;
 $colorText: rgba(0, 0, 0, 0.8);
 
 $MyScale2: 0.072202166064982vw;
-$MyScale5: 0.18050541516245vw;
 $MyScale3: 0.108303249vw;
+$MyScale5: 0.18050541516245vw;
 $MyScale5_17: 0.18663vw;
 $MyScale10: 0.36101083032491vw;
 $MyScale11: 0.3971119133574vw;
@@ -16,52 +16,85 @@ $MyScale20: 0.72202166064982vw;
 $MyScale22: 0.7942238267148vw;
 $MyScale23: 0.83032vw;
 $MyScale27: 0.974729vw;
+$MyScale28: 1.0108303249097vw;
 $MyScale30: 1.0830324909747vw;
 $MyScale37: 1.33574007vw;
 $MyScale40: 1.4440433212996vw;
 $MyScale40_8: 1.472924vw;
 $MyScale43: 1.5523465703971vw;
+$MyScale44: 1.5884476534296vw;
 $MyScale45: 1.62454873vw;
-$MyScale49: 1.7689530685921vw;
-$MyScale50: 1.8050541516245vw;
-$MyScale60: 2.1660649819495vw;
+$MyScale48: 1.7328519855vw;
+$MyScale49: 1.76894vw;
+$MyScale50: 1.80505415vw;
+$MyScale53: 1.913357400722vw;
+$MyScale60: 2.16606vw;
+$MyScale66: 2.3826714801444vw;
 $MyScale66_6: 2.407vw;
+$MyScale70: 2.5270758122744vw;
+$MyScale72: 2.5992779783394vw;
 $MyScale75: 2.7075812274368vw;
 $MyScale76: 2.7436823104693vw;
 $MyScale80: 2.8880866425993vw;
+$MyScale90: 3.2490974729242vw;
+$MyScale91: 3.2851985559567vw;
+$MyScale95: 3.4296028880866vw;
 $MyScale100: 3.6101083032491vw;
+$MyScale110: 3.971119133574vw;
 $MyScale120: 4.3321299638989vw;
 $MyScale123: 4.4405vw;
+$MyScale125: 4.512635379vw;
+$MyScale130: 4.693140794vw;
 $MyScale137: 4.945848375vw;
 $MyScale140: 5.05415vw;
-$MyScale160: 5.7761732851986vw;
+$MyScale144: 5.1985559566vw;
+$MyScale145: 5.2346570397112vw;
+$MyScale150: 5.4151624548vw;
+$MyScale160: 5.776173vw;
 $MyScale163: 5.884476vw;
+$MyScale170: 6.137184115vw;
 $MyScale180: 6.4982vw;
+$MyScale190: 6.8592057761733vw;
 $MyScale200: 7.2204vw;
 $MyScale206_67: 7.4610108vw;
 $MyScale208: 7.5090252vw;
-$MyScale220: 7.942238267148vw;
+$MyScale210: 7.5812274368231vw;
+$MyScale220: 7.942238267vw;
 $MyScale240: 8.66425992vw;
 $MyScale270: 9.7472924187726vw;
 $MyScale280: 10.10830324vw;
+$MyScale290: 10.469314079422vw;
 $MyScale300: 10.830324vw;
 $MyScale320: 11.552346570397vw;
 $MyScale330: 11.913357vw;
+$MyScale340: 12.27436823vw;
+$MyScale380: 13.718411552vw;
 $MyScale390: 14.07942238vw;
+$MyScale398: 14.368231046931vw;
 $MyScale400: 14.44043vw;
 $MyScale440: 15.884476534vw;
 $MyScale475: 17.14801444vw;
 $MyScale480: 17.32851985vw;
+$MyScale500: 18.050541516vw;
 $MyScale510: 18.4115523vw;
 $MyScale560: 20.216606498195vw;
-$MyScale676: 24.404332129964vw;
-$MyScale680: 24.548736462094vw;
+$MyScale600: 21.660649819495vw;
+$MyScale640: 23.104693140794vw;
+$MyScale680: 24.548736462vw;
+$MyScale700: 25.2707581vw;
 $MyScale720: 25.99277978vw;
+$MyScale760: 27.436823104vw;
+$MyScale780: 28.158844765vw;
+$MyScale800: 28.88086642vw;
 $MyScale920: 33.212996389892vw;
 $MyScale960: 34.65703971vw;
+$MyScale995: 35.920577617329vw;
 $MyScale1000: 36.101083032491vw;
 $MyScale1080: 38.98916967509vw;
-$MyScale1542: 55.667870036101vw;
+$MyScale1542: 55.667870036vw;
+$MyScale1560: 56.31768953vw;
+$MyScale1960: 70.758122743vw;
+$MyScale2525: 91.15523465704vw;
 
 $MyMaxWidth: 1170px;
 //$MyMaxWidth: 600px;
@@ -148,7 +181,7 @@ $MyScale1065_mobile: 91.025641025641vw;
 $MyScale1090_mobile: 93.162393162393vw;
 
 @mixin fonsNew($size: 1rem, $family: $Roboto) {
-  font-size: $size;
+  font-size: $size !important;
   font-family: $family !important;
   color: $colorText;
 }
@@ -337,6 +370,17 @@ $MyScale1090_mobile: 93.162393162393vw;
 
   @media (max-width: $MyMaxWidth) {
     @include fonsNew($MyScale60_mobile, var(--inter-font));
+  }
+}
+
+@mixin font60_500() {
+  font-style: normal;
+  font-weight: 500;
+
+  @include fonsNew(2.2vw, var(--inter-font));
+
+  @media (max-width: 960px) {
+    @include fonsNew(2.2rem, var(--inter-font));
   }
 }
 

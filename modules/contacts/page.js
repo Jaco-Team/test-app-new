@@ -19,7 +19,7 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 
-import { SwitchIOS as MySwitch } from '@/../ui/MySwitch.js';
+import MySwitch from '@/../ui/Switch.js';
 
 export default function ContactsPage(props) {
   const { page } = props;
@@ -36,9 +36,9 @@ export default function ContactsPage(props) {
 
   const openMenu = (event) => {
 
-    setActiveModalCity(true); // временно, чтобы открыть модалку города
+    //setActiveModalCity(true); // временно, чтобы открыть модалку города
 
-    // setAnchorEl(event.currentTarget); // временно, чтобы открыть модалку города
+    setAnchorEl(event.currentTarget); // временно, чтобы открыть модалку города
   }
 
   const chooseCity = (city) => {
@@ -72,7 +72,7 @@ export default function ContactsPage(props) {
             <List>
               {myAddr.map((point, key) => (
                 <ListItemButton key={key} disableRipple={false} onClick={() => chooseAddr(point.id)}>
-                  <MapPointIcon style={{ width: '2vw', height: '2.4vw' }} />
+                  <MapPointIcon />
                   <ListItemText primary={<Typography style={{ color: point?.color ? point.color ? point.color : null : null }}>{point.addr}</Typography>}/>
                 </ListItemButton>
               ))}

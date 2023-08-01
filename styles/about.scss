@@ -2,28 +2,30 @@
 
 .PAGEabout{ 
     margin-top: 64px!important;
+    z-index: 3;
+    mix-blend-mode: multiply;
 
     @media (min-width: 800px) {
-        margin-top: 13vw!important;
+        margin-top: $MyScale380!important;
         margin-bottom: 140px!important;
+        padding-top: 0px!important;
 
-        margin-left: 4.5%!important;
-        width: 56.35%!important;
+        margin-left: $MyScale125!important;
+        width: $MyScale1560!important;
         padding-left: 0px!important;
     }
 
     & h1, h2{
-        @include fontH1();
+        @include font75_700();
         text-align: start;
         width: 100%;
-        padding-bottom: 20px;
     }
     & h2{
-        padding-top: 10px;
+        padding-top: $MyScale10;
     }
 
     & img{
-        border-radius: 20px;
+        border-radius: $MyScale20;
     }
     & a{
         text-decoration: none;

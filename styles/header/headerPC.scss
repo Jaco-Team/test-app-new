@@ -25,23 +25,36 @@ html:not([data-scroll='0']) .blockShadow {
   position: fixed;
   z-index: 1200 !important;
   background-color: #fff !important;
-  height: 8.6642599277978vw;
+  height: $MyScale240;
   box-shadow: none !important;
+
+  width: 100%;
 
   & a {
     text-decoration: none;
   }
 
   & > div {
-    padding: 0 !important;
-    margin: 2.1660649819495vw 4.5126353790614vw 2.1660649819495vw 5.2346570397112vw;
     display: flex;
+    flex-direction: row;
+    justify-content: space-between;
     align-items: center;
 
+    padding: 0 !important;
+    margin-top: $MyScale60;
+    margin-bottom: $MyScale60;
+    margin-left: $MyScale145;
+    margin-right: $MyScale125;
+
+    & > div{
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+    }
     & .logoHeaderPC {
-      width: 18.050541516245vw;
-      height: 4.3321299638989vw;
-      margin-right: 0.72202166064982vw;
+      width: $MyScale500;
+      height: $MyScale120;
+      margin-right: $MyScale20;
 
       & img {
         width: 100%;
@@ -49,10 +62,15 @@ html:not([data-scroll='0']) .blockShadow {
       }
     }
 
+    & .headerCat.last{
+
+    }
+
     & .headerCat {
-      width: 5.7761732851986vw;
-      height: 1.4440433212996vw;
-      margin-right: 1.4440433212996vw;
+      min-width: $MyScale160;
+      height: $MyScale40;
+      line-height: $MyScale40;
+      margin-right: $MyScale40;
       display: flex;
       align-items: center;
       justify-content: flex-start;
@@ -82,12 +100,12 @@ html:not([data-scroll='0']) .blockShadow {
     }
 
     & .burgerHeaderPC {
-      width: 2.1660649819495vw;
-      height: 1.0830324909747vw;
+      width: $MyScale60;
+      height: $MyScale30;
       display: flex;
       align-items: center;
-      margin-right: 2.1660649819495vw;
-
+      margin-right: $MyScale60;
+      cursor: pointer;
       & svg {
         width: 100%;
         height: 100%;
@@ -105,17 +123,21 @@ html:not([data-scroll='0']) .blockShadow {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      width: 8.7003610108303vw;
-      height: 1.913357400722vw;
-      margin-right: 2.8519855595668vw;
+      //width: 8.7003610108303vw;
+      //height: $MyScale40;
+      //line-height: $MyScale40;
+      margin-right: $MyScale80;
 
       & svg {
-        width: 1.4440433212996vw;
-        height: 1.913357400722vw;
+        width: $MyScale40;
+        height: $MyScale53;
+        margin-right: $MyScale20;
       }
 
       & p {
         @include font30_400();
+        height: $MyScale40;
+        line-height: $MyScale40;
       }
 
       &:hover {
@@ -155,14 +177,14 @@ html:not([data-scroll='0']) .blockShadow {
     }
 
     & .activeProfileCat {
-      width: 2.8880866425993vw;
-      height: 2.8880866425993vw;
-      border-radius: 2.8880866425993vw;
+      width: $MyScale80;
+      height: $MyScale80;
+      border-radius: $MyScale80;
       background: #6fbef8;
       display: flex;
       align-items: center;
       justify-content: center;
-      margin-right: 1.4440433212996vw;
+      margin-right: $MyScale40;
 
       & a {
         & span {
@@ -173,10 +195,10 @@ html:not([data-scroll='0']) .blockShadow {
     }
 
     & .basketCat {
-      width: 5.7761732851986vw;
+      width: $MyScale160;
       background-color: #dd1a32;
-      border-radius: 1.6245487364621vw;
-      height: 2.8880866425993vw;
+      border-radius: $MyScale45;
+      height: $MyScale80;
       display: flex;
       align-items: center;
       cursor: pointer;
@@ -184,13 +206,19 @@ html:not([data-scroll='0']) .blockShadow {
       & span {
         @include font30_400();
         color: #ffffff;
-        width: 1.2635379061372vw;
+        width: $MyScale95;
         text-align: center;
       }
 
       & svg {
-        width: 1.4440433212996vw;
-        height: 1.0830324909747vw;
+        width: $MyScale40;
+        height: $MyScale30;
+      }
+      & svg.min{
+        margin-left: $MyScale30;
+      }
+      & svg.max{
+        margin-left: 0;
       }
     }
 

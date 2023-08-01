@@ -706,8 +706,7 @@ export const useContactStore = create((set, get) => ({
           center: [ points[0]['xy_center_map']['latitude'], points[0]['xy_center_map']['longitude'] ],
           zoom: 11.5,
           controls: ['geolocationControl', 'searchControl']
-        }, { suppressMapOpenBlock: true },
-        );
+        }, { suppressMapOpenBlock: true });
 
         points_zone.map((zone, key)=>{
           get().myMap2.geoObjects.add(
@@ -734,8 +733,8 @@ export const useContactStore = create((set, get) => ({
             }, {
               iconLayout: 'default#image',
               iconImageHref: '/Favikon.png',
-              iconImageSize: [50, 50],
-              iconImageOffset: [-12, -24],
+              iconImageSize: [65, 65],
+              iconImageOffset: [-12, -20],
               hideIconOnBalloonOpen: false,
             })
         )
@@ -773,9 +772,8 @@ export const useContactStore = create((set, get) => ({
 
     const balloonLayout = ymaps.templateLayoutFactory.createClass( 
       "<div class='my-hint'>" +
-        "<img alt='' src='/about/fasad.jpg' /><br />" +
-        "<div>{{ properties.raion }}</div><br />" +
-        "<div>{{ properties.address }}</div><br />" +
+        "<img alt='' src='/about/fasad.jpg' />" +
+        "<span>{{ properties.raion }}, {{ properties.address }}</span>" +
       "</div>"
     );
 
@@ -912,9 +910,8 @@ export const useContactStore = create((set, get) => ({
 
     const balloonLayout = ymaps.templateLayoutFactory.createClass( 
       "<div class='my-hint'>" +
-        "<img alt='' src='/about/fasad.jpg' /><br />" +
-        "<div>{{ properties.raion }}</div><br />" +
-        "<div>{{ properties.address }}</div><br />" +
+        "<img alt='' src='/about/fasad.jpg' />" +
+        "<span>{{ properties.raion }}, {{ properties.address }}</span>" +
       "</div>"
     );
 
@@ -988,9 +985,18 @@ export const useProfileStore = create((set, get) => ({
   modalOrder: {},
   openModal: false,
   openModalDelete: false,
+  isOpenModalAddr: false,
   shortName: '',
   streets: [],
+  allStreets: [],
   city: '',
+  thisMAP: null,
+  is_fetch: false,
+  chooseAddrStreet: {},
+  infoAboutAddr: null,
+  cityList: [],
+  is_fetch_save_new_addr: false,
+  active_city: 0,
   getPromoList: async (this_module, city, userToken) => {
     let data = {
       type: 'get_my_promos',
@@ -1002,6 +1008,7 @@ export const useProfileStore = create((set, get) => ({
 
     set({
       promoList: json.promo_list,
+      city: city
     });
   },
   getOrderList: async (this_module, city, userToken) => {
@@ -1027,12 +1034,11 @@ export const useProfileStore = create((set, get) => ({
 
     let json = await api(this_module, data);
 
-    console.log( 'getUserInfo', json )
-
     set({
       shortName: json.user?.name.substring(0, 1) + json.user?.fam.substring(0, 1),
       userInfo: json.user,
-      streets: json.streets
+      streets: json.streets,
+      city: city
     });
   },
   setUser: (user) => {
@@ -1083,6 +1089,53 @@ export const useProfileStore = create((set, get) => ({
       openModalDelete: false
     })
   },
+  closeModalAddr: () => {
+    set({
+      isOpenModalAddr: false
+    })
+  },
+  openModalAddr: async (id, city = '') => {
+    let data = {
+      type: 'get_data_for_streets',
+      city_id: city,
+      street_id: id
+    };
+
+    let json = await api('profile', data);
+
+    set({
+      isOpenModalAddr: true,
+      allStreets: json.streets,
+      infoAboutAddr: json.this_info,
+      cityList: json.cities,
+      active_city: json.city
+    })
+
+    ymaps.ready().then((function () {
+  
+      if( parseInt( id ) > 0 ){
+        get().thisMAP = new ymaps.Map('map', {
+          center: [ json.this_info.xy[0], json.this_info.xy[1] ],
+          zoom: 11.5,
+          controls: []
+        }, { suppressMapOpenBlock: true });
+
+        get().setMapZone(json.zones, json.this_info.xy)
+
+        get().setAddrPoint(json.this_info.xy);
+
+      }else{
+        get().thisMAP = new ymaps.Map('map', {
+          center: [ json.city_center[0], json.city_center[1] ],
+          zoom: 11.5,
+          controls: []
+        }, { suppressMapOpenBlock: true });
+
+        get().setMapZone(json.zones, json.city_center)
+      }
+
+    }))
+  },
   orderDel: async (this_module, userToken) => {
     let data = {
       type: 'close_order',
@@ -1100,6 +1153,242 @@ export const useProfileStore = create((set, get) => ({
       get().closeOrder();
       get().getOrderList('zakazy', get().city, userToken);
     }
+  },
+  checkStreet: async(street, home, city_id) => {
+    if( get().is_fetch === true ){
+      setTimeout( () => {
+        get().checkStreet(street, home, city_id)
+      }, 500 )
+
+      return ;
+    }else{
+      set({
+        is_fetch: true,
+        chooseAddrStreet: {}
+      })
+    }
+
+    let data = {
+      type: 'check_street',
+      city_id: city_id,
+      street: street,
+      home: home
+    };
+
+    let json = await api('profile', data);
+
+    if( json?.addrs?.length == 1 ){
+      json.addrs = json?.addrs[0];
+
+      set({
+        chooseAddrStreet: json.addrs
+      })
+
+      get().thisMAP.setCenter([json.addrs.xy_new.latitude, json.addrs.xy_new.longitude], 11);
+
+      get().delAddrPoint();
+
+      setTimeout( () => {
+        get().setAddrPoint(json.addrs.xy);
+      }, 300 )
+      
+    }else{
+      set({
+        chooseAddrStreet: {}
+      })
+    }
+
+    set({
+      is_fetch: false
+    })
+  },
+  saveNewAddr: async(pd, domophome, et, kv, comment, token, is_main, nameAddr, city_id) => {
+
+    if( get().is_fetch_save_new_addr === true ){
+      return ;
+    }
+
+    if( get().is_fetch === true || get().chooseAddrStreet == {} ){
+      setTimeout( () => {
+        get().saveNewAddr(pd, domophome, et, kv, comment, token, is_main, nameAddr, city_id)
+      }, 455 )
+
+      return ;
+    }
+
+    set({
+      is_fetch_save_new_addr: true
+    })
+
+    let data = {
+      type: 'save_new_addr',
+      token: token,
+      city_id: city_id,
+      street: JSON.stringify( get().chooseAddrStreet ),
+      pd: pd,
+      domophome: domophome,
+      et: et,
+      kv: kv,
+      comment: comment,
+      is_main: is_main === true ? 1 : 0,
+      nameAddr: nameAddr
+    };
+
+    let json = await api('profile', data);
+
+    if( json.st === true ){
+      get().closeModalAddr();
+      get().getUserInfo('profile', get().city, token);
+    }
+
+    setTimeout( () => {
+      set({
+        is_fetch_save_new_addr: false
+      })
+    }, 500 )
+    
+  },
+  updateAddr: async(pd, domophome, et, kv, comment, token, is_main, nameAddr, city_id) => {
+
+    if( get().is_fetch_save_new_addr === true ){
+      return ;
+    }
+
+    if( get().is_fetch === true || get().chooseAddrStreet == {} ){
+      setTimeout( () => {
+        get().updateAddr(pd, domophome, et, kv, comment, token, is_main, nameAddr, city_id)
+      }, 455 )
+
+      return ;
+    }
+
+    if( get().chooseAddrStreet == {} ){
+      return ;
+    }
+
+    console.log( 'chooseAddrStreet', get().chooseAddrStreet )
+
+    set({
+      is_fetch_save_new_addr: true
+    })
+
+    let data = {
+      type: 'update_addr',
+      token: token,
+      city_id: city_id,
+      street: JSON.stringify( get().chooseAddrStreet ),
+      pd: pd,
+      domophome: domophome,
+      et: et,
+      kv: kv,
+      id: get().infoAboutAddr.id,
+      comment: comment,
+      is_main: is_main === true ? 1 : 0,
+      nameAddr: nameAddr
+    };
+
+    console.log( data )
+
+    let json = await api('profile', data);
+
+    if( json.st === true ){
+      get().closeModalAddr();
+      get().getUserInfo('profile', get().city, token);
+    }
+
+    setTimeout( () => {
+      set({
+        is_fetch_save_new_addr: false
+      })
+    }, 500 )
+    
+  },
+  delAddr: async(addr_id, token) => {
+    let data = {
+      type: 'del_my_addr',
+      city_id: get().city,
+      token: token,
+      addr_id: addr_id,
+    };
+
+    let json = await api('profile', data);
+
+    if( json.st === true ){
+      get().getUserInfo('profile', get().city, token);
+    }
+  },
+  updateStreetList: async(city_id) => {
+    if( city_id === null || city_id == '' ){
+      return ;
+    }
+
+    let data = {
+      type: 'get_city_street_zone',
+      city_id: city_id,
+    };
+
+    let json = await api('profile', data);
+
+    set({
+      allStreets: json.streets
+    })
+
+    get().setMapZone(json.zones, json.city_center)
+  },
+  setMapZone: (zones, city_center) => {
+    get().thisMAP.geoObjects.removeAll();
+
+    zones.map((zone, key)=>{
+      get().thisMAP.geoObjects.add(
+        new ymaps.Polygon([zone.zone], 
+          {
+            address: '',
+            raion: '',
+          }, 
+          {
+            fillColor: 'rgba(53, 178, 80, 0.15)',
+            strokeColor: '#35B250',
+            strokeWidth: 5,
+            hideIconOnBalloonOpen: false,
+          }
+        )
+      );
+    })
+
+    get().thisMAP.setCenter([city_center[0], city_center[1]], 11);
+  },
+  setAddrPoint: (point) => {
+    let objectManager = new ymaps.ObjectManager();
+
+    let json2 = {
+      "type": "FeatureCollection",
+      "features": []
+    };
+
+    json2.features.push({
+      type: "Feature",
+      id: -1,
+      options: {
+        preset: 'islands#blackDotIcon', 
+        iconColor: 'black'
+      },
+      geometry: {
+        type: "Point",
+        coordinates: [ point[0], point[1] ]
+      },
+    })
+
+    objectManager.add(json2);
+    get().thisMAP.geoObjects.add(objectManager);
+  },
+  delAddrPoint: () => {
+    let geoObjects = get().thisMAP.geoObjects;
+
+    geoObjects.each(function (object) {
+      if( object['geometry'] === null ){
+        get().thisMAP.geoObjects.remove(object)
+      }
+    });
   }
 }));
 

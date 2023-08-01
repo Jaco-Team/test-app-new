@@ -146,7 +146,7 @@
             display: flex;
             flex-direction: column;
             width: 32.2745vw;
-            border: 3px solid #b2b2b2;
+            border: $MyScale3 solid #b2b2b2;
             border-radius: 1.083032vw;
 
             & .itemValueRowMain {
@@ -313,7 +313,7 @@
       & > button {
         width: 14.4405vw;
         border-radius: 1.62455vw;
-        border: 3px solid rgba(0, 0, 0, 0.2);
+        border: $MyScale3 solid rgba(0, 0, 0, 0.2);
         color: rgba(0, 0, 0, 0.6) !important;
         height: 2.8885vw;
 
@@ -325,15 +325,15 @@
 
         &:hover {
           background-color: #f2f2f2;
-          border: 2px solid #cccccc;
+          border: $MyScale2 solid #cccccc;
         }
         &:target {
           background-color: #f2f2f2;
-          border: 2px solid #cccccc;
+          border: $MyScale2 solid #cccccc;
         }
         &:active {
           background-color: #f2f2f2;
-          border: 2px solid #cccccc;
+          border: $MyScale2 solid #cccccc;
         }
       }
       & > div {
@@ -511,7 +511,7 @@
           width: 100%;
           height: 100%;
           border-radius: 1.62455vw;
-          border: 3px solid rgba(0, 0, 0, 0.2);
+          border: $MyScale3 solid rgba(0, 0, 0, 0.2);
           color: rgba(0, 0, 0, 0.6) !important;
 
           @include font30_400();
@@ -522,15 +522,15 @@
 
           &:hover {
             background-color: #f2f2f2;
-            border: 2px solid #cccccc;
+            border: $MyScale2 solid #cccccc;
           }
           &:target {
             background-color: #f2f2f2;
-            border: 2px solid #cccccc;
+            border: $MyScale2 solid #cccccc;
           }
           &:active {
             background-color: #f2f2f2;
-            border: 2px solid #cccccc;
+            border: $MyScale2 solid #cccccc;
           }
         }
         & > div {

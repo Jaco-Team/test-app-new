@@ -2,20 +2,23 @@
 
 .PAGEpolitic{
     margin-top: 64px!important;
-    @media (min-width: 800px) {
-        margin-top: 13vw!important;
-        margin-bottom: 140px!important;
+    z-index: 3;
+    mix-blend-mode: multiply;
 
-        margin-left: 4.5%!important;
-        width: 56.35%!important;
+    @media (min-width: 800px) {
+        margin-top: $MyScale380!important;
+        margin-bottom: 140px!important;
+        padding-top: 0px!important;
+
+        margin-left: $MyScale125!important;
+        width: $MyScale1560!important;
         padding-left: 0px!important;
     }
 
     & h1{
-        @include fonsNew(2rem, var(--inter-font));
+        @include font75_700();
         text-align: center;
         width: 100%;
-        font-weight: 600;
     }
     & h2{
         @include fonsNew(1.3rem, var(--inter-font));
@@ -41,7 +44,7 @@
         }
     }
     & p, li{
-        @include fonsNew(1rem, var(--inter-font));
+        @include font30_400();
     }
      
 }

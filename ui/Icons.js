@@ -632,21 +632,50 @@ export function ArrowUp(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="800"
-      height="800"
-      fill="#FFF"
-      viewBox="0 0 20 20"
+      width="170"
+      height="170"
+      fill="none"
+      viewBox="0 0 170 155"
       {...props}
     >
-      <g>
-        <g fill="none" fillRule="evenodd" stroke="none" strokeWidth="1">
-          <g fill="#FFF" transform="translate(-100 -6639)">
-            <g transform="translate(56 160)">
-              <path d="M44 6489l1.393 1.435 7.607-7.607V6499h2v-16.172l7.586 7.586L64 6489l-10-10-10 10"></path>
-            </g>
-          </g>
-        </g>
-      </g>
+      
+        <circle cx="85" cy="78" r="60" fill="#DD1A32"></circle>
+      
+      <path
+        fill="#fff"
+        d="M80.773 108V64.168l-19.84 19.84L55 78l30-30 30 30-5.933 6.007-19.84-19.839V108h-8.454z"
+      ></path>
+      <defs>
+        <filter
+          id="filter0_d_819_6958"
+          width="170"
+          height="170"
+          x="0"
+          y="0"
+          colorInterpolationFilters="sRGB"
+          filterUnits="userSpaceOnUse"
+        >
+          <feFlood floodOpacity="0" result="BackgroundImageFix"></feFlood>
+          <feColorMatrix
+            in="SourceAlpha"
+            result="hardAlpha"
+            values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 127 0"
+          ></feColorMatrix>
+          <feOffset dy="7"></feOffset>
+          <feGaussianBlur stdDeviation="12.5"></feGaussianBlur>
+          <feComposite in2="hardAlpha" operator="out"></feComposite>
+          <feColorMatrix values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0.25 0"></feColorMatrix>
+          <feBlend
+            in2="BackgroundImageFix"
+            result="effect1_dropShadow_819_6958"
+          ></feBlend>
+          <feBlend
+            in="SourceGraphic"
+            in2="effect1_dropShadow_819_6958"
+            result="shape"
+          ></feBlend>
+        </filter>
+      </defs>
     </svg>
   );
 }
@@ -965,6 +994,22 @@ export function PicupModalOrderIcon(props){
   return (
     <svg xmlns="http://www.w3.org/2000/svg" width="70" height="70" viewBox="0 0 70 70" fill="none" {...props}>
       <path d="M12.5641 16.0748V12.7656H57.5536V16.0748H12.5641ZM12.9287 57.2783V39.5259H9.1875V36.2167L12.5641 21.5156H57.5088L60.8574 36.2167V39.5259H57.1161V57.2783H53.807V39.5259H39.6891V57.2783H12.9287ZM16.238 53.9691H36.3799V39.5259H16.238V53.9691Z" fill="white"/>
+    </svg>
+  )
+}
+
+export function PencilModalAddrIcon(props){
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="60" height="60" viewBox="0 0 60 60" fill="none" {...props}>
+      <path d="M11.9692 48.4157H14.5029L42.1423 20.8003L39.5846 18.2426L11.9692 45.8821V48.4157ZM48.1566 18.7619L41.6231 12.2284L44.2481 9.60337C44.7961 9.05529 45.4668 8.78125 46.2601 8.78125C47.0533 8.78125 47.724 9.05529 48.272 9.60337L50.7816 12.1129C51.3297 12.661 51.5997 13.3317 51.5917 14.1249C51.5837 14.9182 51.3056 15.5969 50.7576 16.1609L48.1566 18.7619ZM46.1566 20.7378L15.6423 51.2522H9.13281V44.7426L39.6471 14.2283L46.1566 20.7378ZM40.8635 19.4974L39.5846 18.2426L42.1423 20.8003L40.8635 19.4974Z" fill="#DD1A32"/>
+    </svg>
+  )
+}
+
+export function HomeModalAddrIcon(props){
+  return (
+    <svg xmlns="http://www.w3.org/2000/svg" width="48" height="48" viewBox="0 0 48 48" fill="none" {...props}>
+      <path d="M12.1438 37.855H17.7253V25.7235H30.2753V37.855H35.8568V20.0703L24.0003 11.1779L12.1438 20.0703V37.855ZM7.59375 42.4051V17.7953L24.0003 5.48438L40.4068 17.7913V42.4051H25.9046V30.0942H22.096V42.4051H7.59375Z" fill="black" fillOpacity="0.6"/>
     </svg>
   )
 }
