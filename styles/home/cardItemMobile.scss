@@ -1,9 +1,9 @@
 @import '../settings.scss';
 
 .ContainerCardItemMobile {
-  width: $MyScale1090_mobile;
-  flex-direction: column;
-  align-items: center;
+  width: $MyScale1090_mobile !important;
+  flex-direction: column !important;
+  align-items: center !important;
   margin-right: $MyScale40_mobile !important;
   margin-left: $MyScale40_mobile !important;
   margin-top: 0 !important;
