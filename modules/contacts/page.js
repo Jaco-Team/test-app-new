@@ -3,7 +3,6 @@ import React, { useState } from 'react';
 import Link from 'next/link';
 
 import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/store.js';
-import { shallow } from 'zustand/shallow';
 
 import Meta from '@/components/meta.js';
 import { MapPointIcon } from '@/ui/Icons.js';
@@ -24,11 +23,11 @@ import MySwitch from '@/../ui/Switch.js';
 export default function ContactsPage(props) {
   const { page } = props;
 
-  const [thisCityList, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu], shallow);
+  const [thisCityList, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu]);
 
-  const [getData, myAddr, phone, disablePointsZone, disable, chooseAddr] = useContactStore((state) => [state.getData, state.myAddr, state.phone, state.disablePointsZone, state.disable, state.chooseAddr], shallow);
+  const [getData, myAddr, phone, disablePointsZone, disable, chooseAddr] = useContactStore((state) => [state.getData, state.myAddr, state.phone, state.disablePointsZone, state.disable, state.chooseAddr]);
 
-  const [activePage, setActiveModalCity] = useHeaderStore((state) => [state.activePage, state.setActiveModalCity], shallow);
+  const [activePage, setActiveModalCity] = useHeaderStore((state) => [state.activePage, state.setActiveModalCity]);
 
   const [anchorEl, setAnchorEl] = useState(null);
 

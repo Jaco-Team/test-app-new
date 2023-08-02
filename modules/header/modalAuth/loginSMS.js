@@ -1,4 +1,3 @@
-import { shallow } from 'zustand/shallow';
 import { useHeaderStore } from '@/components/store';
 
 import MyTextInput from '@/ui/MyTextInput';
@@ -11,7 +10,7 @@ export default function LoginSMS() {
   console.log('render LoginSMS');
 
   const [closeModalAuth, errTextAuth, navigate, changeLogin, loginLogin, checkLoginKey, createProfile] = useHeaderStore(
-    (state) => [state.closeModalAuth, state.errTextAuth, state.navigate, state.changeLogin, state.loginLogin, state.checkLoginKey, state.createProfile], shallow);
+    (state) => [state.closeModalAuth, state.errTextAuth, state.navigate, state.changeLogin, state.loginLogin, state.checkLoginKey, state.createProfile]);
 
   return (
     <div className="modalLoginCreate">

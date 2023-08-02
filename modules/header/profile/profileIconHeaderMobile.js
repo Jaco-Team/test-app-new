@@ -5,7 +5,6 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
 import { useHeaderStore } from '@/components/store.js';
-import { shallow } from 'zustand/shallow';
 
 import { ProfileIconMobile } from '@/ui/Icons.js';
 
@@ -16,7 +15,7 @@ export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_pa
 
   const session = useSession();
 
-  const [userName, setActiveUser, setActiveModalAuth] = useHeaderStore((state) => [state.userName, state.setActiveUser, state.setActiveModalAuth], shallow);
+  const [userName, setActiveUser, setActiveModalAuth] = useHeaderStore((state) => [state.userName, state.setActiveUser, state.setActiveModalAuth]);
 
   useEffect(() => {
     if(session?.status === "authenticated") {

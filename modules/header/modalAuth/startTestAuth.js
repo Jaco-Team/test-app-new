@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 
-import { shallow } from 'zustand/shallow';
 import { useHeaderStore, useCitiesStore } from '@/components/store';
 
 import MyTextInput from '@/ui/MyTextInput';
@@ -19,9 +18,9 @@ export default function StartTestAuth() {
 
   const [closeModalAuth, logIn, errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, showPassword, clickShowPassword, loading] = useHeaderStore(
     (state) => [state.closeModalAuth, state.logIn, state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin,
-      state.checkLoginKey, state.showPassword, state.clickShowPassword, state.loading], shallow);
+      state.checkLoginKey, state.showPassword, state.clickShowPassword, state.loading]);
 
-  const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
+  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
 
   const host = window.location.origin;
 

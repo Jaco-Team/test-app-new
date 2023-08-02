@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 
 import Image from 'next/image';
 
-import { shallow } from 'zustand/shallow';
 import { useHomeStore, useCartStore } from '@/components/store';
 
 import Dialog from '@mui/material/Dialog';
@@ -23,9 +22,9 @@ export default function ModalCardItemPC() {
   //console.log('render ModalCardItemPC');
 
   const [isOpenModal, closeModal, typeModal, openItem, foodValue, navigate, closeTypeModal] = useHomeStore((state) => [state.isOpenModal, state.closeModal, state.typeModal,
-      state.openItem, state.foodValue, state.navigate, state.closeTypeModal], shallow);
+      state.openItem, state.foodValue, state.navigate, state.closeTypeModal]);
 
-  const [minus, plus] = useCartStore((state) => [state.minus, state.plus], shallow);
+  const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
 
   const [count, setCount] = useState(0);
   

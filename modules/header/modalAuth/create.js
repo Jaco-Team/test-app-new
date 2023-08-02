@@ -1,4 +1,3 @@
-import { shallow } from 'zustand/shallow';
 import { useHeaderStore } from '@/components/store';
 
 import MyTextInput from '@/ui/MyTextInput';
@@ -14,7 +13,7 @@ export default function Create() {
   console.log('render Create');
 
   const [closeModalAuth, errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, genPwd, sendsmsNewLogin, showPassword, clickShowPassword] = useHeaderStore((state) => [state.closeModalAuth, state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.genPwd,
-      state.sendsmsNewLogin, state.showPassword, state.clickShowPassword], shallow);
+      state.sendsmsNewLogin, state.showPassword, state.clickShowPassword]);
 
   return (
     <div className="modalLoginCreateNew">

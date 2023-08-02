@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 
 import Image from 'next/image';
 
-import { shallow } from 'zustand/shallow';
 import { useHomeStore } from '@/components/store';
 
 import Dialog from '@mui/material/Dialog';
@@ -231,7 +230,7 @@ const banners = [ban1, ban2, ban3];
 export default function ModalBannerPC() {
   //console.log('render ModalBannerPC');
 
-  const [setActiveBanner, openModalBanner, banner] = useHomeStore((state) => [state.setActiveBanner, state.openModalBanner, state.banner], shallow);
+  const [setActiveBanner, openModalBanner, banner] = useHomeStore((state) => [state.setActiveBanner, state.openModalBanner, state.banner]);
 
   const [item, setItem] = useState([]);
 

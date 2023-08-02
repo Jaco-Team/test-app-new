@@ -4,12 +4,11 @@ import FooterPC from '@/modules/footer/footerPC';
 import FooterMobile from '@/modules/footer/footerMobile';
 
 import { useHeaderStore, useFooterStore } from './store';
-import { shallow } from 'zustand/shallow';
 
 const this_module = 'contacts';
 
 export default memo(function Footer({ cityName }) {
-  const [matches] = useHeaderStore((state) => [state.matches], shallow);
+  const [matches] = useHeaderStore((state) => [state.matches]);
   const [links, getData] = useFooterStore((state) => [state.links, state.getData]);
 
   useEffect(() => {

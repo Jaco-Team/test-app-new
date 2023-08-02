@@ -7,14 +7,13 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.js';
-import { shallow } from 'zustand/shallow';
 
 export default memo(function CardItem({ item, count, index}) {
   //console.log('CardItemPc render');
 
-  const [getItem] = useHomeStore((state) => [state.getItem], shallow);
-  const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
-  const [minus, plus] = useCartStore((state) => [state.minus, state.plus], shallow);
+  const [getItem] = useHomeStore((state) => [state.getItem]);
+  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
+  const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
 
   return (
     <Grid item className={'CardItemPC ' + (count > 0 ? 'active' : '')}

@@ -10,15 +10,13 @@ const DynamicHeader = dynamic(() => import('@/components/header.js'))
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const DynamicPage = dynamic(() => import('@/modules/pageText.js'))
 
-import { shallow } from 'zustand/shallow'
-
 const this_module = 'contacts';
 
 export default React.memo(function Jobs(props) {
 
   const { city, cats, cities, page, all_items } = props.data1;
 
-  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems], shallow);
+  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
 
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);

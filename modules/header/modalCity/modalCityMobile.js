@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { shallow } from 'zustand/shallow';
 
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -19,9 +18,9 @@ export default function ModalCityMobile() {
 
   const [activeList, setActiveList] = useState(false);
 
-  const [thisCityList, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu], shallow);
+  const [thisCityList, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu]);
 
-  const [openCityModal, setActiveModalCity] = useHeaderStore((state) => [state.openCityModal, state.setActiveModalCity], shallow);
+  const [openCityModal, setActiveModalCity] = useHeaderStore((state) => [state.openCityModal, state.setActiveModalCity]);
 
   useEffect(() => {
     if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {

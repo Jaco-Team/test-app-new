@@ -1,5 +1,4 @@
 import { useState, useEffect, useRef } from 'react';
-import { shallow } from 'zustand/shallow';
 import { useHeaderStore } from '@/components/store';
 
 import { IconClose } from '@/ui/Icons';
@@ -16,7 +15,7 @@ export default function LoginSMSCode() {
 
   const [closeModalAuth, errTextAuth, changeCode, sendsmsNewLogin, toTime, checkCode, code, is_sms, navigate, loginLogin, clearCode, preTypeLogin, createProfile] = useHeaderStore(
     (state) => [state.closeModalAuth, state.errTextAuth, state.changeCode, state.sendsmsNewLogin, state.toTime, state.checkCode, state.code, state.is_sms, state.navigate,
-      state.loginLogin, state.clearCode, state.preTypeLogin, state.createProfile], shallow);
+      state.loginLogin, state.clearCode, state.preTypeLogin, state.createProfile]);
 
 
   const [timer, setTimer] = useState(89);

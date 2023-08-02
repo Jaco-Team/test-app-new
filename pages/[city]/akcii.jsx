@@ -10,8 +10,6 @@ import { roboto } from '@/ui/Font.js'
 import { api } from '@/components/api.js';
 import { useAkciiStore, useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
 
-import { shallow } from 'zustand/shallow'
-
 const this_module = 'akcii';
 
 export default function Akcii(props) {
@@ -20,7 +18,7 @@ export default function Akcii(props) {
 
   const getData = useAkciiStore( state => state.getData );
 
-  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems], shallow);
+  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
 
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);

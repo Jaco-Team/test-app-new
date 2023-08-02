@@ -1,4 +1,5 @@
-import { create } from 'zustand';
+import { createWithEqualityFn } from 'zustand/traditional';
+import { shallow } from 'zustand/shallow';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
@@ -7,7 +8,7 @@ var isoWeek = require('dayjs/plugin/isoWeek')
 
 import { api } from './api.js';
 
-export const useCartStore = create((set, get) => ({
+export const useCartStore = createWithEqualityFn((set, get) => ({
   items: [],
   itemsOnDops: [],
   itemsOffDops: [],
@@ -639,9 +640,9 @@ export const useCartStore = create((set, get) => ({
       }
     }
   }
-}))
+}), shallow);
 
-export const useContactStore = create((set, get) => ({
+export const useContactStore = createWithEqualityFn((set, get) => ({
   myPoints: [],
   myUnicPoint: [],
   pointsZone: [],
@@ -938,9 +939,9 @@ export const useContactStore = create((set, get) => ({
     set({ myAddr });
   }
 
-}));
+}), shallow);
 
-export const useAkciiStore = create((set) => ({
+export const useAkciiStore = createWithEqualityFn((set) => ({
   actii: [],
   openAkcia: {},
   openModal: false,
@@ -976,9 +977,9 @@ export const useAkciiStore = create((set) => ({
       openModal: false,
     });
   },
-}));
+}), shallow);
 
-export const useProfileStore = create((set, get) => ({
+export const useProfileStore = createWithEqualityFn((set, get) => ({
   promoList: [],
   orderList: [],
   userInfo: {},
@@ -1390,9 +1391,9 @@ export const useProfileStore = create((set, get) => ({
       }
     });
   }
-}));
+}), shallow);
 
-export const useFooterStore = create((set) => ({
+export const useFooterStore = createWithEqualityFn((set) => ({
   links: {},
 
   getData: async (this_module, city) => {
@@ -1408,9 +1409,9 @@ export const useFooterStore = create((set) => ({
       links: json.page,
     });
   },
-}));
+}), shallow);
 
-export const useHeaderStore = create((set, get) => ({
+export const useHeaderStore = createWithEqualityFn((set, get) => ({
   activePage: '',
   openCityModal: false,
   openAuthModal: false,
@@ -1780,9 +1781,9 @@ export const useHeaderStore = create((set, get) => ({
       set({ userName });
     }
   }
-}));
+}), shallow);
 
-export const useCitiesStore = create((set) => ({
+export const useCitiesStore = createWithEqualityFn((set) => ({
   thisCity: '',
   thisCityRu: '',
   thisCityList: [],
@@ -1801,9 +1802,9 @@ export const useCitiesStore = create((set) => ({
       thisCityList: cityList,
     });
   },
-}));
+}), shallow);
 
-export const useHomeStore = create((set, get) => ({
+export const useHomeStore = createWithEqualityFn((set, get) => ({
   bannerList: [],
   CatsItems: [],
   openItem: null,
@@ -1912,4 +1913,4 @@ export const useHomeStore = create((set, get) => ({
 
   }
 
-}));
+}), shallow);

@@ -1,6 +1,5 @@
 import { useState, useEffect } from 'react';
 
-import { shallow } from 'zustand/shallow';
 import { useProfileStore } from '@/components/store';
 
 import Dialog from '@mui/material/Dialog';
@@ -26,7 +25,7 @@ const ans = [
 ];
 
 export default function ModalOrderDelete() {
-  const [openModalDelete, closeModalDel, orderDel] = useProfileStore( state => [ state.openModalDelete, state.closeModalDel, state.orderDel ], shallow )
+  const [openModalDelete, closeModalDel, orderDel] = useProfileStore( state => [ state.openModalDelete, state.closeModalDel, state.orderDel ])
 
   const [ chooseType, setChooseType ] = useState(0);
   const [ textDel, setTextDel ] = useState('');

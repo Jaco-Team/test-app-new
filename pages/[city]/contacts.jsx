@@ -11,15 +11,13 @@ import { api } from '@/components/api.js';
 import { useContactStore, useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js'
 
-import { shallow } from 'zustand/shallow'
-
 const this_module = 'contacts';
 
 export default function Contacts(props) {
 
   const { city, cats, cities, page, all_items } = props.data1;
   
-  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems], shallow);
+  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
 
   const getData = useContactStore( state => state.getData );
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 

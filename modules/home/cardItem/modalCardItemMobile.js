@@ -2,7 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import Image from 'next/image';
 
-import { shallow } from 'zustand/shallow';
 import { useHomeStore, useCartStore } from '@/components/store';
 
 import Typography from '@mui/material/Typography';
@@ -16,9 +15,9 @@ import { roboto } from '@/ui/Font';
 export default function ModalCardItemMobile() {
   //console.log('render ModalCardItemMobile');
 
-  const [isOpenModal, openItem, setActiveModalCardItemMobile] = useHomeStore((state) => [state.isOpenModal, state.openItem, state.setActiveModalCardItemMobile], shallow);
+  const [isOpenModal, openItem, setActiveModalCardItemMobile] = useHomeStore((state) => [state.isOpenModal, state.openItem, state.setActiveModalCardItemMobile]);
 
-  const [minus, plus] = useCartStore((state) => [state.minus, state.plus], shallow);
+  const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
 
   const [count, setCount] = useState(0);
   const [shadowSet, setShadowSet] = useState(0);

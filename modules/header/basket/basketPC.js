@@ -1,5 +1,4 @@
 import React, { useState, useEffect } from 'react';
-import { shallow } from 'zustand/shallow';
 
 import { useHeaderStore, useCartStore, useCitiesStore } from '@/components/store.js';
 
@@ -20,9 +19,9 @@ export default function BasketPC() {
   const [promo, setPromo] = useState('');
   const [scrollBasket, setScrollBasket] = useState(0);
 
-  const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
-  const [getInfoPromo, checkPromo, allPrice, promoInfo, promoItemsFind, itemsCount, setActiveModalBasket] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice, state.promoInfo, state.promoItemsFind, state.itemsCount, state.setActiveModalBasket], shallow);
-  const [openBasket, setActiveBasket, targetBasket] = useHeaderStore((state) => [state.openBasket, state.setActiveBasket, state.targetBasket], shallow);
+  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
+  const [getInfoPromo, checkPromo, allPrice, promoInfo, promoItemsFind, itemsCount, setActiveModalBasket] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice, state.promoInfo, state.promoItemsFind, state.itemsCount, state.setActiveModalBasket]);
+  const [openBasket, setActiveBasket, targetBasket] = useHeaderStore((state) => [state.openBasket, state.setActiveBasket, state.targetBasket]);
   
   useEffect(() => {
     if (localStorage.getItem('promo_name') && localStorage.getItem('promo_name').length > 0) {

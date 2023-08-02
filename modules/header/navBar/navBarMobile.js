@@ -13,8 +13,6 @@ import { BurgerIconMobile, MenuIconMobile, AboutIconMobile, LocationIconMobile }
 import JacoLogo from '@/public/jaco-logo-mobile.png';
 import { roboto } from '@/ui/Font.js';
 
-import { shallow } from 'zustand/shallow';
-
 import { useHeaderStore, useCitiesStore, useCartStore } from '@/components/store.js';
 
 import BasketIconHeaderMobile from '../basket/basketIconHeaderMobile';
@@ -26,9 +24,9 @@ export default memo(function NavBarMobile({ city, active_page }) {
 
   const [activeMenu, setActiveMenu] = useState(false);
 
-  const [setActiveBasket, openBasket, setActiveModalCity] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity], shallow);
-  const [setThisCityRu, thisCityRu] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu], shallow);
-  const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ], shallow )
+  const [setActiveBasket, openBasket, setActiveModalCity] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity]);
+  const [setThisCityRu, thisCityRu] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu]);
+  const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ])
 
   if (city == '') {
     return null;

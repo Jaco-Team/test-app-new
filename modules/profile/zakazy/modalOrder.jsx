@@ -1,6 +1,5 @@
 import { useState } from 'react';
 
-import { shallow } from 'zustand/shallow';
 import { useProfileStore } from '@/components/store';
 
 import Dialog from '@mui/material/Dialog';
@@ -88,7 +87,7 @@ function ModalOrderStatusIconPicup({types}){
 }
 
 export default function ModalOrder() {
-  const [modalOrder, openModal, closeOrder, openModalDel] = useProfileStore( state => [ state.modalOrder, state.openModal, state.closeOrder, state.openModalDel ], shallow )
+  const [modalOrder, openModal, closeOrder, openModalDel] = useProfileStore( state => [ state.modalOrder, state.openModal, state.closeOrder, state.openModalDel ])
 
   const [ isShowAddr, setShowAddr ] = useState(true);
 

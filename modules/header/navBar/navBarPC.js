@@ -10,7 +10,6 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 import JacoLogo from '@/public/Jaco-Logo-PC.png';
-import { shallow } from 'zustand/shallow';
 
 import {MapPointIcon, ArrowDownHeaderPC, ArrowUpHeaderPC, BurgerIconPC } from '@/ui/Icons.js';
 
@@ -74,9 +73,9 @@ export default function NavBarPC({ city, active_page }) {
 
   const { push } = useRouter();
   
-  const [setActiveBasket, openBasket, setActiveModalCity] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity], shallow);
-  const [setThisCityRu, thisCityRu] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu], shallow);
-  const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ], shallow )
+  const [setActiveBasket, openBasket, setActiveModalCity] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity]);
+  const [setThisCityRu, thisCityRu] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu]);
+  const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ])
 
   if (city == '') return null;
 

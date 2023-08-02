@@ -13,7 +13,6 @@ import BasketPC from '../modules/header/basket/basketPC.js';
 import BasketModalPC from '../modules/header/basket/basketModalPC.js';
 
 import { useHeaderStore } from './store.js';
-import { shallow } from 'zustand/shallow';
 
 export default React.memo(function Header({ city, city_list, cats, active_page }) {
 
@@ -22,7 +21,7 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
   const matchesDev = useMediaQuery('screen and (max-width: 1170px)', { noSsr: false });
   //const matchesDev = useMediaQuery('screen and (max-width: 601px)', { noSsr: false });
 
-  const [setMatches, matches] = useHeaderStore((state) => [state.setMatches, state.matches], shallow);
+  const [setMatches, matches] = useHeaderStore((state) => [state.setMatches, state.matches]);
   
   useEffect(() => {
     setMatches(matchesDev);

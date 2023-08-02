@@ -9,12 +9,11 @@ import MenuCatMobile from './menuCatMobile/menuCatMobile'
 import Meta from '@/components/meta.js';
 
 import { useHeaderStore } from '../../components/store';
-import { shallow } from 'zustand/shallow';
 
 export default function HomePage(props) {
   const { page, city } = props;
 
-  const [matches] = useHeaderStore((state) => [state.matches], shallow);
+  const [matches] = useHeaderStore((state) => [state.matches]);
 
   return (
     <Meta title={page.title} description={page.description}>

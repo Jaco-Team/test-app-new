@@ -5,15 +5,14 @@ import Link from 'next/link';
 import { useSession } from 'next-auth/react';
 
 import { useHeaderStore, useCitiesStore } from '@/components/store.js';
-import { shallow } from 'zustand/shallow';
 
 import { ProfileIcon } from '@/ui/Icons.js';
 
 export default function ProfileIconHeaderPC() {
   const session = useSession();
 
-  const [userName, setActiveUser, setActiveModalAuth] = useHeaderStore((state) => [state.userName, state.setActiveUser, state.setActiveModalAuth], shallow);
-  const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
+  const [userName, setActiveUser, setActiveModalAuth] = useHeaderStore((state) => [state.userName, state.setActiveUser, state.setActiveModalAuth]);
+  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
   
   useEffect(() => {
     if(session?.status === "authenticated") {

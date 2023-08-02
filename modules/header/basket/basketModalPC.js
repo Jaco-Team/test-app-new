@@ -1,5 +1,4 @@
 import { useState, useEffect } from 'react';
-import { shallow } from 'zustand/shallow';
 
 import { useCartStore, useCitiesStore } from '@/components/store.js';
 
@@ -39,8 +38,8 @@ export default function BasketModalPC() {
   //console.log('BasketModalPC render')
 
   const [allPriceWithoutPromo, itemsCount, setActiveModalBasket, openModalBasket, allPrice] = useCartStore(
-    (state) => [state.allPriceWithoutPromo, state.itemsCount, state.setActiveModalBasket, state.openModalBasket, state.allPrice], shallow);
-  const [thisCityList, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu], shallow);
+    (state) => [state.allPriceWithoutPromo, state.itemsCount, state.setActiveModalBasket, state.openModalBasket, state.allPrice]);
+  const [thisCityList, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu]);
 
   const [form, setForm] = useState(false);
   const [list, setList] = useState([]);

@@ -3,7 +3,6 @@ import React, { useEffect, useState } from 'react';
 import Grid from '@mui/material/Grid';
 
 import { useHomeStore, useCartStore, useHeaderStore } from '@/components/store.js';
-import { shallow } from 'zustand/shallow';
 
 import CardItemPc from './cardItemPc';
 import CardItemMobile from './cardItemMobile.js';
@@ -16,9 +15,9 @@ export default React.memo(function CatItems() {
 
   const [cats, setCats] = useState([]);
 
-  const [CatsItems] = useHomeStore((state) => [state.CatsItems], shallow);
-  const [items] = useCartStore((state) => [state.items], shallow);
-  const [matches] = useHeaderStore((state) => [state.matches], shallow);
+  const [CatsItems] = useHomeStore((state) => [state.CatsItems]);
+  const [items] = useCartStore((state) => [state.items]);
+  const [matches] = useHeaderStore((state) => [state.matches]);
 
   useEffect(() => {
     const catsCount = CatsItems.map((cat) => {

@@ -1,5 +1,4 @@
 import { useState } from 'react';
-import { shallow } from 'zustand/shallow';
 
 import { useRouter } from 'next/router';
 import Image from 'next/image';
@@ -24,8 +23,8 @@ export default function ModalCityPC() {
 
   const { push } = useRouter();
 
-  const [thisCityList, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu], shallow);
-  const [openCityModal, setActiveModalCity] = useHeaderStore((state) => [state.openCityModal, state.setActiveModalCity], shallow);
+  const [thisCityList, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu]);
+  const [openCityModal, setActiveModalCity] = useHeaderStore((state) => [state.openCityModal, state.setActiveModalCity]);
 
   const [anchorEl, setAnchorEl] = useState(null);
 

@@ -90,6 +90,7 @@
     position: fixed;
     bottom: 0;
     transition: all 0.5s ease 0s;
+    z-index: 5;
 
     & .containerLegal {
       display: flex;
@@ -145,9 +146,10 @@
   bottom: $MyScale60;
 
   & svg {
-    width: $MyScale120;
-    height: $MyScale120;
+    width: $MyScale60;
+    height: $MyScale60;
   }
+
 }
 
 .ArrowHidden {

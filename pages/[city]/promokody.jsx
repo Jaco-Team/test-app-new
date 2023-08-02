@@ -10,15 +10,13 @@ import { api } from '@/components/api.js';
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js'
 
-import { shallow } from 'zustand/shallow'
-
 const this_module = 'promokody';
 
 export default function Promokody(props) {
 
   const { city, cats, cities, page, all_items } = props.data1;
 
-  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems], shallow);
+  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
 
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);

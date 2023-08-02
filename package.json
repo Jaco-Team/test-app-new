@@ -35,7 +35,7 @@
     "swiper": "^9.4.1",
     "typescript": "^5.1.6",
     "ua-parser-js": "^1.0.35",
-    "zustand": "^4.3.9"
+    "zustand": "^4.4.0"
   },
   "devDependencies": {
     "eslint": "8.46.0",

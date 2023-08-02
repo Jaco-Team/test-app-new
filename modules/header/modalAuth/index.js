@@ -1,6 +1,5 @@
 import dynamic from 'next/dynamic';
 
-import { shallow } from 'zustand/shallow'
 import { useHeaderStore } from '@/components/store';
 
 const Start = dynamic(() => import('./start'));
@@ -22,7 +21,7 @@ import { roboto } from '@/ui/Font';
 
 export default function ModalAuth() {
 
-  const [openAuthModal, closeModalAuth, typeLogin] = useHeaderStore( state => [state.openAuthModal, state.closeModalAuth, state.typeLogin], shallow );
+  const [openAuthModal, closeModalAuth, typeLogin] = useHeaderStore( state => [state.openAuthModal, state.closeModalAuth, state.typeLogin]);
 
   return (
     <Dialog

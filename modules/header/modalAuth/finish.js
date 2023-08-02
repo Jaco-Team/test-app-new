@@ -1,4 +1,3 @@
-import { shallow } from 'zustand/shallow';
 import { useHeaderStore, useCitiesStore } from '@/components/store';
 
 import Image from 'next/image';
@@ -11,8 +10,8 @@ import Typography from '@mui/material/Typography';
 export default function Finish() {
   console.log('render Finish');
 
-  const [closeModalAuth] = useHeaderStore((state) => [state.closeModalAuth], shallow);
-  const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
+  const [closeModalAuth] = useHeaderStore((state) => [state.closeModalAuth]);
+  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
 
   return (
     <div className="modalLoginFinish">

@@ -1,4 +1,3 @@
-import { shallow } from 'zustand/shallow';
 import { useHeaderStore } from '@/components/store';
 
 import { IconClose } from '@/ui/Icons';
@@ -9,7 +8,7 @@ import Typography from '@mui/material/Typography';
 export default function ModalAuthError() {
   console.log('render ModalAuthError');
 
-  const [closeModalAuth, errTitle, errText1, errText2] = useHeaderStore((state) => [state.closeModalAuth, state.errTitle, state.errText1, state.errText2], shallow);
+  const [closeModalAuth, errTitle, errText1, errText2] = useHeaderStore((state) => [state.closeModalAuth, state.errTitle, state.errText1, state.errText2]);
 
   return (
     <div className="modalLoginError">

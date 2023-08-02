@@ -11,17 +11,15 @@ import { api } from '@/components/api.js';
 
 import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.js';
 
-import { shallow } from 'zustand/shallow'
-
 const this_module = 'home';
 
 export default function Home(props) {
 
   const { city, cats, cities, page, all_items } = props.data1;
   
-  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems], shallow);
+  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
   
-  const [ getBanners, getItemsCat ] = useHomeStore( state => [ state.getBanners, state.getItemsCat ] );
+  const [ getBanners, getItemsCat ] = useHomeStore( state => [ state.getBanners, state.getItemsCat ]);
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
   useEffect(() => {

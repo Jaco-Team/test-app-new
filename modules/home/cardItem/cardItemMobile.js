@@ -7,12 +7,11 @@ import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.js';
-import { shallow } from 'zustand/shallow';
 
 export default React.memo(function CardItemMobile({ item, count }) {
-  const [getItem] = useHomeStore((state) => [state.getItem], shallow);
-  const [thisCity] = useCitiesStore((state) => [state.thisCity], shallow);
-  const [minus, plus] = useCartStore((state) => [state.minus, state.plus], shallow);
+  const [getItem] = useHomeStore((state) => [state.getItem]);
+  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
+  const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
 
   return (
     <Grid item className={'CardItemMobile ' + (count > 0 ? 'active' : '')} style={{ width: '93.162393162393vw' }} sx={{ display: { xs: 'flex', md: 'flex', sm: 'none' } }}>

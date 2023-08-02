@@ -1,4 +1,3 @@
-import { shallow } from 'zustand/shallow';
 import { useHeaderStore } from '@/components/store';
 
 import { IconClose } from '@/ui/Icons';
@@ -14,7 +13,7 @@ export default function ResetPWD() {
   console.log('render ResetPWD');
 
   const [closeModalAuth, errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, sendsmsNewLogin, showPassword, clickShowPassword, genPwd] = useHeaderStore((state) => [state.closeModalAuth, state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey,
-      state.sendsmsNewLogin, state.showPassword, state.clickShowPassword, state.genPwd], shallow);
+      state.sendsmsNewLogin, state.showPassword, state.clickShowPassword, state.genPwd]);
 
   return (
     <div className="modalLoginReset">

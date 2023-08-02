@@ -1,4 +1,3 @@
-import { shallow } from 'zustand/shallow';
 import { useHeaderStore } from '@/components/store';
 
 import MyTextInput from '@/ui/MyTextInput';
@@ -15,7 +14,7 @@ export default function Start() {
 
   const [closeModalAuth, logIn, errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, showPassword, clickShowPassword, loading] = useHeaderStore(
     (state) => [state.closeModalAuth, state.logIn, state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin,
-      state.checkLoginKey, state.showPassword, state.clickShowPassword, state.loading], shallow);
+      state.checkLoginKey, state.showPassword, state.clickShowPassword, state.loading]);
 
   return (
     <>

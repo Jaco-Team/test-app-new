@@ -16,11 +16,10 @@ import TableRow from '@mui/material/TableRow';
 import OrderItem from './orderItem.jsx';
 
 import { useProfileStore } from '@/components/store';
-import { shallow } from 'zustand/shallow';
 
 export default React.memo(function OrdersList({year, is_first, token, this_module, city}){
 
-  const [getOrder] = useProfileStore( state => [ state.getOrder ], shallow )
+  const [getOrder] = useProfileStore( state => [ state.getOrder ])
 
   const template = {
     token: token,

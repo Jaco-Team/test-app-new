@@ -73,6 +73,7 @@
     position: fixed;
     bottom: 0;
     transition: all 0.5s ease 0s;
+    z-index: 5;
 
     & .containerLegalMobile {
       display: flex;
@@ -140,7 +141,7 @@
   position: sticky;
 
   & svg {
-    width: 5.1282051282051vw;
-    height: 5.1282051282051vw;
+    width: $MyScale60_mobile;
+    height: $MyScale60_mobile;
   }
 }
