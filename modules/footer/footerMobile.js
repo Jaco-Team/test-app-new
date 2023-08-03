@@ -1,11 +1,12 @@
 import React, { useEffect, useState } from 'react';
 
 import Link from 'next/link';
+
 import Typography from '@mui/material/Typography';
 
 import { NewVKIcon, OdnIcon, TGIcon, ArrowUp } from '@/ui/Icons.js';
 
-export default React.memo(function FooterMobile({ cityName }) {
+export default React.memo(function FooterMobile({ cityName, active_page }) {
   const [cookie, setCookie] = useState(true);
   const [showArrow, setShowArrow] = useState(false);
 
@@ -30,7 +31,8 @@ export default React.memo(function FooterMobile({ cityName }) {
 
   return (
     <>
-      <div className={showArrow ? 'ArrowMobile' : 'ArrowHidden'} onClick={scrollUp} style={{ bottom: cookie ? '3.4188034188034vw' : '37.094017094017vw' }}>
+      <div className={showArrow ? 'ArrowMobile' : 'ArrowHidden'} onClick={scrollUp} style={{ bottom: cookie ? '3.4188034188034vw' : '37.094017094017vw', 
+        marginTop: active_page === 'about' || active_page === 'document' || active_page === 'jobs' ? '-10.25641025641vw' : null}}>
         <ArrowUp />
       </div>
       <footer className="footerMobile" style={{ height: cookie ? '128.20512820513vw' : '165.29914529915vw' }}>

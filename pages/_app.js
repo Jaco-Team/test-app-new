@@ -1,17 +1,19 @@
 import '../styles/globals.scss'
 
 import '../styles/akcii.scss'
-import '../styles/about.scss'
-import '../styles/publichnaya-oferta.scss'
-import '../styles/politika-konfidencialnosti.scss'
+
+import '../styles/about/aboutPC.scss'
+import '../styles/about/aboutMobile.scss'
+
+import '../styles/pageText/pageTextMobile.scss'
+import '../styles/pageText/pageTextPC.scss'
+
 import '../styles/legal.scss'
-import '../styles/instpayorders.scss'
 import '../styles/jobs.scss'
 
 import '../styles/contacts/contacts.scss'
 import '../styles/header/loginForm.scss'
 
-// import '../styles/home.scss'
 import '../styles/home/cardItemPC.scss'
 import '../styles/home/cardItemMobile.scss'
 import '../styles/home/bannersPC.scss'
@@ -31,7 +33,6 @@ import '../styles/profile/profile.scss'
 import '../styles/profile/zakazy_modalOrder.scss'
 import '../styles/profile/zakazy_modalOrderDelete.scss'
 import '../styles/profile/profile_modalAddr.scss'
-
 
 import '../styles/header.scss'
 import '../styles/footer/footerPC.scss'

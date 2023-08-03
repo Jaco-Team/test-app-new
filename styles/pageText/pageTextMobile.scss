@@ -1,0 +1,42 @@
+@import '../settings';
+
+.PageTextMobile {
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+  margin: $MyScale240_mobile $MyScale100_mobile $MyScale140_mobile
+    $MyScale100_mobile !important;
+
+  .arrow {
+    margin-bottom: $MyScale40_mobile;
+    height: $MyScale60_mobile;
+    display: flex;
+
+    & svg {
+      width: $MyScale60_mobile;
+      height: $MyScale60_mobile;
+    }
+  }
+
+  & h1 {
+    @include font75_700();
+    text-align: left;
+    line-height: normal;
+  }
+
+  & p:first-child {
+    text-align: left !important;
+    margin-top: $MyScale60_mobile;
+    margin-bottom: $MyScale40_mobile;
+    & span {
+      @include font30_400();
+    }
+  }
+
+  & p,
+  li {
+    @include font30_400();
+    & strong {
+      @include font50_500();
+    }
+  }
+}

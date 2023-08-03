@@ -1,0 +1,32 @@
+@import '../settings';
+
+.PageTextPC {
+  width: $MyScale1560 !important;
+  margin-top: $MyScale380 !important;
+  margin-bottom: $MyScale140 !important;
+  margin-left: $MyScale125 !important;
+  padding-top: 0 !important;
+  padding-left: 0 !important;
+
+  & h1 {
+    @include font75_700();
+    text-align: left;
+  }
+
+  & p:first-child {
+    text-align: left !important;
+    & span {
+      @include font30_400();
+    }
+  }
+
+  & p, li {
+    @include font30_400();
+    & strong {
+      @include font50_500();
+    }
+    & span {
+      @include font30_400();
+    }
+  }
+}

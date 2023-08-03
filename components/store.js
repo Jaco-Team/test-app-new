@@ -1441,6 +1441,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
   matches: null,
 
+  // установить шиирну экрана устройства, при открытии приложения 
   setMatches: (matches) => {
     set({ matches });
   },

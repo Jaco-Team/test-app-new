@@ -2,21 +2,17 @@
 
 .PAGEpublick{
     margin-top: 64px!important;
-    z-index: 3;
-    mix-blend-mode: multiply;
-
     @media (min-width: 800px) {
-        margin-top: $MyScale380!important;
+        margin-top: 13vw!important;
         margin-bottom: 140px!important;
-        padding-top: 0px!important;
 
-        margin-left: $MyScale125!important;
-        width: $MyScale1560!important;
+        margin-left: 4.5%!important;
+        width: 56.35%!important;
         padding-left: 0px!important;
     }
 
     & h1{
-        @include font75_700();
+        @include fonsNew(2rem, var(--inter-font));
         text-align: center;
         width: 100%;
         font-weight: 600;
@@ -45,7 +41,7 @@
         }
     }
     & p, li{
-        @include font30_400();
+        @include fonsNew(1rem, var(--inter-font));
     }
      
 }

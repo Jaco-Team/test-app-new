@@ -1,34 +1,40 @@
-import React from 'react';
+import Meta from '@/components/meta.js';
+import Link from 'next/link';
+
+import { useHeaderStore } from '@/components/store';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-import Meta from '@/components/meta.js';
 import DocsBreadcrumbs from '@/components/docsBreadcrumbs.js';
 
-export default function PageText(props){
+import { ArrowLeftMobile } from '@/ui/Icons.js';
 
-  const { page, className } = props;
+export default function PageText({ page, classNamePC, classNameMobile, cityName }) {
+  const [matches, activePage] = useHeaderStore((state) => [state.matches, state.activePage]);
 
   return (
     <Meta title={page.title} description={page.description}>
-      <Grid container spacing={3}>
-        <Grid item className={className}>
-          
+      <Grid container>
+        <Grid item className={matches ? classNameMobile : classNamePC}>
+        {!matches ? null : <Link href={'/' + cityName + (activePage === 'jobs' ? '/about' : '/document')} className='arrow'><ArrowLeftMobile /></Link>}
           <Grid item xs={12} style={{ paddingBottom: 15 }}>
-            <Typography variant="h5" component="h1">{ page ? page.page_h : '' }</Typography>
+            <Typography variant="h5" component="h1">
+              {page ? page.page_h : ''}
+            </Typography>
           </Grid>
 
-          { page && page.content ?
-            <Grid item xs={12} dangerouslySetInnerHTML={{__html: page.content}} />
-              :
-            null
-          }
-        
+          {page && page.content ? (
+            <Grid
+              item
+              xs={12}
+              dangerouslySetInnerHTML={{ __html: page.content }}
+            />
+          ) : null}
         </Grid>
 
-        <DocsBreadcrumbs />
+        {!matches ? <DocsBreadcrumbs /> : null}
       </Grid>
     </Meta>
-  )
+  );
 }

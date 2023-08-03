@@ -7,7 +7,7 @@ import { useHeaderStore, useFooterStore } from './store';
 
 const this_module = 'contacts';
 
-export default memo(function Footer({ cityName }) {
+export default memo(function Footer({ cityName, active_page }) {
   const [matches] = useHeaderStore((state) => [state.matches]);
   const [links, getData] = useFooterStore((state) => [state.links, state.getData]);
 
@@ -18,5 +18,5 @@ export default memo(function Footer({ cityName }) {
     
   }, [cityName, getData, links]);
 
-  return <>{matches ? <FooterMobile cityName={cityName} /> : <FooterPC cityName={cityName} />}</>;
+  return <>{matches ? <FooterMobile cityName={cityName} active_page={active_page} /> : <FooterPC cityName={cityName} />}</>;
 })

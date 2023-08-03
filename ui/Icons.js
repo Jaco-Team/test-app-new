@@ -1237,3 +1237,62 @@ export function MessageBasketModalPC(props) {
     </svg>
   );
 }
+
+export function ArrowRightMobile(props) {
+  return (
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="21"
+    height="35"
+    fill="none"
+    viewBox="0 0 21 35"
+    {...props}
+  >
+    <path
+      stroke="#000"
+      strokeLinecap="round"
+      strokeLinejoin="round"
+      strokeOpacity="0.8"
+      strokeWidth="5"
+      d="M2.75 32.5l15.005-15.005L2.75 2.5"
+    ></path>
+  </svg>
+  );
+}
+
+export function ArrowLeftMobile(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="60"
+      height="60"
+      fill="none"
+      viewBox="0 0 60 60"
+      {...props}
+    >
+      <g clipPath="url(#clip0_1487_4731)">
+        <path
+          fill="#000"
+          fillOpacity="0.3"
+          d="M29.996 60.009C13.425 60.009-.01 46.575-.01 30.004-.009 13.434 13.425 0 29.996 0 46.566 0 60 13.433 60 30.004S46.567 60.01 29.996 60.01z"
+        ></path>
+        <path
+          stroke="#fff"
+          strokeLinecap="round"
+          strokeLinejoin="round"
+          strokeWidth="3"
+          d="M33.75 17.5L21.244 30.006 33.75 42.504"
+        ></path>
+      </g>
+      <defs>
+        <clipPath id="clip0_1487_4731">
+          <path
+            fill="#fff"
+            d="M0 0H60V60H0z"
+            transform="matrix(-1 0 0 1 60 0)"
+          ></path>
+        </clipPath>
+      </defs>
+    </svg>
+  );
+}

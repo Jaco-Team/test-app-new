@@ -1,0 +1,43 @@
+@import '../settings';
+
+.pageAboutMobile {
+  height: $MyScale1260_mobile;
+  margin-top: $MyScale200_mobile;
+
+  .containerAboutMobile {
+    width: 100%;
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    margin-bottom: $MyScale200_mobile;
+
+    .listAboutMobile {
+      display: flex;
+      flex-direction: column;
+
+      & a {
+        text-decoration: none;
+
+        .linkAboutMobile {
+          width: $MyScale920_mobile;
+          height: $MyScale160_mobile;
+          border-bottom: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+          display: flex;
+          align-items: center;
+          justify-content: space-between;
+
+          & span {
+            @include font50_500();
+            margin-left: $MyScale40_mobile;
+          }
+
+          & svg {
+            width: $MyScale15_mobile;
+            height: $MyScale30_mobile;
+            margin-right: $MyScale42_24_mobile;
+          }
+        }
+      }
+    }
+  }
+}
