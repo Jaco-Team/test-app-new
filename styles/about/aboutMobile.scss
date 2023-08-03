@@ -1,8 +1,8 @@
 @import '../settings';
 
 .pageAboutMobile {
-  height: $MyScale1260_mobile;
-  margin-top: $MyScale200_mobile;
+  height: $MyScale1260_mobile !important;
+  margin-top: $MyScale200_mobile !important;
 
   .containerAboutMobile {
     width: 100%;
