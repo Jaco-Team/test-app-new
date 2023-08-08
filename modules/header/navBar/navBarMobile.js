@@ -119,7 +119,7 @@ export default memo(function NavBarMobile({ city, active_page }) {
                 </Link>
               </ListItem>
 
-              <BasketIconHeaderMobile setActiveMenu={setActiveMenu} />
+              <BasketIconHeaderMobile setActiveMenu={setActiveMenu} active_page={active_page} city={city}/>
 
             </List>
 

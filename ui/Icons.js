@@ -1296,3 +1296,80 @@ export function ArrowLeftMobile(props) {
     </svg>
   );
 }
+
+export function BasketFooterMobile(props) {
+  return (
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="64"
+    height="49"
+    fill="none"
+    viewBox="0 0 64 49"
+    {...props}
+  >
+    <g stroke="#fff" strokeWidth="3">
+      <path
+        strokeLinejoin="round"
+        d="M52.516 46.635H11.47L2 21h59.987l-9.471 25.635z"
+      ></path>
+      <path strokeMiterlimit="10" d="M5.652 30.031h52.699"></path>
+      <path strokeMiterlimit="10" d="M8.934 37.727h46.124"></path>
+      <path
+        strokeLinecap="round"
+        strokeMiterlimit="10"
+        d="M32 29.398V1.594"
+      ></path>
+    </g>
+  </svg>
+  );
+}
+
+export function ArrowDownCartMobile(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="36"
+      height="21"
+      fill="none"
+      viewBox="0 0 36 21"
+      {...props}
+    >
+      <path
+        stroke="#000"
+        strokeLinecap="round"
+        strokeLinejoin="round"
+        strokeOpacity="0.8"
+        strokeWidth="5"
+        d="M3.25 2.992l15.005 15.005L33.25 2.992"
+      ></path>
+    </svg>
+  );
+}
+
+export function GroupCircleCartMobile(props) {
+  return (
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="207"
+    height="21"
+    fill="none"
+    viewBox="0 0 207 21"
+    {...props}
+  >
+    <g fill="#000" fillOpacity="0.7">
+      <g>
+        <circle cx="10" cy="10.016" r="10"></circle>
+        <circle cx="36.664" cy="10.016" r="10"></circle>
+        <circle cx="63.336" cy="10.016" r="10"></circle>
+        <circle cx="90" cy="10.016" r="10"></circle>
+      </g>
+      <g>
+        <circle cx="116.672" cy="10.016" r="10"></circle>
+        <circle cx="143.336" cy="10.016" r="10"></circle>
+        <circle cx="170.008" cy="10.016" r="10"></circle>
+        <circle cx="196.672" cy="10.016" r="10"></circle>
+      </g>
+    </g>
+  </svg>
+  );
+}

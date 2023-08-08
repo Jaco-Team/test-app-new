@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useEffect } from 'react';
 
 import { useRouter } from 'next/router';
 import Link from 'next/link';
@@ -16,11 +16,9 @@ import { useHeaderStore, useCitiesStore } from '@/components/store.js';
 export default function ModalCityMobile() {
   const { push } = useRouter();
 
-  const [activeList, setActiveList] = useState(false);
-
   const [thisCityList, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu]);
 
-  const [openCityModal, setActiveModalCity] = useHeaderStore((state) => [state.openCityModal, state.setActiveModalCity]);
+  const [openCityModal, openCityModalList, setActiveModalCity, setActiveModalCityList] = useHeaderStore((state) => [state.openCityModal, state.openCityModalList, state.setActiveModalCity, state.setActiveModalCityList]);
 
   useEffect(() => {
     if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
@@ -45,7 +43,7 @@ export default function ModalCityMobile() {
 
   const chooseCity = (city) => {
     localStorage.setItem('setCity', JSON.stringify(city));
-    setActiveList(false);
+    setActiveModalCityList(false);
     setThisCityRu(city.name);
     push(`/${city.link}`);
   };
@@ -83,7 +81,7 @@ export default function ModalCityMobile() {
             <Typography variant="h5" component="span">Да, верно</Typography>
           </Button>
 
-          <Button className="buttons choose" onClick={() => { setActiveList(true); setActiveModalCity(false)}}>
+          <Button className="buttons choose" onClick={() => { setActiveModalCityList(true); setActiveModalCity(false)}}>
             <Typography variant="h5" component="span">
               Нет, выберу город
             </Typography>
@@ -93,8 +91,8 @@ export default function ModalCityMobile() {
 
       <SwipeableDrawer
         anchor={'bottom'}
-        open={activeList}
-        onClose={() => setActiveList(false)}
+        open={openCityModalList}
+        onClose={() => setActiveModalCityList(false)}
         onOpen={() => setActiveModalCity(true)}
         id="modalCityMobileList"
         className={roboto.variable}

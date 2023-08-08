@@ -111,7 +111,9 @@ $MyScale15_mobile: 1.2820512820513vw;
 $MyScale16_mobile: 1.3675213675214vw;
 $MyScale17_mobile: 1.4529914529915vw;
 $MyScale20_mobile: 1.7094017094017vw;
+$MyScale21_mobile: 1.7948717948718vw;
 $MyScale25_mobile: 2.1367521367521vw;
+$MyScale26_mobile: 2.2222222222222vw;
 $MyScale27_mobile: 2.3076923076923vw;
 $MyScale30_mobile: 2.5641025641026vw;
 $MyScale35_mobile: 2.991452991453vw;
@@ -122,16 +124,20 @@ $MyScale40_mobile: 3.4188034188034vw;
 $MyScale42_24_mobile: 3.6102564102564vw;
 $MyScale45_mobile: 3.8461538461538vw;
 $MyScale50_mobile: 4.2735042735043vw;
+$MyScale52_5_mobile: 4.4871794871795vw;
 $MyScale55_mobile: 4.7008547008547vw;
 $MyScale60_mobile: 5.1282051282051vw;
 $MyScale65_mobile: 5.5555555555556vw;
 $MyScale70_mobile: 5.982905982906vw;
-$MyScale77_mobile: 6.5811965811966vw;
 $MyScale75_mobile: 6.4102564102564vw;
+$MyScale77_mobile: 6.5811965811966vw;
 $MyScale80_mobile: 6.8376068376068vw;
+$MyScale83_mobile: 7.0940170940171vw;
 $MyScale86_mobile: 7.3504273504274vw;
 $MyScale90_mobile: 7.6923076923077vw;
+$MyScale94_mobile: 8.034188034188vw;
 $MyScale100_mobile: 8.5470085470085vw;
+$MyScale103_mobile: 8.8034188034188vw;
 $MyScale105_mobile: 8.974358974359vw;
 $MyScale106_mobile: 9.0598290598291vw;
 $MyScale107_mobile: 9.1452991452991vw;
@@ -143,8 +149,10 @@ $MyScale140_mobile: 11.965811965812vw;
 $MyScale150_mobile: 12.820512820513vw;
 $MyScale154_mobile: 13.162393162393vw;
 $MyScale160_mobile: 13.675213675214vw;
+$MyScale163_mobile: 13.931623931624vw;
 $MyScale180_mobile: 15.384615384615vw;
 $MyScale200_mobile: 17.094017094017vw;
+$MyScale206_mobile: 17.606837606838vw;
 $MyScale208_mobile: 17.777777777778vw;
 $MyScale213_mobile: 18.205128205128vw;
 $MyScale214_mobile: 18.290598290598vw;
@@ -152,6 +160,7 @@ $MyScale216_mobile: 18.461538461538vw;
 $MyScale218_mobile: 18.632478632479vw;
 $MyScale220_mobile: 18.803418803419vw;
 $MyScale224_mobile: 19.145299145299vw;
+$MyScale232_mobile: 19.82905982906vw;
 $MyScale240_mobile: 20.512820512821vw;
 $MyScale244_mobile: 20.854700854701vw;
 $MyScale250_mobile: 21.367521367521vw;
@@ -163,12 +172,18 @@ $MyScale350_mobile: 29.91452991453vw;
 $MyScale360_mobile: 30.769230769231vw;
 $MyScale364_mobile: 31.111111111111vw;
 $MyScale370_mobile: 31.623931623932vw;
+$MyScale375_mobile: 32.051282051282vw;
+$MyScale380_mobile: 32.478632478632vw;
 $MyScale390_mobile: 33.333333333333vw;
 $MyScale394_mobile: 33.675213675214vw;
 $MyScale400_mobile: 34.188034188034vw;
 $MyScale410_mobile: 35.042735042735vw;
+$MyScale420_mobile: 35.897435897436vw;
+$MyScale480_mobile: 41.025641025641vw;
 $MyScale490_mobile: 41.880341880342vw;
+$MyScale499_mobile: 42.649572649573vw;
 $MyScale500_mobile: 42.735042735043vw;
+$MyScale505_mobile: 43.162393162393vw;
 $MyScale520_mobile: 44.444444444444vw;
 $MyScale525_mobile: 44.871794871795vw;
 $MyScale540_mobile: 46.153846153846vw;
@@ -183,10 +198,12 @@ $MyScale940_mobile: 80.34188034188vw;
 $MyScale1000_mobile: 85.470085470085vw;
 $MyScale1004_mobile: 85.811965811966vw;
 $MyScale1010_mobile: 86.324786324786vw;
+$MyScale1030_mobile: 88.034188034188vw;
 $MyScale1065_mobile: 91.025641025641vw;
 $MyScale1090_mobile: 93.162393162393vw;
 $MyScale1260_mobile: 107.69230769231vw;
 $MyScale1300_mobile: 111.11111111111vw;
+$MyScale1320_mobile: 112.82051282051vw;
 
 @mixin fonsNew($size: 1rem, $family: $Roboto) {
   font-size: $size !important;
@@ -343,9 +360,9 @@ $MyScale1300_mobile: 111.11111111111vw;
 
   @include fonsNew(1.4440433212996vw, var(--inter-font));
 
-  // @media (max-width: 960px) {
-  //   @include fonsNew(1.4rem, var(--inter-font));
-  // }
+  @media (max-width: $MyMaxWidth) {
+    @include fonsNew($MyScale40_mobile, var(--inter-font));
+  }
 }
 
 @mixin font55_400() {

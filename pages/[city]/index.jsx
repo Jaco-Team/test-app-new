@@ -9,7 +9,7 @@ const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'))
 import { roboto } from '@/ui/Font.js'
 import { api } from '@/components/api.js';
 
-import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.js';
+import { useHomeStore, useCitiesStore, useCartStore, useHeaderStore } from '@/components/store.js';
 
 const this_module = 'home';
 
@@ -21,6 +21,7 @@ export default function Home(props) {
   
   const [ getBanners, getItemsCat ] = useHomeStore( state => [ state.getBanners, state.getItemsCat ]);
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
+  const [setActivePage] = useHeaderStore((state) => [state.setActivePage]);
 
   useEffect(() => {
     setTimeout( () => {
@@ -40,6 +41,8 @@ export default function Home(props) {
     if( allItems.length == 0 ){
       setAllItems(all_items)
     }
+
+    setActivePage('home');
     
   }, []);
 
@@ -49,7 +52,7 @@ export default function Home(props) {
 
       <DynamicHomePage page={page} city={city} />
 
-      <DynamicFooter cityName={city} />
+      <DynamicFooter cityName={city} active_page={this_module} />
     </div>
   )
 }

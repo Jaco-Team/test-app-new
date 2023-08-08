@@ -2,6 +2,8 @@ import '../styles/globals.scss'
 
 import '../styles/akcii.scss'
 
+import '../styles/cart/cartMobile.scss'
+
 import '../styles/about/aboutPC.scss'
 import '../styles/about/aboutMobile.scss'
 

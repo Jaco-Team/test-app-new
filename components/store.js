@@ -92,6 +92,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       set({ promoItemsFind: false });
     }
 
+    if(!promoInfo?.status_promo) {
+      const allPriceWithoutPromo = items.reduce((all, it) => all + it.count * it.one_price, 0);
+      set({ allPriceWithoutPromo, allPrice: 0 });
+    } 
+
     get().getItems();
   },
 
@@ -1441,6 +1446,8 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
   matches: null,
 
+  openCityModalList: false,
+
   // установить шиирну экрана устройства, при открытии приложения 
   setMatches: (matches) => {
     set({ matches });
@@ -1455,6 +1462,12 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     set({ activePage: page });
   },
 
+   // открытие меню со списком городов
+   setActiveModalCityList: (active) => {
+    set({ openCityModalList: active });
+  },
+
+  // открытие меню с выбором города
   setActiveModalCity: (active) => {
     set({ openCityModal: active });
   },

@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import { useHeaderStore } from '@/components/store.js';
 import { Link as ScrollLink } from 'react-scroll';
 import Box from '@mui/material/Box';
 
@@ -18,12 +19,24 @@ export default function MenuCatMobile({ city }) {
 
   if (city == '') return null;
 
+  const [activePage] = useHeaderStore((state) => [state.activePage]);
+
   const handleScroll = () => setScrollMenuCat(window.scrollY > 100);
 
   useEffect(() => {
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
+
+  // так оставить сброс состояния выбора категории товара при переходе на другие страницы ??
+  useEffect(() => {
+    if(activePage === 'home') {
+      setCatMenu(catList)
+    } else {
+      const cat = catList.map(item => item.choice = false)
+      setCatMenu(cat)
+    }
+  }, [activePage]);
 
   const chooseCat = (id, scroll) => {
     localStorage.setItem('goTo', id);

@@ -4,11 +4,15 @@ import Link from 'next/link';
 
 import Typography from '@mui/material/Typography';
 
-import { NewVKIcon, OdnIcon, TGIcon, ArrowUp } from '@/ui/Icons.js';
+import { useCartStore } from '@/components/store.js';
+
+import { NewVKIcon, OdnIcon, TGIcon, ArrowUp, BasketFooterMobile } from '@/ui/Icons.js';
 
 export default React.memo(function FooterMobile({ cityName, active_page }) {
   const [cookie, setCookie] = useState(true);
   const [showArrow, setShowArrow] = useState(false);
+
+  const [itemsCount, allPrice, allPriceWithoutPromo] = useCartStore((state) => [state.itemsCount, state.allPrice, state.allPriceWithoutPromo]);
 
   const handlerArrow = () => setShowArrow(window.scrollY > 50);
 
@@ -31,9 +35,17 @@ export default React.memo(function FooterMobile({ cityName, active_page }) {
 
   return (
     <>
-      <div className={showArrow ? 'ArrowMobile' : 'ArrowHidden'} onClick={scrollUp} style={{ bottom: cookie ? '3.4188034188034vw' : '37.094017094017vw', 
-        marginTop: active_page === 'about' || active_page === 'document' || active_page === 'jobs' ? '-10.25641025641vw' : null}}>
-        <ArrowUp />
+      <div className='containerArrowBasket' style={{ bottom: cookie ? '3.4188034188034vw' : '37.094017094017vw', 
+        width: itemsCount && active_page === 'home' ? '64.529914529915vw' : '10.25641025641vw', left: itemsCount && active_page === 'home' ? '32.051282051282vw' : 
+        '86.324786324786vw'}}>
+        <Link href={'/' + cityName + '/cart'} className={itemsCount && active_page === 'home' ? 'BasketFooterMobile' : 'BasketFooterMobileHidden'} >
+          <span><BasketFooterMobile /></span>
+          <span>{new Intl.NumberFormat('ru-RU').format(allPrice ? allPrice : allPriceWithoutPromo)} ₽</span>
+        </Link>
+        <div className={showArrow && active_page !== 'cart' ? 'ArrowMobile' : 'ArrowHidden'} onClick={scrollUp} 
+          style={{marginTop: active_page === 'about' || active_page === 'document' || active_page === 'jobs' ? '-10.25641025641vw' : null}}>
+          <ArrowUp />
+        </div>
       </div>
       <footer className="footerMobile" style={{ height: cookie ? '128.20512820513vw' : '165.29914529915vw' }}>
         <div

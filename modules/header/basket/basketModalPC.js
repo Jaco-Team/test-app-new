@@ -18,7 +18,7 @@ import Stack from '@mui/material/Stack';
 import { roboto } from '@/ui/Font.js';
 import { IconClose, ArrowDownBasketModalPC, CityBasketModalPC, HomeBasketModalPC, PointBasketModalPC, TimeBasketModalPC, CardBasketModalPC, GroupCircleBasketModalPC, 
   MessageBasketModalPC } from '@/ui/Icons.js';
-import { SwitchBasket as MySwitch } from '@/ui/MySwitch.js';
+import { SwitchBasketPC as MySwitch } from '@/ui/MySwitch.js';
 import MasterCard from '@/public/masterCard.png';
 
 const pointListTLT = [

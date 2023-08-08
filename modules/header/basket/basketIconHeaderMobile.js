@@ -1,23 +1,22 @@
-import { useCartStore, useHeaderStore } from '@/components/store.js';
+import Link from 'next/link';
+import { useCartStore } from '@/components/store.js';
 import { BasketIconMobile } from '@/ui/Icons.js';
 import ListItem from '@mui/material/ListItem';
 
-export default function BasketIconHeaderMobile({ setActiveMenu }) {
+export default function BasketIconHeaderMobile({ setActiveMenu, active_page,city }) {
   //console.log('render BasketIconHeaderMobile');
-
-  const [setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket]);
 
   const [itemsCount] = useCartStore((state) => [state.itemsCount]);
 
   return (
-    <ListItem onClick={() => { setActiveBasket(!openBasket); setActiveMenu(false) }}>
-      <a>
+    <ListItem onClick={() => setActiveMenu(false)}>
+      <Link href={`/${city}/cart`} style={{background: active_page === 'cart' ? 'rgba(0, 0, 0, 0.05)' : null}}>
         <div>
           <div><BasketIconMobile /></div>
-          <span>Корзина</span>
+          <span style={{color: active_page === 'cart' ? ' #dd1a32' : null}}>Корзина</span>
           {itemsCount ? <div className="count_profile"><span>{itemsCount}</span></div> : null}
         </div>
-      </a>
+      </Link>
     </ListItem>
   );
 }

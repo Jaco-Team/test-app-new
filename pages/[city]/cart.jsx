@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic';
 
 const DynamicHeader = dynamic(() => import('@/components/header.js'));
 const DynamicFooter = dynamic(() => import('@/components/footer.js'));
-const DocumentPageMobile = dynamic(() => import('@/modules/document/documentMobile'));
+const CartMobile = dynamic(() => import('@/modules/cart/cartMobile'));
 
 import { roboto } from '@/ui/Font.js';
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
@@ -12,7 +12,8 @@ import { api } from '@/components/api.js';
 
 const this_module = 'contacts';
 
-export default React.memo(function Document(props) {
+export default React.memo(function Cart(props) {
+
   const { city, cats, cities, page, all_items } = props.data1;
 
   const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
@@ -39,18 +40,18 @@ export default React.memo(function Document(props) {
       setAllItems(all_items);
     }
 
-    setActivePage('document');
+    setActivePage('cart');
   }, []);
 
   return (
     <>
       {!matches ? null : (
         <div className={roboto.variable}>
-          <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'other'}/>
+          <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'cart'}/>
 
-          <DocumentPageMobile page={page} cityName={city} />
+          <CartMobile page={page} cityName={city} />
 
-          <DynamicFooter cityName={city} active_page={'document'} />
+          <DynamicFooter cityName={city} active_page={'cart'} />
         </div>
       )}
     </>

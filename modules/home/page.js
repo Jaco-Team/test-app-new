@@ -8,10 +8,9 @@ import MenuCatMobile from './menuCatMobile/menuCatMobile'
 
 import Meta from '@/components/meta.js';
 
-import { useHeaderStore } from '../../components/store';
+import { useHeaderStore } from '@/components/store';
 
-export default function HomePage(props) {
-  const { page, city } = props;
+export default function HomePage({ page, city } ) {
 
   const [matches] = useHeaderStore((state) => [state.matches]);
 
@@ -20,7 +19,7 @@ export default function HomePage(props) {
       {matches ?
       <>
       <BannersMobile />
-      <MenuCatMobile city={city} />
+      <MenuCatMobile city={city}/>
       <ModalCardItemMobile />
       </>
       : 

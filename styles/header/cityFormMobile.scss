@@ -87,32 +87,31 @@
 
 #modalCityMobileList {
   & .MuiDrawer-paper {
-    height: 112.82051282051vw;
-    border-radius: 6.8376068376068vw 6.8376068376068vw 0 0;
-    overflow: hidden;
+    max-height: $MyScale1320_mobile;
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+    overflow-y: auto;
 
     .ContainerList {
-      margin: 3.4188034188034vw 10.683760683761vw 19.82905982906vw
-        10.683760683761vw;
+      margin: $MyScale40_mobile $MyScale125_mobile $MyScale232_mobile $MyScale125_mobile;
       display: flex;
       flex-direction: column;
       align-items: center;
 
       & .Line {
-        height: 0.85470085470085vw;
-        width: 12.820512820513vw;
+        height: $MyScale10_mobile;
+        width: $MyScale150_mobile;
         background: rgba(0, 0, 0, 0.2);
-        border-radius: 0.42735042735043vw;
-        margin-bottom: 6.8376068376068vw;
+        border-radius: $MyScale5_mobile;;
+        margin-bottom: $MyScale80_mobile;
       }
 
       & .loginHeader {
-        height: 10.25641025641vw;
+        height: $MyScale120_mobile;
         width: 100%;
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-bottom: 2.2222222222222vw;
+        margin-bottom: $MyScale26_mobile;
         & span {
           @include font75_700();
         }
@@ -122,20 +121,18 @@
         width: 100%;
         padding: 0;
         & li {
-          height: 13.931623931624vw;
-          border-bottom: 0.25641025641026vw solid rgba(0, 0, 0, 0.2);
+          height: $MyScale163_mobile;
+          border-bottom: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
           padding: 0;
           & a {
             width: 100%;
             height: 100%;
-            cursor: pointer;
             text-decoration: none;
             & div {
-              margin-left: 3.4188034188034vw;
+              margin-left: $MyScale40_mobile;
               display: flex;
               align-items: center;
               height: 100%;
-
               & span {
                 @include font50_500();
               }

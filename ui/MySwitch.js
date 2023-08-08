@@ -61,7 +61,7 @@ const IOSSwitch = styled((props) => (
   },
 }));
 
-const BasketSwitch = styled(Switch)(({ theme }) => ({
+const BasketSwitchPC = styled(Switch)(({ theme }) => ({
   width: '28.880866425993vw',
   height: '2.8880866425993vw',
   padding: 0,
@@ -129,6 +129,74 @@ const BasketSwitch = styled(Switch)(({ theme }) => ({
   },
 }));
 
+const BasketSwitchMobile = styled(Switch)(({ theme }) => ({
+  width: '86.324786324786vw',
+  height: '10.25641025641vw',
+  padding: 0,
+  display: 'flex',
+  borderRadius: '5.1282051282051vw',
+  fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+  fontSize: '4.2735042735043vw',
+  fontWeight: 500,
+  fontStyle: 'normal',
+
+  '& .MuiButtonBase-root.MuiSwitch-switchBase': {
+    padding: 0,
+  },
+
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    transform: 'translateX(43.162393162393vw)',
+    padding: 0,
+  },
+
+  '& .MuiSwitch-switchBase': {
+    transitionDuration: '300ms',
+    '&.Mui-checked': {
+      '& + .MuiSwitch-track': {
+        opacity: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      },
+      '& .MuiSwitch-thumb': {
+        '&:after': {
+          content: "'Самовывоз'",
+          color: '#fff',
+        },
+      },
+    },
+  },
+
+  '& .MuiSwitch-thumb': {
+    width: '43.162393162393vw',
+    background: '#DD1A32',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '&:after': {
+      content: "'Доставка'",
+      color: '#fff',
+    },
+    width: '43.162393162393vw',
+    height: '10.25641025641vw',
+    borderRadius: '5.1282051282051vw',
+  },
+
+  '& .MuiSwitch-track': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    opacity: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    color: 'rgba(0, 0, 0, 0.80)',
+    boxSizing: 'border-box',
+    '&:after': {
+      content: "'Самовывоз'",
+    },
+    '&:before': {
+      content: "'Доставка'",
+    },
+  },
+}));
+
 export class SwitchIOS extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -151,7 +219,7 @@ export class SwitchIOS extends React.PureComponent {
   }
 }
 
-export class SwitchBasket extends React.PureComponent {
+export class SwitchBasketPC extends React.PureComponent {
   constructor(props) {
     super(props);
 
@@ -160,7 +228,21 @@ export class SwitchBasket extends React.PureComponent {
 
   render() {
     return (
-      <BasketSwitch onClick={this.props.onClick} />
+      <BasketSwitchPC onClick={this.props.onClick} />
+    );
+  }
+}
+
+export class SwitchBasketMobile extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
+  render() {
+    return (
+      <BasketSwitchMobile onClick={this.props.onClick} />
     );
   }
 }
