@@ -1,0 +1,92 @@
+@import '../settings';
+
+.cartMenuMobileDataTime {
+  & .MuiDialog-container {
+    display: flex;
+    align-items: flex-end;
+
+    & .MuiDialog-paper {
+      border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+      overflow: visible;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: none !important;
+
+      & .MuiDialogContent-root {
+        padding: 0;
+        overflow: 'hidden';
+
+        .ContainerCartList {
+          margin: $MyScale40_mobile $MyScale125_mobile $MyScale178_mobile
+            $MyScale125_mobile;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & .Line {
+            height: $MyScale10_mobile;
+            width: $MyScale150_mobile;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: $MyScale5_mobile;
+            margin-bottom: $MyScale80_mobile;
+          }
+
+          & .loginHeader {
+            margin-bottom: 7.3504273504274vw;
+            height: $MyScale120_mobile;
+            width: 100%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            & span {
+              @include font75_700();
+            }
+          }
+
+          .sandbox__carousel {
+            position: relative;
+            display: flex;
+            flex-direction: row;
+          }
+
+          .embla {
+            --slide-size: 33.33%;
+          }
+          .embla__viewport {
+            overflow: hidden;
+          }
+
+          .embla__container {
+            backface-visibility: hidden;
+            display: flex;
+            flex-direction: column;
+            touch-action: pan-x;
+            height: $MyScale480_mobile;
+          }
+
+          .embla__slide {
+            flex: 0 0 var(--slide-size);
+            min-width: 0;
+            position: relative;
+            @include font75_700();
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
+
+          .divBackground {
+            position: absolute;
+            width: $MyScale920_mobile;
+            height: $MyScale160_mobile;
+            background: rgba(0, 0, 0, 0.05);
+            border-radius: $MyScale40_mobile;
+            pointer-events: none;
+            left: $MyScale125_mobile;
+            top: $MyScale496_mobile;
+          }
+        }
+      }
+    }
+  }
+}

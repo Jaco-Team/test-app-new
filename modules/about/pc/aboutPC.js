@@ -1,14 +1,14 @@
 import dynamic from 'next/dynamic';
 
-const AboutUs = dynamic(() => import('./aboutUs'));
-const ExcellentDishes = dynamic(() => import('./excellentDishes'));
-const AffordablePrices = dynamic(() => import('./affordablePrices'));
-const CafeLooks = dynamic(() => import('./cafeLooks'));
-const OrderTime = dynamic(() => import('./orderTime'));
-const WeOptimism = dynamic(() => import('./weOptimism'));
-const Responsibility = dynamic(() => import('./responsibility'));
-const Feedback = dynamic(() => import('./feedback'));
-const Cooperation = dynamic(() => import('./cooperation'));
+const AboutUs = dynamic(() => import('./aboutUs'), { ssr: false });
+const ExcellentDishes = dynamic(() => import('./excellentDishes'), { ssr: false });
+const AffordablePrices = dynamic(() => import('./affordablePrices'), { ssr: false });
+const CafeLooks = dynamic(() => import('./cafeLooks'), { ssr: false });
+const OrderTime = dynamic(() => import('./orderTime'), { ssr: false });
+const WeOptimism = dynamic(() => import('./weOptimism'), { ssr: false });
+const Responsibility = dynamic(() => import('./responsibility'), { ssr: false });
+const Feedback = dynamic(() => import('./feedback'), { ssr: false });
+const Cooperation = dynamic(() => import('./cooperation'), { ssr: false });
 
 const AboutBreadcrumbs = dynamic(() => import('./aboutBreadcrumbs'));
 

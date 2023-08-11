@@ -2,13 +2,13 @@ import dynamic from 'next/dynamic';
 
 import { useHeaderStore } from '@/components/store';
 
-const Start = dynamic(() => import('./start'));
-const LoginSMS = dynamic(() => import('./loginSMS'));
-const LoginSMSCode = dynamic(() => import('./loginSMSCode'));
-const ResetPWD = dynamic(() => import('./resetPWD'));
-const Create = dynamic(() => import('./create'));
-const Finish = dynamic(() => import('./finish'));
-const ModalAuthError = dynamic(() => import('./error'));
+const Start = dynamic(() => import('./start'), { ssr: false });
+const LoginSMS = dynamic(() => import('./loginSMS'), { ssr: false });
+const LoginSMSCode = dynamic(() => import('./loginSMSCode'), { ssr: false });
+const ResetPWD = dynamic(() => import('./resetPWD'), { ssr: false });
+const Create = dynamic(() => import('./create'), { ssr: false });
+const Finish = dynamic(() => import('./finish'), { ssr: false });
+const ModalAuthError = dynamic(() => import('./error'), { ssr: false });
 
 const StartTestAuth = dynamic(() => import('./startTestAuth'));
 

@@ -43,7 +43,33 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   openModalBasket: false,
 
-  // модалка Корзины для оформления/оплаты заказа
+  openMenuCart: false,
+  menu: null,
+  idMenu: null,
+  dataMenu: '',
+
+  openDataTimePicker: false,
+  openMapPoints: false,
+
+  myPointsMap: [],
+  myMap: null,
+
+  // открытие/закрытие карты с выбором точек в Корзине мобильной версии
+  setActiveCartMap: (active) => {
+    set({ openMapPoints: active });
+  },
+
+  // открытие/закрытие меню Корзины c выбором даты/времени доставки в мобильной версии
+  setActiveCartDataTimePicker: (active) => {
+    set({ openDataTimePicker: active });
+  },
+
+  // открытие/закрытие меню Корзины в мобильной версии
+  setActiveMenuCart: (active, nameList, id, dataMenu) => {
+    set({ openMenuCart: active, menu: nameList, idMenu: id, dataMenu });
+  },
+
+  // модалка Корзины для оформления/оплаты заказа на ПК
   setActiveModalBasket: (active) => {
     set({ openModalBasket: active });
   },
@@ -644,7 +670,111 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         test: promo_info
       }
     }
-  }
+  },
+
+  // получение данных для карты Корзины в мобильной версии
+  getDataMap: async (this_module, city) => {
+    set({ disable: true });
+
+    const data = {
+      type: 'get_addr_zone_web',
+      city_id: city,
+    };
+
+    const json = await api(this_module, data);
+
+    set({
+      myPoints: json.filter((value, index, self) => index === self.findIndex((t) => t.addr === value.addr))
+    });
+
+    get().loadMap(get().myPoints);
+  },
+
+  // отрисовка карты по данным в Корзине в мобильной версии
+  loadMap: (points) => {
+
+    const widthModal_vw = 15.384615384615;
+    const widthModal_px = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
+
+    let zoomSize;
+
+    if(widthModal_px < 900) {
+      zoomSize = 11;
+    } else {
+      zoomSize = 12.3
+    }
+
+    const dataMenu = get().dataMenu ? get().dataMenu : 'Молодёжная 2'; // для тестирования
+    
+    const pointFind = points.find(point => point.addr === dataMenu);
+      
+    const sizeIcon_px = (widthModal_vw * widthModal_px) / 100;
+
+      if(!get().myMap){
+        ymaps.ready().then((function () {
+      
+          get().myMap = new ymaps.Map('ForMapCart', {
+            center: [ points[0]['xy_center_map']['latitude'], points[0]['xy_center_map']['longitude'] ],
+            zoom: zoomSize,
+            controls: ['geolocationControl', 'searchControl', 'zoomControl']
+          }, { suppressMapOpenBlock: true });
+
+          const img = ymaps.templateLayoutFactory.createClass( 
+            "<div class='my-img-cart'>" +
+              "<img alt='' src='/Favikon.png' />" +
+            "</div>"
+          );
+            
+          points.map(function(point, key){
+            get().myMap.geoObjects.add(
+              new ymaps.Placemark( [point['xy_point']['latitude'], point['xy_point']['longitude']], 
+              {
+                address: points[ key ]['addr'],
+                raion: points[ key ]['raion'],
+              }, {
+                iconLayout: pointFind.addr === point.addr ? img : 'default#image',
+                iconImageHref: '/Favikon.png',
+                iconImageSize: [sizeIcon_px, sizeIcon_px],
+                iconImageOffset: [-12, -20],
+                hideIconOnBalloonOpen: false,
+              })
+          )
+          })
+  
+          get().myMap.geoObjects.events.add('click', get().changePointClick);
+  
+        }))
+      }else{
+        get().myMap.destroy();
+        get().myMap = null;
+        get().loadMap(get().myPoints);
+      }
+    },
+
+  // изменение состояния точки по клику
+  changePointClick: (event) => {
+  
+    const img = ymaps.templateLayoutFactory.createClass( 
+      "<div class='my-img-cart'>" +
+        "<img alt='' src='/Favikon.png' />" +
+      "</div>"
+    );
+
+    const pointChoose = event.get('target');
+
+    const points = ymaps.geoQuery(get().myMap.geoObjects).search('geometry.type = "Point"');
+
+    points.each(function(point) {
+      if(point === pointChoose) {
+        point.options.set({ iconLayout: img })
+      } else {
+        point.options.set({ iconLayout: 'default#image' })
+      }
+    });
+
+    set({ dataMenu: pointChoose.properties._data.address });
+  },
+
 }), shallow);
 
 export const useContactStore = createWithEqualityFn((set, get) => ({
@@ -705,6 +835,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
   // отрисовка карты по данным
   loadMap: (points, points_zone) => {
+
     if(!get().myMap2){
       ymaps.ready().then((function () {
     

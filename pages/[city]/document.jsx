@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'));
-const DynamicFooter = dynamic(() => import('@/components/footer.js'));
-const DocumentPageMobile = dynamic(() => import('@/modules/document/documentMobile'));
+const DynamicHeader = dynamic(() => import('@/components/header.js'), { ssr: false });
+const DynamicFooter = dynamic(() => import('@/components/footer.js'), { ssr: false };
+const DocumentPageMobile = dynamic(() => import('@/modules/document/documentMobile'), { ssr: false });
 
 import { roboto } from '@/ui/Font.js';
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';

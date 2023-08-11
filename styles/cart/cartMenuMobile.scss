@@ -1,0 +1,196 @@
+@import '../settings';
+
+#cartMenuMobile {
+  & .MuiDrawer-paper {
+    max-height: calc(100% - $MyScale200_mobile);
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+    overflow-y: auto;
+
+    .ContainerCartList {
+      margin: $MyScale40_mobile $MyScale125_mobile 0 $MyScale125_mobile;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      & .Line {
+        height: $MyScale10_mobile;
+        width: $MyScale150_mobile;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: $MyScale5_mobile;
+        margin-bottom: $MyScale80_mobile;
+      }
+
+      & .loginHeader {
+        height: $MyScale120_mobile;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        & span {
+          @include font75_700();
+        }
+      }
+
+      & .loginPay {
+        width: $MyScale920_mobile;
+        height: $MyScale120_mobile;
+        border-radius: $MyScale80_mobile;
+        border: $MyScale6_mobile solid rgba(0, 0, 0, 0.7);
+        margin-bottom: $MyScale26_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+
+        & img {
+          width: $MyScale191_mobile;
+          height: $MyScale70_mobile;
+        }
+      }
+
+      & .CartMessage {
+        width: 100%;
+        height: $MyScale400_mobile;
+        margin-bottom: $MyScale117_mobile;
+        border-radius: 40px;
+
+        & .message {
+          width: 100% !important;
+          height: 100%;
+
+          & .MuiInputBase-root.MuiOutlinedInput-root {
+            display: flex;
+            align-items: center;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+
+            & textarea {
+              margin: $MyScale50_mobile;
+              padding: 0;
+              @include font40_400();
+              line-height: normal;
+            }
+
+            & fieldset {
+              border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+              border-radius: $MyScale40_mobile;
+              height: $MyScale400_mobile;
+              margin-bottom: $MyScale117_mobile;
+              padding: 0;
+              top: 0;
+              & legend {
+                line-height: 0;
+              }
+            }
+          }
+        }
+      }
+
+      & ul {
+        width: 100%;
+        padding: 0;
+        & li {
+          height: $MyScale163_mobile;
+          border-bottom: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+          padding: 0;
+
+          & .containerDiv {
+            margin-left: $MyScale40_mobile;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            width: 100%;
+
+            & .containerSpan {
+              display: flex;
+              align-items: center;
+              height: 100%;
+
+              & span:first-child {
+                @include font50_500();
+                margin-right: $MyScale50_mobile;
+              }
+              & span:last-child {
+                @include font40_400();
+                color: rgba(0, 0, 0, 0.4) !important;
+              }
+            }
+
+            & .containerSpanPay {
+              display: flex;
+              align-items: center;
+              height: 100%;
+
+              img {
+                margin-right: $MyScale35_mobile;
+                height: $MyScale60_mobile;
+                width: $MyScale75_mobile;
+              }
+
+              & span:nth-child(2) {
+                width: $MyScale206_mobile;
+                height: $MyScale20_mobile;
+                margin-right: $MyScale10_mobile;
+                display: flex;
+                align-items: center;
+                svg {
+                  width: 100%;
+                  height: 100%;
+                }
+              }
+
+              & span:last-child {
+                @include font50_500();
+              }
+            }
+
+            & .circleDiv {
+              margin-right: $MyScale20_mobile;
+              width: $MyScale100_mobile;
+              height: $MyScale100_mobile;
+              border-radius: $MyScale100_mobile;
+              background: rgba(0, 0, 0, 0.07);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              & svg {
+                width: $MyScale60_mobile;
+                height: $MyScale60_mobile;
+              }
+            }
+          }
+        }
+      }
+
+      & .CartButton {
+        width: $MyScale650_mobile;
+        height: $MyScale120_mobile;
+        border-radius: $MyScale60_mobile;
+        margin-bottom: $MyScale172_mobile;
+        padding: 0;
+        text-transform: lowercase;
+
+        span {
+          display: flex;
+          align-items: center;
+          text-align: center;
+          @include font50_500();
+          color: #fff !important;
+        }
+      }
+    }
+  }
+}
+
+.shadowSpan {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #f2f2f2 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    #f2f2f2 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+}

@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'))
-const DynamicFooter = dynamic(() => import('@/components/footer.js'))
-const DynamicPage = dynamic(() => import('@/modules/akcii/page.js'))
+const DynamicHeader = dynamic(() => import('@/components/header.js'), { ssr: false })
+const DynamicFooter = dynamic(() => import('@/components/footer.js'), { ssr: false })
+const DynamicPage = dynamic(() => import('@/modules/akcii/page.js'), { ssr: false })
 
 import { roboto } from '@/ui/Font.js'
 import { api } from '@/components/api.js';

@@ -10,9 +10,9 @@ import {
   useCartStore,
 } from '@/components/store.js';
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'));
-const DynamicFooter = dynamic(() => import('@/components/footer.js'));
-const DynamicPage = dynamic(() => import('@/modules/pageText'));
+const DynamicHeader = dynamic(() => import('@/components/header.js'), { ssr: false });
+const DynamicFooter = dynamic(() => import('@/components/footer.js'), { ssr: false });
+const DynamicPage = dynamic(() => import('@/modules/pageText'), { ssr: false });
 
 const this_module = 'contacts';
 

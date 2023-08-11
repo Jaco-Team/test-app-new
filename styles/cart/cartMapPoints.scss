@@ -1,0 +1,107 @@
+@import '../settings';
+
+#ForMapCart {
+  min-height: $MyScale940_mobile !important;
+  width: 100vw;
+  margin-bottom: $MyScale80_mobile;
+}
+
+.my-img-cart {
+  position: absolute;
+  left: -12px;
+  top: -20px;
+  width: $MyScale180_mobile;
+  height: $MyScale180_mobile;
+  border-radius: $MyScale180_mobile;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #da1a32;
+  transition-duration: 1s;
+  & img {
+    width: $MyScale150_mobile;
+    transition-duration: 1s;
+  }
+}
+
+#CartMapPoints {
+  z-index: 1400;
+  
+  & .MuiDrawer-paper {
+    max-height: calc(100% - $MyScale200_mobile);
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+    overflow-y: auto;
+
+    .ContainerCartMap {
+      margin-top: $MyScale40_mobile;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      & .Line {
+        height: $MyScale10_mobile;
+        width: $MyScale150_mobile;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: $MyScale5_mobile;
+        margin-bottom: $MyScale80_mobile;
+      }
+
+      & .loginHeader {
+        height: $MyScale120_mobile;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: $MyScale80_mobile;
+        & span {
+          @include font75_700();
+        }
+      }
+
+      & .CartPoint {
+        width: $MyScale960_mobile;
+        height: $MyScale120_mobile;
+        border-radius: $MyScale60_mobile;
+        border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+        margin-bottom: $MyScale220_mobile;
+        display: flex;
+        align-items: center;
+
+        & span:first-child {
+          margin-left: $MyScale40_mobile;
+          margin-right: $MyScale30_mobile;
+          width: $MyScale70_mobile;
+          height: $MyScale70_mobile;
+          & svg {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        & span:last-child {
+          height: $MyScale60_mobile;
+          display: flex;
+          align-items: center;
+          @include font50_500();
+        }
+      }
+
+      & .CartButton {
+        width: $MyScale650_mobile;
+        height: $MyScale120_mobile;
+        border-radius: $MyScale60_mobile;
+        margin-bottom: $MyScale172_mobile;
+        padding: 0;
+        text-transform: lowercase;
+
+        span {
+          display: flex;
+          align-items: center;
+          text-align: center;
+          @include font50_500();
+          color: #fff !important;
+        }
+      }
+    }
+  }
+}

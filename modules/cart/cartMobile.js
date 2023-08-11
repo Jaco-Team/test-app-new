@@ -30,13 +30,11 @@ export default function CartMobile() {
   const [form, setForm] = useState(false);
   const [promo, setPromo] = useState('');
 
-  //const [nameList, setNameList] = useState('');
-
   const [setActiveModalCityList] = useHeaderStore((state) => [state.setActiveModalCityList]);
   const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
-  const [itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOnDops, itemsOffDops, allPrice, getInfoPromo, checkPromo] = 
+  const [itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOnDops, itemsOffDops, allPrice, getInfoPromo, checkPromo, setActiveMenuCart] = 
     useCartStore((state) => [state.itemsCount, state.promoInfo, state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOnDops, state.itemsOffDops, state.allPrice,
-    state.getInfoPromo, state.checkPromo]);
+    state.getInfoPromo, state.checkPromo, state.setActiveMenuCart]);
 
   useEffect(() => {
     if (localStorage.getItem('promo_name') && localStorage.getItem('promo_name').length > 0) {
@@ -44,9 +42,12 @@ export default function CartMobile() {
     }
   }, []);
 
-  const openMenu = (event, nameList) => {
+  const openMenu = (event, nameList, id) => {
     if (nameList === 'city') {
       setActiveModalCityList(true);
+    } else {
+      //console.log(event.target.innerText)
+      setActiveMenuCart(true, nameList, id, event.target.innerText);
     }
   };
  
@@ -71,15 +72,15 @@ export default function CartMobile() {
         </Button>
 
         {form ? (
-          <Button className="CartChoose" onClick={(event) => openMenu(event, 'point')} endIcon={<ArrowDownCartMobile />}>
+          <Button className="CartChoose" onClick={(event) => openMenu(event, 'point', 1)} endIcon={<ArrowDownCartMobile />}>
             <div>
               <Typography component="span"><PointBasketModalPC /></Typography>
-              <Typography component="span">Ворошилова, 12а</Typography>
+              <Typography component="span">Молодёжная, 2</Typography>
             </div>
           </Button>
         ) : (
           <Button className="CartChoose" endIcon={<ArrowDownCartMobile />}
-            //onClick={openMenu}
+            onClick={(event) => openMenu(event, 'addr', 1)}
           >
             <div>
               <Typography component="span"><HomeBasketModalPC /></Typography>
@@ -91,7 +92,7 @@ export default function CartMobile() {
 
         {form ? (
           <Button className="CartChoose" endIcon={<ArrowDownCartMobile />}
-            //onClick={openMenu}
+            onClick={(event) => openMenu(event, 'time', 2)}
           >
             <div>
               <Typography component="span"><TimeBasketModalPC /></Typography>
@@ -100,7 +101,7 @@ export default function CartMobile() {
           </Button>
         ) : (
           <Button className="CartChoose" endIcon={<ArrowDownCartMobile />}
-            //onClick={openMenu}
+            onClick={(event) => openMenu(event, 'time', 1)}
           >
             <div>
               <Typography component="span"><TimeBasketModalPC /></Typography>
@@ -111,7 +112,7 @@ export default function CartMobile() {
 
         {form ? (
           <Button className="CartChoose" endIcon={<ArrowDownCartMobile />} style={{ marginBottom: '6.8376068376068vw' }}
-            //onClick={openMenu}
+            onClick={(event) => openMenu(event, 'pay', 3)}
           >
             <div>
               <Typography component="span"><CardBasketModalPC /></Typography>
@@ -120,7 +121,7 @@ export default function CartMobile() {
           </Button>
         ) : (
           <Button className="CartChoose" endIcon={<ArrowDownCartMobile />}
-            //onClick={openMenu}
+          onClick={(event) => openMenu(event, 'pay', 2)}
           >
             <div>
               <Typography component="span"><CardBasketModalPC /></Typography>
@@ -133,7 +134,7 @@ export default function CartMobile() {
 
         {form ? null : (
           <Button className="CartChoose" endIcon={<ArrowDownCartMobile />} style={{ marginBottom: '6.8376068376068vw' }}
-            //onClick={openMenu}
+            onClick={(event) => openMenu(event, 'message', null)}
           >
             <div>
               <Typography component="span"><MessageBasketModalPC /></Typography>
@@ -173,10 +174,6 @@ export default function CartMobile() {
           <span className={promoInfo?.items_on_price?.length ? promoItemsFind ? 'promoInfo' : null : promoInfo?.status_promo && itemsOffDops.length ? 'promoInfo' : null}>
             {new Intl.NumberFormat('ru-RU').format(allPriceWithoutPromo)}{' '}₽
           </span>
-            {/* {new Intl.NumberFormat('ru-RU').format(
-              allPrice ? allPrice : allPriceWithoutPromo
-            )}{' '}
-            ₽ */}
           </div>
         </div>
 

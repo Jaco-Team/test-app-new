@@ -1,10 +1,11 @@
 import React, { useEffect } from 'react';
 
+import Script from 'next/script';
 import dynamic from 'next/dynamic';
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'));
-const DynamicFooter = dynamic(() => import('@/components/footer.js'));
-const CartMobile = dynamic(() => import('@/modules/cart/cartMobile'));
+const DynamicHeader = dynamic(() => import('@/components/header.js'), { ssr: false });
+const DynamicFooter = dynamic(() => import('@/components/footer.js'), { ssr: false });
+const CartMobile = dynamic(() => import('@/modules/cart/page'), { ssr: false });
 
 import { roboto } from '@/ui/Font.js';
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
@@ -16,7 +17,7 @@ export default React.memo(function Cart(props) {
 
   const { city, cats, cities, page, all_items } = props.data1;
 
-  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
+  const [setAllItems, allItems, getDataMap] = useCartStore((state) => [state.setAllItems, state.allItems, state.getDataMap]);
 
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] =
     useCitiesStore((state) => [state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList]);
@@ -47,6 +48,8 @@ export default React.memo(function Cart(props) {
     <>
       {!matches ? null : (
         <div className={roboto.variable}>
+          <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" onLoad={() => { getDataMap(this_module, city) }} />
+
           <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'cart'}/>
 
           <CartMobile page={page} cityName={city} />
@@ -59,24 +62,7 @@ export default React.memo(function Cart(props) {
 });
 
 export async function getServerSideProps({ req, res, query }) {
-  // let data = {
-  //   type: 'get_page_info',
-  //   city_id: query.city,
-  //   page: 'about',
-  // };
-
-  // const data1 = await api(this_module, data);
-
-  // data1['city'] = query.city;
-
-  // // data1.page.content = data1.page.content.replace(
-  // //   /<a href=\"\//g,
-  // //   '<a href="/' + query.city + '/'
-  // // );
-
-  // return { props: { data1 } };
-
-  res.setHeader(
+    res.setHeader(
     'Cache-Control',
     'public, s-maxage=86400, stale-while-revalidate=86400'
   )
@@ -84,7 +70,7 @@ export async function getServerSideProps({ req, res, query }) {
   let data = {
     type: 'get_page_info', 
     city_id: query.city,
-    page: 'about' 
+    page: 'contacts' 
   };
 
   const data1 = await api(this_module, data);
