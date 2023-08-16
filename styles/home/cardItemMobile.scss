@@ -326,6 +326,11 @@
               position: absolute;
               width: $MyScale100_mobile;
               height: $MyScale100_mobile;
+
+              & svg {
+                height: 100%;
+                width: 100%;
+              }
             }
           }
 
