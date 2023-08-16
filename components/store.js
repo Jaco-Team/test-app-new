@@ -857,8 +857,6 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
     // отрисовка карты по данным
     loadMapMobile: (points, points_zone) => {
-
-      console.log('loadMapMobile.....');
    
       let zoomSize;
         
@@ -1018,8 +1016,6 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
   // отрисовка карты по данным на ПК
   loadMap: (points, points_zone) => {
-
-    console.log('loadMap.....');
 
     if(!get().myMap2){
       ymaps.ready().then((function () {

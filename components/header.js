@@ -20,14 +20,16 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
 
   const thisCityRU = city_list.find((item) => item.link == city)['name'];
 
-  const matchesDev = useMediaQuery('screen and (max-width: 1170px)', { noSsr: false });
+  const matchesDev = useMediaQuery('screen and (max-width: 1170px)');
   //const matchesDev = useMediaQuery('screen and (max-width: 601px)', { noSsr: false });
 
   const [setMatches, matches] = useHeaderStore((state) => [state.setMatches, state.matches]);
   
   useEffect(() => {
-    setMatches(matchesDev);
-  }, [matchesDev]);
+    if(matches !== matchesDev) {
+      setMatches(matchesDev);
+    }
+  }, [matchesDev, matches]);
 
   return (
     <div className={roboto.variable} style={{ overflow: 'auto' }}>

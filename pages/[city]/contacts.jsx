@@ -3,9 +3,9 @@ import React, { useEffect } from 'react';
 import Script from 'next/script'; 
 import dynamic from 'next/dynamic'
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'), { ssr: false })
-const DynamicFooter = dynamic(() => import('@/components/footer.js'), { ssr: false })
-const DynamicPage = dynamic(() => import('@/modules/contacts/page'), { ssr: false })
+const DynamicHeader = dynamic(() => import('@/components/header.js'))
+const DynamicFooter = dynamic(() => import('@/components/footer.js'))
+const ContactsPage = dynamic(() => import('@/modules/contacts/page'))
 
 import { api } from '@/components/api.js';
 import { useContactStore, useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
@@ -46,7 +46,7 @@ export default function Contacts(props) {
 
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
-      <DynamicPage page={page} city={city} />
+      <ContactsPage page={page} city={city} />
 
       <DynamicFooter cityName={city} active_page={this_module} />
     </div>
