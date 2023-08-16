@@ -43,7 +43,7 @@ export default React.memo(function Cart(props) {
 
     setActivePage('cart');
   }, []);
-
+ 
   return (
     <>
       {!matches ? null : (

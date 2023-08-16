@@ -110,7 +110,7 @@ export default function MenuCatMobile({ city }) {
   return (
     <>
       <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="menuCatMobile">
-        <div className="menuCat" style={{ marginBottom: catDopMenu ? '3.4188034188034vw' : '4.2735042735043vw' }}>
+        <div className="menuCat" style={{ marginBottom: catDopMenu ? '1.7094017094017vw' : '2.5641025641026vw' }}>
           {catMenu.map((item, key) => (
             <ScrollLink
               key={key}
@@ -133,11 +133,10 @@ export default function MenuCatMobile({ city }) {
               {catDopMenu.map((cat, key) => (
                 <ScrollLink
                   key={key}
-                  className="CatDop"
-                  style={{minWidth: cat.name.length > 8 ? '24.273504273504vw' : '20.854700854701vw',
+                  className={cat?.choice ? (cat.choice ? 'CatDop activeCatDop' : 'CatDop') : 'CatDop'}
+                  style={{minWidth: cat.name.length > 8 ? '27.350427350427vw' : '21.367521367521vw',
                     marginLeft: key === 0 ? '4.7008547008547vw' : '1.7094017094017vw',
-                    marginRight: cat === catDopMenu.at(-1) ? '4.7008547008547vw' : 0,
-                    background: cat?.choice ? cat.choice ? 'rgba(0, 0, 0, 0.07)' : null : null}}
+                    marginRight: cat === catDopMenu.at(-1) ? '4.7008547008547vw' : 0}}
                   to={'cat' + cat.id}
                   spy={true}
                   isDynamic={true}
@@ -153,7 +152,7 @@ export default function MenuCatMobile({ city }) {
           </div>
         )}
       </Box>
-      {scrollMenuCat ? <div className="blockShadowMenuCatMobile" style={{ top: catDopMenu ? '46.153846153846vw' : '34.188034188034vw' }} /> : null}
+      {scrollMenuCat ? <div className="blockShadowMenuCatMobile" style={{ top: catDopMenu ? '42.735042735043vw' : '32.478632478632vw' }} /> : null}
     </>
   );
 }

@@ -85,7 +85,7 @@ export default memo(function NavBarMobile({ city, active_page }) {
           >
             <List className={'LinkList ' + roboto.variable}>
               <ListItem onClick={() => setActiveMenu(false)}>
-                <Link href={'/' + city} style={{background: active_page === 'home' ? 'rgba(0, 0, 0, 0.05)' : null}}>
+                <Link href={'/' + city} style={{background: active_page === 'home' ? 'rgba(0, 0, 0, 0.03)' : null}}>
                   <div>
                     <div>
                       <MenuIconMobile />
@@ -95,8 +95,8 @@ export default memo(function NavBarMobile({ city, active_page }) {
                 </Link>
               </ListItem>
 
-              <ListItem onClick={() => { setActiveMenu(false); setActiveModalCity(true)}}>
-                <Link href={`/${city}/contacts`} style={{background: active_page === 'contacts' ? 'rgba(0, 0, 0, 0.05)' : null}}>
+              <ListItem onClick={() => setActiveMenu(false)}>
+                <Link href={`/${city}/contacts`} style={{background: active_page === 'contacts' ? 'rgba(0, 0, 0, 0.03)' : null}}>
                   <div>
                     <div>
                       <LocationIconMobile />
@@ -106,18 +106,18 @@ export default memo(function NavBarMobile({ city, active_page }) {
                 </Link>
               </ListItem>
 
-              <ProfileIconHeaderMobile setActiveMenu={setActiveMenu} city={city} active_page={active_page}/>
-
               <ListItem onClick={() => setActiveMenu(false)}>
-                <Link href={`/${city}/about`} style={{background: active_page === 'other' ? 'rgba(0, 0, 0, 0.05)' : null}}>
+                <Link href={`/${city}/about`} style={{background: active_page === 'other' ? 'rgba(0, 0, 0, 0.03)' : null}}>
                   <div>
                     <div>
                       <AboutIconMobile />
                     </div>
-                    <span style={{color: active_page === 'other' ? ' #dd1a32' : null}}>О компании</span>
+                    <span style={{color: active_page === 'other' ? ' #dd1a32' : null}}>Жако</span>
                   </div>
                 </Link>
               </ListItem>
+
+              <ProfileIconHeaderMobile setActiveMenu={setActiveMenu} city={city} active_page={active_page}/>
 
               <BasketIconHeaderMobile setActiveMenu={setActiveMenu} active_page={active_page} city={city}/>
 

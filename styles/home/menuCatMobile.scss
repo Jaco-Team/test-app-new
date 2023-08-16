@@ -17,28 +17,26 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: $MyScale244_mobile;
+      width: $MyScale250_mobile;
       border-radius: $MyScale20_mobile;
-      border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+      background-color: rgba(0, 0, 0, 0.05);
 
       & span {
         display: flex;
         align-items: center;
         text-align: center;
-        @include font40_400();
+        @include font44_400();
       }
     }
 
     .activeCat {
-      border: none;
-      width: $MyScale250_mobile;
       background: #dd1a32;
 
       & span {
         display: flex;
         align-items: center;
         text-align: center;
-        @include font40_400();
+        @include font44_500();
         color: #fff !important;
       }
     }
@@ -47,8 +45,8 @@
   .menuCatDopContainer {
     width: 100%;
     position: relative;
-    height: $MyScale106_mobile;
-    margin-bottom: $MyScale50_mobile;
+    height: $MyScale100_mobile;
+    margin-bottom: $MyScale30_mobile;
 
     .menuCatDop {
       width: 100%;
@@ -70,13 +68,24 @@
         align-items: center;
         justify-content: center;
         border-radius: $MyScale20_mobile;
-        border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+        background-color: rgba(0, 0, 0, 0.05);
 
         & span {
           display: flex;
           align-items: center;
           text-align: center;
-          @include font40_400();
+          @include font44_400();
+        }
+      }
+
+      .activeCatDop {
+        background: rgba(0, 0, 0, 0.10);
+  
+        & span {
+          display: flex;
+          align-items: center;
+          text-align: center;
+          @include font44_500();
         }
       }
     }

@@ -1,3 +1,5 @@
+import { useEffect } from 'react';
+
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import { useCartStore, useCitiesStore } from '@/components/store.js';
@@ -9,13 +11,17 @@ import Typography from '@mui/material/Typography';
 import { roboto } from '@/ui/Font.js';
 import { LocationCartMobile } from '@/ui/Icons.js';
 
-export default function CartMapPoints() {
+export default function CartMapPoints({ cityName }) {
   //console.log('render CartMapPoints');
 
-  const [openMapPoints, setActiveCartMap, dataMenu] = useCartStore((state) => [state.openMapPoints, state.setActiveCartMap, state.dataMenu]);
+  const [openMapPoints, setActiveCartMap, dataMenu, getDataMap] = useCartStore((state) => [state.openMapPoints, state.setActiveCartMap, state.dataMenu, state.getDataMap]);
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
 
   const city = thisCityRu === 'Самара' ? thisCityRu.slice(0, -1) + 'е' : thisCityRu;
+
+  useEffect(() => {
+    getDataMap('contacts', cityName);
+  }, []);
 
   return (
     <SwipeableDrawer

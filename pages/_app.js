@@ -16,8 +16,8 @@ import '../styles/pageText/pageTextPC.scss'
 import '../styles/legal.scss'
 import '../styles/jobs.scss'
 
-import '../styles/contacts/contacts.scss'
-import '../styles/header/loginForm.scss'
+import '../styles/contacts/contactsMobile.scss'
+import '../styles/contacts/contactsPC.scss'
 
 import '../styles/home/cardItemPC.scss'
 import '../styles/home/cardItemMobile.scss'
@@ -25,6 +25,7 @@ import '../styles/home/bannersPC.scss'
 import '../styles/home/bannersMobile.scss'
 import '../styles/home/menuCatMobile.scss'
 
+import '../styles/header/loginForm.scss'
 import '../styles/header/cityFormPC.scss'
 import '../styles/header/cityFormMobile.scss'
 import '../styles/header/headerPC.scss'

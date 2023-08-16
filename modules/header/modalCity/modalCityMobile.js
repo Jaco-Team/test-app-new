@@ -38,7 +38,7 @@ export default function ModalCityMobile() {
     setActiveModalCity(false);
     const city = thisCityList.find((city) => city.name === thisCityRu);
     localStorage.setItem('setCity', JSON.stringify(city));
-    push(`/${city.link}`);
+    //push(`/${city.link}`);
   };
 
   const chooseCity = (city) => {

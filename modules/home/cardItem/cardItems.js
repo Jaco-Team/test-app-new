@@ -78,14 +78,7 @@ export default React.memo(function CatItems() {
         id={'cat' + cat.main_id}
         className="ContainerCardItemMobile"
       >
-        {cat.items.map((it, k) => (
-          <React.Fragment key={k}>
-            <CardItemMobile item={it} count={it.count} />
-            {(key + 1) === cats.length && (k + 1) === cat.items.length ? null :
-              <div className='LineCardItemMobile'></div>
-            }
-          </React.Fragment>
-        ))}
+        {cat.items.map((it, k) => <CardItemMobile key={k} item={it} count={it.count} />)}
       </Grid>
     ));
   } else {

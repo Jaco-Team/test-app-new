@@ -10,9 +10,9 @@
 
   & .CardItemMobile {
     height: $MyScale500_mobile;
-    margin-top: $MyScale40_mobile !important;
-    margin-bottom: $MyScale40_mobile !important;
+    margin-bottom: $MyScale10_mobile !important;
     padding: 0 !important;
+    width: $MyScale1090_mobile;
 
     & .CardContainer {
       background-color: #fff;
@@ -36,17 +36,18 @@
 
       & .CardInfoItem {
         flex-direction: column;
-        width: $MyScale525_mobile;
+        width: $MyScale530_mobile;
         height: 100%;
 
         & .CardNameItem {
           height: $MyScale100_mobile;
-          @include font40_400();
+          @include font44_500();
           display: flex;
           justify-content: flex-start;
-          align-items: center;
+          align-items: flex-end;
           margin-top: $MyScale40_mobile;
           margin-bottom: $MyScale10_mobile;
+          line-height: $MyScale55_mobile;
         }
 
         & .dop_text {
@@ -61,6 +62,7 @@
           & .first_text {
             @include font20_400();
             border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
+            color: rgba(0, 0, 0, 0.60) !important;
             display: flex;
             align-items: center;
             justify-content: flex-start;
@@ -68,11 +70,13 @@
           & .second_text {
             @include font20_400();
             border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
+            color: rgba(0, 0, 0, 0.60) !important;
             display: flex;
             align-items: center;
           }
           & .third_text {
             width: $MyScale100_mobile;
+            color: rgba(0, 0, 0, 0.60) !important;
             @include font20_400();
             display: flex;
             align-items: center;
@@ -84,7 +88,7 @@
           height: $MyScale120_mobile;
           margin-bottom: $MyScale40_mobile;
           color: rgba(0, 0, 0, 0.6) !important;
-          @include font30_400();
+          @include font32_400();
           -webkit-line-clamp: 5;
           display: -webkit-box;
           -webkit-box-orient: vertical;
@@ -97,12 +101,14 @@
           justify-content: flex-start;
 
           & > button {
-            width: $MyScale390_mobile;
+            width: $MyScale270_mobile;
             height: $MyScale90_mobile;
             border-radius: $MyScale55_mobile;
-            border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+            background-color: rgba(0, 0, 0, 0.05);
+            border: none;
             padding: 0;
-            @include font40_400();
+            @include font44_400();
+            color: rgba(0, 0, 0, 0.60) !important;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -110,7 +116,7 @@
           }
 
           & > div {
-            width: $MyScale410_mobile;
+            width: $MyScale380_mobile;
             height: $MyScale110_mobile;
             border-radius: $MyScale55_mobile;
             display: flex;
@@ -124,7 +130,6 @@
               display: flex;
               justify-content: center;
               align-items: center;
-              cursor: pointer;
               background-color: rgba(0, 0, 0, 0.07);
               border: none;
               @include font55_400();
@@ -139,7 +144,6 @@
               justify-content: center;
               align-content: center;
               align-items: center;
-              cursor: pointer;
               background-color: rgba(0, 0, 0, 0.07);
               border: none;
               @include font75_300();
@@ -157,11 +161,6 @@
         }
       }
     }
-  }
-  & .LineCardItemMobile {
-    width: 100%;
-    height: $MyScale2_mobile;
-    background: rgba(0, 0, 0, 0.1);
   }
 }
 
@@ -267,14 +266,14 @@
             display: flex;
             align-items: center;
             justify-content: center;
-            margin-bottom: $MyScale20_mobile;
+            margin-bottom: $MyScale10_mobile;
 
             & span {
               display: flex;
               align-items: center;
               justify-content: center;
               text-align: center;
-              @include font70_400();
+              @include font70_500();
             }
           }
 
@@ -282,14 +281,14 @@
             display: flex;
             align-items: center;
             width: 100%;
-            margin-bottom: $MyScale20_mobile;
-            height: $MyScale80_mobile;
+            margin-bottom: $MyScale10_mobile;
+            height: $MyScale100_mobile;
             position: relative;
 
             & .dop_text {
               width: 100%;
               padding: 0;
-              height: $MyScale80_mobile;
+              height: $MyScale60_mobile;
               display: flex;
               align-items: center;
               justify-content: center;
@@ -325,8 +324,8 @@
             & .dop_icon {
               right: 0;
               position: absolute;
-              width: $MyScale80_mobile;
-              height: $MyScale80_mobile;
+              width: $MyScale100_mobile;
+              height: $MyScale100_mobile;
             }
           }
 
@@ -375,7 +374,7 @@
           margin-bottom: $MyScale200_mobile;
           width: $MyScale800_mobile;
           height: $MyScale160_mobile;
-          border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+          border: none;
           border-radius: $MyScale80_mobile;
           padding: 0;
           @include font60_400();
@@ -383,6 +382,7 @@
           align-items: center;
           justify-content: center;
           white-space: nowrap;
+          background: rgba(0, 0, 0, 0.05);
         }
 
         & > div {
@@ -402,7 +402,6 @@
             display: flex;
             justify-content: center;
             align-items: center;
-            cursor: pointer;
             background-color: rgba(0, 0, 0, 0.07);
             border: none;
             @include font75_400();
@@ -417,7 +416,6 @@
             justify-content: center;
             align-content: center;
             align-items: center;
-            cursor: pointer;
             background-color: rgba(0, 0, 0, 0.07);
             border: none;
             @include font100_300();
@@ -486,7 +484,7 @@
 
         & span {
           text-align: center;
-          @include font70_400();
+          @include font70_500();
         }
       }
 
@@ -563,13 +561,13 @@
           }
 
           & .ListSet {
-            width: $MyScale1000_mobile;
-            margin-right: $MyScale45_mobile;
+            width: $MyScale1010_mobile;
+            margin-right: $MyScale35_mobile;
 
             & .SetItem {
               display: flex;
               height: $MyScale360_mobile;
-              margin-bottom: $MyScale20_mobile;
+              margin-bottom: $MyScale10_mobile;
 
               & .ImgSet {
                 width: $MyScale360_mobile;
@@ -588,14 +586,13 @@
                 margin-top: $MyScale55_mobile;
                 width: $MyScale40_mobile;
                 & span {
-                  @include font40_400();
+                  @include font32_400();
                 }
               }
 
               & .itemDesc {
                 width: $MyScale560_mobile;
-                margin-top: $MyScale55_mobile;
-                margin-bottom: $MyScale55_mobile;
+                margin-top: $MyScale40_mobile;
                 display: flex;
                 align-items: flex-start;
                 flex-direction: column;
@@ -606,8 +603,9 @@
                   height: $MyScale100_mobile;
                   display: flex;
                   align-items: center;
-                  @include font40_400();
+                  @include font44_500();
                   line-height: normal;
+                  margin-bottom: $MyScale10_mobile;
                 }
 
                 & .dop_text_set {
@@ -626,6 +624,7 @@
                     @include font20_400();
                     color: rgba(0, 0, 0, 0.6) !important;
                     border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
+                    margin-bottom: 0;
                   }
                   & span:last-child {
                     width: $MyScale100_mobile;
@@ -640,16 +639,16 @@
 
                 & span:last-child {
                   width: 100%;
-                  height: $MyScale100_mobile;
+                  height: $MyScale120_mobile;
                   display: flex;
                   align-items: center;
-                  @include font25_400();
+                  @include font32_400();
                   color: rgba(0, 0, 0, 0.6) !important;
                   -webkit-line-clamp: 5;
                   display: -webkit-box;
                   -webkit-box-orient: vertical;
                   overflow: hidden;
-                  line-height: $MyScale36_mobile;
+                  line-height: $MyScale40_mobile;
                 }
               }
             }

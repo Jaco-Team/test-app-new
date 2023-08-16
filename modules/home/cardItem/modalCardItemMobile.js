@@ -8,7 +8,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
-import { IconInfoWhite } from '@/ui/Icons';
+import { IconInfoWhiteMobile } from '@/ui/Icons';
 
 import { roboto } from '@/ui/Font';
 
@@ -103,7 +103,7 @@ export default function ModalCardItemMobile() {
                 </div>
 
                 <div className="dop_icon" onClick={() => setActiveValue(true)}>
-                  <IconInfoWhite />
+                  <IconInfoWhiteMobile />
                 </div>
               </div>
 
@@ -183,7 +183,7 @@ export default function ModalCardItemMobile() {
               <div className="ListSet">
                 {openItem?.items.map((item, key) => (
                   <React.Fragment key={key}>
-                    <div className="SetItem" style={{ marginTop: key === 0 ? '3.4188034188034vw' : '1.7094017094017vw' }} >
+                    <div className="SetItem" style={{ marginTop: key === 0 ? '1.7094017094017vw' : '0.85470085470085vw' }} >
                       <div className="itemIndex">
                         <span>{key + 1}.</span>
                       </div>

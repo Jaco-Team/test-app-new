@@ -1,0 +1,222 @@
+@import '../settings';
+
+#ForMapContacts {
+  min-height: $MyScale1170_mobile !important;
+  width: $MyScale1170_mobile;
+  margin-bottom: $MyScale120_mobile;
+}
+
+.my-img-contacts {
+  position: absolute;
+  left: -12px;
+  top: -20px;
+  width: $MyScale150_mobile;
+  height: $MyScale150_mobile;
+  border-radius: $MyScale150_mobile;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #da1a32;
+  transition-duration: 1s;
+  & img {
+    width: $MyScale120_mobile;
+    transition-duration: 1s;
+  }
+}
+
+.ContactsMobile {
+  margin-top: $MyScale200_mobile;
+
+  .ContactsLocation {
+    position: absolute;
+    width: $MyScale120_mobile;
+    height: $MyScale120_mobile;
+    background-color: #ffff;
+    border-radius: $MyScale120_mobile;
+    top: $MyScale1180_mobile;
+    right: $MyScale75_mobile;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    & svg {
+      width: $MyScale80_mobile;
+      height: $MyScale80_mobile;
+    }
+  }
+
+  .ContactsMobileContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    & .ContactPoint {
+      width: $MyScale1010_mobile;
+      height: $MyScale120_mobile;
+      border-radius: $MyScale60_mobile;
+      border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+      margin-bottom: $MyScale40_mobile;
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+
+      & .spanContainer {
+        display: flex;
+        align-items: center;
+
+        & span:first-child {
+          margin-left: $MyScale45_mobile;
+          margin-right: $MyScale25_mobile;
+          width: $MyScale80_mobile;
+          height: $MyScale80_mobile;
+          & svg {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        & span:last-child {
+          height: $MyScale80_mobile;
+          display: flex;
+          align-items: center;
+          @include font50_500();
+        }
+      }
+
+      & .svgContainer {
+        width: $MyScale21_mobile;
+        height: $MyScale39_mobile;
+        margin-right: $MyScale45_mobile;
+        & svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+
+    & .ContactsInfo {
+      height: $MyScale50_mobile;
+      display: flex;
+      align-items: center;
+      margin-bottom: $MyScale20_mobile;
+      & span {
+        @include font40_400();
+      }
+    }
+
+    & .ContactsPhone {
+      height: $MyScale120_mobile;
+      width: $MyScale650_mobile;
+      border-radius: $MyScale70_mobile;
+      border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-bottom: $MyScale80_mobile;
+      & span {
+        @include font50_500();
+      }
+    }
+
+    & .ContactsLine {
+      height: $MyScale3_mobile;
+      width: $MyScale1010_mobile;
+      background-color: rgba(0, 0, 0, 0.2);
+      margin-bottom: $MyScale40_mobile;
+    }
+
+    & .ContactsSwitch {
+      width: $MyScale1010_mobile;
+      height: $MyScale100_mobile;
+      display: flex;
+      flex-direction: row;
+      justify-content: space-between;
+      align-items: center;
+      margin-bottom: $MyScale170_mobile;
+
+      & > span {
+        @include font40_400();
+      }
+
+      & label {
+        align-self: flex-end;
+      }
+    }
+  }
+}
+
+.ContactsModalChoose {
+  & .MuiDialog-container {
+    display: flex;
+    align-items: flex-end;
+
+    & .MuiDialog-paper {
+      border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+      overflow: visible;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: none !important;
+
+      & .MuiDialogContent-root {
+        padding: 0;
+        overflow: 'hidden';
+
+        .ContainerContactsList {
+          margin: $MyScale40_mobile $MyScale125_mobile $MyScale329_mobile
+            $MyScale125_mobile;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & .Line {
+            height: $MyScale10_mobile;
+            width: $MyScale150_mobile;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: $MyScale5_mobile;
+            margin-bottom: $MyScale60_mobile;
+          }
+        }
+
+        & ul {
+          width: 100%;
+          padding: 0;
+          & li {
+            height: $MyScale163_mobile;
+            border-bottom: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+            padding: 0;
+
+            & .containerDiv {
+              margin-left: $MyScale40_mobile;
+              display: flex;
+              align-items: center;
+              height: 100%;
+              width: 100%;
+
+              & .circleDiv {
+                margin-right: $MyScale40_mobile;
+                width: $MyScale20_mobile;
+                height: $MyScale20_mobile;
+                border-radius: $MyScale20_mobile;
+                background: rgba(0, 0, 0, 0.8);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+              }
+
+              & .spanFirst {
+                @include font50_500();
+                margin-right: $MyScale40_mobile;
+              }
+
+              & .spanLast {
+                @include font30_400();
+                color: rgba(0, 0, 0, 0.4) !important;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

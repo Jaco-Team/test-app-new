@@ -16,6 +16,8 @@ import { useHeaderStore } from './store.js';
 
 export default React.memo(function Header({ city, city_list, cats, active_page }) {
 
+  //console.log('render Header')
+
   const thisCityRU = city_list.find((item) => item.link == city)['name'];
 
   const matchesDev = useMediaQuery('screen and (max-width: 1170px)', { noSsr: false });

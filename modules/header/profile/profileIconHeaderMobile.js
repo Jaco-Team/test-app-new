@@ -32,19 +32,19 @@ export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_pa
             <div>
               <ProfileIconMobile />
             </div>
-            <span>Профиль</span>
+            <span>Аккаунт</span>
           </div>
         </a>
       </ListItem>
     ) : (
       <ListItem onClick={() => setActiveMenu(false)}>
-        <Link href={'/' + city + '/zakazy'} style={{background: active_page === 'zakazy' ? 'rgba(0, 0, 0, 0.05)' : null}}>
+        <Link href={'/' + city + '/zakazy'} style={{background: active_page === 'zakazy' ? 'rgba(0, 0, 0, 0.03)' : null}}>
           <div>
             <div>
               <ProfileIconMobile />
             </div>
-            <span style={{color: active_page === 'zakazy' ? ' #dd1a32' : null}}>Профиль</span>
-            <div className="count_profile" style={{ background: '#6FBEF8' }}><span>{userName}</span></div>
+            <span style={{color: active_page === 'zakazy' ? ' #dd1a32' : null}}>Аккаунт</span>
+            <div className="profile"><span>{userName}</span></div>
           </div>
         </Link>
       </ListItem>

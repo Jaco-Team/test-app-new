@@ -152,14 +152,13 @@
   }
 }
 
-
 #ForMap {
   min-height: 100vh;
-  @media (max-width: 960px) {
-    margin-bottom: 40px;
-    margin-left: 12px;
-    margin-right: 12px;
-  }
+  // @media (max-width: 960px) {
+  //   margin-bottom: 40px;
+  //   margin-left: 12px;
+  //   margin-right: 12px;
+  // }
 }
 
 .my-hint {

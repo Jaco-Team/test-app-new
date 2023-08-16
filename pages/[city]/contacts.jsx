@@ -5,11 +5,11 @@ import dynamic from 'next/dynamic'
 
 const DynamicHeader = dynamic(() => import('@/components/header.js'), { ssr: false })
 const DynamicFooter = dynamic(() => import('@/components/footer.js'), { ssr: false })
-const DynamicPage = dynamic(() => import('@/modules/contacts/page.js'), { ssr: false })
+const DynamicPage = dynamic(() => import('@/modules/contacts/page'), { ssr: false })
 
 import { api } from '@/components/api.js';
 import { useContactStore, useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
-import { roboto } from '@/ui/Font.js'
+import { roboto } from '@/ui/Font.js';
 
 const this_module = 'contacts';
 
@@ -37,17 +37,18 @@ export default function Contacts(props) {
     }
 
     setActivePage(this_module)
+
   }, []);
 
   return (
     <div className={roboto.variable}>
-      <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" onLoad={() => { getData(this_module, city) }} />
+      <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" onLoad={() =>  getData(this_module, city)} />
 
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
-      <DynamicPage page={page} />
+      <DynamicPage page={page} city={city} />
 
-      <DynamicFooter cityName={city} />
+      <DynamicFooter cityName={city} active_page={this_module} />
     </div>
   );
 }

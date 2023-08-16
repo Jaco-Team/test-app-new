@@ -18,7 +18,7 @@ export default function CartPage({ page, cityName }) {
       <CartMobile /> 
       <CartMenuMobile />
       <CartDataTimePicker />
-      <CartMapPoints />
+      <CartMapPoints cityName={cityName}/>
       </>
       : null}
     </Meta>

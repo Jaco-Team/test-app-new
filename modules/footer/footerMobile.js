@@ -37,13 +37,13 @@ export default React.memo(function FooterMobile({ cityName, active_page }) {
     <>
       <div className='containerArrowBasket' style={{ bottom: cookie ? '3.4188034188034vw' : '37.094017094017vw', 
         width: itemsCount && active_page === 'home' ? '64.529914529915vw' : '10.25641025641vw', left: itemsCount && active_page === 'home' ? '32.051282051282vw' : 
-        '86.324786324786vw'}}>
+        '86.324786324786vw', marginTop: active_page === 'home' ? '0.85470085470085vw' : null}}>
         <Link href={'/' + cityName + '/cart'} className={itemsCount && active_page === 'home' ? 'BasketFooterMobile' : 'BasketFooterMobileHidden'} >
           <span><BasketFooterMobile /></span>
           <span>{new Intl.NumberFormat('ru-RU').format(allPrice ? allPrice : allPriceWithoutPromo)} ₽</span>
         </Link>
         <div className={showArrow && active_page !== 'cart' ? 'ArrowMobile' : 'ArrowHidden'} onClick={scrollUp} 
-          style={{marginTop: active_page === 'about' || active_page === 'document' || active_page === 'jobs' ? '-10.25641025641vw' : null}}>
+          style={{marginTop: active_page === 'about' || active_page === 'document' || active_page === 'jobs' || active_page === 'contacts' ? '-10.25641025641vw' : null}}>
           <ArrowUp />
         </div>
       </div>
