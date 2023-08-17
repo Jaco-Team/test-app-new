@@ -19,15 +19,13 @@ import MySelect from '@/../ui/MySelect.js';
 
 import { CloseIconMin } from '@/../ui/Icons.js';
 
-import Meta from '@/components/meta.js'
-import ModalAddr from './modalAddr';
+import ModalAddr from './modalAddr.jsx';
 
 import { useProfileStore } from '@/../components/store.js';
 
 import { useSession, signOut } from 'next-auth/react';
 
-export default function ProfilePage(props){
-  const { page, this_module, city } = props;
+export default function ProfilePC({ page, this_module, city }){
 
   const session = useSession();
 
@@ -130,8 +128,7 @@ export default function ProfilePage(props){
   }
 
   return (
-    <Meta title={page.title} description={''}>
-      <Grid container spacing={3} style={{ margin: 0, width: '100%' }}>
+      <Grid container spacing={3} style={{ margin: 0, width: '100%' }} sx={{ display: { xs: 'none', md: 'none', lg: 'flex' } }}>
         <Grid item className="Profile mainContainer">
           
           <Grid item xs={12}>
@@ -332,7 +329,5 @@ export default function ProfilePage(props){
         <ProfileBreadcrumbs />
         <ModalAddr />
       </Grid>
-      
-    </Meta>
   )
 }

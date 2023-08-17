@@ -3,11 +3,8 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 
 import { useSession } from 'next-auth/react';
-
 import { useHeaderStore } from '@/components/store.js';
-
 import { ProfileIconMobile } from '@/ui/Icons.js';
-
 import ListItem from '@mui/material/ListItem';
 
 export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_page }) {
@@ -26,26 +23,21 @@ export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_pa
   return (
     <>
     {!userName ? (
-      <ListItem onClick={() => { setActiveMenu(false); setActiveModalAuth(true) }}>
-        <a>
-          <div>
-            <div>
-              <ProfileIconMobile />
-            </div>
-            <span>Аккаунт</span>
-          </div>
-        </a>
+      <ListItem 
+      //onClick={() => { setActiveMenu(false); setActiveModalAuth(true) }}
+      onClick={() => setActiveMenu(false)}
+      >
+        <Link href={'/' + city + '/account'} style={{background: active_page === 'account' || active_page === 'profile' ? 'rgba(0, 0, 0, 0.03)' : null}}>
+          <ProfileIconMobile />
+          <span>Аккаунт</span>
+        </Link>
       </ListItem>
     ) : (
       <ListItem onClick={() => setActiveMenu(false)}>
         <Link href={'/' + city + '/zakazy'} style={{background: active_page === 'zakazy' ? 'rgba(0, 0, 0, 0.03)' : null}}>
-          <div>
-            <div>
-              <ProfileIconMobile />
-            </div>
-            <span style={{color: active_page === 'zakazy' ? ' #dd1a32' : null}}>Аккаунт</span>
-            <div className="profile"><span>{userName}</span></div>
-          </div>
+          <ProfileIconMobile />
+          <span style={{color: active_page === 'zakazy' ? ' #dd1a32' : null}}>Аккаунт</span>
+          <span className="profile">{userName}</span>
         </Link>
       </ListItem>
     )}

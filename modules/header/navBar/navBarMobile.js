@@ -86,34 +86,22 @@ export default memo(function NavBarMobile({ city, active_page }) {
             <List className={'LinkList ' + roboto.variable}>
               <ListItem onClick={() => setActiveMenu(false)}>
                 <Link href={'/' + city} style={{background: active_page === 'home' ? 'rgba(0, 0, 0, 0.03)' : null}}>
-                  <div>
-                    <div>
-                      <MenuIconMobile />
-                    </div>
-                    <span style={{color: active_page === 'home' ? ' #dd1a32' : null}}>Меню</span>
-                  </div>
+                  <MenuIconMobile />
+                  <span style={{color: active_page === 'home' ? ' #dd1a32' : null}}>Меню</span>
                 </Link>
               </ListItem>
 
               <ListItem onClick={() => setActiveMenu(false)}>
                 <Link href={`/${city}/contacts`} style={{background: active_page === 'contacts' ? 'rgba(0, 0, 0, 0.03)' : null}}>
-                  <div>
-                    <div>
-                      <LocationIconMobile />
-                    </div>
-                    <span style={{color: active_page === 'contacts' ? ' #dd1a32' : null}}>Адреса</span>
-                  </div>
+                  <LocationIconMobile />
+                  <span style={{color: active_page === 'contacts' ? ' #dd1a32' : null}}>Адреса</span>
                 </Link>
               </ListItem>
 
               <ListItem onClick={() => setActiveMenu(false)}>
                 <Link href={`/${city}/about`} style={{background: active_page === 'other' ? 'rgba(0, 0, 0, 0.03)' : null}}>
-                  <div>
-                    <div>
-                      <AboutIconMobile />
-                    </div>
-                    <span style={{color: active_page === 'other' ? ' #dd1a32' : null}}>Жако</span>
-                  </div>
+                  <AboutIconMobile />
+                  <span style={{color: active_page === 'other' ? ' #dd1a32' : null}}>Жако</span>
                 </Link>
               </ListItem>
 
@@ -123,7 +111,7 @@ export default memo(function NavBarMobile({ city, active_page }) {
 
             </List>
 
-            <div className="Line"></div>
+            <div className="Line" />
 
           </SwipeableDrawer>
         </>

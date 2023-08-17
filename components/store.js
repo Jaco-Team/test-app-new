@@ -1318,6 +1318,20 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   cityList: [],
   is_fetch_save_new_addr: false,
   active_city: 0,
+
+  openModalAccountColor: false,
+  colorAccount: {id: 6, login: "rgba(111, 190, 248, 1)", item: 'rgba(111, 190, 248, 0.1)'},
+
+  // открытие/закрытие модалки для выбора цвета Аккаунта в мобильной версии
+  setActiveAccountColor: (active) => {
+    set({ openModalAccountColor: active });
+  },
+
+  // изменение цвета в Аккаунте
+  setAccountColor: (colorAccount) => {
+    set({ colorAccount });
+  },
+
   getPromoList: async (this_module, city, userToken) => {
     let data = {
       type: 'get_my_promos',

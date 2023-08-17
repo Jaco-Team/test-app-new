@@ -74,7 +74,7 @@
         height: $MyScale160_mobile;
         padding: 0;
         margin-bottom: $MyScale10_mobile;
-        
+
         & a {
           border-radius: $MyScale40_mobile;
           width: 100%;
@@ -83,60 +83,45 @@
           display: flex;
           align-items: center;
 
-          & div {
+          & svg {
+            margin-left: $MyScale50_mobile;
+            height: $MyScale100_mobile;
+            width: $MyScale100_mobile;
+            margin-right: $MyScale50_mobile;
+          }
+
+          & span {
             display: flex;
             align-items: center;
-            margin-left: $MyScale50_mobile;
+            @include font50_500();
+            height: $MyScale40_mobile;
+            width: $MyScale540_mobile;
+          }
 
-            & div {
-              height: $MyScale100_mobile;
-              width: $MyScale100_mobile;
-              margin-left: 0;
-              margin-right: $MyScale50_mobile;
-              justify-content: center;
-            }
+          & .count {
+            width: $MyScale80_mobile;
+            height: $MyScale80_mobile;
+            border-radius: $MyScale80_mobile;
+            background: #dd1a32;
+            margin-left: $MyScale60_mobile;
+            @include font44_400();
+            color: #ffffff !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+          }
 
-            & span {
-              display: flex;
-              align-items: center;
-              @include font50_500();
-              height: $MyScale40_mobile;
-              width: $MyScale540_mobile;
-            }
-
-            & .count {
-              width: $MyScale80_mobile;
-              height: $MyScale80_mobile;
-              border-radius: $MyScale80_mobile;
-              background: #dd1a32;
-              margin-left: $MyScale60_mobile;
-              margin-right: 0;
-
-              & span {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                @include font44_400();
-                color: #ffffff !important;
-              }
-            }
-
-            & .profile {
-              width: $MyScale80_mobile;
-              height: $MyScale80_mobile;
-              border-radius: $MyScale80_mobile;
-              background: rgba(0, 0, 0, 0.40);
-              margin-left: $MyScale60_mobile;
-              margin-right: 0;
-
-              & span {
-                display: flex;
-                align-items: center;
-                justify-content: center;
-                @include font32_400();
-                color: #ffffff !important;
-              }
-            }
+          & .profile {
+            width: $MyScale80_mobile;
+            height: $MyScale80_mobile;
+            border-radius: $MyScale80_mobile;
+            background: rgba(0, 0, 0, 0.4);
+            margin-left: $MyScale60_mobile;
+            @include font32_400();
+            color: #ffffff !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
           }
         }
       }

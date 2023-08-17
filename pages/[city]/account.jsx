@@ -1,19 +1,18 @@
 import React, { useEffect } from 'react';
 
-import Script from 'next/script';
 import dynamic from 'next/dynamic'
 
 const DynamicHeader = dynamic(() => import('@/components/header.js'), { ssr: false })
 const DynamicFooter = dynamic(() => import('@/components/footer.js'), { ssr: false })
-const DynamicPage = dynamic(() => import('@/modules/profile/profile/page'), { ssr: false })
+const DynamicPage = dynamic(() => import('@/modules/profile/account/accountMobile'), { ssr: false })
 
 import { api } from '@/components/api.js';
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js'
 
-const this_module = 'profile';
+const this_module = 'account';
 
-export default function Profile(props) {
+export default function Account(props) {
 
   const { city, cats, cities, page, all_items } = props.data1;
 
@@ -40,8 +39,6 @@ export default function Profile(props) {
 
   return (
     <div className={roboto.variable}>
-      <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" />
-      
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
       <DynamicPage page={page} this_module={this_module} city={city} />
@@ -60,10 +57,10 @@ export async function getServerSideProps({ req, res, query }) {
   let data = {
     type: 'get_page_info', 
     city_id: query.city,
-    page: this_module
+    page: 'profile'
   };
 
-  const data1 = await api(this_module, data);
+  const data1 = await api('profile', data);
   
   data1['city'] = query.city;
 

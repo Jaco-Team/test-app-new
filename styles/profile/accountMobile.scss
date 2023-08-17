@@ -1,0 +1,148 @@
+@import '../settings';
+
+.AccountMobile {
+  margin-top: $MyScale200_mobile;
+  flex-direction: column;
+  align-items: center;
+
+  & .accountMain {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  & .accountLogin {
+    width: $MyScale280_mobile;
+    height: $MyScale280_mobile;
+    border-radius: $MyScale280_mobile;
+    color: #fff !important;
+    @include font110_400();
+    margin-top: $MyScale40_mobile;
+  }
+
+  & .accountName {
+    height: $MyScale120_mobile;
+    @include font75_700();
+    margin-top: $MyScale40_mobile;
+  }
+
+  & .accountPhone {
+    height: $MyScale60_mobile;
+    @include font50_500();
+    color: rgba(0, 0, 0, 0.4) !important;
+    margin-bottom: $MyScale126_mobile;
+  }
+
+  & .accountData {
+    width: $MyScale920_mobile;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    row-gap: $MyScale40_mobile;
+    margin-bottom: $MyScale122_mobile;
+
+    & a {
+      width: $MyScale440_mobile;
+      height: $MyScale540_mobile;
+      border-radius: $MyScale40_mobile;
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      text-decoration: none;
+
+      & span {
+        margin-top: $MyScale51_mobile;
+        margin-left: $MyScale50_mobile;
+        width: $MyScale340_mobile;
+        @include font50_500();
+      }
+
+      & svg {
+        margin-bottom: $MyScale30_mobile;
+        width: $MyScale200_mobile;
+        height: $MyScale200_mobile;
+      }
+    }
+  }
+
+  & .accountButton {
+    width: $MyScale650_mobile;
+    height: $MyScale120_mobile;
+    border-radius: $MyScale60_mobile;
+    border: $MyScale3_mobile solid #dd1a32;
+    text-transform: lowercase;
+    margin-bottom: $MyScale112_mobile;
+    & span {
+      @include font50_500();
+      color: #dd1a32 !important;
+      &:first-letter {
+        text-transform: uppercase;
+      }
+    }
+  }
+}
+
+.AccountColor {
+  & .MuiDialog-container {
+    display: flex;
+    align-items: flex-end;
+
+    & .MuiDialog-paper {
+      border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+      overflow: visible;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: none !important;
+
+      & .MuiDialogContent-root {
+        padding: 0;
+        overflow: 'hidden';
+
+        .ContainerAccountColor {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & .Line {
+            height: $MyScale10_mobile;
+            width: $MyScale150_mobile;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: $MyScale5_mobile;
+            margin-bottom: $MyScale80_mobile;
+            margin-top: $MyScale40_mobile;
+          }
+
+          & .loginHeader {
+            margin-bottom: $MyScale106_mobile;
+            height: $MyScale120_mobile;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @include font75_700();
+          }
+
+          & .listColor {
+            display: flex;
+            width: $MyScale919_6_mobile;
+            flex-wrap: wrap;
+            justify-content: space-between;
+            row-gap: $MyScale34_mobile;
+            margin-bottom: $MyScale220_mobile;
+
+            & .itemColor {
+              border-radius: $MyScale5_mobile;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+
+              & svg {
+                width: $MyScale80_mobile;
+                height: $MyScale71_5_mobile;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
