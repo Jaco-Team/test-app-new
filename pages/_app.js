@@ -37,6 +37,7 @@ import '../styles/profile/accountMobile.scss'
 
 import '../styles/profile/profilePC.scss'
 import '../styles/profile/profileMobile.scss'
+import '../styles/profile/profile_modalMobile.scss'
 
 import '../styles/profile/promokody.scss'
 import '../styles/profile/zakazy.scss'

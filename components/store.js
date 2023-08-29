@@ -1319,12 +1319,20 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   is_fetch_save_new_addr: false,
   active_city: 0,
 
-  openModalAccountColor: false,
+  openModalAccount: false,
   colorAccount: {id: 6, login: "rgba(111, 190, 248, 1)", item: 'rgba(111, 190, 248, 0.1)'},
 
-  // открытие/закрытие модалки для выбора цвета Аккаунта в мобильной версии
-  setActiveAccountColor: (active) => {
-    set({ openModalAccountColor: active });
+  openModalProfile: false,
+  modalName: null,
+
+  // открытие/закрытие модалки в Профиле в мобильной версии
+  setActiveProfileModal: (active, modalName) => {
+    set({ openModalProfile: active, modalName });
+  },
+
+  // открытие/закрытие модалки в Аккаунте для выбора цвета или выхода из Аккаунта в мобильной версии
+  setActiveAccountModal: (active, modalName) => {
+    set({ openModalAccount: active, modalName });
   },
 
   // изменение цвета в Аккаунте

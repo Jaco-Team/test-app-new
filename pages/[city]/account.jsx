@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 
 const DynamicHeader = dynamic(() => import('@/components/header.js'), { ssr: false })
 const DynamicFooter = dynamic(() => import('@/components/footer.js'), { ssr: false })
-const DynamicPage = dynamic(() => import('@/modules/profile/account/accountMobile'), { ssr: false })
+const DynamicPage = dynamic(() => import('@/modules/profile/account/page'), { ssr: false })
 
 import { api } from '@/components/api.js';
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
@@ -18,9 +18,7 @@ export default function Account(props) {
 
   const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
 
-  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
-    useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
-
+  const [thisCity, setThisCity, setThisCityRu, setThisCityList] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
   const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
 
   useEffect(() => {

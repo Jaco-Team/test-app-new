@@ -2,8 +2,6 @@ import { useHeaderStore, useProfileStore } from '@/components/store.js';
 
 import Link from 'next/link';
 
-import ModalAccountColor from './modalAccountColor'
-
 import Box from '@mui/material/Box';
 import Button from '@mui/material/Button';
 
@@ -11,11 +9,11 @@ import { AccountMobileAddress, AccountMobilePromo, AccountMobilePerson, AccountM
 
 export default function AccountMobile({ city }) {
   const [userName] = useHeaderStore((state) => [state.userName]);
-  const [setActiveAccountColor, colorAccount] = useProfileStore((state) => [state.setActiveAccountColor, state.colorAccount]);
+  const [setActiveAccountModal, colorAccount] = useProfileStore((state) => [state.setActiveAccountModal, state.colorAccount]);
 
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="AccountMobile">
-      <div className="accountLogin accountMain" onClick={() => setActiveAccountColor(true)} style={{ background: colorAccount.login }}>
+      <div className="accountLogin accountMain" onClick={() => setActiveAccountModal(true, 'color')} style={{ background: colorAccount.login }}>
         {/* для тестирования */}
         {userName ? userName : 'ЯБ'}
       </div>
@@ -39,11 +37,9 @@ export default function AccountMobile({ city }) {
           <AccountMobileHistory style={{ fill: colorAccount.login }} />
         </Link>
       </div>
-      <Button variant="outlined" className="accountButton accountMain">
+      <Button variant="outlined" className="accountButton accountMain" onClick={() => setActiveAccountModal(true, 'exit')}>
         <span>Выйти</span>
       </Button>
-
-      <ModalAccountColor />
     </Box>
   );
 }

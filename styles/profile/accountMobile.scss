@@ -81,7 +81,7 @@
   }
 }
 
-.AccountColor {
+.AccountModal {
   & .MuiDialog-container {
     display: flex;
     align-items: flex-end;
@@ -98,7 +98,7 @@
         padding: 0;
         overflow: 'hidden';
 
-        .ContainerAccountColor {
+        .ContainerAccountModal {
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -113,7 +113,6 @@
           }
 
           & .loginHeader {
-            margin-bottom: $MyScale106_mobile;
             height: $MyScale120_mobile;
             display: flex;
             align-items: center;
@@ -139,6 +138,63 @@
                 width: $MyScale80_mobile;
                 height: $MyScale71_5_mobile;
               }
+            }
+          }
+
+          & .infoExit {
+            height: $MyScale400_mobile;
+            width: $MyScale920_mobile;
+            display: flex;
+            flex-direction: column;
+            line-height: $MyScale55_mobile;
+            margin-bottom: $MyScale60_mobile;
+            justify-content: space-between;
+
+            & span:first-child {
+              text-align: center;
+              @include font40_400();
+            }
+
+            & span:last-child {
+              text-align: center;
+              @include font40_400();
+            }
+          }
+
+          & .buttonModalClose {
+            width: $MyScale650_mobile;
+            height: $MyScale120_mobile;
+            border-radius: $MyScale60_mobile;
+            margin-bottom: $MyScale40_mobile;
+            padding: 0;
+            text-transform: lowercase;
+
+            & span {
+              display: flex;
+              align-items: center;
+              text-align: center;
+              @include font50_500();
+              color: #fff !important;
+              text-transform: capitalize;
+            }
+          }
+
+          & .buttonModalExit {
+            width: $MyScale650_mobile;
+            height: $MyScale120_mobile;
+            border-radius: $MyScale60_mobile;
+            margin-bottom: $MyScale230_mobile;
+            padding: 0;
+            text-transform: lowercase;
+            border: $MyScale3_mobile solid #dd1a32;
+
+            & span {
+              display: flex;
+              align-items: center;
+              text-align: center;
+              @include font50_500();
+              color: #dd1a32 !important;
+              text-transform: capitalize;
             }
           }
         }
