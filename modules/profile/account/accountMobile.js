@@ -20,7 +20,7 @@ export default function AccountMobile({ city }) {
       <div className="accountName accountMain">Ян Брин</div>
       <div className="accountPhone accountMain">+7 (925) 485-89-75</div>
       <div className="accountData accountMain">
-        <Link href={'/' + city + '/profile'} style={{ background: colorAccount.item }}>
+        <Link href={'/' + city + '/address'} style={{ background: colorAccount.item }}>
           <span> Адреса доставки</span>
           <AccountMobileAddress style={{ fill: colorAccount.login }} />
         </Link>

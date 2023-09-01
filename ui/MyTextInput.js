@@ -33,6 +33,7 @@ export default class MyTextInput extends React.PureComponent {
         type={ this.props.type ? this.props.type : this.state.type }
         style={{ width: '100%', zIndex: 3 }} 
         className={ this.props.className ? this.props.className : '' }
+        name={this.props.name}
       />
     )
   }

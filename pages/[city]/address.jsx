@@ -5,24 +5,28 @@ import dynamic from 'next/dynamic'
 
 const DynamicHeader = dynamic(() => import('@/components/header.js'))
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
-const DynamicPage = dynamic(() => import('@/modules/profile/profile/page'))
+const DynamicPage = dynamic(() => import('@/modules/profile/address/page'))
 
 import { api } from '@/components/api.js';
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js'
 
-const this_module = 'profile';
+const this_module = 'address';
 
-export default function Profile(props) {
+export default function Address(props) {
 
-  const { city, cats, cities, page, all_items } = props.data1;
+  const {city, cats, cities, page, all_items} = props.data1;
 
   const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
 
-  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
-    useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
+  const [thisCity, setThisCity, setThisCityRu, setThisCityList] = useCitiesStore(state => [state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList]);
+  const [setActivePage, matches] = useHeaderStore((state) => [state.setActivePage, state.matches]);
 
-  const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
+  useEffect(() => {
+    if (!matches) {
+      window.location.href = '/' + city + '/profile';
+    }
+  }, [matches]);
 
   useEffect(() => {
     if( thisCity != city ){
@@ -60,10 +64,10 @@ export async function getServerSideProps({ req, res, query }) {
   let data = {
     type: 'get_page_info', 
     city_id: query.city,
-    page: this_module
+    page: 'profile'
   };
 
-  const data1 = await api(this_module, data);
+  const data1 = await api('profile', data);
   
   data1['city'] = query.city;
 

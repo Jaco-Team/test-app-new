@@ -3,6 +3,8 @@ import { useState, useEffect } from 'react';
 //import Link from 'next/link';
 import Image from 'next/image';
 
+import AddressModalMobile from '@/modules/profile/address/modalAddressMobile';
+
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
@@ -10,7 +12,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 import { roboto } from '@/ui/Font.js';
-import { useCartStore, useCitiesStore } from '@/components/store.js';
+import { useCartStore, useCitiesStore, useProfileStore } from '@/components/store.js';
 
 import MyTextInput from '@/ui/MyTextInput';
 
@@ -53,7 +55,7 @@ const payList = [
   { name: 'Оплата наличными', id: 3, main: false },
 ];
 
-export default function CartMenuMobile() {
+export default function CartMenuMobile({cityName}) {
   //console.log('render CartMenuMobile');
 
   const [list, setList] = useState([]);
@@ -63,6 +65,8 @@ export default function CartMenuMobile() {
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
   const [openMenuCart, setActiveMenuCart, menu, idMenu, setActiveCartDataTimePicker, setActiveCartMap] = 
     useCartStore((state) => [state.openMenuCart, state.setActiveMenuCart, state.menu, state.idMenu, state.setActiveCartDataTimePicker, state.setActiveCartMap]);
+  
+  const [setActiveAddressModal] = useProfileStore((state) => [state.setActiveAddressModal]);
 
   useEffect(() => {
     if (menu === 'point' && thisCityRu === 'Тольятти') {
@@ -97,6 +101,10 @@ export default function CartMenuMobile() {
     }
     if (menu === 'point' && item.name === 'Выбрать на карте') {
       setActiveCartMap(true);
+    }
+    if (menu === 'addr' && item.name === 'Выбрать на карте') {
+      setActiveMenuCart(false, null, null); setText('');
+      setActiveAddressModal(true, 0, cityName);
     }
   };
 
@@ -196,6 +204,8 @@ export default function CartMenuMobile() {
             <span>&nbsp;{menu === 'addr' ? 'новый' : 'карту'}</span>
           </Button>
         ) : null}
+
+        <AddressModalMobile />
         
       </div>
     </SwipeableDrawer>

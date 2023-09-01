@@ -16,7 +16,7 @@ export default function CartPage({ page, cityName }) {
       {matches ?
       <>
       <CartMobile /> 
-      <CartMenuMobile />
+      <CartMenuMobile cityName={cityName} />
       <CartDataTimePicker />
       <CartMapPoints cityName={cityName}/>
       </>

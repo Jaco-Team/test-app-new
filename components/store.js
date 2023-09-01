@@ -1325,6 +1325,108 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   openModalProfile: false,
   modalName: null,
 
+  openModalAddress: false,
+  streetId: null,
+  //city: '',
+
+  // для тестирования
+  testAddr: {
+    street: 'Московское шоссе',
+    home: 2,
+    corpus: 1,
+    pd: 3,
+    domophome: 'работает',
+    et: 5,
+    kv: 45,
+    comment: 'Как можно быстрее',
+    is_main: 1,
+    name: 'ДОМ',
+  },
+
+  // открытие/закрытие модалки с указанием адреса в Адресах доставки и при Оформлении заказа в мобильной версии
+  setActiveAddressModal: async (active, id, city = '', name) => {
+
+    // name для тестирования 
+
+    if(active) {
+
+      set({ openModalAddress: active, streetId: id, city })
+
+       // name для тестирования 
+      get().getMapMobile(id, city, name);
+
+    } else {
+      set({ openModalAddress: active, streetId: null,  city: '' })
+    }
+
+  },
+
+  // карта для модалки выбора адреса доставки в мобильной версии
+  getMapMobile: async ( id, city = '', name) => {
+
+     // name для тестирования 
+
+    let data = {
+      type: 'get_data_for_streets',
+      city_id: city ? city : get().city,
+      street_id: id
+    };
+
+    let json = await api('profile', data);
+
+    set({
+      allStreets: json.streets,
+      infoAboutAddr: name === 'edit' ? get().testAddr : json.this_info, // для тестирования
+      cityList: json.cities,
+      active_city: json.city
+    })
+
+    const widthModal_px = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
+
+    let zoomSize;
+
+    if(widthModal_px < 900) {
+      zoomSize = 11;
+    } else {
+      zoomSize = 12.3;
+    }
+
+    if(!get().thisMAP){
+
+    ymaps.ready().then((function () {
+
+      if( parseInt( id ) > 0 ){
+        get().thisMAP = new ymaps.Map('map', {
+          center: [ json.this_info.xy[0], json.this_info.xy[1] ],
+          zoom: zoomSize,
+          controls: []
+        }, { suppressMapOpenBlock: true });
+
+        get().setMapZone(json.zones, json.this_info.xy)
+
+        get().setAddrPoint(json.this_info.xy);
+
+      }else{
+        get().thisMAP = new ymaps.Map('map', {
+          center: [ json.city_center[0], json.city_center[1] ],
+          zoom: zoomSize,
+          controls: []
+        }, { suppressMapOpenBlock: true });
+
+        get().setMapZone(json.zones, json.city_center)
+      }
+
+    }))
+
+  } else {
+    get().thisMAP.destroy();
+
+    set({ thisMAP: null });
+
+    get().getMapMobile(get().streetId, get().city);
+  }
+  },
+
   // открытие/закрытие модалки в Профиле в мобильной версии
   setActiveProfileModal: (active, modalName) => {
     set({ openModalProfile: active, modalName });
@@ -1701,6 +1803,24 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     get().thisMAP.setCenter([city_center[0], city_center[1]], 11);
   },
   setAddrPoint: (point) => {
+
+    // const widthPC_vw = 2.1660649819495;
+    // const heightPC_vw = 2.8880866425993;
+
+    // const widthMobile_vw = 8.5470085470085;
+    // const heightMobile_vw = 11.282051282051;
+
+    // const widthScreen_px = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
+
+    // console.log('setAddrPoint', widthScreen_px);
+      
+    // const widthIcon_px = (widthMobile_vw * widthScreen_px) / 100;
+    // const heightIcon_px = (heightMobile_vw * widthScreen_px) / 100;
+
+    // console.log('setAddrPoint', widthIcon_px);
+    // console.log('setAddrPoint', heightIcon_px);
+
+
     let objectManager = new ymaps.ObjectManager();
 
     let json2 = {
@@ -1711,17 +1831,20 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     json2.features.push({
       type: "Feature",
       id: -1,
-      options: {
-        preset: 'islands#blackDotIcon', 
-        iconColor: 'black'
-      },
       geometry: {
         type: "Point",
         coordinates: [ point[0], point[1] ]
       },
     })
 
+    objectManager.objects.options.set({
+      iconLayout: 'default#image',
+      iconImageHref: '/Frame.png',
+      //iconImageSize: [widthIcon_px, heightIcon_px], // w & h
+    });
+
     objectManager.add(json2);
+
     get().thisMAP.geoObjects.add(objectManager);
   },
   delAddrPoint: () => {

@@ -19,7 +19,13 @@ export default function Account(props) {
   const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
 
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
-  const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
+  const [setActivePage, matches] = useHeaderStore((state) => [state.setActivePage, state.matches]);
+
+  useEffect(() => {
+    if (!matches) {
+      window.location.href = '/' + city + '/profile';
+    }
+  }, [matches]);
 
   useEffect(() => {
     if( thisCity != city ){

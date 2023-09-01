@@ -107,7 +107,7 @@ export default function ModalAddr(){
                 <MySelect variant="standard" className="city" data={cityList} value={cityID} func={ e => setCityID(e.target.value) } />
               </div>
               <div className='street'>
-                <MyAutocomplete placeholder={'Улица'} className="city" data={allStreets} val={street_} onChange={ val => setStreet(val) } />
+                <MyAutocomplete placeholder={'Улица'} className="city" data={allStreets} val={street_} onChange={ val => setStreet(val) } variant={'standard'} />
               </div>
               <div className='street_dop_3'>
                 <MyTextInput variant="standard" value={home} placeholder={'Дом'} func={ e => setHome(e.target.value) } />

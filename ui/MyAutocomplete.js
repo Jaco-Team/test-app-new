@@ -5,7 +5,7 @@ import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 
 const filter = createFilterOptions();
 
-export default function MyAutocomplete({data, placeholder, onChange, val, className}) {
+export default function MyAutocomplete({data, placeholder, onChange, val, className, variant, inputAdornment, customPopper, stylePaper}) {
   const [value, setValue] = useState(val);
 
   useEffect( () => {
@@ -69,9 +69,20 @@ export default function MyAutocomplete({data, placeholder, onChange, val, classN
       }}
       renderOption={(props, option) => <li className='itemAutocomplited' {...props}>{option.name}</li>}
       freeSolo
+      
       renderInput={(params) => (
-        <TextField {...params} placeholder={placeholder} variant="standard" />
+        <TextField {...params} 
+          placeholder={placeholder} 
+          variant={variant} 
+          InputProps={{
+            ...params.InputProps,
+            startAdornment: inputAdornment,
+          }}
+        />
       )}
+
+      PopperComponent={customPopper}
+      componentsProps={stylePaper}
     />
   );
 }

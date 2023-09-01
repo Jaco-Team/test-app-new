@@ -48,7 +48,9 @@ export default React.memo(function Cart(props) {
     <>
       {!matches ? null : (
         <div className={roboto.variable}>
-          <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" onLoad={() => { getDataMap(this_module, city) }} />
+          <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" 
+          onLoad={() => { getDataMap(this_module, city) }} 
+          />
 
           <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'cart'}/>
 

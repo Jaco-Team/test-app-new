@@ -34,6 +34,7 @@ import '../styles/header/basketPC.scss'
 import '../styles/header/basketModalPC.scss'
 
 import '../styles/profile/accountMobile.scss'
+import '../styles/profile/addressMobile.scss'
 
 import '../styles/profile/profilePC.scss'
 import '../styles/profile/profileMobile.scss'

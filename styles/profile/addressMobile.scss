@@ -1,0 +1,392 @@
+@import '../settings';
+
+.AddressMobile {
+  margin-top: $MyScale200_mobile;
+  flex-direction: column;
+  align-items: center;
+
+  & .addressLogin {
+    display: flex;
+    width: $MyScale920_mobile;
+    height: $MyScale100_mobile;
+    margin-top: $MyScale30_mobile;
+    margin-bottom: $MyScale90_mobile;
+
+    & a {
+      margin-top: $MyScale10_mobile;
+
+      & svg {
+        width: $MyScale60_mobile;
+        height: $MyScale60_mobile;
+      }
+    }
+
+    & span {
+      width: 100%;
+      align-self: center;
+      text-align: center;
+      @include font75_700();
+    }
+  }
+
+  & ul {
+    width: $MyScale920_mobile;
+    padding: 0;
+    & li {
+      border-bottom: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+      padding: 0;
+      justify-content: space-between;
+
+      & .containerSpan {
+        display: flex;
+        align-items: center;
+        height: 100%;
+        margin-left: $MyScale30_mobile;
+
+        .shadowSpan {
+          mask-image: linear-gradient(
+            90deg,
+            #f2f2f2 0%,
+            rgba(255, 255, 255, 0) 120%
+          );
+          -webkit-mask-image: linear-gradient(
+            90deg,
+            #f2f2f2 0%,
+            rgba(255, 255, 255, 0) 120%
+          );
+        }
+
+        & span:nth-child(1) {
+          @include font50_500();
+          margin-right: $MyScale30_mobile;
+        }
+        & span:nth-child(2) {
+          @include font40_400();
+          color: rgba(0, 0, 0, 0.4) !important;
+          white-space: nowrap;
+        }
+      }
+
+      & .containerSVG {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        & .circleDiv {
+          margin-right: $MyScale20_mobile;
+          width: $MyScale100_mobile;
+          height: $MyScale100_mobile;
+          border-radius: $MyScale100_mobile;
+          background: rgba(0, 0, 0, 0.07);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          & svg {
+            width: $MyScale60_mobile;
+            height: $MyScale60_mobile;
+            margin-right: 0;
+          }
+        }
+
+        & svg {
+          margin-right: $MyScale17_mobile;
+          width: $MyScale80_mobile;
+          height: $MyScale80_mobile;
+        }
+      }
+    }
+  }
+
+  & .buttonAddress {
+    width: $MyScale650_mobile;
+    height: $MyScale120_mobile;
+    border-radius: $MyScale60_mobile;
+    margin-top: $MyScale496_mobile;
+    margin-bottom: $MyScale172_mobile;
+    padding: 0;
+    text-transform: lowercase;
+
+    & span {
+      display: flex;
+      align-items: center;
+      text-align: center;
+      @include font50_500();
+      color: #fff !important;
+    }
+  }
+}
+
+.AddressModalmodile {
+  & .MuiDialog-container {
+    display: flex;
+    align-items: flex-end;
+
+    & .MuiDialog-paper {
+      max-height: calc(100% - $MyScale420_mobile);
+      border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+      overflow: visible;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: none !important;
+
+      & .MuiDialogContent-root {
+        padding: 0;
+        overflow: 'hidden';
+
+        .ContainerAddressModal {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & .Line {
+            height: $MyScale10_mobile;
+            width: $MyScale150_mobile;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: $MyScale5_mobile;
+            margin-bottom: $MyScale80_mobile;
+            margin-top: $MyScale40_mobile;
+          }
+
+          & .loginHeader {
+            margin-bottom: $MyScale60_mobile;
+            height: $MyScale120_mobile;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            @include font75_700();
+          }
+
+          & .map {
+            width: 100%;
+            overflow: hidden;
+            border-top-left-radius: $MyScale40;
+            border-bottom-left-radius: $MyScale40;
+          }
+
+          & .addressForm {
+            margin-top: $MyScale80_mobile;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+
+            & .address_street {
+              width: $MyScale960_mobile;
+              height: $MyScale120_mobile;
+              margin-bottom: $MyScale40_mobile;
+
+              & div {
+                width: $MyScale960_mobile;
+                height: $MyScale120_mobile;
+                padding: 0;
+
+                & .MuiAutocomplete-endAdornment {
+                  display: flex;
+                  justify-content: flex-end;
+                  align-items: center;
+                  top: 0;
+                  margin-right: $MyScale20_mobile;
+                }
+
+                & svg {
+                  width: $MyScale57_3_mobile;
+                  height: $MyScale57_3_mobile;
+                  margin-left: $MyScale51_mobile;
+                }
+
+                & input {
+                  margin-left: $MyScale31_35_mobile;
+                  max-width: $MyScale650_mobile;
+                  height: $MyScale60_mobile;
+                  padding: 0;
+                  @include font50_500();
+                  &:focus ~ fieldset {
+                    border: $MyScale3_mobile solid rgba(221, 26, 50, 0.5) !important;
+                  }
+                }
+
+                & > input::placeholder {
+                  transform: translate3d(0, -0.34188034188034vw, 0);
+                  @include font40_400();
+                  color: rgba(0, 0, 0, 0.4) !important;
+                }
+
+                & fieldset {
+                  padding: 0;
+                  border-radius: $MyScale60_mobile;
+                  border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+                }
+              }
+            }
+
+            & .address_dop {
+              display: flex;
+              align-items: center;
+              margin-bottom: $MyScale40_mobile;
+              column-gap: $MyScale40_mobile;
+
+              & div {
+                width: $MyScale460_mobile !important;
+                height: $MyScale120_mobile;
+                padding: 0;
+
+                & input {
+                  margin-left: $MyScale60_mobile;
+                  width: $MyScale320_mobile;
+                  height: $MyScale60_mobile;
+                  padding: 0;
+                  @include font50_500();
+                  &:focus ~ fieldset {
+                    border: $MyScale3_mobile solid rgba(221, 26, 50, 0.5) !important;
+                  }
+                }
+
+                & > input::placeholder {
+                  transform: translate3d(0, -0.34188034188034vw, 0);
+                  @include font40_400();
+                  color: rgba(0, 0, 0, 0.4) !important;
+                }
+
+                & fieldset {
+                  padding: 0;
+                  border-radius: $MyScale60_mobile;
+                  border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+                }
+              }
+            }
+
+            & .address_comment {
+              width: $MyScale960_mobile;
+              height: $MyScale120_mobile;
+
+              & div {
+                width: $MyScale960_mobile;
+                height: $MyScale120_mobile;
+                padding: 0;
+
+                & input {
+                  margin-left: $MyScale60_mobile;
+                  width: $MyScale650_mobile;
+                  height: $MyScale60_mobile;
+                  padding: 0;
+                  @include font50_500();
+                  &:focus ~ fieldset {
+                    border: $MyScale3_mobile solid rgba(221, 26, 50, 0.5) !important;
+                  }
+                }
+
+                & > input::placeholder {
+                  transform: translate3d(0, -0.34188034188034vw, 0);
+                  @include font40_400();
+                  color: rgba(0, 0, 0, 0.4) !important;
+                }
+
+                & fieldset {
+                  padding: 0;
+                  border-radius: $MyScale60_mobile;
+                  border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+                }
+              }
+            }
+
+            & .address_name {
+              display: flex;
+              align-items: center;
+              width: $MyScale920_mobile;
+              height: $MyScale163_mobile;
+              border-bottom: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+
+              & div {
+                width: $MyScale920_mobile;
+                height: $MyScale163_mobile;
+                margin-left: $MyScale40_mobile;
+                display: flex;
+                align-items: center;
+                & .MuiInputBase-sizeSmall {
+                  height: $MyScale163_mobile;
+                  width: 100%;
+                  margin-left: 0;
+                  & > input {
+                    height: $MyScale163_mobile;
+                    padding: 0;
+                    @include font50_500();
+                  }
+                  & > input::placeholder {
+                    color: rgba(0, 0, 0, 0.8) !important;
+                    @include font40_400();
+                    transform: translate3d(0, -0.34188034188034vw, 0);
+                  }
+                }
+                & fieldset {
+                  padding: 0;
+                  border: none;
+                }
+              }
+
+              & svg {
+                margin-right: $MyScale17_mobile;
+                width: $MyScale80_mobile;
+                height: $MyScale80_mobile;
+              }
+            }
+
+            & .address_main {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              width: $MyScale920_mobile;
+              height: $MyScale163_mobile;
+              border-bottom: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+              margin-bottom: $MyScale60_mobile;
+
+              & .divGroup {
+                width: $MyScale500_mobile;
+                display: flex;
+                align-items: center;
+                justify-content: space-between;
+
+                & span {
+                  margin-left: $MyScale40_mobile;
+                  @include font40_400();
+                }
+
+                & .circleDiv {
+                  width: $MyScale100_mobile;
+                  height: $MyScale100_mobile;
+                  border-radius: $MyScale100_mobile;
+                  background: rgba(0, 0, 0, 0.07);
+                  display: flex;
+                  justify-content: center;
+                  align-items: center;
+                  & svg {
+                    width: $MyScale60_mobile;
+                    height: $MyScale60_mobile;
+                    margin-right: 0;
+                  }
+                }
+              }
+            }
+
+            .address_button {
+              width: $MyScale650_mobile;
+              height: $MyScale120_mobile;
+              border-radius: $MyScale60_mobile;
+              margin-bottom: $MyScale205_mobile;
+              padding: 0;
+              text-transform: lowercase;
+
+              & span {
+                display: flex;
+                align-items: center;
+                text-align: center;
+                @include font50_500();
+                color: #fff !important;
+                text-transform: capitalize;
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
