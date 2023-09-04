@@ -1480,9 +1480,9 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     let json = await api(this_module, data);
 
     set({
-      shortName: json.user?.name.substring(0, 1) + json.user?.fam.substring(0, 1),
-      userInfo: json.user,
-      streets: json.streets,
+      shortName: json?.user?.name.substring(0, 1) + json?.user?.fam.substring(0, 1),
+      userInfo: json?.user,
+      streets: json?.streets,
       city: city
     });
   },
@@ -1590,8 +1590,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     };
 
     let json = await api(this_module, data);
-
-    console.log( json )
 
     if( json.st === true ){
       get().closeModalDel();
@@ -1954,6 +1952,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
   // закрытие форм авторизации
   closeModalAuth: () => {
+    console.log( 'closeModalAuth' )
     set({
       openAuthModal: false,
       errTextAuth: '',

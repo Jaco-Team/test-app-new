@@ -86,10 +86,10 @@ export default function ProfilePC({ page, this_module, city }){
   }, [session]);
 
   useEffect(() => {
-    setValue("name", userInfo.name)
-    setValue("fam", userInfo.fam)
-    setValue("login", userInfo.login)
-    setValue("mail", userInfo.mail)
+    setValue("name", userInfo?.name)
+    setValue("fam", userInfo?.fam)
+    setValue("login", userInfo?.login)
+    setValue("mail", userInfo?.mail)
   }, [userInfo]);
 
   function saveMainData(){
@@ -205,7 +205,7 @@ export default function ProfilePC({ page, this_module, city }){
             <div>
               <div>
                 <span>Хочу получать СМС с акциями и скидками</span>
-                <MySwitch checked={ parseInt(userInfo.spam) == 1 ? true : false } onClick={ event => { changeOtherData('spam', event.target.checked) } } />
+                <MySwitch checked={ parseInt(userInfo?.spam) == 1 ? true : false } onClick={ event => { changeOtherData('spam', event.target.checked) } } />
               </div>
               <div>
                 <span>Хочу получать цифровые чеки на электронную почту</span>
@@ -306,7 +306,7 @@ export default function ProfilePC({ page, this_module, city }){
               </TableHead>
               <TableBody>
                 
-                {streets.map( (item, key) =>
+                {streets?.map( (item, key) =>
                   <TableRow key={key}>
                     <TableCell>{item.city_name}</TableCell>
                     <TableCell>{item.name_street}, д. {item.home}, кв. {item.kv}</TableCell>
