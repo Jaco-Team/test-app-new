@@ -28,7 +28,7 @@ export default function AccountMobile({ city }) {
           <span>Личные данные</span>
           <AccountMobilePerson style={{ fill: colorAccount.login }} />
         </Link>
-        <Link href={'/' + city + '/profile'} style={{ background: colorAccount.item }}>
+        <Link href={'/' + city + '/promokody'} style={{ background: colorAccount.item }}>
           <span>Промокоды и подарки</span>
           <AccountMobilePromo style={{ fill: colorAccount.login }} />
         </Link>

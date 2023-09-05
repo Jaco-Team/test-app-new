@@ -27,7 +27,7 @@ export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_pa
       //onClick={() => { setActiveMenu(false); setActiveModalAuth(true) }}
       onClick={() => setActiveMenu(false)}
       >
-        <Link href={'/' + city + '/account'} style={{background: active_page === 'account' || active_page === 'profile' || active_page === 'address' ? 'rgba(0, 0, 0, 0.03)' : null}}>
+        <Link href={'/' + city + '/account'} style={{background: active_page === 'account' || active_page === 'profile' || active_page === 'address' || active_page === 'promokody' ? 'rgba(0, 0, 0, 0.03)' : null}}>
           <ProfileIconMobile />
           <span>Аккаунт</span>
         </Link>
