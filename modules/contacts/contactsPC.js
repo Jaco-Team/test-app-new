@@ -47,7 +47,7 @@ export default function ContactsPagePC({ city }) {
   };
 
   useEffect(() => {
-    getData('contacts', city);
+    //getData('contacts', city);
   }, []);
 
   return (
