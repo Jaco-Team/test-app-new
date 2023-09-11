@@ -32,7 +32,7 @@ export default function AccountMobile({ city }) {
           <span>Промокоды и подарки</span>
           <AccountMobilePromo style={{ fill: colorAccount.login }} />
         </Link>
-        <Link href={'/' + city + '/profile'} style={{ background: colorAccount.item }}>
+        <Link href={'/' + city + '/zakazy'} style={{ background: colorAccount.item }}>
           <span>История заказов</span>
           <AccountMobileHistory style={{ fill: colorAccount.login }} />
         </Link>
