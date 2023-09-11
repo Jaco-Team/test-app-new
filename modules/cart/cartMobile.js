@@ -15,7 +15,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 import { SwitchBasketMobile as MySwitch } from '@/ui/MySwitch.js';
 
-import { ArrowDownCartMobile, CityBasketModalPC, HomeBasketModalPC, PointBasketModalPC, TimeBasketModalPC, CardBasketModalPC, GroupCircleCartMobile, 
+import { ArrowDownCartMobile, CityBasketModalPC, HomeBasketModalPC, PointBasketModalPC, TimeBasketModalPC, CardBasketModalPC, AddrDotsModalOrderIcon, 
   MessageBasketModalPC } from '@/ui/Icons.js';
 
 import MasterCard from '@/public/masterCard.png';
@@ -126,7 +126,7 @@ export default function CartMobile() {
             <div>
               <Typography component="span"><CardBasketModalPC /></Typography>
               <Image alt="Банковская карта" src={MasterCard} width={49} height={40} priority={true}/>
-              <Typography component="span" style={{ marginRight: '6.8376068376068vw' }}><GroupCircleCartMobile /></Typography>
+              <Typography component="span" style={{ marginRight: '6.8376068376068vw' }}><AddrDotsModalOrderIcon /></Typography>
               <Typography component="span">8472</Typography>
             </div>
           </Button>

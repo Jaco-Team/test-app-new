@@ -43,12 +43,12 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
         <>
           <NavBarPC city={city} cityRu={thisCityRU} catList={cats} active_page={active_page}/>
           <ModalCityPC />
+          <BasketPC />
           <BasketModalPC />
         </>
       }
 
       <ModalAuth />
-      <BasketPC />
     </div>
   );
 });

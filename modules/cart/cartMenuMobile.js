@@ -16,7 +16,7 @@ import { useCartStore, useCitiesStore, useProfileStore } from '@/components/stor
 
 import MyTextInput from '@/ui/MyTextInput';
 
-import { HomeCartMobile, GroupCircleCartMobile } from '@/ui/Icons.js';
+import { HomeCartMobile, AddrDotsModalOrderIcon } from '@/ui/Icons.js';
 
 import MasterCard from '@/public/masterCard.png';
 import Pay from '@/public/pay.png';
@@ -170,7 +170,7 @@ export default function CartMenuMobile({cityName}) {
                     <>
                       <div className="containerSpanPay">
                         <Image alt="Банковская карта" src={MasterCard} width={49} height={40} priority={true}/>
-                        <span><GroupCircleCartMobile /></span>
+                        <span><AddrDotsModalOrderIcon /></span>
                         <span>{item.name}</span>
                       </div>
 
