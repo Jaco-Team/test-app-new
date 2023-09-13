@@ -1,0 +1,135 @@
+@import '../settings';
+
+.PromokodyMobile {
+  margin-top: $MyScale200_mobile;
+  flex-direction: column;
+  align-items: center;
+
+  & .promokodyMain {
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+  }
+
+  & .promokodyLogin {
+    display: flex;
+    width: $MyScale920_mobile;
+    height: $MyScale100_mobile;
+    margin-top: $MyScale30_mobile;
+    margin-bottom: $MyScale95_mobile;
+
+    & a {
+      margin-top: $MyScale10_mobile;
+
+      & svg {
+        width: $MyScale60_mobile;
+        height: $MyScale60_mobile;
+      }
+    }
+
+    & span {
+      width: 100%;
+      align-self: center;
+      text-align: center;
+      @include font75_700();
+    }
+  }
+
+  & .promoList {
+    & .promoCardMobile {
+      width: $MyScale970_mobile;
+      height: $MyScale560_mobile;
+      margin-bottom: $MyScale60_mobile;
+      border-radius: $MyScale40_mobile;
+
+      & .promokodyName {
+        margin-top: $MyScale60_mobile;
+        margin-bottom: $MyScale20_mobile;
+        height: $MyScale240_mobile;
+        justify-content: space-around;
+
+        span:nth-child(1) {
+          @include font50_500();
+        }
+
+        span:nth-child(2) {
+          @include font40_400();
+        }
+
+        span:nth-child(3) {
+          width: $MyScale770_mobile;
+          height: $MyScale3_mobile;
+        }
+
+        span:nth-child(4) {
+          @include font40_400();
+        }
+      }
+
+      & .promokodyBTN {
+        width: $MyScale690_mobile;
+        height: $MyScale120_mobile;
+        border-radius: $MyScale80_mobile;
+        margin-bottom: $MyScale30_mobile;
+        & span {
+          @include font40_500();
+          &:first-letter {
+            text-transform: capitalize;
+          }
+        }
+      }
+
+      & .term {
+        height: $MyScale60_mobile;
+        display: flex;
+        align-items: center;
+        @include font30_400();
+        text-decoration: underline;
+      }
+
+      & .promoDesc {
+        margin-top: $MyScale60_mobile;
+        height: $MyScale400_mobile;
+        width: $MyScale850_mobile;
+        margin-bottom: $MyScale10_mobile;
+
+        span:first-child {
+          @include font40_500();
+          margin-bottom: $MyScale40_mobile;
+        }
+
+        span:last-child {
+          text-align: center;
+          @include font30_400();
+        }
+      }
+    }
+  }
+
+  & .openArchive {
+    height: $MyScale60_mobile;
+    text-transform: lowercase;
+    margin-top: $MyScale30_mobile;
+    margin-bottom: $MyScale90_mobile;
+    & :first-letter {
+      text-transform: uppercase;
+    }
+    & div {
+      @include font50_500();
+    }
+  }
+
+  & .promoArchive {
+    height: $MyScale60_mobile;
+    text-transform: lowercase;
+    margin-bottom: $MyScale120_mobile;
+    & :first-letter {
+      text-transform: uppercase;
+    }
+    & div {
+      @include font40_400();
+      text-decoration: underline;
+      color: #dd1a32 !important;
+    }
+  }
+}

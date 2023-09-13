@@ -2,7 +2,7 @@ import React from 'react';
 
 import Typography from '@mui/material/Typography';
 
-export default React.memo(function PromoCard({item}){
+export default React.memo(function PromoCardPC({item}){
   return (
     <div className={'promoCard'}>
       <Typography component="span" className={'title'}>Что-то дает при применении</Typography>

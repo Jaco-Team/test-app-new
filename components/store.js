@@ -1401,6 +1401,11 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   streetId: null,
   //city: '',
 
+  year: '',
+  yearList: [],
+  openModalYear: false,
+  //openModalOrder: false,
+
   // для тестирования
   testAddr: {
     street: 'Московское шоссе',
@@ -1414,6 +1419,31 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     is_main: 1,
     name: 'ДОМ',
   },
+
+  // открытие/закрытие модалки заказа в Истории заказов в мобильной версии
+  setActiveModalOrder: (active, modalOrder) => {
+    set({ openModal: active, modalOrder })
+  },
+
+  // установить год в Истории заказов в мобильной версии
+  setYear: (year) => {
+    set({ year })
+  },
+
+  // открытие/закрытие модалки выбора года в Истории заказов в мобильной версии
+  setActiveModalYear: (active, list) => {
+    let yearList = [];
+
+    if(list.length) {
+      yearList = list.reduce((arr, item) => {
+        return arr = [...arr, ...[{name: item.year}]]
+      }, [])
+      set({ orderList: list }) // для тестирования
+    } 
+
+    set({ openModalYear: active, yearList })
+  },
+
 
   // открытие/закрытие модалки с указанием адреса в Адресах доставки и при Оформлении заказа в мобильной версии
   setActiveAddressModal: async (active, id, city = '', name) => {
@@ -1513,6 +1543,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   setAccountColor: (colorAccount) => {
     set({ colorAccount });
   },
+
 
   getPromoList: async (this_module, city, userToken) => {
     let data = {

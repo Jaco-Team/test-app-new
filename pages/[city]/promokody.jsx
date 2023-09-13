@@ -4,7 +4,7 @@ import dynamic from 'next/dynamic'
 
 const DynamicHeader = dynamic(() => import('@/components/header.js'), { ssr: false })
 const DynamicFooter = dynamic(() => import('@/components/footer.js'), { ssr: false })
-const DynamicPage = dynamic(() => import('@/modules/profile/promokody/page.jsx'), { ssr: false })
+const DynamicPage = dynamic(() => import('@/modules/profile/promokody/page'), { ssr: false })
 
 import { api } from '@/components/api.js';
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';

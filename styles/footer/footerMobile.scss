@@ -11,7 +11,8 @@
 
   & .ContainerMobileFooter {
     height: 109.40170940171vw;
-    margin: 8.5470085470085vw 10.683760683761vw 10.25641025641vw 10.25641025641vw !important;
+    margin: 8.5470085470085vw 10.683760683761vw 10.25641025641vw
+      10.25641025641vw !important;
     display: flex;
     flex-direction: column;
     width: 79.059829059829vw;
@@ -80,7 +81,8 @@
       flex-direction: column;
       height: 27.692307692308vw;
       align-items: center;
-      margin: 2.5641025641026vw 8.5470085470085vw 3.4188034188034vw 8.5470085470085vw !important;
+      margin: 2.5641025641026vw 8.5470085470085vw 3.4188034188034vw
+        8.5470085470085vw !important;
 
       & .line {
         height: 0.76923076923077vw;
@@ -133,21 +135,21 @@
 
   .ArrowMobile {
     z-index: 1000;
-    width:  $MyScale120_mobile;
-    height:  $MyScale120_mobile;
+    width: $MyScale120_mobile;
+    height: $MyScale120_mobile;
     background-color: rgba(221, 26, 50, 1);
-    border-radius:  $MyScale120_mobile;
+    border-radius: $MyScale120_mobile;
     transition: all 0.5s ease 0s;
     display: flex;
     align-items: center;
     justify-content: center;
-  
+
     & svg {
       width: $MyScale60_mobile;
       height: $MyScale60_mobile;
     }
   }
-  
+
   .BasketFooterMobile {
     z-index: 1000;
     width: $MyScale420_mobile;
@@ -183,9 +185,123 @@
       @include font50_500();
     }
   }
-  
+
   .BasketFooterMobileHidden {
     display: none;
   }
 }
 
+.ordersFooter {
+  z-index: 1000;
+  position: sticky;
+  width: $MyScale1090_mobile;
+  height: $MyScale280_mobile;
+  border-radius: $MyScale40_mobile;
+  background: #fff;
+  box-shadow: 0px $MyScale4_mobile $MyScale100_mobile 0px rgba(0, 0, 0, 0.25);
+  left: $MyScale40_mobile;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+
+  .ordersSpan {
+    width: $MyScale595_mobile;
+    height: $MyScale130_mobile;
+    display: flex;
+    flex-direction: column;
+    text-transform: lowercase;
+    justify-content: space-between;
+    margin-right: $MyScale10_mobile;
+
+    & span {
+      height: $MyScale60_mobile;
+      &:first-letter {
+        text-transform: capitalize;
+      }
+    }
+
+    & span:nth-child(1) {
+      @include font50_500();
+    }
+
+    & span:nth-child(2) {
+      @include font40_400();
+    }
+  }
+
+  & .divBTN {
+    width: $MyScale320_mobile;
+    height: $MyScale90_mobile;
+    border-radius: $MyScale45_mobile;
+    background: rgba(0, 0, 0, 0.05);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    @include font40_400();
+  }
+}
+
+.containerOrders {
+  z-index: 1000;
+  position: sticky;
+  height: $MyScale480_mobile;
+
+  .ordersArray {
+    width: 100%;
+    display: flex;
+    align-items: center;
+    height: $MyScale480_mobile;
+    position: absolute;
+    overflow-x: auto;
+    -ms-overflow-style: none;
+    overflow: -moz-scrollbars-none;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+    }
+
+    .orders {
+      display: flex;
+      flex-direction: column;
+      height: $MyScale280_mobile;
+      border-radius: $MyScale40_mobile;
+      background: #fff;
+      box-shadow: 0px $MyScale4_mobile $MyScale100_mobile 0px
+        rgba(0, 0, 0, 0.25);
+      margin-left: $MyScale40_mobile;
+      padding-left: $MyScale65_mobile;
+      text-transform: lowercase;
+
+      & span {
+        &:first-letter {
+          text-transform: capitalize;
+        }
+      }
+
+      & span:nth-child(1) {
+        margin-top: $MyScale35_mobile;
+        width: $MyScale500_mobile;
+        height: $MyScale60_mobile;
+        @include font50_500();
+      }
+
+      & span:nth-child(2) {
+        width: $MyScale400_mobile;
+        height: $MyScale60_mobile;
+        @include font30_400();
+      }
+
+      & span:nth-child(3) {
+        width: $MyScale320_mobile;
+        height: $MyScale90_mobile;
+        border-radius: $MyScale45_mobile;
+        background: rgba(0, 0, 0, 0.05);
+        text-align: center;
+        @include font40_400();
+        line-height: $MyScale90_mobile;
+      }
+    }
+  }
+}

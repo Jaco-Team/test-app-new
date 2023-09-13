@@ -40,16 +40,22 @@ import '../styles/profile/profilePC.scss'
 import '../styles/profile/profileMobile.scss'
 import '../styles/profile/profile_modalMobile.scss'
 
-import '../styles/profile/promokody.scss'
-import '../styles/profile/zakazy.scss'
-import '../styles/profile/zakazy_modalOrder.scss'
-import '../styles/profile/zakazy_modalOrderDelete.scss'
+import '../styles/profile/promokodyPC.scss'
+import '../styles/profile/promokodyMobile.scss'
 import '../styles/profile/profile_modalAddr.scss'
 
-import '../styles/header.scss'
+import '../styles/profile/zakazyPC.scss'
+import '../styles/profile/zakazy_modalOrder.scss'
+import '../styles/profile/zakazy_modalOrderDelete.scss'
+
+import '../styles/profile/zakazyMobile.scss'
+
+import '../styles/docsBreadcrumbs.scss'
+
 import '../styles/footer/footerPC.scss'
 import '../styles/footer/footerMobile.scss'
-import '../styles/docsBreadcrumbs.scss'
+
+import '../styles/header.scss' // этот нужен??
 
 //pm2 delete test-app-new && rm -rf test-app-new && git clone https://github.com/vito3315/test-app-new.git && cd test-app-new
 //npm install && npm run build && pm2 start npm --name "test-app-new" -- start
