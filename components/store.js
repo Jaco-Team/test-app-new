@@ -54,6 +54,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   myPointsMap: [],
   myMap: null,
 
+  pointList: [],
+
   // открытие/закрытие карты с выбором точек в Корзине мобильной версии
   setActiveCartMap: (active) => {
     set({ openMapPoints: active });
@@ -70,8 +72,78 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   },
 
   // модалка Корзины для оформления/оплаты заказа на ПК
-  setActiveModalBasket: (active) => {
-    set({ openModalBasket: active });
+  setActiveModalBasket: async(active) => {
+
+    const data = {
+      type: 'get_point_list',
+    };
+    
+    const json = await api('cart', data);
+
+    set({ 
+      openModalBasket: active,
+      pointList: json.points,
+    });
+  },
+
+  getTimesPred: async(point_id, date, type_order, cart) => {
+
+    
+
+    const data1 = {
+      type: 'get_date_pred'
+    };
+    
+    const json1 = await api('cart', data1);
+
+
+    
+    const data = {
+      type: 'get_times_pred',
+      point_id: point_id,
+      date: date,
+      type_order: type_order,
+      cart: JSON.stringify(cart)
+    };
+    
+    const json = await api('cart', data);
+
+    return json;
+  },
+
+  getMySavedAddr: async(city_id, token) => {
+    const data = {
+      type: 'get_my_saved_addr',
+      city_id: city_id,
+      token: token
+    };
+    
+    const json = await api('cart', data);
+
+    return json;
+  },
+
+  createOrder: async(token, typeOrder, city_id, point_id, addr, typePay, dateTimeOrder, comment, sdacha, promoName) => {
+    const data = {
+      type: 'create_order',
+      city_id: city_id,
+      token: token,
+      typeOrder: typeOrder,
+      point_id: point_id,
+      addr: addr,
+      typePay: typePay,
+      dateTimeOrder: dateTimeOrder,
+      comment: comment,
+      sdacha: sdacha,
+      promoName: promoName,
+      cart: JSON.stringify(get().items)
+    };
+    
+    console.log( data );
+
+    const json = await api('cart', data);
+
+    return json;
   },
 
   // получения товара для корзины и добавление промоТовара в корзину если есть и разделение корзины на товары без допов и доп товары
@@ -666,7 +738,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
       return {
         st: false,
-        text: promo_info.promo_text.false,
+        text: promo_info?.promo_text?.false,
         test: promo_info
       }
     }
