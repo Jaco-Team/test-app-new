@@ -123,7 +123,7 @@ export default function StartMobile() {
       </div>
 
       <div className="loginLogin"
-        onClick={formPassword && loginLogin.length === 11 ? sendsmsNewLogin : formSMS && loginLogin.length === 11 ? createProfile : loginLogin.length === 11 && pwdLogin.length > 1
+        onClick={formPassword && loginLogin.length === 11 ? sendsmsNewLogin : formSMS && loginLogin.length === 11 ? createProfile : loginLogin.length === 11 && checkPass
             ? logIn : null}
         // onClick={ () => signIn('credentials', { redirect: false, password: pwdLogin, login: loginLogin, callbackUrl: `${host}/${thisCity}/zakazy` }) }
         style={{ backgroundColor:
