@@ -127,7 +127,7 @@ export default function StartMobile() {
             ? logIn : null}
         // onClick={ () => signIn('credentials', { redirect: false, password: pwdLogin, login: loginLogin, callbackUrl: `${host}/${thisCity}/zakazy` }) }
         style={{ backgroundColor:
-            (loginLogin.length === 11 && pwdLogin.length > 1) ||
+            (loginLogin.length === 11 && checkPass) ||
             (formPassword && loginLogin.length === 11) ||
             (formSMS && loginLogin.length === 11)
               ? '#DD1A32'
