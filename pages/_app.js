@@ -21,15 +21,21 @@ import '../styles/contacts/contactsPC.scss'
 
 import '../styles/home/cardItemPC.scss'
 import '../styles/home/cardItemMobile.scss'
+
 import '../styles/home/bannersPC.scss'
 import '../styles/home/bannersMobile.scss'
+
 import '../styles/home/menuCatMobile.scss'
 
-import '../styles/header/loginForm.scss'
+import '../styles/header/loginFormPC.scss'
+import '../styles/header/loginFormMobile.scss'
+
 import '../styles/header/cityFormPC.scss'
 import '../styles/header/cityFormMobile.scss'
+
 import '../styles/header/headerPC.scss'
 import '../styles/header/headerMobile.scss'
+
 import '../styles/header/basketPC.scss'
 import '../styles/header/basketModalPC.scss'
 

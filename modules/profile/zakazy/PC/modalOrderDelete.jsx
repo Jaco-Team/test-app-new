@@ -42,8 +42,8 @@ export default function ModalOrderDelete() {
       onClose={ closeModalDel }
       className={'modalOrderDelPC ' + roboto.variable}
       open={openModalDelete}
-      BackdropComponent={Backdrop}
-      BackdropProps={{ timeout: 500 }}
+      slots={Backdrop}
+      slotProps={{ timeout: 500 }}
       scroll="body"
     >
       <DialogContent style={{ padding: 0, borderRadius: '1.444045vw', overflow: 'hidden'}}>

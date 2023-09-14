@@ -19,7 +19,7 @@ import Backdrop from '@mui/material/Backdrop';
 import { Fade } from '@/ui/Fade';
 import { roboto } from '@/ui/Font';
 
-export default function ModalAuth() {
+export default function ModalAuthPC() {
 
   const [openAuthModal, closeModalAuth, typeLogin] = useHeaderStore( state => [state.openAuthModal, state.closeModalAuth, state.typeLogin]);
 
@@ -28,8 +28,8 @@ export default function ModalAuth() {
       onClose={closeModalAuth}
       className={'modalOpenCityPC ' + roboto.variable}
       open={openAuthModal}
-      BackdropComponent={Backdrop}
-      BackdropProps={{timeout: 500}}
+      slots={Backdrop}
+      slotProps={{ timeout: 500 }}
     >
       <Fade in={openAuthModal} style={{ overflow: 'auto' }}>
         <Box>

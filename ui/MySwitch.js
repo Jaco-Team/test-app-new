@@ -259,6 +259,75 @@ const SwitchContacts = styled((props) => (
   },
 }));
 
+const AuthSwitchMobile = styled(Switch)(({ theme }) => ({
+  width: '71.794871794872vw',
+  height: '10.25641025641vw',
+  padding: 0,
+  display: 'flex',
+  borderRadius: '5.1282051282051vw',
+  fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+  fontSize: '4.2735042735043vw',
+  fontWeight: 500,
+  fontStyle: 'normal',
+
+  '& .MuiButtonBase-root.MuiSwitch-switchBase': {
+    padding: 0,
+  },
+
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    transform: 'translateX(35.897435897436vw)',
+    padding: 0,
+  },
+
+  '& .MuiSwitch-switchBase': {
+    transitionDuration: '300ms',
+    '&.Mui-checked': {
+      '& + .MuiSwitch-track': {
+        opacity: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+      },
+      '& .MuiSwitch-thumb': {
+        '&:after': {
+          content: "'Регистрация'",
+          color: '#fff',
+        },
+      },
+    },
+  },
+
+  '& .MuiSwitch-thumb': {
+    width: '35.897435897436vw',
+    background: '#DD1A32',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '&:after': {
+      content: "'Вход'",
+      color: '#fff',
+    },
+    height: '10.25641025641vw',
+    borderRadius: '5.1282051282051vw',
+  },
+
+  '& .MuiSwitch-track': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: '12.820512820513vw',
+    paddingRight: '5.982905982906vw',
+    opacity: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    color: 'rgba(0, 0, 0, 0.80)',
+    boxSizing: 'border-box',
+    '&:after': {
+      content: "'Регистрация'",
+    },
+    '&:before': {
+      content: "'Вход'",
+    },
+  },
+}));
+
 export class SwitchIOS extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -327,6 +396,20 @@ export class SwitchContactsMobile extends React.PureComponent {
           />
         }
       />
+    );
+  }
+}
+
+export class SwitchAuthMobile extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
+  render() {
+    return (
+      <AuthSwitchMobile onClick={this.props.onClick} checked={this.props.checked} />
     );
   }
 }

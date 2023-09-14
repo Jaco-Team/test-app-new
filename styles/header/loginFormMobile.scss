@@ -1,0 +1,393 @@
+@import '../settings';
+
+.modalAuthMobile {
+  & .MuiDialog-container {
+    display: flex;
+    align-items: flex-end;
+
+    & .MuiDialog-paper {
+      border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+      overflow: visible;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: none !important;
+      max-height: calc(100% - $MyScale200_mobile);
+
+      .ContainerModalAuthMobile {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & .Line {
+          height: $MyScale10_mobile;
+          width: $MyScale150_mobile;
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: $MyScale5_mobile;
+          margin-bottom: $MyScale80_mobile;
+          margin-top: $MyScale40_mobile;
+        }
+
+        & .authLogin {
+          height: $MyScale120_mobile;
+          margin-bottom: $MyScale10_mobile;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          @include font75_700();
+        }
+
+        .modalLoginStartMobile {
+          width: 85.470085470085vw;
+          padding-bottom: $MyScale551_mobile;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & .loginErr {
+            height: $MyScale50_mobile;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            & > span {
+              @include font40_400();
+              color: #dd1a32 !important;
+            }
+          }
+
+          & .inputLogin {
+            width: $MyScale760_mobile;
+            height: $MyScale160_mobile;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            & .MuiInputBase-root.MuiInput-root:after {
+              border-bottom: 0.17094017094017vw solid rgba(0, 0, 0, 0.4);
+            }
+
+            & .MuiInputBase-root.MuiInput-root:before {
+              border-bottom: 0.17094017094017vw solid rgba(0, 0, 0, 0.2);
+            }
+
+            & .MuiInputBase-root.MuiInput-root {
+              width: $MyScale760_mobile;
+              height: 100%;
+              display: flex;
+              align-items: center;
+
+              & input {
+                padding: 0;
+                height: $MyScale100_mobile;
+                margin-left: $MyScale60_mobile;
+                @include font75_700();
+              }
+
+              & > input::placeholder {
+                transform: translate3d(0, -0.85470085470085vw, 0);
+                @include font40_400();
+                color: rgba(0, 0, 0, 0.4) !important;
+              }
+            }
+          }
+
+          & .resetText {
+            width: $MyScale760_mobile;
+            height: $MyScale160_mobile;
+            @include font40_400();
+            text-align: center;
+          }
+
+          & .startInputBox {
+            width: $MyScale1000_mobile;
+            display: flex;
+            position: relative;
+
+            & .eye_icon {
+              right: 0;
+              position: absolute;
+              width: $MyScale80_mobile;
+              height: $MyScale80_mobile;
+              align-self: center;
+              z-index: 5;
+
+              & svg {
+                height: 100%;
+                width: 100%;
+              }
+            }
+          }
+
+          & .loginLosePWD {
+            display: flex;
+            align-items: center;
+            height: $MyScale60_mobile;
+            margin-top: $MyScale10_mobile;
+            & span {
+              text-decoration: underline;
+              @include font40_400();
+              color: rgba(0, 0, 0, 0.4) !important;
+            }
+          }
+
+          & .loginLogin {
+            width: $MyScale650_mobile;
+            height: $MyScale120_mobile;
+            border-radius: $MyScale60_mobile;
+            margin-top: $MyScale40_mobile;
+            margin-bottom: $MyScale10_mobile;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            & span {
+              @include font50_500();
+              color: #ffffff !important;
+            }
+          }
+
+          & .loginOR {
+            height: $MyScale60_mobile;
+            margin-bottom: $MyScale10_mobile;
+            & > span {
+              @include font40_400();
+            }
+          }
+
+          & .loginLoginYa {
+            width: $MyScale650_mobile;
+            height: $MyScale120_mobile;
+            border-radius: $MyScale60_mobile;
+            margin-bottom: $MyScale50_mobile;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+            & span {
+              @include font40_500();
+              color: #ffffff !important;
+            }
+            & svg {
+              width: $MyScale65_mobile;
+              height: $MyScale65_mobile;
+              margin-right: $MyScale20_mobile;
+            }
+          }
+
+          & .loginSMS {
+            height: $MyScale60_mobile;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+
+            & span {
+              text-decoration: underline;
+              @include font40_400();
+              cursor: pointer;
+              color: rgba(0, 0, 0, 0.4) !important;
+            }
+          }
+        }
+
+        .modalLoginCreateMobile {
+          width: $MyScale760_mobile;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & .loginInfo {
+            height: $MyScale60_mobile;
+            margin-bottom: $MyScale30_mobile;
+            display: flex;
+            align-items: center;
+            & h2 {
+              @include font50_500();
+            }
+          }
+
+          & .inputLogin {
+            width: $MyScale760_mobile;
+            height: $MyScale160_mobile;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            & .MuiInputBase-root.MuiInput-root:after {
+              border-bottom: 0.17094017094017vw solid rgba(0, 0, 0, 0.4);
+            }
+
+            & .MuiInputBase-root.MuiInput-root:before {
+              border-bottom: 0.17094017094017vw solid rgba(0, 0, 0, 0.2);
+            }
+
+            & .MuiInputBase-root.MuiInput-root {
+              height: 100%;
+              display: flex;
+              align-items: center;
+
+              & input {
+                padding: 0;
+                height: $MyScale100_mobile;
+                @include font75_700();
+              }
+
+              & > input::placeholder {
+                transform: translate3d(0, -0.85470085470085vw, 0);
+                @include font40_400();
+                color: rgba(0, 0, 0, 0.4) !important;
+              }
+            }
+          }
+
+          & .loginLogin {
+            width: $MyScale650_mobile;
+            height: $MyScale120_mobile;
+            border-radius: $MyScale60_mobile;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            & span {
+              @include font50_500();
+              color: #ffffff !important;
+            }
+          }
+
+          & .loginData {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: $MyScale80_mobile;
+
+            & .data {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              height: $MyScale60_mobile;
+              width: $MyScale760_mobile;
+
+              & span:first-child {
+                height: $MyScale60_mobile;
+                width: $MyScale60_mobile;
+                border-radius: $MyScale10_mobile;
+              }
+
+              & span:last-child {
+                width: $MyScale655_mobile;
+                @include font30_400();
+                line-height: $MyScale30_mobile;
+
+                & a {
+                  color: #dd1a32;
+                }
+              }
+            }
+          }
+        }
+
+        .modalLoginSMSCodeMobile {
+          margin-top: $MyScale50_mobile;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & .loginSubHeader {
+            height: $MyScale60_mobile;
+            margin-bottom: $MyScale30_mobile;
+
+            & span {
+              @include font50_500();
+            }
+          }
+
+          & .loginLine {
+            width: $MyScale500_mobile;
+            height: $MyScale6_mobile;
+            margin-bottom: $MyScale77_mobile;
+            border-radius: $MyScale3_mobile;
+
+            & span {
+              border-radius: $MyScale3_mobile;
+              height: $MyScale6_mobile;
+            }
+          }
+
+          & .disable {
+            & input[disabled] {
+              pointer-events: none;
+            }
+          }
+
+          & .loginAutCode {
+            height: $MyScale158_mobile;
+            width: $MyScale760_mobile;
+            border-bottom: $MyScale2_mobile solid rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+            margin-bottom: $MyScale40_mobile;
+
+            & > div {
+              display: flex;
+              flex-direction: row;
+              margin-bottom: $MyScale20_mobile;
+
+              & input {
+                width: $MyScale75_mobile;
+                height: $MyScale75_mobile;
+                padding: 0;
+                text-align: center;
+                margin-right: $MyScale12_mobile;
+                @include font75_700();
+                border: none;
+                background-clip: padding-box;
+
+                &:focus {
+                  appearance: none;
+                  outline: 0;
+                }
+              }
+
+              & > input::placeholder {
+                transform: translate3d(0, 0.85470085470085vw, 0);
+                font-size: 8.5470085470085vw;
+                color: rgba(0, 0, 0, 0.2) !important;
+              }
+            }
+
+            & .loginSvg {
+              height: $MyScale75_mobile;
+              right: 0;
+              position: absolute;
+              display: flex;
+              align-items: center;
+              & svg {
+                width: $MyScale60_mobile;
+                height: $MyScale60_mobile;
+              }
+            }
+          }
+
+          & .loginTimer {
+            height: $MyScale60_mobile;
+            margin-bottom: $MyScale60_mobile;
+
+            & span {
+              @include font40_400();
+              color: rgba(0, 0, 0, 0.4) !important;
+            }
+          }
+
+          & .loginPrev {
+            height: $MyScale60_mobile;
+            margin-bottom: $MyScale918_mobile;
+
+            & span {
+              text-decoration: underline;
+              @include font40_400();
+            }
+          }
+        }
+      }
+    }
+  }
+}

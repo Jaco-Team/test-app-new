@@ -1921,8 +1921,8 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
   is_sms: true,
 
-  // typeLogin: 'start',
-  typeLogin: 'startTestAuth',
+  typeLogin: 'start',
+  // typeLogin: 'startTestAuth',
   userName: '',
 
   preTypeLogin: '',
@@ -1930,7 +1930,6 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   pwdLogin: '',
   code: '',
   genPwd: '',
-  showPassword: false,
   loading: false,
 
   matches: null,
@@ -1940,11 +1939,6 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   // установить шиирну экрана устройства, при открытии приложения 
   setMatches: (matches) => {
     set({ matches });
-  },
-
-  // показывать/скрывать пароль в форме авторизации
-  clickShowPassword: () => {
-    set({ showPassword: !get().showPassword });
   },
 
   setActivePage: (page) => {
@@ -1974,9 +1968,9 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   // навигация между формами авторизации
   navigate: (typeLogin) => {
 
-    if (typeLogin === 'create' || typeLogin === 'resetPWD') {
-      get().gen_password();
-    }
+    // if (typeLogin === 'create' || typeLogin === 'resetPWD') {
+    //   get().gen_password();
+    // }
 
     set({ typeLogin, errTextAuth: '', preTypeLogin: get().typeLogin });
   },
@@ -1987,19 +1981,25 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     set({
       openAuthModal: false,
       errTextAuth: '',
-      // typeLogin: 'start',
-      typeLogin: 'startTestAuth',
+      typeLogin: 'start',
+      // typeLogin: 'startTestAuth',
       preTypeLogin: '',
       loginLogin: '',
       pwdLogin: '',
       code: '',
       genPwd: '',
-      showPassword: false,
     });
   },
 
   // изменение/введение логина/телефона
   changeLogin: (event) => {
+
+    if(!event) {
+      set({ loginLogin: '' });
+
+      return;
+    }
+
     let data = event.target.value;
 
     if (isNaN(data) && data != '+') {
@@ -2033,7 +2033,11 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
   // установление пароля при авторизации
   setPwdLogin: (event) => {
-    set({ pwdLogin: event.target.value });
+    if(event) {
+      set({ pwdLogin: event.target.value });
+    } else {
+      set({ pwdLogin: event });
+    }
   },
 
   // запуск функции при нажатии enter в зависимости от формы авторизации
@@ -2080,15 +2084,15 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   },
 
   // генерация случаного пароля при регистарции
-  gen_password: () => {
-    let genPwd = '';
-    let symbols = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+?';
-    for (let i = 0; i < 10; i++) {
-      genPwd += symbols.charAt(Math.floor(Math.random() * symbols.length));
-    }
+  // gen_password: () => {
+  //   let genPwd = '';
+  //   let symbols = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+?';
+  //   for (let i = 0; i < 10; i++) {
+  //     genPwd += symbols.charAt(Math.floor(Math.random() * symbols.length));
+  //   }
 
-    set({ genPwd });
-  },
+  //   set({ genPwd });
+  // },
 
   // проверка логина, кода при регистрации/логировании
   checkCode: async () => {
@@ -2149,6 +2153,8 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     const json = await api('auth', data);
 
+    console.log('logIn', json)
+
     if (json.st === false) {
       set({
         errTextAuth: json.text,
@@ -2179,7 +2185,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     const json = await api('auth', data);
 
-    // console.log('createProfile =====>', json);
+    console.log('createProfile =====>', json);
 
     if (json.st) {
       set({
@@ -2216,6 +2222,8 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       pwd: get().pwdLogin,
       token: get().token,
     };
+
+    // console.log('sendsmsNewLogin', data)
 
     const json = await api('auth', data);
 

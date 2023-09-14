@@ -96,8 +96,8 @@ export default function ModalOrder() {
       onClose={ () => closeOrder() }
       className={'modalOrderPC ' + roboto.variable}
       open={openModal}
-      BackdropComponent={Backdrop}
-      BackdropProps={{ timeout: 500 }}
+      slots={Backdrop}
+      slotProps={{ timeout: 500 }}
       scroll="body"
     >
       <DialogContent style={{ padding: 0, borderRadius: '1.444045vw', overflow: 'hidden'}}>
