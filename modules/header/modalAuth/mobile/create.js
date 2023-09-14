@@ -42,6 +42,7 @@ export default function CreateMobile({ city, closeModal }) {
 
       {loginLogin.length > 1 ? (
         <div className="loginData">
+
           <div className="data" style={{ marginBottom: '3.4188034188034vw' }}>
             {checkPolitika ? (
               <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckPolitika(!checkPolitika)}>
@@ -54,6 +55,7 @@ export default function CreateMobile({ city, closeModal }) {
               Согласен с{' '}<Link href={'/' + city + '/politika-konfidencialnosti'}>условиями сбора и обработки персональных данных</Link>
             </Typography>
           </div>
+
           <div className="data">
             {checkAccord ? (
               <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckAccord(!checkAccord)}>
@@ -67,6 +69,7 @@ export default function CreateMobile({ city, closeModal }) {
               </Link>
             </Typography>
           </div>
+          
         </div>
       ) : null}
 
