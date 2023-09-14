@@ -14,7 +14,7 @@ const LoginSMSCodeMobile = dynamic(() => import('./loginSMSCode'));
 import Dialog from '@mui/material/Dialog';
 import Box from '@mui/material/Box';
 import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
+//import CircularProgress from '@mui/material/CircularProgress';
 
 import Stack from '@mui/material/Stack';
 import { SwitchAuthMobile as MySwitch } from '@/ui/MySwitch.js';
@@ -48,9 +48,9 @@ export default function ModalAuthMobile({ city }) {
 
   return (
     <>
-      <Backdrop style={{ zIndex: 99 }} open={loading}>
+      {/* <Backdrop style={{ zIndex: 99 }} open={loading}>
         <CircularProgress color="inherit" />
-      </Backdrop>
+      </Backdrop> */}
 
       <Dialog
         onClose={closeModal}
