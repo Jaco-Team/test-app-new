@@ -65,7 +65,7 @@ export default function ModalAuthPC({ city }) {
             : typeLogin === 'resetPWD' ? 'Новый пароль' : typeLogin === 'createPWD' ? 'Придумайте пароль' : typeLogin === 'finish' ? 'Всё получилось!' : typeLogin === 'loginSMS' ? 'Вход по СМС' : 'Авторизация'}
         </div>
 
-        {typeLogin === 'loginSMS' || typeLogin === 'start' || typeLogin === 'resetPWD' ? (
+        {typeLogin === 'loginSMS' || typeLogin === 'start' || typeLogin === 'resetPWD' || typeLogin === 'create' ? (
           <Stack direction="row" alignItems="center" style={{ width: '17.328519855596vw', marginBottom: errTextAuth ? '0.54151624548736vw' : typeLogin === 'resetPWD' || typeLogin === 'loginSMS' || typeLogin === 'create' || typeLogin === 'createPWD' ? '1.6245487364621vw' : '2.5270758122744vw' }}>
             <MySwitch onClick={(event) => changeForm(event.target.checked)} checked={form} />
           </Stack>
