@@ -1935,3 +1935,23 @@ export function DoneAuthMobile(props) {
   </svg>
   );
 }
+
+export function VectorRightAuthMobile(props) {
+  return (
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="50"
+    height="50"
+    fill="none"
+    viewBox="0 0 50 50"
+    {...props}
+  >
+    <g>
+      <path
+        fill="#fff"
+        d="M32.417 25L19.518 37.898l-3.315-3.315L25.787 25l-9.584-9.583 3.315-3.316L32.417 25z"
+      ></path>
+    </g>
+  </svg>
+  );
+}

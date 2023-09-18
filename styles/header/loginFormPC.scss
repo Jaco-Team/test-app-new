@@ -1,948 +1,618 @@
 @import '../settings';
 
-.class123 {
-  & > div {
-    box-shadow: none !important;
-    border: 0 !important;
-    outline: none !important;
-  }
-}
+.modalAuthPC {
+  & .MuiDialog-paper {
+    overflow: visible;
+    margin: 0 !important;
+    max-width: none !important;
+    border-radius: $MyScale40;
+    width: $MyScale680;
+    height: $MyScale800;
 
-.modalLoginStart {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20.22vw;
-  background-color: #ffffff;
-  padding: 2.54vw 3.63vw 1.08vw 3.63vw;
-  border-radius: 1.83vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  @media (max-width: 800px) {
-    width: calc(100% - 40px);
-    padding: 10px 20px;
-  }
+    & .ContainerModalAuthPC {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
 
-  & .err {
-    & div {
-      background: #fdeff1 !important;
-      border: 3px solid rgba(221, 26, 50, 0.5) !important;
-    }
-  }
+      & .closeButton {
+        position: absolute;
+        height: $MyScale60;
+        width: $MyScale60;
+        padding: 0;
+        left: -$MyScale80;
 
-  & .inputLogin {
-    width: 100% !important;
-    height: 2.89vw;
-    margin-bottom: 20px;
-
-    & .Mui-focused .MuiOutlinedInput-notchedOutline {
-      border-width: 0px !important;
-    }
-
-    & fieldset {
-      border-width: 0px !important;
-    }
-
-    & div {
-      border: 3px solid rgba(0, 0, 0, 0.2);
-      border-radius: 120px;
-      height: 100%;
-      &:hover,
-      &:focus-within {
-        border: 3px solid rgba(221, 26, 50, 0.5) !important;
-      }
-
-      & div {
-        border: unset !important;
-        &:focus-within,
-        &:hover,
-        &:focus,
-        &:active {
-          border: unset !important;
+        & svg {
+          height: 100%;
+          width: 100%;
         }
       }
 
-      & input {
-        height: 90%;
-        padding: 0;
-        width: 100%;
-        padding-left: 30px;
-        letter-spacing: 1px;
-        border-radius: 120px;
-        color: $colorText !important;
-      }
-    }
-
-    & label,
-    span,
-    input {
-      @include font40_400();
-    }
-  }
-
-  & .loginHeader {
-    margin-bottom: 1.27vw;
-    & h2 {
-      @include font50_500();
-    }
-  }
-
-  & .loginLosePWD {
-    display: flex;
-    align-items: center;
-    & span {
-      text-decoration: underline;
-      @include font22_400();
-      cursor: pointer;
-      color: rgba(0, 0, 0, 0.3) !important;
-      &:hover {
-        color: $colorMain !important;
-      }
-    }
-  }
-
-  & .loginLogin {
-    width: 14.445vw;
-    height: 2.89vw;
-    border-radius: 120px;
-    background-color: rgba(0, 0, 0, 0.2);
-    margin-bottom: 12px;
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    & span {
-      @include font30_400();
-      color: #ffffff;
-    }
-  }
-  & .loginLoginYa {
-    width: 14.445vw;
-    height: 2.89vw;
-    border-radius: 120px;
-    background-color: rgba(0, 0, 0, 0.2);
-    margin-bottom: 12px;
-    margin-top: 12px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    background-color: #000;
-    & span {
-      @include font30_400();
-      color: #ffffff;
-
-      margin-right: 0.5vw;
-    }
-    & svg{
-      width: 1.3vw;
-      height: 1.3vw;
-      margin-right: 0.5vw;
-    }
-  }
-
-  & .loginCreate {
-    width: 75%;
-    margin-bottom: 2.53vw;
-    cursor: pointer;
-    & span {
-      text-decoration: underline;
-      @include font30_400();
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      &:hover {
-        color: $colorMain !important;
-      }
-    }
-  }
-
-  & .loginSMS {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    
-    & span {
-      text-decoration: underline;
-      @include font22_400();
-      cursor: pointer;
-      color: rgba(0, 0, 0, 0.3);
-      &:hover {
-        color: $colorMain;
-      }
-    }
-  }
-  & .loginOR{
-    & > span {
-      @include font30_400();
-    }
-  }
-  & .loginErr {
-    width: 90% !important;
-    height: 6.3vw;
-    background: #fdeff1;
-    border: 3px solid rgba(221, 26, 50, 0.5);
-    border-radius: 20px;
-    margin-bottom: 20px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 10px;
-    & > span {
-      @include font30_400();
-    }
-  }
-}
-
-.modalLoginCreateNew {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20.22vw;
-  background-color: #ffffff;
-  padding: 2.54vw 3.63vw 1.08vw 3.63vw;
-  border-radius: 1.83vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-
-  @media (max-width: 800px) {
-    width: calc(100% - 40px);
-    padding: 10px 20px;
-  }
-
-  & .loginHeader {
-    height: 60px;
-    width: 100% !important;
-    margin-bottom: 1.27vw;
-    & h2 {
-      text-align: center;
-      @include font50_500();
-    }
-  }
-
-  & .loginInfo {
-    height: 80px;
-    width: 100% !important;
-    & h2 {
-      text-align: center;
-      @include font30_400();
-    }
-  }
-
-  & .inputLogin {
-    width: 100% !important;
-    height: 60px;
-    margin-bottom: 20px;
-
-    & .Mui-focused .MuiOutlinedInput-notchedOutline {
-      border-width: 0px !important;
-    }
-
-    & fieldset {
-      border-width: 0px !important;
-    }
-
-    & div {
-      border: 3px solid rgba(0, 0, 0, 0.2);
-      border-radius: 120px;
-      height: 100%;
-      &:hover,
-      &:focus-within {
-        border: 3px solid rgba(221, 26, 50, 0.5) !important;
-      }
-
-      & div {
-        border: unset !important;
-        &:focus-within,
-        &:hover,
-        &:focus,
-        &:active {
-          border: unset !important;
-        }
-      }
-
-      & input {
-        height: 90%;
-        padding: 0;
-        width: 100%;
-        padding-left: 30px;
-        letter-spacing: 1px;
-        border-radius: 120px;
-        color: rgba(0, 0, 0, 0.8) !important;
-      }
-    }
-
-    & label,
-    span,
-    input {
-      @include font40_400();
-    }
-  }
-
-  & .loginSubHeader {
-    height: 98px;
-    width: 100% !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    & span {
-      text-align: center;
-      @include fonsNew(0.75rem, $Roboto);
-    }
-  }
-
-  & .loginLogin {
-    width: 75%;
-    height: 60px;
-    border-radius: 120px;
-    background-color: rgba(0, 0, 0, 0.2);
-    margin-top: 20px;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    & span {
-      @include font30_400();
-      color: #ffffff;
-    }
-  }
-
-  & .loginCreate {
-    width: 75%;
-    height: 60px;
-    margin-bottom: 30px;
-    cursor: pointer;
-    & span {
-      text-decoration: underline;
-      @include font30_400();
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      &:hover {
-        color: $colorMain !important;
-      }
-    }
-  }
-
-  & .loginData {
-    height: 80px;
-    width: 100% !important;
-    & span {
-      text-decoration: underline;
-      display: flex;
-      align-items: center;
-      justify-content: flex-start;
-      text-align: center;
-      @include font22_400();
-    }
-  }
-
-  & .loginErr {
-    width: 90% !important;
-    height: 57px;
-    background: #fdeff1;
-    border: 3px solid rgba(221, 26, 50, 0.5);
-    border-radius: 20px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 10px;
-    & > span {
-      @include font30_400();
-    }
-  }
-}
-
-.modalLoginSMSCode {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20.22vw;
-  background-color: #ffffff;
-  padding: 2.54vw 3.63vw 1.08vw 3.63vw;
-  border-radius: 1.83vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  @media (max-width: 800px) {
-    width: calc(100% - 40px);
-    padding: 10px 20px;
-  }
-
-  & .loginHeader {
-    width: 100% !important;
-    margin-bottom: 1.27vw;
-    & h2 {
-      text-align: center;
-      @include font50_500();
-    }
-  }
-
-  & .loginSubHeader1 {
-    height: 83px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px;
-    & span {
-      text-align: center;
-      @include font30_400();
-    }
-  }
-
-  & .loginErr {
-    width: 90% !important;
-    height: 57px;
-    background: #fdeff1;
-    border: 3px solid rgba(221, 26, 50, 0.5);
-    border-radius: 20px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 10px;
-    & > span {
-      @include font30_400();
-    }
-  }
-
-  & .loginSubHeader2 {
-    height: 40px;
-    margin-bottom: 30px;
-    & span {
-      text-align: center;
-      @include font40_400();
-    }
-  }
-
-  & .loginSubHeader3 {
-    height: 71px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-bottom: 15px;
-    cursor: pointer;
-    & span {
-      text-decoration: underline;
-      text-align: center;
-      color: $colorMain !important;
-      @include font30_400();
-    }
-  }
-
-  & .active {
-    border: 3px solid rgba(221, 26, 50, 0.5) !important;
-  }
-
-  & .disable {
-    & input[disabled] {
-      pointer-events: none;
-    }
-  }
-
-  & .loginAutCode {
-    margin-bottom: 20px;
-    & > div {
-      display: flex;
-      flex-direction: row;
-      & input {
-        width: 88px;
-        height: 88px;
-        padding: 0;
-        text-align: center;
-        margin-right: 12px;
-        text-transform: uppercase;
+      & .authLogin {
+        height: $MyScale60;
+        margin-top: $MyScale60;
+        margin-bottom: $MyScale50;
+        display: flex;
+        align-items: center;
+        justify-content: center;
         @include font50_500();
-        border: 3px solid rgba(0, 0, 0, 0.2);
-        border-radius: 20px;
-        background: #fff;
-        background-clip: padding-box;
-        &:focus {
-          appearance: none;
-          outline: 0;
+      }
+
+      .modalLoginStartPC {
+        width: $MyScale620;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & .loginErr {
+          height: $MyScale40;
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          margin-bottom: $MyScale15;
+          & > span {
+            @include font22_400();
+            color: #dd1a32 !important;
+          }
         }
-        &:hover,
-        &:focus,
-        &:active {
-          border: 3px solid rgba(221, 26, 50, 0.5) !important;
+
+        & .inputLogin {
+          width: $MyScale620;
+          height: $MyScale60;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+
+          & .MuiInputBase-root.MuiInput-root:after {
+            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.4);
+          }
+
+          & .MuiInputBase-root.MuiInput-root:before {
+            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.2);
+          }
+
+          & .MuiInputBase-root.MuiInput-root {
+            width: $MyScale480;
+
+            & input {
+              padding: 0;
+              height: $MyScale40;
+              margin-bottom: $MyScale20;
+              margin-left: $MyScale40;
+              @include font40_400();
+            }
+
+            & > input::placeholder {
+              transform: translate3d(0, -$MyScale4, 0);
+              @include font30_400();
+              color: rgba(0, 0, 0, 0.4) !important;
+            }
+
+            & svg {
+              width: $MyScale40;
+              height: $MyScale40;
+              margin-bottom: $MyScale20;
+            }
+          }
         }
-      }
-    }
-  }
 
-  & .loginTimer {
-    height: 51px;
-    margin-bottom: 10px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    color: $colorMain !important;
-    & span {
-      text-align: center;
-      color: $colorMain !important;
-      @include font30_400();
-    }
-  }
-
-  & .loginSend {
-    width: 75%;
-    height: 60px;
-    border-radius: 120px;
-    background-color: rgba(0, 0, 0, 0.2);
-    margin-top: 30px;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    & span {
-      @include font30_400();
-      color: #ffffff;
-    }
-    &:hover {
-      background-color: rgba(0, 0, 0, 0.3);
-    }
-  }
-
-  & .loginPrev {
-    width: 75%;
-    height: 50px;
-    margin-bottom: 60px;
-    cursor: pointer;
-    & span {
-      text-decoration: underline;
-      @include font30_400();
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      &:hover {
-        color: $colorMain !important;
-      }
-    }
-  }
-}
-
-.modalLoginCreate {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20.22vw;
-  background-color: #ffffff;
-  padding: 2.54vw 3.63vw 1.08vw 3.63vw;
-  border-radius: 1.83vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  @media (max-width: 800px) {
-    width: calc(100% - 40px);
-    padding: 10px 20px;
-  }
-
-  & .loginHeader {
-    width: 100% !important;
-    margin-bottom: 2.54vw;
-    & h2 {
-      text-align: center;
-      @include font50_500();
-    }
-  }
-  & .loginSubHeader{
-    width: 100% !important;
-    margin-bottom: 1.27vw;
-    & h3 {
-      text-align: center;
-      @include font30_400();
-    }
-  }
-
-  & .inputLogin {
-    width: 100% !important;
-    height: 2.89vw;
-    padding-bottom: 3.25vw;
-    & .Mui-focused .MuiOutlinedInput-notchedOutline {
-      border-width: 0px !important;
-    }
-
-    & fieldset {
-      border-width: 0px !important;
-    }
-
-    & div {
-      border: 3px solid rgba(0, 0, 0, 0.2);
-      border-radius: 120px;
-      height: 100%;
-      &:hover,
-      &:focus-within {
-        border: 3px solid rgba(221, 26, 50, 0.5) !important;
-      }
-
-      & div {
-        border: unset !important;
-        &:focus-within,
-        &:hover,
-        &:focus,
-        &:active {
-          border: unset !important;
+        & .resetText {
+          width: $MyScale340;
+          height: $MyScale80;
+          @include font22_400();
+          text-align: center;
+          margin-bottom: $MyScale45;
         }
-      }
 
-      & input {
-        height: 90%;
-        padding: 0;
-        width: 100%;
-        padding-left: 30px;
-        letter-spacing: 1px;
-        border-radius: 120px;
-        color: $colorText !important;
-      }
-    }
+        & .startInputBox {
+          width: $MyScale620;
+          display: flex;
+          position: relative;
+          height: $MyScale60;
+          padding-top: $MyScale40;
+          margin-bottom: $MyScale10;
 
-    & label,
-    span,
-    input {
-      @include font40_400();
-    }
-  }
+          & .eye_icon {
+            right: 0;
+            bottom: 0;
+            position: absolute;
+            width: $MyScale60;
+            height: $MyScale70;
+            z-index: 5;
 
-  & .loginErr {
-    width: 90% !important;
-    height: 57px;
-    background: #fdeff1;
-    border: 3px solid rgba(221, 26, 50, 0.5);
-    border-radius: 20px;
-    margin-bottom: 15px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 10px;
-    & > span {
-      @include font30_400();
-    }
-  }
+            & svg {
+              width: $MyScale60;
+              height: $MyScale60;
+            }
+          }
+        }
 
-  & .loginLogin {
-    width: 14.445vw;
-    height: 2.89vw;
-    border-radius: 120px;
-    background-color: rgba(0, 0, 0, 0.2);
-    
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    & span {
-      @include font30_400();
-      color: #ffffff;
-    }
-  }
+        & .loginLosePWD {
+          display: flex;
+          align-items: center;
+          height: $MyScale40;
+          margin-bottom: $MyScale20;
+          & span {
+            text-decoration: underline;
+            @include font22_400();
+            color: rgba(0, 0, 0, 0.4) !important;
+          }
+        }
 
-  & .loginCreate {
-    width: 75%;
-    height: 60px;
-    margin-bottom: 30px;
-    cursor: pointer;
-    & span {
-      text-decoration: underline;
-      @include font30_400();
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      &:hover {
-        color: $colorMain !important;
-      }
-    }
-  }
-}
+        & .loginLogin {
+          width: $MyScale400;
+          height: $MyScale80;
+          border-radius: $MyScale40;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          & span {
+            @include font30_400();
+            color: #ffffff !important;
+          }
+        }
 
-.modalLoginReset {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20.22vw;
-  background-color: #ffffff;
-  padding: 2.54vw 3.63vw 1.08vw 3.63vw;
-  border-radius: 1.83vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  @media (max-width: 800px) {
-    width: calc(100% - 40px);
-    padding: 10px 20px;
-  }
+        & .loginOR {
+          height: $MyScale40;
+          & > span {
+            @include font22_400();
+          }
+        }
 
-  & .inputLogin {
-    width: 100% !important;
-    height: 60px;
-    margin-bottom: 20px;
+        & .loginLoginYa {
+          width: $MyScale400;
+          height: $MyScale60;
+          border-radius: $MyScale30;
+          margin-bottom: $MyScale30;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #000;
+          & span {
+            @include font22_400();
+            color: #ffffff !important;
+          }
+          & svg {
+            width: $MyScale36;
+            height: $MyScale36;
+            margin-right: $MyScale12;
+          }
+        }
 
-    & .Mui-focused .MuiOutlinedInput-notchedOutline {
-      border-width: 0px !important;
-    }
+        & .loginSMS {
+          height: $MyScale40;
+          display: flex;
+          align-items: center;
+          justify-content: center;
 
-    & fieldset {
-      border-width: 0px !important;
-    }
-
-    & div {
-      border: 3px solid rgba(0, 0, 0, 0.2);
-      border-radius: 120px;
-      height: 100%;
-      &:hover,
-      &:focus-within {
-        border: 3px solid rgba(221, 26, 50, 0.5) !important;
-      }
-
-      & div {
-        border: unset !important;
-        &:focus-within,
-        &:hover,
-        &:focus,
-        &:active {
-          border: unset !important;
+          & span {
+            text-decoration: underline;
+            @include font22_400();
+            cursor: pointer;
+            color: rgba(0, 0, 0, 0.4) !important;
+          }
         }
       }
 
-      & input {
-        height: 90%;
-        padding: 0;
-        width: 100%;
-        padding-left: 30px;
-        letter-spacing: 1px;
-        border-radius: 120px;
-        color: $colorText !important;
+      .modalLoginCreatePC {
+        width: $MyScale480;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & .loginInfo {
+          height: $MyScale80;
+          margin-bottom: $MyScale28;
+          display: flex;
+          align-items: center;
+          & h2 {
+            @include font30_400();
+          }
+        }
+
+        & .inputLogin {
+          width: $MyScale480;
+          height: $MyScale67;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+          margin-bottom: $MyScale80;
+
+          & .MuiInputBase-root.MuiInput-root:after {
+            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.4);
+          }
+
+          & .MuiInputBase-root.MuiInput-root:before {
+            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.2);
+          }
+
+          & .MuiInputBase-root.MuiInput-root {
+            width: $MyScale480;
+
+            & input {
+              padding: 0;
+              height: $MyScale50;
+              margin-bottom: $MyScale17;
+              margin-left: $MyScale40;
+              @include font40_400();
+            }
+
+            & > input::placeholder {
+              transform: translate3d(0, -$MyScale4, 0);
+              @include font30_400();
+              color: rgba(0, 0, 0, 0.4) !important;
+            }
+
+            & .vectorInput {
+              width: $MyScale60;
+              height: $MyScale60;
+              border-radius: $MyScale60;
+              background: rgba(0, 0, 0, 0.1);
+              display: flex;
+              align-items: center;
+              margin-bottom: $MyScale17;
+
+              & svg {
+                width: $MyScale50;
+                height: $MyScale50;
+                margin-left: $MyScale7;
+              }
+            }
+          }
+        }
+
+        & .loginData {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & .data {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: $MyScale40;
+            width: $MyScale455;
+
+            & span:first-child {
+              height: $MyScale40;
+              width: $MyScale40;
+              border-radius: $MyScale10;
+
+              & svg {
+                height: $MyScale40;
+                width: $MyScale40;
+              }
+            }
+
+            & span:last-child {
+              height: $MyScale40;
+              width: $MyScale395;
+              @include font18_400();
+              line-height: normal;
+
+              & a {
+                color: #dd1a32;
+              }
+            }
+          }
+        }
       }
-    }
 
-    & label,
-    span,
-    input {
-      @include font40_400();
-    }
-  }
+      .modalLoginSMSCodePC {
+        width: $MyScale580;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-  & .loginHeader {
-    margin-bottom: 1.27vw;
-    & h2 {
-      @include font50_500();
-    }
-  }
+        & .loginSubHeader {
+          height: $MyScale60;
+          margin-bottom: $MyScale12;
 
-  & .loginLogin {
-    width: 75%;
-    height: 60px;
-    border-radius: 120px;
-    background-color: rgba(0, 0, 0, 0.2);
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    & span {
-      @include font30_400();
-      color: #ffffff;
-    }
-  }
+          & span {
+            @include font40_400();
+          }
+        }
 
-  & .loginCreate {
-    width: 75%;
-    height: 60px;
-    margin-bottom: 30px;
-    cursor: pointer;
-    & span {
-      text-decoration: underline;
-      @include font30_400();
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      &:hover {
-        color: $colorMain !important;
+        & .loginLine {
+          width: $MyScale360;
+          height: $MyScale6;
+          margin-bottom: $MyScale27;
+          border-radius: $MyScale3;
+
+          & span {
+            border-radius: $MyScale3;
+            height: $MyScale6;
+          }
+        }
+
+        & .loginSubHeader2 {
+          height: $MyScale80;
+          margin-bottom: $MyScale28;
+          display: flex;
+          align-items: center;
+
+          & span {
+            @include font30_400();
+          }
+        }
+
+        & .loginAutCode {
+          height: $MyScale77;
+          width: $MyScale480;
+          border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.4);
+          display: flex;
+          align-items: flex-end;
+          justify-content: center;
+          position: relative;
+          margin-bottom: $MyScale40;
+
+          & > div {
+            display: flex;
+            flex-direction: row;
+            margin-bottom: $MyScale22;
+
+            & input {
+              width: $MyScale50;
+              height: $MyScale50;
+              padding: 0;
+              @include font50_500();
+              border: none;
+              background-clip: padding-box;
+
+              &:focus {
+                appearance: none;
+                outline: 0;
+              }
+            }
+
+            & > input::placeholder {
+              text-align: center;
+              font-size: $MyScale80;
+              transform: translate3d(0, $MyScale13, 0);
+              color: rgba(0, 0, 0, 0.2) !important;
+            }
+          }
+
+          & .vectorInput {
+            position: absolute;
+            width: $MyScale60;
+            height: $MyScale60;
+            border-radius: $MyScale60;
+            background: rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            right: 0;
+            margin-bottom: $MyScale17;
+
+            & svg {
+              width: $MyScale50;
+              height: $MyScale50;
+              margin-left: $MyScale7;
+            }
+          }
+        }
+
+        & .loginTimer {
+          height: $MyScale40;
+          margin-bottom: $MyScale60;
+
+          & span {
+            @include font30_400();
+            color: rgba(0, 0, 0, 0.4) !important;
+          }
+        }
+
+        & .loginPrev {
+          height: $MyScale40;
+
+          & span {
+            text-decoration: underline;
+            @include font30_400();
+          }
+        }
       }
-    }
-  }
 
-  & .loginSubHeader {
-    height: 113px;
-    width: 100% !important;
-    display: flex;
-    flex-direction: column;
-    justify-content: center;
-    align-items: center;
-    & span {
-      text-align: center;
-      @include fonsNew(0.75rem, $Roboto);
-    }
-  }
+      .modalLoginPwdPC {
+        width: $MyScale620;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-  & .loginErr {
-    width: 90% !important;
-    height: 57px;
-    background: #fdeff1;
-    border: 3px solid rgba(221, 26, 50, 0.5);
-    border-radius: 20px;
-    margin-bottom: 30px;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    text-align: center;
-    padding: 10px;
-    & > span {
-      @include font30_400();
-    }
-  }
-}
+        & .loginSubHeader {
+          width: $MyScale500;
+          text-align: center;
+          height: $MyScale80;
+          margin-bottom: $MyScale50;
 
-.modalLoginError {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20.22vw;
-  background-color: #ffffff;
-  padding: 2.54vw 3.63vw 1.08vw 3.63vw;
-  border-radius: 1.83vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  @media (max-width: 800px) {
-    width: calc(100% - 40px);
-    padding: 10px 20px;
-  }
-  & img {
-    height: 100%;
-    width: auto;
-  }
-  & .InnerBorder {
-    border: 1px solid $colorMain;
-    border-radius: 10px;
-    padding: 20px;
-  }
-  & .loginHeader {
-    height: 60px;
-    margin-bottom: 50px;
-    margin-top: 50px;
-    text-align: center;
-    & h2 {
-      text-align: center;
-      @include font50_500();
-    }
-  }
-  & .loginSubHeader1 {
-    margin-bottom: 30px;
-    text-align: center;
-    & span {
-      @include font30_400();
-    }
-  }
-  & .loginSubHeader2 {
-    margin-bottom: 80px;
-    text-align: center;
-    & span {
-      @include font30_400();
-    }
-  }
-}
+          & span {
+            line-height: $MyScale40;
+            @include font30_400();
+          }
+        }
 
-.modalLoginFinish {
-  position: absolute;
-  top: 50%;
-  left: 50%;
-  transform: translate(-50%, -50%);
-  width: 20.22vw;
-  background-color: #ffffff;
-  padding: 2.54vw 3.63vw 1.08vw 3.63vw;
-  border-radius: 1.83vw;
-  display: flex;
-  flex-direction: column;
-  align-items: center;
-  @media (max-width: 800px) {
-    width: calc(100% - 40px);
-    padding: 10px 20px;
-  }
-  & img {
-    height: 100%;
-    width: auto;
-  }
-  & .loginIMG {
-    height: 90px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-  }
-  & .loginHeader {
-    margin-bottom: 1.27vw;
-    display: flex;
-    align-items: flex-end;
-    & h2 {
-      @include font50_500();
-    }
-  }
-  & .loginSubHeader1 {
-    height: 80px;
-    margin-bottom: 30px;
-    text-align: center;
-    & span {
-      @include font30_400();
-    }
-  }
-  & .loginSubHeader2 {
-    height: 60px;
-    margin-bottom: 40px;
-    text-align: center;
-    & span {
-      @include font22_400();
-    }
-    & a {
-      color: $colorText !important;
-    }
-  }
-  & .loginLogin {
-    width: 75%;
-    height: 60px;
-    border-radius: 120px;
-    background-color: $colorMain;
-    margin-top: 20px;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    text-decoration: none;
-    & span {
-      @include font30_400();
-      color: #ffffff;
-    }
-  }
+        & .inputLogin {
+          width: $MyScale620;
+          height: $MyScale60;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
 
-  & .loginCreate {
-    width: 75%;
-    height: 60px;
-    border-radius: 120px;
-    background-color: #ffffff;
-    border: 1px solid #dd1a32;
-    margin-top: 20px;
-    margin-bottom: 30px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    cursor: pointer;
-    text-decoration: none;
-    & span {
-      @include font30_400();
+          & .MuiInputBase-root.MuiInput-root:after {
+            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.4);
+          }
+
+          & .MuiInputBase-root.MuiInput-root:before {
+            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.2);
+          }
+
+          & .MuiInputBase-root.MuiInput-root {
+            width: $MyScale480;
+
+            & input {
+              padding: 0;
+              height: $MyScale40;
+              margin-bottom: $MyScale20;
+              margin-left: $MyScale20;
+              @include font40_400();
+            }
+
+            & > input::placeholder {
+              transform: translate3d(0, -$MyScale4, 0);
+              @include font30_400();
+              color: rgba(0, 0, 0, 0.4) !important;
+            }
+
+            & svg {
+              width: $MyScale40;
+              height: $MyScale40;
+              margin-bottom: $MyScale20;
+            }
+          }
+
+          & .MuiInputAdornment-root {
+            margin: 0;
+          }
+
+          & .groupCheckPass {
+            width: $MyScale20;
+            display: flex;
+            flex-direction: column;
+            & span {
+              width: $MyScale20;
+              height: $MyScale10;
+              margin-bottom: $MyScale3;
+            }
+          }
+        }
+
+        & .createInputBox {
+          width: $MyScale620;
+          display: flex;
+          position: relative;
+          height: $MyScale60;
+
+          & .eye_icon {
+            right: 0;
+            bottom: 0;
+            position: absolute;
+            width: $MyScale60;
+            height: $MyScale70;
+            z-index: 5;
+
+            & svg {
+              width: $MyScale60;
+              height: $MyScale60;
+            }
+          }
+        }
+
+        & .inputLoginRepeat {
+          width: $MyScale620;
+          height: $MyScale60;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+
+          & .MuiInputBase-root.MuiInput-root:after {
+            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.4);
+          }
+
+          & .MuiInputBase-root.MuiInput-root:before {
+            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.2);
+          }
+
+          & .MuiInputBase-root.MuiInput-root {
+            width: $MyScale480;
+
+            & input {
+              padding: 0;
+              height: $MyScale40;
+              margin-bottom: $MyScale20;
+              margin-left: $MyScale40;
+              @include font40_400();
+            }
+
+            & > input::placeholder {
+              transform: translate3d(0, -$MyScale4, 0);
+              @include font30_400();
+              color: rgba(0, 0, 0, 0.4) !important;
+            }
+
+            & svg {
+              width: $MyScale40;
+              height: $MyScale40;
+              margin-bottom: $MyScale20;
+            }
+          }
+        }
+
+        & .repeatInputBox {
+          width: $MyScale620;
+          display: flex;
+          position: relative;
+          height: $MyScale60;
+          padding-top: $MyScale40;
+        }
+
+        & .loginLogin {
+          width: $MyScale400;
+          height: $MyScale80;
+          border-radius: $MyScale40;
+          margin-top: $MyScale70;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          & span {
+            @include font30_400();
+            color: #ffffff !important;
+          }
+        }
+      }
+
+      .modalLoginFinishPC {
+        width: $MyScale580;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & .loginSVG {
+          width: $MyScale120;
+          height: $MyScale120;
+          margin-bottom: $MyScale40;
+          svg {
+            width: 100%;
+            height: 100%;
+          }
+        }
+
+        & .loginSubHeader {
+          width: $MyScale580;
+          text-align: center;
+          height: $MyScale160;
+          margin-bottom: $MyScale40;
+          display: flex;
+          flex-direction: column;
+
+          & span {
+            line-height: $MyScale40;
+            @include font30_400();
+          }
+        }
+
+        & .loginLogin {
+          text-decoration: none;
+          width: $MyScale400;
+          height: $MyScale80;
+          border-radius: $MyScale40;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          background-color: #dd1a32;
+          & span {
+            @include font30_400();
+            color: #ffffff !important;
+          }
+        }
+      }
     }
   }
 }

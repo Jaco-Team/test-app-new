@@ -99,7 +99,7 @@ export default function StartMobile() {
                 {checkPass ? (
                   <CheckAuthMobile style={{height: '5.1282051282051vw', width: '5.1282051282051vw' }} />
                 ) : (
-                  <ClearAuthMobile style={{ height: '5.1282051282051vw', width: '5.1282051282051vw' }} />
+                  <ClearAuthMobile style={{ height: '5.1282051282051vw', width: '5.1282051282051vw' }} onClick={() => setPwdLogin('')} />
                 )}
               </InputAdornment>
             }

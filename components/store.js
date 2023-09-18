@@ -2126,6 +2126,10 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       if (parseInt(type) == 3) {
         get().sendsmsNewLogin();
       }
+
+      // if (parseInt(type) == 4) {
+      //   get().sendsmsNewLogin();
+      // }
     }
   },
 
@@ -2309,9 +2313,11 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
         errText2: '',
         is_sms: json.is_sms ?? false,
       });
+
       if(get().typeLogin !== 'loginSMSCode') {
         get().navigate('loginSMSCode');
       }
+
     } else {
       if (json.type == 'modal') {
         set({

@@ -1,99 +1,169 @@
-import { useHeaderStore } from '@/components/store';
+import { useState, useEffect } from 'react';
+
+import { useHeaderStore, useCitiesStore } from '@/components/store';
 
 import MyTextInput from '@/ui/MyTextInput';
-import { IconClose, YaIcon, EyeShow, EyeHide } from '@/ui/Icons';
+import { YaIcon, EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, CheckAuthMobile } from '@/ui/Icons';
 
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
-import Backdrop from '@mui/material/Backdrop';
-import CircularProgress from '@mui/material/CircularProgress';
 import InputAdornment from '@mui/material/InputAdornment';
 
-export default function Start() {
-  console.log('render Start');
+import { useSession, signIn } from 'next-auth/react';
 
-  const [closeModalAuth, logIn, errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, showPassword, clickShowPassword, loading] = useHeaderStore(
-    (state) => [state.closeModalAuth, state.logIn, state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin,
-      state.checkLoginKey, state.showPassword, state.clickShowPassword, state.loading]);
+export default function StartPC() {
+  //console.log('render StartPC');
+
+  const [showPassword, setShowPassword] = useState(false);
+
+  const [formPassword, setFormPassword] = useState(false);
+  const [formSMS, setFormSMS] = useState(false);
+  const [checkPass, setCheckPass] = useState(false);
+
+  const session = useSession();
+
+  const [errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, sendsmsNewLogin, createProfile] = useHeaderStore((state) => [
+    state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.logIn, state.sendsmsNewLogin,
+    state.createProfile]);
+
+  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
+
+  const host = window.location.origin;
+
+  useEffect(() => {
+    const regex = /^(?=.*[a-z])(?=.*[A-Z])(?=.*[0-9])(?=.*[^\w\s]).{6,}/;
+
+    if (regex.test(pwdLogin)) {
+      setCheckPass(true);
+    } else {
+      setCheckPass(false);
+    }
+  }, [pwdLogin]);
+
+  const changeForm = (name) => {
+    if (name === 'sms') {
+      setFormSMS(true);
+      navigate('loginSMS');
+      setFormPassword(false);
+    } else {
+      setFormPassword(true);
+      navigate('resetPWD');
+      setFormSMS(false);
+    }
+  };
 
   return (
-    <>
-      <Backdrop style={{ zIndex: 99 }} open={loading}>
-        <CircularProgress color="inherit" />
-      </Backdrop>
-
-      <div className="modalLoginStart">
-        <IconButton style={{ position: 'absolute', top: '-3.2vw', left: -8, backgroundColor: 'transparent' }} onClick={closeModalAuth}>
-          <IconClose style={{ width: '2.166vw', height: '2.166vw', overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }}/>
-        </IconButton>
-
-        <div className="loginHeader">
-          <Typography component="h2">Вход</Typography>
-        </div>
-
-        <MyTextInput
-          type="phone"
-          placeholder="телефон"
-          value={loginLogin}
-          func={(event) => changeLogin(event)}
-          onKeyDown={(event) => checkLoginKey(1, event)}
-          className={!errTextAuth ? 'inputLogin' : 'inputLogin err'}
-        />
-
-        <MyTextInput
-          type={showPassword ? 'text' : 'password'}
-          placeholder="пароль"
-          value={pwdLogin}
-          func={(event) => setPwdLogin(event)}
-          onKeyDown={(event) => checkLoginKey(1, event)}
-          className={!errTextAuth ? 'inputLogin' : 'inputLogin err'}
-          inputAdornment={<InputAdornment position="end"><IconButton aria-label="toggle password visibility" onClick={clickShowPassword}>
-                {showPassword ? <EyeShow style={{ height: '1.1vw', width: '1.81vw' }}/> :
-                  <EyeHide style={{ height: '1.1vw', width: '1.81vw' }}/>
-                }</IconButton></InputAdornment>
-          }
-        />
-
-        <div className="loginLosePWD" style={{ marginBottom: '30px' }}>
-          <Typography component="span" onClick={() => navigate('resetPWD')}>Забыли пароль?</Typography>
-        </div>
-
-        
-        <div className="loginErr" style={{ display: 'none' }}>
+    <div className="modalLoginStartPC">
+      {errTextAuth ? (
+        <div className="loginErr">
           <Typography component="span">{errTextAuth}</Typography>
         </div>
-      
-        
-        <div 
-          className="loginLogin"
-          onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? logIn : null}
-          style={{ backgroundColor: loginLogin.length === 11 && pwdLogin.length > 1 ? '#DD1A32' : 'rgba(0, 0, 0, 0.2)' }}
-        >
-          <Typography component="span">Войти</Typography>
-        </div>
+      ) : null}
 
-        <div className="loginOR">
-          <Typography component="span">или</Typography>
+      {formPassword || formSMS ? (
+        <div className="resetText">
+          Укажите свой номер телефона, мы отправим{' '}{formPassword ? 'новый пароль' : 'смс'}
         </div>
+      ) : null}
 
-        <div 
-          className="loginLoginYa"
-          onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? logIn : null}
-        >
-          <YaIcon />
-          <Typography component="span">Войти с Яндекс ID</Typography>
-        </div>
+      <MyTextInput
+        type="phone"
+        placeholder="телефон"
+        variant="standard"
+        value={loginLogin}
+        func={(event) => changeLogin(event)}
+        onKeyDown={(event) => checkLoginKey(formPassword ? 3 : formSMS ? 2 : 1, event)}
+        className="inputLogin"
+        style={{ marginTop: formSMS ? '0.36101083032491vw' : null }}
+        inputAdornment={
+          <InputAdornment position="end">
+            {loginLogin.length === 11 ? (
+              <CheckAuthMobile style={{ height: '1.4440433212996vw', width: '1.4440433212996vw' }} />
+            ) : (
+              <ClearAuthMobile style={{ height: '1.4440433212996vw', width: '1.4440433212996vw' }} onClick={() => changeLogin('')} />
+            )}
+          </InputAdornment>
+        }
+      />
 
-        <div className="loginCreate" onClick={() => navigate('create')}>
-          <Typography component="span">Зарегистрироваться</Typography>
+      {formPassword || formSMS ? null : (
+        <div className="startInputBox">
+          <MyTextInput
+            type={showPassword ? 'text' : 'password'}
+            placeholder="пароль"
+            variant="standard"
+            value={pwdLogin}
+            func={(event) => setPwdLogin(event)}
+            onKeyDown={(event) => checkLoginKey(1, event)}
+            className="inputLogin"
+            inputAdornment={
+              <InputAdornment position="end">
+                {checkPass ? (
+                  <CheckAuthMobile style={{ height: '1.4440433212996vw', width: '1.4440433212996vw' }} />
+                ) : (
+                  <ClearAuthMobile style={{ height: '1.4440433212996vw', width: '1.4440433212996vw' }} onClick={() => setPwdLogin('')} />
+                )}
+              </InputAdornment>
+            }
+          />
+          {showPassword ? (
+            <div className="eye_icon" onClick={() => setShowPassword(false)}>
+              <EyeShow_modalOrder />
+            </div>
+          ) : (
+            <div className="eye_icon" onClick={() => setShowPassword(true)}>
+              <EyeHide_modalOrder />
+            </div>
+          )}
         </div>
+      )}
 
-        <div className="loginSMS">
-          <Typography component="span" onClick={() => navigate('loginSMS')}>
-            Вход по СМС
-          </Typography>
-        </div>
+      <div className="loginLosePWD" style={{ marginTop: formPassword || formSMS ? '0.36101083032491vw' : null }}>
+        <Typography component="span" onClick={() => changeForm('pass')} style={{ visibility: formPassword ? 'hidden' : 'visible' }}>
+          Забыли пароль?
+        </Typography>
       </div>
-    </>
+
+      <div
+        className="loginLogin"
+        onClick={
+          formPassword && loginLogin.length === 11
+            ? sendsmsNewLogin
+            : formSMS && loginLogin.length === 11
+            ? createProfile
+            : loginLogin.length === 11 && checkPass
+            ? logIn
+            : null
+        }
+        // onClick={ () => signIn('credentials', { redirect: false, password: pwdLogin, login: loginLogin, callbackUrl: `${host}/${thisCity}/zakazy` }) }
+        style={{ backgroundColor:
+            (loginLogin.length === 11 && checkPass) ||
+            (formPassword && loginLogin.length === 11) ||
+            (formSMS && loginLogin.length === 11)
+              ? '#DD1A32'
+              : 'rgba(0, 0, 0, 0.1)',
+        }}
+      >
+        <Typography component="span" 
+        //onClick={() => navigate('loginSMSCode')}
+        >
+          {formPassword ? 'Получить пароль' : formSMS ? 'Получить СМС' : 'Войти'}
+        </Typography>
+      </div>
+
+      <div className="loginOR">
+        <Typography component="span">или</Typography>
+      </div>
+
+      <div className="loginLoginYa" onClick={() => signIn('yandex', { callbackUrl: `${host}/${thisCity}/zakazy`, scope: 'default_phone', response_type: 'code' })}>
+        <YaIcon />
+        <Typography component="span">Войти с Яндекс ID</Typography>
+      </div>
+
+      <div className="loginSMS">
+        <Typography component="span" onClick={() => changeForm('sms')} style={{ visibility: formSMS ? 'hidden' : 'visible' }}>
+          Вход по СМС
+        </Typography>
+      </div>
+    </div>
   );
 }

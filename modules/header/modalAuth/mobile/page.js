@@ -23,13 +23,13 @@ import { Fade } from '@/ui/Fade';
 import { roboto } from '@/ui/Font';
 
 export default function ModalAuthMobile({ city }) {
-  console.log('render ModalAuthMobile');
+  //console.log('render ModalAuthMobile');
 
   const [form, setForm] = useState(false);
   const [timerPage, setTimerPage] = useState(null);
 
-  const [openAuthModal, closeModalAuth, typeLogin, loading, navigate, preTypeLogin, errTextAuth] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth,
-    state.typeLogin, state.loading, state.navigate, state.preTypeLogin, state.errTextAuth]);
+  const [openAuthModal, closeModalAuth, typeLogin, navigate, preTypeLogin, errTextAuth] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth,
+    state.typeLogin, state.navigate, state.preTypeLogin, state.errTextAuth]);
 
   const changeForm = (checked) => {
     setForm(checked);

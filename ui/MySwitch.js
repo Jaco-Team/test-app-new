@@ -328,6 +328,75 @@ const AuthSwitchMobile = styled(Switch)(({ theme }) => ({
   },
 }));
 
+const AuthSwitchPC = styled(Switch)(({ theme }) => ({
+  width: '17.328519855596vw',
+  height: '2.1660649819495vw',
+  padding: 0,
+  display: 'flex',
+  borderRadius: '1.0830324909747vw',
+  fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+  fontSize: '1.0830324909747vw',
+  fontWeight: 400,
+  fontStyle: 'normal',
+
+  '& .MuiButtonBase-root.MuiSwitch-switchBase': {
+    padding: 0,
+  },
+
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    transform: 'translateX(8.6642599277978vw)',
+    padding: 0,
+  },
+
+  '& .MuiSwitch-switchBase': {
+    transitionDuration: '300ms',
+    '&.Mui-checked': {
+      '& + .MuiSwitch-track': {
+        opacity: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+      },
+      '& .MuiSwitch-thumb': {
+        '&:after': {
+          content: "'Регистрация'",
+          color: '#fff',
+        },
+      },
+    },
+  },
+
+  '& .MuiSwitch-thumb': {
+    width: '8.6642599277978vw',
+    background: '#DD1A32',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '&:after': {
+      content: "'Вход'",
+      color: '#fff',
+    },
+    height: '2.1660649819495vw',
+    borderRadius: '1.0830324909747vw',
+  },
+
+  '& .MuiSwitch-track': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: '3.6101083032491vw',
+    paddingRight: '1.2635379061372vw',
+    opacity: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    color: 'rgba(0, 0, 0, 0.80)',
+    boxSizing: 'border-box',
+    '&:after': {
+      content: "'Регистрация'",
+    },
+    '&:before': {
+      content: "'Вход'",
+    },
+  },
+}));
+
 export class SwitchIOS extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -410,6 +479,20 @@ export class SwitchAuthMobile extends React.PureComponent {
   render() {
     return (
       <AuthSwitchMobile onClick={this.props.onClick} checked={this.props.checked} />
+    );
+  }
+}
+
+export class SwitchAuthPC extends React.PureComponent {
+  constructor(props) {
+    super(props);
+
+    this.state = {};
+  }
+
+  render() {
+    return (
+      <AuthSwitchPC onClick={this.props.onClick} checked={this.props.checked} />
     );
   }
 }

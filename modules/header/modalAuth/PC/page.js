@@ -1,49 +1,83 @@
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import { useHeaderStore } from '@/components/store';
 
-const Start = dynamic(() => import('./start'), { ssr: false });
-const LoginSMS = dynamic(() => import('./loginSMS'), { ssr: false });
-const LoginSMSCode = dynamic(() => import('./loginSMSCode'), { ssr: false });
-const ResetPWD = dynamic(() => import('./resetPWD'), { ssr: false });
-const Create = dynamic(() => import('./create'), { ssr: false });
-const Finish = dynamic(() => import('./finish'), { ssr: false });
-const ModalAuthError = dynamic(() => import('./error'), { ssr: false });
+const StartPC = dynamic(() => import('./start'));
+const CreatePC = dynamic(() => import('./create'));
+const LoginSMSCodePC = dynamic(() => import('./loginSMSCode'));
+const CreatePWD_PC = dynamic(() => import('./createPWD'));
+const FinishPC = dynamic(() => import('./finish'));
 
-const StartTestAuth = dynamic(() => import('./startTestAuth'));
+import { IconClose } from '@/ui/Icons';
 
+import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 import Box from '@mui/material/Box';
 import Backdrop from '@mui/material/Backdrop';
 
+import Stack from '@mui/material/Stack';
+import { SwitchAuthPC as MySwitch } from '@/ui/MySwitch.js';
+
 import { Fade } from '@/ui/Fade';
 import { roboto } from '@/ui/Font';
 
-export default function ModalAuthPC() {
+export default function ModalAuthPC({ city }) {
 
-  const [openAuthModal, closeModalAuth, typeLogin] = useHeaderStore( state => [state.openAuthModal, state.closeModalAuth, state.typeLogin]);
+  const [form, setForm] = useState(false);
+  const [timerPage, setTimerPage] = useState(null);
+
+  const [openAuthModal, closeModalAuth, typeLogin, navigate, preTypeLogin, errTextAuth] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth,
+    state.typeLogin, state.navigate, state.preTypeLogin, state.errTextAuth]);
+
+  const changeForm = (checked) => {
+    setForm(checked);
+
+    if (typeLogin === 'start' || typeLogin === 'resetPWD' || typeLogin === 'loginSMS') {
+      navigate('create');
+    } else {
+      navigate('start');
+    }
+  };
+
+  const closeModal = () => {
+    setForm(false);
+    closeModalAuth();
+  };
 
   return (
     <Dialog
-      onClose={closeModalAuth}
-      className={'modalOpenCityPC ' + roboto.variable}
-      open={openAuthModal}
-      slots={Backdrop}
-      slotProps={{ timeout: 500 }}
-    >
-      <Fade in={openAuthModal} style={{ overflow: 'auto' }}>
-        <Box>
-          {typeLogin === 'startTestAuth' ?  <StartTestAuth /> : null}
-          
-          {typeLogin === 'start' ?  <Start /> : null}
-          {typeLogin === 'loginSMS' ?  <LoginSMS /> : null}
-          {typeLogin === 'loginSMSCode' ?  <LoginSMSCode /> : null}
-          {typeLogin === 'resetPWD' ?  <ResetPWD /> : null}
-          {typeLogin === 'create' ?  <Create /> : null}
-          {typeLogin === 'finish' ?  <Finish /> : null}
-          {typeLogin === 'error' ?  <ModalAuthError /> : null}
-        </Box>
-      </Fade>
-    </Dialog>
+    onClose={closeModal}
+    className={'modalAuthPC ' + roboto.variable}
+    open={openAuthModal}
+    slots={Backdrop}
+    slotProps={{ timeout: 500 }}
+  >
+    <Fade in={openAuthModal} style={{ overflow: 'hidden' }}>
+      <Box className="ContainerModalAuthPC">
+
+      <IconButton className='closeButton' onClick={closeModal}>
+        <IconClose />
+      </IconButton>
+
+        <div className="authLogin">
+          {typeLogin === 'loginSMSCode' ? preTypeLogin === 'loginSMS' ? 'Проверочный код' : timerPage === null || timerPage ? 'Звоним на номер' : 'Не дозвонились'
+            : typeLogin === 'resetPWD' ? 'Новый пароль' : typeLogin === 'createPWD' ? 'Придумайте пароль' : typeLogin === 'finish' ? 'Всё получилось!' : typeLogin === 'loginSMS' ? 'Вход по СМС' : 'Авторизация'}
+        </div>
+
+        {typeLogin === 'loginSMS' || typeLogin === 'start' || typeLogin === 'resetPWD' ? (
+          <Stack direction="row" alignItems="center" style={{ width: '17.328519855596vw', marginBottom: errTextAuth ? '0.54151624548736vw' : typeLogin === 'resetPWD' || typeLogin === 'loginSMS' || typeLogin === 'create' || typeLogin === 'createPWD' ? '1.6245487364621vw' : '2.5270758122744vw' }}>
+            <MySwitch onClick={(event) => changeForm(event.target.checked)} checked={form} />
+          </Stack>
+        ) : null}
+
+        {typeLogin === 'start' || typeLogin === 'resetPWD' || typeLogin === 'loginSMS' ? <StartPC /> : null}
+        {typeLogin === 'create' ? <CreatePC city={city} closeModal={closeModal} /> : null}
+        {typeLogin === 'loginSMSCode' ? <LoginSMSCodePC setTimerPage={setTimerPage} /> : null}
+        {typeLogin === 'createPWD' ? <CreatePWD_PC /> : null}
+        {typeLogin === 'finish' ?  <FinishPC closeModal={closeModal} /> : null}
+      </Box>
+    </Fade>
+  </Dialog>
   );
 }

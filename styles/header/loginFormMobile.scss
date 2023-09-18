@@ -4,7 +4,7 @@
   & .MuiDialog-container {
     display: flex;
     align-items: flex-end;
-
+    
     & .MuiDialog-paper {
       border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
       overflow: visible;
@@ -13,6 +13,7 @@
       width: 100%;
       max-width: none !important;
       max-height: calc(100% - $MyScale629_mobile);
+      height: $MyScale1871_mobile;
 
       .ContainerModalAuthMobile {
         display: flex;
@@ -38,7 +39,7 @@
         }
 
         .modalLoginStartMobile {
-          width: 85.470085470085vw;
+          width: $MyScale1000_mobile;
           padding-bottom: $MyScale551_mobile;
           display: flex;
           flex-direction: column;

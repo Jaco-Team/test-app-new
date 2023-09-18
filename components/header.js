@@ -47,7 +47,7 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
           <ModalCityPC />
           <BasketPC />
           <BasketModalPC />
-          <ModalAuthPC />
+          <ModalAuthPC city={city} />
         </>
       }
     </div>

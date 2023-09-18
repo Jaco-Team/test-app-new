@@ -1,29 +1,26 @@
+import { useState } from 'react';
+
+import Link from 'next/link';
+
 import { useHeaderStore } from '@/components/store';
 
 import MyTextInput from '@/ui/MyTextInput';
-import { IconClose } from '@/ui/Icons';
+import { VectorRightAuthMobile, DoneAuthMobile } from '@/ui/Icons';
 
-import IconButton from '@mui/material/IconButton';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
-import VisibilityOutlinedIcon from '@mui/icons-material/VisibilityOutlined';
-import VisibilityOffOutlinedIcon from '@mui/icons-material/VisibilityOffOutlined';
 
-export default function Create() {
-  console.log('render Create');
+export default function CreateMobile({ city, closeModal }) {
+  //console.log('render CreateMobile');
 
-  const [closeModalAuth, errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, genPwd, sendsmsNewLogin, showPassword, clickShowPassword] = useHeaderStore((state) => [state.closeModalAuth, state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.genPwd,
-      state.sendsmsNewLogin, state.showPassword, state.clickShowPassword]);
+  const [checkPolitika, setCheckPolitika] = useState(false);
+  const [checkAccord, setCheckAccord] = useState(false);
+
+  const [changeLogin, loginLogin, checkLoginKey, sendsmsNewLogin, navigate] = useHeaderStore((state) => [state.changeLogin, state.loginLogin, state.checkLoginKey, state.sendsmsNewLogin,
+      state.navigate ]);
 
   return (
-    <div className="modalLoginCreateNew">
-      <IconButton style={{ position: 'absolute', top: '-3.2vw', left: -8, backgroundColor: 'transparent' }} onClick={closeModalAuth}>
-        <IconClose style={{ width: '2.166vw', height: '2.166vw', overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }}/>
-      </IconButton>
-
-      <div className="loginHeader">
-        <Typography component="h2">Регистрация</Typography>
-      </div>
+    <div className="modalLoginCreatePC">
 
       <div className="loginInfo">
         <Typography component="h2">Укажите свой номер телефона</Typography>
@@ -34,47 +31,53 @@ export default function Create() {
         placeholder="телефон"
         value={loginLogin}
         func={(event) => changeLogin(event)}
-        onKeyDown={(event) => checkLoginKey(3, event)}
+        onKeyDown={(event) => checkLoginKey(2, event)}
         className="inputLogin"
+        variant="standard"
+        inputAdornment={
+          <InputAdornment position="end">
+            <div className="vectorInput"
+              //onClick={() => navigate('loginSMSCode')}
+              onClick={ loginLogin.length === 11 && checkAccord && checkPolitika ? sendsmsNewLogin : null}
+              style={{ backgroundColor: loginLogin.length === 11 && checkAccord && checkPolitika ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)' }}
+            >
+              <VectorRightAuthMobile />
+            </div>
+          </InputAdornment>
+        }
       />
 
-      <MyTextInput
-        type={showPassword ? 'text' : 'password'}
-        placeholder="придумайте пароль"
-        value={pwdLogin}
-        func={(event) => setPwdLogin(event)}
-        onKeyDown={(event) => checkLoginKey(3, event)}
-        className="inputLogin"
-        inputAdornment={<InputAdornment position="end"><IconButton aria-label="toggle password visibility" onClick={clickShowPassword}>
-              {showPassword ? <VisibilityOutlinedIcon style={{ fill: 'rgba(0, 0, 0, 0.2)', height: '40px', width: '47px' }}/>
-              : <VisibilityOffOutlinedIcon style={{ fill: 'rgba(0, 0, 0, 0.2)', height: '40px', width: '47px' }}/>}
-            </IconButton></InputAdornment>}
-      />
+      {loginLogin.length > 1 ? (
+        <div className="loginData">
+          <div className="data" style={{ marginBottom: '0.72202166064982vw' }}>
+            {checkPolitika ? (
+              <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckPolitika(!checkPolitika)}>
+                <DoneAuthMobile />
+              </span>
+            ) : (
+              <span onClick={() => setCheckPolitika(!checkPolitika)}
+                style={{ backgroundColor: loginLogin.length === 11 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)' }}></span>
+            )}
+            <Typography component="span" onClick={closeModal}>
+              Согласен с{' '}<Link href={'/' + city + '/politika-konfidencialnosti'}>условиями сбора и обработки персональных данных</Link>
+            </Typography>
+          </div>
 
-      {errTextAuth ? (
-        <div className="loginErr">
-          <Typography component="span">{errTextAuth}</Typography>
+          <div className="data">
+            {checkAccord ? (
+              <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckAccord(!checkAccord)}>
+                <DoneAuthMobile />
+              </span>
+            ) : (
+              <span onClick={() => setCheckAccord(!checkAccord)}
+                style={{ backgroundColor: loginLogin.length === 11 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)' }}></span>
+            )}
+            <Typography component="span" onClick={closeModal} style={{ lineHeight: '1.4440433212996vw' }}>
+              Принимаю{' '}<Link href={'/' + city + '/politika-konfidencialnosti'}>пользовательское соглашение</Link>
+            </Typography>
+          </div>
         </div>
-      ) : (
-        <div className="loginSubHeader">
-          <Typography component="span">Надежный пароль - строчные и заглавные буквы, цифры и символы.</Typography>
-          <Typography component="span">Например: {genPwd}</Typography>
-        </div>
-      )}
-
-      <div className="loginLogin" onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? sendsmsNewLogin : null}
-        style={{ backgroundColor: loginLogin.length === 11 && pwdLogin.length > 1 ? '#DD1A32' : 'rgba(0, 0, 0, 0.2)' }}
-      >
-        <Typography component="span">Зарегистрироваться</Typography>
-      </div>
-
-      <div className="loginCreate" onClick={() => navigate('start')}>
-        <Typography component="span">У меня есть аккаунт</Typography>
-      </div>
-
-      <div className="loginData">
-        <Typography component="span">Продолжая вы соглашаетесь со сбором и обработкой персональных данных и с пользовательским соглашением</Typography>
-      </div>
+      ) : null}
     </div>
   );
 }
