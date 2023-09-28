@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
-//import Link from 'next/link';
+import { useCartStore, useCitiesStore, useProfileStore } from '@/components/store.js';
+
 import Image from 'next/image';
 
 import AddressModalMobile from '@/modules/profile/address/modalAddressMobile';
@@ -12,110 +13,119 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 import { roboto } from '@/ui/Font.js';
-import { useCartStore, useCitiesStore, useProfileStore } from '@/components/store.js';
-
 import MyTextInput from '@/ui/MyTextInput';
-
-import { HomeCartMobile, AddrDotsModalOrderIcon } from '@/ui/Icons.js';
-
-import MasterCard from '@/public/masterCard.png';
+import { HomeCartMobile } from '@/ui/Icons.js';
 import Pay from '@/public/pay.png';
 
-const pointListTLT = [
-  { name: 'Ленинградская 47', id: 1, area: 'Центральный район' },
-  { name: 'Ворошилова 12а', id: 2, area: 'Автозаводский район' },
-  { name: 'Цветной 1', id: 3, area: 'Автозаводский район' },
-  { name: 'Матросова 32', id: 4, area: 'Комсомольский район' },
-  { name: 'Выбрать на карте', id: 5 },
-];
+const type_pay_pic = [{ id: 'cash', name: 'В кафе' }];
 
-const pointListSMR = [
-  { name: 'Молодёжная 2', id: 1, area: 'Промышленный район' },
-  { name: 'Куйбышева 113', id: 2, area: 'Самарский район' },
-  { name: 'Победы 10', id: 3, area: 'Советский район' },
-  { name: 'Выбрать на карте', id: 4 },
-];
-
-const timeList = [
+const type_pred = [
+  { name: 'В ближайшее время', id: -1 },
   { name: 'Запланировать дату и время', id: 1 },
-  { name: 'В ближайшее время', id: 2 },
 ];
 
-const adrrList = [
-  { name: 'ДОМ', id: 1, addr: 'Юбилейная 287, кв. 365' },
-  { name: 'РАБОТА', id: 2, addr: 'Дзержинского 321, оф. 2388' },
-  { name: 'РОДИТЕЛИ', id: 3, addr: 'Автостроителей 58, кв. 14' },
-  { name: 'ул. Гая д. 357к3, кв. 133', id: 4 },
-  { name: 'Выбрать на карте', id: 5 },
+const type_pay_div = [
+  { id: 'cash', name: 'Наличными курьеру' },
+  { id: 'online', name: 'Онлайн на сайте' },
 ];
 
-const payList = [
-  { name: '2154', id: 1, main: false },
-  { name: '8472', id: 2, main: true },
-  { name: 'Оплата наличными', id: 3, main: false },
-];
-
-export default function CartMenuMobile({cityName}) {
+export default function CartMenuMobile({ cityName }) {
   //console.log('render CartMenuMobile');
 
   const [list, setList] = useState([]);
-  const [id, setId] = useState([]);
-  const [text, setText] = useState('');
+  const [id, setId] = useState(null);
 
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
-  const [openMenuCart, setActiveMenuCart, menu, idMenu, setActiveCartDataTimePicker, setActiveCartMap] = 
-    useCartStore((state) => [state.openMenuCart, state.setActiveMenuCart, state.menu, state.idMenu, state.setActiveCartDataTimePicker, state.setActiveCartMap]);
-  
+
+  const [openMenuCart, setActiveMenuCart, nameList, setActiveDataTimePicker, setActiveCartMap, pointList, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getDataMap, setTypePay,
+    comment, changeComment, setSummDiv, typeOrder] = useCartStore((state) => [state.openMenuCart, state.setActiveMenuCart, state.nameList, state.setActiveDataTimePicker, state.setActiveCartMap, state.pointList, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getDataMap, state.setTypePay, state.comment, state.changeComment, state.setSummDiv, state.typeOrder
+  ]);
+
   const [setActiveAddressModal] = useProfileStore((state) => [state.setActiveAddressModal]);
 
   useEffect(() => {
-    if (menu === 'point' && thisCityRu === 'Тольятти') {
-      setList(pointListTLT);
-      setId(idMenu);
+    if (nameList === 'point') {
+      let points = pointList.filter((point) => point.name_ru === thisCityRu);
+
+      // для тестирования, пока нет в данных
+      points = points.map((city) => {
+        city.raion = 'Промышленный р-н';
+        return city;
+      });
+
+      points.push({ name: 'Выбрать на карте', id: points.length + 1 });
+
+      setId(orderPic?.id);
+      setList(points);
     }
 
-    if (menu === 'point' && thisCityRu === 'Самара') {
-      setList(pointListSMR);
-      setId(idMenu);
+    if (nameList === 'addr') {
+      const newAddr = addrList?.find((item) => item.name === 'Выбрать на карте');
+
+      if (!newAddr) {
+        addrList?.push({ name: 'Выбрать на карте', id: addrList.length + 1 });
+      }
+
+      setId(orderAddr?.id);
+      setList(addrList);
     }
 
-    if (menu === 'time') {
-      setList(timeList);
-      setId(idMenu);
+    if (nameList === 'time') {
+      setList(type_pred);
     }
 
-    if (menu === 'addr') {
-      setList(adrrList);
-      setId(idMenu);
+    if (nameList === 'pay') {
+      if(typeOrder) {
+        setList(type_pay_pic);
+      } else {
+        setList(type_pay_div);
+      }
     }
-
-    if (menu === 'pay') {
-      setList(payList);
-      setId(idMenu);
-    }
-  }, [menu, thisCityRu]);
+  }, [nameList, thisCityRu, orderPic, orderAddr]);
 
   const chooseMenuItem = (item) => {
-    if (menu === 'time' && item.name === 'Запланировать дату и время') {
-      setActiveCartDataTimePicker(true);
+    //console.log('chooseMenuItem', item)
+
+    if (nameList === 'point' && item.name !== 'Выбрать на карте') {
+      setActiveMenuCart(false, null);
+      setPoint(item);
+      setId(item.id);
     }
-    if (menu === 'point' && item.name === 'Выбрать на карте') {
+
+    if (nameList === 'point' && item.name === 'Выбрать на карте') {
+      setPoint(null);
       setActiveCartMap(true);
+      setActiveMenuCart(false, null);
+      getDataMap('contacts', cityName);
     }
-    if (menu === 'addr' && item.name === 'Выбрать на карте') {
-      setActiveMenuCart(false, null, null); setText('');
+
+    if (nameList === 'addr' && item.name !== 'Выбрать на карте') {
+      setSummDiv(item?.sum_div ?? 0);
+      setActiveMenuCart(false, nameList);
+      setAddrDiv(item);
+      setId(item.id);
+    }
+
+    if (nameList === 'addr' && item.name === 'Выбрать на карте') {
+      setSummDiv(0);
+      setAddrDiv(null);
+      setActiveMenuCart(false, null);
       setActiveAddressModal(true, 0, cityName);
     }
-  };
 
-  const changeText = (event) => {
-    const text = event.target.value;
+    if (nameList === 'time' && item.name === 'Запланировать дату и время') {
+      setActiveMenuCart(false, null);
+      setActiveDataTimePicker(true);
+    }
 
-    if (text.length > 50) {
-      const maxText = text.toString().slice(0, 50);
-      setText(maxText);
-    } else {
-      setText(text);
+    if (nameList === 'time' && item.name !== 'Запланировать дату и время') {
+      setActiveMenuCart(false, null);
+    }
+
+    if (nameList === 'pay') {
+      setActiveMenuCart(false, null);
+      setId(item.id);
+      setTypePay(item);
     }
   };
 
@@ -123,59 +133,61 @@ export default function CartMenuMobile({cityName}) {
     <SwipeableDrawer
       anchor={'bottom'}
       open={openMenuCart}
-      onClose={() => { setActiveMenuCart(false, null, null); setText('')}}
-      onOpen={() => setActiveMenuCart(true, null, null)}
+      onClose={() => setActiveMenuCart(false, null)}
+      onOpen={() => setActiveMenuCart(true, null)}
       id="cartMenuMobile"
       className={roboto.variable}
       disableSwipeToOpen
     >
       <div className="ContainerCartList">
-
         <div className="Line"></div>
 
-        <div className="loginHeader" style={{ marginBottom: menu === 'pay' ? '3.4188034188034vw' : menu === 'message' ? '7.0940170940171vw' : '2.2222222222222vw'}}>
+        <div className="loginHeader"
+          style={{ marginBottom: nameList === 'pay' ? '3.4188034188034vw' : nameList === 'message' ? '7.0940170940171vw' : '2.2222222222222vw' }}>
           <Typography component="span">
-            {menu === 'point' ? 'Выберите кафе' : menu === 'time' ? 'Дата и время' : menu === 'addr' ? 'Выберите адрес' : menu === 'pay' ? 'Способ оплаты' : menu === 'message'
-              ? 'Сообщение курьеру' : ''}
+            {nameList === 'point' ? 'Выберите кафе' : nameList === 'time' ? 'Дата и время' : nameList === 'addr' ? 'Выберите адрес' : nameList === 'pay' ? 'Способ оплаты'
+              : nameList === 'message' ? 'Сообщение курьеру' : ''}
           </Typography>
         </div>
 
-        {menu !== 'pay' ? null : (
+        {nameList !== 'pay' ? null : (
           <div className="loginPay">
-            <Image alt="Платеж" src={Pay} width={191} height={70} priority={true}/>
+            <Image alt="Платеж" src={Pay} width={191} height={70} priority={true} />
           </div>
         )}
 
-        {menu !== 'message' ? (
+        {nameList !== 'message' ? (
           <List>
-            {list.map((item, key) => (
+            {list?.map((item, key) => (
               <ListItem onClick={() => chooseMenuItem(item)} key={key}
                 style={{ background: id === item.id ? 'rgba(0, 0, 0, 0.05)' : null,
-                  marginBottom: item === list.at(-1) ? menu === 'addr' || menu === 'pay' ? '5.1282051282051vw' : '19.82905982906vw' : null }}
-              >
-                <div className="containerDiv"
-                  style={{ justifyContent: (menu === 'addr' && item.name === 'ДОМ') || (menu === 'pay' && item.main) ? 'space-between' : null }}>
-                  {menu !== 'pay' || item === list.at(-1) ? (
+                         marginBottom: item === list.at(-1) ? nameList === 'addr' ? '5.1282051282051vw' : '19.82905982906vw' : null }}>
+                <div className="containerDiv" style={{ justifyContent: nameList === 'addr' && item.addr_main ? 'space-between' : null }}>
+                  {nameList !== 'pay' || item === list.at(-1) ? (
                     <>
                       <div className="containerSpan">
-                        <span>{item.name}</span>
-                        <span className={ menu === 'addr' && item.name?.length + item?.addr?.length > 32 ? 'shadowSpan' : null }>
-                          {menu === 'point' ? item.area : menu === 'addr' ? item.addr : ''}
+
+                        <span className={ nameList === 'addr' ? item?.addr_name ? item?.addr_name.length > 8 ? 'maxWidthSpan' : null : null : null }
+                          style={{ maxWidth: nameList === 'addr' && item.name !== 'Выбрать на карте' && item?.addr_name ? '23.076923076923vw' : '59.82905982906vw',
+                                   textTransform: nameList === 'addr' ? item?.addr_name ? 'uppercase' : null : null }}>
+                          {nameList !== 'addr' ? item.name : item?.addr_name ? item.addr_name : item.name}
+                        </span>
+
+                        <span className={ nameList === 'addr' && item.addr_name?.length + item?.name?.length > 31 ? 'shadowSpan maxWidthSpan' : null}
+                          style={{ maxWidth: nameList === 'addr' && item.addr_name?.length + item?.name?.length > 31 && item.addr_main ? '37.606837606838vw'
+                                : nameList === 'addr' && item.addr_name?.length + item?.name?.length > 31 ? '47.008547008547vw' : 'max-content'}}>
+                          {nameList === 'point' ? item.raion : nameList === 'addr' ? item?.addr_name ? item.name : null : null}
                         </span>
                       </div>
 
-                      {menu === 'addr' && item.name === 'ДОМ' ? <div className="circleDiv"><HomeCartMobile /></div> : null}
+                      {nameList === 'addr' && item.addr_main ? (
+                        <div className="circleDiv">
+                          <HomeCartMobile />
+                        </div>
+                      ) : null}
                     </>
                   ) : (
-                    <>
-                      <div className="containerSpanPay">
-                        <Image alt="Банковская карта" src={MasterCard} width={49} height={40} priority={true}/>
-                        <span><AddrDotsModalOrderIcon /></span>
-                        <span>{item.name}</span>
-                      </div>
-
-                      {item.main ? <div className="circleDiv"><HomeCartMobile /></div> : null}
-                    </>
+                    <span className="spanPay">{item.name}</span>
                   )}
                 </div>
               </ListItem>
@@ -186,8 +198,8 @@ export default function CartMenuMobile({cityName}) {
             <MyTextInput
               autoFocus
               type="text"
-              value={text}
-              func={(event) => changeText(event)}
+              value={comment}
+              func={(event) => changeComment(event)}
               multiline
               maxRows={7}
               variant="outlined"
@@ -196,17 +208,14 @@ export default function CartMenuMobile({cityName}) {
           </div>
         )}
 
-        {menu === 'addr' || menu === 'pay' ? (
-          <Button className="CartButton" variant="contained"
-            //onClick={(event) => openMenu(event, 'city')}
-          >
-            <span style={{ textTransform: 'capitalize' }}>Добавить</span>
-            <span>&nbsp;{menu === 'addr' ? 'новый' : 'карту'}</span>
+        {nameList === 'addr' ? (
+          <Button className="CartButton" variant="contained" onClick={() => chooseMenuItem({ name: 'Выбрать на карте' })}>
+            <span>Добавить новый</span>
           </Button>
         ) : null}
 
         <AddressModalMobile />
-        
+
       </div>
     </SwipeableDrawer>
   );

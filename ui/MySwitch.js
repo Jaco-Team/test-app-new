@@ -428,7 +428,7 @@ export class SwitchBasketPC extends React.PureComponent {
 
   render() {
     return (
-      <BasketSwitchPC onClick={this.props.onClick} />
+      <BasketSwitchPC onClick={this.props.onClick} checked={this.props.checked}/>
     );
   }
 }
@@ -442,7 +442,7 @@ export class SwitchBasketMobile extends React.PureComponent {
 
   render() {
     return (
-      <BasketSwitchMobile onClick={this.props.onClick} />
+      <BasketSwitchMobile onClick={this.props.onClick} checked={this.props.checked}/>
     );
   }
 }

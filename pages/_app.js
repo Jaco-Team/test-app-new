@@ -38,6 +38,7 @@ import '../styles/header/headerMobile.scss'
 
 import '../styles/header/basketPC.scss'
 import '../styles/header/basketModalPC.scss'
+import '../styles/header/basketDataTimePicker.scss'
 
 import '../styles/profile/accountMobile.scss'
 import '../styles/profile/addressMobile.scss'
@@ -60,6 +61,8 @@ import '../styles/docsBreadcrumbs.scss'
 
 import '../styles/footer/footerPC.scss'
 import '../styles/footer/footerMobile.scss'
+
+import '../styles/header/modalError.scss'
 
 import '../styles/header.scss' // этот нужен??
 

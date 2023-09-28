@@ -11,7 +11,7 @@
       padding: 0;
       border-radius: $MyScale40;
       width: $MyScale1000;
-      height: $MyScale1542;
+      height: $MyScale1662;
       overflow: hidden;
 
       .modalBasketPC {
@@ -65,21 +65,16 @@
               align-items: center;
               margin-left: $MyScale30;
               text-transform: lowercase;
+              width: 80%;
 
               span:first-child {
                 width: $MyScale60;
                 height: $MyScale60;
                 margin-right: $MyScale20;
                 svg {
-                  width: $MyScale60;
-                  height: $MyScale60;
+                  width: 100%;
+                  height: 100%;
                 }
-              }
-
-              img {
-                margin-right: $MyScale20;
-                height: $MyScale40;
-                width: $MyScale49;
               }
 
               span:nth-child(2) {
@@ -101,28 +96,37 @@
                 &:first-letter {
                   text-transform: uppercase;
                 }
-                svg {
-                  width: $MyScale75;
-                  height: $MyScale15;
-                }
               }
 
-              span:nth-child(4) {
-                height: $MyScale60;
-                line-height: $MyScale60;
-                margin-right: $MyScale15;
-                @include font30_400();
-                svg {
-                  width: $MyScale75;
-                  height: $MyScale15;
-                }
-              }
-
-              span:nth-child(5) {
-                height: $MyScale60;
-                line-height: $MyScale60;
-                @include font30_400();
+              & .sdacha {
                 margin: 0;
+
+                & .MuiInputBase-root.MuiOutlinedInput-root {
+                  display: flex;
+                  align-items: center;
+                  border: none;
+                  border-radius: 0;
+                  padding: 0;
+                  margin: 0;
+                  width: 100%;
+
+                  & input {
+                    padding: 0;
+                    @include font30_400();
+                    line-height: $MyScale30;
+                    width: 100%;
+                  }
+
+                  & fieldset {
+                    border: none;
+                    height: $MyScale60;
+                    padding: 0;
+                    top: 0;
+                    & legend {
+                      line-height: 0;
+                    }
+                  }
+                }
               }
             }
 
@@ -131,6 +135,58 @@
               svg {
                 width: $MyScale22;
                 height: $MyScale11;
+              }
+            }
+          }
+
+          .basketMessage {
+            width: $MyScale676;
+            height: $MyScale120;
+            border-radius: $MyScale40;
+            border: $MyScale2 solid rgba(0, 0, 0, 0.2);
+            padding: 0;
+            display: flex;
+            align-items: center;
+            margin-bottom: $MyScale40;
+
+            span {
+              margin-left: $MyScale30;
+              width: $MyScale60;
+              height: $MyScale60;
+              margin-right: $MyScale20;
+              svg {
+                width: 100%;
+                height: 100%;
+              }
+            }
+
+            .message {
+              margin: 0;
+              width: $MyScale500 !important;
+
+              & .MuiInputBase-root.MuiOutlinedInput-root {
+                display: flex;
+                align-items: center;
+                border: none;
+                border-radius: 0;
+                padding: 0;
+                margin: 0;
+                width: 100%;
+
+                & textarea {
+                  padding: 0;
+                  @include font30_400();
+                  line-height: $MyScale30;
+                }
+
+                & fieldset {
+                  border: none;
+                  padding: 0;
+                  top: 0;
+                  & legend {
+                    line-height: 0;
+                  }
+                }
               }
             }
           }

@@ -1,53 +1,61 @@
 import React, { useEffect } from 'react';
 
+import Script from 'next/script'; 
 import dynamic from 'next/dynamic'
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'), { ssr: false })
-const DynamicFooter = dynamic(() => import('@/components/footer.js'), { ssr: false })
-const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'), { ssr: false })
+const DynamicHeader = dynamic(() => import('@/components/header.js'))
+const DynamicFooter = dynamic(() => import('@/components/footer.js'))
+const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'))
 
 import { roboto } from '@/ui/Font.js'
 import { api } from '@/components/api.js';
 
-import { useHomeStore, useCitiesStore, useCartStore, useHeaderStore } from '@/components/store.js';
+import { useHomeStore, useCitiesStore, useCartStore, useHeaderStore, useContactStore } from '@/components/store.js';
 
 const this_module = 'home';
 
 export default function Home(props) {
 
   const { city, cats, cities, page, all_items } = props.data1;
+
+  const getData = useContactStore( state => state.getData );
   
-  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
+  const [setAllItems, changeAllItems] = useCartStore((state) => [state.setAllItems, state.changeAllItems]);
   
   const [ getBanners, getItemsCat ] = useHomeStore( state => [ state.getBanners, state.getItemsCat ]);
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
   const [setActivePage] = useHeaderStore((state) => [state.setActivePage]);
 
   useEffect(() => {
+
     setTimeout( () => {
       window.scrollTo(0, 0);
     }, 100 )
-    
 
     if( thisCity != city ){
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
+
+      setTimeout( () => {
+        changeAllItems();
+      }, 300 )
+
     }
 
     getBanners(this_module, city);
     getItemsCat(this_module, city);
 
-    if( allItems.length == 0 ){
-      setAllItems(all_items)
-    }
-
+    setAllItems(all_items);
     setActivePage('home');
     
-  }, []);
+  }, [thisCity, city]);
 
   return (
     <div className={roboto.variable}>
+
+       <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" onLoad={() =>  getData('contacts', city)} />
+
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
       <DynamicHomePage page={page} city={city} />

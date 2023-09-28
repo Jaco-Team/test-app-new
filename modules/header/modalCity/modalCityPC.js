@@ -23,8 +23,8 @@ export default function ModalCityPC() {
 
   const { push } = useRouter();
 
-  const [thisCityList, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu]);
-  const [openCityModal, setActiveModalCity] = useHeaderStore((state) => [state.openCityModal, state.setActiveModalCity]);
+  const [thisCityList, thisCityRu, setThisCityRu, setThisCity] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu, state.setThisCity]);
+  const [openCityModal, setActiveModalCity, activePage] = useHeaderStore((state) => [state.openCityModal, state.setActiveModalCity, state.activePage]);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -36,7 +36,6 @@ export default function ModalCityPC() {
     setActiveModalCity(false);
     const city = thisCityList.find((city) => city.name === thisCityRu);
     localStorage.setItem('setCity', JSON.stringify(city));
-    push(`/${city.link}`);
   };
 
   const chooseCity = (city) => {
@@ -44,7 +43,13 @@ export default function ModalCityPC() {
     setThisCityRu(city.name);
     setAnchorEl(null);
     setActiveModalCity(false);
-    push(`/${city.link}`);
+    setThisCity(city.link);
+
+    if(activePage && activePage !== 'home') {
+      push(`/${city.link}/${activePage}`);
+    } else {
+      push(`/${city.link}`);
+    }
   };
 
   // thisCityRu = 'Комсомольск-на-Амуре'

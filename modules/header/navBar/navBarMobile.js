@@ -1,5 +1,7 @@
 import { useState, memo, useEffect } from 'react';
 
+import { useRouter } from 'next/router';
+
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -19,14 +21,15 @@ import BasketIconHeaderMobile from '../basket/basketIconHeaderMobile';
 import ProfileIconHeaderMobile from '../profile/profileIconHeaderMobile';
 
 export default memo(function NavBarMobile({ city, active_page }) {
-
   //console.log('NavBarMobile render');
+
+  const { push } = useRouter();
 
   const [activeMenu, setActiveMenu] = useState(false);
 
   const [setActiveBasket, openBasket, setActiveModalCity] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity]);
-  const [setThisCityRu, thisCityRu] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu]);
-  const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ])
+  const [setThisCityRu, thisCityRu, setThisCity] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu, state.setThisCity]);
+  const [ getInfoPromo, getCartLocalStorage ] = useCartStore( state => [ state.getInfoPromo, state.getCartLocalStorage ])
 
   if (city == '') {
     return null;
@@ -40,8 +43,8 @@ export default memo(function NavBarMobile({ city, active_page }) {
 
         if (city.name !== thisCityRu) {
           setThisCityRu(city.name);
-
-          //push(`/${city.link}`);
+          setThisCity(city.link);
+          push(`/${city.link}`);
         }
         
       } else {
@@ -51,6 +54,8 @@ export default memo(function NavBarMobile({ city, active_page }) {
       if( localStorage.getItem('promo_name') ){
         getInfoPromo(localStorage.getItem('promo_name'), city)
       }
+
+      getCartLocalStorage();
 
     }
   }, []);
@@ -67,7 +72,7 @@ export default memo(function NavBarMobile({ city, active_page }) {
   };
 
   return (
-    <AppBar position="fixed" className="headerMobile" elevation={2} onClick={close}>
+    <AppBar position="fixed" className="headerMobile" elevation={2} onClick={close} sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }}>
       <Toolbar>
         <Link href={`/${city}`}>
           <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true}/>

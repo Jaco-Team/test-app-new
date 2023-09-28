@@ -8,7 +8,8 @@
     overflow: hidden;
 
     .ContainerMain {
-      margin: 15.384615384615vw 22.222222222222vw 20.940170940171vw 22.222222222222vw;
+      margin: 15.384615384615vw 22.222222222222vw 20.940170940171vw
+        22.222222222222vw;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -92,7 +93,8 @@
     overflow-y: auto;
 
     .ContainerList {
-      margin: $MyScale40_mobile $MyScale125_mobile $MyScale232_mobile $MyScale125_mobile;
+      margin: $MyScale40_mobile $MyScale125_mobile $MyScale232_mobile
+        $MyScale125_mobile;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -101,7 +103,7 @@
         height: $MyScale10_mobile;
         width: $MyScale150_mobile;
         background: rgba(0, 0, 0, 0.2);
-        border-radius: $MyScale5_mobile;;
+        border-radius: $MyScale5_mobile;
         margin-bottom: $MyScale80_mobile;
       }
 
@@ -124,19 +126,12 @@
           height: $MyScale163_mobile;
           border-bottom: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
           padding: 0;
-          & a {
-            width: 100%;
+          & span {
+            margin-left: $MyScale40_mobile;
+            display: flex;
+            align-items: center;
             height: 100%;
-            text-decoration: none;
-            & div {
-              margin-left: $MyScale40_mobile;
-              display: flex;
-              align-items: center;
-              height: 100%;
-              & span {
-                @include font50_500();
-              }
-            }
+            @include font50_500();
           }
         }
       }

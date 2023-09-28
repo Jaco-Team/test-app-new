@@ -17,7 +17,7 @@ export default React.memo(function Cart(props) {
 
   const { city, cats, cities, page, all_items } = props.data1;
 
-  const [setAllItems, allItems, getDataMap] = useCartStore((state) => [state.setAllItems, state.allItems, state.getDataMap]);
+  const [setAllItems, getDataMap] = useCartStore((state) => [state.setAllItems, state.getDataMap]);
 
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] =
     useCitiesStore((state) => [state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList]);
@@ -31,18 +31,17 @@ export default React.memo(function Cart(props) {
   }, [matches]);
 
   useEffect(() => {
+
     if (thisCity != city) {
       setThisCity(city);
       setThisCityRu(cities.find((item) => item.link == city)['name']);
       setThisCityList(cities);
     }
-
-    if (allItems.length == 0) {
-      setAllItems(all_items);
-    }
-
+    
+    setAllItems(all_items);
     setActivePage('cart');
-  }, []);
+    
+  }, [city, thisCity]);
  
   return (
     <>

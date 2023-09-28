@@ -1,0 +1,103 @@
+@import '../settings';
+
+.modalErrorPC {
+  & .MuiDialog-container {
+    display: flex;
+    align-items: flex-start;
+
+    & .MuiDialog-paper {
+      height: $MyScale200;
+      overflow: visible;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: none !important;
+      background: #dd1a32;
+
+      & .MuiDialogContent-root {
+        padding: 0;
+        display: flex;
+        align-items: center;
+
+        & .containerError {
+          position: relative;
+          display: flex;
+          align-items: center;
+          width: 100%;
+          
+          & button {
+            left: $MyScale70;
+            position: absolute;
+            padding: 0;
+            width: $MyScale60;
+            height: $MyScale60;
+
+            & svg {
+              width: 100%;
+              height: 100%;
+            }
+          }
+
+          & span {
+            width: 100%;
+            align-self: center;
+            text-align: center;
+            @include font30_400();
+            color: #fff !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+.modalErrorMobile {
+  & .MuiDialog-container {
+    display: flex;
+    align-items: flex-start;
+
+    & .MuiDialog-paper {
+      height: $MyScale200_mobile;
+      overflow: visible;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: none !important;
+      background: #dd1a32;
+
+      & .MuiDialogContent-root {
+        padding: 0;
+        display: flex;
+        align-items: center;
+
+        & .containerError {
+          position: relative;
+          display: flex;
+          align-items: center;
+          width: 100%;
+          
+          & button {
+            left: $MyScale70_mobile;
+            position: absolute;
+            padding: 0;
+            width: $MyScale60_mobile;
+            height: $MyScale60_mobile;
+
+            & svg {
+              width: 100%;
+              height: 100%;
+            }
+          }
+
+          & span {
+            width: 100%;
+            align-self: center;
+            text-align: center;
+            @include font40_400();
+            color: #fff !important;
+          }
+        }
+      }
+    }
+  }
+}

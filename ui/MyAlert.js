@@ -8,6 +8,11 @@ const Alert = React.forwardRef(function Alert(props, ref) {
 });
 
 export default class MyAlert extends React.Component {
+
+  constructor(props) {
+    super(props);
+  }
+
   render(){
     return (
       <Snackbar 
@@ -21,10 +26,10 @@ export default class MyAlert extends React.Component {
       >
         <Alert 
           onClose={this.props.onClose} 
-          severity={ this.props.status ? "success" : "error" } 
+          severity={ this.props.action ? "success" : "error" } 
           sx={{ width: '100%' }}
         >
-          { this.props.status ? this.props.text ? this.props.text : 'Данные успешно сохранены!' : this.props.text } 
+          { this.props.action ? this.props.text ? this.props.text : 'Данные успешно сохранены!' : this.props.text } 
         </Alert>
       </Snackbar>
     )

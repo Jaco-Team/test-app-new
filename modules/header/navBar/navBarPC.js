@@ -74,8 +74,8 @@ export default function NavBarPC({ city, active_page }) {
   const { push } = useRouter();
   
   const [setActiveBasket, openBasket, setActiveModalCity] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity]);
-  const [setThisCityRu, thisCityRu] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu]);
-  const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ])
+  const [setThisCityRu, thisCityRu, setThisCity] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu, state.setThisCity]);
+  const [ getInfoPromo, getCartLocalStorage ] = useCartStore( state => [ state.getInfoPromo, state.getCartLocalStorage ])
 
   if (city == '') return null;
 
@@ -83,17 +83,16 @@ export default function NavBarPC({ city, active_page }) {
   const [isOpenburger, setIsOpenburger] = useState(false);
   const [isOpenCat, setIsOpenCat] = useState(false);
   const [list, setList] = useState([]);
-
+ 
   useEffect(() => {
     if (typeof window !== "undefined") {
 
       if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
         const city = JSON.parse(localStorage.getItem('setCity'));
-
         if (city.name !== thisCityRu) {
           setThisCityRu(city.name);
-
-          //push(`/${city.link}`);
+          setThisCity(city.link);
+          push(`/${city.link}`);
         }
         
       } else {
@@ -103,6 +102,8 @@ export default function NavBarPC({ city, active_page }) {
       if( localStorage.getItem('promo_name') ){
         getInfoPromo(localStorage.getItem('promo_name'), city)
       }
+
+      getCartLocalStorage();
 
     }
   }, []);
@@ -152,7 +153,7 @@ export default function NavBarPC({ city, active_page }) {
 
   return (
     <>
-      <AppBar className="headerNew" id="headerNew" elevation={2} sx={{ display: { xs: 'none', md: 'block' } }} onClick={closeBasket}>
+      <AppBar className="headerNew" id="headerNew" elevation={2} sx={{ display: { xs: 'none', md: 'none', lg: 'block' } }} onClick={closeBasket}>
         <Toolbar>
           <div>
             <Link href={'/' + city} className="logoHeaderPC">

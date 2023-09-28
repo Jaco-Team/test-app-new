@@ -95,11 +95,13 @@
         text-transform: lowercase;
 
         span {
-          display: flex;
-          align-items: center;
+          line-height: $MyScale50_mobile;
           text-align: center;
           @include font50_500();
           color: #fff !important;
+          &:first-letter {
+            text-transform: uppercase;
+          }
         }
       }
     }

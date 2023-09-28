@@ -1,7 +1,5 @@
-import { useEffect } from 'react';
-
 import { useRouter } from 'next/router';
-import Link from 'next/link';
+import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
@@ -11,41 +9,42 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 import { roboto } from '@/ui/Font.js';
-import { useHeaderStore, useCitiesStore } from '@/components/store.js';
+import { useHeaderStore, useCitiesStore, useCartStore } from '@/components/store.js';
 
 export default function ModalCityMobile() {
   const { push } = useRouter();
+  const session = useSession();
 
-  const [thisCityList, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu]);
+  const [thisCityList, thisCityRu, setThisCityRu, setThisCity, thisCity] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu, state.setThisCity, state.thisCity]);
 
-  const [openCityModal, openCityModalList, setActiveModalCity, setActiveModalCityList] = useHeaderStore((state) => [state.openCityModal, state.openCityModalList, state.setActiveModalCity, state.setActiveModalCityList]);
+  const [openCityModal, openCityModalList, setActiveModalCity, setActiveModalCityList, activePage] = useHeaderStore((state) => [state.openCityModal, state.openCityModalList, state.setActiveModalCity, state.setActiveModalCityList, state.activePage]);
 
-  useEffect(() => {
-    if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
-      const city = JSON.parse(localStorage.getItem('setCity'));
-
-      if (city.name !== thisCityRu) {
-        setThisCityRu(city.name);
-
-        push(`/${city.link}`);
-      }
-    } else {
-      setActiveModalCity(true);
-    }
-  }, []);
+  const [getMySavedAddr, setPoint, setAddrDiv] = useCartStore((state) => [state.getMySavedAddr, state.setPoint, state.setAddrDiv]);
 
   const rightCity = () => {
     setActiveModalCity(false);
     const city = thisCityList.find((city) => city.name === thisCityRu);
     localStorage.setItem('setCity', JSON.stringify(city));
-    //push(`/${city.link}`);
   };
 
   const chooseCity = (city) => {
     localStorage.setItem('setCity', JSON.stringify(city));
     setActiveModalCityList(false);
     setThisCityRu(city.name);
-    push(`/${city.link}`);
+    setThisCity(city.link);
+
+    if(activePage && activePage !== 'home') {
+      push(`/${city.link}/${activePage}`);
+    } else {
+      push(`/${city.link}`);
+    }
+
+    if(activePage === 'cart') {
+      setPoint(null);
+      setAddrDiv(null);
+      getMySavedAddr(thisCity, session?.data?.user?.token);
+    }
+
   };
 
   // thisCityRu = 'Комсомольск-на-Амуре'
@@ -106,11 +105,7 @@ export default function ModalCityMobile() {
           <List>
             {thisCityList.map((city, key) => (
               <ListItem onClick={() => chooseCity(city)} key={key} style={{ background: thisCityRu === city.name ? 'rgba(0, 0, 0, 0.05)' : null }}>
-                <Link href={`/${city.link}`}>
-                  <div>
-                    <span>{city.name}</span>
-                  </div>
-                </Link>
+                <span>{city.name}</span>
               </ListItem>
             ))}
           </List>

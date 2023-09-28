@@ -3,7 +3,7 @@ import Meta from '@/components/meta.js';
 import CartMobile from './cartMobile';
 import CartMenuMobile from './cartMenuMobile';
 import CartMapPoints from './cartMapPoints';
-import CartDataTimePicker from './cartDataTimePicker';
+import DataTimePicker from '@/modules/cartForm/dataTimePicker';
 
 import { useHeaderStore } from '@/components/store';
 
@@ -15,10 +15,10 @@ export default function CartPage({ page, cityName }) {
     <Meta title={page.title} description={page.description}>
       {matches ?
       <>
-      <CartMobile /> 
+      <CartMobile cityName={cityName} /> 
       <CartMenuMobile cityName={cityName} />
-      <CartDataTimePicker />
-      <CartMapPoints cityName={cityName}/>
+      <CartMapPoints />
+      <DataTimePicker />
       </>
       : null}
     </Meta>

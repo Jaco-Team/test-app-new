@@ -1,5 +1,3 @@
-import { useEffect } from 'react';
-
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import { useCartStore, useCitiesStore } from '@/components/store.js';
@@ -11,17 +9,11 @@ import Typography from '@mui/material/Typography';
 import { roboto } from '@/ui/Font.js';
 import { LocationCartMobile } from '@/ui/Icons.js';
 
-export default function CartMapPoints({ cityName }) {
+export default function CartMapPoints() {
   //console.log('render CartMapPoints');
 
-  const [openMapPoints, setActiveCartMap, dataMenu, getDataMap] = useCartStore((state) => [state.openMapPoints, state.setActiveCartMap, state.dataMenu, state.getDataMap]);
+  const [openMapPoints, setActiveCartMap, orderPic] = useCartStore((state) => [state.openMapPoints, state.setActiveCartMap, state.orderPic]);
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
-
-  const city = thisCityRu === 'Самара' ? thisCityRu.slice(0, -1) + 'е' : thisCityRu;
-
-  useEffect(() => {
-    getDataMap('contacts', cityName);
-  }, []);
 
   return (
     <SwipeableDrawer
@@ -36,7 +28,7 @@ export default function CartMapPoints({ cityName }) {
       <div className="ContainerCartMap">
         <div className="Line"></div>
         <div className="loginHeader">
-          <Typography component="span">Кафе в {city}</Typography>
+          <Typography component="span">Кафе в городе {thisCityRu}</Typography>
         </div>
 
         <Grid item xs={12} id="ForMapCart">
@@ -45,14 +37,13 @@ export default function CartMapPoints({ cityName }) {
 
         <div className="CartPoint">
           <Typography component="span"><LocationCartMobile /></Typography>
-          <Typography component="span">{dataMenu}</Typography>
+          <Typography component="span">{orderPic?.name}</Typography>
         </div>
 
         <Button className="CartButton" variant="contained"
-          //onClick={(event) => openMenu(event, 'city')}
+          onClick={() => setActiveCartMap(false)}
         >
-          <span style={{ textTransform: 'capitalize' }}>Заберу</span>
-          <span>&nbsp;здесь</span>
+          <span>Заберу здесь</span>
         </Button>
       </div>
     </SwipeableDrawer>

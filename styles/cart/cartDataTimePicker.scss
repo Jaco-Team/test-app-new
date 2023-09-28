@@ -18,8 +18,7 @@
         overflow: 'hidden';
 
         .ContainerCartList {
-          margin: $MyScale40_mobile $MyScale125_mobile $MyScale178_mobile
-            $MyScale125_mobile;
+          margin-bottom: $MyScale178_mobile;
           display: flex;
           flex-direction: column;
           align-items: center;
@@ -27,21 +26,20 @@
           & .Line {
             height: $MyScale10_mobile;
             width: $MyScale150_mobile;
+            margin-top: $MyScale40_mobile;
             background: rgba(0, 0, 0, 0.2);
             border-radius: $MyScale5_mobile;
             margin-bottom: $MyScale80_mobile;
           }
 
           & .loginHeader {
-            margin-bottom: 7.3504273504274vw;
+            margin-bottom: $MyScale86_mobile;
             height: $MyScale120_mobile;
             width: 100%;
             display: flex;
             align-items: center;
             justify-content: center;
-            & span {
-              @include font75_700();
-            }
+            @include font75_700();
           }
 
           .sandbox__carousel {

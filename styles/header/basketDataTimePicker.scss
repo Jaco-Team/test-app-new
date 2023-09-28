@@ -1,0 +1,82 @@
+@import '../settings';
+
+.dataTimePickerPC {
+  & .MuiDialog-paper {
+    overflow: visible;
+    margin: 0 !important;
+    max-width: none !important;
+    border-radius: $MyScale40;
+    width: $MyScale760;
+    height: $MyScale700;
+
+    & .ContainerDataPickerPC {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      & .closeButton {
+        position: absolute;
+        height: $MyScale60;
+        width: $MyScale60;
+        padding: 0;
+        left: -$MyScale80;
+
+        & svg {
+          height: 100%;
+          width: 100%;
+        }
+      }
+
+      & .pikerLogin {
+        height: $MyScale60;
+        margin-top: $MyScale100;
+        margin-bottom: $MyScale50;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include font50_500();
+      }
+
+      .sandbox__carousel {
+        position: relative;
+        display: flex;
+        flex-direction: row;
+      }
+
+      .embla {
+        --slide-size: 33.33%;
+      }
+      .embla__viewport {
+        overflow: hidden;
+      }
+
+      .embla__container {
+        backface-visibility: hidden;
+        display: flex;
+        flex-direction: column;
+        touch-action: pan-x;
+        height: $MyScale300;
+      }
+
+      .embla__slide {
+        flex: 0 0 var(--slide-size);
+        min-width: 0;
+        position: relative;
+        @include font50_500();
+        display: flex;
+        align-items: center;
+      }
+
+      .divBackground {
+        position: absolute;
+        width: $MyScale560;
+        height: $MyScale100;
+        background: rgba(0, 0, 0, 0.05);
+        border-radius: $MyScale40;
+        pointer-events: none;
+        left: $MyScale100;
+        top: $MyScale310;
+      }
+    }
+  }
+}

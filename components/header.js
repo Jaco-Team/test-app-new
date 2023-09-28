@@ -13,6 +13,8 @@ import NavBarMobile from '@/modules/header/navBar/navBarMobile.js';
 import BasketPC from '../modules/header/basket/basketPC.js';
 import BasketModalPC from '../modules/header/basket/basketModalPC.js';
 
+import ModalAddr from '@/modules/profile/profile/modalAddr.jsx';
+
 import { useHeaderStore } from './store.js';
 
 export default React.memo(function Header({ city, city_list, cats, active_page }) {
@@ -48,6 +50,7 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
           <BasketPC />
           <BasketModalPC />
           <ModalAuthPC city={city} />
+          <ModalAddr />
         </>
       }
     </div>

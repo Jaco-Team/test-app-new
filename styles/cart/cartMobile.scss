@@ -53,17 +53,12 @@
           }
         }
 
-        img {
-          margin-right: $MyScale35_mobile;
-          height: $MyScale60_mobile;
-          width: $MyScale75_mobile;
-        }
-
         span:nth-child(2) {
           height: $MyScale80_mobile;
-          line-height: $MyScale80_mobile;
+          line-height: $MyScale90_mobile;
           @include font50_500();
-          margin-right: $MyScale40_mobile;
+          margin-right: $MyScale20_mobile;
+          text-align: left;
           &:first-letter {
             text-transform: uppercase;
           }
@@ -72,28 +67,61 @@
         span:nth-child(3) {
           color: rgba(0, 0, 0, 0.4) !important;
           height: $MyScale80_mobile;
-          line-height: $MyScale80_mobile;
+          line-height: $MyScale90_mobile;
+          margin-right: 0;
+          text-align: left;
           @include font40_400();
-          margin-right: $MyScale15_mobile !important;
           &:first-letter {
             text-transform: uppercase;
           }
-          svg {
-            width: $MyScale206_mobile;
-            height: $MyScale20_mobile;
-          }
         }
 
-        span:nth-child(4) {
-          height: $MyScale80_mobile;
-          line-height: $MyScale80_mobile;
+        & .comment {
           @include font50_500();
+          margin-right: $MyScale20_mobile;
+          text-align: left;
+          word-break: break-all;
+          line-height: normal !important;
+          display: flex;
+          align-items: center;
+          width: $MyScale700_mobile;
+        }
+
+        & .sdacha {
           margin: 0;
+          width: 80% !important;
+
+          & .MuiInputBase-root.MuiOutlinedInput-root {
+            display: flex;
+            align-items: center;
+            border: none;
+            border-radius: 0;
+            padding: 0;
+            margin: 0;
+            width: 100%;
+
+            & input {
+              padding: 0;
+              @include font50_500();
+              line-height: $MyScale50_mobile;
+            }
+
+            & fieldset {
+              border: none;
+              height: $MyScale80_mobile;
+              padding: 0;
+              top: 0;
+              & legend {
+                line-height: 0;
+              }
+            }
+          }
         }
       }
 
       span {
         margin-right: $MyScale55_mobile;
+        margin-left: 0;
         svg {
           width: $MyScale36_mobile;
           height: $MyScale21_mobile;

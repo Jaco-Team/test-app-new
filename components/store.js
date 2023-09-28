@@ -29,8 +29,12 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   //0 - обычный / 1 - пред
   byTime: 0,
-  datePreOrder: '',
-  timePreOrder: '',
+
+  // даты для заказа
+  datePreOrder: null,
+
+  // время для заказа
+  timePreOrder: null,
 
   //адрес доставки
   orderAddr: null,
@@ -41,20 +45,256 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // найти добавляемый промо товар в корзине(items)
   promoItemsFind: false,
 
+  // открыть модалку оформления заказа на ПК
   openModalBasket: false,
 
+  // открыть модалки в оформлении заказа на Мобилке
   openMenuCart: false,
-  menu: null,
-  idMenu: null,
-  dataMenu: '',
 
+  // название списка при оформлении заказа
+  nameList: null,
+
+  // открытие модалки чтобы выбрать время и дату заказа
   openDataTimePicker: false,
+
+  // открыть модалку чтобы выбрать точку для оформления заказа в мобилке
   openMapPoints: false,
 
-  myPointsMap: [],
+  // карта и точки в мобилке
+  myPoints: [],
   myMap: null,
 
+  // список точек для оформления заказа
   pointList: [],
+
+  // список адресов досткаи для оформления заказа
+  addrList: [],
+
+  // id точки для оформления заказа
+  point_id: null,
+
+  // выбранное время и дата заказа
+  dateTimeOrder: null,
+
+  // тип способа оплаты
+  typePay: null,
+
+  // комментарий курьеру
+  comment: '',
+
+  // открытие модалки с указанием ошибки
+  openModalErorr: false,
+  // текст ошибки
+  textError: '',
+
+  // сумма доставки заказа
+  summDiv: 0,
+
+  // сдача при оплате наличными курьеру
+  sdacha: 0,
+
+  // установить размер сдачи при оплате наличными курьеру
+  setSdacha: (sdacha) => {
+    set({ sdacha })
+
+    get().setCartLocalStorage();
+  },
+
+  // установить стоимость доставки
+  setSummDiv: (summDiv) => {
+    set({ summDiv })
+
+    get().setCartLocalStorage();
+  },
+
+  // установить тип заказа Доставка/Самовывоз
+  setTypeOrder: (typeOrder) => {
+    set({ typeOrder })
+
+    const cart = JSON.parse(localStorage.getItem('setCart'));
+
+    if (typeOrder) {
+      get().setTypePay({ id: 'cash', name: 'В кафе' });
+      get().setSummDiv(0);
+      get().setSdacha(0);
+      get().changeComment('');
+    } else {
+
+      if(cart?.typePay?.name === 'В кафе') {
+        get().setTypePay(null);
+      }
+
+      get().setSummDiv(get().orderAddr?.sum_div ?? 0);
+    }
+
+    get().setCartLocalStorage();
+  },
+
+  // получение данных корзины и оформления заказа
+  getCartLocalStorage: () => {
+    const promoInfo = get().promoInfo;
+
+    const cart = JSON.parse(localStorage.getItem('setCart'));
+
+    if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
+      const city = JSON.parse(localStorage.getItem('setCity'));
+      
+      if(city?.link === cart?.city?.link) {
+
+        if(cart?.items?.length) {
+          const allPriceWithoutPromo = cart.items.reduce((all, it) => all + it.count * it.one_price, 0);
+      
+          set({ items: cart.items, allPriceWithoutPromo });
+          
+          if(promoInfo) {
+            get().promoCheck();
+          } else {
+            get().getItems();
+          }
+        }
+
+        if(cart?.orderAddr) {
+          set({ orderAddr: cart?.orderAddr });
+        }
+
+        if(cart?.orderPic) {
+          set({ orderPic: cart?.orderPic });
+        }
+
+        if(cart?.comment) {
+          set({ comment: cart?.comment });
+        }
+
+        if(cart?.typePay) {
+          set({ typePay: cart?.typePay });
+        }
+
+        if(cart?.sdacha) {
+          set({ sdacha: cart?.sdacha });
+        }
+
+        if(cart?.typeOrder) {
+          set({ typeOrder: cart?.typeOrder });
+        }
+
+        if(cart?.dateTimeOrder) {
+          set({ dateTimeOrder: cart?.dateTimeOrder });
+        }
+
+        if(cart?.summDiv) {
+          set({ summDiv: cart?.summDiv });
+        }
+      }
+    }
+  },
+
+  // сохранить заполненные/выбранные данные корзины в localStorage
+  setCartLocalStorage: () => {
+
+    const city = JSON.parse(localStorage.getItem('setCity'));
+
+    const data = {
+      city,
+      items: get().items,
+      sdacha: get().sdacha,
+      summDiv: get().summDiv,
+      comment: get().comment,
+      typePay: get().typePay,
+      orderPic: get().orderPic,
+      orderAddr: get().orderAddr,
+      typeOrder: get().typeOrder,
+      dateTimeOrder: get().dateTimeOrder,
+    }
+
+    localStorage.setItem('setCart', JSON.stringify(data));
+  },
+
+  // открытие/закрытие модалки вывода ошибки на клиенте
+  setActiveModalError: (active, textError) => {
+    set({ openModalErorr: active, textError })
+  },
+
+  // комментарий по заказу при доставке товара
+  changeComment: (event) => {
+
+    if(event === '') {
+      set({ comment: event })
+    } else {
+      const comment = event.target.value;
+
+      if (comment.length > 50) {
+        const maxText = comment.toString().slice(0, 50);
+        set({ comment: maxText })
+      } else {
+        set({ comment })
+      }
+
+    }
+
+    get().setCartLocalStorage();
+
+  },
+
+  // установить способо оплаты заказа
+  setTypePay: (typePay) => {
+    set({ typePay })
+
+    get().setCartLocalStorage();
+  },
+  
+  // установить дату и время заказа
+  setDataTimeOrder: (dateTimeOrder) => {
+    set({ dateTimeOrder })
+
+    get().setCartLocalStorage();
+  },
+
+  // выбрать адрес доставки
+  setAddrDiv: (orderAddr) => {
+    set({ orderAddr })
+
+    get().setCartLocalStorage();
+  },
+
+  // выбрать точку
+  setPoint: (orderPic) => {
+    set({ orderPic })
+
+    get().setCartLocalStorage();
+  },
+
+   // все товары которые есть на сайте
+   setAllItems: (allItems) => {
+    set({ allItems })
+  },
+
+  // изменение цен при оформлении заказа в зависимости от выбранного города
+  changeAllItems: () => {
+
+    let items = get().items;
+    const allItems = get().allItems;
+    const promoInfo = get().promoInfo;
+
+    items = items.map((item) => {
+      allItems.map(it => {
+        if(item.item_id === it.id){
+          item.one_price = it.price
+        return item;
+        }
+      })
+      return item;
+    })
+
+    const allPriceWithoutPromo = items.reduce((all, it) => all + it.count * it.one_price, 0);
+
+    set({ items, allPriceWithoutPromo });
+    
+    if(promoInfo) {
+      get().promoCheck();
+    } else {
+      get().getItems();
+    }
+  },
 
   // открытие/закрытие карты с выбором точек в Корзине мобильной версии
   setActiveCartMap: (active) => {
@@ -62,55 +302,80 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   },
 
   // открытие/закрытие меню Корзины c выбором даты/времени доставки в мобильной версии
-  setActiveCartDataTimePicker: (active) => {
+  setActiveDataTimePicker: (active) => {
     set({ openDataTimePicker: active });
   },
 
   // открытие/закрытие меню Корзины в мобильной версии
-  setActiveMenuCart: (active, nameList, id, dataMenu) => {
-    set({ openMenuCart: active, menu: nameList, idMenu: id, dataMenu });
+  setActiveMenuCart: async(active, nameList) => {
+
+    if(active) {
+      const data = {
+        type: 'get_point_list',
+      };
+      
+      const json = await api('cart', data);
+      set({ pointList: json.points});
+    }
+
+    set({ openMenuCart: active, nameList });
   },
 
   // модалка Корзины для оформления/оплаты заказа на ПК
   setActiveModalBasket: async(active) => {
 
-    const data = {
-      type: 'get_point_list',
-    };
-    
-    const json = await api('cart', data);
+    if(active) {
+      const data = {
+        type: 'get_point_list',
+      };
+      
+      const json = await api('cart', data);
+      set({ pointList: json.points});
+    }
 
-    set({ 
-      openModalBasket: active,
-      pointList: json.points,
-    });
+    set({ openModalBasket: active });
   },
 
-  getTimesPred: async(point_id, date, type_order, cart) => {
-
+  // получение дат заказа в оформлении заказа
+  getDataPred: async() => {
     
-
-    const data1 = {
+    const data = {
       type: 'get_date_pred'
     };
     
-    const json1 = await api('cart', data1);
+    let json = await api('cart', data);
 
+    json = json.map(date => {
+      if(date.text !== "Сегодня" && date.text !== "Завтра") {
+          date.text = dayjs(date.text).locale('ru').format('DD MMM').replace('.', '');
+          return date
+        }
+      return date;
+    })
 
+    set({ datePreOrder: json });
+  },
+
+  // получение времени заказа в оформлении заказа
+  getTimesPred: async(point_id, date, typeOrder, cart) => {
+
+    const setDate = date ?? dayjs().format('YYYY-MM-DD');
     
     const data = {
       type: 'get_times_pred',
-      point_id: point_id,
-      date: date,
-      type_order: type_order,
+      date: setDate,
+      point_id: point_id ?? get().point_id,
+      type_order: typeOrder ?? get().typeOrder,
       cart: JSON.stringify(cart)
     };
     
     const json = await api('cart', data);
 
-    return json;
+    set({ timePreOrder: json, point_id: point_id ?? get().point_id, typeOrder: typeOrder ?? get().typeOrder  })
+
   },
 
+  // получение адресов доставки в оформлении заказа
   getMySavedAddr: async(city_id, token) => {
     const data = {
       type: 'get_my_saved_addr',
@@ -120,30 +385,55 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     
     const json = await api('cart', data);
 
-    return json;
+    set({ addrList: json ?? [] });
+
+    get().setCartLocalStorage();
   },
 
-  createOrder: async(token, typeOrder, city_id, point_id, addr, typePay, dateTimeOrder, comment, sdacha, promoName) => {
-    const data = {
-      type: 'create_order',
-      city_id: city_id,
-      token: token,
-      typeOrder: typeOrder,
-      point_id: point_id,
-      addr: addr,
-      typePay: typePay,
-      dateTimeOrder: dateTimeOrder,
-      comment: comment,
-      sdacha: sdacha,
-      promoName: promoName,
-      cart: JSON.stringify(get().items)
-    };
+  // создание заказа
+  createOrder: async(token, city_id) => {
+
+    let data;
+    const typeOrder = get().typeOrder;
+    const promoName = localStorage.getItem('promo_name');
+
+    if(typeOrder) {
+      data = {
+        type: 'create_order',
+        token,
+        city_id,
+        promoName: promoName ?? '',
+        sdacha: get().sdacha,
+        comment: get().comment,
+        typePay: get().typePay.id,
+        typeOrder: get().typeOrder,
+        point_id: get().orderPic.id,
+        dateTimeOrder: get().dateTimeOrder ?? { name: 'В ближайшее время', id: -1 },
+        cart: JSON.stringify(get().items)
+      };
+    } else {
+      data = {
+        type: 'create_order',
+        token,
+        city_id,
+        promoName: promoName ?? '',
+        sdacha: get().sdacha,
+        addr: get().orderAddr,
+        comment: get().comment,
+        typePay: get().typePay.id,
+        typeOrder: get().typeOrder,
+        dateTimeOrder: get().dateTimeOrder ?? { name: 'В ближайшее время', id: -1 },
+        cart: JSON.stringify(get().items)
+      };
+    }
     
-    console.log( data );
+    console.log('createOrder', data);
+    
+    //const json = await api('cart', data);
+    
+    //return json;
 
-    const json = await api('cart', data);
-
-    return json;
+    get().setCartLocalStorage();
   },
 
   // получения товара для корзины и добавление промоТовара в корзину если есть и разделение корзины на товары без допов и доп товары
@@ -198,11 +488,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     get().getItems();
   },
 
-  // все товары которые есть на сайте
-  setAllItems: (allItems) => {
-    set({ allItems })
-  },
-
   // добавления товара для корзины
   plus: (item_id, cat_id) => {
     let check = false;
@@ -242,6 +527,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     } else {
       get().getItems();
     }
+
+    get().setCartLocalStorage();
   },
 
   // вычитание товара из корзины
@@ -267,6 +554,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     } else {
       get().getItems();
     }
+
+    get().setCartLocalStorage();
   },
 
   // получения информации о промике из БД
@@ -755,16 +1044,16 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const json = await api(this_module, data);
 
-    set({
-      myPoints: json.filter((value, index, self) => index === self.findIndex((t) => t.addr === value.addr))
-    });
+    set({ myPoints: json.filter((value, index, self) => index === self.findIndex((t) => t.addr === value.addr)) });
 
-    get().loadMap(get().myPoints);
+    get().loadMap(); 
 
   },
 
   // отрисовка карты по данным в Корзине в мобильной версии
-  loadMap: (points) => {
+  loadMap: () => {
+
+    const points = get().myPoints;
 
     const widthModal_vw = 15.384615384615;
     const widthModal_px = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
@@ -776,10 +1065,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     } else {
       zoomSize = 12.3
     }
-
-    const dataMenu = get().dataMenu ? get().dataMenu : 'Молодёжная 2'; // для тестирования
-    
-    const pointFind = points.find(point => point.addr === dataMenu);
       
     const sizeIcon_px = (widthModal_vw * widthModal_px) / 100;
 
@@ -791,13 +1076,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
             zoom: zoomSize,
             controls: ['geolocationControl', 'searchControl', 'zoomControl']
           }, { suppressMapOpenBlock: true });
-
-          const img = ymaps.templateLayoutFactory.createClass( 
-            "<div class='my-img-cart'>" +
-              "<img alt='' src='/Favikon.png' />" +
-            "</div>"
-          );
-            
+     
           points.map(function(point, key){
             get().myMap.geoObjects.add(
               new ymaps.Placemark( [point['xy_point']['latitude'], point['xy_point']['longitude']], 
@@ -805,7 +1084,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
                 address: points[ key ]['addr'],
                 raion: points[ key ]['raion'],
               }, {
-                iconLayout: pointFind.addr === point.addr ? img : 'default#image',
+                iconLayout: 'default#image',
                 iconImageHref: '/Favikon.png',
                 iconImageSize: [sizeIcon_px, sizeIcon_px],
                 iconImageOffset: [-12, -20],
@@ -819,11 +1098,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         }))
       }else{
         get().myMap.destroy();
-
-        //get().myMap = null;
         set({ myMap: null });
 
-        get().loadMap(get().myPoints);
+        get().loadMap();
       }
     },
 
@@ -848,7 +1125,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       }
     });
 
-    set({ dataMenu: pointChoose.properties._data.address });
+    const orderPic = get().pointList.find(point => point.name === pointChoose.properties._data.address);
+
+    set({ orderPic: orderPic ?? null });
+
+    get().setCartLocalStorage();
   },
 
 }), shallow);
@@ -1812,7 +2093,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       return ;
     }
 
-    console.log( 'chooseAddrStreet', get().chooseAddrStreet )
+    //console.log( 'chooseAddrStreet', get().chooseAddrStreet )
 
     set({
       is_fetch_save_new_addr: true
@@ -1833,7 +2114,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       nameAddr: nameAddr
     };
 
-    console.log( data )
+    //console.log( data )
 
     let json = await api('profile', data);
 
@@ -2049,7 +2330,6 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
   // закрытие форм авторизации
   closeModalAuth: () => {
-    console.log( 'closeModalAuth' )
     set({
       openAuthModal: false,
       errTextAuth: '',
@@ -2229,7 +2509,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     const json = await api('auth', data);
 
-    console.log('logIn', json)
+    //console.log('logIn', json)
 
     if (json.st === false) {
       set({
@@ -2261,7 +2541,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     const json = await api('auth', data);
 
-    console.log('createProfile =====>', json);
+    //console.log('createProfile =====>', json);
 
     if (json.st) {
       set({
@@ -2374,7 +2654,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 }), shallow);
 
 export const useCitiesStore = createWithEqualityFn((set) => ({
-  thisCity: '',
+  thisCity: null,
   thisCityRu: '',
   thisCityList: [],
   setThisCity: (city) => {
@@ -2418,7 +2698,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     const json = await api(this_module, data);
 
-    // console.log('getBanners ====>', json)
+    //console.log('getBanners ====>', json)
 
     set({
       bannerList: json.banners,
@@ -2431,7 +2711,11 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       city_id: city,
     };
 
+    //console.log('getItemsCat', data);
+
     const json = await api(this_module, data);
+
+    //console.log('getItemsCat', json);
 
     set({
       CatsItems: json.items,

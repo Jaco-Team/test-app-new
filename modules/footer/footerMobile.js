@@ -61,7 +61,7 @@ export default React.memo(function FooterMobile({ cityName, active_page }) {
             <span>Заказ {orders[0]?.status_order} №{orders[0]?.order_id}</span>
             <span>В 16:00—16:40 доставим</span>
           </div>
-          <div className='divBTN' onClick={() => getOrder('zakazy', cityName, 'ODkwMDMyNzA2MDYtXy0yNDIwNjY', orders[0]?.order_id, orders[0]?.point_id)}>
+          <div className='divBTN' onClick={() => getOrder('zakazy', cityName, session.data?.user?.token, orders[0]?.order_id, orders[0]?.point_id)}>
             Открыть
           </div>
         </div>
@@ -72,7 +72,7 @@ export default React.memo(function FooterMobile({ cityName, active_page }) {
               <div className='orders' key={key} style={{ marginRight: order === orders?.at(-1) ? '3.4188034188034vw' : null}}>
                 <span>Заказ {order.status_order} №{key + 1}</span>
                 <span>В 16:00—16:40 доставим</span>
-                <span onClick={() => getOrder('zakazy', cityName, 'ODkwMDMyNzA2MDYtXy0yNDIwNjY', orders[0]?.order_id, orders[0]?.point_id)}>Открыть</span>
+                <span onClick={() => getOrder('zakazy', cityName, session.data?.user?.token, orders[0]?.order_id, orders[0]?.point_id)}>Открыть</span>
               </div>
             ))}
           </div>
