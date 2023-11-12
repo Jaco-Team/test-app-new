@@ -76,7 +76,7 @@ const promoA = [
   },
 ];
 
-export default function PromokodyMobile({ city }) {
+export default function PromokodyMobile({ page, this_module, city }) {
   const { getPromoList, promoList } = useProfileStore((state) => state);
 
   const [list, setList] = useState(promoL);

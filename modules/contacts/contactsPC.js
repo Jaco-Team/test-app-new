@@ -18,8 +18,8 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 
-import MySwitch from '@/../ui/Switch.js';
 
+import MySwitch from '@/ui/Switch.js';
 export default function ContactsPagePC({ city }) {
   const [thisCityList, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu]);
 

@@ -12,8 +12,7 @@ import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
-import ClickAwayListener from '@mui/base/ClickAwayListener';
-
+import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import { IconClose, IconInfoRed, IconInfoWhite } from '@/ui/Icons';
 
 import { roboto } from '@/ui/Font';

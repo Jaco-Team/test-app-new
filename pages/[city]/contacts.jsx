@@ -19,7 +19,7 @@ export default function Contacts(props) {
   
   const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
 
-  const getData = useContactStore( state => state.getData );
+  const [ getData ] = useContactStore( state => [ state.getData ] );
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
@@ -42,7 +42,7 @@ export default function Contacts(props) {
 
   return (
     <div className={roboto.variable}>
-      <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" onLoad={() =>  getData(this_module, city)} />
+      <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" onLoad={() => getData(this_module, city)} />
 
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 

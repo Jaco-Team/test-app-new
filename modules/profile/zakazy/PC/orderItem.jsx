@@ -3,7 +3,7 @@ import React from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 
-import { ReloadIcon, CheckIcon, CloseIcon } from '@/../ui/Icons.js';
+import { ReloadIcon, CheckIcon, CloseIcon } from '@/ui/Icons.js';
 
 function areEqual(prevProps, nextProps) {
   return parseInt(nextProps.order.is_delete) === parseInt(prevProps.order.is_delete) || parseInt(nextProps.order.type_status) === parseInt(prevProps.order.type_status);

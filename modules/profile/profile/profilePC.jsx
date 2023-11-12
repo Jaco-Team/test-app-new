@@ -13,15 +13,15 @@ import TableCell from '@mui/material/TableCell';
 import TableHead from '@mui/material/TableHead';
 import TableRow from '@mui/material/TableRow';
 
-import MyTextInput from '@/../ui/MyTextInput.js';
-import { SwitchIOS as MySwitch } from '@/../ui/MySwitch.js';
-import MySelect from '@/../ui/MySelect.js';
+import MyTextInput from '@/ui/MyTextInput.js';
+import { SwitchIOS as MySwitch } from '@/ui/MySwitch.js';
+import MySelect from '@/ui/MySelect.js';
 
-import { CloseIconMin } from '@/../ui/Icons.js';
+import { CloseIconMin } from '@/ui/Icons.js';
 
 import ModalAddr from './modalAddr.jsx';
 
-import { useProfileStore } from '@/../components/store.js';
+import { useProfileStore } from '@/components/store.js';
 
 import { useSession, signOut } from 'next-auth/react';
 

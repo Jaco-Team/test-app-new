@@ -1208,83 +1208,83 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
   },
 
-    // отрисовка карты по данным
-    loadMapMobile: (points, points_zone) => {
-   
-      let zoomSize;
-        
-        const widthModal_vw = 10.25641025641;
-        const widthModal_px = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
+  // отрисовка карты по данным
+  loadMapMobile: (points, points_zone) => {
   
-        const sizeIcon_px = (widthModal_vw * widthModal_px) / 100;
-  
-        if(widthModal_px < 900) {
-          zoomSize = 10.6;
-        } else {
-          zoomSize = 12.3;
-        }
-
-      const addr = 'Молодёжная 2'; // для тестирования
-    
-      const pointFind = points.find(point => point.addr === addr); // для тестирования
-  
-      if(!get().myMapMobile){
-        ymaps.ready().then((function () {
+    let zoomSize;
       
-          get().myMapMobile = new ymaps.Map('ForMapContacts', {
-            center: [ points[0]['xy_center_map']['latitude'], points[0]['xy_center_map']['longitude'] ],
-            zoom: zoomSize,
-            controls: ['geolocationControl', 'searchControl']
-          }, { suppressMapOpenBlock: true });
+      const widthModal_vw = 10.25641025641;
+      const widthModal_px = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
 
-          const img = ymaps.templateLayoutFactory.createClass( 
-            "<div class='my-img-contacts'>" +
-              "<img alt='' src='/Favikon.png' />" +
-            "</div>"
-          );
+      const sizeIcon_px = (widthModal_vw * widthModal_px) / 100;
+
+      if(widthModal_px < 900) {
+        zoomSize = 10.6;
+      } else {
+        zoomSize = 12.3;
+      }
+
+    const addr = 'Молодёжная 2'; // для тестирования
   
-          points_zone.map((zone, key)=>{
-            ///const is_same = zone.length == pointFind.zone.length && zone[0][0] === pointFind.zone[0].latitude && zone[0][1] === pointFind.zone[0].longitude;
-            get().myMapMobile.geoObjects.add(
-              new ymaps.Polygon([zone],
-                {
-                  address: points[ key ]['addr'],
-                },
-                {
-                fillColor: pointFind.addr === points[ key ]['addr'] ? 'rgba(221, 26, 50, 0.15)' : 'rgba(53, 178, 80, 0.15)',
-                strokeColor: pointFind.addr === points[ key ]['addr'] ? '#DD1A32' : '#35B250',
-                strokeWidth: 5,
-              })
-            );
-          })
-          
-          points.map(function(point, key){
-            get().myMapMobile.geoObjects.add(
-              new ymaps.Placemark( [point['xy_point']['latitude'], point['xy_point']['longitude']],
+    const pointFind = points.find(point => point.addr === addr); // для тестирования
+
+    if(!get().myMapMobile){
+      ymaps.ready().then((function () {
+    
+        get().myMapMobile = new ymaps.Map('ForMapContacts', {
+          center: [ points[0]['xy_center_map']['latitude'], points[0]['xy_center_map']['longitude'] ],
+          zoom: zoomSize,
+          controls: ['geolocationControl', 'searchControl']
+        }, { suppressMapOpenBlock: true });
+
+        const img = ymaps.templateLayoutFactory.createClass( 
+          "<div class='my-img-contacts'>" +
+            "<img alt='' src='/Favikon.png' />" +
+          "</div>"
+        );
+
+        points_zone.map((zone, key)=>{
+          ///const is_same = zone.length == pointFind.zone.length && zone[0][0] === pointFind.zone[0].latitude && zone[0][1] === pointFind.zone[0].longitude;
+          get().myMapMobile.geoObjects.add(
+            new ymaps.Polygon([zone],
               {
                 address: points[ key ]['addr'],
               },
-             {
-                iconLayout: pointFind.addr === point.addr ? img : 'default#image',
-                iconImageHref: '/Favikon.png',
-                iconImageSize: [sizeIcon_px, sizeIcon_px],
-                iconImageOffset: [-12, -20],
-              })
-          )
-          })
-  
-          get().myMapMobile.geoObjects.events.add('click', get().changePointClickMobile);
-  
-        }))
-      }else{
-        get().myMapMobile.destroy();
-  
-        //get().myMapMobile = null;
-        set({ myMapMobile: null });
-  
-        get().loadMapMobile(get().myPoints, get().pointsZone);
-      }
-    },
+              {
+              fillColor: pointFind.addr === points[ key ]['addr'] ? 'rgba(221, 26, 50, 0.15)' : 'rgba(53, 178, 80, 0.15)',
+              strokeColor: pointFind.addr === points[ key ]['addr'] ? '#DD1A32' : '#35B250',
+              strokeWidth: 5,
+            })
+          );
+        })
+        
+        points.map(function(point, key){
+          get().myMapMobile.geoObjects.add(
+            new ymaps.Placemark( [point['xy_point']['latitude'], point['xy_point']['longitude']],
+            {
+              address: points[ key ]['addr'],
+            },
+            {
+              iconLayout: pointFind.addr === point.addr ? img : 'default#image',
+              iconImageHref: '/Favikon.png',
+              iconImageSize: [sizeIcon_px, sizeIcon_px],
+              iconImageOffset: [-12, -20],
+            })
+        )
+        })
+
+        get().myMapMobile.geoObjects.events.add('click', get().changePointClickMobile);
+
+      }))
+    }else{
+      get().myMapMobile.destroy();
+
+      //get().myMapMobile = null;
+      set({ myMapMobile: null });
+
+      get().loadMapMobile(get().myPoints, get().pointsZone);
+    }
+  },
 
   // изменение состояния точки по клику на мобильном
   changePointClickMobile: (event) => {
@@ -1354,18 +1354,18 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
     set({ point: pointChoose.properties._data.address });
   },
   
-    // показывать/не показывать границы зон доставки в мобильной версии
-    disablePointsZoneMobile: () => {
-  
-      set({ disable: !get().disable });
-  
-      if(get().disable) {
-        ymaps.geoQuery(get().myMapMobile.geoObjects).search('geometry.type = "Polygon"').setOptions({ strokeColor: '#35B250', fillColor: 'rgba(53, 178, 80, 0.15)', fillOpacity: 1,
-        strokeWidth: 5 });
-      } else {
-        ymaps.geoQuery(get().myMapMobile.geoObjects).search('geometry.type = "Polygon"').setOptions({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
-      }
-    },
+  // показывать/не показывать границы зон доставки в мобильной версии
+  disablePointsZoneMobile: () => {
+
+    set({ disable: !get().disable });
+
+    if(get().disable) {
+      ymaps.geoQuery(get().myMapMobile.geoObjects).search('geometry.type = "Polygon"').setOptions({ strokeColor: '#35B250', fillColor: 'rgba(53, 178, 80, 0.15)', fillOpacity: 1,
+      strokeWidth: 5 });
+    } else {
+      ymaps.geoQuery(get().myMapMobile.geoObjects).search('geometry.type = "Polygon"').setOptions({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
+    }
+  },
 
   // отрисовка карты по данным на ПК
   loadMap: (points, points_zone) => {

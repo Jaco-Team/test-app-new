@@ -1,13 +1,22 @@
 /** @type {import('next').NextConfig} */
 const nextConfig = {
   reactStrictMode: true,
-  swcMinify: true,
   images: {
-    domains: ['storage.yandexcloud.net', 'cdnimg.jacofood.ru'],
+    remotePatterns: [
+      {
+        protocol: 'https',
+        hostname: 'storage.yandexcloud.net',
+        port: '',
+        pathname: '**',
+      },
+      {
+        protocol: 'https',
+        hostname: 'cdnimg.jacofood.ru',
+        port: '',
+        pathname: '**',
+      },
+    ],
     minimumCacheTTL: 86400,
-  },
-  experimental: {
-    
   },
   async redirects() {
     return [

@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import MySwitch from '@/../ui/Switch.js';
+import MySwitch from '@/ui/Switch.js';
 
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
@@ -13,7 +13,7 @@ import MyTextInput from '@/ui/MyTextInput';
 import MyAutocomplete from '@/ui/MyAutocomplete';
 import MySelect from '@/ui/MySelect';
 
-import { useProfileStore } from '@/../components/store.js';
+import { useProfileStore } from '@/components/store.js';
 
 import { useSession } from 'next-auth/react';
 

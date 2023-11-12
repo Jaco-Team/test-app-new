@@ -3,7 +3,7 @@
   "version": "0.1.0",
   "private": true,
   "scripts": {
-    "dev": "PORT=3008 next dev",
+    "dev": "PORT=3008 next dev --turbo",
     "build": "next build",
     "start": "next start",
     "lint": "next lint"
@@ -12,35 +12,35 @@
     "@dietime/react-native-date-picker": "^1.2.1",
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.14.7",
-    "@mui/material": "^5.14.7",
-    "@mui/styled-engine-sc": "^5.14.7",
+    "@mui/icons-material": "^5.14.16",
+    "@mui/material": "^5.14.17",
+    "@mui/styled-engine-sc": "^5.14.12",
     "@react-spring/web": "^9.7.3",
     "css-mediaquery": "^0.1.2",
-    "dayjs": "^1.11.9",
-    "embla-carousel-react": "8.0.0-rc12",
+    "dayjs": "^1.11.10",
+    "embla-carousel-react": "8.0.0-rc14",
     "lodash": "^4.17.21",
     "moment": "^2.29.4",
     "moment-locales-webpack-plugin": "^1.2.0",
     "moment-timezone-data-webpack-plugin": "^1.5.1",
-    "next": "13.4.19",
+    "next": "14.0.2",
     "next-auth": "^4.22.3",
     "query-string": "^8.1.0",
     "react": "18.2.0",
     "react-auth-code-input": "^3.2.1",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.46.0",
-    "react-scroll": "^1.8.9",
-    "sass": "^1.66.1",
-    "sharp": "^0.32.5",
+    "react-hook-form": "^7.48.2",
+    "react-scroll": "^1.9.0",
+    "sass": "^1.69.5",
+    "sharp": "^0.32.6",
     "styled-components": "^5.3.11",
     "swiper": "^9.4.1",
     "typescript": "^5.2.2",
-    "ua-parser-js": "^1.0.35",
-    "zustand": "^4.4.1"
+    "ua-parser-js": "^1.0.37",
+    "zustand": "^4.4.6"
   },
   "devDependencies": {
-    "eslint": "8.48.0",
-    "eslint-config-next": "13.4.19"
+    "eslint": "8.53.0",
+    "eslint-config-next": "14.0.2"
   }
 }

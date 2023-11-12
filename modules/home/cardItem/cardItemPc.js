@@ -26,7 +26,9 @@ export default memo(function CardItem({ item, count, index}) {
           src={'https://cdnimg.jacofood.ru/' + item.img_app + '_1420x1420.jpg'}
           width={1420}
           height={1420}
-          priority={true}
+          priority={false}
+          quality={75}
+          loading={'lazy'}
           onClick={() => getItem('home', thisCity, item.id)}
           style={{ cursor: 'pointer' }}
         />

@@ -10,7 +10,7 @@ export default function PromokodyPage({ page, this_module, city }) {
 
   return (
     <Meta title={page.title} description={''}>
-      {matches ? <PromokodyMobile city={city} /> : <PromokodyPC page={page} this_module={this_module} city={city} />}
+      {matches ? <PromokodyMobile page={page} this_module={this_module} city={city} /> : <PromokodyPC page={page} this_module={this_module} city={city} />}
     </Meta>
   );
 }
