@@ -14,12 +14,10 @@ import { roboto } from '@/ui/Font.js';
 import { LoupeMobile, EditPencilMobile, HomeCartMobile } from '@/ui/Icons.js';
 import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 
-export default function AddressModalMobile({ city }) {
+export default function AddressModalMobile() {
   //console.log('render AddressModalMobile');
 
-  const [openModalAddress, setActiveAddressModal] = useProfileStore((state) => [state.openModalAddress, state.setActiveAddressModal]);
-  const [allStreets, saveNewAddr, checkStreet, active_city, getMapMobile, infoAboutAddr] = useProfileStore((state) => [
-    state.allStreets, state.saveNewAddr, state.checkStreet, state.active_city, state.getMapMobile, state.infoAboutAddr]);
+  const [allStreets, saveNewAddr, checkStreet, active_city, infoAboutAddr, openModalAddress, setActiveAddressModal] = useProfileStore((state) => [state.allStreets, state.saveNewAddr, state.checkStreet, state.active_city, state.infoAboutAddr, state.openModalAddress, state.setActiveAddressModal]);
 
   const [mapChange, setMapChange] = useState(false);
   const [street, setStreet] = useState('');
@@ -27,7 +25,6 @@ export default function AddressModalMobile({ city }) {
 
   useEffect(() => {
     if (street && !mapChange) {
-      getMapMobile(0, city); // для тестирования, id должен быть динамический
       setMapChange(true);
     }
   }, [street, mapChange]);
@@ -37,15 +34,15 @@ export default function AddressModalMobile({ city }) {
       //setStreet_(infoAboutAddr.street);
       setStreet(infoAboutAddr.street);
       setForm({
-        home: infoAboutAddr.home,
-        corpus: infoAboutAddr?.corpus,
-        pd: infoAboutAddr.pd,
-        domophome: infoAboutAddr.domophome,
-        et: infoAboutAddr.et,
-        kv: infoAboutAddr.kv,
-        comment: infoAboutAddr.comment,
+        home: infoAboutAddr?.home ?? '',
+        corpus: infoAboutAddr?.corpus ?? '',
+        pd: infoAboutAddr?.pd ?? '',
+        domophome: infoAboutAddr?.domophome ?? '',
+        et: infoAboutAddr?.et ?? '',
+        kv: infoAboutAddr?.kv ?? '',
+        comment: infoAboutAddr?.comment ?? '',
         check: parseInt(infoAboutAddr.is_main) == 1 ? true : false,
-        nameAddr: infoAboutAddr.name,
+        nameAddr: infoAboutAddr?.name ?? '',
       });
     }
   }, [infoAboutAddr]);
@@ -68,7 +65,7 @@ export default function AddressModalMobile({ city }) {
 
   const close = () => {
     setForm({home: '', corpus: '', pd: '', domophome: '', et: '', kv: '', comment: '', check: false, nameAddr: ''});
-    setActiveAddressModal(false);
+    setActiveAddressModal(false, 0, '');
     setMapChange(false);
     setStreet('');
   };

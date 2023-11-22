@@ -14,10 +14,7 @@ import { useSession } from 'next-auth/react';
 
 export default function OrderPC({ page, this_module, city }) {
 
-  const [getOrderList, orderList] = useProfileStore((state) => [
-    state.getOrderList,
-    state.orderList,
-  ]);
+  const [getOrderList, orderList] = useProfileStore((state) => [state.getOrderList, state.orderList]);
 
   const session = useSession();
 
@@ -26,7 +23,7 @@ export default function OrderPC({ page, this_module, city }) {
       getOrderList(this_module, city, session.data?.user?.token);
     }
   }, [session]);
-
+ 
   return (
     <Grid
       container

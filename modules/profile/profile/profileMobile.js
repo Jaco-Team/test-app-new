@@ -1,5 +1,7 @@
 import { useEffect, useState } from 'react';
 
+import { useSession } from 'next-auth/react';
+
 import { useProfileStore } from '@/components/store.js';
 import Link from 'next/link';
 
@@ -14,27 +16,28 @@ import MyTextInput from '@/ui/MyTextInput';
 import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 import { ArrowLeftMobile, EditPencilMobile, LockMobile } from '@/ui/Icons.js';
 
-export default function ProfileMobile({ city }) {
-  //const [userName] = useHeaderStore((state) => [state.userName]);
-
-  const [userInfo, setUserInfo] = useState({});
-  const [sms, setSMS] = useState(false);
-  const [check, setCheck] = useState(false);
-
-  const [setActiveProfileModal, setActiveAccountModal] = useProfileStore((state) => [state.setActiveProfileModal, state.setActiveAccountModal]);
+export default function ProfileMobile({ city, this_module }) {
+  
+  const session = useSession();
+  
+  const [userDate, setUserDate] = useState('');
+  
+  const [setActiveProfileModal, setActiveAccountModal, setUser, userInfo] = useProfileStore((state) => [state.setActiveProfileModal, state.setActiveAccountModal, state.setUser, state.userInfo]);
 
   const { control, getValues, setValue } = useForm({
     defaultValues: {
       name: '',
       fam: '',
       mail: '',
+      login: '',
     },
   });
 
   useEffect(() => {
-    setValue('name', userInfo.name);
-    setValue('fam', userInfo.fam);
-    setValue('mail', userInfo.mail);
+    setValue('name', userInfo?.name ?? '');
+    setValue('fam', userInfo?.fam ?? '');
+    setValue('mail', userInfo?.mail ?? '');
+    setUserDate(userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ? `${userInfo?.date_bir_d} ${userInfo?.date_bir_m}` : '')
   }, [userInfo]);
 
   function saveMainData() {
@@ -44,16 +47,18 @@ export default function ProfileMobile({ city }) {
     userInfo.fam = userData.fam;
     userInfo.mail = userData.mail;
 
-    console.log('saveMainData', userInfo);
+    setUser(userInfo);
 
-    setUserInfo(userInfo);
-
-    ///setUser(userInfo);
-
-    //updateUser(this_module, city, session.data?.user?.token);
+    updateUser(this_module, city, session.data?.user?.token);
   }
 
-  const userDate = ''; // временно для верстки
+  function changeOtherData(type, data){
+    userInfo[ [type] ] = data === true ? 1 : 0;
+
+    setUser(userInfo);
+
+    updateUser(this_module, city, session.data?.user?.token);
+  } 
 
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="ProfileMobile">
@@ -96,7 +101,7 @@ export default function ProfileMobile({ city }) {
           <EditPencilMobile />
         </div>
         <div className="dataItem profileMain" onClick={() => setActiveProfileModal(true, 'phone')}>
-          <span className="itemSpan">+7 (916) 548-23-78</span>
+          <span className="itemSpan">{userInfo?.login ?? ''}</span>
           <LockMobile />
         </div>
         <div className="dataItem profileMain" onClick={() => userDate ? setActiveProfileModal(true, 'date_change') : setActiveProfileModal(true, 'date_first')}>
@@ -125,28 +130,26 @@ export default function ProfileMobile({ city }) {
           <EditPencilMobile />
         </div>
         <div className="dataItem profileMain">
-          <span className="itemSwitch" style={{ color: sms ? 'rgba(0, 0, 0, 0.80)' : 'rgba(0, 0, 0, 0.40)' }}>
+          <span className="itemSwitch" style={{ color: parseInt(userInfo?.spam) === 1 ? 'rgba(0, 0, 0, 0.80)' : 'rgba(0, 0, 0, 0.40)' }}>
             Хочу получать СМС с акциями, скидками и подарками
           </span>
           <MySwitch
-            //checked={disable}
-            onClick={(event) => setSMS(event.target.checked)}
+            checked={ parseInt(userInfo?.spam) == 1 ? true : false } onClick={ event => { changeOtherData('spam', event.target.checked) } }
           />
         </div>
         <div className="dataItem profileMain">
-          <span className="itemSwitch" style={{ color: check ? 'rgba(0, 0, 0, 0.80)' : 'rgba(0, 0, 0, 0.40)' }}>
+          <span className="itemSwitch" style={{ color: 'rgba(0, 0, 0, 0.40)' }}
+          //style={{ color: check ? 'rgba(0, 0, 0, 0.80)' : 'rgba(0, 0, 0, 0.40)' }}
+          >
             Хочу получать цифровые чеки на электронную почту
           </span>
-          <MySwitch
-            //checked={disable}
-            onClick={(event) => setCheck(event.target.checked)}
-          />
+          <MySwitch />
         </div>
       </div>
 
       <div className="profileDelete profileMain" onClick={() => setActiveAccountModal(true, 'exit')}>Удалить профиль навсегда</div>
 
-      <ProfileModalMobile />
+      <ProfileModalMobile city={city} this_module={this_module} />
       <AccountModalMobile />
     </Box>
   );

@@ -62,13 +62,13 @@ export default function LoginSMSCodePC({ setTimerPage }) {
 
       {timer === 0 && preTypeLogin === 'loginSMS' ? (
         <div className="loginSubHeader2" onClick={reSendSMS}>
-          <Typography component="span" style={{ textDecoration: 'underline', color: '#DD1A32' }}>
+          <Typography component="span" style={{ textDecoration: 'underline', color: '#DD1A32', cursor: 'pointer' }}>
             Войти по СМС
           </Typography>
         </div>
       ) : timer === 0 && preTypeLogin !== 'loginSMS' ? (
         <div className="loginSubHeader2" onClick={reCall}>
-          <Typography component="span" style={{ textDecoration: 'underline', color: '#DD1A32' }}>
+          <Typography component="span" style={{ textDecoration: 'underline', color: '#DD1A32', cursor: 'pointer' }}>
             Позвонить еще раз
           </Typography>
         </div>
@@ -92,12 +92,11 @@ export default function LoginSMSCodePC({ setTimerPage }) {
           placeholder="•"
         />
         <div className="vectorInput"
-           //onClick={() => navigate('createPWD')}
-           onClick={code.length === 4 ? sendsmsNewLogin : null}
+           onClick={() => navigate('createPWD')}
+           //onClick={code.length === 4 ? sendsmsNewLogin : null}
            style={{backgroundColor: code.length === 4 ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)'}}
         >
-          <VectorRightAuthMobile 
-          />
+          <VectorRightAuthMobile style={{ cursor: 'pointer'}} />
         </div>
       </div>
 

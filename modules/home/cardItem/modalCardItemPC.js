@@ -1,8 +1,9 @@
 import { useState, useEffect } from 'react';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
-import { useHomeStore, useCartStore } from '@/components/store';
+import { useHomeStore, useCartStore, useFooterStore } from '@/components/store';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -22,6 +23,8 @@ export default function ModalCardItemPC() {
 
   const [isOpenModal, closeModal, typeModal, openItem, foodValue, navigate, closeTypeModal] = useHomeStore((state) => [state.isOpenModal, state.closeModal, state.typeModal,
       state.openItem, state.foodValue, state.navigate, state.closeTypeModal]);
+
+  const [links] = useFooterStore((state) => [state.links]);
 
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
 
@@ -78,7 +81,6 @@ export default function ModalCardItemPC() {
                 <div className="FirstItem">
                   <div className="Table">
                     <div className="Title">
-                      <div></div>
                       <Typography variant="h5" component="h2" className="ItemTitleSet">Сет состоит из {openItem?.items.length} роллов:</Typography>
                     </div>
 
@@ -112,7 +114,6 @@ export default function ModalCardItemPC() {
                 <div className="FirstItem">
                   <div className="Table">
                     <div className="Title">
-                      <div></div>
                       <Typography variant="h5" component="h2" className="ItemTitleSet">Таблица пищевой ценности (на 100 г):</Typography>
                     </div>
 
@@ -120,7 +121,7 @@ export default function ModalCardItemPC() {
                       <div className="ValueTitle">
                         <Typography variant="h5" component="h2" className="ItemTitleValue">
                           Полное описание состава блюд, калорийности и возможных аллергенов можно{' '}
-                          <span style={{ color: '#DD1A32', textDecoration: 'underline', cursor: 'pointer'}}>скачать в формате PDF</span>{' '}(9 Мб)
+                          <Link href={links?.link_allergens ?? links} target="_blank" style={{ color: '#DD1A32', cursor: 'pointer'}}>скачать в формате PDF</Link>
                         </Typography>
                       </div>
                       {openItem?.items.map((item, key) => (
@@ -171,64 +172,68 @@ export default function ModalCardItemPC() {
               </ClickAwayListener>
             )}
 
-            <Grid className="SecondItem">
-              <Typography variant="h5" component="h1" className="ItemTitleStart">{openItem?.name}</Typography>
+            <ClickAwayListener mouseEvent="onMouseDown" touchEvent="onTouchStart" onClickAway={(event) => closeTypeModal(event)}>
+              <Grid className="SecondItem">
+                <Typography variant="h5" component="h1" className="ItemTitleStart">{openItem?.name}</Typography>
 
-              <div className="dop">
-                <div className="dop_text">
-                  {parseInt(openItem?.cat_id) != 4 ? null : <span className="first_text" onClick={typeModal === 'start' ? () => navigate('set') : () => navigate('start')}
-                      style={{ cursor: typeModal === 'start' ? 'pointer' : null}}
-                    >{openItem?.count_part_new}</span>
-                  }
+                <div className="dop">
+                  <div className="dop_text">
+                    {parseInt(openItem?.cat_id) != 4 ? null : <span className="first_text" onClick={typeModal === 'start' ? () => navigate('set') : () => navigate('start')}
+                        style={{ cursor: typeModal === 'start' ? 'pointer' : null}}
+                      >{openItem?.count_part_new}</span>
+                    }
 
-                  {parseInt(openItem?.cat_id) == 5 || parseInt(openItem?.cat_id) == 6 || parseInt(openItem?.cat_id) == 7 || parseInt(openItem?.cat_id) == 15 ? null : (
-                    <span className="second_text" style={{padding: parseInt(openItem?.cat_id) == 4 ? '0 0.577vw' : '0 1.444045vw 0 0' }}>
-                      {parseInt(openItem?.cat_id) == 14 ? openItem?.size_pizza : openItem?.count_part}
-                      {parseInt(openItem?.cat_id) == 14 ? ' см' : parseInt(openItem?.cat_id) == 6 ? ' л' : ' шт.'}
+                    {parseInt(openItem?.cat_id) == 5 || parseInt(openItem?.cat_id) == 6 || parseInt(openItem?.cat_id) == 7 || parseInt(openItem?.cat_id) == 15 ? null : (
+                      <span className="second_text" style={{padding: parseInt(openItem?.cat_id) == 4 ? '0 0.577vw' : '0 1.444045vw 0 0' }}>
+                        {parseInt(openItem?.cat_id) == 14 ? openItem?.size_pizza : openItem?.count_part}
+                        {parseInt(openItem?.cat_id) == 14 ? ' см' : parseInt(openItem?.cat_id) == 6 ? ' л' : ' шт.'}
+                      </span>
+                    )}
+
+                    <span className="third_text" style={{paddingLeft: parseInt(openItem?.count_part) == 1 ? 0 : '1.444045vw'}}>
+                      {new Intl.NumberFormat('ru-RU').format(openItem?.weight)}
+                      {parseInt(openItem?.id) == 17 || parseInt(openItem?.id) == 237 ? ' шт.' : parseInt(openItem?.cat_id) == 6 ? ' л' : ' г'}
                     </span>
-                  )}
-
-                  <span className="third_text" style={{paddingLeft: parseInt(openItem?.count_part) == 1 ? 0 : '1.444045vw'}}>
-                    {new Intl.NumberFormat('ru-RU').format(openItem?.weight)}
-                    {parseInt(openItem?.id) == 17 || parseInt(openItem?.id) == 237 ? ' шт.' : parseInt(openItem?.cat_id) == 6 ? ' л' : ' г'}
-                  </span>
-                </div>
-
-                <div className="dop_icon" style={{ cursor: typeModal === 'start' ? 'pointer' : null }} 
-                  onClick={typeModal === 'start' ? () => navigate('value') : () => navigate('start')}
-                >
-                  {foodValue === true ? <IconInfoRed /> : <IconInfoWhite />}
-                </div>
-              </div>
-
-              <Typography variant="h5" component="span" className="desk ItemDescStart">
-                {openItem?.marc_desc.length > 0 ? openItem?.marc_desc : openItem?.tmp_desc}
-              </Typography>
-
-              {count == 0 ? (
-                <div className="containerBTN">
-                  <Button variant="outlined" onClick={typeModal === 'start' ? () => changeCountPlus(openItem.id) : () => navigate('start')}
-                    disabled={typeModal === 'start' ? false : true}
-                  >
-                    {new Intl.NumberFormat('ru-RU').format(openItem?.price)} ₽
-                  </Button>
-                </div>
-              ) : (
-                <div className="containerBTN">
-                  <div style={{ backgroundColor: typeModal === 'start' ? '#ffff' : '#E6E6E6' }}
-                    onClick={typeModal === 'start' ? null : () => navigate('start')}
-                  >
-                    <button className="minus" onClick={typeModal === 'start' ? () => changeCountMinus(openItem.id) : () => navigate('start')}
-                      style={{cursor: typeModal === 'start' ? 'pointer' : null}}>–</button>
-
-                    <span>{count}</span>
-
-                    <button className="plus" onClick={typeModal === 'start' ? () => changeCountPlus(openItem.id) : () => navigate('start')}
-                      style={{cursor: typeModal === 'start' ? 'pointer' : null}}>+</button>
                   </div>
+
+                  <div className="dop_icon" style={{ cursor: typeModal === 'start' ? 'pointer' : null, visibility: openItem?.id === '17' || openItem?.id === '237' ? 'hidden' : 'visible' }} 
+                    onClick={typeModal === 'start' ? () => navigate('value') : () => navigate('start')}
+                  >
+                    {foodValue === true ? <IconInfoRed /> : <IconInfoWhite />}
+                  </div>
+
                 </div>
-              )}
-            </Grid>
+
+                <Typography variant="h5" component="span" className="desk ItemDescStart">
+                  {openItem?.marc_desc.length > 0 ? openItem?.marc_desc : openItem?.tmp_desc}
+                </Typography>
+
+                {count == 0 ? (
+                  <div className="containerBTN">
+                    <Button variant="outlined" onClick={typeModal === 'start' ? () => changeCountPlus(openItem.id) : () => navigate('start')}
+                      disabled={typeModal === 'start' ? false : true}
+                    >
+                      {new Intl.NumberFormat('ru-RU').format(openItem?.price)} ₽
+                    </Button>
+                  </div>
+                ) : (
+                  <div className="containerBTN">
+                    <div style={{ backgroundColor: typeModal === 'start' ? '#ffff' : '#E6E6E6' }}
+                      onClick={typeModal === 'start' ? null : () => navigate('start')}
+                    >
+                      <button className="minus" onClick={typeModal === 'start' ? () => changeCountMinus(openItem.id) : () => navigate('start')}
+                        style={{cursor: typeModal === 'start' ? 'pointer' : null}}>–</button>
+
+                      <span>{count}</span>
+
+                      <button className="plus" onClick={typeModal === 'start' ? () => changeCountPlus(openItem.id) : () => navigate('start')}
+                        style={{cursor: typeModal === 'start' ? 'pointer' : null}}>+</button>
+                    </div>
+                  </div>
+                )}
+              </Grid>
+            </ClickAwayListener>
+
           </Grid>
         </Box>
       </DialogContent>

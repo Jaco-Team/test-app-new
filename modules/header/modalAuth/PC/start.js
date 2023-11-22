@@ -77,9 +77,9 @@ export default function StartPC() {
         inputAdornment={
           <InputAdornment position="end">
             {loginLogin.length === 11 ? (
-              <CheckAuthMobile style={{ height: '1.4440433212996vw', width: '1.4440433212996vw' }} />
+              <CheckAuthMobile className='checkSVG' />
             ) : (
-              <ClearAuthMobile style={{ height: '1.4440433212996vw', width: '1.4440433212996vw' }} onClick={() => changeLogin('')} />
+              <ClearAuthMobile className='checkSVG' onClick={() => changeLogin('')} />
             )}
           </InputAdornment>
         }
@@ -98,20 +98,20 @@ export default function StartPC() {
             inputAdornment={
               <InputAdornment position="end">
                 {checkPass ? (
-                  <CheckAuthMobile style={{ height: '1.4440433212996vw', width: '1.4440433212996vw' }} />
+                  <CheckAuthMobile className='checkSVG' />
                 ) : (
-                  <ClearAuthMobile style={{ height: '1.4440433212996vw', width: '1.4440433212996vw' }} onClick={() => setPwdLogin('')} />
+                  <ClearAuthMobile className='checkSVG' onClick={() => setPwdLogin('')} />
                 )}
               </InputAdornment>
             }
           />
           {showPassword ? (
             <div className="eye_icon" onClick={() => setShowPassword(false)}>
-              <EyeShow_modalOrder />
+              <EyeShow_modalOrder style={{ cursor: 'pointer' }}/>
             </div>
           ) : (
             <div className="eye_icon" onClick={() => setShowPassword(true)}>
-              <EyeHide_modalOrder />
+              <EyeHide_modalOrder style={{ cursor: 'pointer' }} />
             </div>
           )}
         </div>

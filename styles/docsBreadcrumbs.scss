@@ -1,77 +1,66 @@
-@import "./settings";
+@import './settings';
 
-.DocsBreadcrumbs{
-    @media (max-width: 799px) {
-        display: none;
+.DocsBreadcrumbs {
+  margin-top: $MyScale300 !important;
+  margin-left: $MyScale160 !important;
+  width: $MyScale840;
+
+  & > div {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.07);
+    border-radius: $MyScale80 !important;
+    display: grid;
+    position: sticky;
+    top: $MyScale300 !important;
+
+    & > span {
+      margin-top: $MyScale80;
+      margin-left: $MyScale80;
+      margin-right: $MyScale80;
+      height: $MyScale40;
+      line-height: $MyScale40;
+      @include font30_700();
+      text-transform: uppercase;
     }
-    margin-top: 64px!important;
-    
-    @media (min-width: 800px) {
-        display: block;
-        //margin-top: 15vw!important;
-        margin-top: $MyScale300!important;
-        margin-bottom: 140px!important;
-
-        padding-top: 0!important;
-
-        margin-left: $MyScale160!important;
-        margin-right: $MyScale125!important;
-        width: $MyScale800!important;
-        padding-left: 0px!important;
+    & > div {
+      margin-top: $MyScale80;
+      margin-left: $MyScale80;
+      margin-right: $MyScale80;
+      height: $MyScale40;
+      & > span {
+        @include font30_700();
+        text-transform: uppercase;
+      }
     }
 
-    & > div{
-        width: 100%;
-        background-color: rgba(0, 0, 0, 0.07);
-        border-radius: $MyScale80!important;
-        display: grid;
-        position: sticky;
-        top: $MyScale300!important;
-        
-        & > span{
-            margin-top: $MyScale80;
-            margin-left: $MyScale80;
-            margin-right: $MyScale80;
-            height: $MyScale40;
-            line-height: $MyScale40;
-            @include font30_700();
-            text-transform: uppercase;
+    & > ul {
+      margin-left: $MyScale60;
+      margin-right: $MyScale80;
+      margin-top: $MyScale20;
+      margin-bottom: $MyScale70;
+      min-height: $MyScale300;
+      padding-left: $MyScale45;
+
+      & > li.activeMarker {
+        color: $colorMain;
+      }
+
+      & > li {
+        min-height: $MyScale60;
+        line-height: $MyScale60;
+        @include font30_400();
+        & > a {
+          @include font30_400();
+          text-decoration: none;
+          cursor: pointer;
         }
-        & > div{
-            margin-top: $MyScale80;
-            margin-left: $MyScale80;
-            margin-right: $MyScale80;
-            height: $MyScale40;
-            & > span{
-                @include font30_700();
-                text-transform: uppercase;
-            }
-        } 
-        
-        & > ul{
-            margin-left: $MyScale60;
-            margin-right: $MyScale80;
-            margin-top: $MyScale20;
-            margin-bottom: $MyScale70;
-            min-height: $MyScale300;
-            padding-left: $MyScale45;
-            & > li{
-                min-height: $MyScale60;
-                line-height: $MyScale60;
-                @include font30_400();
-                & > a{
-                    @include font30_400();
-                    text-decoration: none;
-                    cursor: pointer;
-                }
-                & > a.active{
-                    color: $colorMain;
-                    
-                }
-                & > a:not(.active){
-                    color: $colorText;
-                }
-            }
+        & > a.active {
+          color: $colorMain;
         }
+        & > a:not(.active) {
+          color: $colorText;
+        }
+      }
     }
+  }
 }

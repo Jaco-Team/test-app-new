@@ -43,11 +43,11 @@ export default function Account(props) {
 
   return (
     <div className={roboto.variable}>
-      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
+      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'profile'} />
 
-      <DynamicPage page={page} this_module={this_module} city={city} />
+      <DynamicPage page={page} this_module={'profile'} city={city} />
 
-      <DynamicFooter cityName={city} />
+      <DynamicFooter cityName={city} active_page={this_module} />
     </div>
   );
 }

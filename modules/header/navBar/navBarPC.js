@@ -15,7 +15,7 @@ import {MapPointIcon, ArrowDownHeaderPC, ArrowUpHeaderPC, BurgerIconPC } from '@
 
 import { Link as ScrollLink } from 'react-scroll';
 
-import { useHeaderStore, useCartStore, useCitiesStore } from '@/components/store.js';
+import { useHeaderStore, useCartStore, useCitiesStore, useFooterStore } from '@/components/store.js';
 import useScroll from '../hook.js';
 
 import BasketIconHeaderPC from '../basket/basketIconHeaderPC.js';
@@ -26,6 +26,7 @@ let catList = [{id: '1', name: 'Роллы', link: 'rolly', count_2: '107', coun
 count: '4', list: [{id: '5', name: 'Закуски', link: 'zakuski', count_2: '0', count: '9'}, {id: '7', name: 'Соусы', link: 'sousy', count_2: '0', count: '9'}, {id: '1', name: 'Салаты и фри', link: 'salat'}, {id: '2', name: 'Десерты', link: 'desert'}]}, {id: '6', name: 'Напитки', link: 'napitki', count_2: '0', count: '10'}];
 
 const MenuBurger = React.memo(function MenuBurger({ anchorEl, city, isOpen, onClose }){
+  const [links] = useFooterStore((state) => [state.links]);
   return(
     <Menu id='chooseHeaderCat' anchorEl={anchorEl} open={isOpen} onClose={ () => onClose() } anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} transformOrigin={{ vertical: 'top',  horizontal: 'center' }} autoFocus={false}>
          
@@ -34,7 +35,23 @@ const MenuBurger = React.memo(function MenuBurger({ anchorEl, city, isOpen, onCl
       </MenuItem>
       
       <MenuItem onClick={() => onClose()}>
-        <Link href={`/${city}`}><span>Документы</span></Link>
+        <Link href={"/"+city+"/publichnaya-oferta"}><span>Публичная оферта</span></Link>
+      </MenuItem>
+
+      <MenuItem onClick={() => onClose()}>
+        <Link href={"/"+city+"/politika-konfidencialnosti"}><span>Политика конфиденциальности</span></Link>
+      </MenuItem>
+
+      <MenuItem onClick={() => onClose()}>
+        <Link href={"/"+city+"/instpayorders"}><span>Правила оплаты</span></Link>
+      </MenuItem>
+
+      <MenuItem onClick={() => onClose()}>
+        <Link href={"/"+city+"/legal"}><span>Согласие на обработку персональных данных</span></Link>
+      </MenuItem>
+
+      <MenuItem onClick={() => onClose()}>
+        <Link href={links?.link_allergens ?? links} target="_blank"><span>Калорийность, состав, БЖУ</span></Link>
       </MenuItem>
       
     </Menu>
@@ -89,6 +106,7 @@ export default function NavBarPC({ city, active_page }) {
 
       if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
         const city = JSON.parse(localStorage.getItem('setCity'));
+
         if (city.name !== thisCityRu) {
           setThisCityRu(city.name);
           setThisCity(city.link);

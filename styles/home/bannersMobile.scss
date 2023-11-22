@@ -2,10 +2,10 @@
 
 .BannerMobile {
   & .Item {
-    width: 93.162393162393vw;
-    margin: 17.094017094017vw 3.4188034188034vw 0 3.4188034188034vw;
-    height: 29.57264957265vw;
-    border-radius: 3.4188034188034vw;
+    width: $MyScale1090_mobile;
+    margin: $MyScale200_mobile $MyScale40_mobile 0 $MyScale40_mobile;
+    height: $MyScale346_mobile;
+    border-radius: $MyScale40_mobile;
     background-color: #3faad8;
   }
 
@@ -14,19 +14,178 @@
     top: 0 !important;
     z-index: 3000 !important;
     position: relative !important;
-    margin-top: 1.7094017094017vw;
+    margin-top: $MyScale20_mobile;
     display: flex;
     justify-content: center;
     & .swiper-pagination-bullet {
-      width: 1.7094017094017vw;
-      height: 1.7094017094017vw;
+      width: $MyScale20_mobile;
+      height: $MyScale20_mobile;
       background: rgba(0, 0, 0, 0.1);
-      margin-right: 1.7094017094017vw !important;
+      margin-right: $MyScale20_mobile !important;
       margin-left: 0 !important;
       opacity: 1;
     }
     & .swiper-pagination-bullet-active {
       background: rgba(0, 0, 0, 0.3);
     }
+  }
+}
+
+#modalBannerMobile {
+  & .MuiDrawer-paper {
+    max-height: calc(100% - $MyScale200_mobile);
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+
+    & .BannerMobile {
+      width: 100%;
+
+      & .ImgItemMobile {
+        width: 100%;
+
+        & .ItemMobile {
+          height: $MyScale450_mobile;
+          border-radius: $MyScale80_mobile;
+          position: relative;
+
+          & .Group {
+            z-index: 5;
+            position: absolute;
+            left: $MyScale80_mobile;
+            bottom: $MyScale40_mobile;
+            width: $MyScale620_mobile;
+            height: $MyScale60_mobile;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+
+            & button {
+              background: #ffffff;
+              height: $MyScale60_mobile;
+              width: $MyScale340_mobile;
+              border-radius: $MyScale60_mobile;
+              display: flex;
+              align-items: center;
+
+              & span {
+                text-decoration: line-through;
+                text-decoration-color: #dd1a32;
+                text-decoration-thickness: $MyScale3_mobile;
+                margin-right: $MyScale20_mobile;
+              }
+            }
+
+            & .spanButton {
+              height: $MyScale60_mobile;
+              width: $MyScale240_mobile;
+              color: #fff;
+              display: flex;
+              align-items: center;
+              & svg {
+                width: $MyScale24_mobile;
+                height: $MyScale24_mobile;
+              }
+            }
+          }
+        }
+      }
+
+      & .DescItemMobile {
+        max-width: calc(100% - $MyScale100_mobile);
+        display: flex;
+        flex-direction: column;
+        margin-top: $MyScale60_mobile;
+
+        & .FirstItemMobile {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: $MyScale40_mobile;
+
+          & .TextDecor {
+            text-decoration: underline;
+            color: #dd1a32;
+          }
+        }
+
+        & .SecondItemMobile {
+          display: flex;
+          flex-direction: column;
+          margin-bottom: $MyScale60_mobile;
+
+          & .Title {
+            margin-bottom: $MyScale30_mobile;
+          }
+
+          & .List {
+            display: flex;
+            flex-direction: column;
+
+            & div {
+              display: flex;
+              margin-bottom: $MyScale20_mobile;
+
+              .itemNumber {
+                width: $MyScale60;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-end;
+                margin-top: $MyScale30_mobile;
+              }
+
+              .itemImg {
+                width: $MyScale280_mobile;
+
+                & img {
+                  object-fit: contain;
+                  image-rendering: auto;
+                  width: 100%;
+                  height: auto;
+                }
+              }
+
+              .itemDesc {
+                width: $MyScale600_mobile;
+                display: flex;
+                justify-content: flex-start;
+                flex-direction: column;
+
+                & span {
+                  height: $MyScale120_mobile;
+                  margin-left: $MyScale40_mobile;
+                  text-align: left;
+                  display: flex;
+                  align-items: center;
+                }
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+.BannerFontMobile {
+  & .ItemTitle {
+    @include font50_500();
+  }
+
+  & .ItemName {
+    @include font40_400();
+  }
+
+  & .ItemOther {
+    @include font30_400();
+  }
+
+  & .ItemSpan {
+    @include font40_500();
+  }
+
+  & .ItemDesk {
+    @include font25_400();
+  }
+
+  & .ItemTime {
+    @include font22_400();
   }
 }

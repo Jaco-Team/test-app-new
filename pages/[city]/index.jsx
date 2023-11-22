@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 
-import Script from 'next/script'; 
 import dynamic from 'next/dynamic'
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'))
-const DynamicFooter = dynamic(() => import('@/components/footer.js'))
-const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'))
+const DynamicHeader = dynamic(() => import('@/components/header.js'));
+const DynamicFooter = dynamic(() => import('@/components/footer.js'));
+const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'));
+const LoadMap = dynamic(() => import('@/components/loadMap'));
 
 import { roboto } from '@/ui/Font.js'
 import { api } from '@/components/api.js';
@@ -37,9 +37,9 @@ export default function Home(props) {
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
 
-      setTimeout( () => {
+      setTimeout(() => {
         changeAllItems();
-      }, 300 )
+      }, 300);
 
     }
 
@@ -49,12 +49,12 @@ export default function Home(props) {
     setAllItems(all_items);
     setActivePage('home');
     
-  }, [thisCity, city]);
+  }, [city, thisCity]);
 
   return (
     <div className={roboto.variable}>
 
-       <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" onLoad={() =>  getData('contacts', city)} />
+      <LoadMap getData={getData} city={city} />
 
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 

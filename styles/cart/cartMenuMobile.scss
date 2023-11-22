@@ -51,7 +51,7 @@
         width: 100%;
         height: $MyScale400_mobile;
         margin-bottom: $MyScale117_mobile;
-        border-radius: 40px;
+        border-radius: $MyScale40_mobile;
 
         & .message {
           width: 100% !important;
@@ -90,7 +90,7 @@
         width: 100%;
         padding: 0;
         & li {
-          height: $MyScale163_mobile;
+          min-height: $MyScale163_mobile;
           border-bottom: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
           padding: 0;
 
@@ -100,52 +100,51 @@
             align-items: center;
             height: 100%;
             width: 100%;
+            padding: $MyScale25_mobile 0;
 
             & .containerSpan {
               display: flex;
               align-items: center;
               height: 100%;
 
-              & span:first-child {
+              & span:nth-child(1) {
                 @include font50_500();
                 margin-right: $MyScale50_mobile;
                 text-align: left;
               }
-              & span:last-child {
+              & span:nth-child(2) {
                 @include font40_400();
                 color: rgba(0, 0, 0, 0.4) !important;
                 text-align: left;
               }
             }
 
-            & .maxWidthSpan {
-              text-overflow: ellipsis;
-              overflow: hidden;
-              white-space: nowrap;
-            }
-
-            & .spanPay {
-              height: $MyScale20_mobile;
-              margin-right: $MyScale10_mobile;
+            & div {
               display: flex;
               align-items: center;
-              @include font50_500();
-            }
+              width: 100%;
 
-            & .circleDiv {
-              margin-right: $MyScale20_mobile;
-              width: $MyScale100_mobile;
-              height: $MyScale100_mobile;
-              border-radius: $MyScale100_mobile;
-              background: rgba(0, 0, 0, 0.07);
-              display: flex;
-              justify-content: center;
-              align-items: center;
-              & svg {
-                width: $MyScale60_mobile;
-                height: $MyScale60_mobile;
+              & span {
+                @include font50_500();
+              }
+
+              & .circle {
+                margin-left: auto;
+                margin-right: $MyScale20_mobile;
+                min-width: $MyScale100_mobile;
+                height: $MyScale100_mobile;
+                border-radius: $MyScale100_mobile;
+                background: rgba(0, 0, 0, 0.07);
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                & svg {
+                  width: $MyScale60_mobile;
+                  height: $MyScale60_mobile;
+                }
               }
             }
+
           }
         }
       }

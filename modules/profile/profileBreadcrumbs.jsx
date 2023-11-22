@@ -16,7 +16,7 @@ export default function ProfileBreadcrumbs() {
         <div>
           <span>Личный кабинет</span>
         </div>
-        { thisCity.length == 0 ? null :
+        { thisCity?.length == 0 ? null :
           <ul>
             <li><Link href={"/"+thisCity+"/zakazy"} className={ activePage == 'zakazy' ? 'active' : '' }>История заказов</Link></li>
             <li><Link href={"/"+thisCity+"/profile"} className={ activePage == 'profile' ? 'active' : '' }>Личные данные</Link></li>

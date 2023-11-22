@@ -4,6 +4,7 @@ import CardItems from './cardItem/cardItems.js';
 import ModalCardItemPC from './cardItem/modalCardItemPC.js';
 import ModalCardItemMobile from './cardItem/modalCardItemMobile';
 import ModalBannerPC from './banners/modalBannersPC';
+import ModalBannerMobile from './banners/modalBannersMobile';
 import MenuCatMobile from './menuCatMobile/menuCatMobile'
 
 import Meta from '@/components/meta.js';
@@ -21,6 +22,7 @@ export default function HomePage({ page, city } ) {
       <BannersMobile />
       <MenuCatMobile city={city}/>
       <ModalCardItemMobile />
+      <ModalBannerMobile />
       </>
       : 
       <>

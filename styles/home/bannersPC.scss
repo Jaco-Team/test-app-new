@@ -2,10 +2,10 @@
 
 .modalBannerPC {
   & .MuiDialog-paper {
-    border-radius: 2.888085vw;
+    border-radius: $MyScale80;
     overflow: visible;
-    margin: 8.66425vw 0;
-    width: 90.975vw;
+    margin: $MyScale240 0;
+    width: $MyScale2520;
     max-width: none !important;
   }
 }
@@ -23,43 +23,44 @@
     // }
 
     & .Item {
-      width: 90.975vw;
-      height: 28.881vw;
+      width: $MyScale2520;
+      height: $MyScale800;
       background-color: #3faad8;
-      border-radius: 2.888085vw;
+      border-radius: $MyScale80;
       position: relative;
 
       & .Group {
-        z-index: 1;
+        z-index: 5;
         position: absolute;
-        top: 25vw;
-        left: 20.289vw;
-        width: 31.047vw;
-        height: 4vw;
-        transform: translate(-50%, -50%);
+        left: $MyScale160;
+        bottom: $MyScale80;
+        width: $MyScale860;
+        height: $MyScale80;
         display: flex;
         align-items: center;
+        justify-content: space-between;
 
         & button {
           background: #ffffff;
-          height: 2.888085vw;
-          width: 14.441vw;
-          border-radius: 1.625vw;
+          height: $MyScale80;
+          width: $MyScale400;
+          border-radius: $MyScale45;
           cursor: pointer;
           display: flex;
           align-items: center;
-          margin-right: 2.167vw;
 
           & span {
-            color: #b1b1b1;
             text-decoration: line-through;
             text-decoration-color: #dd1a32;
-            margin-right: 0.55vw;
+            text-decoration-thickness: $MyScale3;
+            margin-right: $MyScale20;
           }
         }
 
-        & span {
-          color: #ffffff;
+        & .spanButton {
+          height: $MyScale80;
+          width: $MyScale400;
+          color: #fff;
           display: flex;
           align-items: center;
           cursor: pointer;
@@ -70,18 +71,19 @@
 
   & .DescItem {
     display: flex;
-    margin: 2.8881vw 5.7762vw 2.8881vw 3.611vw;
+    margin-top: $MyScale80;
+    margin-bottom: $MyScale160;
     justify-content: space-between;
-    width: 100%;
+    width: $MyScale2260;
 
     & .FirstItem {
-      width: 35.3791vw;
+      width: $MyScale980;
       display: flex;
       flex-direction: column;
 
       & .Title {
-        padding-left: 2.1661vw;
-        margin-bottom: 1.0831vw;
+        margin-left: $MyScale60;
+        margin-bottom: $MyScale30;
       }
 
       & .List {
@@ -90,18 +92,18 @@
 
         & div {
           display: flex;
-          margin-bottom: 0.7221vw;
+          margin-bottom: $MyScale20;
 
           .itemNumber {
-            width: 3.1vw;
+            width: $MyScale60;
             flex-direction: column;
             justify-content: flex-start;
             align-items: flex-end;
-            padding-top: 1.0831vw;
+            margin-top: $MyScale30;
           }
 
           .itemImg {
-            width: 11.0548vw;
+            width: $MyScale280;
 
             & img {
               object-fit: contain;
@@ -112,17 +114,17 @@
           }
 
           .itemDesc {
-            width: 24.536vw;
+            width: $MyScale600;
             display: flex;
             justify-content: flex-start;
             flex-direction: column;
 
             & span {
-              height: 4.3322vw;
+              height: $MyScale120;
+              margin-left: $MyScale40;
               text-align: left;
               display: flex;
               align-items: center;
-              padding-left: 1.444vw;
             }
           }
         }
@@ -130,7 +132,7 @@
     }
 
     & .SecondItem {
-      width: 38.9897vw;
+      width: $MyScale1080;
       display: flex;
       flex-direction: column;
 
@@ -140,14 +142,6 @@
         cursor: pointer;
       }
     }
-  }
-
-  & .Line {
-    height: 0.3612vw;
-    width: 10.8305vw;
-    margin-bottom: 1.64vw;
-    background: rgba(0, 0, 0, 0.2);
-    border-radius: 0.1805055vw;
   }
 }
 
@@ -178,56 +172,67 @@
 }
 
 .swiper-slide {
-  cursor: pointer; 
+  cursor: pointer;
 }
 
-.swiper-scrollbar{
+.swiper-scrollbar {
   display: none;
 }
 
-.swiper-pagination{
+.swiper-pagination {
   bottom: 0 !important;
   top: 0 !important;
-  z-index: 3000!important;
-  position: relative!important;
+  z-index: 3000 !important;
+  position: relative !important;
   margin-top: 0.72202166064982vw;
   display: flex;
   justify-content: center;
-  & .swiper-pagination-bullet{
-      width: 0.72202166064982vw;
-      height: 0.72202166064982vw;
-      margin-right: 0.72202166064982vw !important;
-      margin-left: 0 !important;
-      background: rgba(0, 0, 0, 0.1);
-      opacity: 1;
+  & .swiper-pagination-bullet {
+    width: 0.72202166064982vw;
+    height: 0.72202166064982vw;
+    margin-right: 0.72202166064982vw !important;
+    margin-left: 0 !important;
+    background: rgba(0, 0, 0, 0.1);
+    opacity: 1;
   }
-  & .swiper-pagination-bullet-active{
-      background: rgba(0, 0, 0, 0.3);
+  & .swiper-pagination-bullet-active {
+    background: rgba(0, 0, 0, 0.3);
   }
 }
 
-.swiper-button-prev{
-  width: 60px!important;
-  height: 28.881vw!important;
-  top: 0!important;
-  left: 0!important;
-  padding-left: 1.444043vw!important;
-  z-index: 1!important;
-  position: absolute!important;
-  margin-top: 0!important;
+.swiper-button-prev {
+  width: 60px !important;
+  height: 28.881vw !important;
+  top: 0 !important;
+  left: 0 !important;
+  padding-left: 1.444043vw !important;
+  z-index: 1 !important;
+  position: absolute !important;
+  margin-top: 0 !important;
 }
 
-.swiper-button-next{
-  width: 60px!important;
-  height: 28.881vw!important;
-  top: 0!important;
-  right: 0!important;
-  padding-right: 1.444043vw!important;
-  z-index: 1!important;
-  position: absolute!important;
-  margin-top: 0!important;
+.swiper-button-next {
+  width: 60px !important;
+  height: 28.881vw !important;
+  top: 0 !important;
+  right: 0 !important;
+  padding-right: 1.444043vw !important;
+  z-index: 1 !important;
+  position: absolute !important;
+  margin-top: 0 !important;
 }
 
-.swiper-button-next:after, .swiper-button-prev:after{
-  content: ''!important;
+.swiper-button-next:after,
+.swiper-button-prev:after {
+  content: '' !important;
+}
+
+.swiper-button-prev:focus,
+.swiper-button-next:focus {
+  outline: none !important;
+}
+
+.swiper-button-prev:active,
+.swiper-button-next:active {
+  outline: none !important;
 }

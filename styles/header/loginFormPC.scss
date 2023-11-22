@@ -43,6 +43,12 @@
         flex-direction: column;
         align-items: center;
 
+        & .checkSVG {
+          height: $MyScale40;
+          width: $MyScale40;
+          cursor: pointer;
+        }
+
         & .loginErr {
           height: $MyScale40;
           display: flex;
@@ -131,6 +137,7 @@
           align-items: center;
           height: $MyScale40;
           margin-bottom: $MyScale20;
+          cursor: pointer;
           & span {
             text-decoration: underline;
             @include font22_400();
@@ -145,6 +152,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
+          cursor: pointer;
           & span {
             @include font30_400();
             color: #ffffff !important;
@@ -167,6 +175,7 @@
           align-items: center;
           justify-content: center;
           background-color: #000;
+          cursor: pointer;
           & span {
             @include font22_400();
             color: #ffffff !important;
@@ -183,7 +192,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
-
+          cursor: pointer;
           & span {
             text-decoration: underline;
             @include font22_400();
@@ -403,6 +412,7 @@
 
         & .loginPrev {
           height: $MyScale40;
+          cursor: pointer;
 
           & span {
             text-decoration: underline;
@@ -416,6 +426,12 @@
         display: flex;
         flex-direction: column;
         align-items: center;
+
+        & .checkSVG {
+          height: $MyScale40;
+          width: $MyScale40;
+          cursor: pointer;
+        }
 
         & .loginSubHeader {
           width: $MyScale500;
@@ -561,6 +577,7 @@
           display: flex;
           align-items: center;
           justify-content: center;
+          cursor: pointer;
           & span {
             @include font30_400();
             color: #ffffff !important;
@@ -607,6 +624,7 @@
           align-items: center;
           justify-content: center;
           background-color: #dd1a32;
+          cursor: pointer;
           & span {
             @include font30_400();
             color: #ffffff !important;

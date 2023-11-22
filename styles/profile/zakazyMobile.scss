@@ -351,7 +351,10 @@
 
           & .zakazy_dop_2 {
             width: $MyScale920_mobile;
+            min-height: $MyScale120_mobile;
             display: flex;
+            padding-top: $MyScale20_mobile;
+            padding-bottom: $MyScale23_mobile;
             align-items: center;
 
             & span {
@@ -366,17 +369,29 @@
             }
 
             & span:nth-child(2) {
-              height: $MyScale60_mobile;
-              margin-right: $MyScale20_mobile;
+              max-width: $MyScale700_mobile;
             }
 
-            & .svgGroup {
-              height: $MyScale20_mobile;
-              width: $MyScale207_mobile;
-              align-self: center;
+            & .divGroup {
+              max-width: $MyScale700_mobile;
+              height: $MyScale60_mobile;
+              margin-right: $MyScale20_mobile;
+
+              & span {
+                margin-right: $MyScale20_mobile;
+              }
+              
+              & .svgGroup {
+                margin-top: $MyScale10_mobile;
+                margin-bottom: $MyScale5_mobile;
+                height: $MyScale20_mobile;
+                width: $MyScale207_mobile;
+              }
             }
 
             & .svgEye {
+              margin-left: auto;
+              margin-right: $MyScale10_mobile;
               height: $MyScale80_mobile;
               width: $MyScale80_mobile;
             }

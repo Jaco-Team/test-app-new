@@ -32,7 +32,13 @@ export default function DataTimePicker() {
   useEffect(() => {
     const timePredFilter = timePreOrder?.filter((time) => time.name !== 'В ближайшее время');
 
-    setSlidesDate(datePreOrder);
+    if(!timePredFilter.length) {
+      const datePreOrderFilter = datePreOrder?.filter((day) => day.text !== 'Сегодня')
+      setSlidesDate(datePreOrderFilter);
+    } else {
+      setSlidesDate(datePreOrder);
+    }
+
     setSlidesTime(timePredFilter);
   }, [timePreOrder, datePreOrder]);
 
@@ -72,7 +78,7 @@ export default function DataTimePicker() {
     <>
       {matches ? (
         <Dialog
-          onClose={onClose}
+          onClose={chooseData}
           className={'cartMenuMobileDataTime ' + roboto.variable}
           open={openDataTimePicker}
           slots={Backdrop}
@@ -106,7 +112,7 @@ export default function DataTimePicker() {
         </Dialog>
       ) : (
         <Dialog
-          onClose={onClose}
+          onClose={chooseData}
           className={'dataTimePickerPC ' + roboto.variable}
           open={openDataTimePicker}
           slots={Backdrop}

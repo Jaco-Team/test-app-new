@@ -135,9 +135,13 @@ export default function ModalOrder() {
                   
                   <div className='order_city'>
                     {isShowAddr ?
-                      <span>{modalOrder?.order?.city_name}, { modalOrder?.order?.street + ', ' + modalOrder?.order?.home + ', кв. ' + modalOrder?.order?.kv }</span>
+                      <span>
+                        {modalOrder?.order?.city_name}, 
+                        { modalOrder?.order?.street + ', ' + modalOrder?.order?.home + ', кв. ' + modalOrder?.order?.kv }</span>
                         :
-                      <span>{modalOrder?.order?.city_name} <AddrDotsModalOrderIcon className="long" /></span>
+                      <span>
+                        {modalOrder?.order?.city_name} 
+                        <AddrDotsModalOrderIcon className="long" /></span>
                     }
                   </div>
                 </div>
@@ -155,7 +159,7 @@ export default function ModalOrder() {
             <Grid item xs={12} className='header_cart_table'>
               <div className='table_header'>
                 <span>Состав и стоимость заказа:</span>
-                <span>{modalOrder?.order?.sum_order} ₽</span>
+                <span>{new Intl.NumberFormat('ru-RU').format(modalOrder?.order?.sum_order)}{' '}₽</span>
               </div>
 
               {modalOrder?.order_items?.map( (item, key) =>
@@ -164,7 +168,7 @@ export default function ModalOrder() {
                     <span>{item.count}</span>
                     <span>{item.name}</span>
                   </div>
-                  <span>{item.price} ₽</span>
+                  <span>{new Intl.NumberFormat('ru-RU').format(item.price)}{' '}₽</span>
                 </div>
               )}
             </Grid>

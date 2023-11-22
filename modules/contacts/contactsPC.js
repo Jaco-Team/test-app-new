@@ -18,10 +18,10 @@ import ListItemText from '@mui/material/ListItemText';
 import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 
-
 import MySwitch from '@/ui/Switch.js';
 export default function ContactsPagePC({ city }) {
-  const [thisCityList, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu]);
+
+  const [thisCityList, thisCityRu, setThisCityRu, setThisCity] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu, state.setThisCity]);
 
   const [getData, myAddr, phone, disablePointsZone, disable, chooseAddr] = useContactStore((state) => [
     state.getData, state.myAddr, state.phone, state.disablePointsZone, state.disable, state.chooseAddr, state.myMap]);
@@ -32,28 +32,22 @@ export default function ContactsPagePC({ city }) {
 
   const open = Boolean(anchorEl);
 
-  const openMenu = (event) => {
-    //setActiveModalCity(true); // временно, чтобы открыть модалку города
-
-    setAnchorEl(event.currentTarget); // временно, чтобы открыть модалку города
-  };
-
   const chooseCity = (city) => {
+    localStorage.setItem('setCity', JSON.stringify(city));
     setThisCityRu(city.name);
-
+    setThisCity(city.link);
     setAnchorEl(null);
-
     getData(activePage, city.link);
   };
 
   useEffect(() => {
-    //getData('contacts', city);
+    getData('contacts', city);
   }, []);
 
   return (
     <Box className="Contact_" sx={{ display: { xs: 'none', md: 'none', lg: 'block' } }}>
       <div className="Contact">
-        <Button className="chooseCity" onClick={openMenu} endIcon={<KeyboardArrowDownIcon />}>
+        <Button className="chooseCity" onClick={(event) => setAnchorEl(event.currentTarget)} endIcon={<KeyboardArrowDownIcon />}>
           <Typography variant="h5" component="span">
             {thisCityRu}
           </Typography>

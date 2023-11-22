@@ -4,26 +4,23 @@ import Image from 'next/image';
 
 import { useHomeStore } from '@/components/store';
 
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import Backdrop from '@mui/material/Backdrop';
-import IconButton from '@mui/material/IconButton';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-import { IconClose } from '@/ui/Icons';
-
 import { roboto } from '@/ui/Font';
 
 const ban1 = {
   id: '84',
   name: 'Состав комбо',
-  title: 'Пицца Пепперони и большой сет Атлантида из 4 роллов всего за  1 330  1 125 ₽',
+  title:
+    'Пицца Пепперони и большой сет Атлантида из 4 роллов всего за  1 330  1 125 ₽',
   for: 'Для кого',
-  desk1:'Универсальное комбо на компанию из четырёх–шести человек с разными вкусами и предпочтениями — и вкусно, и сытно.',
+  desk1:
+    'Универсальное комбо на компанию из четырёх–шести человек с разными вкусами и предпочтениями — и вкусно, и сытно.',
   how: 'Как заказать',
   desk2:
     'Нажмите кнопку с ценой прямо на баннере или введите промокод «ДЖАМБО» в специальном поле для промокода в Корзине. Товары из комбо добавятся в корзину автоматически. Вы можете добавить в заказ и другие товары, скидка на комбо сохранится.',
@@ -227,7 +224,7 @@ const ban3 = {
 
 const banners = [ban1, ban2, ban3];
 
-export default function ModalBannerPC() {
+export default function ModalBannerMobile() {
   //console.log('render ModalBannerPC');
 
   const [setActiveBanner, openModalBanner, banner] = useHomeStore((state) => [state.setActiveBanner, state.openModalBanner, state.banner]);
@@ -240,135 +237,122 @@ export default function ModalBannerPC() {
   }, [banner]);
 
   return (
-    <Dialog
-      onClose={() => setActiveBanner(false, null)}
-      className={'modalBannerPC ' + roboto.variable}
+    <SwipeableDrawer
+      anchor={'bottom'}
       open={openModalBanner}
-      slots={Backdrop}
-      slotProps={{ timeout: 500 }}
-      scroll='body'
+      onClose={() => setActiveBanner(false, null)}
+      onOpen={() => {}}
+      id="modalBannerMobile"
+      className={roboto.variable}
+      disableSwipeToOpen
     >
-      <DialogContent style={{ padding: 0, overflow: 'hidden' }}>
-        <Box component="div" className="BannerPC BannerFontPC">
-          <IconButton style={{ position: 'absolute', left: '-3.3vw', paddingTop: '0', backgroundColor: 'transparent', zIndex: 50 }} onClick={() => setActiveBanner(false, null)}>
-            <IconClose style={{ width: '2.166vw', height: '2.166vw', overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)' }} />
-          </IconButton>
-
-          <Grid container justifyContent="center">
-            <Grid className="ImgItem">
-              {/* <Image alt={banner?.promo_title} src={ 'https://storage.yandexcloud.net/site-home-img/' + banner?.img_new + '3700х1000.jpg'} width={3700} height={1000} priority={true}
+      <Box component="div" className="BannerMobile BannerFontMobile">
+        <Grid container justifyContent="center">
+          <Grid className="ImgItemMobile">
+            {/* <Image alt={banner?.promo_title} src={ 'https://storage.yandexcloud.net/site-home-img/' + banner?.img_new + '3700х1000.jpg'} width={3700} height={1000} priority={true}
               /> */}
-              <div className="Item"
-                style={{ backgroundColor: banner?.id === '84' ? '#3faad8' : banner?.id === '80' ?  '#B570DF' : banner?.id === '48' ? '#F45773' : null}}
-              >
-
-                <div className="Group">
-                  {banner?.id === '84' ? 
-                    <Button variant="contained" className="ItemOther"><span>1 330</span>1 125 ₽</Button>
-                  : banner?.id === '80' ? 
-                    <Button variant="contained" className="ItemOther">В корзину</Button>
-                  : null}
-
-                  <Typography className="ItemOther spanButton" variant="h5" component="span" onClick={() => setActiveBanner(false, null)}>
-                    Условия акции
-                    <KeyboardArrowUpIcon />
-                  </Typography>
-                </div>
-
-              </div>
-
-            </Grid>
-
-            <Grid className="DescItem">
-              <Grid className="FirstItem">
-                <div className="Title">
-                  {banner?.id === '48' ? 
-                    <Typography variant="h5" component="h2" className="ItemTitle">
-                      <span style={{ color: '#DD1A32', cursor: 'pointer' }}>Укажите дату</span>{' '}своего рождения в профиле
-                    </Typography>
-                   : 
-                    <Typography variant="h5" component="h2" className="ItemTitle">{item?.name}</Typography>
-                  }
-                </div>
-
-                <div className="List">
-                  {item?.items?.map((item, key) => (
-                    <div key={key}>
-                      <div className="itemNumber">
-                        <span className="ItemOther">{key + 1}.</span>
-                      </div>
-
-                      <div className="itemImg">
-                        <Image alt={item?.name} src={'https://cdnimg.jacofood.ru/' + item?.img_app + '_1420x1420.jpg'} width={1420} height={1420} priority={true}/>
-                      </div>
-
-                      <div className="itemDesc">
-                        <Typography className="ItemName" variant="h5" component="span">{item?.name}</Typography>
-                        <Typography variant="h5" component="span" className="ItemDesk">{item?.marc_desc.length > 0 ? item?.marc_desc : item?.tmp_desc}</Typography>
-                      </div>
-                    </div>
-                  ))}
-                </div>
-              </Grid>
-
-              <Grid className="SecondItem">
-                {banner?.id === '84' ? 
-                  <Typography className="ItemTitle" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>
-                    Пицца Пепперони и большой сет Атлантида из 4 роллов всего за{' '}
-                    <span style={{ color: '#B1B1B1', textDecoration: 'line-through', textDecorationColor: '#DD1A32', cursor: 'pointer', textDecorationThickness: '0.14440433212996vw' }}>1 330</span>{' '}1 125 ₽
-                  </Typography>
-                : 
-                  <Typography className="ItemTitle" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>{item?.title}</Typography>
-                }
-
-                <Typography className="ItemSpan" variant="h5" component="span">{item?.for}</Typography>
-
-                <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>{item?.desk1}</Typography>
-
-                {banner?.id === '48' ?
-                  <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>
-                    Подарок получают только те, кто{' '}
-                    <span className='TextDecor'>указал дату родения в профиле</span>{' '}
-                    в настройках аккаунта.
-                  </Typography>
-                : null}
-
-                <Typography className="ItemSpan" variant="h5" component="span">{item?.how}</Typography>
-
-                {banner?.id === '84' ? 
-                  <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>
-                    Нажмите{' '}
-                    <span className='TextDecor'>кнопку с ценой</span>{' '}
-                    прямо на баннере или введите промокод{' '}
-                    <span className='TextDecor'>«ДЖАМБО»</span>{' '}
-                    в специальном поле для промокода в Корзине. Товары из комбо добавятся в корзину автоматически. Вы можете добавить в заказ и другие товары, скидка на комбо сохранится.
-                  </Typography>
-                 : 
-                 banner?.id === '80' ?
-                  <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>
-                    Нажмите кнопку{' '}
-                    <span className='TextDecor'>«В корзину»</span>{' '}
-                    прямо на баннере или введите промокод{' '}
-                    <span className='TextDecor'>«МАМБО»</span>{' '}
-                    в специальном поле для промокода в Корзине. Товары из комбо добавятся в корзину автоматически. Вы можете добавить в заказ и другие товары, скидка на комбо сохранится.
-                  </Typography>
-                 : 
-                 banner?.id === '48' ? (
-                  <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>
-                    Важно: ввести её можно только один раз. Чтобы получить бесплатный ролл, нужно сделать заказ на сумму от 499 рублей.
-                    Укажите промокод в{' '}
-                    <span className='TextDecor'>специальном поле</span>{' '}
-                    во время оформления заказа – ролл Жако будет добавлен в корзину автоматически.
-                  </Typography>
+            <div
+              className="ItemMobile"
+              style={{ backgroundColor: banner?.id === '84' ? '#3faad8' : banner?.id === '80' ? '#B570DF' : banner?.id === '48' ? '#F45773' 
+              : null }}>
+              <div className="Group">
+                {banner?.id === '84' ? (
+                  <Button variant="contained" className="ItemOther"><span>1 330</span>1 125 ₽</Button>
+                ) : banner?.id === '80' ? (
+                  <Button variant="contained" className="ItemOther">В корзину</Button>
                 ) : null}
 
-                <Typography className="ItemTime" variant="h5" component="span">{item?.time}</Typography>
-              </Grid>
-            </Grid>
-        
+                <Typography className="spanButton ItemOther" variant="h5" component="span" onClick={() => setActiveBanner(false, null)}>
+                  Условия акции
+                  <KeyboardArrowUpIcon />
+                </Typography>
+              </div>
+            </div>
           </Grid>
-        </Box>
-      </DialogContent>
-    </Dialog>
+
+          <Grid className="DescItemMobile">
+            <Grid className="FirstItemMobile">
+              {banner?.id === '84' ? (
+                <Typography className="ItemTitle" variant="h5" component="span" style={{ marginBottom: '2.991452991453vw' }}>
+                  Пицца Пепперони и большой сет Атлантида из 4 роллов всего за{' '}
+                  <span style={{ color: '#B1B1B1', textDecoration: 'line-through', textDecorationColor: '#DD1A32', textDecorationThickness: '0.42735042735043vw'}}>
+                    1 330
+                  </span>{' '}
+                  1 125 ₽
+                </Typography>
+              ) : (
+                <Typography className="ItemTitle" variant="h5" component="span" style={{ marginBottom: '2.991452991453vw' }}>{item?.title}</Typography>
+              )}
+
+              <Typography className="ItemSpan" variant="h5" component="span">{item?.for}</Typography>
+
+              <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '2.991452991453vw' }}>{item?.desk1}</Typography>
+
+              {banner?.id === '48' ? (
+                <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '2.991452991453vw' }}>
+                  Подарок получают только те, кто{' '}<span className="TextDecor">указал дату родения в профиле</span>{' '}в настройках аккаунта.
+                </Typography>
+              ) : null}
+
+              <Typography className="ItemSpan" variant="h5" component="span">{item?.how}</Typography>
+
+              {banner?.id === '84' ? (
+                <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '2.991452991453vw' }}>
+                  Нажмите <span className="TextDecor">кнопку с ценой</span>{' '}прямо на баннере или введите промокод{' '}
+                  <span className="TextDecor">«ДЖАМБО»</span> в специальном поле для промокода в Корзине. Товары из комбо добавятся в корзину
+                  автоматически. Вы можете добавить в заказ и другие товары, скидка на комбо сохранится.
+                </Typography>
+              ) : banner?.id === '80' ? (
+                <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '2.991452991453vw' }}>
+                  Нажмите кнопку <span className="TextDecor">«В корзину»</span>{' '}прямо на баннере или введите промокод{' '}
+                  <span className="TextDecor">«МАМБО»</span> в специальном поле для промокода в Корзине. Товары из комбо добавятся в корзину
+                  автоматически. Вы можете добавить в заказ и другие товары, скидка на комбо сохранится.
+                </Typography>
+              ) : banner?.id === '48' ? (
+                <Typography className="ItemOther" variant="h5" component="span" style={{ marginBottom: '2.991452991453vw' }}>
+                  Важно: ввести её можно только один раз. Чтобы получить бесплатный ролл, нужно сделать заказ на сумму от 499 рублей.
+                  Укажите промокод в{' '}<span className="TextDecor">специальном поле</span> во время оформления заказа – ролл Жако будет добавлен в корзину автоматически.
+                </Typography>
+              ) : null}
+
+              <Typography className="ItemTime" variant="h5" component="span">{item?.time}</Typography>
+            </Grid>
+
+            <Grid className="SecondItemMobile">
+              <div className="Title">
+                {banner?.id === '48' ? (
+                  <Typography variant="h5" component="h2" className="ItemTitle">
+                    <span style={{ color: '#DD1A32' }}>Укажите дату</span>{' '}своего рождения в профиле
+                  </Typography>
+                ) : (
+                  <Typography variant="h5" component="h2" className="ItemTitle">
+                    {item?.name}
+                  </Typography>
+                )}
+              </div>
+
+              <div className="List">
+                {item?.items?.map((item, key) => (
+                  <div key={key}>
+                    <div className="itemNumber">
+                      <span className="ItemOther">{key + 1}.</span>
+                    </div>
+
+                    <div className="itemImg">
+                      <Image alt={item?.name} src={'https://cdnimg.jacofood.ru/' + item?.img_app + '_1420x1420.jpg'} width={1420} height={1420} priority={true} />
+                    </div>
+
+                    <div className="itemDesc">
+                      <Typography className="ItemName" variant="h5" component="span">{item?.name}</Typography>
+                      <Typography variant="h5" component="span" className="ItemDesk">{item?.marc_desc.length > 0 ? item?.marc_desc : item?.tmp_desc}</Typography>
+                    </div>
+                  </div>
+                ))}
+              </div>
+            </Grid>
+          </Grid>
+        </Grid>
+      </Box>
+    </SwipeableDrawer>
   );
 }

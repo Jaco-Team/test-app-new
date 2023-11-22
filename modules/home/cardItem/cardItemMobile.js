@@ -32,16 +32,21 @@ export default React.memo(function CardItemMobile({ item, count }) {
           </Typography>
 
           <div className="dop_text">
+
             {parseInt(item.cat_id) != 4 ? null : (
-              <span className="first_text" style={{ width: parseInt(item.count_part_new) > 9 ? '10.25641025641vw' : '8.5470085470085vw' }}>
+              <span className="first_text" 
+              style={{ width: parseInt(item.count_part_new) > 4 && parseInt(item.count_part_new) < 9 ? '11.965811965812vw' : parseInt(item.count_part_new) > 9 ? '13.675213675214vw' : '10.25641025641vw' }}
+              >
                 {item.count_part_new}
               </span>
             )}
 
             {parseInt(item.cat_id) == 5 || parseInt(item.cat_id) == 6 || parseInt(item.cat_id) == 7 || parseInt(item.cat_id) == 15 ? null : (
               <span className="second_text"
-                style={{justifyContent: parseInt(item.cat_id) == 4 ? 'center' : 'flex-start',
-                  width: parseInt(item.cat_id) == 4 ? '8.5470085470085vw' : parseInt(item.cat_id) != 14 ? '5.982905982906vw' : '6.8376068376068vw' }}
+                style={{
+                  justifyContent: parseInt(item.cat_id) == 4 ? 'center' : 'flex-start',
+                  width: parseInt(item.cat_id) == 4 ? '10.25641025641vw' : parseInt(item.cat_id) != 14 ? '7.6923076923077vw' : '8.5470085470085vw' 
+                }}
               >
                 {parseInt(item.cat_id) == 14 ? item.size_pizza : item.count_part}{' '}
                 {parseInt(item.cat_id) == 14 ? 'см' : parseInt(item.cat_id) == 6 ? 'л' : 'шт.'}{' '}
@@ -49,8 +54,7 @@ export default React.memo(function CardItemMobile({ item, count }) {
             )}
 
             <span className="third_text"
-              style={{ justifyContent: parseInt(item.cat_id) == 5 || parseInt(item.cat_id) == 6 || parseInt(item.cat_id) == 7 || parseInt(item.cat_id) == 15
-                    ? 'flex-start' : 'center' }}>
+              style={{ justifyContent: parseInt(item.cat_id) == 5 || parseInt(item.cat_id) == 6 || parseInt(item.cat_id) == 7 || parseInt(item.cat_id) == 15 ? 'flex-start' : 'center' }}>
               {new Intl.NumberFormat('ru-RU').format(item.weight)}{' '}
               {parseInt(item.id) == 17 || parseInt(item.id) == 237 ? 'шт.' : parseInt(item.cat_id) == 6 ? 'л' : 'г'}
             </span>

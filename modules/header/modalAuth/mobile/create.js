@@ -76,7 +76,7 @@ export default function CreateMobile({ city, closeModal }) {
       <div className="loginLogin" onClick={loginLogin.length === 11 && checkAccord && checkPolitika ? sendsmsNewLogin : null}
         style={{ backgroundColor: loginLogin.length === 11 && checkAccord && checkPolitika ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)',
                  marginTop: loginLogin.length > 1 ? '6.8376068376068vw' : '10.25641025641vw',
-                 marginBottom: loginLogin.length === 11 ? '721px' : '921px'}}>
+                 marginBottom: loginLogin.length === 11 ? '61.623931623932vw' : '78.717948717949vw'}}>
 
         <Typography component="span" onClick={() => navigate('loginSMSCode')}>
           Отправить

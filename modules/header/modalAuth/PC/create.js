@@ -37,11 +37,11 @@ export default function CreateMobile({ city, closeModal }) {
         inputAdornment={
           <InputAdornment position="end">
             <div className="vectorInput"
-              //onClick={() => navigate('loginSMSCode')}
-              onClick={ loginLogin.length === 11 && checkAccord && checkPolitika ? sendsmsNewLogin : null}
+              onClick={() => navigate('loginSMSCode')}
+              //onClick={ loginLogin.length === 11 && checkAccord && checkPolitika ? sendsmsNewLogin : null}
               style={{ backgroundColor: loginLogin.length === 11 && checkAccord && checkPolitika ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)' }}
             >
-              <VectorRightAuthMobile />
+              <VectorRightAuthMobile style={{ cursor: 'pointer'}} />
             </div>
           </InputAdornment>
         }
@@ -52,7 +52,7 @@ export default function CreateMobile({ city, closeModal }) {
           <div className="data" style={{ marginBottom: '0.72202166064982vw' }}>
             {checkPolitika ? (
               <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckPolitika(!checkPolitika)}>
-                <DoneAuthMobile />
+                <DoneAuthMobile style={{ cursor: 'pointer'}} />
               </span>
             ) : (
               <span onClick={() => setCheckPolitika(!checkPolitika)}
@@ -66,7 +66,7 @@ export default function CreateMobile({ city, closeModal }) {
           <div className="data">
             {checkAccord ? (
               <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckAccord(!checkAccord)}>
-                <DoneAuthMobile />
+                <DoneAuthMobile style={{ cursor: 'pointer'}} />
               </span>
             ) : (
               <span onClick={() => setCheckAccord(!checkAccord)}

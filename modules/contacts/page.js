@@ -6,14 +6,14 @@ import ContactsModalChoose from './contactsModalChoose';
 
 import { useHeaderStore } from '@/components/store';
 
-export default function ContactsPage({ page, city }) {
+export default function ContactsPage({ page, city, this_module }) {
   const [matches] = useHeaderStore((state) => [state.matches]);
 
   return (
     <Meta title={page.title} description={page.description}>
       {matches ? (
         <>
-          <ContactsPageMobile city={city} />
+          <ContactsPageMobile city={city} this_module={this_module} />
           <ContactsModalChoose />
         </>
       ) : (

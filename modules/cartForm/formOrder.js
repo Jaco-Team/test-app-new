@@ -52,13 +52,9 @@ export default function FormOrder({ cityName }) {
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
 
-  const [items, itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOnDops, itemsOffDops, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,
-    createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay,
-    setTypePay, changeComment, comment, setActiveModalError, typeOrder, setTypeOrder, summDiv, setSummDiv, sdacha, setSdacha] = useCartStore((state) => [state.items, state.itemsCount,
-    state.promoInfo,state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOnDops, state.itemsOffDops, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint,
-    state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment,
-    state.comment, state.setActiveModalError, state.typeOrder, state.setTypeOrder, state.summDiv, state.setSummDiv, state.sdacha, state.setSdacha]);
-
+  const [items, itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOnDops, itemsOffDops, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, setActiveModalError, typeOrder, setTypeOrder, summDiv, setSummDiv, sdacha, setSdacha] = useCartStore((state) => [state.items, state.itemsCount,
+    state.promoInfo,state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOnDops, state.itemsOffDops, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.setActiveModalError, state.typeOrder, state.setTypeOrder, state.summDiv, state.setSummDiv, state.sdacha, state.setSdacha]);
+ 
   useEffect(() => {
     if (matches) {
       setMessage(comment);
@@ -279,20 +275,18 @@ export default function FormOrder({ cityName }) {
             <Button className="CartChoose" endIcon={<ArrowDownCartMobile />} onClick={(event) => openMenu(event, 'addr', 1)}>
               <div>
                 <Typography component="span">
-                  <HomeBasketModalPC />
+                  <HomeBasketModalPC fill='#DD1A32' />
                 </Typography>
 
-                {orderAddr?.addr_name ? (
-                  <Typography component="span" className={orderAddr?.addr_name.length > 8 ? 'maxWidthSpan' : null} style={{ textTransform: 'uppercase', maxWidth: '23.931623931624vw' }}>
+                {orderAddr?.addr_name ?
+                  <Typography component="span" style={{ textTransform: 'uppercase', maxWidth: '63.247863247863vw' }} className={orderAddr?.addr_name?.length > 15 ? 'shadowSpan' : null }>
                     {orderAddr?.addr_name}
                   </Typography>
-                ) : null}
-
-                <Typography component="span"
-                  className={ orderAddr?.addr_name?.length + orderAddr?.name?.length > 31 ? 'shadowSpan maxWidthSpan' : null }
-                  style={{ maxWidth: orderAddr?.addr_name && orderAddr?.addr_name.length + orderAddr?.name?.length > 31 ? '40.17094017094vw' : '63.247863247863vw' }}>
-                  {orderAddr?.name}
-                </Typography>
+                 : 
+                  <Typography component="span" className={orderAddr?.name?.length > 29 ? 'shadowSpan' : null }>
+                    {orderAddr?.name}
+                  </Typography>
+                }
               </div>
             </Button>
           )}
@@ -451,20 +445,19 @@ export default function FormOrder({ cityName }) {
                 endIcon={open ? nameList === 'addr' ? <ArrowDownBasketModalPC style={{ transform: 'rotate(180deg)' }} /> : <ArrowDownBasketModalPC /> : <ArrowDownBasketModalPC />}>
                 <div>
                   <Typography component="span">
-                    <HomeBasketModalPC />
+                    <HomeBasketModalPC fill='#DD1A32' />
                   </Typography>
-                  {orderAddr?.addr_name ? (
-                    <Typography component="span" className={orderAddr?.addr_name.length > 8 ? 'maxWidthSpan' : null} 
-                    style={{ textTransform: 'uppercase', maxWidth: '5.7761732851986vw' }}>
+                  {orderAddr?.addr_name ?
+                    <Typography component="span" style={{ textTransform: 'uppercase', maxWidth: '21.660649819495vw' }} className={orderAddr?.addr_name?.length > 19 ? 'shadowSpan' : null }>
                       {orderAddr?.addr_name}
                     </Typography>
-                  ) : null}
-                  <Typography component="span"
-                    className={ orderAddr?.addr_name?.length + orderAddr?.name?.length > 31 ? 'shadowSpan maxWidthSpan' : null }
-                    style={{ maxWidth: orderAddr?.addr_name && orderAddr?.addr_name.length + orderAddr?.name?.length > 31 ? '11.552346570397vw' : '16.967509025271vw' }}
-                  >
-                    {orderAddr?.name}
-                  </Typography>
+                  : 
+                    <Typography component="span"
+                      className={orderAddr?.name?.length > 31 ? 'shadowSpan' : null}
+                    >
+                      {orderAddr?.name}
+                    </Typography>
+                  }
                 </div>
               </Button>
             )}
@@ -550,8 +543,32 @@ export default function FormOrder({ cityName }) {
             </Button>
           </div>
 
-          <Menu id="basketChooseModal" className={roboto.variable} anchorEl={anchorEl} open={open} onClose={() => { setAnchorEl(null); setList([]) }}>
-            {list.map((item, key) => <MenuItem key={key} onClick={() => chooseItem(item)}>{item.name}</MenuItem>)}
+          <Menu 
+            id="basketChooseModal" 
+            className={roboto.variable} 
+            anchorEl={anchorEl} 
+            open={open} 
+            onClose={() => { setAnchorEl(null); setList([]) }}
+          >
+            {list.map((item, key) => 
+            <MenuItem key={key} onClick={() => chooseItem(item)}>
+              <div>
+                <span>
+                  {nameList === 'addr' ? item?.addr_name ? 
+                    <span style={{textTransform: 'uppercase'}}>
+                      {item.addr_name + ', '}
+                    </span>
+                  : null : null}
+                  {item.name}
+                </span>
+                  {nameList === 'addr' && parseInt(item?.is_main) ?
+                    <span className="circle">
+                      <HomeBasketModalPC fill='#000' fillOpacity='0.6'/>
+                    </span>
+                  : null}
+              </div>
+            </MenuItem>
+            )}
           </Menu>
         </>
       )}

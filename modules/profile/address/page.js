@@ -13,7 +13,7 @@ export default function AddressPage({ page, this_module, city }) {
       {matches ? (
         <>
        <AddressMobile city={city} />
-       <AddressModalMobile city={city}/>
+       <AddressModalMobile />
         </>
       ) : null }
     </Meta>

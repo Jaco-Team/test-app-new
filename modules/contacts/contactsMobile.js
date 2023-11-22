@@ -1,6 +1,8 @@
 import { useEffect } from 'react';
 
-import { useContactStore, useCitiesStore } from '@/components/store.js';
+import Link from 'next/link';
+
+import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/store.js';
 
 import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
@@ -10,30 +12,31 @@ import { MapContactsMobile, LocationIconMobile, VectorRightMobile, LocationMapMo
 
 import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 
-export default function ContactsPageMobile({ city }) {
+import ModalError from '@/modules/cartForm/modalError';
+
+export default function ContactsPageMobile({ city, this_module }) {
   //console.log('render ContactsPageMobile');
 
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
-
-  const [getData, point, phone, disablePointsZoneMobile, disable, setActiveModalChoose] = useContactStore((state) => [
-    state.getData, state.point, state.phone, state.disablePointsZoneMobile, state.disable, state.setActiveModalChoose]);
+  const [setActiveModalCityList] = useHeaderStore((state) => [state.setActiveModalCityList]);
+  const [getData, point, phone, disablePointsZoneMobile, disable, setActiveModalChoose, getUserPosition] = useContactStore((state) => [state.getData, state.point, state.phone, state.disablePointsZoneMobile, state.disable, state.setActiveModalChoose, state.getUserPosition]);
 
   useEffect(() => {
-    getData('contacts', city);
-  }, []);
+    getData(this_module, city);
+  }, [city]);
 
   return (
     <Box sx={{ display: { xs: 'block', md: 'block', lg: 'none' } }} className="ContactsMobile" >
       <Grid item xs={12} id="ForMapContacts">
         <div style={{ width: '100%', height: '100%', backgroundColor: '#e5e5e5' }}/>
       </Grid>
-
+      
       <div className="ContactsLocation">
-        <LocationMapMobile />
+        <LocationMapMobile onClick={getUserPosition} />
       </div>
 
       <div className="ContactsMobileContainer">
-        <div className="ContactPoint" onClick={() => setActiveModalChoose(true, 'city')}>
+        <div className="ContactPoint" onClick={() => setActiveModalCityList(true)}>
           <div className="spanContainer">
             <Typography component="span">
               <MapContactsMobile />
@@ -46,7 +49,7 @@ export default function ContactsPageMobile({ city }) {
           </div>
         </div>
 
-        <div className="ContactPoint" style={{ marginBottom: '5.982905982906vw' }} onClick={() => setActiveModalChoose(true, 'point')}>
+        <div className="ContactPoint" style={{ marginBottom: '5.982905982906vw' }} onClick={() => setActiveModalChoose(true)}>
           <div className="spanContainer">
             <Typography component="span">
               <LocationIconMobile />
@@ -67,7 +70,7 @@ export default function ContactsPageMobile({ city }) {
         </div>
 
         <div className="ContactsPhone">
-          <Typography component="span">{phone}</Typography>
+          <Link href={`tel:${phone.split(/[\s,(),-]+/).join('')}`} component="span">{phone}</Link>
         </div>
 
         <div className="ContactsLine"></div>
@@ -77,6 +80,8 @@ export default function ContactsPageMobile({ city }) {
           <MySwitch checked={disable} onClick={disablePointsZoneMobile} />
         </div>
       </div>
+
+      <ModalError />
     </Box>
   );
 }

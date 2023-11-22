@@ -46,21 +46,13 @@
         height: 5.0545vw;
         margin-bottom: 0.72202vw;
 
-        & div {
-          height: 0.3612vw;
-          width: 5.4157vw;
-          background: rgba(0, 0, 0, 0.2);
-          border-radius: 0.1805055vw;
-          margin-top: 0.72202vw;
-          margin-bottom: 1.805055vw;
-        }
-
         & h2 {
           width: 100%;
           display: flex;
           justify-content: center;
           align-items: center;
           height: 2.1664vw;
+          margin-top: $MyScale80;
         }
       }
 
@@ -129,7 +121,7 @@
         & .ValueItem {
           display: flex;
           width: 100%;
-          height: 10.8307vw;
+          min-height: 10.8307vw;
 
           & .itemNumber {
             width: 2.1661vw;
@@ -153,14 +145,14 @@
               width: 100%;
               display: flex;
               align-items: center;
-              border-bottom: 3px solid #b2b2b2;
+              border-bottom: $MyScale3 solid #b2b2b2;
 
               & > div:first-child {
                 display: flex;
                 justify-content: flex-start;
                 text-align: left;
                 align-items: center;
-                border-right: 3px solid #b2b2b2;
+                border-right: $MyScale3 solid #b2b2b2;
                 width: 31.944vw;
                 height: 2.6726vw;
                 padding-left: 1.083034vw;
@@ -191,9 +183,9 @@
                 justify-content: flex-start;
                 text-align: left;
                 align-items: center;
-                border-right: 3px solid #b2b2b2;
+                border-right: $MyScale3 solid #b2b2b2;
                 width: 18.206vw;
-                height: 4.2245vw;
+                min-height: 4.2245vw;
                 padding-left: 1.083034vw;
                 padding-top: 0.577616vw;
                 padding-bottom: 0.361012vw;
@@ -215,7 +207,7 @@
 
                   .dot {
                     content: '';
-                    border-bottom: 2px dotted rgba(0, 0, 0, 0.8);
+                    border-bottom: $MyScale2 dotted rgba(0, 0, 0, 0.8);
                     flex: 1;
                     margin: 0 0.541515vw;
                     align-items: flex-end;
@@ -270,7 +262,7 @@
 
         & .first_text {
           @include font25_400();
-          border-right: 1px solid rgba(0, 0, 0, 0.6);
+          border-right: $MyScale1 solid rgba(0, 0, 0, 0.6);
           padding-right: 1.444045vw;
           display: flex;
           align-items: center;
@@ -281,7 +273,7 @@
 
         & .second_text {
           @include font25_400();
-          border-right: 1px solid rgba(0, 0, 0, 0.6);
+          border-right: $MyScale1 solid rgba(0, 0, 0, 0.6);
           display: flex;
           align-items: center;
           justify-content: flex-start;
@@ -465,7 +457,7 @@
 
         & .first_text {
           @include font20_400();
-          border-right: 1px solid rgba(0, 0, 0, 0.6);
+          border-right: $MyScale1 solid rgba(0, 0, 0, 0.6);
           flex: 3;
           display: flex;
           align-items: center;
@@ -473,7 +465,7 @@
         }
         & .second_text {
           @include font20_400();
-          border-right: 1px solid rgba(0, 0, 0, 0.6);
+          border-right: $MyScale1 solid rgba(0, 0, 0, 0.6);
           display: flex;
           align-items: center;
           justify-content: center;
@@ -493,10 +485,11 @@
         color: rgba(0, 0, 0, 0.6) !important;
         @include font25_400();
         text-align: center;
-        -webkit-line-clamp: 5;
-        display: -webkit-box;
-        -webkit-box-orient: vertical;
+        line-height: $MyScale33;
         overflow: hidden;
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;
       }
 
       .containerBTN {
@@ -580,16 +573,5 @@
         }
       }
     }
-    // &:hover img {
-    //   transform: translate(0, 5px);
-    //   -webkit-transform: translate(0, 5px);
-    //   -o-transform: translate(0, 5px);
-    //   -moz-transform: translate(0, 5px);
-
-    //   transition: all 0.2s ease-in-out;
-    //   -webkit-transition: all 0.2s ease-in-out; /** Chrome & Safari **/
-    //   -moz-transition: all 0.2s ease-in-out; /** Firefox **/
-    //   -o-transition: all 0.2s ease-in-out; /** Opera **/
-    // }
   }
 }

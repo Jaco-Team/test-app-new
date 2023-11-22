@@ -19,7 +19,7 @@ export default function ModalCityMobile() {
 
   const [openCityModal, openCityModalList, setActiveModalCity, setActiveModalCityList, activePage] = useHeaderStore((state) => [state.openCityModal, state.openCityModalList, state.setActiveModalCity, state.setActiveModalCityList, state.activePage]);
 
-  const [getMySavedAddr, setPoint, setAddrDiv] = useCartStore((state) => [state.getMySavedAddr, state.setPoint, state.setAddrDiv]);
+  const [getMySavedAddr, setPoint, setAddrDiv, changeAllItems] = useCartStore((state) => [state.getMySavedAddr, state.setPoint, state.setAddrDiv, state.changeAllItems]);
 
   const rightCity = () => {
     setActiveModalCity(false);
@@ -43,8 +43,7 @@ export default function ModalCityMobile() {
       setPoint(null);
       setAddrDiv(null);
       getMySavedAddr(thisCity, session?.data?.user?.token);
-    }
-
+    } 
   };
 
   // thisCityRu = 'Комсомольск-на-Амуре'

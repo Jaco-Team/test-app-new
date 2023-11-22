@@ -1,13 +1,13 @@
 import React, { useEffect } from 'react';
 
-import Script from 'next/script'; 
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'))
-const DynamicFooter = dynamic(() => import('@/components/footer.js'))
-const ContactsPage = dynamic(() => import('@/modules/contacts/page'))
+const DynamicHeader = dynamic(() => import('@/components/header.js'));
+const DynamicFooter = dynamic(() => import('@/components/footer.js'));
+const ContactsPage = dynamic(() => import('@/modules/contacts/page'));
+const LoadMap = dynamic(() => import('@/components/loadMap'));
 
-import { api } from '@/components/api.js';
+import { api } from '@/components/api';
 import { useContactStore, useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js';
 
@@ -17,7 +17,7 @@ export default function Contacts(props) {
 
   const { city, cats, cities, page, all_items } = props.data1;
   
-  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
+  const [setAllItems, changeAllItems] = useCartStore((state) => [state.setAllItems, state.changeAllItems]);
 
   const [ getData ] = useContactStore( state => [ state.getData ] );
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
@@ -30,23 +30,24 @@ export default function Contacts(props) {
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
+
+      setTimeout(() => {
+        changeAllItems();
+      }, 300);
     }
 
-    if( allItems.length == 0 ){
-      setAllItems(all_items)
-    }
-
+    setAllItems(all_items)
     setActivePage(this_module)
 
-  }, []);
+  }, [city, thisCity]);
 
   return (
     <div className={roboto.variable}>
-      <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" onLoad={() => getData(this_module, city)} />
+      <LoadMap getData={getData} city={city} />
 
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
-      <ContactsPage page={page} city={city} />
+      <ContactsPage page={page} city={city} this_module={this_module}  />
 
       <DynamicFooter cityName={city} active_page={this_module} />
     </div>

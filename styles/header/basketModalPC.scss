@@ -110,6 +110,10 @@
                   margin: 0;
                   width: 100%;
 
+                  & input::-webkit-outer-spin-button, & input::-webkit-inner-spin-button {
+                    -webkit-appearance: none;
+                  }
+
                   & input {
                     padding: 0;
                     @include font30_400();
@@ -253,17 +257,44 @@
     width: $MyScale680;
     background: #f2f2f2;
     box-shadow: $MyScale10 $MyScale20 $MyScale30 $MyScale5 rgba(0, 0, 0, 0.2);
+
     & ul {
       width: 100%;
       padding: 0;
       & li {
         padding: 0;
-        height: $MyScale100;
+        min-height: $MyScale100;
         padding-left: $MyScale60;
-        @include font30_400();
+        white-space: normal;
+
         &:hover {
           background-color: #ffffff;
           color: #dd1a32;
+        }
+        
+        & div {
+          display: flex;
+          align-items: center;
+          width: 100%;
+          padding: $MyScale20 0;
+
+          & span {
+            @include font30_400();
+          }
+
+          & .circle {
+            margin-left: auto;
+            margin-right: $MyScale20;
+            min-width: $MyScale60;
+            height: $MyScale60;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            & svg {
+              width: $MyScale60;
+              height: $MyScale60;
+            }
+          }
         }
       }
     }

@@ -6,19 +6,21 @@ import { useSession } from 'next-auth/react';
 
 import Typography from '@mui/material/Typography';
 
-import { useCartStore, useProfileStore } from '@/components/store.js';
+import { useCartStore, useProfileStore, useFooterStore } from '@/components/store.js';
 
 import { NewVKIcon, OdnIcon, TGIcon, ArrowUp, BasketFooterMobile } from '@/ui/Icons.js';
 
 import ModalOrderMobile from '@/modules/profile/zakazy/mobile/modalOrderMobile';
 
-export default React.memo(function FooterMobile({ cityName, active_page }) {
+export default function FooterMobile({ cityName, active_page }) {
+
   const [cookie, setCookie] = useState(true);
   const [showArrow, setShowArrow] = useState(false);
   const [orders, setOrders] = useState(null);
 
   const [itemsCount, allPrice, allPriceWithoutPromo] = useCartStore((state) => [state.itemsCount, state.allPrice, state.allPriceWithoutPromo]);
   const [orderList, getOrder] = useProfileStore((state) => [state.orderList, state.getOrder]);
+  const [links] = useFooterStore((state) => [state.links]);
 
   const session = useSession();
 
@@ -91,7 +93,7 @@ export default React.memo(function FooterMobile({ cityName, active_page }) {
         </Link>
 
         <div className={showArrow && active_page !== 'cart' ? 'ArrowMobile' : 'ArrowHidden'} onClick={scrollUp} 
-          style={{marginTop: active_page === 'about' || active_page === 'document' || active_page === 'jobs' || active_page === 'contacts' ? '-10.25641025641vw' : null}}>
+          style={{marginTop: active_page === 'about' || active_page === 'document' || active_page === 'jobs' || active_page === 'contacts' || active_page === 'profile' || active_page === 'account' || active_page === 'address' || active_page === 'zakazy' ? '-10.25641025641vw' : null}}>
           <ArrowUp />
         </div>
 
@@ -106,16 +108,15 @@ export default React.memo(function FooterMobile({ cityName, active_page }) {
           }}
         >
           <div className="icon">
-            <NewVKIcon />
-            <TGIcon />
-            <OdnIcon style={{ marginRight: 0 }} />
+            <Link href={links?.link_vk ?? links} target="_blank"><NewVKIcon /></Link>
+            <Link href={links?.link_tg ?? links} target="_blank"><TGIcon /></Link>
+            <Link href={links?.link_ok ?? links} target="_blank" style={{ marginRight: 0 }}><OdnIcon /></Link>
           </div>
 
           <div className="row" style={{ marginBottom: '11.965811965812vw' }}>
             <div className="column" style={{ marginRight: '2.991452991453vw', paddingLeft: '0.85470085470085vw', width: '36.752136752137vw' }}>
               <Typography component="span">Жако</Typography>
               <Link href={'/' + cityName + '/about'}>О Компании</Link>
-              <Link href={'/' + cityName + '/about'}>История компании</Link>
               <Link href={'/' + cityName + '/about'}>Реквизиты</Link>
               <Link href={'/' + cityName + '/contacts'} style={{ marginBottom: 0 }}>
                 Контакты
@@ -123,7 +124,7 @@ export default React.memo(function FooterMobile({ cityName, active_page }) {
             </div>
             <div className="column">
               <Typography component="span">Документы</Typography>
-              <Link href={'/' + cityName + '/about'}>Калорийность, состав, БЖУ</Link>
+              <Link href={links?.link_allergens ?? links} target="_blank">Калорийность, состав, БЖУ</Link>
               <Link href={'/' + cityName + '/publichnaya-oferta'}>Публичная оферта</Link>
               <Link href={'/' + cityName + '/politika-konfidencialnosti'}>Политика конфиденциальности</Link>
               <Link href={'/' + cityName + '/instpayorders'} style={{ marginBottom: 0 }}>Правила оплаты</Link>
@@ -134,14 +135,11 @@ export default React.memo(function FooterMobile({ cityName, active_page }) {
             <div className="column" style={{ marginRight: '2.991452991453vw', paddingLeft: '0.85470085470085vw', width: '36.752136752137vw' }}>
               <Typography component="span">Работа в жако</Typography>
               <Link href={'/' + cityName + '/jobs'}>Вакансии</Link>
-              <Link href={'/' + cityName + '/about'}>Анкета для работы в кафе</Link>
-              <Link href={'/' + cityName + '/about'}>Анкета для работы в Управляющей компании</Link>
-              <Link href={'/' + cityName + '/about'} style={{ marginBottom: 0 }}>Анкета поставщика</Link>
             </div>
             <div className="column">
               <Typography component="span">Франшиза</Typography>
-              <Link href={'/' + cityName + '/about'}>Сайт франшизы</Link>
-              <Link href={'/' + cityName + '/about'}>Сайт для инвестиций</Link>
+              <Link href={'https://franchise.jacofood.ru'} target="_blank">Сайт франшизы</Link>
+              <Link href={'https://invest.jacofood.ru'} target="_blank">Сайт для инвестиций</Link>
             </div>
           </div>
 
@@ -175,4 +173,4 @@ export default React.memo(function FooterMobile({ cityName, active_page }) {
       <ModalOrderMobile />
     </>
   );
-});
+};

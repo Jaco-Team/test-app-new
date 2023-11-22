@@ -46,7 +46,7 @@ export default function Zakazy(props) {
 
       <DynamicPage page={page} this_module={this_module} city={city} />
 
-      <DynamicFooter cityName={city} />
+      <DynamicFooter cityName={city} active_page={this_module} />
     </div>
   );
 }

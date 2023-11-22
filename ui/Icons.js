@@ -1130,7 +1130,8 @@ export function HomeBasketModalPC(props) {
     >
       <g>
         <path
-          fill="#DD1A32"
+          fill={props.fill}
+          fillOpacity={props.fillOpacity}
           d="M14.086 48.414h9.736V33.102h12.356v15.313h9.735v-23.87L30 12.548 14.086 24.536v23.878zm-2.836 2.837V23.126L30 9.016l18.75 14.11v28.125H33.34V35.938H26.66v15.313H11.25z"
         ></path>
       </g>

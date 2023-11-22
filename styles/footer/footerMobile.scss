@@ -11,7 +11,7 @@
 
   & .ContainerMobileFooter {
     height: 109.40170940171vw;
-    margin: 8.5470085470085vw 10.683760683761vw 10.25641025641vw
+    margin: $MyScale100_mobile 10.683760683761vw 10.25641025641vw
       10.25641025641vw !important;
     display: flex;
     flex-direction: column;
@@ -19,14 +19,22 @@
 
     & .icon {
       width: 100%;
-      margin-bottom: 8.5470085470085vw;
-      height: 8.5470085470085vw;
+      margin-bottom: $MyScale100_mobile;
+      height: $MyScale100_mobile;
+      display: flex;
+      flex-direction: row;
 
-      & svg {
-        width: 8.5470085470085vw;
-        height: 8.5470085470085vw;
-        margin-right: 5.1282051282051vw;
+      & a {
+        width: $MyScale100_mobile;
+        height: $MyScale100_mobile;
+        margin-right: $MyScale60_mobile;
+
+        & svg {
+          width: 100%;
+          height: 100%;
+        }
       }
+     
     }
 
     & .row {

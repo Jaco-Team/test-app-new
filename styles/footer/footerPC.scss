@@ -42,7 +42,6 @@
 
     & .container {
       margin-top: $MyScale90;
-      //height: 100%;
       display: flex;
       flex-direction: column;
       justify-content: space-between;
@@ -50,12 +49,20 @@
 
       & .icon {
         width: 100%;
+        display: flex;
+        flex-direction: row;
 
-        & svg {
+        & a {
           width: $MyScale100;
           height: $MyScale100;
           margin-right: $MyScale60;
+
+          & svg {
+            width: 100%;
+            height: 100%;
+          }
         }
+
       }
 
       

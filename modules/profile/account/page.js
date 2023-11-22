@@ -12,8 +12,8 @@ export default function AccountPage({ page, this_module, city }) {
     <Meta title={page.title} description={''}>
       {matches ? (
         <>
-       <AccountMobile city={city} />
-       <AccountModalMobile />
+          <AccountMobile city={city} this_module={this_module} />
+          <AccountModalMobile />
         </>
       ) : null }
     </Meta>

@@ -10,7 +10,7 @@ export default function ProfilePage({ page, this_module, city }) {
 
   return (
     <Meta title={page.title} description={''}>
-      {matches ? <ProfileMobile city={city} /> : <ProfilePC page={page} this_module={this_module} city={city} />}
+      {matches ? <ProfileMobile city={city} this_module={this_module}/> : <ProfilePC page={page} this_module={this_module} city={city} />}
     </Meta>
   );
 }

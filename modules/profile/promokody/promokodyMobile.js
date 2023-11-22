@@ -77,14 +77,14 @@ const promoA = [
 ];
 
 export default function PromokodyMobile({ page, this_module, city }) {
+
+  const session = useSession();
+
   const { getPromoList, promoList } = useProfileStore((state) => state);
 
   const [list, setList] = useState(promoL);
   const [archive, setArchive] = useState(promoA);
-
   const [openArchive, setOpenArchive] = useState(false);
-
-  const session = useSession();
 
   useEffect(() => {
     if (session.data?.user?.token) {

@@ -2,8 +2,6 @@ import { useState, useEffect } from 'react';
 
 import { useCartStore, useCitiesStore, useProfileStore } from '@/components/store.js';
 
-import Image from 'next/image';
-
 import AddressModalMobile from '@/modules/profile/address/modalAddressMobile';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
@@ -15,7 +13,6 @@ import Button from '@mui/material/Button';
 import { roboto } from '@/ui/Font.js';
 import MyTextInput from '@/ui/MyTextInput';
 import { HomeCartMobile } from '@/ui/Icons.js';
-import Pay from '@/public/pay.png';
 
 const type_pay_pic = [{ id: 'cash', name: 'В кафе' }];
 
@@ -37,9 +34,8 @@ export default function CartMenuMobile({ cityName }) {
 
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
 
-  const [openMenuCart, setActiveMenuCart, nameList, setActiveDataTimePicker, setActiveCartMap, pointList, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getDataMap, setTypePay,
-    comment, changeComment, setSummDiv, typeOrder] = useCartStore((state) => [state.openMenuCart, state.setActiveMenuCart, state.nameList, state.setActiveDataTimePicker, state.setActiveCartMap, state.pointList, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getDataMap, state.setTypePay, state.comment, state.changeComment, state.setSummDiv, state.typeOrder
-  ]);
+  const [openMenuCart, setActiveMenuCart, nameList, setActiveDataTimePicker, setActiveCartMap, pointList, addrList, orderPic, orderAddr,
+    setAddrDiv, setPoint, getDataMap, setTypePay, comment, changeComment, setSummDiv, typeOrder] = useCartStore((state) => [state.openMenuCart, state.setActiveMenuCart, state.nameList, state.setActiveDataTimePicker, state.setActiveCartMap, state.pointList, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getDataMap, state.setTypePay, state.comment, state.changeComment, state.setSummDiv, state.typeOrder]);
 
   const [setActiveAddressModal] = useProfileStore((state) => [state.setActiveAddressModal]);
 
@@ -60,12 +56,6 @@ export default function CartMenuMobile({ cityName }) {
     }
 
     if (nameList === 'addr') {
-      const newAddr = addrList?.find((item) => item.name === 'Выбрать на карте');
-
-      if (!newAddr) {
-        addrList?.push({ name: 'Выбрать на карте', id: addrList.length + 1 });
-      }
-
       setId(orderAddr?.id);
       setList(addrList);
     }
@@ -75,7 +65,7 @@ export default function CartMenuMobile({ cityName }) {
     }
 
     if (nameList === 'pay') {
-      if(typeOrder) {
+      if (typeOrder) {
         setList(type_pay_pic);
       } else {
         setList(type_pay_div);
@@ -142,52 +132,44 @@ export default function CartMenuMobile({ cityName }) {
       <div className="ContainerCartList">
         <div className="Line"></div>
 
-        <div className="loginHeader"
-          style={{ marginBottom: nameList === 'pay' ? '3.4188034188034vw' : nameList === 'message' ? '7.0940170940171vw' : '2.2222222222222vw' }}>
+        <div className="loginHeader" style={{ marginBottom: nameList === 'message' ? '7.0940170940171vw' : '2.2222222222222vw'}}>
           <Typography component="span">
-            {nameList === 'point' ? 'Выберите кафе' : nameList === 'time' ? 'Дата и время' : nameList === 'addr' ? 'Выберите адрес' : nameList === 'pay' ? 'Способ оплаты'
-              : nameList === 'message' ? 'Сообщение курьеру' : ''}
+            {nameList === 'point' ? 'Выберите кафе' : nameList === 'time' ? 'Дата и время' : nameList === 'addr' ? 'Выберите адрес'
+              : nameList === 'pay' ? 'Способ оплаты' : nameList === 'message' ? 'Сообщение курьеру' : ''}
           </Typography>
         </div>
-
-        {nameList !== 'pay' ? null : (
-          <div className="loginPay">
-            <Image alt="Платеж" src={Pay} width={191} height={70} priority={true} />
-          </div>
-        )}
 
         {nameList !== 'message' ? (
           <List>
             {list?.map((item, key) => (
-              <ListItem onClick={() => chooseMenuItem(item)} key={key}
+              <ListItem
+                onClick={() => chooseMenuItem(item)}
+                key={key}
                 style={{ background: id === item.id ? 'rgba(0, 0, 0, 0.05)' : null,
-                         marginBottom: item === list.at(-1) ? nameList === 'addr' ? '5.1282051282051vw' : '19.82905982906vw' : null }}>
-                <div className="containerDiv" style={{ justifyContent: nameList === 'addr' && item.addr_main ? 'space-between' : null }}>
-                  {nameList !== 'pay' || item === list.at(-1) ? (
-                    <>
-                      <div className="containerSpan">
-
-                        <span className={ nameList === 'addr' ? item?.addr_name ? item?.addr_name.length > 8 ? 'maxWidthSpan' : null : null : null }
-                          style={{ maxWidth: nameList === 'addr' && item.name !== 'Выбрать на карте' && item?.addr_name ? '23.076923076923vw' : '59.82905982906vw',
-                                   textTransform: nameList === 'addr' ? item?.addr_name ? 'uppercase' : null : null }}>
-                          {nameList !== 'addr' ? item.name : item?.addr_name ? item.addr_name : item.name}
-                        </span>
-
-                        <span className={ nameList === 'addr' && item.addr_name?.length + item?.name?.length > 31 ? 'shadowSpan maxWidthSpan' : null}
-                          style={{ maxWidth: nameList === 'addr' && item.addr_name?.length + item?.name?.length > 31 && item.addr_main ? '37.606837606838vw'
-                                : nameList === 'addr' && item.addr_name?.length + item?.name?.length > 31 ? '47.008547008547vw' : 'max-content'}}>
-                          {nameList === 'point' ? item.raion : nameList === 'addr' ? item?.addr_name ? item.name : null : null}
-                        </span>
-                      </div>
-
-                      {nameList === 'addr' && item.addr_main ? (
-                        <div className="circleDiv">
-                          <HomeCartMobile />
-                        </div>
-                      ) : null}
-                    </>
+                    marginBottom: item === list.at(-1) ? nameList === 'addr' ? '5.1282051282051vw' : '19.82905982906vw' : null}}
+              >
+                <div className="containerDiv">
+                  {nameList === 'point' ? (
+                    <div className="containerSpan">
+                      <span>{item.name}</span>
+                      {item?.raion ? <span>{item?.raion}</span> : null}
+                    </div>
                   ) : (
-                    <span className="spanPay">{item.name}</span>
+                    <div>
+                      <span>
+                        {nameList === 'addr' ? item?.addr_name ? 
+                          <span style={{ textTransform: 'uppercase'}}>
+                            {item.addr_name + ', '}
+                          </span>
+                        : null : null}
+                        {item.name}
+                      </span>
+                      {nameList === 'addr' && parseInt(item?.is_main) ? (
+                        <span className="circle">
+                          <HomeCartMobile />
+                        </span>
+                      ) : null}
+                    </div>
                   )}
                 </div>
               </ListItem>
@@ -201,7 +183,7 @@ export default function CartMenuMobile({ cityName }) {
               value={comment}
               func={(event) => changeComment(event)}
               multiline
-              maxRows={7}
+              maxRows={3}
               variant="outlined"
               className="message"
             />
@@ -215,7 +197,6 @@ export default function CartMenuMobile({ cityName }) {
         ) : null}
 
         <AddressModalMobile />
-
       </div>
     </SwipeableDrawer>
   );

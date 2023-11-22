@@ -1,4 +1,8 @@
+import { useEffect } from 'react';
+
 import { useHeaderStore, useProfileStore } from '@/components/store.js';
+
+import { useSession } from 'next-auth/react';
 
 import Link from 'next/link';
 
@@ -7,18 +11,30 @@ import Button from '@mui/material/Button';
 
 import { AccountMobileAddress, AccountMobilePromo, AccountMobilePerson, AccountMobileHistory } from '@/ui/Icons.js';
 
-export default function AccountMobile({ city }) {
+export default function AccountMobile({ city, this_module }) {
+
+  const session = useSession();
+
   const [userName] = useHeaderStore((state) => [state.userName]);
-  const [setActiveAccountModal, colorAccount] = useProfileStore((state) => [state.setActiveAccountModal, state.colorAccount]);
+  const [setActiveAccountModal, colorAccount, getUserInfo, userInfo, shortName] = useProfileStore((state) => [state.setActiveAccountModal, state.colorAccount, state.getUserInfo, state.userInfo, state.shortName]);
+
+  useEffect(() => {
+    if( session.data?.user?.token ){
+      getUserInfo(this_module, city, session.data?.user?.token);
+    }
+  }, [session]);
 
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="AccountMobile">
       <div className="accountLogin accountMain" onClick={() => setActiveAccountModal(true, 'color')} style={{ background: colorAccount.login }}>
         {/* для тестирования */}
-        {userName ? userName : 'ЯБ'}
+        {!shortName || shortName === 'undefined' ? 'ЯБ' : shortName }
       </div>
-      <div className="accountName accountMain">Ян Брин</div>
-      <div className="accountPhone accountMain">+7 (925) 485-89-75</div>
+      <div className="accountName accountMain">
+         {/* для тестирования */}
+        {userName ? userName : 'Ян Брин'}
+      </div>
+      <div className="accountPhone accountMain">{userInfo?.login ?? ''}</div>
       <div className="accountData accountMain">
         <Link href={'/' + city + '/address'} style={{ background: colorAccount.item }}>
           <span> Адреса доставки</span>

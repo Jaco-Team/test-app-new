@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+import { useFooterStore } from '@/components/store';
+
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 
@@ -9,6 +11,8 @@ export default React.memo(function FooterPC({ cityName }) {
 
   const [cookie, setCookie] = useState(true);
   const [showArrow, setShowArrow] = useState(false);
+
+  const [links] = useFooterStore((state) => [state.links]);
 
   const handlerArrow = () => setShowArrow(window.scrollY > 50);
 
@@ -38,13 +42,12 @@ export default React.memo(function FooterPC({ cityName }) {
           <div className="column">
             <Typography component="span">Жако</Typography>
             <Link href={'/' + cityName + '/about'}>О Компании</Link>
-            <Link href={'/' + cityName + '/about'}>История компании</Link>
             <Link href={'/' + cityName + '/about'}>Реквизиты</Link>
             <Link href={'/' + cityName + '/contacts'}>Контакты</Link>
           </div>
           <div className="column">
             <Typography component="span">Документы</Typography>
-            <Link href={'/' + cityName + '/about'}>Калорийность, состав, БЖУ</Link>
+            <Link href={links?.link_allergens ?? links} target="_blank">Калорийность, состав, БЖУ</Link>
             <Link href={'/' + cityName + '/publichnaya-oferta'}>Публичная оферта</Link>
             <Link href={'/' + cityName + '/politika-konfidencialnosti'}>Политика конфиденциальности</Link>
             <Link href={'/' + cityName + '/instpayorders'}>Правила оплаты</Link>
@@ -52,20 +55,17 @@ export default React.memo(function FooterPC({ cityName }) {
           <div className="column">
             <Typography component="span">Работа в жако</Typography>
             <Link href={'/' + cityName + '/jobs'}>Вакансии</Link>
-            <Link href={'/' + cityName + '/about'}>Анкета для работы в кафе</Link>
-            <Link href={'/' + cityName + '/about'}>Анкета для работы в Управляющей компании</Link>
-            <Link href={'/' + cityName + '/about'}>Анкета поставщика</Link>
           </div>
           <div className="column">
             <Typography component="span">Франшиза</Typography>
-            <Link href={'/' + cityName + '/about'}>Сайт франшизы</Link>
-            <Link href={'/' + cityName + '/about'}>Сайт для инвестиций</Link>
+            <Link href={'https://franchise.jacofood.ru'} target="_blank">Сайт франшизы</Link>
+            <Link href={'https://invest.jacofood.ru'} target="_blank">Сайт для инвестиций</Link>
           </div>
           <div className="container">
             <div className="icon">
-              <NewVKIcon />
-              <TGIcon />
-              <OdnIcon style={{ marginRight: 0 }}/>
+              <Link href={links?.link_vk ?? links} target="_blank"><NewVKIcon /></Link>
+              <Link href={links?.link_tg ?? links} target="_blank"><TGIcon /></Link>
+              <Link href={links?.link_ok ?? links} target="_blank" style={{ marginRight: 0 }}><OdnIcon /></Link>
             </div>
             
           </div>
@@ -75,8 +75,6 @@ export default React.memo(function FooterPC({ cityName }) {
             <Typography component="span" className="copy">{new Date().getFullYear()} © ООО «Мистер Жако»</Typography>
           </div>
         </div>
-        
-
 
         {cookie ? null : (
           <div className="FooterLegal">

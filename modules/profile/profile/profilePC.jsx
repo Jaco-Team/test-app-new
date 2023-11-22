@@ -227,7 +227,8 @@ export default function ProfilePC({ page, this_module, city }){
               <div>
                 <div>
                   <MySelect 
-                    data={arr_d}
+                    //data={arr_d}
+                    data={[]}
                     className="date_d"
                     disabled={ userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ? true : false }
                     value={ userInfo?.date_bir_d ?? '' }

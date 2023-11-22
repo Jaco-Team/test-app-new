@@ -1,11 +1,11 @@
 import React, { useEffect } from 'react';
 
-import Script from 'next/script';
 import dynamic from 'next/dynamic'
 
 const DynamicHeader = dynamic(() => import('@/components/header.js'))
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const DynamicPage = dynamic(() => import('@/modules/profile/profile/page'))
+const LoadMap = dynamic(() => import('@/components/loadMap'));
 
 import { api } from '@/components/api.js';
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
@@ -40,13 +40,13 @@ export default function Profile(props) {
 
   return (
     <div className={roboto.variable}>
-      <Script src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" />
+      <LoadMap />
       
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
       <DynamicPage page={page} this_module={this_module} city={city} />
 
-      <DynamicFooter cityName={city} />
+      <DynamicFooter cityName={city} active_page={this_module} />
     </div>
   );
 }

@@ -27,12 +27,7 @@ function ModalOrderStatusIconDelivery({ types }) {
       )}
 
       <div className="zakazyCircle"
-        style={{ background: parseInt(types?.type2) == 1
-              // || parseInt(types?.type2) == 0
-              ? '#DD1A32'
-              : 'rgba(0, 0, 0, 0.20)',
-        }}
-      >
+        style={{ background: parseInt(types?.type2) == 1 || parseInt(types?.type2) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
         <CookModalOrderIcon />
       </div>
       {parseInt(types?.type3) == 1 || parseInt(types?.type3) == -1 ? (
@@ -46,12 +41,7 @@ function ModalOrderStatusIconDelivery({ types }) {
       )}
 
       <div className="zakazyCircle"
-        style={{ background: parseInt(types?.type3) == 1
-               // || parseInt(types?.type3) == 0
-              ? '#DD1A32'
-              : 'rgba(0, 0, 0, 0.20)',
-        }}
-      >
+        style={{ background: parseInt(types?.type3) == 1 || parseInt(types?.type3) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
         <DeliveryModalOrderIcon />
       </div>
 
@@ -66,12 +56,7 @@ function ModalOrderStatusIconDelivery({ types }) {
       )}
 
       <div className="zakazyCircle"
-        style={{ background: parseInt(types?.type4) == 1
-              // || parseInt(types?.type4) == 0
-              ? '#DD1A32'
-              : 'rgba(0, 0, 0, 0.20)',
-        }}
-      >
+        style={{ background: parseInt(types?.type4) == 1 || parseInt(types?.type4) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
         <HomeModalOrderIcon />
       </div>
     </div>
@@ -93,12 +78,7 @@ function ModalOrderStatusIconPicup({ types }) {
       )}
 
       <div className="zakazyCircle"
-        style={{ background: parseInt(types?.type2) == 1
-              // || parseInt(types?.type2) == 0
-              ? '#DD1A32'
-              : 'rgba(0, 0, 0, 0.20)',
-        }}
-      >
+        style={{ background: parseInt(types?.type2) == 1 || parseInt(types?.type2) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
         <CookModalOrderIcon />
       </div>
       {parseInt(types?.type3) == 1 || parseInt(types?.type3) == -1 ? (
@@ -111,12 +91,7 @@ function ModalOrderStatusIconPicup({ types }) {
       )}
 
       <div className="zakazyCircle"
-        style={{ background: parseInt(types?.type3) == 1
-              // || parseInt(types?.type3) == 0
-              ? '#DD1A32'
-              : 'rgba(0, 0, 0, 0.20)',
-        }}
-      >
+        style={{ background: parseInt(types?.type3) == 1 || parseInt(types?.type3) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
         <PicupModalOrderIcon />
       </div>
     </div>
@@ -129,11 +104,6 @@ export default function ModalOrderMobile() {
   const [isShowAddr, setShowAddr] = useState(false);
 
   const [openModal, closeOrder, modalOrder, openModalDel] = useProfileStore((state) => [state.openModal, state.closeOrder, state.modalOrder, state.openModalDel]);
-
-  //console.log('ModalOrderMobile', modalOrder);
-
-  const placeLength = parseInt(modalOrder?.order?.type_order_) === 1 ? modalOrder?.order?.city_name.length + modalOrder?.order?.street.length + modalOrder?.order?.home.length +
-  modalOrder?.order?.kv.length + 8 : modalOrder?.order?.city_name.length + 'ул. Ленинградская, 47'.length + 2; // указать адрес точки
 
   return (
     <Dialog
@@ -189,52 +159,37 @@ export default function ModalOrderMobile() {
             <span>{modalOrder?.order?.date_time_order_new}</span>
           </div>
 
-          <div className="zakazy_dop_2"
-            style={{ padding: placeLength > 31 ? parseInt(modalOrder?.order?.type_order_) === 1 && isShowAddr ? '2.5641025641026vw 0' : null : null,
-              height: placeLength > 31 ? '15.384615384615vw' : '10.25641025641vw',
-            }}>
+          <div className="zakazy_dop_2">
 
             {parseInt(modalOrder?.order?.type_order_) === 1 ? <MyAddrLocationIcon /> : <StoreOrderMobileModal />}
 
             {parseInt(modalOrder?.order?.type_order_) === 1 ? (
-              <>
-                {isShowAddr ? (
-                  <>
-                    <div style={{ width: '59.82905982906vw', display: 'flex', flexDirection: placeLength > 31 ? 'column' : 'row', height: 'max-content', 
-                                marginRight: '2.5641025641026vw'}}>
-                      <span>
-                        {modalOrder?.order?.city_name + ','}
-                        {/* Комсомольск-на-Амуре, */}
-                      </span>
-                      <span style={{ height: 'max-content' }}>
-                        {/* ул. Автостроителей, 75, кв. 238 */}
-                        {modalOrder?.order?.street + ', ' + modalOrder?.order?.home + ', кв. ' + modalOrder?.order?.kv}
-                      </span>
-                    </div>
-                    <EyeShow_modalOrder onClick={() => setShowAddr(false)} className="svgEye"/>
-                  </>
-                ) : (
-                  <>
-                    <span style={{ height: 'max-content', width: '34.188034188034vw' }}>
-                      {modalOrder?.order?.city_name}
-                      {/* Комсомольск-на-Амуре */}
-                    </span>
-                    <AddrDotsModalOrderIcon className="svgGroup" style={{ marginRight: '9.4017094017094vw' }}/>
-                    <EyeHide_modalOrder onClick={() => setShowAddr(true)} className="svgEye" />
-                  </>
-                )}
-              </>
-            ) : (
-              <>
-                {/* адрес точки надо указать */}
-                <div style={{ width: '68.376068376068vw', display: 'flex', flexDirection: placeLength > 31 ? 'column' : 'row' }}>
-                  <span style={{ marginRight: placeLength > 31 ? null : '0.85470085470085vw' }}>
-                    {modalOrder?.order?.city_name},{/* Комсомольск-на-Амуре, */}
+               <>
+                {isShowAddr ?
+                  <span>
+                    {modalOrder?.order?.city_name},{' '}
+                    {modalOrder?.order?.street + ', ' + modalOrder?.order?.home + ', кв. ' + modalOrder?.order?.kv}
                   </span>
-                  <span>ул. Ленинградская, 47</span>
-                </div>
+                   :
+                  <div className='divGroup'>
+                    <span>{modalOrder?.order?.city_name}</span>
+                    <AddrDotsModalOrderIcon className="svgGroup" />
+                  </div>
+                }
+                {isShowAddr ?
+                  <EyeShow_modalOrder className="svgEye" onClick={ () => {setShowAddr(false)} } />
+                    :
+                  <EyeHide_modalOrder className="svgEye" onClick={ () => {setShowAddr(true)} } />
+                }
               </>
-            )}
+            ) : 
+              <div style={{ maxWidth: '68.376068376068vw' }}>
+                <span>{modalOrder?.order?.city_name},{' '}</span>
+                {/* адрес точки надо указать */}
+                <span>ул. Ленинградская, 47</span>
+              </div>
+            }
+            
           </div>
 
           <div className="zakazyDivider" style={{ marginBottom: '6.3247863247863vw' }}/>
@@ -250,7 +205,7 @@ export default function ModalOrderMobile() {
                 height: order.name.length > 29 ? '11.111111111111vw' : '6.8376068376068vw' }}>
               <span>{order.count}</span>
               <span>{order.name}</span>
-              <span>{new Intl.NumberFormat('ru-RU').format(order.price)} ₽</span>
+              <span>{new Intl.NumberFormat('ru-RU').format(order.price)}{' '}₽</span>
             </div>
           ))}
 

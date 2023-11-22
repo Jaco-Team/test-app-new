@@ -113,8 +113,9 @@
       align-items: center;
       justify-content: center;
       margin-bottom: $MyScale80_mobile;
-      & span {
+      & a {
         @include font50_500();
+        text-decoration: none;
       }
     }
 

@@ -84,9 +84,9 @@ export default function CreatePWD_PC() {
             inputAdornment={
               <InputAdornment position="end">
                 {passReady ? (
-                  <CheckAuthMobile style={{ height: '1.4440433212996vw', width: '1.4440433212996vw' }} />
+                  <CheckAuthMobile className='checkSVG' />
                 ) : (
-                  <ClearAuthMobile style={{ height: '1.4440433212996vw', width: '1.4440433212996vw' }} onClick={() => setPwdLogin('')} />
+                  <ClearAuthMobile className='checkSVG' onClick={() => setPwdLogin('')} />
                 )}
               </InputAdornment>
             }
@@ -102,11 +102,11 @@ export default function CreatePWD_PC() {
           />
           {showPassword ? (
             <div className="eye_icon" onClick={() => setShowPassword(false)}>
-              <EyeShow_modalOrder />
+              <EyeShow_modalOrder style={{ cursor: 'pointer'}} />
             </div>
           ) : (
             <div className="eye_icon" onClick={() => setShowPassword(true)}>
-              <EyeHide_modalOrder />
+              <EyeHide_modalOrder style={{ cursor: 'pointer'}} />
             </div>
           )}
         </div>
@@ -123,9 +123,9 @@ export default function CreatePWD_PC() {
             inputAdornment={
               <InputAdornment position="end">
                 {passEqual && passReady ? (
-                  <CheckAuthMobile style={{ height: '1.4440433212996vw', width: '1.4440433212996vw' }} />
+                  <CheckAuthMobile className='checkSVG' />
                 ) : (
-                  <ClearAuthMobile style={{ height: '1.4440433212996vw', width: '1.4440433212996vw' }} onClick={() => setLoginRepeat('')}/>
+                  <ClearAuthMobile className='checkSVG' onClick={() => setLoginRepeat('')}/>
                 )}
               </InputAdornment>
             }

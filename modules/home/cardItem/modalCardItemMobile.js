@@ -1,8 +1,9 @@
 import React, { useState, useEffect } from 'react';
 
 import Image from 'next/image';
+import Link from 'next/link';
 
-import { useHomeStore, useCartStore } from '@/components/store';
+import { useHomeStore, useCartStore, useFooterStore } from '@/components/store';
 
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -16,6 +17,8 @@ export default function ModalCardItemMobile() {
   //console.log('render ModalCardItemMobile');
 
   const [isOpenModal, openItem, setActiveModalCardItemMobile] = useHomeStore((state) => [state.isOpenModal, state.openItem, state.setActiveModalCardItemMobile]);
+
+  const [links] = useFooterStore((state) => [state.links]);
 
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
 
@@ -102,7 +105,7 @@ export default function ModalCardItemMobile() {
                   </span>
                 </div>
 
-                <div className="dop_icon" onClick={() => setActiveValue(true)}>
+                <div className="dop_icon" onClick={() => setActiveValue(true)} style={{ visibility: openItem?.id === '17' || openItem?.id === '237' ? 'hidden' : 'visible'}}>
                   <IconInfoWhiteMobile />
                 </div>
               </div>
@@ -238,7 +241,7 @@ export default function ModalCardItemMobile() {
             <span>
               Указана на 100 г. Полное описание состава всех блюд, калорийности
               и возможных аллергенов можно{' '}
-              <span style={{ textDecoration: 'underline' }}
+              <Link href={links?.link_allergens ?? links} target="_blank"
                 ref={(node) => {
                   if (node) {
                     node.style.setProperty('color', '#DD1A32', 'important');
@@ -246,7 +249,7 @@ export default function ModalCardItemMobile() {
                 }}
               >
                 скачать в формате PDF
-              </span>{' '}(9 Мб)
+              </Link>
             </span>
           </div>
 

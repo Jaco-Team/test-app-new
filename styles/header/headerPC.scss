@@ -51,6 +51,7 @@ html:not([data-scroll='0']) .blockShadow {
       flex-direction: row;
       align-items: center;
     }
+
     & .logoHeaderPC {
       width: $MyScale500;
       height: $MyScale120;
@@ -60,10 +61,6 @@ html:not([data-scroll='0']) .blockShadow {
         width: 100%;
         height: auto;
       }
-    }
-
-    & .headerCat.last{
-
     }
 
     & .headerCat {
@@ -101,7 +98,7 @@ html:not([data-scroll='0']) .blockShadow {
 
     & .burgerHeaderPC {
       width: $MyScale60;
-      height: $MyScale30;
+      height: $MyScale36;
       display: flex;
       align-items: center;
       margin-right: $MyScale60;
@@ -123,9 +120,6 @@ html:not([data-scroll='0']) .blockShadow {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      //width: 8.7003610108303vw;
-      //height: $MyScale40;
-      //line-height: $MyScale40;
       margin-right: $MyScale80;
 
       & svg {
@@ -254,7 +248,7 @@ html:not([data-scroll='0']) .blockShadow {
 #chooseHeaderCat {
   & div.MuiPaper-root.MuiMenu-paper {
     border-radius: 0.72202166064982vw;
-    width: 14.440433212996vw;
+    width: $MyScale720;
     background: #ececec;
     box-shadow: 0.36101083032491vw 0.72202166064982vw 1.0830324909747vw 0.18050541516245vw rgba(0, 0, 0, 0.2);
     margin-top: 1.4440433212996vw;

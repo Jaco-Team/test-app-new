@@ -56,28 +56,26 @@
           width: $MyScale400_mobile;
           display: flex;
           align-items: center;
-          justify-content: flex-start;
           margin-bottom: $MyScale10_mobile;
 
           & .first_text {
-            @include font20_400();
+            @include font30_400();
             border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
             color: rgba(0, 0, 0, 0.60) !important;
             display: flex;
             align-items: center;
-            justify-content: flex-start;
           }
           & .second_text {
-            @include font20_400();
+            @include font30_400();
             border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
             color: rgba(0, 0, 0, 0.60) !important;
             display: flex;
             align-items: center;
           }
           & .third_text {
-            width: $MyScale100_mobile;
+            width: $MyScale120_mobile;
             color: rgba(0, 0, 0, 0.60) !important;
-            @include font20_400();
+            @include font30_400();
             display: flex;
             align-items: center;
           }
@@ -89,7 +87,7 @@
           margin-bottom: $MyScale40_mobile;
           color: rgba(0, 0, 0, 0.6) !important;
           @include font32_400();
-          -webkit-line-clamp: 5;
+          -webkit-line-clamp: 3;
           display: -webkit-box;
           -webkit-box-orient: vertical;
           overflow: hidden;
@@ -773,7 +771,7 @@
 
             & .ValueItem {
               display: flex;
-              height: $MyScale400_mobile;
+              min-height: $MyScale400_mobile;
               margin-bottom: $MyScale40_mobile;
 
               & .itemIndex {
@@ -789,7 +787,7 @@
                 display: flex;
                 flex-direction: column;
                 width: $MyScale934_mobile;
-                height: $MyScale394_mobile;
+                min-height: $MyScale394_mobile;
                 border: $MyScale3_mobile solid #b2b2b2;
                 border-radius: $MyScale30_mobile;
 
@@ -850,7 +848,7 @@
                 width: 100%;
                 display: flex;
                 align-items: center;
-                height: $MyScale240_mobile;
+                min-height: $MyScale240_mobile;
 
                 & > div:first-child {
                   border-right: $MyScale3_mobile solid #b2b2b2;
@@ -858,7 +856,7 @@
                   padding-top: $MyScale16_mobile;
                   padding-bottom: $MyScale16_mobile;
                   padding-right: $MyScale17_mobile;
-                  height: $MyScale208_mobile;
+                  min-height: $MyScale208_mobile;
                   display: flex;
                   justify-content: flex-start;
                   text-align: left;
@@ -905,13 +903,13 @@
 
             & .ValueItemOne {
               display: flex;
-              height: $MyScale370_mobile;
+              min-height: $MyScale370_mobile;
 
               & .itemValueColumn {
                 display: flex;
                 flex-direction: column;
                 width: $MyScale1004_mobile;
-                height: $MyScale364_mobile;
+                min-height: $MyScale364_mobile;
                 border: $MyScale3_mobile solid #b2b2b2;
                 border-radius: $MyScale30_mobile;
 
@@ -972,14 +970,15 @@
                 width: 100%;
                 display: flex;
                 align-items: center;
-                height: $MyScale213_mobile;
+                min-height: $MyScale213_mobile;
 
                 & > div:first-child {
                   border-right: $MyScale3_mobile solid #b2b2b2;
                   padding-left: $MyScale27_mobile;
                   padding-top: $MyScale13_mobile;
                   padding-right: $MyScale17_mobile;
-                  height: $MyScale200_mobile;
+                  padding-bottom: $MyScale13_mobile;
+                  min-height: $MyScale200_mobile;
                   display: flex;
                   justify-content: flex-start;
                   text-align: left;

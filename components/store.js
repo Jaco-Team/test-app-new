@@ -132,6 +132,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   // получение данных корзины и оформления заказа
   getCartLocalStorage: () => {
+
     const promoInfo = get().promoInfo;
 
     const cart = JSON.parse(localStorage.getItem('setCart'));
@@ -142,9 +143,12 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       if(city?.link === cart?.city?.link) {
 
         if(cart?.items?.length) {
+
           const allPriceWithoutPromo = cart.items.reduce((all, it) => all + it.count * it.one_price, 0);
+
+          const itemsCount = cart.items.reduce((all, item) => all + item.count, 0);
       
-          set({ items: cart.items, allPriceWithoutPromo });
+          set({ items: cart.items, allPriceWithoutPromo, itemsCount });
           
           if(promoInfo) {
             get().promoCheck();
@@ -221,6 +225,12 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       set({ comment: event })
     } else {
       const comment = event.target.value;
+
+      const len = comment.split(/\r?\n|\r|\n/g)
+
+      if(len.length > 2) {
+        return
+      }
 
       if (comment.length > 50) {
         const maxText = comment.toString().slice(0, 50);
@@ -450,6 +460,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     set({ itemsOffDops, itemsOnDops });
 
+    get().setCartLocalStorage();
+
   },
 
   // установка данных для корзины если есть промик, в зависимости от промика
@@ -580,8 +592,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       };
       
       const json = await api('cart', data);
-      
-      //console.log('getInfoPromo ===>', json)
 
       set({
         promoInfo: json
@@ -594,8 +604,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       set({
         checkPromo: res
       })
-      
-      //console.log('getInfoPromo ===> res promo', res)
       
     }
   
@@ -1143,15 +1151,35 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
   myAddr: [],
   phone: '',
   disable: true,
-
-  point: 'Молодёжная 2', // для тестирования
+  point: '',
   openModalChoose: false,
-  setActiveModalChoose: false,
-  nameList: null,
+  location_user: null,
+
+  // получение геопозиции клиента на карте в мобильной версии
+  getUserPosition: () => {
+    navigator.geolocation.getCurrentPosition(({ coords }) => {
+      const { latitude, longitude } = coords
+        
+      set({ location_user: [latitude, longitude] })
+
+      setTimeout( () => {
+        get().loadMapMobile(get().myPoints, get().pointsZone);
+      }, 300)
+
+      setTimeout(() => {
+        set({ location_user: null })
+      }, 300000);
+      
+    }, ({ message }) => {
+      useCartStore.getState().setActiveModalError(true, 'Не удалось определить местоположение. '+message )
+    }, {
+      enableHighAccuracy: true
+    })
+  },
 
   // открытие/закрытие карты с выбором точек/городов на странице Адреса в мобильной версии
-  setActiveModalChoose: (active, nameList) => {
-    set({ openModalChoose: active, nameList });
+  setActiveModalChoose: (active) => {
+    set({ openModalChoose: active });
   },
 
   // получение данных для карты
@@ -1203,30 +1231,55 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
     if(!matches) {
       get().loadMap(get().myPoints, get().pointsZone);
     } else {
-      get().loadMapMobile(get().myPoints, get().pointsZone);
+      setTimeout( () => {
+        get().loadMapMobile(get().myPoints, get().pointsZone);
+      }, 300)
+    }
+
+    get().choosePointMap(false);
+
+  },
+
+  // выбор точки для страницы Контакты в мобильной версии
+  choosePointMap: (point) => {
+    const pointList = get().myAddr;
+
+    if(point) {
+      const pointFind = pointList.find(item => item.addr === point);
+
+      set({ point: pointFind.addr, openModalChoose: false })
+
+      setTimeout( () => {
+        get().loadMapMobile(get().myPoints, get().pointsZone);
+      }, 300)
+
+    } else {
+      set({ point: pointList[0].addr })
     }
 
   },
 
-  // отрисовка карты по данным
+  // отрисовка карты по данным для мобилки
   loadMapMobile: (points, points_zone) => {
-  
+
     let zoomSize;
+    let pointFind;
+    const addr = get().point;
       
-      const widthModal_vw = 10.25641025641;
-      const widthModal_px = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
+    const widthModal_vw = 10.25641025641;
+    const widthModal_px = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
 
-      const sizeIcon_px = (widthModal_vw * widthModal_px) / 100;
+    const sizeIcon_px = (widthModal_vw * widthModal_px) / 100;
 
-      if(widthModal_px < 900) {
-        zoomSize = 10.6;
-      } else {
-        zoomSize = 12.3;
-      }
+    if(widthModal_px < 900) {
+      zoomSize = 10.6;
+    } else {
+      zoomSize = 12.3;
+    }
 
-    const addr = 'Молодёжная 2'; // для тестирования
-  
-    const pointFind = points.find(point => point.addr === addr); // для тестирования
+    if(addr) {
+      pointFind = points.find(point => point.addr === addr);
+    }
 
     if(!get().myMapMobile){
       ymaps.ready().then((function () {
@@ -1244,15 +1297,14 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
         );
 
         points_zone.map((zone, key)=>{
-          ///const is_same = zone.length == pointFind.zone.length && zone[0][0] === pointFind.zone[0].latitude && zone[0][1] === pointFind.zone[0].longitude;
           get().myMapMobile.geoObjects.add(
             new ymaps.Polygon([zone],
               {
                 address: points[ key ]['addr'],
               },
               {
-              fillColor: pointFind.addr === points[ key ]['addr'] ? 'rgba(221, 26, 50, 0.15)' : 'rgba(53, 178, 80, 0.15)',
-              strokeColor: pointFind.addr === points[ key ]['addr'] ? '#DD1A32' : '#35B250',
+              fillColor: pointFind?.addr === points[ key ]['addr'] ? 'rgba(221, 26, 50, 0.15)' : 'rgba(53, 178, 80, 0.15)',
+              strokeColor: pointFind?.addr === points[ key ]['addr'] ? '#DD1A32' : '#35B250',
               strokeWidth: 5,
             })
           );
@@ -1265,7 +1317,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
               address: points[ key ]['addr'],
             },
             {
-              iconLayout: pointFind.addr === point.addr ? img : 'default#image',
+              iconLayout: pointFind?.addr === point.addr ? img : 'default#image',
               iconImageHref: '/Favikon.png',
               iconImageSize: [sizeIcon_px, sizeIcon_px],
               iconImageOffset: [-12, -20],
@@ -1273,13 +1325,41 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
         )
         })
 
+        let objectManager = new ymaps.ObjectManager();
+
+        let json = {
+          "type": "FeatureCollection",
+          "features": []
+        };
+
+        if(get().location_user) {
+  
+          json.features.push({
+            type: "Feature",
+            id: 0,
+            options: {
+              preset: 'islands#redStretchyIcon', 
+            },
+            properties: {
+              iconContent: 'Вы находитесь здесь'
+            },
+            geometry: {
+              type: "Point",
+              coordinates: get().location_user,
+            },
+          })
+  
+        }
+
+        objectManager.add(json);
+        get().myMapMobile.geoObjects.add(objectManager);
+
         get().myMapMobile.geoObjects.events.add('click', get().changePointClickMobile);
 
       }))
     }else{
       get().myMapMobile.destroy();
 
-      //get().myMapMobile = null;
       set({ myMapMobile: null });
 
       get().loadMapMobile(get().myPoints, get().pointsZone);
@@ -1290,6 +1370,10 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
   changePointClickMobile: (event) => {
 
     const pointChoose = event.get('target');
+
+    if(pointChoose?._mappingByOverlayName) {
+      return;
+    }
 
     ymaps.geoQuery(get().myMapMobile.geoObjects).search('geometry.type = "Point"').setOptions({ iconLayout: 'default#image' });
   
@@ -1305,7 +1389,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       "</div>"
     );
 
-    const type = event.get('target').geometry.getType();
+    const type = event.get('target')?.geometry?.getType();
 
     if(type === 'Polygon') {
 
@@ -1418,7 +1502,6 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
     }else{
       get().myMap2.destroy();
 
-      //get().myMap2 = null;
       set({ myMap2: null });
 
       get().loadMap(get().myPoints, get().pointsZone);
@@ -1679,27 +1762,11 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   modalName: null,
 
   openModalAddress: false,
-  streetId: null,
-  //city: '',
+  streetId: 0,
 
   year: '',
   yearList: [],
   openModalYear: false,
-  //openModalOrder: false,
-
-  // для тестирования
-  testAddr: {
-    street: 'Московское шоссе',
-    home: 2,
-    corpus: 1,
-    pd: 3,
-    domophome: 'работает',
-    et: 5,
-    kv: 45,
-    comment: 'Как можно быстрее',
-    is_main: 1,
-    name: 'ДОМ',
-  },
 
   // открытие/закрытие модалки заказа в Истории заказов в мобильной версии
   setActiveModalOrder: (active, modalOrder) => {
@@ -1727,27 +1794,22 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
 
   // открытие/закрытие модалки с указанием адреса в Адресах доставки и при Оформлении заказа в мобильной версии
-  setActiveAddressModal: async (active, id, city = '', name) => {
-
-    // name для тестирования 
+  setActiveAddressModal: async (active, id, city = '') => {
 
     if(active) {
 
       set({ openModalAddress: active, streetId: id, city })
 
-       // name для тестирования 
-      get().getMapMobile(id, city, name);
+      get().getMapMobile(id, city);
 
     } else {
-      set({ openModalAddress: active, streetId: null,  city: '' })
+      set({ openModalAddress: active, streetId: 0,  city: '', infoAboutAddr: null })
     }
 
   },
 
   // карта для модалки выбора адреса доставки в мобильной версии
-  getMapMobile: async ( id, city = '', name) => {
-
-     // name для тестирования 
+  getMapMobile: async (id, city = '') => {
 
     let data = {
       type: 'get_data_for_streets',
@@ -1759,7 +1821,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     set({
       allStreets: json.streets,
-      infoAboutAddr: name === 'edit' ? get().testAddr : json.this_info, // для тестирования
+      infoAboutAddr: json.this_info,
       cityList: json.cities,
       active_city: json.city
     })
@@ -1864,7 +1926,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     let json = await api(this_module, data);
 
     set({
-      shortName: json?.user?.name.substring(0, 1) + json?.user?.fam.substring(0, 1),
+      shortName: json?.user?.name?.substring(0, 1) + json?.user?.fam?.substring(0, 1),
       userInfo: json?.user,
       streets: json?.streets,
       city: city
@@ -1872,7 +1934,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   },
   setUser: (user) => {
     set({
-      shortName: user?.name.substring(0, 1) + user?.fam.substring(0, 1),
+      shortName: user?.name?.substring(0, 1) + user?.fam?.substring(0, 1),
       userInfo: user,
     });
   },
@@ -2186,23 +2248,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   },
   setAddrPoint: (point) => {
 
-    // const widthPC_vw = 2.1660649819495;
-    // const heightPC_vw = 2.8880866425993;
-
-    // const widthMobile_vw = 8.5470085470085;
-    // const heightMobile_vw = 11.282051282051;
-
-    // const widthScreen_px = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
-
-    // console.log('setAddrPoint', widthScreen_px);
-      
-    // const widthIcon_px = (widthMobile_vw * widthScreen_px) / 100;
-    // const heightIcon_px = (heightMobile_vw * widthScreen_px) / 100;
-
-    // console.log('setAddrPoint', widthIcon_px);
-    // console.log('setAddrPoint', heightIcon_px);
-
-
     let objectManager = new ymaps.ObjectManager();
 
     let json2 = {
@@ -2222,7 +2267,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     objectManager.objects.options.set({
       iconLayout: 'default#image',
       iconImageHref: '/Frame.png',
-      //iconImageSize: [widthIcon_px, heightIcon_px], // w & h
     });
 
     objectManager.add(json2);

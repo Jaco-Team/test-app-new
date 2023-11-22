@@ -2,7 +2,12 @@ import Link from 'next/link';
 import Grid from '@mui/material/Grid';
 import { ArrowRightMobile } from '@/ui/Icons.js';
 
+import { useFooterStore } from '@/components/store.js';
+
 export default function DocumentPageMobile({ cityName }) {
+
+  const [links] = useFooterStore((state) => [state.links]);
+
   return (
     <Grid item className="pageAboutMobile" sx={{ display: { xs: 'flex', md: 'flex', sm: 'none' } }}>
       <div className="containerAboutMobile" style={{ marginBottom: '30.769230769231vw' }}>
@@ -35,7 +40,7 @@ export default function DocumentPageMobile({ cityName }) {
             </div>
           </Link>
 
-          <Link href={'/' + cityName + '/about'}>
+          <Link href={links?.link_allergens ?? links} target="_blank">
             <div className="linkAboutMobile">
               <span>Калорийность, состав, БЖУ</span>
               <ArrowRightMobile />

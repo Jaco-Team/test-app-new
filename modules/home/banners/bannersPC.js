@@ -65,7 +65,7 @@ export default React.memo(function BannersPC() {
                   ) : item.id === '80' ? (
                     <Button variant="contained" className="ItemOther">В корзину</Button>
                   ) : null}
-                  <Typography className="ItemOther" variant="h5" component="span">Условия акции<KeyboardArrowDownIcon /></Typography>
+                  <Typography className="ItemOther spanButton" variant="h5" component="span">Условия акции<KeyboardArrowDownIcon /></Typography>
                 </div>
               </div>
             </SwiperSlide>
