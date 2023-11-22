@@ -32,7 +32,7 @@ export default function DataTimePicker() {
   useEffect(() => {
     const timePredFilter = timePreOrder?.filter((time) => time.name !== 'В ближайшее время');
 
-    if(!timePredFilter.length) {
+    if(!timePredFilter?.length) {
       const datePreOrderFilter = datePreOrder?.filter((day) => day.text !== 'Сегодня')
       setSlidesDate(datePreOrderFilter);
     } else {
