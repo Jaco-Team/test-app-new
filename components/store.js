@@ -1240,6 +1240,26 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
   },
 
+  loadMapNew: () => {
+    if( get().pointsZone.length > 0 ){
+      
+      const matches = useHeaderStore.getState().matches;
+
+      if(!matches) {
+        setTimeout( () => {
+          get().loadMap(get().myPoints, get().pointsZone);
+        }, 300 )
+        
+      } else {
+        setTimeout( () => {
+          get().loadMapMobile(get().myPoints, get().pointsZone);
+        }, 300)
+      }
+
+      get().choosePointMap(false);
+    }
+  },
+
   // выбор точки для страницы Контакты в мобильной версии
   choosePointMap: (point) => {
     const pointList = get().myAddr;

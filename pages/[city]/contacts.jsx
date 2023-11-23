@@ -19,7 +19,7 @@ export default function Contacts(props) {
   
   const [setAllItems, changeAllItems] = useCartStore((state) => [state.setAllItems, state.changeAllItems]);
 
-  const [ getData ] = useContactStore( state => [ state.getData ] );
+  const [ getData, loadMapNew ] = useContactStore( state => [ state.getData, state.loadMapNew ] );
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
@@ -33,6 +33,8 @@ export default function Contacts(props) {
 
       setTimeout(() => {
         changeAllItems();
+
+        
       }, 300);
     }
 
@@ -41,9 +43,15 @@ export default function Contacts(props) {
 
   }, [city, thisCity]);
 
+  useEffect(() => {
+    loadMapNew();
+  }, []);
+
   return (
     <div className={roboto.variable}>
-      <LoadMap getData={getData} city={city} />
+      { city == '' ? false :
+        <LoadMap city={city} />
+      }
 
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 

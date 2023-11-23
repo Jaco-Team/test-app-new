@@ -2,8 +2,6 @@ import React, { useState, useEffect } from 'react';
 
 import Link from 'next/link';
 
-import { api } from '@/components/api.js';
-
 import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/store.js';
 
 import { MapPointIcon } from '@/ui/Icons.js';
