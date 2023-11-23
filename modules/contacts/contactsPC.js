@@ -2,6 +2,8 @@ import React, { useState, useEffect } from 'react';
 
 import Link from 'next/link';
 
+import { api } from '@/components/api.js';
+
 import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/store.js';
 
 import { MapPointIcon } from '@/ui/Icons.js';
@@ -40,9 +42,9 @@ export default function ContactsPagePC({ city }) {
     getData(activePage, city.link);
   };
 
-  useEffect(() => {
-    getData('contacts', city);
-  }, []);
+  //useEffect(() => {
+  //  getData('contacts', city);
+  //}, []);
 
   return (
     <Box className="Contact_" sx={{ display: { xs: 'none', md: 'none', lg: 'block' } }}>

@@ -1,6 +1,7 @@
 import { useState, memo, useEffect } from 'react';
 
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -21,9 +22,8 @@ import BasketIconHeaderMobile from '../basket/basketIconHeaderMobile';
 import ProfileIconHeaderMobile from '../profile/profileIconHeaderMobile';
 
 export default memo(function NavBarMobile({ city, active_page }) {
-  //console.log('NavBarMobile render');
-
-  const { push } = useRouter();
+  const router = useRouter()
+  const pathname = usePathname()
 
   const [activeMenu, setActiveMenu] = useState(false);
 
@@ -35,30 +35,7 @@ export default memo(function NavBarMobile({ city, active_page }) {
     return null;
   }
 
-  useEffect(() => {
-    if (typeof window !== "undefined") {
-
-      if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
-        const city = JSON.parse(localStorage.getItem('setCity'));
-
-        if (city.name !== thisCityRu) {
-          setThisCityRu(city.name);
-          setThisCity(city.link);
-          push(`/${city.link}`);
-        }
-        
-      } else {
-        setActiveModalCity(true);
-      }
-
-      if( localStorage.getItem('promo_name') ){
-        getInfoPromo(localStorage.getItem('promo_name'), city)
-      }
-
-      getCartLocalStorage();
-
-    }
-  }, []);
+  
 
   const close = () => {
     if (openBasket) {

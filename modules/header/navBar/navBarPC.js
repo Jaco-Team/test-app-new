@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
-import { useRouter } from 'next/router';
+import { usePathname } from 'next/navigation'
+import { useRouter } from 'next/navigation'
 import Link from 'next/link';
 import Image from 'next/image';
 
@@ -88,9 +89,10 @@ const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, c
 export default function NavBarPC({ city, active_page }) {
   useScroll();
 
-  const { push } = useRouter();
+  const router = useRouter()
+  const pathname = usePathname()
   
-  const [setActiveBasket, openBasket, setActiveModalCity] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity]);
+  const [setActiveBasket, openBasket, setActiveModalCity, activePage] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity, state.activePage]);
   const [setThisCityRu, thisCityRu, setThisCity] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu, state.setThisCity]);
   const [ getInfoPromo, getCartLocalStorage ] = useCartStore( state => [ state.getInfoPromo, state.getCartLocalStorage ])
 
@@ -105,14 +107,20 @@ export default function NavBarPC({ city, active_page }) {
     if (typeof window !== "undefined") {
 
       if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
-        const city = JSON.parse(localStorage.getItem('setCity'));
+        const city_ = JSON.parse(localStorage.getItem('setCity'));
 
-        if (city.name !== thisCityRu) {
-          setThisCityRu(city.name);
-          setThisCity(city.link);
-          push(`/${city.link}`);
+        if (city_.link !== city && city != '') {
+          setThisCityRu(city_.name);
+          setThisCity(city_.link);
+
+          const new_link = pathname.replace(new RegExp(city, 'g'), city_.link);
+
+          router.push(`${new_link}`, { scroll: true });
+
+          setTimeout( () => {
+            router.refresh();
+          }, 500 ) 
         }
-        
       } else {
         setActiveModalCity(true);
       }
@@ -122,7 +130,6 @@ export default function NavBarPC({ city, active_page }) {
       }
 
       getCartLocalStorage();
-
     }
   }, []);
 
