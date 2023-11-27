@@ -110,7 +110,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        width: $MyScale240_mobile;
+        //width: $MyScale170_mobile;
 
         span:nth-child(1) {
           margin: 0;
@@ -128,7 +128,8 @@
           justify-content: space-between;
           height: $MyScale60_mobile;
           width: $MyScale100_mobile;
-          margin-left: $MyScale40_mobile;
+          //margin-left: $MyScale20_mobile;
+          margin-right: $MyScale40_mobile;
 
           svg {
             width: $MyScale20_mobile;

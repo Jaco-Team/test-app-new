@@ -1,5 +1,7 @@
 import React, { useEffect, useState } from 'react';
 
+
+
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
@@ -27,6 +29,8 @@ import { useSession, signOut } from 'next-auth/react';
 
 export default function ProfilePC({ page, this_module, city }){
 
+  const [ getUserInfo, setUser, userInfo, streets, shortName, updateUser, openModalAddr, delAddr ] = useProfileStore( state => [ state.getUserInfo, state.setUser, state.userInfo, state.streets, state.shortName, state.updateUser, state.openModalAddr, state.delAddr ] );
+
   const session = useSession();
 
   const { control, getValues, setValue } = useForm({
@@ -37,6 +41,11 @@ export default function ProfilePC({ page, this_module, city }){
       mail: ''
     }
   });
+
+  const [ isSpam, setIsSpam ] = useState(0);
+
+  const [ user_d, setUser_d ] = useState('');
+  const [ user_m, setUser_m ] = useState('');
 
   const [ arr_d, setArr_d ] = useState([]);
   const [ arr_m, setArr_m ] = useState([ 
@@ -56,28 +65,17 @@ export default function ProfilePC({ page, this_module, city }){
 
   if( arr_d.length == 0 ){
     
-    console.log( 'arr_d' )
     let arr_d = [];
 
     for(let i = 1; i <= 31; i ++){
-      if( i < 10 ){
-        arr_d.push({
-          name: '0'+i,
-          id: i
-        })
-      }else{
-        arr_d.push({
-          name: i,
-          id: i
-        })
-      }
+      arr_d.push({
+        name: i,
+        id: i
+      })
     }
 
     setArr_d(arr_d);
-    
   }
-
-  const [ getUserInfo, setUser, userInfo, streets, shortName, updateUser, openModalAddr, delAddr ] = useProfileStore( state => [ state.getUserInfo, state.setUser, state.userInfo, state.streets, state.shortName, state.updateUser, state.openModalAddr, state.delAddr ] );
 
   useEffect(() => {
     if( session.data?.user?.token ){
@@ -90,6 +88,10 @@ export default function ProfilePC({ page, this_module, city }){
     setValue("fam", userInfo?.fam)
     setValue("login", userInfo?.login)
     setValue("mail", userInfo?.mail)
+
+    setIsSpam(userInfo?.spam)
+    setUser_d(userInfo?.date_bir_d)  
+    setUser_m(userInfo?.date_bir_m)
   }, [userInfo]);
 
   function saveMainData(){
@@ -108,6 +110,9 @@ export default function ProfilePC({ page, this_module, city }){
     userInfo[ [type] ] = data === true ? 1 : 0;
 
     setUser(userInfo);
+
+    setIsSpam(data === true ? 1 : 0)
+
     updateUser(this_module, city, session.data?.user?.token);
   }  
 
@@ -115,6 +120,14 @@ export default function ProfilePC({ page, this_module, city }){
     userInfo[ [data] ] = value;
 
     setUser(userInfo);
+
+    if( data == 'date_bir_d' ){
+      setUser_d(value)
+    }
+
+    if( data == 'date_bir_m' ){
+      setUser_m(value)
+    }
 
     if( userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ){
       updateUser(this_module, city, session.data?.user?.token);
@@ -131,9 +144,13 @@ export default function ProfilePC({ page, this_module, city }){
       <Grid container spacing={3} style={{ margin: 0, width: '100%' }} sx={{ display: { xs: 'none', md: 'none', lg: 'flex' } }}>
         <Grid item className="Profile mainContainer">
           
+          
+
           <Grid item xs={12}>
             <Typography variant="h5" component="h1">Личные данные</Typography>
           </Grid>
+
+          <div className='map map_1' id='map_1' style={{ width: 300, height: 300 }} />
 
           <Grid item xs={12} className="main_data">
             <div>
@@ -205,9 +222,9 @@ export default function ProfilePC({ page, this_module, city }){
             <div>
               <div>
                 <span>Хочу получать СМС с акциями и скидками</span>
-                <MySwitch checked={ parseInt(userInfo?.spam) == 1 ? true : false } onClick={ event => { changeOtherData('spam', event.target.checked) } } />
+                <MySwitch checked={ parseInt(isSpam) == 1 ? true : false } onClick={ event => { changeOtherData('spam', event.target.checked) } } />
               </div>
-              <div>
+              <div style={{ display: 'none' }}>
                 <span>Хочу получать цифровые чеки на электронную почту</span>
                 <MySwitch />
               </div>
@@ -227,11 +244,10 @@ export default function ProfilePC({ page, this_module, city }){
               <div>
                 <div>
                   <MySelect 
-                    //data={arr_d}
-                    data={[]}
+                    data={arr_d}
                     className="date_d"
                     disabled={ userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ? true : false }
-                    value={ userInfo?.date_bir_d ?? '' }
+                    value={ user_d }
                     func={ (event) => changeUserData('date_bir_d', event.target.value) }
                   />
                 </div>
@@ -240,7 +256,7 @@ export default function ProfilePC({ page, this_module, city }){
                     data={arr_m}
                     className="date_m"
                     disabled={ userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ? true : false }
-                    value={ userInfo?.date_bir_m ?? '' }
+                    value={ user_m }
                     func={ (event) => changeUserData('date_bir_m', event.target.value) }
                   />
                 </div>

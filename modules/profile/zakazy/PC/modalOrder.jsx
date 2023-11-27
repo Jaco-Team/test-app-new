@@ -136,12 +136,14 @@ export default function ModalOrder() {
                   <div className='order_city'>
                     {isShowAddr ?
                       <span>
-                        {modalOrder?.order?.city_name}, 
-                        { modalOrder?.order?.street + ', ' + modalOrder?.order?.home + ', кв. ' + modalOrder?.order?.kv }</span>
+                        {modalOrder?.order?.city_name + ', '}
+                        { modalOrder?.order?.street + ', ' + modalOrder?.order?.home + ', кв. ' + modalOrder?.order?.kv }
+                      </span>
                         :
                       <span>
-                        {modalOrder?.order?.city_name} 
-                        <AddrDotsModalOrderIcon className="long" /></span>
+                        {modalOrder?.order?.city_name + ' '} 
+                        <AddrDotsModalOrderIcon className="long" />
+                      </span>
                     }
                   </div>
                 </div>

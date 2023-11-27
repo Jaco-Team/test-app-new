@@ -23,7 +23,17 @@ export default function OrderPC({ page, this_module, city }) {
       getOrderList(this_module, city, session.data?.user?.token);
     }
   }, [session]);
- 
+
+  useEffect(() => {
+    const timer = setInterval(() => {
+      if (session.data?.user?.token) {
+        getOrderList(this_module, city, session.data?.user?.token);
+      }
+    }, 30 * 1000);
+    
+    return () => clearInterval(timer);
+  }, []);
+
   return (
     <Grid
       container

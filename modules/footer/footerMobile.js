@@ -144,7 +144,7 @@ export default function FooterMobile({ cityName, active_page }) {
           </div>
 
           <div className="copy">
-            <Typography component="span" className="copy">{new Date().getFullYear()} © ООО «Мистер Жако»</Typography>
+            <Typography component="span" className="copy">{new Date().getFullYear()} © ООО «Мистер Жако», ИНН: 6321390811</Typography>
           </div>
         </div>
 

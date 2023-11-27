@@ -1,4 +1,4 @@
-'use_client'
+//'use_client'
 
 import Script from 'next/script';
 

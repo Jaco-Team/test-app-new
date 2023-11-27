@@ -1,6 +1,8 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useState, useRef } from 'react';
 
 import MySwitch from '@/ui/Switch.js';
+
+import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
 
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
@@ -18,8 +20,14 @@ import { useProfileStore } from '@/components/store.js';
 import { useSession } from 'next-auth/react';
 
 export default function ModalAddr(){
-  const [ isOpenModalAddr, closeModalAddr, allStreets, checkStreet, saveNewAddr, infoAboutAddr, cityList, updateStreetList, active_city, updateAddr ] = 
-    useProfileStore( state => [ state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.cityList, state.updateStreetList, state.active_city, state.updateAddr ] );
+  const ref = useRef();
+  const ref2 = useRef();
+  const ymaps = React.useRef(null);
+
+  const [ chooseAddrStreet, center_map, zones, isOpenModalAddr, closeModalAddr, allStreets, checkStreet, saveNewAddr, infoAboutAddr, cityList, updateStreetList, active_city, updateAddr ] = 
+    useProfileStore( state => [ state.chooseAddrStreet, state.center_map, state.zones, state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.cityList, state.updateStreetList, state.active_city, state.updateAddr ] );
+
+  console.log( center_map, zones )
 
   const session = useSession();
 
@@ -59,11 +67,11 @@ export default function ModalAddr(){
   }, [infoAboutAddr] )
 
   useEffect( () => {
-    updateStreetList(cityID);
+    //updateStreetList(cityID);
   }, [cityID] )
 
   useEffect( () => {
-    setCityID(active_city);
+    //setCityID(active_city);
   }, [active_city] )
 
   useEffect(() => {
@@ -79,8 +87,32 @@ export default function ModalAddr(){
       setCheck(false)
       setNameAddr('');
       setCityID(active_city)
+    }else{
+      setTimeout( () => {
+        //render_map_model();
+      }, 1000 )
     }
   }, [isOpenModalAddr]);
+
+  let new_zone = [];
+
+  zones.map( (item, key) => {
+    //console.log( key, item.zone )
+
+    new_zone.push( item.zone )
+  })
+
+  //console.log( 'new_zone', center_map )
+
+  
+
+  useEffect( () => {
+    if( ref2.current && chooseAddrStreet?.xy ){
+      ref2.current.setCenter(chooseAddrStreet?.xy);
+    }
+
+    console.log( 'chooseAddrStreet', ref2.current, chooseAddrStreet )
+  }, [chooseAddrStreet] )
 
   return (
     <Dialog
@@ -97,7 +129,26 @@ export default function ModalAddr(){
           </IconButton>
 
           <div className='mainGrid'>
-            <div className='map' id='map' />
+            <div className='map unic_map_key' id='unic_map_key'>
+              <YMaps query={{ lang: 'ru_RU', apikey: 'ae2bad1f-486e-442b-a9f7-d84fff6296db' }}>
+                <Map defaultState={center_map} instanceRef={ref2} width="100%" height="100%">
+
+                  { !chooseAddrStreet?.xy ? false :
+                    <Placemark geometry={chooseAddrStreet?.xy} />
+                  }
+                  
+                  <Polygon
+                    geometry={new_zone}
+                    options={{
+                      fillColor: 'rgba(53, 178, 80, 0.15)',
+                      strokeColor: '#35B250',
+                      strokeWidth: 5,
+                      hideIconOnBalloonOpen: false
+                    }}
+                  />
+                </Map>
+              </YMaps>
+            </div>
             <div className='form'>
 
               <div className='nameAddr'>

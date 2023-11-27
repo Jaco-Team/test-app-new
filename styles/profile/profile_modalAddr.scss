@@ -18,9 +18,12 @@
             & > li{
                 height: $MyScale100;
                 @include font30_400();
-                border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
-                margin-left: $MyScale40;
-                margin-right: $MyScale40;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                //border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
+                //margin-left: $MyScale40;
+                //margin-right: $MyScale40;
             }
         }
     }
@@ -48,9 +51,9 @@
 .MuiAutocomplete-option{
     height: $MyScale100;
     @include font30_400();
-    border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
-    margin-left: $MyScale40;
-    margin-right: $MyScale40;
+    //border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
+    //margin-left: $MyScale40;
+    //margin-right: $MyScale40;
 }
 
 .modalAddrPC {

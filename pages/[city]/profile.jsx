@@ -40,8 +40,6 @@ export default function Profile(props) {
 
   return (
     <div className={roboto.variable}>
-      <LoadMap />
-      
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
       <DynamicPage page={page} this_module={this_module} city={city} />

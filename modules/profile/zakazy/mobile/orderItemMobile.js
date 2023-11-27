@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useProfileStore } from '@/components/store.js';
 
-import { ArrowRightMobile, CheckOrderMobile, CalendarOrderMobile, DeleteOrderMobile, CookOrderMobile, EllipseOrderMobile, ErrorOrderMobile } from '@/ui/Icons.js';
+import { ArrowRightMobile, CheckOrderMobile, CalendarOrderMobile, DeleteOrderMobile, CookOrderMobile, EllipseOrderMobile, ErrorOrderMobile, DeliveryModalOrderIcon } from '@/ui/Icons.js';
 
 import moment from 'moment';
 import 'moment/locale/ru';
@@ -22,49 +22,65 @@ export default React.memo(function OrderItemMobile({ order, token, this_module, 
     setActiveModalOrder(true, order);
   };
 
-  return (
-    <div className="zakazyItem"
-      style={{
-        marginBottom: last ? '11.111111111111vw' : null,
-        background: parseInt(order?.type_status) === 1 || parseInt(order?.type_status) === 2 || parseInt(order?.type_status) === 3 ? 'rgba(221, 26, 50, 0.07)' : null,
-      }}
-    >
-      <span>{order?.order_id}</span>
+  let icon_status = false;
+  let text_status = '';
 
-      {parseInt(order?.type_order) === 2 ? (
-        <ErrorOrderMobile />
-      ) : parseInt(order?.is_pred) === 1 ? (
-        <CalendarOrderMobile />
-      ) : parseInt(order?.is_delete) === 1 ? (
-        <DeleteOrderMobile />
-      ) : parseInt(order?.type_status) === 1 || parseInt(order?.type_status) === 2 || parseInt(order?.type_status) === 3 ? (
-        <CookOrderMobile />
-      ) : (
-        <CheckOrderMobile />
-      )}
+  //order.type_order = 2;
+  //order.status_order_ = 2;
 
-      <span
-        style={{ color: parseInt(order?.type_status) === 1 || parseInt(order?.type_status) === 2 || parseInt(order?.type_status) === 3 ? '#DD1A32' : 'rgba(0, 0, 0, 0.80)' }}
-      >
-        {parseInt(order?.type_status) === 1 || parseInt(order?.type_status) === 2
-          ? 'Готовим'
-          : parseInt(order?.type_status) === 3
-          ? 'Везем'
-          : moment(order?.date).format('D MMM').replace('.', '')}
-      </span>
-
-      <div className="zakazyGroup">
-        {parseInt(order?.type_status) === 1 || parseInt(order?.type_status) === 2 || parseInt(order?.type_status) === 3 ? (
+  if( parseInt(order?.is_delete) === 1 ){
+    icon_status = <DeleteOrderMobile />;
+    text_status = moment(order?.date).format('D MMM').replace('.', '');
+  }else{
+    if( parseInt(order?.type_order) === 1 && parseInt(order?.status_order_) === 5 ){
+      icon_status = <DeliveryModalOrderIcon />;
+      text_status = 'Везем';
+    }
+    if( parseInt(order?.status_order_) < 5 ){
+      icon_status = 
+        <div className="zakazyGroup">
           <div className="zakazyEllipse">
             <EllipseOrderMobile />
             <EllipseOrderMobile />
             <EllipseOrderMobile />
           </div>
-        ) : (
-          <span>{new Intl.NumberFormat('ru-RU').format(order?.sum)} ₽</span>
-        )}
+        </div>;
 
-        <ArrowRightMobile onClick={openOrder} />
+      text_status = 'Готовим';
+
+      if( parseInt(order?.type_order) === 2 && parseInt(order?.status_order_) == 4 ){
+        text_status = 'Ждем вас';
+      }
+    }
+    if( parseInt(order?.is_pred) === 1 && parseInt(order?.status_order_) === 1 ){
+      icon_status = <CalendarOrderMobile />;
+      text_status = moment(order?.date).format('D MMM').replace('.', '');
+    }
+    if( parseInt(order?.status_order_) === 6 ){
+      icon_status = <CheckOrderMobile />;
+      text_status = moment(order?.date).format('D MMM').replace('.', '');
+    }
+  }
+
+  
+
+  return (
+    <div className="zakazyItem"
+      style={{
+        marginBottom: last ? '11.111111111111vw' : 0,
+        background: parseInt(order?.is_delete) == 1 ? 'rgba(221, 26, 50, 0.07)' : '#fff',
+      }}
+      onClick={openOrder}
+    >
+      <span>{order?.order_id}</span>
+      {icon_status}
+      <span>
+        {text_status}
+      </span>
+
+      <div className="zakazyGroup">
+        <span>{new Intl.NumberFormat('ru-RU').format(order?.sum)} ₽</span>
+        <ArrowRightMobile />
       </div>
     </div>
   );

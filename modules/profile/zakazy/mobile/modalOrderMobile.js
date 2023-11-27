@@ -105,6 +105,32 @@ export default function ModalOrderMobile() {
 
   const [openModal, closeOrder, modalOrder, openModalDel] = useProfileStore((state) => [state.openModal, state.closeOrder, state.modalOrder, state.openModalDel]);
 
+  let text_status = '';
+
+  if( modalOrder ){
+    if( parseInt(modalOrder?.order?.is_delete) == 1 ){
+      text_status = `Отменили в ${modalOrder?.order?.del_date_time}`;
+    }else{
+      if( parseInt(modalOrder?.order?.type_order_) == 1 ){
+        if( parseInt(modalOrder?.order?.status_order) >= 1 && parseInt(modalOrder?.order?.status_order) <= 5 ){
+          text_status = `Доставим до ${modalOrder?.order?.max_time_order}`;
+        }else{
+          text_status = `Доставили в ${modalOrder?.order?.close_date_time}`;
+        }
+      }else{
+        if( parseInt(modalOrder?.order?.status_order) >= 1 && parseInt(modalOrder?.order?.status_order) <= 3 ){
+          text_status = `Будет готов до ${modalOrder?.order?.max_time_order}`;
+        }else{
+          if( parseInt(modalOrder?.order?.status_order) == 4 ){
+            text_status = 'Ждёт в кафе, можно забирать';
+          }else{
+            text_status = `Отдали в ${modalOrder?.order?.close_date_time}`;
+          }
+        }
+      }
+    }
+  }
+
   return (
     <Dialog
       onClose={closeOrder}
@@ -128,19 +154,7 @@ export default function ModalOrderMobile() {
           </div>
 
           <div className="zakazyTimeText">
-            <span>
-              {parseInt(modalOrder?.order?.status_order) === 2 || parseInt(modalOrder?.order?.status_order) === 3
-
-                ? parseInt(modalOrder?.order?.type_order_) === 1 ? `Доставим до ${modalOrder?.order?.max_time_order}` : `Будет готов в ${modalOrder?.order?.max_time_order}`
-
-                : parseInt(modalOrder?.order?.status_order) === 1 ? 'Отменили в 15:42'
-
-                : parseInt(modalOrder?.order?.status_order) === 4 ? parseInt(modalOrder?.order?.type_order_) === 1
-                  ? `Доставим до ${modalOrder?.order?.max_time_order}` : 'Ждёт в кафе, можно забирать'
-
-                : 'Отдали в 16:31'}
-            </span>
-            {parseInt(modalOrder?.order?.status_order) === 6 || parseInt(modalOrder?.order?.status_order) === 5 ? <span>&nbsp;на 10 минут быстрее</span> : null}
+            <span>{text_status}</span>
           </div>
 
           {parseInt(modalOrder?.order?.status_order) === 6 || parseInt(modalOrder?.order?.status_order) === 1 ? null : 
@@ -186,7 +200,7 @@ export default function ModalOrderMobile() {
               <div style={{ maxWidth: '68.376068376068vw' }}>
                 <span>{modalOrder?.order?.city_name},{' '}</span>
                 {/* адрес точки надо указать */}
-                <span>ул. Ленинградская, 47</span>
+                <span>{ modalOrder?.order?.point_name }</span>
               </div>
             }
             
@@ -209,7 +223,7 @@ export default function ModalOrderMobile() {
             </div>
           ))}
 
-          {parseInt(modalOrder?.order?.status_order) === 2 || parseInt(modalOrder?.order?.status_order) === 3 || parseInt(modalOrder?.order?.status_order) === 4 ? (
+          { parseInt(modalOrder?.order?.is_delete) == 0 && parseInt(modalOrder?.order?.status_order) != 6 ? (
             <Button className="zakazyBTN" variant="outlined" onClick={openModalDel}>
               <span>Отменить заказ</span>
             </Button>

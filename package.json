@@ -15,6 +15,7 @@
     "@mui/icons-material": "^5.14.18",
     "@mui/material": "^5.14.18",
     "@mui/styled-engine-sc": "^5.14.12",
+    "@pbe/react-yandex-maps": "^1.2.5",
     "@react-spring/web": "^9.7.3",
     "css-mediaquery": "^0.1.2",
     "dayjs": "^1.11.10",

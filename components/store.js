@@ -1184,6 +1184,11 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
   // получение данных для карты
   getData: async (this_module, city) => {
+
+    if( !city ){
+      return ;
+    }
+
     set({ disable: true });
 
     const data = {
@@ -1568,19 +1573,21 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
       points.each(function(point) {
 
-      const res = event.get('target').geometry.contains(point.geometry.getCoordinates())
+        const res = event.get('target').geometry.contains(point.geometry.getCoordinates())
 
         if(res) {
           if(get().disable) {
-            point.options.set({ iconLayout: img, balloonLayout: balloonLayout })
-            point.balloon.open();
+            //point.options.set({ iconLayout: img, balloonLayout: balloonLayout })
+            point.options.set({ iconLayout: img })
+            //point.balloon.open();
           }
         }
       });
     }
 
     if(type === 'Point') {
-      event.get('target').options.set({ iconLayout: img, balloonLayout: balloonLayout })
+      //event.get('target').options.set({ iconLayout: img, balloonLayout: balloonLayout })
+      event.get('target').options.set({ iconLayout: img })
 
       const polygons = ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"')
 
@@ -1601,6 +1608,9 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
   // изменение состояния карты/точек при клике вне точек
   changePointNotHover: (event) => {
+
+    console.log( 'changePointNotHover' )
+
     get().myMap2.balloon.close();
 
     const type = event.get('target').getType();
@@ -1706,8 +1716,9 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
          item.options.set({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
         }
 
-        item.options.set({ balloonLayout: balloonLayout, iconLayout: img });
-        item.balloon.open();
+        //item.options.set({ balloonLayout: balloonLayout, iconLayout: img });
+        item.options.set({ iconLayout: img });
+        //item.balloon.open();
 
       }
     });
@@ -1774,6 +1785,9 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   cityList: [],
   is_fetch_save_new_addr: false,
   active_city: 0,
+
+  center_map: null,
+  zones: [],
 
   openModalAccount: false,
   colorAccount: {id: 6, login: "rgba(111, 190, 248, 1)", item: 'rgba(111, 190, 248, 0.1)'},
@@ -2014,18 +2028,29 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api('profile', data);
 
+    console.log( json.this_info )
+
     set({
       isOpenModalAddr: true,
       allStreets: json.streets,
       infoAboutAddr: json.this_info,
       cityList: json.cities,
-      active_city: json.city
+      active_city: json.city,
+
+      center_map: {
+        center: [json.city_center[0], json.city_center[1]],
+        zoom: 11.5,
+        controls: []
+      },
+      zones: json.zones
     })
 
-    ymaps.ready().then((function () {
+    /*ymaps.ready().then(( () => {
   
+      console.log( json )
+
       if( parseInt( id ) > 0 ){
-        get().thisMAP = new ymaps.Map('map', {
+        get().thisMAP = new ymaps.Map('unic_map_key', {
           center: [ json.this_info.xy[0], json.this_info.xy[1] ],
           zoom: 11.5,
           controls: []
@@ -2036,7 +2061,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
         get().setAddrPoint(json.this_info.xy);
 
       }else{
-        get().thisMAP = new ymaps.Map('map', {
+        get().thisMAP = new ymaps.Map('unic_map_key', {
           center: [ json.city_center[0], json.city_center[1] ],
           zoom: 11.5,
           controls: []
@@ -2045,7 +2070,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
         get().setMapZone(json.zones, json.city_center)
       }
 
-    }))
+    }))*/
   },
   orderDel: async (this_module, userToken) => {
     let data = {
@@ -2090,15 +2115,20 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       json.addrs = json?.addrs[0];
 
       set({
-        chooseAddrStreet: json.addrs
+        chooseAddrStreet: json.addrs,
+        center_map: {
+          center: [json?.addrs?.xy[0], json?.addrs?.xy[1]],
+          //zoom: 11.5,
+          //controls: []
+        },
       })
 
-      get().thisMAP.setCenter([json.addrs.xy_new.latitude, json.addrs.xy_new.longitude], 11);
+      //get().thisMAP.setCenter([json.addrs.xy_new.latitude, json.addrs.xy_new.longitude], 11);
 
-      get().delAddrPoint();
+      //get().delAddrPoint();
 
       setTimeout( () => {
-        get().setAddrPoint(json.addrs.xy);
+        //get().setAddrPoint(json.addrs.xy);
       }, 300 )
       
     }else{
@@ -2762,7 +2792,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     const json = await api(this_module, data);
 
-    //console.log('getBanners ====>', json)
+    console.log('getBanners ====>', json)
 
     set({
       bannerList: json.banners,

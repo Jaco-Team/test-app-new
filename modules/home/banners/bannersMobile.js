@@ -1,4 +1,6 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, { useEffect, useRef } from 'react';
+
+import Image from 'next/image';
 
 import Box from '@mui/material/Box';
 
@@ -12,22 +14,13 @@ import 'swiper/css/pagination';
 import { useHomeStore } from '../../../components/store.js';
 
 export default React.memo(function BannersMobile() {
-  //console.log('BannersMobile render');
-
-  const [banners, setBanners] = useState([]);
   const [bannerList, setActiveBanner] = useHomeStore((state) => [state.bannerList, state.setActiveBanner]);
 
   const swiperRef = useRef(null);
 
   useEffect(() => {
-    if (banners.length == 0) {
-      const filterList = bannerList.filter((banner) => banner.id === '84' || banner.id === '80' || banner.id === '48');
-
-      setBanners(filterList);
-    }
-  }, [bannerList]);
-
-  if (banners.length == 0) return null;
+    swiperRef.current.swiper.autoplay.start();
+  }, []);
 
   return (
     <Box component="div" className="BannerMobile">
@@ -42,11 +35,9 @@ export default React.memo(function BannersMobile() {
         scrollbar={{ draggable: true }}
         ref={swiperRef}
       >
-        {banners.map((item, key) => (
-          <SwiperSlide key={key} dataswiperautoplay="2000" 
-          onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}
-          >
-            <div className="Item" style={{ backgroundColor: item.id === '84' ? '#3faad8' : item.id === '80' ? '#B570DF' : item.id === '48' ? '#F45773' : null}}></div>
+        {bannerList.map((item, key) => (
+          <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
+            <Image alt={item.promo_title} src={"https://storage.yandexcloud.net/site-home-img/"+item.img_new+"1000х500.jpg"} width={ 1000 } height={ 500 } priority={true} className="Item" />
           </SwiperSlide>
         ))}
       </Swiper>

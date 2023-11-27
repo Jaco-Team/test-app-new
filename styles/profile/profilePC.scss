@@ -11,12 +11,11 @@
             padding: 0;
             & > li{
                 height: $MyScale100;
-                width: $MyScale160;
+                width: $MyScale240;
                 @include font30_400();
-                text-align: center;
-                border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
-                margin-left: $MyScale40;
-                margin-right: $MyScale40;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
         }
     }
@@ -31,12 +30,11 @@
             padding: 0;
             & > li{
                 height: $MyScale100;
-                width: $MyScale320;
+                width: $MyScale400;
                 @include font30_400();
-                text-align: center;
-                border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
-                margin-left: $MyScale40;
-                margin-right: $MyScale40;
+                display: flex;
+                justify-content: center;
+                align-items: center;
             }
         }
     }

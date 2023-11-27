@@ -30,6 +30,16 @@ export default function OrderMobile({ city, this_module }) {
   }, [session]);
 
   useEffect(() => {
+    const timer = setInterval(() => {
+      if (session.data?.user?.token) {
+        getOrderList(this_module, city, session.data?.user?.token);
+      }
+    }, 30 * 1000);
+    
+    return () => clearInterval(timer);
+  }, []);
+
+  useEffect(() => {
     if (year) {
       const list = orderList.find((item) => item.year === year);
       setList(list);
@@ -45,10 +55,10 @@ export default function OrderMobile({ city, this_module }) {
         <Link href={'/' + city + '/account'}>
           <ArrowLeftMobile />
         </Link>
-        {!orderList.length ? null :
+        { !orderList || orderList?.length == 0 ? null :
           <div className="loginContainer">
             <span>{list?.year}</span>
-            <VectorDownMobile onClick={() => setActiveModalYear(true, listOrders)}/>
+            <VectorDownMobile onClick={() => setActiveModalYear(true, orderList)}/>
           </div>
         }
       </div>
@@ -61,12 +71,12 @@ export default function OrderMobile({ city, this_module }) {
         </div>
         {list?.orders?.map((order, ykey) => (
           <OrdersItemMobile
-            key={ykey}
+            key={order?.order_id}
             order={order}
             token={session.data?.user?.token}
             this_module={this_module}
             city={city}
-            last={order === list?.orders?.at(-1) ? 'last' : ''}
+            last={list?.orders?.length-1 == ykey ? 'last' : ''}
           />
         ))}
       </div>
