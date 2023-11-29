@@ -43,12 +43,6 @@
         flex-direction: column;
         align-items: center;
 
-        & .checkSVG {
-          height: $MyScale40;
-          width: $MyScale40;
-          cursor: pointer;
-        }
-
         & .loginErr {
           height: $MyScale40;
           display: flex;
@@ -97,6 +91,7 @@
               width: $MyScale40;
               height: $MyScale40;
               margin-bottom: $MyScale20;
+              cursor: pointer;
             }
           }
         }
@@ -106,7 +101,7 @@
           height: $MyScale80;
           @include font22_400();
           text-align: center;
-          margin-bottom: $MyScale45;
+          margin-bottom: $MyScale55;
         }
 
         & .startInputBox {
@@ -124,7 +119,7 @@
             width: $MyScale60;
             height: $MyScale70;
             z-index: 5;
-
+            cursor: pointer;
             & svg {
               width: $MyScale60;
               height: $MyScale60;
@@ -137,6 +132,7 @@
           align-items: center;
           height: $MyScale40;
           margin-bottom: $MyScale20;
+          margin-top: $MyScale10;
           cursor: pointer;
           & span {
             text-decoration: underline;
@@ -252,18 +248,24 @@
             }
 
             & .vectorInput {
-              width: $MyScale60;
-              height: $MyScale60;
-              border-radius: $MyScale60;
-              background: rgba(0, 0, 0, 0.1);
+              position: absolute;
+              height: $MyScale50;
+              width: $MyScale50;
+              border-radius: $MyScale50;
+              right: 0;
               display: flex;
-              align-items: center;
-              margin-bottom: $MyScale17;
+              justify-content: center;
+              margin-bottom: $MyScale22;
+              cursor: pointer;
 
-              & svg {
+              & .clearSvg {
                 width: $MyScale50;
                 height: $MyScale50;
-                margin-left: $MyScale7;
+              }
+              & .vectorSvg {
+                margin-left: auto;
+                width: $MyScale46;
+                height: $MyScale50;
               }
             }
           }
@@ -285,6 +287,7 @@
               height: $MyScale40;
               width: $MyScale40;
               border-radius: $MyScale10;
+              cursor: pointer;
 
               & svg {
                 height: $MyScale40;
@@ -366,6 +369,7 @@
               @include font50_500();
               border: none;
               background-clip: padding-box;
+              background-color: #fff;
 
               &:focus {
                 appearance: none;
@@ -381,21 +385,25 @@
             }
           }
 
-          & .vectorInput {
+          & .loginSvg {
             position: absolute;
-            width: $MyScale60;
-            height: $MyScale60;
-            border-radius: $MyScale60;
-            background: rgba(0, 0, 0, 0.1);
-            display: flex;
-            align-items: center;
+            height: $MyScale50;
+            width: $MyScale50;
+            border-radius: $MyScale50;
             right: 0;
-            margin-bottom: $MyScale17;
+            display: flex;
+            justify-content: center;
+            margin-bottom: $MyScale22;
+            cursor: pointer;
 
-            & svg {
+            & .clearSvg {
               width: $MyScale50;
               height: $MyScale50;
-              margin-left: $MyScale7;
+            }
+            & .vectorSvg {
+              margin-left: auto;
+              width: $MyScale46;
+              height: $MyScale50;
             }
           }
         }
@@ -427,12 +435,6 @@
         flex-direction: column;
         align-items: center;
 
-        & .checkSVG {
-          height: $MyScale40;
-          width: $MyScale40;
-          cursor: pointer;
-        }
-
         & .loginSubHeader {
           width: $MyScale500;
           text-align: center;
@@ -445,128 +447,77 @@
           }
         }
 
-        & .inputLogin {
-          width: $MyScale620;
-          height: $MyScale60;
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-
-          & .MuiInputBase-root.MuiInput-root:after {
-            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.4);
-          }
-
-          & .MuiInputBase-root.MuiInput-root:before {
-            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.2);
-          }
-
-          & .MuiInputBase-root.MuiInput-root {
-            width: $MyScale480;
-
-            & input {
-              padding: 0;
-              height: $MyScale40;
-              margin-bottom: $MyScale20;
-              margin-left: $MyScale20;
-              @include font40_400();
-            }
-
-            & > input::placeholder {
-              transform: translate3d(0, -$MyScale4, 0);
-              @include font30_400();
-              color: rgba(0, 0, 0, 0.4) !important;
-            }
-
-            & svg {
-              width: $MyScale40;
-              height: $MyScale40;
-              margin-bottom: $MyScale20;
-            }
-          }
-
-          & .MuiInputAdornment-root {
-            margin: 0;
-          }
-
-          & .groupCheckPass {
-            width: $MyScale20;
-            display: flex;
-            flex-direction: column;
-            & span {
-              width: $MyScale20;
-              height: $MyScale10;
-              margin-bottom: $MyScale3;
-            }
-          }
-        }
-
-        & .createInputBox {
+        & .inputBox {
           width: $MyScale620;
           display: flex;
           position: relative;
-          height: $MyScale60;
 
+          & .inputLogin {
+            height: $MyScale80;
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            & .MuiInputBase-root.MuiInput-root:after {
+              border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.4);
+            }
+
+            & .MuiInputBase-root.MuiInput-root:before {
+              border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.2);
+            }
+
+            & .MuiInputBase-root.MuiInput-root {
+              width: $MyScale480;
+
+              & input {
+                align-self: center;
+                padding: 0;
+                height: $MyScale40;
+                margin-left: $MyScale20;
+                @include font40_400();
+              }
+
+              & > input::placeholder {
+                transform: translate3d(0, -$MyScale4, 0);
+                @include font30_400();
+                color: rgba(0, 0, 0, 0.4) !important;
+              }
+
+              & svg {
+                width: $MyScale45;
+                height: $MyScale45;
+                cursor: pointer;
+              }
+            }
+
+            & .MuiInputAdornment-root {
+              margin: 0;
+
+              & .groupCheckPass {
+                width: $MyScale20;
+                display: flex;
+                flex-direction: column;
+                & span {
+                  height: $MyScale10;
+                  margin-bottom: $MyScale3;
+                }
+              }
+            }
+          }
           & .eye_icon {
             right: 0;
-            bottom: 0;
             position: absolute;
             width: $MyScale60;
-            height: $MyScale70;
+            height: $MyScale60;
             z-index: 5;
+            align-self: center;
 
             & svg {
-              width: $MyScale60;
-              height: $MyScale60;
+              height: 100%;
+              width: 100%;
+              cursor: pointer;
             }
           }
-        }
-
-        & .inputLoginRepeat {
-          width: $MyScale620;
-          height: $MyScale60;
-          display: flex;
-          flex-direction: row;
-          justify-content: center;
-
-          & .MuiInputBase-root.MuiInput-root:after {
-            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.4);
-          }
-
-          & .MuiInputBase-root.MuiInput-root:before {
-            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.2);
-          }
-
-          & .MuiInputBase-root.MuiInput-root {
-            width: $MyScale480;
-
-            & input {
-              padding: 0;
-              height: $MyScale40;
-              margin-bottom: $MyScale20;
-              margin-left: $MyScale40;
-              @include font40_400();
-            }
-
-            & > input::placeholder {
-              transform: translate3d(0, -$MyScale4, 0);
-              @include font30_400();
-              color: rgba(0, 0, 0, 0.4) !important;
-            }
-
-            & svg {
-              width: $MyScale40;
-              height: $MyScale40;
-              margin-bottom: $MyScale20;
-            }
-          }
-        }
-
-        & .repeatInputBox {
-          width: $MyScale620;
-          display: flex;
-          position: relative;
-          height: $MyScale60;
-          padding-top: $MyScale40;
         }
 
         & .loginLogin {

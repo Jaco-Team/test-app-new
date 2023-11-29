@@ -3,27 +3,24 @@ import { useState, useEffect } from 'react';
 import { useHeaderStore, useCitiesStore } from '@/components/store';
 
 import MyTextInput from '@/ui/MyTextInput';
-import { YaIcon, EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, CheckAuthMobile } from '@/ui/Icons';
+import {YaIcon, EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, CheckAuthMobile} from '@/ui/Icons';
 
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { useSession, signIn } from 'next-auth/react';
 
-export default function StartPC() {
-  //console.log('render StartPC');
+export default function Start() {
+  //console.log('render Start');
+
+  const session = useSession();
 
   const [showPassword, setShowPassword] = useState(false);
-
   const [formPassword, setFormPassword] = useState(false);
   const [formSMS, setFormSMS] = useState(false);
   const [checkPass, setCheckPass] = useState(false);
 
-  const session = useSession();
-
-  const [errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, sendsmsNewLogin, createProfile] = useHeaderStore((state) => [
-    state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.logIn, state.sendsmsNewLogin,
-    state.createProfile]);
+  const [errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, sendsmsNewLogin, createProfile, matches] = useHeaderStore((state) => [state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.logIn, state.sendsmsNewLogin, state.createProfile, state.matches]);
 
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
 
@@ -52,7 +49,7 @@ export default function StartPC() {
   };
 
   return (
-    <div className="modalLoginStartPC">
+    <div className={matches ? 'modalLoginStartMobile' : 'modalLoginStartPC'}>
       {errTextAuth ? (
         <div className="loginErr">
           <Typography component="span">{errTextAuth}</Typography>
@@ -73,13 +70,12 @@ export default function StartPC() {
         func={(event) => changeLogin(event)}
         onKeyDown={(event) => checkLoginKey(formPassword ? 3 : formSMS ? 2 : 1, event)}
         className="inputLogin"
-        style={{ marginTop: formSMS ? '0.36101083032491vw' : null }}
         inputAdornment={
           <InputAdornment position="end">
             {loginLogin.length === 11 ? (
-              <CheckAuthMobile className='checkSVG' />
+              <CheckAuthMobile />
             ) : (
-              <ClearAuthMobile className='checkSVG' onClick={() => changeLogin('')} />
+              <ClearAuthMobile onClick={() => changeLogin('')} />
             )}
           </InputAdornment>
         }
@@ -87,6 +83,7 @@ export default function StartPC() {
 
       {formPassword || formSMS ? null : (
         <div className="startInputBox">
+
           <MyTextInput
             type={showPassword ? 'text' : 'password'}
             placeholder="пароль"
@@ -98,53 +95,40 @@ export default function StartPC() {
             inputAdornment={
               <InputAdornment position="end">
                 {checkPass ? (
-                  <CheckAuthMobile className='checkSVG' />
+                  <CheckAuthMobile />
                 ) : (
-                  <ClearAuthMobile className='checkSVG' onClick={() => setPwdLogin('')} />
+                  <ClearAuthMobile onClick={() => setPwdLogin('')} />
                 )}
               </InputAdornment>
             }
           />
+
           {showPassword ? (
             <div className="eye_icon" onClick={() => setShowPassword(false)}>
-              <EyeShow_modalOrder style={{ cursor: 'pointer' }}/>
+              <EyeShow_modalOrder />
             </div>
           ) : (
             <div className="eye_icon" onClick={() => setShowPassword(true)}>
-              <EyeHide_modalOrder style={{ cursor: 'pointer' }} />
+              <EyeHide_modalOrder />
             </div>
           )}
+          
         </div>
       )}
 
-      <div className="loginLosePWD" style={{ marginTop: formPassword || formSMS ? '0.36101083032491vw' : null }}>
+      <div className="loginLosePWD">
         <Typography component="span" onClick={() => changeForm('pass')} style={{ visibility: formPassword ? 'hidden' : 'visible' }}>
           Забыли пароль?
         </Typography>
       </div>
 
-      <div
-        className="loginLogin"
-        onClick={
-          formPassword && loginLogin.length === 11
-            ? sendsmsNewLogin
-            : formSMS && loginLogin.length === 11
-            ? createProfile
-            : loginLogin.length === 11 && checkPass
-            ? logIn
-            : null
-        }
+      <div className="loginLogin"
+        onClick={formPassword && loginLogin.length === 11 ? sendsmsNewLogin : formSMS && loginLogin.length === 11 ? createProfile : loginLogin.length === 11 && checkPass ? logIn : null}
         // onClick={ () => signIn('credentials', { redirect: false, password: pwdLogin, login: loginLogin, callbackUrl: `${host}/${thisCity}/zakazy` }) }
-        style={{ backgroundColor:
-            (loginLogin.length === 11 && checkPass) ||
-            (formPassword && loginLogin.length === 11) ||
-            (formSMS && loginLogin.length === 11)
-              ? '#DD1A32'
-              : 'rgba(0, 0, 0, 0.1)',
-        }}
+        style={{backgroundColor: (loginLogin.length === 11 && checkPass) || (formPassword && loginLogin.length === 11) || (formSMS && loginLogin.length === 11) ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)'}}
       >
-        <Typography component="span" 
-        //onClick={() => navigate('loginSMSCode')}
+        <Typography component="span"
+          //onClick={() => navigate('loginSMSCode')}
         >
           {formPassword ? 'Получить пароль' : formSMS ? 'Получить СМС' : 'Войти'}
         </Typography>

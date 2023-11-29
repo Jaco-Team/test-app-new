@@ -1,17 +1,17 @@
-import { useCitiesStore } from '@/components/store';
+import { useCitiesStore, useHeaderStore } from '@/components/store';
 
 import Link from 'next/link';
 import { CheckAuthMobile } from '@/ui/Icons';
 import Typography from '@mui/material/Typography';
 
-export default function FinishPC({closeModal}) {
-  //console.log('render FinishPC');
+export default function Finish({ closeModal }) {
+  //console.log('render Finish');
 
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
+  const [matches] = useHeaderStore((state) => [state.matches]);
 
   return (
-    <div className="modalLoginFinishPC">
-
+    <div className={matches ? 'modalLoginFinishMobile' : 'modalLoginFinishPC'}>
       <div className="loginSVG">
         <CheckAuthMobile />
       </div>
@@ -24,7 +24,6 @@ export default function FinishPC({closeModal}) {
       <Link href={`/${thisCity}/`} passHref className="loginLogin" onClick={closeModal}>
         <Typography component="span">Открыть меню</Typography>
       </Link>
-    
     </div>
   );
 }

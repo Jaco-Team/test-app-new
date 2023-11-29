@@ -4,15 +4,14 @@
   & .MuiDialog-container {
     display: flex;
     align-items: flex-end;
-    
+
     & .MuiDialog-paper {
       border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
-      overflow: visible;
       margin: 0;
       padding: 0;
       width: 100%;
       max-width: none !important;
-      max-height: calc(100% - $MyScale629_mobile);
+      max-height: calc(100% - $MyScale200_mobile);
       height: $MyScale1871_mobile;
 
       .ContainerModalAuthMobile {
@@ -31,7 +30,7 @@
 
         & .authLogin {
           height: $MyScale120_mobile;
-          margin-bottom: $MyScale10_mobile;
+          margin-bottom: $MyScale30_mobile;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -64,11 +63,11 @@
             justify-content: center;
 
             & .MuiInputBase-root.MuiInput-root:after {
-              border-bottom: 0.17094017094017vw solid rgba(0, 0, 0, 0.4);
+              border-bottom: $MyScale2_mobile solid rgba(0, 0, 0, 0.4);
             }
 
             & .MuiInputBase-root.MuiInput-root:before {
-              border-bottom: 0.17094017094017vw solid rgba(0, 0, 0, 0.2);
+              border-bottom: $MyScale2_mobile solid rgba(0, 0, 0, 0.2);
             }
 
             & .MuiInputBase-root.MuiInput-root {
@@ -85,9 +84,14 @@
               }
 
               & > input::placeholder {
-                transform: translate3d(0, -0.85470085470085vw, 0);
+                transform: translate3d(0, -$MyScale10_mobile, 0);
                 @include font40_400();
                 color: rgba(0, 0, 0, 0.4) !important;
+              }
+
+              & svg {
+                width: $MyScale60_mobile;
+                height: $MyScale60_mobile;
               }
             }
           }
@@ -123,7 +127,7 @@
             display: flex;
             align-items: center;
             height: $MyScale60_mobile;
-            margin-top: $MyScale10_mobile;
+            margin-top: $MyScale20_mobile;
             & span {
               text-decoration: underline;
               @include font40_400();
@@ -183,7 +187,6 @@
             & span {
               text-decoration: underline;
               @include font40_400();
-              cursor: pointer;
               color: rgba(0, 0, 0, 0.4) !important;
             }
           }
@@ -213,11 +216,11 @@
             justify-content: center;
 
             & .MuiInputBase-root.MuiInput-root:after {
-              border-bottom: 0.17094017094017vw solid rgba(0, 0, 0, 0.4);
+              border-bottom: $MyScale2_mobile solid rgba(0, 0, 0, 0.4);
             }
 
             & .MuiInputBase-root.MuiInput-root:before {
-              border-bottom: 0.17094017094017vw solid rgba(0, 0, 0, 0.2);
+              border-bottom: $MyScale2_mobile solid rgba(0, 0, 0, 0.2);
             }
 
             & .MuiInputBase-root.MuiInput-root {
@@ -232,9 +235,14 @@
               }
 
               & > input::placeholder {
-                transform: translate3d(0, -0.85470085470085vw, 0);
+                transform: translate3d(0, -$MyScale10_mobile, 0);
                 @include font40_400();
                 color: rgba(0, 0, 0, 0.4) !important;
+              }
+
+              & svg {
+                width: $MyScale60_mobile;
+                height: $MyScale60_mobile;
               }
             }
           }
@@ -246,6 +254,7 @@
             display: flex;
             align-items: center;
             justify-content: center;
+            margin-top: $MyScale80_mobile;
             & span {
               @include font50_500();
               color: #ffffff !important;
@@ -335,9 +344,9 @@
             & > div {
               display: flex;
               flex-direction: row;
-              margin-bottom: $MyScale20_mobile;
 
               & input {
+                margin-bottom: $MyScale20_mobile;
                 width: $MyScale75_mobile;
                 height: $MyScale75_mobile;
                 padding: 0;
@@ -346,6 +355,7 @@
                 @include font75_700();
                 border: none;
                 background-clip: padding-box;
+                background-color: #fff;
 
                 &:focus {
                   appearance: none;
@@ -354,20 +364,28 @@
               }
 
               & > input::placeholder {
-                transform: translate3d(0, 0.85470085470085vw, 0);
-                font-size: 8.5470085470085vw;
+                transform: translate3d(0, $MyScale10_mobile, 0);
+                font-size: $MyScale100_mobile;
                 color: rgba(0, 0, 0, 0.2) !important;
               }
             }
 
             & .loginSvg {
-              height: $MyScale75_mobile;
-              right: 0;
+              margin-bottom: $MyScale30_mobile;
               position: absolute;
+              height: $MyScale60_mobile;
+              width: $MyScale60_mobile;
+              border-radius: $MyScale60_mobile;
+              right: 0;
               display: flex;
-              align-items: center;
-              & svg {
+              justify-content: center;
+              & .clearSvg {
                 width: $MyScale60_mobile;
+                height: $MyScale60_mobile;
+              }
+              & .vectorSvg {
+                margin-left: auto;
+                width: $MyScale57_mobile;
                 height: $MyScale60_mobile;
               }
             }
@@ -390,6 +408,159 @@
             & span {
               text-decoration: underline;
               @include font40_400();
+            }
+          }
+        }
+
+        .modalLoginPwdMobile {
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & .loginSubHeader {
+            width: $MyScale680_mobile;
+            text-align: center;
+            height: $MyScale100_mobile;
+            margin-top: $MyScale70_mobile;
+            margin-bottom: $MyScale80_mobile;
+
+            & span {
+              line-height: $MyScale40_mobile;
+              @include font40_400();
+            }
+          }
+
+          & .inputBox {
+            width: $MyScale1000_mobile;
+            display: flex;
+            position: relative;
+
+            & .inputLogin {
+              height: $MyScale160_mobile;
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+
+              & .MuiInputBase-root.MuiInput-root:after {
+                border-bottom: $MyScale2_mobile solid rgba(0, 0, 0, 0.4);
+              }
+
+              & .MuiInputBase-root.MuiInput-root:before {
+                border-bottom: $MyScale2_mobile solid rgba(0, 0, 0, 0.2);
+              }
+
+              & .MuiInputBase-root.MuiInput-root {
+                width: $MyScale760_mobile;
+
+                & input {
+                  align-self: center;
+                  padding: 0;
+                  height: $MyScale100_mobile;
+                  margin-left: $MyScale40_mobile;
+                  @include font75_700();
+                }
+
+                & > input::placeholder {
+                  transform: translate3d(0, -$MyScale10_mobile, 0);
+                  @include font40_400();
+                  color: rgba(0, 0, 0, 0.4) !important;
+                }
+
+                & svg {
+                  width: $MyScale60_mobile;
+                  height: $MyScale60_mobile;
+                }
+              }
+
+              & .MuiInputAdornment-root {
+                margin: 0;
+
+                & .groupCheckPass {
+                  width: $MyScale60_mobile;
+                  display: flex;
+                  flex-direction: column;
+                  & span {
+                    height: $MyScale40_mobile;
+                    margin-bottom: $MyScale5_mobile;
+                  }
+                }
+              }
+            }
+
+            & .eye_icon {
+              right: 0;
+              position: absolute;
+              width: $MyScale80_mobile;
+              height: $MyScale80_mobile;
+              align-self: center;
+              z-index: 5;
+
+              & svg {
+                height: 100%;
+                width: 100%;
+              }
+            }
+          }
+
+          & .loginLogin {
+            width: $MyScale650_mobile;
+            height: $MyScale120_mobile;
+            border-radius: $MyScale60_mobile;
+            margin-top: $MyScale80_mobile;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            & span {
+              @include font50_500();
+              color: #ffffff !important;
+            }
+          }
+        }
+
+        .modalLoginFinishMobile {
+          width: $MyScale600_mobile;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & .loginSVG {
+            width: $MyScale200_mobile;
+            height: $MyScale200_mobile;
+            margin-top: $MyScale70_mobile;
+            margin-bottom: $MyScale80_mobile;
+            svg {
+              width: 100%;
+              height: 100%;
+            }
+          }
+
+          & .loginSubHeader {
+            width: $MyScale800_mobile;
+            text-align: center;
+            height: $MyScale160_mobile;
+            margin-bottom: $MyScale80_mobile;
+            display: flex;
+            flex-direction: column;
+
+            & span {
+              line-height: $MyScale50_mobile;
+              @include font40_400();
+            }
+          }
+
+          & .loginLogin {
+            text-decoration: none;
+            width: $MyScale650_mobile;
+            height: $MyScale120_mobile;
+            border-radius: $MyScale60_mobile;
+            margin-top: $MyScale80_mobile;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #dd1a32;
+            & span {
+              @include font50_500();
+              color: #ffffff !important;
             }
           }
         }
