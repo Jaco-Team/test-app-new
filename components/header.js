@@ -28,6 +28,8 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
 
   const [setMatches, matches] = useHeaderStore((state) => [state.setMatches, state.matches]);
   
+  console.log( 'matchesDev', matchesDev, matches )
+
   useEffect(() => {
     if(matches !== matchesDev) {
       setMatches(matchesDev);

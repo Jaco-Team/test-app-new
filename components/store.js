@@ -1857,53 +1857,17 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       allStreets: json.streets,
       infoAboutAddr: json.this_info,
       cityList: json.cities,
-      active_city: json.city
+      active_city: json.city,
+
+      chooseAddrStreet: json.this_info,
+      center_map: {
+        center: json.this_info ? [json?.this_info?.xy[0], json?.this_info?.xy[1]] : [json.city_center[0], json.city_center[1]],
+        zoom: 11.5,
+        controls: []
+      },
+      zones: json.zones
     })
-
-    const widthModal_px = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
-
-    let zoomSize;
-
-    if(widthModal_px < 900) {
-      zoomSize = 11;
-    } else {
-      zoomSize = 12.3;
-    }
-
-    if(!get().thisMAP){
-
-    ymaps.ready().then((function () {
-
-      if( parseInt( id ) > 0 ){
-        get().thisMAP = new ymaps.Map('map', {
-          center: [ json.this_info.xy[0], json.this_info.xy[1] ],
-          zoom: zoomSize,
-          controls: []
-        }, { suppressMapOpenBlock: true });
-
-        get().setMapZone(json.zones, json.this_info.xy)
-
-        get().setAddrPoint(json.this_info.xy);
-
-      }else{
-        get().thisMAP = new ymaps.Map('map', {
-          center: [ json.city_center[0], json.city_center[1] ],
-          zoom: zoomSize,
-          controls: []
-        }, { suppressMapOpenBlock: true });
-
-        get().setMapZone(json.zones, json.city_center)
-      }
-
-    }))
-
-  } else {
-    get().thisMAP.destroy();
-
-    set({ thisMAP: null });
-
-    get().getMapMobile(get().streetId, get().city);
-  }
+    
   },
 
   // открытие/закрытие модалки в Профиле в мобильной версии
@@ -2028,49 +1992,20 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api('profile', data);
 
-    console.log( json.this_info )
-
     set({
       isOpenModalAddr: true,
       allStreets: json.streets,
       infoAboutAddr: json.this_info,
       cityList: json.cities,
       active_city: json.city,
-
+      chooseAddrStreet: json.this_info,
       center_map: {
-        center: [json.city_center[0], json.city_center[1]],
+        center: json.this_info ? [json?.this_info?.xy[0], json?.this_info?.xy[1]] : [json.city_center[0], json.city_center[1]],
         zoom: 11.5,
         controls: []
       },
       zones: json.zones
     })
-
-    /*ymaps.ready().then(( () => {
-  
-      console.log( json )
-
-      if( parseInt( id ) > 0 ){
-        get().thisMAP = new ymaps.Map('unic_map_key', {
-          center: [ json.this_info.xy[0], json.this_info.xy[1] ],
-          zoom: 11.5,
-          controls: []
-        }, { suppressMapOpenBlock: true });
-
-        get().setMapZone(json.zones, json.this_info.xy)
-
-        get().setAddrPoint(json.this_info.xy);
-
-      }else{
-        get().thisMAP = new ymaps.Map('unic_map_key', {
-          center: [ json.city_center[0], json.city_center[1] ],
-          zoom: 11.5,
-          controls: []
-        }, { suppressMapOpenBlock: true });
-
-        get().setMapZone(json.zones, json.city_center)
-      }
-
-    }))*/
   },
   orderDel: async (this_module, userToken) => {
     let data = {
@@ -2088,10 +2023,10 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       get().getOrderList('zakazy', get().city, userToken);
     }
   },
-  checkStreet: async(street, home, city_id) => {
+  checkStreet: async(street, home, pd, city_id) => {
     if( get().is_fetch === true ){
       setTimeout( () => {
-        get().checkStreet(street, home, city_id)
+        get().checkStreet(street, home, pd, city_id)
       }, 500 )
 
       return ;
@@ -2106,6 +2041,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       type: 'check_street',
       city_id: city_id,
       street: street,
+      pd: pd,
       home: home
     };
 
@@ -2118,19 +2054,9 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
         chooseAddrStreet: json.addrs,
         center_map: {
           center: [json?.addrs?.xy[0], json?.addrs?.xy[1]],
-          //zoom: 11.5,
-          //controls: []
         },
       })
 
-      //get().thisMAP.setCenter([json.addrs.xy_new.latitude, json.addrs.xy_new.longitude], 11);
-
-      //get().delAddrPoint();
-
-      setTimeout( () => {
-        //get().setAddrPoint(json.addrs.xy);
-      }, 300 )
-      
     }else{
       set({
         chooseAddrStreet: {}
@@ -2269,11 +2195,21 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     let json = await api('profile', data);
 
     set({
-      allStreets: json.streets
+      allStreets: json.streets,
+      zones: json.zones,
+      //chooseAddrStreet: {}
     })
 
-    get().setMapZone(json.zones, json.city_center)
+    //get().setMapZone(json.zones, json.city_center)
   },
+  clearAddr: () => {
+    alert( 'clearAddr' )
+    set({
+      chooseAddrStreet: {},
+      infoAboutAddr: null
+    })
+  },
+
   setMapZone: (zones, city_center) => {
     get().thisMAP.geoObjects.removeAll();
 

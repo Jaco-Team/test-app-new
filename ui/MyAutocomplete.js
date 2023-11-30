@@ -6,16 +6,16 @@ import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 const filter = createFilterOptions();
 
 export default function MyAutocomplete({data, placeholder, onChange, val, className, variant, inputAdornment, customPopper, stylePaper}) {
-  const [value, setValue] = useState(val);
+  const [value, setValue] = useState( val );
 
   useEffect( () => {
-    setValue(val)
+    setValue(val);
   }, [val] )
 
   return (
     <Autocomplete
       value={value}
-      onChange={(event, newValue) => {
+      onChange={(event, newValue, reason) => {
         if (typeof newValue === 'string') {
           setValue({
             name: newValue,
@@ -80,6 +80,8 @@ export default function MyAutocomplete({data, placeholder, onChange, val, classN
           }}
         />
       )}
+
+      
 
       PopperComponent={customPopper}
       componentsProps={stylePaper}

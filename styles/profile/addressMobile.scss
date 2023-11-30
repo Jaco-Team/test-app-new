@@ -95,7 +95,7 @@
   }
 }
 
-.AddressModalmodile {
+.AddressModalmodile { 
   & .MuiDialog-container {
     display: flex;
     align-items: flex-end;
@@ -103,7 +103,7 @@
     & .MuiDialog-paper {
       max-height: calc(100% - $MyScale420_mobile);
       border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
-      overflow: visible;
+      //overflow: visible;
       margin: 0;
       padding: 0;
       width: 100%;
@@ -141,6 +141,7 @@
             overflow: hidden;
             border-top-left-radius: $MyScale40;
             border-bottom-left-radius: $MyScale40;
+            
           }
 
           & .addressForm {

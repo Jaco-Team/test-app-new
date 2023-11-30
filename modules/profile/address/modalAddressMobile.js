@@ -1,6 +1,8 @@
-import { useEffect, useState } from 'react';
+import { useEffect, useState, useRef } from 'react';
 
 import { useProfileStore } from '@/components/store.js';
+
+import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -14,40 +16,125 @@ import { roboto } from '@/ui/Font.js';
 import { LoupeMobile, EditPencilMobile, HomeCartMobile } from '@/ui/Icons.js';
 import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 
+import { useSession } from 'next-auth/react';
+
 export default function AddressModalMobile() {
-  //console.log('render AddressModalMobile');
+  const ref2 = useRef();
 
-  const [allStreets, saveNewAddr, checkStreet, active_city, infoAboutAddr, openModalAddress, setActiveAddressModal] = useProfileStore((state) => [state.allStreets, state.saveNewAddr, state.checkStreet, state.active_city, state.infoAboutAddr, state.openModalAddress, state.setActiveAddressModal]);
+  const [openModalAddress, setActiveAddressModal] = useProfileStore((state) => [state.openModalAddress, state.setActiveAddressModal]);
 
-  const [mapChange, setMapChange] = useState(false);
-  const [street, setStreet] = useState('');
-  const [form, setForm] = useState({home: '', corpus: '', pd: '', domophome: '', et: '', kv: '', comment: '', check: false, nameAddr: ''});
+  const [ clearAddr, chooseAddrStreet, center_map, zones, isOpenModalAddr, closeModalAddr, allStreets, checkStreet, saveNewAddr, infoAboutAddr, cityList, updateStreetList, active_city, updateAddr ] = 
+  useProfileStore( state => [ state.clearAddr, state.chooseAddrStreet, state.center_map, state.zones, state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.cityList, state.updateStreetList, state.active_city, state.updateAddr ] );
 
-  useEffect(() => {
-    if (street && !mapChange) {
-      setMapChange(true);
+
+  //const [mapChange, setMapChange] = useState(false);
+  //const [street, setStreet] = useState('');
+  //const [form, setForm] = useState({home: '', corpus: '', pd: '', domophome: '', et: '', kv: '', comment: '', check: false, nameAddr: ''});
+
+  const session = useSession();
+
+  const [ street, setStreet ] = useState('');
+  const [ street_, setStreet_ ] = useState('');
+  const [ home, setHome ] = useState( '' );
+  const [ pd, setPd ] = useState( '' );
+  const [ domophome, setDomophome ] = useState('');
+  const [ et, setEt ] = useState('');
+  const [ kv, setKv ] = useState('');
+  const [ comment, setComment ] = useState('');
+  const [ check, setCheck ] = useState(false);
+  const [ nameAddr, setNameAddr ] = useState('');
+  const [ cityID, setCityID ] = useState(active_city);
+
+  useEffect( () => {
+    if( infoAboutAddr ){
+      setStreet_(infoAboutAddr.street);
+      setStreet({id: infoAboutAddr?.id, name: infoAboutAddr?.street });
+      setHome(infoAboutAddr.home);
+      setPd(infoAboutAddr.pd);
+      setDomophome(infoAboutAddr.domophome);
+      setEt(infoAboutAddr.et);
+      setKv(infoAboutAddr.kv);
+      setComment(infoAboutAddr.comment);
+      setCheck( parseInt(infoAboutAddr.is_main) == 1 ? true : false )
+      setNameAddr(infoAboutAddr.name)
+      setCityID(infoAboutAddr.city_id);
+    }else{
+      setHome('');
+      setStreet('');
+      setStreet_('')
+      
+      setPd('');
+      setDomophome('');
+      setEt('');
+      setKv('');
+      setComment('');
+      setCheck(false)
     }
-  }, [street, mapChange]);
+  }, [infoAboutAddr] )
 
   useEffect(() => {
-    if (infoAboutAddr !== null) {
-      //setStreet_(infoAboutAddr.street);
-      setStreet(infoAboutAddr.street);
-      setForm({
-        home: infoAboutAddr?.home ?? '',
-        corpus: infoAboutAddr?.corpus ?? '',
-        pd: infoAboutAddr?.pd ?? '',
-        domophome: infoAboutAddr?.domophome ?? '',
-        et: infoAboutAddr?.et ?? '',
-        kv: infoAboutAddr?.kv ?? '',
-        comment: infoAboutAddr?.comment ?? '',
-        check: parseInt(infoAboutAddr.is_main) == 1 ? true : false,
-        nameAddr: infoAboutAddr?.name ?? '',
-      });
+    if( street && street.length > 0 && home.length > 0 ){
+      checkStreet(street, home, pd, cityID);
     }
-  }, [infoAboutAddr]);
+  }, [street, home, pd]);
+
+  useEffect( () => {
+    //updateStreetList(cityID);
+  }, [cityID] )
+
+  function chengeCity(city){
+    setCityID(city);
+    clearAddr();
+  }
+
+  useEffect( () => {
+    setCityID(active_city);
+  }, [active_city] )
 
   useEffect(() => {
+    if( openModalAddress == false ){
+      setStreet('');
+      setStreet_('')
+      setHome('');
+      setPd('');
+      setDomophome('');
+      setEt('');
+      setKv('');
+      setComment('');
+      setCheck(false)
+      setNameAddr('');
+      setCityID(active_city)
+    }else{
+      setTimeout( () => {
+        //render_map_model();
+      }, 1000 )
+    }
+  }, [openModalAddress]);
+
+  let new_zone = [];
+
+  zones.map( (item, key) => {
+    new_zone.push( item.zone )
+  })
+
+  useEffect( () => {
+    if( ref2.current && center_map?.center ){
+      ref2.current.setCenter([zones[0].xy_center_map['latitude'], zones[0].xy_center_map['longitude']]);
+    }
+  }, [zones] )
+
+  useEffect( () => {
+    if( ref2.current && chooseAddrStreet?.xy ){
+      ref2.current.setCenter(chooseAddrStreet?.xy);
+    }
+  }, [chooseAddrStreet] )
+
+
+
+
+
+
+  /*useEffect(() => {
     if (street && street.length > 0 && form.home.length > 0) {
       checkStreet(street, form.home, active_city);
     }
@@ -76,7 +163,9 @@ export default function AddressModalMobile() {
 
     //saveNewAddr(form, street)
     close();
-  };
+  };*/
+
+  console.log(  )
 
   return (
     <Dialog
@@ -92,7 +181,26 @@ export default function AddressModalMobile() {
           <div className="Line"></div>
           <div className="loginHeader">Новый адрес</div>
 
-          <div className="map" id="map" style={{ minHeight: street ? '93.162393162393vw' : '20.512820512821vw' }} />
+          <div className="map" style={{ minHeight: '93.162393162393vw' }} >
+            <YMaps query={{ lang: 'ru_RU', apikey: 'ae2bad1f-486e-442b-a9f7-d84fff6296db' }}>
+              <Map defaultState={center_map} instanceRef={ref2} width="100%" height="100%" style={{ minHeight: '93.162393162393vw' }} >
+
+                { !chooseAddrStreet || Object.entries(chooseAddrStreet).length === 0 ? false :
+                  <Placemark geometry={chooseAddrStreet?.xy} options={{ iconLayout: 'default#image', iconImageHref: '/Frame.png', iconImageSize: [35, 50], iconImageOffset: [-15, -50] }} />
+                }
+
+                <Polygon
+                  geometry={new_zone}
+                  options={{
+                    fillColor: 'rgba(53, 178, 80, 0.15)',
+                    strokeColor: '#35B250',
+                    strokeWidth: 5,
+                    hideIconOnBalloonOpen: false
+                  }}
+                />
+              </Map>
+            </YMaps>
+          </div>
 
           <div className="addressForm">
             <div className="address_street">
@@ -108,69 +216,62 @@ export default function AddressModalMobile() {
             </div>
             <div className="address_dop">
               <MyTextInput
-                value={form.home}
+                value={home}
                 name="home"
                 placeholder="Дом"
                 type="number"
-                func={handleChange}
+                func={ e => setHome(e.target.value) }
               />
               <MyTextInput
-                value={form.corpus}
-                name="corpus"
-                placeholder="Корпус"
-                type="number"
-                func={handleChange}
-              />
-            </div>
-
-            <div className="address_dop">
-              <MyTextInput
-                value={form.pd}
+                value={pd}
                 name="pd"
                 placeholder="Подьезд"
                 type="number"
-                func={handleChange}
-              />
-              <MyTextInput
-                value={form.domophome}
-                name="domophome"
-                placeholder="Домофон"
-                func={handleChange}
-              />
-            </div>
-
-            <div className="address_dop">
-              <MyTextInput
-                value={form.et}
-                name="et"
-                placeholder="Этаж"
-                type="number"
-                func={handleChange}
-              />
-              <MyTextInput
-                value={form.kv}
-                name="kv"
-                placeholder="Квартира"
-                type="number"
-                func={handleChange}
+                func={ e => setPd(e.target.value) }
               />
             </div>
 
             <div className="address_comment">
               <MyTextInput
-                value={form.comment}
+                value={domophome}
+                name="domophome"
+                placeholder="Домофон"
+                func={ e => setDomophome(e.target.value) }
+              />
+            </div>
+
+            <div className="address_dop">
+              <MyTextInput
+                value={et}
+                name="et"
+                placeholder="Этаж"
+                type="number"
+                func={ e => setEt(e.target.value) }
+              />
+              <MyTextInput
+                value={kv}
+                name="kv"
+                placeholder="Квартира"
+                type="number"
+                func={ e => setKv(e.target.value) }
+              />
+            </div>
+
+            <div className="address_comment">
+              <MyTextInput
+                value={comment}
                 name="comment"
                 placeholder="Комментарий"
-                func={handleChange}
+                func={ e => setComment(e.target.value) }
               />
             </div>
 
             <div className="address_name">
               <MyTextInput
-                value={form.nameAddr}
+                value={nameAddr}
                 name="nameAddr"
                 placeholder="Дать короткое название"
-                func={handleChange}
+                func={ e => setNameAddr(e.target.value) }
               />
               <EditPencilMobile />
             </div>
@@ -182,10 +283,10 @@ export default function AddressModalMobile() {
                   <HomeCartMobile />
                 </div>
               </div>
-              <MySwitch checked={form.check} onClick={handleChange} />
+              <MySwitch checked={check} onClick={ (event) => { setCheck(event.target.checked) } } />
             </div>
 
-            <Button className="address_button" variant="contained" onClick={handleSave}>
+            <Button className="address_button" variant="contained" onClick={ () => {} }>
               <span>Сохранить</span>
             </Button>
           </div>

@@ -144,13 +144,9 @@ export default function ProfilePC({ page, this_module, city }){
       <Grid container spacing={3} style={{ margin: 0, width: '100%' }} sx={{ display: { xs: 'none', md: 'none', lg: 'flex' } }}>
         <Grid item className="Profile mainContainer">
           
-          
-
           <Grid item xs={12}>
             <Typography variant="h5" component="h1">Личные данные</Typography>
           </Grid>
-
-          <div className='map map_1' id='map_1' style={{ width: 300, height: 300 }} />
 
           <Grid item xs={12} className="main_data">
             <div>

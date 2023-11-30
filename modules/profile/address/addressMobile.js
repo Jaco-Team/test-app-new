@@ -12,7 +12,7 @@ import { ArrowLeftMobile, EditPencilMobile, HomeCartMobile } from '@/ui/Icons.js
 export default function AddressMobile({ city }) {
   //console.log('render AddressMobile');
 
-  const [setActiveAddressModal, streets] = useProfileStore((state) => [state.setActiveAddressModal, state.streets]);
+  const [setActiveAddressModal, streets, openModalAddr] = useProfileStore((state) => [state.setActiveAddressModal, state.streets, state.openModalAddr]);
 
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="AddressMobile">
@@ -26,6 +26,7 @@ export default function AddressMobile({ city }) {
       <List>
         {streets.map((item, key) => (
           <ListItem key={key}
+            onClick={() => setActiveAddressModal(true, item.id, city)}
             style={{ background: parseInt(item?.is_main) ? 'rgba(0, 0, 0, 0.05)' : null, borderTop: key === 0 ? '0.25641025641026vw solid rgba(0, 0, 0, 0.2)' : 'none'}}
           >
             <div className="containerSpan">
@@ -44,7 +45,7 @@ export default function AddressMobile({ city }) {
                 </span>
               ) : null}
 
-              <EditPencilMobile onClick={() => setActiveAddressModal(true, item.id, city)} />
+              <EditPencilMobile />
             </div>
           </ListItem>
         ))}

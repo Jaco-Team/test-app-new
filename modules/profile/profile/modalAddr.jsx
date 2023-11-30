@@ -20,21 +20,17 @@ import { useProfileStore } from '@/components/store.js';
 import { useSession } from 'next-auth/react';
 
 export default function ModalAddr(){
-  const ref = useRef();
   const ref2 = useRef();
-  const ymaps = React.useRef(null);
 
-  const [ chooseAddrStreet, center_map, zones, isOpenModalAddr, closeModalAddr, allStreets, checkStreet, saveNewAddr, infoAboutAddr, cityList, updateStreetList, active_city, updateAddr ] = 
-    useProfileStore( state => [ state.chooseAddrStreet, state.center_map, state.zones, state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.cityList, state.updateStreetList, state.active_city, state.updateAddr ] );
-
-  console.log( center_map, zones )
+  const [ clearAddr, chooseAddrStreet, center_map, zones, isOpenModalAddr, closeModalAddr, allStreets, checkStreet, saveNewAddr, infoAboutAddr, cityList, updateStreetList, active_city, updateAddr ] = 
+    useProfileStore( state => [ state.clearAddr, state.chooseAddrStreet, state.center_map, state.zones, state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.cityList, state.updateStreetList, state.active_city, state.updateAddr ] );
 
   const session = useSession();
 
   const [ street, setStreet ] = useState('');
   const [ street_, setStreet_ ] = useState('');
-  const [ home, setHome ] = useState('');
-  const [ pd, setPd ] = useState('');
+  const [ home, setHome ] = useState( '' );
+  const [ pd, setPd ] = useState( '' );
   const [ domophome, setDomophome ] = useState('');
   const [ et, setEt ] = useState('');
   const [ kv, setKv ] = useState('');
@@ -45,15 +41,14 @@ export default function ModalAddr(){
 
   useEffect(() => {
     if( street && street.length > 0 && home.length > 0 ){
-      checkStreet(street, home, cityID);
+      checkStreet(street, home, pd, cityID);
     }
-  }, [street, home]);
+  }, [street, home, pd]);
 
   useEffect( () => {
-
-    if( infoAboutAddr != null ){
+    if( infoAboutAddr ){
       setStreet_(infoAboutAddr.street);
-      setStreet(infoAboutAddr.street);
+      setStreet({id: infoAboutAddr?.id, name: infoAboutAddr?.street });
       setHome(infoAboutAddr.home);
       setPd(infoAboutAddr.pd);
       setDomophome(infoAboutAddr.domophome);
@@ -63,15 +58,31 @@ export default function ModalAddr(){
       setCheck( parseInt(infoAboutAddr.is_main) == 1 ? true : false )
       setNameAddr(infoAboutAddr.name)
       setCityID(infoAboutAddr.city_id);
+    }else{
+      setHome('');
+      setStreet('');
+      setStreet_('')
+      
+      setPd('');
+      setDomophome('');
+      setEt('');
+      setKv('');
+      setComment('');
+      setCheck(false)
     }
   }, [infoAboutAddr] )
 
   useEffect( () => {
-    //updateStreetList(cityID);
+    updateStreetList(cityID);
   }, [cityID] )
 
+  function chengeCity(city){
+    setCityID(city);
+    clearAddr();
+  }
+
   useEffect( () => {
-    //setCityID(active_city);
+    setCityID(active_city);
   }, [active_city] )
 
   useEffect(() => {
@@ -97,21 +108,19 @@ export default function ModalAddr(){
   let new_zone = [];
 
   zones.map( (item, key) => {
-    //console.log( key, item.zone )
-
     new_zone.push( item.zone )
   })
 
-  //console.log( 'new_zone', center_map )
-
-  
+  useEffect( () => {
+    if( ref2.current && center_map?.center ){
+      ref2.current.setCenter([zones[0].xy_center_map['latitude'], zones[0].xy_center_map['longitude']]);
+    }
+  }, [zones] )
 
   useEffect( () => {
     if( ref2.current && chooseAddrStreet?.xy ){
       ref2.current.setCenter(chooseAddrStreet?.xy);
     }
-
-    console.log( 'chooseAddrStreet', ref2.current, chooseAddrStreet )
   }, [chooseAddrStreet] )
 
   return (
@@ -129,14 +138,14 @@ export default function ModalAddr(){
           </IconButton>
 
           <div className='mainGrid'>
-            <div className='map unic_map_key' id='unic_map_key'>
+            <div className='map'>
               <YMaps query={{ lang: 'ru_RU', apikey: 'ae2bad1f-486e-442b-a9f7-d84fff6296db' }}>
                 <Map defaultState={center_map} instanceRef={ref2} width="100%" height="100%">
 
-                  { !chooseAddrStreet?.xy ? false :
-                    <Placemark geometry={chooseAddrStreet?.xy} />
+                  { !chooseAddrStreet || Object.entries(chooseAddrStreet).length === 0 ? false :
+                    <Placemark geometry={chooseAddrStreet?.xy} options={{ iconLayout: 'default#image', iconImageHref: '/Frame.png', iconImageSize: [35, 50], iconImageOffset: [-15, -50] }} />
                   }
-                  
+
                   <Polygon
                     geometry={new_zone}
                     options={{
@@ -155,7 +164,7 @@ export default function ModalAddr(){
                 <MyTextInput variant="standard" placeholder={'Новый адрес'} inputAdornment={ <PencilModalAddrIcon /> } value={nameAddr} func={ e => setNameAddr(e.target.value) } />
               </div>
               <div className='city'>
-                <MySelect variant="standard" className="city" data={cityList} value={cityID} func={ e => setCityID(e.target.value) } />
+                <MySelect variant="standard" className="city" data={cityList} value={cityID} func={ e => chengeCity(e.target.value) } />
               </div>
               <div className='street'>
                 <MyAutocomplete placeholder={'Улица'} className="city" data={allStreets} val={street_} onChange={ val => setStreet(val) } variant={'standard'} />
