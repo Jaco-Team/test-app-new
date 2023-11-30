@@ -6,19 +6,16 @@ import { roboto } from '../ui/Font.js';
 
 import ModalCityPC from '../modules/header/modalCity/modalCityPC.js';
 import ModalCityMobile from '../modules/header/modalCity/modalCityMobile.js';
-import ModalAuthPC from '../modules/header/modalAuth/PC/page.js';
-import ModalAuthMobile from '@/modules/header/modalAuth/mobile/page.js'
+import ModalAuth from '../modules/header/modalAuth/page.js';
 import NavBarPC from '../modules/header/navBar/navBarPC.js';
 import NavBarMobile from '@/modules/header/navBar/navBarMobile.js';
 import BasketPC from '../modules/header/basket/basketPC.js';
 import BasketModalPC from '../modules/header/basket/basketModalPC.js';
-
 import ModalAddr from '@/modules/profile/profile/modalAddr.jsx';
 
 import { useHeaderStore } from './store.js';
 
 export default React.memo(function Header({ city, city_list, cats, active_page }) {
-
   //console.log('render Header')
 
   const thisCityRU = city_list.find((item) => item.link == city)['name'];
@@ -43,7 +40,6 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
         <>
           <NavBarMobile city={city} active_page={active_page}/>
           <ModalCityMobile />
-          <ModalAuthMobile city={city} />
         </>
         :
         <>
@@ -51,10 +47,10 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
           <ModalCityPC />
           <BasketPC />
           <BasketModalPC />
-          <ModalAuthPC city={city} />
           <ModalAddr />
         </>
       }
+      <ModalAuth city={city} />
     </div>
   );
 });
