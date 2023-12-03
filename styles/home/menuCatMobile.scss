@@ -17,8 +17,11 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: $MyScale250_mobile;
+      //width: $MyScale250_mobile;
+      padding-left: $MyScale40_mobile;
+      padding-right: $MyScale40_mobile;
       border-radius: $MyScale20_mobile;
+      margin-right: $MyScale20_mobile;
       background-color: rgba(0, 0, 0, 0.05);
 
       & span {
@@ -47,6 +50,7 @@
     position: relative;
     height: $MyScale100_mobile;
     margin-bottom: $MyScale30_mobile;
+    transition: all 0.1s ease 0s;
 
     .menuCatDop {
       width: 100%;
@@ -98,7 +102,8 @@
   width: 100%;
   height: $MyScale80_mobile;
   margin-bottom: -$MyScale80_mobile;
-  position: sticky;
+  position: fixed;
+  right: 0;
   background: linear-gradient(
     180deg,
     rgba(115, 115, 115, 0.1) 0%,

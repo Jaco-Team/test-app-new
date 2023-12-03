@@ -4,13 +4,13 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { roboto } from '../ui/Font.js';
 
-import ModalCityPC from '../modules/header/modalCity/modalCityPC.js';
-import ModalCityMobile from '../modules/header/modalCity/modalCityMobile.js';
-import ModalAuth from '../modules/header/modalAuth/page.js';
-import NavBarPC from '../modules/header/navBar/navBarPC.js';
+import ModalCityPC from '@/modules/header/modalCity/modalCityPC.js';
+import ModalCityMobile from '@/modules/header/modalCity/modalCityMobile.js';
+import ModalAuth from '@/modules/header/modalAuth/page.js';
+import NavBarPC from '@/modules/header/navBar/navBarPC.js';
 import NavBarMobile from '@/modules/header/navBar/navBarMobile.js';
-import BasketPC from '../modules/header/basket/basketPC.js';
-import BasketModalPC from '../modules/header/basket/basketModalPC.js';
+import BasketPC from '@/modules/header/basket/basketPC.js';
+import BasketModalPC from '@/modules/header/basket/basketModalPC.js';
 import ModalAddr from '@/modules/profile/profile/modalAddr.jsx';
 
 import { useHeaderStore } from './store.js';

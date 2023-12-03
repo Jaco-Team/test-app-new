@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHeaderStore } from '@/components/store.js';
+import { useHeaderStore, useHomeStore } from '@/components/store.js';
 import { Link as ScrollLink } from 'react-scroll';
 import Box from '@mui/material/Box';
 
@@ -12,10 +12,18 @@ count: '4', list: [{id: '5', name: 'Закуски', link: 'zakuski', count_2: '
 
 export default function MenuCatMobile({ city }) {
 
-  const [catMenu, setCatMenu] = useState(catList);
-  const [catDopMenu, setCatDopMenu] = useState(null);
+  const [ category, setCategory ] = useHomeStore((state) => [ state.category, state.setCategory ]);
+
+  const [catMenu, setCatMenu] = useState(category);
+  const [catDopMenu, setCatDopMenu] = useState([]);
   const [scrollMenuCat, setScrollMenuCat] = useState(0);
   const [offset, setOffset] = useState(null);
+
+  useEffect(() => {
+    setCatMenu(category);
+  }, [category]);
+
+  console.log( 'category', catMenu, catDopMenu )
 
   if (city == '') return null;
 
@@ -31,9 +39,9 @@ export default function MenuCatMobile({ city }) {
   // так оставить сброс состояния выбора категории товара при переходе на другие страницы ??
   useEffect(() => {
     if(activePage === 'home') {
-      setCatMenu(catList)
+      setCatMenu(category)
     } else {
-      const cat = catList.map(item => item.choice = false)
+      const cat = category.map(item => item.choice = false)
       setCatMenu(cat)
     }
   }, [activePage]);
@@ -51,11 +59,11 @@ export default function MenuCatMobile({ city }) {
       if (cat.id === id) {
         cat.choice = true;
 
-        if (cat?.list) {
-          cat.list.map((cat) => (cat.choice = false));
-          setCatDopMenu(cat.list);
+        if (cat?.cats) {
+          cat.cats.map((cat) => (cat.choice = false));
+          setCatDopMenu(cat.cats);
         } else {
-          setCatDopMenu(null);
+          setCatDopMenu([]);
         }
       } else {
         cat.choice = false;
@@ -110,7 +118,7 @@ export default function MenuCatMobile({ city }) {
   return (
     <>
       <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="menuCatMobile">
-        <div className="menuCat" style={{ marginBottom: catDopMenu ? '1.7094017094017vw' : '2.5641025641026vw' }}>
+        <div className="menuCat" style={{ marginBottom: catDopMenu.length == 0 ? '1.7094017094017vw' : '2.5641025641026vw' }}>
           {catMenu.map((item, key) => (
             <ScrollLink
               key={key}
@@ -127,7 +135,7 @@ export default function MenuCatMobile({ city }) {
             </ScrollLink>
           ))}
         </div>
-        {!catDopMenu ? null : (
+        {catDopMenu.length == 0 ? false : (
           <div className="menuCatDopContainer">
             <div className="menuCatDop">
               {catDopMenu.map((cat, key) => (
@@ -145,14 +153,18 @@ export default function MenuCatMobile({ city }) {
                   onClick={() => chooseDopCat(cat.id, 'scroll')}
                   onSetActive={() => chooseDopCat(cat.id, null)}
                 >
-                  <span id={'link_' + cat.id}>{cat.name}</span>
+                  <span id={'link_' + cat.id}>{cat.short_name}</span>
                 </ScrollLink>
               ))}
             </div>
           </div>
         )}
       </Box>
-      {scrollMenuCat ? <div className="blockShadowMenuCatMobile" style={{ top: catDopMenu ? '42.735042735043vw' : '32.478632478632vw' }} /> : null}
+      {scrollMenuCat ? 
+        <div className="blockShadowMenuCatMobile" style={{ top: catDopMenu.length != 0 ? '43.735042735043vw' : '32.478632478632vw' }} /> 
+          : 
+        false
+      }
     </>
   );
 }

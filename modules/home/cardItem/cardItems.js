@@ -75,7 +75,7 @@ export default React.memo(function CatItems() {
         spacing={2}
         key={key}
         name={'cat' + cat.main_id}
-        id={'cat' + cat.main_id}
+        id={'cat' + cat.id}
         className="ContainerCardItemMobile"
       >
         {cat.items.map((it, k) => <CardItemMobile key={k} item={it} count={it.count} />)}

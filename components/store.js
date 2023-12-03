@@ -1867,7 +1867,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       },
       zones: json.zones
     })
-    
+
   },
 
   // открытие/закрытие модалки в Профиле в мобильной версии
@@ -2707,10 +2707,13 @@ export const useCitiesStore = createWithEqualityFn((set) => ({
 export const useHomeStore = createWithEqualityFn((set, get) => ({
   bannerList: [],
   CatsItems: [],
+  category: [],
   openItem: null,
   isOpenModal: false,
   typeModal: 'start',
   foodValue: false,
+
+  activeSlider: true,
 
   openModalBanner: false,
   banner: null,
@@ -2728,8 +2731,6 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     const json = await api(this_module, data);
 
-    console.log('getBanners ====>', json)
-
     set({
       bannerList: json.banners,
     });
@@ -2741,14 +2742,17 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       city_id: city,
     };
 
-    //console.log('getItemsCat', data);
-
     const json = await api(this_module, data);
-
-    //console.log('getItemsCat', json);
 
     set({
       CatsItems: json.items,
+      category: json.main_cat
+    });
+  },
+
+  setCategory: (cats) => {
+    set({
+      category: cats
     });
   },
 
@@ -2813,7 +2817,11 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       get().swiper.autoplay.start();
     }
     
-    set({ banner, openModalBanner: active });
+    set({ 
+      activeSlider: !active,
+      banner, 
+      openModalBanner: active 
+    });
 
   }
 

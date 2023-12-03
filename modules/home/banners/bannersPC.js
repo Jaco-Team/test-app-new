@@ -17,13 +17,28 @@ import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
 import { useHomeStore } from '../../../components/store.js';
 
 export default React.memo(function BannersPC() {
-  const [bannerList, setActiveBanner] = useHomeStore((state) => [state.bannerList, state.setActiveBanner]);
+  const [bannerList, setActiveBanner, activeSlider] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider]);
 
   const swiperRef = useRef(null);
 
   useEffect(() => {
-    swiperRef.current.swiper.autoplay.start();
-  }, []);
+    const swiper = document.querySelector('.swiper').swiper;
+
+    const timer = setInterval(() => {
+      if( activeSlider ){
+        swiper.slideNext();
+      }
+    }, 5000);
+    
+    return () => clearInterval(timer);
+  });
+
+  useEffect(() => {
+    if( bannerList.length > 0 ){
+      const swiper = document.querySelector('.swiper').swiper;
+      swiper.activeIndex = 0;
+    }
+  }, [bannerList]);
 
   /*
     <div className="Item" style={{ backgroundColor: item.id === '84' ? '#3faad8' : item.id === '80' ? '#B570DF' : item.id === '48' ? '#F45773' : null}}>
@@ -46,7 +61,7 @@ export default React.memo(function BannersPC() {
           spaceBetween={0}
           slidesPerView={1}
           loop={true}
-          autoplay={{ disableOnInteraction: true }}
+          autoplay={false}
           speed={2500}
           pagination={{ clickable: true }}
           navigation={{
@@ -60,7 +75,7 @@ export default React.memo(function BannersPC() {
         >
 
           {bannerList.map((item, key) => (
-            <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => setActiveBanner(true, item, (swiperRef.current).swiper)}>
+            <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
               <Image alt={item.promo_title} src={"https://storage.yandexcloud.net/site-home-img/"+item.img_new+"3700х1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '2.4vw' }} />
             </SwiperSlide>
           ))}

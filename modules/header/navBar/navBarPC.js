@@ -16,7 +16,7 @@ import {MapPointIcon, ArrowDownHeaderPC, ArrowUpHeaderPC, BurgerIconPC } from '@
 
 import { Link as ScrollLink } from 'react-scroll';
 
-import { useHeaderStore, useCartStore, useCitiesStore, useFooterStore } from '@/components/store.js';
+import { useHeaderStore, useCartStore, useCitiesStore, useFooterStore, useHomeStore } from '@/components/store.js';
 import useScroll from '../hook.js';
 
 import BasketIconHeaderPC from '../basket/basketIconHeaderPC.js';
@@ -70,7 +70,7 @@ const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, c
               spy={true}
               isDynamic={true}
               smooth={false}
-              offset={-100}
+              offset={-140}
               onClick={onClose}
             >
               <span id={'link_' + cat.id}>{cat.name}</span>
@@ -95,6 +95,7 @@ export default function NavBarPC({ city, active_page }) {
   const [setActiveBasket, openBasket, setActiveModalCity, activePage] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity, state.activePage]);
   const [setThisCityRu, thisCityRu, setThisCity] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu, state.setThisCity]);
   const [ getInfoPromo, getCartLocalStorage ] = useCartStore( state => [ state.getInfoPromo, state.getCartLocalStorage ])
+  const [ category, setCategory ] = useHomeStore((state) => [ state.category, state.setCategory ]);
 
   if (city == '') return null;
 
@@ -136,12 +137,14 @@ export default function NavBarPC({ city, active_page }) {
   const openMenu = (event, id) => {
     setIsOpenCat(true)
     setAnchorEl(event.currentTarget);
-    catList.forEach((cat) => {
-      if (cat.id === id) {
+    category.forEach((cat) => {
+      if( parseInt(cat.id) === parseInt(id) ) {
         cat.expanded = anchorEl ? false : true;
-        setList(cat.list);
+        setList(cat.cats);
       }
     });
+
+    setCategory(category);
   };
 
   function openMenuBurger(event){
@@ -155,13 +158,15 @@ export default function NavBarPC({ city, active_page }) {
 
   const closeMenu = () => {
     setAnchorEl(null);
-    catList.forEach((cat) => {
+    category.forEach((cat) => {
       if (cat.expanded) {
         cat.expanded = false;
       }
     });
     setList([]);
-    setIsOpenCat(false)
+    setIsOpenCat(false);
+
+    setCategory(category);
   };
 
   function chooseCat(id){
@@ -176,16 +181,8 @@ export default function NavBarPC({ city, active_page }) {
     }
   }
 
-  return (
-    <>
-      <AppBar className="headerNew" id="headerNew" elevation={2} sx={{ display: { xs: 'none', md: 'none', lg: 'block' } }} onClick={closeBasket}>
-        <Toolbar>
-          <div>
-            <Link href={'/' + city} className="logoHeaderPC">
-              <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={500} height={120} priority={true}/>
-            </Link>
-
-            {catList.map((item, key) =>
+  /*
+    {catList.map((item, key) =>
               item.name === 'Пицца' || item.name === 'Напитки' ? (
                 active_page === 'home' ? 
                   <ScrollLink
@@ -220,6 +217,44 @@ export default function NavBarPC({ city, active_page }) {
                 )
               )
             }
+  */
+
+
+  return (
+    <>
+      <AppBar className="headerNew" id="headerNew" elevation={2} sx={{ display: { xs: 'none', md: 'none', lg: 'block' } }} onClick={closeBasket}>
+        <Toolbar>
+          <div>
+            <Link href={'/' + city} className="logoHeaderPC">
+              <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={500} height={120} priority={true}/>
+            </Link>
+
+            {category.map( (item, key) => 
+              item.cats.length > 0 ?
+                <div className={item?.expanded ? "headerCat activeCat" : 'headerCat'} onClick={(event) => openMenu(event, item.id)}>
+                  <span>
+                    {item.name} {item?.expanded ? <ArrowUpHeaderPC /> : <ArrowDownHeaderPC />}
+                  </span>
+                </div>
+                  :
+                active_page === 'home' ?
+                  <ScrollLink
+                    key={key}
+                    className={"headerCat "+ (key+1 == category.length ? 'last' : '') }
+                    to={'cat' + item.id}
+                    spy={true}
+                    isDynamic={true}
+                    smooth={false}
+                    offset={-140}
+                    //style={{marginRight: item.name === 'Пицца' ? 0 : '18.050541516245vw', width: item.name === 'Напитки' ? '7.2202166064982vw' : '5.7761732851986vw'}}
+                  >
+                    <span id={'link_' + item.id}>{item.name}</span> 
+                  </ScrollLink>
+                    :
+                  <Link href={`/${city}`} onClick={() => chooseCat(item.id)} key={key} className={"headerCat "+ (key+1 == category.length ? 'last' : '') }>
+                    <span>{item.name}</span>
+                  </Link>
+            )}
           </div>
 
           <div>
