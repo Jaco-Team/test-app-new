@@ -43,7 +43,7 @@
       }
     }
 
-    .activeCat {
+    .activeCat, .active {
       background: #dd1a32;
 
       & span {
@@ -93,7 +93,7 @@
         }
       }
 
-      .activeCatDop {
+      .activeCatDop, .active {
         background: rgba(0, 0, 0, 0.10);
   
         & span {

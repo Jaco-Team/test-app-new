@@ -46,28 +46,17 @@ function useCheckCat(CatsItems) {
           if( max ){
             if( parseInt(activeID.id) != parseInt(max.id) || parseInt(activeID.parent_id) != parseInt(max.parent_id) ){
               
-              if( document.querySelector('.Cat') ){
-                document.querySelector('.Cat').classList.remove('activeCat');
-              }
-
-              if( document.querySelector('#link_'+max.parent_id) ){
-                document.querySelector('#link_'+max.parent_id).classList.add('activeCat');
-              }
-
-              //console.log( 'check', parseInt(max.parent_id) > 0 && document.querySelector('#linkDOP_'+max.id), document.querySelector('#linkDOP_'+max.id), '#linkDOP_'+max.id )
-
-              if( parseInt(max.parent_id) > 0 && document.querySelector('#linkDOP_'+max.id) ){
-                //document.querySelector('#linkDOP_'+max.id).scrollIntoView();
-
-                console.log( 'check' );
-
-                //document.querySelector('#linkDOP_'+max.id).scrollIntoView({behavior: 'smooth', block: 'end', inline: 'end'});
-    
-                
-
-              }
-
               setActiveID( {id: max.id, parent_id: max.parent_id} )
+
+              setTimeout( () => {
+                if( document.querySelector('.Cat') ){
+                  document.querySelector('.Cat').classList.remove('activeCat');
+                }
+  
+                if( document.querySelector('#link_'+max.parent_id) ){
+                  document.querySelector('#link_'+max.parent_id).classList.add('activeCat');
+                }
+              }, 200 )
             }
           }
         }

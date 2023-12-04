@@ -12,48 +12,33 @@ export default function MenuCatMobile({ city }) {
 
   const [ category, setCategory ] = useHomeStore((state) => [ state.category, state.setCategory ]);
 
-  const [ thisActiveID, setThisActiveID ] = useState(0);
-
   const [catMenu, setCatMenu] = useState(category);
   const [catDopMenu, setCatDopMenu] = useState([]);
-  const [scrollMenuCat, setScrollMenuCat] = useState(0);
   const [offset, setOffset] = useState(null);
 
-  //if( category.length > 0 ){
-    let activeID = useCheckCat(category);
-    //setThisActiveID(thisActiveID);
+  let activeID = useCheckCat(category);
+  
+  useEffect(() => {
+    if( parseInt(activeID.id) !== parseInt(activeID.parent_id) ){
+      let chooseItem = catMenu.find( item => parseInt(item.id) == parseInt(activeID.parent_id) );
 
-  useEffect( () => {
-    chooseCat(activeID?.id, false)
-  }, [activeID] )
-
-    console.log( 'activeID', activeID )
-  //}
+      if( chooseItem ){
+        setCatDopMenu(chooseItem.cats);
+      }else{
+        setCatDopMenu([]);
+      }
+    }else{
+      setCatDopMenu([]);
+    }
+  }, [activeID]);
 
   useEffect(() => {
     setCatMenu(category);
-
-    
   }, [category]);
-
-  useEffect(() => {
-    setCatMenu(category);
-
-    
-  }, [category]);
-
-  //console.log( 'category', catMenu, catDopMenu )
 
   if (city == '') return null;
 
   const [activePage] = useHeaderStore((state) => [state.activePage]);
-
-  //const handleScroll = () => setScrollMenuCat(window.scrollY > 100);
-
-  useEffect(() => {
-    //window.addEventListener('scroll', handleScroll);
-    //return () => window.removeEventListener('scroll', handleScroll);
-  }, []);
 
   // так оставить сброс состояния выбора категории товара при переходе на другие страницы ??
   useEffect(() => {
@@ -66,7 +51,6 @@ export default function MenuCatMobile({ city }) {
   }, [activePage]);
 
   const chooseCat = (id, scroll) => {
-    console.log( 'chooseCat' )
     localStorage.setItem('goTo', id);
 
     const menuCatDop = document.querySelector('.menuCatDop');
@@ -111,8 +95,6 @@ export default function MenuCatMobile({ city }) {
       return cat;
     });
 
-    setCatDopMenu(newCatDopMenu);
-
     if (scroll) {
       getScroll(id);
     }
@@ -142,7 +124,7 @@ export default function MenuCatMobile({ city }) {
           {catMenu.map((item, key) => (
             <ScrollLink
               key={key}
-              className={item?.choice ? (item.choice ? 'Cat activeCat' : 'Cat') : 'Cat'}
+              className={'Cat'}
               to={'cat' + item.id}
               id={'link_' + item.id}
               spy={true}
@@ -150,7 +132,7 @@ export default function MenuCatMobile({ city }) {
               smooth={false}
               offset={offset}
               onClick={() => chooseCat(item.id, 'scroll')}
-              onSetActive={() => chooseCat(item.id, null)}
+              //onSetActive={() => chooseCat(item.id, null)}
             >
               <span>{item.name}</span>
             </ScrollLink>
@@ -162,7 +144,7 @@ export default function MenuCatMobile({ city }) {
               {catDopMenu.map((cat, key) => (
                 <ScrollLink
                   key={key}
-                  className={cat?.choice ? (cat.choice ? 'CatDop activeCatDop' : 'CatDop') : 'CatDop'}
+                  className={'CatDop'}
                   style={{minWidth: cat.name.length > 8 ? '27.350427350427vw' : '21.367521367521vw',
                     marginLeft: key === 0 ? '3.4188034188vw' : '1.7094017094017vw',
                     marginRight: cat === catDopMenu.at(-1) ? '3.4188034188vw' : 0}}
@@ -177,18 +159,15 @@ export default function MenuCatMobile({ city }) {
                   onSetActive={ () => {
 
                     chooseDopCat(cat.id, null);
+
                     let scrollContainer = document.querySelector("#menuCatDop");
 
                     let data = document.querySelector('#linkDOP_'+cat.id).getBoundingClientRect()
-
-                    console.log( data['x'] + data['width'] - 150 )
 
                     scrollContainer.scroll({
                         left: data['x'] + data['width'] - 150,
                         behavior: 'smooth'
                     });
-
-
                   } }
                 >
                   <span>{cat.short_name}</span>
