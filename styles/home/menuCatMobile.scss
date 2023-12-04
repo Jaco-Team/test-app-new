@@ -10,8 +10,15 @@
   .menuCat {
     display: flex;
     justify-content: space-between;
-    margin: $MyScale50_mobile $MyScale55_mobile 0 $MyScale55_mobile;
+    margin: $MyScale50_mobile $MyScale40_mobile 0 $MyScale40_mobile;
     height: $MyScale100_mobile;
+    overflow: scroll;
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    scrollbar-width: none;  /* Firefox */
+
+    &::-webkit-scrollbar { 
+      display: none;  /* Safari and Chrome */
+    }
 
     .Cat {
       display: flex;
@@ -23,6 +30,10 @@
       border-radius: $MyScale20_mobile;
       margin-right: $MyScale20_mobile;
       background-color: rgba(0, 0, 0, 0.05);
+
+      &:last-child{
+        margin-right: 0!important;
+      }
 
       & span {
         display: flex;

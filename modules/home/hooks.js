@@ -2,7 +2,7 @@ import { useEffect, useState } from 'react';
 
 function useCheckCat(CatsItems) {
 
-  const [activeID, setActiveID] = useState({id: 0, main_id: 0});
+  const [activeID, setActiveID] = useState({id: 0, parent_id: 0});
   
   var lastPOS = 0;
 
@@ -18,45 +18,56 @@ function useCheckCat(CatsItems) {
           var elem = document.getElementById('cat'+item.id);
 
           if( elem ){
-            var top = elem.getBoundingClientRect().top + document.body.scrollTop - 200;
+            var top = elem.getBoundingClientRect().top + document.body.scrollTop - 250;
             
             if(top < 0){
-              arrMax.push({ name: item.name, Y: top, main_id: item.main_id, id: item.id })
+              arrMax.push({ name: item.name, Y: top, parent_id: item.parent_id, id: item.id })
             }
+          }else{
+            item.cats.map( (it) => {
+              elem = document.getElementById('cat'+it.id);
+
+              if( elem ){
+                top = elem.getBoundingClientRect().top + document.body.scrollTop - 250;
+                
+                if(top < 0){
+                  arrMax.push({ name: it.name, Y: top, parent_id: it.parent_id, id: it.id })
+                }
+              }
+            } )
           }
         })
             
-        let is_find = false;
-
         if( arrMax.length > 0 ){
           let max = arrMax[ arrMax.length-1 ];
           
           arrMax = [];
           
-          let doubleCatList = CatsItems.filter( (item) => parseInt(item.main_id) == parseInt(max.main_id) )
-
           if( max ){
-            if( parseInt(activeID.id) != parseInt(max.id) && parseInt(max.main_id) != 0 ){
-              is_find = true;
-
-              if( document.querySelector('#link_'+max.main_id) ){
-                if( document.querySelector('.activeCat') ){
-                    document.querySelector('.activeCat').classList.remove('activeCat');
-                }
-                document.querySelector('#link_'+max.main_id).classList.add('activeCat');
+            if( parseInt(activeID.id) != parseInt(max.id) || parseInt(activeID.parent_id) != parseInt(max.parent_id) ){
+              
+              if( document.querySelector('.Cat') ){
+                document.querySelector('.Cat').classList.remove('activeCat');
               }
 
-              if( doubleCatList.length > 1 ){
-                  //this.setState({
-                  //    doubleCatList: doubleCatList
-                  //})
-              }else{
-                  //this.setState({
-                  //    doubleCatList: []
-                  //})
+              if( document.querySelector('#link_'+max.parent_id) ){
+                document.querySelector('#link_'+max.parent_id).classList.add('activeCat');
               }
 
-              setActiveID( {id: max.id, main_id: max.main_id} )
+              //console.log( 'check', parseInt(max.parent_id) > 0 && document.querySelector('#linkDOP_'+max.id), document.querySelector('#linkDOP_'+max.id), '#linkDOP_'+max.id )
+
+              if( parseInt(max.parent_id) > 0 && document.querySelector('#linkDOP_'+max.id) ){
+                //document.querySelector('#linkDOP_'+max.id).scrollIntoView();
+
+                console.log( 'check' );
+
+                //document.querySelector('#linkDOP_'+max.id).scrollIntoView({behavior: 'smooth', block: 'end', inline: 'end'});
+    
+                
+
+              }
+
+              setActiveID( {id: max.id, parent_id: max.parent_id} )
             }
           }
         }
