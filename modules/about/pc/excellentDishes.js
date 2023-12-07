@@ -29,14 +29,12 @@ export default function ExcellentDishes() {
     
       <Image
         alt=""
-        src="/about/j-pepperoni.jpg"
-        width={3150}
-        height={1556}
+        src="/about/Populyarnye-blyuda1.jpg"
+        width={2000}
+        height={1540}
         priority={true}
         style={{ width: '100%', height: 'auto' }}
       />
-    
-      <p style={{ textAlign: 'center' }}>Пицца Пепперони и сет Атлантида</p>
     </Grid>
   );
 }

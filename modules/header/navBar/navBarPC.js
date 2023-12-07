@@ -231,7 +231,7 @@ export default function NavBarPC({ city, active_page }) {
 
             {category.map( (item, key) => 
               item.cats.length > 0 ?
-                <div className={item?.expanded ? "headerCat activeCat" : 'headerCat'} onClick={(event) => openMenu(event, item.id)}>
+                <div key={key} className={item?.expanded ? "headerCat activeCat" : 'headerCat'} onClick={(event) => openMenu(event, item.id)}>
                   <span>
                     {item.name} {item?.expanded ? <ArrowUpHeaderPC /> : <ArrowDownHeaderPC />}
                   </span>

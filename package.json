@@ -13,7 +13,7 @@
     "@emotion/react": "^11.11.1",
     "@emotion/styled": "^11.11.0",
     "@mui/icons-material": "^5.14.19",
-    "@mui/material": "^5.14.19",
+    "@mui/material": "^5.14.20",
     "@mui/styled-engine-sc": "^5.14.12",
     "@pbe/react-yandex-maps": "^1.2.5",
     "@react-spring/web": "^9.7.3",
@@ -36,12 +36,12 @@
     "sharp": "^0.33.0",
     "styled-components": "^5.3.11",
     "swiper": "^9.4.1",
-    "typescript": "^5.3.2",
+    "typescript": "^5.3.3",
     "ua-parser-js": "^1.0.37",
     "zustand": "^4.4.7"
   },
   "devDependencies": {
-    "eslint": "8.54.0",
+    "eslint": "8.55.0",
     "eslint-config-next": "14.0.3"
   }
 }
