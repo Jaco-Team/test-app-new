@@ -29,11 +29,13 @@ export const authConfig = {
     CredentialsProvider({
       name: "Credentials",
       credentials: {
-        login: { label: "Username", type: "text", placeholder: "jsmith" },
+        login: { label: "Username", type: "text" },
         password: { label: "Password", type: "password" }
       },
       async authorize(credentials, req) {
         
+        console.log( 'credentials', credentials )
+
         const data = {
           type: 'site_login',
           
@@ -42,6 +44,8 @@ export const authConfig = {
         };
     
         const json = await api('auth', data);
+
+        console.log( 'json auth', json )
 
         if( json.st === true ){
           return {

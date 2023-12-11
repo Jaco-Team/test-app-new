@@ -124,7 +124,7 @@ export default function Start() {
 
       <div className="loginLogin"
         onClick={formPassword && loginLogin.length === 11 ? sendsmsNewLogin : formSMS && loginLogin.length === 11 ? createProfile : loginLogin.length === 11 && checkPass ? logIn : null}
-        // onClick={ () => signIn('credentials', { redirect: false, password: pwdLogin, login: loginLogin, callbackUrl: `${host}/${thisCity}/zakazy` }) }
+        //onClick={ () => signIn('credentials', { redirect: false, password: pwdLogin, login: loginLogin }) }
         style={{backgroundColor: (loginLogin.length === 11 && checkPass) || (formPassword && loginLogin.length === 11) || (formSMS && loginLogin.length === 11) ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)'}}
       >
         <Typography component="span"
