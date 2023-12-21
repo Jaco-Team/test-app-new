@@ -55,7 +55,7 @@ export default function ContactsPageMobile() {
                       iconImageSize: [65, 65], 
                       iconImageOffset: [-12, -20], 
                     }} 
-                    onClick={() => changePointClick(point.addr, 'mobile')}
+                    onClick={() => changePointClick(point.addr)}
                   />
                 ))
               }
@@ -64,7 +64,7 @@ export default function ContactsPageMobile() {
                   <Polygon key={key}
                     geometry={[point.zone]}
                     options={point.options}
-                    onClick={() => changePointClick(point.addr, 'mobile')}
+                    onClick={() => changePointClick(point.addr)}
                   />
                 ))
               }

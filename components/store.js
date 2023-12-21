@@ -1269,7 +1269,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
   },
 
   // изменение состояния точки по клику
-  changePointClick: (addr, type) => {
+  changePointClick: (addr) => {
     
     const disable = get().disable;
     let zones = get().zones;
@@ -1281,65 +1281,37 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
         "<img alt='' src='/Favikon.png' />" +
       "</div>"
     )
-    
-    if(type === 'pc') {
 
-      points_zone = points_zone.map(item => {
-        if(disable) {
-          if(item.addr === addr) {
-            item.options = get().polygon_options_active;
-          } else {
-            item.options = get().polygon_options_default;
-          }
-        } 
-        return item
-      })
-  
-      zones = zones.map(item => {
+    points_zone = points_zone.map(item => {
+      if(disable) {
         if(item.addr === addr) {
-          item.image = img;
+          item.options = get().polygon_options_active;
         } else {
-          item.image = 'default#image';
+          item.options = get().polygon_options_default;
         }
-        return item
-      })
-  
-      myAddr = myAddr.map(item => {
-        if (item.addr === addr)  {
-          item.color = '#DD1A32'
-        } else {
-          item.color = null;
-        }
-        return item
-      });
-  
-      set({ points_zone, zones, myAddr })
-    }
+      } 
+      return item
+    })
 
-    if(type === 'mobile') {
+    zones = zones.map(item => {
+      if(item.addr === addr) {
+        item.image = img;
+      } else {
+        item.image = 'default#image';
+      }
+      return item
+    })
 
-      points_zone = points_zone.map(item => {
-        if(disable) {
-          if(item.addr === addr) {
-            item.options = get().polygon_options_active;
-          } else {
-            item.options = get().polygon_options_default;
-          }
-        } 
-        return item
-      })
-  
-      zones = zones.map(item => {
-        if(item.addr === addr) {
-          item.image = img;
-        } else {
-          item.image = 'default#image';
-        }
-        return item
-      })
-  
-      set({ points_zone, zones, point: addr })
-    }
+    myAddr = myAddr.map(item => {
+      if (item.addr === addr)  {
+        item.color = '#DD1A32'
+      } else {
+        item.color = null;
+      }
+      return item
+    });
+
+    set({ points_zone, zones, myAddr, point: addr })
 
   },
 

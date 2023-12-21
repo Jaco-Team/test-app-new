@@ -72,7 +72,7 @@ export default function ContactsPagePC() {
           <Typography variant="h5" component="h2">Адреса кафе:</Typography>
           <List>
             {myAddr.map((point, key) => (
-              <ListItemButton key={key} disableRipple={false} onClick={() => changePointClick(point.addr, 'pc')}>
+              <ListItemButton key={key} disableRipple={false} onClick={() => changePointClick(point.addr)}>
                 <MapPointIcon />
                 <ListItemText primary={
                     <Typography style={{color: point?.color ? point.color : null}}>
@@ -129,7 +129,7 @@ export default function ContactsPagePC() {
                       iconImageSize: [65, 65], 
                       iconImageOffset: [-12, -20], 
                     }} 
-                    onClick={() => changePointClick(point.addr, 'pc')}
+                    onClick={() => changePointClick(point.addr)}
                   />
                 ))
               }
@@ -138,7 +138,7 @@ export default function ContactsPagePC() {
                   <Polygon key={key}
                     geometry={[point.zone]}
                     options={point.options}
-                    onClick={() => changePointClick(point.addr, 'pc')}
+                    onClick={() => changePointClick(point.addr)}
                   />
                 ))
               }
