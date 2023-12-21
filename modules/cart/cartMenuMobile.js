@@ -35,7 +35,7 @@ export default function CartMenuMobile({ cityName }) {
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
 
   const [openMenuCart, setActiveMenuCart, nameList, setActiveDataTimePicker, setActiveCartMap, pointList, addrList, orderPic, orderAddr,
-    setAddrDiv, setPoint, getDataMap, setTypePay, comment, changeComment, setSummDiv, typeOrder] = useCartStore((state) => [state.openMenuCart, state.setActiveMenuCart, state.nameList, state.setActiveDataTimePicker, state.setActiveCartMap, state.pointList, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getDataMap, state.setTypePay, state.comment, state.changeComment, state.setSummDiv, state.typeOrder]);
+    setAddrDiv, setPoint, setTypePay, comment, changeComment, setSummDiv, typeOrder, getMapCart] = useCartStore((state) => [state.openMenuCart, state.setActiveMenuCart, state.nameList, state.setActiveDataTimePicker, state.setActiveCartMap, state.pointList, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.setTypePay, state.comment, state.changeComment, state.setSummDiv, state.typeOrder, state.getMapCart]);
 
   const [setActiveAddressModal] = useProfileStore((state) => [state.setActiveAddressModal]);
 
@@ -53,6 +53,8 @@ export default function CartMenuMobile({ cityName }) {
 
       setId(orderPic?.id);
       setList(points);
+
+      getMapCart('contacts', cityName);
     }
 
     if (nameList === 'addr') {
@@ -83,10 +85,8 @@ export default function CartMenuMobile({ cityName }) {
     }
 
     if (nameList === 'point' && item.name === 'Выбрать на карте') {
-      setPoint(null);
       setActiveCartMap(true);
       setActiveMenuCart(false, null);
-      getDataMap('contacts', cityName);
     }
 
     if (nameList === 'addr' && item.name !== 'Выбрать на карте') {

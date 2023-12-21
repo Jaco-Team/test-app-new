@@ -24,6 +24,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   free_drive: 0,
   itemsPromo: [],
 
+  zones: null,
+  center_map: null,
+
   //0 - доставка / 1 - самовывоз
   typeOrder: 0,
 
@@ -60,10 +63,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // открыть модалку чтобы выбрать точку для оформления заказа в мобилке
   openMapPoints: false,
 
-  // карта и точки в мобилке
-  myPoints: [],
-  myMap: null,
-
   // список точек для оформления заказа
   pointList: [],
 
@@ -84,6 +83,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   // открытие модалки с указанием ошибки
   openModalErorr: false,
+
   // текст ошибки
   textError: '',
 
@@ -370,6 +370,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   getTimesPred: async(point_id, date, typeOrder, cart) => {
 
     const setDate = date ?? dayjs().format('YYYY-MM-DD');
+
+    const today = dayjs().format('YYYY-MM-DD');
     
     const data = {
       type: 'get_times_pred',
@@ -379,9 +381,36 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       cart: JSON.stringify(cart)
     };
     
-    const json = await api('cart', data);
+    let json = await api('cart', data);
+    json = json?.filter((time) => time.name !== 'В ближайшее время');
+    
+    if(setDate === today && !json.length) {
 
-    set({ timePreOrder: json, point_id: point_id ?? get().point_id, typeOrder: typeOrder ?? get().typeOrder  })
+      let tomorrow = new Date();
+      tomorrow.setDate(tomorrow.getDate()+1);
+      tomorrow = dayjs(tomorrow).format('YYYY-MM-DD');
+
+      const data = {
+        type: 'get_times_pred',
+        date: tomorrow,
+        point_id: point_id ?? get().point_id,
+        type_order: typeOrder ?? get().typeOrder,
+        cart: JSON.stringify(cart)
+      };
+      
+      let json = await api('cart', data);
+      json = json?.filter((time) => time.name !== 'В ближайшее время');
+
+      let datePreOrder = get().datePreOrder;
+      datePreOrder = datePreOrder?.filter((day) => day.text !== 'Сегодня')
+
+      set({ timePreOrder: json, point_id: point_id ?? get().point_id, typeOrder: typeOrder ?? get().typeOrder, datePreOrder })
+
+    } else {
+
+      set({ timePreOrder: json, point_id: point_id ?? get().point_id, typeOrder: typeOrder ?? get().typeOrder  })
+
+    }
 
   },
 
@@ -1041,9 +1070,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     }
   },
 
-  // получение данных для карты Корзины в мобильной версии
-  getDataMap: async (this_module, city) => {
-    set({ disable: true });
+  // получение данных для карты
+  getMapCart: async (this_module, city) => {
+
+    if(!city) return;
 
     const data = {
       type: 'get_addr_zone_web',
@@ -1052,120 +1082,99 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const json = await api(this_module, data);
 
-    set({ myPoints: json.filter((value, index, self) => index === self.findIndex((t) => t.addr === value.addr)) });
-
-    get().loadMap(); 
-
-  },
-
-  // отрисовка карты по данным в Корзине в мобильной версии
-  loadMap: () => {
-
-    const points = get().myPoints;
-
-    const widthModal_vw = 15.384615384615;
-    const widthModal_px = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
+    json.map((point) => point.image = 'default#image');
 
     let zoomSize;
 
-    if(widthModal_px < 900) {
-      zoomSize = 11;
+    if(window.innerWidth < 601) {
+      zoomSize = 10.6;
     } else {
-      zoomSize = 12.3
+      zoomSize = 11.5;
     }
-      
-    const sizeIcon_px = (widthModal_vw * widthModal_px) / 100;
 
-      if(!get().myMap){
-        ymaps.ready().then((function () {
-      
-          get().myMap = new ymaps.Map('ForMapCart', {
-            center: [ points[0]['xy_center_map']['latitude'], points[0]['xy_center_map']['longitude'] ],
-            zoom: zoomSize,
-            controls: ['geolocationControl', 'searchControl', 'zoomControl']
-          }, { suppressMapOpenBlock: true });
-     
-          points.map(function(point, key){
-            get().myMap.geoObjects.add(
-              new ymaps.Placemark( [point['xy_point']['latitude'], point['xy_point']['longitude']], 
-              {
-                address: points[ key ]['addr'],
-                raion: points[ key ]['raion'],
-              }, {
-                iconLayout: 'default#image',
-                iconImageHref: '/Favikon.png',
-                iconImageSize: [sizeIcon_px, sizeIcon_px],
-                iconImageOffset: [-12, -20],
-                hideIconOnBalloonOpen: false,
-              })
-          )
-          })
-  
-          get().myMap.geoObjects.events.add('click', get().changePointClick);
-  
-        }))
-      }else{
-        get().myMap.destroy();
-        set({ myMap: null });
+    set({
+      center_map: {
+        center: [json[0].xy_center_map.latitude, json[0].xy_center_map.longitude],
+        zoom: zoomSize,
+        controls: []
+      },
+      zones: json,
+    })
 
-        get().loadMap();
-      }
-    },
+    setTimeout(() => {
+      get().changePointClick(get().orderPic?.name ?? '');
+    }, 100)
 
-  // изменение состояния точки по клику
-  changePointClick: (event) => {
-  
+  },
+
+  // изменение состояния точки по клику на Карте
+  changePointClick: (addr) => {
+    
+    let zones = get().zones;
+    const pointList = get().pointList;
+
+    const orderPic = pointList.find(point => point.name === addr);
+
     const img = ymaps.templateLayoutFactory.createClass( 
-      "<div class='my-img-cart'>" +
+      "<div class='my-img'>" +
         "<img alt='' src='/Favikon.png' />" +
       "</div>"
-    );
-
-    const pointChoose = event.get('target');
-
-    const points = ymaps.geoQuery(get().myMap.geoObjects).search('geometry.type = "Point"');
-
-    points.each(function(point) {
-      if(point === pointChoose) {
-        point.options.set({ iconLayout: img })
+    )
+  
+    zones = zones.map(item => {
+      if(item.addr === addr) {
+        item.image = img;
       } else {
-        point.options.set({ iconLayout: 'default#image' })
+        item.image = 'default#image';
       }
-    });
+      return item
+    })
 
-    const orderPic = get().pointList.find(point => point.name === pointChoose.properties._data.address);
-
-    set({ orderPic: orderPic ?? null });
+    set({ zones, orderPic: orderPic ?? null });
 
     get().setCartLocalStorage();
+
   },
 
 }), shallow);
 
 export const useContactStore = createWithEqualityFn((set, get) => ({
-  myPoints: [],
-  myUnicPoint: [],
-  pointsZone: [],
-  myMap2: null,
-  myMapMobile: null,
   myAddr: [],
   phone: '',
   disable: true,
   point: '',
   openModalChoose: false,
   location_user: null,
+  zones: null,
+  center_map: null,
+  points_zone: null,
 
+  polygon_options_default: {
+      fillColor: 'rgba(53, 178, 80, 0.15)',
+      strokeColor: '#35B250',
+      strokeWidth: 5,
+      fillOpacity: 1,
+  },
+  polygon_options_active: { 
+    strokeColor: '#DD1A32', 
+    fillColor: 'rgba(221, 26, 50, 0.15)', 
+    fillOpacity: 1, 
+    strokeWidth: 5 
+  },
+  polygon_options_none: { 
+    fillColor: "#000000", 
+    strokeColor: "#000000", 
+    fillOpacity: 0.001, 
+    strokeWidth: 0 
+  },
+ 
   // получение геопозиции клиента на карте в мобильной версии
   getUserPosition: () => {
     navigator.geolocation.getCurrentPosition(({ coords }) => {
       const { latitude, longitude } = coords
         
       set({ location_user: [latitude, longitude] })
-
-      setTimeout( () => {
-        get().loadMapMobile(get().myPoints, get().pointsZone);
-      }, 300)
-
+     
       setTimeout(() => {
         set({ location_user: null })
       }, 300000);
@@ -1183,11 +1192,9 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
   },
 
   // получение данных для карты
-  getData: async (this_module, city) => {
+  getMap: async (this_module, city) => {
 
-    if( !city ){
-      return ;
-    }
+    if(!city) return;
 
     set({ disable: true });
 
@@ -1197,74 +1204,53 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
     };
 
     const json = await api(this_module, data);
-    
+
     let points_zone = [];
 
-    json.map(function (point) {
+    json.map((point) => {
       if (point['zone_origin'].length > 0) {
-        points_zone.push(JSON.parse(point['zone_origin']));
+        points_zone.push({ 
+          zone: JSON.parse(point['zone_origin']), 
+          addr: point.addr, 
+          options: get().polygon_options_default,
+        })
+      return point;
       }
-    });
+    })
 
-    let unic_point = [],
-      check = false;
+    
+    let zoomSize;
+    
+    if(window.innerWidth < 601) {
+      zoomSize = 10.6;
+    } else {
+      zoomSize = 11.5;
+    }
 
-    json.map(function (point) {
-      check = false;
-
-      unic_point.map(function (new_point) {
-        if (parseInt(new_point.id) == parseInt(point.id)) {
-          check = true;
-        }
-      });
-
-      if (!check) {
-        unic_point.push(point);
-      }
-    });
+    json.forEach((point) => point.image = 'default#image');
 
     set({
-      myPoints: json,
-      myUnicPoint: unic_point,
-      pointsZone: points_zone,
+      center_map: {
+        center: [json[0].xy_center_map.latitude, json[0].xy_center_map.longitude],
+        zoom: zoomSize,
+        controls: []
+      },
+      zones: json,
+      points_zone,
       phone: json[0].phone,
-      myAddr: json.filter((value, index, self) => index === self.findIndex((t) => t.addr === value.addr))
-    });
+      myAddr: json.filter((value, index, self) => index === self.findIndex((t) => t.addr === value.addr)),
+    })
 
     const matches = useHeaderStore.getState().matches;
 
-    if(!matches) {
-      get().loadMap(get().myPoints, get().pointsZone);
-    } else {
-      setTimeout( () => {
-        get().loadMapMobile(get().myPoints, get().pointsZone);
+    if(matches) {
+      setTimeout(() => {
+        get().choosePointMap(false);
       }, 300)
     }
 
-    get().choosePointMap(false);
-
   },
-
-  loadMapNew: () => {
-    if( get().pointsZone.length > 0 ){
-      
-      const matches = useHeaderStore.getState().matches;
-
-      if(!matches) {
-        setTimeout( () => {
-          get().loadMap(get().myPoints, get().pointsZone);
-        }, 300 )
-        
-      } else {
-        setTimeout( () => {
-          get().loadMapMobile(get().myPoints, get().pointsZone);
-        }, 300)
-      }
-
-      get().choosePointMap(false);
-    }
-  },
-
+  
   // выбор точки для страницы Контакты в мобильной версии
   choosePointMap: (point) => {
     const pointList = get().myAddr;
@@ -1272,459 +1258,143 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
     if(point) {
       const pointFind = pointList.find(item => item.addr === point);
 
-      set({ point: pointFind.addr, openModalChoose: false })
+      set({ openModalChoose: false })
 
-      setTimeout( () => {
-        get().loadMapMobile(get().myPoints, get().pointsZone);
-      }, 300)
+      get().changePointClick(pointFind?.addr, 'mobile');
 
     } else {
-      set({ point: pointList[0].addr })
+      get().changePointClick(pointList[0].addr, 'mobile');
     }
 
-  },
-
-  // отрисовка карты по данным для мобилки
-  loadMapMobile: (points, points_zone) => {
-
-    let zoomSize;
-    let pointFind;
-    const addr = get().point;
-      
-    const widthModal_vw = 10.25641025641;
-    const widthModal_px = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
-
-    const sizeIcon_px = (widthModal_vw * widthModal_px) / 100;
-
-    if(widthModal_px < 900) {
-      zoomSize = 10.6;
-    } else {
-      zoomSize = 12.3;
-    }
-
-    if(addr) {
-      pointFind = points.find(point => point.addr === addr);
-    }
-
-    if(!get().myMapMobile){
-      ymaps.ready().then((function () {
-    
-        get().myMapMobile = new ymaps.Map('ForMapContacts', {
-          center: [ points[0]['xy_center_map']['latitude'], points[0]['xy_center_map']['longitude'] ],
-          zoom: zoomSize,
-          controls: ['geolocationControl', 'searchControl']
-        }, { suppressMapOpenBlock: true });
-
-        const img = ymaps.templateLayoutFactory.createClass( 
-          "<div class='my-img-contacts'>" +
-            "<img alt='' src='/Favikon.png' />" +
-          "</div>"
-        );
-
-        points_zone.map((zone, key)=>{
-          get().myMapMobile.geoObjects.add(
-            new ymaps.Polygon([zone],
-              {
-                address: points[ key ]['addr'],
-              },
-              {
-              fillColor: pointFind?.addr === points[ key ]['addr'] ? 'rgba(221, 26, 50, 0.15)' : 'rgba(53, 178, 80, 0.15)',
-              strokeColor: pointFind?.addr === points[ key ]['addr'] ? '#DD1A32' : '#35B250',
-              strokeWidth: 5,
-            })
-          );
-        })
-        
-        points.map(function(point, key){
-          get().myMapMobile.geoObjects.add(
-            new ymaps.Placemark( [point['xy_point']['latitude'], point['xy_point']['longitude']],
-            {
-              address: points[ key ]['addr'],
-            },
-            {
-              iconLayout: pointFind?.addr === point.addr ? img : 'default#image',
-              iconImageHref: '/Favikon.png',
-              iconImageSize: [sizeIcon_px, sizeIcon_px],
-              iconImageOffset: [-12, -20],
-            })
-        )
-        })
-
-        let objectManager = new ymaps.ObjectManager();
-
-        let json = {
-          "type": "FeatureCollection",
-          "features": []
-        };
-
-        if(get().location_user) {
-  
-          json.features.push({
-            type: "Feature",
-            id: 0,
-            options: {
-              preset: 'islands#redStretchyIcon', 
-            },
-            properties: {
-              iconContent: 'Вы находитесь здесь'
-            },
-            geometry: {
-              type: "Point",
-              coordinates: get().location_user,
-            },
-          })
-  
-        }
-
-        objectManager.add(json);
-        get().myMapMobile.geoObjects.add(objectManager);
-
-        get().myMapMobile.geoObjects.events.add('click', get().changePointClickMobile);
-
-      }))
-    }else{
-      get().myMapMobile.destroy();
-
-      set({ myMapMobile: null });
-
-      get().loadMapMobile(get().myPoints, get().pointsZone);
-    }
-  },
-
-  // изменение состояния точки по клику на мобильном
-  changePointClickMobile: (event) => {
-
-    const pointChoose = event.get('target');
-
-    if(pointChoose?._mappingByOverlayName) {
-      return;
-    }
-
-    ymaps.geoQuery(get().myMapMobile.geoObjects).search('geometry.type = "Point"').setOptions({ iconLayout: 'default#image' });
-  
-    if(get().disable) {
-      ymaps.geoQuery(get().myMapMobile.geoObjects).search('geometry.type = "Polygon"').setOptions({ strokeColor: '#35B250', fillColor: 'rgba(53, 178, 80, 0.15)', fillOpacity: 1, strokeWidth: 5 });
-    } else {
-      ymaps.geoQuery(get().myMapMobile.geoObjects).search('geometry.type = "Polygon"').setOptions({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
-    }
-
-    const img = ymaps.templateLayoutFactory.createClass( 
-      "<div class='my-img-contacts'>" +
-        "<img alt='' src='/Favikon.png' />" +
-      "</div>"
-    );
-
-    const type = event.get('target')?.geometry?.getType();
-
-    if(type === 'Polygon') {
-
-      if(get().disable) {
-        event.get('target').options.set({ strokeColor: '#DD1A32', fillColor: 'rgba(221, 26, 50, 0.15)', fillOpacity: 1, strokeWidth: 5 });
-      } else {
-        event.get('target').options.set({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
-      }
-
-      const points = ymaps.geoQuery(get().myMapMobile.geoObjects).search('geometry.type = "Point"')
-
-      points.each(function(point) {
-
-      const res = event.get('target').geometry.contains(point.geometry.getCoordinates())
-
-        if(res) {
-          if(get().disable) {
-            point.options.set({ iconLayout: img })
-          } else {
-            point.options.set({ iconLayout: 'default#image' })
-          }
-        }
-      });
-    }
-
-    if(type === 'Point') {
-      event.get('target').options.set({ iconLayout: img })
-
-      const polygons = ymaps.geoQuery(get().myMapMobile.geoObjects).search('geometry.type = "Polygon"')
-
-      polygons.each(function(polygon) {
-
-      const res = polygon.geometry.contains(event.get('target').geometry.getCoordinates())
-
-        if(res) {
-          if(get().disable) {
-            polygon.options.set({ strokeColor: '#DD1A32', fillColor: 'rgba(221, 26, 50, 0.15)', fillOpacity: 1, strokeWidth: 5 });
-          } else {
-            polygon.options.set({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
-          }
-        }
-
-      });
-    }
-
-    set({ point: pointChoose.properties._data.address });
-  },
-  
-  // показывать/не показывать границы зон доставки в мобильной версии
-  disablePointsZoneMobile: () => {
-
-    set({ disable: !get().disable });
-
-    if(get().disable) {
-      ymaps.geoQuery(get().myMapMobile.geoObjects).search('geometry.type = "Polygon"').setOptions({ strokeColor: '#35B250', fillColor: 'rgba(53, 178, 80, 0.15)', fillOpacity: 1,
-      strokeWidth: 5 });
-    } else {
-      ymaps.geoQuery(get().myMapMobile.geoObjects).search('geometry.type = "Polygon"').setOptions({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
-    }
-  },
-
-  // отрисовка карты по данным на ПК
-  loadMap: (points, points_zone) => {
-
-    if(!get().myMap2){
-      ymaps.ready().then((function () {
-    
-        get().myMap2 = new ymaps.Map('ForMap', {
-          center: [ points[0]['xy_center_map']['latitude'], points[0]['xy_center_map']['longitude'] ],
-          zoom: 11.5,
-          controls: ['geolocationControl', 'searchControl']
-        }, { suppressMapOpenBlock: true });
-
-        points_zone.map((zone, key)=>{
-          get().myMap2.geoObjects.add(
-            new ymaps.Polygon([zone], 
-              {
-                address: points[ key ]['addr'],
-                raion: points[ key ]['raion'],
-              }, 
-              {
-              fillColor: 'rgba(53, 178, 80, 0.15)',
-              strokeColor: '#35B250',
-              strokeWidth: 5,
-              hideIconOnBalloonOpen: false,
-            })
-          );
-        })
-          
-        points.map(function(point, key){
-          get().myMap2.geoObjects.add(
-            new ymaps.Placemark( [point['xy_point']['latitude'], point['xy_point']['longitude']], 
-            {
-              address: points[ key ]['addr'],
-              raion: points[ key ]['raion'],
-            }, {
-              iconLayout: 'default#image',
-              iconImageHref: '/Favikon.png',
-              iconImageSize: [65, 65],
-              iconImageOffset: [-12, -20],
-              hideIconOnBalloonOpen: false,
-            })
-        )
-        })
-
-        get().myMap2.geoObjects.events.add('click', get().changePointClick);
-        get().myMap2.events.add('click', get().changePointNotHover);
-
-      }))
-    }else{
-      get().myMap2.destroy();
-
-      set({ myMap2: null });
-
-      get().loadMap(get().myPoints, get().pointsZone);
-    }
   },
 
   // изменение состояния точки по клику
-  changePointClick: (event) => {
-
-    get().myMap2.balloon.close();
-
-    ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Point"').setOptions({ iconLayout: 'default#image' });
-  
-    if(get().disable) {
-      ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ strokeColor: '#35B250', fillColor: 'rgba(53, 178, 80, 0.15)', fillOpacity: 1, strokeWidth: 5 });
-    } else {
-      ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
-    }
+  changePointClick: (addr, type) => {
+    
+    const disable = get().disable;
+    let zones = get().zones;
+    let points_zone = get().points_zone;
+    let myAddr = get().myAddr;
 
     const img = ymaps.templateLayoutFactory.createClass( 
       "<div class='my-img'>" +
         "<img alt='' src='/Favikon.png' />" +
       "</div>"
-    );
+    )
+    
+    if(type === 'pc') {
 
-    const balloonLayout = ymaps.templateLayoutFactory.createClass( 
-      "<div class='my-hint'>" +
-        "<img alt='' src='/about/fasad.jpg' />" +
-        "<span>{{ properties.raion }}, {{ properties.address }}</span>" +
-      "</div>"
-    );
-
-    const type = event.get('target').geometry.getType();
-
-    if(type === 'Polygon') {
-
-      if(get().disable) {
-        event.get('target').options.set({ strokeColor: '#DD1A32', fillColor: 'rgba(221, 26, 50, 0.15)', fillOpacity: 1, strokeWidth: 5 });
-      } else {
-        event.get('target').options.set({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
-      }
-
-      const points = ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Point"')
-
-      points.each(function(point) {
-
-        const res = event.get('target').geometry.contains(point.geometry.getCoordinates())
-
-        if(res) {
-          if(get().disable) {
-            //point.options.set({ iconLayout: img, balloonLayout: balloonLayout })
-            point.options.set({ iconLayout: img })
-            //point.balloon.open();
-          }
-        }
-      });
-    }
-
-    if(type === 'Point') {
-      //event.get('target').options.set({ iconLayout: img, balloonLayout: balloonLayout })
-      event.get('target').options.set({ iconLayout: img })
-
-      const polygons = ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"')
-
-      polygons.each(function(polygon) {
-
-      const res = polygon.geometry.contains(event.get('target').geometry.getCoordinates())
-
-        if(res) {
-          if(get().disable) {
-            polygon.options.set({ strokeColor: '#DD1A32', fillColor: 'rgba(221, 26, 50, 0.15)', fillOpacity: 1, strokeWidth: 5 });
+      points_zone = points_zone.map(item => {
+        if(disable) {
+          if(item.addr === addr) {
+            item.options = get().polygon_options_active;
           } else {
-            polygon.options.set({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
+            item.options = get().polygon_options_default;
           }
+        } 
+        return item
+      })
+  
+      zones = zones.map(item => {
+        if(item.addr === addr) {
+          item.image = img;
+        } else {
+          item.image = 'default#image';
         }
+        return item
+      })
+  
+      myAddr = myAddr.map(item => {
+        if (item.addr === addr)  {
+          item.color = '#DD1A32'
+        } else {
+          item.color = null;
+        }
+        return item
       });
+  
+      set({ points_zone, zones, myAddr })
     }
+
+    if(type === 'mobile') {
+
+      points_zone = points_zone.map(item => {
+        if(disable) {
+          if(item.addr === addr) {
+            item.options = get().polygon_options_active;
+          } else {
+            item.options = get().polygon_options_default;
+          }
+        } 
+        return item
+      })
+  
+      zones = zones.map(item => {
+        if(item.addr === addr) {
+          item.image = img;
+        } else {
+          item.image = 'default#image';
+        }
+        return item
+      })
+  
+      set({ points_zone, zones, point: addr })
+    }
+
   },
 
   // изменение состояния карты/точек при клике вне точек
   changePointNotHover: (event) => {
 
-    console.log( 'changePointNotHover' )
-
-    get().myMap2.balloon.close();
-
     const type = event.get('target').getType();
-
+    
     if(type === 'yandex#map') {
-      ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Point"').setOptions({ iconLayout: 'default#image' });
 
-      if(get().disable) {
-        ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ strokeColor: '#35B250', fillColor: 'rgba(53, 178, 80, 0.15)', fillOpacity: 1,
-        strokeWidth: 5 });
-      } else {
-        ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
-      }
+      const disable = get().disable;
+      const zones = get().zones;
+      const myAddr = get().myAddr;
+      let points_zone = get().points_zone;
+
+      zones.forEach(item => item.image = 'default#image');
+
+      points_zone = points_zone.map(item => {
+        if(disable) {
+          item.options = get().polygon_options_default;
+        } 
+        return item
+      })
+      
+      myAddr.forEach(addr => addr.color = null);
+  
+      set({ myAddr, zones, points_zone });
     }
 
-    const myAddr = get().myAddr.map(addr => {
-        addr.color = null;
-        return addr;
-      }
-    );
-
-    set({ myAddr });
   },
 
   // показывать/не показывать границы зон доставки
   disablePointsZone: () => {
-  
+
     set({ disable: !get().disable });
 
-    if(get().disable) {
-      ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ strokeColor: '#35B250', fillColor: 'rgba(53, 178, 80, 0.15)', fillOpacity: 1,
-      strokeWidth: 5 });
-    } else {
-      ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
-    }
-  },
+    let points_zone = get().points_zone;
+    const myAddr = get().myAddr;
 
-  // выбор адреса точки
-  chooseAddr: (id) => {
-
-    get().myMap2.balloon.close();
-
-    ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Point"').setOptions({ iconLayout: 'default#image' });
-
-    if(get().disable) {
-      ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ strokeColor: '#35B250', fillColor: 'rgba(53, 178, 80, 0.15)', fillOpacity: 1,
-      strokeWidth: 5, balloonLayout: null });
-    } else {
-      ymaps.geoQuery(get().myMap2.geoObjects).search('geometry.type = "Polygon"').setOptions({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
-    }
-
-    const addrHasColor = get().myAddr.find(addr => addr.id === id && addr.color === '#DD1A32');
-    
-    if(addrHasColor) {
-      
-      const myAddr = get().myAddr.map(addr => {
-        addr.color = null;
-        return addr;
-      });
-      
-      set({ myAddr });
-      
-      return;
-    }
-
-    let newAddr = '';
-
-    const myAddr = get().myAddr.map(addr => {
-      if (addr.id === id)  {
-        addr.color = '#DD1A32'
-        newAddr = addr.addr;
-        return addr;
-      } else {
-        addr.color = null;
-        return addr;
-      }
-    });
-
-    const img = ymaps.templateLayoutFactory.createClass( 
-      "<div class='my-img'>" +
-        "<img alt='' src='/Favikon.png' />" +
-      "</div>"
-    );
-
-    const balloonLayout = ymaps.templateLayoutFactory.createClass( 
-      "<div class='my-hint'>" +
-        "<img alt='' src='/about/fasad.jpg' />" +
-        "<span>{{ properties.raion }}, {{ properties.address }}</span>" +
-      "</div>"
-    );
-
-    const data = ymaps.geoQuery(get().myMap2.geoObjects);
-
-    data.each(function(item) {
-
-      const addr = item.properties._data.address;
-
-      if(addr === newAddr) {
-
-       if(get().disable) {
-         item.options.set({strokeColor: '#DD1A32', fillColor: 'rgba(221, 26, 50, 0.15)', fillOpacity: 1, strokeWidth: 5 });
+    points_zone = points_zone.map(item => {
+      if(get().disable) {
+          const chooseAddr = myAddr.find(addr => addr?.color);
+          if(chooseAddr?.addr === item.addr) {
+            item.options = get().polygon_options_active;
+          } else {
+            item.options = get().polygon_options_default;
+          }
         } else {
-         item.options.set({ fillColor: "#000000", strokeColor: "#000000", fillOpacity: 0.001, strokeWidth: 0 });
+          item.options = get().polygon_options_none;
         }
-
-        //item.options.set({ balloonLayout: balloonLayout, iconLayout: img });
-        item.options.set({ iconLayout: img });
-        //item.balloon.open();
-
-      }
-    });
-
-    set({ myAddr });
-  }
+      return item
+    })
+  
+    set({ points_zone });
+  },
 
 }), shallow);
 
@@ -1852,6 +1522,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     };
 
     let json = await api('profile', data);
+
+    console.log('getMapMobile json', json);
 
     set({
       allStreets: json.streets,

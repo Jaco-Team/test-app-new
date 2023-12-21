@@ -37,7 +37,7 @@ export default function BasketPC() {
         id="simple-popover"
         open={openBasket}
         anchorEl={targetBasket}
-        onClose={() => setActiveBasket(false)}
+        onClose={() => { setActiveBasket(false); setScrollBasket(0) }}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         marginThreshold={0}
@@ -79,7 +79,7 @@ export default function BasketPC() {
               variant="contained"
               disabled={!itemsCount}
               //onClick={this.props.openLogin}
-              onClick={() => { setActiveModalBasket(true); setActiveBasket(false)}}
+              onClick={() => { setActiveModalBasket(true); setActiveBasket(false); setScrollBasket(0) }}
             >
               <span>Оформить заказ</span>
             </Button>

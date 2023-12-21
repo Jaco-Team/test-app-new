@@ -101,7 +101,7 @@
             & .nameAddr{
                 width: $MyScale680;
                 height: $MyScale120;
-                margin-top: $MyScale150;
+                margin-top: $MyScale60;
                 margin-left: $MyScale170;
                 display: flex;
                 align-items: center;
@@ -208,8 +208,8 @@
             }
             & .btnSave{
                 margin-left: $MyScale150;
-                margin-top: $MyScale130;
-                margin-bottom: $MyScale144;
+                margin-top: $MyScale60;
+                margin-bottom: $MyScale60;
                 & > div{
                     width: $MyScale400;
                     height: $MyScale80;

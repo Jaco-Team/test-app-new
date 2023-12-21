@@ -5,7 +5,6 @@ import dynamic from 'next/dynamic';
 const DynamicHeader = dynamic(() => import('@/components/header.js'));
 const DynamicFooter = dynamic(() => import('@/components/footer.js'));
 const CartPage = dynamic(() => import('@/modules/cart/page'));
-const LoadMap = dynamic(() => import('@/components/loadMap'));
 
 import { roboto } from '@/ui/Font.js';
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
@@ -17,7 +16,7 @@ export default React.memo(function Cart(props) {
 
   const { city, cats, cities, page, all_items } = props.data1;
 
-  const [setAllItems, getDataMap] = useCartStore((state) => [state.setAllItems, state.getDataMap]);
+  const [setAllItems] = useCartStore((state) => [state.setAllItems]);
 
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] =
     useCitiesStore((state) => [state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList]);
@@ -47,7 +46,6 @@ export default React.memo(function Cart(props) {
     <>
       {!matches ? null : (
         <div className={roboto.variable}>
-          <LoadMap getData={getDataMap} city={city} />
 
           <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'cart'}/>
 

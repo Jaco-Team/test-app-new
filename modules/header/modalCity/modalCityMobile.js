@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 import { roboto } from '@/ui/Font.js';
-import { useHeaderStore, useCitiesStore, useCartStore } from '@/components/store.js';
+import { useHeaderStore, useCitiesStore, useCartStore, useContactStore } from '@/components/store.js';
 
 export default function ModalCityMobile() {
   const { push } = useRouter();
@@ -19,7 +19,9 @@ export default function ModalCityMobile() {
 
   const [openCityModal, openCityModalList, setActiveModalCity, setActiveModalCityList, activePage] = useHeaderStore((state) => [state.openCityModal, state.openCityModalList, state.setActiveModalCity, state.setActiveModalCityList, state.activePage]);
 
-  const [getMySavedAddr, setPoint, setAddrDiv, changeAllItems] = useCartStore((state) => [state.getMySavedAddr, state.setPoint, state.setAddrDiv, state.changeAllItems]);
+  const [getMySavedAddr, setPoint, setAddrDiv] = useCartStore((state) => [state.getMySavedAddr, state.setPoint, state.setAddrDiv]);
+
+  const [getMap] = useContactStore(state => [state.getMap]);
 
   const rightCity = () => {
     setActiveModalCity(false);
@@ -33,17 +35,16 @@ export default function ModalCityMobile() {
     setThisCityRu(city.name);
     setThisCity(city.link);
 
+    getMap('contacts', city.link);
+    setPoint(null);
+    setAddrDiv(null);
+    getMySavedAddr(thisCity, session?.data?.user?.token);
+
     if(activePage && activePage !== 'home') {
       push(`/${city.link}/${activePage}`);
     } else {
       push(`/${city.link}`);
     }
-
-    if(activePage === 'cart') {
-      setPoint(null);
-      setAddrDiv(null);
-      getMySavedAddr(thisCity, session?.data?.user?.token);
-    } 
   };
 
   // thisCityRu = 'Комсомольск-на-Амуре'

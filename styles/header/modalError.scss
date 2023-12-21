@@ -6,37 +6,45 @@
     align-items: flex-start;
 
     & .MuiDialog-paper {
-      height: $MyScale200;
+      height: $MyScale100;
       overflow: visible;
       margin: 0;
       padding: 0;
       width: 100%;
       max-width: none !important;
       background: #dd1a32;
+      border-radius: unset;
 
       & .MuiDialogContent-root {
         padding: 0;
         display: flex;
         align-items: center;
+        justify-content: center;
 
-        & .containerError {
+        & .btnError {
           position: relative;
           display: flex;
           align-items: center;
-          width: 100%;
-          
+
           & button {
-            left: $MyScale70;
-            position: absolute;
+            left: $MyScale60;
             padding: 0;
-            width: $MyScale60;
-            height: $MyScale60;
+            width: $MyScale40;
+            height: $MyScale40;
 
             & svg {
               width: 100%;
               height: 100%;
             }
           }
+        }
+        
+        & .containerError {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
 
           & span {
             width: 100%;
@@ -45,7 +53,19 @@
             @include font30_400();
             color: #fff !important;
           }
+
+          & .MuiLinearProgress-root {
+            margin-top: $MyScale20;
+            background-color: unset;
+            height: $MyScale4;
+            width: 50%;
+  
+            & span {
+              background-color: #fff !important;
+            }
+          }
         }
+
       }
     }
   }
@@ -57,37 +77,46 @@
     align-items: flex-start;
 
     & .MuiDialog-paper {
-      height: $MyScale200_mobile;
+      height: $MyScale100_mobile;
       overflow: visible;
       margin: 0;
       padding: 0;
       width: 100%;
       max-width: none !important;
       background: #dd1a32;
+      border-radius: unset;
 
       & .MuiDialogContent-root {
         padding: 0;
         display: flex;
         align-items: center;
+        justify-content: center;
 
-        & .containerError {
+        & .btnError {
           position: relative;
           display: flex;
           align-items: center;
-          width: 100%;
-          
-          & button {
-            left: $MyScale70_mobile;
-            position: absolute;
-            padding: 0;
-            width: $MyScale60_mobile;
-            height: $MyScale60_mobile;
 
+          & button {
+            position: absolute;
+            left: $MyScale40_mobile;
+            padding: 0;
+            width: $MyScale50_mobile;
+            height: $MyScale50_mobile;
+  
             & svg {
               width: 100%;
               height: 100%;
             }
           }
+        }
+
+        & .containerError {
+          flex: 1;
+          display: flex;
+          align-items: center;
+          flex-direction: column;
+          justify-content: center;
 
           & span {
             width: 100%;
@@ -95,6 +124,17 @@
             text-align: center;
             @include font40_400();
             color: #fff !important;
+          }
+
+          & .MuiLinearProgress-root {
+            margin-top: $MyScale20_mobile;
+            background-color: unset;
+            height: $MyScale4_mobile;
+            width: 70%;
+  
+            & span {
+              background-color: #fff !important;
+            }
           }
         }
       }

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React, { useState, useRef, useEffect } from 'react';
 
 import Link from 'next/link';
 
@@ -6,8 +6,9 @@ import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/st
 
 import { MapPointIcon } from '@/ui/Icons.js';
 
+import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
+
 import Box from '@mui/material/Box';
-import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Button from '@mui/material/Button';
@@ -19,12 +20,14 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 
 import MySwitch from '@/ui/Switch.js';
-export default function ContactsPagePC({ city }) {
+export default function ContactsPagePC() {
+
+  const ref = useRef();
 
   const [thisCityList, thisCityRu, setThisCityRu, setThisCity] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu, state.setThisCity]);
 
-  const [getData, myAddr, phone, disablePointsZone, disable, chooseAddr] = useContactStore((state) => [
-    state.getData, state.myAddr, state.phone, state.disablePointsZone, state.disable, state.chooseAddr, state.myMap]);
+  const [myAddr, phone, disablePointsZone, disable, center_map, zones, getMap, points_zone, changePointClick, changePointNotHover] = useContactStore((state) => [
+    state.myAddr, state.phone, state.disablePointsZone, state.disable, state.center_map, state.zones, state.getMap, state.points_zone, state.changePointClick, state.changePointNotHover]);
 
   const [activePage] = useHeaderStore((state) => [state.activePage]);
 
@@ -37,12 +40,14 @@ export default function ContactsPagePC({ city }) {
     setThisCityRu(city.name);
     setThisCity(city.link);
     setAnchorEl(null);
-    getData(activePage, city.link);
+    getMap(activePage, city.link);
   };
 
-  //useEffect(() => {
-  //  getData('contacts', city);
-  //}, []);
+  useEffect(() => {
+    if(ref.current && center_map?.center){
+      ref.current.setCenter([zones[0].xy_center_map['latitude'], zones[0].xy_center_map['longitude']]);
+    }
+  }, [zones])
 
   return (
     <Box className="Contact_" sx={{ display: { xs: 'none', md: 'none', lg: 'block' } }}>
@@ -67,10 +72,10 @@ export default function ContactsPagePC({ city }) {
           <Typography variant="h5" component="h2">Адреса кафе:</Typography>
           <List>
             {myAddr.map((point, key) => (
-              <ListItemButton key={key} disableRipple={false} onClick={() => chooseAddr(point.id)}>
+              <ListItemButton key={key} disableRipple={false} onClick={() => changePointClick(point.addr, 'pc')}>
                 <MapPointIcon />
                 <ListItemText primary={
-                    <Typography style={{color: point?.color ? point.color ? point.color : null : null}}>
+                    <Typography style={{color: point?.color ? point.color : null}}>
                       {point.addr}
                     </Typography>
                   }
@@ -103,9 +108,46 @@ export default function ContactsPagePC({ city }) {
         </div>
       </div>
 
-      <Grid item xs={12} id="ForMap">
-        <div style={{width: '100%', height: '100%', marginRight: 12, backgroundColor: '#e5e5e5' }}/>
-      </Grid>
+      {!center_map ? null :
+        <div style={{ minHeight: '68.231046931408vw', width: '100%' }} >
+          <YMaps query={{ lang: 'ru_RU', apikey: 'ae2bad1f-486e-442b-a9f7-d84fff6296db' }}>
+            <Map 
+              defaultState={center_map} 
+              instanceRef={ref} 
+              width="100%" 
+              height="100%" 
+              style={{ minHeight: '68.231046931408vw' }}
+              onClick={(event) => changePointNotHover(event)}
+            >
+
+              {zones?.map((point, key) => (
+                  <Placemark key={key}
+                    geometry={[point.xy_point.latitude, point.xy_point.longitude]}
+                    options={{ 
+                      iconLayout: point.image, 
+                      iconImageHref: '/Favikon.png', 
+                      iconImageSize: [65, 65], 
+                      iconImageOffset: [-12, -20], 
+                    }} 
+                    onClick={() => changePointClick(point.addr, 'pc')}
+                  />
+                ))
+              }
+
+              {points_zone?.map((point, key) => (
+                  <Polygon key={key}
+                    geometry={[point.zone]}
+                    options={point.options}
+                    onClick={() => changePointClick(point.addr, 'pc')}
+                  />
+                ))
+              }
+
+            </Map>
+          </YMaps>
+        </div>
+      }
+
     </Box>
   );
 }

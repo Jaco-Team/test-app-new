@@ -3,7 +3,7 @@
 .Contact_{
   position: relative;
   margin-top: $MyScale240!important;
-  min-height: 900px;
+  min-height: $MyScale900;
   height: 85%;
   z-index: 3;
   mix-blend-mode: multiply;
@@ -152,55 +152,47 @@
   }
 }
 
-#ForMap {
-  min-height: 100vh;
-  // @media (max-width: 960px) {
-  //   margin-bottom: 40px;
-  //   margin-left: 12px;
-  //   margin-right: 12px;
-  // }
-}
-
-.my-hint {
-  position: absolute;
-  left: -$MyScale220;
-  top: 60px;
-  width: $MyScale500;
-  height: $MyScale380;
-  background: #ffffff;
-  box-shadow: $MyScale5 $MyScale10 $MyScale30 rgba(0, 0, 0, 0.25);
-  border-radius: $MyScale30;
+// для фото при выборе точки на карте, на случай если эти фото добавят
+// .my-hint {
+//   position: absolute;
+//   left: -$MyScale220;
+//   top: 60px;
+//   width: $MyScale500;
+//   height: $MyScale380;
+//   background: #ffffff;
+//   box-shadow: $MyScale5 $MyScale10 $MyScale30 rgba(0, 0, 0, 0.25);
+//   border-radius: $MyScale30;
   
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  text-align: center;
-  flex-direction: column;
-  & img {
-    height: $MyScale220;
-    width: $MyScale440;
-    margin-left: $MyScale30;
-    margin-right: $MyScale30;
-    margin-top: $MyScale30;
-    margin-bottom: $MyScale20;
-  }
-  & span{
-    @include font30_400();
-    margin-left: $MyScale50;
-    margin-right: $MyScale50;
-    margin-bottom: $MyScale30;
-    height: $MyScale80;
-    line-height: $MyScale40;
-  }
-  /*&::after {
-    content: "";
-    position: absolute;
-    //left: 100%;
-    top: 0px;
-    border: $MyScale70 solid transparent;
-    border-bottom: $MyScale140 solid rgba(87, 220, 53, 0.3);
-  }*/
-}
+//   display: flex;
+//   align-items: center;
+//   justify-content: center;
+//   text-align: center;
+//   flex-direction: column;
+//   & img {
+//     height: $MyScale220;
+//     width: $MyScale440;
+//     margin-left: $MyScale30;
+//     margin-right: $MyScale30;
+//     margin-top: $MyScale30;
+//     margin-bottom: $MyScale20;
+//   }
+//   & span{
+//     @include font30_400();
+//     margin-left: $MyScale50;
+//     margin-right: $MyScale50;
+//     margin-bottom: $MyScale30;
+//     height: $MyScale80;
+//     line-height: $MyScale40;
+//   }
+//   /*&::after {
+//     content: "";
+//     position: absolute;
+//     //left: 100%;
+//     top: 0px;
+//     border: $MyScale70 solid transparent;
+//     border-bottom: $MyScale140 solid rgba(87, 220, 53, 0.3);
+//   }*/
+// }
 
 .my-img {
   position: absolute;
@@ -219,7 +211,6 @@
     transition-duration: 1s;
   }
 }
-
 
 #chooseCityContact {
   & div.MuiPaper-root.MuiMenu-paper {

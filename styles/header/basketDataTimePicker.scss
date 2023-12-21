@@ -30,7 +30,7 @@
       & .pikerLogin {
         height: $MyScale60;
         margin-top: $MyScale100;
-        margin-bottom: $MyScale50;
+        margin-bottom: $MyScale100;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -43,9 +43,27 @@
         flex-direction: row;
       }
 
+      .embla_button {
+        cursor: pointer;
+        position: absolute;
+        left: $MyScale240;
+        height: $MyScale60;
+        width: $MyScale60;
+
+        & svg {
+          height: 100%;
+          width: 100%;
+        }
+      }
+
       .embla {
         --slide-size: 33.33%;
       }
+
+      .embla_time {
+        --slide-size: 100%;
+      }
+
       .embla__viewport {
         overflow: hidden;
       }
@@ -75,7 +93,7 @@
         border-radius: $MyScale40;
         pointer-events: none;
         left: $MyScale100;
-        top: $MyScale310;
+        top: $MyScale360;
       }
     }
   }

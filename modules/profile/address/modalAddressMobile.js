@@ -37,7 +37,7 @@ export default function AddressModalMobile() {
   const [ street_, setStreet_ ] = useState('');
   const [ home, setHome ] = useState( '' );
   const [ pd, setPd ] = useState( '' );
-  const [ domophome, setDomophome ] = useState('');
+  const [ domophome, setDomophome ] = useState(true);
   const [ et, setEt ] = useState('');
   const [ kv, setKv ] = useState('');
   const [ comment, setComment ] = useState('');
@@ -51,7 +51,7 @@ export default function AddressModalMobile() {
       setStreet({id: infoAboutAddr?.id, name: infoAboutAddr?.street });
       setHome(infoAboutAddr.home);
       setPd(infoAboutAddr.pd);
-      setDomophome(infoAboutAddr.domophome);
+      setDomophome(infoAboutAddr.domophome ? true : false);
       setEt(infoAboutAddr.et);
       setKv(infoAboutAddr.kv);
       setComment(infoAboutAddr.comment);
@@ -64,11 +64,11 @@ export default function AddressModalMobile() {
       setStreet_('')
       
       setPd('');
-      setDomophome('');
       setEt('');
       setKv('');
       setComment('');
-      setCheck(false)
+      setCheck(false);
+      setDomophome(true);
     }
   }, [infoAboutAddr] )
 
@@ -97,13 +97,13 @@ export default function AddressModalMobile() {
       setStreet_('')
       setHome('');
       setPd('');
-      setDomophome('');
       setEt('');
       setKv('');
       setComment('');
       setCheck(false)
       setNameAddr('');
-      setCityID(active_city)
+      setCityID(active_city);
+      setDomophome(true);
     }else{
       setTimeout( () => {
         //render_map_model();
@@ -130,8 +130,8 @@ export default function AddressModalMobile() {
   }, [chooseAddrStreet] )
 
 
-
-
+  console.log('AddressModalMobile new_zone', new_zone);
+  console.log('AddressModalMobile zones', zones);
 
 
   /*useEffect(() => {
@@ -231,15 +231,6 @@ export default function AddressModalMobile() {
               />
             </div>
 
-            <div className="address_comment">
-              <MyTextInput
-                value={domophome}
-                name="domophome"
-                placeholder="Домофон"
-                func={ e => setDomophome(e.target.value) }
-              />
-            </div>
-
             <div className="address_dop">
               <MyTextInput
                 value={et}
@@ -266,6 +257,13 @@ export default function AddressModalMobile() {
               />
             </div>
 
+            <div className="address_main" style={{ marginTop: '5.1282051282051vw' }}>
+              <div className="divGroup">
+                <span>Домофон работает</span>
+              </div>
+              <MySwitch checked={domophome} onClick={(event) => setDomophome(event.target.checked)} />
+            </div>
+
             <div className="address_name">
               <MyTextInput
                 value={nameAddr}
@@ -276,7 +274,7 @@ export default function AddressModalMobile() {
               <EditPencilMobile />
             </div>
 
-            <div className="address_main">
+            <div className="address_main" style={{ marginBottom: '5.1282051282051vw' }}>
               <div className="divGroup">
                 <span>Сделать главным</span>
                 <div className="circleDiv">

@@ -6,12 +6,12 @@ import { useContactStore } from '@/components/store.js';
 
 export default function LoadMap({ city }) {
 
-  const [ getData ] = useContactStore( state => [ state.getData ] );
-
+  const [getMap] = useContactStore(state => [state.getMap]);
+  
   const gt_data = () => {
-    setTimeout( () => {
-      getData('contacts', city)
-    }, 300 )
+    setTimeout(() => {
+      getMap('contacts', city);
+    }, 300)
   }
 
   return (

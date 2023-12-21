@@ -268,7 +268,11 @@ export default function FormOrder({ cityName }) {
                 <Typography component="span">
                   <PointBasketModalPC />
                 </Typography>
-                <Typography component="span">{orderPic?.name}</Typography>
+                {orderPic?.name ?
+                  <Typography component="span">{orderPic?.name}</Typography>
+                    :
+                  <Typography component="span" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Выберите кафе</Typography>
+                }
               </div>
             </Button>
           ) : (
@@ -283,9 +287,13 @@ export default function FormOrder({ cityName }) {
                     {orderAddr?.addr_name}
                   </Typography>
                  : 
-                  <Typography component="span" className={orderAddr?.name?.length > 29 ? 'shadowSpan' : null }>
-                    {orderAddr?.name}
-                  </Typography>
+                  <>
+                    {orderAddr?.name ?
+                      <Typography component="span" className={orderAddr?.name?.length > 29 ? 'shadowSpan' : null}>{orderAddr?.name}</Typography>
+                        :
+                      <Typography component="span" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Выберите адрес</Typography>
+                    }
+                  </>
                 }
               </div>
             </Button>
@@ -308,7 +316,11 @@ export default function FormOrder({ cityName }) {
               <Typography component="span">
                 <CardBasketModalPC />
               </Typography>
-              <Typography component="span">{typePay?.name}</Typography>
+              {typePay?.name ?
+                <Typography component="span">{typePay?.name}</Typography>
+                  :
+                <Typography component="span" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Способ оплаты</Typography>
+              }
             </div>
           </Button>
 
@@ -339,10 +351,14 @@ export default function FormOrder({ cityName }) {
                 <Typography component="span">
                   <MessageBasketModalPC />
                 </Typography>
-                <Typography component="span" className={message.length > 20 ? 'comment' : null}
-                  style={{ height: message.length > 20 ? '13.675213675214vw' : '6.8376068376068vw' }}>
-                  {message ? message : 'Сообщение курьеру'}
-                </Typography>
+                {message ?
+                  <Typography component="span" className={message.length > 20 ? 'comment' : null}
+                    style={{ height: message.length > 20 ? '13.675213675214vw' : '6.8376068376068vw' }}>
+                    {message}
+                  </Typography>
+                    :
+                  <Typography component="span" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Сообщение курьеру</Typography>
+                }
               </div>
             </Button>
           )}
@@ -437,7 +453,11 @@ export default function FormOrder({ cityName }) {
                   <Typography component="span">
                     <PointBasketModalPC />
                   </Typography>
-                  <Typography component="span">{orderPic?.name}</Typography>
+                  {orderPic?.name ?
+                    <Typography component="span">{orderPic?.name}</Typography>
+                      :
+                    <Typography component="span" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Выберите кафе</Typography>
+                  }
                 </div>
               </Button>
             ) : (
@@ -452,11 +472,13 @@ export default function FormOrder({ cityName }) {
                       {orderAddr?.addr_name}
                     </Typography>
                   : 
-                    <Typography component="span"
-                      className={orderAddr?.name?.length > 31 ? 'shadowSpan' : null}
-                    >
-                      {orderAddr?.name}
-                    </Typography>
+                    <>
+                      {orderAddr?.name ?
+                        <Typography component="span" className={orderAddr?.name?.length > 31 ? 'shadowSpan' : null}>{orderAddr?.name}</Typography>
+                          :
+                        <Typography component="span" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Выберите адрес</Typography>
+                      }
+                    </>
                   }
                 </div>
               </Button>
@@ -481,7 +503,11 @@ export default function FormOrder({ cityName }) {
                 <Typography component="span">
                   <CardBasketModalPC />
                 </Typography>
-                <Typography component="span">{typePay?.name}</Typography>
+                {typePay?.name ?
+                  <Typography component="span">{typePay?.name}</Typography>
+                    :
+                  <Typography component="span" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Способ оплаты</Typography>
+                }
               </div>
             </Button>
 

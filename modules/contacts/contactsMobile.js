@@ -1,10 +1,11 @@
-import { useEffect } from 'react';
+import { useRef, useEffect } from 'react';
 
 import Link from 'next/link';
 
+import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
+
 import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/store.js';
 
-import Grid from '@mui/material/Grid';
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
 
@@ -14,22 +15,76 @@ import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 
 import ModalError from '@/modules/cartForm/modalError';
 
-export default function ContactsPageMobile({ city, this_module }) {
+export default function ContactsPageMobile() {
   //console.log('render ContactsPageMobile');
 
+  const ref = useRef();
+
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
+
   const [setActiveModalCityList] = useHeaderStore((state) => [state.setActiveModalCityList]);
-  const [getData, point, phone, disablePointsZoneMobile, disable, setActiveModalChoose, getUserPosition] = useContactStore((state) => [state.getData, state.point, state.phone, state.disablePointsZoneMobile, state.disable, state.setActiveModalChoose, state.getUserPosition]);
+
+  const [point, phone, disablePointsZone, disable, setActiveModalChoose, getUserPosition, center_map, zones, points_zone, changePointClick, location_user] = useContactStore((state) => [state.point, state.phone, state.disablePointsZone, state.disable, state.setActiveModalChoose, state.getUserPosition, state.center_map, state.zones, state.points_zone, state.changePointClick, state.location_user]);
 
   useEffect(() => {
-    getData(this_module, city);
-  }, [city]);
+    if(ref.current && center_map?.center){
+      ref.current.setCenter([zones[0].xy_center_map['latitude'], zones[0].xy_center_map['longitude']]);
+    }
+  }, [zones])
 
   return (
     <Box sx={{ display: { xs: 'block', md: 'block', lg: 'none' } }} className="ContactsMobile" >
-      <Grid item xs={12} id="ForMapContacts">
-        <div style={{ width: '100%', height: '100%', backgroundColor: '#e5e5e5' }}/>
-      </Grid>
+
+      {!center_map ? null :
+        <div style={{ minHeight: '100vw', width: '100%', marginBottom: '10.25641025641vw' }} >
+          <YMaps query={{ lang: 'ru_RU', apikey: 'ae2bad1f-486e-442b-a9f7-d84fff6296db' }}>
+            <Map 
+              defaultState={center_map} 
+              instanceRef={ref} 
+              width="100%" 
+              height="100%" 
+              style={{ minHeight: '100vw' }}
+            >
+
+              {zones?.map((point, key) => (
+                  <Placemark key={key}
+                    geometry={[point.xy_point.latitude, point.xy_point.longitude]}
+                    options={{ 
+                      iconLayout: point.image, 
+                      iconImageHref: '/Favikon.png', 
+                      iconImageSize: [65, 65], 
+                      iconImageOffset: [-12, -20], 
+                    }} 
+                    onClick={() => changePointClick(point.addr, 'mobile')}
+                  />
+                ))
+              }
+
+              {points_zone?.map((point, key) => (
+                  <Polygon key={key}
+                    geometry={[point.zone]}
+                    options={point.options}
+                    onClick={() => changePointClick(point.addr, 'mobile')}
+                  />
+                ))
+              }
+
+              {!location_user ? null :
+                <Placemark
+                  geometry={location_user}
+                  options={{ 
+                    preset: 'islands#redStretchyIcon',
+                  }} 
+                  properties={{
+                    iconContent: 'Вы находитесь здесь'
+                  }}
+                />
+              }
+
+            </Map>
+          </YMaps>
+        </div>
+      }
       
       <div className="ContactsLocation">
         <LocationMapMobile onClick={getUserPosition} />
@@ -77,7 +132,7 @@ export default function ContactsPageMobile({ city, this_module }) {
 
         <div className="ContactsSwitch">
           <Typography component="span">Показать зону доставки</Typography>
-          <MySwitch checked={disable} onClick={disablePointsZoneMobile} />
+          <MySwitch checked={disable} onClick={disablePointsZone} />
         </div>
       </div>
 

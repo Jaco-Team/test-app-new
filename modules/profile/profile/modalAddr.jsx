@@ -31,7 +31,7 @@ export default function ModalAddr(){
   const [ street_, setStreet_ ] = useState('');
   const [ home, setHome ] = useState( '' );
   const [ pd, setPd ] = useState( '' );
-  const [ domophome, setDomophome ] = useState('');
+  const [ domophome, setDomophome ] = useState(true);
   const [ et, setEt ] = useState('');
   const [ kv, setKv ] = useState('');
   const [ comment, setComment ] = useState('');
@@ -51,7 +51,7 @@ export default function ModalAddr(){
       setStreet({id: infoAboutAddr?.id, name: infoAboutAddr?.street });
       setHome(infoAboutAddr.home);
       setPd(infoAboutAddr.pd);
-      setDomophome(infoAboutAddr.domophome);
+      setDomophome(infoAboutAddr.domophome ? true : false);
       setEt(infoAboutAddr.et);
       setKv(infoAboutAddr.kv);
       setComment(infoAboutAddr.comment);
@@ -64,7 +64,7 @@ export default function ModalAddr(){
       setStreet_('')
       
       setPd('');
-      setDomophome('');
+      setDomophome(true);
       setEt('');
       setKv('');
       setComment('');
@@ -92,7 +92,7 @@ export default function ModalAddr(){
       setStreet_('')
       setHome('');
       setPd('');
-      setDomophome('');
+      setDomophome(true);
       setEt('');
       setKv('');
       setComment('');
@@ -170,10 +170,9 @@ export default function ModalAddr(){
               <div className='street'>
                 <MyAutocomplete placeholder={'Улица'} className="city" data={allStreets} val={street_} onChange={ val => setStreet(val) } variant={'standard'} />
               </div>
-              <div className='street_dop_3'>
+              <div className='street_dop_2'>
                 <MyTextInput variant="standard" value={home} placeholder={'Дом'} func={ e => setHome(e.target.value) } />
                 <MyTextInput variant="standard" value={pd} placeholder={'Подъезд'} type={'nember'} func={ e => setPd(e.target.value) } />
-                <MyTextInput variant="standard" value={domophome} placeholder={'Домофон'} func={ e => setDomophome(e.target.value) } />
               </div>
               <div className='street_dop_2'>
                 <MyTextInput variant="standard" value={et} placeholder={'Этаж'} type={'nember'} func={ e => setEt(e.target.value) } />
@@ -181,6 +180,12 @@ export default function ModalAddr(){
               </div>
               <div className='comment'>
                 <MyTextInput variant="standard" value={comment} placeholder={'Комментарий курьеру'} func={ e => setComment(e.target.value) } />
+              </div>
+              <div className='chooseMain'>
+                <div>
+                  <span>Домофон работает</span>
+                </div>
+                <MySwitch onClick={(event) => setDomophome(event.target.checked)} checked={domophome} />
               </div>
               <div className='chooseMain'>
                 <div>

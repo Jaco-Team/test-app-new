@@ -1,29 +1,5 @@
 @import '../settings';
 
-#ForMapCart {
-  min-height: $MyScale940_mobile !important;
-  width: 100vw;
-  margin-bottom: $MyScale80_mobile;
-}
-
-.my-img-cart {
-  position: absolute;
-  left: -12px;
-  top: -20px;
-  width: $MyScale180_mobile;
-  height: $MyScale180_mobile;
-  border-radius: $MyScale180_mobile;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #da1a32;
-  transition-duration: 1s;
-  & img {
-    width: $MyScale150_mobile;
-    transition-duration: 1s;
-  }
-}
-
 #CartMapPoints {
   z-index: 1400;
   

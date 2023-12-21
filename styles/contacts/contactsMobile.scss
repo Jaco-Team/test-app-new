@@ -1,29 +1,5 @@
 @import '../settings';
 
-#ForMapContacts {
-  min-height: $MyScale1170_mobile !important;
-  width: $MyScale1170_mobile;
-  margin-bottom: $MyScale120_mobile;
-}
-
-.my-img-contacts {
-  position: absolute;
-  left: -12px;
-  top: -20px;
-  width: $MyScale150_mobile;
-  height: $MyScale150_mobile;
-  border-radius: $MyScale150_mobile;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #da1a32;
-  transition-duration: 1s;
-  & img {
-    width: $MyScale120_mobile;
-    transition-duration: 1s;
-  }
-}
-
 .ContactsMobile {
   margin-top: $MyScale200_mobile;
 

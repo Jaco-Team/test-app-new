@@ -11,7 +11,7 @@
       padding: 0;
       border-radius: $MyScale40;
       width: $MyScale1000;
-      height: $MyScale1662;
+      height: $MyScale1500;
       overflow: hidden;
 
       .modalBasketPC {
@@ -32,7 +32,7 @@
           flex-direction: column;
           align-items: center;
           justify-content: center;
-          margin: $MyScale80 $MyScale80 $MyScale160 $MyScale80;
+          margin: $MyScale80 $MyScale80 0 $MyScale80;
 
           .basketHeader {
             display: flex;

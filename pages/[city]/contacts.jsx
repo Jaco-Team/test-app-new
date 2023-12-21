@@ -8,7 +8,7 @@ const ContactsPage = dynamic(() => import('@/modules/contacts/page'));
 const LoadMap = dynamic(() => import('@/components/loadMap'));
 
 import { api } from '@/components/api';
-import { useContactStore, useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
+import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js';
 
 const this_module = 'contacts';
@@ -19,9 +19,7 @@ export default function Contacts(props) {
   
   const [setAllItems, changeAllItems] = useCartStore((state) => [state.setAllItems, state.changeAllItems]);
 
-  const [ getData, loadMapNew ] = useContactStore( state => [ state.getData, state.loadMapNew ] );
-  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
-    useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
+  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
   const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
 
@@ -43,10 +41,6 @@ export default function Contacts(props) {
 
   }, [city, thisCity]);
 
-  useEffect(() => {
-    loadMapNew();
-  }, []);
-
   return (
     <div className={roboto.variable}>
       { city == '' ? false :
@@ -55,7 +49,7 @@ export default function Contacts(props) {
 
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
-      <ContactsPage page={page} city={city} this_module={this_module}  />
+      <ContactsPage page={page} city={city} />
 
       <DynamicFooter cityName={city} active_page={this_module} />
     </div>
