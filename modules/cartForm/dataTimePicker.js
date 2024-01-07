@@ -215,6 +215,8 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
     chooseItem(emblaApi.selectedScrollSnap(), data);
   }, [emblaApi])
 
+  //onClick={chooseData}
+
   return (
     <>
       {matches ? (
@@ -240,19 +242,20 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
             style={{transform: 'rotate(90deg)', bottom: '11.552346570397vw', left: data === 'date' ? '8.6642599277978vw' : '15.342960288809vw'}}>
             <ArrowBackIosNewIcon onClick={scrollPrev} />
           </div>
-          <div className={slides.length < 4 && data === 'time' ? 'embla_time' : 'embla'} onClick={chooseData}>
+          <div className={slides.length < 4 && data === 'time' ? 'embla_time' : 'embla'} >
             <div className="embla__viewport" ref={emblaRef}>
               <div className="embla__container" style={{ width: data === 'date' ? '12.996389891697vw' : '7.2202166064982vw' }}>
-                {slides?.map((item, i) => (
+                {slides?.map((item, i) => 
                   <div className="embla__slide" key={i} style={{ justifyContent: data === 'date' ? item.text === 'Сегодня' ? 'flex-end' : 'space-between' : 'center',
                       color: i !== active ? 'rgba(0, 0, 0, 0.20)' : 'rgba(0, 0, 0, 0.8)',
                       marginLeft: data === 'date' ? '1.4440433212996vw' : null,
                     }}
+                    onClick={ i < active ? scrollPrev : i == active ? chooseData : scrollNext }
                   >
                     {data === 'date' && item.text !== 'Сегодня' ? <span style={{ textTransform: 'uppercase' }}>{item.dow}</span> : null}
                     <span>{data === 'time' ? item.id : item.text}</span>
                   </div>
-                ))}
+                )}
               </div>
             </div>
           </div>

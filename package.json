@@ -10,19 +10,19 @@
   },
   "dependencies": {
     "@dietime/react-native-date-picker": "^1.2.1",
-    "@emotion/react": "^11.11.1",
+    "@emotion/react": "^11.11.3",
     "@emotion/styled": "^11.11.0",
-    "@mui/icons-material": "^5.14.19",
-    "@mui/material": "^5.14.20",
+    "@mui/icons-material": "^5.15.3",
+    "@mui/material": "^5.15.3",
     "@mui/styled-engine-sc": "^5.14.12",
     "@pbe/react-yandex-maps": "^1.2.5",
     "@react-spring/web": "^9.7.3",
     "css-mediaquery": "^0.1.2",
     "dayjs": "^1.11.10",
-    "embla-carousel-react": "8.0.0-rc15",
+    "embla-carousel-react": "8.0.0-rc19",
     "embla-carousel-wheel-gestures": "^8.0.0-rc05",
     "lodash": "^4.17.21",
-    "moment": "^2.29.4",
+    "moment": "^2.30.1",
     "moment-locales-webpack-plugin": "^1.2.0",
     "moment-timezone-data-webpack-plugin": "^1.5.1",
     "next": "14.0.4",
@@ -31,10 +31,10 @@
     "react": "18.2.0",
     "react-auth-code-input": "^3.2.1",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.49.0",
+    "react-hook-form": "^7.49.2",
     "react-scroll": "^1.9.0",
-    "sass": "^1.69.5",
-    "sharp": "^0.33.0",
+    "sass": "^1.69.7",
+    "sharp": "^0.33.1",
     "styled-components": "^5.3.11",
     "swiper": "^9.4.1",
     "typescript": "^5.3.3",
@@ -42,7 +42,7 @@
     "zustand": "^4.4.7"
   },
   "devDependencies": {
-    "eslint": "8.55.0",
+    "eslint": "8.56.0",
     "eslint-config-next": "14.0.4"
   }
 }
