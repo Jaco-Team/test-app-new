@@ -35,7 +35,7 @@ export default function CartMenuMobile({ cityName }) {
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
 
   const [openMenuCart, setActiveMenuCart, nameList, setActiveDataTimePicker, setActiveCartMap, pointList, addrList, orderPic, orderAddr,
-    setAddrDiv, setPoint, setTypePay, comment, changeComment, setSummDiv, typeOrder, getMapCart] = useCartStore((state) => [state.openMenuCart, state.setActiveMenuCart, state.nameList, state.setActiveDataTimePicker, state.setActiveCartMap, state.pointList, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.setTypePay, state.comment, state.changeComment, state.setSummDiv, state.typeOrder, state.getMapCart]);
+    setAddrDiv, setPoint, setTypePay, comment, changeComment, setSummDiv, typeOrder, getMapCart, setDataTimeOrder] = useCartStore((state) => [state.openMenuCart, state.setActiveMenuCart, state.nameList, state.setActiveDataTimePicker, state.setActiveCartMap, state.pointList, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.setTypePay, state.comment, state.changeComment, state.setSummDiv, state.typeOrder, state.getMapCart, state.setDataTimeOrder]);
 
   const [setActiveAddressModal] = useProfileStore((state) => [state.setActiveAddressModal]);
 
@@ -109,6 +109,7 @@ export default function CartMenuMobile({ cityName }) {
     }
 
     if (nameList === 'time' && item.name !== 'Запланировать дату и время') {
+      setDataTimeOrder(item);
       setActiveMenuCart(false, null);
     }
 

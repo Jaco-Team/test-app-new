@@ -8,6 +8,8 @@ import Typography from '@mui/material/Typography';
 
 import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.js';
 
+import BadgeItem from './badge';
+
 export default React.memo(function CardItemMobile({ item, count }) {
   const [getItem] = useHomeStore((state) => [state.getItem]);
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
@@ -24,6 +26,12 @@ export default React.memo(function CardItemMobile({ item, count }) {
             priority={true}
             onClick={() => getItem('home', thisCity, item.id)}
           />
+
+          {parseInt(item.is_new) == 0 ? parseInt(item.is_hit) == 0 ? null :
+            <BadgeItem size={'small'} type={'hit'} view={'mobile'} />
+                :
+            <BadgeItem size={'small'} type={'new'} view={'mobile'} />
+          }
         </div>
 
         <div className="CardInfoItem">

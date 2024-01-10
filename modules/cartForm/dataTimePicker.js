@@ -13,6 +13,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Backdrop from '@mui/material/Backdrop';
 import Box from '@mui/material/Box';
+import Button from '@mui/material/Button';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 
 import { Fade } from '@/ui/Fade';
@@ -149,6 +150,10 @@ export default function DataTimePicker() {
                 />
               </section>
 
+              <Button className="btnDataTime" variant="contained" onClick={chooseData}>
+                <span>Выбрать</span>
+              </Button>
+
               <div className="divBackground" />
             </Box>
           </Fade>
@@ -215,12 +220,14 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
     chooseItem(emblaApi.selectedScrollSnap(), data);
   }, [emblaApi])
 
-  //onClick={chooseData}
+  const handleData = (index) => {
+    active === (slides.length - 1) && index === 0 ? scrollNext() : index < active || index === (slides.length - 1) && active === 0 ? scrollPrev() : index === active ? chooseData() : scrollNext();
+  }
 
   return (
     <>
       {matches ? (
-        <div className={slides.length < 4 && data === 'time' ? 'embla_time' : 'embla'} onClick={chooseData}>
+        <div className={slides?.length < 4 && data === 'time' ? 'embla_time' : 'embla'} onClick={chooseData}>
           <div className="embla__viewport" ref={emblaRef}>
             <div className="embla__container" style={{ width: data === 'date' ? '42.735042735043vw' : '35.897435897436vw' }}>
               {slides?.map((item, i) => (
@@ -242,16 +249,16 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
             style={{transform: 'rotate(90deg)', bottom: '11.552346570397vw', left: data === 'date' ? '8.6642599277978vw' : '15.342960288809vw'}}>
             <ArrowBackIosNewIcon onClick={scrollPrev} />
           </div>
-          <div className={slides.length < 4 && data === 'time' ? 'embla_time' : 'embla'} >
+          <div className={slides?.length < 4 && data === 'time' ? 'embla_time' : 'embla'}>
             <div className="embla__viewport" ref={emblaRef}>
               <div className="embla__container" style={{ width: data === 'date' ? '12.996389891697vw' : '7.2202166064982vw' }}>
                 {slides?.map((item, i) => 
-                  <div className="embla__slide" key={i} style={{ justifyContent: data === 'date' ? item.text === 'Сегодня' ? 'flex-end' : 'space-between' : 'center',
-                      color: i !== active ? 'rgba(0, 0, 0, 0.20)' : 'rgba(0, 0, 0, 0.8)',
-                      marginLeft: data === 'date' ? '1.4440433212996vw' : null,
-                    }}
-                    onClick={ i < active ? scrollPrev : i == active ? chooseData : scrollNext }
-                  >
+                  <div className="embla__slide" 
+                       key={i}
+                       onClick={() => handleData(i)}
+                       style={{ justifyContent: data === 'date' ? item.text === 'Сегодня' ? 'flex-end' : 'space-between' : 'center',
+                                color: i !== active ? 'rgba(0, 0, 0, 0.20)' : 'rgba(0, 0, 0, 0.8)',
+                                marginLeft: data === 'date' ? '1.4440433212996vw' : null}}>
                     {data === 'date' && item.text !== 'Сегодня' ? <span style={{ textTransform: 'uppercase' }}>{item.dow}</span> : null}
                     <span>{data === 'time' ? item.id : item.text}</span>
                   </div>

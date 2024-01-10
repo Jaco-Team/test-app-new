@@ -8,6 +8,8 @@ import Button from '@mui/material/Button';
 
 import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.js';
 
+import BadgeItem from './badge';
+
 export default memo(function CardItem({ item, count, index}) {
   //console.log('CardItemPc render');
 
@@ -21,17 +23,26 @@ export default memo(function CardItem({ item, count, index}) {
       sx={{ display: { xs: 'none', sm: 'flex' } }}
     >
       <div>
-        <Image
-          alt={item.name}
-          src={'https://cdnimg.jacofood.ru/' + item.img_app + '_1420x1420.jpg'}
-          width={1420}
-          height={1420}
-          priority={false}
-          quality={75}
-          loading={'lazy'}
-          onClick={() => getItem('home', thisCity, item.id)}
-          style={{ cursor: 'pointer' }}
-        />
+
+        <div style={{ position: 'relative' }}>
+          <Image
+            alt={item.name}
+            src={'https://cdnimg.jacofood.ru/' + item.img_app + '_1420x1420.jpg'}
+            width={1420}
+            height={1420}
+            priority={false}
+            quality={75}
+            loading={'lazy'}
+            onClick={() => getItem('home', thisCity, item.id)}
+            style={{ cursor: 'pointer' }}
+          />
+
+          {parseInt(item.is_new) == 0 ? parseInt(item.is_hit) == 0 ? null :
+            <BadgeItem size={'big'} type={'hit'} view={'pc'} />
+                :
+            <BadgeItem size={'big'} type={'new'} view={'pc'} />
+          }
+        </div>
 
         <Typography className="CardNameItem" variant="h5" component="h3">{item.name}</Typography>
         

@@ -11,6 +11,8 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import { IconInfoWhiteMobile } from '@/ui/Icons';
 
+import BadgeItem from './badge';
+
 import { roboto } from '@/ui/Font';
 
 export default function ModalCardItemMobile() {
@@ -76,6 +78,12 @@ export default function ModalCardItemMobile() {
             <div className="ItemContainer">
               <div className="ImgModalCardMobile">
                 <Image alt={openItem?.name ?? 'ImgModalCardMobile'} src={'https://cdnimg.jacofood.ru/' + openItem?.img_app + '_1420x1420.jpg'} width={1420} height={1420} priority={true} />
+
+                {parseInt(openItem?.is_new) == 0 ? parseInt(openItem?.is_hit) == 0 ? null :
+                  <BadgeItem size={'big'} type={'hit'} view={'pc'} />
+                      :
+                  <BadgeItem size={'big'} type={'new'} view={'pc'} />
+                }
               </div>
 
               <div className="TitleModalCardMobile" style={{ height: openItem?.name.length > 26 ? '13.675213675214vw' : '6.8376068376068vw' }}>

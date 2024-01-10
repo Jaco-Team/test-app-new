@@ -31,7 +31,6 @@ export default function FormOrder({ cityName }) {
   const [list, setList] = useState([]);
   const [nameList, setNameList] = useState('');
   const [anchorEl, setAnchorEl] = useState(null);
-  const [timePred, setTimePred] = useState({ name: 'В ближайшее время', id: -1 });
   const [message, setMessage] = useState('');
 
   const type_pay_pic = [{ id: 'cash', name: 'В кафе' }];
@@ -51,7 +50,7 @@ export default function FormOrder({ cityName }) {
   const [matches, setActiveModalCityList] = useHeaderStore((state) => [state.matches, state.setActiveModalCityList]);
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
-
+ 
   const [items, itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOnDops, itemsOffDops, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, setActiveModalError, typeOrder, setTypeOrder, summDiv, setSummDiv, sdacha, setSdacha] = useCartStore((state) => [state.items, state.itemsCount,
     state.promoInfo,state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOnDops, state.itemsOffDops, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.setActiveModalError, state.typeOrder, state.setTypeOrder, state.summDiv, state.setSummDiv, state.sdacha, state.setSdacha]);
  
@@ -73,7 +72,6 @@ export default function FormOrder({ cityName }) {
     if (localStorage.getItem('promo_name') && localStorage.getItem('promo_name').length > 0) {
       setPromo(localStorage.getItem('promo_name'));
     }
-
     getMySavedAddr(thisCity, session?.data?.user?.token);
   }, []);
 
@@ -121,7 +119,6 @@ export default function FormOrder({ cityName }) {
       if (point_id) {
         getDataPred();
         getTimesPred(point_id, null, !typeOrder ? 0 : 1, []);
-        setDataTimeOrder(null);
 
         if (matches) {
           setActiveMenuCart(true, nameList);
@@ -184,7 +181,7 @@ export default function FormOrder({ cityName }) {
     if (nameList === 'time') {
       setAnchorEl(null);
       if (item.name === 'В ближайшее время') {
-        setTimePred(item);
+        setDataTimeOrder(item);
       } else {
         setActiveDataTimePicker(true);
       }
@@ -305,7 +302,7 @@ export default function FormOrder({ cityName }) {
                 <TimeBasketModalPC />
               </Typography>
               <Typography component="span">
-                {dateTimeOrder ? dateTimeOrder.text + ' к ' + dateTimeOrder.name : timePred?.name}
+                {dateTimeOrder ? dateTimeOrder?.name === 'В ближайшее время' ? dateTimeOrder?.name : dateTimeOrder.text + ' к ' + dateTimeOrder.name : type_pred[0].name}
               </Typography>
             </div>
           </Button>
@@ -461,25 +458,33 @@ export default function FormOrder({ cityName }) {
                 </div>
               </Button>
             ) : (
-              <Button className="basketChoose" onClick={(event) => openMenu(event, 'addr')}
-                endIcon={open ? nameList === 'addr' ? <ArrowDownBasketModalPC style={{ transform: 'rotate(180deg)' }} /> : <ArrowDownBasketModalPC /> : <ArrowDownBasketModalPC />}>
+              <Button className="basketChoose" onClick={(event) => openMenu(event, 'addr')}>
                 <div>
+
                   <Typography component="span">
                     <HomeBasketModalPC fill='#DD1A32' />
                   </Typography>
+
                   {orderAddr?.addr_name ?
-                    <Typography component="span" style={{ textTransform: 'uppercase', maxWidth: '21.660649819495vw' }} className={orderAddr?.addr_name?.length > 19 ? 'shadowSpan' : null }>
+                    <Typography component="span" style={{ textTransform: 'uppercase'}} className={orderAddr?.addr_name?.length > 19 ? 'shadowSpan' : null }>
                       {orderAddr?.addr_name}
                     </Typography>
                   : 
                     <>
                       {orderAddr?.name ?
-                        <Typography component="span" className={orderAddr?.name?.length > 31 ? 'shadowSpan' : null}>{orderAddr?.name}</Typography>
+                        <Typography component="span" className={orderAddr?.name?.length > 31 ? 'shadowSpan' : null}>
+                          {orderAddr?.name}
+                          </Typography>
                           :
                         <Typography component="span" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Выберите адрес</Typography>
                       }
                     </>
                   }
+
+                  <Typography component="span" className="svg_addr">
+                    {open ? nameList === 'addr' ? <ArrowDownBasketModalPC style={{ transform: 'rotate(180deg)' }} /> : <ArrowDownBasketModalPC /> : <ArrowDownBasketModalPC />}
+                  </Typography>
+
                 </div>
               </Button>
             )}
@@ -491,7 +496,7 @@ export default function FormOrder({ cityName }) {
                   <TimeBasketModalPC />
                 </Typography>
                 <Typography component="span">
-                  {dateTimeOrder ? dateTimeOrder.text + ' к ' + dateTimeOrder.name : timePred?.name}
+                  {dateTimeOrder ? dateTimeOrder?.name === 'В ближайшее время' ? dateTimeOrder?.name : dateTimeOrder.text + ' к ' + dateTimeOrder.name : type_pred[0].name}
                 </Typography>
               </div>
             </Button>

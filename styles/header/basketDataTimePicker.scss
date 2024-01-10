@@ -7,7 +7,7 @@
     max-width: none !important;
     border-radius: $MyScale40;
     width: $MyScale760;
-    height: $MyScale700;
+    height: $MyScale900;
 
     & .ContainerDataPickerPC {
       display: flex;
@@ -29,8 +29,8 @@
 
       & .pikerLogin {
         height: $MyScale60;
-        margin-top: $MyScale100;
-        margin-bottom: $MyScale100;
+        margin-top: $MyScale80;
+        margin-bottom: $MyScale140;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -85,6 +85,24 @@
         align-items: center;
       }
 
+      .btnDataTime {
+        width: $MyScale560;
+        height: $MyScale80;
+        border-radius: $MyScale40;
+        margin-top: $MyScale160;
+        padding: 0;
+        text-transform: lowercase;
+
+        span {
+          display: flex;
+          align-items: center;
+          text-align: center;
+          @include font30_400();
+          color: #fff;
+          text-transform: capitalize;
+        }
+      }
+
       .divBackground {
         position: absolute;
         width: $MyScale560;
@@ -93,7 +111,7 @@
         border-radius: $MyScale40;
         pointer-events: none;
         left: $MyScale100;
-        top: $MyScale360;
+        top: $MyScale380;
       }
     }
   }

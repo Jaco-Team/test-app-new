@@ -5,6 +5,8 @@ import Link from 'next/link';
 
 import { useHomeStore, useCartStore, useFooterStore } from '@/components/store';
 
+import BadgeItem from './badge';
+
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Backdrop from '@mui/material/Backdrop';
@@ -73,6 +75,12 @@ export default function ModalCardItemPC() {
             {typeModal !== 'start' ? null : (
               <div className="ImgItem">
                 <Image alt={openItem?.name} src={'https://cdnimg.jacofood.ru/' + openItem?.img_app + '_1420x1420.jpg'} width={1420} height={1420} priority={true}/>
+
+                {parseInt(openItem?.is_new) == 0 ? parseInt(openItem?.is_hit) == 0 ? null :
+                  <BadgeItem size={'big'} type={'hit'} view={'pc'} />
+                      :
+                  <BadgeItem size={'big'} type={'new'} view={'pc'} />
+                }
               </div>
             )}
 

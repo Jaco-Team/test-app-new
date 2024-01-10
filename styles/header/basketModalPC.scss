@@ -11,7 +11,7 @@
       padding: 0;
       border-radius: $MyScale40;
       width: $MyScale1000;
-      height: $MyScale1500;
+      height: $MyScale1560;
       overflow: hidden;
 
       .modalBasketPC {
@@ -59,18 +59,20 @@
             &:hover {
               background-color: #fff;
             }
+            position: relative;
 
             div {
               display: flex;
               align-items: center;
               margin-left: $MyScale30;
               text-transform: lowercase;
-              width: 80%;
-
+              width: $MyScale560;
+             
               span:first-child {
+                position: absolute;
                 width: $MyScale60;
                 height: $MyScale60;
-                margin-right: $MyScale20;
+                margin-right: 0;
                 svg {
                   width: 100%;
                   height: 100%;
@@ -81,10 +83,15 @@
                 height: $MyScale60;
                 line-height: $MyScale60;
                 @include font30_400();
-                margin-right: $MyScale10;
+                margin-right: 0;
+                margin-left: $MyScale70;
                 &:first-letter {
                   text-transform: uppercase;
                 }
+
+                white-space: nowrap;
+                text-overflow: ellipsis;
+                overflow: hidden
               }
 
               span:nth-child(3) {
@@ -119,6 +126,7 @@
                     @include font30_400();
                     line-height: $MyScale30;
                     width: 100%;
+                    margin-left: $MyScale70;
                   }
 
                   & fieldset {
@@ -131,6 +139,15 @@
                     }
                   }
                 }
+              }
+            }
+
+            .svg_addr {
+              position: absolute;
+              right: $MyScale43;
+              svg {
+                width: $MyScale22;
+                height: $MyScale11;
               }
             }
 
@@ -264,7 +281,6 @@
       & li {
         padding: 0;
         min-height: $MyScale100;
-        padding-left: $MyScale60;
         white-space: normal;
 
         &:hover {
@@ -276,16 +292,17 @@
           display: flex;
           align-items: center;
           width: 100%;
-          padding: $MyScale20 0;
-
+          padding: $MyScale20 $MyScale60;
+          
           & span {
+            width: 100%;
+            word-wrap: break-word;
             @include font30_400();
           }
 
           & .circle {
-            margin-left: auto;
-            margin-right: $MyScale20;
-            min-width: $MyScale60;
+            margin-left: $MyScale20;
+            width: $MyScale60;
             height: $MyScale60;
             display: flex;
             justify-content: center;

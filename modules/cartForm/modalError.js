@@ -22,8 +22,15 @@ export default function ModalError() {
 
     if(openModalErorr) {
       const timer = setInterval(() => {
-        setProgress((prevProgress) => (prevProgress >= 100 ? setActiveModalError(false, '') : prevProgress + 10));
-      }, 1000);
+        setProgress((oldProgress) => {
+          if (oldProgress === 100) {
+            return 0;
+          } else {
+            const diff = Math.random() * 10;
+            return Math.min(oldProgress + diff, 100);
+          }
+        });
+      }, 400);
   
       return () => {
         clearInterval(timer);
@@ -34,6 +41,14 @@ export default function ModalError() {
     }
 
   }, [openModalErorr]);
+
+  useEffect(() => {
+
+    if(!progress) {
+      setActiveModalError(false, '');
+    }
+
+  }, [progress]);
 
   return (
     <Dialog 

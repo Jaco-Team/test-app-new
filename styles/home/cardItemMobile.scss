@@ -26,6 +26,7 @@
         width: $MyScale500_mobile;
         height: $MyScale500_mobile;
         margin-right: $MyScale40_mobile;
+        position: relative;
         & img {
           object-fit: contain;
           image-rendering: auto;

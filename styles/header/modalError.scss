@@ -45,23 +45,27 @@
           align-items: center;
           flex-direction: column;
           justify-content: center;
+          height: 100%;
 
           & span {
+            height: 65%;
             width: 100%;
-            align-self: center;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
             @include font30_400();
             color: #fff !important;
           }
 
           & .MuiLinearProgress-root {
-            margin-top: $MyScale20;
+            margin-top: $MyScale15;
             background-color: unset;
             height: $MyScale4;
             width: 50%;
   
             & span {
               background-color: #fff !important;
+              opacity: 0.4;
             }
           }
         }
@@ -117,23 +121,27 @@
           align-items: center;
           flex-direction: column;
           justify-content: center;
+          height: 100%;
 
           & span {
+            height: 65%;
             width: 100%;
-            align-self: center;
-            text-align: center;
+            display: flex;
+            justify-content: center;
+            align-items: flex-end;
             @include font40_400();
             color: #fff !important;
           }
 
           & .MuiLinearProgress-root {
-            margin-top: $MyScale20_mobile;
+            margin-top: $MyScale15_mobile;
             background-color: unset;
             height: $MyScale4_mobile;
             width: 70%;
   
             & span {
               background-color: #fff !important;
+              opacity: 0.4;
             }
           }
         }
