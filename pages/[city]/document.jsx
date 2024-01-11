@@ -42,18 +42,18 @@ export default React.memo(function Document(props) {
     setActivePage('document');
   }, []);
 
+  if( !matches ){
+    return false;
+  }
+
   return (
-    <>
-      {!matches ? null : (
-        <div className={roboto.variable}>
-          <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'other'}/>
+    <div className={roboto.variable}>
+      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'other'}/>
 
-          <DocumentPageMobile page={page} cityName={city} />
+      <DocumentPageMobile page={page} cityName={city} />
 
-          <DynamicFooter cityName={city} active_page={'document'} />
-        </div>
-      )}
-    </>
+      <DynamicFooter cityName={city} active_page={'document'} />
+    </div>
   );
 });
 

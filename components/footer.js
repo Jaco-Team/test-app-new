@@ -18,5 +18,13 @@ export default memo(function Footer({ cityName, active_page }) {
     
   }, [cityName, getData, links]);
 
-  return <>{matches ? <FooterMobile cityName={cityName} active_page={active_page} /> : <FooterPC cityName={cityName} />}</>;
+  if( matches ){
+    return (
+      <FooterMobile cityName={cityName} active_page={active_page} />
+    );
+  }
+
+  return (
+    <FooterPC cityName={cityName} />
+  );
 })

@@ -6,7 +6,8 @@
     "dev": "PORT=3008 next dev --turbo",
     "build": "next build",
     "start": "next start",
-    "lint": "next lint"
+    "lint": "next lint",
+    "oxc": "npx oxlint@latest"
   },
   "dependencies": {
     "@dietime/react-native-date-picker": "^1.2.1",

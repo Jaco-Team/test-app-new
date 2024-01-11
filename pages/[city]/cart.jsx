@@ -42,19 +42,19 @@ export default React.memo(function Cart(props) {
     
   }, [city, thisCity]);
  
+  if( !matches ){
+    return false;
+  }
+
   return (
-    <>
-      {!matches ? null : (
-        <div className={roboto.variable}>
+    <div className={roboto.variable}>
 
-          <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'cart'}/>
+      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'cart'}/>
 
-          <CartPage page={page} cityName={city} />
+      <CartPage page={page} cityName={city} />
 
-          <DynamicFooter cityName={city} active_page={'cart'} />
-        </div>
-      )}
-    </>
+      <DynamicFooter cityName={city} active_page={'cart'} />
+    </div>
   );
 });
 

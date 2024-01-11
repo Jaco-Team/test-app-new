@@ -109,15 +109,13 @@ export default function PromokodyMobile({ page, this_module, city }) {
             <div>Архив промокодов</div>
           </div>
         )}
-        <>
-          {!openArchive ? null : (
-            <>
-              {archive.map((item, key) => (
-                <PromoCardMobile key={key} item={item} last={item === archive.at(-1) && archive.length ? 'last' : ''} archive={openArchive}/>
-              ))}
-            </>
-          )}
-        </>
+        
+        {!openArchive ? null : 
+          archive.map((item, key) => (
+            <PromoCardMobile key={key} item={item} last={item === archive.at(-1) && archive.length ? 'last' : ''} archive={openArchive}/>
+          ))
+        }
+        
         <div onClick={() => setOpenArchive(!openArchive)} className="promoArchive">
           <div>{openArchive ? 'Свернуть архив промокодов' : 'Показать архив промокодов'}</div>
         </div>

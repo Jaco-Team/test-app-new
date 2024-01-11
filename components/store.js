@@ -1717,7 +1717,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       return ;
     }
 
-    if( get().is_fetch === true || get().chooseAddrStreet == {} ){
+    if( get().is_fetch === true || Object.keys( get().chooseAddrStreet ).length == 0 ){
       setTimeout( () => {
         get().saveNewAddr(pd, domophome, et, kv, comment, token, is_main, nameAddr, city_id)
       }, 455 )
@@ -1763,7 +1763,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       return ;
     }
 
-    if( get().is_fetch === true || get().chooseAddrStreet == {} ){
+    if( get().is_fetch === true || Object.keys( get().chooseAddrStreet ).length == 0 ){
       setTimeout( () => {
         get().updateAddr(pd, domophome, et, kv, comment, token, is_main, nameAddr, city_id)
       }, 455 )
@@ -1771,11 +1771,9 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       return ;
     }
 
-    if( get().chooseAddrStreet == {} ){
+    if( Object.keys( get().chooseAddrStreet ).length == 0 ){
       return ;
     }
-
-    //console.log( 'chooseAddrStreet', get().chooseAddrStreet )
 
     set({
       is_fetch_save_new_addr: true
@@ -1795,8 +1793,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       is_main: is_main === true ? 1 : 0,
       nameAddr: nameAddr
     };
-
-    //console.log( data )
 
     let json = await api('profile', data);
 

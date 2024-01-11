@@ -283,14 +283,11 @@ export default function FormOrder({ cityName }) {
                   <Typography component="span" style={{ textTransform: 'uppercase', maxWidth: '63.247863247863vw' }} className={orderAddr?.addr_name?.length > 15 ? 'shadowSpan' : null }>
                     {orderAddr?.addr_name}
                   </Typography>
-                 : 
-                  <>
-                    {orderAddr?.name ?
-                      <Typography component="span" className={orderAddr?.name?.length > 29 ? 'shadowSpan' : null}>{orderAddr?.name}</Typography>
-                        :
-                      <Typography component="span" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Выберите адрес</Typography>
-                    }
-                  </>
+                    : 
+                  orderAddr?.name ?
+                    <Typography component="span" className={orderAddr?.name?.length > 29 ? 'shadowSpan' : null}>{orderAddr?.name}</Typography>
+                      :
+                    <Typography component="span" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Выберите адрес</Typography>
                 }
               </div>
             </Button>
@@ -469,16 +466,13 @@ export default function FormOrder({ cityName }) {
                     <Typography component="span" style={{ textTransform: 'uppercase'}} className={orderAddr?.addr_name?.length > 19 ? 'shadowSpan' : null }>
                       {orderAddr?.addr_name}
                     </Typography>
-                  : 
-                    <>
-                      {orderAddr?.name ?
-                        <Typography component="span" className={orderAddr?.name?.length > 31 ? 'shadowSpan' : null}>
-                          {orderAddr?.name}
-                          </Typography>
-                          :
-                        <Typography component="span" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Выберите адрес</Typography>
-                      }
-                    </>
+                      : 
+                    orderAddr?.name ?
+                      <Typography component="span" className={orderAddr?.name?.length > 31 ? 'shadowSpan' : null}>
+                        {orderAddr?.name}
+                        </Typography>
+                        :
+                      <Typography component="span" style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Выберите адрес</Typography>
                   }
 
                   <Typography component="span" className="svg_addr">
