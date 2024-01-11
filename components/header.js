@@ -13,7 +13,7 @@ import BasketPC from '@/modules/header/basket/basketPC.js';
 import BasketModalPC from '@/modules/header/basket/basketModalPC.js';
 import ModalAddr from '@/modules/profile/profile/modalAddr.jsx';
 
-import { useHeaderStore } from './store.js';
+import { useHeaderStore, useHomeStore } from './store.js';
 
 export default React.memo(function Header({ city, city_list, cats, active_page }) {
   //console.log('render Header')
@@ -24,8 +24,15 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
   //const matchesDev = useMediaQuery('screen and (max-width: 601px)', { noSsr: false });
 
   const [setMatches, matches] = useHeaderStore((state) => [state.setMatches, state.matches]);
+  const [getItemsCat, category] = useHomeStore((state) => [state.getItemsCat, state.category]);
   
-  console.log( 'matchesDev', matchesDev, matches )
+  useEffect(() => {
+    if( category?.length == 0 ){
+      getItemsCat('home', city);
+    }
+
+    console.log( 'category', category )
+  }, []);
 
   useEffect(() => {
     if(matches !== matchesDev) {

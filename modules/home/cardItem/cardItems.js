@@ -39,30 +39,30 @@ export default React.memo(function CatItems() {
     setCats(catsCount);
   }, [items, CatsItems]);
 
-  // useEffect(() => {
-  //   setTimeout(() => {
-  //     if (localStorage.getItem('goTo')) {
-  //       let hash = localStorage.getItem('goTo');
+  useEffect(() => {
+    setTimeout(() => {
+      if (localStorage.getItem('goTo')) {
+        let hash = localStorage.getItem('goTo');
 
-  //       localStorage.removeItem('goTo');
+        localStorage.removeItem('goTo');
 
-  //       let offset = 100;
+        let offset = 100;
 
-  //       if (document.querySelector('.scrollCat.mobile')) {
-  //         offset += 100;
-  //       }
+        if (document.querySelector('.scrollCat.mobile')) {
+          offset += 100;
+        }
 
-  //       setTimeout(() => {
-  //         scroller.scrollTo('cat' + hash, {
-  //           duration: 200,
-  //           delay: 0,
-  //           smooth: 'easeInOutQuart',
-  //           offset: -offset,
-  //         });
-  //       }, 150);
-  //     }
-  //   }, 300);
-  // }, []);
+        setTimeout(() => {
+          scroller.scrollTo('cat' + hash, {
+            duration: 200,
+            delay: 0,
+            smooth: 'easeInOutQuart',
+            offset: -offset,
+          });
+        }, 150);
+      }
+    }, 300);
+  }, []);
 
   //console.log(cats)
   
