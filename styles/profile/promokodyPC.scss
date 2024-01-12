@@ -37,7 +37,7 @@
         width: calc(100% - 24px);
     }
 
-    & > div:last-child{
+    & > div.promo_list_active{
         display: flex;
         flex-flow: row wrap!important;
         margin-top: $MyScale80;
@@ -45,10 +45,16 @@
     & .promoCard{
         display: flex;
         flex-direction: column;
+        justify-content: space-between;
         background-color: rgba(233, 71, 35, 0.3);
         border-radius: $MyScale80;
         margin-top: $MyScale40;
         width: $MyScale760;
+
+        & > div{
+            display: flex;
+            flex-direction: column;
+        }
 
         &:nth-child(odd) {
             margin-right: $MyScale40;
@@ -58,7 +64,7 @@
             text-align: center;
         }
        
-        .title{
+        & .title{
             @include font50_500();
             width: $MyScale680;
             padding-left: $MyScale40;

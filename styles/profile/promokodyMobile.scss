@@ -41,19 +41,33 @@
       height: $MyScale560_mobile;
       margin-bottom: $MyScale60_mobile;
       border-radius: $MyScale40_mobile;
+      background-color: rgba(233, 71, 35, .3);
+      margin-bottom: $MyScale120_mobile;
+      &:last-child{
+        margin-bottom: $MyScale60_mobile;
+      }
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
 
       & .promokodyName {
         margin-top: $MyScale60_mobile;
         margin-bottom: $MyScale20_mobile;
         height: $MyScale240_mobile;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
         justify-content: space-around;
 
         span:nth-child(1) {
           @include font50_500();
+          margin-bottom: $MyScale20_mobile;
         }
 
         span:nth-child(2) {
           @include font40_400();
+          text-align: center;
         }
 
         span:nth-child(3) {
@@ -61,16 +75,18 @@
           height: $MyScale3_mobile;
         }
 
-        span:nth-child(4) {
-          @include font40_400();
-        }
+        
+      }
+      & .dates{
+        @include font40_400();
+        margin-bottom: $MyScale20_mobile;
       }
 
       & .promokodyBTN {
         width: $MyScale690_mobile;
         height: $MyScale120_mobile;
         border-radius: $MyScale80_mobile;
-        margin-bottom: $MyScale30_mobile;
+        margin-bottom: $MyScale60_mobile;
         & span {
           @include font40_500();
           &:first-letter {

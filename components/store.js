@@ -996,17 +996,19 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       if( parseInt(promo_info.promo_action) == 2 ){
 
         promo_info.items_add.forEach((el) => {
-          this_item = allItems.find( (item) => item.id == el.item_id );
+          this_item = allItems.find( (item) => parseInt(item.id) == parseInt(el.item_id) );
           
-          cart_new_promo.push({
-            item_id: el.item_id,
-            count: el.count,
-            one_price: this_item['price'],
-            all_price: el.price,
-            name: this_item['name'],
-            img_app: this_item.img_app,
-            disabled: true,
-          });
+          if( this_item ){
+            cart_new_promo.push({
+              item_id: el.item_id,
+              count: el.count,
+              one_price: this_item['price'],
+              all_price: el.price,
+              name: this_item['name'],
+              img_app: this_item.img_app,
+              disabled: true,
+            });
+          }
         });
         
         tmp = 0;
@@ -1409,7 +1411,8 @@ export const useAkciiStore = createWithEqualityFn((set) => ({
 }), shallow);
 
 export const useProfileStore = createWithEqualityFn((set, get) => ({
-  promoList: [],
+  promoListActive: [],
+  promoListOld: [],
   orderList: [],
   userInfo: {},
   modalOrder: {},
@@ -1539,8 +1542,9 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api(this_module, data);
 
-    set({
-      promoList: json.promo_list,
+    set({ 
+      promoListActive: json.active_list,
+      promoListOld: json.old_list,
       city: city
     });
   },

@@ -46,10 +46,10 @@ export default React.memo(function CatItems() {
 
         localStorage.removeItem('goTo');
 
-        let offset = 100;
+        let offset = 140;
 
         if (document.querySelector('.scrollCat.mobile')) {
-          offset += 100;
+          offset += 140;
         }
 
         setTimeout(() => {

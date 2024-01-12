@@ -6,15 +6,16 @@ import Typography from '@mui/material/Typography';
 import ProfileBreadcrumbs from '../profileBreadcrumbs.jsx';
 import PromoCardPC from './promoCardPC.jsx';
 
-import { useProfileStore } from '../../../components/store.js';
+import { useProfileStore, useCartStore } from '../../../components/store.js';
 
 import { useSession } from 'next-auth/react';
 
 export default function PromokodyPC({ page, this_module, city }) {
 
-  const { getPromoList, promoList } = useProfileStore((state) => state);
+  const [ getPromoList, promoListActive ] = useProfileStore( state => [ state.getPromoList, state.promoListActive ]);
+  const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ] )
 
-  const session = useSession();
+  const session = useSession(); 
 
   useEffect(() => {
     if (session.data?.user?.token) {
@@ -31,26 +32,12 @@ export default function PromokodyPC({ page, this_module, city }) {
           </Typography>
         </Grid>
 
-        <Grid item xs={12}>
-          {promoList.map((item, key) => (
-            <PromoCardPC key={key} item={item} />
-          ))}
-          {promoList.map((item, key) => (
-            <PromoCardPC key={key} item={item} />
-          ))}
-          {promoList.map((item, key) => (
-            <PromoCardPC key={key} item={item} />
-          ))}
-          {promoList.map((item, key) => (
-            <PromoCardPC key={key} item={item} />
-          ))}
-          {promoList.map((item, key) => (
-            <PromoCardPC key={key} item={item} />
-          ))}
-          {promoList.map((item, key) => (
-            <PromoCardPC key={key} item={item} />
+        <Grid item xs={12} className='promo_list_active'>
+          {promoListActive.map((item, key) => (
+            <PromoCardPC key={key} item={item} activePromo={getInfoPromo} />
           ))}
         </Grid>
+
       </Grid>
       <ProfileBreadcrumbs />
     </Grid>

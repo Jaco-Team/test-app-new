@@ -22,7 +22,7 @@ export default function Home(props) {
   
   const [setAllItems, changeAllItems] = useCartStore((state) => [state.setAllItems, state.changeAllItems]);
   
-  const [ getBanners, getItemsCat ] = useHomeStore( state => [ state.getBanners, state.getItemsCat ]);
+  const [ getBanners ] = useHomeStore( state => [ state.getBanners ]);
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
   const [setActivePage] = useHeaderStore((state) => [state.setActivePage]);
 
@@ -40,11 +40,9 @@ export default function Home(props) {
       setTimeout(() => {
         changeAllItems();
       }, 300);
-
     }
 
     getBanners(this_module, city);
-    getItemsCat(this_module, city);
 
     setAllItems(all_items);
     setActivePage('home');
