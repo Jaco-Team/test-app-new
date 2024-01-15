@@ -10,7 +10,7 @@ import { ArrowLeftMobile } from '@/ui/Icons.js';
 
 import PromoCardMobile from './promoCardMobile';
 
-export default function PromokodyMobile({ page, this_module, city }) {
+export default function PromokodyMobile({ this_module, city }) {
 
   const session = useSession();
 
@@ -32,7 +32,7 @@ export default function PromokodyMobile({ page, this_module, city }) {
       </div>
       <div className="promoList promokodyMain">
         {promoListActive.map((item, key) => (
-          <PromoCardMobile key={key} item={item}/>
+          <PromoCardMobile key={key} item={item} />
         ))}
       </div>
     </Box>

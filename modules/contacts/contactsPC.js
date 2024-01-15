@@ -110,7 +110,7 @@ export default function ContactsPagePC() {
 
       {!center_map ? null :
         <div style={{ minHeight: '68.231046931408vw', width: '100%' }} >
-          <YMaps query={{ lang: 'ru_RU', apikey: 'ae2bad1f-486e-442b-a9f7-d84fff6296db' }}>
+          <YMaps query={{ lang: 'ru_RU', apikey: 'f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8' }}>
             <Map 
               defaultState={center_map} 
               instanceRef={ref} 

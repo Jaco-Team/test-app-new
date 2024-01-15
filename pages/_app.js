@@ -62,7 +62,7 @@ import '../styles/docsBreadcrumbs.scss'
 import '../styles/footer/footerPC.scss'
 import '../styles/footer/footerMobile.scss'
 
-import '../styles/header/modalError.scss'
+import '../styles/header/modalAlert.scss'
 
 import '../styles/header.scss' // этот нужен??
 import '../styles/badge_item.scss'

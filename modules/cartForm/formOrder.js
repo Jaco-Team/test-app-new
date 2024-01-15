@@ -12,7 +12,6 @@ import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 import MoneyIcon from '@mui/icons-material/Money';
 
-import ModalError from '@/modules/cartForm/modalError';
 import MyTextInput from '@/ui/MyTextInput';
 import CartItemMobile from '@/modules/cart/cartItemsMobile';
 import { SwitchBasketPC as MySwitchPC } from '@/ui/MySwitch.js';
@@ -47,12 +46,12 @@ export default function FormOrder({ cityName }) {
 
   const [openModalAddr] = useProfileStore((state) => [state.openModalAddr]);
 
-  const [matches, setActiveModalCityList] = useHeaderStore((state) => [state.matches, state.setActiveModalCityList]);
+  const [matches, setActiveModalCityList, setActiveModalAlert] = useHeaderStore((state) => [state.matches, state.setActiveModalCityList, state.setActiveModalAlert]);
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
  
-  const [items, itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOnDops, itemsOffDops, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, setActiveModalError, typeOrder, setTypeOrder, summDiv, setSummDiv, sdacha, setSdacha] = useCartStore((state) => [state.items, state.itemsCount,
-    state.promoInfo,state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOnDops, state.itemsOffDops, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.setActiveModalError, state.typeOrder, state.setTypeOrder, state.summDiv, state.setSummDiv, state.sdacha, state.setSdacha]);
+  const [items, itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOnDops, itemsOffDops, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, summDiv, setSummDiv, sdacha, setSdacha] = useCartStore((state) => [state.items, state.itemsCount,
+    state.promoInfo,state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOnDops, state.itemsOffDops, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.summDiv, state.setSummDiv, state.sdacha, state.setSdacha]);
  
   useEffect(() => {
     if (matches) {
@@ -73,7 +72,7 @@ export default function FormOrder({ cityName }) {
       setPromo(localStorage.getItem('promo_name'));
     }
     getMySavedAddr(thisCity, session?.data?.user?.token);
-  }, []);
+  }, [promoInfo]);
 
   const openMenu = (event, nameList) => {
     setNameList(nameList);
@@ -127,7 +126,7 @@ export default function FormOrder({ cityName }) {
           setList(type_pred);
         }
       } else {
-        setActiveModalError(true, 'Необходимо выбрать ' + (typeOrder ? 'Кафе' : 'Адрес доставки'));
+        setActiveModalAlert(true, 'Необходимо выбрать ' + (typeOrder ? 'Кафе' : 'Адрес доставки', false));
       }
     }
 
@@ -201,36 +200,36 @@ export default function FormOrder({ cityName }) {
     //token, typeOrder, city_id, point_id, addr, typePay, dateTimeOrder, comment, sdacha, promoName
     
     if(!thisCityRu) {
-      setActiveModalError(true, 'Необходимо выбрать город');
+      setActiveModalAlert(true, 'Необходимо выбрать город', false);
       return;
     }
 
     if (typeOrder) {
       if (!orderPic) {
-        setActiveModalError(true, 'Необходимо выбрать Кафе');
+        setActiveModalAlert(true, 'Необходимо выбрать Кафе', false);
         return;
       }
     } 
     
     if (!typeOrder) {
       if (!orderAddr) {
-        setActiveModalError(true, 'Необходимо выбрать Адрес доставки');
+        setActiveModalAlert(true, 'Необходимо выбрать Адрес доставки', false);
         return;
       }
     }
 
     if(!typePay) {
-      setActiveModalError(true, 'Необходимо выбрать способо оплаты');
+      setActiveModalAlert(true, 'Необходимо выбрать способо оплаты', false);
       return;
     }
 
     if(!items.length) {
-      setActiveModalError(true, 'Необходимо добавить товар в корзину');
+      setActiveModalAlert(true, 'Необходимо добавить товар в корзину', false);
       return;
     }
 
     if(!session?.data?.user?.token) {
-      setActiveModalError(true, 'Необходимо Авторизироваться');
+      setActiveModalAlert(true, 'Необходимо Авторизироваться', false);
       return;
     }
 
@@ -416,8 +415,6 @@ export default function FormOrder({ cityName }) {
           <Button className="CartOrder" variant="contained" disabled={!itemsCount} onClick={create_order}>
             <span>Заказать</span>
           </Button>
-
-          <ModalError />
         </div>
       ) : (
         <>
@@ -597,8 +594,6 @@ export default function FormOrder({ cityName }) {
           </Menu>
         </>
       )}
-
-      <ModalError />
     </>
   );
 }

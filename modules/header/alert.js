@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useCartStore, useHeaderStore } from '@/components/store.js';
+import { useHeaderStore } from '@/components/store.js';
 
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
@@ -11,16 +11,14 @@ import LinearProgress from '@mui/material/LinearProgress';
 import { IconClose } from '@/ui/Icons';
 import { roboto } from '@/ui/Font.js';
 
-export default function ModalError() {
+export default function ModalAlert() {
   const [progress, setProgress] = useState(0);
 
-  const [matches] = useHeaderStore((state) => [state.matches]);
-
-  const [openModalErorr, setActiveModalError, textError] = useCartStore((state) => [state.openModalErorr, state.setActiveModalError, state.textError]);
+  const [matches, openModalAlert, setActiveModalAlert, textAlert, statusAlert] = useHeaderStore((state) => [state.matches, state.openModalAlert, state.setActiveModalAlert, state.textAlert, state.statusAlert]);
 
   useEffect(() => {
 
-    if(openModalErorr) {
+    if(openModalAlert) {
       const timer = setInterval(() => {
         setProgress((oldProgress) => {
           if (oldProgress === 100) {
@@ -40,33 +38,33 @@ export default function ModalError() {
       setProgress(0);
     }
 
-  }, [openModalErorr]);
+  }, [openModalAlert]);
 
   useEffect(() => {
 
     if(!progress) {
-      setActiveModalError(false, '');
+      setActiveModalAlert(false, '', false);
     }
 
   }, [progress]);
 
   return (
     <Dialog 
-      onClose={() => setActiveModalError(false, '')}
-      className={matches ? 'modalErrorMobile ' + roboto.variable : 'modalErrorPC ' + roboto.variable}
-      open={openModalErorr}
+      onClose={() => setActiveModalAlert(false, '', false)}
+      className={matches ? 'modalAlertMobile ' + roboto.variable : 'modalAlertPC ' + roboto.variable}
+      open={openModalAlert}
       slots={Backdrop}
       slotProps={{ timeout: 500 }}
       fullWidth
     >
-      <DialogContent>
-        <div className='btnError'>
-          <IconButton className="closeError" onClick={() => setActiveModalError(false, '')}>
+      <DialogContent style={{ backgroundColor: statusAlert ? 'rgb(46, 125, 50)' : '#dd1a32' }}>
+        <div className='btnAlert'>
+          <IconButton className="closeAlert" onClick={() => setActiveModalAlert(false, '', false)}>
             <IconClose />
           </IconButton>
         </div>
-        <div className='containerError'>
-          <span>{textError}</span>
+        <div className='containerAlert'>
+          <span>{textAlert}</span>
           <LinearProgress variant="determinate" size="sm" value={progress} />
         </div>
       </DialogContent>

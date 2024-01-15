@@ -16,7 +16,7 @@ export default function LoadMap({ city }) {
 
   return (
     <Script 
-      src="https://api-maps.yandex.ru/2.1/?apikey=ae2bad1f-486e-442b-a9f7-d84fff6296db&lang=ru_RU" 
+      src="https://api-maps.yandex.ru/2.1/?apikey=f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8&lang=ru_RU" 
       onLoad={ gt_data } 
     />
   );

@@ -44,7 +44,7 @@ export default function CartMapPoints() {
 
         {!center_map ? null :
           <div style={{ minHeight: '80.34188034188vw', width: '100%', marginBottom: '6.8376068376068vw' }} >
-            <YMaps query={{ lang: 'ru_RU', apikey: 'ae2bad1f-486e-442b-a9f7-d84fff6296db' }}>
+            <YMaps query={{ lang: 'ru_RU', apikey: 'f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8' }}>
               <Map 
                 defaultState={center_map} 
                 instanceRef={ref} 

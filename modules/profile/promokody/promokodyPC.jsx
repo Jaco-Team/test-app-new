@@ -6,14 +6,13 @@ import Typography from '@mui/material/Typography';
 import ProfileBreadcrumbs from '../profileBreadcrumbs.jsx';
 import PromoCardPC from './promoCardPC.jsx';
 
-import { useProfileStore, useCartStore } from '../../../components/store.js';
+import { useProfileStore } from '../../../components/store.js';
 
 import { useSession } from 'next-auth/react';
 
-export default function PromokodyPC({ page, this_module, city }) {
+export default function PromokodyPC({ this_module, city }) {
 
   const [ getPromoList, promoListActive ] = useProfileStore( state => [ state.getPromoList, state.promoListActive ]);
-  const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ] )
 
   const session = useSession(); 
 
@@ -34,7 +33,7 @@ export default function PromokodyPC({ page, this_module, city }) {
 
         <Grid item xs={12} className='promo_list_active'>
           {promoListActive.map((item, key) => (
-            <PromoCardPC key={key} item={item} activePromo={getInfoPromo} />
+            <PromoCardPC key={key} item={item} />
           ))}
         </Grid>
 

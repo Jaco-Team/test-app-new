@@ -1,6 +1,6 @@
 @import '../settings';
 
-.modalErrorPC {
+.modalAlertPC {
   & .MuiDialog-container {
     display: flex;
     align-items: flex-start;
@@ -12,7 +12,6 @@
       padding: 0;
       width: 100%;
       max-width: none !important;
-      background: #dd1a32;
       border-radius: unset;
 
       & .MuiDialogContent-root {
@@ -21,7 +20,7 @@
         align-items: center;
         justify-content: center;
 
-        & .btnError {
+        & .btnAlert {
           position: relative;
           display: flex;
           align-items: center;
@@ -39,7 +38,7 @@
           }
         }
         
-        & .containerError {
+        & .containerAlert {
           flex: 1;
           display: flex;
           align-items: center;
@@ -75,7 +74,7 @@
   }
 }
 
-.modalErrorMobile {
+.modalAlertMobile {
   & .MuiDialog-container {
     display: flex;
     align-items: flex-start;
@@ -87,7 +86,6 @@
       padding: 0;
       width: 100%;
       max-width: none !important;
-      background: #dd1a32;
       border-radius: unset;
 
       & .MuiDialogContent-root {
@@ -96,7 +94,7 @@
         align-items: center;
         justify-content: center;
 
-        & .btnError {
+        & .btnAlert {
           position: relative;
           display: flex;
           align-items: center;
@@ -115,7 +113,7 @@
           }
         }
 
-        & .containerError {
+        & .containerAlert {
           flex: 1;
           display: flex;
           align-items: center;

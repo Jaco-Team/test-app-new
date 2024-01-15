@@ -81,12 +81,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // комментарий курьеру
   comment: '',
 
-  // открытие модалки с указанием ошибки
-  openModalErorr: false,
-
-  // текст ошибки
-  textError: '',
-
   // сумма доставки заказа
   summDiv: 0,
 
@@ -211,11 +205,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     }
 
     localStorage.setItem('setCart', JSON.stringify(data));
-  },
-
-  // открытие/закрытие модалки вывода ошибки на клиенте
-  setActiveModalError: (active, textError) => {
-    set({ openModalErorr: active, textError })
   },
 
   // комментарий по заказу при доставке товара
@@ -609,7 +598,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       })
       
       localStorage.removeItem('promo_name')
-      
+    
       get().setDataPromoBasket();
       
     } else {
@@ -1182,7 +1171,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       }, 300000);
       
     }, ({ message }) => {
-      useCartStore.getState().setActiveModalError(true, 'Не удалось определить местоположение. '+message )
+      useHeaderStore.getState().setActiveModalAlert(true, 'Не удалось определить местоположение. '+message )
     }, {
       enableHighAccuracy: true
     })
@@ -1962,6 +1951,15 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   matches: null,
 
   openCityModalList: false,
+
+  openModalAlert: false,
+  textAlert: '',
+  statusAlert: false,
+
+  // открытие/закрытие модалки вывода сообщения на клиенте
+  setActiveModalAlert: (active, textAlert, statusAlert) => {
+    set({ openModalAlert: active, textAlert, statusAlert })
+  },
 
   // установить шиирну экрана устройства, при открытии приложения 
   setMatches: (matches) => {

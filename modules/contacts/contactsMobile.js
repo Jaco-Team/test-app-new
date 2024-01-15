@@ -13,8 +13,6 @@ import { MapContactsMobile, LocationIconMobile, VectorRightMobile, LocationMapMo
 
 import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 
-import ModalError from '@/modules/cartForm/modalError';
-
 export default function ContactsPageMobile() {
   //console.log('render ContactsPageMobile');
 
@@ -37,7 +35,7 @@ export default function ContactsPageMobile() {
 
       {!center_map ? null :
         <div style={{ minHeight: '100vw', width: '100%', marginBottom: '10.25641025641vw' }} >
-          <YMaps query={{ lang: 'ru_RU', apikey: 'ae2bad1f-486e-442b-a9f7-d84fff6296db' }}>
+          <YMaps query={{ lang: 'ru_RU', apikey: 'f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8' }}>
             <Map 
               defaultState={center_map} 
               instanceRef={ref} 
@@ -135,8 +133,6 @@ export default function ContactsPageMobile() {
           <MySwitch checked={disable} onClick={disablePointsZone} />
         </div>
       </div>
-
-      <ModalError />
     </Box>
   );
 }

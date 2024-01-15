@@ -12,6 +12,7 @@ import NavBarMobile from '@/modules/header/navBar/navBarMobile.js';
 import BasketPC from '@/modules/header/basket/basketPC.js';
 import BasketModalPC from '@/modules/header/basket/basketModalPC.js';
 import ModalAddr from '@/modules/profile/profile/modalAddr.jsx';
+import ModalAlert from '@/modules/header/alert';
 
 import { useHeaderStore, useHomeStore } from './store.js';
 
@@ -58,6 +59,7 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
         </>
       }
       <ModalAuth city={city} />
+      <ModalAlert />
     </div>
   );
 });

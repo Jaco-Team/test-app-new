@@ -182,7 +182,7 @@ export default function AddressModalMobile() {
           <div className="loginHeader">Новый адрес</div>
 
           <div className="map" style={{ minHeight: '93.162393162393vw' }} >
-            <YMaps query={{ lang: 'ru_RU', apikey: 'ae2bad1f-486e-442b-a9f7-d84fff6296db' }}>
+            <YMaps query={{ lang: 'ru_RU', apikey: 'f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8' }}>
               <Map defaultState={center_map} instanceRef={ref2} width="100%" height="100%" style={{ minHeight: '93.162393162393vw' }} >
 
                 { !chooseAddrStreet || Object.entries(chooseAddrStreet).length === 0 ? false :

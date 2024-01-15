@@ -1,6 +1,17 @@
 import Button from '@mui/material/Button';
 
+import { useCartStore, useHeaderStore } from '@/components/store';
+
 export default function PromoCardMobile({ item }) {
+
+  const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ] )
+  const [setActiveModalAlert] = useHeaderStore((state) => [state.setActiveModalAlert]);
+
+  const activePromo = (item) => {
+    setActiveModalAlert(true, 'Промокод активирован', true);
+    getInfoPromo(item.promo_name, item.city_id);
+  }
+
   return (
     <div className="promoCardMobile">
       
@@ -16,8 +27,7 @@ export default function PromoCardMobile({ item }) {
         className="promokodyBTN"
         variant={'contained'}
         style={{ backgroundColor: 'rgba(233, 71, 35, 0.5)', border: 'none' }}
-        
-        //onClick={}
+        onClick={ () => activePromo(item) }
       >
         <span style={{ textTransform: 'uppercase', color: 'rgba(0, 0, 0, 0.8)' }}>
           {item.promo_name}

@@ -27,7 +27,7 @@ export default function BasketPC() {
     if (localStorage.getItem('promo_name') && localStorage.getItem('promo_name').length > 0) {
       setPromo(localStorage.getItem('promo_name'));
     }
-  }, []);
+  }, [promoInfo]);
 
   const listenScrollEvent = (event) => setScrollBasket(event.target.scrollTop);
 
