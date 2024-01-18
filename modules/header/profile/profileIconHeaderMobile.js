@@ -1,28 +1,18 @@
-import { useEffect } from 'react';
-
 import Link from 'next/link';
 
-import { useSession } from 'next-auth/react';
 import { useHeaderStore } from '@/components/store.js';
 import { ProfileIconMobile } from '@/ui/Icons.js';
 import ListItem from '@mui/material/ListItem';
 
 export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_page }) {
-  const session = useSession();
+  const [userName, setActiveModalAuth, isAuth] = useHeaderStore((state) => [state.userName, state.setActiveModalAuth, isAuth]);
 
-  const [userName, setActiveUser, setActiveModalAuth] = useHeaderStore((state) => [state.userName, state.setActiveUser, state.setActiveModalAuth]);
+  let bgColor = active_page === 'account' || active_page === 'profile' || active_page === 'address' || active_page === 'promokody' || active_page === 'zakazy';
 
-  useEffect(() => {
-    if(session?.status === "authenticated") {
-      setActiveUser(session.data.user.name ?? session.data.user.display_name);
-    }
-  }, [session]);
-
-  if( !userName ){
+  if( isAuth !== 'auth' ){
     return (
       <ListItem onClick={() => { setActiveMenu(false); setActiveModalAuth(true) }}>
-        <div style={{background: active_page === 'account' || active_page === 'profile' || active_page === 'address' || active_page === 'promokody' 
-             || active_page === 'zakazy' ? 'rgba(0, 0, 0, 0.03)' : null}}>
+        <div style={{background: bgColor ? 'rgba(0, 0, 0, 0.03)' : '#fff'}}>
           <ProfileIconMobile />
           <span>Аккаунт</span>
         </div>
@@ -32,9 +22,9 @@ export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_pa
 
   return (
     <ListItem onClick={() => setActiveMenu(false)}>
-      <Link href={'/' + city + '/zakazy'} style={{background: active_page === 'zakazy' ? 'rgba(0, 0, 0, 0.03)' : null}}>
+      <Link href={'/' + city + '/zakazy'} style={{background: bgColor ? 'rgba(0, 0, 0, 0.03)' : '#fff'}}>
         <ProfileIconMobile />
-        <span style={{color: active_page === 'zakazy' ? ' #dd1a32' : null}}>Аккаунт</span>
+        <span style={{color: bgColor ? ' #dd1a32' : null}}>Аккаунт</span>
         <span className="profile">{userName}</span>
       </Link>
     </ListItem>

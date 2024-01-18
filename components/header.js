@@ -17,22 +17,20 @@ import ModalAlert from '@/modules/header/alert';
 import { useHeaderStore, useHomeStore } from './store.js';
 
 export default React.memo(function Header({ city, city_list, cats, active_page }) {
-  //console.log('render Header')
-
   const thisCityRU = city_list.find((item) => item.link == city)['name'];
 
   const matchesDev = useMediaQuery('screen and (max-width: 1170px)');
   //const matchesDev = useMediaQuery('screen and (max-width: 601px)', { noSsr: false });
 
-  const [setMatches, matches] = useHeaderStore((state) => [state.setMatches, state.matches]);
-  const [getItemsCat, category] = useHomeStore((state) => [state.getItemsCat, state.category]);
+  const [setMatches, matches, checkToken] = useHeaderStore( state => [state.setMatches, state.matches, state.checkToken]);
+  const [getItemsCat, category] = useHomeStore( state => [state.getItemsCat, state.category]);
   
   useEffect(() => {
     if( category?.length == 0 ){
       getItemsCat('home', city);
     }
 
-    console.log( 'category', category )
+    checkToken();
   }, []);
 
   useEffect(() => {

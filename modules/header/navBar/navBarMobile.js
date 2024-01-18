@@ -1,7 +1,4 @@
-import { useState, memo, useEffect } from 'react';
-
-import { usePathname } from 'next/navigation'
-import { useRouter } from 'next/navigation'
+import { useState, memo } from 'react';
 
 import Link from 'next/link';
 import Image from 'next/image';
@@ -16,26 +13,19 @@ import { BurgerIconMobile, MenuIconMobile, AboutIconMobile, LocationIconMobile }
 import JacoLogo from '@/public/jaco-logo-mobile.png';
 import { roboto } from '@/ui/Font.js';
 
-import { useHeaderStore, useCitiesStore, useCartStore } from '@/components/store.js';
+import { useHeaderStore } from '@/components/store.js';
 
 import BasketIconHeaderMobile from '../basket/basketIconHeaderMobile';
 import ProfileIconHeaderMobile from '../profile/profileIconHeaderMobile';
 
 export default memo(function NavBarMobile({ city, active_page }) {
-  const router = useRouter()
-  const pathname = usePathname()
-
   const [activeMenu, setActiveMenu] = useState(false);
 
-  const [setActiveBasket, openBasket, setActiveModalCity] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity]);
-  const [setThisCityRu, thisCityRu, setThisCity] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu, state.setThisCity]);
-  const [ getInfoPromo, getCartLocalStorage ] = useCartStore( state => [ state.getInfoPromo, state.getCartLocalStorage ])
-
+  const [setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket]);
+  
   if (city == '') {
     return null;
   }
-
-  
 
   const close = () => {
     if (openBasket) {

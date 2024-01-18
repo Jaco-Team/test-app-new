@@ -8,12 +8,12 @@ import {YaIcon, EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, CheckAu
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { useSession, signIn } from 'next-auth/react';
+//import { useSession, signIn } from 'next-auth/react';
 
 export default function Start() {
   //console.log('render Start');
 
-  const session = useSession();
+  //const session = useSession();
 
   const [showPassword, setShowPassword] = useState(false);
   const [formPassword, setFormPassword] = useState(false);
@@ -63,7 +63,7 @@ export default function Start() {
       ) : null}
 
       <MyTextInput
-        type="phone"
+        type="text"
         placeholder="телефон"
         variant="standard"
         value={loginLogin}
@@ -123,7 +123,8 @@ export default function Start() {
       </div>
 
       <div className="loginLogin"
-        onClick={formPassword && loginLogin.length === 11 ? sendsmsNewLogin : formSMS && loginLogin.length === 11 ? createProfile : loginLogin.length === 11 && checkPass ? logIn : null}
+        //onClick={formPassword ? sendsmsNewLogin : formSMS ? createProfile : checkPass ? logIn : null}
+        onClick={logIn}
         //onClick={ () => signIn('credentials', { redirect: false, password: pwdLogin, login: loginLogin }) }
         style={{backgroundColor: (loginLogin.length === 11 && checkPass) || (formPassword && loginLogin.length === 11) || (formSMS && loginLogin.length === 11) ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)'}}
       >
@@ -138,7 +139,9 @@ export default function Start() {
         <Typography component="span">или</Typography>
       </div>
 
-      <div className="loginLoginYa" onClick={() => signIn('yandex', { callbackUrl: `${host}/${thisCity}/zakazy`, scope: 'default_phone', response_type: 'code' })}>
+      <div className="loginLoginYa" 
+        //onClick={() => signIn('yandex', { callbackUrl: `${host}/${thisCity}/zakazy`, scope: 'default_phone', response_type: 'code' })}
+      >
         <YaIcon />
         <Typography component="span">Войти с Яндекс ID</Typography>
       </div>

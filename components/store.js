@@ -1956,6 +1956,8 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   textAlert: '',
   statusAlert: false,
 
+  isAuth: 'none',
+
   // открытие/закрытие модалки вывода сообщения на клиенте
   setActiveModalAlert: (active, textAlert, statusAlert) => {
     set({ openModalAlert: active, textAlert, statusAlert })
@@ -1971,7 +1973,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   },
 
    // открытие меню со списком городов
-   setActiveModalCityList: (active) => {
+  setActiveModalCityList: (active) => {
     set({ openCityModalList: active });
   },
 
@@ -2181,8 +2183,6 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     const json = await api('auth', data);
 
-    //console.log('logIn', json)
-
     if (json.st === false) {
       set({
         errTextAuth: json.text,
@@ -2193,14 +2193,44 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
         errTextAuth: '',
         is_sms: json.is_sms,
         token: json.token,
+        userName: json.name,
         openAuthModal: false,
         loading: false,
+        isAuth: 'auth'
       });
 
       if (typeof window !== 'undefined') {
         localStorage.setItem('token', json.token);
       }
     }
+  },
+
+  checkToken: async () => {
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+
+      if( token && token.length > 0 ){
+        const data = {
+          type: 'check_token',
+          token: token,
+        };
+
+        const json = await api('auth', data);
+
+        if (json.st === false) {
+          set({
+            isAuth: 'none'
+          });
+        }else{
+          set({
+            token: token,
+            userName: json.user.name,
+            isAuth: 'auth'
+          });
+        }
+      }
+    }
+    
   },
 
   // создание нового аккаунта или получения смс кода для действующего аккаунта
