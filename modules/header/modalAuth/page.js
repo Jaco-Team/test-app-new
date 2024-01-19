@@ -6,7 +6,8 @@ import { useHeaderStore } from '@/components/store';
 const Start = dynamic(() => import('./start'));
 const Create = dynamic(() => import('./create'));
 const LoginSMSCode = dynamic(() => import('./loginSMSCode'));
-const CreatePWD = dynamic(() => import('./createPWD'));
+const ResetPWD = dynamic(() => import('./resetPWD'));
+const LoginSMS = dynamic(() => import('./loginSMS'));
 const Finish = dynamic(() => import('./finish'));
 
 import IconButton from '@mui/material/IconButton';
@@ -30,13 +31,10 @@ export default function ModalAuth({ city }) {
 
   console.log( 'session', session )
 
-  
-
   const [form, setForm] = useState(false);
   const [timerPage, setTimerPage] = useState(null);
 
-  const [openAuthModal, closeModalAuth, typeLogin, navigate, preTypeLogin, errTextAuth, matches] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth, state.typeLogin, state.navigate, state.preTypeLogin, state.errTextAuth,
-    state.matches]);
+  const [openAuthModal, closeModalAuth, typeLogin, navigate, preTypeLogin, matches] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth, state.typeLogin, state.navigate, state.preTypeLogin, state.matches]);
 
   const changeForm = (checked) => {
     setForm(checked);
@@ -57,6 +55,8 @@ export default function ModalAuth({ city }) {
     closeModal()
   }
 
+  const login = typeLogin === 'loginSMSCode' ? preTypeLogin === 'loginSMS' ? 'Проверочный код' : timerPage === null || timerPage ? 'Звоним на номер' : 'Не дозвонились' : typeLogin === 'resetPWD' ? 'Новый пароль' : typeLogin === 'createPWD' ? 'Придумайте пароль' : typeLogin === 'finish' ? 'Всё получилось!' : typeLogin === 'loginSMS' ? 'Вход по СМС' : 'Авторизация';
+
   return (
     <Dialog
       onClose={closeModal}
@@ -76,29 +76,23 @@ export default function ModalAuth({ city }) {
             </IconButton>
           )}
 
-          <div className="authLogin">
-            {typeLogin === 'loginSMSCode' ? preTypeLogin === 'loginSMS' ? 'Проверочный код' : timerPage === null || timerPage ? 'Звоним на номер' : 'Не дозвонились' : typeLogin === 'resetPWD' ? 'Новый пароль' : typeLogin === 'createPWD'
-              ? 'Придумайте пароль' : typeLogin === 'finish' ? 'Всё получилось!' : typeLogin === 'loginSMS' ? 'Вход по СМС' : 'Авторизация'}
-          </div>
+          <div className="authLogin">{login}</div>
 
-          {matches ? (typeLogin === 'loginSMS' || typeLogin === 'start' || typeLogin === 'resetPWD' || typeLogin === 'create' ? (
-              <Stack direction="row" alignItems="center" style={{width: '71.794871794872vw', marginBottom: errTextAuth ? '2.5641025641026vw' : '6.8376068376068vw'}}>
-                <MySwitchMobile onClick={(event) => changeForm(event.target.checked)} checked={form} />
+          {typeLogin === 'start' || typeLogin === 'create' ?
+              <Stack className='stack'>
+                 {matches ?
+                  <MySwitchMobile onClick={(event) => changeForm(event.target.checked)} checked={form} />
+                  :
+                  <MySwitchPC onClick={(event) => changeForm(event.target.checked)} checked={form} />
+                 }
               </Stack>
-            ) : null
-          ) : typeLogin === 'loginSMS' || typeLogin === 'start' || typeLogin === 'resetPWD' || typeLogin === 'create' ? (
-            <Stack direction="row" alignItems="center"
-              style={{width: '17.328519855596vw', marginBottom: errTextAuth ? '0.54151624548736vw' : typeLogin === 'resetPWD' || typeLogin === 'loginSMS' || typeLogin === 'create' || typeLogin === 'createPWD' ? '1.6245487364621vw' : 
-              '2.5270758122744vw'}}
-            >
-              <MySwitchPC onClick={(event) => changeForm(event.target.checked)} checked={form} />
-            </Stack>
-          ) : null}
+          : null}
 
-          {typeLogin === 'start' || typeLogin === 'resetPWD' || typeLogin === 'loginSMS' ? <Start /> : null}
+          {typeLogin === 'start' ? <Start /> : null}
+          {typeLogin === 'resetPWD' ? <ResetPWD /> : null}
+          {typeLogin === 'loginSMS' ? <LoginSMS /> : null}
           {typeLogin === 'create' ? <Create city={city} closeModal={closeModal} /> : null}
           {typeLogin === 'loginSMSCode' ? <LoginSMSCode setTimerPage={setTimerPage} /> : null}
-          {typeLogin === 'createPWD' ? <CreatePWD /> : null}
           {typeLogin === 'finish' ? <Finish closeModal={closeModal} /> : null}
 
         </Box>

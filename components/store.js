@@ -2022,7 +2022,6 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     if(!event) {
       set({ loginLogin: '' });
-
       return;
     }
 
@@ -2281,11 +2280,9 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       token: get().token,
     };
 
-    // console.log('sendsmsNewLogin', data)
-
     const json = await api('auth', data);
 
-    // console.log('sendsmsNewLogin', json)
+    //console.log('sendsmsNewLogin', json)
 
     if (json['st']) {
       set({

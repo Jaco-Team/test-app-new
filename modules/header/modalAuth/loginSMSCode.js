@@ -100,8 +100,7 @@ export default function LoginSMSCode({ setTimerPage }) {
         <div className="loginSvg" style={{ backgroundColor: code.length === 4 ? '#DD1A32' : '#fff' }}>
           {code.length === 4 ? (
             <VectorRightAuthMobile className="vectorSvg"
-              onClick={() => navigate('createPWD')}
-              //onClick={code.length === 4 ? sendsmsNewLogin : null}
+              onClick={code.length === 4 ? sendsmsNewLogin : null}
             />
           ) : (
             <ClearAuthMobile className="clearSvg" onClick={() => inputRef.current?.clear()} />

@@ -5,7 +5,7 @@ import { ProfileIconMobile } from '@/ui/Icons.js';
 import ListItem from '@mui/material/ListItem';
 
 export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_page }) {
-  const [userName, setActiveModalAuth, isAuth] = useHeaderStore((state) => [state.userName, state.setActiveModalAuth, isAuth]);
+  const [userName, setActiveModalAuth, isAuth] = useHeaderStore((state) => [state.userName, state.setActiveModalAuth, state.isAuth]);
 
   let bgColor = active_page === 'account' || active_page === 'profile' || active_page === 'address' || active_page === 'promokody' || active_page === 'zakazy';
 

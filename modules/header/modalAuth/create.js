@@ -5,7 +5,7 @@ import Link from 'next/link';
 import { useHeaderStore } from '@/components/store';
 
 import MyTextInput from '@/ui/MyTextInput';
-import {ClearAuthMobile, DoneAuthMobile, VectorRightAuthMobile } from '@/ui/Icons';
+import {ClearAuthMobile, DoneAuthMobile, VectorRightAuthMobile, CheckAuthMobile, EyeShow_modalOrder, EyeHide_modalOrder } from '@/ui/Icons';
 
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -15,8 +15,9 @@ export default function Create({ city, closeModal }) {
 
   const [checkPolitika, setCheckPolitika] = useState(false);
   const [checkAccord, setCheckAccord] = useState(false);
+  const [showPassword, setShowPassword] = useState(false);
 
-  const [changeLogin, loginLogin, checkLoginKey, sendsmsNewLogin, navigate, matches] = useHeaderStore((state) => [state.changeLogin, state.loginLogin, state.checkLoginKey, state.sendsmsNewLogin, state.navigate, state.matches]);
+  const [changeLogin, loginLogin, checkLoginKey, sendsmsNewLogin, matches, setPwdLogin, pwdLogin] = useHeaderStore((state) => [state.changeLogin, state.loginLogin, state.checkLoginKey, state.sendsmsNewLogin, state.matches, state.setPwdLogin, state.pwdLogin]);
 
   return (
     <div className={matches ? 'modalLoginCreateMobile' : 'modalLoginCreatePC'}>
@@ -29,19 +30,18 @@ export default function Create({ city, closeModal }) {
         placeholder="телефон"
         value={loginLogin}
         func={(event) => changeLogin(event)}
-        onKeyDown={(event) => checkLoginKey(2, event)}
+        onKeyDown={(event) => checkLoginKey(3, event)}
         className="inputLogin"
         variant="standard"
         inputAdornment={
           <InputAdornment position="end">
             {matches ? (
-              <ClearAuthMobile onClick={() => changeLogin('')} />
+               loginLogin.length === 11 ? <CheckAuthMobile /> : <ClearAuthMobile onClick={() => setPwdLogin('')} />
             ) : (
-              <div className="vectorInput" style={{ backgroundColor: loginLogin.length === 11 && checkAccord && checkPolitika ? '#DD1A32' : '#fff' }}>
-                {loginLogin.length === 11 && checkAccord && checkPolitika ? (
+              <div className="vectorInput" style={{ backgroundColor: loginLogin.length === 11 && checkAccord && checkPolitika && pwdLogin.length > 5 ? '#DD1A32' : '#fff' }}>
+                {loginLogin.length === 11 && checkAccord && checkPolitika && pwdLogin.length > 5 ? (
                   <VectorRightAuthMobile className="vectorSvg"
-                    onClick={() => navigate('loginSMSCode')}
-                    //onClick={ loginLogin.length === 11 && checkAccord && checkPolitika ? sendsmsNewLogin : null}
+                    onClick={ loginLogin.length === 11 && checkAccord && checkPolitika && pwdLogin.length > 5 ? sendsmsNewLogin : null}
                   />
                 ) : (
                   <ClearAuthMobile className="clearSvg" onClick={() => changeLogin('')} />
@@ -52,44 +52,76 @@ export default function Create({ city, closeModal }) {
         }
       />
 
-      {loginLogin.length > 1 ? (
-        <div className="loginData">
-          <div className="data" style={{ marginBottom: matches ? '3.4188034188034vw' : '0.72202166064982vw' }}>
-            {checkPolitika ? (
-              <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckPolitika(!checkPolitika)}>
-                <DoneAuthMobile />
-              </span>
-            ) : (
-              <span onClick={() => setCheckPolitika(!checkPolitika)} style={{ backgroundColor: loginLogin.length === 11 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)'}}></span>
-            )}
-            <Typography component="span" onClick={closeModal}>
-              Согласен с{' '}<Link href={'/' + city + '/politika-konfidencialnosti'}>условиями сбора и обработки персональных данных</Link>
-            </Typography>
-          </div>
+      <div className="startInputBox">
 
-          <div className="data">
-            {checkAccord ? (
-              <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckAccord(!checkAccord)}>
-                <DoneAuthMobile />
-              </span>
-            ) : (
-              <span onClick={() => setCheckAccord(!checkAccord)} style={{ backgroundColor: loginLogin.length === 11 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)' }}></span>
-            )}
-            <Typography component="span" onClick={closeModal} style={{ lineHeight: matches ? '2.5641025641026vw' : '1.4440433212996vw' }}>
-              Принимаю{' '}<Link href={'/' + city + '/politika-konfidencialnosti'}>пользовательское соглашение</Link>
-            </Typography>
+        <MyTextInput
+          type={showPassword ? 'text' : 'password'}
+          placeholder="пароль"
+          variant="standard"
+          value={pwdLogin}
+          func={(event) => setPwdLogin(event)}
+          onKeyDown={(event) => checkLoginKey(3, event)}
+          className="inputLogin"
+          inputAdornment={
+            <InputAdornment position="end">
+              {pwdLogin.length > 5 ? (
+                <CheckAuthMobile className="clear_svg" />
+              ) : (
+                <ClearAuthMobile className="clear_svg" onClick={() => setPwdLogin('')} />
+              )}
+            </InputAdornment>
+          }
+        />
+
+        {showPassword ? (
+          <div className="eye_icon" onClick={() => setShowPassword(false)}>
+            <EyeShow_modalOrder />
           </div>
+        ) : (
+          <div className="eye_icon" onClick={() => setShowPassword(true)}>
+            <EyeHide_modalOrder />
+          </div>
+        )}
+
+      </div>
+
+      <div className="loginData">
+        <div className="data" style={{ marginBottom: matches ? '3.4188034188034vw' : '0.72202166064982vw' }}>
+          {checkPolitika ? (
+            <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckPolitika(!checkPolitika)}>
+              <DoneAuthMobile />
+            </span>
+          ) : (
+            <span onClick={() => setCheckPolitika(!checkPolitika)} style={{ backgroundColor: loginLogin.length === 11 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)'}}></span>
+          )}
+          <Typography component="span" onClick={closeModal}>
+            Согласен с{' '}<Link href={'/' + city + '/politika-konfidencialnosti'}>условиями сбора и обработки персональных данных</Link>
+          </Typography>
         </div>
-      ) : null}
+
+        <div className="data">
+          {checkAccord ? (
+            <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckAccord(!checkAccord)}>
+              <DoneAuthMobile />
+            </span>
+          ) : (
+            <span onClick={() => setCheckAccord(!checkAccord)} style={{ backgroundColor: loginLogin.length === 11 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)' }}></span>
+          )}
+          <Typography component="span" onClick={closeModal} style={{ lineHeight: matches ? '2.5641025641026vw' : '1.4440433212996vw' }}>
+            Принимаю{' '}<Link href={'/' + city + '/politika-konfidencialnosti'}>пользовательское соглашение</Link>
+          </Typography>
+        </div>
+      </div>
 
       {!matches ? null : (
-        <div className="loginLogin" onClick={loginLogin.length === 11 && checkAccord && checkPolitika ? sendsmsNewLogin : null} 
-          style={{backgroundColor: loginLogin.length === 11 && checkAccord && checkPolitika ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)'}}>
-          <Typography component="span" onClick={() => navigate('loginSMSCode')}>
+        <div className="loginLogin" onClick={ loginLogin.length === 11 && checkAccord && checkPolitika && pwdLogin.length > 5 ? sendsmsNewLogin : null}
+          style={{backgroundColor: loginLogin.length === 11 && checkAccord && checkPolitika && pwdLogin.length > 5 ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)'}}>
+          <Typography component="span">
             Отправить
           </Typography>
         </div>
       )}
+
     </div>
   );
 }

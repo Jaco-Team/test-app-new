@@ -3,21 +3,21 @@ import { useState } from 'react';
 import { useHeaderStore, useCitiesStore } from '@/components/store';
 
 import MyTextInput from '@/ui/MyTextInput';
-import {YaIcon, EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, CheckAuthMobile} from '@/ui/Icons';
+import {EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, CheckAuthMobile} from '@/ui/Icons';
 
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 
 //import { useSession, signIn } from 'next-auth/react';
 
-export default function Start() {
-  //console.log('render Start');
+export default function ResetPWD() {
+  //console.log('render ResetPWD');
 
   //const session = useSession();
 
   const [showPassword, setShowPassword] = useState(false);
 
-  const [errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, matches] = useHeaderStore((state) => [state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.logIn, state.matches]);
+  const [errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, sendsmsNewLogin, matches] = useHeaderStore((state) => [state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.sendsmsNewLogin, state.matches]);
 
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
 
@@ -29,13 +29,17 @@ export default function Start() {
         <Typography component="span">{errTextAuth}</Typography>
       </div>
 
+      <div className="resetText">
+        Укажите свой номер телефона и новый пароль
+      </div>
+
       <MyTextInput
         type="text"
         placeholder="телефон"
         variant="standard"
         value={loginLogin}
         func={(event) => changeLogin(event)}
-        onKeyDown={(event) => checkLoginKey(1, event)}
+        onKeyDown={(event) => checkLoginKey(3, event)}
         className="inputLogin"
         inputAdornment={
           <InputAdornment position="end">
@@ -56,7 +60,7 @@ export default function Start() {
           variant="standard"
           value={pwdLogin}
           func={(event) => setPwdLogin(event)}
-          onKeyDown={(event) => checkLoginKey(1, event)}
+          onKeyDown={(event) => checkLoginKey(3, event)}
           className="inputLogin"
           inputAdornment={
             <InputAdornment position="end">
@@ -81,28 +85,15 @@ export default function Start() {
         
       </div>
 
-      <div className="loginLosePWD">
-        <Typography component="span" onClick={() => navigate('resetPWD')}>
-          Забыли пароль?
-        </Typography>
-      </div>
-
       <div className="loginLogin"
-        onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? logIn : null}
-        style={{backgroundColor: loginLogin.length === 11 && pwdLogin.length > 1 ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)'}}
+        onClick={loginLogin.length === 11 && pwdLogin.length > 1 ? sendsmsNewLogin : null}
+        style={{
+          backgroundColor: loginLogin.length === 11 && pwdLogin.length > 1 ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)', 
+          marginTop: matches ? '10.25641025641vw' : '2.5270758122744vw',
+          marginBottom: matches ? '10.25641025641vw' : '2.5270758122744vw',
+        }}
       >
-        <Typography component="span">Войти</Typography>
-      </div>
-
-      <div className="loginOR">
-        <Typography component="span">или</Typography>
-      </div>
-
-      <div className="loginLoginYa" 
-        //onClick={() => signIn('yandex', { callbackUrl: `${host}/${thisCity}/zakazy`, scope: 'default_phone', response_type: 'code' })}
-      >
-        <YaIcon />
-        <Typography component="span">Войти с Яндекс ID</Typography>
+        <Typography component="span">Сменить пароль</Typography>
       </div>
 
       <div className="loginSMS">

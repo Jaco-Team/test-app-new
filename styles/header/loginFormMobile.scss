@@ -37,6 +37,13 @@
           @include font75_700();
         }
 
+        & .stack {
+          flex-direction: row;
+          align-items: center;
+          width: $MyScale840_mobile;
+          margin-bottom: $MyScale30_mobile;
+        }
+
         .modalLoginStartMobile {
           width: $MyScale1000_mobile;
           padding-bottom: $MyScale551_mobile;
@@ -101,6 +108,7 @@
             height: $MyScale160_mobile;
             @include font40_400();
             text-align: center;
+            margin-top: $MyScale30_mobile;
           }
 
           & .startInputBox {
@@ -224,6 +232,7 @@
             }
 
             & .MuiInputBase-root.MuiInput-root {
+              width: $MyScale760_mobile;
               height: 100%;
               display: flex;
               align-items: center;
@@ -243,6 +252,26 @@
               & svg {
                 width: $MyScale60_mobile;
                 height: $MyScale60_mobile;
+              }
+            }
+          }
+
+          & .startInputBox {
+            width: $MyScale1000_mobile;
+            display: flex;
+            position: relative;
+
+            & .eye_icon {
+              right: 0;
+              position: absolute;
+              width: $MyScale80_mobile;
+              height: $MyScale80_mobile;
+              align-self: center;
+              z-index: 5;
+
+              & svg {
+                height: 100%;
+                width: 100%;
               }
             }
           }
