@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useSession } from 'next-auth/react';
+//import { useSession } from 'next-auth/react';
 
 import { useProfileStore } from '@/components/store.js';
 
@@ -26,7 +26,7 @@ export default function ModalOrderMobileDelete() {
   const [active, setActive] = useState(0);
   const [text, setText] = useState('');
 
-  const session = useSession();
+  //const session = useSession();
 
   const [openModalDelete, closeModalDel, orderDel] = useProfileStore((state) => [state.openModalDelete, state.closeModalDel, state.orderDel]);
 
