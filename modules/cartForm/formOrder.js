@@ -2,7 +2,6 @@ import { useState, useEffect } from 'react';
 
 import { useCartStore, useCitiesStore, useHeaderStore, useProfileStore } from '@/components/store.js';
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -24,7 +23,6 @@ const dopText = { text: 'Выберите столько приправ и пр�
 
 export default function FormOrder({ cityName }) {
   const { push } = useRouter();
-  const session = useSession();
 
   const [promo, setPromo] = useState('');
   const [list, setList] = useState([]);
@@ -46,7 +44,7 @@ export default function FormOrder({ cityName }) {
 
   const [openModalAddr] = useProfileStore((state) => [state.openModalAddr]);
 
-  const [matches, setActiveModalCityList, setActiveModalAlert] = useHeaderStore((state) => [state.matches, state.setActiveModalCityList, state.setActiveModalAlert]);
+  const [matches, setActiveModalCityList, setActiveModalAlert, token] = useHeaderStore((state) => [state.matches, state.setActiveModalCityList, state.setActiveModalAlert, state.token]);
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
  
@@ -71,7 +69,7 @@ export default function FormOrder({ cityName }) {
     if (localStorage.getItem('promo_name') && localStorage.getItem('promo_name').length > 0) {
       setPromo(localStorage.getItem('promo_name'));
     }
-    getMySavedAddr(thisCity, session?.data?.user?.token);
+    getMySavedAddr(thisCity, token);
   }, [promoInfo]);
 
   const openMenu = (event, nameList) => {
@@ -158,7 +156,7 @@ export default function FormOrder({ cityName }) {
       setPoint(null);
       setAddrDiv(null);
       setSummDiv(0);
-      getMySavedAddr(item.link, session?.data?.user?.token);
+      getMySavedAddr(item.link, token);
     }
 
     if (nameList === 'point') {
@@ -228,15 +226,12 @@ export default function FormOrder({ cityName }) {
       return;
     }
 
-    if(!session?.data?.user?.token) {
+    if(!token || token.length == 0) {
       setActiveModalAlert(true, 'Необходимо Авторизироваться', false);
       return;
     }
 
-    createOrder(
-      session?.data?.user?.token,
-      thisCity,
-    );
+    createOrder( token, thisCity );
   }
 
   return (

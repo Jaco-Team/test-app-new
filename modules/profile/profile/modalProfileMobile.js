@@ -2,9 +2,7 @@ import { useEffect, useState, useCallback } from 'react';
 
 import useEmblaCarousel from 'embla-carousel-react';
 
-import { useSession } from 'next-auth/react';
-
-import { useProfileStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStore } from '@/components/store.js';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -18,8 +16,6 @@ dayjs.locale('ru');
 
 export default function ProfileModalMobile({ city, this_module }) {
 
-  const session = useSession();
-
   const [calendar, setCalendar] = useState(false);
 
   const [activeDay, setActiveDay] = useState(0);
@@ -29,6 +25,7 @@ export default function ProfileModalMobile({ city, this_module }) {
   const [slidesMonth, setSlidesMonth] = useState([]);
 
   const [openModalProfile, setActiveProfileModal, modalName, userInfo, setUser, updateUser] = useProfileStore((state) => [state.openModalProfile, state.setActiveProfileModal, state.modalName, state.userInfo, state.setUser, state.updateUser]);
+  const [ token, signOut ] = useHeaderStore( state => [ state.token, state.signOut ] )
 
   const getDays = () => {
 
@@ -86,7 +83,7 @@ export default function ProfileModalMobile({ city, this_module }) {
     setUser(userInfo);
 
     if(userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0){
-      updateUser(this_module, city, session.data?.user?.token);
+      updateUser(this_module, city, token);
     }
 
     onClose();

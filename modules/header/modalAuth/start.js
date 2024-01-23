@@ -8,13 +8,7 @@ import {YaIcon, EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, CheckAu
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 
-//import { useSession, signIn } from 'next-auth/react';
-
 export default function Start() {
-  //console.log('render Start');
-
-  //const session = useSession();
-
   const [showPassword, setShowPassword] = useState(false);
 
   const [errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, matches] = useHeaderStore((state) => [state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.logIn, state.matches]);

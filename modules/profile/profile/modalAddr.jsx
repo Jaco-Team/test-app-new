@@ -15,9 +15,7 @@ import MyTextInput from '@/ui/MyTextInput';
 import MyAutocomplete from '@/ui/MyAutocomplete';
 import MySelect from '@/ui/MySelect';
 
-import { useProfileStore } from '@/components/store.js';
-
-import { useSession } from 'next-auth/react';
+import { useProfileStore, useHeaderStore } from '@/components/store.js';
 
 export default function ModalAddr(){
   const ref2 = useRef();
@@ -25,7 +23,7 @@ export default function ModalAddr(){
   const [ clearAddr, chooseAddrStreet, center_map, zones, isOpenModalAddr, closeModalAddr, allStreets, checkStreet, saveNewAddr, infoAboutAddr, cityList, updateStreetList, active_city, updateAddr ] = 
     useProfileStore( state => [ state.clearAddr, state.chooseAddrStreet, state.center_map, state.zones, state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.cityList, state.updateStreetList, state.active_city, state.updateAddr ] );
 
-  const session = useSession();
+  const [ token, signOut ] = useHeaderStore( state => [ state.token, state.signOut ] )
 
   const [ street, setStreet ] = useState('');
   const [ street_, setStreet_ ] = useState('');
@@ -197,7 +195,7 @@ export default function ModalAddr(){
                 <MySwitch onClick={ (event) => { setCheck(event.target.checked) } } checked={check} />
               </div>
               <div className='btnSave'>
-                <div onClick={ () => { infoAboutAddr != null ? updateAddr(pd, domophome, et, kv, comment, session.data?.user?.token, check, nameAddr, cityID) : saveNewAddr(pd, domophome, et, kv, comment, session.data?.user?.token, check, nameAddr, cityID) } }>
+                <div onClick={ () => { infoAboutAddr != null ? updateAddr(pd, domophome, et, kv, comment, token, check, nameAddr, cityID) : saveNewAddr(pd, domophome, et, kv, comment, token, check, nameAddr, cityID) } }>
                   <span>Сохранить</span>
                 </div>
               </div>

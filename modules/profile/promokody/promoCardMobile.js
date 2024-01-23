@@ -21,7 +21,6 @@ export default function PromoCardMobile({ item }) {
         <span style={{ background: 'rgba(233, 71, 35, 0.5)' }}></span>
       </div>
 
-
       <span className='dates'>{'Срок действия:'} {item.diff_days_text}</span>
       <Button
         className="promokodyBTN"

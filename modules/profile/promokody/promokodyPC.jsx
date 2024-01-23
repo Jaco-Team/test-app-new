@@ -6,21 +6,18 @@ import Typography from '@mui/material/Typography';
 import ProfileBreadcrumbs from '../profileBreadcrumbs.jsx';
 import PromoCardPC from './promoCardPC.jsx';
 
-import { useProfileStore } from '../../../components/store.js';
-
-import { useSession } from 'next-auth/react';
+import { useProfileStore, useHeaderStore } from '../../../components/store.js';
 
 export default function PromokodyPC({ this_module, city }) {
 
   const [ getPromoList, promoListActive ] = useProfileStore( state => [ state.getPromoList, state.promoListActive ]);
-
-  const session = useSession(); 
+  const [ token ] = useHeaderStore( state => [ state.token ] )
 
   useEffect(() => {
-    if (session.data?.user?.token) {
-      getPromoList(this_module, city, session.data?.user?.token);
+    if( token && token.length > 0 ) {
+      getPromoList(this_module, city, token);
     }
-  }, [session]);
+  }, [token]);
 
   return (
     <Grid container spacing={3} style={{ margin: 0, width: '100%' }} sx={{ display: { xs: 'none', md: 'none', lg: 'flex' } }}>

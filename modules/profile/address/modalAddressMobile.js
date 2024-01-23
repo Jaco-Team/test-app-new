@@ -16,8 +16,6 @@ import { roboto } from '@/ui/Font.js';
 import { LoupeMobile, EditPencilMobile, HomeCartMobile } from '@/ui/Icons.js';
 import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 
-import { useSession } from 'next-auth/react';
-
 export default function AddressModalMobile() {
   const ref2 = useRef();
 
@@ -30,8 +28,6 @@ export default function AddressModalMobile() {
   //const [mapChange, setMapChange] = useState(false);
   //const [street, setStreet] = useState('');
   //const [form, setForm] = useState({home: '', corpus: '', pd: '', domophome: '', et: '', kv: '', comment: '', check: false, nameAddr: ''});
-
-  const session = useSession();
 
   const [ street, setStreet ] = useState('');
   const [ street_, setStreet_ ] = useState('');

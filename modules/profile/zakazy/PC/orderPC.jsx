@@ -8,26 +8,24 @@ import ModalOrder from './modalOrder.jsx';
 import ModalOrderDelete from './modalOrderDelete.jsx';
 import OrdersList from './ordersList.jsx';
 
-import { useProfileStore } from '@/components/store.js';
-
-import { useSession } from 'next-auth/react';
+import { useProfileStore, useHeaderStore } from '@/components/store.js';
 
 export default function OrderPC({ page, this_module, city }) {
 
   const [getOrderList, orderList] = useProfileStore((state) => [state.getOrderList, state.orderList]);
 
-  const session = useSession();
+  const [ token ] = useHeaderStore( state => [ state.token ] )
 
   useEffect(() => {
-    if (session.data?.user?.token) {
-      getOrderList(this_module, city, session.data?.user?.token);
+    if( token && token.length > 0 ) {
+      getOrderList(this_module, city, token);
     }
-  }, [session]);
+  }, [token]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (session.data?.user?.token) {
-        getOrderList(this_module, city, session.data?.user?.token);
+      if( token && token.length > 0 ) {
+        getOrderList(this_module, city, token);
       }
     }, 30 * 1000);
     
@@ -54,7 +52,7 @@ export default function OrderPC({ page, this_module, city }) {
               key={ykey}
               is_first={ykey == 0 ? true : false}
               year={year}
-              token={session.data?.user?.token}
+              token={token}
               this_module={this_module}
               city={city}
             />

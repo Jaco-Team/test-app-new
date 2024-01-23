@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-
+import Link from 'next/link'
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -23,15 +23,13 @@ import { CloseIconMin } from '@/ui/Icons.js';
 
 import ModalAddr from './modalAddr.jsx';
 
-import { useProfileStore } from '@/components/store.js';
-
-import { useSession, signOut } from 'next-auth/react';
+import { useProfileStore, useHeaderStore } from '@/components/store.js';
 
 export default function ProfilePC({ page, this_module, city }){
 
   const [ getUserInfo, setUser, userInfo, streets, shortName, updateUser, openModalAddr, delAddr ] = useProfileStore( state => [ state.getUserInfo, state.setUser, state.userInfo, state.streets, state.shortName, state.updateUser, state.openModalAddr, state.delAddr ] );
 
-  const session = useSession();
+  const [ token, signOut ] = useHeaderStore( state => [ state.token, state.signOut ] )
 
   const { control, getValues, setValue } = useForm({
     defaultValues: {
@@ -78,10 +76,10 @@ export default function ProfilePC({ page, this_module, city }){
   }
 
   useEffect(() => {
-    if( session.data?.user?.token ){
-      getUserInfo(this_module, city, session.data?.user?.token);
+    if( token && token.length > 0 ){
+      getUserInfo(this_module, city, token);
     }
-  }, [session]);
+  }, [token]);
 
   useEffect(() => {
     setValue("name", userInfo?.name)
@@ -103,7 +101,7 @@ export default function ProfilePC({ page, this_module, city }){
 
     setUser(userInfo);
 
-    updateUser(this_module, city, session.data?.user?.token);
+    updateUser(this_module, city, token);
   }
 
   function changeOtherData(type, data){
@@ -113,7 +111,7 @@ export default function ProfilePC({ page, this_module, city }){
 
     setIsSpam(data === true ? 1 : 0)
 
-    updateUser(this_module, city, session.data?.user?.token);
+    updateUser(this_module, city, token);
   }  
 
   function changeUserData(data, value){
@@ -130,8 +128,12 @@ export default function ProfilePC({ page, this_module, city }){
     }
 
     if( userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ){
-      updateUser(this_module, city, session.data?.user?.token);
+      updateUser(this_module, city, token);
     }
+  }
+
+  function thisSignOut(){
+    signOut(city);
   }
 
   let host = '';
@@ -325,7 +327,7 @@ export default function ProfilePC({ page, this_module, city }){
                     <TableCell>{item.name_street}, д. {item.home}, кв. {item.kv}</TableCell>
                     <TableCell className={ parseInt(item.is_main) == 1 ? 'ChooseAddr' : '' }>{ parseInt(item.is_main) == 1 ? <div>Основной</div> : false }</TableCell>
                     <TableCell className='ChangeAddr'><span onClick={ () => openModalAddr(item.id, item.city) }>Изменить</span></TableCell>
-                    <TableCell><CloseIconMin onClick={ () => delAddr(item.id, session.data?.user?.token) } /></TableCell>
+                    <TableCell><CloseIconMin onClick={ () => delAddr(item.id, token) } /></TableCell>
                   </TableRow> 
                 )}
               
@@ -335,7 +337,7 @@ export default function ProfilePC({ page, this_module, city }){
 
           <Grid item xs={12} className="log_out">
             <span>Удалить аккаунт</span>
-            <span onClick={ () => { signOut({callbackUrl: `${host}/${city}/`}) } }>Выйти</span>
+            <Link href={"/"+city} onClick={ thisSignOut }>Выйти</Link>
           </Grid>
 
         </Grid>

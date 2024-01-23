@@ -10,11 +10,9 @@ import Box from '@mui/material/Box';
 import AuthCode from 'react-auth-code-input';
 
 export default function LoginSMSCode({ setTimerPage }) {
-  //console.log('render LoginSMSCode');
-
   const inputRef = useRef(null);
 
-  const [changeCode, sendsmsNewLogin, toTime, navigate, loginLogin, clearCode, preTypeLogin, code, matches] = useHeaderStore((state) => [state.changeCode, state.sendsmsNewLogin, state.toTime, state.navigate, state.loginLogin, state.clearCode, state.preTypeLogin, state.code, state.matches]);
+  const [changeCode, createProfile, checkCode, toTime, navigate, loginLogin, clearCode, preTypeLogin, code, matches] = useHeaderStore( state => [state.changeCode, state.createProfile, state.checkCode, state.toTime, state.navigate, state.loginLogin, state.clearCode, state.preTypeLogin, state.code, state.matches]);
 
   const [timer, setTimer] = useState(89);
 
@@ -39,16 +37,33 @@ export default function LoginSMSCode({ setTimerPage }) {
     setTimer(89);
   };
 
-  const reCall = () => {
-    sendsmsNewLogin();
-    setTimer(89);
-  };
-
   const changeNumber = () => {
     navigate(preTypeLogin);
     setTimerPage(null);
     changeCode('');
   };
+
+  /*
+    {timer === 0 && preTypeLogin === 'loginSMS' ? (
+        <div className={matches ? 'loginSubHeader' : 'loginSubHeader2'} onClick={reSendSMS}>
+          <Typography component="span" style={{ textDecoration: 'underline', color: '#DD1A32' }}>
+            Войти по СМС
+          </Typography>
+        </div>
+      ) : timer === 0 && preTypeLogin !== 'loginSMS' ? (
+        <div className={matches ? 'loginSubHeader' : 'loginSubHeader2'} onClick={reCall}>
+          <Typography component="span" style={{ textDecoration: 'underline', color: '#DD1A32' }}>
+            Позвонить еще раз
+          </Typography>
+        </div>
+      ) : (
+        <div className={matches ? 'loginSubHeader' : 'loginSubHeader2'}>
+          <Typography component="span">
+            Введите 4 цифры из смс
+          </Typography>
+        </div>
+      )}
+  */
 
   return (
     <div
@@ -66,41 +81,25 @@ export default function LoginSMSCode({ setTimerPage }) {
         )}
       </Box>
 
-      {timer === 0 && preTypeLogin === 'loginSMS' ? (
-        <div className={matches ? 'loginSubHeader' : 'loginSubHeader2'} onClick={reSendSMS}>
-          <Typography component="span" style={{ textDecoration: 'underline', color: '#DD1A32' }}>
-            Войти по СМС
-          </Typography>
-        </div>
-      ) : timer === 0 && preTypeLogin !== 'loginSMS' ? (
-        <div className={matches ? 'loginSubHeader' : 'loginSubHeader2'} onClick={reCall}>
-          <Typography component="span" style={{ textDecoration: 'underline', color: '#DD1A32' }}>
-            Позвонить еще раз
-          </Typography>
-        </div>
-      ) : (
-        <div className={matches ? 'loginSubHeader' : 'loginSubHeader2'}>
-          <Typography component="span">
-            {preTypeLogin === 'loginSMS' ? 'Введите 4 цифры из смс' : 'Введите последние 4 цифры номера'}
-          </Typography>
-        </div>
-      )}
+      <div className={matches ? 'loginSubHeader' : 'loginSubHeader2'}>
+        <Typography component="span">
+          Введите 4 цифры из смс
+        </Typography>
+      </div>
 
       <div className="loginAutCode">
         <AuthCode
-          autoFocus={false}
+          autoFocus={true}
           allowedCharacters="numeric"
           length="4"
           onChange={(data) => changeCode(data)}
-          containerClassName={timer === 0 ? 'disable' : null}
-          disabled={timer === 0 ? true : false}
           ref={inputRef}
           placeholder="•"
         />
         <div className="loginSvg" style={{ backgroundColor: code.length === 4 ? '#DD1A32' : '#fff' }}>
           {code.length === 4 ? (
             <VectorRightAuthMobile className="vectorSvg"
-              onClick={code.length === 4 ? sendsmsNewLogin : null}
+              onClick={code.length === 4 ? checkCode : null}
             />
           ) : (
             <ClearAuthMobile className="clearSvg" onClick={() => inputRef.current?.clear()} />
@@ -108,9 +107,19 @@ export default function LoginSMSCode({ setTimerPage }) {
         </div>
       </div>
 
-      <div className="loginTimer">
-        <Typography component="span">{toTime(timer)}</Typography>
-      </div>
+      
+        { timer === 0 ?
+          <div className={matches ? 'loginSubHeader' : 'loginSubHeader2'} onClick={reSendSMS}>
+            <Typography component="span" style={{ textDecoration: 'underline', color: '#DD1A32', cursor: 'pointer' }}>
+              Отправить смс еще раз
+            </Typography>
+          </div>
+            :
+          <div className="loginTimer">
+            <Typography component="span">{toTime(timer)}</Typography>
+          </div>
+        }
+      
 
       <div className="loginPrev">
         <Typography component="span" onClick={changeNumber}>

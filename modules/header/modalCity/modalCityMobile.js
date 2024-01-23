@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import { useSession } from 'next-auth/react';
 import Image from 'next/image';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
@@ -13,11 +12,10 @@ import { useHeaderStore, useCitiesStore, useCartStore, useContactStore } from '@
 
 export default function ModalCityMobile() {
   const { push } = useRouter();
-  const session = useSession();
 
   const [thisCityList, thisCityRu, setThisCityRu, setThisCity, thisCity] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu, state.setThisCity, state.thisCity]);
 
-  const [openCityModal, openCityModalList, setActiveModalCity, setActiveModalCityList, activePage] = useHeaderStore((state) => [state.openCityModal, state.openCityModalList, state.setActiveModalCity, state.setActiveModalCityList, state.activePage]);
+  const [openCityModal, openCityModalList, setActiveModalCity, setActiveModalCityList, activePage, token] = useHeaderStore((state) => [state.openCityModal, state.openCityModalList, state.setActiveModalCity, state.setActiveModalCityList, state.activePage, state.token]);
 
   const [getMySavedAddr, setPoint, setAddrDiv] = useCartStore((state) => [state.getMySavedAddr, state.setPoint, state.setAddrDiv]);
 
@@ -38,7 +36,7 @@ export default function ModalCityMobile() {
     getMap('contacts', city.link);
     setPoint(null);
     setAddrDiv(null);
-    getMySavedAddr(thisCity, session?.data?.user?.token);
+    getMySavedAddr(thisCity, token);
 
     if(activePage && activePage !== 'home') {
       push(`/${city.link}/${activePage}`);

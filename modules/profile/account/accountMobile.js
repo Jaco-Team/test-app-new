@@ -2,8 +2,6 @@ import { useEffect } from 'react';
 
 import { useHeaderStore, useProfileStore } from '@/components/store.js';
 
-import { useSession } from 'next-auth/react';
-
 import Link from 'next/link';
 
 import Box from '@mui/material/Box';
@@ -13,16 +11,14 @@ import { AccountMobileAddress, AccountMobilePromo, AccountMobilePerson, AccountM
 
 export default function AccountMobile({ city, this_module }) {
 
-  const session = useSession();
-
-  const [userName] = useHeaderStore((state) => [state.userName]);
-  const [setActiveAccountModal, colorAccount, getUserInfo, userInfo, shortName] = useProfileStore((state) => [state.setActiveAccountModal, state.colorAccount, state.getUserInfo, state.userInfo, state.shortName]);
+  const [ userName, token ] = useHeaderStore( state => [ state.userName, state.token ]);
+  const [ setActiveAccountModal, colorAccount, getUserInfo, userInfo, shortName ] = useProfileStore( state => [state.setActiveAccountModal, state.colorAccount, state.getUserInfo, state.userInfo, state.shortName]);
 
   useEffect(() => {
-    if( session.data?.user?.token ){
-      getUserInfo(this_module, city, session.data?.user?.token);
+    if( token && token.length > 0 ) {
+      getUserInfo(this_module, city, token);
     }
-  }, [session]);
+  }, [token]);
 
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="AccountMobile">

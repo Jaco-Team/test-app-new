@@ -72,8 +72,6 @@ import '../styles/badge_item.scss'
 
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
-import { SessionProvider } from "next-auth/react";
-
 const theme = createTheme({
   palette: {
     primary: {
@@ -93,13 +91,11 @@ export function reportWebVitals(metric) {
   console.log(metric)
 }
 
-function MyApp({ Component, pageProps: { session, ...pageProps } }) {
+function MyApp({ Component, pageProps: { ...pageProps } }) {
 
   return (
     <ThemeProvider theme={theme}>
-      <SessionProvider session={session}>
-        <Component {...pageProps} />
-      </SessionProvider>
+      <Component {...pageProps} />
     </ThemeProvider>
   )
 }

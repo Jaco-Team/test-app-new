@@ -8,6 +8,8 @@ var isoWeek = require('dayjs/plugin/isoWeek')
 
 import { api } from './api.js';
 
+import Cookies from 'js-cookie'
+
 export const useCartStore = createWithEqualityFn((set, get) => ({
   items: [],
   itemsOnDops: [],
@@ -2133,21 +2135,10 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     const res = await api('auth', data);
 
-    // console.log('checkCode ===>', res);
-
     if (res.st === false) {
-      if (res.type === 'modal') {
-        set({
-          typeLogin: 'error',
-          errTitle: res.title,
-          errText1: res.text1,
-          errText2: res.text2,
-        });
-      } else {
-        set({
-          errTextAuth: res.text,
-        });
-      }
+      set({
+        errTextAuth: res.text,
+      });
     } else {
       set({
         errTextAuth: '',
@@ -2156,9 +2147,6 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
         errText2: '',
       });
 
-      // itemsStore.setToken( res.token, res.name );
-      // itemsStore.setUserName(res.name);
-
       if (get().preTypeLogin === 'create') {
         set({
           typeLogin: 'finish',
@@ -2166,7 +2154,26 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       } else {
         get().closeModalAuth();
       }
+
+      set({
+        errTextAuth: '',
+        token: res.token,
+        userName: res.name,
+        isAuth: 'auth'
+      });
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('token', res.token);
+        Cookies.set('token', res.token, { expires: 7 }) //expires 7 days
+      }
     }
+  },
+
+  signOut: (city) => {
+    localStorage.removeItem('token');
+    Cookies.remove('token');
+
+    window.location.href = '/' + city;
   },
 
   //логирование в форме регистрации
@@ -2200,6 +2207,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
       if (typeof window !== 'undefined') {
         localStorage.setItem('token', json.token);
+        Cookies.set('token', json.token, { expires: 7 }) //expires 7 days
       }
     }
   },
@@ -2227,6 +2235,33 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
             isAuth: 'auth'
           });
         }
+
+        return ;
+      }
+
+      const token2 = Cookies.get('token');
+
+      if( token2 && token2.length > 0 ){
+        const data = {
+          type: 'check_token',
+          token: token2,
+        };
+
+        const json = await api('auth', data);
+
+        if (json.st === false) {
+          set({
+            isAuth: 'none'
+          });
+        }else{
+          set({
+            token: token2,
+            userName: json.user.name,
+            isAuth: 'auth'
+          });
+        }
+
+        return ;
       }
     }
     
@@ -2237,12 +2272,13 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     const data = {
       type: 'create_profile',
       number: get().loginLogin,
-      // token: get().token,
     };
 
-    const json = await api('auth', data);
+    if(get().typeLogin !== 'loginSMSCode') {
+      get().navigate('loginSMSCode');
+    }
 
-    //console.log('createProfile =====>', json);
+    const json = await api('auth', data);
 
     if (json.st) {
       set({
@@ -2250,24 +2286,11 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
         errTitle: '',
         errText1: '',
         errText2: '',
-        is_sms: json.is_sms,
       });
-      if(get().typeLogin !== 'loginSMSCode') {
-        get().navigate('loginSMSCode');
-      }
     } else {
-      if (json.type == 'modal') {
-        set({
-          typeLogin: 'error',
-          errTitle: json.title,
-          errText1: json.text1,
-          errText2: json.text2,
-        });
-      } else {
-        set({
-          errTextAuth: json.text,
-        });
-      }
+      set({
+        errTextAuth: json.text,
+      });
     }
   },
 
@@ -2281,8 +2304,6 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     };
 
     const json = await api('auth', data);
-
-    //console.log('sendsmsNewLogin', json)
 
     if (json['st']) {
       set({
@@ -2298,25 +2319,14 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       }
 
     } else {
-      if (json.type == 'modal') {
-        set({
-          typeLogin: 'error',
-          errTitle: json.title,
-          errText1: json.text1,
-          errText2: json.text2,
-        });
-      } else {
-        set({
-          errTextAuth: json.text,
-        });
-      }
+      set({
+        errTextAuth: json.text,
+      });
     }
+  },
 
-    // setTimeout( () => {
-    //     this.setState({
-    //         is_load_new: false
-    //     })
-    // }, 300 )
+  loginBySMS: async () => {
+
   },
 
   // открытие/закрытие корзины на главное странице

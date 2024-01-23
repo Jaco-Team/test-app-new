@@ -1,7 +1,7 @@
 import { useEffect } from 'react';
 
-import { useProfileStore } from '@/components/store.js';
-import { useSession } from 'next-auth/react';
+import { useProfileStore, useHeaderStore } from '@/components/store.js';
+
 import Link from 'next/link';
 
 import Box from '@mui/material/Box';
@@ -12,15 +12,14 @@ import PromoCardMobile from './promoCardMobile';
 
 export default function PromokodyMobile({ this_module, city }) {
 
-  const session = useSession();
-
   const [ getPromoList, promoListActive ] = useProfileStore( state => [ state.getPromoList, state.promoListActive ]);
+  const [ token ] = useHeaderStore( state => [ state.token ] )
 
   useEffect(() => {
-    if (session.data?.user?.token) {
-      getPromoList(this_module, city, session.data?.user?.token);
+    if( token && token.length > 0 ) {
+      getPromoList(this_module, city, token);
     }
-  }, [session]);
+  }, [token]);
 
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="PromokodyMobile">

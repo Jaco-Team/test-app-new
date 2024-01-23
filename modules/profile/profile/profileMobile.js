@@ -1,8 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useSession } from 'next-auth/react';
-
-import { useProfileStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStore } from '@/components/store.js';
 import Link from 'next/link';
 
 import ProfileModalMobile from './modalProfileMobile';
@@ -18,11 +16,10 @@ import { ArrowLeftMobile, EditPencilMobile, LockMobile } from '@/ui/Icons.js';
 
 export default function ProfileMobile({ city, this_module }) {
   
-  const session = useSession();
-  
   const [userDate, setUserDate] = useState('');
   
   const [setActiveProfileModal, setActiveAccountModal, setUser, userInfo] = useProfileStore((state) => [state.setActiveProfileModal, state.setActiveAccountModal, state.setUser, state.userInfo]);
+  const [ token, signOut ] = useHeaderStore( state => [ state.token, state.signOut ] )
 
   const { control, getValues, setValue } = useForm({
     defaultValues: {
@@ -49,7 +46,7 @@ export default function ProfileMobile({ city, this_module }) {
 
     setUser(userInfo);
 
-    updateUser(this_module, city, session.data?.user?.token);
+    updateUser(this_module, city, token);
   }
 
   function changeOtherData(type, data){
@@ -57,7 +54,7 @@ export default function ProfileMobile({ city, this_module }) {
 
     setUser(userInfo);
 
-    updateUser(this_module, city, session.data?.user?.token);
+    updateUser(this_module, city, token);
   } 
 
   return (

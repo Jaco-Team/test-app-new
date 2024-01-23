@@ -23,18 +23,12 @@ import { IconClose } from '@/ui/Icons';
 import { Fade } from '@/ui/Fade';
 import { roboto } from '@/ui/Font';
 
-import { useSession, signIn } from 'next-auth/react';
-
 export default function ModalAuth({ city }) {
     
-  const session = useSession();
-
-  console.log( 'session', session )
-
   const [form, setForm] = useState(false);
   const [timerPage, setTimerPage] = useState(null);
 
-  const [openAuthModal, closeModalAuth, typeLogin, navigate, preTypeLogin, matches] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth, state.typeLogin, state.navigate, state.preTypeLogin, state.matches]);
+  const [openAuthModal, closeModalAuth, typeLogin, navigate, preTypeLogin, matches, isAuth] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth, state.typeLogin, state.navigate, state.preTypeLogin, state.matches, state.isAuth]);
 
   const changeForm = (checked) => {
     setForm(checked);
@@ -51,7 +45,7 @@ export default function ModalAuth({ city }) {
     closeModalAuth();
   };
 
-  if( session.status == 'authenticated' && openAuthModal === true ){
+  if( isAuth == 'auth' && openAuthModal === true ){
     closeModal()
   }
 

@@ -2,8 +2,7 @@ import { useEffect, useState } from 'react';
 
 import Link from 'next/link';
 
-import { useProfileStore } from '@/components/store.js';
-import { useSession } from 'next-auth/react';
+import { useProfileStore, useHeaderStore } from '@/components/store.js';
 
 import Box from '@mui/material/Box';
 
@@ -16,23 +15,23 @@ import { ArrowLeftMobile, VectorDownMobile } from '@/ui/Icons.js';
 
 export default function OrderMobile({ city, this_module }) {
 
-  const session = useSession();
-
   const [list, setList] = useState([]);
 
   const [getOrderList, orderList, year, setActiveModalYear, setYear] =
     useProfileStore((state) => [state.getOrderList, state.orderList, state.year, state.setActiveModalYear, state.setYear]);
 
+  const [ token ] = useHeaderStore( state => [ state.token ] )
+
   useEffect(() => {
-    if (session.data?.user?.token) {
-      getOrderList(this_module, city, session.data?.user?.token);
+    if( token && token.length > 0 ) {
+      getOrderList(this_module, city, token);
     }
-  }, [session]);
+  }, [token]);
 
   useEffect(() => {
     const timer = setInterval(() => {
-      if (session.data?.user?.token) {
-        getOrderList(this_module, city, session.data?.user?.token);
+      if( token && token.length > 0 ) {
+        getOrderList(this_module, city, token);
       }
     }, 30 * 1000);
     
@@ -73,7 +72,7 @@ export default function OrderMobile({ city, this_module }) {
           <OrdersItemMobile
             key={order?.order_id}
             order={order}
-            token={session.data?.user?.token}
+            token={token}
             this_module={this_module}
             city={city}
             last={list?.orders?.length-1 == ykey ? 'last' : ''}

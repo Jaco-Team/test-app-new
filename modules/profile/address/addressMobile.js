@@ -10,8 +10,6 @@ import Button from '@mui/material/Button';
 import { ArrowLeftMobile, EditPencilMobile, HomeCartMobile } from '@/ui/Icons.js';
 
 export default function AddressMobile({ city }) {
-  //console.log('render AddressMobile');
-
   const [setActiveAddressModal, streets, openModalAddr] = useProfileStore((state) => [state.setActiveAddressModal, state.streets, state.openModalAddr]);
 
   return (

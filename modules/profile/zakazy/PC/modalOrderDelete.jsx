@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { useProfileStore } from '@/components/store';
+import { useProfileStore, useHeaderStore } from '@/components/store';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -12,8 +12,6 @@ import Typography from '@mui/material/Typography';
 import { IconClose } from '@/ui/Icons';
 import MyTextInput from '@/ui/MyTextInput';
 import { roboto } from '@/ui/Font';
-
-import { useSession } from 'next-auth/react';
 
 const ans = [
   { id: 1, ans: 'Хочу отредактировать заказ' },
@@ -30,7 +28,7 @@ export default function ModalOrderDelete() {
   const [ chooseType, setChooseType ] = useState(0);
   const [ textDel, setTextDel ] = useState('');
 
-  const session = useSession();
+  const [ token ] = useHeaderStore( state => [ state.token ] )
 
   useEffect( () => {
     setTextDel('');
@@ -74,7 +72,7 @@ export default function ModalOrderDelete() {
             </Grid>
 
             <Grid item xs={12} className='header_btn'>
-              <div onClick={ () => orderDel( 'zakazy', session.data?.user?.token, chooseType == 6 ? textDel : ans[ chooseType ]['ans'] ) }>
+              <div onClick={ () => orderDel( 'zakazy', token, chooseType == 6 ? textDel : ans[ chooseType ]['ans'] ) }>
                 <span>Отменить</span>
               </div>
                 

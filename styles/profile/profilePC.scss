@@ -422,15 +422,15 @@
         display: flex;
         justify-content: space-between;
         align-items: center;
-        & span{
+        & span, a{
             @include font30_400();
             cursor: pointer;
         }
-        & span:first-child{
+        & span{
             text-decoration-line: underline;
             color: $colorMain;
         }
-        & span:last-child{
+        & a{
             color: $colorMain;
             border: 1px solid $colorMain;
             border-radius: $MyScale40;

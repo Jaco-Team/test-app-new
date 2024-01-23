@@ -27,8 +27,6 @@ const colorList = [
 ];
 
 export default function AccountModalMobile() {
-  //console.log('render AccountModalMobile');
-
   const [value, setValue] = useState('');
 
   const [openModalAccount, setActiveAccountModal, colorAccount, setAccountColor, modalName] = 
