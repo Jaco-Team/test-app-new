@@ -11,7 +11,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 export default function Start() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, matches] = useHeaderStore((state) => [state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.logIn, state.matches]);
+  const [errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, matches, yandexAuthLink] = useHeaderStore((state) => [state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.logIn, state.matches, state.yandexAuthLink]);
 
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
 
@@ -92,12 +92,14 @@ export default function Start() {
         <Typography component="span">или</Typography>
       </div>
 
-      <div className="loginLoginYa" 
+      <a className="loginLoginYa" 
+        href={ yandexAuthLink }
+        style={{ textDecoration: 'none' }}
         //onClick={() => signIn('yandex', { callbackUrl: `${host}/${thisCity}/zakazy`, scope: 'default_phone', response_type: 'code' })}
       >
         <YaIcon />
         <Typography component="span">Войти с Яндекс ID</Typography>
-      </div>
+      </a>
 
       <div className="loginSMS">
         <Typography component="span" onClick={() => navigate('loginSMS')}>Вход по СМС</Typography>

@@ -1730,7 +1730,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       city_id: city_id,
       street: JSON.stringify( get().chooseAddrStreet ),
       pd: pd,
-      domophome: domophome,
+      domophome: domophome === true ? 1 : 0,
       et: et,
       kv: kv,
       comment: comment,
@@ -1780,7 +1780,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       city_id: city_id,
       street: JSON.stringify( get().chooseAddrStreet ),
       pd: pd,
-      domophome: domophome,
+      domophome: domophome === true ? 1 : 0,
       et: et,
       kv: kv,
       id: get().infoAboutAddr.id,
@@ -1959,6 +1959,8 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   statusAlert: false,
 
   isAuth: 'none',
+
+  yandexAuthLink: '',
 
   // открытие/закрытие модалки вывода сообщения на клиенте
   setActiveModalAlert: (active, textAlert, statusAlert) => {
@@ -2329,6 +2331,19 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
   },
 
+  getYandexLinkAuth: async(city) => {
+    const data = {
+      type: 'getYaLinkAuth',
+      city: city
+    };
+
+    const json = await api('auth', data);
+
+    set({
+      yandexAuthLink: json?.link
+    })
+  },
+
   // открытие/закрытие корзины на главное странице
   setActiveBasket: (active) => {
     
@@ -2487,6 +2502,8 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
   // открытие/закрытие модального окна баннер на главное странице
   setActiveBanner: (active, banner, swiper) => {
+
+    console.log( banner )
 
     if(swiper) set({ swiper });
 

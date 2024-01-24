@@ -23,7 +23,7 @@ export default function ModalAddr(){
   const [ clearAddr, chooseAddrStreet, center_map, zones, isOpenModalAddr, closeModalAddr, allStreets, checkStreet, saveNewAddr, infoAboutAddr, cityList, updateStreetList, active_city, updateAddr ] = 
     useProfileStore( state => [ state.clearAddr, state.chooseAddrStreet, state.center_map, state.zones, state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.cityList, state.updateStreetList, state.active_city, state.updateAddr ] );
 
-  const [ token, signOut ] = useHeaderStore( state => [ state.token, state.signOut ] )
+  const [ token ] = useHeaderStore( state => [ state.token ] )
 
   const [ street, setStreet ] = useState('');
   const [ street_, setStreet_ ] = useState('');
@@ -49,7 +49,7 @@ export default function ModalAddr(){
       setStreet({id: infoAboutAddr?.id, name: infoAboutAddr?.street });
       setHome(infoAboutAddr.home);
       setPd(infoAboutAddr.pd);
-      setDomophome(infoAboutAddr.domophome ? true : false);
+      setDomophome(parseInt(infoAboutAddr.domophome) == 1 ? true : false);
       setEt(infoAboutAddr.et);
       setKv(infoAboutAddr.kv);
       setComment(infoAboutAddr.comment);
@@ -97,10 +97,6 @@ export default function ModalAddr(){
       setCheck(false)
       setNameAddr('');
       setCityID(active_city)
-    }else{
-      setTimeout( () => {
-        //render_map_model();
-      }, 1000 )
     }
   }, [isOpenModalAddr]);
 

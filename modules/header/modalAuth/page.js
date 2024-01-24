@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 import { useHeaderStore } from '@/components/store';
@@ -28,7 +28,13 @@ export default function ModalAuth({ city }) {
   const [form, setForm] = useState(false);
   const [timerPage, setTimerPage] = useState(null);
 
-  const [openAuthModal, closeModalAuth, typeLogin, navigate, preTypeLogin, matches, isAuth] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth, state.typeLogin, state.navigate, state.preTypeLogin, state.matches, state.isAuth]);
+  const [openAuthModal, closeModalAuth, typeLogin, navigate, preTypeLogin, matches, isAuth, getYandexLinkAuth] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth, state.typeLogin, state.navigate, state.preTypeLogin, state.matches, state.isAuth, state.getYandexLinkAuth]);
+
+  useEffect( () => {
+    if( openAuthModal === true ){
+      getYandexLinkAuth(city);
+    }
+  }, [openAuthModal] )
 
   const changeForm = (checked) => {
     setForm(checked);
@@ -49,7 +55,9 @@ export default function ModalAuth({ city }) {
     closeModal()
   }
 
-  const login = typeLogin === 'loginSMSCode' ? preTypeLogin === 'loginSMS' ? 'Проверочный код' : timerPage === null || timerPage ? 'Звоним на номер' : 'Не дозвонились' : typeLogin === 'resetPWD' ? 'Новый пароль' : typeLogin === 'createPWD' ? 'Придумайте пароль' : typeLogin === 'finish' ? 'Всё получилось!' : typeLogin === 'loginSMS' ? 'Вход по СМС' : 'Авторизация';
+  const login = typeLogin === 'loginSMSCode' ? preTypeLogin === 'loginSMS' ? 'Проверочный код' : timerPage === null || timerPage ? 'Проверочный код' : 'Не дозвонились' : typeLogin === 'resetPWD' ? 'Новый пароль' : typeLogin === 'createPWD' ? 'Придумайте пароль' : typeLogin === 'finish' ? 'Всё получилось!' : typeLogin === 'loginSMS' ? 'Вход по СМС' : 'Авторизация';
+
+  console.log( 'typeLogin', typeLogin )
 
   return (
     <Dialog
