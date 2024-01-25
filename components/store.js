@@ -1962,6 +1962,8 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
   yandexAuthLink: '',
 
+  doubleClickSMS: false,
+
   // открытие/закрытие модалки вывода сообщения на клиенте
   setActiveModalAlert: (active, textAlert, statusAlert) => {
     set({ openModalAlert: active, textAlert, statusAlert })
@@ -2269,16 +2271,26 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     
   },
 
+  // защита
   // создание нового аккаунта или получения смс кода для действующего аккаунта
   createProfile: async () => {
-    const data = {
-      type: 'create_profile',
-      number: get().loginLogin,
-    };
+
+    if( get().doubleClickSMS === true ){
+      return ;
+    }
+
+    set({
+      doubleClickSMS: true
+    })
 
     if(get().typeLogin !== 'loginSMSCode') {
       get().navigate('loginSMSCode');
     }
+
+    const data = {
+      type: 'create_profile',
+      number: get().loginLogin,
+    };
 
     const json = await api('auth', data);
 
@@ -2294,15 +2306,32 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
         errTextAuth: json.text,
       });
     }
+
+    set({
+      doubleClickSMS: false
+    })
   },
 
+  // защита
   // подтвреждение новой регистрации/изменения в существующий аккаунт
   sendsmsNewLogin: async () => {
+
+    if( get().doubleClickSMS === true ){
+      return ;
+    }
+
+    set({
+      doubleClickSMS: true
+    })
+
+    if(get().typeLogin !== 'loginSMSCode') {
+      get().navigate('loginSMSCode');
+    }
+
     const data = {
       type: 'sendsmsrp',
       number: get().loginLogin,
-      pwd: get().pwdLogin,
-      token: get().token,
+      pwd: get().pwdLogin
     };
 
     const json = await api('auth', data);
@@ -2313,22 +2342,16 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
         errTitle: '',
         errText1: '',
         errText2: '',
-        is_sms: json.is_sms ?? false,
       });
-
-      if(get().typeLogin !== 'loginSMSCode') {
-        get().navigate('loginSMSCode');
-      }
-
     } else {
       set({
         errTextAuth: json.text,
       });
     }
-  },
 
-  loginBySMS: async () => {
-
+    set({
+      doubleClickSMS: false
+    })
   },
 
   getYandexLinkAuth: async(city) => {
@@ -2342,6 +2365,26 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     set({
       yandexAuthLink: json?.link
     })
+  },
+
+  yandexAuthCheck: async(code) => {
+    const data = {
+      type: 'checkAuthYandex',
+      code
+    };
+
+    const json = await api('auth', data);
+
+    set({
+      token: json.token,
+      userName: json.name,
+      isAuth: 'auth'
+    });
+
+    if (typeof window !== 'undefined') {
+      localStorage.setItem('token', json.token);
+      Cookies.set('token', json.token, { expires: 7 }) //expires 7 days
+    }
   },
 
   // открытие/закрытие корзины на главное странице

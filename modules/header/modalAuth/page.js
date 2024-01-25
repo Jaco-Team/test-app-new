@@ -28,13 +28,27 @@ export default function ModalAuth({ city }) {
   const [form, setForm] = useState(false);
   const [timerPage, setTimerPage] = useState(null);
 
-  const [openAuthModal, closeModalAuth, typeLogin, navigate, preTypeLogin, matches, isAuth, getYandexLinkAuth] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth, state.typeLogin, state.navigate, state.preTypeLogin, state.matches, state.isAuth, state.getYandexLinkAuth]);
+  const [openAuthModal, closeModalAuth, typeLogin, navigate, preTypeLogin, matches, isAuth, getYandexLinkAuth, yandexAuthCheck] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth, state.typeLogin, state.navigate, state.preTypeLogin, state.matches, state.isAuth, state.getYandexLinkAuth, state.yandexAuthCheck]);
 
   useEffect( () => {
     if( openAuthModal === true ){
       getYandexLinkAuth(city);
     }
   }, [openAuthModal] )
+
+  useEffect( () => {
+    console.log( 'location', window?.location.search )
+
+    let search = window.location.search;
+    let checkItem = search.split('?code=');
+                    
+    if( checkItem[1] ){
+        
+      window.history.replaceState(null, null, window?.location.pathname);
+
+      yandexAuthCheck(checkItem[1]);
+    }
+  }, [] )
 
   const changeForm = (checked) => {
     setForm(checked);
