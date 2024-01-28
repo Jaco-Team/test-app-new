@@ -89,6 +89,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // сдача при оплате наличными курьеру
   sdacha: 0,
 
+  openPayForm: false,
+
   // установить размер сдачи при оплате наличными курьеру
   setSdacha: (sdacha) => {
     set({ sdacha })
@@ -438,7 +440,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         typePay: get().typePay.id,
         typeOrder: get().typeOrder,
         point_id: get().orderPic.id,
-        dateTimeOrder: get().dateTimeOrder ?? { name: 'В ближайшее время', id: -1 },
+        dateTimeOrder: JSON.stringify(get().dateTimeOrder ?? { date: '', name: 'В ближайшее время', id: -1 }),
         cart: JSON.stringify(get().items)
       };
     } else {
@@ -448,19 +450,45 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         city_id,
         promoName: promoName ?? '',
         sdacha: get().sdacha,
-        addr: get().orderAddr,
+        addr: JSON.stringify(get().orderAddr),
+        point_id: get().orderAddr.point_id,
         comment: get().comment,
         typePay: get().typePay.id,
         typeOrder: get().typeOrder,
-        dateTimeOrder: get().dateTimeOrder ?? { name: 'В ближайшее время', id: -1 },
+        dateTimeOrder: JSON.stringify(get().dateTimeOrder ?? { date: '', name: 'В ближайшее время', id: -1 }),
         cart: JSON.stringify(get().items)
       };
     }
     
     console.log('createOrder', data);
     
-    //const json = await api('cart', data);
+    const json = await api('cart', data);
     
+    if( json.st === true ){
+      if( get().typePay.id == 'online' ){
+
+        set({
+          openPayForm: true
+        })
+
+        const checkout = new window.YooMoneyCheckoutWidget({
+          confirmation_token: json.pay.pay.confirmation.confirmation_token, //Токен, который перед проведением оплаты нужно получить от ЮKassa
+          return_url: '', //Ссылка на страницу завершения оплаты, это может быть любая ваша страница
+
+          error_callback: function(error) {
+            console.log(error)
+            //попробовать показать ошибку (смени свою почту в ЛК на ya.ru)
+          }
+        });
+
+        setTimeout( () => {
+          checkout.render('payment-form');
+        }, 300 )
+      }
+    }else{
+      //показать ошибку
+    }
+
     //return json;
 
     get().setCartLocalStorage();
