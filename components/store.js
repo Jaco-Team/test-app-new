@@ -1489,8 +1489,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api('profile', data);
 
-    console.log('getMapMobile json', json);
-
     set({
       allStreets: json.streets,
       infoAboutAddr: json.this_info,
@@ -1662,6 +1660,17 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       get().getOrderList('zakazy', get().city, userToken);
     }
   },
+
+  // установить выбранный адрес, если похожих адресов больше одного
+  setAddress: (chooseAddrStreet) => {
+    set({
+      chooseAddrStreet,
+      center_map: {
+        center: [chooseAddrStreet?.xy[0], chooseAddrStreet?.xy[1]],
+      },
+    })
+  },
+
   checkStreet: async(street, home, pd, city_id) => {
     if( get().is_fetch === true ){
       setTimeout( () => {
@@ -1669,6 +1678,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       }, 500 )
 
       return ;
+
     }else{
       set({
         is_fetch: true,
@@ -1696,10 +1706,20 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
         },
       })
 
-    }else{
+    } else {
+
+      if(json?.addrs?.length === 0) {
+        useHeaderStore.getState().setActiveModalAlert(true, 'Адрес не найден, или указан не точно', false);
+      }
+
+      if(json?.addrs?.length > 1) {
+        useHeaderStore.getState().setActiveModalSelectAddress(true, json.addrs);
+      }
+
       set({
-        chooseAddrStreet: {}
+        chooseAddrStreet: {},
       })
+
     }
 
     set({
@@ -1943,6 +1963,9 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   // typeLogin: 'startTestAuth',
   userName: '',
 
+  timer: 89,
+  timerPage: false,
+
   preTypeLogin: '',
   loginLogin: '',
   pwdLogin: '',
@@ -1963,6 +1986,33 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   yandexAuthLink: '',
 
   doubleClickSMS: false,
+
+  openModalSelectAddress: false,
+  chooseAddrStreet: [],
+
+  // открытие/закрытие модалки выбора адреса доставки при условии что есть два и более похожих адреса
+  setActiveModalSelectAddress: (active, chooseAddrStreet) => {
+    set({ openModalSelectAddress: active, chooseAddrStreet})
+  },
+
+  // установить таймер для формы авторизации
+  setTimer: (timer) => {
+    set({ timer })
+
+    if(timer === 0) {
+      set({ timerPage: true })
+    } else {
+      set({ timerPage: false })
+    }
+  },
+
+  // установление таймера 
+  toTime: (seconds) => {
+    let date = new Date(null);
+    date.setSeconds(seconds);
+    date.toISOString().substring(14, 19)
+    return date.toISOString().substring(14, 19);
+  },
 
   // открытие/закрытие модалки вывода сообщения на клиенте
   setActiveModalAlert: (active, textAlert, statusAlert) => {
@@ -1992,11 +2042,6 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   setActiveModalAuth: (active) => {
     set({ openAuthModal: active });
   },
-  
-  // установление ошибки 
-  setErrTextAuth: (text) => {
-    set({ errTextAuth: text });
-  },
 
   // навигация между формами авторизации
   navigate: (typeLogin) => {
@@ -2020,6 +2065,8 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       pwdLogin: '',
       code: '',
       genPwd: '',
+      timer: 89,
+      timerPage: false,
     });
   },
 
@@ -2091,31 +2138,19 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       // }
     }
   },
-
-  // установление таймера 
-  toTime: (seconds) => {
-    let date = new Date(null);
-    date.setSeconds(seconds);
-    return date.toISOString().substring(14, 19);
-  },
-
+  
   // изменение/введение 4-х значного номера подтверждения
   changeCode: (code) => {
 
     set({ code });
 
-    if (code.length < 4) {
+    if (code.length < 4 || code === '') {
       set({ errTextAuth: '' });
     }
 
     if (code.length === 4) {
       get().checkCode();
     }
-  },
-
-  // сбрасывает/очищает поля ввода 4-х значного кода
-  clearCode: () => {
-    set({ code: '', errTextAuth: '' });
   },
 
   // генерация случаного пароля при регистарции
@@ -2162,7 +2197,8 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       set({
         errTextAuth: '',
         token: res.token,
-        userName: res.name,
+        userName: get().setNameUser(res.name),
+
         isAuth: 'auth'
       });
 
@@ -2203,7 +2239,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
         errTextAuth: '',
         is_sms: json.is_sms,
         token: json.token,
-        userName: json.name,
+        userName: get().setNameUser(json.name),
         openAuthModal: false,
         loading: false,
         isAuth: 'auth'
@@ -2235,7 +2271,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
         }else{
           set({
             token: token,
-            userName: json.user.name,
+            userName: get().setNameUser(json.user.name),
             isAuth: 'auth'
           });
         }
@@ -2260,7 +2296,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
         }else{
           set({
             token: token2,
-            userName: json.user.name,
+            userName: get().setNameUser(json.user.name),
             isAuth: 'auth'
           });
         }
@@ -2282,10 +2318,6 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     set({
       doubleClickSMS: true
     })
-
-    if(get().typeLogin !== 'loginSMSCode') {
-      get().navigate('loginSMSCode');
-    }
 
     const data = {
       type: 'create_profile',
@@ -2325,6 +2357,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     })
 
     if(get().typeLogin !== 'loginSMSCode') {
+      set({ timerPage: false, timer: 89 })
       get().navigate('loginSMSCode');
     }
 
@@ -2377,7 +2410,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     set({
       token: json.token,
-      userName: json.name,
+      userName: get().setNameUser(json.name),
       isAuth: 'auth'
     });
 
@@ -2399,12 +2432,11 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
   },
 
-  // тестовая аутенфикация
-  setActiveUser: (name) => {
+  // определение инициалов из имени клиента при авторизации
+  setNameUser: (name) => {
+    let userName = '';
 
-    console.log( name )
-    if( name ){
-      let userName = '';
+    if(name){
       const nameSplit = name.split(' ');
 
       if(nameSplit.length === 1) {
@@ -2413,10 +2445,9 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
         userName = nameSplit[0][0].toUpperCase() + nameSplit[1][0].toUpperCase()
       }
 
-      // console.log('setActiveUser ===>', userName);
-
-      set({ userName });
     }
+
+    return userName;
   }
 }), shallow);
 

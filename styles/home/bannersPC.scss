@@ -1,145 +1,167 @@
 @import '../settings.scss';
 
+.eridBannerPC {
+  position: absolute;
+  right: $MyScale380;
+  bottom: $MyScale40;
+  width: $MyScale200;
+  height: $MyScale50;
+  border-radius: $MyScale50;
+  background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+
+  & .spanContainer {
+    display: flex;
+    flex-direction: column;
+    margin-left: auto;
+    margin-right: $MyScale30;
+    color: #fff;
+    line-height: $MyScale10;
+  }
+
+  & .text {
+    color: #fff !important;
+    font-weight: 300 !important;
+    margin-left: auto;
+  }
+}
+
 .modalBannerPC {
   & .MuiDialog-paper {
     border-radius: $MyScale80;
     overflow: visible;
     margin: $MyScale240 0;
-    width: $MyScale2520;
     max-width: none !important;
-  }
-}
+    width: $MyScale2520;
 
-.BannerPC {
-  & .ImgItem {
-    //position: relative;
-
-    // & img {
-    //   object-fit: contain;
-    //   image-rendering: auto;
-    //   width: 100%;
-    //   height: auto;
-    //   border-radius: 1.444vw;
-    // }
-
-    & .Item {
-      width: $MyScale2520;
-      height: $MyScale800;
-      background-color: #3faad8;
-      border-radius: $MyScale80;
+    .BannerPC {
       position: relative;
 
-      & .Group {
-        z-index: 5;
+      & .iconBTN {
         position: absolute;
-        left: $MyScale160;
-        bottom: $MyScale80;
-        width: $MyScale860;
-        height: $MyScale80;
-        display: flex;
-        align-items: center;
-        justify-content: space-between;
+        left: -$MyScale80;
+        padding: 0;
+        background-color: transparent;
+        z-index: 50;
 
-        & button {
-          background: #ffffff;
-          height: $MyScale80;
-          width: $MyScale400;
-          border-radius: $MyScale45;
-          cursor: pointer;
-          display: flex;
-          align-items: center;
+        & svg {
+          width: $MyScale60;
+          height: $MyScale60;
+          overflow: visible;
+          border-radius: $MyScale30;
+          background: rgba(0, 0, 0, 0.5);
+        }
+      }
 
-          & span {
-            text-decoration: line-through;
-            text-decoration-color: #dd1a32;
-            text-decoration-thickness: $MyScale3;
-            margin-right: $MyScale20;
-          }
+      & .ImgItem {
+        position: relative;
+
+        & img {
+          border-radius: $MyScale80;
+          object-fit: contain;
+          image-rendering: auto;
+          width: 100%;
+          height: auto;
         }
 
-        & .spanButton {
+        & span {
+          left: $MyScale160;
+          bottom: $MyScale40;
+          position: absolute;
           height: $MyScale80;
           width: $MyScale400;
           color: #fff;
           display: flex;
           align-items: center;
           cursor: pointer;
+          & svg {
+            width: $MyScale25;
+            height: $MyScale25;
+          }
         }
       }
-    }
-  }
 
-  & .DescItem {
-    display: flex;
-    margin-top: $MyScale80;
-    margin-bottom: $MyScale160;
-    justify-content: space-between;
-    width: $MyScale2260;
-
-    & .FirstItem {
-      width: $MyScale980;
-      display: flex;
-      flex-direction: column;
-
-      & .Title {
-        margin-left: $MyScale60;
-        margin-bottom: $MyScale30;
+      & .erid {
+        justify-content: flex-start;
+        width: 100%;
+        margin-left: $MyScale120;
+        margin-top: $MyScale40;
       }
 
-      & .List {
+      & .DescItem {
         display: flex;
-        flex-direction: column;
+        margin-top: $MyScale60;
+        margin-bottom: $MyScale60;
+        justify-content: space-between;
+        width: $MyScale2260;
 
-        & div {
+        & .FirstItem {
+          width: $MyScale980;
           display: flex;
-          margin-bottom: $MyScale20;
+          flex-direction: column;
 
-          .itemNumber {
-            width: $MyScale60;
-            flex-direction: column;
-            justify-content: flex-start;
-            align-items: flex-end;
-            margin-top: $MyScale30;
+          & .Title {
+            margin-left: $MyScale60;
+            margin-bottom: $MyScale30;
           }
 
-          .itemImg {
-            width: $MyScale280;
-
-            & img {
-              object-fit: contain;
-              image-rendering: auto;
-              width: 100%;
-              height: auto;
-            }
-          }
-
-          .itemDesc {
-            width: $MyScale600;
+          & .List {
             display: flex;
-            justify-content: flex-start;
             flex-direction: column;
 
-            & span {
-              height: $MyScale120;
-              margin-left: $MyScale40;
-              text-align: left;
+            & div {
               display: flex;
-              align-items: center;
+              margin-bottom: $MyScale20;
+
+              .itemNumber {
+                width: $MyScale60;
+                flex-direction: column;
+                justify-content: flex-start;
+                align-items: flex-end;
+                margin-top: $MyScale30;
+              }
+
+              .itemImg {
+                width: $MyScale280;
+
+                & img {
+                  object-fit: contain;
+                  image-rendering: auto;
+                  width: 100%;
+                  height: auto;
+                }
+              }
+
+              .itemDesc {
+                width: $MyScale600;
+                display: flex;
+                justify-content: flex-start;
+                flex-direction: column;
+
+                & span {
+                  height: $MyScale120;
+                  margin-left: $MyScale40;
+                  text-align: left;
+                  display: flex;
+                  align-items: center;
+                }
+              }
             }
           }
         }
-      }
-    }
 
-    & .SecondItem {
-      width: $MyScale1080;
-      display: flex;
-      flex-direction: column;
+        & .SecondItem {
+          width: $MyScale1080;
+          display: flex;
+          flex-direction: column;
 
-      & .TextDecor {
-        text-decoration: underline;
-        color: #dd1a32;
-        cursor: pointer;
+          & div {
+            & p {
+              @include font40_400();
+            }
+          }
+        }
       }
     }
   }

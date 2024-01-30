@@ -91,6 +91,8 @@ export default function ModalOrder() {
 
   const [ isShowAddr, setShowAddr ] = useState(true);
 
+  const order_status = parseInt(modalOrder?.order?.is_delete) === 1 ? `Отменен ${modalOrder?.order?.del_date_time}` : parseInt(modalOrder?.order?.status_order) === 6 ? `Получен ${modalOrder?.order?.close_date_time}` : `Доставим до ${modalOrder?.order?.max_time_order}`;
+
   return (
     <Dialog
       onClose={ () => closeOrder() }
@@ -111,7 +113,7 @@ export default function ModalOrder() {
               <Typography variant="h5" component="h1">Заказ {modalOrder?.order?.this_status_order}</Typography>
             </Grid>
             <Grid item xs={12} className='header_time'>
-              <Typography variant="h5" component="span">Доставим до {modalOrder?.order?.max_time_order}</Typography>
+              <Typography variant="h5" component="span">{order_status}</Typography>
             </Grid>
 
             {modalOrder?.order?.type_order_ == '1' ?

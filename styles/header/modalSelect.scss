@@ -1,0 +1,106 @@
+@import '../settings';
+
+.modalSelectPC {
+  & .MuiDialog-paper {
+    border-radius: $MyScale40;
+    overflow: visible;
+    margin: 0;
+    width: $MyScale1500;
+    max-width: none !important;
+
+    & .iconBTN {
+      position: absolute;
+      left: -$MyScale80;
+      top: 0;
+      padding: 0;
+      background-color: transparent;
+      z-index: 50;
+
+      & svg {
+        width: $MyScale60;
+        height: $MyScale60;
+        overflow: visible;
+        border-radius: $MyScale30;
+        background: rgba(0, 0, 0, 0.5);
+      }
+    }
+
+    & .container {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+
+      & span {
+        align-self: center;
+        @include font50_500();
+        margin-bottom: $MyScale60;
+      }
+
+      & ul {
+        width: 100%;
+        padding: 0;
+        & li {
+          @include font30_400();
+          margin-bottom: $MyScale40;
+          cursor: pointer;
+          border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.2);
+        }
+      }
+    }
+  }
+}
+
+#modalSelectMobile {
+  z-index: 1400;
+
+  & .MuiDrawer-paper {
+    max-height: $MyScale1320_mobile;
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+    overflow-y: auto;
+
+    .ContainerList {
+      margin: $MyScale40_mobile $MyScale125_mobile $MyScale232_mobile
+        $MyScale125_mobile;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      & .Line {
+        height: $MyScale10_mobile;
+        width: $MyScale150_mobile;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: $MyScale5_mobile;
+        margin-bottom: $MyScale80_mobile;
+      }
+
+      & .loginHeader {
+        height: $MyScale120_mobile;
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: $MyScale26_mobile;
+        & span {
+          @include font75_700();
+        }
+      }
+
+      & ul {
+        width: 100%;
+        padding: 0;
+        & li {
+          min-height: $MyScale163_mobile;
+          border-bottom: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+          padding: 0;
+          & span {
+            margin-left: $MyScale40_mobile;
+            display: flex;
+            align-items: center;
+            height: 100%;
+            @include font50_500();
+          }
+        }
+      }
+    }
+  }
+}

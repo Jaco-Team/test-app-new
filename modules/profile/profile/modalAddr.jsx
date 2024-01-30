@@ -38,8 +38,10 @@ export default function ModalAddr(){
   const [ cityID, setCityID ] = useState(active_city);
 
   useEffect(() => {
-    if( street && street.length > 0 && home.length > 0 ){
+    if(street && street.length > 0 && home.length > 0){
       checkStreet(street, home, pd, cityID);
+    } else {
+      checkStreet(null);
     }
   }, [street, home, pd]);
 
@@ -137,7 +139,7 @@ export default function ModalAddr(){
               <YMaps query={{ lang: 'ru_RU', apikey: 'f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8' }}>
                 <Map defaultState={center_map} instanceRef={ref2} width="100%" height="100%">
 
-                  { !chooseAddrStreet || Object.entries(chooseAddrStreet).length === 0 ? false :
+                  { !chooseAddrStreet || Object.entries(chooseAddrStreet).length === 0 ? null :
                     <Placemark geometry={chooseAddrStreet?.xy} options={{ iconLayout: 'default#image', iconImageHref: '/Frame.png', iconImageSize: [35, 50], iconImageOffset: [-15, -50] }} />
                   }
 

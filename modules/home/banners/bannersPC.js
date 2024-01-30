@@ -1,9 +1,10 @@
-import React, { useEffect, useRef } from 'react';
+import React, { useEffect, useRef, useState } from 'react';
+import { useHomeStore, useHeaderStore } from '../../../components/store.js';
+import Image from 'next/image';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-
-import Image from 'next/image';
+import Tooltip from '@mui/material/Tooltip';
 
 import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -14,24 +15,25 @@ import 'swiper/css/pagination';
 
 import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
 
-import { useHomeStore } from '../../../components/store.js';
-
 export default React.memo(function BannersPC() {
   const [bannerList, setActiveBanner, activeSlider] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider]);
+  const [setActiveModalAlert] = useHeaderStore((state) => [state.setActiveModalAlert]);
 
   const swiperRef = useRef(null);
+
+  const [openTooltip, setOpenTooltip] = useState(false);
 
   useEffect(() => {
     const swiper = document.querySelector('.swiper').swiper;
 
     const timer = setInterval(() => {
-      if( activeSlider ){
+      if(activeSlider && !openTooltip){
         swiper.slideNext();
       }
     }, 5000);
     
     return () => clearInterval(timer);
-  });
+  }, [openTooltip]);
 
   useEffect(() => {
     if( bannerList.length > 0 ){
@@ -39,6 +41,19 @@ export default React.memo(function BannersPC() {
       swiper.activeIndex = 0;
     }
   }, [bannerList]);
+
+  const handleOpen = () => {
+    setOpenTooltip(true);
+  };
+ 
+  const handleClose = () => {
+    setOpenTooltip(false);
+  };
+
+  const handleCopy = () => {
+    setOpenTooltip(false);
+    setActiveModalAlert(true, 'Ссылка успешно скопирована', true);
+  }
 
   /*
     <div className="Item" style={{ backgroundColor: item.id === '84' ? '#3faad8' : item.id === '80' ? '#B570DF' : item.id === '48' ? '#F45773' : null}}>
@@ -53,8 +68,10 @@ export default React.memo(function BannersPC() {
               </div>
   */
 
+
   return (
     <Box component="div" className="BannerPC BannerFontPC">
+
       <Grid className="ImgItem">
         <Swiper
           modules={[Autoplay, Navigation, Pagination, A11y, EffectCreative]}
@@ -75,14 +92,53 @@ export default React.memo(function BannersPC() {
         >
 
           {bannerList.map((item, key) => (
-            <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
+            <SwiperSlide key={key} dataswiperautoplay="2000" onClick={openTooltip ? () => {} : () => setActiveBanner(true, item, swiperRef.current.swiper)}>
               <Image alt={item.promo_title} src={"https://storage.yandexcloud.net/site-home-img/"+item.img_new+"3700х1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '2.4vw' }} />
+                <Tooltip
+                open={openTooltip}
+                onOpen={handleOpen}
+                onClose={handleClose}
+                title={<span>Рекламодатель:<br /> ООО "Мистер Жако"<br /> ИНН 6321390811<br /> erid: {item.erid}<br /> <span style={{ color: '#cc0033', textDecoration: 'underline', cursor: 'pointer' }} onClick={handleCopy}><span>Копировать ссылку</span></span> </span>} 
+                arrow placement="top" 
+                className='eridBannerPC'
+                  componentsProps={{
+                    tooltip: {
+                      sx: { 
+                        bgcolor: '#fff', 
+                        color: 'rgba(0, 0, 0, 0.80)',
+                        width: '10.830324909747vw',
+                        borderRadius: '1.0830324909747vw',
+                        p: '1.0830324909747vw',
+                        fontStyle: 'normal',
+                        fontWeight: 400,
+                        fontSize: '0.72202166064982vw',
+                        '& .MuiTooltip-arrow': {
+                          color: '#fff',
+                          '&::before': {
+                            backgroundColor: 'white',
+                          },
+                        },
+                      },
+                    },
+                  }}
+                >
+                  <span>
+                    <span className="ItemDesk text">Реклама</span>
+                    <span className='spanContainer'>
+                      <span>•</span>
+                      <span>•</span>
+                      <span>•</span>
+                    </span>
+                  </span>
+                </Tooltip>
             </SwiperSlide>
           ))}
           <div className="swiper-button-prev"><ArrowIcon width='2.166065vw' height='2.166065vw' /></div>
           <div className="swiper-button-next"><NextIcon width='2.166065vw' height='2.166065vw' /></div>
         </Swiper>
       </Grid>
+
+
     </Box>
   );
 });

@@ -24,11 +24,9 @@ import { Fade } from '@/ui/Fade';
 import { roboto } from '@/ui/Font';
 
 export default function ModalAuth({ city }) {
-    
   const [form, setForm] = useState(false);
-  const [timerPage, setTimerPage] = useState(null);
 
-  const [openAuthModal, closeModalAuth, typeLogin, navigate, preTypeLogin, matches, isAuth, getYandexLinkAuth, yandexAuthCheck] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth, state.typeLogin, state.navigate, state.preTypeLogin, state.matches, state.isAuth, state.getYandexLinkAuth, state.yandexAuthCheck]);
+  const [openAuthModal, closeModalAuth, typeLogin, navigate, matches, isAuth, getYandexLinkAuth, yandexAuthCheck] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth, state.typeLogin, state.navigate, state.matches, state.isAuth, state.getYandexLinkAuth, state.yandexAuthCheck]);
 
   useEffect( () => {
     if( openAuthModal === true ){
@@ -69,9 +67,9 @@ export default function ModalAuth({ city }) {
     closeModal()
   }
 
-  const login = typeLogin === 'loginSMSCode' ? preTypeLogin === 'loginSMS' ? 'Проверочный код' : timerPage === null || timerPage ? 'Проверочный код' : 'Не дозвонились' : typeLogin === 'resetPWD' ? 'Новый пароль' : typeLogin === 'createPWD' ? 'Придумайте пароль' : typeLogin === 'finish' ? 'Всё получилось!' : typeLogin === 'loginSMS' ? 'Вход по СМС' : 'Авторизация';
+  const login = typeLogin === 'loginSMSCode' ? 'Проверочный код' : typeLogin === 'resetPWD' ? 'Новый пароль' : typeLogin === 'createPWD' ? 'Придумайте пароль' : typeLogin === 'finish' ? 'Всё получилось!' : typeLogin === 'loginSMS' ? 'Вход по СМС' : 'Авторизация';
 
-  console.log( 'typeLogin', typeLogin )
+  // console.log( 'typeLogin', typeLogin )
 
   return (
     <Dialog
@@ -108,7 +106,7 @@ export default function ModalAuth({ city }) {
           {typeLogin === 'resetPWD' ? <ResetPWD /> : null}
           {typeLogin === 'loginSMS' ? <LoginSMS /> : null}
           {typeLogin === 'create' ? <Create city={city} closeModal={closeModal} /> : null}
-          {typeLogin === 'loginSMSCode' ? <LoginSMSCode setTimerPage={setTimerPage} /> : null}
+          {typeLogin === 'loginSMSCode' ? <LoginSMSCode /> : null}
           {typeLogin === 'finish' ? <Finish closeModal={closeModal} /> : null}
 
         </Box>

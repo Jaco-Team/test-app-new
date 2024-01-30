@@ -52,11 +52,15 @@
           align-items: center;
 
           & .loginErr {
+            width: $MyScale800_mobile;
             height: $MyScale50_mobile;
             display: flex;
             justify-content: center;
             align-items: center;
+            text-align: center;
+            margin-bottom: $MyScale30_mobile;
             & > span {
+              line-height: $MyScale40_mobile;
               @include font40_400();
               color: #dd1a32 !important;
             }
@@ -333,12 +337,36 @@
           flex-direction: column;
           align-items: center;
 
+          & .loginErr {
+            width: $MyScale800_mobile;
+            height: $MyScale50_mobile;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            text-align: center;
+            margin-bottom: $MyScale60_mobile;
+            & > span {
+              line-height: $MyScale40_mobile;
+              @include font40_400();
+              color: #dd1a32 !important;
+            }
+          }
+
           & .loginSubHeader {
             height: $MyScale60_mobile;
             margin-bottom: $MyScale30_mobile;
 
             & span {
               @include font50_500();
+            }
+          }
+
+          & .loginSubHeader2 {
+            height: $MyScale60_mobile;
+            margin-bottom: $MyScale60_mobile;
+
+            & span {
+              @include font40_400();
             }
           }
 
@@ -423,7 +451,7 @@
           & .loginTimer {
             height: $MyScale60_mobile;
             margin-bottom: $MyScale60_mobile;
-
+     
             & span {
               @include font40_400();
               color: rgba(0, 0, 0, 0.4) !important;

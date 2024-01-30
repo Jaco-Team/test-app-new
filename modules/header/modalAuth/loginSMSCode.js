@@ -1,4 +1,4 @@
-import { useState, useEffect, useRef } from 'react';
+import { useRef, useEffect } from 'react';
 import { useHeaderStore } from '@/components/store';
 
 import { ClearAuthMobile, VectorRightAuthMobile } from '@/ui/Icons';
@@ -8,41 +8,32 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 
 import AuthCode from 'react-auth-code-input';
+import Timer from './timer';
 
-export default function LoginSMSCode({ setTimerPage }) {
+export default function LoginSMSCode() {
   const inputRef = useRef(null);
 
-  const [changeCode, createProfile, checkCode, toTime, navigate, loginLogin, clearCode, preTypeLogin, code, matches] = useHeaderStore( state => [state.changeCode, state.createProfile, state.checkCode, state.toTime, state.navigate, state.loginLogin, state.clearCode, state.preTypeLogin, state.code, state.matches]);
-
-  const [timer, setTimer] = useState(89);
+  const [changeCode, createProfile, checkCode, navigate, loginLogin, preTypeLogin, code, matches, timerPage, setTimer, errTextAuth] = useHeaderStore( state => [state.changeCode, state.createProfile, state.checkCode, state.navigate, state.loginLogin, state.preTypeLogin, state.code, state.matches, state.timerPage, state.setTimer, state.errTextAuth]);
 
   useEffect(() => {
-    let interval;
-
-    if (timer > 0) {
-      interval = setInterval(() => {
-        setTimer((timer) => timer - 1);
-        setTimerPage(timer - 1);
-      }, 1000);
-    } else {
+    if (timerPage) {
       inputRef.current.clear();
-      clearCode();
-    }
-
-    return () => clearInterval(interval);
-  }, [timer]);
+      changeCode('');
+    } 
+  }, [changeCode, timerPage]);
 
   const reSendSMS = () => {
     createProfile();
     setTimer(89);
+    inputRef.current.clear();
+    changeCode('');
   };
 
   const changeNumber = () => {
     navigate(preTypeLogin);
-    setTimerPage(null);
     changeCode('');
   };
-
+  
   /*
     {timer === 0 && preTypeLogin === 'loginSMS' ? (
         <div className={matches ? 'loginSubHeader' : 'loginSubHeader2'} onClick={reSendSMS}>
@@ -66,17 +57,19 @@ export default function LoginSMSCode({ setTimerPage }) {
   */
 
   return (
-    <div
-      className={matches ? 'modalLoginSMSCodeMobile' : 'modalLoginSMSCodePC'}
-    >
+    <div className={matches ? 'modalLoginSMSCodeMobile' : 'modalLoginSMSCodePC'}>
+      <div className="loginErr">
+        <Typography component="span">{errTextAuth}</Typography>
+      </div>
+      
       <div className="loginSubHeader">
         <Typography component="span">{loginLogin}</Typography>
       </div>
 
       <Box className="loginLine">
-        {timer === 0 ? (
+        {timerPage ? (
           <LinearProgress variant="determinate" style={{ background: '#DD1A32' }} value={100} />
-        ) : (
+          ) : (
           <LinearProgress />
         )}
       </Box>
@@ -106,20 +99,16 @@ export default function LoginSMSCode({ setTimerPage }) {
           )}
         </div>
       </div>
-
       
-        { timer === 0 ?
-          <div className={matches ? 'loginSubHeader' : 'loginSubHeader2'} onClick={reSendSMS}>
-            <Typography component="span" style={{ textDecoration: 'underline', color: '#DD1A32', cursor: 'pointer' }}>
-              Отправить смс еще раз
-            </Typography>
-          </div>
-            :
-          <div className="loginTimer">
-            <Typography component="span">{toTime(timer)}</Typography>
-          </div>
-        }
-      
+      {timerPage ?
+        <div className='loginSubHeader2' onClick={reSendSMS}>
+          <Typography component="span" style={{ textDecoration: 'underline', color: '#DD1A32', cursor: 'pointer' }}>
+            Отправить смс еще раз
+          </Typography>
+        </div>
+          :
+        <Timer />
+      }
 
       <div className="loginPrev">
         <Typography component="span" onClick={changeNumber}>
@@ -128,4 +117,4 @@ export default function LoginSMSCode({ setTimerPage }) {
       </div>
     </div>
   );
-}
+};

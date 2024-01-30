@@ -10,7 +10,9 @@ export default function ProfileIconHeaderPC() {
   
   return (
     <div className={userName ? 'activeProfileCat' : 'profileHeaderPC'} >
-      {isAuth == 'auth' ? <Link href={'/' + thisCity + '/zakazy'}><span>{userName}</span></Link> : <ProfileIcon onClick={ () => setActiveModalAuth(true) } style={{ cursor: 'pointer' }}/> }
+      {isAuth === 'auth' && userName ? <Link href={'/' + thisCity + '/zakazy'}><span>{userName}</span></Link> 
+        : isAuth === 'auth' && !userName ? <Link href={'/' + thisCity + '/zakazy'}><ProfileIcon /></Link> 
+        : <ProfileIcon onClick={ () => setActiveModalAuth(true) } style={{ cursor: 'pointer' }}/> }
     </div>
   );
 }

@@ -1,11 +1,80 @@
 @import '../settings.scss';
 
+.tooltip_banner_mobile {
+  position: absolute;
+  left: $MyScale890_mobile;
+  bottom: $MyScale57_3_mobile;
+  width: $MyScale180_mobile;
+  background-color: #fff;
+  border-radius: $MyScale20_mobile;
+  display: flex;
+  flex-direction: column;
+  padding: $MyScale20_mobile;
+  white-space: pre-wrap;
+
+  & .tooltip_text_mobile {
+    @include font15_300();
+  }
+
+  & .tooltip_copy_mobile {
+    @include font15_300();
+    text-decoration: underline;
+    color: #DD1A32 !important;
+    text-decoration-thickness: $MyScale1_mobile;
+  }
+
+}
+
+.erid_banner_mobile {
+  position: absolute;
+  right: $MyScale100_mobile;
+  bottom: $MyScale20_mobile;
+  width: $MyScale140_mobile;
+  height: $MyScale30_mobile;
+  border-radius: $MyScale30_mobile;
+  background-color: rgba(0, 0, 0, 0.1);
+  display: flex;
+  align-items: center;
+
+  & .erid_text_mobile {
+    color: #fff !important;
+    @include font18_400();
+    margin-left: $MyScale20_mobile;
+    font-weight: 300 !important;
+  }
+
+  & .erid_svg_mobile {
+    width: $MyScale20_mobile;
+    height: $MyScale20_mobile;
+    margin-left: auto;
+    margin-right: $MyScale10_mobile;
+
+    & path {
+      fill: #fff;
+    }
+  }
+}
+
+.erid_banner_mobile:hover:after {
+  content: '';
+  position: absolute;
+  bottom: 110%;
+  left: 50%;
+  margin-left: -$MyScale5_mobile;
+  width: 0;
+  border-top: $MyScale5_mobile solid #fff;
+  border-right: $MyScale5_mobile solid transparent;
+  border-left: $MyScale5_mobile solid transparent;
+  font-size: 0;
+  line-height: 0;
+}
+
 .BannerMobile {
-  & .Item {
+
+  & .item_banner_image {
     width: $MyScale1090_mobile;
     margin: $MyScale200_mobile $MyScale40_mobile 0 $MyScale40_mobile;
-    //height: $MyScale346_mobile;
-    height: calc( $MyScale1090_mobile / 2 );
+    height: calc($MyScale1090_mobile / 2);
     border-radius: $MyScale40_mobile;
     background-color: #3faad8;
   }
@@ -42,68 +111,56 @@
 
       & .ImgItemMobile {
         width: 100%;
+        position: relative;
 
-        & .ItemMobile {
-          height: $MyScale450_mobile;
+        & img {
           border-radius: $MyScale80_mobile;
-          position: relative;
-
-          & .Group {
-            z-index: 5;
-            position: absolute;
-            left: $MyScale80_mobile;
-            bottom: $MyScale40_mobile;
-            width: $MyScale620_mobile;
-            height: $MyScale60_mobile;
-            display: flex;
-            align-items: center;
-            justify-content: space-between;
-
-            & button {
-              background: #ffffff;
-              height: $MyScale60_mobile;
-              width: $MyScale340_mobile;
-              border-radius: $MyScale60_mobile;
-              display: flex;
-              align-items: center;
-
-              & span {
-                text-decoration: line-through;
-                text-decoration-color: #dd1a32;
-                text-decoration-thickness: $MyScale3_mobile;
-                margin-right: $MyScale20_mobile;
-              }
-            }
-
-            & .spanButton {
-              height: $MyScale60_mobile;
-              width: $MyScale240_mobile;
-              color: #fff;
-              display: flex;
-              align-items: center;
-              & svg {
-                width: $MyScale24_mobile;
-                height: $MyScale24_mobile;
-              }
-            }
+          object-fit: contain;
+          image-rendering: auto;
+          width: 100%;
+          height: auto;
+        }
+        & span {
+          height: $MyScale60_mobile;
+          width: $MyScale240_mobile;
+          color: #fff;
+          display: flex;
+          align-items: center;
+          position: absolute;
+          left: $MyScale80_mobile;
+          bottom: $MyScale10_mobile;
+          & svg {
+            width: $MyScale24_mobile;
+            height: $MyScale24_mobile;
           }
         }
+      }
+
+      & .erid {
+        justify-content: flex-start;
+        width: 100%;
+        margin-left: $MyScale50_mobile;
+        margin-top: $MyScale20_mobile;
       }
 
       & .DescItemMobile {
         max-width: calc(100% - $MyScale100_mobile);
         display: flex;
         flex-direction: column;
-        margin-top: $MyScale60_mobile;
+        margin-top: $MyScale40_mobile;
 
         & .FirstItemMobile {
           display: flex;
           flex-direction: column;
-          margin-bottom: $MyScale40_mobile;
 
-          & .TextDecor {
-            text-decoration: underline;
-            color: #dd1a32;
+          & span {
+            margin-bottom: $MyScale10_mobile;
+          }
+
+          & div {
+            & p {
+              @include font30_400();
+            }
           }
         }
 
@@ -125,7 +182,7 @@
               margin-bottom: $MyScale20_mobile;
 
               .itemNumber {
-                width: $MyScale60;
+                width: $MyScale60_mobile;
                 flex-direction: column;
                 justify-content: flex-start;
                 align-items: flex-end;

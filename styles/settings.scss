@@ -31,9 +31,10 @@ $MyScale33: 1.1913357400722vw;
 $MyScale34: 1.2274368231047vw;
 $MyScale35: 1.2635379061372vw;
 $MyScale36: 1.2996389891697vw;
-$MyScale37: 1.33574007vw;
+$MyScale37: 1.3357400722022vw;
 $MyScale40: 1.4440433212996vw;
 $MyScale40_8: 1.472924vw;
+$MyScale41: 1.4801444043321vw;
 $MyScale43: 1.5523465703971vw;
 $MyScale44: 1.5884476534296vw;
 $MyScale45: 1.6245487364621vw;
@@ -52,7 +53,11 @@ $MyScale72: 2.5992779783394vw;
 $MyScale75: 2.7075812274368vw;
 $MyScale76: 2.7436823104693vw;
 $MyScale77: 2.7797833935018vw;
+$MyScale79: 2.8519855595668vw;
 $MyScale80: 2.8880866425993vw;
+$MyScale81: 2.9241877256318vw;
+$MyScale82: 2.9602888086643vw;
+$MyScale83: 2.9963898916968vw;
 $MyScale84: 3.0324909747292vw;
 $MyScale90: 3.2490974729242vw;
 $MyScale91: 3.2851985559567vw;
@@ -151,6 +156,7 @@ $MyScale13_mobile: 1.1111111111111vw;
 $MyScale15_mobile: 1.2820512820513vw;
 $MyScale16_mobile: 1.3675213675214vw;
 $MyScale17_mobile: 1.4529914529915vw;
+$MyScale18_mobile: 1.5384615384615vw;
 $MyScale20_mobile: 1.7094017094017vw;
 $MyScale21_mobile: 1.7948717948718vw;
 $MyScale22_mobile: 1.8803418803419vw;
@@ -167,6 +173,7 @@ $MyScale34_mobile: 2.9059829059829vw;
 $MyScale35_mobile: 2.991452991453vw;
 $MyScale36_mobile: 3.0769230769231vw;
 $MyScale37_mobile: 3.1623931623932vw;
+$MyScale38_mobile: 3.2478632478632vw;
 $MyScale39_mobile: 3.3333333333333vw;
 $MyScale40_mobile: 3.4188034188034vw;
 $MyScale42_24_mobile: 3.6102564102564vw;
@@ -305,10 +312,14 @@ $MyScale792_mobile: 67.692307692308vw;
 $MyScale794_mobile: 67.863247863248vw;
 $MyScale800_mobile: 68.376068376068vw;
 $MyScale820_mobile: 70.08547008547vw;
+$MyScale825_mobile: 70.512820512821vw;
+$MyScale830_mobile: 70.940170940171vw;
 $MyScale840_mobile: 71.794871794872vw;
 $MyScale850_mobile: 72.649572649573vw;
 $MyScale860_mobile: 73.504273504274vw;
+$MyScale890_mobile: 76.068376068376vw;
 $MyScale900_mobile: 32.490974729242vw;
+$MyScale910_mobile: 77.777777777778vw;
 $MyScale918_mobile: 78.461538461538vw;
 $MyScale919_6_mobile: 78.598290598291vw;
 $MyScale920_mobile: 78.632478632479vw;
@@ -360,15 +371,26 @@ $MyScale1871_mobile: 159.91452991453vw;
   }
 }
 
+@mixin font15_300() {
+  font-style: normal;
+  font-weight: 300;
+
+  // @include fonsNew(0.64981949458484vw, var(--inter-font));
+
+  @media (max-width: $MyMaxWidth) {
+    @include fonsNew($MyScale15_mobile, var(--inter-font));
+  }
+}
+
 @mixin font18_400() {
   font-style: normal;
   font-weight: 400;
 
   @include fonsNew(0.64981949458484vw, var(--inter-font));
 
-  // @media (max-width: $MyMaxWidth) {
-  //   @include fonsNew($MyScale20_mobile, var(--inter-font));
-  // }
+  @media (max-width: $MyMaxWidth) {
+    @include fonsNew($MyScale18_mobile, var(--inter-font));
+  }
 }
 
 @mixin font20_400() {

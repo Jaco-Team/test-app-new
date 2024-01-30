@@ -71,6 +71,8 @@ export default function AddressModalMobile() {
   useEffect(() => {
     if( street && street.length > 0 && home.length > 0 ){
       checkStreet(street, home, pd, cityID);
+    } else {
+      checkStreet(null);
     }
   }, [street, home, pd]);
 

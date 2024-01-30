@@ -120,10 +120,10 @@ html:not([data-scroll='0']) .blockShadow {
       display: flex;
       align-items: center;
       justify-content: space-between;
-      margin-right: $MyScale80;
+      margin-right: $MyScale79;
 
       & svg {
-        width: $MyScale40;
+        width: $MyScale41;
         height: $MyScale53;
         margin-right: $MyScale20;
       }
@@ -146,9 +146,12 @@ html:not([data-scroll='0']) .blockShadow {
     }
 
     & .profileHeaderPC {
-      width: 2.8880866425993vw;
-      height: 2.8880866425993vw;
-      margin-right: 1.4440433212996vw;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: $MyScale80;
+      height: $MyScale80;
+      margin-right: $MyScale40;
 
       & svg {
         width: 100%;
