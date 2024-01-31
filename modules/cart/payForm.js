@@ -1,49 +1,56 @@
-import { useRef, useEffect } from 'react';
-
-import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-
-import { useCartStore, useCitiesStore } from '@/components/store.js';
-
-import Button from '@mui/material/Button';
-import Typography from '@mui/material/Typography';
-
-import { roboto } from '@/ui/Font.js';
+import { useCartStore, useHeaderStore } from '@/components/store.js';
 
 import Dialog from '@mui/material/Dialog';
+import DialogContent from '@mui/material/DialogContent';
+import IconButton from '@mui/material/IconButton';
+import Backdrop from '@mui/material/Backdrop';
+
+import { IconClose } from '@/ui/Icons';
+import { roboto } from '@/ui/Font.js';
 
 export default function PayForm() {
-  //console.log('render CartMapPoints');
+  console.log('render PayForm');
 
-  const ref = useRef();
-
-  const [openPayForm, setActiveCartMap, orderPic, center_map, zones, changePointClick] = useCartStore((state) => [state.openPayForm, state.setActiveCartMap, state.orderPic, state.center_map, state.zones, state.changePointClick]);
-  const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
-
-  useEffect(() => {
-    if(ref.current && center_map?.center){
-      ref.current.setCenter([zones[0].xy_center_map['latitude'], zones[0].xy_center_map['longitude']]);
-    }
-  }, [zones]);
+  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [openPayForm, setPayForm] = useCartStore((state) => [state.openPayForm, state.setPayForm]);
 
   return (
-    <Dialog
-      anchor={'bottom'}
-      open={openPayForm}
-      onClose={() => {}}
-      onOpen={() => {}}
-      id="CartMapPoints"
-      className={roboto.variable}
-      disableSwipeToOpen
-    >
-      <div className="ContainerCartMap">
-        <div className="Line"></div>
-        
-
-        <div style={{ minHeight: '80.34188034188vw', width: '100%', marginBottom: '6.8376068376068vw' }} id="payment-form">
-          
-        </div>
-      
-      </div>
-    </Dialog>
+    <>
+      {matches ? (
+        <Dialog
+          onClose={() => setPayForm(false)}
+          className={'cartPayFromMobile ' + roboto.variable}
+          open={openPayForm}
+          slots={Backdrop}
+          slotProps={{ timeout: 500 }}
+          fullWidth
+        >
+          <DialogContent>
+            <div className="ContainerCart">
+              <div className="Line"></div>
+              <div id="payment-form" />
+            </div>
+          </DialogContent>
+        </Dialog>
+      ) : (
+        <Dialog
+          onClose={() => setPayForm(false)}
+          className={'cartPayFromPC ' + roboto.variable}
+          open={openPayForm}
+          slots={Backdrop}
+          slotProps={{ timeout: 500 }}
+          fullWidth
+        >
+          <DialogContent>
+            <IconButton className="iconBTN" onClick={() => setPayForm(false)}>
+              <IconClose />
+            </IconButton>
+            <div className="ContainerCart">
+              <div id="payment-form" />
+            </div>
+          </DialogContent>
+        </Dialog>
+      )}
+    </>
   );
 }

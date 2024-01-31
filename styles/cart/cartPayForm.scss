@@ -1,0 +1,82 @@
+@import '../settings';
+
+#payment-form {
+  width: 100%;
+}
+
+.cartPayFromMobile {
+  & .MuiDialog-container {
+    display: flex;
+    align-items: flex-end;
+
+    & .MuiDialog-paper {
+      border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+      overflow: visible;
+      margin: 0;
+      padding: 0;
+      width: 100%;
+      max-width: none !important;
+      height: 700px;
+      max-height: calc(100% - $MyScale200_mobile);
+
+      & .MuiDialogContent-root {
+        padding: 0;
+        overflow-y: auto;
+
+        .ContainerCart {
+          margin-bottom: $MyScale80_mobile;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & .Line {
+            height: $MyScale10_mobile;
+            width: $MyScale150_mobile;
+            margin-top: $MyScale40_mobile;
+            background: rgba(0, 0, 0, 0.2);
+            border-radius: $MyScale5_mobile;
+            margin-bottom: $MyScale80_mobile;
+          }
+        }
+      }
+    }
+  }
+}
+
+.cartPayFromPC {
+  & .MuiDialog-paper {
+    border-radius: $MyScale40;
+    overflow: visible;
+    margin: 0;
+    width: 600px;
+    max-width: none !important;
+    min-height: 640px;
+
+    & .MuiDialogContent-root {
+      overflow: visible;
+      position: relative;
+
+      & .iconBTN {
+        position: absolute;
+        left: -$MyScale80;
+        top: 0;
+        padding: 0;
+        background-color: transparent;
+        z-index: 50;
+
+        & svg {
+          width: $MyScale60;
+          height: $MyScale60;
+          border-radius: $MyScale30;
+          background: rgba(0, 0, 0, 0.5);
+        }
+      }
+
+      .ContainerCart {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+      }
+    }
+  }
+}

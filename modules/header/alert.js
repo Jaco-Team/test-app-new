@@ -46,7 +46,7 @@ export default function ModalAlert() {
       setActiveModalAlert(false, '', false);
     }
 
-  }, [progress]);
+  }, [progress, setActiveModalAlert]);
 
   return (
     <Dialog 

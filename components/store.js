@@ -91,6 +91,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   openPayForm: false,
 
+  // открытие/закрытие формы оплаты онлайн
+  setPayForm: (active) => {
+    set({ openPayForm: active })
+  },
+
   // установить размер сдачи при оплате наличными курьеру
   setSdacha: (sdacha) => {
     set({ sdacha })
@@ -463,6 +468,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     console.log('createOrder', data);
     
     const json = await api('cart', data);
+
+    console.log('createOrder json', json);
     
     if( json.st === true ){
       if( get().typePay.id == 'online' ){
@@ -484,9 +491,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         setTimeout( () => {
           checkout.render('payment-form');
         }, 300 )
+      
       }
     }else{
       //показать ошибку
+      useHeaderStore.getState().setActiveModalAlert(true, json.text, false);
     }
 
     //return json;
