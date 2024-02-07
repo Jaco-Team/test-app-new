@@ -468,6 +468,8 @@
         );
         mix-blend-mode: multiply;
         transition: all 0.1s ease 0s;
+
+        display: none!important;//тут
       }
 
       & .lineModalCardMobileSet {
@@ -624,7 +626,7 @@
                     width: $MyScale100_mobile;
                     display: flex;
                     align-items: center;
-                    height: $MyScale20_mobile;
+                    height: $MyScale40_mobile;
                     text-align: center;
                     @include font30_400();
                     color: rgba(0, 0, 0, 0.6) !important;
@@ -633,7 +635,7 @@
                   }
                   & span:last-child {
                     width: $MyScale150_mobile;
-                    height: $MyScale20_mobile;
+                    height: $MyScale40_mobile;
                     display: flex;
                     align-items: center;
                     justify-content: center;

@@ -77,7 +77,15 @@ export default function ModalCardItemMobile() {
           <div className="ItemModalCardMobile">
             <div className="ItemContainer">
               <div className="ImgModalCardMobile">
-                <Image alt={openItem?.name ?? 'ImgModalCardMobile'} src={'https://cdnimg.jacofood.ru/' + openItem?.img_app + '_1420x1420.jpg'} width={1420} height={1420} priority={true} />
+                <Image 
+                  alt={openItem?.name} 
+                  src={'https://cdnimg.jacofood.ru/' + openItem?.img_app + '_732x732.jpg'} 
+                  width={732} 
+                  height={732} 
+                  quality={100}
+                  loading="lazy"
+                  priority={true} 
+                />
 
                 {parseInt(openItem?.is_new) == 0 ? parseInt(openItem?.is_hit) == 0 ? null :
                   <BadgeItem size={'big'} type={'hit'} view={'pc'} />
