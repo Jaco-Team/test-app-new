@@ -13,6 +13,21 @@ import { MapContactsMobile, LocationIconMobile, VectorRightMobile, LocationMapMo
 
 import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 
+function ContactsPageMobilePointMap({ point, changePointClick }) {
+  return (
+    <Placemark
+      geometry={[point.xy_point.latitude, point.xy_point.longitude]}
+      options={{ 
+        iconLayout: point.image, 
+        iconImageHref: '/Favikon.png', 
+        iconImageSize: [65, 65], 
+        iconImageOffset: [-12, -20], 
+      }} 
+      onClick={() => changePointClick(point.addr)}
+    />
+  )
+}
+
 export default function ContactsPageMobile() {
   //console.log('render ContactsPageMobile');
 
@@ -22,7 +37,7 @@ export default function ContactsPageMobile() {
 
   const [setActiveModalCityList] = useHeaderStore((state) => [state.setActiveModalCityList]);
 
-  const [point, phone, disablePointsZone, disable, setActiveModalChoose, getUserPosition, center_map, zones, points_zone, changePointClick, location_user] = useContactStore((state) => [state.point, state.phone, state.disablePointsZone, state.disable, state.setActiveModalChoose, state.getUserPosition, state.center_map, state.zones, state.points_zone, state.changePointClick, state.location_user]);
+  const [point, points, phone, disablePointsZone, disable, setActiveModalChoose, getUserPosition, center_map, zones, points_zone, changePointClick, location_user] = useContactStore((state) => [state.point, state.points, state.phone, state.disablePointsZone, state.disable, state.setActiveModalChoose, state.getUserPosition, state.center_map, state.zones, state.points_zone, state.changePointClick, state.location_user]);
 
   useEffect(() => {
     if(ref.current && center_map?.center){
@@ -44,19 +59,18 @@ export default function ContactsPageMobile() {
               style={{ minHeight: '100vw' }}
             >
 
-              {zones?.map((point, key) => (
-                  <Placemark key={key}
-                    geometry={[point.xy_point.latitude, point.xy_point.longitude]}
-                    options={{ 
-                      iconLayout: point.image, 
-                      iconImageHref: '/Favikon.png', 
-                      iconImageSize: [65, 65], 
-                      iconImageOffset: [-12, -20], 
-                    }} 
-                    onClick={() => changePointClick(point.addr)}
-                  />
-                ))
-              }
+              {points?.map((point, key) => 
+                <Placemark key={point.id}
+                  geometry={[point.xy_point.latitude, point.xy_point.longitude]}
+                  options={{ 
+                    iconLayout: point.image, 
+                    iconImageHref: '/Favikon.png', 
+                    iconImageSize: [65, 65], 
+                    iconImageOffset: [-12, -20], 
+                  }} 
+                  onClick={() => changePointClick(point.addr)}
+                />
+              )}
 
               {points_zone?.map((point, key) => (
                   <Polygon key={key}

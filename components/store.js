@@ -1112,7 +1112,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const json = await api(this_module, data);
 
-    json.map((point) => point.image = 'default#image');
+    json.zones.map((point) => point.image = 'default#image');
+    json.points.map((point) => point.image = 'default#image');
 
     let zoomSize;
 
@@ -1124,11 +1125,12 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     set({
       center_map: {
-        center: [json[0].xy_center_map.latitude, json[0].xy_center_map.longitude],
+        center: [json.zones[0].xy_center_map.latitude, json.zones[0].xy_center_map.longitude],
         zoom: zoomSize,
         controls: []
       },
-      zones: json,
+      zones: json.zones,
+      points: json.points,
     })
 
     setTimeout(() => {
@@ -1179,11 +1181,13 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
   center_map: null,
   points_zone: null,
 
+  points: [],
+
   polygon_options_default: {
-      fillColor: 'rgba(53, 178, 80, 0.15)',
-      strokeColor: '#35B250',
-      strokeWidth: 5,
-      fillOpacity: 1,
+    fillColor: 'rgba(53, 178, 80, 0.15)',
+    strokeColor: '#35B250',
+    strokeWidth: 5,
+    fillOpacity: 1,
   },
   polygon_options_active: { 
     strokeColor: '#DD1A32', 
@@ -1237,7 +1241,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
     let points_zone = [];
 
-    json.map((point) => {
+    json.zones.map((point) => {
       if (point['zone_origin'].length > 0) {
         points_zone.push({ 
           zone: JSON.parse(point['zone_origin']), 
@@ -1257,18 +1261,20 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       zoomSize = 11.5;
     }
 
-    json.forEach((point) => point.image = 'default#image');
+    json.zones.forEach((point) => point.image = 'default#image');
+    json.points.forEach((point) => point.image = 'default#image');
 
     set({
       center_map: {
-        center: [json[0].xy_center_map.latitude, json[0].xy_center_map.longitude],
+        center: [json.zones[0].xy_center_map.latitude, json.zones[0].xy_center_map.longitude],
         zoom: zoomSize,
         controls: []
       },
-      zones: json,
+      points: json.points,
+      zones: json.zones,
       points_zone,
-      phone: json[0].phone,
-      myAddr: json.filter((value, index, self) => index === self.findIndex((t) => t.addr === value.addr)),
+      phone: json.zones[0].phone,
+      myAddr: json.zones.filter((value, index, self) => index === self.findIndex((t) => t.addr === value.addr)),
     })
 
     const matches = useHeaderStore.getState().matches;
@@ -1305,6 +1311,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
     let zones = get().zones;
     let points_zone = get().points_zone;
     let myAddr = get().myAddr;
+    let points = get().points;
 
     const img = ymaps.templateLayoutFactory.createClass( 
       "<div class='my-img'>" +
@@ -1323,7 +1330,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       return item
     })
 
-    zones = zones.map(item => {
+    points = points.map(item => {
       if(item.addr === addr) {
         item.image = img;
       } else {
@@ -1341,7 +1348,13 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       return item
     });
 
-    set({ points_zone, zones, myAddr, point: addr })
+    set({ 
+      points_zone, 
+      points,
+      zones, 
+      myAddr, 
+      point: addr 
+    })
 
   },
 
