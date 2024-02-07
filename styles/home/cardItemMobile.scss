@@ -453,6 +453,7 @@
       display: flex;
       align-items: center;
       flex-direction: column;
+      z-index: 1100;
 
       & .blockShadowModalCardItemSet {
         top: $MyScale550_mobile;
@@ -615,28 +616,28 @@
                 & .dop_text_set {
                   display: flex;
                   height: $MyScale40_mobile;
-                  width: $MyScale200_mobile;
+                  width: $MyScale300_mobile;
                   align-items: center;
                   margin-bottom: $MyScale10_mobile;
 
                   & span:first-child {
-                    width: $MyScale65_mobile;
+                    width: $MyScale100_mobile;
                     display: flex;
                     align-items: center;
                     height: $MyScale20_mobile;
                     text-align: center;
-                    @include font20_400();
+                    @include font30_400();
                     color: rgba(0, 0, 0, 0.6) !important;
                     border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
                     margin-bottom: 0;
                   }
                   & span:last-child {
-                    width: $MyScale100_mobile;
+                    width: $MyScale150_mobile;
                     height: $MyScale20_mobile;
                     display: flex;
                     align-items: center;
                     justify-content: center;
-                    @include font20_400();
+                    @include font30_400();
                     color: rgba(0, 0, 0, 0.6) !important;
                   }
                 }
@@ -646,7 +647,7 @@
                   height: $MyScale120_mobile;
                   display: flex;
                   align-items: center;
-                  @include font32_400();
+                  @include font35_400();
                   color: rgba(0, 0, 0, 0.6) !important;
                   -webkit-line-clamp: 5;
                   display: -webkit-box;

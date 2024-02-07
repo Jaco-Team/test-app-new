@@ -208,7 +208,7 @@ export default function ModalCardItemMobile() {
 
                         <div className="dop_text_set">
                           <span>{item.count_part + ' шт.'}</span>
-                          <span>{new Intl.NumberFormat('ru-RU').format(openItem?.weight) + ' г'}</span>
+                          <span>{new Intl.NumberFormat('ru-RU').format(item?.weight) + ' г'}</span>
                         </div>
 
                         <Typography component="span">
