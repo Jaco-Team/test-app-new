@@ -1,7 +1,7 @@
 @import '../settings';
 
 .pageAboutMobile {
-  height: $MyScale1260_mobile !important;
+  //height: $MyScale1260_mobile !important;
   margin-top: $MyScale200_mobile !important;
 
   .containerAboutMobile {
@@ -9,7 +9,8 @@
     display: flex;
     align-items: flex-end;
     justify-content: center;
-    margin-bottom: $MyScale200_mobile;
+    padding-bottom: $MyScale200_mobile;
+    //margin-top: $MyScale200_mobile;
 
     .listAboutMobile {
       display: flex;

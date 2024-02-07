@@ -2,26 +2,20 @@ import Link from 'next/link';
 import Grid from '@mui/material/Grid';
 import { ArrowRightMobile } from '@/ui/Icons.js';
 
+import { useFooterStore } from '@/components/store.js';
+
 export default function AboutPageMobile({ cityName }) {
+
+  const [links] = useFooterStore((state) => [state.links]);
+
   return (
     <Grid item className="pageAboutMobile" sx={{ display: { xs: 'flex', md: 'flex', sm: 'none' } }}>
-      <div className="containerAboutMobile" style={{ marginBottom: '17.094017094017vw' }}>
+      <div className="containerAboutMobile">
         <div className="listAboutMobile">
-          <Link href={'/' + cityName}>
+          
+          <Link href={'/' + cityName + '/about'}>
             <div className="linkAboutMobile">
-              <span>Что мы ценим?</span>
-              <ArrowRightMobile />
-            </div>
-          </Link>
-          <Link href={'/' + cityName}>
-            <div className="linkAboutMobile">
-              <span>Наши кафе</span>
-              <ArrowRightMobile />
-            </div>
-          </Link>
-          <Link href={'/' + cityName}>
-            <div className="linkAboutMobile">
-              <span>История компании</span>
+              <span>О компании</span>
               <ArrowRightMobile />
             </div>
           </Link>
@@ -37,12 +31,32 @@ export default function AboutPageMobile({ cityName }) {
               <ArrowRightMobile />
             </div>
           </Link>
-          <Link href={'/' + cityName}>
+          <Link href={'/' + cityName + '/publichnaya-oferta'}>
             <div className="linkAboutMobile">
-              <span>Социальная ответственность</span>
+              <span>Публичная оферта</span>
               <ArrowRightMobile />
             </div>
           </Link>
+          <Link href={'/' + cityName + '/politika-konfidencialnosti'}>
+            <div className="linkAboutMobile">
+              <span>Политика конфиденциальности</span>
+              <ArrowRightMobile />
+            </div>
+          </Link>
+          <Link href={'/' + cityName + '/instpayorders'}>
+            <div className="linkAboutMobile">
+              <span>Правила оплаты</span>
+              <ArrowRightMobile />
+            </div>
+          </Link>
+
+          <Link href={links?.link_allergens ?? links} target="_blank">
+            <div className="linkAboutMobile">
+              <span>Калорийность, состав, БЖУ</span>
+              <ArrowRightMobile />
+            </div>
+          </Link>
+          
         </div>
       </div>
     </Grid>

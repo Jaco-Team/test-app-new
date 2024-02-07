@@ -43,6 +43,18 @@
             @include fonsNew(1.3rem, var(--inter-font));
             text-align: center;
         }
+
+        & p, li, a{
+            @include font35_400();
+        }
+        & a{
+            color: $colorMain;
+            line-height: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: table;
+            text-decoration: none;
+        }
     }
     & p, li{
         @include font30_400();

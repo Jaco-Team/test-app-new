@@ -28,13 +28,20 @@
     margin-top: $MyScale60_mobile;
     margin-bottom: $MyScale40_mobile;
     & span {
-      @include font30_400();
+      @include font40_400();
     }
   }
+  & a{
+    color: $colorMain;
+    line-height: 2rem;
+    font-weight: bold;
+    cursor: pointer;
+    display: table;
+    text-decoration: none;
+}
 
-  & p,
-  li {
-    @include font30_400();
+  & p, li {
+    @include font40_400();
     & strong {
       @include font50_500();
     }
