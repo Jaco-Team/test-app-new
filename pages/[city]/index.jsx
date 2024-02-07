@@ -49,10 +49,12 @@ export default function Home(props) {
     
   }, [city, thisCity]);
 
+  //<LoadMap getData={getData} city={city} />
+
   return (
     <div className={roboto.variable}>
 
-      <LoadMap getData={getData} city={city} />
+      
 
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 

@@ -1709,6 +1709,11 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   },
 
   checkStreet: async(street, home, pd, city_id) => {
+
+    if( !street || !home || !city_id ){
+      return ;
+    }
+
     if( get().is_fetch === true ){
       setTimeout( () => {
         get().checkStreet(street, home, pd, city_id)
@@ -2524,14 +2529,24 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
   banner: null,
   swiper: null,
 
+  openBannerItems: [],
+  typePromo: 0,
+  
   setActiveModalCardItemMobile: (active) => {
     set({ isOpenModal: active });
   },
 
   getBanners: async (this_module, city) => {
+    let token = '';
+
+    if (typeof window !== 'undefined') {
+      token = localStorage.getItem('token');
+    }
+
     let data = {
       type: 'get_banners',
       city_id: city,
+      token
     };
 
     const json = await api(this_module, data);
@@ -2614,7 +2629,67 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
   // открытие/закрытие модального окна баннер на главное странице
   setActiveBanner: (active, banner, swiper) => {
 
-    console.log( banner )
+    let new_banner = {...banner};
+
+    const all_items = useCartStore.getState().allItems;
+
+    console.log( 'new_banner', new_banner )
+
+    if( banner ){
+      if( new_banner?.info && Object.keys(new_banner?.info).length > 0 ){
+
+        //скидка
+        if( parseInt(new_banner.info.promo_action) == 1 ){
+
+        }
+        //добавляет товар
+        if( parseInt(new_banner.info.promo_action) == 2 ){
+          new_banner.info.items_add.map( (item, key) => {
+            let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
+
+            new_banner.info.items_add[ key ]['img_app'] = find_item?.img_app
+          } )
+
+          console.log( 'items', new_banner.info.items_add )
+
+          set({
+            openBannerItems: new_banner.info.items_add
+          })
+        }
+        //товар за цену
+        if( parseInt(new_banner.info.promo_action) == 3 ){
+          new_banner.info.items_on_price.map( (item, key) => {
+            new_banner.info.items_on_price[ key ]['img_app'] = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.id) )['img_app'];
+          } )
+
+          set({
+            openBannerItems: new_banner.info.items_on_price
+          })
+        }
+
+        set({
+          typePromo: new_banner.info.promo_action
+        })
+      }else{
+
+        new_banner?.item?.map( (item, key) => {
+          let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
+
+          if( find_item ){
+            new_banner.item[ key ] = find_item;
+          }
+        })
+
+        set({
+          openBannerItems: new_banner?.item ?? [],
+          typePromo: 0
+        })
+      }
+
+      set({ 
+        banner: new_banner
+      });
+    }
 
     if(swiper) set({ swiper });
 
@@ -2626,7 +2701,6 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     
     set({ 
       activeSlider: !active,
-      banner, 
       openModalBanner: active 
     });
 

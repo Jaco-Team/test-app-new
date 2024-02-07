@@ -10,7 +10,7 @@ function useCheckCat(CatsItems) {
     const thisPOS = document.documentElement.scrollTop;
 
     if( CatsItems.length > 0 ){
-      if( thisPOS - lastPOS > 300 || lastPOS - thisPOS > 300 ){
+      if( thisPOS - lastPOS > 200 || lastPOS - thisPOS > 200 ){
         
         let arrMax = [];
         

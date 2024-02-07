@@ -17,7 +17,7 @@ import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
 
 export default React.memo(function BannersPC() {
   const [bannerList, setActiveBanner, activeSlider] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider]);
-  const [setActiveModalAlert] = useHeaderStore((state) => [state.setActiveModalAlert]);
+  //const [setActiveModalAlert] = useHeaderStore((state) => [state.setActiveModalAlert]);
 
   const swiperRef = useRef(null);
 
@@ -50,9 +50,11 @@ export default React.memo(function BannersPC() {
     setOpenTooltip(false);
   };
 
-  const handleCopy = () => {
+  const handleCopy = (text) => {
     setOpenTooltip(false);
     setActiveModalAlert(true, 'Ссылка успешно скопирована', true);
+    //window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+    navigator.clipboard.writeText(text)
   }
 
   /*
@@ -68,6 +70,42 @@ export default React.memo(function BannersPC() {
               </div>
   */
 
+  /*
+                    <Tooltip
+                  open={openTooltip}
+                  onOpen={handleOpen}
+                  onClose={handleClose}
+                  title={<span className='spanTitle'>Рекламодатель:<br /> {item?.org}<br /> ИНН {item?.inn}<br /> erid: {item?.erid}<br /> <span style={{ color: '#cc0033', textDecoration: 'underline', cursor: 'pointer' }} onClick={ () => handleCopy(item.erid) }><span>Копировать ссылку</span></span> </span>} 
+                  arrow placement="top" 
+                  className='eridBannerPC'
+                    componentsProps={{
+                      tooltip: {
+                        sx: { 
+                          bgcolor: '#fff', 
+                          color: 'rgba(0, 0, 0, 0.80)',
+                          width: '10.830324909747vw',
+                          borderRadius: '1.0830324909747vw',
+                          p: '1.0830324909747vw',
+                          '& .MuiTooltip-arrow': {
+                            color: '#fff',
+                            '&::before': {
+                              backgroundColor: 'white',
+                            },
+                          },
+                        },
+                      },
+                    }}
+                >
+                  <span className='titleDots'>
+                    <span className="ItemDesk text">Реклама</span>
+                    <span className='spanContainer'>
+                      <span>•</span>
+                      <span>•</span>
+                      <span>•</span>
+                    </span>
+                  </span>
+                </Tooltip>
+  */
 
   return (
     <Box component="div" className="BannerPC BannerFontPC">
@@ -92,45 +130,8 @@ export default React.memo(function BannersPC() {
         >
 
           {bannerList.map((item, key) => (
-            <SwiperSlide key={key} dataswiperautoplay="2000" onClick={openTooltip ? () => {} : () => setActiveBanner(true, item, swiperRef.current.swiper)}>
-              <Image alt={item.promo_title} src={"https://storage.yandexcloud.net/site-home-img/"+item.img_new+"3700х1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '2.4vw' }} />
-                <Tooltip
-                open={openTooltip}
-                onOpen={handleOpen}
-                onClose={handleClose}
-                title={<span>Рекламодатель:<br /> ООО "Мистер Жако"<br /> ИНН 6321390811<br /> erid: {item.erid}<br /> <span style={{ color: '#cc0033', textDecoration: 'underline', cursor: 'pointer' }} onClick={handleCopy}><span>Копировать ссылку</span></span> </span>} 
-                arrow placement="top" 
-                className='eridBannerPC'
-                  componentsProps={{
-                    tooltip: {
-                      sx: { 
-                        bgcolor: '#fff', 
-                        color: 'rgba(0, 0, 0, 0.80)',
-                        width: '10.830324909747vw',
-                        borderRadius: '1.0830324909747vw',
-                        p: '1.0830324909747vw',
-                        fontStyle: 'normal',
-                        fontWeight: 400,
-                        fontSize: '0.72202166064982vw',
-                        '& .MuiTooltip-arrow': {
-                          color: '#fff',
-                          '&::before': {
-                            backgroundColor: 'white',
-                          },
-                        },
-                      },
-                    },
-                  }}
-                >
-                  <span>
-                    <span className="ItemDesk text">Реклама</span>
-                    <span className='spanContainer'>
-                      <span>•</span>
-                      <span>•</span>
-                      <span>•</span>
-                    </span>
-                  </span>
-                </Tooltip>
+            <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
+              <Image alt={item.title} src={"https://storage.yandexcloud.net/site-home-img/"+item.img+"3700х1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '2.4vw' }} />
             </SwiperSlide>
           ))}
           <div className="swiper-button-prev"><ArrowIcon width='2.166065vw' height='2.166065vw' /></div>

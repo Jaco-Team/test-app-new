@@ -14,15 +14,15 @@ import { useHomeStore, useHeaderStore } from '../../../components/store.js';
 import { VerticalVector } from '@/ui/Icons.js';
 
 export default React.memo(function BannersMobile() {
-  const [bannerList, setActiveBanner, activeSlider] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider]);
-  const [setActiveModalAlert] = useHeaderStore((state) => [state.setActiveModalAlert]);
+  const [bannerList, setActiveBanner] = useHomeStore((state) => [state.bannerList, state.setActiveBanner]);
+  //const [setActiveModalAlert] = useHeaderStore((state) => [state.setActiveModalAlert]);
 
   const swiperRef = useRef(null);
 
-  const [openTooltip, setOpenTooltip] = useState(false);
-  const [banner, setBanner] = useState(false);
+  //const [openTooltip, setOpenTooltip] = useState(false);
+  //const [banner, setBanner] = useState(false);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const swiper = document.querySelector('.swiper').swiper;
 
     const timer = setInterval(() => {
@@ -32,7 +32,7 @@ export default React.memo(function BannersMobile() {
     }, 5000);
 
     return () => clearInterval(timer);
-  }, [openTooltip]);
+  }, [openTooltip]);*/
 
   useEffect(() => {
     if (bannerList.length > 0) {
@@ -41,11 +41,11 @@ export default React.memo(function BannersMobile() {
     }
   }, [bannerList]);
 
-  const setActiveTooltip = (active) => {
+  /*const setActiveTooltip = (active) => {
     setOpenTooltip(active);
-  };
+  };*/
 
-  useEffect(() => {
+  /*useEffect(() => {
 
     const checkClickOutside = e => {
 
@@ -75,7 +75,22 @@ export default React.memo(function BannersMobile() {
     document.addEventListener("click", checkClickOutside);
     return () => document.removeEventListener("click", checkClickOutside);
 
-  }, [banner, openTooltip])
+  }, [banner, openTooltip])*/
+
+  /**
+   * 
+   * {!openTooltip ? null :
+              <div className='tooltip_banner_mobile'>
+                <span className='tooltip_text_mobile'>{`Рекламодатель:\n\ООО "Мистер Жако"\n\ИНН 6321390811\n\erid: ${item.erid}`}</span>
+                <span className='tooltip_copy_mobile'>Копировать ссылку</span>
+              </div>
+            }
+
+            <div onClick={() => setActiveTooltip(true)} className="erid_banner_mobile">
+              <span className="erid_text_mobile">Реклама</span>
+              <VerticalVector className='erid_svg_mobile' />
+            </div>
+   */
 
   return (
     <Box component="div" className="BannerMobile">
@@ -91,28 +106,15 @@ export default React.memo(function BannersMobile() {
         ref={swiperRef}
       >
         {bannerList.map((item, key) => (
-          <SwiperSlide key={key} onClick={() => setBanner(item)}>
+          <SwiperSlide key={key} onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
             <Image
-              alt={item.promo_title}
-              src={'https://storage.yandexcloud.net/site-home-img/' + item.img_new + '1000х500.jpg'}
+              alt={item.title}
+              src={'https://storage.yandexcloud.net/site-home-img/' + item.img + '1000х500.jpg'}
               width={1000}
               height={500}
               priority={true}
               className="item_banner_image"
             />
-
-            {!openTooltip ? null :
-              <div className='tooltip_banner_mobile'>
-                <span className='tooltip_text_mobile'>{`Рекламодатель:\n\ООО "Мистер Жако"\n\ИНН 6321390811\n\erid: ${item.erid}`}</span>
-                <span className='tooltip_copy_mobile'>Копировать ссылку</span>
-              </div>
-            }
-
-            <div onClick={() => setActiveTooltip(true)} className="erid_banner_mobile">
-              <span className="erid_text_mobile">Реклама</span>
-              <VerticalVector className='erid_svg_mobile' />
-            </div>
-
           </SwiperSlide>
         ))}
       </Swiper>

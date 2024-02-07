@@ -216,6 +216,213 @@
               }
             }
           }
+
+          .containerBTNitem{
+            width: 100%;
+            
+            & > button {
+              margin-left: $MyScale30_mobile;
+              width: $MyScale240_mobile;
+              border-radius: $MyScale45_mobile;
+              border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+              color: rgba(0, 0, 0, 0.6) !important;
+              height: $MyScale70_mobile;
+      
+              @include font30_400();
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              white-space: nowrap;
+      
+              cursor: pointer;
+
+              &:hover {
+                background-color: #f2f2f2;
+                border: $MyScale2_mobile solid #cccccc;
+              }
+              &:target {
+                background-color: #f2f2f2;
+                border: $MyScale2_mobile solid #cccccc;
+              }
+              &:active {
+                background-color: #f2f2f2;
+                border: $MyScale2_mobile solid #cccccc;
+              }
+            }
+
+            & > div {
+              margin-left: $MyScale30_mobile;
+              width: $MyScale240_mobile;
+              border-radius: $MyScale45_mobile;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              height: $MyScale70_mobile;
+              margin-bottom: 0!important;
+
+              & > .minus {
+                padding: 0;
+                margin-left: 0.2888088vw;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                border: none;
+                background-color: #e6e6e6;
+      
+                @include font50_300();
+                width: $MyScale60_mobile;
+                height: $MyScale60_mobile;
+                border-radius: $MyScale40_mobile;
+                cursor: pointer;
+              }
+              & > .plus {
+                padding: 0;
+                margin-right: 0.2888088vw;
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                align-items: center;
+                border: none;
+                background-color: #e6e6e6;
+      
+                @include font50_300();
+                width: $MyScale60_mobile;
+                height: $MyScale60_mobile;
+                border-radius: $MyScale40_mobile;
+                cursor: pointer;
+              }
+              & > span {
+                display: flex;
+                align-items: center!important;
+                text-align: center!important;
+                margin-left: 0!important;
+                justify-content: center;
+                @include font40_400();
+              }
+            }
+
+            & > span{
+              margin-left: $MyScale30_mobile;
+              //width: $MyScale240;
+              //border-radius: 1.62455vw;
+              //border: $MyScale3 solid rgba(0, 0, 0, 0.2);
+              color: rgba(0, 0, 0, 0.6) !important;
+              height: $MyScale70_mobile;
+      
+              @include font30_400();
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              white-space: nowrap;
+            }
+          }
+
+          .containerBTNItemMobile {
+            display: flex;
+            align-items: center;
+            justify-content: flex-start;
+            margin-bottom: 0!important;
+  
+            & > button {
+              width: $MyScale380_mobile;
+              height: $MyScale110_mobile;
+              border-radius: $MyScale55_mobile;
+              margin-left: $MyScale30_mobile;
+              background-color: rgba(0, 0, 0, 0.05);
+              border: none;
+              padding: 0;
+              @include font44_400();
+              color: rgba(0, 0, 0, 0.60) !important;
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              white-space: nowrap;
+            }
+  
+            & > div {
+              width: $MyScale380_mobile;
+              height: $MyScale110_mobile;
+              border-radius: $MyScale55_mobile;
+              margin-left: $MyScale30_mobile;
+              margin-bottom: 0!important;
+              display: flex;
+              justify-content: space-between;
+              align-items: center;
+              background-color: #ffff;
+  
+              & > .minus {
+                padding: 0;
+                margin-left: $MyScale10_mobile;
+                display: flex;
+                justify-content: center;
+                align-items: center;
+                background-color: rgba(0, 0, 0, 0.07);
+                border: none;
+                @include font55_400();
+                width: $MyScale90_mobile;
+                height: $MyScale90_mobile;
+                border-radius: $MyScale90_mobile;
+              }
+              & > .plus {
+                padding: 0;
+                margin-right: $MyScale10_mobile;
+                display: flex;
+                justify-content: center;
+                align-content: center;
+                align-items: center;
+                background-color: rgba(0, 0, 0, 0.07);
+                border: none;
+                @include font75_300();
+                width: $MyScale90_mobile;
+                height: $MyScale90_mobile;
+                border-radius: $MyScale90_mobile;
+              }
+              & > span {
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                margin-left: 0!important;
+                @include font60_400();
+              }
+            }
+          }
+
+          .containerBTN {
+            width: 100%;
+            margin-top: $MyScale30_mobile;
+            margin-bottom: $MyScale100_mobile;
+
+            & > button {
+              width: 100%;
+              height: $MyScale110_mobile;
+              border-radius: $MyScale55_mobile;
+              
+              border: $MyScale3 solid rgba(0, 0, 0, 0.2);
+              color: rgba(0, 0, 0, 0.6) !important;
+              
+      
+              @include font30_400();
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              white-space: nowrap;
+      
+              cursor: pointer;
+
+              &:hover {
+                background-color: #f2f2f2;
+                border: $MyScale2 solid #cccccc;
+              }
+              &:target {
+                background-color: #f2f2f2;
+                border: $MyScale2 solid #cccccc;
+              }
+              &:active {
+                background-color: #f2f2f2;
+                border: $MyScale2 solid #cccccc;
+              }
+            }
+          }
         }
       }
     }

@@ -81,37 +81,37 @@ export default React.memo(function CatItems() {
         {cat.items.map((it, k) => <CardItemMobile key={k} item={it} count={it.count} />)}
       </Grid>
     ));
-  } else {
-    return cats.map((cat, key) => (
-      <Grid
-        container
-        spacing={2}
-        key={key}
-        name={'cat' + cat.main_id}
-        id={'cat' + cat.id}
-        className="ContainerCardItemPC"
-        ref={(node) => {
-          if (node && key === 0) {
-            node.style.setProperty(
-              'margin-top',
-              '2.1660649819495vw',
-              'important'
-            );
-          }
-          if (node && cat === cats.at(-1)) {
-            node.style.setProperty(
-              'margin-bottom',
-              '2.1660649819495vw',
-              'important'
-            );
-          }
-        }}
-      >
-        {cat.items.map((it, k) => (
-          <CardItemPc key={k} index={k} item={it} count={it.count} />
-        ))}
-      </Grid>
-    ));
   }
+    
+  return cats.map((cat, key) => (
+    <Grid
+      container
+      spacing={2}
+      key={key}
+      name={'cat' + cat.main_id}
+      id={'cat' + cat.id}
+      className="ContainerCardItemPC"
+      ref={(node) => {
+        if (node && key === 0) {
+          node.style.setProperty(
+            'margin-top',
+            '2.1660649819495vw',
+            'important'
+          );
+        }
+        if (node && cat === cats.at(-1)) {
+          node.style.setProperty(
+            'margin-bottom',
+            '2.1660649819495vw',
+            'important'
+          );
+        }
+      }}
+    >
+      {cat.items.map((it, k) => (
+        <CardItemPc key={k} index={k} item={it} count={it.count} />
+      ))}
+    </Grid>
+  ));
 
 });
