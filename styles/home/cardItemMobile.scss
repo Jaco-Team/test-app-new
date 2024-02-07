@@ -84,10 +84,10 @@
 
         .desc_text {
           width: 100%;
-          height: $MyScale120_mobile;
-          margin-bottom: $MyScale40_mobile;
+          height: $MyScale125_mobile;
+          margin-bottom: $MyScale35_mobile;
           color: rgba(0, 0, 0, 0.6) !important;
-          @include font32_400();
+          @include font35_400();
           -webkit-line-clamp: 3;
           display: -webkit-box;
           -webkit-box-orient: vertical;
