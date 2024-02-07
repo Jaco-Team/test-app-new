@@ -83,7 +83,7 @@ export default function ModalCardItemMobile() {
                   width={732} 
                   height={732} 
                   quality={100}
-                  loading="lazy"
+                  //loading="lazy"
                   priority={true} 
                 />
 
@@ -208,7 +208,13 @@ export default function ModalCardItemMobile() {
                       </div>
 
                       <div className="ImgSet">
-                        <Image alt={item.name} src={'https://cdnimg.jacofood.ru/' + item.img_app + '_1420x1420.jpg'} width={1420} height={1420} priority={true}/>
+                        <Image 
+                          alt={item.name} 
+                          src={'https://cdnimg.jacofood.ru/' + item.img_app + '_732x732.jpg'} 
+                          width={732} 
+                          height={732} 
+                          priority={true}
+                        />
                       </div>
 
                       <div className="itemDesc">
