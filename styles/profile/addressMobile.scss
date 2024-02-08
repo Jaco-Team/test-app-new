@@ -1,5 +1,12 @@
 @import '../settings';
 
+.itemAutocomplited{
+  @include font30_700();
+  @media (max-width: 800px) {
+      @include font40_400();
+  }
+}
+
 .AddressMobile {
   margin-top: $MyScale200_mobile;
   flex-direction: column;

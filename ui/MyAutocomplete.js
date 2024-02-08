@@ -53,7 +53,6 @@ export default function MyAutocomplete({data, placeholder, onChange, val, classN
       //selectOnFocus
       //clearOnBlur
       handleHomeEndKeys
-      id="free-solo-with-text-demo"
       options={data}
       getOptionLabel={(option) => {
         // Value selected with enter, right from the input

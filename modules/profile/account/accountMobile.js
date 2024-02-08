@@ -30,7 +30,7 @@ export default function AccountMobile({ city, this_module }) {
       </div>
       <div className="accountName accountMain">
          {/* для тестирования */}
-        {userName ? userName : 'Я'}
+        {userInfo?.name ? userInfo?.name : ''}
       </div>
       <div className="accountPhone accountMain">{userInfo?.login ?? ''}</div>
       <div className="accountData accountMain">
