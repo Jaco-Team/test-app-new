@@ -216,9 +216,7 @@
                   @include font40_400();
                 }
 
-                & .ItemDesk{
-                  @include font35_400();
-                }
+                
 
                 & span {
                   height: $MyScale150_mobile;
@@ -226,8 +224,13 @@
                   text-align: left;
                   display: flex;
                   align-items: center;
-  
-                  
+                }
+
+                & .ItemDesk{
+                  @include font35_400();
+                  min-height: $MyScale150_mobile;
+                  height: max-content;
+                  padding-bottom: $MyScale20_mobile;
                 }
               }
             }
@@ -339,6 +342,10 @@
             justify-content: flex-start;
             margin-bottom: 0!important;
   
+            & > span{
+              @include font44_400();
+            }
+
             & > button {
               width: $MyScale380_mobile;
               height: $MyScale110_mobile;
