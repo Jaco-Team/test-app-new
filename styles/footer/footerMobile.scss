@@ -28,6 +28,7 @@
         width: $MyScale100_mobile;
         height: $MyScale100_mobile;
         margin-right: $MyScale60_mobile;
+        
 
         & svg {
           width: 100%;
@@ -47,14 +48,14 @@
         height: 34.188034188034vw;
 
         & span {
-          @include font30_700();
+          @include font35_700();
           text-transform: uppercase;
           color: rgba(82, 82, 82, 1);
           margin-bottom: 3.4188034188034vw;
         }
 
         & a {
-          @include font30_400();
+          @include font35_400();
           text-decoration: none;
           color: rgba(82, 82, 82, 1);
           margin-bottom: 3.4188034188034vw;
@@ -103,7 +104,7 @@
       & .text {
         width: 100%;
         height: 11.111111111111vw;
-        @include font30_400();
+        @include font35_400();
         position: relative;
         margin-bottom: 3.4188034188034vw;
         p {
@@ -128,7 +129,7 @@
         justify-content: center;
         align-items: center;
         & span {
-          @include font30_400();
+          @include font35_400();
           color: #ffffff !important;
         }
       }
