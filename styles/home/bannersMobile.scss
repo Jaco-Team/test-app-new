@@ -207,21 +207,21 @@
               }
 
               .itemDesc {
-                width: $MyScale600_mobile;
+                width: $MyScale700_mobile;
                 display: flex;
                 justify-content: flex-start;
                 flex-direction: column;
 
                 & .ItemName{
-                  @include font35_400();
+                  @include font40_400();
                 }
 
                 & .ItemDesk{
-                  @include font25_400();
+                  @include font35_400();
                 }
 
                 & span {
-                  height: $MyScale120_mobile;
+                  height: $MyScale150_mobile;
                   margin-left: $MyScale40_mobile;
                   text-align: left;
                   display: flex;
