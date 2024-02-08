@@ -52,5 +52,9 @@
     & p, li{
         @include font30_400();
         line-height: 1.5;
+
+        @media (max-width: 960px) {
+            @include font35_400();
+        }
     }
 }
