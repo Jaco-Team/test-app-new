@@ -153,13 +153,19 @@
           display: flex;
           flex-direction: column;
 
+          
+
           & span {
             margin-bottom: $MyScale10_mobile;
           }
 
           & div {
-            & p {
+            & p, li, a, span {
               @include font30_400();
+  
+              @media (max-width: 800px) {
+                @include font40_400();
+              }
             }
           }
         }
@@ -206,12 +212,22 @@
                 justify-content: flex-start;
                 flex-direction: column;
 
+                & .ItemName{
+                  @include font35_400();
+                }
+
+                & .ItemDesk{
+                  @include font25_400();
+                }
+
                 & span {
                   height: $MyScale120_mobile;
                   margin-left: $MyScale40_mobile;
                   text-align: left;
                   display: flex;
                   align-items: center;
+  
+                  
                 }
               }
             }

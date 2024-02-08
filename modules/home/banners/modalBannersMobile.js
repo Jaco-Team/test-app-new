@@ -123,7 +123,7 @@ export default function ModalBannerMobile() {
     setActiveBanner(false, null);
   }
 
-  console.log(openBannerItems);
+  
 
   /*
     <Grid className="erid">
@@ -172,7 +172,7 @@ export default function ModalBannerMobile() {
 
               <div className="List">
                 {openBannerItems?.map((item, key) => (
-                  <CartItemPromo key={item.item_id} data_key={key} item={item} typePromo={typePromo} promo={banner?.info} isAuth={isAuth} />
+                  <CartItemPromo key={item?.item_id ? item?.item_id : item?.id } data_key={key} item={item} typePromo={typePromo} promo={banner?.info} isAuth={isAuth} />
                 ))}
               </div>
 
