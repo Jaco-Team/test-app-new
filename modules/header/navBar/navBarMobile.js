@@ -71,7 +71,7 @@ export default memo(function NavBarMobile({ city, active_page }) {
               </ListItem>
 
               <ListItem onClick={() => setActiveMenu(false)}>
-                <Link href={`/${city}/about`} style={{background: active_page === 'other' ? 'rgba(0, 0, 0, 0.03)' : null}}>
+                <Link href={`/${city}/document`} style={{background: active_page === 'other' ? 'rgba(0, 0, 0, 0.03)' : null}}>
                   <AboutIconMobile />
                   <span style={{color: active_page === 'other' ? ' #dd1a32' : null}}>Жако</span>
                 </Link>

@@ -5,6 +5,10 @@
   margin-left: $MyScale160 !important;
   width: $MyScale840;
 
+  @media (max-width: 800px) {
+    display: none;
+  }
+
   & > div {
     width: 100%;
     background-color: rgba(0, 0, 0, 0.07);
@@ -21,6 +25,10 @@
       line-height: $MyScale40;
       @include font30_700();
       text-transform: uppercase;
+
+      @media (max-width: 800px) {
+        @include font35_700();
+      }
     }
     & > div {
       margin-top: $MyScale80;
@@ -30,6 +38,10 @@
       & > span {
         @include font30_700();
         text-transform: uppercase;
+
+        @media (max-width: 800px) {
+          @include font35_700();
+        }
       }
     }
 
@@ -49,10 +61,18 @@
         min-height: $MyScale60;
         line-height: $MyScale60;
         @include font30_400();
+
+        @media (max-width: 800px) {
+          @include font35_400();
+        }
         & > a {
           @include font30_400();
           text-decoration: none;
           cursor: pointer;
+
+          @media (max-width: 800px) {
+            @include font35_400();
+          }
         }
         & > a.active {
           color: $colorMain;

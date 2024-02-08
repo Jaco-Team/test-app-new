@@ -481,6 +481,17 @@ $MyScale1871_mobile: 159.91452991453vw;
   }
 }
 
+@mixin font35_700() {
+  font-style: normal;
+  font-weight: 700;
+
+  @include fonsNew(1.2635379061372vw, var(--inter-font));
+
+  @media (max-width: $MyMaxWidth) {
+    @include fonsNew($MyScale35_mobile, var(--inter-font));
+  }
+}
+
 @mixin font44_400() {
   font-style: normal;
   font-weight: 400;
