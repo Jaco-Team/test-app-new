@@ -20,15 +20,17 @@ export default function AccountMobile({ city, this_module }) {
     }
   }, [token]);
 
+  //onClick={() => setActiveAccountModal(true, 'color')}
+
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="AccountMobile">
-      <div className="accountLogin accountMain" onClick={() => setActiveAccountModal(true, 'color')} style={{ background: colorAccount.login }}>
+      <div className="accountLogin accountMain" style={{ background: colorAccount.login }}>
         {/* для тестирования */}
-        {!shortName || shortName === 'undefined' ? 'ЯБ' : shortName }
+        {!shortName || shortName === 'undefined' ? 'Я' : shortName }
       </div>
       <div className="accountName accountMain">
          {/* для тестирования */}
-        {userName ? userName : 'Ян Брин'}
+        {userName ? userName : 'Я'}
       </div>
       <div className="accountPhone accountMain">{userInfo?.login ?? ''}</div>
       <div className="accountData accountMain">

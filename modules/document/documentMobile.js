@@ -25,12 +25,6 @@ export default function DocumentPageMobile({ cityName }) {
               <ArrowRightMobile />
             </div>
           </Link>
-          <Link href={'/' + cityName + '/document'}>
-            <div className="linkAboutMobile">
-              <span>Документы</span>
-              <ArrowRightMobile />
-            </div>
-          </Link>
           <Link href={'/' + cityName + '/publichnaya-oferta'}>
             <div className="linkAboutMobile">
               <span>Публичная оферта</span>

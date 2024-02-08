@@ -76,9 +76,9 @@ export default function AddressModalMobile() {
     }
   }, [street, home, pd]);
 
-  useEffect( () => {
+  //useEffect( () => {
     //updateStreetList(cityID);
-  }, [cityID] )
+  //}, [cityID] )
 
   function chengeCity(city){
     setCityID(city);
@@ -128,8 +128,8 @@ export default function AddressModalMobile() {
   }, [chooseAddrStreet] )
 
 
-  console.log('AddressModalMobile new_zone', new_zone);
-  console.log('AddressModalMobile zones', zones);
+  //console.log('AddressModalMobile new_zone', new_zone);
+  //console.log('AddressModalMobile zones', zones);
 
 
   /*useEffect(() => {
@@ -163,7 +163,7 @@ export default function AddressModalMobile() {
     close();
   };*/
 
-  console.log(  )
+  //console.log(  )
 
   return (
     <Dialog
@@ -282,7 +282,7 @@ export default function AddressModalMobile() {
               <MySwitch checked={check} onClick={ (event) => { setCheck(event.target.checked) } } />
             </div>
 
-            <Button className="address_button" variant="contained" onClick={ () => {} }>
+            <Button className="address_button" variant="contained" onClick={ () => { infoAboutAddr != null ? updateAddr(pd, domophome, et, kv, comment, token, check, nameAddr, cityID) : saveNewAddr(pd, domophome, et, kv, comment, token, check, nameAddr, cityID) } }>
               <span>Сохранить</span>
             </Button>
           </div>

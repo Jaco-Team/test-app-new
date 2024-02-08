@@ -18,8 +18,14 @@ export default function ProfileMobile({ city, this_module }) {
   
   const [userDate, setUserDate] = useState('');
   
-  const [setActiveProfileModal, setActiveAccountModal, setUser, userInfo] = useProfileStore((state) => [state.setActiveProfileModal, state.setActiveAccountModal, state.setUser, state.userInfo]);
-  const [ token, signOut ] = useHeaderStore( state => [ state.token, state.signOut ] )
+  const [setActiveProfileModal, setActiveAccountModal, setUser, userInfo, getUserInfo, updateUser] = useProfileStore((state) => [state.setActiveProfileModal, state.setActiveAccountModal, state.setUser, state.userInfo, state.getUserInfo, state.updateUser]);
+  const [ token, userName, signOut ] = useHeaderStore( state => [ state.token, state.userName, state.signOut ] )
+
+  useEffect(() => {
+    if( token && token.length > 0 ) {
+      getUserInfo(this_module, city, token);
+    }
+  }, [token]);
 
   const { control, getValues, setValue } = useForm({
     defaultValues: {
@@ -34,7 +40,7 @@ export default function ProfileMobile({ city, this_module }) {
     setValue('name', userInfo?.name ?? '');
     setValue('fam', userInfo?.fam ?? '');
     setValue('mail', userInfo?.mail ?? '');
-    setUserDate(userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ? `${userInfo?.date_bir_d} ${userInfo?.date_bir_m}` : '')
+    setUserDate( userInfo?.date_bir ? userInfo?.date_bir : userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ? `${userInfo?.date_bir_d} ${userInfo?.date_bir_m}` : '')
   }, [userInfo]);
 
   function saveMainData() {
@@ -56,6 +62,19 @@ export default function ProfileMobile({ city, this_module }) {
 
     updateUser(this_module, city, token);
   } 
+
+  //<div className="profileDelete profileMain" onClick={() => setActiveAccountModal(true, 'exit')}>Удалить профиль навсегда</div>
+
+  /*
+    <div className="dataItem profileMain">
+          <span className="itemSwitch" style={{ color: 'rgba(0, 0, 0, 0.40)' }}
+          //style={{ color: check ? 'rgba(0, 0, 0, 0.80)' : 'rgba(0, 0, 0, 0.40)' }}
+          >
+            Хочу получать цифровые чеки на электронную почту
+          </span>
+          <MySwitch />
+        </div>
+  */
 
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="ProfileMobile">
@@ -134,17 +153,10 @@ export default function ProfileMobile({ city, this_module }) {
             checked={ parseInt(userInfo?.spam) == 1 ? true : false } onClick={ event => { changeOtherData('spam', event.target.checked) } }
           />
         </div>
-        <div className="dataItem profileMain">
-          <span className="itemSwitch" style={{ color: 'rgba(0, 0, 0, 0.40)' }}
-          //style={{ color: check ? 'rgba(0, 0, 0, 0.80)' : 'rgba(0, 0, 0, 0.40)' }}
-          >
-            Хочу получать цифровые чеки на электронную почту
-          </span>
-          <MySwitch />
-        </div>
+        
       </div>
 
-      <div className="profileDelete profileMain" onClick={() => setActiveAccountModal(true, 'exit')}>Удалить профиль навсегда</div>
+      
 
       <ProfileModalMobile city={city} this_module={this_module} />
       <AccountModalMobile />
