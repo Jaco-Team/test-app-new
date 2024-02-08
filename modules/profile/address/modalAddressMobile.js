@@ -1,6 +1,6 @@
 import { useEffect, useState, useRef } from 'react';
 
-import { useProfileStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStore } from '@/components/store.js';
 
 import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
 
@@ -18,6 +18,8 @@ import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 
 export default function AddressModalMobile() {
   const ref2 = useRef();
+
+  const [ token ] = useHeaderStore( state => [ state.token ] )
 
   const [openModalAddress, setActiveAddressModal] = useProfileStore((state) => [state.openModalAddress, state.setActiveAddressModal]);
 
@@ -163,7 +165,9 @@ export default function AddressModalMobile() {
     close();
   };*/
 
-  //console.log(  )
+  const close = () => {
+    setActiveAddressModal(false, 0, '');
+  };
 
   return (
     <Dialog
@@ -217,7 +221,7 @@ export default function AddressModalMobile() {
                 value={home}
                 name="home"
                 placeholder="Дом"
-                type="number"
+                //type="number"
                 func={ e => setHome(e.target.value) }
               />
               <MyTextInput

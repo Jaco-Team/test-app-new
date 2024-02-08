@@ -1818,6 +1818,10 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     if( json.st === true ){
       get().closeModalAddr();
       get().getUserInfo('profile', get().city, token);
+
+      set({
+        openModalAddress: false
+      })
     }
 
     setTimeout( () => {
@@ -1869,6 +1873,10 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     if( json.st === true ){
       get().closeModalAddr();
       get().getUserInfo('profile', get().city, token);
+
+      set({
+        openModalAddress: false
+      })
     }
 
     setTimeout( () => {
