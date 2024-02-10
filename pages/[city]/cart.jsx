@@ -14,9 +14,9 @@ const this_module = 'contacts';
 
 export default React.memo(function Cart(props) {
 
-  const { city, cats, cities, page, all_items } = props.data1;
+  const { city, cats, cities, page, all_items, free_items, need_dop } = props.data1;
 
-  const [setAllItems] = useCartStore((state) => [state.setAllItems]);
+  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops]);
 
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] =
     useCitiesStore((state) => [state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList]);
@@ -35,9 +35,19 @@ export default React.memo(function Cart(props) {
       setThisCity(city);
       setThisCityRu(cities.find((item) => item.link == city)['name']);
       setThisCityList(cities);
+
+      setTimeout(() => {
+        changeAllItems();
+      }, 300);
     }
     
-    setAllItems(all_items);
+    if( allItems.length == 0 ){
+      setAllItems(all_items)
+    }
+
+    setFreeItems(free_items);
+    setNeedDops(need_dop);
+    
     setActivePage('cart');
     
   }, [city, thisCity]);

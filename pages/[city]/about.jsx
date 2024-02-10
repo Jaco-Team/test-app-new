@@ -2,9 +2,9 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'), { ssr: false })
-const DynamicFooter = dynamic(() => import('@/components/footer.js'), { ssr: false })
-const AboutPage = dynamic(() => import('@/modules/about/aboutPage'), { ssr: false })
+const DynamicHeader = dynamic(() => import('@/components/header.js'))
+const DynamicFooter = dynamic(() => import('@/components/footer.js'))
+const AboutPage = dynamic(() => import('@/modules/about/aboutPage'))
 
 import { roboto } from '@/ui/Font.js'
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
@@ -14,9 +14,9 @@ const this_module = 'contacts';
 
 export default React.memo(function About(props) {
 
-  const { city, cats, cities, page, all_items } = props.data1;
+  const { city, cats, cities, page, all_items, free_items, need_dop } = props.data1;
 
-  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
+  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops]);
 
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
@@ -28,11 +28,18 @@ export default React.memo(function About(props) {
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
+
+      setTimeout(() => {
+        changeAllItems();
+      }, 300);
     }
 
     if( allItems.length == 0 ){
       setAllItems(all_items)
     }
+
+    setFreeItems(free_items);
+    setNeedDops(need_dop);
 
     setActivePage('about')
   }, []);

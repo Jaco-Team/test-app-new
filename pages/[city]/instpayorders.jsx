@@ -10,19 +10,16 @@ import {
   useCartStore,
 } from '@/components/store.js';
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'), { ssr: false });
-const DynamicFooter = dynamic(() => import('@/components/footer.js'), { ssr: false });
-const DynamicPage = dynamic(() => import('@/modules/pageText'), { ssr: false });
+const DynamicHeader = dynamic(() => import('@/components/header.js'));
+const DynamicFooter = dynamic(() => import('@/components/footer.js'));
+const DynamicPage = dynamic(() => import('@/modules/pageText'));
 
 const this_module = 'contacts';
 
 export default React.memo(function Instpayorders(props) {
-  const { city, cats, cities, page, all_items } = props.data1;
+  const { city, cats, cities, page, all_items, free_items, need_dop } = props.data1;
 
-  const [setAllItems, allItems] = useCartStore((state) => [
-    state.setAllItems,
-    state.allItems,
-  ]);
+  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops]);
 
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] =
     useCitiesStore((state) => [
@@ -39,11 +36,18 @@ export default React.memo(function Instpayorders(props) {
       setThisCity(city);
       setThisCityRu(cities.find((item) => item.link == city)['name']);
       setThisCityList(cities);
+
+      setTimeout(() => {
+        changeAllItems();
+      }, 300);
     }
 
     if (allItems.length == 0) {
       setAllItems(all_items);
     }
+
+    setFreeItems(free_items);
+    setNeedDops(need_dop);
 
     setActivePage('instpayorders');
   }, []);

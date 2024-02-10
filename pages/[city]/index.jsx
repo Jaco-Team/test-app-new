@@ -5,23 +5,20 @@ import dynamic from 'next/dynamic'
 const DynamicHeader = dynamic(() => import('@/components/header.js'));
 const DynamicFooter = dynamic(() => import('@/components/footer.js'));
 const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'));
-const LoadMap = dynamic(() => import('@/components/loadMap'));
 
 import { roboto } from '@/ui/Font.js'
 import { api } from '@/components/api.js';
 
-import { useHomeStore, useCitiesStore, useCartStore, useHeaderStore, useContactStore } from '@/components/store.js';
+import { useHomeStore, useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
 
 const this_module = 'home';
 
 export default function Home(props) {
 
-  const { city, cats, cities, page, all_items } = props.data1;
+  const { city, cats, cities, page, all_items, free_items, need_dop } = props.data1;
 
-  const getData = useContactStore( state => state.getData );
-  
-  const [setAllItems, changeAllItems] = useCartStore((state) => [state.setAllItems, state.changeAllItems]);
-  
+  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops]);
+
   const [ getBanners ] = useHomeStore( state => [ state.getBanners ]);
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
   const [setActivePage] = useHeaderStore((state) => [state.setActivePage]);
@@ -44,18 +41,19 @@ export default function Home(props) {
 
     getBanners(this_module, city);
 
-    setAllItems(all_items);
+    if( allItems.length == 0 ){
+      setAllItems(all_items)
+    }
+
+    setFreeItems(free_items);
+    setNeedDops(need_dop);
+
     setActivePage('home');
     
   }, [city, thisCity]);
 
-  //<LoadMap getData={getData} city={city} />
-
   return (
     <div className={roboto.variable}>
-
-      
-
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
       <DynamicHomePage page={page} city={city} />
@@ -64,120 +62,6 @@ export default function Home(props) {
     </div>
   )
 }
-
-/*
-class Akcii_old extends React.Component {
-  constructor(props) {
-      super(props);
-      
-      this.state = {    
-          is_load: false,
-          
-          page: this.props.data1 ? this.props.data1.page : null,
-          title: this.props.data1 ? this.props.data1.page.title : '',
-          description: this.props.data1 ? this.props.data1.page.description : '',
-
-          city: this.props.data1 ? this.props.data1.city : '',
-          city_name: this.props.city,
-          cats: this.props.data1?.cats ?? [],
-          city_list: this.props.data1?.cities ?? [],
-
-          openMSG: false,
-          statusMSG: false,
-          textMSG: '',
-
-          banners: []
-      };
-  }
-  
-  getData = (method, data = {}) => {
-    data.type = method; 
-
-    return fetch(config.urlApi+this_module, {
-      method: 'POST',
-      headers: {
-          'Content-Type':'application/x-www-form-urlencoded'},
-      body: queryString.stringify(data)
-    })
-      .then((res) => res.json())
-      .then((json) => {
-        return json;
-      })
-      .catch((err) => {
-        console.log(err);
-      });
-  };
-
-  componentDidMount(){
-    this.getBanners()
-  }
-  
-  closeAlert(){
-
-  }
-
-  async getBanners(){
-    let data = {
-      city_id: this.state.city
-    };
-
-    const json = await this.getData('get_banners', data);
-
-    console.log( 'banners', json )
-
-    this.setState({
-      banners: json.banners
-    })
-  }
-  
-  render() {
-    return (
-      <div className={roboto.variable}>
-        <Header city={this.state.city} cats={this.state.cats} city_list={this.state.city_list} active_page={this_module} />
-
-        { this.state.banners.length == 0 ? null : 
-          <Banners banners={this.state.banners} />
-        }
-
-        <Grid container spacing={3} className="Actii mainContainer">
-                  
-          <Head>
-            <title>{this.state.title}</title>
-            <meta name="description" content={this.state.description} />
-            <link rel="icon" href="/favicon.ico" />
-          </Head>
-          
-          <Snackbar
-            anchorOrigin={{
-              vertical: 'top',
-              horizontal: 'center',
-            }}
-            open={this.state.openMSG}
-            autoHideDuration={3000}
-            onClose={this.closeAlert.bind(this)}
-            message={this.state.textMSG}
-            style={{ backgroundColor: this.state.statusMSG ? 'green' : '#BB0025', borderRadius: 4 }}
-          />
-
-          <Grid item xs={12}>
-            <Grid container spacing={3}>
-
-            
-
-            </Grid>
-          </Grid>
-
-          
-
-        </Grid>
-
-        { this.state.city == '' ? null :
-          <Footer cityName={this.state.city} />
-        }
-      </div>
-    )
-  }
-}*/
 
 export async function getServerSideProps({ req, res, query }) {
 
