@@ -17,6 +17,9 @@ export default function Meta({ title, description, children }) {
             <meta name="description" content={description} />
             <meta name="og:title" content={title} />
             <meta name="og:description" content={description} />
+            <meta name="og:site_name" content="Жако роллы и пицца" />
+            <meta name="og:type" content="website" />
+            <meta name="og:url" content="https://jacofood.ru${req.originalUrl}" />
           </>
             :
           <meta name="robots" content="noindex, nofollow" />

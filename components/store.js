@@ -1473,6 +1473,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       typeOrder: parseInt(order?.order?.type_order_) - 1,
       orderPic: parseInt(order?.order?.type_order_) == 2 ? order?.order?.pic_info : null,
       point_id: order?.order?.point_id,
+
+      comment: order?.order?.comment,
+      sdacha: order?.order?.sdacha,
     })
 
     if( parseInt(order?.order?.type_order_) == 1 ){
