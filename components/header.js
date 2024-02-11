@@ -1,7 +1,5 @@
 import React, { useEffect } from 'react';
 
-import Script from 'next/script';
-
 import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { roboto } from '../ui/Font.js';
@@ -44,8 +42,6 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
 
   return (
     <div className={roboto.variable} style={{ overflow: 'auto' }}>
-
-      <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" strategy="lazyOnload" />
 
       {matches ?
         <>
