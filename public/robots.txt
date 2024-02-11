@@ -1,0 +1,15 @@
+User-agent: *
+Disallow: /*cart*
+Disallow: /*profile*
+Sitemap: https://jacofood.ru/sitemap.xml
+Host: https://jacofood.ru
+
+User-agent: Yandex
+Disallow: /*cart*
+Disallow: /*profile*
+Sitemap: https://jacofood.ru/sitemap.xml
+
+User-agent: Yandex
+Disallow: /?
+Clean-param: showItem /
+Clean-param: code /*
