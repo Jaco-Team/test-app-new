@@ -63,14 +63,21 @@ export default function FormOrder({ cityName }) {
         changeAllItems();
       }, 300);
     }
+    if( thisCity ){
+      getMySavedAddr(thisCity, token);
+    }
   }, [thisCity, cityName]);
 
   useEffect(() => {
     if (localStorage.getItem('promo_name') && localStorage.getItem('promo_name').length > 0) {
       setPromo(localStorage.getItem('promo_name'));
     }
-    getMySavedAddr(thisCity, token);
+    
   }, [promoInfo]);
+
+  useEffect(() => {
+    
+  }, [])
 
   const openMenu = (event, nameList) => {
     setNameList(nameList);

@@ -24,12 +24,6 @@ export default React.memo(function Cart(props) {
   const [setActivePage, matches] = useHeaderStore((state) => [state.setActivePage, state.matches]);
 
   useEffect(() => {
-    if (!matches) {
-      window.location.href = '/' + city;
-    }
-  }, [matches]);
-
-  useEffect(() => {
 
     if (thisCity != city) {
       setThisCity(city);
@@ -52,10 +46,6 @@ export default React.memo(function Cart(props) {
     
   }, [city, thisCity]);
  
-  if( !matches ){
-    return false;
-  }
-
   return (
     <div className={roboto.variable}>
 

@@ -431,17 +431,21 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   // получение адресов доставки в оформлении заказа
   getMySavedAddr: async(city_id, token) => {
-    const data = {
-      type: 'get_my_saved_addr',
-      city_id: city_id,
-      token: token
-    };
-    
-    const json = await api('cart', data);
+    if (typeof window !== 'undefined') {
+      const token1 = localStorage.getItem('token');
 
-    set({ addrList: json ?? [] });
+      const data = {
+        type: 'get_my_saved_addr',
+        city_id: city_id,
+        token: token1
+      };
+      
+      const json = await api('cart', data);
 
-    get().setCartLocalStorage();
+      set({ addrList: json ?? [] });
+
+      get().setCartLocalStorage();
+    }
   },
 
   // создание заказа
@@ -451,7 +455,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const typeOrder = get().typeOrder;
     const promoName = localStorage.getItem('promo_name');
 
-    if(typeOrder) {
+    //самовывоз
+    if( parseInt(typeOrder) == 1 ) {
       data = {
         type: 'create_order',
         token,
@@ -533,7 +538,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     let itemsOffDops = allItems.filter(item => parseInt(item.cat_id) !== 7 && item.cat_id !== undefined );
 
-    itemsOffDops = [ ...itemsWithPromo ];
+    itemsOffDops = [ ...itemsOffDops, ...itemsWithPromo ];
 
     set({ itemsOffDops, itemsOnDops });
 
@@ -810,6 +815,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   // добавления товара для корзины
   plus: (item_id, cat_id) => {
+
     let check = false;
     let items = get().items;
     const allItems = get().allItems;
@@ -823,7 +829,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     }
 
     items = items.map((item) => {
-      if(item.item_id === item_id){
+      if( parseInt(item.item_id) === parseInt(item_id) ){
         item.count++;
         itemsCount++;
         check = true;
@@ -833,18 +839,19 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     })
 
     if(!check){
-      const item = allItems.find(item => item.id === item_id);
+      const item = allItems.find(item => parseInt(item.id) === parseInt(item_id));
+
       if(item){
         item.count = 1;
         itemsCount++;
         item.item_id = item.id;
         item.one_price = item.price;
-        item.cat_id = cat_id;
+        item.cat_id = item.cat_id;
         items = [...items,...[item]];
       }
     }
 
-    const allPriceWithoutPromo = items.reduce((all, it) => all + it.count * it.one_price, 0);
+    const allPriceWithoutPromo = items.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
 
     set({ items, itemsCount, allPriceWithoutPromo });
     
@@ -866,16 +873,12 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const promoInfo = get().promoInfo;
 
     items = items.reduce((newItems, item) => {
-      if(item.item_id === item_id){
+      if(parseInt(item.item_id) === parseInt(item_id)){
         item.count--;
         itemsCount--;
       }
       return item.count ? newItems = [...newItems,...[item]] : newItems;
     }, [])
-
-    
-
-
 
     let check_dop = items.filter( (item, key) => parseInt(item.count) > 0 && (parseInt(item.item_id) == 17 || parseInt(item.item_id) == 237) );
 
@@ -903,7 +906,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       }
     })
 
-    const allPriceWithoutPromo = items.reduce((all, it) => all + it.count * it.one_price, 0);
+    const allPriceWithoutPromo = items.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
 
     set({ items, itemsCount, allPriceWithoutPromo });
     
@@ -1458,6 +1461,76 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   },
 
+  repeatOrder: (order) => {
+    const city = useCitiesStore.getState().thisCity;
+
+    set({
+      items: [],
+      itemsOnDops: [],
+      itemsOffDops: [],
+      itemsWithPromo: [],
+
+      typeOrder: parseInt(order?.order?.type_order_) - 1,
+      orderPic: parseInt(order?.order?.type_order_) == 2 ? order?.order?.pic_info : null,
+      point_id: order?.order?.point_id,
+    })
+
+    if( parseInt(order?.order?.type_order_) == 1 ){
+      get().setAddrDiv(order?.order?.street_info);
+      get().setSummDiv(order?.order?.street_info?.sum_div ?? 0);
+    }
+
+    //if( order?.order?.promo_name?.length > 0 ){
+      get().getInfoPromo(order?.order?.promo_name ?? '', city);
+    //}
+
+    const itemsWithPromo = get().itemsWithPromo;
+    const allItems = get().allItems;
+    
+    let checkItem = null;
+    let my_cart = [];
+
+    order.order_items.map((item) => {
+      checkItem = allItems.find( it => parseInt(it.id) === parseInt(item.item_id) );
+
+      checkItem.count = parseInt(item.count);
+      checkItem.one_price = parseInt(checkItem.price);
+      checkItem.item_id = parseInt(checkItem.id);
+
+      if( checkItem ){
+        my_cart.push(checkItem);
+      }
+    })
+
+    const allPriceWithoutPromo = my_cart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
+    const itemsCount = my_cart.reduce((all, it) => parseInt(all) + parseInt(it.count), 0);
+
+    set({ 
+      items: my_cart, 
+      itemsCount, 
+      allPriceWithoutPromo 
+    });
+    
+    
+    get().getItems();
+    
+    get().check_need_dops();
+
+    get().setCartLocalStorage();
+
+    useProfileStore.getState().closeOrder();
+
+    const matches = useHeaderStore.getState().matches;
+
+    if( matches ){ 
+      window.location.href = '/' + city + '/cart';
+    }else{
+      useHeaderStore.getState().setActiveBasket(true);  
+    }
+    
+    
+  },
+
 }), shallow);
 
 export const useContactStore = createWithEqualityFn((set, get) => ({
@@ -1984,10 +2057,14 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       zones: json.zones
     })
   },
-  orderDel: async (this_module, userToken) => {
+  repeatOrder: () => {
+    console.log(get().modalOrder);
+  },
+  orderDel: async (this_module, userToken, text) => {
     let data = {
       type: 'close_order',
       user_id: userToken,
+      ans: text,
       order_id: get().modalOrder?.order?.order_id,
       point_id: get().modalOrder?.order?.point_id
     };
@@ -1998,6 +2075,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       get().closeModalDel();
       get().closeOrder();
       get().getOrderList('zakazy', get().city, userToken);
+    }else{
+      useHeaderStore.getState().setActiveModalAlert(true, json.text, false);
     }
   },
 

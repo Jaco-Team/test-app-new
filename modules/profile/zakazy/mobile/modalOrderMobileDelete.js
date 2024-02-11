@@ -1,8 +1,6 @@
 import { useState } from 'react';
 
-//import { useSession } from 'next-auth/react';
-
-import { useProfileStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStore } from '@/components/store.js';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -17,7 +15,8 @@ const answers = [
   { id: 2, val: 'Изменились планы' },
   { id: 3, val: 'Долгое время ожидания' },
   { id: 4, val: 'Недостаточно средств' },
-  { id: 5, val: 'Другое' },
+  { id: 5, val: 'Просто отмените' },
+  { id: 6, val: 'Другое' },
 ];
 
 export default function ModalOrderMobileDelete() {
@@ -26,7 +25,7 @@ export default function ModalOrderMobileDelete() {
   const [active, setActive] = useState(0);
   const [text, setText] = useState('');
 
-  //const session = useSession();
+  const [ token ] = useHeaderStore( state => [ state.token ] )
 
   const [openModalDelete, closeModalDel, orderDel] = useProfileStore((state) => [state.openModalDelete, state.closeModalDel, state.orderDel]);
 
@@ -80,7 +79,7 @@ export default function ModalOrderMobileDelete() {
             <span>Вернуться к заказу</span>
           </Button>
           <Button className="buttonDelete" variant="outlined"
-            //onClick={() => orderDel('zakazy', session.data?.user?.token, active === 5 ? text : active ? answers[active - 1].val : answers[active].val)}
+            onClick={ () => orderDel( 'zakazy', token, active === 6 ? text : answers[active].val) }
           >
             <span>Отменить заказ</span>
           </Button>
