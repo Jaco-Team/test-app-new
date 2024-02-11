@@ -47,7 +47,7 @@ export default React.memo(function FooterPC({ cityName }) {
           </div>
           <div className="column">
             <Typography component="span">Документы</Typography>
-            { Object.keys().length == 0 ? false : 
+            { Object.keys(links).length == 0 ? false : 
               <Link href={links?.link_allergens ?? ''} target="_blank">Калорийность, состав, БЖУ</Link>
             }
             <Link href={'/' + cityName + '/publichnaya-oferta'}>Публичная оферта</Link>
@@ -65,7 +65,7 @@ export default React.memo(function FooterPC({ cityName }) {
           </div>
           <div className="container">
             <div className="icon">
-              { Object.keys().length == 0 ? false :
+              { Object.keys(links).length == 0 ? false :
                 <>
                   <Link href={links?.link_vk ?? ''} target="_blank"><NewVKIcon /></Link>
                   <Link href={links?.link_tg ?? ''} target="_blank"><TGIcon /></Link>
