@@ -17,6 +17,9 @@ export default memo(function CardItem({ item, count, index}) {
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
 
+  //732
+  //1420
+
   return (
     <Grid item className={'CardItemPC ' + (count > 0 ? 'active' : '')}
       style={{ marginRight: (index + 1) % 4 === 0 ? 0 : '1.4440433212996vw', marginBottom: count > 0 ? '1.4440433212996vw' : '2.8880866425993vw', height: count > 0 ? '35.740072202166vw' : '34.296028880866vw'}}
@@ -27,9 +30,9 @@ export default memo(function CardItem({ item, count, index}) {
         <div style={{ position: 'relative' }}>
           <Image
             alt={item.name}
-            src={'https://cdnimg.jacofood.ru/' + item.img_app + '_1420x1420.jpg'}
-            width={1420}
-            height={1420}
+            src={'https://cdnimg.jacofood.ru/' + item.img_app + '_732x732.jpg'}
+            width={732}
+            height={732}
             priority={false}
             quality={75}
             loading={'lazy'}
