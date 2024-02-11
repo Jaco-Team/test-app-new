@@ -47,7 +47,9 @@ export default React.memo(function FooterPC({ cityName }) {
           </div>
           <div className="column">
             <Typography component="span">Документы</Typography>
-            <Link href={links?.link_allergens ?? ''} target="_blank">Калорийность, состав, БЖУ</Link>
+            { Object.keys().length == 0 ? false : 
+              <Link href={links?.link_allergens ?? ''} target="_blank">Калорийность, состав, БЖУ</Link>
+            }
             <Link href={'/' + cityName + '/publichnaya-oferta'}>Публичная оферта</Link>
             <Link href={'/' + cityName + '/politika-konfidencialnosti'}>Политика конфиденциальности</Link>
             <Link href={'/' + cityName + '/instpayorders'}>Правила оплаты</Link>
@@ -63,9 +65,13 @@ export default React.memo(function FooterPC({ cityName }) {
           </div>
           <div className="container">
             <div className="icon">
-              <Link href={links?.link_vk ?? ''} target="_blank"><NewVKIcon /></Link>
-              <Link href={links?.link_tg ?? ''} target="_blank"><TGIcon /></Link>
-              <Link href={links?.link_ok ?? ''} target="_blank" style={{ marginRight: 0 }}><OdnIcon /></Link>
+              { Object.keys().length == 0 ? false :
+                <>
+                  <Link href={links?.link_vk ?? ''} target="_blank"><NewVKIcon /></Link>
+                  <Link href={links?.link_tg ?? ''} target="_blank"><TGIcon /></Link>
+                  <Link href={links?.link_ok ?? ''} target="_blank" style={{ marginRight: 0 }}><OdnIcon /></Link>
+                </>
+              }
             </div>
             
           </div>
