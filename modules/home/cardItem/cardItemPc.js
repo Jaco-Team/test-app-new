@@ -10,6 +10,8 @@ import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.j
 
 import BadgeItem from './badge';
 
+import {placeholder_img} from '@/public/placeholder_img';
+
 export default memo(function CardItem({ item, count, index}) {
   //console.log('CardItemPc render');
 
@@ -35,6 +37,8 @@ export default memo(function CardItem({ item, count, index}) {
             loading={'lazy'}
             onClick={() => getItem('home', thisCity, item.id)}
             style={{ cursor: 'pointer' }}
+            placeholder="blur"
+            blurDataURL={placeholder_img}
           />
 
           {parseInt(item.is_new) == 0 ? parseInt(item.is_hit) == 0 ? null :

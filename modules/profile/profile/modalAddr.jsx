@@ -62,7 +62,6 @@ export default function ModalAddr(){
       setHome('');
       setStreet('');
       setStreet_('')
-      
       setPd('');
       setDomophome(true);
       setEt('');
@@ -72,9 +71,9 @@ export default function ModalAddr(){
     }
   }, [infoAboutAddr] )
 
-  useEffect( () => {
-    updateStreetList(cityID);
-  }, [cityID] )
+  // useEffect( () => {
+  //   updateStreetList(cityID);
+  // }, [cityID] )
 
   function chengeCity(city){
     setCityID(city);

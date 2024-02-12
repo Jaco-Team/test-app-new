@@ -10,27 +10,29 @@ import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.j
 
 import BadgeItem from './badge';
 
+import {placeholder_img} from '@/public/placeholder_img';
+
 export default React.memo(function CardItemMobile({ item, count }) {
   const [getItem] = useHomeStore((state) => [state.getItem]);
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
-
-  //1420
-  //732
-  //585
 
   return (
     <Grid item className={'CardItemMobile ' + (count > 0 ? 'active' : '')} sx={{ display: { xs: 'flex', md: 'flex', sm: 'none' } }}>
       <div className="CardContainer">
 
         <div className="CardImg">
-          <Image alt={item.name} src={'https://cdnimg.jacofood.ru/' + item.img_app + '_585x585.jpg'}
+          <Image 
+            alt={item.name} 
+            src={'https://cdnimg.jacofood.ru/' + item.img_app + '_585x585.jpg'}
             width={585}
             height={585}
             priority={false}
             quality={80}
             loading="lazy"
             onClick={() => getItem('home', thisCity, item.id)}
+            placeholder="blur"
+            blurDataURL={placeholder_img}
           />
 
           {parseInt(item.is_new) == 0 ? parseInt(item.is_hit) == 0 ? null :
@@ -41,11 +43,11 @@ export default React.memo(function CardItemMobile({ item, count }) {
         </div>
 
         <div className="CardInfoItem">
-          <Typography className="CardNameItem" component="span">
+          <Typography className="CardNameItem" component="span" onClick={() => getItem('home', thisCity, item.id)}>
             {item.name}
           </Typography>
 
-          <div className="dop_text">
+          <div className="dop_text" onClick={() => getItem('home', thisCity, item.id)}>
 
             {parseInt(item.cat_id) != 4 ? null : (
               <span className="first_text" 
@@ -74,7 +76,7 @@ export default React.memo(function CardItemMobile({ item, count }) {
             </span>
           </div>
 
-          <div className="desc_text">
+          <div className="desc_text" onClick={() => getItem('home', thisCity, item.id)}>
             {item.marc_desc.length > 0 ? item.marc_desc : item.tmp_desc}
           </div>
 

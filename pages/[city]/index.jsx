@@ -54,8 +54,6 @@ export default function Home(props) {
   return (
     <div className={roboto.variable}>
 
-      
-
       <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
 
       <DynamicHomePage page={page} city={city} />

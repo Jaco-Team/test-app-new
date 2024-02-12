@@ -15,6 +15,8 @@ import BadgeItem from './badge';
 
 import { roboto } from '@/ui/Font';
 
+import {placeholder_img} from '@/public/placeholder_img';
+
 export default function ModalCardItemMobile() {
   //console.log('render ModalCardItemMobile');
 
@@ -85,6 +87,8 @@ export default function ModalCardItemMobile() {
                   quality={100}
                   //loading="lazy"
                   priority={true} 
+                  placeholder="blur"
+                  blurDataURL={placeholder_img}
                 />
 
                 {parseInt(openItem?.is_new) == 0 ? parseInt(openItem?.is_hit) == 0 ? null :
@@ -214,6 +218,8 @@ export default function ModalCardItemMobile() {
                           width={732} 
                           height={732} 
                           priority={true}
+                          placeholder="blur"
+                          blurDataURL={placeholder_img}
                         />
                       </div>
 

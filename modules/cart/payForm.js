@@ -9,7 +9,7 @@ import { IconClose } from '@/ui/Icons';
 import { roboto } from '@/ui/Font.js';
 
 export default function PayForm() {
-  console.log('render PayForm');
+  //console.log('render PayForm');
 
   const [matches] = useHeaderStore((state) => [state.matches]);
   const [openPayForm, setPayForm] = useCartStore((state) => [state.openPayForm, state.setPayForm]);

@@ -17,22 +17,24 @@ export default function HomePage({ page, city } ) {
 
   return (
     <Meta title={page.title} description={page.description}>
-      {matches ?
-      <>
-      <BannersMobile />
-      <MenuCatMobile city={city}/>
-      <ModalCardItemMobile />
-      <ModalBannerMobile />
-      </>
-      : 
-      <>
-      <BannersPC />
-      <ModalCardItemPC />
-      <ModalBannerPC />
-      </>
-      }
+      <div style={{ minHeight: '50vh' }}>
+        {matches ?
+          <>
+            <BannersMobile />
+            <MenuCatMobile city={city}/>
+            <ModalCardItemMobile />
+            <ModalBannerMobile />
+          </>
+        : 
+          <>
+            <BannersPC />
+            <ModalCardItemPC />
+            <ModalBannerPC />
+          </>
+        }
 
-      <CardItems />
+        <CardItems />
+      </div>
 
     </Meta>
   );

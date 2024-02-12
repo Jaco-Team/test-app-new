@@ -1518,18 +1518,20 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     if(active) {
 
-      set({ openModalAddress: active, streetId: id, city })
+      set({ openModalAddress: active, streetId: id, city})
 
       get().getMapMobile(id, city);
 
     } else {
-      set({ openModalAddress: active, streetId: 0,  city: '', infoAboutAddr: null })
+      set({ openModalAddress: active, streetId: 0,  city: '', infoAboutAddr: null, center_map: null })
     }
 
   },
 
   // карта для модалки выбора адреса доставки в мобильной версии
   getMapMobile: async (id, city = '') => {
+
+    console.log('getMapMobile')
 
     let data = {
       type: 'get_data_for_streets',
@@ -1544,7 +1546,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       infoAboutAddr: json.this_info,
       cityList: json.cities,
       active_city: json.city,
-
       chooseAddrStreet: json.this_info,
       center_map: {
         center: json.this_info ? [json?.this_info?.xy[0], json?.this_info?.xy[1]] : [json.city_center[0], json.city_center[1]],
@@ -1610,6 +1611,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api(this_module, data);
 
+    console.log('getUserInfo json', json)
+
     set({
       shortName: json?.user?.name?.substring(0, 1) + json?.user?.fam?.substring(0, 1),
       userInfo: json?.user,
@@ -1617,12 +1620,16 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       city: city
     });
   },
+
   setUser: (user) => {
+
     set({
       shortName: user?.name?.substring(0, 1) + user?.fam?.substring(0, 1),
       userInfo: user,
     });
+
   },
+
   updateUser: async (this_module, city, userToken) => {
     let data = {
       type: 'update_user',
@@ -1633,6 +1640,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api(this_module, data);
   },
+
   getOrder: async (this_module, city, userToken, order_id, point_id) => {
     let data = {
       type: 'get_order',

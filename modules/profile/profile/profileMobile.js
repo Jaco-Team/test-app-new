@@ -17,15 +17,10 @@ import { ArrowLeftMobile, EditPencilMobile, LockMobile } from '@/ui/Icons.js';
 export default function ProfileMobile({ city, this_module }) {
   
   const [userDate, setUserDate] = useState('');
+  const [isSpam, setIsSpam] = useState(0);
   
-  const [setActiveProfileModal, setActiveAccountModal, setUser, userInfo, getUserInfo, updateUser] = useProfileStore((state) => [state.setActiveProfileModal, state.setActiveAccountModal, state.setUser, state.userInfo, state.getUserInfo, state.updateUser]);
-  const [ token, userName, signOut ] = useHeaderStore( state => [ state.token, state.userName, state.signOut ] )
-
-  useEffect(() => {
-    if( token && token.length > 0 ) {
-      getUserInfo(this_module, city, token);
-    }
-  }, [token]);
+  const [setActiveProfileModal, setUser, userInfo, getUserInfo, updateUser] = useProfileStore((state) => [state.setActiveProfileModal, state.setUser, state.userInfo, state.getUserInfo, state.updateUser]);
+  const [token] = useHeaderStore( state => [ state.token] )
 
   const { control, getValues, setValue } = useForm({
     defaultValues: {
@@ -37,11 +32,20 @@ export default function ProfileMobile({ city, this_module }) {
   });
 
   useEffect(() => {
+
     setValue('name', userInfo?.name ?? '');
     setValue('fam', userInfo?.fam ?? '');
     setValue('mail', userInfo?.mail ?? '');
-    setUserDate( userInfo?.date_bir ? userInfo?.date_bir : userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ? `${userInfo?.date_bir_d} ${userInfo?.date_bir_m}` : '')
-  }, [userInfo]);
+    setIsSpam(userInfo?.spam);
+    setUserDate( userInfo?.date_bir?.length ? userInfo?.date_bir.toLowerCase() : '');
+
+  }, [setValue, userInfo]);
+
+  useEffect(() => {
+    if( token && token.length > 0 ) {
+      getUserInfo(this_module, city, token);
+    }
+  }, [token]);
 
   function saveMainData() {
     let userData = getValues();
@@ -59,6 +63,8 @@ export default function ProfileMobile({ city, this_module }) {
     userInfo[ [type] ] = data === true ? 1 : 0;
 
     setUser(userInfo);
+
+    setIsSpam(data === true ? 1 : 0);
 
     updateUser(this_module, city, token);
   } 
@@ -150,15 +156,13 @@ export default function ProfileMobile({ city, this_module }) {
             Хочу получать СМС с акциями, скидками и подарками
           </span>
           <MySwitch
-            checked={ parseInt(userInfo?.spam) == 1 ? true : false } onClick={ event => { changeOtherData('spam', event.target.checked) } }
+            checked={parseInt(isSpam) == 1 ? true : false} onClick={ event => { changeOtherData('spam', event.target.checked) } }
           />
         </div>
         
       </div>
 
-      
-
-      <ProfileModalMobile city={city} this_module={this_module} />
+      <ProfileModalMobile city={city} this_module={this_module} setUserDate={setUserDate} />
       <AccountModalMobile />
     </Box>
   );

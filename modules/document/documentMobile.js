@@ -9,51 +9,47 @@ export default function DocumentPageMobile({ cityName }) {
   const [links] = useFooterStore((state) => [state.links]);
 
   return (
-    <Grid item className="pageAboutMobile" sx={{ display: { xs: 'flex', md: 'flex', sm: 'none' } }}>
-      <div className="containerAboutMobile" style={{ marginBottom: '30.769230769231vw' }}>
-        <div className="listAboutMobile">
+    <Grid item className="pageDocumentMobile" sx={{ display: { xs: 'flex', md: 'flex', sm: 'none' } }}>
+      <div className="containerDocumentMobile">
+        <div className="listDocumentMobile">
           
           <Link href={'/' + cityName + '/about'}>
-            <div className="linkAboutMobile">
+            <div className="linkDocumentMobile">
               <span>О компании</span>
               <ArrowRightMobile />
             </div>
           </Link>
           <Link href={'/' + cityName + '/jobs'}>
-            <div className="linkAboutMobile">
+            <div className="linkDocumentMobile">
               <span>Вакансии</span>
               <ArrowRightMobile />
             </div>
           </Link>
           <Link href={'/' + cityName + '/publichnaya-oferta'}>
-            <div className="linkAboutMobile">
+            <div className="linkDocumentMobile">
               <span>Публичная оферта</span>
               <ArrowRightMobile />
             </div>
           </Link>
           <Link href={'/' + cityName + '/politika-konfidencialnosti'}>
-            <div className="linkAboutMobile">
+            <div className="linkDocumentMobile">
               <span>Политика конфиденциальности</span>
               <ArrowRightMobile />
             </div>
           </Link>
           <Link href={'/' + cityName + '/instpayorders'}>
-            <div className="linkAboutMobile">
+            <div className="linkDocumentMobile">
               <span>Правила оплаты</span>
               <ArrowRightMobile />
             </div>
           </Link>
 
           <Link href={links?.link_allergens ?? links} target="_blank">
-            <div className="linkAboutMobile">
+            <div className="linkDocumentMobile">
               <span>Калорийность, состав, БЖУ</span>
               <ArrowRightMobile />
             </div>
           </Link>
-          
-
-          
-
           
         </div>
       </div>

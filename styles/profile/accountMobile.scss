@@ -4,6 +4,7 @@
   margin-top: $MyScale200_mobile;
   flex-direction: column;
   align-items: center;
+  min-height: 50vh;
 
   & .accountMain {
     display: flex;
@@ -81,122 +82,104 @@
   }
 }
 
-.AccountModal {
-  & .MuiDialog-container {
-    display: flex;
-    align-items: flex-end;
+#AccountModal {
+  z-index: 1300;
 
-    & .MuiDialog-paper {
-      border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
-      overflow: visible;
-      margin: 0;
-      padding: 0;
-      width: 100%;
-      max-width: none !important;
+  & .MuiDrawer-paper {
+    max-height: calc(100% - $MyScale200_mobile);
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+    .ContainerAccountModal {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: auto;
 
-      & .MuiDialogContent-root {
-        padding: 0;
-        overflow: 'hidden';
+      & .Line {
+        height: $MyScale10_mobile;
+        width: $MyScale150_mobile;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: $MyScale5_mobile;
+        margin-bottom: $MyScale80_mobile;
+        margin-top: $MyScale40_mobile;
+      }
 
-        .ContainerAccountModal {
+      & .loginHeader {
+        height: $MyScale120_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include font75_700();
+      }
+
+      & .listColor {
+        display: flex;
+        width: $MyScale919_6_mobile;
+        flex-wrap: wrap;
+        justify-content: space-between;
+        row-gap: $MyScale34_mobile;
+        margin-bottom: $MyScale220_mobile;
+
+        & .itemColor {
+          border-radius: $MyScale5_mobile;
           display: flex;
-          flex-direction: column;
           align-items: center;
+          justify-content: center;
 
-          & .Line {
-            height: $MyScale10_mobile;
-            width: $MyScale150_mobile;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: $MyScale5_mobile;
-            margin-bottom: $MyScale80_mobile;
-            margin-top: $MyScale40_mobile;
+          & svg {
+            width: $MyScale80_mobile;
+            height: $MyScale71_5_mobile;
           }
+        }
+      }
 
-          & .loginHeader {
-            height: $MyScale120_mobile;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            @include font75_700();
-          }
+      & .infoExit {
+        height: $MyScale400_mobile;
+        width: $MyScale910_mobile;
+        display: flex;
+        line-height: $MyScale55_mobile;
+        margin-bottom: $MyScale60_mobile;
+        justify-content: space-between;
 
-          & .listColor {
-            display: flex;
-            width: $MyScale919_6_mobile;
-            flex-wrap: wrap;
-            justify-content: space-between;
-            row-gap: $MyScale34_mobile;
-            margin-bottom: $MyScale220_mobile;
+        & span {
+          text-align: center;
+          @include font40_400();
+        }
+      }
 
-            & .itemColor {
-              border-radius: $MyScale5_mobile;
-              display: flex;
-              align-items: center;
-              justify-content: center;
+      & .buttonModalClose {
+        width: $MyScale650_mobile;
+        height: $MyScale120_mobile;
+        border-radius: $MyScale60_mobile;
+        margin-bottom: $MyScale40_mobile;
+        padding: 0;
+        text-transform: lowercase;
 
-              & svg {
-                width: $MyScale80_mobile;
-                height: $MyScale71_5_mobile;
-              }
-            }
-          }
+        & span {
+          display: flex;
+          align-items: center;
+          text-align: center;
+          @include font50_500();
+          color: #fff !important;
+          text-transform: capitalize;
+        }
+      }
 
-          & .infoExit {
-            height: $MyScale400_mobile;
-            width: $MyScale920_mobile;
-            display: flex;
-            flex-direction: column;
-            line-height: $MyScale55_mobile;
-            margin-bottom: $MyScale60_mobile;
-            justify-content: space-between;
+      & .buttonModalExit {
+        width: $MyScale650_mobile;
+        height: $MyScale120_mobile;
+        border-radius: $MyScale60_mobile;
+        margin-bottom: $MyScale230_mobile;
+        padding: 0;
+        text-transform: lowercase;
+        border: $MyScale3_mobile solid #dd1a32;
 
-            & span:first-child {
-              text-align: center;
-              @include font40_400();
-            }
-
-            & span:last-child {
-              text-align: center;
-              @include font40_400();
-            }
-          }
-
-          & .buttonModalClose {
-            width: $MyScale650_mobile;
-            height: $MyScale120_mobile;
-            border-radius: $MyScale60_mobile;
-            margin-bottom: $MyScale40_mobile;
-            padding: 0;
-            text-transform: lowercase;
-
-            & span {
-              display: flex;
-              align-items: center;
-              text-align: center;
-              @include font50_500();
-              color: #fff !important;
-              text-transform: capitalize;
-            }
-          }
-
-          & .buttonModalExit {
-            width: $MyScale650_mobile;
-            height: $MyScale120_mobile;
-            border-radius: $MyScale60_mobile;
-            margin-bottom: $MyScale230_mobile;
-            padding: 0;
-            text-transform: lowercase;
-            border: $MyScale3_mobile solid #dd1a32;
-
-            & span {
-              display: flex;
-              align-items: center;
-              text-align: center;
-              @include font50_500();
-              color: #dd1a32 !important;
-              text-transform: capitalize;
-            }
-          }
+        & span {
+          display: flex;
+          align-items: center;
+          text-align: center;
+          @include font50_500();
+          color: #dd1a32 !important;
+          text-transform: capitalize;
         }
       }
     }

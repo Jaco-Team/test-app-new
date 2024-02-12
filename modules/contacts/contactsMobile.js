@@ -1,24 +1,20 @@
-import { useRef, useEffect } from 'react';
-
+import { useRef, useEffect, memo } from 'react';
 import Link from 'next/link';
-
 import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
-
 import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/store.js';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-
 import { MapContactsMobile, LocationIconMobile, VectorRightMobile, LocationMapMobile } from '@/ui/Icons.js';
-
 import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 
-function ContactsPageMobilePointMap({ point, changePointClick }) {
+const ContactsPageMobilePointMap = memo(function ContactsPageMobilePointMap({ point, changePointClick, image }) {
+  // console.log('ContactsPageMobilePointMap render')
   return (
     <Placemark
       geometry={[point.xy_point.latitude, point.xy_point.longitude]}
       options={{ 
-        iconLayout: point.image, 
+        iconLayout: image, 
         iconImageHref: '/Favikon.png', 
         iconImageSize: [65, 65], 
         iconImageOffset: [-12, -20], 
@@ -26,7 +22,7 @@ function ContactsPageMobilePointMap({ point, changePointClick }) {
       onClick={() => changePointClick(point.addr)}
     />
   )
-}
+})
 
 export default function ContactsPageMobile() {
   //console.log('render ContactsPageMobile');
@@ -60,16 +56,7 @@ export default function ContactsPageMobile() {
             >
 
               {points?.map((point, key) => 
-                <Placemark key={point.id}
-                  geometry={[point.xy_point.latitude, point.xy_point.longitude]}
-                  options={{ 
-                    iconLayout: point.image, 
-                    iconImageHref: '/Favikon.png', 
-                    iconImageSize: [65, 65], 
-                    iconImageOffset: [-12, -20], 
-                  }} 
-                  onClick={() => changePointClick(point.addr)}
-                />
+                <ContactsPageMobilePointMap key={point.id} point={point} changePointClick={changePointClick} image={point.image} />
               )}
 
               {points_zone?.map((point, key) => (

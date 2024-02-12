@@ -141,9 +141,9 @@
   position: sticky;
   display: flex;
   justify-content: space-between;
+  z-index: 1000;
 
   .ArrowMobile {
-    z-index: 1000;
     width: $MyScale120_mobile;
     height: $MyScale120_mobile;
     background-color: rgba(221, 26, 50, 1);
@@ -160,7 +160,6 @@
   }
 
   .BasketFooterMobile {
-    z-index: 1000;
     width: $MyScale420_mobile;
     height: $MyScale120_mobile;
     background-color: rgba(221, 26, 50, 1);

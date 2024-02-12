@@ -11,8 +11,8 @@ import { AccountMobileAddress, AccountMobilePromo, AccountMobilePerson, AccountM
 
 export default function AccountMobile({ city, this_module }) {
 
-  const [ userName, token ] = useHeaderStore( state => [ state.userName, state.token ]);
-  const [ setActiveAccountModal, colorAccount, getUserInfo, userInfo, shortName ] = useProfileStore( state => [state.setActiveAccountModal, state.colorAccount, state.getUserInfo, state.userInfo, state.shortName]);
+  const [ token ] = useHeaderStore( state => [ state.token ]);
+  const [ setActiveAccountModal, colorAccount, getUserInfo, userInfo, shortName] = useProfileStore( state => [state.setActiveAccountModal, state.colorAccount, state.getUserInfo, state.userInfo, state.shortName]);
 
   useEffect(() => {
     if( token && token.length > 0 ) {
@@ -20,16 +20,12 @@ export default function AccountMobile({ city, this_module }) {
     }
   }, [token]);
 
-  //onClick={() => setActiveAccountModal(true, 'color')}
-
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="AccountMobile">
       <div className="accountLogin accountMain" style={{ background: colorAccount.login }}>
-        {/* для тестирования */}
-        {!shortName || shortName === 'undefined' ? 'Я' : shortName }
+        {shortName}
       </div>
       <div className="accountName accountMain">
-         {/* для тестирования */}
         {userInfo?.name ? userInfo?.name : ''}
       </div>
       <div className="accountPhone accountMain">{userInfo?.login ?? ''}</div>

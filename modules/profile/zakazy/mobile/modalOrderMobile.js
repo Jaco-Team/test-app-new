@@ -1,11 +1,9 @@
 import { useState } from 'react';
 import { useProfileStore } from '@/components/store.js';
 
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import Backdrop from '@mui/material/Backdrop';
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import { roboto } from '@/ui/Font.js';
 
@@ -132,15 +130,15 @@ export default function ModalOrderMobile() {
   }
 
   return (
-    <Dialog
-      onClose={closeOrder}
-      className={'ZakazyModalOrder ' + roboto.variable}
-      open={openModal}
-      slots={Backdrop}
-      slotProps={{ timeout: 500 }}
-      fullWidth
-    >
-      <DialogContent>
+      <SwipeableDrawer
+        anchor={'bottom'}
+        open={openModal}
+        onClose={closeOrder}
+        onOpen={() => {}}
+        id="ZakazyModalOrder"
+        className={roboto.variable}
+        disableSwipeToOpen
+      >
         <div className="ContainerZakazyModalOrder">
           <div className="Line" />
 
@@ -235,7 +233,6 @@ export default function ModalOrderMobile() {
             </Button>
           )}
         </div>
-      </DialogContent>
-    </Dialog>
+      </SwipeableDrawer>
   );
 }

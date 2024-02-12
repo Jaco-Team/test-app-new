@@ -1,13 +1,9 @@
 import { useEffect, useState, useRef } from 'react';
-
 import { useProfileStore, useHeaderStore } from '@/components/store.js';
-
 import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
 
-import Dialog from '@mui/material/Dialog';
-import DialogContent from '@mui/material/DialogContent';
-import Backdrop from '@mui/material/Backdrop';
 import Button from '@mui/material/Button';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import MyPopper from '@/ui/MyPopper';
 import MyTextInput from '@/ui/MyTextInput';
@@ -19,17 +15,12 @@ import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 export default function AddressModalMobile() {
   const ref2 = useRef();
 
-  const [ token ] = useHeaderStore( state => [ state.token ] )
+  const [token] = useHeaderStore( state => [state.token]);
 
   const [openModalAddress, setActiveAddressModal] = useProfileStore((state) => [state.openModalAddress, state.setActiveAddressModal]);
 
-  const [ clearAddr, chooseAddrStreet, center_map, zones, isOpenModalAddr, closeModalAddr, allStreets, checkStreet, saveNewAddr, infoAboutAddr, cityList, updateStreetList, active_city, updateAddr ] = 
-  useProfileStore( state => [ state.clearAddr, state.chooseAddrStreet, state.center_map, state.zones, state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.cityList, state.updateStreetList, state.active_city, state.updateAddr ] );
-
-
-  //const [mapChange, setMapChange] = useState(false);
-  //const [street, setStreet] = useState('');
-  //const [form, setForm] = useState({home: '', corpus: '', pd: '', domophome: '', et: '', kv: '', comment: '', check: false, nameAddr: ''});
+  const [chooseAddrStreet, center_map, zones, allStreets, checkStreet, saveNewAddr, infoAboutAddr, active_city, updateAddr ] = 
+  useProfileStore( state => [state.chooseAddrStreet, state.center_map, state.zones, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.active_city, state.updateAddr ] );
 
   const [ street, setStreet ] = useState('');
   const [ street_, setStreet_ ] = useState('');
@@ -42,6 +33,14 @@ export default function AddressModalMobile() {
   const [ check, setCheck ] = useState(false);
   const [ nameAddr, setNameAddr ] = useState('');
   const [ cityID, setCityID ] = useState(active_city);
+
+  useEffect(() => {
+    if( street && street.length > 0 && home.length > 0 ){
+      checkStreet(street, home, pd, cityID);
+    } else {
+      checkStreet(null);
+    }
+  }, [street, home, pd]);
 
   useEffect( () => {
     if( infoAboutAddr ){
@@ -60,7 +59,6 @@ export default function AddressModalMobile() {
       setHome('');
       setStreet('');
       setStreet_('')
-      
       setPd('');
       setEt('');
       setKv('');
@@ -69,24 +67,17 @@ export default function AddressModalMobile() {
       setDomophome(true);
     }
   }, [infoAboutAddr] )
-
-  useEffect(() => {
-    if( street && street.length > 0 && home.length > 0 ){
-      checkStreet(street, home, pd, cityID);
-    } else {
-      checkStreet(null);
-    }
-  }, [street, home, pd]);
-
+ 
   //useEffect( () => {
     //updateStreetList(cityID);
   //}, [cityID] )
 
-  function chengeCity(city){
-    setCityID(city);
-    clearAddr();
-  }
+  // function chengeCity(city){
+  //   setCityID(city);
+  //   clearAddr();
+  // }
 
+  //???
   useEffect( () => {
     setCityID(active_city);
   }, [active_city] )
@@ -121,7 +112,7 @@ export default function AddressModalMobile() {
     if( ref2.current && center_map?.center ){
       ref2.current.setCenter([zones[0].xy_center_map['latitude'], zones[0].xy_center_map['longitude']]);
     }
-  }, [zones] )
+  }, [zones, center_map] )
 
   useEffect( () => {
     if( ref2.current && chooseAddrStreet?.xy ){
@@ -129,60 +120,21 @@ export default function AddressModalMobile() {
     }
   }, [chooseAddrStreet] )
 
-
-  //console.log('AddressModalMobile new_zone', new_zone);
-  //console.log('AddressModalMobile zones', zones);
-
-
-  /*useEffect(() => {
-    if (street && street.length > 0 && form.home.length > 0) {
-      checkStreet(street, form.home, active_city);
-    }
-  }, [street, form.home]);
-
-  const handleChange = (event) => {
-    const name = event.target.name;
-
-    if (name) {
-      setForm({ ...form, [name]: event.target.value });
-    } else {
-      setForm({ ...form, check: event.target.checked });
-    }
-  };
-
-  const close = () => {
-    setForm({home: '', corpus: '', pd: '', domophome: '', et: '', kv: '', comment: '', check: false, nameAddr: ''});
-    setActiveAddressModal(false, 0, '');
-    setMapChange(false);
-    setStreet('');
-  };
-
-  const handleSave = () => {
-    console.log(form);
-    console.log(street);
-
-    //saveNewAddr(form, street)
-    close();
-  };*/
-
-  const close = () => {
-    setActiveAddressModal(false, 0, '');
-  };
-
   return (
-    <Dialog
-      onClose={close}
-      className={'AddressModalmodile ' + roboto.variable}
+    <SwipeableDrawer
+      anchor={'bottom'}
       open={openModalAddress}
-      slots={Backdrop}
-      slotProps={{ timeout: 500 }}
-      fullWidth
+      onClose={() => setActiveAddressModal(false, 0, '')}
+      onOpen={() => {}}
+      id="AddressModalmodile"
+      className={roboto.variable}
+      disableSwipeToOpen
     >
-      <DialogContent>
-        <div className="ContainerAddressModal">
-          <div className="Line"></div>
-          <div className="loginHeader">Новый адрес</div>
+      <div className="ContainerAddressModal">
+        <div className="Line"></div>
+        <div className="loginHeader">{infoAboutAddr !== null ? 'Редактирование адреса' : 'Новый адрес'}</div>
 
+        {!center_map ? null :
           <div className="map" style={{ minHeight: '93.162393162393vw' }} >
             <YMaps query={{ lang: 'ru_RU', apikey: 'f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8' }}>
               <Map defaultState={center_map} instanceRef={ref2} width="100%" height="100%" style={{ minHeight: '93.162393162393vw' }} >
@@ -203,95 +155,95 @@ export default function AddressModalMobile() {
               </Map>
             </YMaps>
           </div>
+        }
 
-          <div className="addressForm">
-            <div className="address_street">
-              <MyAutocomplete
-                placeholder="Улица"
-                data={allStreets}
-                val={street}
-                onChange={(val) => setStreet(val)}
-                inputAdornment={<LoupeMobile />}
-                customPopper={MyPopper}
-                stylePaper={{ paper: { style: { width: '82.051282051282vw' } } }}
-              />
-            </div>
-            <div className="address_dop">
-              <MyTextInput
-                value={home}
-                name="home"
-                placeholder="Дом"
-                //type="number"
-                func={ e => setHome(e.target.value) }
-              />
-              <MyTextInput
-                value={pd}
-                name="pd"
-                placeholder="Подьезд"
-                type="number"
-                func={ e => setPd(e.target.value) }
-              />
-            </div>
-
-            <div className="address_dop">
-              <MyTextInput
-                value={et}
-                name="et"
-                placeholder="Этаж"
-                type="number"
-                func={ e => setEt(e.target.value) }
-              />
-              <MyTextInput
-                value={kv}
-                name="kv"
-                placeholder="Квартира"
-                type="number"
-                func={ e => setKv(e.target.value) }
-              />
-            </div>
-
-            <div className="address_comment">
-              <MyTextInput
-                value={comment}
-                name="comment"
-                placeholder="Комментарий"
-                func={ e => setComment(e.target.value) }
-              />
-            </div>
-
-            <div className="address_main" style={{ marginTop: '5.1282051282051vw' }}>
-              <div className="divGroup">
-                <span>Домофон работает</span>
-              </div>
-              <MySwitch checked={domophome} onClick={(event) => setDomophome(event.target.checked)} />
-            </div>
-
-            <div className="address_name">
-              <MyTextInput
-                value={nameAddr}
-                name="nameAddr"
-                placeholder="Дать короткое название"
-                func={ e => setNameAddr(e.target.value) }
-              />
-              <EditPencilMobile />
-            </div>
-
-            <div className="address_main" style={{ marginBottom: '5.1282051282051vw' }}>
-              <div className="divGroup">
-                <span>Сделать главным</span>
-                <div className="circleDiv">
-                  <HomeCartMobile />
-                </div>
-              </div>
-              <MySwitch checked={check} onClick={ (event) => { setCheck(event.target.checked) } } />
-            </div>
-
-            <Button className="address_button" variant="contained" onClick={ () => { infoAboutAddr != null ? updateAddr(pd, domophome, et, kv, comment, token, check, nameAddr, cityID) : saveNewAddr(pd, domophome, et, kv, comment, token, check, nameAddr, cityID) } }>
-              <span>Сохранить</span>
-            </Button>
+        <div className="addressForm">
+          <div className="address_street">
+            <MyAutocomplete
+              placeholder="Улица"
+              data={allStreets}
+              val={street}
+              onChange={(val) => setStreet(val)}
+              inputAdornment={<LoupeMobile />}
+              customPopper={MyPopper}
+              stylePaper={{ paper: { style: { width: '82.051282051282vw' } } }}
+            />
           </div>
+          <div className="address_dop">
+            <MyTextInput
+              value={home}
+              name="home"
+              placeholder="Дом"
+              //type="number"
+              func={ e => setHome(e.target.value) }
+            />
+            <MyTextInput
+              value={pd}
+              name="pd"
+              placeholder="Подьезд"
+              type="number"
+              func={ e => setPd(e.target.value) }
+            />
+          </div>
+
+          <div className="address_dop">
+            <MyTextInput
+              value={et}
+              name="et"
+              placeholder="Этаж"
+              type="number"
+              func={ e => setEt(e.target.value) }
+            />
+            <MyTextInput
+              value={kv}
+              name="kv"
+              placeholder="Квартира"
+              type="number"
+              func={ e => setKv(e.target.value) }
+            />
+          </div>
+
+          <div className="address_comment">
+            <MyTextInput
+              value={comment}
+              name="comment"
+              placeholder="Комментарий"
+              func={ e => setComment(e.target.value) }
+            />
+          </div>
+
+          <div className="address_main" style={{ marginTop: '5.1282051282051vw' }}>
+            <div className="divGroup">
+              <span>Домофон работает</span>
+            </div>
+            <MySwitch checked={domophome} onClick={(event) => setDomophome(event.target.checked)} />
+          </div>
+
+          <div className="address_name">
+            <MyTextInput
+              value={nameAddr}
+              name="nameAddr"
+              placeholder="Дать короткое название"
+              func={ e => setNameAddr(e.target.value) }
+            />
+            <EditPencilMobile />
+          </div>
+
+          <div className="address_main" style={{ marginBottom: '5.1282051282051vw' }}>
+            <div className="divGroup">
+              <span>Сделать главным</span>
+              <div className="circleDiv">
+                <HomeCartMobile />
+              </div>
+            </div>
+            <MySwitch checked={check} onClick={ (event) => { setCheck(event.target.checked) } } />
+          </div>
+
+          <Button className="address_button" variant="contained" onClick={ () => { infoAboutAddr != null ? updateAddr(pd, domophome, et, kv, comment, token, check, nameAddr, cityID) : saveNewAddr(pd, domophome, et, kv, comment, token, check, nameAddr, cityID) } }>
+            <span>Сохранить</span>
+          </Button>
         </div>
-      </DialogContent>
-    </Dialog>
+      </div>
+    </SwipeableDrawer>
   );
 }

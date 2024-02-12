@@ -89,7 +89,7 @@ export default function FooterMobile({ cityName, active_page }) {
         </Link>
 
         <div className={showArrow && active_page !== 'cart' ? 'ArrowMobile' : 'ArrowHidden'} onClick={scrollUp} 
-          style={{marginTop: active_page === 'about' || active_page === 'document' || active_page === 'jobs' || active_page === 'contacts' || active_page === 'profile' || active_page === 'account' || active_page === 'address' || active_page === 'zakazy' ? '-10.25641025641vw' : null}}>
+          style={{marginTop: active_page === 'document' || active_page === 'jobs' || active_page === 'contacts' || active_page === 'profile' || active_page === 'account' || active_page === 'address' || active_page === 'zakazy' ? '-10.25641025641vw' : null}}>
           <ArrowUp />
         </div>
 

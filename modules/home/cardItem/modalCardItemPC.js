@@ -20,6 +20,8 @@ import { IconClose, IconInfoRed, IconInfoWhite } from '@/ui/Icons';
 
 import { roboto } from '@/ui/Font';
 
+import {placeholder_img} from '@/public/placeholder_img';
+
 export default function ModalCardItemPC() {
   //console.log('render ModalCardItemPC');
 
@@ -74,7 +76,7 @@ export default function ModalCardItemPC() {
           <Grid container>
             {typeModal !== 'start' ? null : (
               <div className="ImgItem">
-                <Image alt={openItem?.name} src={'https://cdnimg.jacofood.ru/' + openItem?.img_app + '_1420x1420.jpg'} width={1420} height={1420} priority={true}/>
+                <Image alt={openItem?.name} src={'https://cdnimg.jacofood.ru/' + openItem?.img_app + '_1420x1420.jpg'} width={1420} height={1420} priority={true} placeholder="blur" blurDataURL={placeholder_img}/>
 
                 {parseInt(openItem?.is_new) == 0 ? parseInt(openItem?.is_hit) == 0 ? null :
                   <BadgeItem size={'big'} type={'hit'} view={'pc'} />
@@ -100,7 +102,7 @@ export default function ModalCardItemPC() {
                           </div>
 
                           <div className="itemImg">
-                            <Image alt={item.name} src={'https://cdnimg.jacofood.ru/' + item.img_app + '_1420x1420.jpg'} width={1420} height={1420} priority={true}/>
+                            <Image alt={item.name} src={'https://cdnimg.jacofood.ru/' + item.img_app + '_1420x1420.jpg'} width={1420} height={1420} priority={true} placeholder="blur" blurDataURL={placeholder_img}/>
                           </div>
 
                           <div className="itemDesc">

@@ -1,23 +1,24 @@
 @import '../settings';
 
-.pageAboutMobile {
+.pageDocumentMobile {
   margin-top: $MyScale200_mobile !important;
+  min-height: 50vh;
 
-  .containerAboutMobile {
+  .containerDocumentMobile {
     width: 100%;
     display: flex;
-    align-items: flex-end;
+    margin-top: $MyScale120_mobile;
+    margin-bottom: $MyScale200_mobile;
     justify-content: center;
-    padding-bottom: $MyScale200_mobile;
 
-    .listAboutMobile {
+    .listDocumentMobile {
       display: flex;
       flex-direction: column;
 
       & a {
         text-decoration: none;
 
-        .linkAboutMobile {
+        .linkDocumentMobile {
           width: $MyScale920_mobile;
           height: $MyScale160_mobile;
           border-bottom: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
@@ -36,6 +37,7 @@
             margin-right: $MyScale42_24_mobile;
           }
         }
+
       }
     }
   }

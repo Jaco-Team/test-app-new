@@ -14,7 +14,22 @@ import { roboto } from '@/ui/Font.js';
 import dayjs from 'dayjs';
 dayjs.locale('ru');
 
-export default function ProfileModalMobile({ city, this_module }) {
+const mon = [
+  {'id': 1, 'mon': "январь"},
+  {'id': 2, 'mon': "февраль"},
+  {'id': 3, 'mon': "март"},
+  {'id': 4, 'mon': "апрель"},
+  {'id': 5, 'mon': "май"},
+  {'id': 6, 'mon': "июнь"},
+  {'id': 7, 'mon': "июль"},
+  {'id': 8, 'mon': "август"},
+  {'id': 9, 'mon': "сентябрь"},
+  {'id': 10, 'mon': "октябрь"},
+  {'id': 11, 'mon': "ноябрь"},
+  {'id': 12, 'mon': "декабрь"},
+]
+
+export default function ProfileModalMobile({ city, this_module, setUserDate }) {
 
   const [calendar, setCalendar] = useState(false);
 
@@ -76,13 +91,15 @@ export default function ProfileModalMobile({ city, this_module }) {
   const chooseData = () => {
     const day = slidesDay.find((d, i) => i === activeDay);
     const month = slidesMonth.find((m, i) => i === activeMonth);
+    const month_number = mon.find(m => m.mon === month).id;
 
     userInfo.date_bir_d = day;
-    userInfo.date_bir_m = month;
+    userInfo.date_bir_m = month_number;
 
     setUser(userInfo);
+    setUserDate(`${day} ${month}`);
 
-    if(userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0){
+    if(day?.length > 0 && month?.length > 0){
       updateUser(this_module, city, token);
     }
 

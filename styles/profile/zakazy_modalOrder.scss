@@ -115,9 +115,13 @@
                 }
             }
             & .order_city{
-                padding-top: $MyScale37;
-                padding-bottom: $MyScale43;
-                //width: $MyScale200;
+                display: flex;
+                align-items: center;
+                min-height: $MyScale100;
+                padding: $MyScale25 0;
+                width: $MyScale640;
+                // padding-top: $MyScale37;
+                // padding-bottom: $MyScale43;
                 //margin-right: $MyScale49;
             }
         }

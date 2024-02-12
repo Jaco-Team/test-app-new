@@ -10,6 +10,7 @@ import '../styles/cart/cartPayForm.scss'
 
 import '../styles/about/aboutPC.scss'
 import '../styles/about/aboutMobile.scss'
+import '../styles/about/documentMobile.scss'
 
 import '../styles/pageText/pageTextMobile.scss'
 import '../styles/pageText/pageTextPC.scss'
