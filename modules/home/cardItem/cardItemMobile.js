@@ -28,7 +28,7 @@ export default React.memo(function CardItemMobile({ item, count }) {
             width={585}
             height={585}
             priority={false}
-            quality={80}
+            quality={75}
             loading="lazy"
             onClick={() => getItem('home', thisCity, item.id)}
             placeholder="blur"

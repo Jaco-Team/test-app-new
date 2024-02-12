@@ -1,5 +1,7 @@
 import { useCartStore, useHeaderStore } from '@/components/store.js';
 
+import Script from 'next/script';
+
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
@@ -25,6 +27,9 @@ export default function PayForm() {
           slotProps={{ timeout: 500 }}
           fullWidth
         >
+          { openPayForm === false ? false :
+            <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
+          }
           <DialogContent>
             <div className="ContainerCart">
               <div className="Line"></div>
@@ -41,6 +46,9 @@ export default function PayForm() {
           slotProps={{ timeout: 500 }}
           fullWidth
         >
+          { openPayForm === false ? false :
+            <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
+          }
           <DialogContent>
             <IconButton className="iconBTN" onClick={() => setPayForm(false)}>
               <IconClose />

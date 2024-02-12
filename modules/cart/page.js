@@ -1,3 +1,5 @@
+import React, { useEffect } from 'react';
+
 import Meta from '@/components/meta.js';
 
 import CartMobile from './cartMobile';
@@ -12,16 +14,22 @@ export default function CartPage({ page, cityName }) {
 
   const [matches] = useHeaderStore((state) => [state.matches]);
 
+  /*useEffect(() => {
+    setTimeout(() => {
+      if (!matches) {
+        window.location.href = '/' + cityName;
+      }
+    }, 1000);    
+  }, []);*/
+
   return (
     <Meta title={page.title} description={page.description}>
-      {matches ?
-      <>
-        <CartMobile cityName={cityName} /> 
-        <CartMenuMobile cityName={cityName} />
-        <CartMapPoints />
-        <DataTimePicker />
-      </>
-      : null}
+      
+          <CartMobile cityName={cityName} /> 
+          <CartMenuMobile cityName={cityName} />
+          <CartMapPoints />
+          <DataTimePicker />
+        
 
       <PayForm />
     </Meta>

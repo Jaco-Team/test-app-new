@@ -118,69 +118,66 @@ export default function MenuCatMobile({ city }) {
   };
 
   return (
-    <>
-      <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="menuCatMobile">
-        <div className="menuCat" style={{ marginBottom: catDopMenu.length == 0 ? '1.7094017094017vw' : '2.5641025641026vw' }}>
-          {catMenu.map((item, key) => (
-            <ScrollLink
-              key={key}
-              className={'Cat'}
-              to={'cat' + item.id}
-              id={'link_' + item.id}
-              spy={true}
-              isDynamic={true}
-              smooth={false}
-              offset={offset}
-              onClick={() => chooseCat(item.id, 'scroll')}
-              //onSetActive={() => chooseCat(item.id, null)}
-            >
-              <span>{item.name}</span>
-            </ScrollLink>
-          ))}
-        </div>
-        {catDopMenu.length == 0 ? false : (
-          <div className="menuCatDopContainer">
-            <div className="menuCatDop" id="menuCatDop" >
-              {catDopMenu.map((cat, key) => (
-                <ScrollLink
-                  key={key}
-                  className={'CatDop'}
-                  style={{minWidth: cat.name.length > 8 ? '27.350427350427vw' : '21.367521367521vw',
-                    marginLeft: key === 0 ? '3.4188034188vw' : '1.7094017094017vw',
-                    marginRight: cat === catDopMenu.at(-1) ? '3.4188034188vw' : 0}}
-                  to={'cat' + cat.id}
-                  id={'linkDOP_' + cat.id}
-                  spy={true}
-                  isDynamic={true}
-                  smooth={false}
-                  offset={offset}
-                  onClick={() => chooseDopCat(cat.id, 'scroll')}
-                  //onSetActive={() => chooseDopCat(cat.id, null)}
-                  onSetActive={ () => {
+    <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="menuCatMobile">
+      <div className="menuCat" style={{ marginBottom: catDopMenu.length == 0 ? '1.7094017094017vw' : '2.5641025641026vw' }}>
+        {catMenu.map((item, key) => (
+          <ScrollLink
+            key={key}
+            className={'Cat'}
+            to={'cat' + item.id}
+            id={'link_' + item.id}
+            spy={true}
+            isDynamic={true}
+            smooth={false}
+            offset={offset}
+            onClick={() => chooseCat(item.id, 'scroll')}
+            //onSetActive={() => chooseCat(item.id, null)}
+          >
+            <span>{item.name}</span>
+          </ScrollLink>
+        ))}
+      </div>
+      {catDopMenu.length == 0 ? false : (
+        <div className="menuCatDopContainer">
+          <div className="menuCatDop" id="menuCatDop" >
+            {catDopMenu.map((cat, key) => (
+              <ScrollLink
+                key={key}
+                className={'CatDop'}
+                style={{minWidth: cat.name.length > 8 ? '27.350427350427vw' : '21.367521367521vw',
+                  marginLeft: key === 0 ? '3.4188034188vw' : '1.7094017094017vw',
+                  marginRight: cat === catDopMenu.at(-1) ? '3.4188034188vw' : 0}}
+                to={'cat' + cat.id}
+                id={'linkDOP_' + cat.id}
+                spy={true}
+                isDynamic={true}
+                smooth={false}
+                offset={offset}
+                onClick={() => chooseDopCat(cat.id, 'scroll')}
+                //onSetActive={() => chooseDopCat(cat.id, null)}
+                onSetActive={ () => {
 
-                    chooseDopCat(cat.id, null);
+                  chooseDopCat(cat.id, null);
 
-                    let scrollContainer = document.querySelector("#menuCatDop");
+                  let scrollContainer = document.querySelector("#menuCatDop");
 
-                    let data = document.querySelector('#linkDOP_'+cat.id).getBoundingClientRect()
+                  let data = document.querySelector('#linkDOP_'+cat.id).getBoundingClientRect()
 
-                    scrollContainer.scroll({
-                        left: data['x'] + data['width'] - 150,
-                        behavior: 'smooth'
-                    });
-                  } }
-                >
-                  <span>{cat.short_name}</span>
-                </ScrollLink>
-              ))}
-            </div>
+                  scrollContainer.scroll({
+                      left: data['x'] + data['width'] - 150,
+                      behavior: 'smooth'
+                  });
+                } }
+              >
+                <span>{cat.short_name}</span>
+              </ScrollLink>
+            ))}
           </div>
-        )}
-  
-        <div className="blockShadowMenuCatMobile" style={{ position: 'sticky', top: catDopMenu.length != 0 ? '43.735042735043vw' : '31.5786vw' }} /> 
-        
-      </Box>
+        </div>
+      )}
+
+      <div className="blockShadowMenuCatMobile" style={{ position: 'sticky', top: catDopMenu.length != 0 ? '43.735042735043vw' : '31.5786vw' }} /> 
       
-    </>
+    </Box>
   );
 }

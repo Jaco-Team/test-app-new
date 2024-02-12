@@ -1,5 +1,5 @@
 import { useState } from 'react';
-import { useProfileStore } from '@/components/store.js';
+import { useProfileStore, useCartStore } from '@/components/store.js';
 
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -102,6 +102,8 @@ export default function ModalOrderMobile() {
   const [isShowAddr, setShowAddr] = useState(false);
 
   const [openModal, closeOrder, modalOrder, openModalDel] = useProfileStore((state) => [state.openModal, state.closeOrder, state.modalOrder, state.openModalDel]);
+
+  const [ repeatOrder ] = useCartStore( state => [ state.repeatOrder ])
 
   let text_status = '';
 
@@ -227,7 +229,7 @@ export default function ModalOrderMobile() {
             </Button>
           ) : (
             <Button className="zakazyRepeat" variant="contained"
-              //onClick={}
+              onClick={ () => repeatOrder(modalOrder) }
             >
               <span>Повторить заказ</span>
             </Button>

@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useProfileStore } from '@/components/store';
+import { useProfileStore, useCartStore } from '@/components/store';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -89,9 +89,33 @@ function ModalOrderStatusIconPicup({types}){
 export default function ModalOrder() {
   const [modalOrder, openModal, closeOrder, openModalDel] = useProfileStore( state => [ state.modalOrder, state.openModal, state.closeOrder, state.openModalDel ])
 
+  const [ repeatOrder ] = useCartStore( state => [ state.repeatOrder ])
+
   const [ isShowAddr, setShowAddr ] = useState(true);
 
-  const order_status = parseInt(modalOrder?.order?.is_delete) === 1 ? `Отменен ${modalOrder?.order?.del_date_time}` : parseInt(modalOrder?.order?.status_order) === 6 ? `Получен ${modalOrder?.order?.close_date_time}` : `Доставим до ${modalOrder?.order?.max_time_order}`;
+  let order_status = '';
+
+  if( parseInt(modalOrder?.order?.is_delete) == 1 ){
+    order_status = `Отменили в ${modalOrder?.order?.del_date_time}`;
+  }else{
+    if( parseInt(modalOrder?.order?.type_order_) == 1 ){
+      if( parseInt(modalOrder?.order?.status_order) >= 1 && parseInt(modalOrder?.order?.status_order) <= 5 ){
+        order_status = `Доставим до ${modalOrder?.order?.max_time_order}`;
+      }else{
+        order_status = `Доставили в ${modalOrder?.order?.close_date_time}`;
+      }
+    }else{
+      if( parseInt(modalOrder?.order?.status_order) >= 1 && parseInt(modalOrder?.order?.status_order) <= 3 ){
+        order_status = `Будет готов до ${modalOrder?.order?.max_time_order}`;
+      }else{
+        if( parseInt(modalOrder?.order?.status_order) == 4 ){
+          order_status = 'Ждёт в кафе, можно забирать';
+        }else{
+          order_status = `Отдали в ${modalOrder?.order?.close_date_time}`;
+        }
+      }
+    }
+  }
 
   return (
     <Dialog
@@ -116,7 +140,7 @@ export default function ModalOrder() {
               <Typography variant="h5" component="span">{order_status}</Typography>
             </Grid>
 
-            {modalOrder?.order?.type_order_ == '1' ?
+            { parseInt(modalOrder?.order?.type_order_) == 1 ?
               <ModalOrderStatusIconDelivery types={modalOrder?.order?.types} />
                 :
               <ModalOrderStatusIconPicup types={modalOrder?.order?.types} />
@@ -139,7 +163,7 @@ export default function ModalOrder() {
                     {isShowAddr ?
                       <span>
                         {modalOrder?.order?.city_name + ', '}
-                        { modalOrder?.order?.street + ', ' + modalOrder?.order?.home + ', кв. ' + modalOrder?.order?.kv }
+                        { parseInt(modalOrder?.order?.type_order_) == 1 ? modalOrder?.order?.street + ', ' + modalOrder?.order?.home + ', кв. ' + modalOrder?.order?.kv : modalOrder?.order?.point_name }
                       </span>
                         :
                       <span>
@@ -183,7 +207,7 @@ export default function ModalOrder() {
                   <span>Отменить заказ</span>
                 </div>
                   :
-                <div onClick={ () => openModalDel() }>
+                <div onClick={ () => repeatOrder(modalOrder) }>
                   <span>Повторить заказ</span>
                 </div>
               }

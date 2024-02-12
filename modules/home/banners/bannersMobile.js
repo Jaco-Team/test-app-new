@@ -112,7 +112,9 @@ export default React.memo(function BannersMobile() {
               src={'https://storage.yandexcloud.net/site-home-img/' + item.img + '1000х500.jpg'}
               width={1000}
               height={500}
-              priority={true}
+              priority={false}
+              quality={75}
+              loading={'lazy'}
               className="item_banner_image"
             />
           </SwiperSlide>

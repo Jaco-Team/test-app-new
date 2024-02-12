@@ -17,6 +17,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   itemsWithPromo: [],
 
   allItems: [],
+  freeItems: [],
+  needDops: [],
+  dopListCart: [],
   itemsCount: 0,
   allPrice: 0,
   allPriceWithoutPromo: null, 
@@ -136,7 +139,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // получение данных корзины и оформления заказа
   getCartLocalStorage: () => {
 
-    const promoInfo = get().promoInfo;
+    const promoName = localStorage.getItem('promo_name');
 
     const cart = JSON.parse(localStorage.getItem('setCart'));
 
@@ -145,7 +148,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       
       if(city?.link === cart?.city?.link) {
 
-        if(cart?.items?.length) {
+        //if(cart?.items?.length) {
 
           const allPriceWithoutPromo = cart.items.reduce((all, it) => all + it.count * it.one_price, 0);
 
@@ -153,12 +156,21 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       
           set({ items: cart.items, allPriceWithoutPromo, itemsCount });
           
-          if(promoInfo) {
-            get().promoCheck();
-          } else {
+          if(promoName) {
+
+            get().getInfoPromo(promoName, city?.link)
+
+            //setTimeout(() => {
+              get().getItems();
+              get().check_need_dops();
+            //}, 3000)
+          }else{
             get().getItems();
+            get().check_need_dops();
           }
-        }
+          
+          
+        //}
 
         if(cart?.orderAddr) {
           set({ orderAddr: cart?.orderAddr });
@@ -271,9 +283,14 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     get().setCartLocalStorage();
   },
 
-   // все товары которые есть на сайте
-   setAllItems: (allItems) => {
+  // все товары которые есть на сайте
+  setAllItems: (allItems) => {
     set({ allItems })
+  },
+
+  // все товары которые есть на сайте
+  setFreeItems: (freeItems) => {
+    set({ freeItems })
   },
 
   // изменение цен при оформлении заказа в зависимости от выбранного города
@@ -414,17 +431,21 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   // получение адресов доставки в оформлении заказа
   getMySavedAddr: async(city_id, token) => {
-    const data = {
-      type: 'get_my_saved_addr',
-      city_id: city_id,
-      token: token
-    };
-    
-    const json = await api('cart', data);
+    if (typeof window !== 'undefined') {
+      const token1 = localStorage.getItem('token');
 
-    set({ addrList: json ?? [] });
+      const data = {
+        type: 'get_my_saved_addr',
+        city_id: city_id,
+        token: token1
+      };
+      
+      const json = await api('cart', data);
 
-    get().setCartLocalStorage();
+      set({ addrList: json ?? [] });
+
+      get().setCartLocalStorage();
+    }
   },
 
   // создание заказа
@@ -434,7 +455,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const typeOrder = get().typeOrder;
     const promoName = localStorage.getItem('promo_name');
 
-    if(typeOrder) {
+    //самовывоз
+    if( parseInt(typeOrder) == 1 ) {
       data = {
         type: 'create_order',
         token,
@@ -509,11 +531,14 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const items = get().items;
     const itemsWithPromo = get().itemsWithPromo;
 
-    const allItems = itemsWithPromo.length ? [...itemsWithPromo] : [...items];
+    //const allItems = [...items, ...itemsWithPromo];
+    const allItems = [...items];
 
-    const itemsOnDops = allItems.filter(item => item.cat_id === '7');
+    const itemsOnDops = allItems.filter(item => parseInt(item.cat_id) === 7 );
 
-    const itemsOffDops = allItems.filter(item => item.cat_id !== '7');
+    let itemsOffDops = allItems.filter(item => parseInt(item.cat_id) !== 7 && item.cat_id !== undefined );
+
+    itemsOffDops = [ ...itemsOffDops, ...itemsWithPromo ];
 
     set({ itemsOffDops, itemsOnDops });
 
@@ -526,13 +551,13 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const items = get().items;
     const promoInfo = get().promoInfo;
-    const itemsPromo = get().itemsPromo;
+    //const itemsPromo = get().itemsWithPromo;
 
     const itemsCount = items.reduce((all, item) => all + item.count, 0);
     
     if(promoInfo?.promo_action === '2') {
       let itemsWithPromo = get().itemsWithPromo;
-      itemsWithPromo = [...items, ...itemsPromo];
+      itemsWithPromo = [...items, ...itemsWithPromo];
       const allPriceWithoutPromo = itemsWithPromo.reduce((all, it) => all + it.count * it.one_price, 0);
       set({ itemsCount: itemsCount + promoInfo.items_add.length, itemsWithPromo, allPriceWithoutPromo });
     } else {
@@ -557,16 +582,254 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     get().getItems();
   },
 
+  setNeedDops: (dops) => {
+    set({ needDops: dops });
+  },
+
+  check_need_dops: () => {
+    let my_cart = get().items;
+    let my_cart_promo = get().itemsPromo;
+    let all_items = get().allItems;
+    
+    if( all_items.length == 0 || all_items.length == 0 ){
+      return [];
+    }
+    
+    let count_pizza = 0,
+        count_rolls = 0;
+        
+    let need_dops = get().needDops;
+        
+    my_cart.forEach(el => {
+      let this_item = all_items.find( (item) => item.id == el.item_id );
+      
+      if( !this_item ){
+        return [];
+      }
+      
+      if( parseInt(this_item['cat_id']) == 14 ){
+        count_pizza += parseInt(el.count)
+      }else{
+        if( parseInt(this_item['cat_id']) !== 14 && parseInt(this_item['cat_id']) !== 5 && parseInt(this_item['cat_id']) !== 6 && parseInt(this_item['cat_id']) !== 7 ){
+          count_rolls += parseInt(el.count)
+        }
+      }
+    });
+    
+    let all_need_dops = [];
+    
+    if( count_rolls > 0 && count_pizza == 0 ){
+      all_need_dops = need_dops['rolls'];
+    }
+    
+    if( count_rolls == 0 && count_pizza > 0 ){
+      all_need_dops = need_dops['pizza'];
+    }
+    
+    if( count_rolls > 0 && count_pizza > 0 ){
+      all_need_dops = [...need_dops['rolls'], ...need_dops['pizza']];
+    }
+    
+    if( count_rolls == 0 && count_pizza == 0 ){
+      all_need_dops = [...need_dops['rolls'], ...need_dops['pizza']];
+    }
+    
+    let my_dops = [],
+        add_my_dop = [];
+    
+    my_cart.forEach(el => {
+      let this_item = all_items.find( (item) => item.id == el.item_id );
+      
+      if( !this_item ){
+        return [];
+      }
+      
+      if( parseInt(this_item['cat_id']) == 7 ){
+        my_dops.push( this_item );
+      }
+    });
+    
+    my_dops.forEach( (my_d) => {
+      let check_dop = false;
+      
+      all_need_dops.forEach( (need_dop) => {
+        if( parseInt( need_dop.id ) == parseInt( my_d.id ) ){
+          check_dop = true;
+        }
+      });
+      
+      if( !check_dop ){
+        add_my_dop.push( my_d );
+      }
+    });
+    
+    all_need_dops = [...all_need_dops, ...add_my_dop];
+    
+    all_need_dops.forEach( (el, key) => {
+      let this_item = my_cart.find( (item) => el.id == item.item_id );
+      
+      if( !this_item ){
+        all_need_dops[ key ].count = 0;
+      }else{
+        all_need_dops[ key ].count = this_item.count;
+      }
+    
+      all_need_dops[ key ].one_price = el.price;
+      all_need_dops[ key ].item_id = el.id;
+    });
+
+    set({
+      dopListCart: all_need_dops
+    })
+  },
+
+  check_max_count: (item_id) =>{
+    let free_dops_in_cart = [];
+    let unic_id = [];
+    
+    let my_cart = get().items;
+    let my_cart_promo = get().itemsPromo;
+    let free_items = get().freeItems;
+    let all_items = get().allItems;
+    
+    let check_item = all_items.find( (item) => parseInt(item.id) == parseInt(item_id) );
+    
+    if( parseInt(check_item.id) == 231 || parseInt(check_item.id) == 232 || parseInt(check_item.id) == 233 ){
+      return 1;
+    }
+    
+    if( parseInt(check_item.type) != 3 || (parseInt(check_item.id) !== 17 && parseInt(check_item.id) !== 237) ){
+      return 99;
+    }
+    
+    if( !free_items ){
+      return 99;
+    }
+    
+    let all_max_count = 0;
+    let my_free_count = 0;
+    let this_my_free_count = 0;
+    
+    my_cart.forEach((item_cart, key) => {
+      
+      let item_info = all_items.find( (item) => parseInt(item.id) == parseInt(item_cart['item_id']) );
+      let check_free = free_items.find( (item) => parseInt(item['item_id']) == parseInt(item_cart['item_id']) );
+      
+      if( check_free && check_free.max_count && parseInt(item_info.type) != 3 ){
+        all_max_count += parseInt(check_free.max_count);
+      }
+      
+      if( parseInt(item_info.id) == 17 || parseInt(item_info.id) == 237 ){
+        my_free_count += parseInt(item_cart['count']);
+      }
+      
+      if( parseInt(item_info.id) == parseInt(item_id) ){
+        this_my_free_count += parseInt(item_cart['count']);
+      }
+
+      free_items.forEach( (item) => {
+        if( parseInt(item_cart['item_id']) == parseInt(item['item_id']) ){
+          item['count_in_cart'] = parseInt(item_cart['count']);
+          
+          free_dops_in_cart.push( item );
+          unic_id.push( parseInt(item['dop_item_id']) );
+        }
+      });
+    });
+
+    my_cart_promo.forEach((item_cart, key) => {
+      
+      let item_info = all_items.find( (item) => parseInt(item.id) == parseInt(item_cart['item_id']) );
+      let check_free = free_items.find( (item) => parseInt(item['item_id']) == parseInt(item_cart['item_id']) );
+      
+      if( check_free && check_free.max_count && parseInt(item_info.type) != 3 ){
+        all_max_count += parseInt(check_free.max_count);
+      }
+      
+      if( parseInt(item_info.id) == 17 || parseInt(item_info.id) == 237 ){
+        my_free_count += parseInt(item_cart['count']);
+      }
+      
+      if( parseInt(item_info.id) == parseInt(item_id) ){
+        this_my_free_count += parseInt(item_cart['count']);
+      }
+
+      free_items.forEach( (item) => {
+        if( parseInt(item_cart['item_id']) == parseInt(item['item_id']) ){
+          item['count_in_cart'] = parseInt(item_cart['count']);
+          
+          free_dops_in_cart.push( item );
+          unic_id.push( parseInt(item['dop_item_id']) );
+        }
+      });
+    });
+    
+    unic_id = [...new Set(unic_id)];
+    
+    let new_free_dop = [];
+    
+    unic_id.forEach( (unic_item, key) => {
+      free_dops_in_cart.forEach( (item_free) => {
+        if( parseInt(unic_item) == parseInt(item_free['dop_item_id']) ){
+          let check = false;
+          
+          new_free_dop.forEach( (el, k) => {
+            if( parseInt( el['item_id'] ) == parseInt(unic_item) ){
+              check = true;
+              new_free_dop[k]['count'] += item_free['count_in_cart'] * item_free['max_count'];
+            }
+          });
+          
+          if( !check ){
+            new_free_dop.push({
+              item_id: parseInt(unic_item),
+              count_in_cart: item_free['count_in_cart'],
+              count: item_free['count_in_cart'] * item_free['max_count']
+            });
+          }
+        }
+      })
+    });
+    
+    let max_count = 99;
+    
+    if( new_free_dop.length > 0 ){
+      
+      let max_count2 = new_free_dop.find( (item) => parseInt(item['item_id']) == 17 || parseInt(item['item_id']) == 237 );
+          max_count = new_free_dop.find( (item) => parseInt(item['item_id']) == parseInt(item_id) );
+      
+      if( max_count ){
+        max_count = parseInt(max_count['count']);
+        
+        if( my_free_count >= max_count ){
+          return max_count - my_free_count;
+        }else{
+          return max_count;
+        }
+        
+      }
+    }
+    
+    return 0;
+  },
+
   // добавления товара для корзины
   plus: (item_id, cat_id) => {
+
     let check = false;
     let items = get().items;
     const allItems = get().allItems;
     let itemsCount = get().itemsCount;
     const promoInfo = get().promoInfo;
 
+    const max_count = get().check_max_count(item_id);
+
+    if( max_count <= 0 ){
+      return ;
+    }
+
     items = items.map((item) => {
-      if(item.item_id === item_id){
+      if( parseInt(item.item_id) === parseInt(item_id) ){
         item.count++;
         itemsCount++;
         check = true;
@@ -576,18 +839,19 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     })
 
     if(!check){
-      const item = allItems.find(item => item.id === item_id);
+      const item = allItems.find(item => parseInt(item.id) === parseInt(item_id));
+
       if(item){
         item.count = 1;
         itemsCount++;
         item.item_id = item.id;
         item.one_price = item.price;
-        item.cat_id = cat_id;
+        item.cat_id = item.cat_id;
         items = [...items,...[item]];
       }
     }
 
-    const allPriceWithoutPromo = items.reduce((all, it) => all + it.count * it.one_price, 0);
+    const allPriceWithoutPromo = items.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
 
     set({ items, itemsCount, allPriceWithoutPromo });
     
@@ -596,6 +860,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     } else {
       get().getItems();
     }
+
+    get().check_need_dops();
 
     get().setCartLocalStorage();
   },
@@ -607,14 +873,40 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const promoInfo = get().promoInfo;
 
     items = items.reduce((newItems, item) => {
-      if(item.item_id === item_id){
+      if(parseInt(item.item_id) === parseInt(item_id)){
         item.count--;
         itemsCount--;
       }
       return item.count ? newItems = [...newItems,...[item]] : newItems;
     }, [])
 
-    const allPriceWithoutPromo = items.reduce((all, it) => all + it.count * it.one_price, 0);
+    let check_dop = items.filter( (item, key) => parseInt(item.count) > 0 && (parseInt(item.item_id) == 17 || parseInt(item.item_id) == 237) );
+
+    if( check_dop.length == 0 ){
+      check_dop = 1;
+    }else{
+      check_dop = check_dop.length;
+    }
+
+    let max_count = 0;
+
+    items.map( (item, key) => {
+      max_count = get().check_max_count(item.item_id);
+      
+      //max_count = parseInt(max_count / check_dop) - 2;
+
+      if( max_count > 0 && max_count < 1 ){
+        max_count = 1;
+      }else{
+        max_count = parseInt(max_count);
+      }
+
+      if( parseInt(max_count) < 0 ){
+        items[key]['count'] = parseInt(item.count) + parseInt(max_count) >= 0 ? parseInt(item.count) + parseInt(max_count) : 0;
+      }
+    })
+
+    const allPriceWithoutPromo = items.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
 
     set({ items, itemsCount, allPriceWithoutPromo });
     
@@ -623,6 +915,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     } else {
       get().getItems();
     }
+
+    get().check_need_dops();
 
     get().setCartLocalStorage();
   },
@@ -673,7 +967,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     set({
       free_drive: 0,
-      itemsPromo: []
+      itemsWithPromo: []
     })
     
     let tmp = 0,
@@ -740,10 +1034,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       this_time = dayjs( get().timePreOrder ).format("HH:mm");
       this_dow = parseInt( dayjs( get().datePreOrder ).isoWeekday() );
     }
-
-    // console.log( 'this_date', this_date )
-    // console.log( 'this_time', this_time )
-    // console.log( 'this_dow', this_dow )
 
     if( promo_info ){
       if( promo_info.status_promo === false ){
@@ -1035,6 +1325,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
               name: this_item['name'],
               img_app: this_item.img_app,
               disabled: true,
+              cat_id: this_item.cat_id
             });
           }
         });
@@ -1049,9 +1340,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         allPrice += cart_new_promo.reduce( (sum, item) => sum + parseInt(item['all_price']), tmp );
         
         set({
-          itemsPromo: cart_new_promo,
+          itemsWithPromo: cart_new_promo,
           allPrice: allPrice
         })
+
+        get().getItems();
       }
       
       //товар за цену
@@ -1166,6 +1459,79 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     get().setCartLocalStorage();
 
+  },
+
+  repeatOrder: (order) => {
+    const city = useCitiesStore.getState().thisCity;
+
+    set({
+      items: [],
+      itemsOnDops: [],
+      itemsOffDops: [],
+      itemsWithPromo: [],
+
+      typeOrder: parseInt(order?.order?.type_order_) - 1,
+      orderPic: parseInt(order?.order?.type_order_) == 2 ? order?.order?.pic_info : null,
+      point_id: order?.order?.point_id,
+
+      comment: order?.order?.comment,
+      sdacha: order?.order?.sdacha,
+    })
+
+    if( parseInt(order?.order?.type_order_) == 1 ){
+      get().setAddrDiv(order?.order?.street_info);
+      get().setSummDiv(order?.order?.street_info?.sum_div ?? 0);
+    }
+
+    //if( order?.order?.promo_name?.length > 0 ){
+      get().getInfoPromo(order?.order?.promo_name ?? '', city);
+    //}
+
+    const itemsWithPromo = get().itemsWithPromo;
+    const allItems = get().allItems;
+    
+    let checkItem = null;
+    let my_cart = [];
+
+    order.order_items.map((item) => {
+      checkItem = allItems.find( it => parseInt(it.id) === parseInt(item.item_id) );
+
+      checkItem.count = parseInt(item.count);
+      checkItem.one_price = parseInt(checkItem.price);
+      checkItem.item_id = parseInt(checkItem.id);
+
+      if( checkItem ){
+        my_cart.push(checkItem);
+      }
+    })
+
+    const allPriceWithoutPromo = my_cart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
+    const itemsCount = my_cart.reduce((all, it) => parseInt(all) + parseInt(it.count), 0);
+
+    set({ 
+      items: my_cart, 
+      itemsCount, 
+      allPriceWithoutPromo 
+    });
+    
+    
+    get().getItems();
+    
+    get().check_need_dops();
+
+    get().setCartLocalStorage();
+
+    useProfileStore.getState().closeOrder();
+
+    const matches = useHeaderStore.getState().matches;
+
+    if( matches ){ 
+      window.location.href = '/' + city + '/cart';
+    }else{
+      useHeaderStore.getState().setActiveBasket(true);  
+    }
+    
+    
   },
 
 }), shallow);
@@ -1702,10 +2068,14 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       zones: json.zones
     })
   },
-  orderDel: async (this_module, userToken) => {
+  repeatOrder: () => {
+    console.log(get().modalOrder);
+  },
+  orderDel: async (this_module, userToken, text) => {
     let data = {
       type: 'close_order',
       user_id: userToken,
+      ans: text,
       order_id: get().modalOrder?.order?.order_id,
       point_id: get().modalOrder?.order?.point_id
     };
@@ -1716,6 +2086,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       get().closeModalDel();
       get().closeOrder();
       get().getOrderList('zakazy', get().city, userToken);
+    }else{
+      useHeaderStore.getState().setActiveModalAlert(true, json.text, false);
     }
   },
 
@@ -2662,8 +3034,6 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     const all_items = useCartStore.getState().allItems;
 
-    console.log( 'new_banner', new_banner )
-
     if( banner ){
       if( new_banner?.info && Object.keys(new_banner?.info).length > 0 ){
 
@@ -2678,8 +3048,6 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
             new_banner.info.items_add[ key ]['img_app'] = find_item?.img_app
           } )
-
-          console.log( 'items', new_banner.info.items_add )
 
           set({
             openBannerItems: new_banner.info.items_add
