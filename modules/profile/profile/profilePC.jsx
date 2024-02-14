@@ -336,7 +336,7 @@ export default function ProfilePC({ page, this_module, city }){
           </Grid>
 
           <Grid item xs={12} className="log_out">
-            <span>Удалить аккаунт</span>
+            <span style={{ visibility: 'hidden' }}>Удалить аккаунт</span>
             <Link href={"/"+city} onClick={ thisSignOut }>Выйти</Link>
           </Grid>
 

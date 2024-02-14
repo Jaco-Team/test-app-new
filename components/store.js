@@ -487,12 +487,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       };
     }
     
-    console.log('createOrder', data);
-    
     const json = await api('cart', data);
 
-    console.log('createOrder json', json);
-    
     if( json.st === true ){
       if( get().typePay.id == 'online' ){
 
@@ -531,14 +527,15 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const items = get().items;
     const itemsWithPromo = get().itemsWithPromo;
 
-    //const allItems = [...items, ...itemsWithPromo];
-    const allItems = [...items];
+    const allItems = [...items, ...itemsWithPromo];
+    //const allItems = [...items];
 
-    const itemsOnDops = allItems.filter(item => parseInt(item.cat_id) === 7 );
+    const itemsOnDops = allItems.filter(item => parseInt(item.cat_id) === 7 && !item.disabled );
 
-    let itemsOffDops = allItems.filter(item => parseInt(item.cat_id) !== 7 && item.cat_id !== undefined );
+    let itemsOffDops = allItems.filter(item => (parseInt(item.cat_id) !== 7 || item.disabled) && item.cat_id !== undefined );
 
-    itemsOffDops = [ ...itemsOffDops, ...itemsWithPromo ];
+    //itemsOffDops = [ ...itemsOffDops, ...itemsWithPromo ];
+    //itemsOffDops = [ ...itemsWithPromo ];
 
     set({ itemsOffDops, itemsOnDops });
 
@@ -557,8 +554,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     
     if(promoInfo?.promo_action === '2') {
       let itemsWithPromo = get().itemsWithPromo;
-      itemsWithPromo = [...items, ...itemsWithPromo];
-      const allPriceWithoutPromo = itemsWithPromo.reduce((all, it) => all + it.count * it.one_price, 0);
+
+      let itemsWithPromo__ = [...items, ...itemsWithPromo];
+
+      const allPriceWithoutPromo = itemsWithPromo__.reduce((all, it) => all + it.count * it.one_price, 0);
+
       set({ itemsCount: itemsCount + promoInfo.items_add.length, itemsWithPromo, allPriceWithoutPromo });
     } else {
       set({ itemsCount: itemsCount, itemsWithPromo: [] });
@@ -1897,8 +1897,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   // карта для модалки выбора адреса доставки в мобильной версии
   getMapMobile: async (id, city = '') => {
 
-    console.log('getMapMobile')
-
     let data = {
       type: 'get_data_for_streets',
       city_id: city ? city : get().city,
@@ -1976,8 +1974,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     };
 
     let json = await api(this_module, data);
-
-    console.log('getUserInfo json', json)
 
     set({
       shortName: json?.user?.name?.substring(0, 1) + json?.user?.fam?.substring(0, 1),
@@ -2069,7 +2065,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     })
   },
   repeatOrder: () => {
-    console.log(get().modalOrder);
+    //console.log(get().modalOrder);
   },
   orderDel: async (this_module, userToken, text) => {
     let data = {

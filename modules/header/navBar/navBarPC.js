@@ -219,6 +219,7 @@ export default function NavBarPC({ city, active_page }) {
             }
   */
 
+  console.log( 'category', category )
 
   return (
     <>
