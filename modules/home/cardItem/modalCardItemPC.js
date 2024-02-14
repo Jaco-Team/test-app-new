@@ -48,15 +48,15 @@ export default function ModalCardItemPC() {
     
   }, [isOpenModal] )
   
-    const changeCountPlus = (id) => {
-      setCount(count + 1);
-      plus(id, openItem?.cat_id);
-    };
-  
-    const changeCountMinus = (id) => {
-      setCount(count - 1);
-      minus(id);
-    };
+  const changeCountPlus = (id) => {
+    setCount(count + 1);
+    plus(id, openItem?.cat_id);
+  };
+
+  const changeCountMinus = (id) => {
+    setCount(count - 1);
+    minus(id);
+  };
 
   return (
     <Dialog

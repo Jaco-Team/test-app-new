@@ -8,7 +8,7 @@ import Box from '@mui/material/Box';
 
 import OrdersItemMobile from './orderItemMobile';
 import ModalOrderYear from './modalOrderYear';
-import ModalOrderMobile from './modalOrderMobile';
+//import ModalOrderMobile from './modalOrderMobile';
 import ModalOrderMobileDelete from './modalOrderMobileDelete';
 
 import { ArrowLeftMobile, VectorDownMobile } from '@/ui/Icons.js';
@@ -81,7 +81,7 @@ export default function OrderMobile({ city, this_module }) {
       </div>
 
       <ModalOrderYear />
-      <ModalOrderMobile />
+      
       <ModalOrderMobileDelete />
     </Box>
   );

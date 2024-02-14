@@ -97,7 +97,7 @@ function ModalOrderStatusIconPicup({ types }) {
 }
 
 export default React.memo(function ModalOrderMobile() {
-  //console.log('render ModalOrderMobile');
+  console.log('render ModalOrderMobile');
 
   const [isShowAddr, setShowAddr] = useState(false);
 
@@ -146,11 +146,6 @@ export default React.memo(function ModalOrderMobile() {
 
           <div className="zakazyLogin">
             <span>Заказ {modalOrder?.order?.this_status_order}</span>
-            {parseInt(modalOrder?.order?.status_order) === 6 ? (
-              <CheckOrderMobileModal />
-            ) : parseInt(modalOrder?.order?.status_order) === 1 ? (
-              <DeleteOrderMobileModal />
-            ) : null}
           </div>
 
           <div className="zakazyTimeText">

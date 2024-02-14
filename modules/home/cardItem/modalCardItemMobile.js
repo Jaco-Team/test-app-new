@@ -18,7 +18,7 @@ import { roboto } from '@/ui/Font';
 import {placeholder_img} from '@/public/placeholder_img';
 
 export default function ModalCardItemMobile() {
-  //console.log('render ModalCardItemMobile');
+  console.log('render ModalCardItemMobile');
 
   const [isOpenModal, openItem, setActiveModalCardItemMobile] = useHomeStore((state) => [state.isOpenModal, state.openItem, state.setActiveModalCardItemMobile]);
 
