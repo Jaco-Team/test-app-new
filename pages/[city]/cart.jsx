@@ -44,7 +44,14 @@ export default React.memo(function Cart(props) {
     
     setActivePage('cart');
     
-  }, [city, thisCity]);
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+
+      if( !token || token == '' ){
+        window.location.href = '/'+city;
+      }
+    }
+  }, []);
  
   return (
     <div className={roboto.variable}>

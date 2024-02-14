@@ -46,7 +46,15 @@ export default function Address(props) {
     setFreeItems(free_items);
     setNeedDops(need_dop);
 
-    setActivePage(this_module)
+    setActivePage(this_module);
+
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+
+      if( !token || token == '' ){
+        window.location.href = '/'+city;
+      }
+    }
   }, []);
 
   return (

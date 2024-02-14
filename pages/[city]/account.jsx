@@ -46,6 +46,14 @@ export default function Account(props) {
     setNeedDops(need_dop);
 
     setActivePage(this_module)
+
+    if (typeof window !== 'undefined') {
+      const token = localStorage.getItem('token');
+
+      if( !token || token == '' ){
+        window.location.href = '/'+city;
+      }
+    }
   }, []);
 
   return (

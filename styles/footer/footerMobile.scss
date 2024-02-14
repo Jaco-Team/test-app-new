@@ -4,7 +4,7 @@
   width: 100%;
   background-color: rgba(0, 0, 0, 0.07);
   position: relative;
-  margin-top: 3.4188034188034vw !important;
+  margin-top: $MyScale40_mobile !important;
   display: flex;
   flex-direction: column;
   align-items: center;
@@ -51,14 +51,14 @@
           @include font35_700();
           text-transform: uppercase;
           color: rgba(82, 82, 82, 1);
-          margin-bottom: 3.4188034188034vw;
+          margin-bottom: $MyScale40_mobile;
         }
 
         & a {
           @include font35_400();
           text-decoration: none;
           color: rgba(82, 82, 82, 1);
-          margin-bottom: 3.4188034188034vw;
+          margin-bottom: $MyScale40_mobile;
         }
       }
     }
@@ -75,11 +75,11 @@
   }
 
   & .FooterLegalMobile {
-    height: $MyScale420_mobile;
+    height: $MyScale600_mobile;
     width: 100%;
     background: #ffffff;
     box-shadow: 0vw -0.36101083032491vw 1.8050541516245vw 0px rgba(0, 0, 0, 0.05);
-    border-radius: 3.4188034188034vw 3.4188034188034vw 0 0;
+    border-radius: $MyScale40_mobile $MyScale40_mobile 0 0;
     position: fixed;
     bottom: 0;
     transition: all 0.5s ease 0s;
@@ -88,9 +88,9 @@
     & .containerLegalMobile {
       display: flex;
       flex-direction: column;
-      height: 27.692307692308vw;
+      height: $MyScale600_mobile;
       align-items: center;
-      margin: 2.5641025641026vw 8.5470085470085vw 3.4188034188034vw
+      margin: $MyScale50_mobile 8.5470085470085vw $MyScale40_mobile
         8.5470085470085vw !important;
 
       & .line {
@@ -98,15 +98,15 @@
         width: 12.820512820513vw;
         background: rgba(0, 0, 0, 0.2);
         border-radius: 0.42735042735043vw;
-        margin-bottom: 3.5042735042735vw;
+        margin-bottom: $MyScale70_mobile;
       }
 
       & .text {
         width: 100%;
-        height: 11.111111111111vw;
+        height: $MyScale200_mobile;
         @include font35_400();
         position: relative;
-        margin-bottom: 3.4188034188034vw;
+        margin-bottom: $MyScale70_mobile;
         p {
           margin: 0;
           position: absolute;
