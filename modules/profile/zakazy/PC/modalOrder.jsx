@@ -121,7 +121,8 @@ export default function ModalOrder() {
     <Dialog
       onClose={ () => closeOrder() }
       className={'modalOrderPC ' + roboto.variable}
-      open={openModal}
+      //open={openModal}
+      open={false}
       slots={Backdrop}
       slotProps={{ timeout: 500 }}
       scroll="body"

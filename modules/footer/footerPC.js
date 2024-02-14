@@ -29,7 +29,9 @@ export default React.memo(function FooterPC({ cityName }) {
   }, []);
 
   useEffect(() => {
-    if (!localStorage.getItem('setCookie') && !localStorage.getItem('setCookie')?.length) setCookie(false);
+    if (!localStorage.getItem('setCookie') && !localStorage.getItem('setCookie')?.length){
+      setCookie(false);
+    } 
   }, []);
 
   return (
