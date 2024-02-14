@@ -96,7 +96,7 @@ function ModalOrderStatusIconPicup({ types }) {
   );
 }
 
-export default function ModalOrderMobile() {
+export default React.memo(function ModalOrderMobile() {
   //console.log('render ModalOrderMobile');
 
   const [isShowAddr, setShowAddr] = useState(false);
@@ -237,4 +237,4 @@ export default function ModalOrderMobile() {
         </div>
       </SwipeableDrawer>
   );
-}
+})

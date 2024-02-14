@@ -86,7 +86,7 @@ function ModalOrderStatusIconPicup({types}){
   )
 }
 
-export default function ModalOrder() {
+export default React.memo(function ModalOrder() {
   const [modalOrder, openModal, closeOrder, openModalDel] = useProfileStore( state => [ state.modalOrder, state.openModal, state.closeOrder, state.openModalDel ])
 
   const [ repeatOrder ] = useCartStore( state => [ state.repeatOrder ])
@@ -121,8 +121,7 @@ export default function ModalOrder() {
     <Dialog
       onClose={ () => closeOrder() }
       className={'modalOrderPC ' + roboto.variable}
-      //open={openModal}
-      open={false}
+      open={openModal}
       slots={Backdrop}
       slotProps={{ timeout: 500 }}
       scroll="body"
@@ -219,4 +218,4 @@ export default function ModalOrder() {
       </DialogContent>
     </Dialog>
   );
-}
+})
