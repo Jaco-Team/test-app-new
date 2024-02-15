@@ -14,13 +14,13 @@ export default function FooterMobile({ cityName, active_page }) {
 
   const [cookie, setCookie] = useState(true);
   const [showArrow, setShowArrow] = useState(false);
-  const [orders, setOrders] = useState(null);
+  //const [orders, setOrders] = useState(null);
 
   const [itemsCount, allPrice, allPriceWithoutPromo] = useCartStore((state) => [state.itemsCount, state.allPrice, state.allPriceWithoutPromo]);
-  const [orderList, getOrder] = useProfileStore((state) => [state.orderList, state.getOrder]);
+  //const [orderList, getOrder] = useProfileStore((state) => [state.orderList, state.getOrder]);
   const [links] = useFooterStore((state) => [state.links]);
 
-  const [ token ] = useHeaderStore( state => [ state.token ]);
+  //const [ token ] = useHeaderStore( state => [ state.token ]);
 
   const handlerArrow = () => setShowArrow(window.scrollY > 50);
 
@@ -41,18 +41,18 @@ export default function FooterMobile({ cityName, active_page }) {
     if (!localStorage.getItem('setCookie') && !localStorage.getItem('setCookie')?.length) setCookie(false);
   }, []);
 
-  useEffect(() => {
+  /*useEffect(() => {
     const orders = orderList[0]?.orders?.filter(order => parseInt(order.type_status) === 1 || parseInt(order.type_status) === 2 || parseInt(order.type_status) === 3);
 
     if(orders?.length) {
       setOrders(orders);
     }
 
-  }, [orderList]);
+  }, [orderList]);*/
 
-  return (
-    <>
-      {!orders || active_page !== 'home' ? null :
+  /**
+   * 
+   * {!orders || active_page !== 'home' ? null :
         orders.length === 1 ?
         <div className='ordersFooter' style={{ bottom: !cookie && showArrow || !cookie && itemsCount ? '50.769230769231vw' : showArrow || itemsCount ? '17.094017094017vw' : cookie ? '3.4188034188034vw' : '37.094017094017vw' }}>
           <div className='ordersSpan'>
@@ -76,6 +76,11 @@ export default function FooterMobile({ cityName, active_page }) {
           </div>
         </div>
       }
+   */
+
+  return (
+    <>
+      
 
       <div className='containerArrowBasket' 
         style={{ bottom: cookie ? '3.4188034188034vw' : '37.094017094017vw', 
