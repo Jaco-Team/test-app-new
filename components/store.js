@@ -539,6 +539,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     set({ itemsOffDops, itemsOnDops });
 
+    get().check_need_dops();
+
     get().setCartLocalStorage();
 
   },

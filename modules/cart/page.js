@@ -12,12 +12,12 @@ import { useCartStore } from '@/components/store';
 
 export default function CartPage({ page, cityName }) {
 
-  const [ check_need_dops, getItems ] = useCartStore( state => [ state.check_need_dops, state.getItems ] );
+  /*const [ check_need_dops, getItems ] = useCartStore( state => [ state.check_need_dops, state.getItems ] );
 
   useEffect( () => {
     check_need_dops();
     getItems();  
-  }, [] );
+  }, [] );*/
 
   return (
     <Meta title={page.title} description={page.description}>
