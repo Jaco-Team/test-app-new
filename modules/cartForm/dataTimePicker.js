@@ -110,6 +110,10 @@ export default function DataTimePicker() {
               />
             </section>
 
+            <Button className="btnDataTime" variant="contained" onClick={chooseData}>
+              <span>Выбрать</span>
+            </Button>
+
             <div className="divBackground" />
           </div>
         </DialogContent>
