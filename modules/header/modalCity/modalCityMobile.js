@@ -17,7 +17,7 @@ export default function ModalCityMobile() {
 
   const [openCityModal, openCityModalList, setActiveModalCity, setActiveModalCityList, activePage, token] = useHeaderStore((state) => [state.openCityModal, state.openCityModalList, state.setActiveModalCity, state.setActiveModalCityList, state.activePage, state.token]);
 
-  const [getMySavedAddr, setPoint, setAddrDiv] = useCartStore((state) => [state.getMySavedAddr, state.setPoint, state.setAddrDiv]);
+  const [getMySavedAddr, setPoint, setAddrDiv, getNewPriceItems] = useCartStore((state) => [state.getMySavedAddr, state.setPoint, state.setAddrDiv, state.getNewPriceItems]);
 
   const [getMap] = useContactStore(state => [state.getMap]);
 
@@ -37,6 +37,8 @@ export default function ModalCityMobile() {
     setPoint(null);
     setAddrDiv(null);
     getMySavedAddr(thisCity, token);
+
+    getNewPriceItems(city.link);
 
     if(activePage && activePage !== 'home') {
       push(`/${city.link}/${activePage}`);

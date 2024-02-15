@@ -140,7 +140,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   getCartLocalStorage: () => {
 
     const promoName = localStorage.getItem('promo_name');
-
+    const allItems = get().allItems;
     const cart = JSON.parse(localStorage.getItem('setCart'));
 
     if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
@@ -149,6 +149,15 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       if(city?.link === cart?.city?.link) {
 
         //if(cart?.items?.length) {
+
+        let this_item = null;
+
+        cart?.items?.map((item, key) => {
+          this_item = allItems.find( it => parseInt(it.id) === parseInt(item.item_id));
+
+          cart.items[ key ]['one_price'] = this_item?.price;
+          cart.items[ key ]['all_price'] = parseInt(this_item?.price) * parseInt(item.count);
+        })
 
           const allPriceWithoutPromo = cart.items.reduce((all, it) => all + it.count * it.one_price, 0);
 
@@ -286,6 +295,37 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // все товары которые есть на сайте
   setAllItems: (allItems) => {
     set({ allItems })
+  },
+
+  getNewPriceItems: async(city) => {
+    let data = {
+      type: 'get_page_info', 
+      city_id: city,
+      page: 'zakazy'
+    };
+  
+    let json = await api('zakazy', data);
+
+    console.log( 'json', json )
+
+    let cart = get().items;
+    let allItems = json?.all_items;
+    let this_item = null;
+
+    cart.map((item, key) => {
+      this_item = allItems.find( it => parseInt(it.id) === parseInt(item.item_id));
+
+      cart[ key ]['one_price'] = this_item?.price;
+      cart[ key ]['all_price'] = parseInt(this_item?.price) * parseInt(item.count);
+    })
+
+    set({ items: cart });
+
+    get().setAllItems(json?.all_items);
+    //get().changeAllItems();
+
+    get().promoCheck();
+    get().getItems();
   },
 
   // все товары которые есть на сайте
