@@ -241,8 +241,6 @@ export default function FormOrder({ cityName }) {
     createOrder( token, thisCity );
   }
 
-  alert( JSON.stringify(dopListCart) );
-
   return (
     <>
       {matches ? (
