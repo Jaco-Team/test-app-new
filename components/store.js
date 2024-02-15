@@ -2200,6 +2200,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       set({
         openModalAddress: false
       })
+
+      useCartStore.getState().getMySavedAddr();
     }
 
     setTimeout( () => {
@@ -2255,6 +2257,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       set({
         openModalAddress: false
       })
+
+      useCartStore.getState().getMySavedAddr();
     }
 
     setTimeout( () => {
