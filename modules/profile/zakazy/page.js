@@ -8,8 +8,6 @@ import { useHeaderStore } from '@/components/store';
 export default function OrderPage({ page, this_module, city }) {
   const [matches] = useHeaderStore((state) => [state.matches]);
 
-  console.log( 'page', page )
-
   return (
     <Meta title={page.title} description={''}>
       {matches ? 

@@ -94,6 +94,7 @@ export default function FooterMobile({ cityName, active_page }) {
         </div>
 
       </div>
+      
       <footer className="footerMobile" style={{ height: cookie ? '128.20512820513vw' : '165.29914529915vw' }}>
         <div
           className="ContainerMobileFooter"
