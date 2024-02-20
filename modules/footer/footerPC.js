@@ -90,7 +90,7 @@ export default React.memo(function FooterPC({ cityName }) {
               <div className="text">
                 <p>
                   Мы{' '}
-                  <Link className="link" href={'/' + cityName + '/politika-konfidencialnosti'}>используем</Link>{' '}
+                  <Link className="link" href={'/' + cityName + '/politika-legal'}>используем</Link>{' '}
                   файлы «Cookie» и метрическую систему
                   «Яндекс.Метрика» для сбора и анализа информации о
                   производительности и использовании сайта. Продолжая пользоваться
