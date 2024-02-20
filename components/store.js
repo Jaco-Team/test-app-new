@@ -1721,6 +1721,10 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
     let myAddr = get().myAddr;
     let points = get().points;
 
+    if(typeof ymaps == "undefined"){
+      return ;
+    }
+
     const img = ymaps.templateLayoutFactory.createClass( 
       "<div class='my-img'>" +
         "<img alt='' src='/Favikon.png' />" +

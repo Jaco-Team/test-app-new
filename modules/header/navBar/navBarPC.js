@@ -226,8 +226,6 @@ export default function NavBarPC({ city, active_page }) {
             }
   */
 
-  console.log( 'category', category )
-
   return (
     <>
       <AppBar className="headerNew" id="headerNew" elevation={2} sx={{ display: { xs: 'none', md: 'none', lg: 'block' } }} onClick={closeBasket}>

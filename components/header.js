@@ -27,12 +27,21 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
   const [getItemsCat, category] = useHomeStore( state => [state.getItemsCat, state.category]);
   
   useEffect(() => {
-    if( category?.length == 0 ){
-      getItemsCat('home', city);
-    }
+    //if( category?.length == 0 ){
+      //getItemsCat('home', city);
+
+      //console.log('getItemsCat');
+    //}
 
     checkToken();
   }, []);
+
+  useEffect(() => {
+    if( city && city.length > 0 ){
+      getItemsCat('home', city);
+      console.log('getItemsCat');
+    }
+  }, [city]);
 
   useEffect(() => {
     if(matches !== matchesDev) {
