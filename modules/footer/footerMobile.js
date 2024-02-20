@@ -159,6 +159,7 @@ export default function FooterMobile({ cityName, active_page }) {
         {cookie ? null : (
           <div className="FooterLegalMobile">
             <div className="containerLegalMobile">
+              <div className="line"></div>
               <div className="text">
                 <p>Мы{' '}
                   <Link className="link" href={'/' + cityName + '/politika-legal'}>используем</Link>{' '}
