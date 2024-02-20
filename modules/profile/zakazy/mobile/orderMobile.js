@@ -15,6 +15,8 @@ import { ArrowLeftMobile, VectorDownMobile } from '@/ui/Icons.js';
 
 export default function OrderMobile({ city, this_module }) {
 
+  console.log( 'city2', city );
+
   const [list, setList] = useState([]);
 
   const [getOrderList, orderList, year, setActiveModalYear, setYear] =
@@ -26,17 +28,19 @@ export default function OrderMobile({ city, this_module }) {
     if( token && token.length > 0 ) {
       getOrderList(this_module, city, token);
     }
-  }, [token]);
+  }, [token, city]);
 
   useEffect(() => {
     const timer = setInterval(() => {
       if( token && token.length > 0 ) {
         getOrderList(this_module, city, token);
+
+        console.log( 'city3', city );
       }
     }, 30 * 1000);
     
     return () => clearInterval(timer);
-  }, []);
+  }, [city]);
 
   useEffect(() => {
     if (year) {

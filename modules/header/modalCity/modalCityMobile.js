@@ -47,8 +47,6 @@ export default function ModalCityMobile() {
     }
   };
 
-  // thisCityRu = 'Комсомольск-на-Амуре'
-
   return (
     <>
       <SwipeableDrawer
