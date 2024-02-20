@@ -135,6 +135,8 @@ export default function FooterMobile({ cityName, active_page }) {
               }
               <Link href={'/' + cityName + '/publichnaya-oferta'}>Публичная оферта</Link>
               <Link href={'/' + cityName + '/politika-konfidencialnosti'}>Политика конфиденциальности</Link>
+              <Link href={'/' + cityName + '/legal'}>Согласие на обработку персональных данных</Link>
+              <Link href={'/' + cityName + '/politika-legal'}>Политика в отношении обработки метрических данных</Link>
               <Link href={'/' + cityName + '/instpayorders'} style={{ marginBottom: 0 }}>Правила оплаты</Link>
             </div>
           </div>

@@ -43,6 +43,18 @@ export default function DocumentPageMobile({ cityName }) {
               <ArrowRightMobile />
             </div>
           </Link>
+          <Link href={'/' + cityName + '/legal'}>
+            <div className="linkDocumentMobile">
+              <span>Согласие на обработку персональных данных</span>
+              <ArrowRightMobile />
+            </div>
+          </Link>
+          <Link href={'/' + cityName + '/politika-legal'}>
+            <div className="linkDocumentMobile">
+              <span>Политика в отношении обработки метрических данных</span>
+              <ArrowRightMobile />
+            </div>
+          </Link>
 
           <Link href={links?.link_allergens ?? links} target="_blank">
             <div className="linkDocumentMobile">
