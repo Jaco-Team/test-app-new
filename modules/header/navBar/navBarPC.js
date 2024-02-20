@@ -28,9 +28,16 @@ count: '4', list: [{id: '5', name: 'Закуски', link: 'zakuski', count_2: '
 
 const MenuBurger = React.memo(function MenuBurger({ anchorEl, city, isOpen, onClose }){
   const [links] = useFooterStore((state) => [state.links]);
+  const [ thisCityRu ] = useCitiesStore( state => [ state.thisCityRu ] );
+  const [ setActiveModalCity ] = useHeaderStore( state => [ state.setActiveModalCity ] );
+
   return(
     <Menu id='chooseHeaderCat' anchorEl={anchorEl} open={isOpen} onClose={ () => onClose() } anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} transformOrigin={{ vertical: 'top',  horizontal: 'center' }} autoFocus={false}>
          
+      <MenuItem onClick={() => { setActiveModalCity(true); onClose(); } }>
+        <a><span>{thisCityRu}</span></a>
+      </MenuItem>
+
       <MenuItem onClick={() => onClose()}>
         <Link href={`/${city}/about`}><span>О компании</span></Link>
       </MenuItem>

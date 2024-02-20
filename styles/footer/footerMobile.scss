@@ -10,7 +10,7 @@
   align-items: center;
 
   & .ContainerMobileFooter {
-    height: 109.40170940171vw;
+    //height: 109.40170940171vw;
     margin: $MyScale100_mobile 10.683760683761vw 10.25641025641vw
       10.25641025641vw !important;
     display: flex;
@@ -45,7 +45,7 @@
         display: flex;
         flex-direction: column;
         width: 37.606837606838vw;
-        height: 34.188034188034vw;
+        min-height: 34.188034188034vw;
 
         & span {
           @include font35_700();

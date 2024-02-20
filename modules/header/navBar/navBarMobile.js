@@ -9,11 +9,11 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
-import { BurgerIconMobile, MenuIconMobile, AboutIconMobile, LocationIconMobile } from '@/ui/Icons.js';
+import { BurgerIconMobile, MenuIconMobile, AboutIconMobile, LocationIconMobile, MapContactsMobile } from '@/ui/Icons.js';
 import JacoLogo from '@/public/jaco-logo-mobile.png';
 import { roboto } from '@/ui/Font.js';
 
-import { useHeaderStore } from '@/components/store.js';
+import { useHeaderStore, useCitiesStore } from '@/components/store.js';
 
 import BasketIconHeaderMobile from '../basket/basketIconHeaderMobile';
 import ProfileIconHeaderMobile from '../profile/profileIconHeaderMobile';
@@ -21,8 +21,10 @@ import ProfileIconHeaderMobile from '../profile/profileIconHeaderMobile';
 export default memo(function NavBarMobile({ city, active_page }) {
   const [activeMenu, setActiveMenu] = useState(false);
 
-  const [setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket]);
+  const [setActiveBasket, openBasket, setActiveModalCityList] = useHeaderStore( state => [state.setActiveBasket, state.openBasket, state.setActiveModalCityList] );
   
+  const [ thisCityRu ] = useCitiesStore( state => [ state.thisCityRu ] );
+
   if (city == '') {
     return null;
   }
@@ -56,6 +58,14 @@ export default memo(function NavBarMobile({ city, active_page }) {
             id='headerMenuCat'
           >
             <List className={'LinkList ' + roboto.variable}>
+
+              <ListItem onClick={() => { setActiveModalCityList(true); setActiveMenu(false); }}>
+                <a>
+                  <MapContactsMobile />
+                  <span>{thisCityRu}</span>
+                </a>
+              </ListItem>
+
               <ListItem onClick={() => setActiveMenu(false)}>
                 <Link href={'/' + city} style={{background: active_page === 'home' ? 'rgba(0, 0, 0, 0.03)' : null}}>
                   <MenuIconMobile />
