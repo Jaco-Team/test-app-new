@@ -20,7 +20,7 @@ export default function OrderPC({ page, this_module, city }) {
     if( token && token.length > 0 ) {
       getOrderList(this_module, city, token);
     }
-  }, [token]);
+  }, [token, city]);
 
   useEffect(() => {
     const timer = setInterval(() => {

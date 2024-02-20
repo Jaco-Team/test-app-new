@@ -1,6 +1,8 @@
 import { useEffect, useState, useCallback } from 'react';
 
 import useEmblaCarousel from 'embla-carousel-react';
+import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
+import { flushSync } from 'react-dom';
 
 import { useProfileStore, useHeaderStore } from '@/components/store.js';
 
@@ -31,7 +33,7 @@ const mon = [
 
 export default function ProfileModalMobile({ city, this_module, setUserDate }) {
 
-  const [calendar, setCalendar] = useState(false);
+  const [calendar, setCalendar] = useState(true);
 
   const [activeDay, setActiveDay] = useState(0);
   const [activeMonth, setActiveMonth] = useState(0);
@@ -177,6 +179,10 @@ export default function ProfileModalMobile({ city, this_module, setUserDate }) {
                 />
               </section>
 
+              <Button className="btnDataTime" variant="contained" onClick={chooseData}>
+                <span>Выбрать</span>
+              </Button>
+
               <div className="divBackground" />
             </>
           ) : null}
@@ -193,19 +199,37 @@ const DataPicker = ({ slides, chooseItem, data, activeData }) => {
     loop: true,
     axis: 'y',
     containScroll: 'trimSnaps',
-  });
+    skipSnaps: true,
+  }, [
+    WheelGesturesPlugin(),
+  ]);
 
   const onSelect = useCallback((emblaApi) => {
     setActive(emblaApi.selectedScrollSnap());
     chooseItem(emblaApi.selectedScrollSnap(), data);
   }, []);
 
+  const onScroll = useCallback((emblaApi) => {
+    if (!emblaApi) return;
+
+    setActive(emblaApi.selectedScrollSnap());
+    chooseItem(emblaApi.selectedScrollSnap(), data);
+  }, [emblaApi]);
+
   useEffect(() => {
     if (emblaApi) {
       emblaApi.on('select', onSelect);
       emblaApi.scrollTo(activeData);
+
+      onScroll();
+      emblaApi.on('scroll', () => {
+        flushSync(() => onScroll());
+      });
+
+      emblaApi.on('reInit', onScroll);
+      emblaApi.on('reInit', onSelect);
     }
-  }, [emblaApi, activeData]);
+  }, [emblaApi, activeData, onSelect, onScroll]);
 
   return (
     <div className="embla">

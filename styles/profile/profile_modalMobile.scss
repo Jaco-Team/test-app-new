@@ -143,6 +143,24 @@
             justify-content: center;
           }
 
+          .btnDataTime {
+            width: $MyScale650_mobile;
+            height: $MyScale120_mobile;
+            border-radius: $MyScale80_mobile;
+            margin-bottom: $MyScale160_mobile;
+            padding: 0;
+            text-transform: lowercase;
+    
+            span {
+              display: flex;
+              align-items: center;
+              text-align: center;
+              @include font50_500();
+              color: #fff!important;
+              text-transform: capitalize;
+            }
+          }
+
           .divBackground {
             position: absolute;
             width: $MyScale920_mobile;

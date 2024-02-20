@@ -19,7 +19,7 @@ export default function PromokodyMobile({ this_module, city }) {
     if( token && token.length > 0 ) {
       getPromoList(this_module, city, token);
     }
-  }, [token]);
+  }, [token, city]);
 
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="PromokodyMobile">

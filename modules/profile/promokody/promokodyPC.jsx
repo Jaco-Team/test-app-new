@@ -17,7 +17,7 @@ export default function PromokodyPC({ this_module, city }) {
     if( token && token.length > 0 ) {
       getPromoList(this_module, city, token);
     }
-  }, [token]);
+  }, [token, city]);
 
   return (
     <Grid container spacing={3} style={{ margin: 0, width: '100%' }} sx={{ display: { xs: 'none', md: 'none', lg: 'flex' } }}>

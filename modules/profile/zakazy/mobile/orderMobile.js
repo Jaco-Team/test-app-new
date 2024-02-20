@@ -15,8 +15,6 @@ import { ArrowLeftMobile, VectorDownMobile } from '@/ui/Icons.js';
 
 export default function OrderMobile({ city, this_module }) {
 
-  console.log( 'city2', city );
-
   const [list, setList] = useState([]);
 
   const [getOrderList, orderList, year, setActiveModalYear, setYear] =
