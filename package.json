@@ -23,7 +23,7 @@
     "@react-spring/web": "^9.7.3",
     "css-mediaquery": "^0.1.2",
     "dayjs": "^1.11.10",
-    "embla-carousel-react": "8.0.0-rc22",
+    "embla-carousel-react": "8.0.0-rc23",
     "embla-carousel-wheel-gestures": "8.0.0-rc05",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
@@ -37,13 +37,13 @@
     "react-dom": "18.2.0",
     "react-hook-form": "^7.50.1",
     "react-scroll": "^1.9.0",
-    "sass": "^1.70.0",
+    "sass": "^1.71.0",
     "sharp": "^0.33.2",
     "styled-components": "^5.3.11",
     "swiper": "^9.4.1",
     "typescript": "^5.3.3",
     "ua-parser-js": "^1.0.37",
-    "zustand": "^4.5.0"
+    "zustand": "^4.5.1"
   },
   "devDependencies": {
     "eslint": "8.56.0",
