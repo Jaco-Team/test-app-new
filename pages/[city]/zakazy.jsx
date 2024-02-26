@@ -10,9 +10,13 @@ import { api } from '@/components/api.js';
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js'
 
+import { useRouter } from 'next/router';
+
 const this_module = 'zakazy';
 
 export default function Zakazy(props) {
+
+  const { push } = useRouter();
 
   const { city, cats, cities, page, all_items, free_items, need_dop } = props.data1;
 
@@ -46,8 +50,8 @@ export default function Zakazy(props) {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('token');
 
-      if( !token || token == '' ){
-        window.location.href = '/'+city;
+      if( (!token || token == '') && city.length > 0 ){
+        push(`/${city}`);
       }
     }
 

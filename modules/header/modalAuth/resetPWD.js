@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useHeaderStore, useCitiesStore } from '@/components/store';
+import { useHeaderStore } from '@/components/store';
 
 import MyTextInput from '@/ui/MyTextInput';
 import {EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, CheckAuthMobile} from '@/ui/Icons';
@@ -8,20 +8,10 @@ import {EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, CheckAuthMobile
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 
-//import { useSession, signIn } from 'next-auth/react';
-
 export default function ResetPWD() {
-  //console.log('render ResetPWD');
-
-  //const session = useSession();
-
   const [showPassword, setShowPassword] = useState(false);
 
   const [errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, sendsmsNewLogin, matches] = useHeaderStore((state) => [state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.sendsmsNewLogin, state.matches]);
-
-  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
-
-  const host = window.location.origin;
 
   return (
     <div className={matches ? 'modalLoginStartMobile' : 'modalLoginStartPC'}>

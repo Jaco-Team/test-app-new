@@ -94,6 +94,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   openPayForm: false,
 
+  DBClick: false,
+
   // открытие/закрытие формы оплаты онлайн
   setPayForm: (active) => {
     set({ openPayForm: active })
@@ -491,6 +493,12 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // создание заказа
   createOrder: async(token, city_id) => {
 
+    if( get().DBClick === true ){
+      return;
+    }else{
+      set({ DBClick: true });
+    }
+
     let data;
     const typeOrder = get().typeOrder;
     const promoName = localStorage.getItem('promo_name');
@@ -529,6 +537,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     
     const json = await api('cart', data);
 
+    setTimeout( () => {
+      set({ DBClick: false });
+    }, 300 )
+
     if( json.st === true ){
       if( get().typePay.id == 'online' ){
 
@@ -550,15 +562,47 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           checkout.render('payment-form');
         }, 300 )
       
+        return 'wait_payment';
+      }else{
+        return 'to_cart';
       }
     }else{
       //показать ошибку
       useHeaderStore.getState().setActiveModalAlert(true, json.text, false);
+
+      return 'nothing';
     }
 
     //return json;
 
-    get().setCartLocalStorage();
+    //get().setCartLocalStorage();
+  },
+
+  clearCartData: () => {
+    localStorage.removeItem('setCart');
+    localStorage.removeItem('promo_name');
+
+    set({
+      items: [],
+      itemsOnDops: [],
+      itemsOffDops: [],
+      itemsWithPromo: [],
+
+      dopListCart: [],
+      itemsCount: 0,
+      allPrice: 0,
+      allPriceWithoutPromo: null, 
+
+      promoInfo: null,
+      checkPromo: null,
+      free_drive: 0,
+      itemsPromo: [],
+    });
+
+    get().getCartLocalStorage();
+
+    get().setDataPromoBasket();
+    get().check_need_dops();
   },
 
   // получения товара для корзины и добавление промоТовара в корзину если есть и разделение корзины на товары без допов и доп товары
@@ -1900,6 +1944,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   yearList: [],
   openModalYear: false,
 
+  
+
   // открытие/закрытие модалки заказа в Истории заказов в мобильной версии
   setActiveModalOrder: (active, modalOrder) => {
     set({ openModal: active, modalOrder })
@@ -2045,6 +2091,9 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       user_id: userToken,
       user: JSON.stringify(get().userInfo),
     };
+
+    console.log( 'updateUser', get().userInfo);
+    console.log( 'updateUser 1', data );
 
     let json = await api(this_module, data);
   },
@@ -2478,6 +2527,14 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
   openModalSelectAddress: false,
   chooseAddrStreet: [],
+
+  isShowLoad: false,
+
+  showLoad: (is_show) => {
+    set({
+      isShowLoad: is_show,
+    });
+  },
 
   // открытие/закрытие модалки выбора адреса доставки при условии что есть два и более похожих адреса
   setActiveModalSelectAddress: (active, chooseAddrStreet) => {

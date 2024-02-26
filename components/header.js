@@ -15,6 +15,9 @@ import ModalAddr from '@/modules/profile/profile/modalAddr.jsx';
 import ModalAlert from '@/modules/header/alert';
 import SelectAddress from '@/modules/header/selectAddress.js'
 
+import Backdrop from '@mui/material/Backdrop';
+import CircularProgress from '@mui/material/CircularProgress';
+
 import { useHeaderStore, useHomeStore } from './store.js';
 
 export default React.memo(function Header({ city, city_list, cats, active_page }) {
@@ -23,7 +26,7 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
   const matchesDev = useMediaQuery('screen and (max-width: 1170px)');
   //const matchesDev = useMediaQuery('screen and (max-width: 601px)', { noSsr: false });
 
-  const [setMatches, matches, checkToken] = useHeaderStore( state => [state.setMatches, state.matches, state.checkToken]);
+  const [setMatches, matches, checkToken, isShowLoad] = useHeaderStore( state => [state.setMatches, state.matches, state.checkToken, state.isShowLoad] ); 
   const [getItemsCat, category] = useHomeStore( state => [state.getItemsCat, state.category]);
   
   useEffect(() => {
@@ -51,6 +54,13 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
 
   return (
     <div className={roboto.variable} style={{ overflow: 'auto' }}>
+
+      <Backdrop
+        sx={{ color: '#fff', zIndex: 5000 }}
+        open={isShowLoad}
+      >
+        <CircularProgress color="inherit" />
+      </Backdrop>
 
       {matches ?
         <>

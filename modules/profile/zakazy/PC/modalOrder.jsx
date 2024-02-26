@@ -18,7 +18,7 @@ function ModalOrderStatusIconDelivery({types}){
   return (
     <Grid item xs={12} className='header_status_icon'>
       <div className={ parseInt(types?.type1) == 1 || parseInt(types?.type1) == 0 ? 'active' : '' }>
-        <CartModalOrderIcon />
+        <CartModalOrderIcon fill={'#fff'} />
       </div>
       { parseInt(types?.type2) == 1 || parseInt(types?.type2) == -1 ?
         <LinearProgress variant="determinate" className={parseInt(types?.type2) == -1 ? '' : 'active'} value={ parseInt(types?.type2) == 1 ? 100 : 0 } />
@@ -27,7 +27,7 @@ function ModalOrderStatusIconDelivery({types}){
       }
 
       <div className={ parseInt(types?.type2) == 1 || parseInt(types?.type2) == 0 ? 'active' : '' }>
-        <CookModalOrderIcon />
+        <CookModalOrderIcon fill={'#fff'} />
       </div>
       { parseInt(types?.type3) == 1 || parseInt(types?.type3) == -1 ?
         <LinearProgress variant="determinate" className={parseInt(types?.type3) == -1 ? '' : 'active'} value={ parseInt(types?.type3) == 1 ? 100 : 0 } />
@@ -36,7 +36,7 @@ function ModalOrderStatusIconDelivery({types}){
       }
       
       <div className={ parseInt(types?.type3) == 1 || parseInt(types?.type3) == 0 ? 'active' : '' }>
-        <DeliveryModalOrderIcon />
+        <DeliveryModalOrderIcon fill={'#fff'} />
       </div>
       { parseInt(types?.type4) == 1 || parseInt(types?.type4) == -1 ?
         <LinearProgress variant="determinate" className={parseInt(types?.type4) == -1 ? '' : 'active'} value={ parseInt(types?.type4) == 1 ? 100 : 0 } />
@@ -44,7 +44,7 @@ function ModalOrderStatusIconDelivery({types}){
         <LinearProgress />
       }
       <div className={ parseInt(types?.type4) == 1 || parseInt(types?.type4) == 0 ? 'active' : '' }>
-        <HomeModalOrderIcon />
+        <HomeModalOrderIcon fill={'#fff'} />
       </div>
     </Grid>
   )
@@ -54,7 +54,7 @@ function ModalOrderStatusIconPicup({types}){
   return (
     <Grid item xs={12} className='header_status_icon'>
       <div className={ parseInt(types?.type1) == 1 || parseInt(types?.type1) == 0 ? 'active' : '' }>
-        <CartModalOrderIcon />
+        <CartModalOrderIcon fill={'#fff'} />
       </div>
       { parseInt(types?.type2) == 1 || parseInt(types?.type2) == -1 ?
         <LinearProgress variant="determinate" className={parseInt(types?.type2) == -1 ? '' : 'active'} value={ parseInt(types?.type2) == 1 ? 100 : 0 } />
@@ -63,7 +63,7 @@ function ModalOrderStatusIconPicup({types}){
       }
 
       <div className={ parseInt(types?.type2) == 1 || parseInt(types?.type2) == 0 ? 'active' : '' }>
-        <CookModalOrderIcon />
+        <CookModalOrderIcon fill={'#fff'} />
       </div>
       { parseInt(types?.type3) == 1 || parseInt(types?.type3) == -1 ?
         <LinearProgress variant="determinate" className={parseInt(types?.type3) == -1 ? '' : 'active'} value={ parseInt(types?.type3) == 1 ? 100 : 0 } />
@@ -72,7 +72,7 @@ function ModalOrderStatusIconPicup({types}){
       }
       
       <div className={ parseInt(types?.type3) == 1 || parseInt(types?.type3) == 0 ? 'active' : '' }>
-        <PicupModalOrderIcon />
+        <PicupModalOrderIcon fill={'#fff'} />
       </div>
       { parseInt(types?.type4) == 1 || parseInt(types?.type4) == -1 ?
         <LinearProgress variant="determinate" className={parseInt(types?.type4) == -1 ? '' : 'active'} value={ parseInt(types?.type4) == 1 ? 100 : 0 } />
@@ -80,7 +80,7 @@ function ModalOrderStatusIconPicup({types}){
         <LinearProgress />
       }
       <div className={ parseInt(types?.type4) == 1 || parseInt(types?.type4) == 0 ? 'active' : '' }>
-        <HomeModalOrderIcon />
+        <HomeModalOrderIcon fill={'#fff'} />
       </div>
     </Grid>
   )

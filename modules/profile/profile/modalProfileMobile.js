@@ -44,29 +44,16 @@ export default function ProfileModalMobile({ city, this_module, setUserDate }) {
   const [openModalProfile, setActiveProfileModal, modalName, userInfo, setUser, updateUser] = useProfileStore((state) => [state.openModalProfile, state.setActiveProfileModal, state.modalName, state.userInfo, state.setUser, state.updateUser]);
   const [ token, signOut ] = useHeaderStore( state => [ state.token, state.signOut ] )
 
-  const getDays = () => {
-
-    const month = activeMonth < 9 ? `0${activeMonth + 1}` : `${activeMonth + 1}`;
-
-    const result = `2024-${month}`;
-
-    const slidesDay = new Array(dayjs(result).daysInMonth()).fill(null).map((x, i) => (i + 1).toString());
-
-    if (activeDay > slidesDay.length - 1) {
-      setActiveDay(slidesDay.length - 1);
-    }
-
-    setSlidesDay(slidesDay);
-  };
-
   useEffect(() => {
 
-    const slidesDay = new Array(dayjs().daysInMonth()).fill(null).map((x, i) => (i + 1).toString());
+    //const slidesDay = new Array(dayjs().daysInMonth()).fill(null).map((x, i) => (i + 1).toString());
+    const slidesDay = Array.from({length: 31}, (_, i) => i + 1);
+
     const slidesMonth = [...Array(12).keys()].map(key => new Date(0, key).toLocaleString('ru', { month: 'long' }))
 
     const presentDate = dayjs().format('D/MMMM').split('/');
 
-    const activeDay = slidesDay.findIndex((day) => day === presentDate[0]);
+    const activeDay = slidesDay.findIndex((day) => parseInt(day) === parseInt(presentDate[0]));
     const activeMonth = slidesMonth.findIndex((month) => month === presentDate[1]);
 
     setActiveDay(activeDay);
@@ -76,10 +63,6 @@ export default function ProfileModalMobile({ city, this_module, setUserDate }) {
     setSlidesMonth(slidesMonth);
 
   }, [calendar]);
-
-  useEffect(() => {
-    getDays();
-  }, [activeMonth]);
 
   const chooseItem = (index, data) => {
     if (data === 'day') {
@@ -101,7 +84,7 @@ export default function ProfileModalMobile({ city, this_module, setUserDate }) {
     setUser(userInfo);
     setUserDate(`${day} ${month}`);
 
-    if(day?.length > 0 && month?.length > 0){
+    if( parseInt(day) > 0 && parseInt(month_number) > 0){
       updateUser(this_module, city, token);
     }
 
@@ -111,7 +94,7 @@ export default function ProfileModalMobile({ city, this_module, setUserDate }) {
 
   const onClose = () => {
     setActiveProfileModal(false, null); 
-    setCalendar(false);
+    setCalendar(true);
   }
 
   return (
@@ -163,7 +146,7 @@ export default function ProfileModalMobile({ city, this_module, setUserDate }) {
             </div>
           ) : modalName === 'date_first' && calendar ? (
             <>
-              <section className="sandbox__carousel" onClick={chooseData}>
+              <section className="sandbox__carousel">
                 <DataPicker
                   slides={slidesDay}
                   chooseItem={chooseItem}

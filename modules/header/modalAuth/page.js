@@ -35,8 +35,6 @@ export default function ModalAuth({ city }) {
   }, [openAuthModal] )
 
   useEffect( () => {
-    console.log( 'location', window?.location.search )
-
     let search = window.location.search;
     let checkItem = search.split('?code=');
                     
@@ -68,8 +66,6 @@ export default function ModalAuth({ city }) {
   }
 
   const login = typeLogin === 'loginSMSCode' ? 'Проверочный код' : typeLogin === 'resetPWD' ? 'Новый пароль' : typeLogin === 'createPWD' ? 'Придумайте пароль' : typeLogin === 'finish' ? 'Всё получилось!' : typeLogin === 'loginSMS' ? 'Вход по СМС' : 'Авторизация';
-
-  // console.log( 'typeLogin', typeLogin )
 
   return (
     <Dialog

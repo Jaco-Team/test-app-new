@@ -16,7 +16,7 @@ function ModalOrderStatusIconDelivery({ types }) {
       <div className="zakazyCircle"
         style={{ background: parseInt(types?.type1) == 1 || parseInt(types?.type1) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}
       >
-        <CartModalOrderIcon />
+        <CartModalOrderIcon fill={'#fff'} />
       </div>
       {parseInt(types?.type2) == 1 || parseInt(types?.type2) == -1 ? (
         <LinearProgress variant="determinate" style={{ background: parseInt(types?.type2) == -1 ? '' : '#DD1A32' }} value={parseInt(types?.type2) == 1 ? 100 : 0}/>
@@ -26,7 +26,7 @@ function ModalOrderStatusIconDelivery({ types }) {
 
       <div className="zakazyCircle"
         style={{ background: parseInt(types?.type2) == 1 || parseInt(types?.type2) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
-        <CookModalOrderIcon />
+        <CookModalOrderIcon fill={'#fff'} />
       </div>
       {parseInt(types?.type3) == 1 || parseInt(types?.type3) == -1 ? (
         <LinearProgress
@@ -40,7 +40,7 @@ function ModalOrderStatusIconDelivery({ types }) {
 
       <div className="zakazyCircle"
         style={{ background: parseInt(types?.type3) == 1 || parseInt(types?.type3) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
-        <DeliveryModalOrderIcon />
+        <DeliveryModalOrderIcon fill={'#fff'} />
       </div>
 
       {parseInt(types?.type4) == 1 || parseInt(types?.type4) == -1 ? (
@@ -55,7 +55,7 @@ function ModalOrderStatusIconDelivery({ types }) {
 
       <div className="zakazyCircle"
         style={{ background: parseInt(types?.type4) == 1 || parseInt(types?.type4) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
-        <HomeModalOrderIcon />
+        <HomeModalOrderIcon fill={'#fff'} />
       </div>
     </div>
   );
@@ -67,7 +67,7 @@ function ModalOrderStatusIconPicup({ types }) {
       <div className="zakazyCircle"
         style={{ background: parseInt(types?.type1) == 1 || parseInt(types?.type1) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}
       >
-        <CartModalOrderIcon />
+        <CartModalOrderIcon fill={'#fff'} />
       </div>
       {parseInt(types?.type2) == 1 || parseInt(types?.type2) == -1 ? (
         <LinearProgress variant="determinate" style={{ background: parseInt(types?.type2) == -1 ? '' : '#DD1A32' }} value={parseInt(types?.type2) == 1 ? 100 : 0} />
@@ -77,7 +77,7 @@ function ModalOrderStatusIconPicup({ types }) {
 
       <div className="zakazyCircle"
         style={{ background: parseInt(types?.type2) == 1 || parseInt(types?.type2) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
-        <CookModalOrderIcon />
+        <CookModalOrderIcon fill={'#fff'} />
       </div>
       {parseInt(types?.type3) == 1 || parseInt(types?.type3) == -1 ? (
         <LinearProgress variant="determinate"
@@ -90,7 +90,7 @@ function ModalOrderStatusIconPicup({ types }) {
 
       <div className="zakazyCircle"
         style={{ background: parseInt(types?.type3) == 1 || parseInt(types?.type3) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
-        <PicupModalOrderIcon />
+        <PicupModalOrderIcon fill={'#fff'} />
       </div>
     </div>
   );

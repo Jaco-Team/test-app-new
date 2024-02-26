@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useHeaderStore, useCitiesStore } from '@/components/store';
+import { useHeaderStore } from '@/components/store';
 
 import MyTextInput from '@/ui/MyTextInput';
 import {YaIcon, EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, CheckAuthMobile} from '@/ui/Icons';
@@ -12,10 +12,6 @@ export default function Start() {
   const [showPassword, setShowPassword] = useState(false);
 
   const [errTextAuth, navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, matches, yandexAuthLink] = useHeaderStore((state) => [state.errTextAuth, state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.logIn, state.matches, state.yandexAuthLink]);
-
-  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
-
-  const host = window.location.origin;
 
   return (
     <div className={matches ? 'modalLoginStartMobile' : 'modalLoginStartPC'}>

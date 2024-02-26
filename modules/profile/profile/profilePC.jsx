@@ -131,17 +131,7 @@ export default function ProfilePC({ page, this_module, city }){
       updateUser(this_module, city, token);
     }
   }
-
-  function thisSignOut(){
-    signOut(city);
-  }
-
-  let host = '';
-
-  if (typeof window !== "undefined") {
-    host = window.location.origin;
-  }
-
+  
   return (
       <Grid container spacing={3} style={{ margin: 0, width: '100%' }} sx={{ display: { xs: 'none', md: 'none', lg: 'flex' } }}>
         <Grid item className="Profile mainContainer">
@@ -337,7 +327,7 @@ export default function ProfilePC({ page, this_module, city }){
 
           <Grid item xs={12} className="log_out">
             <span style={{ visibility: 'hidden' }}>Удалить аккаунт</span>
-            <Link href={"/"+city} onClick={ thisSignOut }>Выйти</Link>
+            <Link href={"/"+city} onClick={ () => signOut(city) }>Выйти</Link>
           </Grid>
 
         </Grid>

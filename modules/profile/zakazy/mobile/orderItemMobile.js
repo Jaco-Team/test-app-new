@@ -29,11 +29,11 @@ export default React.memo(function OrderItemMobile({ order, token, this_module, 
   //order.status_order_ = 2;
 
   if( parseInt(order?.is_delete) === 1 ){
-    icon_status = <DeleteOrderMobile />;
+    icon_status = <DeleteOrderMobile fill="#cc0033" />;
     text_status = moment(order?.date).format('D MMM').replace('.', '');
   }else{
     if( parseInt(order?.type_order) === 1 && parseInt(order?.status_order_) === 5 ){
-      icon_status = <DeliveryModalOrderIcon />;
+      icon_status = <DeliveryModalOrderIcon fill={'#cc0033'} />;
       text_status = 'Везем';
     }
     if( parseInt(order?.status_order_) < 5 ){
@@ -53,7 +53,7 @@ export default React.memo(function OrderItemMobile({ order, token, this_module, 
       }
     }
     if( parseInt(order?.is_pred) === 1 && parseInt(order?.status_order_) === 1 ){
-      icon_status = <CalendarOrderMobile />;
+      icon_status = <CalendarOrderMobile fill="#cc0033" />;
       text_status = moment(order?.date).format('D MMM').replace('.', '');
     }
     if( parseInt(order?.status_order_) === 6 ){
@@ -61,8 +61,6 @@ export default React.memo(function OrderItemMobile({ order, token, this_module, 
       text_status = moment(order?.date).format('D MMM').replace('.', '');
     }
   }
-
-  
 
   return (
     <div className="zakazyItem"
