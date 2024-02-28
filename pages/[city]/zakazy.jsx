@@ -39,13 +39,13 @@ export default function Zakazy(props) {
     }
 
     if( allItems.length == 0 ){
-      setAllItems(all_items); 
-
-      getCartLocalStorage();
+      setAllItems(all_items);
     }
 
     setFreeItems(free_items);
     setNeedDops(need_dop);
+
+    getCartLocalStorage();
 
     setActivePage(this_module);
 

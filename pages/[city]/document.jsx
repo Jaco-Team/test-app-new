@@ -42,12 +42,12 @@ export default React.memo(function Document(props) {
 
     if( allItems.length == 0 ){
       setAllItems(all_items);
-
-      getCartLocalStorage();
     }
 
     setFreeItems(free_items);
     setNeedDops(need_dop);
+
+    getCartLocalStorage();
 
     setActivePage('document');
   }, []);

@@ -44,12 +44,12 @@ export default function Account(props) {
 
     if( allItems.length == 0 ){
       setAllItems(all_items);
-
-      getCartLocalStorage();
     }
 
     setFreeItems(free_items);
     setNeedDops(need_dop);
+
+    getCartLocalStorage();
 
     setActivePage(this_module)
 
