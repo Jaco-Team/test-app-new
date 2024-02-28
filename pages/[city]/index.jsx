@@ -17,7 +17,7 @@ export default function Home(props) {
 
   const { city, cats, cities, page, all_items, free_items, need_dop } = props.data1;
 
-  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops]);
+  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
   const [ getBanners ] = useHomeStore( state => [ state.getBanners ]);
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
@@ -42,7 +42,9 @@ export default function Home(props) {
     getBanners(this_module, city);
 
     if( allItems.length == 0 ){
-      setAllItems(all_items)
+      setAllItems(all_items);
+
+      getCartLocalStorage();
     }
 
     setFreeItems(free_items);

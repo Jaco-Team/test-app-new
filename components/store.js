@@ -628,7 +628,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       itemsPromo: [],
     });
 
-    get().getCartLocalStorage();
+    get().setCartLocalStorage();
 
     get().setDataPromoBasket();
     get().check_need_dops();

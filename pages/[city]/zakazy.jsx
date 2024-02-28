@@ -20,7 +20,7 @@ export default function Zakazy(props) {
 
   const { city, cats, cities, page, all_items, free_items, need_dop } = props.data1;
 
-  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops]);
+  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
@@ -28,10 +28,6 @@ export default function Zakazy(props) {
   const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
 
   useEffect(() => {
-    if( allItems.length == 0 ){
-      setAllItems(all_items)
-    }
-
     if( thisCity != city ){
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );
@@ -42,7 +38,11 @@ export default function Zakazy(props) {
       }, 300);
     }
 
-    
+    if( allItems.length == 0 ){
+      setAllItems(all_items); 
+
+      getCartLocalStorage();
+    }
 
     setFreeItems(free_items);
     setNeedDops(need_dop);

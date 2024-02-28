@@ -19,7 +19,7 @@ const this_module = 'contacts';
 export default React.memo(function Instpayorders(props) {
   const { city, cats, cities, page, all_items, free_items, need_dop } = props.data1;
 
-  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops]);
+  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] =
     useCitiesStore((state) => [
@@ -44,6 +44,8 @@ export default React.memo(function Instpayorders(props) {
 
     if (allItems.length == 0) {
       setAllItems(all_items);
+
+      getCartLocalStorage();
     }
 
     setFreeItems(free_items);
