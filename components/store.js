@@ -1632,6 +1632,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const allPriceWithoutPromo = my_cart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
     const itemsCount = my_cart.reduce((all, it) => parseInt(all) + parseInt(it.count), 0);
 
+    console.log( 'my_cart', my_cart )
+
     set({ 
       items: my_cart, 
       itemsCount, 
