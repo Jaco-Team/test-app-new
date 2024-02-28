@@ -1652,7 +1652,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const matches = useHeaderStore.getState().matches;
 
     if( matches ){ 
-      //window.location.href = '/' + city + '/cart';
+      setTimeout(() => {
+        window.location.href = '/' + city + '/cart';
+      }, 500)
+      
     }else{
       useHeaderStore.getState().setActiveBasket(true);  
     }
