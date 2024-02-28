@@ -145,6 +145,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const allItems = get().allItems;
     const cart = JSON.parse(localStorage.getItem('setCart'));
 
+    if( allItems.lenength == 0 ) {
+      return;
+    }
+
     if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
       const city = JSON.parse(localStorage.getItem('setCity'));
       
@@ -1573,6 +1577,12 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   repeatOrder: (order) => {
     const city = useCitiesStore.getState().thisCity;
 
+    const allItems = get().allItems;
+
+    if( allItems.length == 0 ){
+      return;
+    }
+
     set({
       items: [],
       itemsOnDops: [],
@@ -1597,7 +1607,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     //}
 
     const itemsWithPromo = get().itemsWithPromo;
-    const allItems = get().allItems;
+    
     
     let checkItem = null;
     let my_cart = [];

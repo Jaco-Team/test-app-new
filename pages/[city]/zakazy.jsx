@@ -28,6 +28,10 @@ export default function Zakazy(props) {
   const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
 
   useEffect(() => {
+    if( allItems.length == 0 ){
+      setAllItems(all_items)
+    }
+
     if( thisCity != city ){
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );
@@ -38,9 +42,7 @@ export default function Zakazy(props) {
       }, 300);
     }
 
-    if( allItems.length == 0 ){
-      setAllItems(all_items)
-    }
+    
 
     setFreeItems(free_items);
     setNeedDops(need_dop);
