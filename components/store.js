@@ -145,7 +145,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const allItems = get().allItems;
     const cart = JSON.parse(localStorage.getItem('setCart'));
 
-    if( allItems.lenength == 0 ) {
+    if( allItems.length == 0 ) {
       return;
     }
 
