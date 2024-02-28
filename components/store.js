@@ -1583,6 +1583,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       return;
     }
 
+    console.log( 'allItems', allItems )
+
     set({
       items: [],
       itemsOnDops: [],
@@ -1614,6 +1616,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     order.order_items.map((item) => {
       checkItem = allItems.find( it => parseInt(it.id) === parseInt(item.item_id) );
+
+      console.log( 'item', item )
+      console.log( 'checkItem', checkItem )
 
       checkItem.count = parseInt(item.count);
       checkItem.one_price = parseInt(checkItem.price);
