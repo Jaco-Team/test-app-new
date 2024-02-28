@@ -3,13 +3,14 @@ import React from 'react';
 import TableCell from '@mui/material/TableCell';
 import TableRow from '@mui/material/TableRow';
 
-import { ReloadIcon, CheckIcon, CloseIcon, CloseIcon_old } from '@/ui/Icons.js';
+import { ReloadIcon, CheckIcon, CloseIcon_old } from '@/ui/Icons.js';
 
 function areEqual(prevProps, nextProps) {
   return parseInt(nextProps.order.is_delete) === parseInt(prevProps.order.is_delete) || parseInt(nextProps.order.type_status) === parseInt(prevProps.order.type_status);
 }
 
 export default React.memo(function OrderItem({order, template, getOrder}){
+
   return (
     <TableRow>
       <TableCell> 

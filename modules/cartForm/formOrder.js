@@ -42,13 +42,13 @@ export default function FormOrder({ cityName }) {
 
   const open = Boolean(anchorEl);
 
-  const [openModalAddr, getOrderList] = useProfileStore( state => [ state.openModalAddr, state.getOrderList ]);
+  const [openModalAddr, getOrderList, clearOrderList] = useProfileStore( state => [ state.openModalAddr, state.getOrderList, state.clearOrderList ]);
 
   const [matches, setActiveModalCityList, setActiveModalAlert, token, showLoad] = useHeaderStore((state) => [state.matches, state.setActiveModalCityList, state.setActiveModalAlert, state.token, state.showLoad]);
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
  
-  const [setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOnDops, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, summDiv, setSummDiv, sdacha, setSdacha, check_need_dops] = useCartStore((state) => [state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
+  const [setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOnDops, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, summDiv, setSummDiv, sdacha, setSdacha, check_need_dops] = useCartStore((state) => [state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
     state.promoInfo,state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOnDops, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.summDiv, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops]);
  
   useEffect(() => {
@@ -240,22 +240,34 @@ export default function FormOrder({ cityName }) {
 
     showLoad(true);
 
-    const res = await createOrder( token, thisCity );
+    const res = await createOrder( token, thisCity, trueOrderCLose );
 
-    setTimeout(() => {
+    //setTimeout(() => {
       showLoad(false);
-    }, 300)
-
-    console.log('createOrder', res);
+    //}, 300)
 
     if( res == 'to_cart' ){
-      setTimeout(() => {
-        clearCartData();
-        getOrderList('zakazy', thisCity, token);
-        setActiveModalBasket(false);
-        push(`/${thisCity}/zakazy`);
-      }, 300)
+      trueOrderCLose();
     }
+  }
+
+  function trueOrderCLose() {
+    showLoad(true);
+
+    setTimeout(() => {
+      clearCartData();
+      //clearOrderList();
+      
+      setActiveModalBasket(false);
+      setPayForm(false);
+      push(`/${thisCity}/zakazy`);
+
+      setTimeout(() => {
+        getOrderList('zakazy', thisCity, token);
+
+        showLoad(false);
+      }, 2000)
+    }, 300)
   }
 
   return (

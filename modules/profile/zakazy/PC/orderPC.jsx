@@ -23,14 +23,15 @@ export default function OrderPC({ page, this_module, city }) {
   }, [token, city]);
 
   useEffect(() => {
+
     const timer = setInterval(() => {
       if( token && token.length > 0 ) {
         getOrderList(this_module, city, token);
       }
-    }, 30 * 1000);
+    }, 10 * 1000);
     
     return () => clearInterval(timer);
-  }, []);
+  }, [token, city]);
 
   return (
     <Grid

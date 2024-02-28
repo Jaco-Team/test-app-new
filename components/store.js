@@ -491,7 +491,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   },
 
   // создание заказа
-  createOrder: async(token, city_id) => {
+  createOrder: async(token, city_id, funcClose) => {
 
     if( get().DBClick === true ){
       return;
@@ -550,12 +550,35 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
         const checkout = new window.YooMoneyCheckoutWidget({
           confirmation_token: json.pay.pay.confirmation.confirmation_token, //Токен, который перед проведением оплаты нужно получить от ЮKassa
-          return_url: '', //Ссылка на страницу завершения оплаты, это может быть любая ваша страница
+          //return_url: 'https://jacofood.ru/'+this.state.city_name+'/profile', //Ссылка на страницу завершения оплаты, это может быть любая ваша страница
+          //return_url: 'http://localhost:3008/'+city_id+'/zakazy',
 
           error_callback: function(error) {
             console.log(error)
             //попробовать показать ошибку (смени свою почту в ЛК на ya.ru)
           }
+        });
+
+        checkout.on('success', () => {
+          //Код, который нужно выполнить после успешной оплаты.
+          
+          console.log('success pay');
+
+          
+
+          //Удаление инициализированного виджета
+          checkout.destroy();
+          funcClose();
+
+          //document.getElementById('true_order_hidden').click();
+        });
+    
+        checkout.on('fail', () => {
+          //Код, который нужно выполнить после неудачной оплаты.
+          
+          //Удаление инициализированного виджета
+          checkout.destroy();
+          return 'nothing';
         });
 
         setTimeout( () => {
@@ -2056,6 +2079,11 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     set({
       orderList: json?.order_list,
       city: city
+    });
+  },
+  clearOrderList: () => {
+    set({
+      orderList: []
     });
   },
   getUserInfo: async (this_module, city, userID) => {

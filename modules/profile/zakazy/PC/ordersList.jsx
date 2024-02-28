@@ -17,7 +17,7 @@ import OrderItem from './orderItem.jsx';
 
 import { useProfileStore } from '@/components/store';
 
-export default React.memo(function OrdersList({year, is_first, token, this_module, city}){
+export default function OrdersList({year, is_first, token, this_module, city}){
 
   const [getOrder] = useProfileStore( state => [ state.getOrder ])
 
@@ -56,4 +56,4 @@ export default React.memo(function OrdersList({year, is_first, token, this_modul
       </AccordionDetails>
     </Accordion> 
   )
-})
+}
