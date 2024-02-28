@@ -165,6 +165,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           cart.items[ key ]['all_price'] = parseInt(this_item?.price) * parseInt(item.count);
         })
 
+        console.log('cart?.items', cart?.items);
+
           const allPriceWithoutPromo = cart.items.reduce((all, it) => all + it.count * it.one_price, 0);
 
           const itemsCount = cart.items.reduce((all, item) => all + item.count, 0);
@@ -1643,9 +1645,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     
     get().getItems();
     
-    get().check_need_dops();
+    //get().check_need_dops();
 
-    get().setCartLocalStorage();
+    //get().setCartLocalStorage();
 
     useProfileStore.getState().closeOrder();
 
