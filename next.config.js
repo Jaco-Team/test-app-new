@@ -1,4 +1,7 @@
 /** @type {import('next').NextConfig} */
+
+const { withAxiom } = require('next-axiom');
+
 const nextConfig = {
   trailingSlash: false,
   reactStrictMode: true,
@@ -34,5 +37,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 
-module.exports = withBundleAnalyzer(nextConfig)
+module.exports = withAxiom(nextConfig)
+//module.exports = withBundleAnalyzer(nextConfig)
 //module.exports = nextConfig
