@@ -172,8 +172,8 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
       />
       <noscript><img src="https://vk.com/rtrg?p=VK-RTRG-409134-7MvqQ" style={{position: 'fixed', left: '-999px'}} alt=""/></noscript>
 
-      { pageProps['data1']['city'] == 'togliatti' ? <MetricaTLT /> : null }
-      { pageProps['data1']['city'] == 'samara' ? <MetricaSMR /> : null }
+      { pageProps?.data1?.city == 'togliatti' ? <MetricaTLT /> : null }
+      { pageProps?.data1?.city == 'samara' ? <MetricaSMR /> : null }
 
       <Component {...pageProps} />
     </ThemeProvider>
