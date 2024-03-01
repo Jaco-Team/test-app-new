@@ -2,6 +2,7 @@ import { useState } from 'react';
 
 import { useProfileStore, useHeaderStore } from '@/components/store.js';
 
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Backdrop from '@mui/material/Backdrop';
@@ -36,13 +37,13 @@ export default function ModalOrderMobileDelete() {
   };
 
   return (
-    <Dialog
-      onClose={close}
-      className={'ZakazyModalOrderDelete ' + roboto.variable}
+    <SwipeableDrawer
+      anchor={'bottom'}
       open={openModalDelete}
-      slots={Backdrop}
-      slotProps={{ timeout: 500 }}
-      fullWidth
+      onClose={close}
+      onOpen={() => {}}
+      className={'ZakazyModalOrderDelete ' + roboto.variable}
+      disableSwipeToOpen
     >
       <DialogContent>
         <div className="ContainerZakazyModalOrderDelete">
@@ -58,14 +59,14 @@ export default function ModalOrderMobileDelete() {
             </div>
           ))}
 
-          {active && active !== 5 ? (
+          {active && active !== 6 ? (
             <div className="dopText">
               <span>Спасибо, что рассказали!</span>
               <span>Удачи с планами, пусть всё получится :)</span>
             </div>
           ) : null}
 
-          {active && active === 5 ? (
+          {active && active === 6 ?
             <div className="zakazyText">
               <MyTextInput
                 variant="standard"
@@ -73,7 +74,9 @@ export default function ModalOrderMobileDelete() {
                 func={(e) => setText(e.target.value)}
               />
             </div>
-          ) : null}
+              : 
+            null
+          }
 
           <Button className="buttonBack" variant="contained" onClick={close} style={{ marginTop: active ? null : '19.230769230769vw' }}>
             <span>Вернуться к заказу</span>
@@ -85,6 +88,6 @@ export default function ModalOrderMobileDelete() {
           </Button>
         </div>
       </DialogContent>
-    </Dialog>
+    </SwipeableDrawer>
   );
 }

@@ -475,11 +475,9 @@
 }
 
 .ZakazyModalOrderDelete {
-  & .MuiDialog-container {
-    display: flex;
-    align-items: flex-end;
+  z-index: 9999;
 
-    & .MuiDialog-paper {
+    & .MuiPaper-root {
       border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
       overflow: visible;
       margin: 0;
@@ -598,6 +596,6 @@
           }
         }
       }
-    }
+    
   }
 }

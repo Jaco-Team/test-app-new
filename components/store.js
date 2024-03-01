@@ -90,7 +90,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   summDiv: 0,
 
   // сдача при оплате наличными курьеру
-  sdacha: 0,
+  sdacha: '',
 
   openPayForm: false,
 

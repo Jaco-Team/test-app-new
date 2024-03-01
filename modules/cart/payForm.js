@@ -10,22 +10,22 @@ import Backdrop from '@mui/material/Backdrop';
 import { IconClose } from '@/ui/Icons';
 import { roboto } from '@/ui/Font.js';
 
-export default function PayForm() {
-  //console.log('render PayForm');
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
+export default function PayForm() {
   const [matches] = useHeaderStore((state) => [state.matches]);
   const [openPayForm, setPayForm] = useCartStore((state) => [state.openPayForm, state.setPayForm]);
 
   return (
     <>
       {matches ? (
-        <Dialog
-          onClose={() => setPayForm(false)}
-          className={'cartPayFromMobile ' + roboto.variable}
+        <SwipeableDrawer
+          anchor={'bottom'}
           open={openPayForm}
-          slots={Backdrop}
-          slotProps={{ timeout: 500 }}
-          fullWidth
+          onClose={() => setPayForm(false)}
+          onOpen={() => setPayForm(true)}
+          className={'cartPayFromMobile ' + roboto.variable}
+          disableSwipeToOpen
         >
           { openPayForm === false ? false :
             <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
@@ -36,7 +36,7 @@ export default function PayForm() {
               <div id="payment-form" />
             </div>
           </DialogContent>
-        </Dialog>
+        </SwipeableDrawer>
       ) : (
         <Dialog
           onClose={() => setPayForm(false)}
