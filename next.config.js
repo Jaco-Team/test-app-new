@@ -1,3 +1,4 @@
+const MillionLint = require('@million/lint');
 /** @type {import('next').NextConfig} */
 
 const { withAxiom } = require('next-axiom');
@@ -37,6 +38,4 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
 })
 
-module.exports = withAxiom(nextConfig)
-//module.exports = withBundleAnalyzer(nextConfig)
-//module.exports = nextConfig
+module.exports = MillionLint.next()(withAxiom(nextConfig));

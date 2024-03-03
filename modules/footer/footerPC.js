@@ -44,7 +44,7 @@ export default React.memo(function FooterPC({ cityName }) {
           <div className="column">
             <Typography component="span">Жако</Typography>
             <Link href={'/' + cityName + '/about'}>О Компании</Link>
-            <Link href={'/' + cityName + '/about'}>Реквизиты</Link>
+            <Link href={'/' + cityName + '/company-details'}>Реквизиты</Link>
             <Link href={'/' + cityName + '/contacts'}>Контакты</Link>
           </div>
           <div className="column">

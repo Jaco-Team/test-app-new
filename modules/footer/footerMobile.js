@@ -123,7 +123,7 @@ export default function FooterMobile({ cityName, active_page }) {
             <div className="column" style={{ marginRight: '2.991452991453vw', paddingLeft: '0.85470085470085vw', width: '36.752136752137vw' }}>
               <Typography component="span">Жако</Typography>
               <Link href={'/' + cityName + '/about'}>О Компании</Link>
-              <Link href={'/' + cityName + '/about'}>Реквизиты</Link>
+              <Link href={'/' + cityName + '/company-details'}>Реквизиты</Link>
               <Link href={'/' + cityName + '/contacts'} style={{ marginBottom: 0 }}>
                 Контакты
               </Link>

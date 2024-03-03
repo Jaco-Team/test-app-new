@@ -38,9 +38,13 @@
     cursor: pointer;
     display: table;
     text-decoration: none;
-}
+  }
 
-  & p, li {
+  & strong {
+    @include font40_500();
+  }
+
+  & p, li, span {
     @include font40_400();
     & strong {
       @include font50_500();

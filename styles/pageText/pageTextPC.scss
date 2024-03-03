@@ -19,8 +19,10 @@
       @include font30_400();
     }
   }
-
-  & p, li {
+  & strong {
+    @include font40_500();
+  }
+  & p, li, span {
     @include font30_400();
     & strong {
       @include font50_500();

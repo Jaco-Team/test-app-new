@@ -22,6 +22,8 @@ export default function DocsBreadcrumbs() {
           <ul>
             <li className={ activePage === 'publichnaya-oferta' ? 'activeMarker' : '' }><Link className={ activePage === 'publichnaya-oferta' ? 'active' : '' } href={"/"+thisCity+"/publichnaya-oferta"}>Публичная оферта</Link></li>
 
+            <li className={ activePage === 'company-details' ? 'activeMarker' : '' }><Link className={ activePage === 'company-details' ? 'active' : '' } href={"/"+thisCity+"/company-details"}>Реквизиты</Link></li>
+
             <li className={ activePage === 'politika-konfidencialnosti' ? 'activeMarker' : '' }><Link className={ activePage === 'politika-konfidencialnosti' ? 'active' : '' } href={"/"+thisCity+"/politika-konfidencialnosti"}>Политика конфиденциальности</Link></li>
 
             <li className={ activePage === 'instpayorders' ? 'activeMarker' : '' }><Link className={ activePage === 'instpayorders' ? 'active' : '' } href={"/"+thisCity+"/instpayorders"}>Правила оплаты</Link></li>
