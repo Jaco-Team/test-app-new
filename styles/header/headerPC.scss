@@ -4,7 +4,7 @@ html:not([data-scroll='0']) .blockShadow {
   width: 100%;
   height: 2.8880866425993vw;
   position: fixed;
-  top: 8.6642599277978vw;
+  top: $MyScale128;
   background: linear-gradient(180deg,rgba(115, 115, 115, 0.1) 0%, rgba(83, 92, 84, 0) 100%);
   mix-blend-mode: multiply;
   transition: all 0.5s ease 0s;
@@ -15,7 +15,7 @@ html:not([data-scroll='0']) .blockShadow {
   width: 100%;
   height: 0;
   position: fixed;
-  top: 4.8736462093863vw;
+  top: $MyScale128;
   background: linear-gradient(180deg,rgba(115, 115, 115, 0.1) 0%, rgba(83, 92, 84, 0) 100%);
   mix-blend-mode: multiply;
   transition: all 0.1s ease 0s;
@@ -25,7 +25,7 @@ html:not([data-scroll='0']) .blockShadow {
   position: fixed;
   z-index: 1200 !important;
   background-color: #fff !important;
-  height: $MyScale240;
+  height: $MyScale128;
   box-shadow: none !important;
 
   width: 100%;
@@ -39,11 +39,11 @@ html:not([data-scroll='0']) .blockShadow {
     flex-direction: row;
     justify-content: space-between;
     align-items: center;
-
+    height: inherit;
     padding: 0 !important;
-    margin-top: $MyScale60;
-    margin-bottom: $MyScale60;
-    margin-left: $MyScale145;
+    //margin-top: $MyScale32;
+    //margin-bottom: $MyScale32;
+    margin-left: $MyScale125;
     margin-right: $MyScale125;
 
     & > div{
@@ -53,9 +53,11 @@ html:not([data-scroll='0']) .blockShadow {
     }
 
     & .logoHeaderPC {
-      width: $MyScale500;
-      height: $MyScale120;
+      width: auto;
+      height: $MyScale112;
       margin-right: $MyScale20;
+      display: flex;
+      margin-left: $MyScale32;
 
       & img {
         width: 100%;
@@ -64,26 +66,33 @@ html:not([data-scroll='0']) .blockShadow {
     }
 
     & .headerCat {
-      min-width: $MyScale160;
-      height: $MyScale40;
+      width: $MyScale192;
+      height: $MyScale64;
       line-height: $MyScale40;
-      margin-right: $MyScale40;
+      margin-right: $MyScale16;
       display: flex;
       align-items: center;
-      justify-content: flex-start;
+      justify-content: center;
 
       & span {
-        @include font40_400();
+        @include font32_400();
         cursor: pointer;
         white-space: nowrap;
         display: flex;
         text-align: center;
+        justify-content: space-around;
+        align-content: center;
+        flex-wrap: wrap;
 
         & svg {
-          width: 0.57761732851986vw;
-          height: 0.28880866425993vw;
-          margin-top: 0.72202166064982vw;
-          margin-left: 0.18050541516245vw;
+          width: $MyScale20;
+          height: $MyScale20;
+          margin-top: $MyScale8;
+          margin-left: $MyScale8;
+          & path {
+            stroke: $colorText;
+            stroke-opacity: 1;
+          }
         }
 
         &:hover {
@@ -96,80 +105,47 @@ html:not([data-scroll='0']) .blockShadow {
       }
     }
 
-    & .burgerHeaderPC {
-      width: $MyScale60;
-      height: $MyScale36;
-      display: flex;
-      align-items: center;
-      margin-right: $MyScale60;
+    & .headerCat.link {
+      width: $MyScale192;
+      height: $MyScale64;
+      border-radius: $MyScale100;
+      border: $MyScale2 solid rgba(0, 0, 0, 0.2);
       cursor: pointer;
-      & svg {
-        width: 100%;
-        height: 100%;
-      }
-
-      &:hover {
-        & svg path {
-          stroke: #dd1a32;
-          stroke-opacity: 1;
+      &:hover{
+        border: $MyScale2 solid $colorMain;
+        & span{
+          color: $colorMain;
         }
       }
     }
 
-    & .mapHeaderPC {
-      display: flex;
-      align-items: center;
-      justify-content: space-between;
-      margin-right: $MyScale79;
-
-      & svg {
-        width: $MyScale41;
-        height: $MyScale53;
-        margin-right: $MyScale20;
-      }
-
-      & p {
-        @include font30_400();
-        height: $MyScale40;
-        line-height: $MyScale40;
-      }
-
-      &:hover {
-        & svg path:first-child {
-          fill: #dd1a32;
-          fill-opacity: 1;
-        }
-        & p {
-          color: #dd1a32;
-        }
-      }
+    & .profileHeaderPC.active, .burgerHeaderPC.active, .mapHeaderPC.active{
+      background-color: rgba(0, 0, 0, 0.05)!important;
     }
 
-    & .profileHeaderPC {
+    & .profileHeaderPC, .burgerHeaderPC, .mapHeaderPC {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: $MyScale80;
-      height: $MyScale80;
-      margin-right: $MyScale40;
+      width: $MyScale64;
+      height: $MyScale64;
+      border-radius: $MyScale100;
+      margin-right: $MyScale48;
+      cursor: pointer;
 
       & svg {
-        width: 100%;
-        height: 100%;
-
-        &:hover {
-          & path {
-            stroke: #dd1a32;
-            stroke-opacity: 1;
-          }
-
-          & g {
-            & g:nth-of-type(2) {
-              fill: #dd1a32;
-              fill-opacity: 1;
-            }
-          }
+        width: $MyScale38;
+        height: $MyScale38;
+        fill: $colorMain;
+        & path {
+          fill: $colorMain!important;
         }
+      }
+      &:hover{
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+      &:active{
+        background-color: rgba(0, 0, 0, 0.1);
       }
     }
 
@@ -191,31 +167,81 @@ html:not([data-scroll='0']) .blockShadow {
       }
     }
 
-    & .basketCat {
-      width: $MyScale160;
+    & .basketCat{
+      margin-right: $MyScale32;
+    }
+
+    & .basketCat.max {
+      width: $MyScale217;
+      height: $MyScale64;
       background-color: #dd1a32;
       border-radius: $MyScale45;
-      height: $MyScale80;
+      
       display: flex;
       align-items: center;
       cursor: pointer;
+      transition: all 0.2s ease 0s;
 
       & span {
-        @include font30_400();
+        @include font25_400();
         color: #ffffff;
-        width: $MyScale95;
         text-align: center;
       }
 
-      & svg {
-        width: $MyScale40;
-        height: $MyScale30;
-      }
-      & svg.min{
-        margin-left: $MyScale30;
-      }
-      & svg.max{
+      & svg{
         margin-left: 0;
+        width: $MyScale38;
+        height: $MyScale38;
+        fill: #fff;
+        stroke: #fff;
+        //stroke-opacity: 1;
+        & path {
+          fill: #fff;
+          stroke: #fff;
+          stroke-opacity: 1;
+        }
+      }
+    }
+    & .basketCat.min {
+      width: $MyScale64;
+      height: $MyScale64;
+      border-radius: $MyScale100;
+      background-color: #fff;
+      cursor: pointer;
+      transition: all 0.2s ease 0s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      & svg{
+        width: $MyScale38;
+        height: $MyScale38;
+
+        margin-left: 0;
+        fill: $colorMain;
+        //stroke: $colorMain;
+        //stroke-opacity: 1;
+        & path {
+          fill: $colorMain!important;
+          stroke: $colorMain;
+          stroke-opacity: 0.5;
+        }
+      }
+
+      &:hover{
+        background-color: rgba(0, 0, 0, 0.05);
+      }
+      &:active{
+        background-color: rgba(0, 0, 0, 0.1);
+      }
+    }
+
+    & .chooseCity{
+      @include font32_400();
+      cursor: pointer;
+      margin-right: $MyScale48;
+      &:hover{
+        color: $colorMain;
       }
     }
 
@@ -250,28 +276,30 @@ html:not([data-scroll='0']) .blockShadow {
 
 #chooseHeaderCat {
   & div.MuiPaper-root.MuiMenu-paper {
-    border-radius: 0.72202166064982vw;
-    width: $MyScale720;
-    background: #ececec;
-    box-shadow: 0.36101083032491vw 0.72202166064982vw 1.0830324909747vw 0.18050541516245vw rgba(0, 0, 0, 0.2);
-    margin-top: 1.4440433212996vw;
+    border-radius: $MyScale20;
+    width: $MyScale400;
+    background: #fff;
+    box-shadow: $MyScale10 $MyScale20 $MyScale30 $MyScale5 rgba(0, 0, 0, 0.2);
+    margin-top: $MyScale40;
 
     & ul {
       padding: 0;
+      margin: $MyScale10;
 
       & li {
         padding: 0;
-        height: 2.8880866425993vw;
+        min-height: $MyScale80;
+        border-radius: $MyScale10;
 
         &:hover {
-          background-color: #ffffff;
+          background-color: rgba(0, 0, 0, 0.03);
         }
 
         & a {
           width: 100%;
           height: 100%;
           text-decoration: none;
-
+          
           & span {
             width: 100%;
             height: 100%;
@@ -279,6 +307,9 @@ html:not([data-scroll='0']) .blockShadow {
             align-items: center;
             justify-content: center;
             @include font30_400();
+            white-space: break-spaces;
+            text-align: center;
+            
             &:hover {
               color: #dd1a32;
             }

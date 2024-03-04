@@ -10,9 +10,10 @@ import Toolbar from '@mui/material/Toolbar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-import JacoLogo from '@/public/Jaco-Logo-PC.png';
-
-import {MapPointIcon, ArrowDownHeaderPC, ArrowUpHeaderPC, BurgerIconPC } from '@/ui/Icons.js';
+//import JacoLogo from '@/public/Jaco-Logo-PC.png';
+import JacoLogo from '@/public/Jaco-Logo-120.png';
+//Jaco-Logo-120.png
+import {MapPointIcon, ArrowDownHeaderPC, ArrowUpHeaderPC, BurgerIconPC, IconArrowDown, JacoDocsIcon, LocationHeaderIcon } from '@/ui/Icons.js';
 
 import { Link as ScrollLink } from 'react-scroll';
 
@@ -22,40 +23,32 @@ import useScroll from '../hook.js';
 import BasketIconHeaderPC from '../basket/basketIconHeaderPC.js';
 import ProfileIconHeaderPC from '../profile/profileIconHeaderPC.js';
 
-let catList = [{id: '1', name: 'Роллы', link: 'rolly', count_2: '107', count: '0', list: [{id: '1', name: 'Сеты роллов'}, { id: '2', name: 'Фирменные' }, {id: '3', name: 'Жареные'}, 
-{id: '4', name: 'Запеченные'}, {id: '5', name: 'Классика'}]}, {id: '14', name: 'Пицца', link: 'pizza', count_2: '0', count: '12'}, {id: '15', name: 'Блюда', link: null, count_2: '0',
-count: '4', list: [{id: '5', name: 'Закуски', link: 'zakuski', count_2: '0', count: '9'}, {id: '7', name: 'Соусы', link: 'sousy', count_2: '0', count: '9'}, {id: '1', name: 'Салаты и фри', link: 'salat'}, {id: '2', name: 'Десерты', link: 'desert'}]}, {id: '6', name: 'Напитки', link: 'napitki', count_2: '0', count: '10'}];
-
 const MenuBurger = React.memo(function MenuBurger({ anchorEl, city, isOpen, onClose }){
   const [links] = useFooterStore((state) => [state.links]);
-  const [ thisCityRu ] = useCitiesStore( state => [ state.thisCityRu ] );
-  const [ setActiveModalCity ] = useHeaderStore( state => [ state.setActiveModalCity ] );
+  //const [ thisCityRu ] = useCitiesStore( state => [ state.thisCityRu ] );
+  //const [ setActiveModalCity ] = useHeaderStore( state => [ state.setActiveModalCity ] );
 
   return(
     <Menu id='chooseHeaderCat' anchorEl={anchorEl} open={isOpen} onClose={ () => onClose() } anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} transformOrigin={{ vertical: 'top',  horizontal: 'center' }} autoFocus={false}>
          
-      <MenuItem onClick={() => { setActiveModalCity(true); onClose(); } }>
-        <a><span>{thisCityRu}</span></a>
-      </MenuItem>
-
       <MenuItem onClick={() => onClose()}>
         <Link href={`/${city}/about`}><span>О компании</span></Link>
       </MenuItem>
       
       <MenuItem onClick={() => onClose()}>
+        <Link href={"/"+city+"/company-details"}><span>Реквизиты</span></Link>
+      </MenuItem>
+
+      <MenuItem onClick={() => onClose()}>
         <Link href={"/"+city+"/publichnaya-oferta"}><span>Публичная оферта</span></Link>
       </MenuItem>
 
       <MenuItem onClick={() => onClose()}>
-        <Link href={"/"+city+"/politika-konfidencialnosti"}><span>Политика конфиденциальности</span></Link>
+        <Link href={"/"+city+"/politika-konfidencialnosti"}><span>Политика</span></Link>
       </MenuItem>
 
       <MenuItem onClick={() => onClose()}>
         <Link href={"/"+city+"/instpayorders"}><span>Правила оплаты</span></Link>
-      </MenuItem>
-
-      <MenuItem onClick={() => onClose()}>
-        <Link href={"/"+city+"/legal"}><span>Согласие на обработку персональных данных</span></Link>
       </MenuItem>
 
       <MenuItem onClick={() => onClose()}>
@@ -93,7 +86,7 @@ const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, c
   )
 })
 
-export default function NavBarPC({ city, active_page }) {
+export default React.memo(function NavBarPC({ city, active_page }) {
   useScroll();
 
   const router = useRouter()
@@ -226,6 +219,21 @@ export default function NavBarPC({ city, active_page }) {
             }
   */
 
+  let activeProfile = false;
+  let activeDoc = false;
+
+  if( active_page == 'zakazy' || active_page == 'profile' || active_page == 'promokody' ){
+    activeProfile = true;
+  }else{
+    if( active_page == 'home' || active_page == 'cart' || active_page == 'akcii' || active_page == 'contacts' ){
+
+    }else{
+      activeDoc = true;
+    }
+  }
+
+  console.log( 'render header' )
+
   return (
     <>
       <AppBar className="headerNew" id="headerNew" elevation={2} sx={{ display: { xs: 'none', md: 'none', lg: 'block' } }} onClick={closeBasket}>
@@ -261,19 +269,27 @@ export default function NavBarPC({ city, active_page }) {
                     <span>{item.name}</span>
                   </Link>
             )}
+
+            <Link href={`/${city}/akcii`} className={"headerCat link" }>
+              <span>Акции</span>
+            </Link>
           </div>
 
           <div>
-            <div className={active_page === 'other' || isOpenburger ? 'burgerHeaderPC activeCatSvg' : 'burgerHeaderPC'} onClick={ (event) => openMenuBurger(event) }>
-              <BurgerIconPC />
+            
+            <div className={'chooseCity'} onClick={ () => setActiveModalCity(true) }>
+              {thisCityRu}
             </div>
 
-            <Link href={'/' + city + '/contacts'}  className={active_page === 'contacts' ? 'mapHeaderPC activeCatMap' : 'mapHeaderPC'}>
-              <MapPointIcon />
-              <p>Адреса кафе</p>
+            <Link href={'/' + city + '/contacts'}  className={active_page === 'contacts' ? 'mapHeaderPC active' : 'mapHeaderPC'}>
+              <LocationHeaderIcon />
             </Link>
             
-            <ProfileIconHeaderPC />
+            <div className={'burgerHeaderPC '+(activeDoc ? 'active' : '')} onClick={ (event) => openMenuBurger(event) }>
+              <JacoDocsIcon />
+            </div>
+
+            <ProfileIconHeaderPC activeProfile={activeProfile} />
 
             <BasketIconHeaderPC />
 
@@ -285,4 +301,4 @@ export default function NavBarPC({ city, active_page }) {
       <div className='blockShadow' />
     </>
   );
-}
+})
