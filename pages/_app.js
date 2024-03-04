@@ -177,12 +177,16 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
       { pageProps?.data1?.city == 'togliatti' ? <MetricaTLT /> : null }
       { pageProps?.data1?.city == 'samara' ? <MetricaSMR /> : null }
 
-      <Header
-        city={pageProps?.data1?.city}
-        cats={pageProps?.data1?.cats}
-        city_list={pageProps?.data1?.cities}
-        //active_page={'other'}
-      />
+      
+
+      { !pageProps || pageProps?.statusCode == 404 || pageProps?.statusCode == 500 || typeof pageProps?.data1?.city === 'undefined' ? false :
+        <Header
+          city={pageProps?.data1?.city}
+          cats={pageProps?.data1?.cats}
+          city_list={pageProps?.data1?.cities}
+          //active_page={'other'}
+        />
+      }
 
       <Component {...pageProps} />
     </ThemeProvider>

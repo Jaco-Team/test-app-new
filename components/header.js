@@ -21,9 +21,17 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { useHeaderStore, useHomeStore } from './store.js';
 
-export default React.memo(function Header({ city, city_list, cats }) {
-  const thisCityRU = city_list.find((item) => item.link == city)['name'];
+export default React.memo(function header({ city, city_list, cats }) {
+  
+  let thisCityRU = '';
 
+  if( city_list && city_list.length > 0 ) {
+    thisCityRU = city_list.find((item) => item.link == city)['name'];
+  }else{
+    return ;
+  }
+
+  //const matchesDev = false;
   const matchesDev = useMediaQuery('screen and (max-width: 1170px)');
   //const matchesDev = useMediaQuery('screen and (max-width: 601px)', { noSsr: false });
 
@@ -43,7 +51,6 @@ export default React.memo(function Header({ city, city_list, cats }) {
   useEffect(() => {
     if( city && city.length > 0 ){
       getItemsCat('home', city);
-      console.log('getItemsCat');
     }
   }, [city]);
 
