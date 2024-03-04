@@ -78,6 +78,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import YandexMetrika from '@/components/YandexMetrika';
 import { GoogleTagManager } from '@next/third-parties/google'
 
+import Header from '@/components/header';
+
 const theme = createTheme({
   palette: {
     primary: {
@@ -174,6 +176,13 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
 
       { pageProps?.data1?.city == 'togliatti' ? <MetricaTLT /> : null }
       { pageProps?.data1?.city == 'samara' ? <MetricaSMR /> : null }
+
+      <Header
+        city={pageProps?.data1?.city}
+        cats={pageProps?.data1?.cats}
+        city_list={pageProps?.data1?.cities}
+        //active_page={'other'}
+      />
 
       <Component {...pageProps} />
     </ThemeProvider>

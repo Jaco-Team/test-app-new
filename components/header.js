@@ -21,7 +21,7 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { useHeaderStore, useHomeStore } from './store.js';
 
-export default React.memo(function Header({ city, city_list, cats, active_page }) {
+export default React.memo(function Header({ city, city_list, cats }) {
   const thisCityRU = city_list.find((item) => item.link == city)['name'];
 
   const matchesDev = useMediaQuery('screen and (max-width: 1170px)');
@@ -66,12 +66,12 @@ export default React.memo(function Header({ city, city_list, cats, active_page }
 
       {matches ?
         <>
-          <NavBarMobile city={city} active_page={active_page}/>
+          <NavBarMobile city={city}/>
           <ModalCityMobile />
         </>
         :
         <>
-          <NavBarPC city={city} cityRu={thisCityRU} catList={cats} active_page={active_page}/>
+          <NavBarPC city={city} cityRu={thisCityRU} catList={cats}/>
           <ModalCityPC />
           <BasketPC />
           <BasketModalPC />

@@ -8,8 +8,6 @@ export default function ProfileIconHeaderPC({activeProfile}) {
   const [userName, setActiveModalAuth, isAuth] = useHeaderStore((state) => [state.userName, state.setActiveModalAuth, state.isAuth]);
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
   
-  console.log( 'isAuth', isAuth )
-
   return (
     <div className={'profileHeaderPC '+(activeProfile ? 'active' : '')} >
       {isAuth === 'auth' ? 

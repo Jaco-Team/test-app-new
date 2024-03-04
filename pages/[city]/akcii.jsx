@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'), { ssr: false })
+//const DynamicHeader = dynamic(() => import('@/components/header.js'), { ssr: false })
 const DynamicFooter = dynamic(() => import('@/components/footer.js'), { ssr: false })
 const DynamicPage = dynamic(() => import('@/modules/akcii/page.js'), { ssr: false })
 
@@ -43,8 +43,6 @@ export default function Akcii(props) {
 
   return (
     <div className={roboto.variable}>
-      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
-
       <DynamicPage page={page} city={city} />
       
       <DynamicFooter cityName={city} />

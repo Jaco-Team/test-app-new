@@ -23,8 +23,6 @@ import { roboto } from '@/ui/Font';
 import {placeholder_img} from '@/public/placeholder_img';
 
 export default function ModalCardItemPC() {
-  //console.log('render ModalCardItemPC');
-
   const [isOpenModal, closeModal, typeModal, openItem, foodValue, navigate, closeTypeModal] = useHomeStore((state) => [state.isOpenModal, state.closeModal, state.typeModal,
       state.openItem, state.foodValue, state.navigate, state.closeTypeModal]);
 
@@ -80,9 +78,10 @@ export default function ModalCardItemPC() {
                   alt={openItem?.name} 
                   src={'https://cdnimg.jacofood.ru/' + openItem?.img_app + '_1420x1420.jpg'} 
                   width={1420} height={1420} 
+                  quality={100}
                   priority={true} 
-                  placeholder="blur" 
-                  blurDataURL={placeholder_img}
+                  //placeholder="blur" 
+                  //blurDataURL={placeholder_img}
                 />
 
                 {parseInt(openItem?.is_new) == 0 ? parseInt(openItem?.is_hit) == 0 ? null :
@@ -111,12 +110,12 @@ export default function ModalCardItemPC() {
                           <div className="itemImg">
                             <Image 
                               alt={item.name} 
-                              src={'https://cdnimg.jacofood.ru/' + item.img_app + '_1420x1420.jpg'} 
-                              width={1420} 
-                              height={1420} 
+                              src={'https://cdnimg.jacofood.ru/' + item.img_app + '_732x732.jpg'} 
+                              width={732} 
+                              height={732} 
                               priority={true} 
-                              placeholder="blur" 
-                              blurDataURL={placeholder_img}
+                              //placeholder="blur" 
+                              //blurDataURL={placeholder_img}
                             />
                           </div>
 

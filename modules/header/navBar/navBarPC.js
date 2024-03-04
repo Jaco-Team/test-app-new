@@ -70,7 +70,7 @@ const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, c
               spy={true}
               isDynamic={true}
               smooth={false}
-              offset={-140}
+              offset={-70}
               onClick={onClose}
             >
               <span id={'link_' + cat.id}>{cat.name}</span>
@@ -86,7 +86,15 @@ const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, c
   )
 })
 
-export default React.memo(function NavBarPC({ city, active_page }) {
+const MemoLogo = React.memo(function MemoLogo({city}){
+  return(
+    <Link href={'/' + city} className="logoHeaderPC">
+      <img alt="Жако доставка роллов и пиццы" src={'/Jaco-Logo-120.png'} />
+    </Link>
+  )
+})
+
+export default React.memo(function NavBarPC({ city }) {
   useScroll();
 
   const router = useRouter()
@@ -222,26 +230,22 @@ export default React.memo(function NavBarPC({ city, active_page }) {
   let activeProfile = false;
   let activeDoc = false;
 
-  if( active_page == 'zakazy' || active_page == 'profile' || active_page == 'promokody' ){
+  if( activePage == 'zakazy' || activePage == 'profile' || activePage == 'promokody' ){
     activeProfile = true;
   }else{
-    if( active_page == 'home' || active_page == 'cart' || active_page == 'akcii' || active_page == 'contacts' ){
+    if( activePage == 'home' || activePage == 'cart' || activePage == 'akcii' || activePage == 'contacts' ){
 
     }else{
       activeDoc = true;
     }
   }
 
-  console.log( 'render header' )
-
   return (
     <>
       <AppBar className="headerNew" id="headerNew" elevation={2} sx={{ display: { xs: 'none', md: 'none', lg: 'block' } }} onClick={closeBasket}>
         <Toolbar>
           <div>
-            <Link href={'/' + city} className="logoHeaderPC">
-              <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={500} height={120} priority={true}/>
-            </Link>
+            <MemoLogo city={city} />
 
             {category.map( (item, key) => 
               item.cats.length > 0 ?
@@ -251,7 +255,7 @@ export default React.memo(function NavBarPC({ city, active_page }) {
                   </span>
                 </div>
                   :
-                active_page === 'home' ?
+                  activePage === 'home' ?
                   <ScrollLink
                     key={key}
                     className={"headerCat "+ (key+1 == category.length ? 'last' : '') }
@@ -259,7 +263,7 @@ export default React.memo(function NavBarPC({ city, active_page }) {
                     spy={true}
                     isDynamic={true}
                     smooth={false}
-                    offset={-140}
+                    offset={-70}
                     //style={{marginRight: item.name === 'Пицца' ? 0 : '18.050541516245vw', width: item.name === 'Напитки' ? '7.2202166064982vw' : '5.7761732851986vw'}}
                   >
                     <span id={'link_' + item.id}>{item.name}</span> 
@@ -281,7 +285,7 @@ export default React.memo(function NavBarPC({ city, active_page }) {
               {thisCityRu}
             </div>
 
-            <Link href={'/' + city + '/contacts'}  className={active_page === 'contacts' ? 'mapHeaderPC active' : 'mapHeaderPC'}>
+            <Link href={'/' + city + '/contacts'}  className={activePage === 'contacts' ? 'mapHeaderPC active' : 'mapHeaderPC'}>
               <LocationHeaderIcon />
             </Link>
             
@@ -293,7 +297,7 @@ export default React.memo(function NavBarPC({ city, active_page }) {
 
             <BasketIconHeaderPC />
 
-            <MenuCat anchorEl={anchorEl} isOpen={isOpenCat} onClose={closeMenu} chooseCat={chooseCat} city={city} list={list} active_page={active_page} />
+            <MenuCat anchorEl={anchorEl} isOpen={isOpenCat} onClose={closeMenu} chooseCat={chooseCat} city={city} list={list} active_page={activePage} />
             <MenuBurger anchorEl={anchorEl} isOpen={isOpenburger} onClose={closeMenuBurger} city={city} />
           </div>
         </Toolbar>

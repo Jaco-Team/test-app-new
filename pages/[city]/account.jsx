@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'))
+//const DynamicHeader = dynamic(() => import('@/components/header.js'))
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const DynamicPage = dynamic(() => import('@/modules/profile/account/page'))
 
@@ -64,8 +64,6 @@ export default function Account(props) {
 
   return (
     <div className={roboto.variable}>
-      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'profile'} />
-
       <DynamicPage page={page} this_module={'profile'} city={city} />
 
       <DynamicFooter cityName={city} active_page={this_module} />

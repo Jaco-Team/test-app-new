@@ -2,7 +2,9 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'));
+//import Header from '@/components/header';
+
+//const DynamicHeader = dynamic(() => import('@/components/header.js'));
 const DynamicFooter = dynamic(() => import('@/components/footer.js'));
 const DocumentPageMobile = dynamic(() => import('@/modules/document/documentMobile'));
 
@@ -58,7 +60,7 @@ export default React.memo(function Document(props) {
 
   return (
     <div className={roboto.variable}>
-      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'other'}/>
+      
 
       <DocumentPageMobile page={page} cityName={city} />
 

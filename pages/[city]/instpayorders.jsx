@@ -10,7 +10,9 @@ import {
   useCartStore,
 } from '@/components/store.js';
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'));
+//import Header from '@/components/header';
+
+//const DynamicHeader = dynamic(() => import('@/components/header.js'));
 const DynamicFooter = dynamic(() => import('@/components/footer.js'));
 const DynamicPage = dynamic(() => import('@/modules/pageText'));
 
@@ -56,12 +58,7 @@ export default React.memo(function Instpayorders(props) {
 
   return (
     <div className={roboto.variable}>
-      <DynamicHeader
-        city={city}
-        cats={cats}
-        city_list={cities}
-        active_page={'other'}
-      />
+      
 
       <DynamicPage page={page} classNamePC="PageTextPC" classNameMobile="PageTextMobile" cityName={city}/>
 

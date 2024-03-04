@@ -165,8 +165,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           cart.items[ key ]['all_price'] = parseInt(this_item?.price) * parseInt(item.count);
         })
 
-        console.log('cart?.items', cart?.items);
-
           const allPriceWithoutPromo = cart.items.reduce((all, it) => all + it.count * it.one_price, 0);
 
           const itemsCount = cart.items.reduce((all, item) => all + item.count, 0);
@@ -313,8 +311,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     };
   
     let json = await api('zakazy', data);
-
-    console.log( 'json', json )
 
     let cart = get().items;
     let allItems = json?.all_items;
@@ -1585,8 +1581,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       return;
     }
 
-    console.log( 'allItems', allItems )
-
     set({
       items: [],
       itemsOnDops: [],
@@ -1619,9 +1613,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     order.order_items.map((item) => {
       checkItem = allItems.find( it => parseInt(it.id) === parseInt(item.item_id) );
 
-      console.log( 'item', item )
-      console.log( 'checkItem', checkItem )
-
       checkItem.count = parseInt(item.count);
       checkItem.one_price = parseInt(checkItem.price);
       checkItem.item_id = parseInt(checkItem.id);
@@ -1633,8 +1624,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const allPriceWithoutPromo = my_cart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
     const itemsCount = my_cart.reduce((all, it) => parseInt(all) + parseInt(it.count), 0);
-
-    console.log( 'my_cart', my_cart )
 
     set({ 
       items: my_cart, 
@@ -2141,9 +2130,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       user_id: userToken,
       user: JSON.stringify(get().userInfo),
     };
-
-    console.log( 'updateUser', get().userInfo);
-    console.log( 'updateUser 1', data );
 
     let json = await api(this_module, data);
   },

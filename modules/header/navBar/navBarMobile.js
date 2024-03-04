@@ -18,10 +18,10 @@ import { useHeaderStore, useCitiesStore } from '@/components/store.js';
 import BasketIconHeaderMobile from '../basket/basketIconHeaderMobile';
 import ProfileIconHeaderMobile from '../profile/profileIconHeaderMobile';
 
-export default memo(function NavBarMobile({ city, active_page }) {
+export default memo(function NavBarMobile({ city }) {
   const [activeMenu, setActiveMenu] = useState(false);
 
-  const [setActiveBasket, openBasket, setActiveModalCityList] = useHeaderStore( state => [state.setActiveBasket, state.openBasket, state.setActiveModalCityList] );
+  const [setActiveBasket, openBasket, setActiveModalCityList, activePage] = useHeaderStore( state => [state.setActiveBasket, state.openBasket, state.setActiveModalCityList, state.activePage] );
   
   const [ thisCityRu ] = useCitiesStore( state => [ state.thisCityRu ] );
 
@@ -67,29 +67,29 @@ export default memo(function NavBarMobile({ city, active_page }) {
               </ListItem>
 
               <ListItem onClick={() => setActiveMenu(false)}>
-                <Link href={'/' + city} style={{background: active_page === 'home' ? 'rgba(0, 0, 0, 0.03)' : null}}>
+                <Link href={'/' + city} style={{background: activePage === 'home' ? 'rgba(0, 0, 0, 0.03)' : null}}>
                   <MenuIconMobile />
-                  <span style={{color: active_page === 'home' ? ' #dd1a32' : null}}>Меню</span>
+                  <span style={{color: activePage === 'home' ? ' #dd1a32' : null}}>Меню</span>
                 </Link>
               </ListItem>
 
               <ListItem onClick={() => setActiveMenu(false)}>
-                <Link href={`/${city}/contacts`} style={{background: active_page === 'contacts' ? 'rgba(0, 0, 0, 0.03)' : null}}>
+                <Link href={`/${city}/contacts`} style={{background: activePage === 'contacts' ? 'rgba(0, 0, 0, 0.03)' : null}}>
                   <LocationIconMobile />
-                  <span style={{color: active_page === 'contacts' ? ' #dd1a32' : null}}>Адреса</span>
+                  <span style={{color: activePage === 'contacts' ? ' #dd1a32' : null}}>Адреса</span>
                 </Link>
               </ListItem>
 
               <ListItem onClick={() => setActiveMenu(false)}>
-                <Link href={`/${city}/document`} style={{background: active_page === 'other' ? 'rgba(0, 0, 0, 0.03)' : null}}>
+                <Link href={`/${city}/document`} style={{background: activePage === 'other' ? 'rgba(0, 0, 0, 0.03)' : null}}>
                   <AboutIconMobile />
-                  <span style={{color: active_page === 'other' ? ' #dd1a32' : null}}>Жако</span>
+                  <span style={{color: activePage === 'other' ? ' #dd1a32' : null}}>Жако</span>
                 </Link>
               </ListItem>
 
-              <ProfileIconHeaderMobile setActiveMenu={setActiveMenu} city={city} active_page={active_page}/>
+              <ProfileIconHeaderMobile setActiveMenu={setActiveMenu} city={city} active_page={activePage}/>
 
-              <BasketIconHeaderMobile setActiveMenu={setActiveMenu} active_page={active_page} city={city}/>
+              <BasketIconHeaderMobile setActiveMenu={setActiveMenu} active_page={activePage} city={city}/>
 
             </List>
 

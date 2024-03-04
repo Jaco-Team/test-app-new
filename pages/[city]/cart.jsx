@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'));
+//const DynamicHeader = dynamic(() => import('@/components/header.js'));
 const DynamicFooter = dynamic(() => import('@/components/footer.js'));
 const CartPage = dynamic(() => import('@/modules/cart/page'));
 const LoadMap = dynamic(() => import('@/components/loadMap'));
@@ -66,8 +66,6 @@ export default React.memo(function Cart(props) {
       { city == '' ? false :
         <LoadMap city={city} />
       }
-
-      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={'cart'}/>
 
       <CartPage page={page} cityName={city} />
 

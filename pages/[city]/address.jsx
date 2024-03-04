@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Script from 'next/script';
 import dynamic from 'next/dynamic'
 
-const DynamicHeader = dynamic(() => import('@/components/header.js'))
+//const DynamicHeader = dynamic(() => import('@/components/header.js'))
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const DynamicPage = dynamic(() => import('@/modules/profile/address/page'))
 
@@ -67,8 +67,6 @@ export default function Address(props) {
     <div className={roboto.variable}>
       <Script src="https://api-maps.yandex.ru/2.1/?apikey=f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8&lang=ru_RU" />
       
-      <DynamicHeader city={city} cats={cats} city_list={cities} active_page={this_module} />
-
       <DynamicPage page={page} this_module={this_module} city={city} />
 
       <DynamicFooter cityName={city} active_page={this_module} />
