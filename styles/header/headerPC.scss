@@ -53,14 +53,14 @@ html:not([data-scroll='0']) .blockShadow {
     }
 
     & .logoHeaderPC {
-      width: auto;
+      width: $MyScale373_55;
       height: $MyScale112;
       margin-right: $MyScale20;
       display: flex;
       margin-left: $MyScale32;
 
       & img {
-        width: 100%;
+        width: auto;
         height: auto;
       }
     }
