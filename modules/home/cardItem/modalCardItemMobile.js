@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import Image from 'next/image';
+//import Image from 'next/image';
 import Link from 'next/link';
 
 import { useHomeStore, useCartStore, useFooterStore } from '@/components/store';
@@ -15,7 +15,7 @@ import BadgeItem from './badge';
 
 import { roboto } from '@/ui/Font';
 
-import {placeholder_img} from '@/public/placeholder_img';
+//import {placeholder_img} from '@/public/placeholder_img';
 
 export default function ModalCardItemMobile() {
   const [isOpenModal, openItem, setActiveModalCardItemMobile] = useHomeStore((state) => [state.isOpenModal, state.openItem, state.setActiveModalCardItemMobile]);
@@ -57,6 +57,23 @@ export default function ModalCardItemMobile() {
   const listenScrollSet = (event) => setShadowSet(event.target.scrollTop);
   const listenScrollValue = (event) => setShadowValue(event.target.scrollTop);
 
+  /**
+   * 
+   * <Image 
+                  alt={openItem?.name} 
+                  src={'https://cdnimg.jacofood.ru/' + openItem?.img_app + '_732x732.jpg'} 
+                  width={732} 
+                  height={732} 
+                  quality={100}
+                  //loading="lazy"
+                  priority={true} 
+                  placeholder="blur"
+                  blurDataURL={placeholder_img}
+                />
+   */
+
+  const img_name = openItem?.img_app;
+
   return (
     <>
       {/* стартовая */}
@@ -77,17 +94,42 @@ export default function ModalCardItemMobile() {
           <div className="ItemModalCardMobile">
             <div className="ItemContainer">
               <div className="ImgModalCardMobile">
-                <Image 
-                  alt={openItem?.name} 
-                  src={'https://cdnimg.jacofood.ru/' + openItem?.img_app + '_732x732.jpg'} 
-                  width={732} 
-                  height={732} 
-                  quality={100}
-                  //loading="lazy"
-                  priority={true} 
-                  placeholder="blur"
-                  blurDataURL={placeholder_img}
-                />
+                <picture>
+                  <source 
+                    type="image/webp" 
+                    srcset={`
+                      https://cdnimg.jacofood.ru/${img_name}_292x292.webp 138w,
+                      https://cdnimg.jacofood.ru/${img_name}_366x366.webp 146w,
+                      https://cdnimg.jacofood.ru/${img_name}_466x466.webp 183w,
+                      https://cdnimg.jacofood.ru/${img_name}_585x585.webp 233w,
+                      https://cdnimg.jacofood.ru/${img_name}_732x732.webp 292w,
+                      https://cdnimg.jacofood.ru/${img_name}_1168x1168.webp 366w,
+                      https://cdnimg.jacofood.ru/${img_name}_1420x1420.webp 584w,
+                      https://cdnimg.jacofood.ru/${img_name}_2000x2000.webp 760w,
+                      https://cdnimg.jacofood.ru/${img_name}_2000x2000.webp 1875w`} 
+                    sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+                  <source 
+                    type="image/jpeg" 
+                    srcset={`
+                      https://cdnimg.jacofood.ru/${img_name}_292x292.jpg 138w,
+                      https://cdnimg.jacofood.ru/${img_name}_366x366.jpg 146w,
+                      https://cdnimg.jacofood.ru/${img_name}_466x466.jpg 183w,
+                      https://cdnimg.jacofood.ru/${img_name}_585x585.jpg 233w,
+                      https://cdnimg.jacofood.ru/${img_name}_732x732.jpg 292w,
+                      https://cdnimg.jacofood.ru/${img_name}_1168x1168.jpg 366w,
+                      https://cdnimg.jacofood.ru/${img_name}_1420x1420.jpg 584w,
+                      https://cdnimg.jacofood.ru/${img_name}_2000x2000.jpg 760w,
+                      https://cdnimg.jacofood.ru/${img_name}_2000x2000.jpg 1875w`} 
+                    sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+
+                  <img 
+                    alt={openItem?.name} 
+                    title={openItem?.name} 
+                    src={`https://cdnimg.jacofood.ru/${img_name}_292x292.jpg`} 
+                    //style={{ minHeight: GRID * 1.125, minWidth: GRID * 1.125 }}
+                    loading="lazy"
+                  />
+                </picture>
 
                 {parseInt(openItem?.is_new) == 0 ? parseInt(openItem?.is_hit) == 0 ? null :
                   <BadgeItem size={'big'} type={'hit'} view={'pc'} />
@@ -210,15 +252,42 @@ export default function ModalCardItemMobile() {
                       </div>
 
                       <div className="ImgSet">
-                        <Image 
-                          alt={item.name} 
-                          src={'https://cdnimg.jacofood.ru/' + item.img_app + '_732x732.jpg'} 
-                          width={732} 
-                          height={732} 
-                          priority={true}
-                          placeholder="blur"
-                          blurDataURL={placeholder_img}
-                        />
+                        <picture>
+                          <source 
+                            type="image/webp" 
+                            srcset={`
+                              https://cdnimg.jacofood.ru/${item.img_app}_292x292.webp 138w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_366x366.webp 146w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_466x466.webp 183w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_585x585.webp 233w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_732x732.webp 292w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_1168x1168.webp 366w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_1420x1420.webp 584w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_2000x2000.webp 760w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_2000x2000.webp 1875w`} 
+                            sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+                          <source 
+                            type="image/jpeg" 
+                            srcset={`
+                              https://cdnimg.jacofood.ru/${item.img_app}_292x292.jpg 138w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_366x366.jpg 146w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_466x466.jpg 183w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_585x585.jpg 233w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_732x732.jpg 292w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_1168x1168.jpg 366w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_1420x1420.jpg 584w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_2000x2000.jpg 760w,
+                              https://cdnimg.jacofood.ru/${item.img_app}_2000x2000.jpg 1875w`} 
+                            sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+
+                          <img 
+                            alt={item.name} 
+                            title={item.name} 
+                            src={`https://cdnimg.jacofood.ru/${item.img_app}_292x292.jpg`} 
+                            //style={{ minHeight: GRID * 1.125, minWidth: GRID * 1.125 }}
+                            loading="lazy"
+                          />
+                        </picture>
                       </div>
 
                       <div className="itemDesc">

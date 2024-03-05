@@ -8,37 +8,40 @@ const DynamicPage = dynamic(() => import('@/modules/akcii/page.js'), { ssr: fals
 
 import { roboto } from '@/ui/Font.js'
 import { api } from '@/components/api.js';
-import { useAkciiStore, useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
+import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
 
 const this_module = 'akcii';
 
 export default function Akcii(props) {
 
-  const { city, cats, cities, page, all_items } = props.data1;
+  const { city, cats, cities, page, all_items, free_items, need_dop } = props.data1;
 
-  const getData = useAkciiStore( state => state.getData );
+  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
-  const [setAllItems, allItems] = useCartStore((state) => [state.setAllItems, state.allItems]);
-
-  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
-    useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
-
-  const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
+  const [thisCity, setThisCity, setThisCityRu, setThisCityList] = useCitiesStore(state => [state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList]);
+  const [setActivePage, matches] = useHeaderStore((state) => [state.setActivePage, state.matches]);
 
   useEffect(() => {
     if( thisCity != city ){
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
+
+      setTimeout(() => {
+        changeAllItems();
+      }, 300);
     }
 
     if( allItems.length == 0 ){
-      setAllItems(all_items)
+      setAllItems(all_items);
     }
 
-    setActivePage(this_module)
+    setFreeItems(free_items);
+    setNeedDops(need_dop);
 
-    getData(this_module, city);
+    getCartLocalStorage();
+
+    setActivePage(this_module);
   }, []);
 
   return (
