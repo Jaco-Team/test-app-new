@@ -2,6 +2,9 @@ import '../styles/globals.scss'
 
 import '../styles/akcii.scss'
 
+import '../styles/akcii/akciiPC.scss'
+import '../styles/akcii/akciiMobile.scss'
+
 import '../styles/cart/cartMobile.scss'
 import '../styles/cart/cartMenuMobile.scss'
 import '../styles/cart/cartDataTimePicker.scss'

@@ -1,0 +1,256 @@
+@import '../settings.scss';
+
+.akciiPC {
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh;
+  margin: 0 $MyScale125;
+
+  & .login {
+    height: $MyScale256;
+    width: $MyScale1206;
+    margin-top: $MyScale320;
+    margin-bottom: $MyScale224;
+    @include font120_500();
+    margin-left: $MyScale34;
+  }
+
+  & img {
+    border-radius: $MyScale32;
+    object-fit: contain;
+    image-rendering: auto;
+    width: 100%;
+    height: auto;
+  }
+
+  & .containerAccia {
+    justify-content: center;
+    margin-bottom: $MyScale96;
+
+    & .DescItem {
+      display: flex;
+      margin-top: $MyScale60;
+      margin-bottom: $MyScale60;
+      justify-content: space-between;
+      width: $MyScale2260;
+
+      & .FirstItem {
+        width: $MyScale980;
+        display: flex;
+        flex-direction: column;
+
+        & .title {
+          @include font50_500();
+          margin-left: $MyScale30;
+          margin-bottom: $MyScale30;
+        }
+
+        & .List {
+          display: flex;
+          flex-direction: column;
+
+          & div {
+            display: flex;
+            margin-bottom: $MyScale20;
+            height: $MyScale280;
+
+            .itemNumber {
+              width: $MyScale60;
+              margin-top: $MyScale30;
+              @include font30_400();
+              text-align: end;
+            }
+
+            .itemImg {
+              width: $MyScale280;
+
+              & img {
+                object-fit: contain;
+                image-rendering: auto;
+                width: 100%;
+                height: auto;
+              }
+            }
+
+            .itemDesc {
+              width: $MyScale600;
+              display: flex;
+              justify-content: flex-start;
+              flex-direction: column;
+
+              & span {
+                margin-left: $MyScale40;
+                text-align: left;
+                display: flex;
+                align-items: center;
+              }
+
+              & .ItemName {
+                min-height: $MyScale100;
+                @include font40_400();
+              }
+
+              & .ItemDesk {
+                min-height: $MyScale110;
+                @include font25_400();
+                line-height: $MyScale32;
+              }
+            }
+          }
+        }
+
+        .containerBTNitem {
+          width: 100%;
+
+          & > button {
+            margin-left: $MyScale30;
+            width: $MyScale240;
+            border-radius: 1.62455vw;
+            border: $MyScale3 solid rgba(0, 0, 0, 0.2);
+            color: rgba(0, 0, 0, 0.6) !important;
+            height: $MyScale70;
+
+            @include font30_400();
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+
+            cursor: pointer;
+
+            &:hover {
+              background-color: #f2f2f2;
+              border: $MyScale2 solid #cccccc;
+            }
+            &:target {
+              background-color: #f2f2f2;
+              border: $MyScale2 solid #cccccc;
+            }
+            &:active {
+              background-color: #f2f2f2;
+              border: $MyScale2 solid #cccccc;
+            }
+          }
+
+          & > div {
+            margin-left: $MyScale30;
+            width: $MyScale240;
+            border-radius: $MyScale45;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            height: $MyScale70;
+            margin-bottom: 0 !important;
+
+            & > .minus {
+              padding: 0;
+              margin-left: 0.2888088vw;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border: none;
+              background-color: #e6e6e6;
+
+              @include font50_300();
+              width: $MyScale60;
+              height: $MyScale60;
+              border-radius: $MyScale40;
+              cursor: pointer;
+            }
+            & > .plus {
+              padding: 0;
+              margin-right: 0.2888088vw;
+              display: flex;
+              justify-content: center;
+              align-content: center;
+              align-items: center;
+              border: none;
+              background-color: #e6e6e6;
+
+              @include font50_300();
+              width: $MyScale60;
+              height: $MyScale60;
+              border-radius: $MyScale40;
+              cursor: pointer;
+            }
+            & > span {
+              display: flex;
+              align-items: center !important;
+              text-align: center !important;
+              margin-left: 0 !important;
+              justify-content: center;
+              @include font40_400();
+            }
+          }
+
+          & > span {
+            margin-left: $MyScale30;
+            //width: $MyScale240;
+            //border-radius: 1.62455vw;
+            //border: $MyScale3 solid rgba(0, 0, 0, 0.2);
+            color: rgba(0, 0, 0, 0.6) !important;
+            height: $MyScale70;
+
+            @include font30_400();
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+          }
+        }
+
+        .containerBTN {
+          width: 100%;
+          margin-top: $MyScale20;
+
+          & > button {
+            margin-left: $MyScale30;
+            width: $MyScale400;
+            border-radius: 1.62455vw;
+            border: $MyScale3 solid rgba(0, 0, 0, 0.2);
+            color: rgba(0, 0, 0, 0.6) !important;
+            height: $MyScale80;
+
+            @include font30_400();
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+
+            cursor: pointer;
+
+            &:hover {
+              background-color: #f2f2f2;
+              border: $MyScale2 solid #cccccc;
+            }
+            &:target {
+              background-color: #f2f2f2;
+              border: $MyScale2 solid #cccccc;
+            }
+            &:active {
+              background-color: #f2f2f2;
+              border: $MyScale2 solid #cccccc;
+            }
+          }
+        }
+      }
+
+      & .SecondItem {
+        width: $MyScale1080;
+        display: flex;
+        flex-direction: column;
+
+        & span {
+          @include font50_500();
+          margin-bottom: $MyScale33;
+        }
+
+        & div {
+          & p {
+            @include font40_400();
+          }
+        }
+      }
+    }
+  }
+}

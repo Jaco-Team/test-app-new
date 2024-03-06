@@ -1035,7 +1035,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // получения информации о промике из БД
   getInfoPromo: async (promoName, city) => {
     
-    if( promoName.length == 0 ){
+    if( promoName?.length == 0 ){
       set({
         promoInfo: null,
         checkPromo: null,
@@ -1905,40 +1905,65 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
 export const useAkciiStore = createWithEqualityFn((set) => ({
   actii: [],
-  openAkcia: {},
-  openModal: false,
-  getData: async (this_module, city) => {
-    let data = {
-      type: 'get_actii',
-      city_id: city,
-    };
+ 
+  getAktia: (bannerList) => {
+    const all_items = useCartStore.getState().allItems;
 
-    const json = await api(this_module, data);
+    bannerList = bannerList.map(new_banner => {
+      if( new_banner?.info && Object.keys(new_banner?.info).length > 0 ){
 
-    set({
-      actii: json,
+        //скидка
+        if( parseInt(new_banner.info.promo_action) == 1 ){
+
+        }
+        
+        //добавляет товар
+        if( parseInt(new_banner.info.promo_action) == 2 ){
+          new_banner.info.items_add.map( (item, key) => {
+            let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
+
+            new_banner.info.items_add[ key ]['img_app'] = find_item?.img_app
+          } )
+
+          return new_banner.actiItems = new_banner.info.items_add
+          
+        }
+
+        //товар за цену
+        if( parseInt(new_banner.info.promo_action) == 3 ){
+          new_banner.info.items_on_price.map( (item, key) => {
+            new_banner.info.items_on_price[ key ]['img_app'] = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.id) )['img_app'];
+          } )
+
+          return new_banner.actiItems = new_banner.info.items_on_price
+        }
+
+        return new_banner.typePromo = new_banner.info.promo_action
+        
+      } else {
+
+        new_banner?.item?.map( (item, key) => {
+          let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
+
+          if( find_item ){
+            new_banner.item[ key ] = find_item;
+          }
+        })
+
+        new_banner.actiItems = new_banner?.item ?? []
+        new_banner.typePromo = 0
+      }
+
+      return new_banner
+      
+    })
+
+    set({ 
+      actii: bannerList
     });
+    
   },
-  getAktia: async (id, city) => {
-    let data = {
-      type: 'get_one_actii',
-      city_id: city,
-      act_id: id,
-    };
 
-    const json = await api('akcii', data);
-
-    set({
-      openAkcia: json,
-      openModal: true,
-    });
-  },
-  closeAktia: () => {
-    set({
-      openAkcia: {},
-      openModal: false,
-    });
-  },
 }), shallow);
 
 export const useProfileStore = createWithEqualityFn((set, get) => ({
@@ -3180,6 +3205,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
         if( parseInt(new_banner.info.promo_action) == 1 ){
 
         }
+
         //добавляет товар
         if( parseInt(new_banner.info.promo_action) == 2 ){
           new_banner.info.items_add.map( (item, key) => {
@@ -3192,6 +3218,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
             openBannerItems: new_banner.info.items_add
           })
         }
+
         //товар за цену
         if( parseInt(new_banner.info.promo_action) == 3 ){
           new_banner.info.items_on_price.map( (item, key) => {

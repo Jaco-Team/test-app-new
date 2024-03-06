@@ -1,0 +1,235 @@
+@import '../settings.scss';
+
+.akciiMobile {
+  display: flex;
+  flex-direction: column;
+  min-height: 50vh;
+  margin: 0 $MyScale40_mobile;
+
+  & .login {
+    height: $MyScale200_mobile;
+    width: $MyScale600_mobile;
+    margin-top: $MyScale320_mobile;
+    margin-bottom: $MyScale120_mobile;
+    @include font70_500();
+    margin-left: $MyScale44_mobile;
+  }
+
+  & img {
+    border-radius: $MyScale40_mobile;
+    object-fit: contain;
+    image-rendering: auto;
+    width: 100%;
+    height: auto;
+  }
+
+  & .containerAcciaMobile {
+    justify-content: center;
+    margin-bottom: $MyScale40_mobile;
+
+    & .DescItemMobile {
+      display: flex;
+      flex-direction: column;
+      margin-top: $MyScale40_mobile;
+      max-width: calc(100% - $MyScale60_mobile);
+
+      & .FirstItemMobile {
+        display: flex;
+        flex-direction: column;
+
+        & .title {
+          @include font50_500();
+          margin-bottom: $MyScale10_mobile;
+        }
+
+        & div {
+          & p,
+          li,
+          a,
+          span {
+            @include font30_400();
+
+            @media (max-width: 800px) {
+              @include font40_400();
+            }
+          }
+        }
+      }
+
+      & .SecondItemMobile {
+        margin-bottom: $MyScale60_mobile;
+        display: flex;
+        flex-direction: column;
+
+        & .itemTitle {
+          @include font50_500();
+          margin-bottom: $MyScale30_mobile;
+        }
+
+        & .List {
+          display: flex;
+          flex-direction: column;
+
+          & div {
+            display: flex;
+            margin-bottom: $MyScale20_mobile;
+            height: $MyScale490_mobile;
+
+            .itemNumber {
+              width: $MyScale50_mobile;
+              text-align: end;
+              margin-top: $MyScale30_mobile;
+              @include font30_400();
+            }
+
+            .itemImg {
+              width: $MyScale280_mobile;
+
+              & img {
+                object-fit: contain;
+                image-rendering: auto;
+                width: 100%;
+                height: auto;
+              }
+            }
+
+            .itemDesc {
+              width: $MyScale700_mobile;
+              display: flex;
+              justify-content: flex-start;
+              flex-direction: column;
+
+              & .ItemName {
+                @include font40_400();
+                min-height: $MyScale150_mobile;
+              }
+
+              & span {
+                margin-left: $MyScale40_mobile;
+                text-align: left;
+                display: flex;
+                align-items: center;
+              }
+
+              & .ItemDesk {
+                @include font35_400();
+                min-height: $MyScale210_mobile;
+                margin-bottom: $MyScale20_mobile;
+              }
+            }
+          }
+        }
+
+        .containerBTN {
+          width: 100%;
+          margin-top: $MyScale30_mobile;
+          margin-bottom: $MyScale100_mobile;
+
+          & > button {
+            width: 100%;
+            height: $MyScale110_mobile;
+            border-radius: $MyScale55_mobile;
+
+            border: $MyScale3 solid rgba(0, 0, 0, 0.2);
+            color: rgba(0, 0, 0, 0.6) !important;
+
+            @include font40_400();
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+
+            cursor: pointer;
+
+            &:hover {
+              background-color: #f2f2f2;
+              border: $MyScale2 solid #cccccc;
+            }
+            &:target {
+              background-color: #f2f2f2;
+              border: $MyScale2 solid #cccccc;
+            }
+            &:active {
+              background-color: #f2f2f2;
+              border: $MyScale2 solid #cccccc;
+            }
+          }
+        }
+
+        .containerBTNItemMobile {
+          display: flex;
+          align-items: center;
+          justify-content: flex-start;
+          margin-bottom: 0 !important;
+
+          & > span {
+            @include font44_400();
+          }
+
+          & > button {
+            width: $MyScale380_mobile;
+            height: $MyScale110_mobile;
+            border-radius: $MyScale55_mobile;
+            margin-left: $MyScale30_mobile;
+            background-color: rgba(0, 0, 0, 0.05);
+            border: none;
+            padding: 0;
+            @include font44_400();
+            color: rgba(0, 0, 0, 0.6) !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+          }
+
+          & > div {
+            width: $MyScale380_mobile;
+            height: $MyScale110_mobile;
+            border-radius: $MyScale55_mobile;
+            margin-left: $MyScale30_mobile;
+            margin-bottom: 0 !important;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffff;
+
+            & > .minus {
+              padding: 0;
+              margin-left: $MyScale10_mobile;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              background-color: rgba(0, 0, 0, 0.07);
+              border: none;
+              @include font55_400();
+              width: $MyScale90_mobile;
+              height: $MyScale90_mobile;
+              border-radius: $MyScale90_mobile;
+            }
+            & > .plus {
+              padding: 0;
+              margin-right: $MyScale10_mobile;
+              display: flex;
+              justify-content: center;
+              align-content: center;
+              align-items: center;
+              background-color: rgba(0, 0, 0, 0.07);
+              border: none;
+              @include font75_300();
+              width: $MyScale90_mobile;
+              height: $MyScale90_mobile;
+              border-radius: $MyScale90_mobile;
+            }
+            & > span {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              margin-left: 0 !important;
+              @include font60_400();
+            }
+          }
+        }
+      }
+    }
+  }
+}
