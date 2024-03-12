@@ -19,7 +19,11 @@ import { ArrowDownBasketModalPC, ArrowDownCartMobile, CityBasketModalPC, HomeBas
 
 import { roboto } from '@/ui/Font.js';
 
-const dopText = { text: 'Выберите столько приправ и приборов, сколько необходимо' };
+const dopText = {
+  rolly: 'Выберите столько приправ и приборов, сколько необходимо. Есть РОЛЛЫ!',
+  pizza: 'Выберите столько приправ и приборов, сколько необходимо. Есть ПИЦЦА!',
+  all: 'Выберите столько приправ и приборов, сколько необходимо.',
+}
 
 export default function FormOrder({ cityName }) {
   const { push } = useRouter();
@@ -48,8 +52,8 @@ export default function FormOrder({ cityName }) {
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
  
-  const [setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOnDops, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, summDiv, setSummDiv, sdacha, setSdacha, check_need_dops] = useCartStore((state) => [state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
-    state.promoInfo,state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOnDops, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.summDiv, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops]);
+  const [setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, summDiv, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is] = useCartStore((state) => [state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
+    state.promoInfo,state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.summDiv, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is]);
  
   useEffect(() => {
     if (matches) {
@@ -388,13 +392,13 @@ export default function FormOrder({ cityName }) {
           )}
 
           {itemsOffDops.map((item, key) => (
-            <CartItemMobile key={key} count={item.count} item={item} last={ item === itemsOffDops.at(-1) && itemsOnDops.length ? 'last' : '' }/>
+            <CartItemMobile key={key} count={item.count} item={item} last={ item === itemsOffDops.at(-1) ? 'last' : '' }/>
           ))}
 
           {dopListCart.length ? (
             <>
               <div className="CartItemDopText">
-                <span>{dopText.text}</span>
+                <span>{dopText[cart_is]}</span>
               </div>
               {dopListCart.map((item, key) => (
                 <CartItemMobile key={key} count={item.count} item={item} last={''} />

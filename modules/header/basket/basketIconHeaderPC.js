@@ -14,11 +14,11 @@ export default function BasketIconHeaderPC() {
   }
 
   return (
-    <div className={"basketCat "+(parseInt(itemsCount) > 0 ? 'max' : 'min')} style={{ justifyContent: parseInt(itemsCount) > 0 ? 'space-evenly' : 'center' }} onClick={handlerOpenBasket}>
+    <div className={"basketCat "+(parseInt(itemsCount) > 0 ? 'max' : 'min')+(openBasket ? ' active' : '')} style={{ justifyContent: parseInt(itemsCount) > 0 ? 'space-evenly' : 'center' }} onClick={handlerOpenBasket}>
       { parseInt(itemsCount) > 0 ? (
         <>
           <BasketIconNew className={'min'} />
-          <span>{new Intl.NumberFormat('ru-RU').format(allPriceWithoutPromo)} ₽</span>
+          <span>{new Intl.NumberFormat('ru-RU').format(allPrice ? allPrice : allPriceWithoutPromo)} ₽</span>
         </>
       ) : (
         <BasketIconNew className={'max'} />

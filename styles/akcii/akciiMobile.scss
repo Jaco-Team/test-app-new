@@ -16,7 +16,7 @@
   }
 
   & img {
-    border-radius: $MyScale40_mobile;
+    border-radius: $MyScale40_mobile $MyScale40_mobile 0 0;
     object-fit: contain;
     image-rendering: auto;
     width: 100%;
@@ -26,6 +26,8 @@
   & .containerAcciaMobile {
     justify-content: center;
     margin-bottom: $MyScale40_mobile;
+    background-color: rgba(0, 0, 0, 0.03);
+    border-radius: 0 0 $MyScale40_mobile $MyScale40_mobile;
 
     & .DescItemMobile {
       display: flex;
@@ -90,6 +92,7 @@
                 image-rendering: auto;
                 width: 100%;
                 height: auto;
+                mix-blend-mode: multiply;
               }
             }
 

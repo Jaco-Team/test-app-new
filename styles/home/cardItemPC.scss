@@ -11,6 +11,23 @@
 }
 
 .modalItemPC {
+
+  & .closeButton {
+    position: absolute;
+    top: 0;
+    left: -$MyScale80;
+    padding: 0;
+    background-color: transparent;
+
+    & svg {
+      width: $MyScale60;
+      height: $MyScale60;
+      overflow: visible;
+      border-radius: $MyScale60;
+      background-color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
   & .ImgItem {
     position: relative;
     width: 44.7655vw;
@@ -158,7 +175,7 @@
                 height: 2.6726vw;
                 padding-left: 1.083034vw;
                 padding-top: 1.263537vw;
-                padding-bottom: 1.407944vw;
+                padding-bottom: $MyScale38;
               }
 
               & > div:last-child {
@@ -189,7 +206,7 @@
                 min-height: 4.2245vw;
                 padding-left: 1.083034vw;
                 padding-top: 0.577616vw;
-                padding-bottom: 0.361012vw;
+                padding-bottom: $MyScale15;
                 padding-right: 0.72202vw;
               }
 
@@ -289,8 +306,8 @@
       }
 
       & .dop_icon {
-        width: 2.1661vw;
-        height: 2.1661vw;
+        width: $MyScale60;
+        height: $MyScale60;
       }
 
       & .desc {
@@ -304,11 +321,12 @@
       bottom: 0;
 
       & > button {
-        width: 14.4405vw;
-        border-radius: 1.62455vw;
         border: $MyScale3 solid rgba(0, 0, 0, 0.2);
+        width: $MyScale400;
+        border-radius: 1.62455vw;
         color: rgba(0, 0, 0, 0.6) !important;
-        height: 2.8885vw;
+        height: $MyScale80;
+        padding: 0;
 
         @include font30_400();
         display: flex;
@@ -330,13 +348,13 @@
         }
       }
       & > div {
-        // width: 10.8305vw;
-        width: 14.4405vw;
+        width: $MyScale394;
         border-radius: 1.62455vw;
         display: flex;
         justify-content: space-between;
         align-items: center;
-        height: 2.8885vw;
+        height: $MyScale74;
+        border: $MyScale3 solid rgba(0, 0, 0, 0.2);
 
         & > .minus {
           padding: 0;
@@ -346,7 +364,7 @@
           align-items: center;
           border: none;
           background-color: #e6e6e6;
-
+          mix-blend-mode: multiply;
           @include font50_300();
           width: 2.1661vw;
           height: 2.1661vw;
@@ -361,7 +379,7 @@
           align-items: center;
           border: none;
           background-color: #e6e6e6;
-
+          mix-blend-mode: multiply;
           @include font50_300();
           width: 2.1661vw;
           height: 2.1661vw;
@@ -417,74 +435,85 @@
 .ContainerCardItemPC {
   width: 90.975vw !important;
   align-items: center;
-  margin: 0 4.5126353790614vw !important;
+  margin: 0 $MyScale125 !important;
 
   .CardItemPC {
-    width: 21.660649819495vw;
+    width: $MyScale600;
     padding: 0 !important;
-
+    height: $MyScale1016;
+    margin-bottom: $MyScale32;
+    
     & > div {
       background-color: #fff;
-      border-radius: 1.4440433212996vw;
+      border-radius: $MyScale32;
       mix-blend-mode: multiply;
       display: flex;
       flex-direction: column;
       width: 100%;
       align-items: center;
 
-      & img {
+      & .imgItem {
+        position: relative;
         width: 100%;
-        height: auto;
-        position: initial;
+
+        & img {
+          width: 100%;
+          height: auto;
+          position: initial;
+        }
       }
 
       & .CardNameItem {
-        width: 100%;
-        height: 3.6101083032491vw;
-        @include font40_400();
+        height: $MyScale96;
+        @include font44_500;
         display: flex;
         justify-content: center;
         align-items: center;
         text-align: center;
+        padding: 0 $MyScale32;
       }
 
       & .dop_text {
         padding: 0;
-        height: 1.4440433212996vw;
-        width: 14.440433212996vw;
+        height: $MyScale64;
+        width: $MyScale300;
         display: flex;
         align-items: center;
-        justify-content: center;
 
         & .first_text {
-          @include font20_400();
-          border-right: $MyScale1 solid rgba(0, 0, 0, 0.6);
-          flex: 3;
+          @include font22_400();
           display: flex;
           align-items: center;
           justify-content: center;
+          color: rgba(0, 0, 0, 0.4);
         }
         & .second_text {
-          @include font20_400();
-          border-right: $MyScale1 solid rgba(0, 0, 0, 0.6);
+          @include font22_400();
           display: flex;
           align-items: center;
           justify-content: center;
+          color: rgba(0, 0, 0, 0.4);
         }
         & .third_text {
-          @include font20_400();
+          @include font22_400();
           display: flex;
           align-items: center;
           justify-content: center;
+          color: rgba(0, 0, 0, 0.4);
+        }
+
+        & .divider {
+          height: $MyScale20;
+          width: $MyScale1;
+          background-color: rgba(0, 0, 0, 0.4);
         }
       }
 
       .desc_text {
-        width: 100%;
-        height: 3.6101083032491vw;
-        margin-top: 0.36101083032491vw;
+        padding: 0 $MyScale32;
+        height: $MyScale96;
         color: rgba(0, 0, 0, 0.6) !important;
-        @include font25_400();
+        @include font26_400();
         text-align: center;
         line-height: $MyScale33;
         overflow: hidden;
@@ -497,40 +526,32 @@
         display: flex;
         align-items: center;
         justify-content: center;
-        margin-top: 0.72202166064982vw;
-        width: 10.830324909747vw;
-        height: 2.8880866425993vw;
+        margin-top: $MyScale32;
+        width: $MyScale384;
+        height: $MyScale96;
 
         & > button {
           width: 100%;
           height: 100%;
-          border-radius: 1.62455vw;
-          border: $MyScale3 solid rgba(0, 0, 0, 0.2);
-          color: rgba(0, 0, 0, 0.6) !important;
-
-          @include font30_400();
+          border-radius: $MyScale48;
+          border: none;
+          background-color: rgba(0, 0, 0, 0.05);
+          color: rgba(0, 0, 0, 0.8) !important;
+          padding: 0;
+          @include font32_400();
           display: flex;
           align-items: center;
           justify-content: center;
           white-space: nowrap;
 
-          &:hover {
-            background-color: #f2f2f2;
-            border: $MyScale2 solid #cccccc;
-          }
-          &:target {
-            background-color: #f2f2f2;
-            border: $MyScale2 solid #cccccc;
-          }
-          &:active {
-            background-color: #f2f2f2;
-            border: $MyScale2 solid #cccccc;
+          &:hover{
+            background-color: rgba(0, 0, 0, 0.07) !important;
           }
         }
         & > div {
           width: 100%;
           height: 100%;
-          border-radius: 1.62455vw;
+          border-radius: $MyScale48;
           display: flex;
           justify-content: space-between;
           align-items: center;
@@ -538,38 +559,46 @@
 
           & > .minus {
             padding: 0;
-            margin-left: 0.36101083032491vw;
+            margin-left: $MyScale8;
             display: flex;
             justify-content: center;
             align-items: center;
             cursor: pointer;
-            background-color: rgba(242, 242, 242, 0.5);
+            border-radius: $MyScale40;
+            background-color:rgba(0, 0, 0, 0.05);
             border: none;
-            @include font50_300();
-            width: 2.1661vw;
-            height: 2.1661vw;
-            border-radius: 4.3321299638989vw;
+            @include font44_400();
+            width: $MyScale80;
+            height: $MyScale80;
+
+            &:hover{
+              background-color: rgba(0, 0, 0, 0.07) !important;
+            }
           }
           & > .plus {
             padding: 0;
-            margin-right: 0.36101083032491vw;
+            margin-right: $MyScale8;
             display: flex;
             justify-content: center;
             align-content: center;
             align-items: center;
             cursor: pointer;
-            background-color: rgba(242, 242, 242, 0.5);
+            background-color:rgba(0, 0, 0, 0.05);
             border: none;
-            @include font50_300();
-            width: 2.1661vw;
-            height: 2.1661vw;
-            border-radius: 4.3321299638989vw;
+            @include font60_300();
+            width: $MyScale80;
+            height: $MyScale80;
+            border-radius: $MyScale40;
+
+            &:hover{
+              background-color: rgba(0, 0, 0, 0.07) !important;
+            }
           }
           & > span {
             display: flex;
             align-items: center;
             justify-content: center;
-            @include font40_400();
+            @include font44_400();
           }
         }
       }

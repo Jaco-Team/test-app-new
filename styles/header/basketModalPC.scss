@@ -17,13 +17,17 @@
       .modalBasketPC {
         .closeButtonBasketPC {
           position: absolute;
+          top: 0;
           left: -3.3vw;
           padding: 0;
           background-color: transparent;
-          top: 0;
-          svg {
+
+          & svg {
             width: $MyScale60;
             height: $MyScale60;
+            overflow: visible;
+            border-radius: $MyScale60;
+            background-color: rgba(0, 0, 0, 0.5);
           }
         }
 

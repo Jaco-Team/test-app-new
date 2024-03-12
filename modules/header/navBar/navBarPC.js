@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
-import Image from 'next/image';
+//import Image from 'next/image';
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -11,7 +11,7 @@ import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
 //import JacoLogo from '@/public/Jaco-Logo-PC.png';
-import JacoLogo from '@/public/Jaco-Logo-120.png';
+//import JacoLogo from '@/public/Jaco-Logo-120.png';
 //Jaco-Logo-120.png
 import {MapPointIcon, ArrowDownHeaderPC, ArrowUpHeaderPC, BurgerIconPC, IconArrowDown, JacoDocsIcon, LocationHeaderIcon } from '@/ui/Icons.js';
 
@@ -52,7 +52,7 @@ const MenuBurger = React.memo(function MenuBurger({ anchorEl, city, isOpen, onCl
       </MenuItem>
 
       <MenuItem onClick={() => onClose()}>
-        <Link href={links?.link_allergens ?? links} target="_blank"><span>Калорийность, состав, БЖУ</span></Link>
+        <Link href={links?.link_allergens ?? links} target="_blank"><span>Пищевая ценность</span></Link>
       </MenuItem>
       
     </Menu>
@@ -161,7 +161,7 @@ export default React.memo(function NavBarPC({ city }) {
   }
 
   function closeMenuBurger(){
-    setIsOpenburger( false )
+    setIsOpenburger( false );
   }
 
   const closeMenu = () => {
@@ -234,8 +234,10 @@ export default React.memo(function NavBarPC({ city }) {
     activeProfile = true;
   }else{
     if( activePage == 'home' || activePage == 'cart' || activePage == 'akcii' || activePage == 'contacts' ){
-
+      activeProfile = false;
+      activeDoc = false;
     }else{
+      activeProfile = false;
       activeDoc = true;
     }
   }
@@ -286,11 +288,11 @@ export default React.memo(function NavBarPC({ city }) {
             </div>
 
             <Link href={'/' + city + '/contacts'}  className={activePage === 'contacts' ? 'mapHeaderPC active' : 'mapHeaderPC'}>
-              <LocationHeaderIcon />
+              <LocationHeaderIcon className='map_svg' />
             </Link>
             
             <div className={'burgerHeaderPC '+(activeDoc ? 'active' : '')} onClick={ (event) => openMenuBurger(event) }>
-              <JacoDocsIcon />
+              <JacoDocsIcon className='burger_svg'/>
             </div>
 
             <ProfileIconHeaderPC activeProfile={activeProfile} />

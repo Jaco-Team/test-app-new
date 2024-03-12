@@ -27,14 +27,14 @@
   }
 }
 
-.spanTitle{
+.spanTitle {
   @include font25_400();
 }
-.titleDots{
-  & > .text{
+.titleDots {
+  & > .text {
     @include font25_400();
   }
-  & .spanContainer > span{
+  & .spanContainer > span {
     @include font25_400();
     color: #fff;
   }
@@ -49,21 +49,20 @@
     width: $MyScale2520;
 
     .BannerPC {
-      position: relative;
 
       & .iconBTN {
         position: absolute;
+        top: 0;
         left: -$MyScale80;
         padding: 0;
         background-color: transparent;
-        z-index: 50;
 
         & svg {
           width: $MyScale60;
           height: $MyScale60;
           overflow: visible;
-          border-radius: $MyScale30;
-          background: rgba(0, 0, 0, 0.5);
+          border-radius: $MyScale60;
+          background-color: rgba(0, 0, 0, 0.5);
         }
       }
 
@@ -164,9 +163,9 @@
             }
           }
 
-          .containerBTNitem{
+          .containerBTNitem {
             width: 100%;
-            
+
             & > button {
               margin-left: $MyScale30;
               width: $MyScale240;
@@ -174,13 +173,13 @@
               border: $MyScale3 solid rgba(0, 0, 0, 0.2);
               color: rgba(0, 0, 0, 0.6) !important;
               height: $MyScale70;
-      
+
               @include font30_400();
               display: flex;
               align-items: center;
               justify-content: center;
               white-space: nowrap;
-      
+
               cursor: pointer;
 
               &:hover {
@@ -205,7 +204,7 @@
               justify-content: space-between;
               align-items: center;
               height: $MyScale70;
-              margin-bottom: 0!important;
+              margin-bottom: 0 !important;
 
               & > .minus {
                 padding: 0;
@@ -215,7 +214,7 @@
                 align-items: center;
                 border: none;
                 background-color: #e6e6e6;
-      
+
                 @include font50_300();
                 width: $MyScale60;
                 height: $MyScale60;
@@ -231,7 +230,7 @@
                 align-items: center;
                 border: none;
                 background-color: #e6e6e6;
-      
+
                 @include font50_300();
                 width: $MyScale60;
                 height: $MyScale60;
@@ -240,22 +239,22 @@
               }
               & > span {
                 display: flex;
-                align-items: center!important;
-                text-align: center!important;
-                margin-left: 0!important;
+                align-items: center !important;
+                text-align: center !important;
+                margin-left: 0 !important;
                 justify-content: center;
                 @include font40_400();
               }
             }
 
-            & > span{
+            & > span {
               margin-left: $MyScale30;
               //width: $MyScale240;
               //border-radius: 1.62455vw;
               //border: $MyScale3 solid rgba(0, 0, 0, 0.2);
               color: rgba(0, 0, 0, 0.6) !important;
               height: $MyScale70;
-      
+
               @include font30_400();
               display: flex;
               align-items: center;
@@ -266,7 +265,7 @@
 
           .containerBTN {
             width: 100%;
-            
+
             & > button {
               margin-left: $MyScale30;
               width: $MyScale400;
@@ -274,13 +273,13 @@
               border: $MyScale3 solid rgba(0, 0, 0, 0.2);
               color: rgba(0, 0, 0, 0.6) !important;
               height: $MyScale80;
-      
+
               @include font30_400();
               display: flex;
               align-items: center;
               justify-content: center;
               white-space: nowrap;
-      
+
               cursor: pointer;
 
               &:hover {
@@ -341,8 +340,8 @@
   }
 }
 
-.swiper{
-  margin-top: $MyScale128!important;
+.swiper {
+  margin-top: $MyScale128 !important;
 }
 .swiper-slide {
   cursor: pointer;
@@ -353,23 +352,20 @@
 }
 
 .swiper-pagination {
-  bottom: 0 !important;
-  top: 0 !important;
-  z-index: 3000 !important;
-  position: relative !important;
-  margin-top: 0.72202166064982vw;
+  bottom: $MyScale32 !important;
   display: flex;
   justify-content: center;
   & .swiper-pagination-bullet {
-    width: 0.72202166064982vw;
-    height: 0.72202166064982vw;
-    margin-right: 0.72202166064982vw !important;
+    width: $MyScale16;
+    height: $MyScale16;
+    margin-right: $MyScale32 !important;
     margin-left: 0 !important;
-    background: rgba(0, 0, 0, 0.1);
-    opacity: 1;
+    background-color: rgb(255, 255, 255);
+    opacity: 0.4;
   }
   & .swiper-pagination-bullet-active {
-    background: rgba(0, 0, 0, 0.3);
+    background-color: rgb(255, 255, 255);
+    opacity: 1;
   }
 }
 
@@ -382,6 +378,13 @@
   z-index: 1 !important;
   position: absolute !important;
   margin-top: 0 !important;
+
+  & svg {
+    width: $MyScale50_67;
+    height: $MyScale50_67;
+    border-radius: $MyScale50_67;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
 }
 
 .swiper-button-next {
@@ -393,6 +396,13 @@
   z-index: 1 !important;
   position: absolute !important;
   margin-top: 0 !important;
+
+  & svg {
+    width: $MyScale50_67;
+    height: $MyScale50_67;
+    border-radius: $MyScale50_67;
+    background-color: rgba(0, 0, 0, 0.4);
+  }
 }
 
 .swiper-button-next:after,

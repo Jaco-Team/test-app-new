@@ -46,8 +46,9 @@ export default function ModalOrderDelete() {
     >
       <DialogContent style={{ padding: 0, borderRadius: '1.444045vw', overflow: 'hidden'}}>
         <div className="container">
-          <IconButton style={{position: 'absolute', left: '-3.3vw', paddingTop: '0', backgroundColor: 'transparent'}} onClick={closeModalDel}>
-            <IconClose style={{width: '2.1661vw', height: '2.1661vw', overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)'}}/>
+
+          <IconButton className="closeButton" onClick={closeModalDel}>
+            <IconClose />
           </IconButton>
 
           <Grid container>

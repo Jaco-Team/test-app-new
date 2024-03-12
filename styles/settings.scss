@@ -14,6 +14,7 @@ $MyScale5_17: 0.18663vw;
 $MyScale6: 0.21660649819495vw;
 $MyScale7: 0.25270758122744vw;
 $MyScale8: 0.28880866425993vw;
+$MyScale9: 0.32490974729242vw;
 $MyScale10: 0.36101083032491vw;
 $MyScale11: 0.3971119133574vw;
 $MyScale12: 0.43321299638989vw;
@@ -27,27 +28,36 @@ $MyScale22: 0.7942238267148vw;
 $MyScale22_7: 0.81949458483755vw;
 $MyScale23: 0.83032vw;
 $MyScale25: 0.90252707581227vw;
+$MyScale26: 0.93862815884477vw;
 $MyScale27: 0.97472924187726vw;
 $MyScale28: 1.0108303249097vw;
+$MyScale28_53: 1.029963898917vw;
 $MyScale30: 1.0830324909747vw;
+$MyScale30_19: 1.0898916967509vw;
 $MyScale32: 1.1552346570397vw;
 $MyScale33: 1.1913357400722vw;
 $MyScale34: 1.2274368231047vw;
+$MyScale34_49: 1.2451263537906vw;
+$MyScale34_88: 1.2592057761733vw;
 $MyScale35: 1.2635379061372vw;
 $MyScale36: 1.2996389891697vw;
 $MyScale37: 1.3357400722022vw;
 $MyScale38: 1.3718411552347vw;
+$MyScale38_02: 1.3725631768953vw;
+$MyScale38_49: 1.3895306859206vw;
 $MyScale40: 1.4440433212996vw;
 $MyScale40_8: 1.472924vw;
 $MyScale41: 1.4801444043321vw;
+$MyScale41_8: 1.5090252707581vw;
 $MyScale43: 1.5523465703971vw;
 $MyScale44: 1.5884476534296vw;
 $MyScale45: 1.6245487364621vw;
 $MyScale46: 1.6606498194946vw;
 $MyScale47: 1.6967509025271vw;
-$MyScale48: 1.7328519855vw;
+$MyScale48: 1.7328519855596vw;
 $MyScale49: 1.76894vw;
 $MyScale50: 1.8050541516245vw;
+$MyScale50_67: 1.8292418772563vw;
 $MyScale53: 1.913357400722vw;
 $MyScale55: 1.985559566787vw;
 $MyScale60: 2.1660649819495vw;
@@ -57,6 +67,7 @@ $MyScale67: 2.4187725631769vw;
 $MyScale66_6: 2.407vw;
 $MyScale70: 2.5270758122744vw;
 $MyScale72: 2.5992779783394vw;
+$MyScale74: 2.6714801444043vw;
 $MyScale75: 2.7075812274368vw;
 $MyScale76: 2.7436823104693vw;
 $MyScale77: 2.7797833935018vw;
@@ -76,7 +87,7 @@ $MyScale112: 4.043321299639vw;
 $MyScale114: 4.115523465704vw;
 $MyScale120: 4.3321299638989vw;
 $MyScale123: 4.4405vw;
-$MyScale125: 4.512635379vw;
+$MyScale125: 4.5126353790614vw;
 $MyScale128: 4.6209386281588vw;
 $MyScale130: 4.693140794vw;
 $MyScale137: 4.945848375vw;
@@ -111,7 +122,9 @@ $MyScale340: 12.27436823vw;
 $MyScale360: 12.996389891697vw;
 $MyScale373_55: 13.485559566787vw;
 $MyScale380: 13.718411552347vw;
+$MyScale384: 13.862815884477vw;
 $MyScale390: 14.07942238vw;
+$MyScale394: 14.223826714801vw;
 $MyScale395: 14.259927797834vw;
 $MyScale398: 14.368231046931vw;
 $MyScale400: 14.440433212996vw;
@@ -123,7 +136,9 @@ $MyScale470: 16.967509025271vw;
 $MyScale475: 17.14801444vw;
 $MyScale480: 17.328519855596vw;
 $MyScale500: 18.050541516245vw;
+$MyScale505: 18.231046931408vw;
 $MyScale510: 18.4115523vw;
+$MyScale536: 19.350180505415vw;
 $MyScale560: 20.216606498195vw;
 $MyScale580: 20.938628158845vw;
 $MyScale600: 21.660649819495vw;
@@ -144,6 +159,7 @@ $MyScale960: 34.65703971vw;
 $MyScale980: 35.379061371841vw;
 $MyScale995: 35.920577617329vw;
 $MyScale1000: 36.101083032491vw;
+$MyScale1016: 36.678700361011vw;
 $MyScale1080: 38.98916967509vw;
 $MyScale1206: 43.537906137184vw;
 $MyScale1500: 54.151624548736vw;
@@ -447,10 +463,21 @@ $MyScale1871_mobile: 159.91452991453vw;
   font-style: normal;
   font-weight: 400;
 
-  @include fonsNew(0.9vw, var(--inter-font));
+  @include fonsNew($MyScale25, var(--inter-font));
 
   @media (max-width: $MyMaxWidth) {
     @include fonsNew($MyScale25_mobile, var(--inter-font));
+  }
+}
+
+@mixin font26_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @include fonsNew($MyScale26, var(--inter-font));
+
+  @media (max-width: $MyMaxWidth) {
+    @include fonsNew($MyScale26_mobile, var(--inter-font));
   }
 }
 
@@ -480,7 +507,7 @@ $MyScale1871_mobile: 159.91452991453vw;
   font-style: normal;
   font-weight: 400;
 
-  @include fonsNew(1.1552346570397vw, var(--inter-font));
+  @include fonsNew($MyScale32, var(--inter-font));
 
   @media (max-width: $MyMaxWidth) {
     @include fonsNew($MyScale32_mobile, var(--inter-font));
@@ -513,7 +540,7 @@ $MyScale1871_mobile: 159.91452991453vw;
   font-style: normal;
   font-weight: 400;
 
- //@include fonsNew(1.2635379061372vw, var(--inter-font));
+ @include fonsNew($MyScale44, var(--inter-font));
 
  @media (max-width: $MyMaxWidth) {
   @include fonsNew($MyScale44_mobile, var(--inter-font));
@@ -524,7 +551,7 @@ $MyScale1871_mobile: 159.91452991453vw;
   font-style: normal;
   font-weight: 500;
 
- // @include fonsNew(1.8050541516245vw, var(--inter-font));
+ @include fonsNew($MyScale44, var(--inter-font));
 
   @media (max-width: $MyMaxWidth) {
     @include fonsNew($MyScale44_mobile, var(--inter-font));
@@ -601,10 +628,10 @@ $MyScale1871_mobile: 159.91452991453vw;
   font-style: normal;
   font-weight: 300;
 
-  @include fonsNew(2.2vw, var(--inter-font));
+  @include fonsNew($MyScale60, var(--inter-font));
 
   @media (max-width: 960px) {
-    @include fonsNew(2.2rem, var(--inter-font));
+    @include fonsNew($MyScale60_mobile, var(--inter-font));
   }
 }
 

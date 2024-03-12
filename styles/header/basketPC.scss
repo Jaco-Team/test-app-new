@@ -127,6 +127,7 @@
             text-decoration-thickness: 0.10830324909747vw !important;
             text-decoration: line-through;
             text-decoration-color: rgba(221, 26, 50, 0.8);
+            white-space: nowrap;
           }
   
           & .spanPromo {
@@ -135,6 +136,7 @@
             height: 1.4440433212996vw;
             display: flex;
             align-items: center;
+            white-space: nowrap;
           }
         }
 
@@ -155,17 +157,21 @@
           height: 2.1660649819495vw;
           padding: 0;
           margin-left: 0.36101083032491vw;
-          @include font35_400();
+          @include font44_400();
           display: flex;
           justify-content: center;
           align-items: center;
           border-radius: 2.1660649819495vw;
           cursor: pointer;
           border: none;
+
+          &:hover{
+            background-color: rgba(0, 0, 0, 0.07) !important;
+          }
         }
 
         & > span {
-          @include font40_400();
+          @include font44_400();
         }
 
         & > .plus {
@@ -173,13 +179,17 @@
           height: 2.1660649819495vw;
           padding: 0;
           margin-right: 0.36101083032491vw;
-          @include font35_400();
+          @include font60_300();
           display: flex;
           justify-content: center;
           align-items: center;
           border-radius: 2.1660649819495vw;
           cursor: pointer;
           border: none;
+
+          &:hover{
+            background-color: rgba(0, 0, 0, 0.07) !important;
+          }
         }
       }
 

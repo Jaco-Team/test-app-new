@@ -16,7 +16,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 import { ClickAwayListener } from '@mui/base/ClickAwayListener';
-import { IconClose, IconInfoRed, IconInfoWhite } from '@/ui/Icons';
+import { IconClose, IconInfo } from '@/ui/Icons';
 
 import { roboto } from '@/ui/Font';
 
@@ -84,8 +84,9 @@ export default function ModalCardItemPC() {
     >
       <DialogContent style={{ padding: 0, borderRadius: '1.444045vw', overflow: 'hidden', background: typeModal === 'start' ? '#FFFFFF' : '#E6E6E6'}}>
         <Box component="div" className="modalItemPC ModalFontPC">
-          <IconButton style={{position: 'absolute', left: '-3.3vw', paddingTop: '0', backgroundColor: 'transparent'}} onClick={closeModal}>
-            <IconClose style={{width: '2.1661vw', height: '2.1661vw', overflow: 'visible', borderRadius: 50, background: 'rgba(0, 0, 0, 0.5)'}}/>
+
+          <IconButton className="closeButton" onClick={closeModal}>
+            <IconClose />
           </IconButton>
 
           <Grid container>
@@ -295,7 +296,7 @@ export default function ModalCardItemPC() {
                   <div className="dop_icon" style={{ cursor: typeModal === 'start' ? 'pointer' : null, visibility: openItem?.id === '17' || openItem?.id === '237' ? 'hidden' : 'visible' }} 
                     onClick={typeModal === 'start' ? () => navigate('value') : () => navigate('start')}
                   >
-                    {foodValue === true ? <IconInfoRed /> : <IconInfoWhite />}
+                    {foodValue === true ? <IconInfo fill='#DD1A32' /> : <IconInfo fill='rgba(0, 0, 0, 0.2)' />}
                   </div>
 
                 </div>

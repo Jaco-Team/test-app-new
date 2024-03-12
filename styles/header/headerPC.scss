@@ -5,7 +5,11 @@ html:not([data-scroll='0']) .blockShadow {
   height: 2.8880866425993vw;
   position: fixed;
   top: $MyScale128;
-  background: linear-gradient(180deg,rgba(115, 115, 115, 0.1) 0%, rgba(83, 92, 84, 0) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(115, 115, 115, 0.1) 0%,
+    rgba(83, 92, 84, 0) 100%
+  );
   mix-blend-mode: multiply;
   transition: all 0.5s ease 0s;
   z-index: 2;
@@ -16,7 +20,11 @@ html:not([data-scroll='0']) .blockShadow {
   height: 0;
   position: fixed;
   top: $MyScale128;
-  background: linear-gradient(180deg,rgba(115, 115, 115, 0.1) 0%, rgba(83, 92, 84, 0) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(115, 115, 115, 0.1) 0%,
+    rgba(83, 92, 84, 0) 100%
+  );
   mix-blend-mode: multiply;
   transition: all 0.1s ease 0s;
 }
@@ -27,7 +35,6 @@ html:not([data-scroll='0']) .blockShadow {
   background-color: #fff !important;
   height: $MyScale128;
   box-shadow: none !important;
-
   width: 100%;
 
   & a {
@@ -46,7 +53,7 @@ html:not([data-scroll='0']) .blockShadow {
     margin-left: $MyScale125;
     margin-right: $MyScale125;
 
-    & > div{
+    & > div {
       display: flex;
       flex-direction: row;
       align-items: center;
@@ -58,6 +65,7 @@ html:not([data-scroll='0']) .blockShadow {
       margin-right: $MyScale20;
       display: flex;
       margin-left: $MyScale32;
+      cursor: pointer;
 
       & img {
         width: auto;
@@ -111,41 +119,57 @@ html:not([data-scroll='0']) .blockShadow {
       border-radius: $MyScale100;
       border: $MyScale2 solid rgba(0, 0, 0, 0.2);
       cursor: pointer;
-      &:hover{
+      &:hover {
         border: $MyScale2 solid $colorMain;
-        & span{
+        & span {
           color: $colorMain;
         }
       }
     }
 
-    & .profileHeaderPC.active, .burgerHeaderPC.active, .mapHeaderPC.active{
-      background-color: rgba(0, 0, 0, 0.05)!important;
+    & .profileHeaderPC.active,
+    .burgerHeaderPC.active,
+    .mapHeaderPC.active,
+    .basketCat.min.active {
+      background-color: rgba(0, 0, 0, 0.05);
+        outline: rgba(0, 0, 0, 0.05) $MyScale16 solid;
+        outline-offset: 0;
     }
 
-    & .profileHeaderPC, .burgerHeaderPC, .mapHeaderPC {
+    & .profileHeaderPC,
+    .burgerHeaderPC,
+    .mapHeaderPC {
       display: flex;
       align-items: center;
       justify-content: center;
-      width: $MyScale64;
-      height: $MyScale64;
-      border-radius: $MyScale100;
+      width: $MyScale48;
+      height: $MyScale48;
+      border-radius: $MyScale48;
       margin-right: $MyScale48;
       cursor: pointer;
 
-      & svg {
-        width: $MyScale38;
-        height: $MyScale38;
-        fill: $colorMain;
-        & path {
-          fill: $colorMain!important;
-        }
+      & .profile_svg {
+        width: $MyScale30;
+        height: $MyScale28_53;
       }
-      &:hover{
+      & .burger_svg {
+        width: $MyScale38_49;
+        height: $MyScale34_49;
+      }
+      & .map_svg {
+        width: $MyScale30_19;
+        height: $MyScale38_02;
+      }
+
+      &:hover {
         background-color: rgba(0, 0, 0, 0.05);
+        outline: rgba(0, 0, 0, 0.05) $MyScale16 solid;
+        outline-offset: 0;
       }
-      &:active{
+      &:active {
         background-color: rgba(0, 0, 0, 0.1);
+        outline: rgba(0, 0, 0, 0.1) $MyScale16 solid;
+        outline-offset: 0;
       }
     }
 
@@ -167,7 +191,7 @@ html:not([data-scroll='0']) .blockShadow {
       }
     }
 
-    & .basketCat{
+    & .basketCat {
       margin-right: $MyScale32;
     }
 
@@ -176,7 +200,7 @@ html:not([data-scroll='0']) .blockShadow {
       height: $MyScale64;
       background-color: #dd1a32;
       border-radius: $MyScale45;
-      
+
       display: flex;
       align-items: center;
       cursor: pointer;
@@ -188,23 +212,21 @@ html:not([data-scroll='0']) .blockShadow {
         text-align: center;
       }
 
-      & svg{
-        margin-left: 0;
-        width: $MyScale38;
-        height: $MyScale38;
+      & svg {
+        width: $MyScale41_8;
+        height: $MyScale34_88;
         fill: #fff;
         stroke: #fff;
-        //stroke-opacity: 1;
         & path {
           fill: #fff;
           stroke: #fff;
-          stroke-opacity: 1;
+          stroke-opacity: 0.1;
         }
       }
     }
     & .basketCat.min {
-      width: $MyScale64;
-      height: $MyScale64;
+      width: $MyScale48;
+      height: $MyScale48;
       border-radius: $MyScale100;
       background-color: #fff;
       cursor: pointer;
@@ -213,34 +235,35 @@ html:not([data-scroll='0']) .blockShadow {
       justify-content: center;
       align-items: center;
 
-      & svg{
-        width: $MyScale38;
-        height: $MyScale38;
+      & svg {
+        width: $MyScale41_8;
+        height: $MyScale34_88;
 
-        margin-left: 0;
         fill: $colorMain;
-        //stroke: $colorMain;
-        //stroke-opacity: 1;
         & path {
-          fill: $colorMain!important;
+          fill: $colorMain !important;
           stroke: $colorMain;
-          stroke-opacity: 0.5;
+          stroke-opacity: 0.1;
         }
       }
 
-      &:hover{
+      &:hover {
         background-color: rgba(0, 0, 0, 0.05);
+        outline: rgba(0, 0, 0, 0.05) $MyScale16 solid;
+        outline-offset: 0;
       }
-      &:active{
+      &:active {
         background-color: rgba(0, 0, 0, 0.1);
+        outline: rgba(0, 0, 0, 0.1) $MyScale16 solid;
+        outline-offset: 0;
       }
     }
 
-    & .chooseCity{
+    & .chooseCity {
       @include font32_400();
       cursor: pointer;
       margin-right: $MyScale48;
-      &:hover{
+      &:hover {
         color: $colorMain;
       }
     }
@@ -299,17 +322,17 @@ html:not([data-scroll='0']) .blockShadow {
           width: 100%;
           height: 100%;
           text-decoration: none;
-          
+
           & span {
             width: 100%;
-            height: 100%;
+            min-height: $MyScale80;
             display: flex;
             align-items: center;
             justify-content: center;
             @include font30_400();
             white-space: break-spaces;
             text-align: center;
-            
+
             &:hover {
               color: #dd1a32;
             }

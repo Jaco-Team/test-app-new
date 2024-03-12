@@ -16,14 +16,17 @@
 
       & .closeButton {
         position: absolute;
-        height: $MyScale60;
-        width: $MyScale60;
-        padding: 0;
+        top: 0;
         left: -$MyScale80;
+        padding: 0;
+        background-color: transparent;
 
         & svg {
-          height: 100%;
-          width: 100%;
+          width: $MyScale60;
+          height: $MyScale60;
+          overflow: visible;
+          border-radius: $MyScale60;
+          background-color: rgba(0, 0, 0, 0.5);
         }
       }
 

@@ -12,7 +12,7 @@ import Cookies from 'js-cookie'
 
 export const useCartStore = createWithEqualityFn((set, get) => ({
   items: [],
-  itemsOnDops: [],
+  //itemsOnDops: [],
   itemsOffDops: [],
   itemsWithPromo: [],
 
@@ -95,6 +95,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   openPayForm: false,
 
   DBClick: false,
+
+  // проверка наличия в корзине роллов, пиццы или всего
+  cart_is: 'all',
 
   // открытие/закрытие формы оплаты онлайн
   setPayForm: (active) => {
@@ -609,7 +612,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     set({
       items: [],
-      itemsOnDops: [],
+      //itemsOnDops: [],
+      cart_is: 'all',
       itemsOffDops: [],
       itemsWithPromo: [],
 
@@ -637,16 +641,25 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const itemsWithPromo = get().itemsWithPromo;
 
     const allItems = [...items, ...itemsWithPromo];
-    //const allItems = [...items];
 
-    const itemsOnDops = allItems.filter(item => parseInt(item.cat_id) === 7 && !item.disabled );
+    const rolly = !!allItems.find(item => parseInt(item.cat_id) === 4 || parseInt(item.cat_id) === 10 || parseInt(item.cat_id) === 13 || parseInt(item.cat_id) === 12 || parseInt(item.cat_id) === 9);
+    const pizza = !!allItems.find(item => parseInt(item.cat_id) === 14);
+
+    if(rolly && !pizza) {
+      set({ cart_is: 'rolly' })
+    } 
+
+    if(!rolly && pizza) {
+      set({ cart_is: 'pizza' })
+    } 
+
+    if(rolly && pizza || !rolly && !pizza) {
+      set({ cart_is: 'all' })
+    } 
 
     let itemsOffDops = allItems.filter(item => (parseInt(item.cat_id) !== 7 || item.disabled) && item.cat_id !== undefined );
 
-    //itemsOffDops = [ ...itemsOffDops, ...itemsWithPromo ];
-    //itemsOffDops = [ ...itemsWithPromo ];
-
-    set({ itemsOffDops, itemsOnDops });
+    set({ itemsOffDops });
 
     get().check_need_dops();
 
@@ -1583,7 +1596,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     set({
       items: [],
-      itemsOnDops: [],
+      //itemsOnDops: [],
       itemsOffDops: [],
       itemsWithPromo: [],
 
@@ -1593,6 +1606,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
       comment: order?.order?.comment,
       sdacha: order?.order?.sdacha,
+
+      cart_is: 'all'
     })
 
     if( parseInt(order?.order?.type_order_) == 1 ){

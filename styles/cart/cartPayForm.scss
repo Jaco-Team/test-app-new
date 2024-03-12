@@ -58,17 +58,17 @@
 
       & .iconBTN {
         position: absolute;
-        left: -$MyScale80;
         top: 0;
+        left: -$MyScale80;
         padding: 0;
         background-color: transparent;
-        z-index: 50;
 
         & svg {
           width: $MyScale60;
           height: $MyScale60;
-          border-radius: $MyScale30;
-          background: rgba(0, 0, 0, 0.5);
+          overflow: visible;
+          border-radius: $MyScale60;
+          background-color: rgba(0, 0, 0, 0.5);
         }
       }
 

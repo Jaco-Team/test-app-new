@@ -95,7 +95,7 @@ export default React.memo(function CatItems() {
         if (node && key === 0) {
           node.style.setProperty(
             'margin-top',
-            '2.1660649819495vw',
+            '1.1552346570397vw',
             'important'
           );
         }

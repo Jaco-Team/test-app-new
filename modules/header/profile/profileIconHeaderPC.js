@@ -11,9 +11,9 @@ export default function ProfileIconHeaderPC({activeProfile}) {
   return (
     <div className={'profileHeaderPC '+(activeProfile ? 'active' : '')} >
       {isAuth === 'auth' ? 
-        <Link href={'/' + thisCity + '/zakazy'}><ProfileIconNew /></Link> 
+        <Link href={'/' + thisCity + '/zakazy'}><ProfileIconNew className='profile_svg' /></Link> 
           : 
-        <ProfileIconNew onClick={ () => setActiveModalAuth(true) } style={{ cursor: 'pointer' }}/> 
+        <ProfileIconNew className='profile_svg' onClick={ () => setActiveModalAuth(true) } style={{ cursor: 'pointer' }}/> 
       }
     </div>
   );

@@ -125,17 +125,17 @@ export default React.memo(function BannersPC() {
           }}
           scrollbar={{ draggable: true }}
           // style={{width: !matches ? '100%' : '90.975vw', marginTop: !matches ? 60 : '8.66425vw', borderRadius: '2.8881vw'}}
-          style={{width: '90.975vw', marginTop: '8.66425vw', borderRadius: '2.8881vw'}}
+          style={{width: '90.975vw', marginTop: '8.66425vw'}}
           ref={swiperRef}
         >
 
           {bannerList.map((item, key) => (
             <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
-              <Image alt={item.title} src={"https://storage.yandexcloud.net/site-home-img/"+item.img+"3700х1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '2.4vw' }} />
+              <Image alt={item.title} src={"https://storage.yandexcloud.net/site-home-img/"+item.img+"3700х1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }} />
             </SwiperSlide>
           ))}
-          <div className="swiper-button-prev"><ArrowIcon width='2.166065vw' height='2.166065vw' /></div>
-          <div className="swiper-button-next"><NextIcon width='2.166065vw' height='2.166065vw' /></div>
+          <div className="swiper-button-prev"><ArrowIcon /></div>
+          <div className="swiper-button-next"><NextIcon /></div>
         </Swiper>
       </Grid>
 

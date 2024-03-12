@@ -136,6 +136,7 @@
     .CartItems {
       width: $MyScale1090_mobile;
       display: flex;
+      position: relative;
 
       .CartItemsImg {
         width: $MyScale200_mobile;
@@ -168,6 +169,7 @@
 
         & div {
           display: flex;
+          min-height: $MyScale40_mobile;
 
           & .spanCount:not(.promoInfo) {
             @include font40_400();
@@ -188,6 +190,7 @@
             text-decoration-thickness: $MyScale3_mobile !important;
             text-decoration: line-through;
             text-decoration-color: rgba(221, 26, 50, 0.8);
+            white-space: nowrap;
           }
 
           & .spanPromo {
@@ -196,6 +199,7 @@
             height: $MyScale40_mobile;
             display: flex;
             align-items: center;
+            white-space: nowrap;
           }
         }
       }
@@ -208,6 +212,8 @@
         justify-content: space-between;
         align-items: center;
         margin-top: $MyScale80_mobile;
+        right: 0;
+        position: absolute;
 
         & > .minus {
           width: $MyScale120_mobile;

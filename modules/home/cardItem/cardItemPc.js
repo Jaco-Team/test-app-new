@@ -23,13 +23,11 @@ export default memo(function CardItem({ item, count, index}) {
   //1420
 
   return (
-    <Grid item className={'CardItemPC ' + (count > 0 ? 'active' : '')}
-      style={{ marginRight: (index + 1) % 4 === 0 ? 0 : '1.4440433212996vw', marginBottom: count > 0 ? '1.4440433212996vw' : '2.8880866425993vw', height: count > 0 ? '35.740072202166vw' : '34.296028880866vw'}}
-      sx={{ display: { xs: 'none', sm: 'flex' } }}
-    >
+    <Grid item className={'CardItemPC ' + (count > 0 ? 'active' : '')} style={{ marginRight: (index + 1) % 4 === 0 ? 0 : '1.4440433212996vw' }}
+      sx={{ display: { xs: 'none', sm: 'flex' } }}>
       <div>
 
-        <div style={{ position: 'relative' }}>
+        <div className='imgItem'>
           <Image
             alt={item.name}
             src={'https://cdnimg.jacofood.ru/' + item.img_app + '_732x732.jpg'}
@@ -53,21 +51,21 @@ export default memo(function CardItem({ item, count, index}) {
 
         <Typography className="CardNameItem" variant="h5" component="h3">{item.name}</Typography>
         
-        <div className="dop_text">
+        <div className="dop_text" style={{ justifyContent: parseInt(item.cat_id) == 4 ?  'space-evenly' : 'center' }}>
           {parseInt(item.cat_id) != 4 ? null : <span className="first_text">{item.count_part_new}</span>}
 
+          {parseInt(item.cat_id) == 4 ? <span className="divider"/> : null}
+
           {parseInt(item.cat_id) == 5 || parseInt(item.cat_id) == 6 || parseInt(item.cat_id) == 7 || parseInt(item.cat_id) == 15 ? null : (
-            <span className="second_text" 
-            style={{ flex: parseInt(item.cat_id) == 4 ? 2 : 0.2 }}
-            >
+            <span className="second_text"  style={{ marginRight: parseInt(item.cat_id) !== 4 ? '0.36101083032491vw' : null }}>
               {parseInt(item.cat_id) == 14 ? item.size_pizza : item.count_part}{' '}
               {parseInt(item.cat_id) == 14 ? 'см' : parseInt(item.cat_id) == 6 ? 'л' : 'шт.'}{' '}
             </span>
           )}
 
-          <span className="third_text"  
-          style={{ flex: parseInt(item.cat_id) == 4 ? 3 : 0.2 }}
-          >
+          {parseInt(item.cat_id) == 5 || parseInt(item.cat_id) == 6 || parseInt(item.cat_id) == 7 || parseInt(item.cat_id) == 15 ? null : <span className="divider"/>}
+
+          <span className="third_text" style={{ marginLeft: parseInt(item.cat_id) !== 4 ? '0.36101083032491vw' : null }}>
             {new Intl.NumberFormat('ru-RU').format(item.weight)}{' '}
             {parseInt(item.id) == 17 || parseInt(item.id) == 237 ? 'шт.' : parseInt(item.cat_id) == 6 ? 'л' : 'г'}
           </span>
@@ -85,7 +83,7 @@ export default memo(function CardItem({ item, count, index}) {
           </div>
         ) : (
           <div className="containerBTN">
-            <Button variant="outlined" className="ModalItemButtonCartPC" onClick={() => plus(item.id, item.cat_id)}>
+            <Button variant="outlined" onClick={() => plus(item.id, item.cat_id)}>
               {new Intl.NumberFormat('ru-RU').format(item.price)} ₽
             </Button>
           </div>

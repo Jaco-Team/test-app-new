@@ -3,14 +3,16 @@ import { useCartStore } from '@/components/store.js';
 import RowPC from './rowPC';
 
 const dopText = {
-  text: 'Выберите столько приправ и приборов, сколько необходимо'
+  rolly: 'Выберите столько приправ и приборов, сколько необходимо. Есть РОЛЛЫ!',
+  pizza: 'Выберите столько приправ и приборов, сколько необходимо. Есть ПИЦЦА!',
+  all: 'Выберите столько приправ и приборов, сколько необходимо.',
 }
 
 export default function TablePC() {
 
   //console.log('render Basket TablePC');
 
-  const [itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOnDops, itemsOffDops, dopListCart] = useCartStore((state) => [state.itemsCount, state.promoInfo, state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOnDops, state.itemsOffDops, state.dopListCart]);
+  const [itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOffDops, dopListCart, cart_is] = useCartStore((state) => [state.itemsCount, state.promoInfo, state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOffDops, state.dopListCart, state.cart_is]);
 
   function getWord(int, array) {
     return (array = array || ['позиция', 'позиции', 'позиций']) && array[(int % 100 > 4 && int % 100 < 20) ? 2 : [2, 0, 1, 1, 1, 2][(int % 10 < 5) ? int % 10 : 5]];
@@ -21,13 +23,13 @@ export default function TablePC() {
       <tbody>
 
         {itemsOffDops.map((item, key) => 
-          <RowPC key={key} count={item.count} item={item} last={item === itemsOffDops.at(-1) && itemsOnDops.length ? 'last' : ''} />
+          <RowPC key={key} count={item.count} item={item} last={item === itemsOffDops.at(-1) ? 'last' : ''} />
         )}
 
         {dopListCart.length ?
           <>
             <tr className='dopText'>
-              <td>{dopText.text}</td>
+              <td>{dopText[cart_is]}</td>
             </tr>
 
             {dopListCart.map((item, key) => 

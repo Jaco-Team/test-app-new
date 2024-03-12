@@ -71,7 +71,7 @@ export default function ModalCityPC() {
           </IconButton>
 
           <div className="loginIMG" style={{  marginBottom: thisCityRu.length > 12 ? '1.0830324909747vw' : '2.5270758122744vw' }}>
-            <Image alt="Город" src="/Favikon.png" width={240} height={240} priority={true}/>
+            <Image alt="Город" src="/Favicon_city.png" width={240} height={240} priority={true}/>
           </div>
 
           <div className="loginHeader">

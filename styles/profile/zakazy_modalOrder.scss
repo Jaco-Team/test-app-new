@@ -1,197 +1,211 @@
-
-@import "../settings";
+@import '../settings';
 
 .modalOrderPC {
-    & .container{
-        padding-left: $MyScale100;
-        padding-right: $MyScale100;
-    }
-    & .MuiDialog-paper {
-      border-radius: $MyScale40;
-      overflow: visible;
-      margin: 0;
-      width: $MyScale1000;
-      max-width: none !important;
-    }
+  & .container {
+    padding-left: $MyScale100;
+    padding-right: $MyScale100;
 
-    & .header_status{
-        height: $MyScale120;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-top: $MyScale80;
-        & > h1{
-            @include font50_500();
-        }
-    }
-    & .header_status_icon{
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        margin-bottom: $MyScale60;
-        margin-top: $MyScale40;
-        & > div.active{
-            background-color: $colorMain;
-        }
-        & > div{
-            height: $MyScale100;
-            width: $MyScale100;
-            border-radius: 100%;
-            background-color: rgba(0, 0, 0, 0.20);
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            & > svg{
-                width: $MyScale66_6!important;
-                height: $MyScale66_6!important;
-            }
-        }
-        & > span{
-            width: $MyScale123;
-            margin-left: $MyScale5_17;
-            margin-right: $MyScale5_17;
-            //background-color: $colorMain!important;
-        }
-        & > span:not(.active){
-            background-color: rgba(0, 0, 0, 0.20)!important;
-        }
-    }
-    & .header_time{
+    & .closeButton {
+      position: absolute;
+      top: 0;
+      left: -$MyScale80;
+      padding: 0;
+      background-color: transparent;
+
+      & svg {
+        width: $MyScale60;
         height: $MyScale60;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        & > span{
-            @include font40_400();
-        }
-    }
-    & .header_addr_table{
-        & span{
-            @include font40_500();
-        }
-        & svg:not(.long){
-            width: $MyScale60!important;
-            height: $MyScale60!important;
-            margin-right: $MyScale11;
-        }
-        & svg.long{
-            width: $MyScale206_67!important;
-            height: $MyScale20!important;
-        }
-        & > div:first-child{
-            height: $MyScale120;
-            border-top: 4px solid rgba(0, 0, 0, 0.80);
-            border-bottom: 2px solid rgba(0, 0, 0, 0.20);
-            display: flex;
-            align-items: center;
-            & > .order_num{
-                width: $MyScale180;
-                margin-right: $MyScale49;
-            }
-        }
-        & > div:last-child{
-            min-height: $MyScale120;
-            border-bottom: 4px solid rgba(0, 0, 0, 0.80);
-            display: flex;
-            //align-items: center;
-            justify-content: space-between;
-            & > svg{
-                margin-right: $MyScale40;
-            }
-            & > div:last-child{
-                //margin-top: $MyScale27;
-                & > svg{
-                    cursor: pointer;
-                }
-            }
-            & > div{
-                display: flex;
-                align-items: center;
-                & > div:not(.order_city){
-                    width: $MyScale60!important;
-                    height: $MyScale60!important;
-                    margin-right: $MyScale11;
-                    //margin-top: $MyScale27;
-                }
-            }
-            & .order_city{
-                display: flex;
-                align-items: center;
-                min-height: $MyScale100;
-                padding: $MyScale25 0;
-                width: $MyScale640;
-                // padding-top: $MyScale37;
-                // padding-bottom: $MyScale43;
-                //margin-right: $MyScale49;
-            }
-        }
-    }
-    & .header_cart_table{
-        display: flex;
-        flex-direction: column;
-        & > div{
-            min-height: $MyScale40;
-            display: flex;
-            flex-direction: row;
-            align-items: center;
-            border-bottom: 2px solid rgba(0, 0, 0, 0.20);
-        }
-        & > .table_header{
-            padding-top: $MyScale60;
-            padding-bottom: $MyScale23;
-            justify-content: space-between;
-            & > span:first-child{
-                @include font30_400();
-            }
-            & > span:last-child{
-                @include font40_500();
-            }
-        }
-        & > div:not(.table_header){
-            justify-content: space-between;
-            padding-top: $MyScale30;
-            padding-bottom: $MyScale30;
-            & > div{
-                display: flex;
-                align-items: center;
-                & span:first-child{
-                    width: $MyScale80;
-                    text-align: center;
-                    align-self: baseline;
-                }
-            }
-            & span{
-                @include font30_400();
-            }
-            & > span{
-                width: $MyScale140;
-                text-align: end;
-                align-self: baseline;
-            }
-            
-        }
-    }
-    
-    & .header_btn{
-        margin-top: $MyScale80;
-        margin-bottom: $MyScale80;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        & > div{
-            height: $MyScale80;
-            width: $MyScale400;
-            border-radius: $MyScale40;
-            border: 3px solid $colorMain;
-            text-align: center;
-            display: flex;
-            justify-content: center;
-            align-items: center;
-            cursor: pointer;
-            & > span{
-                @include font30_400();
-                color: $colorMain;
-            }
-        }
+        overflow: visible;
+        border-radius: $MyScale60;
+        background-color: rgba(0, 0, 0, 0.5);
+      }
     }
   }
+  & .MuiDialog-paper {
+    border-radius: $MyScale40;
+    overflow: visible;
+    margin: 0;
+    width: $MyScale1000;
+    max-width: none !important;
+  }
+
+  & .header_status {
+    height: $MyScale120;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-top: $MyScale80;
+    & > h1 {
+      @include font50_500();
+    }
+  }
+  & .header_status_icon {
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: $MyScale60;
+    margin-top: $MyScale40;
+    & > div.active {
+      background-color: $colorMain;
+    }
+    & > div {
+      height: $MyScale100;
+      width: $MyScale100;
+      border-radius: 100%;
+      background-color: rgba(0, 0, 0, 0.2);
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      & > svg {
+        width: $MyScale66_6 !important;
+        height: $MyScale66_6 !important;
+      }
+    }
+    & > span {
+      width: $MyScale123;
+      margin-left: $MyScale5_17;
+      margin-right: $MyScale5_17;
+      //background-color: $colorMain!important;
+    }
+    & > span:not(.active) {
+      background-color: rgba(0, 0, 0, 0.2) !important;
+    }
+  }
+  & .header_time {
+    height: $MyScale60;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & > span {
+      @include font40_400();
+    }
+  }
+  & .header_addr_table {
+    & span {
+      @include font40_500();
+    }
+    & svg:not(.long) {
+      width: $MyScale60 !important;
+      height: $MyScale60 !important;
+      margin-right: $MyScale11;
+    }
+    & svg.long {
+      width: $MyScale206_67 !important;
+      height: $MyScale20 !important;
+    }
+    & > div:first-child {
+      height: $MyScale120;
+      border-top: 4px solid rgba(0, 0, 0, 0.8);
+      border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      & > .order_num {
+        width: $MyScale180;
+        margin-right: $MyScale49;
+      }
+    }
+    & > div:last-child {
+      min-height: $MyScale120;
+      border-bottom: 4px solid rgba(0, 0, 0, 0.8);
+      display: flex;
+      //align-items: center;
+      justify-content: space-between;
+      & > svg {
+        margin-right: $MyScale40;
+      }
+      & > div:last-child {
+        //margin-top: $MyScale27;
+        & > svg {
+          cursor: pointer;
+        }
+      }
+      & > div {
+        display: flex;
+        align-items: center;
+        & > div:not(.order_city) {
+          width: $MyScale60 !important;
+          height: $MyScale60 !important;
+          margin-right: $MyScale11;
+          //margin-top: $MyScale27;
+        }
+      }
+      & .order_city {
+        display: flex;
+        align-items: center;
+        min-height: $MyScale100;
+        padding: $MyScale25 0;
+        width: $MyScale640;
+        // padding-top: $MyScale37;
+        // padding-bottom: $MyScale43;
+        //margin-right: $MyScale49;
+      }
+    }
+  }
+  & .header_cart_table {
+    display: flex;
+    flex-direction: column;
+    & > div {
+      min-height: $MyScale40;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+    }
+    & > .table_header {
+      padding-top: $MyScale60;
+      padding-bottom: $MyScale23;
+      justify-content: space-between;
+      & > span:first-child {
+        @include font30_400();
+      }
+      & > span:last-child {
+        @include font40_500();
+      }
+    }
+    & > div:not(.table_header) {
+      justify-content: space-between;
+      padding-top: $MyScale30;
+      padding-bottom: $MyScale30;
+      & > div {
+        display: flex;
+        align-items: center;
+        & span:first-child {
+          width: $MyScale80;
+          text-align: center;
+          align-self: baseline;
+        }
+      }
+      & span {
+        @include font30_400();
+      }
+      & > span {
+        width: $MyScale140;
+        text-align: end;
+        align-self: baseline;
+      }
+    }
+  }
+
+  & .header_btn {
+    margin-top: $MyScale80;
+    margin-bottom: $MyScale80;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    & > div {
+      height: $MyScale80;
+      width: $MyScale400;
+      border-radius: $MyScale40;
+      border: 3px solid $colorMain;
+      text-align: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      cursor: pointer;
+      & > span {
+        @include font30_400();
+        color: $colorMain;
+      }
+    }
+  }
+}
