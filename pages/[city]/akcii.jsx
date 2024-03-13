@@ -8,7 +8,7 @@ const DynamicPage = dynamic(() => import('@/modules/akcii/page.js'), { ssr: fals
 
 import { roboto } from '@/ui/Font.js'
 import { api } from '@/components/api.js';
-import { useCitiesStore, useHeaderStore, useCartStore, useHomeStore } from '@/components/store.js';
+import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
 
 const this_module = 'akcii';
 
@@ -18,7 +18,6 @@ export default function Akcii(props) {
 
   const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
-  const [getBanners] = useHomeStore(state => [state.getBanners]);
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] = useCitiesStore(state => [state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList]);
   const [setActivePage] = useHeaderStore((state) => [state.setActivePage]);
 
@@ -37,7 +36,6 @@ export default function Akcii(props) {
       setAllItems(all_items);
     }
 
-    getBanners('home', city);
     setFreeItems(free_items);
     setNeedDops(need_dop);
     getCartLocalStorage();

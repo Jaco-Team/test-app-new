@@ -9,10 +9,15 @@ export default React.memo(function PromoCardPC({ item }){
   const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ] )
   const [setActiveModalAlert] = useHeaderStore((state) => [state.setActiveModalAlert]);
 
-  const activePromo = (item) => {
-    setActiveModalAlert(true, 'Промокод активирован', true);
-    getInfoPromo(item.promo_name, item.city_id);
-  }
+  const activePromo = async(item) => {
+    const res = await getInfoPromo(item.name, item.city_id);
+
+    if( res.st === false ) {
+      setActiveModalAlert(true, res.text, false);
+    }else{
+      setActiveModalAlert(true, 'Промокод активирован', true);
+    }
+  };
 
   return (
     <div className={'promoCard'}>

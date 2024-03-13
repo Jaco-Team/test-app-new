@@ -672,30 +672,33 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const items = get().items;
     const promoInfo = get().promoInfo;
+    const checkPromo = get().checkPromo;
     //const itemsPromo = get().itemsWithPromo;
 
     const itemsCount = items.reduce((all, item) => all + item.count, 0);
     
-    if(promoInfo?.promo_action === '2') {
-      let itemsWithPromo = get().itemsWithPromo;
+    if( checkPromo?.st === true ) {
+      if(promoInfo?.promo_action === '2') {
+        let itemsWithPromo = get().itemsWithPromo;
 
-      let itemsWithPromo__ = [...items, ...itemsWithPromo];
+        let itemsWithPromo__ = [...items, ...itemsWithPromo];
 
-      const allPriceWithoutPromo = itemsWithPromo__.reduce((all, it) => all + it.count * it.one_price, 0);
+        const allPriceWithoutPromo = itemsWithPromo__.reduce((all, it) => all + it.count * it.one_price, 0);
 
-      set({ itemsCount: itemsCount + promoInfo.items_add.length, itemsWithPromo, allPriceWithoutPromo });
-    } else {
-      set({ itemsCount: itemsCount, itemsWithPromo: [] });
-    }
-
-    if(promoInfo?.promo_action === '3') {
-      const promoId = promoInfo.items_on_price[0].id;
-      const promo = items.find(item => item.item_id === promoId);
-      if(promo) {
-        set({ promoItemsFind: true });
+        set({ itemsCount: itemsCount + promoInfo.items_add.length, itemsWithPromo, allPriceWithoutPromo });
+      } else {
+        set({ itemsCount: itemsCount, itemsWithPromo: [] });
       }
-    } else {
-      set({ promoItemsFind: false });
+
+      if(promoInfo?.promo_action === '3') {
+        const promoId = promoInfo.items_on_price[0].id;
+        const promo = items.find(item => item.item_id === promoId);
+        if(promo) {
+          set({ promoItemsFind: true });
+        }
+      } else {
+        set({ promoItemsFind: false });
+      }
     }
 
     if(!promoInfo?.status_promo) {
@@ -1058,6 +1061,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     
       get().setDataPromoBasket();
       
+      return {
+        st: false,
+        text: '',
+      };
+
     } else {
       
       const data = {
@@ -1080,6 +1088,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         checkPromo: res
       })
       
+      return res;
     }
   
   },
@@ -3282,6 +3291,65 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       openModalBanner: active 
     });
 
-  }
+  },
+
+  dataForActia: (banner) => {
+    let new_banner = {...banner};
+
+    const all_items = useCartStore.getState().allItems;
+
+    let openBannerItems = [];
+    let typePromo = 0;
+
+    if( banner ){
+      if( new_banner?.info && Object.keys(new_banner?.info).length > 0 ){
+
+        //скидка
+        if( parseInt(new_banner.info.promo_action) == 1 ){
+
+        }
+
+        //добавляет товар
+        if( parseInt(new_banner.info.promo_action) == 2 ){
+          new_banner.info.items_add.map( (item, key) => {
+            let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
+
+            new_banner.info.items_add[ key ]['img_app'] = find_item?.img_app
+          } )
+
+          openBannerItems = new_banner.info.items_add;
+        }
+
+        //товар за цену
+        if( parseInt(new_banner.info.promo_action) == 3 ){
+          new_banner.info.items_on_price.map( (item, key) => {
+            new_banner.info.items_on_price[ key ]['img_app'] = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.id) )['img_app'];
+          } )
+
+          openBannerItems = new_banner.info.items_on_price;
+        }
+
+        typePromo = new_banner.info.promo_action;
+      }else{
+
+        new_banner?.item?.map( (item, key) => {
+          let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
+
+          if( find_item ){
+            new_banner.item[ key ] = find_item;
+          }
+        })
+
+        typePromo = 0;
+        openBannerItems = new_banner?.item ?? [];
+      }
+
+      return {
+        banner: new_banner,
+        typePromo,
+        openBannerItems
+      };
+    }
+  },
 
 }), shallow);

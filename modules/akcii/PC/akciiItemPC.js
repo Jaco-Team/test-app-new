@@ -81,48 +81,54 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
 }
 
 export default function AkciiItemPC({ actia }) {
-  // console.log('render AkciiItemPC');
-
+  const [dataForActia] = useHomeStore((state) => [state.dataForActia]);
   const [getInfoPromo] = useCartStore((state) => [state.getInfoPromo]);
   const [setActiveModalAlert, isAuth] = useHeaderStore((state) => [state.setActiveModalAlert, state.isAuth]);
 
-  const activePromo = (item) => {
-    setActiveModalAlert(true, 'Промокод активирован', true);
-    getInfoPromo(item.name, item.city_id);
+  const data = dataForActia(actia);
+
+  const activePromo = async(item) => {
+    const res = await getInfoPromo(item.name, item.city_id);
+
+    if( res.st === false ) {
+      setActiveModalAlert(true, res.text, false);
+    }else{
+      setActiveModalAlert(true, 'Промокод активирован', true);
+    }
   };
 
   return (
     <Grid container className="containerAccia">
-      <Image alt={actia?.title} src={'https://storage.yandexcloud.net/site-home-img/' + actia?.img + '3700х1000.jpg'} width={3700} height={1000} priority={true} />
+      <Image alt={data?.banner?.title} src={'https://storage.yandexcloud.net/site-home-img/' + data?.banner?.img + '3700х1000.jpg'} width={3700} height={1000} priority={true} />
 
       <Grid className="DescItem">
         <Grid className="FirstItem">
-          {actia?.actiItems?.length ? <Typography variant="h5" component="h2" className="title">Состав</Typography> : null}
+          {data?.openBannerItems?.length ? <Typography variant="h5" component="h2" className="title">Состав</Typography> : false}
 
           <div className="List">
-            {actia?.actiItems.map((item, key) => (
+            {data?.openBannerItems.map((item, key) => (
               <CartItemPromo
                 key={key}
                 data_key={key}
                 item={item}
-                typePromo={actia?.typePromo}
-                promo={actia?.info}
+                typePromo={data?.typePromo}
+                promo={data?.banner?.info}
                 isAuth={isAuth}
               />
             ))}
           </div>
 
-          {parseInt(actia?.typePromo) == 0 ? false :
+          {parseInt(data?.typePromo) == 0 ? false :
             <div className="containerBTN">
-              <button onClick={() => activePromo(actia?.info)}>Воспользоватся акцией</button>
+              <button onClick={() => activePromo(data?.banner?.info)}>Воспользоватся акцией</button>
             </div>
           }
         </Grid>
 
         <Grid className="SecondItem">
-          <Typography variant="h5" component="span">{actia?.title}</Typography>
+          <Typography variant="h5" component="span">{data?.banner?.title}</Typography>
 
-          {actia && actia?.text ? <Grid dangerouslySetInnerHTML={{ __html: actia?.text }} /> : null}
+          {data && data?.banner?.text ? <Grid dangerouslySetInnerHTML={{ __html: data?.banner?.text }} /> : null}
         </Grid>
       </Grid>
     </Grid>

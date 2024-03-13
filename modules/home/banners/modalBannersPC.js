@@ -122,11 +122,16 @@ export default function ModalBannerPC() {
 
   const [ setActiveBanner, openModalBanner, banner, openBannerItems, typePromo ] = useHomeStore((state) => [state.setActiveBanner, state.openModalBanner, state.banner, state.openBannerItems, state.typePromo]);
 
-  const activePromo = (item) => {
-    setActiveModalAlert(true, 'Промокод активирован', true);
-    getInfoPromo(item.name, item.city_id);
-    setActiveBanner(false, null);
-  }
+  const activePromo = async(item) => {
+    const res = await getInfoPromo(item.name, item.city_id);
+
+    if( res.st === false ) {
+      setActiveModalAlert(true, res.text, false);
+    }else{
+      setActiveModalAlert(true, 'Промокод активирован', true);
+      setActiveBanner(false, null);
+    }
+  };
 
   return (
     <Dialog

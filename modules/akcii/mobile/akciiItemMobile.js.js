@@ -87,52 +87,52 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
 export default function AkciiItemMobile({ actia }) {
   // console.log('render AkciiItemMobile');
 
+  const [dataForActia] = useHomeStore((state) => [state.dataForActia]);
   const [getInfoPromo] = useCartStore((state) => [state.getInfoPromo]);
   const [setActiveModalAlert, isAuth] = useHeaderStore((state) => [state.setActiveModalAlert, state.isAuth]);
 
-  const activePromo = (item) => {
-    setActiveModalAlert(true, 'Промокод активирован', true);
-    getInfoPromo(item.name, item.city_id);
-  };
+  const data = dataForActia(actia);
 
-  /*
-    <Grid className="erid">
-      <Typography variant="h5" component="h2" className="ItemTime" style={{ color: 'rgba(0, 0, 0, 0.20)' }}>
-        {`Реклама, Jacofood.ru, erid: ${banner?.erid}`}
-      </Typography>
-    </Grid>
-  */
+  const activePromo = async(item) => {
+    const res = await getInfoPromo(item.name, item.city_id);
+
+    if( res.st === false ) {
+      setActiveModalAlert(true, res.text, false);
+    }else{
+      setActiveModalAlert(true, 'Промокод активирован', true);
+    }
+  };
 
   return (
     <Grid container className="containerAcciaMobile">
-      <Image alt={actia?.title} src={'https://storage.yandexcloud.net/site-home-img/' + actia?.img + '1000х500.jpg'} width={1000} height={500} priority={true} />
+      <Image alt={data?.banner?.title} src={'https://storage.yandexcloud.net/site-home-img/' + data?.banner?.img + '1000х500.jpg'} width={1000} height={500} priority={true} />
 
       <Grid className="DescItemMobile">
         <Grid className="FirstItemMobile">
-          <Typography className="title" variant="h5" component="span">{actia?.title}</Typography>
+          <Typography className="title" variant="h5" component="span">{data?.banner?.title}</Typography>
 
-          {actia && actia?.text ? <Grid dangerouslySetInnerHTML={{ __html: actia?.text }} /> : null}
+          {data && data?.banner?.text ? <Grid dangerouslySetInnerHTML={{ __html: data?.banner?.text }} /> : false}
         </Grid>
 
         <Grid className="SecondItemMobile">
-          {actia?.actiItems?.length > 0 ? <Typography variant="h5" component="h2" className="itemTitle">Состав</Typography> : false}
+          {data?.openBannerItems?.length > 0 ? <Typography variant="h5" component="h2" className="itemTitle">Состав</Typography> : false}
 
           <div className="List">
-            {actia?.actiItems.map((item, key) => (
+            {data?.openBannerItems.map((item, key) => (
               <CartItemPromo
                 key={key}
                 data_key={key}
                 item={item}
-                typePromo={actia?.typePromo}
-                promo={actia?.info}
+                typePromo={data?.typePromo}
+                promo={data?.banner?.info}
                 isAuth={isAuth}
               />
             ))}
           </div>
 
-          {parseInt(actia?.typePromo) == 0 ? false :
+          {parseInt(data?.typePromo) == 0 ? false :
             <div className="containerBTN">
-              <button onClick={() => activePromo(actia?.info)}>Воспользоватся акцией</button>
+              <button onClick={() => activePromo(data?.banner?.info)}>Воспользоватся акцией</button>
             </div>
           }
         </Grid>
