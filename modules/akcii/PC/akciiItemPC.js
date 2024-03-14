@@ -24,13 +24,17 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
   }, [items, CatsItems]);
 
   function this_plus(item_id, cat_id) {
-    getInfoPromo(promo?.name, promo?.city_id);
-
+    if( promo?.name && promo?.name?.length > 0) {
+      getInfoPromo(promo?.name, promo?.city_id);
+    }
+    
     plus(item_id, cat_id);
   }
 
   function this_minus(item_id) {
-    getInfoPromo(promo?.name, promo?.city_id);
+    if( promo?.name && promo?.name?.length > 0) {
+      getInfoPromo(promo?.name, promo?.city_id);
+    }
 
     minus(item_id);
   }
