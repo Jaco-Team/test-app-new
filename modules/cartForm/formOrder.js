@@ -20,9 +20,9 @@ import { ArrowDownBasketModalPC, ArrowDownCartMobile, CityBasketModalPC, HomeBas
 import { roboto } from '@/ui/Font.js';
 
 const dopText = {
-  rolly: 'Выберите столько приправ и приборов, сколько необходимо. Есть РОЛЛЫ!',
-  pizza: 'Выберите столько приправ и приборов, сколько необходимо. Есть ПИЦЦА!',
-  all: 'Выберите столько приправ и приборов, сколько необходимо.',
+  rolly: 'Не забудьте про соусы, приправы и приборы',
+  pizza: 'Попробуйте необычное сочетание пиццы и соуса',
+  all: 'Не забудьте про соусы, приправы и приборы',
 }
 
 export default function FormOrder({ cityName }) {
@@ -37,7 +37,8 @@ export default function FormOrder({ cityName }) {
   const type_pay_pic = [{ id: 'cash', name: 'В кафе' }];
   const type_pay_div = [
     { id: 'cash', name: 'Наличными курьеру' },
-    { id: 'online', name: 'Онлайн на сайте' },
+    //{ id: 'sbp', name: 'СБП' },
+    { id: 'online', name: 'Картой на сайте' },
   ];
   const type_pred = [
     { name: 'В ближайшее время', id: -1 },

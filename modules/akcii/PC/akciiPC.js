@@ -9,7 +9,9 @@ export default function AkciiPC() {
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
 
   useEffect(() => {
-    getBanners('home', thisCity);
+    if( thisCity && thisCity.length > 0 ) {
+      getBanners('home', thisCity);
+    }
   }, [thisCity]);
 
   return (

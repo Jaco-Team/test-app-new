@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-//const DynamicHeader = dynamic(() => import('@/components/header.js'))
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const AboutPage = dynamic(() => import('@/modules/about/aboutPage'))
 
@@ -51,7 +50,6 @@ export default React.memo(function About(props) {
       <AboutPage page={page} cityName={city}/>
 
       <DynamicFooter cityName={city} active_page={'about'}/>
-
     </div>
   )
 })

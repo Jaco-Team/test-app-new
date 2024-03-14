@@ -547,7 +547,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     }, 300 )
 
     if( json.st === true ){
-      if( get().typePay.id == 'online' ){
+      if( get().typePay.id == 'online' || get().typePay.id == 'sbp' ){
 
         set({
           openPayForm: true

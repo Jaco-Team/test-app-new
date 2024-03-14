@@ -10,9 +10,6 @@ import {
   useCartStore,
 } from '@/components/store.js';
 
-//import Header from '@/components/header';
-
-//const DynamicHeader = dynamic(() => import('@/components/header.js'));
 const DynamicFooter = dynamic(() => import('@/components/footer.js'));
 const DynamicPage = dynamic(() => import('@/modules/pageText'));
 
@@ -58,8 +55,6 @@ export default React.memo(function Legal(props) {
 
   return (
     <div className={roboto.variable}>
-      
-
       <DynamicPage page={page} classNamePC="PAGELegal"/>
 
       <DynamicFooter cityName={city} active_page={'legal'} />

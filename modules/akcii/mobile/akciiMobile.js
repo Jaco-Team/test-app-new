@@ -5,22 +5,19 @@ import AkciiItemMobile from './akciiItemMobile.js';
 
 export default function AkciiMobile() {
   const [bannerList, getBanners] = useHomeStore((state) => [state.bannerList, state.getBanners]);
-  const [getAktia, actii] = useAkciiStore((state) => [state.getAktia, state.actii]);
 
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
 
   useEffect(() => {
-    getAktia(bannerList);
-  }, [bannerList]);
-
-  useEffect(() => {
-    getBanners('home', thisCity);
+    if( thisCity && thisCity.length > 0 ) {
+      getBanners('home', thisCity);
+    }
   }, [thisCity]);
 
   return (
     <div className="akciiMobile">
       <span className="login">Выгодные предложения</span>
-      {actii?.map((item, key) => (
+      {bannerList?.map((item, key) => (
         <AkciiItemMobile key={key} actia={item} />
       ))}
     </div>

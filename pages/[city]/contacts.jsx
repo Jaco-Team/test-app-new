@@ -2,7 +2,6 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
 
-//const DynamicHeader = dynamic(() => import('@/components/header.js'));
 const DynamicFooter = dynamic(() => import('@/components/footer.js'));
 const ContactsPage = dynamic(() => import('@/modules/contacts/page'));
 const LoadMap = dynamic(() => import('@/components/loadMap'));

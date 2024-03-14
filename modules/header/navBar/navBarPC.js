@@ -276,7 +276,7 @@ export default React.memo(function NavBarPC({ city }) {
                   </Link>
             )}
 
-            <Link href={`/${city}/akcii`} className={"headerCat link" }>
+            <Link href={`/${city}/akcii`} className={"headerCat link " + (activePage === 'akcii'? 'activeCat' : '')}>
               <span>Акции</span>
             </Link>
           </div>
