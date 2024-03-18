@@ -35,6 +35,11 @@ const nextConfig = {
         destination: '/togliatti',
         permanent: false,
       },
+      {
+        source: '/:path?text*',
+        permanent: true,
+        destination: '/:path',
+      }
     ]
   },
 }
