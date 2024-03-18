@@ -50,7 +50,7 @@ export default React.memo(function header({ city, city_list, cats }) {
 
     
 
-    if (typeof window !== 'undefined') {
+    /*if (typeof window !== 'undefined') {
       let search = window.location.search;
                   
       if( search.length > 0 ){
@@ -61,7 +61,7 @@ export default React.memo(function header({ city, city_list, cats }) {
           permanentRedirect(window.location.pathname);
         }
       }
-    }
+    }*/
 
     checkToken();
   }, []);
