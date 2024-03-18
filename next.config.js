@@ -36,7 +36,7 @@ const nextConfig = {
         permanent: false,
       },
       {
-        source: '/:path?text*',
+        source: '*?text*',
         permanent: true,
         destination: '/:path',
       }
