@@ -2,7 +2,7 @@
 
 .modalCardItemPC {
   & .MuiDialog-paper {
-    border-radius: 1.444045vw;
+    border-radius: $MyScale32;
     overflow: visible;
     margin: 0;
     width: 70.7585vw;
@@ -443,6 +443,11 @@
     height: $MyScale1016;
     margin-bottom: $MyScale32;
     
+    @media (min-width: 801px) and (max-width: 1000px) {
+      width: calc($MyScale600 * 2);
+      height: calc($MyScale1016 * 2);
+    }
+
     & > div {
       background-color: #fff;
       border-radius: $MyScale32;
@@ -471,6 +476,11 @@
         align-items: center;
         text-align: center;
         padding: 0 $MyScale32;
+
+        @media (min-width: 801px) and (max-width: 1000px) {
+          height: calc($MyScale96 * 2);
+          padding: 0 $MyScale64;
+        }
       }
 
       & .dop_text {
@@ -479,6 +489,11 @@
         width: $MyScale300;
         display: flex;
         align-items: center;
+
+        @media (min-width: 801px) and (max-width: 1000px) {
+          height: calc($MyScale64 * 2);
+          width: calc($MyScale300 * 2);
+        }
 
         & .first_text {
           @include font22_400();
@@ -506,6 +521,11 @@
           height: $MyScale20;
           width: $MyScale1;
           background-color: rgba(0, 0, 0, 0.4);
+
+          @media (min-width: 801px) and (max-width: 1000px) {
+            height: calc($MyScale20 * 2);
+            width: calc($MyScale1 * 2);
+          }
         }
       }
 
@@ -520,6 +540,12 @@
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
+
+        @media (min-width: 801px) and (max-width: 1000px) {
+          height: calc($MyScale64 * 3);
+          padding: 0 $MyScale64;
+          line-height: calc($MyScale33 * 2);
+        }
       }
 
       .containerBTN {
@@ -529,6 +555,12 @@
         margin-top: $MyScale32;
         width: $MyScale384;
         height: $MyScale96;
+
+        @media (min-width: 801px) and (max-width: 1000px) {
+          width: calc($MyScale384 * 2);
+          height: calc($MyScale96 * 2);
+          margin-top: calc($MyScale32 * 2);
+        }
 
         & > button {
           width: 100%;
@@ -544,6 +576,10 @@
           justify-content: center;
           white-space: nowrap;
 
+          @media (min-width: 801px) and (max-width: 1000px) {
+            border-radius: calc($MyScale48 * 2);
+          }
+
           &:hover{
             background-color: rgba(0, 0, 0, 0.07) !important;
           }
@@ -556,6 +592,10 @@
           justify-content: space-between;
           align-items: center;
           background-color: #ffff;
+
+          @media (min-width: 801px) and (max-width: 1000px) {
+            border-radius: calc($MyScale48 * 2);
+          }
 
           & > .minus {
             padding: 0;
@@ -570,6 +610,13 @@
             @include font44_400();
             width: $MyScale80;
             height: $MyScale80;
+
+            @media (min-width: 801px) and (max-width: 1000px) {
+              margin-left: calc($MyScale8 * 2);
+              border-radius: calc($MyScale40 * 2);
+              width: calc($MyScale80 * 2);
+              height: calc($MyScale80 * 2);
+            }
 
             &:hover{
               background-color: rgba(0, 0, 0, 0.07) !important;
@@ -589,6 +636,13 @@
             width: $MyScale80;
             height: $MyScale80;
             border-radius: $MyScale40;
+
+            @media (min-width: 801px) and (max-width: 1000px) {
+              margin-right: calc($MyScale8 * 2);
+              border-radius: calc($MyScale40 * 2);
+              width: calc($MyScale80 * 2);
+              height: calc($MyScale80 * 2);
+            }
 
             &:hover{
               background-color: rgba(0, 0, 0, 0.07) !important;

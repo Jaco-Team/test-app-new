@@ -64,11 +64,12 @@ export default React.memo(function CatItems() {
     }, 300);
   }, []);
 
-  //console.log(cats)
+  console.log('cats', cats, cats.length)
   
-  if (!cats.length) return <div style={{ height: 1000 }} />;
+  if (cats.length == 0) return <div style={{ height: 1000 }} />;
 
   if (matches) {
+    console.log('render matches');
     return cats.map((cat, key) => (
       <Grid
         container
@@ -83,6 +84,7 @@ export default React.memo(function CatItems() {
     ));
   }
     
+  console.log('render NOmatches');
   return cats.map((cat, key) => (
     <Grid
       container

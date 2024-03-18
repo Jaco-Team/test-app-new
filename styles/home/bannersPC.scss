@@ -42,7 +42,7 @@
 
 .modalBannerPC {
   & .MuiDialog-paper {
-    border-radius: $MyScale80;
+    border-radius: $MyScale32;
     overflow: visible;
     margin: $MyScale128 0;
     max-width: none !important;
@@ -70,7 +70,7 @@
         position: relative;
 
         & img {
-          border-radius: $MyScale80;
+          border-radius: $MyScale32;
           object-fit: contain;
           image-rendering: auto;
           width: 100%;

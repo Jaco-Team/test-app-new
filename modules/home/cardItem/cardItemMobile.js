@@ -18,7 +18,7 @@ export default React.memo(function CardItemMobile({ item, count }) {
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
 
   return (
-    <Grid item className={'CardItemMobile ' + (count > 0 ? 'active' : '')} sx={{ display: { xs: 'flex', md: 'flex', sm: 'none' } }}>
+    <Grid item className={'CardItemMobile ' + (count > 0 ? 'active' : '')} sx={{ display: { xs: 'flex', md: 'flex', sm: 'flex' } }}>
       <div className="CardContainer">
 
         <div className="CardImg">

@@ -21,6 +21,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { useHeaderStore, useHomeStore } from './store.js';
 
+import { permanentRedirect } from 'next/navigation'
+import { redirect } from 'next/navigation'
+
 export default React.memo(function header({ city, city_list, cats }) {
   
   let thisCityRU = '';
@@ -32,8 +35,8 @@ export default React.memo(function header({ city, city_list, cats }) {
   }
 
   //const matchesDev = false;
-  const matchesDev = useMediaQuery('screen and (max-width: 1170px)');
-  //const matchesDev = useMediaQuery('screen and (max-width: 601px)', { noSsr: false });
+  //const matchesDev = useMediaQuery('screen and (max-width: 1170px)');
+  const matchesDev = useMediaQuery('screen and (max-width: 800px)');
 
   const [setMatches, matches, checkToken, isShowLoad] = useHeaderStore( state => [state.setMatches, state.matches, state.checkToken, state.isShowLoad] ); 
   const [getItemsCat, category] = useHomeStore( state => [state.getItemsCat, state.category]);
@@ -44,6 +47,21 @@ export default React.memo(function header({ city, city_list, cats }) {
 
       //console.log('getItemsCat');
     //}
+
+    
+
+    if (typeof window !== 'undefined') {
+      let search = window.location.search;
+                  
+      if( search.length > 0 ){
+          
+        let checkItem = search.split('?text');
+
+        if( checkItem[1] ){
+          permanentRedirect(window.location.pathname);
+        }
+      }
+    }
 
     checkToken();
   }, []);

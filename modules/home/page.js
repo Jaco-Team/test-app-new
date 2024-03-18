@@ -7,6 +7,8 @@ import ModalBannerPC from './banners/modalBannersPC';
 import ModalBannerMobile from './banners/modalBannersMobile';
 import MenuCatMobile from './menuCatMobile/menuCatMobile'
 
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 import Meta from '@/components/meta.js';
 
 import { useHeaderStore } from '@/components/store';
@@ -15,6 +17,10 @@ export default function HomePage({ page, city } ) {
 
   const [matches] = useHeaderStore((state) => [state.matches]);
 
+  const matchesDev = useMediaQuery('screen and (max-width: 1000px)');
+
+  console.log(matchesDev,matches, );
+
   return (
     <Meta title={page.title} description={page.description}>
       <div style={{ minHeight: '50vh' }}>
@@ -22,16 +28,18 @@ export default function HomePage({ page, city } ) {
           <>
             <BannersMobile />
             <MenuCatMobile city={city}/>
-            <ModalCardItemMobile />
+            
             <ModalBannerMobile />
           </>
         : 
           <>
             <BannersPC />
-            <ModalCardItemPC />
+            
             <ModalBannerPC />
           </>
         }
+
+        { matchesDev ? <ModalCardItemMobile /> : <ModalCardItemPC /> }
 
         <CardItems />
       </div>
