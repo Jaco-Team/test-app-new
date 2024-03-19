@@ -89,8 +89,6 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
 }
 
 export default function AkciiItemMobile({ actia }) {
-  // console.log('render AkciiItemMobile');
-
   const [dataForActia] = useHomeStore((state) => [state.dataForActia]);
   const [getInfoPromo] = useCartStore((state) => [state.getInfoPromo]);
   const [setActiveModalAlert, isAuth] = useHeaderStore((state) => [state.setActiveModalAlert, state.isAuth]);
@@ -106,8 +104,6 @@ export default function AkciiItemMobile({ actia }) {
       setActiveModalAlert(true, 'Промокод активирован', true);
     }
   };
-
-  console.log( 'data', data, actia )
 
   return (
     <Grid container className="containerAcciaMobile">

@@ -9,7 +9,6 @@ import { MapContactsMobile, LocationIconMobile, VectorRightMobile, LocationMapMo
 import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 
 const ContactsPageMobilePointMap = memo(function ContactsPageMobilePointMap({ point, changePointClick, image }) {
-  // console.log('ContactsPageMobilePointMap render')
   return (
     <Placemark
       geometry={[point.xy_point.latitude, point.xy_point.longitude]}
@@ -25,8 +24,6 @@ const ContactsPageMobilePointMap = memo(function ContactsPageMobilePointMap({ po
 })
 
 export default function ContactsPageMobile() {
-  //console.log('render ContactsPageMobile');
-
   const ref = useRef();
 
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);

@@ -119,8 +119,6 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
 }
 
 export default function ModalBannerPC() {
-  // console.log('render ModalBannerPC');
-
   const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ] )
   const [ setActiveModalAlert, isAuth ] = useHeaderStore( state => [ state.setActiveModalAlert, state.isAuth ]);
 

@@ -973,8 +973,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         itemsCount++;
         item.item_id = item.id;
         item.one_price = item.price;
-        item.cat_id = item.cat_id;
-        items = [...items,...[item]];
+        //item.cat_id = item.cat_id;
+        items = [...items, ...[item]];
       }
     }
 

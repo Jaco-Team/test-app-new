@@ -5,8 +5,6 @@ import { CheckAuthMobile } from '@/ui/Icons';
 import Typography from '@mui/material/Typography';
 
 export default function Finish({ closeModal }) {
-  //console.log('render Finish');
-
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
   const [matches] = useHeaderStore((state) => [state.matches]);
 

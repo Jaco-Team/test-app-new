@@ -5,13 +5,7 @@ import Image from 'next/image';
 import { useCartStore } from '@/components/store.js';
 
 export default memo(function CartItemMobile({ item, count, last }) {
-  //console.log('render CartItemMobile');
-
   const [minus, plus, promoInfo] = useCartStore((state) => [state.minus, state.plus, state.promoInfo]);
-
-  console.log('item_1 ', parseInt(item?.one_price) * parseInt(count), item?.one_price, count);
-  console.log('item_2 ', item?.all_price);
-  console.log('item_3 ', item);
 
   return (
     <div className='CartItems' style={{ borderBottom: last ? 'none' : '0.17094017094017vw solid rgba(0, 0, 0, 0.1)'}}>

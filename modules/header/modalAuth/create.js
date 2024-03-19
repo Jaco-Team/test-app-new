@@ -11,8 +11,6 @@ import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 
 export default function Create({ city, closeModal }) {
-  //console.log('render Create');
-
   const [checkPolitika, setCheckPolitika] = useState(false);
   const [checkAccord, setCheckAccord] = useState(false);
   const [showPassword, setShowPassword] = useState(false);

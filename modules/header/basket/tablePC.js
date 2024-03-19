@@ -9,9 +9,6 @@ const dopText = {
 }
 
 export default function TablePC() {
-
-  //console.log('render Basket TablePC');
-
   const [itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOffDops, dopListCart, cart_is] = useCartStore((state) => [state.itemsCount, state.promoInfo, state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOffDops, state.dopListCart, state.cart_is]);
 
   function getWord(int, array) {

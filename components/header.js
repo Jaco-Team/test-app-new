@@ -24,8 +24,8 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { useHeaderStore, useHomeStore } from './store.js';
 
-import { permanentRedirect } from 'next/navigation'
-import { redirect } from 'next/navigation'
+//import { permanentRedirect } from 'next/navigation'
+//import { redirect } from 'next/navigation'
 
 export default React.memo(function header({ city, city_list, cats }) {
   

@@ -114,8 +114,6 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
 }
 
 export default function ModalBannerMobile() {
-  // console.log('render ModalBannerMobile');
-
   const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ] )
   const [ setActiveModalAlert, isAuth ] = useHeaderStore( state => [ state.setActiveModalAlert, state.isAuth ]);
 

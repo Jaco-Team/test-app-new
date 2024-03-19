@@ -11,8 +11,6 @@ import * as Scroll from 'react-scroll';
 var scroller = Scroll.scroller;
 
 export default React.memo(function CatItems() {
-  //console.log('CatItems render');
-
   const [cats, setCats] = useState([]);
 
   const [CatsItems] = useHomeStore((state) => [state.CatsItems]);
@@ -64,12 +62,9 @@ export default React.memo(function CatItems() {
     }, 300);
   }, []);
 
-  console.log('cats', cats, cats.length)
-  
   if (cats.length == 0) return <div style={{ height: 1000 }} />;
 
   if (matches) {
-    console.log('render matches');
     return cats.map((cat, key) => (
       <Grid
         container
@@ -84,7 +79,6 @@ export default React.memo(function CatItems() {
     ));
   }
     
-  console.log('render NOmatches');
   return cats.map((cat, key) => (
     <Grid
       container

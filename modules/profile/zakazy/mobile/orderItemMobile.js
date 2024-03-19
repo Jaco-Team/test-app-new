@@ -13,8 +13,6 @@ function areEqual(prevProps, nextProps) {
 }
 
 export default React.memo(function OrderItemMobile({ order, token, this_module, city, last }) {
-  //console.log('render OrderItemMobile');
-
   const [getOrder, setActiveModalOrder] = useProfileStore((state) => [state.getOrder, state.setActiveModalOrder]);
 
   const openOrder = () => {

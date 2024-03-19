@@ -19,8 +19,6 @@ export default function HomePage({ page, city } ) {
 
   const matchesDev = useMediaQuery('screen and (max-width: 1000px)');
 
-  console.log(matchesDev,matches, );
-
   return (
     <Meta title={page.title} description={page.description}>
       <div style={{ minHeight: '50vh' }}>

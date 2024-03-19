@@ -9,8 +9,6 @@ import ListItem from '@mui/material/ListItem';
 import { roboto } from '@/ui/Font.js';
 
 export default function ContactsModalChoose() {
-  //console.log('render ContactsModalChoose');
-
   const [openModalChoose, setActiveModalChoose, myAddr, point, choosePointMap] =
     useContactStore((state) => [state.openModalChoose, state.setActiveModalChoose, state.myAddr, state.point, state.choosePointMap]);
 

@@ -97,8 +97,6 @@ function ModalOrderStatusIconPicup({ types }) {
 }
 
 export default React.memo(function ModalOrderMobile() {
-  console.log('render ModalOrderMobile');
-
   const [isShowAddr, setShowAddr] = useState(false);
 
   const [openModal, closeOrder, modalOrder, openModalDel] = useProfileStore((state) => [state.openModal, state.closeOrder, state.modalOrder, state.openModalDel]);

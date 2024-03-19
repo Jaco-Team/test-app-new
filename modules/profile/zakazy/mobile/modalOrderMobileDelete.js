@@ -21,8 +21,6 @@ const answers = [
 ];
 
 export default function ModalOrderMobileDelete() {
-  //console.log('render ModalOrderMobileDelete');
-
   const [active, setActive] = useState(0);
   const [text, setText] = useState('');
 

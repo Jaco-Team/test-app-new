@@ -27,8 +27,6 @@ const type_pay_div = [
 ];
 
 export default function CartMenuMobile({ cityName }) {
-  //console.log('render CartMenuMobile');
-
   const [list, setList] = useState([]);
   const [id, setId] = useState(null);
 
@@ -76,8 +74,6 @@ export default function CartMenuMobile({ cityName }) {
   }, [nameList, thisCityRu, orderPic, orderAddr]);
 
   const chooseMenuItem = (item) => {
-    //console.log('chooseMenuItem', item)
-
     if (nameList === 'point' && item.name !== 'Выбрать на карте') {
       setActiveMenuCart(false, null);
       setPoint(item);

@@ -4,8 +4,6 @@ import { BasketIconMobile } from '@/ui/Icons.js';
 import ListItem from '@mui/material/ListItem';
 
 export default function BasketIconHeaderMobile({ setActiveMenu, active_page, city }) {
-  //console.log('render BasketIconHeaderMobile');
-
   const [itemsCount] = useCartStore((state) => [state.itemsCount]);
 
   return (

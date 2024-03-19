@@ -13,8 +13,6 @@ import BadgeItem from './badge';
 import {placeholder_img} from '@/public/placeholder_img';
 
 export default memo(function CardItem({ item, count, index}) {
-  //console.log('CardItemPc render');
-
   const [getItem] = useHomeStore((state) => [state.getItem]);
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);

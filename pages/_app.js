@@ -96,9 +96,9 @@ const theme = createTheme({
   },
 })
 
-export function reportWebVitals(metric) {
+/*export function reportWebVitals(metric) {
   console.log(metric)
-}
+}*/
 
 function MetricaTLT(){
   return ( 

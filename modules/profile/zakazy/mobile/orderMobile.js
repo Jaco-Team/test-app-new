@@ -32,8 +32,6 @@ export default function OrderMobile({ city, this_module }) {
     const timer = setInterval(() => {
       if( token && token.length > 0 ) {
         getOrderList(this_module, city, token);
-
-        console.log( 'city3', city );
       }
     }, 30 * 1000);
     

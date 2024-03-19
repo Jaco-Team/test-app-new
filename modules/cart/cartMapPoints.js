@@ -13,8 +13,6 @@ import { roboto } from '@/ui/Font.js';
 import { LocationCartMobile } from '@/ui/Icons.js';
 
 export default function CartMapPoints() {
-  //console.log('render CartMapPoints');
-
   const ref = useRef();
 
   const [openMapPoints, setActiveCartMap, orderPic, center_map, zones, changePointClick] = useCartStore((state) => [state.openMapPoints, state.setActiveCartMap, state.orderPic, state.center_map, state.zones, state.changePointClick]);

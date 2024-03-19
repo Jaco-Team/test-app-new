@@ -5,8 +5,6 @@ import Image from 'next/image';
 import { useCartStore } from '@/components/store.js';
 
 export default memo(function RowPC({ item, count, last }) {
-  //('render Basket RowPC');
-
   const [minus, plus, promoInfo] = useCartStore((state) => [state.minus, state.plus, state.promoInfo]);
 
   return (

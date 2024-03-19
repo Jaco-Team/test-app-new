@@ -9,8 +9,6 @@ import ListItem from '@mui/material/ListItem';
 import { roboto } from '@/ui/Font.js';
 
 export default function ModalOrderYear() {
-  //console.log('render ModalOrderYear');
-
   const [openModalYear, setActiveModalYear, year, yearList, setYear] =
     useProfileStore((state) => [state.openModalYear, state.setActiveModalYear, state.year, state.yearList, state.setYear]);
 
