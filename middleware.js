@@ -28,7 +28,7 @@ export function middleware(request) {
     return NextResponse.redirect(new URL(request.nextUrl.pathname, request.url), 301)
   }
 
-  checkItem = request.nextUrl.search.split('.');
+  checkItem = request.nextUrl.pathname.split('.');
 
   if( !isLowerCase(request.nextUrl.pathname) && !checkItem[1] ){
     return NextResponse.redirect(new URL(request.nextUrl.pathname.toLowerCase(), request.url), 301)
