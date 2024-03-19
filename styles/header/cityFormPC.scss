@@ -1,5 +1,90 @@
 @import '../settings.scss';
 
+.modalVKPCMain{
+  & .MuiDialog-paper {
+    overflow: visible;
+    margin: 0 !important;
+    max-width: none !important;
+    border-radius: $MyScale38;
+
+    .MuiDialogContent-root {
+      padding: 0;
+      border-radius: $MyScale38;
+      background: linear-gradient(#ededed 0%, #ededed 25%, #fff 25%, #fff 100%);
+      width: $MyScale680;
+      height: $MyScale800;
+      overflow: hidden;
+
+      .modalCityPC {
+        margin: $MyScale60 $MyScale140 $MyScale80 $MyScale140;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & .closeButton {
+          position: absolute;
+          top: 0;
+          left: -$MyScale80;
+          padding: 0;
+          background-color: transparent;
+
+          & svg {
+            width: $MyScale60;
+            height: $MyScale60;
+            overflow: visible;
+            border-radius: $MyScale60;
+            background-color: rgba(0, 0, 0, 0.5);
+          }
+        }
+
+        & .loginIMG {
+          height: $MyScale200;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          & > img {
+            height: 100%;
+            width: auto;
+          }
+        }
+
+        & .loginHeader {
+          //height: $MyScale60;
+          width: 100%;
+          margin-bottom: $MyScale40;
+          & span {
+            @include font32_400();
+          }
+          & a {
+            @include font32_400();
+            text-decoration: underline;
+            color: rgb(82, 82, 82);
+          }
+        }
+
+        
+
+        & .buttons {
+          padding: 0;
+          width: $MyScale400;
+          height: $MyScale80;
+          border-radius: $MyScale40;
+          background-color: rgb(0, 119, 255);
+          margin-bottom: $MyScale20;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          cursor: pointer;
+          
+          @include font32_400();
+          color: #ffffff;
+          
+        }
+      }
+    }
+  }
+}
+
 .modalOpenCityPC {
   & .MuiDialog-paper {
     overflow: visible;

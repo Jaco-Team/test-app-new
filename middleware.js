@@ -1,5 +1,13 @@
 import { NextResponse } from 'next/server'
 
+function isUpperCase(str) {
+  return str === str.toUpperCase();
+}
+
+function isLowerCase(str) {
+  return str === str.toLowerCase();
+}
+
 export function middleware(request) {
   
   let checkItem = request.nextUrl.search.split('?text');
@@ -18,6 +26,10 @@ export function middleware(request) {
 
   if( checkItem[1] ){
     return NextResponse.redirect(new URL(request.nextUrl.pathname, request.url), 301)
+  }
+
+  if( !isLowerCase(request.nextUrl.pathname) ){
+    return NextResponse.redirect(new URL(request.nextUrl.pathname.toLowerCase(), request.url), 301)
   }
 
   return NextResponse.next()

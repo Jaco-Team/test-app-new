@@ -16,6 +16,9 @@ import ModalAddr from '@/modules/profile/profile/modalAddr.jsx';
 import ModalAlert from '@/modules/header/alert';
 import SelectAddress from '@/modules/header/selectAddress.js'
 
+import ModalActiveVK_pc from '@/modules/header/modalActiveVK/modalActiveVK_pc';
+import ModalActiveVK_mobile from '@/modules/header/modalActiveVK/modalActiveVK_mobile';
+
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -48,21 +51,6 @@ export default React.memo(function header({ city, city_list, cats }) {
       //console.log('getItemsCat');
     //}
 
-    
-
-    /*if (typeof window !== 'undefined') {
-      let search = window.location.search;
-                  
-      if( search.length > 0 ){
-          
-        let checkItem = search.split('?text');
-
-        if( checkItem[1] ){
-          permanentRedirect(window.location.pathname);
-        }
-      }
-    }*/
-
     checkToken();
   }, []);
 
@@ -93,6 +81,7 @@ export default React.memo(function header({ city, city_list, cats }) {
         <>
           <NavBarMobile city={city}/>
           <ModalCityMobile />
+          <ModalActiveVK_mobile />
         </>
         :
         <>
@@ -101,8 +90,10 @@ export default React.memo(function header({ city, city_list, cats }) {
           <BasketPC />
           <BasketModalPC />
           <ModalAddr />
+          <ModalActiveVK_pc />
         </>
       }
+      
       <ModalAuth city={city} />
       <ModalAlert />
       <SelectAddress />
