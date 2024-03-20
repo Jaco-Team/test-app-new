@@ -12,7 +12,7 @@ export const ItemHomePc = ({ title, img, weight, description, price, count }) =>
       <div className='BlockIMG'>
         <Image
           alt={title}
-          src={'https://cdnimg.jacofood.ru/' + img + '_732x732.jpg'}
+          src={ img.length > 0 ? 'https://cdnimg.jacofood.ru/' + img + '_732x732.jpg' : placeholder_img}
           width={732}
           height={732}
           priority={false}

@@ -37,7 +37,9 @@ export default {
 const Template = (args) => <ItemHomePc {...args} />;
 
 export const Default = Template.bind({});
+export const PlaceholderImg = Template.bind({});
 export const Active = Template.bind({});
+export const PlaceholderImgActive = Template.bind({});
 export const LongText = Template.bind({});
 
 Default.args = {
@@ -55,6 +57,22 @@ Active.args = {
   description: 'Сёрфинг запечённый, Цезарь с курицей, Цезарь с курицей запечённый, Каравелла, Ролл Жако', 
   price: '1129',
   count: '1'
+};
+PlaceholderImgActive.args = {
+  title: 'Водопад сет', 
+  img: '', 
+  weight: '5 роллов | 40 шт. | 1 311 г', 
+  description: 'Сёрфинг запечённый, Цезарь с курицей, Цезарь с курицей запечённый, Каравелла, Ролл Жако', 
+  price: '1129',
+  count: '1'
+};
+PlaceholderImg.args = {
+  title: 'Водопад сет', 
+  img: '', 
+  weight: '5 роллов | 40 шт. | 1 311 г', 
+  description: 'Сёрфинг запечённый, Цезарь с курицей, Цезарь с курицей запечённый, Каравелла, Ролл Жако', 
+  price: '1129',
+  count: '0'
 };
 LongText.args = {
   title: 'Цезарь с курицей запечённый унаги', 
