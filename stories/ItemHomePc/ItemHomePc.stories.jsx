@@ -3,7 +3,7 @@ import React from 'react';
 import { ItemHomePc } from './ItemHomePc';
 
 export default {
-  title: 'ItemHomePc',
+  title: 'Карточка товара на главной ПК',
   component: ItemHomePc,
   tags: ['autodocs'],
   argTypes: {

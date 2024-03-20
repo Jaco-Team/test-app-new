@@ -3,7 +3,7 @@ import React from 'react';
 import { MyButton } from './MyButton';
 
 export default {
-  title: 'MyButton',
+  title: 'Кнопка',
   component: MyButton,
   tags: ['autodocs'],
   argTypes: {
