@@ -1,0 +1,17 @@
+@charset "utf-8";
+
+$Roboto: var(--inter-font);
+$ColorText: rgba(0, 0, 0, 0.8);
+
+@function calcSize($size) {
+    @return calc(100 * calc($size / 2770))+vw;
+}
+
+@mixin MyFonts($size: 32, $weight: 400) {
+    font-size: calcSize($size)!important;
+    font-family: $Roboto !important;
+    color: $ColorText;
+
+    font-style: normal;
+    font-weight: $weight;
+}

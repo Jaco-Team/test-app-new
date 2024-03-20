@@ -1,0 +1,102 @@
+@import "../global";
+
+.ItemHomePc{
+    width: calcSize(600);
+    height: calcSize(984);
+    //border: 1px solid red;
+    border-radius: calcSize(32);
+
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    mix-blend-mode: multiply;
+
+    &.active{
+        background-color: rgba($color: #000000, $alpha: 0.05);
+        height: calcSize(1016);
+    }
+
+    & .BlockIMG{
+        mix-blend-mode: multiply;
+        & > img{
+            width: calcSize(600);
+            height: calcSize(600);
+            cursor: pointer;
+        }
+    }
+    
+    & .title{
+        @include MyFonts(44, 400);
+        text-align: center;
+        width: calcSize(536);
+        height: calcSize(96);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+    }
+    & .weight{
+        @include MyFonts(22, 400);
+        line-height: calcSize(64);
+        color: rgba($color: #000000, $alpha: 0.4);
+        text-align: center;
+        width: calcSize(536);
+        height: calcSize(64);
+    }
+    & .description{
+        @include MyFonts(26, 400);
+        line-height: calcSize(30);
+        color: rgba($color: #000000, $alpha: 0.6);
+        text-align: center;
+        width: calcSize(536);
+        height: calcSize(96);
+        display: -webkit-box;
+        -webkit-line-clamp: 3;
+        -webkit-box-orient: vertical;  
+        overflow: hidden;
+    }
+    & .btn_price{
+        width: calcSize(384);
+        height: calcSize(96);
+        border: 0px solid transparent;
+        border-radius: 100px;
+        background-color: rgba($color: #000000, $alpha: 0.05);
+        @include MyFonts(32, 400);
+        line-height: calcSize(40);
+        margin-top: calcSize(27);
+        cursor: pointer;
+    }
+    & .btn_count{
+        width: calcSize(384);
+        height: calcSize(96);
+        border: 0px solid transparent;
+        border-radius: 100px;
+        background-color: #fff;
+        margin-top: calcSize(27);
+        margin-bottom: calcSize(32);
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        & > span{
+            @include MyFonts(32, 400);
+            line-height: calcSize(40);
+        }
+        & button{
+            width: calcSize(80);
+            height: calcSize(80);
+            border-radius: 100px;
+            background-color: rgba($color: #000000, $alpha: 0.05);
+            border: 0px solid transparent;
+            line-height: calcSize(56);
+            cursor: pointer;
+
+            &.plus{
+                @include MyFonts(60, 400);
+                margin-right: calcSize(7);
+            }
+            &.minus{
+                @include MyFonts(44, 400);
+                margin-left: calcSize(7);
+            }
+        }
+    }
+}

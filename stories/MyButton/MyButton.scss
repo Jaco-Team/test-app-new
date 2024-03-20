@@ -1,0 +1,58 @@
+@import "../global";
+
+.MyButton{
+    border-radius: calcSize(40);
+    border: 0px solid #fff;
+
+    @include MyFonts(32, 400);
+
+    &.primary{
+        background-color: #DA1A32;
+        color: #fff;
+        & *{
+            color: #fff;
+        }
+        &:hover{
+            background-color: #C7172D;
+        }
+        &:active{
+            background-color: #B11528;
+        }
+    }
+    &.secondary{
+        background-color: #fff;
+        border: calcSize(2) solid #DA1A32;
+        color: #DA1A32;
+        & *{
+            color: #DA1A32;
+        }
+        &:hover{
+            background-color: rgba($color: #000000, $alpha: 0.05);
+            border-color: #C7172D;
+            color: #C7172D;
+            & *{
+                color: #C7172D;
+            }
+        }
+        &:active{
+            background-color: #B11528;
+            border-color: #B11528;
+            color: #fff;
+            & *{
+                color: #fff;
+            }
+        }
+    }
+    &.small{
+        width: calcSize(240);
+        height: calcSize(80);
+    }
+    &.medium{
+        width: calcSize(320);
+        height: calcSize(80);
+    }
+    &.large{
+        width: calcSize(400);
+        height: calcSize(80);
+    }
+}
