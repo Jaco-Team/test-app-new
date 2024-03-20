@@ -41,7 +41,7 @@ export default function WeOptimism() {
         style={{ width: '100%', height: 'auto' }}
       />
     
-      <p style={{ textAlign: 'center' }}>А это Наталья, менеджер кафе на Цветном (Тольятти). Всех заряжает оптимизмом!</p>
+      <p style={{ textAlign: 'center' }}>А это Наталия, менеджер кафе на Цветном (Тольятти). Всех заряжает оптимизмом!</p>
     </Grid>
   );
 }
