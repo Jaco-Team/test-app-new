@@ -63,6 +63,15 @@
     margin-bottom: $MyScale30_mobile;
     transition: all 0.1s ease 0s;
 
+    &::-webkit-scrollbar {
+      width: 0;
+      height: 0;
+      background-color: transparent;
+    }
+    &::-webkit-scrollbar-thumb {
+      background: transparent;
+    }
+
     .menuCatDop {
       width: 100%;
       display: flex;
@@ -76,6 +85,10 @@
       &::-webkit-scrollbar {
         width: 0;
         height: 0;
+        background-color: transparent;
+      }
+      &::-webkit-scrollbar-thumb {
+        background: transparent;
       }
 
       .CatDop {
