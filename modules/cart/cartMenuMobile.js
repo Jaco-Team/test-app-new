@@ -41,12 +41,6 @@ export default function CartMenuMobile({ cityName }) {
     if (nameList === 'point') {
       let points = pointList.filter((point) => point.name_ru === thisCityRu);
 
-      // для тестирования, пока нет в данных
-      points = points.map((city) => {
-        city.raion = 'Промышленный р-н';
-        return city;
-      });
-
       points.push({ name: 'Выбрать на карте', id: points.length + 1 });
 
       setId(orderPic?.id);

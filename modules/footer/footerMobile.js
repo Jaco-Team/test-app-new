@@ -14,13 +14,12 @@ export default function FooterMobile({ cityName, active_page }) {
 
   const [cookie, setCookie] = useState(true);
   const [showArrow, setShowArrow] = useState(false);
-  //const [orders, setOrders] = useState(null);
+  
 
   const [itemsCount, allPrice, allPriceWithoutPromo] = useCartStore((state) => [state.itemsCount, state.allPrice, state.allPriceWithoutPromo]);
-  //const [orderList, getOrder] = useProfileStore((state) => [state.orderList, state.getOrder]);
   const [links] = useFooterStore((state) => [state.links]);
 
-  //const [ token ] = useHeaderStore( state => [ state.token ]);
+  const [ isAuth, setActiveModalAuth ] = useHeaderStore( state => [ state.isAuth, state.setActiveModalAuth ]);
 
   const handlerArrow = () => setShowArrow(window.scrollY > 50);
 
@@ -41,42 +40,12 @@ export default function FooterMobile({ cityName, active_page }) {
     if (!localStorage.getItem('setCookie') && !localStorage.getItem('setCookie')?.length) setCookie(false);
   }, []);
 
-  /*useEffect(() => {
-    const orders = orderList[0]?.orders?.filter(order => parseInt(order.type_status) === 1 || parseInt(order.type_status) === 2 || parseInt(order.type_status) === 3);
-
-    if(orders?.length) {
-      setOrders(orders);
+  function openBasketMobile(event){
+    if( isAuth != 'auth' ){
+      event.preventDefault();
+      setActiveModalAuth(true);
     }
-
-  }, [orderList]);*/
-
-  /**
-   * 
-   * {!orders || active_page !== 'home' ? null :
-        orders.length === 1 ?
-        <div className='ordersFooter' style={{ bottom: !cookie && showArrow || !cookie && itemsCount ? '50.769230769231vw' : showArrow || itemsCount ? '17.094017094017vw' : cookie ? '3.4188034188034vw' : '37.094017094017vw' }}>
-          <div className='ordersSpan'>
-            <span>Заказ {orders[0]?.status_order} №{orders[0]?.order_id}</span>
-            <span>В 16:00—16:40 доставим</span>
-          </div>
-          <div className='divBTN' onClick={() => getOrder('zakazy', cityName, token, orders[0]?.order_id, orders[0]?.point_id)}>
-            Открыть
-          </div>
-        </div>
-        :
-        <div className='containerOrders' style={{ bottom: !cookie && showArrow || !cookie && itemsCount ? '42.222222222222vw' : showArrow || itemsCount ? '8.5470085470085vw' :       cookie ? '-5.1282051282051vw' : '28.547008547009vw' }}>
-          <div className='ordersArray'>
-            {orders?.map((order, key) => (
-              <div className='orders' key={key} style={{ marginRight: order === orders?.at(-1) ? '3.4188034188034vw' : null}}>
-                <span>Заказ {order.status_order} №{key + 1}</span>
-                <span>В 16:00—16:40 доставим</span>
-                <span onClick={() => getOrder('zakazy', cityName, token, orders[0]?.order_id, orders[0]?.point_id)}>Открыть</span>
-              </div>
-            ))}
-          </div>
-        </div>
-      }
-   */
+  }
 
   return (
     <>
@@ -88,7 +57,7 @@ export default function FooterMobile({ cityName, active_page }) {
                  left: itemsCount && active_page === 'home' ? '32.051282051282vw' : '86.324786324786vw', 
                  marginTop: active_page === 'home' ? '3.4188034188034vw' : null }}>
 
-        <Link href={'/' + cityName + '/cart'} className={itemsCount && active_page === 'home' ? 'BasketFooterMobile' : 'BasketFooterMobileHidden'} >
+        <Link href={'/' + cityName + '/cart'} onClick={openBasketMobile} className={itemsCount && active_page === 'home' ? 'BasketFooterMobile' : 'BasketFooterMobileHidden'} >
           <span><BasketFooterMobile /></span>
           <span>{new Intl.NumberFormat('ru-RU').format(allPrice ? allPrice : allPriceWithoutPromo)} ₽</span>
         </Link>

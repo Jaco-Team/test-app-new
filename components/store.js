@@ -15,7 +15,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   //itemsOnDops: [],
   itemsOffDops: [],
   itemsWithPromo: [],
-
+  
   allItems: [],
   freeItems: [],
   needDops: [],
@@ -3152,6 +3152,8 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     };
 
     const json = await api(this_module, data);
+
+    //console.table(json.items)
 
     set({
       CatsItems: json.items,
