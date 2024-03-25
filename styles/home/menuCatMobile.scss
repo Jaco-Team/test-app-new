@@ -63,10 +63,14 @@
     margin-bottom: $MyScale30_mobile;
     transition: all 0.1s ease 0s;
 
+    scrollbar-width: none; /* Firefox */
+    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+
     &::-webkit-scrollbar {
       width: 0;
       height: 0;
       background-color: transparent;
+      display: none;
     }
     &::-webkit-scrollbar-thumb {
       background: transparent;
@@ -86,6 +90,7 @@
         width: 0;
         height: 0;
         background-color: transparent;
+        display: none;
       }
       &::-webkit-scrollbar-thumb {
         background: transparent;
