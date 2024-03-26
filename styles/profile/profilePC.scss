@@ -121,6 +121,9 @@
                         padding-left: $MyScale40;
                         @include font30_400();
                     }
+                    & > input[readonly]{
+                        cursor: default;
+                    }
                 }
                 & fieldset{
                     border-radius: $MyScale80;

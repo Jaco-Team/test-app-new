@@ -122,11 +122,11 @@ export default function ProfileMobile({ city, this_module }) {
           />
           <EditPencilMobile />
         </div>
-        <div className="dataItem profileMain" onClick={() => setActiveProfileModal(true, 'phone')}>
+        <div className="dataItem profileMain" /*onClick={() => setActiveProfileModal(true, 'phone')}*/>
           <span className="itemSpan">{userInfo?.login ?? ''}</span>
           <LockMobile />
         </div>
-        <div className="dataItem profileMain" onClick={() => userDate ? setActiveProfileModal(true, 'date_change') : setActiveProfileModal(true, 'date_first')}>
+        <div className="dataItem profileMain" onClick={() => userDate ? /*setActiveProfileModal(true, 'date_change')*/ () => {} : setActiveProfileModal(true, 'date_first')}>
           <span className={userDate ? 'itemSpan' : 'itemSpan notDate'}>
             {userDate ? userDate : 'Дата рождения'}
           </span>

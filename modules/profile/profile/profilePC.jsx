@@ -184,6 +184,7 @@ export default function ProfilePC({ page, this_module, city }){
                       readOnly={true}
                       func={onChange}
                       value={value}
+                      style={{ cursor: 'default' }}
                     />
                   )}
                   name="login"
