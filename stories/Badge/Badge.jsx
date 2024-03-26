@@ -6,7 +6,9 @@ const arrColor = {
   sale: { color: '#DB0021', text: 'скидка' }, 
 }
 
-export default function BadgeItem({size, view, type}) {
+import './Badge.scss';
+
+export const Badge = ({size, view, type}) => {
   return (
     <div className={'badge container '+view }>
       <div className={'shadow '+size} />

@@ -1,0 +1,15 @@
+@import '../global';
+
+.closeBTN {
+  position: absolute !important;
+  padding: 0 !important;
+  background-color: transparent !important;
+
+  & svg {
+    width: calcSize(60);
+    height: calcSize(60);
+    overflow: visible;
+    border-radius: calcSize(60);
+    background-color: rgba(0, 0, 0, 0.5);
+  }
+}

@@ -1,32 +1,32 @@
-@import "../global";
+@import '../global';
 
-.MyCatLink{
-    width: calcSize(192);
-    height: calcSize(64);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    cursor: pointer;
-    border: 0 solid transparent;
+.MyCatLink {
+  width: calcSize(192);
+  height: calcSize(64);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  cursor: pointer;
+  border: 0 solid transparent;
 
-    @include MyFonts(32, 400);
+  @include MyFonts(32, 400);
 
-    &.bordered{
-        width: calcSize(190);
-        height: calcSize(62);
-        border-radius: calcSize(40);
-        border: calcSize(1) solid rgba($color: #000000, $alpha: 0.2);
+  &.bordered {
+    width: calcSize(190);
+    height: calcSize(62);
+    border-radius: calcSize(40);
+    border: calcSize(1) solid rgba($color: #000000, $alpha: 0.2);
+  }
+  &:hover {
+    color: #da1a32;
+    &.bordered {
+      border-color: #da1a32;
     }
-    &:hover{
-        color: #DA1A32;
-        &.bordered{
-            border-color: #DA1A32;
-        }
+  }
+  &:active {
+    color: #c7172d;
+    &.bordered {
+      border-color: #c7172d;
     }
-    &:active{
-        color: #C7172D;
-        &.bordered{
-            border-color: #C7172D;
-        }
-    }
+  }
 }

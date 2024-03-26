@@ -1,0 +1,13 @@
+@import '../global';
+
+.homePC {
+  min-height: 50vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .containerBanner {
+    width: calcSize(2520);
+    margin-top: calcSize(128);
+  }
+}

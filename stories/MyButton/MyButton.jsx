@@ -1,13 +1,12 @@
 import React from 'react';
 import PropTypes from 'prop-types';
 import './MyButton.scss';
-import { roboto } from '../Font.js'
 
 export const MyButton = ({ variant, size, children, ...props }) => {
   return (
     <button
       type="button"
-      className={[roboto.variable, 'MyButton', variant, size].join(' ')}
+      className={['MyButton', variant, size].join(' ')}
       {...props}
     >
       {children}

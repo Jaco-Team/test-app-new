@@ -1,0 +1,11 @@
+@import '../global';
+
+.bannerIMG {
+  & img {
+    border-radius: calcSize(32);
+    object-fit: contain;
+    image-rendering: auto;
+    width: 100%;
+    height: auto;
+  }
+}
