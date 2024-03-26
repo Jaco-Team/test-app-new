@@ -17,6 +17,8 @@
     "@dietime/react-native-date-picker": "^1.2.1",
     "@emotion/react": "^11.11.4",
     "@emotion/styled": "^11.11.0",
+    "@fontsource/material-icons": "^5.0.16",
+    "@fontsource/roboto": "^5.0.12",
     "@million/lint": "^0.0.73",
     "@mui/icons-material": "^5.15.14",
     "@mui/material": "^5.15.14",
@@ -53,18 +55,19 @@
     "zustand": "^4.5.2"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^1.2.23",
-    "@storybook/addon-essentials": "^8.0.2",
-    "@storybook/addon-interactions": "^8.0.2",
-    "@storybook/addon-links": "^8.0.2",
-    "@storybook/addon-onboarding": "^8.0.2",
-    "@storybook/blocks": "^8.0.2",
-    "@storybook/nextjs": "^8.0.2",
-    "@storybook/react": "^8.0.2",
-    "@storybook/test": "^8.0.2",
+    "@chromatic-com/storybook": "^1.2.25",
+    "@storybook/addon-essentials": "^8.0.4",
+    "@storybook/addon-interactions": "^8.0.4",
+    "@storybook/addon-links": "^8.0.4",
+    "@storybook/addon-onboarding": "^8.0.4",
+    "@storybook/addon-themes": "^8.0.4",
+    "@storybook/blocks": "^8.0.4",
+    "@storybook/nextjs": "^8.0.4",
+    "@storybook/react": "^8.0.4",
+    "@storybook/test": "^8.0.4",
     "eslint": "8.57.0",
     "eslint-config-next": "14.1.4",
     "eslint-plugin-storybook": "^0.8.0",
-    "storybook": "^8.0.2"
+    "storybook": "^8.0.4"
   }
 }

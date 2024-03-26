@@ -2,16 +2,23 @@
 
 $Roboto: var(--inter-font);
 $ColorText: rgba(0, 0, 0, 0.8);
+$ColorMain: #cc0033;
 
 @function calcSize($size) {
-    @return calc(100 * calc($size / 2770))+vw;
+  @return calc(100 * calc($size / 2770)) + vw;
 }
 
 @mixin MyFonts($size: 32, $weight: 400) {
-    font-size: calcSize($size)!important;
-    font-family: $Roboto !important;
-    color: $ColorText;
+  font-size: calcSize($size) !important;
+  font-family: $Roboto !important;
+  color: $ColorText;
 
-    font-style: normal;
-    font-weight: $weight;
+  font-style: normal;
+  font-weight: $weight;
+}
+
+@mixin fonsNew($size: 1rem, $family: $Roboto) {
+  font-size: $size !important;
+  font-family: $family !important;
+  color: $ColorText;
 }

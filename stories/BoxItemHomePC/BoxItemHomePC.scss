@@ -1,0 +1,13 @@
+@import '../global';
+
+.containerItemHomePC {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: space-between;
+  width: calcSize(2520);
+  align-items: center;
+  margin: 0 calcSize(125);
+  margin-top: calcSize(32);
+  margin-bottom: calcSize(60);
+  row-gap: calcSize(32);
+}

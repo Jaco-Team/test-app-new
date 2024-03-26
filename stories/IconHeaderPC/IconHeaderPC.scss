@@ -1,0 +1,53 @@
+@import '../global';
+
+.IconHeaderPC {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calcSize(48);
+  height: calcSize(48);
+  border-radius: calcSize(48);
+  margin-right: calcSize(48);
+  cursor: pointer;
+
+  & .cart {
+    width: calcSize(41.8);
+    height: calcSize(34.88);
+
+    fill: $ColorMain;
+    & path {
+      fill: $ColorMain !important;
+      stroke: $ColorMain;
+      stroke-opacity: 0.1;
+    }
+  }
+  & .profile {
+    width: calcSize(30);
+    height: calcSize(28.53);
+  }
+  & .docs {
+    width: calcSize(38.49);
+    height: calcSize(34.49);
+  }
+  & .location {
+    width: calcSize(30.19);
+    height: calcSize(38.02);
+  }
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.05);
+    outline: rgba(0, 0, 0, 0.05) calcSize(16) solid;
+    outline-offset: 0;
+  }
+  &:active {
+    background-color: rgba(0, 0, 0, 0.1);
+    outline: rgba(0, 0, 0, 0.1) calcSize(16) solid;
+    outline-offset: 0;
+  }
+}
+
+.active {
+  background-color: rgba(0, 0, 0, 0.05);
+  outline: rgba(0, 0, 0, 0.05) calcSize(16) solid;
+  outline-offset: 0;
+}

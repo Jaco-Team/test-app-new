@@ -3,16 +3,18 @@ import PropTypes from 'prop-types';
 import Image from 'next/image';
 
 import './ItemHomePc.scss';
-import { roboto } from '../Font.js'
-import {placeholder_img} from '@/public/placeholder_img';
+import { placeholder_img } from '@/public/placeholder_img';
+import { Badge } from '../Badge/Badge';
 
-export const ItemHomePc = ({ title, img, weight, description, price, count }) => {
+export const ItemHomePc = ({title, img, weight, description, price, count, is_new, is_hit}) => {
   return (
-    <div className={[roboto.variable, 'ItemHomePc', ( parseInt(count) > 0 ? 'active' : '' )].join(' ')}>
-      <div className='BlockIMG'>
+    <div
+      className={['ItemHomePc', parseInt(count) > 0 ? 'active' : ''].join(' ')}
+    >
+      <div className="BlockIMG">
         <Image
           alt={title}
-          src={ img.length > 0 ? 'https://cdnimg.jacofood.ru/' + img + '_732x732.jpg' : placeholder_img}
+          src={img.length > 0 ? 'https://cdnimg.jacofood.ru/' + img + '_732x732.jpg' : placeholder_img}
           width={732}
           height={732}
           priority={false}
@@ -23,20 +25,27 @@ export const ItemHomePc = ({ title, img, weight, description, price, count }) =>
           blurDataURL={placeholder_img}
         />
 
-        
+        {parseInt(is_new) == 0 ? parseInt(is_hit) == 0 ? null : (
+            <Badge size={'big'} type={'hit'} view={'pc'} />
+          ) : (
+            <Badge size={'big'} type={'new'} view={'pc'} />
+        )}
+
       </div>
-      <span className='title'>{title}</span>
-      <span className='weight'>{weight}</span>
-      <span className='description'>{description}</span>
-      { parseInt(count) > 0 ? 
-        <div className='btn_count'>
+      <span className="title">{title}</span>
+      <span className="weight">{weight}</span>
+      <span className="description">{description}</span>
+      {parseInt(count) > 0 ? (
+        <div className="btn_count">
           <button className="minus">–</button>
           <span>{count}</span>
-          <button className="plus">+</button>  
+          <button className="plus">+</button>
         </div>
-          :
-        <button className='btn_price'>{new Intl.NumberFormat('ru-RU').format(price)} ₽</button>
-      }
+      ) : (
+        <button className="btn_price">
+          {new Intl.NumberFormat('ru-RU').format(price)} ₽
+        </button>
+      )}
     </div>
   );
 };
@@ -48,4 +57,6 @@ ItemHomePc.propTypes = {
   description: PropTypes.string.isRequired,
   price: PropTypes.string.isRequired,
   count: PropTypes.string.isRequired,
+  is_new: PropTypes.string.isRequired,
+  is_hit: PropTypes.string.isRequired,
 };
