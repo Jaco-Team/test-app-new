@@ -15,6 +15,8 @@ import Dialog from '@mui/material/Dialog';
 import Box from '@mui/material/Box';
 import Backdrop from '@mui/material/Backdrop';
 
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+
 import Stack from '@mui/material/Stack';
 import { SwitchAuthPC as MySwitchPC } from '@/ui/MySwitch.js';
 import { SwitchAuthMobile as MySwitchMobile } from '@/ui/MySwitch.js';
@@ -66,6 +68,52 @@ export default function ModalAuth({ city }) {
   }
 
   const login = typeLogin === 'loginSMSCode' ? 'Проверочный код' : typeLogin === 'resetPWD' ? 'Новый пароль' : typeLogin === 'createPWD' ? 'Придумайте пароль' : typeLogin === 'finish' ? 'Всё получилось!' : typeLogin === 'loginSMS' ? 'Вход по СМС' : 'Авторизация';
+
+  if( matches ){
+    return (
+      <SwipeableDrawer
+        anchor={'bottom'}
+        open={openAuthModal}
+        onClose={closeModal}
+        onOpen={() => {}}
+        className={'modalAuthMobile ' + roboto.variable}
+        disableSwipeToOpen
+      >
+        <Fade in={openAuthModal} style={{ overflow: matches ? 'auto' : 'hidden' }}>
+          <Box className={matches ? 'ContainerModalAuthMobile' : 'ContainerModalAuthPC'}>
+
+            {matches ? (
+              <div className="Line" />
+            ) : (
+              <IconButton className="closeButton" onClick={closeModal}>
+                <IconClose />
+              </IconButton>
+            )}
+
+            <div className="authLogin">{login}</div>
+
+            {typeLogin === 'start' || typeLogin === 'create' ?
+                <Stack className='stack'>
+                  {matches ?
+                    <MySwitchMobile onClick={(event) => changeForm(event.target.checked)} checked={form} />
+                    :
+                    <MySwitchPC onClick={(event) => changeForm(event.target.checked)} checked={form} />
+                  }
+                </Stack>
+            : null}
+
+            {typeLogin === 'start' ? <Start /> : null}
+            {typeLogin === 'resetPWD' ? <ResetPWD /> : null}
+            {typeLogin === 'loginSMS' ? <LoginSMS /> : null}
+            {typeLogin === 'create' ? <Create city={city} closeModal={closeModal} /> : null}
+            {typeLogin === 'loginSMSCode' ? <LoginSMSCode /> : null}
+            {typeLogin === 'finish' ? <Finish closeModal={closeModal} /> : null}
+
+          </Box>
+        </Fade>
+      </SwipeableDrawer>
+    )
+  }
 
   return (
     <Dialog

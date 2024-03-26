@@ -93,7 +93,7 @@ export default function Create({ city, closeModal }) {
             <span onClick={() => setCheckPolitika(!checkPolitika)} style={{ backgroundColor: loginLogin.length === 11 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)'}}></span>
           )}
           <Typography component="span" onClick={closeModal}>
-            Согласен с{' '}<Link href={'/' + city + '/politika-konfidencialnosti'}>условиями сбора и обработки персональных данных</Link>
+            Согласен с{' '}<Link href={'/' + city + '/legal'}>условиями сбора и обработки персональных данных</Link>
           </Typography>
         </div>
 

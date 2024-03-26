@@ -2757,7 +2757,12 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
         get().logIn();
       }
       if (parseInt(type) == 2) {
-        get().createProfile();
+        get().navigate('loginSMSCode');
+        get().setTimer(89);
+
+        setTimeout( () => {
+          get().createProfile();
+        }, 300)
       }
 
       if (parseInt(type) == 3) {
@@ -2970,9 +2975,11 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       });
     }
 
-    set({
-      doubleClickSMS: false
-    })
+    setTimeout(() => {
+      set({
+        doubleClickSMS: false
+      })
+    }, 300);
   },
 
   // защита
@@ -3013,9 +3020,11 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       });
     }
 
-    set({
-      doubleClickSMS: false
-    })
+    setTimeout(() => {
+      set({
+        doubleClickSMS: false
+      })
+    }, 300);
   },
 
   getYandexLinkAuth: async(city) => {
