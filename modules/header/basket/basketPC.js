@@ -17,7 +17,7 @@ export default function BasketPC() {
 
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
   const [getInfoPromo, checkPromo, allPrice, promoInfo, promoItemsFind, itemsCount, setActiveModalBasket] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice, state.promoInfo, state.promoItemsFind, state.itemsCount, state.setActiveModalBasket]);
-  const [openBasket, setActiveBasket, targetBasket] = useHeaderStore((state) => [state.openBasket, state.setActiveBasket, state.targetBasket]);
+  const [openBasket, setActiveBasket, targetBasket, isAuth, setActiveModalAuth] = useHeaderStore((state) => [state.openBasket, state.setActiveBasket, state.targetBasket, state.isAuth, state.setActiveModalAuth]);
   
   useEffect(() => {
     if (localStorage.getItem('promo_name') && localStorage.getItem('promo_name').length > 0) {
@@ -26,6 +26,18 @@ export default function BasketPC() {
   }, [promoInfo]);
 
   const listenScrollEvent = (event) => setScrollBasket(event.target.scrollTop);
+
+  function openBasketModal(){
+    if( isAuth == 'auth' ){
+      setActiveModalBasket(true); 
+      setActiveBasket(false); 
+      setScrollBasket(0);
+    }else{
+      setActiveBasket(false); 
+      setScrollBasket(0);
+      setActiveModalAuth(true);
+    }
+  }
 
   return (
     <>
@@ -66,20 +78,13 @@ export default function BasketPC() {
           </div>
 
           <div className="InCart">
-            {/* {itemsStore.getToken() !== null ?
-              <Link to={'/' + itemsStore.getCity() + '/cart'} exact={true} style={{ textDecoration: 'none' }} onClick={this.handleClose.bind(this)}>
-                  <Button variant="contained">Оформить заказ</Button>
-              </Link>
-             : */}
             <Button
               variant="contained"
               disabled={!itemsCount}
-              //onClick={this.props.openLogin}
-              onClick={() => { setActiveModalBasket(true); setActiveBasket(false); setScrollBasket(0) }}
+              onClick={openBasketModal}
             >
               <span>Оформить заказ</span>
             </Button>
-            {/* } */}
           </div>
 
         </div>

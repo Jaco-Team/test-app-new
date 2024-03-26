@@ -1,9 +1,11 @@
-import { useProfileStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStore, useCitiesStore } from '@/components/store.js';
 
 import Button from '@mui/material/Button';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import { roboto } from '@/ui/Font.js';
+
+import { useRouter } from 'next/router';
 
 //import { CheckAccountColor } from '@/ui/Icons.js';
 
@@ -26,6 +28,10 @@ export default function AccountModalMobile() {
   //const [value, setValue] = useState('');
 
   const [openModalAccount, setActiveAccountModal, userInfo] = useProfileStore((state) => [state.openModalAccount, state.setActiveAccountModal, state.userInfo]);
+  const [ signOut ] = useHeaderStore( state => [ state.signOut ] )
+  const [ thisCity ] = useCitiesStore( state => [ state.thisCity ] )
+
+  const { push } = useRouter();
 
   // useEffect(() => {
   //   const color = colorList.find(color => color.id === colorAccount.id)
@@ -77,9 +83,7 @@ export default function AccountModalMobile() {
           <Button className="buttonModalClose" variant="contained" onClick={() => setActiveAccountModal(false, null)}>
             <span>Остаться</span>
           </Button>
-          <Button className="buttonModalExit" variant="outlined" 
-          //onClick={}
-          >
+          <Button className="buttonModalExit" variant="outlined" onClick={ () => { signOut(thisCity); push(`/${thisCity}`); } }>
             <span>Выйти</span>
           </Button>
         </>

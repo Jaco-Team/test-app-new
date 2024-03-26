@@ -27,6 +27,8 @@ import { useHeaderStore, useHomeStore } from './store.js';
 //import { permanentRedirect } from 'next/navigation'
 //import { redirect } from 'next/navigation'
 
+import { usePathname } from 'next/navigation'
+
 export default React.memo(function header({ city, city_list, cats }) {
   
   let thisCityRU = '';
@@ -36,6 +38,10 @@ export default React.memo(function header({ city, city_list, cats }) {
   }else{
     return ;
   }
+
+  const pathname = usePathname()
+
+  //console.log( 'pathname', pathname );
 
   //const matchesDev = false;
   //const matchesDev = useMediaQuery('screen and (max-width: 1170px)');

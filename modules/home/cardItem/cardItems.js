@@ -10,8 +10,18 @@ import CardItemMobile from './cardItemMobile.js';
 import * as Scroll from 'react-scroll';
 var scroller = Scroll.scroller;
 
+import { usePathname } from 'next/navigation'
+
 export default React.memo(function CatItems() {
   const [cats, setCats] = useState([]);
+
+  const pathname = usePathname();
+  let catygory = '';
+
+  if(pathname.split('menu/')[1] && pathname.split('menu/')[1].length > 0) {
+    catygory = pathname.split('menu/')[1];
+  }
+
 
   const [CatsItems] = useHomeStore((state) => [state.CatsItems]);
   const [items] = useCartStore((state) => [state.items]);
@@ -64,8 +74,16 @@ export default React.memo(function CatItems() {
 
   if (cats.length == 0) return <div style={{ height: 1000 }} />;
 
+  let newCats = [];
+
+  if( catygory.length > 0 ) {
+    newCats = cats.filter( item => item.link == catygory || item.main_link == catygory );
+  }else{
+    newCats = cats
+  }
+
   if (matches) {
-    return cats.map((cat, key) => (
+    return newCats.map((cat, key) => (
       <Grid
         container
         spacing={2}
@@ -79,7 +97,7 @@ export default React.memo(function CatItems() {
     ));
   }
     
-  return cats.map((cat, key) => (
+  return newCats.map((cat, key) => (
     <Grid
       container
       spacing={2}
@@ -95,7 +113,7 @@ export default React.memo(function CatItems() {
             'important'
           );
         }
-        if (node && cat === cats.at(-1)) {
+        if (node && cat === newCats.at(-1)) {
           node.style.setProperty(
             'margin-bottom',
             '2.1660649819495vw',
