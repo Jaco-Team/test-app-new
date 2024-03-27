@@ -13,10 +13,10 @@ import Button from '@mui/material/Button';
 
 export default function BasketPC() {
   const [promo, setPromo] = useState('');
-  const [scrollBasket, setScrollBasket] = useState(0);
+  //const [scrollBasket, setScrollBasket] = useState(0);
 
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
-  const [getInfoPromo, checkPromo, allPrice, promoInfo, promoItemsFind, itemsCount, setActiveModalBasket] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice, state.promoInfo, state.promoItemsFind, state.itemsCount, state.setActiveModalBasket]);
+  const [getInfoPromo, checkPromo, allPrice, allPriceWithoutPromo, promoInfo, promoItemsFind, itemsCount, setActiveModalBasket] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice, state.allPriceWithoutPromo, state.promoInfo, state.promoItemsFind, state.itemsCount, state.setActiveModalBasket]);
   const [openBasket, setActiveBasket, targetBasket, isAuth, setActiveModalAuth] = useHeaderStore((state) => [state.openBasket, state.setActiveBasket, state.targetBasket, state.isAuth, state.setActiveModalAuth]);
   
   useEffect(() => {
@@ -25,16 +25,16 @@ export default function BasketPC() {
     }
   }, [promoInfo]);
 
-  const listenScrollEvent = (event) => setScrollBasket(event.target.scrollTop);
+  //const listenScrollEvent = (event) => setScrollBasket(event.target.scrollTop);
 
   function openBasketModal(){
     if( isAuth == 'auth' ){
       setActiveModalBasket(true); 
       setActiveBasket(false); 
-      setScrollBasket(0);
+      //setScrollBasket(0);
     }else{
       setActiveBasket(false); 
-      setScrollBasket(0);
+      //setScrollBasket(0);
       setActiveModalAuth(true);
     }
   }
@@ -45,13 +45,13 @@ export default function BasketPC() {
         id="simple-popover"
         open={openBasket}
         anchorEl={targetBasket}
-        onClose={() => { setActiveBasket(false); setScrollBasket(0) }}
+        onClose={() => setActiveBasket(false) }
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         marginThreshold={0}
         className={roboto.variable}
       >
-        <div onScroll={listenScrollEvent}>
+        <div>
 
           <TablePC />
 
@@ -89,7 +89,7 @@ export default function BasketPC() {
 
         </div>
       </Popover>
-      {scrollBasket ? <div className="blockShadowBasket" /> : null}
+      { openBasket ? <div className="blockShadowBasket" /> : false }
     </>
   );
 }

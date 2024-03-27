@@ -1077,7 +1077,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       const json = await api('cart', data);
 
       set({
-        promoInfo: json
+        promoInfo: json,
+        allPrice: 0,
+        allPriceWithoutPromo: null, 
       })
       
       localStorage.setItem('promo_name', promoName)

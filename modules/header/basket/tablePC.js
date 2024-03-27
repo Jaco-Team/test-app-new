@@ -15,6 +15,9 @@ export default function TablePC() {
     return (array = array || ['позиция', 'позиции', 'позиций']) && array[(int % 100 > 4 && int % 100 < 20) ? 2 : [2, 0, 1, 1, 1, 2][(int % 10 < 5) ? int % 10 : 5]];
   }
 
+  let price1 = itemsOffDops.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
+  let price2 = dopListCart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
+
   return (
     <table className="TableMini">
       <tbody>
@@ -43,7 +46,7 @@ export default function TablePC() {
           <td>Итого: {itemsCount} {getWord(itemsCount)}</td>
           <td>
           <div className={promoInfo?.items_on_price?.length ? promoItemsFind ? 'promoInfo' : null : promoInfo?.status_promo && itemsOffDops.length ? 'promoInfo' : null}>
-            {new Intl.NumberFormat('ru-RU').format(allPriceWithoutPromo)} ₽
+            {new Intl.NumberFormat('ru-RU').format( parseInt( price1 ) + parseInt( price2 ) )} ₽
           </div>
           </td>
         </tr>
