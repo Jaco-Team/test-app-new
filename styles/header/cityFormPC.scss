@@ -77,7 +77,7 @@
           cursor: pointer;
           
           @include font32_400();
-          color: #ffffff;
+          color: #ffffff!important;
           
         }
       }
@@ -172,9 +172,15 @@
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          & span {
+          &:not(.choose) > span {
             @include font30_400();
-            color: #ffffff;
+            color: #ffffff!important;
+            &:first-letter {
+              text-transform: uppercase;
+            }
+          }
+          &.choose > span {
+            @include font30_400();
             &:first-letter {
               text-transform: uppercase;
             }

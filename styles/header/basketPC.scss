@@ -320,7 +320,7 @@
       cursor: pointer;
       & span {
         @include font30_400();
-        color: #ffffff;
+        color: #ffffff!important;
         &:first-letter {
           text-transform: uppercase;
         }

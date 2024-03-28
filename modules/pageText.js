@@ -16,8 +16,9 @@ export default function PageText({ page, classNamePC, classNameMobile, cityName 
   return (
     <Meta title={page.title} description={page.description}>
       <Grid container>
-        <Grid item className={matches ? classNameMobile : classNamePC} style={{ minHeight: activePage === 'jobs' ? '50vh' : null }}>
-        {!matches ? null : <Link href={'/' + cityName + '/document' } className='arrow'><ArrowLeftMobile /></Link>}
+        <Grid item className={matches ? classNameMobile ?? classNamePC : classNamePC} style={{ minHeight: activePage === 'jobs' ? '50vh' : null }}>
+          {!matches ? null : <Link href={'/' + cityName + '/document' } className='arrow'><ArrowLeftMobile /></Link>}
+
           <Grid item xs={12} style={{ paddingBottom: 15 }}>
             <Typography variant="h5" component="h1">
               {page ? page.page_h : ''}

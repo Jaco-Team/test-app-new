@@ -138,8 +138,8 @@ export function IconInfo(props) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"
-      width="48"
-      height="48"
+      //width="48"
+      //height="48"
       viewBox="0 -960 960 960"
       {...props}
     >

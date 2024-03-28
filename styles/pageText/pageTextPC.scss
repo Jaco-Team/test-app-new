@@ -1,7 +1,79 @@
 @import '../settings';
 
 .PageTextPC {
-  width: $MyScale1560 !important;
+  margin-top: 64px!important;
+    z-index: 3;
+    mix-blend-mode: multiply;
+
+    & img{
+        border-radius: $MyScale20;
+    }
+    & a{
+        text-decoration: none;
+        color: $colorMain;
+    }
+
+    & h2{
+        padding-top: $MyScale10;
+    }
+
+    @media (min-width: 961px) {
+        margin-top: $MyScale380!important;
+        margin-bottom: 140px!important;
+        padding-top: 0px!important;
+
+        margin-left: $MyScale125!important;
+        width: $MyScale1560!important;
+        padding-left: 0px!important;
+
+        
+        & h1, h2{
+            @include font75_700();
+            text-align: start;
+            width: 100%;
+            font-weight: 600;
+        }
+        & p, li, span{
+            @include font30_400();
+            line-height: 1.5;
+        }
+        & strong {
+          @include font40_500();
+        }
+    }
+    @media (max-width: 960px) {
+        margin-top: $MyScale100_mobile!important;
+        margin-bottom: 64px; 
+        margin-left: $MyScale100_mobile;
+        width: $MyScale970_mobile;
+
+        & h1, h2{
+            @include font75_700();
+            text-align: start;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        & p, li, a{
+            @include font35_400();
+        }
+        & strong {
+          @include font40_500();
+        }
+        & p, li, span{
+            line-height: 1.5;
+        }
+        & a{
+            color: $colorMain;
+            line-height: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            //display: table;
+            text-decoration: none;
+        }
+    }
+
+  /*width: $MyScale1560 !important;
   margin-top: $MyScale280 !important;
   margin-bottom: $MyScale140 !important;
   margin-left: $MyScale125 !important;
@@ -30,5 +102,5 @@
     & span {
       @include font30_400();
     }
-  }
+  }*/
 }

@@ -95,8 +95,8 @@
     }
     & > div:first-child {
       height: $MyScale120;
-      border-top: 4px solid rgba(0, 0, 0, 0.8);
-      border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+      border-top: $MyScale4 solid rgba(0, 0, 0, 0.8);
+      border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.2);
       display: flex;
       align-items: center;
       & > .order_num {
@@ -106,7 +106,7 @@
     }
     & > div:last-child {
       min-height: $MyScale120;
-      border-bottom: 4px solid rgba(0, 0, 0, 0.8);
+      border-bottom: $MyScale4 solid rgba(0, 0, 0, 0.8);
       display: flex;
       //align-items: center;
       justify-content: space-between;
@@ -149,7 +149,7 @@
       display: flex;
       flex-direction: row;
       align-items: center;
-      border-bottom: 2px solid rgba(0, 0, 0, 0.2);
+      border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.2);
     }
     & > .table_header {
       padding-top: $MyScale60;
@@ -195,8 +195,8 @@
     & > div {
       height: $MyScale80;
       width: $MyScale400;
-      border-radius: $MyScale40;
-      border: 3px solid $colorMain;
+      border-radius: $MyScale60;
+      border: $MyScale3 solid $colorMain;
       text-align: center;
       display: flex;
       justify-content: center;
@@ -204,7 +204,7 @@
       cursor: pointer;
       & > span {
         @include font30_400();
-        color: $colorMain;
+        color: $colorMain!important;
       }
     }
   }

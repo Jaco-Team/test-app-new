@@ -50,7 +50,7 @@ export default function ContactsPagePC() {
   }, [zones])
 
   return (
-    <Box className="Contact_" sx={{ display: { xs: 'none', md: 'none', lg: 'block' } }}>
+    <Box className="Contact_">
       <div className="Contact">
         <Button className="chooseCity" onClick={(event) => setAnchorEl(event.currentTarget)} endIcon={<KeyboardArrowDownIcon />}>
           <Typography variant="h5" component="span">

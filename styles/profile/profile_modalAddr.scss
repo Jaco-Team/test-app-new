@@ -237,7 +237,7 @@
           cursor: pointer;
           & > span {
             @include font30_400();
-            color: #fff;
+            color: #fff!important;
           }
         }
       }

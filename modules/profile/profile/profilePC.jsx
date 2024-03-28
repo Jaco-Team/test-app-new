@@ -133,7 +133,7 @@ export default function ProfilePC({ page, this_module, city }){
   }
   
   return (
-      <Grid container spacing={3} style={{ margin: 0, width: '100%' }} sx={{ display: { xs: 'none', md: 'none', lg: 'flex' } }}>
+      <Grid container spacing={3} style={{ margin: 0, width: '100%' }}>
         <Grid item className="Profile mainContainer">
           
           <Grid item xs={12}>

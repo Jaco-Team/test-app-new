@@ -65,7 +65,7 @@ export default function BasketPC() {
               func={(event) => setPromo(event.target.value)}
               inputAdornment={
                 <InputAdornment position="end">
-                  {promoInfo ? promoInfo.status_promo ? <div className="circleInput"></div> : <div className="circleInput" style={{ background: '#DD1A32' }}></div> : null}
+                  {checkPromo ? checkPromo.st === true ? <div className="circleInput"></div> : <div className="circleInput" style={{ background: '#DD1A32' }}></div> : null}
                 </InputAdornment>
               }
             />

@@ -5,8 +5,10 @@
   margin-left: $MyScale160 !important;
   width: $MyScale840;
 
-  @media (max-width: 800px) {
-    display: none;
+  &:not(.profile){
+    @media (max-width: 960px) {
+      display: none;
+    }
   }
 
   & > div {

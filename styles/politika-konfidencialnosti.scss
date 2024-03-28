@@ -5,7 +5,7 @@
     z-index: 3;
     mix-blend-mode: multiply;
 
-    @media (min-width: 800px) {
+    @media (min-width: 961px) {
         margin-top: $MyScale380!important;
         margin-bottom: 140px!important;
         padding-top: 0px!important;
@@ -13,38 +13,45 @@
         margin-left: $MyScale125!important;
         width: $MyScale1560!important;
         padding-left: 0px!important;
-    }
 
-    & h1{
-        @include font75_700();
-        text-align: center;
-        width: 100%;
-    }
-    & h2{
-        @include fonsNew(1.3rem, var(--inter-font));
-    }
-    & .mainContainer{
-        padding-top: 0!important; 
-        padding-bottom: 36px!important;
-    }
-    @media (min-width: 960px) {
-        //margin-left: 8.35% !important; 
-        //flex-grow: 0;
-        //max-width: 83.333333%;
-        //flex-basis: 83.333333%;
-    }
-    @media (max-width: 960px) {
-        margin-top: 64px!important;
-        margin-bottom: 64px; 
-        margin-left: 0px;
-        width: calc(100% - 24px);
+        
         & h1{
-            @include fonsNew(1.3rem, var(--inter-font));
+            @include font75_700();
             text-align: center;
+            width: 100%;
+            font-weight: 600;
+        }
+        & h2{
+            @include fonsNew(1.3rem, var(--inter-font));
+        }
+        & p, li, span{
+            @include font30_400();
         }
     }
-    & p, li{
-        @include font30_400();
+    @media (max-width: 960px) {
+        margin-top: $MyScale100_mobile!important;
+        margin-bottom: 64px; 
+        margin-left: $MyScale100_mobile;
+        width: $MyScale970_mobile;
+
+        & h1{
+            @include font75_700();
+            text-align: center;
+            width: 100%;
+            font-weight: 600;
+        }
+
+        & p, li, a{
+            @include font35_400();
+        }
+        & a{
+            color: $colorMain;
+            line-height: 2rem;
+            font-weight: bold;
+            cursor: pointer;
+            display: table;
+            text-decoration: none;
+        }
     }
      
 }

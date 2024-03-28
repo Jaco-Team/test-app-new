@@ -11,7 +11,7 @@ export default function ProfileBreadcrumbs() {
   const [ thisCity ] = useCitiesStore(state => [ state.thisCity ]);
 
   return (
-    <Grid item className="DocsBreadcrumbs" style={{ paddingBottom: 15 }}>
+    <Grid item className="DocsBreadcrumbs profile" style={{ paddingBottom: 15 }}>
       <div>
         <div>
           <span>Личный кабинет</span>

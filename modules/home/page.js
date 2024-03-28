@@ -17,7 +17,7 @@ export default function HomePage({ page, city } ) {
 
   const [matches] = useHeaderStore((state) => [state.matches]);
 
-  const matchesDev = useMediaQuery('screen and (max-width: 1000px)');
+  const matchesDev = useMediaQuery('screen and (max-width: 800px)');
 
   return (
     <Meta title={page.title} description={page.description}>

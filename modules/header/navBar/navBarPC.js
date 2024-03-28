@@ -233,7 +233,7 @@ export default React.memo(function NavBarPC({ city }) {
   if( activePage == 'zakazy' || activePage == 'profile' || activePage == 'promokody' ){
     activeProfile = true;
   }else{
-    if( activePage == 'home' || activePage == 'cart' || activePage == 'akcii' || activePage == 'contacts' ){
+    if( activePage == 'home' || activePage == 'category' || activePage == 'cart' || activePage == 'akcii' || activePage == 'contacts' ){
       activeProfile = false;
       activeDoc = false;
     }else{
@@ -244,7 +244,7 @@ export default React.memo(function NavBarPC({ city }) {
 
   return (
     <>
-      <AppBar className="headerNew" id="headerNew" elevation={2} sx={{ display: { xs: 'none', md: 'none', lg: 'block' } }} onClick={closeBasket}>
+      <AppBar className="headerNew" id="headerNew" elevation={2} onClick={closeBasket}>
         <Toolbar>
           <div>
             <MemoLogo city={city} />

@@ -39,7 +39,7 @@ export default React.memo(function FooterPC({ cityName }) {
       <div className={showArrow ? 'ArrowPC' : 'ArrowHidden'} onClick={scrollUp}>
         <ArrowUp />
       </div>
-      <footer className="footerPC" style={{ height: cookie ? '36.101083032491vw' : '45.126353790614vw' }}>
+      <footer className="footerPC" style={{ minHeight: cookie ? '36.101083032491vw' : '45.126353790614vw' }}>
         <div className="ContainerPCFooter">
           <div className="column">
             <Typography component="span">Жако</Typography>

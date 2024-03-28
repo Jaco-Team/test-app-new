@@ -132,7 +132,7 @@ export default function ModalCardItemPC() {
                 
                 {parseInt(openItem?.is_new) == 0 ? parseInt(openItem?.is_hit) == 0 ? null :
                   <BadgeItem size={'big'} type={'hit'} view={'pc'} />
-                      :
+                    :
                   <BadgeItem size={'big'} type={'new'} view={'pc'} />
                 }
               </div>

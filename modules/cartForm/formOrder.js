@@ -53,8 +53,8 @@ export default function FormOrder({ cityName }) {
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
  
-  const [setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, summDiv, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is] = useCartStore((state) => [state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
-    state.promoInfo,state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.summDiv, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is]);
+  const [setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, summDiv, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is, free_drive] = useCartStore((state) => [state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
+    state.promoInfo,state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.summDiv, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is, state.free_drive]);
  
   useEffect(() => {
     if (matches) {
@@ -275,6 +275,16 @@ export default function FormOrder({ cityName }) {
     }, 300)
   }
 
+  let NewSummDiv = summDiv;
+
+  if( parseInt(free_drive) == 1 ) {
+    if( parseInt(allPriceWithoutPromo) > 0 || parseInt(allPrice) > 0 ) {
+      NewSummDiv = 0;
+    }else{
+      NewSummDiv = 1;
+    }
+  }
+
   return (
     <>
       {matches ? (
@@ -410,7 +420,7 @@ export default function FormOrder({ cityName }) {
           {typeOrder ? null : (
             <div className="CartDelivery">
               <span>Доставка:</span>
-              <span>{new Intl.NumberFormat('ru-RU').format(summDiv)} ₽</span>
+              <span>{new Intl.NumberFormat('ru-RU').format(NewSummDiv)} ₽</span>
             </div>
           )}
 
@@ -420,7 +430,7 @@ export default function FormOrder({ cityName }) {
             </span>
             <div>
               <span className={ promoInfo?.items_on_price?.length ? promoItemsFind ? 'promoInfo' : null : promoInfo?.status_promo && itemsOffDops.length ? 'promoInfo' : null }>
-                {new Intl.NumberFormat('ru-RU').format(parseInt(allPriceWithoutPromo) + parseInt(summDiv))} ₽
+                {new Intl.NumberFormat('ru-RU').format(parseInt(allPriceWithoutPromo) + parseInt(NewSummDiv))} ₽
               </span>
             </div>
           </div>
@@ -438,8 +448,8 @@ export default function FormOrder({ cityName }) {
                 </InputAdornment>}
             />
             {promoInfo?.items_on_price?.length ?  promoItemsFind ?
-                <div>{new Intl.NumberFormat('ru-RU').format(parseInt(allPrice) + parseInt(summDiv))}{' '}₽</div> : null : promoInfo?.status_promo && itemsCount ? 
-                <div>{new Intl.NumberFormat('ru-RU').format(parseInt(allPrice) + parseInt(summDiv))}{' '}₽</div> : null}
+                <div>{new Intl.NumberFormat('ru-RU').format(parseInt(allPrice) + parseInt(NewSummDiv))}{' '}₽</div> : null : promoInfo?.status_promo && itemsCount ? 
+                <div>{new Intl.NumberFormat('ru-RU').format(parseInt(allPrice) + parseInt(NewSummDiv))}{' '}₽</div> : null}
           </div>
 
           <div className="CartItemDescPromo">
@@ -587,13 +597,13 @@ export default function FormOrder({ cityName }) {
             {typeOrder ? null : (
               <div className="basketDelivery">
                 <span>Доставка:</span>
-                <span>{new Intl.NumberFormat('ru-RU').format(summDiv)} ₽</span>
+                <span>{new Intl.NumberFormat('ru-RU').format(NewSummDiv)} ₽</span>
               </div>
             )}
             
             <div className="basketTotal" style={{ marginTop: typeOrder ? '2.1660649819495vw' : '0.72202166064982vw' }}>
               <span>Итого: {itemsCount} {getWord(itemsCount)}</span>
-              <span>{new Intl.NumberFormat('ru-RU').format(allPrice ? parseInt(allPrice) + parseInt(summDiv) : parseInt(allPriceWithoutPromo) + parseInt(summDiv))}{' '}₽</span>
+              <span>{new Intl.NumberFormat('ru-RU').format(allPrice ? parseInt(allPrice) + parseInt(NewSummDiv) : parseInt(allPriceWithoutPromo) + parseInt(NewSummDiv))}{' '}₽</span>
             </div>
 
             <Button className="basketOrder" variant="contained" onClick={create_order}>

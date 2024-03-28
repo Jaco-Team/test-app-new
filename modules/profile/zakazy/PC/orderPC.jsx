@@ -38,7 +38,6 @@ export default function OrderPC({ page, this_module, city }) {
       container
       spacing={3}
       style={{ margin: 0, width: '100%' }}
-      sx={{ display: { xs: 'none', md: 'none', lg: 'flex' } }}
     >
       <Grid item className="Zakazy mainContainer">
         <Grid item xs={12}>
