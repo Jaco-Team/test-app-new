@@ -22,7 +22,7 @@ export default function AboutUs() {
     
       <Image
         alt=""
-        src="/about/fasad.jpg"
+        src="/about/main.png"
         width={4606}
         height={3456}
         priority={true}
