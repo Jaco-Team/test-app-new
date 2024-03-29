@@ -151,7 +151,7 @@ export default function ModalBannerMobile() {
       <Box component="div" className="BannerMobile BannerFontMobile">
         <Grid container justifyContent="center">
           <Grid className="ImgItemMobile">
-            <Image alt={banner?.title} src={'https://storage.yandexcloud.net/site-home-img/' + banner?.img + '1000х500.jpg'}
+            <Image alt={banner?.title} src={'https://storage.yandexcloud.net/site-home-img/' + banner?.img + '1000x500.jpg'}
               width={1000}
               height={500}
               priority={true}

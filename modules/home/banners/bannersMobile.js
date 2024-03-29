@@ -109,7 +109,7 @@ export default React.memo(function BannersMobile() {
           <SwiperSlide key={key} onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
             <Image
               alt={item.title}
-              src={'https://storage.yandexcloud.net/site-home-img/' + item.img + '1000х500.jpg'}
+              src={'https://storage.yandexcloud.net/site-home-img/' + item.img + '1000x500.jpg'}
               width={1000}
               height={500}
               priority={false}

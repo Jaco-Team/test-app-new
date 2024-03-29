@@ -44,6 +44,50 @@
     <loc>https://jacofood.ru/togliatti/jobs</loc>
     <priority>0.9</priority>
   </url>
+  <url>
+    <loc>https://jacofood.ru/togliatti/menu</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/togliatti/menu/klassicheskie-rolly</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/togliatti/menu/firmennye-rolly</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/togliatti/menu/zapechyonnye-rolly</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/togliatti/menu/zharenye-rolly</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/togliatti/menu/sety</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/togliatti/menu/zakuski</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/togliatti/menu/napitki</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/togliatti/menu/sousy</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/togliatti/menu/pizza</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/togliatti/menu/rolly</loc>
+    <priority>0.9</priority>
+  </url>
   
 
   <url>
@@ -90,5 +134,48 @@
     <loc>https://jacofood.ru/samara/jobs</loc>
     <priority>0.9</priority>
   </url>
-
+<url>
+    <loc>https://jacofood.ru/samara/menu</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/samara/menu/klassicheskie-rolly</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/samara/menu/firmennye-rolly</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/samara/menu/zapechyonnye-rolly</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/samara/menu/zharenye-rolly</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/samara/menu/sety</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/samara/menu/zakuski</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/samara/menu/napitki</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/samara/menu/sousy</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/samara/menu/pizza</loc>
+    <priority>0.9</priority>
+  </url>
+  <url>
+    <loc>https://jacofood.ru/samara/menu/rolly</loc>
+    <priority>0.9</priority>
+  </url>
 </urlset>
