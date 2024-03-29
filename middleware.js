@@ -1,4 +1,7 @@
 import { NextResponse } from 'next/server'
+import sslRedirect from 'next-ssl-redirect-middleware';
+
+export default sslRedirect({});
 
 function isUpperCase(str) {
   return str === str.toUpperCase();
