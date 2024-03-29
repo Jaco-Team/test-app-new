@@ -24,7 +24,7 @@ module.exports = {
       host : '79.174.86.137',
       ref  : 'origin/main',
       repo : 'git@github.com:vito3315/test-app-new.git',
-      path : '/root/test-app-new',
+      path : '/var/www/test-app-new',
       'pre-deploy-local': '',
       'post-deploy' : 'npm run deploy:prod',
       'pre-setup': ''
