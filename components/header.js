@@ -39,6 +39,13 @@ export default React.memo(function header({ city, city_list, cats }) {
     return ;
   }
 
+  if( typeof window != 'undefined' ){
+    if (location.protocol !== 'https:' && location.hostname != 'localhost' ) {
+      location.replace(`https:${location.href.substring(location.protocol.length)}`);
+    }
+  }
+
+
   const pathname = usePathname()
 
   //console.log( 'pathname', pathname );
