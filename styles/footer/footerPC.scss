@@ -128,9 +128,11 @@
         display: flex;
         justify-content: center;
         align-items: center;
+        cursor: pointer;
         & span {
           @include font30_400();
-          color: #ffffff;
+          color: #ffffff!important;
+          cursor: pointer;
         }
       }
     }

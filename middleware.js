@@ -10,6 +10,10 @@ function isLowerCase(str) {
 
 export function middleware(request) {
   
+  if( request.nextUrl.hostname != 'localhost' && request.nextUrl.protocol == 'http:' ){
+    return NextResponse.redirect(new URL('https://' + request.nextUrl.host + request.nextUrl.pathname, request.url), 301)
+  }
+
   let checkItem = request.nextUrl.search.split('?text');
 
   if( checkItem[1] ){
