@@ -101,7 +101,7 @@
           align-items: center;
           text-align: center;
           @include font30_400();
-          color: #fff;
+          color: #fff!important;
           text-transform: capitalize;
         }
       }
