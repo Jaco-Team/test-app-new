@@ -101,7 +101,7 @@ export default function MenuCatMobile({ city }) {
   };
 
   const getScroll = (id) => {
-    const header = document.querySelector('.headerMobile').getBoundingClientRect().height;
+    /*const header = document.querySelector('.headerMobile').getBoundingClientRect().height;
 
     const menu = document.querySelector('.menuCatMobile').getBoundingClientRect().height;
 
@@ -114,7 +114,7 @@ export default function MenuCatMobile({ city }) {
       delay: 0,
       smooth: 'easeInOutQuart',
       offset,
-    });
+    });*/
   };
 
   console.log( 'render main_menu', catMenu )
