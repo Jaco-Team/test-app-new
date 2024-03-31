@@ -41,16 +41,13 @@ export default memo(function MenuCatMobile({ city }) {
 
   //const [catMenu, setCatMenu] = useState(category);
   //const [catDopMenu, setCatDopMenu] = useState([]);
-  //const [offset, setOffset] = useState(null);
+  const [offset, setOffset] = useState(null);
 
   //const [activePage] = useHeaderStore((state) => [state.activePage]);
 
-  
-  return (
-    <Box className="menuCatMobile">
-      <ChooseCat1 category={category} offset={offset} />
-      
-      {catDopMenu.length == 0 ? false : (
+  /**
+   * 
+   * {catDopMenu.length == 0 ? false : (
         <div className="menuCatDopContainer">
           <div className="menuCatDop" id="menuCatDop" >
             {catDopMenu.map((cat, key) => (
@@ -88,8 +85,15 @@ export default memo(function MenuCatMobile({ city }) {
           </div>
         </div>
       )}
+   */
 
-      <div className="blockShadowMenuCatMobile" style={{ position: 'sticky', top: catDopMenu.length != 0 ? '43.735042735043vw' : '31.5786vw' }} /> 
+  return (
+    <Box className="menuCatMobile">
+      <ChooseCat1 category={category} offset={offset} />
+      
+      
+
+      <div className="blockShadowMenuCatMobile" style={{ position: 'sticky', top: '31.5786vw' }} /> 
       
     </Box>
   );
