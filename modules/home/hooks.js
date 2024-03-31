@@ -50,11 +50,11 @@ function useCheckCat(CatsItems) {
 
               setTimeout( () => {
                 if( document.querySelector('.Cat') ){
-                  document.querySelector('.Cat').classList.remove('activeCat');
+                  //document.querySelector('.Cat').classList.remove('activeCat');
                 }
   
                 if( document.querySelector('#link_'+max.parent_id) ){
-                  document.querySelector('#link_'+max.parent_id).classList.add('activeCat');
+                  //document.querySelector('#link_'+max.parent_id).classList.add('activeCat');
                 }
               }, 200 )
             }
