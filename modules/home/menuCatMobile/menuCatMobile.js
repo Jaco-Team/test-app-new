@@ -8,7 +8,7 @@ import useCheckCat from '../hooks';
 import * as Scroll from 'react-scroll';
 var scroller = Scroll.scroller;
 
-const ChooseCat1 = memo( ({ category, offset }) => {
+const ChooseCat1 = memo( ({ category, offset, chooseCat }) => {
   return(
     <div className="menuCat" style={{ marginBottom: '1.7094017094017vw' }}>
       {category.map((item, key) => (
@@ -21,7 +21,7 @@ const ChooseCat1 = memo( ({ category, offset }) => {
           //isDynamic={true}
           //smooth={false}
           //offset={offset}
-          //onClick={() => {} }
+          onClick={() => chooseCat(item.id, 'scroll') }
           //onSetActive={() => chooseCat(item.id, null)}
         >
           <span>{item.name}</span>
@@ -29,7 +29,7 @@ const ChooseCat1 = memo( ({ category, offset }) => {
       ))}
     </div>
   )
-}, areEqual );
+} );
 
 function areEqual(prevProps, nextProps) {
   return JSON.stringify(prevProps.category) === JSON.stringify(nextProps.category);
@@ -39,7 +39,7 @@ export default memo(function MenuCatMobile({ city }) {
 
   const [ category, setCategory ] = useHomeStore((state) => [ state.category, state.setCategory ]);
 
-  //const [catMenu, setCatMenu] = useState(category);
+  const [catMenu, setCatMenu] = useState(category);
   //const [catDopMenu, setCatDopMenu] = useState([]);
   const [offset, setOffset] = useState(null);
 
@@ -87,9 +87,42 @@ export default memo(function MenuCatMobile({ city }) {
       )}
    */
 
+      const chooseCat = (id, scroll) => {
+        localStorage.setItem('goTo', id);
+    
+        const menuCatDop = document.querySelector('.menuCatDop');
+    
+        if (menuCatDop) {
+          //menuCatDop.scrollLeft = 0;
+        }
+    
+        const newCatMenu = catMenu.map((cat) => {
+          if (cat.id === id) {
+            cat.choice = true;
+    
+            if(cat.cats.length > 0) {
+              cat.cats.map((cat) => (cat.choice = false));
+              setCatDopMenu(cat.cats);
+            } else {
+              setCatDopMenu([]);
+            }
+          } else {
+            cat.choice = false;
+          }
+    
+          return cat;
+        });
+    
+        setCatMenu(newCatMenu);
+    
+        if (scroll) {
+          //getScroll(id);
+        }
+      };
+
   return (
     <Box className="menuCatMobile">
-      <ChooseCat1 category={category} offset={offset} />
+      <ChooseCat1 category={category} offset={offset} chooseCat={chooseCat} />
       
       
 
