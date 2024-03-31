@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, memo } from 'react';
 import { useHeaderStore, useHomeStore } from '@/components/store.js';
 import { Link as ScrollLink } from 'react-scroll';
 import Box from '@mui/material/Box';
@@ -7,6 +7,31 @@ import useCheckCat from '../hooks';
 
 import * as Scroll from 'react-scroll';
 var scroller = Scroll.scroller;
+
+const MenuCatMobileItem = memo(({ item, offset, chooseCat }) => {
+
+  console.log( 'render main_menu', item.name, offset )
+
+  return (
+    <ScrollLink
+      className={'Cat'}
+      to={'cat' + item.id}
+      id={'link_' + item.id}
+      spy={true}
+      isDynamic={true}
+      smooth={false}
+      offset={offset}
+      onClick={() => chooseCat(item.id, 'scroll')}
+      //onSetActive={() => chooseCat(item.id, null)}
+    >
+      <span>{item.name}</span>
+    </ScrollLink>
+  );
+}, areEqual)
+
+function areEqual(prevProps, nextProps) {
+  return parseInt(prevProps.offset) === parseInt(nextProps.offset);
+}
 
 export default function MenuCatMobile({ city }) {
 
@@ -121,20 +146,7 @@ export default function MenuCatMobile({ city }) {
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="menuCatMobile">
       <div className="menuCat" style={{ marginBottom: catDopMenu.length == 0 ? '1.7094017094017vw' : '2.5641025641026vw' }}>
         {catMenu.map((item, key) => (
-          <ScrollLink
-            key={key}
-            className={'Cat'}
-            to={'cat' + item.id}
-            id={'link_' + item.id}
-            spy={true}
-            isDynamic={true}
-            smooth={false}
-            offset={offset}
-            onClick={() => chooseCat(item.id, 'scroll')}
-            //onSetActive={() => chooseCat(item.id, null)}
-          >
-            <span>{item.name}</span>
-          </ScrollLink>
+          <MenuCatMobileItem key={item?.id} item={item} offset={offset} chooseCat={chooseCat} />
         ))}
       </div>
       {catDopMenu.length == 0 ? false : (
