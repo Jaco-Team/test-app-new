@@ -8,7 +8,7 @@ import useCheckCat from '../hooks';
 import * as Scroll from 'react-scroll';
 var scroller = Scroll.scroller;
 
-export default function MenuCatMobile({ city }) {
+export default memo(function MenuCatMobile({ city }) {
 
   const [ category, setCategory ] = useHomeStore((state) => [ state.category, state.setCategory ]);
 
@@ -16,113 +16,13 @@ export default function MenuCatMobile({ city }) {
   const [catDopMenu, setCatDopMenu] = useState([]);
   const [offset, setOffset] = useState(null);
 
-  let activeID = useCheckCat(category);
-  
-  useEffect(() => {
-    if( parseInt(activeID.id) !== parseInt(activeID.parent_id) ){
-      let chooseItem = catMenu.find( item => parseInt(item.id) == parseInt(activeID.parent_id) );
-
-      if( chooseItem ){
-        setCatDopMenu(chooseItem.cats);
-      }else{
-        setCatDopMenu([]);
-      }
-    }else{
-      setCatDopMenu([]);
-    }
-  }, [activeID]);
-
-  useEffect(() => {
-    setCatMenu(category);
-  }, [category]);
-
-  if (city == '') return null;
-
   const [activePage] = useHeaderStore((state) => [state.activePage]);
 
-  // так оставить сброс состояния выбора категории товара при переходе на другие страницы ??
-  useEffect(() => {
-    if(activePage === 'home') {
-      setCatMenu(category)
-    } else {
-      const cat = category.map(item => item.choice = false)
-      setCatMenu(cat)
-    }
-  }, [activePage]);
-
-  const chooseCat = (id, scroll) => {
-    localStorage.setItem('goTo', id);
-
-    const menuCatDop = document.querySelector('.menuCatDop');
-
-    if (menuCatDop) {
-      //menuCatDop.scrollLeft = 0;
-    }
-
-    const newCatMenu = catMenu.map((cat) => {
-      if (cat.id === id) {
-        cat.choice = true;
-
-        if(cat.cats.length > 0) {
-          cat.cats.map((cat) => (cat.choice = false));
-          setCatDopMenu(cat.cats);
-        } else {
-          setCatDopMenu([]);
-        }
-      } else {
-        cat.choice = false;
-      }
-
-      return cat;
-    });
-
-    setCatMenu(newCatMenu);
-
-    if (scroll) {
-      //getScroll(id);
-    }
-  };
-
-  const chooseDopCat = (id, scroll) => {
-    localStorage.setItem('goTo', id);
-
-    const newCatDopMenu = catDopMenu.map((cat) => {
-      if (cat.id === id) {
-        cat.choice = true;
-      } else {
-        cat.choice = false;
-      }
-      return cat;
-    });
-
-    if (scroll) {
-      getScroll(id);
-    }
-  };
-
-  const getScroll = (id) => {
-    /*const header = document.querySelector('.headerMobile').getBoundingClientRect().height;
-
-    const menu = document.querySelector('.menuCatMobile').getBoundingClientRect().height;
-
-    const offset = -(header + menu);
-
-    setOffset(offset);
-
-    scroller.scrollTo('cat' + id, {
-      duration: 0,
-      delay: 0,
-      smooth: 'easeInOutQuart',
-      offset,
-    });*/
-  };
-
-  console.log( 'render main_menu', catMenu )
-
+  
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="menuCatMobile">
       <div className="menuCat" style={{ marginBottom: catDopMenu.length == 0 ? '1.7094017094017vw' : '2.5641025641026vw' }}>
-        {catMenu.map((item, key) => (
+        {category.map((item, key) => (
           <ScrollLink
             key={key}
             className={'Cat'}
@@ -132,7 +32,7 @@ export default function MenuCatMobile({ city }) {
             isDynamic={true}
             smooth={false}
             offset={offset}
-            onClick={() => chooseCat(item.id, 'scroll')}
+            onClick={() => {} }
             //onSetActive={() => chooseCat(item.id, null)}
           >
             <span>{item.name}</span>
@@ -182,4 +82,4 @@ export default function MenuCatMobile({ city }) {
       
     </Box>
   );
-}
+})
