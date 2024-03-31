@@ -17,7 +17,7 @@ import OrderItem from './orderItem.jsx';
 
 import { useProfileStore } from '@/components/store';
 
-export default function OrdersList({year, is_first, token, this_module, city}){
+export default function OrdersList({orders, token, this_module, city}){
 
   const [getOrder] = useProfileStore( state => [ state.getOrder ])
 
@@ -27,33 +27,25 @@ export default function OrdersList({year, is_first, token, this_module, city}){
     city: city
   };
 
+  //blockTable
+
   return (
-    <Accordion defaultExpanded={ is_first }>
-      <AccordionSummary
-        expandIcon={<ExpandMoreIcon />}
-        className={'blockTitle'}
-      >
-        <Typography component="span">{year.year}</Typography>
-      </AccordionSummary>
-      <AccordionDetails className={'blockTable'}>
-        <Table>
-          <TableHead>
-            <TableRow>
-              <TableCell>статус заказа</TableCell>
-              <TableCell>номер</TableCell>
-              <TableCell>дата</TableCell>
-              <TableCell>время</TableCell>
-              <TableCell>сумма</TableCell>
-              <TableCell></TableCell>
-            </TableRow>
-          </TableHead>
-          <TableBody>
-            {year.orders.map( (order, key) =>
-              <OrderItem key={key} order={order} template={template} getOrder={getOrder} />
-            )}
-          </TableBody>
-        </Table>
-      </AccordionDetails>
-    </Accordion> 
+    <Table>
+      <TableHead>
+        <TableRow>
+          <TableCell>статус заказа</TableCell>
+          <TableCell>номер</TableCell>
+          <TableCell>дата</TableCell>
+          <TableCell>время</TableCell>
+          <TableCell>сумма</TableCell>
+          <TableCell></TableCell>
+        </TableRow>
+      </TableHead>
+      <TableBody>
+        {orders.map( (order, key) =>
+          <OrderItem key={key} order={order} template={template} getOrder={getOrder} />
+        )}
+      </TableBody>
+    </Table>
   )
 }

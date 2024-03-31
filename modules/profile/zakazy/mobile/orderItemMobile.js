@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useProfileStore } from '@/components/store.js';
 
-import { ArrowRightMobile, CheckOrderMobile, CalendarOrderMobile, DeleteOrderMobile, CookOrderMobile, EllipseOrderMobile, ErrorOrderMobile, DeliveryModalOrderIcon } from '@/ui/Icons.js';
+import { ArrowRightMobile, CheckOrderMobile, CalendarOrderMobile, DeleteOrderMobile, CookOrderMobile, EllipseOrderMobile, ErrorOrderMobile, DeliveryModalOrderIcon, ReloadIcon } from '@/ui/Icons.js';
 
 import moment from 'moment';
 import 'moment/locale/ru';
@@ -35,14 +35,7 @@ export default React.memo(function OrderItemMobile({ order, token, this_module, 
       text_status = 'Везем';
     }
     if( parseInt(order?.status_order_) < 5 ){
-      icon_status = 
-        <div className="zakazyGroup">
-          <div className="zakazyEllipse">
-            <EllipseOrderMobile />
-            <EllipseOrderMobile />
-            <EllipseOrderMobile />
-          </div>
-        </div>;
+      icon_status = <ReloadIcon fill="#cc0033" />;
 
       text_status = 'Готовим';
 

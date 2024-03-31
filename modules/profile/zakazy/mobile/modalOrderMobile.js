@@ -1,5 +1,5 @@
-import React, { useState } from 'react';
-import { useProfileStore, useCartStore } from '@/components/store.js';
+import React, { useState, useEffect } from 'react';
+import { useProfileStore, useCartStore, useHeaderStore, useCitiesStore } from '@/components/store';
 
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -99,9 +99,12 @@ function ModalOrderStatusIconPicup({ types }) {
 export default React.memo(function ModalOrderMobile() {
   const [isShowAddr, setShowAddr] = useState(false);
 
-  const [openModal, closeOrder, modalOrder, openModalDel] = useProfileStore((state) => [state.openModal, state.closeOrder, state.modalOrder, state.openModalDel]);
+  const [openModal, closeOrder, modalOrder, openModalDel, getOrder] = useProfileStore((state) => [state.openModal, state.closeOrder, state.modalOrder, state.openModalDel, state.getOrder]);
 
   const [ repeatOrder ] = useCartStore( state => [ state.repeatOrder ])
+
+  const [ token ] = useHeaderStore( state => [ state.token ] )
+  const [ thisCity ] = useCitiesStore( state => [ state.thisCity ] )
 
   let text_status = '';
 
@@ -128,6 +131,18 @@ export default React.memo(function ModalOrderMobile() {
       }
     }
   }
+
+  useEffect( () => {
+    if( openModal == true ){
+      const timer = setInterval(() => {
+        if( token && token.length > 0 ) {
+          getOrder('zakazy', thisCity, token, modalOrder?.order?.order_id, modalOrder?.order?.point_id)
+        }
+      }, 30 * 1000);
+      
+      return () => clearInterval(timer);
+    }
+  }, [openModal] )
 
   return (
       <SwipeableDrawer

@@ -1,6 +1,6 @@
-import React, { useState } from 'react';
+import React, { useState, useEffect } from 'react';
 
-import { useProfileStore, useCartStore } from '@/components/store';
+import { useProfileStore, useCartStore, useHeaderStore, useCitiesStore } from '@/components/store';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -87,11 +87,14 @@ function ModalOrderStatusIconPicup({types}){
 }
 
 export default React.memo(function ModalOrder() {
-  const [modalOrder, openModal, closeOrder, openModalDel] = useProfileStore( state => [ state.modalOrder, state.openModal, state.closeOrder, state.openModalDel ])
+  const [modalOrder, openModal, closeOrder, openModalDel, getOrder] = useProfileStore( state => [ state.modalOrder, state.openModal, state.closeOrder, state.openModalDel, state.getOrder ])
 
   const [ repeatOrder ] = useCartStore( state => [ state.repeatOrder ])
 
   const [ isShowAddr, setShowAddr ] = useState(true);
+
+  const [ token ] = useHeaderStore( state => [ state.token ] )
+  const [ thisCity ] = useCitiesStore( state => [ state.thisCity ] )
 
   let order_status = '';
 
@@ -116,6 +119,20 @@ export default React.memo(function ModalOrder() {
       }
     }
   }
+
+  useEffect( () => {
+    if( openModal == true ){
+      const timer = setInterval(() => {
+        if( token && token.length > 0 ) {
+          getOrder('zakazy', thisCity, token, modalOrder?.order?.order_id, modalOrder?.order?.point_id)
+        }
+      }, 30 * 1000);
+      
+      return () => clearInterval(timer);
+    }
+  }, [openModal] )
+
+  //console.log(  )
 
   return (
     <Dialog

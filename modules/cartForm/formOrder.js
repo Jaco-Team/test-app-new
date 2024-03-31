@@ -136,7 +136,7 @@ export default function FormOrder({ cityName }) {
           setList(type_pred);
         }
       } else {
-        setActiveModalAlert(true, 'Необходимо выбрать ' + (typeOrder ? 'Кафе' : 'Адрес доставки', false));
+        setActiveModalAlert(true, 'Необходимо выбрать ' + (typeOrder ? 'Кафе' : 'Адрес доставки'), false);
       }
     }
 

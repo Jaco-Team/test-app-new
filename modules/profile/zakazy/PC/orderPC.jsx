@@ -28,7 +28,7 @@ export default function OrderPC({ page, this_module, city }) {
       if( token && token.length > 0 ) {
         getOrderList(this_module, city, token);
       }
-    }, 10 * 1000);
+    }, 30 * 1000);
     
     return () => clearInterval(timer);
   }, [token, city]);
@@ -46,22 +46,20 @@ export default function OrderPC({ page, this_module, city }) {
           </Typography>
         </Grid>
 
-        <Grid item xs={12}>
-          {orderList.map((year, ykey) => (
-            <OrdersList
-              key={ykey}
-              is_first={ykey == 0 ? true : false}
-              year={year}
-              token={token}
-              this_module={this_module}
-              city={city}
-            />
-          ))}
+        <Grid item xs={12} className='blockTable'>
+          <OrdersList
+            orders={orderList}
+            token={token}
+            this_module={this_module}
+            city={city}
+          />
         </Grid>
       </Grid>
+
       <ProfileBreadcrumbs />
       <ModalOrder />
       <ModalOrderDelete />
+
     </Grid>
   );
 }

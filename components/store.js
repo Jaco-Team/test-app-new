@@ -2131,7 +2131,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   },
   getOrderList: async (this_module, city, userToken) => {
     let data = {
-      type: 'get_my_orders_new',
+      type: 'get_my_orders_new_',
       city_id: city,
       user_id: userToken,
     };

@@ -15,10 +15,8 @@ import { ArrowLeftMobile, VectorDownMobile } from '@/ui/Icons.js';
 
 export default function OrderMobile({ city, this_module }) {
 
-  const [list, setList] = useState([]);
-
-  const [getOrderList, orderList, year, setActiveModalYear, setYear] =
-    useProfileStore((state) => [state.getOrderList, state.orderList, state.year, state.setActiveModalYear, state.setYear]);
+  const [getOrderList, orderList] =
+    useProfileStore((state) => [state.getOrderList, state.orderList]);
 
   const [ token ] = useHeaderStore( state => [ state.token ] )
 
@@ -38,30 +36,15 @@ export default function OrderMobile({ city, this_module }) {
     return () => clearInterval(timer);
   }, [city]);
 
-  useEffect(() => {
-    if (year) {
-      const list = orderList.find((item) => item.year === year);
-      setList(list);
-    } else {
-      setList(orderList[0]);
-      setYear(orderList[0]?.year);
-    }
-  }, [orderList, year]);
-
-  //<ModalOrderMobile />
-
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="ZakazyMobile">
       <div className="zakazyLogin">
         <Link href={'/' + city + '/account'}>
           <ArrowLeftMobile />
         </Link>
-        { !orderList || orderList?.length == 0 ? null :
-          <div className="loginContainer">
-            <span>{list?.year}</span>
-            <VectorDownMobile onClick={() => setActiveModalYear(true, orderList)}/>
+        <div className="loginContainer">
+            <span>История заказов</span>
           </div>
-        }
       </div>
       <div className="zakazyList" style={{ marginBottom: !orderList.length ? '85.470085470085vw' : null}}>
         <div className="zakazyHead">
@@ -70,14 +53,14 @@ export default function OrderMobile({ city, this_module }) {
           <span>дата</span>
           <span>стоимость</span>
         </div>
-        {list?.orders?.map((order, ykey) => (
+        {orderList?.map((order, ykey) => (
           <OrdersItemMobile
             key={order?.order_id}
             order={order}
             token={token}
             this_module={this_module}
             city={city}
-            last={list?.orders?.length-1 == ykey ? 'last' : ''}
+            last={orderList?.length-1 == ykey ? 'last' : ''}
           />
         ))}
       </div>
