@@ -162,7 +162,7 @@ export default function MenuCatMobile({ city }) {
 
   return (
     <Box  className="menuCatMobile">
-      <MenuCatMobileMenu catMenu={catMenu} offset={offset} chooseCat={chooseCat} />
+      <MenuCatMobileMenu catMenu={catMenu} offset={offset} chooseCat={ () => {} } />
       
       {catDopMenu.length == 0 ? false : (
         <div className="menuCatDopContainer">
