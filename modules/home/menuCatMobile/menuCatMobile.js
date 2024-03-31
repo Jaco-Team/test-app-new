@@ -8,37 +8,48 @@ import useCheckCat from '../hooks';
 import * as Scroll from 'react-scroll';
 var scroller = Scroll.scroller;
 
+const ChooseCat1 = memo( ({ category, offset }) => {
+  return(
+    <div className="menuCat" style={{ marginBottom: '1.7094017094017vw' }}>
+      {category.map((item, key) => (
+        <ScrollLink
+          key={key}
+          className={'Cat'}
+          to={'cat' + item.id}
+          id={'link_' + item.id}
+          spy={true}
+          isDynamic={true}
+          smooth={false}
+          offset={offset}
+          onClick={() => {} }
+          //onSetActive={() => chooseCat(item.id, null)}
+        >
+          <span>{item.name}</span>
+        </ScrollLink>
+      ))}
+    </div>
+  )
+}, areEqual );
+
+function areEqual(prevProps, nextProps) {
+  return JSON.stringify(prevProps.category) === JSON.stringify(nextProps.category);
+}
+
 export default memo(function MenuCatMobile({ city }) {
 
   const [ category, setCategory ] = useHomeStore((state) => [ state.category, state.setCategory ]);
 
-  const [catMenu, setCatMenu] = useState(category);
-  const [catDopMenu, setCatDopMenu] = useState([]);
-  const [offset, setOffset] = useState(null);
+  //const [catMenu, setCatMenu] = useState(category);
+  //const [catDopMenu, setCatDopMenu] = useState([]);
+  //const [offset, setOffset] = useState(null);
 
-  const [activePage] = useHeaderStore((state) => [state.activePage]);
+  //const [activePage] = useHeaderStore((state) => [state.activePage]);
 
   
   return (
-    <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="menuCatMobile">
-      <div className="menuCat" style={{ marginBottom: catDopMenu.length == 0 ? '1.7094017094017vw' : '2.5641025641026vw' }}>
-        {category.map((item, key) => (
-          <ScrollLink
-            key={key}
-            className={'Cat'}
-            to={'cat' + item.id}
-            id={'link_' + item.id}
-            spy={true}
-            isDynamic={true}
-            smooth={false}
-            offset={offset}
-            onClick={() => {} }
-            //onSetActive={() => chooseCat(item.id, null)}
-          >
-            <span>{item.name}</span>
-          </ScrollLink>
-        ))}
-      </div>
+    <Box className="menuCatMobile">
+      <ChooseCat1 category={category} offset={offset} />
+      
       {catDopMenu.length == 0 ? false : (
         <div className="menuCatDopContainer">
           <div className="menuCatDop" id="menuCatDop" >
