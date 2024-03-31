@@ -17,27 +17,19 @@ export default function HomePage({ page, city } ) {
 
   const [matches] = useHeaderStore((state) => [state.matches]);
 
-  const matchesDev = useMediaQuery('screen and (max-width: 800px)');
+  //const matchesDev = useMediaQuery('screen and (max-width: 800px)');
 
   return (
     <Meta title={page.title} description={page.description}>
       <div style={{ minHeight: '50vh' }}>
-        {matches ?
-          <>
+        
             <BannersMobile />
             <MenuCatMobile city={city}/>
             
             <ModalBannerMobile />
-          </>
-        : 
-          <>
-            <BannersPC />
-            
-            <ModalBannerPC />
-          </>
-        }
+          
 
-        { matchesDev ? <ModalCardItemMobile /> : <ModalCardItemPC /> }
+        { matches ? <ModalCardItemMobile /> : <ModalCardItemPC /> }
 
         <CardItems />
       </div>
