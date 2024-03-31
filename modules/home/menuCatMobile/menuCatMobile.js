@@ -13,19 +13,19 @@ const MenuCatMobileItem = memo(({ item, offset, chooseCat }) => {
   console.log( 'render main_menu', item.name, offset )
 
   return (
-    <ScrollLink
+    <a
       className={'Cat'}
-      to={'cat' + item.id}
+      //to={'cat' + item.id}
       id={'link_' + item.id}
-      spy={false}
-      isDynamic={false}
-      smooth={false}
-      offset={offset}
+      //spy={false}
+      //isDynamic={false}
+      //smooth={false}
+      //offset={offset}
       onClick={() => chooseCat(item.id, 'scroll')}
       //onSetActive={() => chooseCat(item.id, null)}
     >
       <span>{item.name}</span>
-    </ScrollLink>
+    </a>
   );
 }, areEqual)
 
@@ -68,10 +68,10 @@ export default function MenuCatMobile({ city }) {
   // так оставить сброс состояния выбора категории товара при переходе на другие страницы ??
   useEffect(() => {
     if(activePage === 'home') {
-      setCatMenu(category)
+      //setCatMenu(category)
     } else {
-      const cat = category.map(item => item.choice = false)
-      setCatMenu(cat)
+      //const cat = category.map(item => item.choice = false)
+      //setCatMenu(cat)
     }
   }, [activePage]);
 
@@ -101,7 +101,7 @@ export default function MenuCatMobile({ city }) {
       return cat;
     });
 
-    setCatMenu(newCatMenu);
+    //setCatMenu(newCatMenu);
 
     if (scroll) {
       getScroll(id);
