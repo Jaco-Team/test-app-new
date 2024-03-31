@@ -162,11 +162,8 @@ export default function MenuCatMobile({ city }) {
 
   return (
     <Box  className="menuCatMobile">
-      <div className="menuCat" style={{ marginBottom: '2.5641025641026vw' }}>
-        {catMenu.map((item, key) => (
-          <MenuCatMobileItem key={item?.id} item={item} offset={offset} chooseCat={chooseCat} />
-        ))}
-      </div>
+      <MenuCatMobileMenu catMenu={catMenu} offset={offset} chooseCat={chooseCat} />
+      
       {catDopMenu.length == 0 ? false : (
         <div className="menuCatDopContainer">
           <div className="menuCatDop" id="menuCatDop" >
