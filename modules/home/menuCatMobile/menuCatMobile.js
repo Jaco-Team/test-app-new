@@ -17,8 +17,8 @@ const MenuCatMobileItem = memo(({ item, offset, chooseCat }) => {
       className={'Cat'}
       to={'cat' + item.id}
       id={'link_' + item.id}
-      spy={true}
-      isDynamic={true}
+      spy={false}
+      isDynamic={false}
       smooth={false}
       offset={offset}
       onClick={() => chooseCat(item.id, 'scroll')}
@@ -142,9 +142,12 @@ export default function MenuCatMobile({ city }) {
     });
   };
 
+  //sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }}
+  //style={{ marginBottom: catDopMenu.length == 0 ? '1.7094017094017vw' : '2.5641025641026vw' }}
+
   return (
-    <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="menuCatMobile">
-      <div className="menuCat" style={{ marginBottom: catDopMenu.length == 0 ? '1.7094017094017vw' : '2.5641025641026vw' }}>
+    <Box  className="menuCatMobile">
+      <div className="menuCat" style={{ marginBottom: '2.5641025641026vw' }}>
         {catMenu.map((item, key) => (
           <MenuCatMobileItem key={item?.id} item={item} offset={offset} chooseCat={chooseCat} />
         ))}
