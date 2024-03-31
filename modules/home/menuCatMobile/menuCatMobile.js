@@ -12,20 +12,20 @@ const ChooseCat1 = memo( ({ category, offset }) => {
   return(
     <div className="menuCat" style={{ marginBottom: '1.7094017094017vw' }}>
       {category.map((item, key) => (
-        <ScrollLink
-          key={key}
+        <a
+          key={item.id}
           className={'Cat'}
-          to={'cat' + item.id}
+          //to={'cat' + item.id}
           id={'link_' + item.id}
-          spy={true}
-          isDynamic={true}
-          smooth={false}
-          offset={offset}
-          onClick={() => {} }
+          //spy={true}
+          //isDynamic={true}
+          //smooth={false}
+          //offset={offset}
+          //onClick={() => {} }
           //onSetActive={() => chooseCat(item.id, null)}
         >
           <span>{item.name}</span>
-        </ScrollLink>
+        </a>
       ))}
     </div>
   )
