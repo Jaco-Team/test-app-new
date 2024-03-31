@@ -79,7 +79,7 @@ export default function MenuCatMobile({ city }) {
     setCatMenu(newCatMenu);
 
     if (scroll) {
-      getScroll(id);
+      //getScroll(id);
     }
   };
 
