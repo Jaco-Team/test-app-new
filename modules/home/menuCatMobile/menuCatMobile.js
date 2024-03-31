@@ -33,6 +33,21 @@ function areEqual(prevProps, nextProps) {
   return parseInt(prevProps.offset) === parseInt(nextProps.offset);
 }
 
+const MenuCatMobileMenu = memo(({ catMenu, offset, chooseCat }) => {
+
+  return (
+    <div className="menuCat" style={{ marginBottom: '2.5641025641026vw' }}>
+      {catMenu.map((item, key) => (
+        <MenuCatMobileItem key={item?.id} item={item} offset={offset} chooseCat={chooseCat} />
+      ))}
+    </div>
+  );
+}, areEqual2)
+
+function areEqual2(prevProps, nextProps) {
+  return parseInt(prevProps.offset) === parseInt(nextProps.offset) || JSON.stringify(prevProps.catMenu) === JSON.stringify(nextProps.catMenu);
+}
+
 export default function MenuCatMobile({ city }) {
 
   const [ category, setCategory ] = useHomeStore((state) => [ state.category, state.setCategory ]);
