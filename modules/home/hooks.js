@@ -54,7 +54,7 @@ function useCheckCat(CatsItems) {
                 }
   
                 if( document.querySelector('#link_'+max.parent_id) ){
-                  document.querySelector('#link_'+max.parent_id).classList.add('activeCat');
+                  //document.querySelector('#link_'+max.parent_id).classList.add('activeCat');
                 }
               }, 200 )
             }

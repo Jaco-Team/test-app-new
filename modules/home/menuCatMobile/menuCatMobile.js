@@ -117,6 +117,8 @@ export default function MenuCatMobile({ city }) {
     });
   };
 
+  console.log( 'catMenu', catMenu, activeID )
+
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="menuCatMobile"
      style={{position: cat_position ? 'fixed' : 'sticky'}}
