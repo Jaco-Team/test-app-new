@@ -4,15 +4,15 @@
   flex-direction: column;
   z-index: 1100 !important;
   position: sticky;
-  //position: fixed;
-  //right: 0;
-  //left: 0;
-  //width: 100%;
+  right: 0;
+  left: 0;
   top: $MyScale200_mobile;
   background-color: #fff;
   transform: translate3d(0,0,0);
-  transform-style: preserver-3d;
+  transform-style: preserve-3d;
   backface-visibility: hidden;
+  position: -webkit-sticky;
+  -webkit-backface-visibility: hidden;
 
   .menuCat {
     display: flex;
