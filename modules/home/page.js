@@ -7,7 +7,7 @@ import ModalBannerPC from './banners/modalBannersPC';
 import ModalBannerMobile from './banners/modalBannersMobile';
 import MenuCatMobile from './menuCatMobile/menuCatMobile'
 
-import useMediaQuery from '@mui/material/useMediaQuery';
+//import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Meta from '@/components/meta.js';
 
@@ -22,12 +22,20 @@ export default function HomePage({ page, city } ) {
   return (
     <Meta title={page.title} description={page.description}>
       <div style={{ minHeight: '50vh' }}>
-        
+        {matches ?
+          <>
             <BannersMobile />
             <MenuCatMobile city={city}/>
             
             <ModalBannerMobile />
-          
+          </>
+        : 
+          <>
+            <BannersPC />
+            
+            <ModalBannerPC />
+          </>
+        }
 
         { matches ? <ModalCardItemMobile /> : <ModalCardItemPC /> }
 

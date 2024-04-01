@@ -3,6 +3,7 @@
 .menuCatMobile {
   flex-direction: column;
   z-index: 1100 !important;
+  //position: sticky;
   position: fixed;
   width: 100%;
   top: $MyScale200_mobile;
