@@ -10,7 +10,7 @@ var scroller = Scroll.scroller;
 
 export default function MenuCatMobile({ city }) {
 
-  const [ category, setCategory ] = useHomeStore((state) => [ state.category, state.setCategory ]);
+  const [ category, setCategory, cat_position ] = useHomeStore((state) => [ state.category, state.setCategory, state.cat_position ]);
 
   const [catMenu, setCatMenu] = useState(category);
   const [catDopMenu, setCatDopMenu] = useState([]);
@@ -118,7 +118,9 @@ export default function MenuCatMobile({ city }) {
   };
 
   return (
-    <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="menuCatMobile">
+    <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="menuCatMobile"
+     style={{position: cat_position ? 'fixed' : 'sticky'}}
+    >
       <div className="menuCat" style={{ marginBottom: catDopMenu.length == 0 ? '1.7094017094017vw' : '2.5641025641026vw' }}>
         {catMenu.map((item, key) => (
           <ScrollLink

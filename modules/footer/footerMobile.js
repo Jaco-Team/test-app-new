@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import Typography from '@mui/material/Typography';
 
-import { useCartStore, useProfileStore, useFooterStore, useHeaderStore } from '@/components/store.js';
+import { useCartStore, useHomeStore, useFooterStore, useHeaderStore } from '@/components/store.js';
 
 import { NewVKIcon, OdnIcon, TGIcon, ArrowUp, BasketFooterMobile } from '@/ui/Icons.js';
 
@@ -15,13 +15,18 @@ export default function FooterMobile({ cityName, active_page }) {
   const [cookie, setCookie] = useState(true);
   const [showArrow, setShowArrow] = useState(false);
   
-
   const [itemsCount, allPrice, allPriceWithoutPromo] = useCartStore((state) => [state.itemsCount, state.allPrice, state.allPriceWithoutPromo]);
   const [links] = useFooterStore((state) => [state.links]);
 
   const [ isAuth, setActiveModalAuth ] = useHeaderStore( state => [ state.isAuth, state.setActiveModalAuth ]);
 
-  const handlerArrow = () => setShowArrow(window.scrollY > 50);
+  const [setMenuCatPosition] = useHomeStore(state => [state.setMenuCatPosition]);
+
+  const handlerArrow = () => {
+    setShowArrow(window.scrollY > 50);
+
+    setMenuCatPosition(window.scrollY > 200);
+  }
 
   const scrollUp = () =>
     window.scrollTo({ left: 0, top: 0, behavior: 'smooth' });

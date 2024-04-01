@@ -3131,6 +3131,14 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
   openBannerItems: [],
   typePromo: 0,
+
+  // стили для меню категории в мобилке, в зависимости от скролла
+  cat_position: false,
+
+  // установить стили для меню категории в мобилке, в зависимости от скролла
+  setMenuCatPosition: (value) => {
+    set({cat_position: value})
+  },
   
   setActiveModalCardItemMobile: (active) => {
     set({ isOpenModal: active });
