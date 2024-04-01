@@ -78,6 +78,9 @@ export default function MenuCatMobile({ city }) {
 
     setCatMenu(newCatMenu);
 
+    document.querySelector('.Cat').classList.remove('active');
+    document.querySelector('#link_'+id).classList.add('active');
+
     if (scroll) {
       getScroll(id);
     }
