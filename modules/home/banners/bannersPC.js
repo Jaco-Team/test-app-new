@@ -107,6 +107,8 @@ export default React.memo(function BannersPC() {
                 </Tooltip>
   */
 
+                    //
+
   return (
     <Box component="div" className="BannerPC BannerFontPC">
 
@@ -128,10 +130,9 @@ export default React.memo(function BannersPC() {
           style={{width: '90.975vw', marginTop: '8.66425vw'}}
           ref={swiperRef}
         >
-
           {bannerList.map((item, key) => (
             <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
-              <Image alt={item.title} src={"https://storage.yandexcloud.net/site-home-img/"+item.img+"3700x1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }} />
+              <Image alt={item.title} src={"https://storage.yandexcloud.net/site-home-img/"+item.img+"_3700x1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }} />
             </SwiperSlide>
           ))}
           <div className="swiper-button-prev"><ArrowIcon /></div>

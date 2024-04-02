@@ -103,7 +103,7 @@ export default function AkciiItemPC({ actia }) {
 
   return (
     <Grid container className="containerAccia">
-      <Image alt={data?.banner?.title} src={'https://storage.yandexcloud.net/site-home-img/' + data?.banner?.img + '3700x1000.jpg'} width={3700} height={1000} priority={true} />
+      <Image alt={data?.banner?.title} src={'https://storage.yandexcloud.net/site-home-img/' + data?.banner?.img + '_3700x1000.jpg'} width={3700} height={1000} priority={true} />
 
       <Grid className="DescItem">
         <Grid className="FirstItem">

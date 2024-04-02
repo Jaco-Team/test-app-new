@@ -152,7 +152,7 @@ export default function ModalBannerPC() {
 
           <Grid container justifyContent="center">
             <Grid className="ImgItem">
-              <Image alt={banner?.title} src={'https://storage.yandexcloud.net/site-home-img/' + banner?.img + '3700x1000.jpg'}
+              <Image alt={banner?.title} src={'https://storage.yandexcloud.net/site-home-img/' + banner?.img + '_3700x1000.jpg'}
                 width={3700}
                 height={1000}
                 priority={true}

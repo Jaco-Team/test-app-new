@@ -107,7 +107,7 @@ export default function AkciiItemMobile({ actia }) {
 
   return (
     <Grid container className="containerAcciaMobile">
-      <Image alt={data?.banner?.title} src={'https://storage.yandexcloud.net/site-home-img/' + data?.banner?.img + '1000x500.jpg'} width={1000} height={500} priority={true} />
+      <Image alt={data?.banner?.title} src={'https://storage.yandexcloud.net/site-home-img/' + data?.banner?.img + '_1000x500.jpg'} width={1000} height={500} priority={true} />
 
       <Grid className="DescItemMobile">
         <Grid className="FirstItemMobile">
