@@ -35,6 +35,8 @@ export default function ExcellentDishes() {
         priority={true}
         style={{ width: '100%', height: 'auto' }}
       />
+
+      <p>Сет Атлантида и пицца Пепперони</p>
     </Grid>
   );
 }

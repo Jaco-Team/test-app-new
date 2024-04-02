@@ -47,9 +47,9 @@ export default memo(function CardItem({ item, count, index}) {
           }
         </div>
 
-        <Typography className="CardNameItem" variant="h5" component="h3">{item.name}</Typography>
+        <Typography className="CardNameItem" variant="h5" component="h3" style={{ cursor: 'pointer' }} onClick={() => getItem('home', thisCity, item.id)}>{item.name}</Typography>
         
-        <div className="dop_text" style={{ justifyContent: parseInt(item.cat_id) == 4 ?  'space-evenly' : 'center' }}>
+        <div className="dop_text" style={{ cursor: 'pointer', justifyContent: parseInt(item.cat_id) == 4 ?  'space-evenly' : 'center' }} onClick={() => getItem('home', thisCity, item.id)}>
           {parseInt(item.cat_id) != 4 ? null : <span className="first_text">{item.count_part_new}</span>}
 
           {parseInt(item.cat_id) == 4 ? <span className="divider"/> : null}
@@ -69,7 +69,7 @@ export default memo(function CardItem({ item, count, index}) {
           </span>
         </div>
 
-        <div className="desc_text">{item.marc_desc.length > 0 ? item.marc_desc : item.tmp_desc}</div>
+        <div className="desc_text" style={{ cursor: 'pointer' }} onClick={() => getItem('home', thisCity, item.id)}>{item.marc_desc.length > 0 ? item.marc_desc : item.tmp_desc}</div>
 
         {count ? (
           <div className="containerBTN">

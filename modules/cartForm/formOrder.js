@@ -275,10 +275,22 @@ export default function FormOrder({ cityName }) {
     }, 300)
   }
 
+  function setPromoText(event){
+
+    if (event.keyCode === 13) {
+      getInfoPromo(promo, thisCity);
+    }
+  }
+
   let NewSummDiv = summDiv;
 
+  let price1 = itemsOffDops.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
+  let price2 = dopListCart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
+
+  let allPriceWithoutPromo_new = price1 + price2;
+
   if( parseInt(free_drive) == 1 ) {
-    if( parseInt(allPriceWithoutPromo) > 0 || parseInt(allPrice) > 0 ) {
+    if( parseInt(allPriceWithoutPromo_new) > 0 || parseInt(allPrice) > 0 ) {
       NewSummDiv = 0;
     }else{
       NewSummDiv = 1;
@@ -430,7 +442,7 @@ export default function FormOrder({ cityName }) {
             </span>
             <div>
               <span className={ promoInfo?.items_on_price?.length ? promoItemsFind ? 'promoInfo' : null : promoInfo?.status_promo && itemsOffDops.length ? 'promoInfo' : null }>
-                {new Intl.NumberFormat('ru-RU').format(parseInt(allPriceWithoutPromo) + parseInt(NewSummDiv))} ₽
+                {new Intl.NumberFormat('ru-RU').format(parseInt(allPriceWithoutPromo_new) + parseInt(NewSummDiv))} ₽
               </span>
             </div>
           </div>
@@ -440,14 +452,15 @@ export default function FormOrder({ cityName }) {
               placeholder="Есть промокод"
               value={promo}
               label=""
+              onKeyDown={setPromoText}
               onBlur={() => getInfoPromo(promo, thisCity)}
-              func={(event) => setPromo(event.target.value)}
+              func={ event => setPromo(event.target.value)}
               inputAdornment={
                 <InputAdornment position="end">
                   {promoInfo ? promoInfo.status_promo ? <div className="circleInput"></div> : <div className="circleInput" style={{ background: '#DD1A32' }}></div> : null}
                 </InputAdornment>}
             />
-            {promoInfo?.items_on_price?.length ?  promoItemsFind ?
+            {promoInfo?.items_on_price?.length ? promoItemsFind ?
                 <div>{new Intl.NumberFormat('ru-RU').format(parseInt(allPrice) + parseInt(NewSummDiv))}{' '}₽</div> : null : promoInfo?.status_promo && itemsCount ? 
                 <div>{new Intl.NumberFormat('ru-RU').format(parseInt(allPrice) + parseInt(NewSummDiv))}{' '}₽</div> : null}
           </div>
@@ -603,7 +616,7 @@ export default function FormOrder({ cityName }) {
             
             <div className="basketTotal" style={{ marginTop: typeOrder ? '2.1660649819495vw' : '0.72202166064982vw' }}>
               <span>Итого: {itemsCount} {getWord(itemsCount)}</span>
-              <span>{new Intl.NumberFormat('ru-RU').format(allPrice ? parseInt(allPrice) + parseInt(NewSummDiv) : parseInt(allPriceWithoutPromo) + parseInt(NewSummDiv))}{' '}₽</span>
+              <span>{new Intl.NumberFormat('ru-RU').format(allPrice ? parseInt(allPrice) + parseInt(NewSummDiv) : parseInt(allPriceWithoutPromo_new) + parseInt(NewSummDiv))}{' '}₽</span>
             </div>
 
             <Button className="basketOrder" variant="contained" onClick={create_order}>

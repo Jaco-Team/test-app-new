@@ -59,18 +59,18 @@ export default memo(function NavBarMobile({ city }) {
           >
             <List className={'LinkList ' + roboto.variable}>
 
-              <ListItem onClick={() => { setActiveModalCityList(true); setActiveMenu(false); }}>
-                <a>
-                  <MapContactsMobile />
-                  <span>{thisCityRu}</span>
-                </a>
-              </ListItem>
-
               <ListItem onClick={() => setActiveMenu(false)}>
                 <Link href={'/' + city} style={{background: activePage === 'home' ? 'rgba(0, 0, 0, 0.03)' : null}}>
                   <MenuIconMobile />
                   <span style={{color: activePage === 'home' ? ' #dd1a32' : null}}>Меню</span>
                 </Link>
+              </ListItem>
+
+              <ListItem onClick={() => { setActiveModalCityList(true); setActiveMenu(false); }}>
+                <a>
+                  <MapContactsMobile />
+                  <span>{thisCityRu}</span>
+                </a>
               </ListItem>
 
               <ListItem onClick={() => setActiveMenu(false)}>

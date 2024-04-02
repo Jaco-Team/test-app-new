@@ -22,7 +22,7 @@ export default function AboutUs() {
     
       <Image
         alt=""
-        src="/about/main.png"
+        src="/about/new_main_min.png"
         width={4606}
         height={3456}
         priority={true}

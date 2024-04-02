@@ -6,7 +6,7 @@ import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/st
 
 import { MapPointIcon } from '@/ui/Icons.js';
 
-import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
+import { YMaps, Map, Placemark, Polygon, SearchControl } from '@pbe/react-yandex-maps';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -119,29 +119,28 @@ export default function ContactsPagePC() {
               style={{ minHeight: '68.231046931408vw' }}
               onClick={(event) => changePointNotHover(event)}
             >
+              <SearchControl options={{ float: "left" }} />
 
               {zones?.map((point, key) => (
-                  <Placemark key={key}
-                    geometry={[point.xy_point.latitude, point.xy_point.longitude]}
-                    options={{ 
-                      iconLayout: point.image, 
-                      iconImageHref: '/Favikon.png', 
-                      iconImageSize: [65, 65], 
-                      iconImageOffset: [-12, -20], 
-                    }} 
-                    onClick={() => changePointClick(point.addr)}
-                  />
-                ))
-              }
+                <Placemark key={key}
+                  geometry={[point.xy_point.latitude, point.xy_point.longitude]}
+                  options={{ 
+                    iconLayout: point.image, 
+                    iconImageHref: '/Favikon.png', 
+                    iconImageSize: [65, 65], 
+                    iconImageOffset: [-12, -20], 
+                  }} 
+                  onClick={() => changePointClick(point.addr)}
+                />
+              ))}
 
               {points_zone?.map((point, key) => (
-                  <Polygon key={key}
-                    geometry={[point.zone]}
-                    options={point.options}
-                    onClick={() => changePointClick(point.addr)}
-                  />
-                ))
-              }
+                <Polygon key={key}
+                  geometry={[point.zone]}
+                  options={point.options}
+                  onClick={() => changePointClick(point.addr)}
+                />
+              ))}
 
             </Map>
           </YMaps>

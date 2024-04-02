@@ -39,6 +39,17 @@ export default function BasketPC() {
     }
   }
 
+  function setPromoText(event){
+
+    if (event.keyCode === 13) {
+      getInfoPromo(promo, thisCity);
+
+      setTimeout( () => {
+        getInfoPromo(promo, thisCity)
+      }, 300 )
+    }
+  }
+
   return (
     <>
       <Popover
@@ -61,6 +72,7 @@ export default function BasketPC() {
               placeholder="Есть промокод"
               value={promo}
               label=""
+              onKeyDown={setPromoText}
               onBlur={() => getInfoPromo(promo, thisCity)}
               func={(event) => setPromo(event.target.value)}
               inputAdornment={
