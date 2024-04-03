@@ -279,6 +279,10 @@ export default function FormOrder({ cityName }) {
 
     if (event.keyCode === 13) {
       getInfoPromo(promo, thisCity);
+
+      setTimeout( () => {
+        getInfoPromo(promo, thisCity)
+      }, 300 )
     }
   }
 
