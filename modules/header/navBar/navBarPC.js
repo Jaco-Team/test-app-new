@@ -86,11 +86,26 @@ const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, c
   )
 })
 
-const MemoLogo = React.memo(function MemoLogo({city}){
+const MemoLogo = React.memo(function MemoLogo({city, activePage}){
   return(
-    <Link href={'/' + city} className="logoHeaderPC">
-      <img alt="Жако доставка роллов и пиццы" src={'/Jaco-Logo-120.png'} />
-    </Link>
+    <>
+      {activePage === 'home' ?
+        <ScrollLink
+          className="logoHeaderPC"
+          to={'BannerPC'}
+          spy={true}
+          isDynamic={true}
+          smooth={false}
+          offset={-200}
+        >
+          <img alt="Жако доставка роллов и пиццы" src={'/Jaco-Logo-120.png'} />
+        </ScrollLink>
+          :
+        <Link href={'/' + city} className="logoHeaderPC">
+          <img alt="Жако доставка роллов и пиццы" src={'/Jaco-Logo-120.png'} />
+        </Link>
+      }
+    </>
   )
 })
 
@@ -247,7 +262,7 @@ export default React.memo(function NavBarPC({ city }) {
       <AppBar className="headerNew" id="headerNew" elevation={2} onClick={closeBasket}>
         <Toolbar>
           <div>
-            <MemoLogo city={city} />
+            <MemoLogo city={city} activePage={activePage} />
 
             {category.map( (item, key) => 
               item.cats.length > 0 ?

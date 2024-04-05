@@ -18,6 +18,30 @@ import { useHeaderStore, useCitiesStore } from '@/components/store.js';
 import BasketIconHeaderMobile from '../basket/basketIconHeaderMobile';
 import ProfileIconHeaderMobile from '../profile/profileIconHeaderMobile';
 
+import { Link as ScrollLink } from 'react-scroll';
+
+const MemoLogo = memo(function MemoLogo({city, activePage}){
+  return(
+    <>
+      {activePage === 'home' ?
+        <ScrollLink
+          to={'BannerMobile'}
+          spy={true}
+          isDynamic={true}
+          smooth={false}
+          offset={-200}
+        >
+          <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true}/>
+        </ScrollLink>
+          :
+        <Link href={'/' + city}>
+          <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true}/>
+        </Link>
+      }
+    </>
+  )
+})
+
 export default memo(function NavBarMobile({ city }) {
   const [activeMenu, setActiveMenu] = useState(false);
 
@@ -43,10 +67,7 @@ export default memo(function NavBarMobile({ city }) {
   return (
     <AppBar position="fixed" className="headerMobile" elevation={2} onClick={close} sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }}>
       <Toolbar>
-        <Link href={`/${city}`}>
-          <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true}/>
-        </Link>
-
+        <MemoLogo city={city} activePage={activePage} />
         <>
           <BurgerIconMobile onClick={() => setActiveMenu(true)} className={activeMenu ? 'BurgerActive' : null}/>
 

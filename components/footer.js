@@ -25,6 +25,6 @@ export default memo(function Footer({ cityName, active_page }) {
   }
 
   return (
-    <FooterPC cityName={cityName} />
+    <FooterPC cityName={cityName} active_page={active_page} />
   );
 })

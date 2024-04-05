@@ -1780,7 +1780,8 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       center_map: {
         center: [json.zones[0].xy_center_map.latitude, json.zones[0].xy_center_map.longitude],
         zoom: zoomSize,
-        controls: []
+        controls: [],
+        behaviors: ["disable('scrollZoom')"]
       },
       points: json.points,
       zones: json.zones,

@@ -6,7 +6,7 @@ import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/st
 
 import { MapPointIcon } from '@/ui/Icons.js';
 
-import { YMaps, Map, Placemark, Polygon, SearchControl } from '@pbe/react-yandex-maps';
+import { YMaps, Map, Placemark, Polygon, SearchControl, ZoomControl } from '@pbe/react-yandex-maps';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -113,13 +113,14 @@ export default function ContactsPagePC() {
           <YMaps query={{ lang: 'ru_RU', apikey: 'f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8' }}>
             <Map 
               defaultState={center_map} 
-              instanceRef={ref} 
+              instanceRef={ref}
               width="100%" 
               height="100%" 
               style={{ minHeight: '68.231046931408vw' }}
               onClick={(event) => changePointNotHover(event)}
             >
               <SearchControl options={{ float: "left" }} />
+              <ZoomControl options={{ float: "left" }} />
 
               {zones?.map((point, key) => (
                 <Placemark key={key}
