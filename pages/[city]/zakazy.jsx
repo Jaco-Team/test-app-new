@@ -51,6 +51,8 @@ export default function Zakazy(props) {
     if (typeof window !== 'undefined') {
       const token = localStorage.getItem('token');
 
+      console.log('token', token);
+
       if( (!token || token == '') && city.length > 0 ){
         push(`/${city}`);
       }

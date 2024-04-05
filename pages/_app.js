@@ -148,6 +148,24 @@ function MetricaSMR(){
 
 function MyApp({ Component, pageProps: { ...pageProps } }) {
 
+  /*return (
+    <ThemeProvider theme={theme}>
+      
+      
+
+      { !pageProps || pageProps?.statusCode == 404 || pageProps?.statusCode == 500 || typeof pageProps?.data1?.city === 'undefined' ? false :
+        <Header
+          city={pageProps?.data1?.city}
+          cats={pageProps?.data1?.cats}
+          city_list={pageProps?.data1?.cities}
+          //active_page={'other'}
+        />
+      }
+
+      <Component {...pageProps} />
+    </ThemeProvider>
+  )*/
+
   return (
     <ThemeProvider theme={theme}>
       <YandexMetrika 

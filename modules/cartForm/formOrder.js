@@ -123,11 +123,11 @@ export default function FormOrder({ cityName }) {
     }
 
     if (nameList === 'time') {
-      const point_id = typeOrder ? orderPic?.id : orderAddr?.point_id;
+      const point_id = typeOrder == 'pic' ? orderPic?.id : orderAddr?.point_id;
 
       if (point_id) {
         getDataPred();
-        getTimesPred(point_id, null, !typeOrder ? 0 : 1, []);
+        getTimesPred(point_id, null, typeOrder == 'pic' ? 1 : 0, []);
 
         if (matches) {
           setActiveMenuCart(true, nameList);
@@ -136,7 +136,7 @@ export default function FormOrder({ cityName }) {
           setList(type_pred);
         }
       } else {
-        setActiveModalAlert(true, 'Необходимо выбрать ' + (typeOrder ? 'Кафе' : 'Адрес доставки'), false);
+        setActiveModalAlert(true, 'Необходимо выбрать ' + (typeOrder == 'pic' ? 'Кафе' : 'Адрес доставки'), false);
       }
     }
 
@@ -144,7 +144,7 @@ export default function FormOrder({ cityName }) {
       if (matches) {
         setActiveMenuCart(true, nameList);
       } else {
-        if (typeOrder) {
+        if ( typeOrder == 'pic' ) {
           setList(type_pay_pic);
         } else {
           setList(type_pay_div);
@@ -214,14 +214,14 @@ export default function FormOrder({ cityName }) {
       return;
     }
 
-    if (typeOrder) {
+    if ( typeOrder == 'pic' ) {
       if (!orderPic) {
         setActiveModalAlert(true, 'Необходимо выбрать Кафе', false);
         return;
       }
     } 
     
-    if (!typeOrder) {
+    if ( typeOrder == 'dev' ) {
       if (!orderAddr) {
         setActiveModalAlert(true, 'Необходимо выбрать Адрес доставки', false);
         return;
@@ -308,7 +308,7 @@ export default function FormOrder({ cityName }) {
           <div className="CartMobileText">Оформить заказ</div>
 
           <Stack direction="row" alignItems="center" style={{ width: '86.324786324786vw', marginBottom: '6.8376068376068vw' }}>
-            <MySwitchMobile onClick={(event) => setTypeOrder(event.target.checked)} checked={typeOrder ? true : false} />
+            <MySwitchMobile onClick={(event) => setTypeOrder(event.target.checked) } checked={ typeOrder == 'pic' ? true : false} />
           </Stack>
 
           <Button className="CartChoose" onClick={(event) => openMenu(event, 'city')} endIcon={<ArrowDownCartMobile />}>
@@ -320,7 +320,7 @@ export default function FormOrder({ cityName }) {
             </div>
           </Button>
 
-          {typeOrder ? (
+          {typeOrder == 'pic' ? (
             <Button className="CartChoose" onClick={(event) => openMenu(event, 'point')} endIcon={<ArrowDownCartMobile />}>
               <div>
                 <Typography component="span">
@@ -365,7 +365,7 @@ export default function FormOrder({ cityName }) {
             </div>
           </Button>
 
-          <Button className="CartChoose" endIcon={<ArrowDownCartMobile />} style={{ marginBottom: typeOrder ? '6.8376068376068vw' : '3.4188034188034vw' }} 
+          <Button className="CartChoose" endIcon={<ArrowDownCartMobile />} style={{ marginBottom: typeOrder == 'pic' ? '6.8376068376068vw' : '3.4188034188034vw' }} 
             onClick={(event) => openMenu(event, 'pay')}>
             <div>
               <Typography component="span">
@@ -379,7 +379,7 @@ export default function FormOrder({ cityName }) {
             </div>
           </Button>
 
-          {typeOrder ? null : typePay?.id !== 'cash' ? null : (
+          {typeOrder == 'pic' ? null : typePay?.id !== 'cash' ? null : (
             <Button className="CartChoose">
               <div>
                 <Typography component="span">
@@ -399,7 +399,7 @@ export default function FormOrder({ cityName }) {
             </Button>
           )}
 
-          {typeOrder ? null : (
+          {typeOrder == 'pic' ? null : (
             <Button className="CartChoose" endIcon={<ArrowDownCartMobile />} onClick={(event) => openMenu(event, 'message')}
               style={{ marginBottom: '6.8376068376068vw', height: message.length > 20 ? '20.512820512821vw' : '10.25641025641vw' }}>
               <div>
@@ -433,14 +433,14 @@ export default function FormOrder({ cityName }) {
             </>
           ) : null}
 
-          {typeOrder ? null : (
+          {typeOrder == 'pic' ? null : (
             <div className="CartDelivery">
               <span>Доставка:</span>
               <span>{new Intl.NumberFormat('ru-RU').format(NewSummDiv)} ₽</span>
             </div>
           )}
 
-          <div className="CartTotal" style={{ marginTop: typeOrder ? '5.1282051282051vw' : 0 }}>
+          <div className="CartTotal" style={{ marginTop: typeOrder == 'pic' ? '5.1282051282051vw' : 0 }}>
             <span>
               Итого: {itemsCount} {getWord(itemsCount)}
             </span>
@@ -487,7 +487,7 @@ export default function FormOrder({ cityName }) {
             </div>
 
             <Stack direction="row" alignItems="center" style={{ width: '28.880866425993vw', marginBottom: '2.8880866425993vw' }}>
-              <MySwitchPC onClick={(event) => setTypeOrder(event.target.checked)} checked={typeOrder ? true : false} />
+              <MySwitchPC onClick={(event) => setTypeOrder(event.target.checked) } checked={ typeOrder == 'pic' ? true : false} />
             </Stack>
 
             <Button className="basketChoose" onClick={(event) => openMenu(event, 'city')}
@@ -500,7 +500,7 @@ export default function FormOrder({ cityName }) {
               </div>
             </Button>
 
-            {typeOrder ? (
+            {typeOrder == 'pic' ? (
               <Button className="basketChoose" onClick={(event) => openMenu(event, 'point')}
                 endIcon={open ? nameList === 'point' ? <ArrowDownBasketModalPC style={{ transform: 'rotate(180deg)' }} /> : <ArrowDownBasketModalPC /> : <ArrowDownBasketModalPC />}>
                 <div>
@@ -555,7 +555,7 @@ export default function FormOrder({ cityName }) {
               </div>
             </Button>
 
-            <Button className="basketChoose" style={{ marginBottom: typeOrder ? '2.8880866425993vw' : '1.4440433212996vw' }}
+            <Button className="basketChoose" style={{ marginBottom: typeOrder == 'pic' ? '2.8880866425993vw' : '1.4440433212996vw' }}
               onClick={(event) => openMenu(event, 'pay')}
               endIcon={open ? nameList === 'pay' ? <ArrowDownBasketModalPC style={{ transform: 'rotate(180deg)' }} /> : <ArrowDownBasketModalPC /> : <ArrowDownBasketModalPC /> }>
               <div>
@@ -570,7 +570,7 @@ export default function FormOrder({ cityName }) {
               </div>
             </Button>
 
-            {typeOrder ? null : typePay?.id !== 'cash' ? null : (
+            {typeOrder == 'pic' ? null : typePay?.id !== 'cash' ? null : (
               <Button className="basketChoose">
                 <div>
                   <Typography component="span">
@@ -590,7 +590,7 @@ export default function FormOrder({ cityName }) {
               </Button>
             )}
 
-            {typeOrder ? null : (
+            {typeOrder == 'pic' ? null : (
               <div className="basketMessage">
                 <Typography component="span">
                   <MessageBasketModalPC />
@@ -611,14 +611,14 @@ export default function FormOrder({ cityName }) {
 
             <div className="basketLine"></div>
 
-            {typeOrder ? null : (
+            {typeOrder == 'pic' ? null : (
               <div className="basketDelivery">
                 <span>Доставка:</span>
                 <span>{new Intl.NumberFormat('ru-RU').format(NewSummDiv)} ₽</span>
               </div>
             )}
             
-            <div className="basketTotal" style={{ marginTop: typeOrder ? '2.1660649819495vw' : '0.72202166064982vw' }}>
+            <div className="basketTotal" style={{ marginTop: typeOrder == 'pic' ? '2.1660649819495vw' : '0.72202166064982vw' }}>
               <span>Итого: {itemsCount} {getWord(itemsCount)}</span>
               <span>{new Intl.NumberFormat('ru-RU').format(allPrice ? parseInt(allPrice) + parseInt(NewSummDiv) : parseInt(allPriceWithoutPromo_new) + parseInt(NewSummDiv))}{' '}₽</span>
             </div>

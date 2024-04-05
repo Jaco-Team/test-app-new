@@ -40,3 +40,6 @@ next-env.d.ts
 *storybook.log
 # Sentry Config File
 .sentryclirc
+
+# Sentry Config File
+.sentryclirc

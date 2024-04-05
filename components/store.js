@@ -33,7 +33,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   center_map: null,
 
   //0 - доставка / 1 - самовывоз
-  typeOrder: 0,
+  typeOrder: 'dev',
 
   //0 - обычный / 1 - пред
   byTime: 0,
@@ -120,7 +120,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   // установить тип заказа Доставка/Самовывоз
   setTypeOrder: (typeOrder) => {
-    set({ typeOrder })
+
+    set({ typeOrder: typeOrder ? 'pic' : 'dev' })
 
     const cart = JSON.parse(localStorage.getItem('setCart'));
 
@@ -439,7 +440,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       type: 'get_times_pred',
       date: setDate,
       point_id: point_id ?? get().point_id,
-      type_order: typeOrder ?? get().typeOrder,
+      type_order: (typeOrder ?? get().typeOrder) == 'pic' ? 1 : 0,
       cart: JSON.stringify(cart)
     };
     
@@ -456,7 +457,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         type: 'get_times_pred',
         date: tomorrow,
         point_id: point_id ?? get().point_id,
-        type_order: typeOrder ?? get().typeOrder,
+        type_order: (typeOrder ?? get().typeOrder) == 'pic' ? 1 : 0,
         cart: JSON.stringify(cart)
       };
       
@@ -466,11 +467,18 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       let datePreOrder = get().datePreOrder;
       datePreOrder = datePreOrder?.filter((day) => day.text !== 'Сегодня')
 
-      set({ timePreOrder: json, point_id: point_id ?? get().point_id, typeOrder: typeOrder ?? get().typeOrder, datePreOrder })
+      set({ 
+        timePreOrder: json, 
+        point_id: point_id ?? get().point_id, 
+        datePreOrder 
+      })
 
     } else {
 
-      set({ timePreOrder: json, point_id: point_id ?? get().point_id, typeOrder: typeOrder ?? get().typeOrder  })
+      set({ 
+        timePreOrder: json, 
+        point_id: point_id ?? get().point_id, 
+      })
 
     }
 
@@ -509,7 +517,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const promoName = localStorage.getItem('promo_name');
 
     //самовывоз
-    if( parseInt(typeOrder) == 1 ) {
+    if( typeOrder == 'pic' ) {
       data = {
         type: 'create_order',
         token,
@@ -518,7 +526,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         sdacha: get().sdacha,
         comment: get().comment,
         typePay: get().typePay.id,
-        typeOrder: get().typeOrder,
+        typeOrder: 1,
         point_id: get().orderPic.id,
         dateTimeOrder: JSON.stringify(get().dateTimeOrder ?? { date: '', name: 'В ближайшее время', id: -1 }),
         cart: JSON.stringify(get().items)
@@ -534,7 +542,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         point_id: get().orderAddr.point_id,
         comment: get().comment,
         typePay: get().typePay.id,
-        typeOrder: get().typeOrder,
+        typeOrder: 0,
         dateTimeOrder: JSON.stringify(get().dateTimeOrder ?? { date: '', name: 'В ближайшее время', id: -1 }),
         cart: JSON.stringify(get().items)
       };
@@ -1150,7 +1158,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         point_id_dev = 0,
         point_id_pic = 0;
     
-    type_order = parseInt( get().typeOrder );
+    type_order = get().typeOrder == 'pic' ? 1 : 0;
     point_id_dev = get().orderAddr ? parseInt( get().orderAddr.point_id ) : 0;
     point_id_pic = parseInt( get().orderPic );
     
@@ -1611,7 +1619,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       itemsOffDops: [],
       itemsWithPromo: [],
 
-      typeOrder: parseInt(order?.order?.type_order_) - 1,
+      typeOrder: parseInt(order?.order?.type_order_) == 2 ? 'pic' : 'dev',
       orderPic: parseInt(order?.order?.type_order_) == 2 ? order?.order?.pic_info : null,
       point_id: order?.order?.point_id,
 
@@ -2247,9 +2255,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       zones: json.zones
     })
   },
-  repeatOrder: () => {
-    //console.log(get().modalOrder);
-  },
   orderDel: async (this_module, userToken, text) => {
     let data = {
       type: 'close_order',
@@ -2843,7 +2848,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
       if (typeof window !== 'undefined') {
         localStorage.setItem('token', res.token);
-        Cookies.set('token', res.token, { expires: 7 }) //expires 7 days
+        Cookies.set('token', res.token, { expires: 60 }) //expires 7 days
       }
     }
   },
@@ -2886,7 +2891,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
       if (typeof window !== 'undefined') {
         localStorage.setItem('token', json.token);
-        Cookies.set('token', json.token, { expires: 7 }) //expires 7 days
+        Cookies.set('token', json.token, { expires: 60 }) //expires 7 days
       }
     }
   },
@@ -2913,6 +2918,9 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
             userName: get().setNameUser(json.user.name),
             isAuth: 'auth'
           });
+
+          localStorage.setItem('token', token);
+          Cookies.set('token', token, { expires: 60 }) //expires 7 days
         }
 
         return ;
@@ -2938,6 +2946,9 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
             userName: get().setNameUser(json.user.name),
             isAuth: 'auth'
           });
+
+          localStorage.setItem('token', token2);
+          Cookies.set('token', token2, { expires: 60 }) //expires 7 days
         }
 
         return ;
@@ -3059,7 +3070,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     if (typeof window !== 'undefined') {
       localStorage.setItem('token', json.token);
-      Cookies.set('token', json.token, { expires: 7 }) //expires 7 days
+      Cookies.set('token', json.token, { expires: 60 }) //expires 7 days
     }
   },
 
@@ -3082,9 +3093,16 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     if(name){
       const nameSplit = name.split(' ');
 
+      if(nameSplit.length === 0) {
+        return name;
+      }
+
       if(nameSplit.length === 1) {
-        userName = nameSplit[0][0].toUpperCase() + nameSplit[0][1].toUpperCase()
-      } else {
+        //userName = nameSplit[0][0].toUpperCase() + nameSplit[0][1].toUpperCase()
+        userName = nameSplit[0].toUpperCase();
+      } 
+      
+      if(nameSplit.length > 1 && nameSplit[0] != '' && nameSplit[1] != '') {
         userName = nameSplit[0][0].toUpperCase() + nameSplit[1][0].toUpperCase()
       }
 
@@ -3161,7 +3179,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     const json = await api(this_module, data);
 
     set({
-      bannerList: json.banners,
+      bannerList: json?.banners,
     });
   },
   

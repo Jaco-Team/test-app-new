@@ -9,7 +9,7 @@ import 'moment/locale/ru';
 moment.locale('ru');
 
 function areEqual(prevProps, nextProps) {
-  return parseInt(nextProps.order?.is_delete) === parseInt(prevProps.order?.is_delete) || parseInt(nextProps.order?.type_status) === parseInt(prevProps.order?.type_status);
+  return JSON.stringify(prevProps.order) === JSON.stringify(nextProps.order);
 }
 
 export default React.memo(function OrderItemMobile({ order, token, this_module, city, last }) {
