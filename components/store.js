@@ -2842,7 +2842,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
       if (typeof window !== 'undefined') {
         localStorage.setItem('token', res.token);
-        Cookies.set('token', res.token, { expires: 7 }) //expires 7 days
+        Cookies.set('token', res.token, { expires: 60 }) //expires 7 days
       }
     }
   },
@@ -2885,7 +2885,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
       if (typeof window !== 'undefined') {
         localStorage.setItem('token', json.token);
-        Cookies.set('token', json.token, { expires: 7 }) //expires 7 days
+        Cookies.set('token', json.token, { expires: 60 }) //expires 7 days
       }
     }
   },
@@ -3058,7 +3058,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     if (typeof window !== 'undefined') {
       localStorage.setItem('token', json.token);
-      Cookies.set('token', json.token, { expires: 7 }) //expires 7 days
+      Cookies.set('token', json.token, { expires: 60 }) //expires 7 days
     }
   },
 
@@ -3090,7 +3090,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
         userName = nameSplit[0].toUpperCase();
       } 
       
-      if(nameSplit.length > 1) {
+      if(nameSplit.length > 1 && nameSplit[0] != '' && nameSplit[1] != '') {
         userName = nameSplit[0][0].toUpperCase() + nameSplit[1][0].toUpperCase()
       }
 
