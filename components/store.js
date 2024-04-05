@@ -518,7 +518,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         sdacha: get().sdacha,
         comment: get().comment,
         typePay: get().typePay.id,
-        typeOrder: get().typeOrder,
+        typeOrder: parseInt(get().typeOrder),
         point_id: get().orderPic.id,
         dateTimeOrder: JSON.stringify(get().dateTimeOrder ?? { date: '', name: 'В ближайшее время', id: -1 }),
         cart: JSON.stringify(get().items)
@@ -534,7 +534,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         point_id: get().orderAddr.point_id,
         comment: get().comment,
         typePay: get().typePay.id,
-        typeOrder: get().typeOrder,
+        typeOrder: parseInt(get().typeOrder),
         dateTimeOrder: JSON.stringify(get().dateTimeOrder ?? { date: '', name: 'В ближайшее время', id: -1 }),
         cart: JSON.stringify(get().items)
       };
