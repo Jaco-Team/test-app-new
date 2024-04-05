@@ -3081,9 +3081,16 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     if(name){
       const nameSplit = name.split(' ');
 
+      if(nameSplit.length === 0) {
+        return name;
+      }
+
       if(nameSplit.length === 1) {
-        userName = nameSplit[0][0].toUpperCase() + nameSplit[0][1].toUpperCase()
-      } else {
+        //userName = nameSplit[0][0].toUpperCase() + nameSplit[0][1].toUpperCase()
+        userName = nameSplit[0].toUpperCase();
+      } 
+      
+      if(nameSplit.length > 1) {
         userName = nameSplit[0][0].toUpperCase() + nameSplit[1][0].toUpperCase()
       }
 
@@ -3160,7 +3167,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     const json = await api(this_module, data);
 
     set({
-      bannerList: json.banners,
+      bannerList: json?.banners,
     });
   },
   

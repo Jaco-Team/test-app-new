@@ -54,14 +54,13 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 })
 
 // module.exports = MillionLint.next()(withAxiom(nextConfig));
-module.exports = withAxiom(nextConfig);
+//module.exports = withAxiom(nextConfig);
 
 // Injected content via Sentry wizard below
 
 const { withSentryConfig } = require("@sentry/nextjs");
 
-module.exports = withSentryConfig(
-  module.exports,
+module.exports = withAxiom(withSentryConfig(
   {
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options
@@ -98,4 +97,4 @@ module.exports = withSentryConfig(
     // https://vercel.com/docs/cron-jobs
     automaticVercelMonitors: true,
   }
-);
+));
