@@ -10,9 +10,9 @@ import OrdersList from './ordersList.jsx';
 
 import { useProfileStore, useHeaderStore } from '@/components/store.js';
 
-export default function OrderPC({ page, this_module, city }) {
+export default function OrderPC({ this_module, city }) {
 
-  const [getOrderList, orderList] = useProfileStore((state) => [state.getOrderList, state.orderList]);
+  const [getOrderList] = useProfileStore((state) => [state.getOrderList, state.orderList]);
 
   const [ token ] = useHeaderStore( state => [ state.token ] )
 
@@ -48,7 +48,6 @@ export default function OrderPC({ page, this_module, city }) {
 
         <Grid item xs={12} className='blockTable'>
           <OrdersList
-            orders={orderList}
             token={token}
             this_module={this_module}
             city={city}

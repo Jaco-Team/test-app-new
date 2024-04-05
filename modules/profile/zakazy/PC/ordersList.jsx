@@ -17,9 +17,9 @@ import OrderItem from './orderItem.jsx';
 
 import { useProfileStore } from '@/components/store';
 
-export default function OrdersList({orders, token, this_module, city}){
+export default function OrdersList({ token, this_module, city }){
 
-  const [getOrder] = useProfileStore( state => [ state.getOrder ])
+  const [ getOrder, orderList] = useProfileStore( state => [ state.getOrder, state.orderList ])
 
   const template = {
     token: token,
@@ -42,8 +42,8 @@ export default function OrdersList({orders, token, this_module, city}){
         </TableRow>
       </TableHead>
       <TableBody>
-        {orders.map( (order, key) =>
-          <OrderItem key={key} order={order} template={template} getOrder={getOrder} />
+        {orderList.map( order =>
+          <OrderItem key={order.order_id} order={order} template={template} getOrder={getOrder} />
         )}
       </TableBody>
     </Table>

@@ -15,8 +15,7 @@ import { ArrowLeftMobile, VectorDownMobile } from '@/ui/Icons.js';
 
 export default function OrderMobile({ city, this_module }) {
 
-  const [getOrderList, orderList] =
-    useProfileStore((state) => [state.getOrderList, state.orderList]);
+  const [getOrderList, orderList] = useProfileStore((state) => [state.getOrderList, state.orderList]);
 
   const [ token ] = useHeaderStore( state => [ state.token ] )
 

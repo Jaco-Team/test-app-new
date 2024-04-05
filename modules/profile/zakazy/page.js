@@ -13,7 +13,7 @@ export default function OrderPage({ page, this_module, city }) {
       {matches ? 
         <OrderMobile this_module={this_module} city={city} /> 
           : 
-        <OrderPC page={page} this_module={this_module} city={city} />
+        <OrderPC this_module={this_module} city={city} />
       }
     </Meta>
   );

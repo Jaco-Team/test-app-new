@@ -6,10 +6,12 @@ import TableRow from '@mui/material/TableRow';
 import { ReloadIcon, CheckIcon, CloseIcon_old } from '@/ui/Icons.js';
 
 function areEqual(prevProps, nextProps) {
-  return parseInt(nextProps.order.is_delete) === parseInt(prevProps.order.is_delete) || parseInt(nextProps.order.type_status) === parseInt(prevProps.order.type_status);
+  return JSON.stringify(prevProps.order) === JSON.stringify(nextProps.order);
 }
 
 export default React.memo(function OrderItem({order, template, getOrder}){
+
+  console.log( 'render_order', order.order_id )
 
   return (
     <TableRow>
