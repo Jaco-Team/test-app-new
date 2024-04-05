@@ -470,7 +470,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       set({ 
         timePreOrder: json, 
         point_id: point_id ?? get().point_id, 
-        typeOrder: typeOrder ?? get().typeOrder,
         datePreOrder 
       })
 
@@ -479,7 +478,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       set({ 
         timePreOrder: json, 
         point_id: point_id ?? get().point_id, 
-        typeOrder: typeOrder ?? get().typeOrder  
       })
 
     }
