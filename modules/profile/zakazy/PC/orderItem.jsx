@@ -11,8 +11,6 @@ function areEqual(prevProps, nextProps) {
 
 export default React.memo(function OrderItem({order, template, getOrder}){
 
-  console.log( 'render_order', order.order_id )
-
   return (
     <TableRow>
       <TableCell> 
