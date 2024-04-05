@@ -56,7 +56,6 @@ const withBundleAnalyzer = require('@next/bundle-analyzer')({
 // module.exports = MillionLint.next()(withAxiom(nextConfig));
 module.exports = withAxiom(nextConfig);
 
-
 // Injected content via Sentry wizard below
 
 const { withSentryConfig } = require("@sentry/nextjs");
