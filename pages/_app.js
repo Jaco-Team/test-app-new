@@ -79,6 +79,8 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import YandexMetrika from '@/components/YandexMetrika';
 import { GoogleTagManager } from '@next/third-parties/google'
 
+import * as Sentry from "@sentry/browser";
+
 import Header from '@/components/header';
 
 const theme = createTheme({
@@ -95,6 +97,8 @@ const theme = createTheme({
     },
   },
 })
+
+
 
 /*export function reportWebVitals(metric) {
   console.log(metric)
@@ -147,6 +151,24 @@ function MetricaSMR(){
 }
 
 function MyApp({ Component, pageProps: { ...pageProps } }) {
+
+  if( typeof window !== "undefined" ){
+    Sentry.init({
+      dsn: "https://1a6c09f7a517190201fb5cae351f9ede@o4505941569830912.ingest.us.sentry.io/4507028536229888",
+    
+      // Alternatively, use `process.env.npm_package_version` for a dynamic release version
+      // if your build tool supports it.
+      release: "site_new@1.1.1",
+      integrations: [
+        Sentry.browserTracingIntegration(),
+        //Sentry.replayIntegration(),
+      ],
+    
+      // Set `tracePropagationTargets` to control for which URLs distributed tracing should be enabled
+      //tracePropagationTargets: [/^https:\/\/new\.jacofood\.ru/],
+    
+    });
+  }
 
   /*return (
     <ThemeProvider theme={theme}>
