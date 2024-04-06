@@ -141,14 +141,15 @@ export default function FormOrder({ cityName }) {
     }
 
     if (nameList === 'pay') {
+      if ( typeOrder == 'pic' ) {
+        setList(type_pay_pic);
+      } else {
+        setList(type_pay_div);
+      }
+
       if (matches) {
         setActiveMenuCart(true, nameList);
       } else {
-        if ( typeOrder == 'pic' ) {
-          setList(type_pay_pic);
-        } else {
-          setList(type_pay_div);
-        }
         setAnchorEl(event.currentTarget);
       }
     }

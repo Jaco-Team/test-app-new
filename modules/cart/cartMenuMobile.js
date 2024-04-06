@@ -59,7 +59,7 @@ export default function CartMenuMobile({ cityName }) {
     }
 
     if (nameList === 'pay') {
-      if (typeOrder) {
+      if (typeOrder == 'pic') {
         setList(type_pay_pic);
       } else {
         setList(type_pay_div);
