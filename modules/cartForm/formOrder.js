@@ -637,23 +637,34 @@ export default function FormOrder({ cityName }) {
             onClose={() => { setAnchorEl(null); setList([]) }}
           >
             {list.map((item, key) => 
-            <MenuItem key={key} onClick={() => chooseItem(item)}>
-              <div>
-                <span>
-                  {nameList === 'addr' ? item?.addr_name ? 
-                    <span style={{textTransform: 'uppercase'}}>
-                      {item.addr_name + ', '}
+              <MenuItem key={key} onClick={() => chooseItem(item)}>
+                <div style={{ flexDirection: 'column' }}>
+                  <div style={{ flexDirection: 'row' }}>
+                    <span>
+                      {nameList === 'addr' ? item?.addr_name ? 
+                        <span style={{textTransform: 'uppercase'}}>
+                          {item.addr_name + ', '}
+                        </span>
+                      : null : null}
+                      {item.name}
                     </span>
-                  : null : null}
-                  {item.name}
-                </span>
-                  {nameList === 'addr' && parseInt(item?.is_main) ?
-                    <span className="circle">
-                      <HomeBasketModalPC fill='#000' fillOpacity='0.6'/>
+                      {nameList === 'addr' && parseInt(item?.is_main) ?
+                        <span className="circle">
+                          <HomeBasketModalPC fill='#000' fillOpacity='0.6'/>
+                        </span>
+                      : null}
+                  </div>
+                  {nameList === 'addr' ?
+                    <span className='dopAddrInfo'>
+                      {item?.pd?.length > 0 && parseInt(item?.pd) > 0 ? ('Пд: '+item?.pd + ', ') : ''}
+                      {item?.et?.length > 0 && parseInt(item?.et) > 0 ? ('Этаж: '+item?.et + ', ') : ''}
+                      { parseInt(item?.dom_true) == 0 ? 'Домофон: не работает' : 'Домофон: работает'}
                     </span>
-                  : null}
-              </div>
-            </MenuItem>
+                      :
+                    false
+                  }
+                </div>
+              </MenuItem>
             )}
           </Menu>
         </>

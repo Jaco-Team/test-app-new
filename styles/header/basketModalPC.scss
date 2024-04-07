@@ -298,8 +298,9 @@
           width: 100%;
           padding: $MyScale20 $MyScale60;
           
-          & span {
-            width: 100%;
+          & span:not(.dopAddrInfo) {
+            //width: 100%;
+            width: fit-content;
             word-wrap: break-word;
             @include font30_400();
           }
@@ -311,6 +312,7 @@
             display: flex;
             justify-content: center;
             align-items: center;
+            
             & svg {
               width: $MyScale60;
               height: $MyScale60;

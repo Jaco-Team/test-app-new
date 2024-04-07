@@ -234,13 +234,16 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container" style={{ width: data === 'date' ? '42.735042735043vw' : '35.897435897436vw' }}>
             {slides?.map((item, i) => (
-              <div className="embla__slide" key={i}
-                style={{ justifyContent: data === 'date' ? item.text === 'Сегодня' ? 'flex-end' : 'space-between' : null,
-                          color: i !== active ? 'rgba(0, 0, 0, 0.20)' : 'rgba(0, 0, 0, 0.8)',
-                          marginLeft: '3.4188034188034vw',
-                      }}>
-                {data === 'date' && item.text !== 'Сегодня' ? <span style={{ textTransform: 'uppercase' }}>{item.dow}</span> : null}
-                <span>{data === 'time' ? item.id : item.text}</span>
+              <div className="embla__slide" 
+                key={i}
+                style={{ 
+                  justifyContent: data === 'date' ? item?.text === 'Сегодня' ? 'flex-end' : 'space-between' : null,
+                  color: i !== active ? 'rgba(0, 0, 0, 0.20)' : 'rgba(0, 0, 0, 0.8)',
+                  marginLeft: '3.4188034188034vw',
+                }}
+              >
+                {data === 'date' && item?.text !== 'Сегодня' ? <span style={{ textTransform: 'uppercase' }}>{item?.dow}</span> : null}
+                <span>{data === 'time' ? item?.id : item?.text}</span>
               </div>
             ))}
           </div>
@@ -260,13 +263,16 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
           <div className="embla__container" style={{ width: data === 'date' ? '12.996389891697vw' : '7.2202166064982vw' }}>
             {slides?.map((item, i) => 
               <div className="embla__slide" 
-                    key={i}
-                    onClick={() => handleData(i)}
-                    style={{ justifyContent: data === 'date' ? item.text === 'Сегодня' ? 'flex-end' : 'space-between' : 'center',
-                            color: i !== active ? 'rgba(0, 0, 0, 0.20)' : 'rgba(0, 0, 0, 0.8)',
-                            marginLeft: data === 'date' ? '1.4440433212996vw' : null}}>
-                {data === 'date' && item.text !== 'Сегодня' ? <span style={{ textTransform: 'uppercase' }}>{item.dow}</span> : null}
-                <span>{data === 'time' ? item.id : item.text}</span>
+                key={i}
+                onClick={() => handleData(i)}
+                style={{ 
+                  justifyContent: data === 'date' ? item?.text === 'Сегодня' ? 'flex-end' : 'space-between' : 'center',
+                  color: i !== active ? 'rgba(0, 0, 0, 0.20)' : 'rgba(0, 0, 0, 0.8)',
+                  marginLeft: data === 'date' ? '1.4440433212996vw' : null
+                }}
+              >
+                {data === 'date' && item?.text !== 'Сегодня' ? <span style={{ textTransform: 'uppercase' }}>{item?.dow}</span> : null}
+                <span>{data === 'time' ? item?.id : item?.text}</span>
               </div>
             )}
           </div>

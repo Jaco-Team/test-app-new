@@ -110,6 +110,8 @@ export default function CartMenuMobile({ cityName }) {
     }
   };
 
+  console.log( 'list', list )
+
   return (
     <SwipeableDrawer
       anchor={'bottom'}
@@ -146,20 +148,31 @@ export default function CartMenuMobile({ cityName }) {
                       {item?.raion ? <span>{item?.raion}</span> : null}
                     </div>
                   ) : (
-                    <div>
-                      <span>
-                        {nameList === 'addr' ? item?.addr_name ? 
-                          <span style={{ textTransform: 'uppercase'}}>
-                            {item.addr_name + ', '}
-                          </span>
-                        : null : null}
-                        {item.name}
-                      </span>
-                      {nameList === 'addr' && parseInt(item?.is_main) ? (
-                        <span className="circle">
-                          <HomeCartMobile />
+                    <div style={{ flexDirection: 'column' }}>
+                      <div style={{ flexDirection: 'row' }}>
+                        <span>
+                          {nameList === 'addr' ? item?.addr_name ? 
+                            <span style={{ textTransform: 'uppercase'}}>
+                              {item.addr_name + ', '}
+                            </span>
+                          : null : null}
+                          {item.name}
                         </span>
-                      ) : null}
+                        {nameList === 'addr' && parseInt(item?.is_main) ? (
+                          <span className="circle">
+                            <HomeCartMobile />
+                          </span>
+                        ) : null}
+                      </div>
+                      {nameList === 'addr' ?
+                        <span className='dopAddrInfo'>
+                          {item?.pd?.length > 0 && parseInt(item?.pd) > 0 ? ('Пд: '+item?.pd + ', ') : ''}
+                          {item?.et?.length > 0 && parseInt(item?.et) > 0 ? ('Этаж: '+item?.et + ', ') : ''}
+                          { parseInt(item?.dom_true) == 0 ? 'Домофон: не работает' : 'Домофон: работает'}
+                        </span>
+                          :
+                        false
+                      }
                     </div>
                   )}
                 </div>
