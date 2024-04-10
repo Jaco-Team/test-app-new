@@ -3,7 +3,7 @@ import React from 'react';
 import { MyCatLink } from './MyCatLink';
 
 export default {
-  title: 'MyCatLink',
+  title: 'Header / Категории',
   component: MyCatLink,
   tags: ['autodocs'],
   argTypes: {
@@ -34,15 +34,25 @@ const Template = (args) => <MyCatLink {...args} />;
 //👇 Затем каждая история повторно использует этот шаблон.
 export const Bordered = Template.bind({});
 export const NoBordered = Template.bind({});
+export const NoBorderedArrow = Template.bind({});
 
 Bordered.args = {
   variant: 'text',
   bordered: true,
   children: 'Роллы',
+  arrow: false
 };
 
 NoBordered.args = {
   variant: 'text',
   bordered: false,
   children: 'Роллы',
+  arrow: false
+};
+
+NoBorderedArrow.args = {
+  variant: 'text',
+  bordered: false,
+  children: 'Роллы',
+  arrow: true
 };

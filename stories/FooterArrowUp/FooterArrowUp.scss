@@ -1,0 +1,26 @@
+@import "../global";
+
+.ArrowPC {
+  z-index: 1000;
+  width: calcSize(120);
+  height: calcSize(120);
+  background-color: rgba(221, 26, 50, 1);
+  border-radius: calcSize(120);
+  box-shadow: 0vw calcSize(7) calcSize(25) rgba(0, 0, 0, 0.25);
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  left: calcSize(2525);
+  position: sticky;
+  bottom: calcSize(60);
+
+  & svg {
+    width: calcSize(60);
+    height: calcSize(60);
+  }
+}
+
+.ArrowHidden {
+  display: none;
+}

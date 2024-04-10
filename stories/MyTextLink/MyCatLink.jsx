@@ -2,7 +2,9 @@ import React from 'react';
 import PropTypes from 'prop-types';
 import './MyCatLink.scss';
 
-export const MyCatLink = ({ variant, bordered, children, ...props }) => {
+import { ArrowDownHeaderPC } from '../Icons';
+
+export const MyCatLink = ({ variant, bordered, children, arrow, ...props }) => {
   if (variant == 'link') {
     return (
       <a
@@ -10,6 +12,7 @@ export const MyCatLink = ({ variant, bordered, children, ...props }) => {
         {...props}
       >
         {children}
+        { arrow ? <ArrowDownHeaderPC /> : false }
       </a>
     );
   }
@@ -20,6 +23,7 @@ export const MyCatLink = ({ variant, bordered, children, ...props }) => {
       {...props}
     >
       {children}
+      { arrow ? <ArrowDownHeaderPC /> : false }
     </p>
   );
 };
@@ -27,5 +31,6 @@ export const MyCatLink = ({ variant, bordered, children, ...props }) => {
 MyCatLink.propTypes = {
   variant: PropTypes.oneOf(['link', 'text']),
   bordered: PropTypes.bool,
+  arrow: PropTypes.bool,
   children: PropTypes.node,
 };

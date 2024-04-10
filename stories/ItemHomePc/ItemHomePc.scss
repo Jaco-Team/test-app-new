@@ -23,6 +23,11 @@
             height: calcSize(600);
             cursor: pointer;
         }
+        & > .badge{
+            position: absolute;
+            top: calcSize(20);
+            left: calcSize(20);
+        }
     }
     
     & .title{

@@ -10,9 +10,9 @@ import './Badge.scss';
 
 export const Badge = ({size, view, type}) => {
   return (
-    <div className={'badge container '+view }>
-      <div className={'shadow '+size} />
-      <div className={'box '+size} style={{ backgroundColor: arrColor[type].color }}>
+    <div className={'badge container '+size }>
+      <div className={'shadow'} />
+      <div className={'box'} style={{ backgroundColor: arrColor[type].color }}>
         <Typography component="span">{arrColor[type].text}</Typography>
       </div>
     </div>

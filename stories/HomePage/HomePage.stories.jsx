@@ -1,12 +1,12 @@
 import { HomePage } from './HomePage';
 
-import * as NavBarPC from '../navBarPC/NavBarPC.stories';
-import * as BannerPC from '../BannerPC/BannerPC.stories';
+import * as HeaderPC from '../HeaderPC/HeaderPC.stories';
+import * as BannerListPC from '../BannerListPC/BannerListPC.stories';
 import * as BoxItemHomePC from '../BoxItemHomePC/BoxItemHomePC.stories';
 import * as FooterPC from '../FooterPC/FooterPC.stories';
 
 export default {
-  title: 'HomePage',
+  title: 'Главная страница / Главная',
   component: HomePage,
   tags: ['autodocs'],
   parameters: {
@@ -17,8 +17,8 @@ export default {
       type: 'object',
       description: 'Данные по умолчанию для шапки ПК',
     },
-    banner: {
-      type: 'object',
+    banners: {
+      type: 'array',
       description: 'Данные по умолчанию для баннера ПК',
     },
     container: {
@@ -34,10 +34,26 @@ export default {
 
 const Template = (args) => <HomePage {...args} />;
 export const Default = Template.bind({});
+export const Cookie = Template.bind({});
+export const ArrowUp = Template.bind({});
 
 Default.args = {
-  header: NavBarPC.Default.args,
-  banner: BannerPC.Default.args,
+  header: HeaderPC.Default.args,
+  banners: BannerListPC.TwoImg.args,
   container: BoxItemHomePC.Default.args,
   footer: FooterPC.Default.args,
+};
+
+Cookie.args = {
+  header: HeaderPC.Default.args,
+  banners: BannerListPC.TwoImg.args,
+  container: BoxItemHomePC.Default.args,
+  footer: {...FooterPC.Default.args, cookie: false}
+};
+
+ArrowUp.args = {
+  header: HeaderPC.Default.args,
+  banners: BannerListPC.TwoImg.args,
+  container: BoxItemHomePC.Default.args,
+  footer: {...FooterPC.Default.args, arrow: true}
 };

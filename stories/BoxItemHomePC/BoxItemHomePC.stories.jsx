@@ -2,7 +2,7 @@ import { BoxItemHomePC } from './BoxItemHomePC';
 import * as ItemHomePc from '../ItemHomePc/ItemHomePc.stories';
 
 export default {
-  title: 'BoxItemHomePC',
+  title: 'Главная страница / Товар / Список',
   component: BoxItemHomePC,
   tags: ['autodocs'],
   parameters: {

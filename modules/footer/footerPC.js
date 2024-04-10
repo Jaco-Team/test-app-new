@@ -82,7 +82,7 @@ export default React.memo(function FooterPC({ cityName, active_page }) {
         </div>
         <div className="ContainerCopyFooter">
           <div className="copy">
-            <Typography component="span" className="copy">{new Date().getFullYear()} © ООО «Мистер Жако», ИНН: 6321390811</Typography>
+            <Typography component="span" className="copy">{new Date().getFullYear()} © Жако</Typography>
           </div>
         </div>
 

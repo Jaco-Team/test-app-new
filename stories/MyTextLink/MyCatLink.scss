@@ -1,13 +1,24 @@
 @import '../global';
 
 .MyCatLink {
-  width: calcSize(192);
-  height: calcSize(64);
+  border: calcSize(1) solid transparent;
+  width: calcSize(190);
+  height: calcSize(62);
+  margin-right: calcSize(16);
   display: flex;
-  justify-content: center;
   align-items: center;
+  justify-content: center;
   cursor: pointer;
-  border: 0 solid transparent;
+
+  & svg {
+    width: calcSize(20);
+    height: calcSize(20);
+    margin-left: calcSize(4);
+    & path {
+      stroke: $ColorText;
+      stroke-opacity: 1;
+    }
+  }
 
   @include MyFonts(32, 400);
 
@@ -15,18 +26,26 @@
     width: calcSize(190);
     height: calcSize(62);
     border-radius: calcSize(40);
-    border: calcSize(1) solid rgba($color: #000000, $alpha: 0.2);
+    border-color: rgba($color: #000000, $alpha: 0.2);
   }
   &:hover {
     color: #da1a32;
     &.bordered {
       border-color: #da1a32;
     }
+    & svg path {
+      stroke: #da1a32;
+      stroke-opacity: 1;
+    }
   }
   &:active {
     color: #c7172d;
     &.bordered {
       border-color: #c7172d;
+    }
+    & svg path {
+      stroke: #c7172d;
+      stroke-opacity: 1;
     }
   }
 }

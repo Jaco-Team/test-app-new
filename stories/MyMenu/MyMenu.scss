@@ -1,0 +1,52 @@
+@import '../global';
+
+.MyMenuPaper{
+  width: calcSize(400);
+  & ul{
+    padding-top: calcSize(10);
+    padding-bottom: calcSize(10);
+    padding-left: 0;
+    padding-right: 0;
+  }
+}
+
+.MyMenu {
+  & div.MuiPaper-root.MuiMenu-paper {
+    border-radius: calcSize(20);
+    width: calcSize(400);
+    background: #fff;
+    box-shadow: calcSize(10) calcSize(20) calcSize(30) calcSize(5) rgba(0, 0, 0, 0.2);
+    margin-top: calcSize(40);
+  }
+  
+  & li {
+    padding: 0;
+    min-height: calcSize(80);
+    border-radius: calcSize(10);
+    list-style: none;
+    margin-left: calcSize(10);
+    margin-right: calcSize(10);
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.03);
+    }
+
+    & a {
+      text-decoration: none;
+      width: 100%;
+      min-height: calcSize(80);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      @include MyFonts(30, 400);
+      white-space: break-spaces;
+      text-align: center;
+
+      &:hover {
+        color: #dd1a32;
+      }
+      
+    }
+  }
+}

@@ -1,7 +1,7 @@
 import { CloseButton } from './CloseButton';
 
 export default {
-  title: 'CloseButton',
+  title: 'Элементы / IconClose',
   component: CloseButton,
   tags: ['autodocs'],
 };

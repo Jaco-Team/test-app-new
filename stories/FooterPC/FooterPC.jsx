@@ -3,16 +3,18 @@ import Link from 'next/link';
 
 import './FooterPC.scss';
 
-import { NewVKIcon, OdnIcon, TGIcon, ArrowUp } from '../Icons';
+import { FooterCookie } from '../FooterCookie/FooterCookie';
+import { FooterArrowUp } from '../FooterArrowUp/FooterArrowUp';
+
+import { NewVKIcon, OdnIcon, TGIcon } from '../Icons';
 import Typography from '@mui/material/Typography';
 
 export const FooterPC = ({ cookie, arrow, cityName, links }) => {
   return (
     <>
-      <div className={arrow ? 'ArrowPC' : 'ArrowHidden'}>
-        <ArrowUp />
-      </div>
-      <footer className="footerPC" style={{ height: cookie ? '36.101083032491vw' : '45.126353790614vw' }}>
+      <FooterArrowUp arrow={arrow} />
+      {cookie ? false : <FooterCookie cityName={cityName} />}
+      <footer className="footerPC">
         <div className="ContainerPCFooter">
           <div className="column">
             <Typography component="span">Жако</Typography>
@@ -79,30 +81,10 @@ export const FooterPC = ({ cookie, arrow, cityName, links }) => {
         <div className="ContainerCopyFooter">
           <div className="copy">
             <Typography component="span" className="copy">
-              {new Date().getFullYear()} © ООО «Мистер Жако», ИНН: 6321390811
+              {new Date().getFullYear()} © Жако
             </Typography>
           </div>
         </div>
-
-        {cookie ? null : (
-          <div className="FooterLegal">
-            <div className="containerLegal">
-              <div className="text">
-                <p>
-                  Мы{' '}<Link className="link" href={'/' + cityName + '/politika-legal'}>используем</Link>{' '}
-                  файлы «Cookie» и метрическую систему «Яндекс.Метрика» для
-                  сбора и анализа информации о производительности и
-                  использовании сайта. Продолжая пользоваться сайтом, вы
-                  соглашаетесь на размещение файлов «Cookie» и обработку данных
-                  метрических систем.
-                </p>
-              </div>
-              <div className="buttonAccept">
-                <span>Согласен</span>
-              </div>
-            </div>
-          </div>
-        )}
       </footer>
     </>
   );

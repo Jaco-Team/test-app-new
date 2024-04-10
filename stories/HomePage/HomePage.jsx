@@ -1,17 +1,17 @@
-import { NavBarPC } from '../navBarPC/NavBarPC';
-import { BannerPC } from '../BannerPC/BannerPC';
+import { HeaderPC } from '../HeaderPC/HeaderPC';
+import { BannerListPC } from '../BannerListPC/BannerListPC';
 import { BoxItemHomePC } from '../BoxItemHomePC/BoxItemHomePC';
 import { FooterPC } from '../FooterPC/FooterPC';
 
 import PropTypes from 'prop-types';
 import './HomePage.scss';
 
-export const HomePage = ({ header, banner, container, footer }) => {
+export const HomePage = ({ header, banners, container, footer }) => {
   return (
     <div className="homePC">
-      <NavBarPC {...header} />
+      <HeaderPC {...header} />
       <div className="containerBanner">
-        <BannerPC {...banner} />
+        <BannerListPC {...banners} />
       </div>
       <BoxItemHomePC {...container} />
       <FooterPC {...footer} />
@@ -21,7 +21,7 @@ export const HomePage = ({ header, banner, container, footer }) => {
 
 HomePage.propTypes = {
   header: PropTypes.object,
-  banner: PropTypes.object,
+  banners: PropTypes.array,
   container: PropTypes.object,
   footer: PropTypes.object,
 };

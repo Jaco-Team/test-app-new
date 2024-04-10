@@ -3,7 +3,7 @@ import React from 'react';
 import { ItemHomePc } from './ItemHomePc';
 
 export default {
-  title: 'Карточка товара на главной ПК',
+  title: 'Главная страница / Товар / Карточка товара',
   component: ItemHomePc,
   tags: ['autodocs'],
   argTypes: {
@@ -108,6 +108,6 @@ Badge.args = {
   description: 'Сёрфинг запечённый, Цезарь с курицей, Цезарь с курицей запечённый, Каравелла, Ролл Жако', 
   price: '1129',
   count: '0',
-  is_new: '0',
-  is_hit: '1'
+  is_new: '1',
+  is_hit: '0'
 };

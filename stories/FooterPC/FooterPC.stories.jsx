@@ -1,7 +1,7 @@
 import { FooterPC } from './FooterPC';
 
 export default {
-  title: 'FooterPC',
+  title: 'Footer / Footer',
   component: FooterPC,
   tags: ['autodocs'],
   argTypes: {

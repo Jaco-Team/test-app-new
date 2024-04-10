@@ -1,46 +1,62 @@
 @import '../global';
 
 .badge {
-  &.container {
-    position: absolute;
-    top: 20px;
-    left: 20px;
-    &.mobile {
-      top: 0;
-      left: -10px;
-    }
-  }
-  & > .shadow {
-    width: 114px;
-    height: 44px;
+  position: relative;
+  display: flex;
+
+  & > .shadow{
     background-color: rgba(255, 255, 255, 0.6);
-    border-radius: 30px;
-    &.small {
-      width: 84px;
-      height: 34px;
-    }
+    border-radius: calcSize(30);
+    z-index: 1;
+    position: absolute;
+    bottom: calcSize(2);
+    right: calcSize(2);
   }
   & > .box {
-    width: 110px;
-    height: 40px;
-    border-radius: 30px;
     display: flex;
     justify-content: center;
     align-items: center;
-    position: absolute;
-    top: 2px;
-    left: 2px;
-    & > span {
-      @include fonsNew(1rem, var(--inter-font));
-      color: #fff;
-      text-transform: uppercase;
+    z-index: 2;
+    border-radius: calcSize(30);
+  }
+  & span {
+    color: #fff!important;
+    text-transform: uppercase;
+  }
+
+  &.big {
+    width: calcSize(190);
+    height: calcSize(62);
+    & > .shadow {
+      width: calcSize(190);
+      height: calcSize(62);
     }
-    &.small {
-      width: 80px;
-      height: 30px;
-      & > span {
-        @include fonsNew(0.75rem, var(--inter-font));
-      }
+    & .box {
+      width: calcSize(186);
+      height: calcSize(58);
+    }
+    & span{
+      @include MyFonts(26, 400);
+      line-height: calcSize(26);
+      padding-top: calcSize(2);
     }
   }
+
+  &.small {
+    width: calcSize(80);
+    height: calcSize(30);
+    & > .shadow {
+      width: calcSize(80);
+      height: calcSize(30);
+    }
+    & .box {
+      width: calcSize(77);
+      height: calcSize(26);
+    }
+    & span{
+      @include MyFonts(12, 400);
+      line-height: calcSize(12);
+    }
+  }
+  
 }

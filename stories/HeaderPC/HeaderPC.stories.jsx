@@ -1,14 +1,11 @@
 import React from 'react';
 
-import { NavBarPC } from './NavBarPC';
+import { HeaderPC } from './HeaderPC';
 
 export default {
-  title: 'HeaderPC',
-  component: NavBarPC,
+  title: 'Header / Header',
+  component: HeaderPC,
   tags: ['autodocs'],
-  // parameters: {
-  //   layout: 'fullscreen',
-  // },
   argTypes: {
     scroll: {
       type: 'boolean',
@@ -21,7 +18,7 @@ export default {
   },
 };
 
-const Template = (args) => <NavBarPC {...args} />;
+const Template = (args) => <HeaderPC {...args} />;
 export const Default = Template.bind({});
 export const Shadow = Template.bind({});
 

@@ -1,0 +1,67 @@
+@import '../global';
+
+.IconCartHeaderPC {
+  display: flex;
+  align-items: center;
+  border-radius: calcSize(48);
+  margin-right: calcSize(48);
+  cursor: pointer;
+
+  &:not(.active){
+    width: calcSize(48);
+    height: calcSize(48);
+
+    justify-content: center;
+
+    & svg {
+      fill: $ColorMain;
+      & path {
+        fill: $ColorMain !important;
+        stroke: $ColorMain;
+      }
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+      outline: rgba(0, 0, 0, 0.05) calcSize(16) solid;
+      outline-offset: 0;
+    }
+    &:active {
+      background-color: rgba(0, 0, 0, 0.1);
+      outline: rgba(0, 0, 0, 0.1) calcSize(16) solid;
+      outline-offset: 0;
+    }
+  }
+  &.active{
+    width: calcSize(217);
+    height: calcSize(64);
+    background-color: $ColorMain;;
+
+    justify-content: space-evenly;
+
+    & svg {
+      fill: #fff;
+      stroke: #fff;
+      & path {
+        fill: #fff;
+        stroke: #fff;
+      }
+    }
+
+    & > span {
+      @include MyFonts(25, 400);
+      line-height: calcSize(25);
+      color: #ffffff;
+      text-align: center;
+    }
+  }
+
+  & svg {
+    width: calcSize(41.8);
+    height: calcSize(34.88);
+
+    & path {
+      stroke-opacity: 0.1;
+    }
+  }
+}

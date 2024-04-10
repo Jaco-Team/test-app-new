@@ -1,0 +1,221 @@
+@import '../global';
+
+.itemBannerPCNew{
+  width: calcSize(980);
+  height: calcSize(340);
+
+  display: flex;
+  flex-direction: row;
+
+  & .number{
+    width: calcSize(60);
+    height: calcSize(30);
+    @include MyFonts(40, 400);
+    line-height: calcSize(40);
+    color: rgba(0, 0, 0, 0.6);
+    text-align: end;
+  }
+
+  & img{
+    width: calcSize(280);
+    height: calcSize(280);
+    object-fit: contain;
+    image-rendering: auto;
+  }
+
+  & .itemDesc{
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+    margin-left: calcSize(40);
+    
+    & .title{
+      width: calcSize(600);
+      height: calcSize(120);
+      @include MyFonts(40, 400);
+    }
+    & .desc{
+      width: calcSize(600);
+      height: calcSize(120);
+      @include MyFonts(25, 400);
+      //line-height: calcSize(36);
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+    & div.price.button{
+      display: flex;
+      align-items: center;
+      justify-content: space-between!important;
+    }
+    & button.price.button{
+      border: calcSize(3) solid rgba(0, 0, 0, 0.2);
+      &:hover {
+        background-color: #f2f2f2;
+        border: calcSize(3) solid #cccccc;
+      }
+      &:target {
+        background-color: #f2f2f2;
+        border: calcSize(3) solid #cccccc;
+      }
+      &:active {
+        background-color: #f2f2f2;
+        border: calcSize(3) solid #cccccc;
+      }
+    }
+
+    & .price{
+      width: calcSize(255);
+      height: calcSize(60);
+
+      &.text{
+        & > span{
+          @include MyFonts(30, 400);
+          color: rgba(0, 0, 0, 0.6) !important;
+        }
+      }
+
+      &.button {
+        width: calcSize(255);
+        height: calcSize(60);
+        border-radius: calcSize(45);
+        color: rgba(0, 0, 0, 0.6) !important;
+        
+        @include MyFonts(30, 400);
+        line-height: calcSize(40);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+        cursor: pointer;
+        
+        & > button {
+          width: calcSize(255);
+          border-radius: calcSize(45);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          height: calcSize(60);
+          margin-bottom: 0 !important;
+      
+          &.minus {
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border: none;
+            background-color: #e6e6e6;
+      
+            @include MyFonts(50, 300);
+            width: calcSize(60);
+            height: calcSize(60);
+            border-radius: calcSize(40);
+            cursor: pointer;
+          }
+          &.plus {
+            padding: 0;
+            display: flex;
+            justify-content: center;
+            align-content: center;
+            align-items: center;
+            border: none;
+            background-color: #e6e6e6;
+      
+            @include MyFonts(50, 300);
+            width: calcSize(60);
+            height: calcSize(60);
+            border-radius: calcSize(40);
+            cursor: pointer;
+          }
+          
+        }
+      
+        & > span {
+          color: rgba(0, 0, 0, 0.6) !important;
+          @include MyFonts(30, 400);
+        }
+      }
+    }
+  }
+
+}
+
+
+
+
+.itemBannerPC {
+  display: flex;
+  margin-bottom: calcSize(20);
+
+  .itemNumber {
+    width: calcSize(60);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    align-items: flex-end;
+    margin-top: calcSize(30);
+  }
+
+  .itemImg {
+    width: calcSize(280);
+
+    & img {
+      object-fit: contain;
+      image-rendering: auto;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  .itemDesc {
+    width: calcSize(600);
+    display: flex;
+    justify-content: flex-start;
+    flex-direction: column;
+
+    & .desc {
+      line-height: calcSize(30);
+      display: -webkit-box;
+      -webkit-line-clamp: 4;
+      -webkit-box-orient: vertical;
+      overflow: hidden;
+    }
+
+    & span {
+      height: calcSize(120);
+      margin-left: calcSize(40);
+      text-align: left;
+      display: flex;
+      align-items: center;
+    }
+  }
+}
+
+
+
+.BannerFontPC {
+  & .ItemTitle {
+    @include MyFonts(50, 500);
+  }
+
+  & .ItemName {
+    @include MyFonts(40, 400);
+  }
+
+  & .ItemOther {
+    @include MyFonts(30, 400);
+  }
+
+  & .ItemSpan {
+    @include MyFonts(40, 500);
+  }
+
+  & .ItemDesk {
+    @include MyFonts(25, 400);
+  }
+
+  & .ItemTime {
+    @include MyFonts(22, 400);
+  }
+}

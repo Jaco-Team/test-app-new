@@ -1,0 +1,94 @@
+@import '../global';
+
+.BannerFull{
+  & > div{
+    width: calcSize(2520);
+  }
+
+  & .DescItem {
+    display: flex;
+    justify-content: space-between;
+    margin-top: calcSize(60);
+    margin-bottom: calcSize(60);
+
+    & > .FirstItem{
+      width: calcSize(1080);
+      & > .title{
+        width: calcSize(1080);
+        height: calcSize(60);
+        @include MyFonts(50, 500);
+        line-height: calcSize(50);
+        margin-bottom: calcSize(30);
+        margin-left: calcSize(60);
+        display: block;
+      }
+      & .buttonPromo{
+        margin-left: calcSize(60);
+        margin-top: calcSize(30);
+        width: calcSize(420);
+        border-radius: calcSize(45);
+        border: calcSize(3) solid rgba(0, 0, 0, 0.2);
+        color: rgba(0, 0, 0, 0.6) !important;
+        height: calcSize(80);
+
+        @include MyFonts(30, 400);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+
+        cursor: pointer;
+
+        &:hover {
+          background-color: #f2f2f2;
+          border: calcSize(2) solid #cccccc;
+        }
+        &:target {
+          background-color: #f2f2f2;
+          border: calcSize(2) solid #cccccc;
+        }
+        &:active {
+          background-color: #f2f2f2;
+          border: calcSize(2) solid #cccccc;
+        }
+      }
+    }
+    & > .SecondItem{
+      width: calcSize(1080);
+      & > .title{
+        @include MyFonts(50, 500);
+      }
+      & p, span{
+        @include MyFonts(30, 400);
+        line-height: calcSize(40);
+      }
+      & strong, b{
+        @include MyFonts(40, 500);
+        line-height: calcSize(40);
+      }
+    }
+  }
+
+  & .ImgItem {
+    position: relative;
+    & img{
+      cursor: default;
+    }
+    & span {
+      left: calcSize(160);
+      bottom: calcSize(90);
+      position: absolute;
+      height: calcSize(80);
+      width: calcSize(400);
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      @include MyFonts(30, 400);
+      color: #fff!important;
+      & svg {
+        width: calcSize(25);
+        height: calcSize(25);
+      }
+    }
+  }
+}
