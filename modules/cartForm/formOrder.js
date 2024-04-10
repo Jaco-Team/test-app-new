@@ -69,7 +69,7 @@ export default function FormOrder({ cityName }) {
       }, 300);
     }
     if( thisCity ){
-      getMySavedAddr(thisCity, token);
+      getMySavedAddr(thisCity);
     }
   }, [thisCity, cityName]);
 
@@ -169,7 +169,7 @@ export default function FormOrder({ cityName }) {
       setPoint(null);
       setAddrDiv(null);
       setSummDiv(0);
-      getMySavedAddr(item.link, token);
+      getMySavedAddr(item.link);
     }
 
     if (nameList === 'point') {

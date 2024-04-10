@@ -110,7 +110,7 @@ export default function CartMenuMobile({ cityName }) {
     }
   };
 
-  console.log( 'list', list )
+  // console.log( 'list', list )
 
   return (
     <SwipeableDrawer
