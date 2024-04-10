@@ -485,7 +485,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   },
 
   // получение адресов доставки в оформлении заказа
-  getMySavedAddr: async(city_id, token) => {
+  getMySavedAddr: async(city_id, address) => {
     if (typeof window !== 'undefined') {
       const token1 = localStorage.getItem('token');
 
@@ -496,6 +496,15 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       };
       
       const json = await api('cart', data);
+
+      if(address) {
+        const findAddr = json.find(addr => addr.name_street === address.street && addr.home === address.home);
+
+        if(findAddr) {
+          get().setAddrDiv(findAddr);
+        }
+
+      }
 
       set({ addrList: json ?? [] });
 
@@ -1761,7 +1770,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
     let points_zone = [];
 
-    json.zones.map((point) => {
+    json?.zones.map((point) => {
       if (point['zone_origin'].length > 0) {
         points_zone.push({ 
           zone: JSON.parse(point['zone_origin']), 
@@ -1781,21 +1790,21 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       zoomSize = 11.5;
     }
 
-    json.zones.forEach((point) => point.image = 'default#image');
-    json.points.forEach((point) => point.image = 'default#image');
+    json?.zones.forEach((point) => point.image = 'default#image');
+    json?.points.forEach((point) => point.image = 'default#image');
 
     set({
       center_map: {
-        center: [json.zones[0].xy_center_map.latitude, json.zones[0].xy_center_map.longitude],
+        center: [json?.zones[0].xy_center_map.latitude, json?.zones[0].xy_center_map.longitude],
         zoom: zoomSize,
         controls: [],
         behaviors: ["disable('scrollZoom')"]
       },
-      points: json.points,
-      zones: json.zones,
+      points: json?.points,
+      zones: json?.zones,
       points_zone,
-      phone: json.zones[0].phone,
-      myAddr: json.zones.filter((value, index, self) => index === self.findIndex((t) => t.addr === value.addr)),
+      phone: json?.zones[0].phone,
+      myAddr: json?.zones?.filter((value, index, self) => index === self.findIndex((t) => t.addr === value.addr)),
     })
 
     const matches = useHeaderStore.getState().matches;
@@ -2096,7 +2105,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       infoAboutAddr: json.this_info,
       cityList: json.cities,
       active_city: json.city,
-      chooseAddrStreet: json.this_info,
+      chooseAddrStreet: json.this_info ?? {},
       center_map: {
         center: json.this_info ? [json?.this_info?.xy[0], json?.this_info?.xy[1]] : [json.city_center[0], json.city_center[1]],
         zoom: 11.5,
@@ -2246,7 +2255,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       infoAboutAddr: json.this_info,
       cityList: json.cities,
       active_city: json.city,
-      chooseAddrStreet: json.this_info,
+      chooseAddrStreet: json.this_info ?? {},
       center_map: {
         center: json.this_info ? [json?.this_info?.xy[0], json?.this_info?.xy[1]] : [json.city_center[0], json.city_center[1]],
         zoom: 11.5,
@@ -2353,10 +2362,10 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     if( get().is_fetch === true || Object.keys( get().chooseAddrStreet ).length == 0 ){
       setTimeout( () => {
-        get().saveNewAddr(pd, domophome, et, kv, comment, token, is_main, nameAddr, city_id)
+        get().saveNewAddr(pd, domophome, et, kv, comment, token, is_main, nameAddr, city_id);
       }, 455 )
-
-      return ;
+      
+      return;
     }
 
     set({
@@ -2380,6 +2389,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     let json = await api('profile', data);
 
     if( json.st === true ){
+
       get().closeModalAddr();
       get().getUserInfo('profile', get().city, token);
 
@@ -2387,7 +2397,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
         openModalAddress: false
       })
 
-      useCartStore.getState().getMySavedAddr();
+      useCartStore.getState().getMySavedAddr(city_id, { street: get().chooseAddrStreet.street, home: get().chooseAddrStreet.home });
     }
 
     setTimeout( () => {
@@ -2444,7 +2454,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
         openModalAddress: false
       })
 
-      useCartStore.getState().getMySavedAddr();
+      useCartStore.getState().getMySavedAddr(city_id, { street: get().chooseAddrStreet.street, home: get().chooseAddrStreet.home });
     }
 
     setTimeout( () => {

@@ -58,11 +58,9 @@ export default function ModalAlert() {
       fullWidth
     >
       <DialogContent style={{ backgroundColor: statusAlert ? 'rgb(46, 125, 50)' : '#dd1a32' }}>
-        <div className='btnAlert'>
-          <IconButton className="closeAlert" onClick={() => setActiveModalAlert(false, '', false)}>
-            <IconClose />
-          </IconButton>
-        </div>
+        <IconButton onClick={() => setActiveModalAlert(false, '', false)}>
+          <IconClose />
+        </IconButton>
         <div className='containerAlert'>
           <span>{textAlert}</span>
           <LinearProgress variant="determinate" size="sm" value={progress} />

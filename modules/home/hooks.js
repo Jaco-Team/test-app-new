@@ -43,21 +43,24 @@ function useCheckCat(CatsItems) {
           
           arrMax = [];
           
-          if( max ){
+          if(max){
             if( parseInt(activeID.id) != parseInt(max.id) || parseInt(activeID.parent_id) != parseInt(max.parent_id) ){
               
               setActiveID( {id: max.id, parent_id: max.parent_id} )
 
-              setTimeout( () => {
-                if( document.querySelector('.Cat') ){
-                  document.querySelector('.Cat').classList.remove('active');
-                }
+              setTimeout(() => {
+
+                Array.from(document.querySelectorAll('.Cat')).forEach(element => element.classList.remove('active'))
   
-                if( document.querySelector('#link_'+max.parent_id) ){
-                  document.querySelector('.Cat').classList.remove('active');
-                  document.querySelector('#link_'+max.parent_id).classList.add('active');
-                }
-              }, 200 )
+                if(document.querySelector('#link_'+max.parent_id)){
+                  document.querySelector('#link_'+max.parent_id)?.classList.add('active');
+                } 
+
+                if(document.querySelector('#link_'+max.id)){
+                  document.querySelector('#link_'+max.id)?.classList.add('active');
+                } 
+
+              }, 200)
             }
           }
         }

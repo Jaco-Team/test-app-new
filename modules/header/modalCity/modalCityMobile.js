@@ -36,7 +36,7 @@ export default function ModalCityMobile() {
     getMap('contacts', city.link);
     setPoint(null);
     setAddrDiv(null);
-    getMySavedAddr(thisCity, token);
+    getMySavedAddr(thisCity);
 
     getNewPriceItems(city.link);
 

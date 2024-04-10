@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useHeaderStore, useHomeStore } from '@/components/store.js';
+import { useHomeStore } from '@/components/store.js';
 import { Link as ScrollLink } from 'react-scroll';
 import Box from '@mui/material/Box';
 
@@ -10,7 +10,7 @@ var scroller = Scroll.scroller;
 
 export default function MenuCatMobile({ city }) {
 
-  const [ category, setCategory, cat_position ] = useHomeStore((state) => [ state.category, state.setCategory, state.cat_position ]);
+  const [category, cat_position] = useHomeStore((state) => [state.category, state.cat_position]);
 
   const [catMenu, setCatMenu] = useState(category);
   const [catDopMenu, setCatDopMenu] = useState([]);
@@ -38,18 +38,6 @@ export default function MenuCatMobile({ city }) {
 
   if (city == '') return null;
 
-  const [activePage] = useHeaderStore((state) => [state.activePage]);
-
-  // так оставить сброс состояния выбора категории товара при переходе на другие страницы ??
-  useEffect(() => {
-    if(activePage === 'home') {
-      setCatMenu(category)
-    } else {
-      const cat = category.map(item => item.choice = false)
-      setCatMenu(cat)
-    }
-  }, [activePage]);
-
   const chooseCat = (id, scroll) => {
     localStorage.setItem('goTo', id);
 
@@ -61,18 +49,12 @@ export default function MenuCatMobile({ city }) {
 
     const newCatMenu = catMenu.map((cat) => {
       if (cat.id === id) {
-        cat.choice = true;
-
         if(cat.cats.length > 0) {
-          cat.cats.map((cat) => (cat.choice = false));
           setCatDopMenu(cat.cats);
         } else {
           setCatDopMenu([]);
         }
-      } else {
-        cat.choice = false;
-      }
-
+      } 
       return cat;
     });
 
@@ -85,15 +67,6 @@ export default function MenuCatMobile({ city }) {
 
   const chooseDopCat = (id, scroll) => {
     localStorage.setItem('goTo', id);
-
-    const newCatDopMenu = catDopMenu.map((cat) => {
-      if (cat.id === id) {
-        cat.choice = true;
-      } else {
-        cat.choice = false;
-      }
-      return cat;
-    });
 
     if (scroll) {
       getScroll(id);
