@@ -386,11 +386,17 @@
       }
     }
 
+    & .basketDopText{
+      width: $MyScale1010_mobile;
+      @include font44_400();
+    }
+
     & .CartOrder {
       width: $MyScale650_mobile;
       height: $MyScale120_mobile;
       border-radius: $MyScale60_mobile;
       margin-bottom: $MyScale340_mobile;
+      margin-top: $MyScale100_mobile;
       padding: 0;
       text-transform: lowercase;
 

@@ -302,6 +302,9 @@ export default function FormOrder({ cityName }) {
     }
   }
 
+  let date = new Date();
+  let hours = date.getHours();
+
   return (
     <>
       {matches ? (
@@ -476,6 +479,12 @@ export default function FormOrder({ cityName }) {
             </span>
           </div>
 
+          {typeOrder == 'pic' ? 
+            <span className="basketDopText">{ parseInt(hours) >= 21 ? 'Заказы на самовывоз выдаются до 22:00' : '' }</span> 
+              : 
+            <span className="basketDopText">Уважаемые клиенты, на сайте указано приблизительное время готовности заказа и доставки. В зависимости от ситуации на дорогах время доставки может быть увеличено. Благодарим за понимание!</span>
+          }
+
           <Button className="CartOrder" variant="contained" disabled={!itemsCount} onClick={create_order}>
             <span>Заказать</span>
           </Button>
@@ -624,9 +633,16 @@ export default function FormOrder({ cityName }) {
               <span>{new Intl.NumberFormat('ru-RU').format(allPrice ? parseInt(allPrice) + parseInt(NewSummDiv) : parseInt(allPriceWithoutPromo_new) + parseInt(NewSummDiv))}{' '}₽</span>
             </div>
 
+            {typeOrder == 'pic' ? 
+              <span className="basketDopText">{ parseInt(hours) >= 21 ? 'Заказы на самовывоз выдаются до 22:00' : '' }</span> 
+                : 
+              <span className="basketDopText">Уважаемые клиенты, на сайте указано приблизительное время готовности заказа и доставки. В зависимости от ситуации на дорогах время доставки может быть увеличено. Благодарим за понимание!</span>
+            }
+
             <Button className="basketOrder" variant="contained" onClick={create_order}>
               <span>Заказать</span>
             </Button>
+            
           </div>
 
           <Menu 
@@ -654,7 +670,7 @@ export default function FormOrder({ cityName }) {
                         </span>
                       : null}
                   </div>
-                  {nameList === 'addr' ?
+                  {nameList === 'addr' && item.name != 'Добавить новый адрес' ?
                     <span className='dopAddrInfo'>
                       {item?.pd?.length > 0 && parseInt(item?.pd) > 0 ? ('Пд: '+item?.pd + ', ') : ''}
                       {item?.et?.length > 0 && parseInt(item?.et) > 0 ? ('Этаж: '+item?.et + ', ') : ''}

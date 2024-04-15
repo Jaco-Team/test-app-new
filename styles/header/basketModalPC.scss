@@ -248,11 +248,19 @@
             }
           }
 
+          .basketDopText {
+            @include font26_400();
+            line-height: $MyScale30;
+
+            margin-top: $MyScale30;
+          }
+
           .basketOrder {
             width: $MyScale560;
             height: $MyScale80;
             border-radius: $MyScale40;
-            margin-top: $MyScale80;
+            //margin-top: $MyScale80;
+            margin-top: $MyScale30;
             padding: 0;
             text-transform: lowercase;
 
