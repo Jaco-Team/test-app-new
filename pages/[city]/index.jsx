@@ -71,13 +71,22 @@ export async function getServerSideProps({ req, res, query }) {
 
   let data = {
     type: 'get_page_info', 
-    city_id: query.city,
+    city_id: query?.city,
     page: '' 
   };
 
   const data1 = await api(this_module, data);
 
-  data1['city'] = query.city;
+  if (!data1) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+
+  data1['city'] = query?.city;
 
   return { props: { data1 } }
 }

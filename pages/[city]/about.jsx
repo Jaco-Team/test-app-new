@@ -63,6 +63,15 @@ export async function getServerSideProps({ req, res, query }) {
 
   const data1 = await api(this_module, data);
 
+  if (!data1) {
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+
   data1['city'] = query.city;
 
   data1.page.content = data1.page.content.replace(

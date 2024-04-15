@@ -1759,7 +1759,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
     if(!city) return;
 
-    set({ disable: true });
+    //set({ disable: true });
 
     const data = {
       type: 'get_addr_zone_web',
@@ -1798,7 +1798,8 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
         center: [json?.zones[0].xy_center_map.latitude, json?.zones[0].xy_center_map.longitude],
         zoom: zoomSize,
         controls: [],
-        behaviors: ["disable('scrollZoom')"]
+        behaviors: ["drag", "dblClickZoom", "rightMouseButtonMagnifier", "multiTouch"]
+        //behaviors: ["disable('scrollZoom')"]
       },
       points: json?.points,
       zones: json?.zones,

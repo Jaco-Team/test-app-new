@@ -225,12 +225,15 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
   }, [emblaApi])
 
   const handleData = (index) => {
-    active === (slides.length - 1) && index === 0 ? scrollNext() : index < active || index === (slides.length - 1) && active === 0 ? scrollPrev() : index === active ? chooseData() : scrollNext();
+    //active === (slides.length - 1) && index === 0 ? scrollNext() : index < active || index === (slides.length - 1) && active === 0 ? scrollPrev() : index === active ? chooseData() : scrollNext();
+    active === (slides.length - 1) && index === 0 ? scrollNext() : index < active || index === (slides.length - 1) && active === 0 ? scrollPrev() : index === active ? () => {} : scrollNext();
   }
+
+  //onClick={chooseData}
 
   if( matches ){
     return (
-      <div className={slides?.length < 4 && data === 'time' ? 'embla_time' : 'embla'} onClick={chooseData}>
+      <div className={slides?.length < 4 && data === 'time' ? 'embla_time' : 'embla'}>
         <div className="embla__viewport" ref={emblaRef}>
           <div className="embla__container" style={{ width: data === 'date' ? '42.735042735043vw' : '35.897435897436vw' }}>
             {slides?.map((item, i) => (
