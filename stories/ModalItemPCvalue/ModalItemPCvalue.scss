@@ -1,0 +1,101 @@
+@import '../global';
+
+.valueItem {
+  display: flex;
+  min-height: calcSize(300);
+  width: calcSize(994);
+
+  & .itemNumber {
+    width: calcSize(60);
+    height: calcSize(30);
+    text-align: right;
+    margin-right: calcSize(40);
+    margin-top: calcSize(30);
+    @include MyFonts(30, 400);
+    color: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  & .itemValueColumn {
+    display: flex;
+    flex-direction: column;
+    width: calcSize(894);
+    border: calcSize(3) solid #b2b2b2;
+    border-radius: calcSize(30);
+
+    & .itemValueRowMain {
+      display: flex;
+      align-items: center;
+      border-bottom: calcSize(3) solid #b2b2b2;
+
+      & > span:first-child {
+        @include MyFonts(40, 400);
+        min-height: calcSize(149.5);
+        border-right: calcSize(3) solid #b2b2b2;
+        width: calcSize(718.5);
+        padding-left: calcSize(30);
+        line-height: calcSize(47);
+        display: flex;
+        align-items: center;
+      }
+
+      & > div:last-child {
+        width: calcSize(175.5);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        flex-direction: column;
+
+        & > span:first-child {
+          @include MyFonts(50, 400);
+        }
+
+        & > span:last-child {
+          @include MyFonts(22, 400);
+        }
+      }
+    }
+
+    & .itemValueRow {
+      display: flex;
+      align-items: center;
+      
+      & > div:first-child {
+        min-height: calcSize(144.5);
+        @include MyFonts(22, 400);
+        width: calcSize(538.5);
+        border-right: calcSize(3) solid #b2b2b2;
+        line-height: calcSize(26);
+        padding-left: calcSize(30);
+        display: flex;
+        align-items: center;
+        padding-top: calcSize(16);
+        padding-bottom: calcSize(10);
+      }
+
+      & > div:last-child {
+        width: calcSize(355.5);
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+
+        & div {
+          width: calcSize(300);
+          display: flex;
+          justify-content: space-between;
+
+          & > span {
+            @include MyFonts(22, 400);
+          }
+
+          .dot {
+            content: '';
+            border-bottom: calcSize(2) dotted rgba(0, 0, 0, 0.8);
+            flex: 1;
+            margin: 0 calcSize(15);
+            margin-bottom: calcSize(8);
+          }
+        }
+      }
+    }
+  }
+}

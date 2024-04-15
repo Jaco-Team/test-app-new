@@ -1,0 +1,37 @@
+@import '../global';
+
+.modalItemPC {
+  border-radius: calcSize(32);
+  overflow: visible;
+  margin: 0;
+  width: calcSize(1960);
+  max-width: none !important;
+  display: flex;
+
+  & .ImgItem {
+    position: relative;
+    width: calcSize(1240);
+    height: calcSize(1240);
+    margin: calcSize(40);
+
+    & > .badge {
+      position: absolute;
+      top: calcSize(40);
+      left: calcSize(40);
+    }
+  }
+
+  & .FirstItem {
+    width: calcSize(1320);
+    height: calcSize(1320);
+    position: relative;
+    overflow-y: hidden;
+  }
+
+  & .SecondItem {
+    margin: calcSize(200) 0;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+  }
+}

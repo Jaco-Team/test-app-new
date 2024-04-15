@@ -1,0 +1,53 @@
+@import '../global';
+
+.titleItem {
+  margin-bottom: calcSize(20);
+  @include MyFonts(50, 400);
+}
+
+.dop {
+  display: flex;
+  align-items: center;
+  width: calcSize(560);
+  justify-content: space-between;
+  margin-bottom: calcSize(40);
+
+  .dop_text {
+    width: calcSize(400);
+    display: flex;
+    align-items: center;
+
+    & span {
+      @include MyFonts(25, 400);
+    }
+
+    & .first_text {
+      text-decoration: underline;
+      color: #dd1a32 !important;
+      padding-right: calcSize(40);
+    }
+
+    & .divider {
+      height: calcSize(20);
+      width: calcSize(1);
+      background-color: rgba(0, 0, 0, 0.6);
+
+      @media (min-width: 801px) and (max-width: 1000px) {
+        height: calc(calcSize(20) * 2);
+        width: calc(calcSize(1) * 2);
+      }
+    }
+  }
+
+  & .dop_icon {
+    display: flex;
+    align-items: center;
+  }
+}
+
+.desc {
+  display: flex;
+  width: calcSize(560);
+  @include MyFonts(30, 400);
+  color: rgba(0, 0, 0, 0.6) !important;
+}

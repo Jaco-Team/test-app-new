@@ -1,0 +1,59 @@
+@import '../global';
+
+.table {
+  position: absolute;
+  background: #ffffff;
+  width: calcSize(1160);
+  height: calcSize(1240);
+  margin: calcSize(80);
+  border-top-left-radius: calcSize(40);
+  border-top-right-radius: calcSize(40);
+  display: flex;
+  flex-direction: column;
+
+  & .title {
+    @include MyFonts(40, 400);
+    min-height: calcSize(140);
+    margin-bottom: calcSize(20);
+    display: flex;
+    align-items: flex-end;
+    align-self: center;
+  }
+
+  & .list {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    overflow-y: auto;
+    padding-bottom: calcSize(100);
+    row-gap: calcSize(40);
+
+    & .valueTitle {
+      width: calcSize(670);
+      text-align: center;
+      @include MyFonts(22, 400);
+      align-self: center;
+      line-height: calcSize(26);
+
+      & a {
+        color: #DD1A32;
+        cursor: pointer;
+      }
+    }
+
+    &::-webkit-scrollbar {
+      width: calcSize(40);
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.3);
+      border-right: solid calcSize(30) #ffffff;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.2);
+      margin-bottom: calcSize(240);
+      border-right: solid calcSize(30) #ffffff;
+    }
+  }
+}

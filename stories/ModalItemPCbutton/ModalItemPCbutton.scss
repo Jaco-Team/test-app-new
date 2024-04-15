@@ -1,0 +1,72 @@
+@import '../global';
+
+.btn {
+  border: calcSize(3) solid rgba(0, 0, 0, 0.2);
+  width: calcSize(400);
+  border-radius: calcSize(45);
+  color: rgba(0, 0, 0, 0.6) !important;
+  height: calcSize(80);
+  padding: 0;
+  background-color: transparent;
+  @include MyFonts(30, 400);
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f2f2f2;
+    border: calcSize(2) solid #cccccc;
+  }
+  &:target {
+    background-color: #f2f2f2;
+    border: calcSize(2) solid #cccccc;
+  }
+  &:active {
+    background-color: #f2f2f2;
+    border: calcSize(2) solid #cccccc;
+  }
+}
+
+button:disabled,
+button[disabled]{
+  pointer-events: none;
+  cursor: unset;
+}
+
+.container {
+  width: calcSize(394);
+  border-radius: calcSize(45);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: calcSize(74);
+  border: calcSize(3) solid rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+
+  & button {
+    padding: 0;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.07);
+    mix-blend-mode: multiply;
+    @include MyFonts(50, 300);
+    width: calcSize(60);
+    height: calcSize(60);
+    border-radius: calcSize(40);
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.09) !important;
+    }
+  }
+
+  & button:nth-child(1) {
+    margin-left: calcSize(8);
+  }
+
+  & button:nth-child(3) {
+    margin-right: calcSize(8);
+  }
+
+  & span {
+    @include MyFonts(40, 400);
+  }
+}

@@ -1,0 +1,55 @@
+@import '../global';
+
+.setItem {
+  display: flex;
+  width: calcSize(980);
+  height: calcSize(240);
+
+  & .itemNumber {
+    width: calcSize(60);
+    display: flex;
+    flex-direction: column;
+    align-items: flex-end;
+    margin-right: calcSize(20);
+    @include MyFonts(25, 400);
+    color: rgba(0, 0, 0, 0.6) !important;
+  }
+
+  & picture {
+    width: calcSize(240);
+    & img {
+      object-fit: contain;
+      image-rendering: auto;
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  & .itemDesc {
+    width: calcSize(600);
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
+    margin-left: calcSize(60);
+
+    & span {
+      display: flex;
+      align-items: center;
+      height: 50%;
+      text-align: left;
+    }
+
+    & span:nth-child(1) {
+      @include MyFonts(40, 400);
+    }
+
+    & span:nth-child(2) {
+      @include MyFonts(25, 400);
+      color: rgba(0, 0, 0, 0.6) !important;
+      overflow: hidden;
+      display: -webkit-box;
+      -webkit-line-clamp: 3;
+      -webkit-box-orient: vertical;
+    }
+  }
+}
