@@ -66,8 +66,8 @@ export async function getServerSideProps({ req, res, query }) {
 
   res.setHeader(
     'Cache-Control',
-    'public, s-maxage=86400, stale-while-revalidate=86400'
-  )
+    'public, s-maxage=3600, stale-while-revalidate=3600'
+  );
 
   let data = {
     type: 'get_page_info', 
