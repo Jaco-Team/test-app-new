@@ -1,0 +1,315 @@
+@import '../global';
+
+.modalAuthPC {
+  border-radius: calcSize(40);
+  width: calcSize(680);
+  height: calcSize(800);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & .modalLoginPC {
+    margin-top: calcSize(15);
+    width: calcSize(620);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  & .authLogin {
+    height: calcSize(60);
+    margin-top: calcSize(60);
+    margin-bottom: calcSize(50);
+    display: flex;
+    align-items: center;
+    @include MyFonts(50, 500);
+  }
+
+  & .loginErr {
+    width: calcSize(560);
+    height: calcSize(40);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: calcSize(15);
+    line-height: calcSize(25);
+    @include MyFonts(22, 400);
+    color: #dd1a32;
+  }
+
+  & .inputLogin {
+    width: calcSize(620);
+    height: calcSize(60);
+    display: flex;
+    flex-direction: row;
+    justify-content: center;
+
+    & .MuiInputBase-root.MuiInput-root:after {
+      border-bottom: calcSize(2) solid rgba(0, 0, 0, 0.4);
+    }
+
+    & .MuiInputBase-root.MuiInput-root:before {
+      border-bottom: calcSize(2) solid rgba(0, 0, 0, 0.2);
+    }
+
+    & .MuiInputBase-root.MuiInput-root {
+      width: calcSize(480);
+
+      & input {
+        padding: 0;
+        height: calcSize(40);
+        margin-bottom: calcSize(20);
+        margin-left: calcSize(40);
+        @include MyFonts(40, 400);
+      }
+
+      & > input::placeholder {
+        transform: translate3d(0, calcSize(-4), 0);
+        @include MyFonts(30, 400);
+        color: rgba(0, 0, 0, 0.4);
+      }
+
+      & svg {
+        margin-bottom: calcSize(20);
+      }
+    }
+  }
+
+  & .inputBox {
+    width: calcSize(620);
+    display: flex;
+    position: relative;
+    height: calcSize(60);
+    margin-top: calcSize(40);
+    margin-bottom: calcSize(10);
+
+    & svg:nth-child(2) {
+      right: 0;
+      bottom: calcSize(8);
+      position: absolute;
+      z-index: 5;
+      cursor: pointer;
+      width: calcSize(60);
+      height: calcSize(60);
+    }
+  }
+
+  & .loginLoginYa {
+    text-decoration: 'none';
+    width: calcSize(400);
+    height: calcSize(60);
+    border-radius: calcSize(30);
+    margin-bottom: calcSize(30);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #000;
+    cursor: pointer;
+    & span {
+      @include MyFonts(22, 400);
+      color: #ffffff !important;
+    }
+    & svg {
+      width: calcSize(36);
+      height: calcSize(36);
+      margin-right: calcSize(12);
+    }
+  }
+
+  & .loginSMS {
+    height: calcSize(40);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+    text-decoration: underline;
+    @include MyFonts(22, 400);
+    cursor: pointer;
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+  & .loginInfo {
+    height: calcSize(80);
+    margin-bottom: calcSize(28);
+    display: flex;
+    align-items: center;
+    @include MyFonts(30, 400);
+  }
+
+  & .loginLosePWD {
+    display: flex;
+    align-items: center;
+    height: calcSize(40);
+    margin-bottom: calcSize(20);
+    margin-top: calcSize(10);
+    cursor: pointer;
+    text-decoration: underline;
+    @include MyFonts(22, 400);
+    color: rgba(0, 0, 0, 0.4);
+  }
+
+  & .loginOR {
+    display: flex;
+    align-items: center;
+    height: calcSize(40);
+    @include MyFonts(22, 400);
+  }
+
+  & .resetText {
+    width: calcSize(340);
+    height: calcSize(80);
+    @include MyFonts(22, 400);
+    text-align: center;
+    margin-bottom: calcSize(55);
+    line-height: calcSize(24);
+  }
+
+  & .loginLogin {
+    margin: calcSize(70) 0;
+  }
+
+  & .loginData {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin-top: calcSize(70);
+
+    & .data {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      height: calcSize(40);
+      width: calcSize(455);
+
+      & .checkbox {
+        height: calcSize(40);
+        width: calcSize(40);
+        border-radius: calcSize(10);
+        cursor: pointer;
+      }
+
+      & span:last-child {
+        height: calcSize(40);
+        width: calcSize(395);
+        @include MyFonts(18, 400);
+        line-height: normal;
+
+        & a {
+          color: #dd1a32;
+        }
+      }
+    }
+  }
+
+  & .loginSubHeader {
+    height: calcSize(60);
+    margin-bottom: calcSize(12);
+    @include MyFonts(40, 400);
+  }
+
+  & .loginSubHeader2 {
+    height: calcSize(80);
+    margin-bottom: calcSize(28);
+    display: flex;
+    align-items: center;
+    @include MyFonts(30, 400);
+  }
+
+  & .loginLine {
+    width: calcSize(360);
+    height: calcSize(6);
+    margin-bottom: calcSize(27);
+    border-radius: calcSize(3);
+  }
+
+  & .loginAutCode {
+    height: calcSize(77);
+    width: calcSize(480);
+    border-bottom: calcSize(2) solid rgba(0, 0, 0, 0.4);
+    display: flex;
+    align-items: flex-end;
+    justify-content: center;
+    position: relative;
+    margin-bottom: calcSize(40);
+
+    & > div {
+      display: flex;
+      flex-direction: row;
+      margin-bottom: calcSize(22);
+
+      & input {
+        width: calcSize(50);
+        height: calcSize(50);
+        padding: 0;
+        @include MyFonts(50, 500);
+        border: none;
+        background-clip: padding-box;
+        background-color: #fff;
+
+        &:focus {
+          appearance: none;
+          outline: 0;
+        }
+      }
+
+      & > input::placeholder {
+        text-align: center;
+        font-size: calcSize(80);
+        transform: translate3d(0, calcSize(13), 0);
+        color: rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    & .loginSvg {
+      position: absolute;
+      right: 0;
+    }
+  }
+
+  & .loginPrev {
+    height: calcSize(40);
+    cursor: pointer;
+    text-decoration: underline;
+    @include MyFonts(30, 400);
+  }
+
+  & .loginFinish {
+    width: calcSize(120);
+    height: calcSize(120);
+    margin-bottom: calcSize(40);
+    svg {
+      cursor: unset;
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  & .loginText {
+    width: calcSize(580);
+    text-align: center;
+    height: calcSize(160);
+    margin-bottom: calcSize(40);
+    display: flex;
+    flex-direction: column;
+    & span {
+      line-height: calcSize(40);
+      @include MyFonts(30, 400);
+    }
+  }
+
+  & .loginLink {
+    text-decoration: none;
+    width: calcSize(400);
+    height: calcSize(80);
+    border-radius: calcSize(40);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: #dd1a32;
+    cursor: pointer;
+    & span {
+      @include MyFonts(30, 400);
+      color: #ffffff;
+    }
+  }
+}

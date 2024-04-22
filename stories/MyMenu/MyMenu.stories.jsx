@@ -22,4 +22,5 @@ Default.args = {
   onClose: () => {},
   isOpen: true,
   anchorEl: null,
+  type: 'cat'
 };

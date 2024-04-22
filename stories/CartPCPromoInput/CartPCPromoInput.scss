@@ -1,0 +1,57 @@
+@import '../global';
+
+.promoInput {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-left: calcSize(50);
+  margin-right: calcSize(55);
+  height: calcSize(80);
+  width: calcSize(865);
+
+  & .MuiFormControl-root.MuiTextField-root {
+    width: calcSize(400) !important;
+
+    & .MuiInputBase-root.MuiOutlinedInput-root {
+      width: 100%;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+
+      & .MuiInputAdornment-root {
+        width: calcSize(20);
+        height: calcSize(20);
+        margin-right: calcSize(30);
+        margin-left: 0;
+        border-radius: calcSize(20);
+      }
+
+      & input {
+        width: calcSize(310);
+        margin-left: calcSize(40);
+        display: flex;
+        align-items: center;
+        padding: 0;
+        @include MyFonts(30, 400);
+        &::placeholder {
+          color: rgba(0, 0, 0, 0.4);
+        }
+      }
+      & fieldset {
+        border: calcSize(3) solid rgba(0, 0, 0, 0.2);
+        border-radius: calcSize(40);
+        height: calcSize(74);
+        padding: 0;
+        top: calcSize(-20);
+      }
+    }
+  }
+
+  & span:nth-child(2) {
+    width: calcSize(300);
+    justify-content: flex-end;
+    @include MyFonts(50, 500);
+    display: flex;
+    align-items: center;
+  }
+}

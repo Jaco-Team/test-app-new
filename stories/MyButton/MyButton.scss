@@ -1,58 +1,186 @@
-@import "../global";
+@import '../global';
 
-.MyButton{
-    border-radius: calcSize(40);
-    border: 0px solid #fff;
+.MyButton {
+  border-radius: calcSize(40);
+  border: 0px solid #fff;
+  cursor: pointer;
 
-    @include MyFonts(32, 400);
+  @include MyFonts(32, 400);
 
-    &.primary{
-        background-color: #DA1A32;
+  &.primary {
+    color: #fff;
+    & * {
+      color: #fff;
+    }
+    &:hover {
+      background-color: #c7172d !important;
+    }
+    &:active {
+      background-color: #b11528 !important;
+    }
+  }
+  &.secondary {
+    border: calcSize(2) solid #da1a32;
+    color: #da1a32;
+    & * {
+      color: #da1a32;
+    }
+    &:hover {
+      background-color: rgba($color: #000000, $alpha: 0.05) !important;
+      border-color: #c7172d;
+      color: #c7172d;
+      & * {
+        color: #c7172d;
+      }
+    }
+    &:active {
+      background-color: #b11528 !important;
+      border-color: #b11528;
+      color: #fff;
+      & * {
         color: #fff;
-        & *{
-            color: #fff;
-        }
-        &:hover{
-            background-color: #C7172D;
-        }
-        &:active{
-            background-color: #B11528;
-        }
+      }
     }
-    &.secondary{
-        background-color: #fff;
-        border: calcSize(2) solid #DA1A32;
-        color: #DA1A32;
-        & *{
-            color: #DA1A32;
-        }
-        &:hover{
-            background-color: rgba($color: #000000, $alpha: 0.05);
-            border-color: #C7172D;
-            color: #C7172D;
-            & *{
-                color: #C7172D;
-            }
-        }
-        &:active{
-            background-color: #B11528;
-            border-color: #B11528;
-            color: #fff;
-            & *{
-                color: #fff;
-            }
-        }
+  }
+  &.auth {
+    color: #fff;
+    & * {
+      color: #fff;
     }
-    &.small{
-        width: calcSize(240);
-        height: calcSize(80);
+    &:hover, :active {
+      background-color: rgba($color: #000000, $alpha: 0.2) !important;
     }
-    &.medium{
-        width: calcSize(320);
-        height: calcSize(80);
+  }
+  &.city {
+    display: flex;
+    align-items: center;
+    position: relative;
+    border: calcSize(3) solid rgba(0, 0, 0, 0.2);
+    color: rgba(0, 0, 0, 0.8);
+    & * {
+      color: rgba(0, 0, 0, 0.8);
     }
-    &.large{
-        width: calcSize(400);
-        height: calcSize(80);
+    &:hover {
+      background-color: rgba($color: #000000, $alpha: 0.05) !important;
+      border-color: rgba(0, 0, 0, 0.2);
+      color: rgba(0, 0, 0, 0.8);
+      & * {
+        color: rgba(0, 0, 0, 0.8);
+      }
     }
+
+    &:active {
+      background-color: rgba($color: #000000, $alpha: 0.05) !important;
+      border-color: rgba(0, 0, 0, 0.2);
+      color: rgba(0, 0, 0, 0.8);
+      & * {
+        color: rgba(0, 0, 0, 0.8);
+      }
+    }
+
+    & span {
+      margin-right: auto;
+      margin-left: auto;
+    }
+
+    & svg {
+      position: absolute;
+      width: calcSize(20);
+      height: calcSize(20);
+      right: calcSize(30);
+    }
+  }
+  &.cart {
+    color: #fff !important;
+    @include MyFonts(30, 400);
+    margin-bottom: calcSize(170);
+  }
+
+  &.small {
+    width: calcSize(240);
+    height: calcSize(80);
+  }
+  &.medium {
+    width: calcSize(320);
+    height: calcSize(80);
+  }
+  &.large {
+    width: calcSize(400);
+    height: calcSize(80);
+  }
+  &.big {
+    width: calcSize(560);
+    height: calcSize(80);
+  }
+}
+
+.modalBTN {
+  border: calcSize(3) solid rgba(0, 0, 0, 0.2);
+  width: calcSize(400);
+  border-radius: calcSize(45);
+  color: rgba(0, 0, 0, 0.6) !important;
+  height: calcSize(80);
+  padding: 0;
+  background-color: transparent;
+  @include MyFonts(30, 400);
+  white-space: nowrap;
+  cursor: pointer;
+
+  &:hover {
+    background-color: #f2f2f2;
+    border: calcSize(2) solid #cccccc;
+  }
+  &:target {
+    background-color: #f2f2f2;
+    border: calcSize(2) solid #cccccc;
+  }
+  &:active {
+    background-color: #f2f2f2;
+    border: calcSize(2) solid #cccccc;
+  }
+}
+
+button:disabled,
+button[disabled]{
+  pointer-events: none;
+  cursor: unset;
+}
+
+.containerModalBTN {
+  width: calcSize(394);
+  border-radius: calcSize(45);
+  display: flex;
+  justify-content: space-between;
+  align-items: center;
+  height: calcSize(74);
+  border: calcSize(3) solid rgba(0, 0, 0, 0.2);
+  background-color: transparent;
+
+  & > button {
+    padding: 0;
+    border: none;
+    background-color: rgba(0, 0, 0, 0.07);
+    mix-blend-mode: multiply;
+    @include MyFonts(50, 300);
+    width: calcSize(60);
+    height: calcSize(60);
+    border-radius: calcSize(40);
+    cursor: pointer;
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.09) !important;
+    }
+  }
+
+  & > button:nth-child(1) {
+    margin-left: calcSize(8);
+  }
+
+  & > button:nth-child(3) {
+    margin-right: calcSize(8);
+  }
+
+  & > span {
+    @include MyFonts(40, 400);
+  }
 }

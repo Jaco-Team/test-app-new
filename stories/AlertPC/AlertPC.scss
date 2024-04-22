@@ -1,0 +1,51 @@
+@import '../global';
+
+.modalAlertPC {
+  display: flex;
+  align-items: center;
+  height: calcSize(100);
+
+  & button {
+    position: absolute;
+    left: calcSize(60);
+    padding: 0;
+    width: calcSize(40);
+    height: calcSize(40);
+
+    & svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  & .containerAlert {
+    flex: 1;
+    display: flex;
+    align-items: center;
+    flex-direction: column;
+    justify-content: center;
+    height: 100%;
+
+    & span {
+      height: 65%;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      align-items: flex-end;
+      @include MyFonts(30, 400);
+      color: #fff !important;
+    }
+
+    & .MuiLinearProgress-root {
+      margin-top: calcSize(15);
+      background-color: unset;
+      height: calcSize(4);
+      width: 50%;
+
+      & span {
+        background-color: #fff;
+        opacity: 0.4;
+      }
+    }
+  }
+}

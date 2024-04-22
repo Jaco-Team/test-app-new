@@ -3,7 +3,7 @@ import PropTypes from 'prop-types';
 import { Badge } from '../Badge/Badge';
 import { ModalItemPCimg } from '../ModalItemPCimg/ModalItemPCimg';
 import { ModalItemPCdesc } from '../ModalItemPCdesc/ModalItemPCdesc';
-import { ModalItemPCbutton } from '../ModalItemPCbutton/ModalItemPCbutton';
+import { MyButton } from '../MyButton/MyButton';
 import { ModalItemPClist } from '../ModalItemPClist/ModalItemPClist';
 
 import './ModalItemPC.scss';
@@ -30,7 +30,7 @@ export const ModalItemPC = ({ img_name, title, is_new, is_hit, desc, count, type
 
       <div className="SecondItem">
         <ModalItemPCdesc {...desc} />
-        <ModalItemPCbutton {...count} />
+        <MyButton {...count} />
       </div>
     </div>
   );

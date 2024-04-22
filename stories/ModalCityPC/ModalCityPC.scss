@@ -1,0 +1,43 @@
+@import '../global';
+
+.modalCityPC {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  border-radius: calcSize(40);
+  background: linear-gradient(#ededed 0%, #ededed 25%, #fff 25%, #fff 100%);
+  width: calcSize(680);
+  height: calcSize(800);
+  position: relative;
+
+  & img {
+    position: absolute;
+    height: calcSize(200);
+    width: auto;
+    top: calcSize(60);
+  }
+
+  & span:nth-child(2) {
+    @include MyFonts(40, 400);
+    height: calcSize(60);
+    margin-bottom: calcSize(20);
+  }
+
+  & span:nth-child(3) {
+    text-align: center;
+    line-height: calcSize(75);
+    @include MyFonts(75, 700);
+    min-height: calcSize(60);
+    padding: 0 calcSize(40);
+  }
+
+  & div:nth-child(4) {
+    position: absolute;
+    height: calcSize(180);
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    bottom: calcSize(80);
+  }
+}

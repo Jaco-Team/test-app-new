@@ -1,0 +1,106 @@
+@import '../global';
+
+tr {
+  width: calcSize(895);
+  height: calcSize(182);
+  display: flex;
+  justify-content: center;
+
+  & img {
+    height: calcSize(160);
+    width: calcSize(160);
+    margin-right: calcSize(40);
+    object-fit: contain;
+    image-rendering: auto;
+  }
+
+  & td:nth-child(2) {
+    width: calcSize(400);
+    display: flex;
+    flex-direction: column;
+    height: calcSize(130);
+    justify-content: space-between;
+    margin-right: calcSize(15);
+    margin-top: calcSize(10);
+
+    & > span {
+      @include MyFonts(30, 400);
+    }
+
+    & > span:nth-child(1) {
+      height: calcSize(80);
+      display: flex;
+      align-items: flex-end;
+    }
+
+    & > div {
+      display: flex;
+
+      & > span:nth-child(-n + 2) {
+        height: calcSize(40);
+        display: flex;
+        align-items: center;
+        white-space: nowrap;
+      }
+
+      & span:nth-child(1) {
+        color: rgba(0, 0, 0, 0.4);
+      }
+
+      & span:nth-child(2) {
+        color: #dd1a32;
+      }
+
+      & span:nth-child(1).promoInfo {
+        margin-right: calcSize(20);
+        text-decoration-thickness: calcSize(3);
+        text-decoration: line-through;
+        text-decoration-color: rgba(221, 26, 50, 0.8);
+        white-space: nowrap;
+      }
+    }
+  }
+
+  & td:nth-child(3) {
+    width: calcSize(236);
+    height: calcSize(76);
+    padding: 0;
+    border-radius: calcSize(45);
+    border: calcSize(2) solid rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: calcSize(40);
+
+    & > button {
+      width: calcSize(60);
+      height: calcSize(60);
+      padding: 0;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      border-radius: calcSize(60);
+      cursor: default;
+      border: none;
+    }
+
+    & > button:not([disabled]):hover {
+      background-color: rgba(0, 0, 0, 0.07) !important;
+      cursor: pointer;
+    }
+
+    & > span {
+      @include MyFonts(44, 400);
+    }
+
+    & > .minus {
+      margin-left: calcSize(10);
+      @include MyFonts(44, 400);
+    }
+
+    & > .plus {
+      margin-right: calcSize(10);
+      @include MyFonts(60, 300);
+    }
+  }
+}

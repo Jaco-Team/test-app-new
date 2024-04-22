@@ -1,0 +1,395 @@
+import React from 'react';
+
+import { styled } from '@mui/material/styles';
+import Switch from '@mui/material/Switch';
+
+export const IOSSwitch = styled((props) => (
+  <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+))(({ theme }) => ({
+  width: '4.2vw',
+  height: '2.1vw',
+  borderRadius: '2vw',
+  padding: 0,
+  '& .MuiSwitch-switchBase': {
+    padding: 0,
+    margin: '0.1vw',
+    transitionDuration: '300ms',
+    '&.Mui-checked': {
+      transform: 'translateX(2.1vw)',
+      color: '#fff',
+      marginTop: '0.1vw',
+      '& + .MuiSwitch-track': {
+        backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#57DC35',
+        opacity: 1,
+        border: 0,
+      },
+      '&.Mui-disabled + .MuiSwitch-track': {
+        opacity: 0.5,
+      },
+    },
+    '& .MuiSwitch-thumb': {
+      boxShadow: 'none',
+    },
+    '&.Mui-focusVisible .MuiSwitch-thumb': {
+      color: '#33cf4d',
+      border: '6px solid #fff',
+    },
+    '&.Mui-disabled .MuiSwitch-thumb': {
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.grey[100]
+          : theme.palette.grey[600],
+    },
+    '&.Mui-disabled + .MuiSwitch-track': {
+      opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+    },
+  },
+  '& .MuiSwitch-thumb': {
+    //paddingTop: '0.1vw',
+    boxSizing: 'border-box',
+    width: '1.9vw',
+    height: '1.9vw',
+  },
+  '& .MuiSwitch-track': {
+    borderRadius: 36 / 2,
+    backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
+    opacity: 1,
+    transition: theme.transitions.create(['background-color'], {
+      duration: 500,
+    }),
+  },
+}));
+
+export const BasketSwitchPC = styled(Switch)(({ theme }) => ({
+  width: '28.880866425993vw',
+  height: '2.8880866425993vw',
+  padding: 0,
+  display: 'flex',
+  borderRadius: '1.4440433212996vw',
+  fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+  fontSize: '1.0830324909747vw',
+  fontWeight: 400,
+  fontStyle: 'normal',
+
+  '& .MuiButtonBase-root.MuiSwitch-switchBase': {
+    padding: 0,
+  },
+
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    transform: 'translateX(14.440433212996vw)',
+    padding: 0,
+  },
+
+  '& .MuiSwitch-switchBase': {
+    transitionDuration: '300ms',
+    '&.Mui-checked': {
+      '& + .MuiSwitch-track': {
+        opacity: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      },
+      '& .MuiSwitch-thumb': {
+        '&:after': {
+          content: "'Самовывоз'",
+          color: '#fff',
+        },
+      },
+    },
+  },
+
+  '& .MuiSwitch-thumb': {
+    width: '14.440433212996vw',
+    background: '#DD1A32',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '&:after': {
+      content: "'Доставка'",
+      color: '#fff',
+    },
+    height: '2.8880866425993vw',
+    borderRadius: '1.4440433212996vw',
+  },
+
+  '& .MuiSwitch-track': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    opacity: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    color: 'rgba(0, 0, 0, 0.80)',
+    boxSizing: 'border-box',
+    '&:after': {
+      content: "'Самовывоз'",
+    },
+    '&:before': {
+      content: "'Доставка'",
+    },
+  },
+}));
+
+export const BasketSwitchMobile = styled(Switch)(({ theme }) => ({
+  width: '86.324786324786vw',
+  height: '10.25641025641vw',
+  padding: 0,
+  display: 'flex',
+  borderRadius: '5.1282051282051vw',
+  fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+  fontSize: '4.2735042735043vw',
+  fontWeight: 500,
+  fontStyle: 'normal',
+
+  '& .MuiButtonBase-root.MuiSwitch-switchBase': {
+    padding: 0,
+  },
+
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    transform: 'translateX(43.162393162393vw)',
+    padding: 0,
+  },
+
+  '& .MuiSwitch-switchBase': {
+    transitionDuration: '300ms',
+    '&.Mui-checked': {
+      '& + .MuiSwitch-track': {
+        opacity: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.05)',
+      },
+      '& .MuiSwitch-thumb': {
+        '&:after': {
+          content: "'Самовывоз'",
+          color: '#fff',
+        },
+      },
+    },
+  },
+
+  '& .MuiSwitch-thumb': {
+    width: '43.162393162393vw',
+    background: '#DD1A32',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '&:after': {
+      content: "'Доставка'",
+      color: '#fff',
+    },
+    height: '10.25641025641vw',
+    borderRadius: '5.1282051282051vw',
+  },
+
+  '& .MuiSwitch-track': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-around',
+    opacity: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.05)',
+    color: 'rgba(0, 0, 0, 0.80)',
+    boxSizing: 'border-box',
+    '&:after': {
+      content: "'Самовывоз'",
+    },
+    '&:before': {
+      content: "'Доставка'",
+    },
+  },
+}));
+
+export const SwitchContacts = styled((props) => (
+  <Switch focusVisibleClassName=".Mui-focusVisible" disableRipple {...props} />
+))(({ theme }) => ({
+  width: '12.820512820513vw',
+  height: '7.6923076923077vw',
+  borderRadius: '3.8461538461538vw',
+  padding: 0,
+
+  '& .MuiSwitch-switchBase': {
+    padding: 0,
+    margin: '0.42735042735043vw',
+    transitionDuration: '300ms',
+
+    '&.Mui-checked': {
+      transform: 'translateX(5.1282051282051vw)',
+      color: '#fff',
+   
+      '& + .MuiSwitch-track': {
+        backgroundColor: theme.palette.mode === 'dark' ? '#2ECA45' : '#57DC35',
+        opacity: 1,
+        border: 0,
+      },
+
+      '&.Mui-disabled + .MuiSwitch-track': {
+        opacity: 0.5,
+      },
+
+    },
+
+    '& .MuiSwitch-thumb': {
+      boxShadow: 'none',
+    },
+    '&.Mui-focusVisible .MuiSwitch-thumb': {
+      color: '#33cf4d',
+    },
+    '&.Mui-disabled .MuiSwitch-thumb': {
+      color:
+        theme.palette.mode === 'light'
+          ? theme.palette.grey[100]
+          : theme.palette.grey[600],
+    },
+    '&.Mui-disabled + .MuiSwitch-track': {
+      opacity: theme.palette.mode === 'light' ? 0.7 : 0.3,
+    },
+  },
+
+  '& .MuiSwitch-thumb': {
+    boxSizing: 'border-box',
+    width: '6.8376068376068vw',
+    height: '6.8376068376068vw',
+  },
+
+  '& .MuiSwitch-track': {
+    borderRadius: '3.8461538461538vw',
+    backgroundColor: theme.palette.mode === 'light' ? '#E9E9EA' : '#39393D',
+    opacity: 1,
+    transition: theme.transitions.create(['background-color'], {
+      duration: 500,
+    }),
+  },
+}));
+
+export const AuthSwitchMobile = styled(Switch)(({ theme }) => ({
+  width: '71.794871794872vw',
+  height: '10.25641025641vw',
+  padding: 0,
+  display: 'flex',
+  borderRadius: '5.1282051282051vw',
+  fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+  fontSize: '4.2735042735043vw',
+  fontWeight: 500,
+  fontStyle: 'normal',
+
+  '& .MuiButtonBase-root.MuiSwitch-switchBase': {
+    padding: 0,
+  },
+
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    transform: 'translateX(35.897435897436vw)',
+    padding: 0,
+  },
+
+  '& .MuiSwitch-switchBase': {
+    transitionDuration: '300ms',
+    '&.Mui-checked': {
+      '& + .MuiSwitch-track': {
+        opacity: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+      },
+      '& .MuiSwitch-thumb': {
+        '&:after': {
+          content: "'Регистрация'",
+          color: '#fff',
+        },
+      },
+    },
+  },
+
+  '& .MuiSwitch-thumb': {
+    width: '35.897435897436vw',
+    background: '#DD1A32',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '&:after': {
+      content: "'Вход'",
+      color: '#fff',
+    },
+    height: '10.25641025641vw',
+    borderRadius: '5.1282051282051vw',
+  },
+
+  '& .MuiSwitch-track': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: '12.820512820513vw',
+    paddingRight: '5.982905982906vw',
+    opacity: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    color: 'rgba(0, 0, 0, 0.80)',
+    boxSizing: 'border-box',
+    '&:after': {
+      content: "'Регистрация'",
+    },
+    '&:before': {
+      content: "'Вход'",
+    },
+  },
+}));
+
+export const AuthSwitchPC = styled(Switch)(({ theme }) => ({
+  width: '17.328519855596vw',
+  height: '2.1660649819495vw',
+  padding: 0,
+  display: 'flex',
+  borderRadius: '1.0830324909747vw',
+  fontFamily: `"Roboto", "Helvetica", "Arial", sans-serif`,
+  fontSize: '1.0830324909747vw',
+  fontWeight: 400,
+  fontStyle: 'normal',
+
+  '& .MuiButtonBase-root.MuiSwitch-switchBase': {
+    padding: 0,
+  },
+
+  '& .MuiSwitch-switchBase.Mui-checked': {
+    transform: 'translateX(8.6642599277978vw)',
+    padding: 0,
+  },
+
+  '& .MuiSwitch-switchBase': {
+    transitionDuration: '300ms',
+    '&.Mui-checked': {
+      '& + .MuiSwitch-track': {
+        opacity: 1,
+        backgroundColor: 'rgba(0, 0, 0, 0.1)',
+      },
+      '& .MuiSwitch-thumb': {
+        '&:after': {
+          content: "'Регистрация'",
+          color: '#fff',
+        },
+      },
+    },
+  },
+
+  '& .MuiSwitch-thumb': {
+    width: '8.6642599277978vw',
+    background: '#DD1A32',
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'center',
+    '&:after': {
+      content: "'Вход'",
+      color: '#fff',
+    },
+    height: '2.1660649819495vw',
+    borderRadius: '1.0830324909747vw',
+  },
+
+  '& .MuiSwitch-track': {
+    display: 'flex',
+    alignItems: 'center',
+    justifyContent: 'space-between',
+    paddingLeft: '3.6101083032491vw',
+    paddingRight: '1.2635379061372vw',
+    opacity: 1,
+    backgroundColor: 'rgba(0, 0, 0, 0.1)',
+    color: 'rgba(0, 0, 0, 0.80)',
+    boxSizing: 'border-box',
+    '&:after': {
+      content: "'Регистрация'",
+    },
+    '&:before': {
+      content: "'Вход'",
+    },
+  },
+}));

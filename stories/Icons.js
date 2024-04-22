@@ -1,3 +1,30 @@
+export function VectorCity(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="19"
+      height="12"
+      fill="none"
+      viewBox="0 0 19 12"
+      {...props}
+    >
+      <path
+        fill="#FFF"
+        fillOpacity="0"
+        fillRule="nonzero"
+        d="M16-.04v-.03a1.49 1.49 0 012.12 0c.59.6.59 1.53 0 2.13h-.03L16-.04zM.03 2.06H0C-.6 1.46-.6.53 0-.07a1.49 1.49 0 012.12 0v.03L.03 2.06z"
+      ></path>
+      <path
+        stroke="#000"
+        strokeLinecap="round"
+        strokeOpacity="0.3"
+        strokeWidth="3"
+        d="M17.06 1l-8 8-8-8"
+      ></path>
+    </svg>
+  );
+}
+
 export function VerticalVector(props) {
   return (
     <svg
@@ -2025,7 +2052,7 @@ export function ClearAuthMobile(props) {
       width="60"
       height="60"
       fill="none"
-      viewBox="0 0 60 60"
+      viewBox="0.8 0.4 60 60"
       {...props}
     >
       <path
@@ -2044,7 +2071,7 @@ export function CheckAuthMobile(props) {
       width="60"
       height="60"
       fill="none"
-      viewBox="0 0 60 60"
+      viewBox="0.8 0 60 60"
       {...props}
     >
       <path

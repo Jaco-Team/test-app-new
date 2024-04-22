@@ -1,0 +1,13 @@
+@import '../global';
+
+.descPromo {
+  display: flex;
+  align-items: center;
+  width: calcSize(840);
+  margin: calcSize(10) calcSize(60) calcSize(30) calcSize(70);
+  min-height: calcSize(40);
+  & span {
+    text-align: start;
+    @include MyFonts(22, 400);
+  }
+}

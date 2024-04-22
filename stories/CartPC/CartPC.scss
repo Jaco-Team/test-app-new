@@ -1,0 +1,38 @@
+@import '../global';
+
+.cartPC {
+  height: 100vh;
+  width: calcSize(1000);
+  border-top: calcSize(2) solid rgba(0, 0, 0, 0.2);
+  overflow-y: auto;
+  text-align: center;
+
+  &::-webkit-scrollbar {
+    width: calcSize(30);
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: #979696;
+    border-right: solid calcSize(20) #ffffff;
+  }
+
+  &::-webkit-scrollbar-track {
+    margin-top: calcSize(40);
+    background: #d9d9d9;
+    border-right: solid calcSize(20) #ffffff;
+  }
+}
+
+.blockShadowBasket {
+  z-index: 1150;
+  width: calcSize(1000);
+  height: calcSize(40);
+  position: absolute;
+  background: linear-gradient(
+    180deg,
+    rgba(115, 115, 115, 0.1) 0%,
+    rgba(83, 92, 84, 0) 100%
+  );
+  mix-blend-mode: multiply;
+  transition: all 0.1s ease 0s;
+}

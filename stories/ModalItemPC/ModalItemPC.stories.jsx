@@ -1,6 +1,6 @@
 import { ModalItemPC } from './ModalItemPC';
 import * as ModalItemPCdesc from '../ModalItemPCdesc/ModalItemPCdesc.stories';
-import * as ModalItemPCbutton from '../ModalItemPCbutton/ModalItemPCbutton.stories';
+import * as MyButton from '../MyButton/MyButton.stories';
 import * as ModalItemPClist from '../ModalItemPClist/ModalItemPClist.stories';
 
 export default {
@@ -63,7 +63,7 @@ Start_1.args = {
   is_new: '0',
   is_hit: '0',
   desc: ModalItemPCdesc.Variant_1.args,
-  count: ModalItemPCbutton.Default.args,
+  count: MyButton.Modal.args,
   list: {},
   typeModal: 'start',
 };
@@ -74,7 +74,7 @@ Start_2.args = {
   is_new: '0',
   is_hit: '0',
   desc: ModalItemPCdesc.Variant_2.args,
-  count: ModalItemPCbutton.Default.args,
+  count: MyButton.Modal.args,
   list: {},
   typeModal: 'start',
 };
@@ -85,7 +85,7 @@ Start_3.args = {
   is_new: '0',
   is_hit: '0',
   desc: ModalItemPCdesc.Variant_3.args,
-  count: ModalItemPCbutton.Default.args,
+  count: MyButton.Modal.args,
   list: {},
   typeModal: 'start',
 };
@@ -96,7 +96,7 @@ Start_4.args = {
   is_new: '0',
   is_hit: '0',
   desc: ModalItemPCdesc.Variant_4.args,
-  count: ModalItemPCbutton.Default.args,
+  count: MyButton.Modal.args,
   list: {},
   typeModal: 'start',
 };
@@ -107,7 +107,7 @@ Start_count.args = {
   is_new: '0',
   is_hit: '0',
   desc: ModalItemPCdesc.Variant_1.args,
-  count: ModalItemPCbutton.Active.args,
+  count: MyButton.Modal_Active.args,
   list: {},
   typeModal: 'start',
 };
@@ -118,7 +118,7 @@ Set.args = {
   is_new: '0',
   is_hit: '0',
   desc: {...ModalItemPCdesc.Variant_1.args, typeModal: 'set'},
-  count: {...ModalItemPCbutton.Default.args, typeModal: 'set'},
+  count: {...MyButton.Modal.args, typeModal: 'set'},
   list: ModalItemPClist.Set.args,
   typeModal: 'set',
 };
@@ -129,7 +129,7 @@ Set_count.args = {
   is_new: '0',
   is_hit: '0',
   desc: {...ModalItemPCdesc.Variant_1.args, typeModal: 'set'},
-  count: {...ModalItemPCbutton.Active.args, typeModal: 'set'},
+  count: {...MyButton.Modal_Active.args, typeModal: 'set'},
   list: ModalItemPClist.Set.args,
   typeModal: 'set',
 };
@@ -140,7 +140,7 @@ Value_1.args = {
   is_new: '0',
   is_hit: '0',
   desc: {...ModalItemPCdesc.Variant_1.args, typeModal: 'set', foodValue: true},
-  count: {...ModalItemPCbutton.Default.args, typeModal: 'set'},
+  count: {...MyButton.Modal.args, typeModal: 'set'},
   list: ModalItemPClist.Value.args,
   typeModal: 'value',
 };
@@ -151,7 +151,7 @@ Value_2.args = {
   is_new: '0',
   is_hit: '0',
   desc: {...ModalItemPCdesc.Variant_2.args, typeModal: 'set', foodValue: true},
-  count: {...ModalItemPCbutton.Default.args, typeModal: 'set'},
+  count: {...MyButton.Modal.args, typeModal: 'set'},
   list: ModalItemPClist.Value.args,
   typeModal: 'value',
 };
@@ -162,7 +162,7 @@ Value_3.args = {
   is_new: '0',
   is_hit: '0',
   desc: {...ModalItemPCdesc.Variant_3.args, typeModal: 'set', foodValue: true},
-  count: {...ModalItemPCbutton.Default.args, typeModal: 'set'},
+  count: {...MyButton.Modal.args, typeModal: 'set'},
   list: ModalItemPClist.Value.args,
   typeModal: 'value',
 };
@@ -173,7 +173,7 @@ Value_count.args = {
   is_new: '0',
   is_hit: '0',
   desc: {...ModalItemPCdesc.Variant_1.args, typeModal: 'set', foodValue: true},
-  count: {...ModalItemPCbutton.Active.args, typeModal: 'set'},
+  count: {...MyButton.Modal_Active.args, typeModal: 'set'},
   list: ModalItemPClist.Value.args,
   typeModal: 'value',
 };
@@ -184,7 +184,7 @@ Badge.args = {
   is_new: '1',
   is_hit: '0',
   desc: ModalItemPCdesc.Variant_1.args,
-  count: ModalItemPCbutton.Default.args,
+  count: MyButton.Modal.args,
   list: {},
   typeModal: 'start',
 };

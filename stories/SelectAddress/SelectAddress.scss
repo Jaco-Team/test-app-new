@@ -1,0 +1,30 @@
+@import '../global';
+
+.modalSelectPC {
+  border-radius: calcSize(40);
+  width: calcSize(1500);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+
+  & span {
+    align-self: center;
+    @include MyFonts(50, 500);
+    margin-bottom: calcSize(60);
+  }
+
+  & ul {
+    width: 100%;
+    list-style: none;
+    align-self: center;
+    padding: 0 calcSize(40);
+    & li {
+      padding-left: calcSize(20);
+      @include MyFonts(30, 400);
+      margin-bottom: calcSize(40);
+      cursor: pointer;
+      border-bottom: calcSize(3) solid rgba(0, 0, 0, 0.2);
+    }
+  }
+}

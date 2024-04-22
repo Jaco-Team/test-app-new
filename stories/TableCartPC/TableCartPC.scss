@@ -1,0 +1,8 @@
+@import '../global';
+
+.tableCartPC {
+  margin: calcSize(20) calcSize(35) calcSize(30) calcSize(40);
+  border-spacing: 0;
+  display: flex;
+  flex-direction: column;
+}

@@ -6,7 +6,7 @@ import Toolbar from '@mui/material/Toolbar';
 
 import './HeaderPC.scss';
 import { MyCatLink } from '../MyTextLink/MyCatLink';
-import { HeaderPCIcon } from '../HeaderPCIcon/HeaderPCIcon';
+import { IconPC } from '../IconPC/IconPC';
 import { MyMenu } from '../MyMenu/MyMenu';
 
 const category = [{link: 'https://example.com', title: 'Сеты'}, {link: 'https://example.com', title: 'Фирменные роллы'}, {link: 'https://example.com', title: 'Жаренные роллы'}, {link: 'https://example.com', title: 'Запеченные роллы'}];
@@ -48,16 +48,16 @@ export const HeaderPC = ({ scroll, count }) => {
             <a className="city">
               <MyCatLink children="Тольятти" />
             </a>
-            <HeaderPCIcon icon="location" />
-            <HeaderPCIcon icon="docs" />
-            <HeaderPCIcon icon="profile" />
-            <HeaderPCIcon icon="basket" count={count} />
+            <IconPC icon="location" element='header' />
+            <IconPC icon="docs" element='header' />
+            <IconPC icon="profile" element='header' />
+            <IconPC icon="basket" count={count} element='header' />
           </div>
         </Toolbar>
       </AppBar>
       {scroll ? <div className="blockShadow" /> : null}
 
-      <MyMenu list={category} isOpen={isOpenCat} anchorEl={anchorEl} onClose={closeMenu} />
+      <MyMenu list={category} isOpen={isOpenCat} anchorEl={anchorEl} onClose={closeMenu} type='cat' />
     </>
   );
 };

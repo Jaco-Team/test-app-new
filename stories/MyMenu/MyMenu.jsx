@@ -6,7 +6,7 @@ import Link from 'next/link';
 import Menu from '@mui/material/Menu';
 import Paper from '@mui/material/Paper';
 
-export const MyMenu = ({ anchorEl, isOpen, onClose, list }) => {
+export const MyMenu = ({ anchorEl, isOpen, onClose, list, type }) => {
 
   if( !anchorEl && isOpen === true ){
     return (
@@ -31,10 +31,15 @@ export const MyMenu = ({ anchorEl, isOpen, onClose, list }) => {
       transformOrigin={{ vertical: 'top',  horizontal: 'center' }} 
       autoFocus={false}
       className='MyMenu'
+      style={{ marginTop: type === 'cat' ? '1.4440433212996vw' : '0.72202166064982vw' }}
     >
-      {list.map( item => 
-        <li key={item.link} onClick={onClose}>
-          <Link href={item.link}>{item.title}</Link>
+      {list.map((item, key) => 
+        <li key={key} onClick={onClose}>
+          {type === 'cat' ? 
+            <Link href={item.link}>{item.title}</Link>
+            :
+            <span>{item.title}</span>
+          }
         </li>
       )}
     </Menu>

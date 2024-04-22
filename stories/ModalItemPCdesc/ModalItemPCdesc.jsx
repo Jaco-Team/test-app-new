@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import './ModalItemPCdesc.scss';
-import { ModalItemPCicon } from '../ModalItemPCicon/ModalItemPCicon';
+import { IconPC } from '../IconPC/IconPC';
 
 export const ModalItemPCdesc = ({ title_desk, cat_id, typeModal, count_part_new, size_pizza, count_part, weight, id, foodValue, marc_desc, tmp_desc }) => {
   return (
@@ -30,7 +30,7 @@ export const ModalItemPCdesc = ({ title_desk, cat_id, typeModal, count_part_new,
 
         {id === '17' || id === '237' ? null :
           <div className="dop_icon" style={{ cursor: typeModal === 'start' ? 'pointer' : null }}>
-            <ModalItemPCicon foodValue={foodValue} />
+            <IconPC icon="value" element='product' foodValue={foodValue} />
           </div>
         }
 

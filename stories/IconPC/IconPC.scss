@@ -1,13 +1,13 @@
 @import '../global';
 
-.IconCartHeaderPC {
+.IconHeaderPC {
   display: flex;
   align-items: center;
   border-radius: calcSize(48);
   margin-right: calcSize(48);
   cursor: pointer;
 
-  &:not(.active){
+  &:not(.active) {
     width: calcSize(48);
     height: calcSize(48);
 
@@ -32,10 +32,10 @@
       outline-offset: 0;
     }
   }
-  &.active{
+  &.active {
     width: calcSize(217);
     height: calcSize(64);
-    background-color: $ColorMain;;
+    background-color: $ColorMain;
 
     justify-content: space-evenly;
 
@@ -64,4 +64,45 @@
       stroke-opacity: 0.1;
     }
   }
+}
+
+.IconAuthPC {
+  width: calcSize(40);
+  height: calcSize(40);
+  cursor: pointer;
+}
+
+.IconAuthPC_vector {
+  height: calcSize(40);
+  width: calcSize(40);
+  border-radius: calcSize(40);
+  display: flex;
+  justify-content: center;
+  margin-bottom: calcSize(22);
+  cursor: pointer;
+  background-color: #dd1a32;
+
+  & svg {
+    margin-left: calcSize(3);
+    width: calcSize(40);
+    height: calcSize(40);
+  }
+}
+
+.IconAuthPC_done {
+  height: calcSize(40);
+  width: calcSize(40);
+  border-radius: calcSize(10);
+  cursor: pointer;
+  background-color: #dd1a32;
+
+  & svg {
+    height: calcSize(40);
+    width: calcSize(40);
+  }
+}
+
+.IconItemValue {
+  width: calcSize(60);
+  height: calcSize(60);
 }

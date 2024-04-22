@@ -1,0 +1,31 @@
+@import '../global';
+
+tfoot {
+  display: flex;
+  width: calcSize(845);
+  height: calcSize(60);
+  margin: calcSize(40) calcSize(20) calcSize(30) calcSize(30);
+  justify-content: space-between;
+
+  & td:first-child {
+    @include MyFonts(40, 500);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  & td:last-child {
+    & > span:not(.promoInfo) {
+      @include MyFonts(50, 500);
+      line-height: calcSize(60);
+    }
+
+    & > span.promoInfo {
+      @include MyFonts(40, 500);
+      color: rgba(0, 0, 0, 0.4);
+      text-decoration-thickness: 0.10830324909747vw !important;
+      text-decoration: line-through;
+      text-decoration-color: rgba(221, 26, 50, 0.8);
+    }
+  }
+}

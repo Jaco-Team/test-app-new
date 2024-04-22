@@ -1,0 +1,14 @@
+@import '../global';
+
+.dopText {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: calcSize(895);
+  height: calcSize(200);
+  background: rgba(0, 0, 0, 0.05);
+  border-radius: calcSize(20);
+  @include MyFonts(30, 400);
+  text-align: center;
+  padding: 0 calcSize(180);
+}
