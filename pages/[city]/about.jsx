@@ -55,6 +55,11 @@ export default React.memo(function About(props) {
 })
 
 export async function getServerSideProps({ req, res, query }) {
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=3600, stale-while-revalidate=3600'
+  );
+
   let data = {
     type: 'get_page_info', 
     city_id: query.city,
