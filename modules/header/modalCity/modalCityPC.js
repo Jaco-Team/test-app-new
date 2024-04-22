@@ -45,7 +45,7 @@ export default function ModalCityPC() {
     setAnchorEl(null);
     setActiveModalCity(false);
     setThisCity(city.link);
-    getMap(activePage, city.link);
+    getMap('contacts', city.link);
 
     if(activePage && activePage !== 'home') {
       push(`/${city.link}/${activePage}`);
