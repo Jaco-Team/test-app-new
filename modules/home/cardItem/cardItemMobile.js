@@ -14,8 +14,16 @@ import {placeholder_img} from '@/public/placeholder_img';
 
 export default React.memo(function CardItemMobile({ item, count }) {
   const [getItem] = useHomeStore((state) => [state.getItem]);
-  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
+  const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
+
+  const metrica_param = {
+    city: thisCityRu, 
+    tovar: item.name, 
+    category: item.cat_name,
+    platform: 'mobile',
+    view: 'Главная'
+  };
 
   return (
     <Grid item className={'CardItemMobile ' + (count > 0 ? 'active' : '')} sx={{ display: { xs: 'flex', md: 'flex', sm: 'flex' } }}>
@@ -37,7 +45,7 @@ export default React.memo(function CardItemMobile({ item, count }) {
 
           {parseInt(item.is_new) == 0 ? parseInt(item.is_hit) == 0 ? null :
             <BadgeItem size={'small'} type={'hit'} view={'mobile'} />
-                :
+              :
             <BadgeItem size={'small'} type={'new'} view={'mobile'} />
           }
         </div>
@@ -83,14 +91,14 @@ export default React.memo(function CardItemMobile({ item, count }) {
           {count ? (
             <div className="containerBTNMobile">
               <div variant="contained">
-                <button className="minus" onClick={() => minus(item.id)}>–</button>
+                <button className="minus" onClick={() => { minus(item.id); ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); } }>–</button>
                 <span>{count}</span>
-                <button className="plus" onClick={() => plus(item.id, item.cat_id)}>+</button>
+                <button className="plus" onClick={() => { plus(item.id, item.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>+</button>
               </div>
             </div>
           ) : (
             <div className="containerBTNMobile">
-              <Button variant="outlined" onClick={() => plus(item.id, item.cat_id)}>
+              <Button variant="outlined" onClick={() => { plus(item.id, item.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>
                 {new Intl.NumberFormat('ru-RU').format(item.price)} ₽
               </Button>
             </div>

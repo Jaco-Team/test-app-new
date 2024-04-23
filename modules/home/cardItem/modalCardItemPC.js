@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 //import Image from 'next/image';
 import Link from 'next/link';
 
-import { useHomeStore, useCartStore, useFooterStore } from '@/components/store';
+import { useHomeStore, useCartStore, useFooterStore, useCitiesStore } from '@/components/store';
 
 import BadgeItem from './badge';
 
@@ -28,10 +28,20 @@ export default function ModalCardItemPC() {
 
   const [links] = useFooterStore((state) => [state.links]);
 
+  const [thisCityRu] = useCitiesStore((state) => [ state.thisCityRu ]);
+
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
 
   const [count, setCount] = useState(0);
   
+  const metrica_param = {
+    city: thisCityRu, 
+    tovar: openItem?.name, 
+    category: openItem?.cat_name,
+    platform: 'pc',
+    view: 'Модалка товара'
+  };
+
   useEffect( () => {
 
     const items = useCartStore.getState().items;
@@ -49,11 +59,15 @@ export default function ModalCardItemPC() {
   const changeCountPlus = (id) => {
     setCount(count + 1);
     plus(id, openItem?.cat_id);
+
+    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param);
   };
 
   const changeCountMinus = (id) => {
     setCount(count - 1);
     minus(id);
+
+    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param);
   };
 
   

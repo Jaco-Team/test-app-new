@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import Image from 'next/image';
 
-import { useHomeStore, useCartStore, useHeaderStore } from '@/components/store';
+import { useHomeStore, useCartStore, useHeaderStore, useCitiesStore } from '@/components/store';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Box from '@mui/material/Box';
@@ -20,7 +20,17 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
   const [ CatsItems ] = useHomeStore( state => [ state.CatsItems ]);
   const [ items, minus, plus, getInfoPromo ] = useCartStore( state => [ state.items, state.minus, state.plus, state.getInfoPromo ]);
 
+  const [thisCityRu] = useCitiesStore((state) => [ state.thisCityRu ]);
+
   let count = 0;
+
+  const metrica_param = {
+    city: thisCityRu, 
+    tovar: thisItem?.name, 
+    category: thisItem?.cat_name,
+    platform: 'mobile',
+    view: 'Баннер'
+  };
 
   useEffect(() => {
     CatsItems.map((cat) => {
@@ -39,7 +49,9 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
       getInfoPromo(promo?.name, promo?.city_id);
     }
 
-    plus(item_id, cat_id)
+    plus(item_id, cat_id);
+
+    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param);
   }
 
   function this_minus(item_id){
@@ -47,7 +59,9 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
       getInfoPromo(promo?.name, promo?.city_id);
     }
 
-    minus(item_id)
+    minus(item_id);
+
+    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param);
   }
 
   count = items.find( f_item => parseInt(f_item?.item_id) == parseInt( item?.id ) || parseInt(f_item?.item_id) == parseInt( item?.item_id ) );

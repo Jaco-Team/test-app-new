@@ -3,7 +3,7 @@ import React, { useState, useEffect } from 'react';
 //import Image from 'next/image';
 import Link from 'next/link';
 
-import { useHomeStore, useCartStore, useFooterStore } from '@/components/store';
+import { useHomeStore, useCartStore, useFooterStore, useCitiesStore } from '@/components/store';
 
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -24,11 +24,21 @@ export default function ModalCardItemMobile() {
 
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
 
+  const [thisCityRu] = useCitiesStore((state) => [ state.thisCityRu ]);
+
   const [count, setCount] = useState(0);
   const [shadowSet, setShadowSet] = useState(0);
   const [shadowValue, setShadowValue] = useState(0);
   const [activeSet, setActiveSet] = useState(false);
   const [activeValue, setActiveValue] = useState(false);
+
+  const metrica_param = {
+    city: thisCityRu, 
+    tovar: openItem?.name, 
+    category: openItem?.cat_name,
+    platform: 'mobile',
+    view: 'Модалка товара'
+  };
 
   useEffect(() => {
     const items = useCartStore.getState().items;
@@ -45,11 +55,15 @@ export default function ModalCardItemMobile() {
   const changeCountPlus = (id) => {
     setCount(count + 1);
     plus(id, openItem?.cat_id);
+
+    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param);
   };
 
   const changeCountMinus = (id) => {
     setCount(count - 1);
     minus(id);
+
+    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param);
   };
 
   const desc = openItem?.marc_desc.length > 0 ? openItem?.marc_desc : openItem?.tmp_desc;
