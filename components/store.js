@@ -99,6 +99,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // проверка наличия в корзине роллов, пиццы или всего
   cart_is: 'all',
 
+  ya_metrik: {
+    'togliatti': 3321706,
+    'samara': 3321699
+  },
+
   // открытие/закрытие формы оплаты онлайн
   setPayForm: (active) => {
     set({ openPayForm: active })
@@ -556,6 +561,14 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         cart: JSON.stringify(get().items)
       };
     }
+
+    try {
+      const city = useCitiesStore.getState().thisCity;
+      const ym_data = {full_cart: get().items, type_pay: get().typePay.id, typeOrder: get().typeOrder}
+      ym(get().ya_metrik[city], 'reachGoal', 'pay_order', ym_data);
+    } catch (error) {
+      console.log('createOrder', error);
+    }
     
     const json = await api('cart', data);
 
@@ -618,9 +631,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       return 'nothing';
     }
 
-    //return json;
+    // return json;
 
-    //get().setCartLocalStorage();
+    // get().setCartLocalStorage();
   },
 
   clearCartData: () => {
@@ -959,12 +972,13 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   // добавления товара для корзины
   plus: (item_id, cat_id) => {
-
     let check = false;
     let items = get().items;
     const allItems = get().allItems;
     let itemsCount = get().itemsCount;
     const promoInfo = get().promoInfo;
+
+    let ym_item;
 
     const max_count = get().check_max_count(item_id);
 
@@ -977,6 +991,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         item.count++;
         itemsCount++;
         check = true;
+
+        ym_item = item;
         return item;
       }
       return item;
@@ -993,8 +1009,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         //item.cat_id = item.cat_id;
         items = [...items, ...[item]];
       }
-    }
 
+      ym_item = item;
+    }
+ 
     const allPriceWithoutPromo = items.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
 
     set({ items, itemsCount, allPriceWithoutPromo });
@@ -1008,6 +1026,14 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     get().check_need_dops();
 
     get().setCartLocalStorage();
+
+    try {
+      const city = useCitiesStore.getState().thisCity;
+      ym_item = {item_id: ym_item.item_id, item_name: ym_item.name, price: ym_item.one_price}
+      ym(get().ya_metrik[city], 'reachGoal', 'add_to_cart', ym_item);
+    } catch (error) {
+      console.log('plus', error);
+    }
   },
 
   // вычитание товара из корзины
@@ -1016,10 +1042,14 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     let itemsCount = get().itemsCount;
     const promoInfo = get().promoInfo;
 
+    let ym_item;
+
     items = items.reduce((newItems, item) => {
       if(parseInt(item.item_id) === parseInt(item_id)){
         item.count--;
         itemsCount--;
+
+        ym_item = item;
       }
       return item.count ? newItems = [...newItems,...[item]] : newItems;
     }, [])
@@ -1063,6 +1093,14 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     get().check_need_dops();
 
     get().setCartLocalStorage();
+
+    try {
+      const city = useCitiesStore.getState().thisCity;
+      ym_item = {item_id: ym_item.item_id, item_name: ym_item.name, price: ym_item.one_price}
+      ym(get().ya_metrik[city], 'reachGoal', 'remove_from_cart', ym_item);
+    } catch (error) {
+      console.log('minus', error);
+    }
   },
 
   // получения информации о промике из БД
