@@ -100,8 +100,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   cart_is: 'all',
 
   ya_metrik: {
-    'togliatti': 3321706,
-    'samara': 3321699
+    'togliatti': 47085879,
+    'samara': 47085879
   },
 
   // открытие/закрытие формы оплаты онлайн
@@ -562,14 +562,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       };
     }
 
-    try {
-      const city = useCitiesStore.getState().thisCity;
-      const ym_data = {full_cart: get().items, type_pay: get().typePay.id, typeOrder: get().typeOrder}
-      ym(get().ya_metrik[city], 'reachGoal', 'pay_order', ym_data);
-    } catch (error) {
-      console.log('createOrder', error);
-    }
-    
     const json = await api('cart', data);
 
     setTimeout( () => {
@@ -622,6 +614,23 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       
         return 'wait_payment';
       }else{
+        try {
+          const city = useCitiesStore.getState().thisCity;
+          const city_ru = useCitiesStore.getState().thisCityRu;
+    
+          const ym_data = {
+            city: city_ru,
+            full_cart: get().items, 
+            type_pay: get().typePay.name,
+            typeOrder: typeOrder == 'pic' ? 'Самовывоз' : 'Доставка'
+          }
+    
+          //ym(get().ya_metrik[city], 'reachGoal', 'pay_order', ym_data);
+    
+        } catch (error) {
+          console.log('createOrder', error);
+        }
+
         return 'to_cart';
       }
     }else{
@@ -978,6 +987,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     let itemsCount = get().itemsCount;
     const promoInfo = get().promoInfo;
 
+    
+
     let ym_item;
 
     const max_count = get().check_max_count(item_id);
@@ -1029,8 +1040,18 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     try {
       const city = useCitiesStore.getState().thisCity;
-      ym_item = {item_id: ym_item.item_id, item_name: ym_item.name, price: ym_item.one_price}
-      ym(get().ya_metrik[city], 'reachGoal', 'add_to_cart', ym_item);
+      const city_ru = useCitiesStore.getState().thisCityRu;
+
+      //ym_item = { city: city_ru, item_id: ym_item.item_id, item_name: ym_item.name, price: ym_item.one_price }
+
+      //console.log( { city: city_ru, item_name: ym_item.name, price: ym_item.one_price } )
+
+      //ym(47085879, 'reachGoal', 'add_to_cart', { city: city_ru, tovar: ym_item.name, price: ym_item.one_price });
+
+      //const res = ym(get().ya_metrik[city], 'reachGoal', 'add_to_cart', ym_item);
+
+      //console.log( 'res', res, get().ya_metrik[city] );
+
     } catch (error) {
       console.log('plus', error);
     }
@@ -1096,8 +1117,17 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     try {
       const city = useCitiesStore.getState().thisCity;
-      ym_item = {item_id: ym_item.item_id, item_name: ym_item.name, price: ym_item.one_price}
-      ym(get().ya_metrik[city], 'reachGoal', 'remove_from_cart', ym_item);
+      const city_ru = useCitiesStore.getState().thisCityRu;
+
+      ym_item = {
+        city: city_ru,
+        item_id: ym_item.item_id, 
+        item_name: ym_item.name, 
+        price: ym_item.one_price
+      }
+
+      //ym(get().ya_metrik[city], 'reachGoal', 'remove_from_cart', ym_item);
+
     } catch (error) {
       console.log('minus', error);
     }

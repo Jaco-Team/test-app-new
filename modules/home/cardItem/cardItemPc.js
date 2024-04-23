@@ -20,9 +20,10 @@ export default memo(function CardItem({ item, count, index}) {
   //732
   //1420
 
+  //console.log( item )
+
   return (
-    <Grid item className={'CardItemPC ' + (count > 0 ? 'active' : '')} style={{ marginRight: (index + 1) % 4 === 0 ? 0 : '1.4440433212996vw' }}
-      sx={{ display: { xs: 'none', sm: 'flex' } }}>
+    <Grid item className={'CardItemPC ' + (count > 0 ? 'active' : '')} style={{ marginRight: (index + 1) % 4 === 0 ? 0 : '1.4440433212996vw' }} sx={{ display: { xs: 'none', sm: 'flex' } }}>
       <div>
 
         <div className='imgItem'>
@@ -74,14 +75,14 @@ export default memo(function CardItem({ item, count, index}) {
         {count ? (
           <div className="containerBTN">
             <div variant="contained">
-              <button className="minus" onClick={() => minus(item.id)}>–</button>
+              <button className="minus" onClick={() => { minus(item.id); ym(47085879, 'reachGoal', 'add_to_cart', { city: 'tlt', tovar: item.name, category: item.cat_id }); } }>–</button>
               <span>{count}</span>
-              <button className="plus" onClick={() => plus(item.id, item.cat_id)} >+</button>
+              <button className="plus" onClick={() => { plus(item.id, item.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', { city: 'tlt', tovar: item.name, category: item.cat_id }); }} >+</button>
             </div>
           </div>
         ) : (
           <div className="containerBTN">
-            <Button variant="outlined" onClick={() => plus(item.id, item.cat_id)} >
+            <Button variant="outlined" onClick={() => { plus(item.id, item.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', { city: 'tlt', tovar: item.name, category: item.cat_id }); }} >
               {new Intl.NumberFormat('ru-RU').format(item.price)} ₽
             </Button>
           </div>
