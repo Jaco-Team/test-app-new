@@ -261,6 +261,21 @@ export default function FormOrder({ cityName }) {
     showLoad(true);
 
     setTimeout(() => {
+
+      try{
+        const ym_data = {
+          city: thisCityRu,
+          type_pay: typePay?.name,
+          summ: allPrice,
+          typeOrder: typeOrder == 'pic' ? 'Самовывоз' : 'Доставка'
+        }
+  
+        ym(47085879, 'reachGoal', 'pay_order', ym_data);
+      }catch(e){
+        console.log(e)
+      }
+      
+
       clearCartData();
       //clearOrderList();
       

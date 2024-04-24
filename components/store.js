@@ -620,12 +620,12 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     
           const ym_data = {
             city: city_ru,
-            full_cart: get().items, 
             type_pay: get().typePay.name,
+            summ: get().allPrice,
             typeOrder: typeOrder == 'pic' ? 'Самовывоз' : 'Доставка'
           }
     
-          //ym(get().ya_metrik[city], 'reachGoal', 'pay_order', ym_data);
+          ym(get().ya_metrik[city], 'reachGoal', 'pay_order', ym_data);
     
         } catch (error) {
           console.log('createOrder', error);
