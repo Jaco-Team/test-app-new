@@ -19,11 +19,8 @@ import { roboto } from '@/ui/Font';
 
 export default function ModalCardItemMobile() {
   const [isOpenModal, openItem, setActiveModalCardItemMobile] = useHomeStore((state) => [state.isOpenModal, state.openItem, state.setActiveModalCardItemMobile]);
-
   const [links] = useFooterStore((state) => [state.links]);
-
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
-
   const [thisCityRu] = useCitiesStore((state) => [ state.thisCityRu ]);
 
   const [count, setCount] = useState(0);
@@ -55,15 +52,11 @@ export default function ModalCardItemMobile() {
   const changeCountPlus = (id) => {
     setCount(count + 1);
     plus(id, openItem?.cat_id);
-
-    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param);
   };
 
   const changeCountMinus = (id) => {
     setCount(count - 1);
     minus(id);
-
-    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param);
   };
 
   const desc = openItem?.marc_desc.length > 0 ? openItem?.marc_desc : openItem?.tmp_desc;
@@ -196,16 +189,16 @@ export default function ModalCardItemMobile() {
 
           {count == 0 ? (
             <div className="containerBTN_ModalMObile">
-              <Button variant="outlined" onClick={() => changeCountPlus(openItem?.id)}>
+              <Button variant="outlined" onClick={() => { changeCountPlus(openItem?.id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>
                 {new Intl.NumberFormat('ru-RU').format(openItem?.price)} ₽
               </Button>
             </div>
           ) : (
             <div className="containerBTN_ModalMObile">
               <div>
-                <button className="minus" onClick={() => changeCountMinus(openItem?.id)}>–</button>
+                <button className="minus" onClick={() => { changeCountMinus(openItem?.id); ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); } }>–</button>
                 <span>{count + ' ' + 'за' + ' ' + count * parseInt(openItem?.price)}{' '}₽</span>
-                <button className="plus" onClick={() => changeCountPlus(openItem?.id)}>+</button>
+                <button className="plus" onClick={() => { changeCountPlus(openItem?.id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>+</button>
               </div>
             </div>
           )}

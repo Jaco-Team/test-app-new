@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useHomeStore, useCartStore, useHeaderStore } from '@/components/store';
+import { useHomeStore, useCartStore, useHeaderStore, useCitiesStore } from '@/components/store';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -10,6 +10,16 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
   const [thisItem, setThisItem] = useState({});
   const [CatsItems] = useHomeStore((state) => [state.CatsItems]);
   const [items, minus, plus, getInfoPromo] = useCartStore((state) => [state.items, state.minus, state.plus, state.getInfoPromo]);
+
+  const [thisCityRu] = useCitiesStore((state) => [ state.thisCityRu ]);
+
+  const metrica_param = {
+    city: thisCityRu, 
+    tovar: thisItem?.name, 
+    category: thisItem?.cat_name,
+    platform: 'mobile',
+    view: 'Акция'
+  };
 
   let count = 0;
 
@@ -71,14 +81,14 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
         {parseInt(typePromo) == 2 ? false : count ?
           <div className="containerBTNItemMobile">
             <div variant="contained">
-              <button className="minus" onClick={() => this_minus(thisItem?.id)}>–</button>
+              <button className="minus" onClick={() => { this_minus(thisItem?.id); ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); } }>–</button>
               <span>{count}</span>
-              <button className="plus" onClick={() => this_plus(thisItem?.id, thisItem?.cat_id)}>+</button>
+              <button className="plus" onClick={() => { this_plus(thisItem?.id, thisItem?.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>+</button>
             </div>
           </div>
         : parseInt(item?.price) == 0 ? false :
           <div className="containerBTNItemMobile">
-            <Button variant="outlined" onClick={() => this_plus(thisItem?.id, thisItem?.cat_id)}>
+            <Button variant="outlined" onClick={() => { this_plus(thisItem?.id, thisItem?.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>
               {new Intl.NumberFormat('ru-RU').format(item?.price)} ₽
             </Button>
           </div>

@@ -266,7 +266,7 @@ export default function FormOrder({ cityName }) {
         const ym_data = {
           city: thisCityRu,
           type_pay: typePay?.name,
-          summ: allPrice,
+          //summ: allPrice,
           typeOrder: typeOrder == 'pic' ? 'Самовывоз' : 'Доставка'
         }
   
@@ -319,6 +319,13 @@ export default function FormOrder({ cityName }) {
 
   let date = new Date();
   let hours = date.getHours();
+
+  /*const ym_data = {
+    city: thisCityRu,
+    type_pay: typePay?.name,
+    summ: allPriceWithoutPromo_new + NewSummDiv,
+    typeOrder: typeOrder == 'pic' ? 'Самовывоз' : 'Доставка'
+  }*/
 
   return (
     <>
@@ -500,7 +507,7 @@ export default function FormOrder({ cityName }) {
             <span className="basketDopText">Уважаемые клиенты, на сайте указано приблизительное время готовности заказа и доставки. В зависимости от ситуации на дорогах время доставки может быть увеличено. Благодарим за понимание!</span>
           }
 
-          <Button className="CartOrder" variant="contained" disabled={!itemsCount} onClick={create_order}>
+          <Button className="CartOrder" variant="contained" disabled={!itemsCount} onClick={ () => { create_order(); } }>
             <span>Заказать</span>
           </Button>
         </div>
@@ -654,7 +661,7 @@ export default function FormOrder({ cityName }) {
               <span className="basketDopText">Уважаемые клиенты, на сайте указано приблизительное время готовности заказа и доставки. В зависимости от ситуации на дорогах время доставки может быть увеличено. Благодарим за понимание!</span>
             }
 
-            <Button className="basketOrder" variant="contained" onClick={create_order}>
+            <Button className="basketOrder" variant="contained" onClick={ () => { create_order(); } }>
               <span>Заказать</span>
             </Button>
             

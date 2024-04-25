@@ -27,11 +27,8 @@ export default function ModalCardItemPC() {
       state.openItem, state.foodValue, state.navigate, state.closeTypeModal]);
 
   const [links] = useFooterStore((state) => [state.links]);
-
   const [thisCityRu] = useCitiesStore((state) => [ state.thisCityRu ]);
-
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
-
   const [count, setCount] = useState(0);
   
   const metrica_param = {
@@ -59,15 +56,11 @@ export default function ModalCardItemPC() {
   const changeCountPlus = (id) => {
     setCount(count + 1);
     plus(id, openItem?.cat_id);
-
-    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param);
   };
 
   const changeCountMinus = (id) => {
     setCount(count - 1);
     minus(id);
-
-    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param);
   };
 
   
@@ -109,7 +102,7 @@ export default function ModalCardItemPC() {
                 <picture>
                   <source 
                     type="image/webp" 
-                    srcset={`
+                    srcSet={`
                       https://cdnimg.jacofood.ru/${img_name}_366x366.webp 138w,
                       https://cdnimg.jacofood.ru/${img_name}_466x466.webp 146w,
                       https://cdnimg.jacofood.ru/${img_name}_585x585.webp 183w,
@@ -122,7 +115,7 @@ export default function ModalCardItemPC() {
                     sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
                   <source 
                     type="image/jpeg" 
-                    srcset={`
+                    srcSet={`
                       https://cdnimg.jacofood.ru/${img_name}_366x366.jpg 138w,
                       https://cdnimg.jacofood.ru/${img_name}_466x466.jpg 146w,
                       https://cdnimg.jacofood.ru/${img_name}_585x585.jpg 183w,
@@ -138,7 +131,6 @@ export default function ModalCardItemPC() {
                     alt={openItem?.name} 
                     title={openItem?.name} 
                     src={`https://cdnimg.jacofood.ru/${img_name}_292x292.jpg`} 
-                    //style={{ minHeight: GRID * 1.125, minWidth: GRID * 1.125 }}
                     loading="lazy"
                   />
                 </picture>
@@ -321,7 +313,7 @@ export default function ModalCardItemPC() {
 
                 {count == 0 ? (
                   <div className="containerBTN">
-                    <Button variant="outlined" onClick={typeModal === 'start' ? () => changeCountPlus(openItem.id) : () => navigate('start')}
+                    <Button variant="outlined" onClick={typeModal === 'start' ? () => { changeCountPlus(openItem.id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } : () => navigate('start')}
                       disabled={typeModal === 'start' ? false : true}
                     >
                       {new Intl.NumberFormat('ru-RU').format(openItem?.price)} ₽
@@ -332,12 +324,12 @@ export default function ModalCardItemPC() {
                     <div style={{ backgroundColor: typeModal === 'start' ? '#ffff' : '#E6E6E6' }}
                       onClick={typeModal === 'start' ? null : () => navigate('start')}
                     >
-                      <button className="minus" onClick={typeModal === 'start' ? () => changeCountMinus(openItem.id) : () => navigate('start')}
+                      <button className="minus" onClick={typeModal === 'start' ? () => { changeCountMinus(openItem.id); ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); } : () => navigate('start')}
                         style={{cursor: typeModal === 'start' ? 'pointer' : null}}>–</button>
 
                       <span>{count}</span>
 
-                      <button className="plus" onClick={typeModal === 'start' ? () => changeCountPlus(openItem.id) : () => navigate('start')}
+                      <button className="plus" onClick={typeModal === 'start' ? () => { changeCountPlus(openItem.id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } : () => navigate('start')}
                         style={{cursor: typeModal === 'start' ? 'pointer' : null}}>+</button>
                     </div>
                   </div>

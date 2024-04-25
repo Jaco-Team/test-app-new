@@ -50,8 +50,6 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
     }
 
     plus(item_id, cat_id);
-
-    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param);
   }
 
   function this_minus(item_id){
@@ -60,8 +58,6 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
     }
 
     minus(item_id);
-
-    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param);
   }
 
   count = items.find( f_item => parseInt(f_item?.item_id) == parseInt( item?.id ) || parseInt(f_item?.item_id) == parseInt( item?.item_id ) );
@@ -107,15 +103,15 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
           count ? (
             <div className="containerBTNItemMobile">
               <div variant="contained">
-                <button className="minus" onClick={() => this_minus(thisItem?.id)}>–</button>
+                <button className="minus" onClick={() => { this_minus(thisItem?.id); ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); } }>–</button>
                 <span>{count}</span>
-                <button className="plus" onClick={() => this_plus(thisItem?.id, thisItem?.cat_id)}>+</button>
+                <button className="plus" onClick={() => { this_plus(thisItem?.id, thisItem?.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>+</button>
               </div>
             </div>
           ) : (
             parseInt(item?.price) == 0 ? false :
               <div className="containerBTNItemMobile">
-                <Button variant="outlined" className="ModalItemButtonCartPC" onClick={() => this_plus(thisItem?.id, thisItem?.cat_id)}>
+                <Button variant="outlined" className="ModalItemButtonCartPC" onClick={() => { this_plus(thisItem?.id, thisItem?.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>
                   {new Intl.NumberFormat('ru-RU').format(item?.price)} ₽
                 </Button>
               </div>

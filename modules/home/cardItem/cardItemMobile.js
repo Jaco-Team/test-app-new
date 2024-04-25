@@ -25,12 +25,9 @@ export default React.memo(function CardItemMobile({ item, count }) {
     view: 'Главная'
   };
 
-  return (
-    <Grid item className={'CardItemMobile ' + (count > 0 ? 'active' : '')} sx={{ display: { xs: 'flex', md: 'flex', sm: 'flex' } }}>
-      <div className="CardContainer">
-
-        <div className="CardImg">
-          <Image 
+  /**
+   * 
+   * <Image 
             alt={item.name} 
             src={'https://cdnimg.jacofood.ru/' + item.img_app + '_585x585.jpg'}
             width={585}
@@ -42,6 +39,51 @@ export default React.memo(function CardItemMobile({ item, count }) {
             placeholder="blur"
             blurDataURL={placeholder_img}
           />
+   * 
+   */
+
+  return (
+    <Grid item className={'CardItemMobile ' + (count > 0 ? 'active' : '')} sx={{ display: { xs: 'flex', md: 'flex', sm: 'flex' } }} id={item.link} name={item.link}>
+      <div className="CardContainer">
+
+        <div className="CardImg">
+          <picture>
+            <source 
+              type="image/webp" 
+              srcSet={`
+                https://cdnimg.jacofood.ru/${item.img_app}_366x366.webp 138w,
+                https://cdnimg.jacofood.ru/${item.img_app}_466x466.webp 146w,
+                https://cdnimg.jacofood.ru/${item.img_app}_585x585.webp 183w,
+                https://cdnimg.jacofood.ru/${item.img_app}_585x585.webp 233w,
+                https://cdnimg.jacofood.ru/${item.img_app}_585x585.webp 292w,
+                https://cdnimg.jacofood.ru/${item.img_app}_732x732.webp 366w,
+                https://cdnimg.jacofood.ru/${item.img_app}_732x732.webp 584w,
+                https://cdnimg.jacofood.ru/${item.img_app}_732x732.webp 760w,
+                https://cdnimg.jacofood.ru/${item.img_app}_1168x1168.webp 1875w`} 
+              sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+            <source 
+              type="image/jpeg" 
+              srcSet={`
+                https://cdnimg.jacofood.ru/${item.img_app}_366x366.jpg 138w,
+                https://cdnimg.jacofood.ru/${item.img_app}_466x466.jpg 146w,
+                https://cdnimg.jacofood.ru/${item.img_app}_585x585.jpg 183w,
+                https://cdnimg.jacofood.ru/${item.img_app}_585x585.jpg 233w,
+                https://cdnimg.jacofood.ru/${item.img_app}_585x585.jpg 292w,
+                https://cdnimg.jacofood.ru/${item.img_app}_585x585.jpg 366w,
+                https://cdnimg.jacofood.ru/${item.img_app}_732x732.jpg 584w,
+                https://cdnimg.jacofood.ru/${item.img_app}_732x732.jpg 760w,
+                https://cdnimg.jacofood.ru/${item.img_app}_1168x1168.jpg 1875w`} 
+              sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+
+            <img 
+              alt={item?.name} 
+              title={item?.name} 
+              src={`https://cdnimg.jacofood.ru/${item.img_app}_292x292.jpg`} 
+              loading="lazy"
+              onClick={() => getItem('home', thisCity, item.id)}
+              style={{ cursor: 'pointer' }}
+            />
+          </picture>
 
           {parseInt(item.is_new) == 0 ? parseInt(item.is_hit) == 0 ? null :
             <BadgeItem size={'small'} type={'hit'} view={'mobile'} />

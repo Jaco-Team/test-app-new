@@ -100,8 +100,8 @@
           justify-content: flex-start;
 
           & > button {
-            width: $MyScale270_mobile;
-            height: $MyScale90_mobile;
+            width: $MyScale410_mobile;
+            height: $MyScale110_mobile;
             border-radius: $MyScale55_mobile;
             background-color: rgba(0, 0, 0, 0.05);
             border: none;
@@ -115,7 +115,7 @@
           }
 
           & > div {
-            width: $MyScale380_mobile;
+            width: $MyScale410_mobile;
             height: $MyScale110_mobile;
             border-radius: $MyScale55_mobile;
             display: flex;

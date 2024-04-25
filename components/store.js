@@ -624,7 +624,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           const ym_data = {
             city: city_ru,
             type_pay: get().typePay.name,
-            summ: get().allPrice,
+            //summ: get().allPrice,
             typeOrder: typeOrder == 'pic' ? 'Самовывоз' : 'Доставка'
           }
     
@@ -698,6 +698,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     if(rolly && pizza || !rolly && !pizza) {
       set({ cart_is: 'all' })
     } 
+
+    
 
     let itemsOffDops = allItems.filter(item => (parseInt(item.cat_id) !== 7 || item.disabled) && item.cat_id !== undefined );
 
@@ -1216,6 +1218,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         all_price: parseInt(el_cart.one_price) * parseInt(el_cart.count),
         img_app: el_cart.img_app,
         cat_id: el_cart.cat_id,
+        cat_name: el_cart?.cat_name,
       });
     })
     
@@ -3242,6 +3245,18 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
   },
   
   setActiveModalCardItemMobile: (active) => {
+    if( active == false ){
+      let state = { },
+        title = '',
+        url = window.location.pathname;
+
+      window.history.pushState(state, title, url);
+
+      set({
+        openItem: null
+      })
+    }
+
     set({ isOpenModal: active });
   },
 
@@ -3298,6 +3313,16 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     const json = await api(this_module, data);
 
+    if( json?.link ){
+      let state = { 'item_id': item_id, 'item_name': json?.name },
+          title = json?.name,
+          url = window.location.pathname+'?item='+json?.link;
+
+      window.history.pushState(state, title, url);
+    }else{
+      get().closeModal();
+    }
+
     set({
       isOpenModal: true,
       openItem: json,
@@ -3307,9 +3332,17 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
   // закрытие модального окна товара на главной странице
   closeModal: () => {
+
+    let state = { },
+      title = '',
+      url = window.location.pathname;
+
+    window.history.pushState(state, title, url)
+
     set({
       isOpenModal: false,
       foodValue: false,
+      openItem: null
     });
   },
 
