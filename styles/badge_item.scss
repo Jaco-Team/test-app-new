@@ -32,7 +32,7 @@
         left: 2px;
         & > span{
             @include fonsNew(1rem, var(--inter-font));
-            color: #fff;
+            color: #fff!important;
             text-transform: uppercase;
         }
         &.small{
