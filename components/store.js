@@ -332,9 +332,12 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       cart[ key ]['all_price'] = parseInt(this_item?.price) * parseInt(item.count);
     })
 
-    set({ items: cart });
+    set({ 
+      items: cart,
+      allItems: json?.all_items
+    });
 
-    get().setAllItems(json?.all_items);
+    //get().setAllItems(json?.all_items);
     //get().changeAllItems();
 
     get().promoCheck();
@@ -3340,6 +3343,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     let new_banner = {...banner};
 
     const all_items = useCartStore.getState().allItems;
+    //const all_items = items;
 
     if( banner ){
       if( new_banner?.info && Object.keys(new_banner?.info).length > 0 ){
@@ -3354,7 +3358,8 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
           new_banner.info.items_add.map( (item, key) => {
             let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
 
-            new_banner.info.items_add[ key ]['img_app'] = find_item?.img_app
+            new_banner.info.items_add[ key ]['img_app'] = find_item?.img_app;
+            new_banner.info.items_add[ key ]['price'] = find_item?.price;
           } )
 
           set({
@@ -3365,7 +3370,10 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
         //товар за цену
         if( parseInt(new_banner.info.promo_action) == 3 ){
           new_banner.info.items_on_price.map( (item, key) => {
-            new_banner.info.items_on_price[ key ]['img_app'] = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.id) )['img_app'];
+            let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.id) );
+
+            new_banner.info.items_on_price[ key ]['img_app'] = find_item['img_app'];
+            new_banner.info.items_on_price[ key ]['price'] = find_item['price'];
           } )
 
           set({

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef, useState } from 'react';
-import { useHomeStore, useHeaderStore } from '../../../components/store.js';
+import { useHomeStore, useHeaderStore, useCartStore } from '../../../components/store.js';
 import Image from 'next/image';
 
 import Box from '@mui/material/Box';
@@ -15,7 +15,7 @@ import 'swiper/css/pagination';
 
 import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
 
-export default React.memo(function BannersPC() {
+export default (function BannersPC() {
   const [bannerList, setActiveBanner, activeSlider] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider]);
   //const [setActiveModalAlert] = useHeaderStore((state) => [state.setActiveModalAlert]);
 
