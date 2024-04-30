@@ -3147,15 +3147,19 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     const json = await api('auth', data);
 
-    set({
-      token: json.token,
-      userName: get().setNameUser(json.name),
-      isAuth: 'auth'
-    });
+    if (json?.st === false) {
+      get().setActiveModalAlert(true, json?.text, false);
+    }else{
+      set({
+        token: json?.token,
+        userName: get().setNameUser(json?.name),
+        isAuth: 'auth'
+      });
 
-    if (typeof window !== 'undefined') {
-      localStorage.setItem('token', json.token);
-      Cookies.set('token', json.token, { expires: 60 }) //expires 7 days
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('token', json?.token);
+        Cookies.set('token', json?.token, { expires: 60 }) //expires 7 days
+      }
     }
   },
 

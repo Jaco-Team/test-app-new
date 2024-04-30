@@ -33,7 +33,7 @@
     "@sentry/browser": "^7.112.2",
     "@sentry/nextjs": "^7.112.2",
     "css-mediaquery": "^0.1.2",
-    "dayjs": "^1.11.10",
+    "dayjs": "^1.11.11",
     "embla-carousel-react": "8.0.2",
     "embla-carousel-wheel-gestures": "8.0.0-rc05",
     "js-cookie": "^3.0.5",
