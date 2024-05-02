@@ -1,0 +1,25 @@
+@import '../global';
+
+.modalFormOrderPC {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  border-radius: calcSize(40);
+  width: calcSize(1000);
+  height: calcSize(1650);
+  position: relative;
+
+  & .loginHeader {
+    display: flex;
+    align-items: center;
+    height: calcSize(120);
+    margin-bottom: calcSize(40);
+    margin-top: calcSize(80);
+    @include MyFonts(50, 500);
+  }
+
+  & .MuiSwitch-root {
+    margin-bottom: calcSize(80);
+  }
+  
+}

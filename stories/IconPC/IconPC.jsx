@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 import './IconPC.scss';
-import {LocationHeaderIcon, ProfileIconNew, JacoDocsIcon, BasketIconNew, YaIcon, EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, CheckAuthMobile, VectorRightAuthMobile, DoneAuthMobile, IconInfo} from '../Icons';
+import {LocationHeaderIcon, ProfileIconNew, JacoDocsIcon, BasketIconNew, YaIcon, EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, CheckAuthMobile, VectorRightAuthMobile, DoneAuthMobile, IconInfo, CityBasketModalPC} from '../Icons';
 
 export const IconPC = ({ count, icon, element, foodValue }) => {
 
@@ -45,6 +45,14 @@ export const IconPC = ({ count, icon, element, foodValue }) => {
         <IconInfo fill="rgba(0, 0, 0, 0.2)" className='IconItemValue' />
       )}
     </>
+    );
+  }
+
+  if(element === 'form_order') {
+    return (
+      <>
+        { icon == 'city' ? <CityBasketModalPC className="IconFormOrder" /> : false }
+      </>
     );
   }
 };

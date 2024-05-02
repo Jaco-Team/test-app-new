@@ -41,6 +41,26 @@
       border-right: solid 0.72202166064982vw #ffffff;
     }
 
+    .dopText {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: $MyScale20;
+      @include font30_400();
+      text-align: center;
+    }
+
+    tr.dopText{
+      padding: 0 $MyScale180 !important;
+      height: $MyScale200 !important;
+    }
+
+    span.dopText {
+      margin: $MyScale20 $MyScale35 0 $MyScale40;
+      padding: $MyScale40;
+    }
+
     & .TableMini {
       margin: 0.72202166064982vw 1.2635379061372vw 1.0830324909747vw 1.4440433212996vw;
       border-spacing: 0;
@@ -62,22 +82,6 @@
           & img {
             height: 5.7761732851986vw;
             width: 5.7761732851986vw;
-          }
-        }
-
-        .dopText {
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          padding: 0;
-          border: none;
-          height: 7.2202166064982vw;
-          background: rgba(0, 0, 0, 0.05);
-          border-radius: 0.72202166064982vw;
-          & td {
-            width: 70%;
-            @include font30_400();
-            text-align: center;
           }
         }
       }

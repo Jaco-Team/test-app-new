@@ -25,6 +25,8 @@ const dopText = {
   all: 'Не забудьте про соусы, приправы и приборы',
 }
 
+const dopText_2 = 'Блюда могут содержать ингредиенты, обладающие аллергенными свойствами. Если у вам есть аллергия на какой-либо продукт, пожалуйста, уточняйте состав в меню или на кассе. Обратите внимание, что мы не можем исключить или заменить ингредиенты, но с удовольствием поможем выбрать блюдо с подходящим составом.';
+
 export default function FormOrder({ cityName }) {
   const { push } = useRouter();
 
@@ -443,6 +445,10 @@ export default function FormOrder({ cityName }) {
               </div>
             </Button>
           )}
+
+          <div className="CartItemDopText" style={{ marginBottom: itemsOffDops.length ? null : '3.4188034188034vw' }}>
+            <span>{dopText_2}</span>
+          </div>
 
           {itemsOffDops.map((item, key) => (
             <CartItemMobile key={key} count={item.count} item={item} last={ item === itemsOffDops.at(-1) ? 'last' : '' }/>

@@ -29,7 +29,7 @@ export default function TablePC() {
         {dopListCart.length ?
           <>
             <tr className='dopText'>
-              <td>{dopText[cart_is]}</td>
+              {dopText[cart_is]}
             </tr>
 
             {dopListCart.map((item, key) => 

@@ -11,6 +11,8 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
 
+const dopText = 'Блюда могут содержать ингредиенты, обладающие аллергенными свойствами. Если у вам есть аллергия на какой-либо продукт, пожалуйста, уточняйте состав в меню или на кассе. Обратите внимание, что мы не можем исключить или заменить ингредиенты, но с удовольствием поможем выбрать блюдо с подходящим составом.';
+
 export default function BasketPC() {
   const [promo, setPromo] = useState('');
   //const [scrollBasket, setScrollBasket] = useState(0);
@@ -63,6 +65,8 @@ export default function BasketPC() {
         className={roboto.variable}
       >
         <div>
+
+          <span className='dopText'>{dopText}</span>
 
           <TablePC />
 

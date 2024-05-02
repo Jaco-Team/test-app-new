@@ -247,7 +247,7 @@
 
     .CartItemDopText {
       width: $MyScale1090_mobile;
-      height: $MyScale280_mobile;
+      min-height: $MyScale280_mobile;
       display: flex;
       align-items: center;
       justify-content: center;
@@ -256,7 +256,7 @@
       background: rgba(0, 0, 0, 0.05);
       border-radius: $MyScale40_mobile;
       & span {
-        width: 70%;
+        padding: $MyScale60_mobile;
         @include font40_400();
         text-align: center;
       }

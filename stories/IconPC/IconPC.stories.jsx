@@ -44,6 +44,7 @@ export const Vector_Rigth = Template.bind({});
 export const Done = Template.bind({});
 export const Value = Template.bind({});
 export const Value_Active = Template.bind({});
+export const City = Template.bind({});
 
 Location.args = {
   count: 0,
@@ -126,4 +127,9 @@ Value_Active.args = {
   icon: 'value',
   element: 'product',
   foodValue: true
+};
+
+City.args = {
+  icon: 'city',
+  element: 'form_order',
 };

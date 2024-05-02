@@ -1,0 +1,41 @@
+@import '../global';
+
+.btnChoice {
+  width: calcSize(680);
+  height: calcSize(80);
+  border-radius: calcSize(40);
+  border: calcSize(2) solid rgba(0, 0, 0, 0.2);
+  display: flex;
+  align-items: center;
+  margin-bottom: calcSize(40);
+  position: relative;
+  cursor: pointer;
+
+  &:hover {
+    background-color: rgba(0, 0, 0, 0.02);
+  }
+
+  & svg:nth-child(1) {
+    position: absolute;
+    left: calcSize(30);
+  }
+
+  span:nth-child(2) {
+    @include MyFonts(30, 400);
+    margin-left: calcSize(100);
+    white-space: nowrap;
+    text-overflow: ellipsis;
+    overflow: hidden;
+
+    &:first-letter {
+      text-transform: uppercase;
+    }
+  }
+
+  & svg:nth-child(3) {
+    position: absolute;
+    right: calcSize(43);
+    width: calcSize(22);
+    height: calcSize(11);
+  }
+}
