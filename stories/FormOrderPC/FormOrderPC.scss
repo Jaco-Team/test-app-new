@@ -8,6 +8,7 @@
   width: calcSize(1000);
   height: calcSize(1650);
   position: relative;
+  padding: 0 calcSize(80);
 
   & .loginHeader {
     display: flex;
@@ -21,5 +22,42 @@
   & .MuiSwitch-root {
     margin-bottom: calcSize(80);
   }
-  
+
+  & .divider {
+    width: calcSize(920);
+    height: calcSize(2);
+    background: rgba(0, 0, 0, 0.1);
+  }
+
+  & .delivery {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    margin-top: calcSize(40);
+    width: 100%;
+    height: calcSize(60);
+    span {
+      @include MyFonts(40, 500);
+    }
+  }
+
+  & .total {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: calcSize(60);
+    span:first-child {
+      @include MyFonts(40, 500);
+    }
+    span:last-child {
+      @include MyFonts(50, 500);
+    }
+  }
+
+  & .dopText {
+    @include MyFonts(26, 400);
+    line-height: calcSize(30);
+    margin: calcSize(30) 0;
+  }
 }

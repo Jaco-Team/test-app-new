@@ -1,6 +1,7 @@
 import PropTypes from 'prop-types';
 import './IconPC.scss';
-import {LocationHeaderIcon, ProfileIconNew, JacoDocsIcon, BasketIconNew, YaIcon, EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, CheckAuthMobile, VectorRightAuthMobile, DoneAuthMobile, IconInfo, CityBasketModalPC} from '../Icons';
+import {LocationHeaderIcon, ProfileIconNew, JacoDocsIcon, BasketIconNew, YaIcon, EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, CheckAuthMobile, VectorRightAuthMobile, DoneAuthMobile, IconInfo, CityBasketModalPC, HomeBasketModalPC, TimeBasketModalPC, CardBasketModalPC, MessageBasketModalPC, PointBasketModalPC} from '../Icons';
+import MoneyIcon from '@mui/icons-material/Money';
 
 export const IconPC = ({ count, icon, element, foodValue }) => {
 
@@ -39,12 +40,12 @@ export const IconPC = ({ count, icon, element, foodValue }) => {
   if(element === 'product' && icon == 'value') {
     return (
       <>
-      {foodValue === true ? (
-        <IconInfo fill="#DD1A32" className='IconItemValue' />
-      ) : (
-        <IconInfo fill="rgba(0, 0, 0, 0.2)" className='IconItemValue' />
-      )}
-    </>
+        {foodValue === true ? (
+          <IconInfo fill="#DD1A32" className='IconItemValue' />
+        ) : (
+          <IconInfo fill="rgba(0, 0, 0, 0.2)" className='IconItemValue' />
+        )}
+      </>
     );
   }
 
@@ -52,6 +53,12 @@ export const IconPC = ({ count, icon, element, foodValue }) => {
     return (
       <>
         { icon == 'city' ? <CityBasketModalPC className="IconFormOrder" /> : false }
+        { icon == 'home' ? <HomeBasketModalPC className="IconFormOrder" fill='#DD1A32' /> : false }
+        { icon == 'time' ? <TimeBasketModalPC className="IconFormOrder" /> : false }
+        { icon == 'card' ? <CardBasketModalPC className="IconFormOrder" /> : false }
+        { icon == 'comment' ? <MessageBasketModalPC className="IconFormOrder" /> : false }
+        { icon == 'sdacha' ? <MoneyIcon className="IconFormOrder" /> : false }
+        { icon == 'point' ? <PointBasketModalPC className="IconFormOrder" /> : false }
       </>
     );
   }

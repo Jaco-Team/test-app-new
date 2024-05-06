@@ -18,6 +18,7 @@
   & svg:nth-child(1) {
     position: absolute;
     left: calcSize(30);
+    color: #dd1a32;
   }
 
   span:nth-child(2) {
@@ -26,6 +27,7 @@
     white-space: nowrap;
     text-overflow: ellipsis;
     overflow: hidden;
+    width: calcSize(520);
 
     &:first-letter {
       text-transform: uppercase;
@@ -38,4 +40,90 @@
     width: calcSize(22);
     height: calcSize(11);
   }
+}
+
+.sdacha {
+  margin: 0;
+
+  & .MuiInputBase-root.MuiOutlinedInput-root {
+    border: none;
+    border-radius: 0;
+
+    & input::-webkit-outer-spin-button,
+    & input::-webkit-inner-spin-button {
+      -webkit-appearance: none;
+    }
+
+    & input {
+      padding: 0;
+      @include MyFonts(30, 400);
+      width: 100%;
+      margin-left: calcSize(100);
+    }
+
+    & fieldset {
+      border: none;
+      padding: 0;
+      top: 0;
+      & legend {
+        line-height: 0;
+      }
+    }
+  }
+}
+
+.comment {
+  width: calcSize(676);
+  height: calcSize(120);
+  border-radius: calcSize(40);
+  border: calcSize(2) solid rgba(0, 0, 0, 0.2);
+  padding: 0;
+  display: flex;
+  align-items: center;
+  margin-bottom: calcSize(40);
+
+  & svg:nth-child(1) {
+    margin-left: calcSize(30);
+    margin-right: calcSize(20);
+  }
+
+  .message {
+    margin: 0;
+    width: calcSize(500) !important;
+
+    & .MuiInputBase-root.MuiOutlinedInput-root {
+      display: flex;
+      align-items: center;
+      border: none;
+      border-radius: 0;
+      padding: 0;
+
+      & textarea {
+        @include MyFonts(30, 400);
+        line-height: calcSize(30);
+      }
+
+      & fieldset {
+        border: none;
+        padding: 0;
+        top: 0;
+        & legend {
+          line-height: 0;
+        }
+      }
+    }
+  }
+}
+
+.shadowSpan {
+  -webkit-mask-image: linear-gradient(
+    to right,
+    #f2f2f2 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
+  mask-image: linear-gradient(
+    to right,
+    #f2f2f2 0%,
+    rgba(255, 255, 255, 0) 100%
+  );
 }
