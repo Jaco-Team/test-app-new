@@ -90,7 +90,7 @@ export default function Start() {
 
       <a className="loginLoginYa" 
         href={ yandexAuthLink }
-        style={{ textDecoration: 'none' }}
+        style={{ textDecoration: 'none', display: 'none' }}
         //onClick={() => signIn('yandex', { callbackUrl: `${host}/${thisCity}/zakazy`, scope: 'default_phone', response_type: 'code' })}
       >
         <YaIcon />
