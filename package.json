@@ -10,7 +10,7 @@
     "lint": "next lint",
     "oxc": "npx oxlint@latest",
     "win": "next dev -p 3008",
-    "storybook": "storybook dev -p 6006",
+    "storybook": "storybook dev -p 6007",
     "build-storybook": "storybook build",
     "deploy:local": "next build && pm2 startOrRestart ecosystem.config.js --env local",
     "deploy:dev": "next build && pm2 startOrRestart ecosystem.config.js --env development",
