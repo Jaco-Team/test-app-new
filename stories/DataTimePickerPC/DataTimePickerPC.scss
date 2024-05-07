@@ -1,0 +1,83 @@
+@import '../global';
+
+.dataTimePickerPC {
+  border-radius: calcSize(40);
+  width: calcSize(760);
+  height: calcSize(900);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  position: relative;
+
+  & .pikerLogin {
+    height: calcSize(60);
+    margin-top: calcSize(80);
+    margin-bottom: calcSize(140);
+    display: flex;
+    align-items: center;
+    @include MyFonts(50, 500);
+  }
+
+  .sandbox__carousel {
+    position: relative;
+    display: flex;
+    flex-direction: row;
+  }
+
+  .embla_button {
+    cursor: pointer;
+    position: absolute;
+    left: calcSize(240);
+    height: calcSize(60);
+    width: calcSize(60);
+
+    & svg {
+      height: 100%;
+      width: 100%;
+    }
+  }
+
+  .embla {
+    --slide-size: 33.33%;
+  }
+
+  .embla_time {
+    --slide-size: 100%;
+  }
+
+  .embla__viewport {
+    overflow: hidden;
+  }
+
+  .embla__container {
+    backface-visibility: hidden;
+    display: flex;
+    flex-direction: column;
+    touch-action: pan-x;
+    height: calcSize(300);
+  }
+
+  .embla__slide {
+    flex: 0 0 var(--slide-size);
+    min-width: 0;
+    position: relative;
+    @include MyFonts(50, 500);
+    display: flex;
+    align-items: center;
+  }
+
+  & button#btn {
+    margin-top: calcSize(160);
+  }
+
+  .divBackground {
+    position: absolute;
+    width: calcSize(560);
+    height: calcSize(100);
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: calcSize(40);
+    pointer-events: none;
+    left: calcSize(100);
+    top: calcSize(380);
+  }
+}

@@ -14,7 +14,7 @@ export const CartPC = ({ data, openBasket, promo, desc }) => {
         <TableCartPC {...data} />
         <CartPCPromoInput {...promo} />
         <CartPCPromoText {...desc} />
-        <MyButton children="Оформить заказ" variant="cart" size="big" />
+        <MyButton children="Оформить заказ" variant="cart" size="big" id='btn' />
       </div>
     </>
   );

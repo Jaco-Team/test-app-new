@@ -45,6 +45,12 @@ export const Done = Template.bind({});
 export const Value = Template.bind({});
 export const Value_Active = Template.bind({});
 export const City = Template.bind({});
+export const Home = Template.bind({});
+export const Time = Template.bind({});
+export const Card = Template.bind({});
+export const Comment = Template.bind({});
+export const Sdacha = Template.bind({});
+export const Point = Template.bind({});
 
 Location.args = {
   count: 0,
@@ -131,5 +137,35 @@ Value_Active.args = {
 
 City.args = {
   icon: 'city',
+  element: 'form_order',
+};
+
+Home.args = {
+  icon: 'home',
+  element: 'form_order',
+};
+
+Time.args = {
+  icon: 'time',
+  element: 'form_order',
+};
+
+Card.args = {
+  icon: 'card',
+  element: 'form_order',
+};
+
+Comment.args = {
+  icon: 'comment',
+  element: 'form_order',
+};
+
+Sdacha.args = {
+  icon: 'sdacha',
+  element: 'form_order',
+};
+
+Point.args = {
+  icon: 'point',
   element: 'form_order',
 };

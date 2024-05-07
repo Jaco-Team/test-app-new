@@ -93,7 +93,6 @@
   &.cart {
     color: #fff !important;
     @include MyFonts(30, 400);
-    margin-bottom: calcSize(170);
   }
 
   &.small {

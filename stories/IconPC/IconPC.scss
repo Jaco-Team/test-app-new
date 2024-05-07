@@ -108,6 +108,7 @@
 }
 
 .IconFormOrder {
-  width: calcSize(60);
-  height: calcSize(60);
+  width: calcSize(60) !important;
+  height: calcSize(60) !important;
+  color: #dd1a32;
 }

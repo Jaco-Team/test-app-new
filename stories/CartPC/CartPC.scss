@@ -21,6 +21,10 @@
     background: #d9d9d9;
     border-right: solid calcSize(20) #ffffff;
   }
+
+  & button#btn {
+    margin-bottom: calcSize(170);
+  }
 }
 
 .blockShadowBasket {

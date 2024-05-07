@@ -19,7 +19,7 @@ export default {
     },
     size: {
       type: 'string',
-      description: 'Ширина кнопки 240 / 320 / 400',
+      description: 'Ширина кнопки 240 / 320 / 400 / 560',
       defaultValue: 'medium',
       control: {
         type: 'radio',

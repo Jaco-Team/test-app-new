@@ -506,10 +506,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       const json = await api('cart', data);
 
       if(address) {
-        const findAddr = json.find(addr => addr.name_street === address.street && addr.home === address.home);
+        const findAddr = json.find(addr => addr.street === address.street && addr.home === address.home);
 
         if(findAddr) {
           get().setAddrDiv(findAddr);
+          get().setSummDiv(findAddr.sum_div ?? 0);
         }
 
       }
