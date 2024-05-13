@@ -1929,6 +1929,15 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       "</div>"
     )
 
+    zones = zones.map(item => {
+      if(item.addr === addr) {
+        item.image = img;
+      } else {
+        item.image = 'default#image';
+      }
+      return item
+    })
+
     points_zone = points_zone.map(item => {
       if(disable) {
         if(item.addr === addr) {
