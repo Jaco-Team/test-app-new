@@ -145,6 +145,8 @@ export default function ProfileMobile({ city, this_module }) {
                 onBlur={() => saveMainData()}
                 func={onChange}
                 value={value}
+                type="email"
+                autocomplete="off"
               />
             )}
             name="mail"

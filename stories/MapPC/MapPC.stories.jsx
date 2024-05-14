@@ -1,7 +1,7 @@
 import { MapPC } from './MapPC';
 
 export default {
-  title: 'Контакты / Карта',
+  title: 'Страница Контакты / Карта',
   component: MapPC,
   tags: ['autodocs'],
   argTypes: {
@@ -1198,92 +1198,6 @@ const json = {
       image: 'default#image',
     },
   ],
-  //   points: [
-  //     {
-  //       id: '1',
-  //       xy_point: {
-  //         latitude: 53.505389,
-  //         longitude: 49.414321,
-  //         latitudeDelta: 0.1922,
-  //         longitudeDelta: 0.0321,
-  //       },
-  //       raion: 'Центральный р-н.',
-  //       addr: 'Ленинградская 47',
-  //       xy_center_map: '["53.518271","49.415377"]',
-  //       phone: '8 (8482) 90-30-52',
-  //       phone_new: '88482903052',
-  //       organization: 'ООО Мистер Жако',
-  //       inn: '6321390811',
-  //       ogrn: '1156313042621',
-  //       kpp: '632401001',
-  //       full_addr:
-  //         '445021, РФ, Самарская обл., г. Тольятти, ул. Ленинградская, д. 47, комната 47',
-  //       image: 'default#image',
-  //     },
-  //     {
-  //       id: '2',
-  //       xy_point: {
-  //         latitude: 53.531521,
-  //         longitude: 49.312353,
-  //         latitudeDelta: 0.1922,
-  //         longitudeDelta: 0.0321,
-  //       },
-  //       raion: 'Автозаводский р-н.',
-  //       addr: 'Ворошилова 12а',
-  //       xy_center_map: '["53.518271","49.415377"]',
-  //       phone: '8 (8482) 90-30-52',
-  //       phone_new: '88482903052',
-  //       organization: 'ООО Мистер Жако',
-  //       inn: '6321390811',
-  //       ogrn: '1156313042621',
-  //       kpp: '632401001',
-  //       full_addr:
-  //         '445042, РФ, Самарская обл., г. Тольятти, ул. Ворошилова, д. 12а',
-  //       image: 'default#image',
-  //     },
-  //     {
-  //       id: '6',
-  //       xy_point: {
-  //         latitude: 53.540848,
-  //         longitude: 49.33923,
-  //         latitudeDelta: 0.1922,
-  //         longitudeDelta: 0.0321,
-  //       },
-  //       raion: 'Автозаводский р-н.',
-  //       addr: 'Цветной 1',
-  //       xy_center_map: '["53.518271","49.415377"]',
-  //       phone: '8 (8482) 90-30-52',
-  //       phone_new: '88482903052',
-  //       organization: 'ООО «Атлантида»',
-  //       inn: '6321463058',
-  //       ogrn: '1206300032751',
-  //       kpp: '632101001',
-  //       full_addr:
-  //         '445030, РФ, Самарская обл., г. Тольятти, бульвар Цветной, д. 1, помещение 41',
-  //       image: 'default#image',
-  //     },
-  //     {
-  //       id: '3',
-  //       xy_point: {
-  //         latitude: 53.481084,
-  //         longitude: 49.474651,
-  //         latitudeDelta: 0.1922,
-  //         longitudeDelta: 0.0321,
-  //       },
-  //       raion: 'Комсомольский р-н.',
-  //       addr: 'Матросова 32',
-  //       xy_center_map: '["53.518271","49.415377"]',
-  //       phone: '8 (8482) 90-30-52',
-  //       phone_new: '88482903052',
-  //       organization: 'ООО Мистер Жако',
-  //       inn: '6321390811',
-  //       ogrn: '1156313042621',
-  //       kpp: '632401001',
-  //       full_addr:
-  //         '445008, РФ, Самарская обл., г. Тольятти, ул. Матросова, д. 32',
-  //       image: 'default#image',
-  //     },
-  //   ],
 };
 
 let points_zone_default = [];
@@ -1352,14 +1266,8 @@ Default.args = {
       'multiTouch',
     ],
   },
-  //points: json?.points,
   zones: json?.zones,
   points_zone: points_zone_default,
-  //   phone: json?.zones[0].phone,
-  //   myAddr: json?.zones?.filter(
-  //     (value, index, self) =>
-  //       index === self.findIndex((t) => t.addr === value.addr)
-  //   ),
   type_map: 'default',
 };
 

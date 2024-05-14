@@ -9,12 +9,12 @@ import { FooterArrowUp } from '../FooterArrowUp/FooterArrowUp';
 import { NewVKIcon, OdnIcon, TGIcon } from '../Icons';
 import Typography from '@mui/material/Typography';
 
-export const FooterPC = ({ cookie, arrow, cityName, links }) => {
+export const FooterPC = ({ cookie, arrow, cityName, links, page }) => {
   return (
     <>
-      <FooterArrowUp arrow={arrow} />
+      <FooterArrowUp arrow={arrow} page={page} />
       {cookie ? false : <FooterCookie cityName={cityName} />}
-      <footer className="footerPC">
+      <footer className="footerPC" style={{ minHeight: cookie ? '36.101083032491vw' : '45.126353790614vw', marginTop: page === 'contacts' ? null : '1.8050541516245vw' }}>
         <div className="ContainerPCFooter">
           <div className="column">
             <Typography component="span">Жако</Typography>
@@ -95,4 +95,5 @@ FooterPC.propTypes = {
   arrow: PropTypes.bool,
   cityName: PropTypes.string.isRequired,
   links: PropTypes.object,
+  page: PropTypes.string.isRequired,
 };

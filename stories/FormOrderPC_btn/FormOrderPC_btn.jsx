@@ -14,7 +14,7 @@ export const FormOrderPC_btn = ({text, icon, placeholder, open, ...props}) => {
           <IconPC icon={icon} element="form_order" />
           {icon !== 'sdacha' ? (
             <>
-              <span className={text?.length > 25 ? 'shadowSpan' : null} style={{color: text ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.4)'}}>{text ? text : placeholder}</span>
+              <span style={{color: text ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.4)'}}>{text ? text : placeholder}</span>
               {open ? <ArrowDownBasketModalPC style={{ transform: 'rotate(180deg)' }} /> : <ArrowDownBasketModalPC />}
             </>
           ) : (

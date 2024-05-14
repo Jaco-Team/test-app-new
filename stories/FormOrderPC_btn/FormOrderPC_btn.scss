@@ -29,6 +29,20 @@
     overflow: hidden;
     width: calcSize(520);
 
+    -webkit-mask-image: linear-gradient(
+      to right,
+      #f2f2f2 50%,
+      rgba(255, 255, 255, 0) 90%
+    );
+    mask-image: linear-gradient(
+      to right,
+      #f2f2f2 50%,
+      rgba(255, 255, 255, 0) 90%
+    );
+    &:first-letter {
+      text-transform: capitalize;
+    }
+
     &:first-letter {
       text-transform: uppercase;
     }
@@ -113,17 +127,4 @@
       }
     }
   }
-}
-
-.shadowSpan {
-  -webkit-mask-image: linear-gradient(
-    to right,
-    #f2f2f2 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
-  mask-image: linear-gradient(
-    to right,
-    #f2f2f2 0%,
-    rgba(255, 255, 255, 0) 100%
-  );
 }

@@ -1,0 +1,10 @@
+@import '../global';
+
+.boxContactsPC {
+  position: relative;
+  margin-top: calcSize(128);
+  min-height: calcSize(900);
+  height: 85%;
+  z-index: 3;
+  mix-blend-mode: multiply;
+}

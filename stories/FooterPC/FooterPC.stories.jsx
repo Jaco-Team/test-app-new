@@ -20,6 +20,10 @@ export default {
     links: {
       type: 'object',
       description: 'Ссылки для перехода на другие страницы',
+    },
+    page: {
+      type: 'string',
+      description: 'Страница сайта',
     }
   },
   parameters: {
@@ -46,18 +50,21 @@ Default.args = {
   arrow: false,
   cityName: 'samara',
   links,
+  page: 'default',
 };
 
 Cookie.args = {
   cookie: false,
   arrow: false,
   cityName: 'samara',
-  links
+  links,
+  page: 'default',
 };
 
 Arrow.args = {
   cookie: true,
   arrow: true,
   cityName: 'samara',
-  links
+  links,
+  page: 'default',
 };

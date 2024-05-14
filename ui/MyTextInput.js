@@ -35,6 +35,7 @@ export default class MyTextInput extends React.PureComponent {
         style={{ width: '100%', zIndex: 3 }} 
         className={ this.props.className ? this.props.className : '' }
         name={this.props.name}
+        autocomplete={this.props.autocomplete ? this.props.autocomplete : null}
       />
     )
   }

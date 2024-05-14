@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import {YMaps, Map, Placemark, Polygon, SearchControl, ZoomControl} from '@pbe/react-yandex-maps';
 import './MapPC.scss';
 
-// ymaps в storybook не работает, сделал костыль для активной иконки
+// ymaps в storybook не работает, сделал костыль для активной иконки, но не совсем работает
 
 export const MapPC = ({ center_map, zones, points_zone, type_map }) => {
   const ref = useRef();
@@ -50,7 +50,7 @@ export const MapPC = ({ center_map, zones, points_zone, type_map }) => {
           ))}
         </Map>
       </YMaps>
-      {type_map === 'default' ? null : (
+      {type_map !== 'active' ? null : (
         <div class="my-img">
           <img alt="" src="/Favikon.png" />
         </div>

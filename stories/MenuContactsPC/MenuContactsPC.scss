@@ -1,0 +1,149 @@
+@import '../global';
+
+.сontactPC {
+  background: #ffffff;
+  box-shadow: calcSize(10) calcSize(20) calcSize(40) calcSize(15)
+    rgba(0, 0, 0, 0.15);
+  border-radius: calcSize(80);
+  z-index: 1;
+  position: absolute;
+  top: calcSize(60);
+  right: calcSize(125);
+  width: calcSize(800);
+  display: flex;
+  flex-direction: column;
+  padding: calcSize(91) calcSize(100) calcSize(72) calcSize(100);
+
+  & .chooseCity {
+    width: calcSize(600);
+    height: calcSize(90);
+    border-radius: calcSize(45);
+    white-space: nowrap;
+    border: calcSize(2) solid rgba(0, 0, 0, 0.25);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    cursor: pointer;
+    position: relative;
+
+    & span {
+      @include MyFonts(50, 500);
+      white-space: nowrap;
+      text-overflow: ellipsis;
+      overflow: hidden;
+      width: calcSize(500);
+      margin-left: calcSize(50);
+      -webkit-mask-image: linear-gradient(
+        to right,
+        #f2f2f2 50%,
+        rgba(255, 255, 255, 0) 90%
+      );
+      mask-image: linear-gradient(
+        to right,
+        #f2f2f2 50%,
+        rgba(255, 255, 255, 0) 90%
+      );
+      &:first-letter {
+        text-transform: capitalize;
+      }
+    }
+
+    & svg {
+      position: absolute;
+      right: calcSize(38.02);
+      width: calcSize(25);
+      height: calcSize(25);
+    }
+
+    &:hover {
+      background-color: rgba(0, 0, 0, 0.05);
+    }
+  }
+
+  & .listAddr {
+    margin-top: calcSize(60);
+
+    & h2 {
+      @include MyFonts(30, 400);
+      height: calcSize(50);
+      margin: 0;
+    }
+
+    & ul {
+      padding: 0;
+      margin: 0;
+
+      & li {
+        list-style: none;
+        display: flex;
+        align-items: center;
+        margin-top: calcSize(40);
+
+        & svg {
+          width: calcSize(50);
+          height: calcSize(66);
+          & > g > path:first-child {
+            fill-opacity: 1;
+            fill: $ColorMain;
+          }
+        }
+
+        & span {
+          @include MyFonts(40, 400);
+          margin-left: calcSize(40);
+          cursor: pointer;
+          &:hover {
+            color: #dd1a32;
+          }
+        }
+      }
+      & li:last-child {
+        margin-bottom: calcSize(72);
+      }
+    }
+  }
+
+  & .divider {
+    height: calcSize(2);
+    width: calcSize(600);
+    background-color: #e5e5e5;
+  }
+
+  & .listInfo {
+    margin-top: calcSize(50);
+    & *:nth-child(3) {
+      margin-top: calcSize(20);
+    }
+    & *:nth-child(4) {
+      margin-bottom: calcSize(40);
+    }
+    & span {
+      @include MyFonts(30, 400);
+      height: calcSize(50);
+      line-height: calcSize(50);
+      display: block;
+    }
+    & h2 {
+      @include MyFonts(60, 500);
+      height: calcSize(100);
+      line-height: calcSize(100);
+      margin: 0;
+    }
+  }
+
+  & .switch {
+    height: calcSize(100);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-top: calcSize(28);
+
+    & > span {
+      @include MyFonts(30, 400);
+    }
+
+    & > label {
+      margin-right: 0;
+    }
+  }
+}
