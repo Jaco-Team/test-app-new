@@ -3299,6 +3299,12 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     const json = await api(this_module, data);
 
+    let activePage = useHeaderStore.getState().activePage;
+
+    if( activePage == 'akcii' ){
+      json.banners = json?.banners.filter( (item) => parseInt(item.is_active_actii) == 1 );
+    }
+
     set({
       bannerList: json?.banners,
     });
