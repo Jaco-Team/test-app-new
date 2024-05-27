@@ -1667,6 +1667,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const orderPic = pointList.find(point => point.name === addr);
 
+    if(typeof ymaps == "undefined"){
+      return ;
+    }
+
     const img = ymaps.templateLayoutFactory.createClass( 
       "<div class='my-img'>" +
         "<img alt='' src='/Favikon.png' />" +
