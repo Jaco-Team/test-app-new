@@ -3305,6 +3305,10 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       json.banners = json?.banners.filter( (item) => parseInt(item.is_active_actii) == 1 );
     }
 
+    if( activePage == 'home' ){
+      json.banners = json?.banners.filter( (item) => parseInt(item.is_active_home) == 1 );
+    }
+
     set({
       bannerList: json?.banners,
     });
