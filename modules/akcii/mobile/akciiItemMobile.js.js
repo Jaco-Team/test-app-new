@@ -62,7 +62,27 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
       <span className="itemNumber">{data_key + 1}.</span>
 
       <div className="itemImg">
-        {thisItem?.img_app ? <Image alt={item?.name} src={'https://cdnimg.jacofood.ru/' + thisItem?.img_app + '_1420x1420.jpg'} width={1420} height={1420} priority={true} /> : false}
+        {thisItem?.img_app ? 
+          <picture>
+            <source 
+              type="image/webp" 
+              srcSet={`https://cdnimg.jacofood.ru/${thisItem.img_app}_1420x1420.webp`} 
+              sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+            <source 
+              type="image/jpeg" 
+              srcSet={`https://cdnimg.jacofood.ru/${thisItem.img_app}_1420x1420.jpg`} 
+              sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+
+            <img 
+              alt={item?.name} 
+              title={item?.name} 
+              src={`https://cdnimg.jacofood.ru/${thisItem.img_app}_1420x1420.jpg`} 
+              loading="lazy"
+            />
+          </picture>
+           : 
+          false
+        }
       </div>
 
       <div className="itemDesc">
@@ -117,7 +137,23 @@ export default function AkciiItemMobile({ actia }) {
 
   return (
     <Grid container className="containerAcciaMobile">
-      <Image alt={data?.banner?.title} src={'https://storage.yandexcloud.net/site-home-img/' + data?.banner?.img + '_1000x500.jpg'} width={1000} height={500} priority={true} />
+      <picture>
+        <source 
+          type="image/webp" 
+          srcSet={`https://storage.yandexcloud.net/site-home-img/${data?.banner?.img}_1000x500.webp`} 
+          sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+        <source 
+          type="image/jpeg" 
+          srcSet={`https://storage.yandexcloud.net/site-home-img/${data?.banner?.img}_1000x500.jpg`} 
+          sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+
+        <img 
+          alt={data?.banner?.title} 
+          title={data?.banner?.title} 
+          src={`https://storage.yandexcloud.net/site-home-img/${data?.banner?.img}_1000x500.jpg`} 
+          loading="lazy"
+        />
+      </picture>
 
       <Grid className="DescItemMobile">
         <Grid className="FirstItemMobile">
