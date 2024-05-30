@@ -1665,6 +1665,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const orderPic = pointList.find(point => point.name === addr);
 
+    if(typeof ymaps == "undefined"){
+      return ;
+    }
+
     const img = ymaps.templateLayoutFactory.createClass( 
       "<div class='my-img'>" +
         "<img alt='' src='/Favikon.png' />" +
@@ -3287,6 +3291,16 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     };
 
     const json = await api(this_module, data);
+
+    let activePage = useHeaderStore.getState().activePage;
+
+    if( activePage == 'akcii' ){
+      json.banners = json?.banners.filter( (item) => parseInt(item.is_active_actii) == 1 );
+    }
+
+    if( activePage == 'home' ){
+      json.banners = json?.banners.filter( (item) => parseInt(item.is_active_home) == 1 );
+    }
 
     set({
       bannerList: json?.banners,
