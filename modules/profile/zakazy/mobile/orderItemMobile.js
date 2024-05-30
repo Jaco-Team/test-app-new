@@ -13,12 +13,9 @@ function areEqual(prevProps, nextProps) {
 }
 
 export default React.memo(function OrderItemMobile({ order, token, this_module, city, last }) {
-  const [getOrder, setActiveModalOrder] = useProfileStore((state) => [state.getOrder, state.setActiveModalOrder]);
+  const [getOrder] = useProfileStore((state) => [state.getOrder]);
 
-  const openOrder = () => {
-    getOrder(this_module, city, token, order?.order_id, order?.point_id)
-    setActiveModalOrder(true, order);
-  };
+  const openOrder = () => getOrder(this_module, city, token, order?.order_id, order?.point_id);
 
   let icon_status = false;
   let text_status = '';

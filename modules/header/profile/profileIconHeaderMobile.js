@@ -22,7 +22,7 @@ export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_pa
 
   return (
     <ListItem onClick={() => setActiveMenu(false)}>
-      <Link href={'/' + city + '/zakazy'} style={{background: bgColor ? 'rgba(0, 0, 0, 0.03)' : '#fff'}}>
+      <Link href={'/' + city + '/account'} style={{background: bgColor ? 'rgba(0, 0, 0, 0.03)' : '#fff'}}>
         <ProfileIconMobile />
         <span style={{color: bgColor ? ' #dd1a32' : null}}>Аккаунт</span>
         <span className="profile">{userName}</span>

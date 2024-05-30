@@ -1,9 +1,7 @@
 @import '../global';
 
 .BannerFull{
-  & > div{
-    width: calcSize(2520);
-  }
+  width: calcSize(2520) !important;
 
   & .DescItem {
     display: flex;

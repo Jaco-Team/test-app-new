@@ -1,0 +1,46 @@
+@import '../global';
+
+.aboutPC {
+  display: flex;
+  min-height: 70vh;
+  margin-top: calcSize(128);
+  mix-blend-mode: multiply;
+
+  & .aboutContainerPC {
+    display: flex;
+    flex-direction: column;
+
+    & img {
+      border-radius: calcSize(40);
+    }
+    & a {
+      text-decoration: none;
+      color: $ColorMain;
+    }
+
+    & h2 {
+      padding-top: calcSize(10);
+    }
+
+    @media (min-width: 961px) {
+      margin-top: calcSize(120);
+      margin-bottom: calcSize(140);
+      padding-top: 0;
+      margin-left: calcSize(125);
+      width: calcSize(1560);
+      padding-left: 0;
+
+      & h1,
+      h2 {
+        @include MyFonts(75, 700);
+      }
+
+      & p,
+      li,
+      span {
+        @include MyFonts(30, 400);
+        line-height: 1.5;
+      }
+    }
+  }
+}

@@ -26,7 +26,7 @@ export default function Responsibility() {
       </p>
       
       <Image
-        alt=""
+        alt="Responsibility"
         src="/about/субботник.jpg"
         width={2560}
         height={1920}

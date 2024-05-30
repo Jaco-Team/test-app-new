@@ -1,6 +1,6 @@
 import React from 'react';
 
-import Image from 'next/image';
+//import Image from 'next/image';
 
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';

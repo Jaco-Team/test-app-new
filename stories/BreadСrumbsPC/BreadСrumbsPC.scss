@@ -1,0 +1,62 @@
+@import '../global';
+
+.breadCrumbsPC {
+  margin-left: calcSize(160);
+  width: calcSize(840);
+  background-color: rgba(0, 0, 0, 0.07);
+  border-radius: calcSize(80);
+  padding-top: calcSize(80);
+  display: flex;
+  flex-direction: column;
+  position: sticky;
+  top: calcSize(248);
+
+  & > span {
+    margin-left: calcSize(80);
+    height: calcSize(40);
+    line-height: calcSize(40);
+    @include MyFonts(30, 700);
+    text-transform: uppercase;
+
+    @media (max-width: 800px) {
+      @include MyFonts(35, 700);
+    }
+  }
+
+  & > ul {
+    margin-left: calcSize(60);
+    margin-top: calcSize(20);
+    margin-bottom: calcSize(70);
+    min-height: calcSize(300);
+    padding-left: calcSize(45);
+
+    & > li.activeMarker {
+      color: $ColorMain;
+    }
+    
+    & > li {
+      min-height: calcSize(60);
+      line-height: calcSize(60);
+      @include MyFonts(30, 400);
+
+      @media (max-width: 800px) {
+        @include MyFonts(35, 400);
+      }
+      & > a {
+        @include MyFonts(30, 400);
+        text-decoration: none;
+        cursor: pointer;
+
+        @media (max-width: 800px) {
+          @include MyFonts(35, 400);
+        }
+      }
+      & > a.active {
+        color: $ColorMain;
+      }
+      & > a:not(.active) {
+        color: $ColorText;
+      }
+    }
+  }
+}

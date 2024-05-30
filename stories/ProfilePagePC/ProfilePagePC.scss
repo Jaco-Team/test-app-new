@@ -1,0 +1,201 @@
+@import '../global';
+
+.profilePC {
+  display: flex;
+
+  .profileContainerPC {
+    width: calcSize(1560);
+    margin-top: calcSize(300);
+    margin-left: calcSize(125);
+    margin-bottom: calcSize(140);
+
+    & .profile_title {
+      @include MyFonts(75, 700);
+      margin-bottom: calcSize(80);
+    }
+
+    & .profile_data {
+      display: flex;
+      height: calcSize(280);
+      margin-bottom: calcSize(60);
+
+      & > span:first-child {
+        width: calcSize(280);
+        margin-left: calcSize(80);
+        margin-right: calcSize(120);
+        background-color: #6fbef8;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        @include MyFonts(110, 400);
+        color: #fff;
+        border-radius: calcSize(140);
+      }
+
+      & > div:last-child {
+        padding: calcSize(20) 0;
+        width: calcSize(1080);
+        display: flex;
+        flex-wrap: wrap;
+        align-items: center;
+        column-gap: calcSize(60);
+
+        & > div {
+          width: calcSize(510) !important;
+
+          & .MuiInputBase-sizeSmall {
+            width: 100%;
+            height: calcSize(80);
+            z-index: 3;
+            & > input {
+              height: calcSize(80);
+              padding: 0;
+              padding-left: calcSize(40);
+              @include MyFonts(30, 400);
+            }
+            & > input[readonly] {
+              cursor: default;
+            }
+          }
+          & fieldset {
+            border-radius: calcSize(40);
+            border-width: calcSize(3);
+          }
+        }
+      }
+    }
+
+    & .profile_check {
+      width: 100%;
+      height: calcSize(80);
+      display: flex;
+      align-items: center;
+      margin-bottom: calcSize(100);
+
+      & .text {
+        width: calcSize(900);
+        @include MyFonts(30, 400);
+        margin-left: auto;
+      }
+
+      & label {
+        margin: 0;
+      }
+    }
+
+    & .profile_date {
+      display: flex;
+      margin-bottom: calcSize(100);
+
+      & .promokod {
+        width: calcSize(440);
+        margin-right: calcSize(40);
+        @include MyFonts(30, 400);
+        -webkit-clip-path: polygon(
+          0% 0%,
+          88.3% 0%,
+          100% 50%,
+          88.3% 100%,
+          0% 100%
+        );
+        clip-path: polygon(0% 0%, 88.3% 0%, 100% 50%, 88.3% 100%, 0% 100%);
+        margin-top: calcSize(20);
+        margin-bottom: calcSize(12);
+        background-color: rgba(87, 220, 53, 0.3);
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding-left: calcSize(40);
+        padding-right: calcSize(80);
+        line-height: calcSize(40);
+      }
+
+      & > div:last-child {
+        width: calcSize(1080);
+
+        & div:first-child {
+          height: calcSize(80);
+          display: flex;
+          align-items: center;
+          @include MyFonts(30, 400);
+        }
+
+        & .last_text {
+          @include MyFonts(22, 400);
+          margin-top: calcSize(20);
+          height: calcSize(60);
+          display: flex;
+          align-items: center;
+        }
+
+        & .profile_select {
+          display: flex;
+          @include MyFonts(30, 400);
+
+          & div {
+            height: calcSize(80);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+
+            & svg {
+              width: calcSize(60);
+              height: calcSize(60);
+              top: auto;
+            }
+
+            & fieldset {
+              padding: 0;
+              border-radius: calcSize(40);
+              border-width: calcSize(3);
+            }
+          }
+
+          & div:first-child {
+            width: calcSize(160);
+            margin-right: calcSize(20);
+          }
+          & div:last-child {
+            width: calcSize(320);
+          }
+        }
+      }
+    }
+
+    & .profile_table {
+      width: 100%;
+      margin-bottom: calcSize(160);
+      & thead {
+        & tr {
+          display: flex;
+          justify-content: space-between;
+          border-bottom: calcSize(3) solid rgba(0, 0, 0, 0.2);
+
+          & th {
+            margin-bottom: calcSize(21.5);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            height: calcSize(80);
+            padding: 0;
+          }
+
+          & th:first-child {
+            @include MyFonts(40, 500);
+          }
+          & th:last-child {
+            width: calcSize(300);
+            @include MyFonts(30, 400);
+            border-radius: calcSize(40);
+            cursor: pointer;
+            border: calcSize(3) solid rgba(0, 0, 0, 0.3);
+          }
+        }
+      }
+    }
+
+    & button:last-child {
+      float: right;
+    }
+  }
+}

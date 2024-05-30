@@ -6,7 +6,7 @@ export const ModalItemPCimg = ({ img_name, title }) => {
     <picture>
       <source
         type="image/webp"
-        srcset={` https://cdnimg.jacofood.ru/${img_name}_366x366.webp 138w,
+        srcSet={` https://cdnimg.jacofood.ru/${img_name}_366x366.webp 138w,
                   https://cdnimg.jacofood.ru/${img_name}_466x466.webp 146w,
                   https://cdnimg.jacofood.ru/${img_name}_585x585.webp 183w,
                   https://cdnimg.jacofood.ru/${img_name}_1168x1168.webp 233w,
@@ -19,7 +19,7 @@ export const ModalItemPCimg = ({ img_name, title }) => {
       />
       <source
         type="image/jpeg"
-        srcset={` https://cdnimg.jacofood.ru/${img_name}_366x366.jpg 138w,
+        srcSet={` https://cdnimg.jacofood.ru/${img_name}_366x366.jpg 138w,
                   https://cdnimg.jacofood.ru/${img_name}_466x466.jpg 146w,
                   https://cdnimg.jacofood.ru/${img_name}_585x585.jpg 183w,
                   https://cdnimg.jacofood.ru/${img_name}_1168x1168.jpg 233w,

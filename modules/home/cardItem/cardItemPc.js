@@ -1,6 +1,6 @@
 import { memo } from 'react';
 
-import Image from 'next/image';
+//import Image from 'next/image';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';

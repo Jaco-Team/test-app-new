@@ -163,16 +163,19 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       
       if(city?.link === cart?.city?.link) {
 
-        //if(cart?.items?.length) {
+          let this_item = null;
 
-        let this_item = null;
+          cart.items = cart?.items?.reduce((newItems, item) => {
+            this_item = allItems.find(it => parseInt(it.id) === parseInt(item.item_id));
 
-        cart?.items?.map((item, key) => {
-          this_item = allItems.find( it => parseInt(it.id) === parseInt(item.item_id));
+            if(this_item) {
+              item.one_price = this_item?.price;
+              item.all_price = parseInt(this_item?.price) * parseInt(item.count);
+              newItems.push(item);
+            }
 
-          cart.items[ key ]['one_price'] = this_item?.price;
-          cart.items[ key ]['all_price'] = parseInt(this_item?.price) * parseInt(item.count);
-        })
+            return newItems;
+          }, [])
 
           const allPriceWithoutPromo = cart.items.reduce((all, it) => all + it.count * it.one_price, 0);
 
@@ -188,13 +191,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
               get().getItems();
               get().check_need_dops();
             //}, 3000)
-          }else{
+          } else {
             get().getItems();
             get().check_need_dops();
           }
-          
-          
-        //}
 
         if(cart?.orderAddr) {
           set({ orderAddr: cart?.orderAddr });
@@ -993,8 +993,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     let itemsCount = get().itemsCount;
     const promoInfo = get().promoInfo;
 
-    
-
     let ym_item;
 
     const max_count = get().check_max_count(item_id);
@@ -1029,7 +1027,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
       ym_item = item;
     }
- 
+
     const allPriceWithoutPromo = items.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
 
     set({ items, itemsCount, allPriceWithoutPromo });
@@ -1078,7 +1076,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
         ym_item = item;
       }
-      return item.count ? newItems = [...newItems,...[item]] : newItems;
+      return item.count > 0 ? newItems = [...newItems,...[item]] : newItems;
     }, [])
 
     let check_dop = items.filter( (item, key) => parseInt(item.count) > 0 && (parseInt(item.item_id) == 17 || parseInt(item.item_id) == 237) );
@@ -1785,8 +1783,6 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
   center_map: null,
   points_zone: null,
 
-  points: [],
-
   polygon_options_default: {
     fillColor: 'rgba(53, 178, 80, 0.15)',
     strokeColor: '#35B250',
@@ -1866,17 +1862,14 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
     }
 
     json?.zones.forEach((point) => point.image = 'default#image');
-    json?.points.forEach((point) => point.image = 'default#image');
 
     set({
       center_map: {
         center: [json?.zones[0].xy_center_map.latitude, json?.zones[0].xy_center_map.longitude],
         zoom: zoomSize,
         controls: [],
-        behaviors: ["drag", "dblClickZoom", "rightMouseButtonMagnifier", "multiTouch"]
-        //behaviors: ["disable('scrollZoom')"]
+        behaviors: ["drag", "dblClickZoom", "rightMouseButtonMagnifier", "multiTouch"],
       },
-      points: json?.points,
       zones: json?.zones,
       points_zone,
       phone: json?.zones[0].phone,
@@ -1902,10 +1895,10 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
       set({ openModalChoose: false })
 
-      get().changePointClick(pointFind?.addr, 'mobile');
+      get().changePointClick(pointFind?.addr);
 
     } else {
-      get().changePointClick(pointList[0].addr, 'mobile');
+      get().changePointClick(pointList[0].addr);
     }
 
   },
@@ -1917,7 +1910,6 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
     let zones = get().zones;
     let points_zone = get().points_zone;
     let myAddr = get().myAddr;
-    let points = get().points;
 
     if(typeof ymaps == "undefined"){
       return ;
@@ -1929,9 +1921,12 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       "</div>"
     )
 
+    let center;
+
     zones = zones.map(item => {
       if(item.addr === addr) {
         item.image = img;
+        center = [item.xy_point.latitude, item.xy_point.longitude]
       } else {
         item.image = 'default#image';
       }
@@ -1949,15 +1944,6 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       return item
     })
 
-    points = points.map(item => {
-      if(item.addr === addr) {
-        item.image = img;
-      } else {
-        item.image = 'default#image';
-      }
-      return item
-    })
-
     myAddr = myAddr.map(item => {
       if (item.addr === addr)  {
         item.color = '#DD1A32'
@@ -1967,12 +1953,26 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       return item
     });
 
+    let zoomSize;
+        
+    if(window.innerWidth < 601) {
+      zoomSize = 11;
+    } else {
+      zoomSize = 12;
+    }
+
     set({ 
       points_zone, 
-      points,
       zones, 
       myAddr, 
-      point: addr 
+      point: addr,
+      center_map: {
+        center,
+        zoom: zoomSize,
+        controls: [],
+        behaviors: ["drag", "dblClickZoom", "rightMouseButtonMagnifier", "multiTouch"],
+        duration: 1000
+      },
     })
 
   },
@@ -2131,13 +2131,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   year: '',
   yearList: [],
   openModalYear: false,
-
-  
-
-  // открытие/закрытие модалки заказа в Истории заказов в мобильной версии
-  setActiveModalOrder: (active, modalOrder) => {
-    set({ openModal: active, modalOrder })
-  },
 
   // установить год в Истории заказов в мобильной версии
   setYear: (year) => {

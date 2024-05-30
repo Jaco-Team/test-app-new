@@ -28,7 +28,7 @@ export default function ExcellentDishes() {
       </p>
     
       <Image
-        alt=""
+        alt="ExcellentDishes"
         src="/about/Populyarnye-blyuda1.jpg"
         width={2000}
         height={1540}

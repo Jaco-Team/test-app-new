@@ -1,11 +1,9 @@
 @import '../global';
 
 .BannerPCImg{
-  border-radius: calcSize(80);
   object-fit: contain;
   image-rendering: auto;
   width: calcSize(2520);
   height: calcSize(682);
-  //height: auto;
   cursor: pointer;
 }

@@ -21,7 +21,7 @@ export default function AboutUs() {
       </p>
     
       <Image
-        alt=""
+        alt="AboutUs"
         src="/about/new_main_min.png"
         width={4606}
         height={3456}

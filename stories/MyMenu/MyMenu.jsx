@@ -36,7 +36,7 @@ export const MyMenu = ({ anchorEl, isOpen, onClose, list, type }) => {
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         autoFocus={false}
-        className={type === 'contacts' ? "MyMenu Contacts" : "MyMenu"}
+        className={type === 'contacts' ? "MyMenu Contacts" : type === 'modal' ? "MyMenu Modal" : "MyMenu"}
         style={{
           marginTop: type === 'cat' ? '1.4440433212996vw' : '0.72202166064982vw',
         }}

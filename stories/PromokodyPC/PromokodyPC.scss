@@ -1,0 +1,40 @@
+@import '../global';
+
+.promoCardPC {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  background-color: rgba(233, 71, 35, 0.3);
+  border-radius: calcSize(80);
+  width: calcSize(760);
+  
+  & .title {
+    @include MyFonts(50, 500);
+    margin-top: calcSize(60);
+  }
+  & .text {
+    @include MyFonts(30, 400);
+    margin-top: calcSize(40);
+  }
+  & .endText {
+    @include MyFonts(30, 400);
+    margin-top: calcSize(40);
+  }
+  & .endDate {
+    @include MyFonts(50, 500);
+    color: rgba(221, 26, 50, 1);
+  }
+  & .name {
+    @include MyFonts(50, 500);
+    margin-bottom: calcSize(60);
+    margin-top: calcSize(20);
+    background-color: rgba(233, 71, 35, 0.5);
+    border-radius: calcSize(40);
+    height: calcSize(160);
+    width: calcSize(640);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    cursor: pointer;
+  }
+}

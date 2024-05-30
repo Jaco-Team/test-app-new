@@ -21,6 +21,7 @@
     height: calcSize(280);
     object-fit: contain;
     image-rendering: auto;
+    mix-blend-mode: multiply;
   }
 
   & .itemDesc{

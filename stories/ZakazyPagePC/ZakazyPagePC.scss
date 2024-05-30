@@ -1,0 +1,15 @@
+@import '../global';
+
+.zakazyPC {
+  display: flex;
+
+  .zakazyTablePC {
+    margin-top: calcSize(300);
+    margin-left: calcSize(125);
+
+    & .title {
+      @include MyFonts(75, 700);
+      margin-bottom: calcSize(80);
+    }
+  }
+}

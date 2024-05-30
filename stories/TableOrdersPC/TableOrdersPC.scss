@@ -1,0 +1,44 @@
+@import '../global';
+
+.tableOrdersPC {
+  margin-bottom: calcSize(140);
+
+  @media (max-width: 960px) {
+    overflow: scroll;
+  }
+
+  & thead {
+    & tr {
+      display: flex;
+      align-items: center;
+      width: calcSize(1560);
+      height: calcSize(40);
+      border-bottom: calcSize(3) solid rgba(0, 0, 0, 0.2);
+
+      @media (max-width: 960px) {
+        border-bottom: calcSize(2) solid rgba(0, 0, 0, 0.2);
+      }
+      & th {
+        padding: 0;
+        @include MyFonts(22, 400);
+
+        &:first-child {
+          display: flex;
+          justify-content: flex-start;
+          align-items: center;
+          width: calcSize(280);
+          margin-right: calcSize(100);
+        }
+        &:nth-child(2) {
+          margin-right: calcSize(135);
+        }
+        &:nth-child(3) {
+          margin-right: calcSize(205);
+        }
+        &:nth-child(4) {
+          margin-right: calcSize(153);
+        }
+      }
+    }
+  }
+}

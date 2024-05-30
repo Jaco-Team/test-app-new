@@ -163,7 +163,7 @@ export default function ModalCardItemPC() {
                             <picture>
                               <source 
                                 type="image/webp" 
-                                srcset={`
+                                srcSet={`
                                   https://cdnimg.jacofood.ru/${item.img_app}_292x292.webp 138w,
                                   https://cdnimg.jacofood.ru/${item.img_app}_366x366.webp 146w,
                                   https://cdnimg.jacofood.ru/${item.img_app}_466x466.webp 183w,
@@ -176,7 +176,7 @@ export default function ModalCardItemPC() {
                                 sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
                               <source 
                                 type="image/jpeg" 
-                                srcset={`
+                                srcSet={`
                                   https://cdnimg.jacofood.ru/${item.img_app}_292x292.jpg 138w,
                                   https://cdnimg.jacofood.ru/${item.img_app}_366x366.jpg 146w,
                                   https://cdnimg.jacofood.ru/${item.img_app}_466x466.jpg 183w,

@@ -15,6 +15,7 @@ export default {
 const Template = (args) => <TableCartPC_text {...args} />;
 export const Pizza = Template.bind({});
 export const Rolly = Template.bind({});
+export const Allergens = Template.bind({});
 
 Pizza.args = {
   text: 'pizza',
@@ -22,4 +23,8 @@ Pizza.args = {
 
 Rolly.args = {
   text: 'rolly',
+};
+
+Allergens.args = {
+  text: 'allergens',
 };

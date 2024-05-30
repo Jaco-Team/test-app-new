@@ -30,13 +30,13 @@ export default function ContactsPageMobile() {
 
   const [setActiveModalCityList] = useHeaderStore((state) => [state.setActiveModalCityList]);
 
-  const [point, points, phone, disablePointsZone, disable, setActiveModalChoose, getUserPosition, center_map, zones, points_zone, changePointClick, location_user] = useContactStore((state) => [state.point, state.points, state.phone, state.disablePointsZone, state.disable, state.setActiveModalChoose, state.getUserPosition, state.center_map, state.zones, state.points_zone, state.changePointClick, state.location_user]);
+  const [point, phone, disablePointsZone, disable, setActiveModalChoose, getUserPosition, center_map, zones, points_zone, changePointClick, location_user] = useContactStore((state) => [state.point, state.phone, state.disablePointsZone, state.disable, state.setActiveModalChoose, state.getUserPosition, state.center_map, state.zones, state.points_zone, state.changePointClick, state.location_user]);
 
   useEffect(() => {
     if(ref.current && center_map?.center){
-      ref.current.setCenter([zones[0].xy_center_map['latitude'], zones[0].xy_center_map['longitude']]);
+      ref.current.setCenter(center_map?.center, center_map?.zoom, { duration: center_map?.duration} );
     }
-  }, [zones])
+  }, [center_map])
 
   return (
     <Box sx={{ display: { xs: 'block', md: 'block', lg: 'none' } }} className="ContactsMobile" >
@@ -52,7 +52,7 @@ export default function ContactsPageMobile() {
               style={{ minHeight: '100vw' }}
             >
 
-              {points?.map((point, key) => 
+              {zones?.map((point, key) => 
                 <ContactsPageMobilePointMap key={point.id} point={point} changePointClick={changePointClick} image={point.image} />
               )}
 

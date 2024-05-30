@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-import Image from 'next/image';
+// import Image from 'next/image';
 
 import { useHomeStore, useCartStore, useHeaderStore, useCitiesStore } from '@/components/store';
 
@@ -72,11 +72,28 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
 
       <div className="itemImg">
         {thisItem?.img_app ? (
-          <Image alt={item?.name} src={'https://cdnimg.jacofood.ru/' + thisItem?.img_app + '_1420x1420.jpg'}
-            width={1420}
-            height={1420}
-            priority={true}
-          />
+          // <Image alt={item?.name} src={'https://cdnimg.jacofood.ru/' + thisItem?.img_app + '_1420x1420.jpg'}
+          //   width={1420}
+          //   height={1420}
+          //   priority={true}
+          // />
+          <picture>
+            <source 
+              type="image/webp" 
+              srcSet={'https://cdnimg.jacofood.ru/' + thisItem?.img_app + '_1420x1420.jpg'} 
+              sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+            <source 
+              type="image/jpeg" 
+              srcSet={'https://cdnimg.jacofood.ru/' + thisItem?.img_app + '_1420x1420.jpg'} 
+              sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+
+            <img 
+              alt={thisItem?.title} 
+              title={thisItem?.title} 
+              src={'https://cdnimg.jacofood.ru/' + thisItem?.img_app + '_1420x1420.jpg'} 
+              loading="lazy"
+            />
+          </picture>
         ) : false}
       </div>
 
@@ -161,11 +178,28 @@ export default function ModalBannerMobile() {
       <Box component="div" className="BannerMobile BannerFontMobile">
         <Grid container justifyContent="center">
           <Grid className="ImgItemMobile">
-            <Image alt={banner?.title} src={'https://storage.yandexcloud.net/site-home-img/' + banner?.img + '_1000x500.jpg'}
+            {/* <Image alt={banner?.title} src={'https://storage.yandexcloud.net/site-home-img/' + banner?.img + '_1000x500.jpg'}
               width={1000}
               height={500}
               priority={true}
-            />
+            /> */}
+            <picture>
+              <source 
+                type="image/webp" 
+                srcSet={'https://storage.yandexcloud.net/site-home-img/' + banner?.img + '_1000x500.jpg'} 
+                sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+              <source 
+                type="image/jpeg" 
+                srcSet={'https://storage.yandexcloud.net/site-home-img/' + banner?.img + '_1000x500.jpg'} 
+                sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+
+              <img 
+                alt={banner?.title} 
+                title={banner?.title} 
+                src={'https://storage.yandexcloud.net/site-home-img/' + banner?.img + '_1000x500.jpg'} 
+                loading="lazy"
+              />
+            </picture>
             <Typography className="ItemTime" variant="h5" component="span" onClick={() => setActiveBanner(false, null)}>
               Условия акции
               <KeyboardArrowUpIcon />

@@ -1,0 +1,24 @@
+@import '../global';
+
+.promokodyPC {
+  display: flex;
+
+  & .promokodyContainerPC {
+    width: calcSize(1560);
+    margin-top: calcSize(300);
+    margin-left: calcSize(125);
+    margin-bottom: calcSize(140);
+
+    & .header {
+      @include MyFonts(75, 700);
+      margin-bottom: calcSize(80);
+    }
+
+    & .promoListPC {
+      display: flex;
+      flex-wrap: wrap;
+      justify-content: space-between;
+      row-gap: calcSize(40);
+    }
+  }
+}

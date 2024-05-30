@@ -55,7 +55,7 @@
     }
   }
 
-  & .dopText {
+  & .dopTextForm {
     @include MyFonts(26, 400);
     line-height: calcSize(30);
     margin: calcSize(30) 0;

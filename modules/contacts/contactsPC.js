@@ -45,9 +45,9 @@ export default function ContactsPagePC() {
 
   useEffect(() => {
     if(ref.current && center_map?.center){
-      ref.current.setCenter([zones[0].xy_center_map['latitude'], zones[0].xy_center_map['longitude']]);
+      ref.current.setCenter(center_map?.center, center_map?.zoom, { duration: center_map?.duration} );
     }
-  }, [zones])
+  }, [center_map])
 
   return (
     <Box className="Contact_">
@@ -72,7 +72,7 @@ export default function ContactsPagePC() {
           <Typography variant="h5" component="h2">Адреса кафе:</Typography>
           <List>
             {myAddr.map((point, key) => (
-              <ListItemButton key={key} disableRipple={false} onClick={() => changePointClick(point.addr)}>
+              <ListItemButton key={key} disableRipple onClick={() => changePointClick(point.addr)}>
                 <MapPointIcon />
                 <ListItemText primary={
                     <Typography style={{color: point?.color ? point.color : null}}>

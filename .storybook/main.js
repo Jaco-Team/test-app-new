@@ -3,6 +3,7 @@ const config = {
   stories: [
     "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)",
   ],
+
   addons: [
     "@storybook/addon-onboarding",
     "@storybook/addon-links",
@@ -10,13 +11,18 @@ const config = {
     "@chromatic-com/storybook",
     "@storybook/addon-interactions",
   ],
+
   framework: {
     name: "@storybook/nextjs",
     options: {},
   },
-  docs: {
-    autodocs: "tag",
-  },
+
+  docs: {},
+
   staticDirs: ["../public"],
+
+  typescript: {
+    reactDocgen: "react-docgen-typescript"
+  }
 };
 export default config;

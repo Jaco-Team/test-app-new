@@ -1,0 +1,19 @@
+@import '../global';
+
+.akciiPC {
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh;
+  margin: 0 calcSize(125);
+  row-gap: calcSize(96);
+
+  & .login {
+    height: calcSize(256);
+    width: calcSize(1206);
+    margin-top: calcSize(320);
+    margin-bottom: calcSize(128);
+    @include MyFonts(120, 500);
+    margin-left: calcSize(34);
+    line-height: calcSize(140);
+  }
+}

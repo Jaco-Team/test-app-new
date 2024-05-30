@@ -1,10 +1,10 @@
-import React, { useEffect, useRef, useState } from 'react';
-import { useHomeStore, useHeaderStore, useCartStore } from '../../../components/store.js';
-import Image from 'next/image';
+import React, { useEffect, useRef } from 'react';
+import { useHomeStore } from '../../../components/store.js';
+// import Image from 'next/image';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-import Tooltip from '@mui/material/Tooltip';
+//import Tooltip from '@mui/material/Tooltip';
 
 import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -21,19 +21,19 @@ export default (function BannersPC() {
 
   const swiperRef = useRef(null);
 
-  const [openTooltip, setOpenTooltip] = useState(false);
+  // const [openTooltip, setOpenTooltip] = useState(false);
 
   useEffect(() => {
     const swiper = document.querySelector('.swiper').swiper;
 
     const timer = setInterval(() => {
-      if(activeSlider && !openTooltip){
+      if(activeSlider){
         swiper.slideNext();
       }
     }, 5000);
     
     return () => clearInterval(timer);
-  }, [openTooltip]);
+  }, []);
 
   useEffect(() => {
     if( bannerList.length > 0 ){
@@ -42,20 +42,20 @@ export default (function BannersPC() {
     }
   }, [bannerList]);
 
-  const handleOpen = () => {
-    setOpenTooltip(true);
-  };
+  // const handleOpen = () => {
+  //   setOpenTooltip(true);
+  // };
  
-  const handleClose = () => {
-    setOpenTooltip(false);
-  };
+  // const handleClose = () => {
+  //   setOpenTooltip(false);
+  // };
 
-  const handleCopy = (text) => {
-    setOpenTooltip(false);
-    setActiveModalAlert(true, 'Ссылка успешно скопирована', true);
-    //window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
-    navigator.clipboard.writeText(text)
-  }
+  // const handleCopy = (text) => {
+  //   setOpenTooltip(false);
+  //   setActiveModalAlert(true, 'Ссылка успешно скопирована', true);
+  //   //window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
+  //   navigator.clipboard.writeText(text)
+  // }
 
   /*
     <div className="Item" style={{ backgroundColor: item.id === '84' ? '#3faad8' : item.id === '80' ? '#B570DF' : item.id === '48' ? '#F45773' : null}}>
@@ -132,7 +132,25 @@ export default (function BannersPC() {
         >
           {bannerList.map((item, key) => (
             <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
-              <Image alt={item.title} src={"https://storage.yandexcloud.net/site-home-img/"+item.img+"_3700x1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }} />
+              {/* <Image alt={item.title} src={"https://storage.yandexcloud.net/site-home-img/"+item.img+"_3700x1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }} /> */}
+              <picture>
+                <source 
+                  type="image/webp" 
+                  srcSet={"https://storage.yandexcloud.net/site-home-img/"+item.img+"_3700x1000.jpg"} 
+                  sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+                <source 
+                  type="image/jpeg" 
+                  srcSet={"https://storage.yandexcloud.net/site-home-img/"+item.img+"_3700x1000.jpg"} 
+                  sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+
+                <img 
+                  alt={item?.name} 
+                  title={item?.name} 
+                  src={"https://storage.yandexcloud.net/site-home-img/"+item.img+"_3700x1000.jpg"} 
+                  loading="lazy"
+                  style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }}
+                />
+              </picture>
             </SwiperSlide>
           ))}
           <div className="swiper-button-prev"><ArrowIcon /></div>

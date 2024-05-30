@@ -16,6 +16,12 @@
   }
 }
 
+.MyMenu.Modal {
+  & div.MuiPaper-root.MuiMenu-paper {
+    width: calcSize(780);
+  }
+}
+
 .MyMenu {
   & div.MuiPaper-root.MuiMenu-paper {
     border-radius: calcSize(20);

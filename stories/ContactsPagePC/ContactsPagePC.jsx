@@ -13,8 +13,8 @@ export const ContactsPagePC = ({ header, menu, map, footer }) => {
       <div className="boxContactsPC">
         <MenuContactsPC {...menu} />
         <MapPC {...map} />
-        <FooterPC {...footer} />
       </div>
+      <FooterPC {...footer} />
     </>
   );
 };

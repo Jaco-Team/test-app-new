@@ -1,0 +1,185 @@
+@import '../global';
+
+.modalAddressPC {
+  display: flex;
+  height: calcSize(1320);
+  border-radius: calcSize(40);
+  width: calcSize(1960);
+
+  & .map {
+    width: 50%;
+    overflow: hidden;
+    border-top-left-radius: calcSize(40);
+    border-bottom-left-radius: calcSize(40);
+  }
+
+  & .form {
+    width: calcSize(810);
+    margin-top: calcSize(60);
+    margin-left: calcSize(170);
+
+    & .nameAddr {
+      width: calcSize(680) !important;
+      height: calcSize(120);
+      display: flex;
+      align-items: center;
+      margin-left: calcSize(20);
+
+      & .MuiInputBase-root::before,
+      .MuiInputBase-root::after {
+        border-width: 0;
+        height: 0;
+      }
+
+      & .MuiInputBase-root {
+        width: 100%;
+        & input {
+          width: calcSize(620);
+          height: calcSize(120);
+          padding: 0;
+          padding-left: calcSize(20);
+          @include MyFonts(50, 500);
+        }
+      }
+      & > span {
+        @include MyFonts(50, 500);
+        color: rgba(0, 0, 0, 0.4);
+      }
+      & svg {
+        width: calcSize(60);
+        height: calcSize(60);
+      }
+    }
+
+    & .city {
+      width: calcSize(700);
+      height: calcSize(90);
+      white-space: nowrap;
+      border-bottom: calcSize(3) solid rgba(0, 0, 0, 0.2);
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      cursor: pointer;
+      position: relative;
+      margin-top: calcSize(30);
+
+      & span {
+        @include MyFonts(30, 400);
+        white-space: nowrap;
+        text-overflow: ellipsis;
+        overflow: hidden;
+        width: calcSize(600);
+        margin-left: calcSize(20);
+        -webkit-mask-image: linear-gradient(
+          to right,
+          #f2f2f2 50%,
+          rgba(255, 255, 255, 0) 90%
+        );
+        mask-image: linear-gradient(
+          to right,
+          #f2f2f2 50%,
+          rgba(255, 255, 255, 0) 90%
+        );
+        &:first-letter {
+          text-transform: capitalize;
+        }
+      }
+    }
+
+    & .city.street {
+      margin-top: calcSize(60);
+    }
+
+    & .street_dop {
+      margin-top: calcSize(60);
+      width: calcSize(700);
+
+      & div {
+        height: calcSize(60);
+        width: calcSize(340) !important;
+
+        & .MuiInputBase-root::before {
+          border-bottom: calcSize(3) solid rgba(0, 0, 0, 0.2);
+        }
+
+        &:nth-child(1) {
+          margin-right: calcSize(20);
+        }
+
+        & .MuiInputBase-root {
+          & input {
+            height: calcSize(40);
+            padding-bottom: calcSize(20);
+            padding-left: calcSize(20);
+            @include MyFonts(30, 400);
+          }
+        }
+        & > span {
+          @include MyFonts(30, 400);
+          color: rgba(0, 0, 0, 0.4);
+        }
+      }
+    }
+
+    & .comment {
+      margin-top: calcSize(60);
+      width: calcSize(700) !important;
+
+      & .MuiInputBase-root::before {
+        border-bottom: calcSize(3) solid rgba(0, 0, 0, 0.2);
+      }
+
+      & .MuiInputBase-root {
+        height: calcSize(60);
+
+        & input {
+          height: calcSize(40);
+          padding-bottom: calcSize(20);
+          padding-left: calcSize(20);
+          @include MyFonts(30, 400);
+        }
+      }
+      & > span {
+        @include MyFonts(30, 400);
+        color: rgba(0, 0, 0, 0.4);
+      }
+    }
+
+    & .check {
+      width: calcSize(700);
+      height: calcSize(120);
+      display: flex;
+      align-items: center;
+      border-bottom: calcSize(3) solid rgba(0, 0, 0, 0.2);
+
+      & .text {
+        margin-left: calcSize(20);
+        @include MyFonts(30, 400);
+      }
+
+      & label {
+        margin: 0;
+        margin-left: auto;
+      }
+
+      & div {
+        width: calcSize(80);
+        height: calcSize(80);
+        background-color: rgba(0, 0, 0, 0.07);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        border-radius: calcSize(40);
+        margin-left: calcSize(20);
+        & > svg {
+          width: calcSize(48);
+          height: calcSize(48);
+        }
+      }
+    }
+
+    & button:last-child {
+      margin-top: calcSize(110);
+    }
+  }
+}

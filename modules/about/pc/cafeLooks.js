@@ -54,7 +54,7 @@ export default function CafeLooks() {
         {arrayImage.map((item, key) => (
           <SwiperSlide key={key}>
             <Image
-              alt=""
+              alt="CafeLooks"
               src={item.img}
               width={1280}
               height={720}

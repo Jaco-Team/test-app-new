@@ -27,7 +27,7 @@ export const IconPC = ({ count, icon, element, foodValue }) => {
     return (
       <>
         { icon == 'ya' ? <YaIcon className="IconAuthPC" /> : false }
-        { icon == 'eyeShow' ? <EyeShow_modalOrder className="IconAuthPC" /> : false }
+        { icon == 'eyeShow' ? <EyeShow_modalOrder className="IconAuthPC" fill="black" /> : false }
         { icon == 'eyeHide' ? <EyeHide_modalOrder className="IconAuthPC" /> : false }
         { icon == 'clear' ? <ClearAuthMobile className="IconAuthPC" /> : false }
         { icon == 'check' ? <CheckAuthMobile className="IconAuthPC" /> : false }

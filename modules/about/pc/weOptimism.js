@@ -33,7 +33,7 @@ export default function WeOptimism() {
       </p>
     
       <Image
-        alt=""
+        alt="WeOptimism"
         src="/about/IMG_5144.jpg"
         width={4541}
         height={3027}

@@ -46,6 +46,7 @@ export const BannerListPC = ({ bannerList }) => {
             <BannerPCImg 
               img={"https://storage.yandexcloud.net/site-home-img/"+item.img+"_3700x1000.jpg"} 
               title={item.title}
+              type='banner'
             />
           </SwiperSlide>
         ))}
@@ -57,5 +58,5 @@ export const BannerListPC = ({ bannerList }) => {
 };
 
 BannerListPC.propTypes = {
-  bannerList: PropTypes.array.isRequired
+  bannerList: PropTypes.array.isRequired,
 };

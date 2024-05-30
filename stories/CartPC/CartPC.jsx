@@ -4,6 +4,7 @@ import './CartPC.scss';
 import { TableCartPC } from '../TableCartPC/TableCartPC';
 import { CartPCPromoInput } from '../CartPCPromoInput/CartPCPromoInput';
 import { CartPCPromoText } from '../CartPCPromoText/CartPCPromoText';
+import { TableCartPC_text } from '../TableCartPC_text/TableCartPC_text';
 import { MyButton } from '../MyButton/MyButton';
 
 export const CartPC = ({ data, openBasket, promo, desc }) => {
@@ -11,6 +12,7 @@ export const CartPC = ({ data, openBasket, promo, desc }) => {
     <>
       {openBasket ? <div className="blockShadowBasket" /> : false}
       <div className="cartPC">
+        <TableCartPC_text text="allergens" />
         <TableCartPC {...data} />
         <CartPCPromoInput {...promo} />
         <CartPCPromoText {...desc} />

@@ -83,9 +83,9 @@ export const FormOrderPC = ({typeOrder, summ, itemsCount, allPrice, allPriceWith
         </div>
 
         {typeOrder == 'pickup' ? (
-          <span className="dopText">{parseInt(hours) >= 21 ? 'Заказы на самовывоз выдаются до 22:00' : ''}</span>
+          <span className="dopTextForm">{parseInt(hours) >= 21 ? 'Заказы на самовывоз выдаются до 22:00' : ''}</span>
         ) : (
-          <span className="dopText">
+          <span className="dopTextForm">
             Уважаемые клиенты, на сайте указано приблизительное время готовности
             заказа и доставки. В зависимости от ситуации на дорогах время
             доставки может быть увеличено. Благодарим за понимание!

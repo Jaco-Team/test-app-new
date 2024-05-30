@@ -1,0 +1,56 @@
+@import '../global';
+
+.profileAddrPC {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: calcSize(1560);
+  height: calcSize(120);
+  border-bottom: calcSize(3) solid rgba(0, 0, 0, 0.2);
+
+  & td {
+    @include MyFonts(30, 400);
+    padding: 0;
+  }
+
+  & td:nth-child(1) {
+    width: calcSize(300);
+  }
+  & td:nth-child(2) {
+    width: calcSize(960);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & span {
+      height: calcSize(60);
+      width: calcSize(240);
+      border-radius: calcSize(30);
+      background: rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+    }
+  }
+  & td:nth-child(3) {
+    width: calcSize(160);
+    cursor: pointer;
+    &:hover {
+      color: $ColorMain;
+      text-decoration: underline;
+    }
+  }
+  & td:last-child {
+    & svg {
+      width: calcSize(60);
+      height: calcSize(60);
+      vertical-align: text-top;
+      cursor: pointer;
+
+      &:hover > path {
+        stroke: $ColorMain;
+        stroke-opacity: 1;
+      }
+    }
+  }
+}

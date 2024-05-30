@@ -7,7 +7,7 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import { roboto } from '@/ui/Font.js';
 
-import { CheckOrderMobileModal, DeleteOrderMobileModal, CartModalOrderIcon, CookModalOrderIcon, DeliveryModalOrderIcon, HomeModalOrderIcon, PicupModalOrderIcon,
+import { CartModalOrderIcon, CookModalOrderIcon, DeliveryModalOrderIcon, HomeModalOrderIcon, PicupModalOrderIcon,
   MyAddrLocationIcon, StoreOrderMobileModal, SharpIcon, CalendarIcon, AddrDotsModalOrderIcon, EyeShow_modalOrder, EyeHide_modalOrder } from '@/ui/Icons.js';
 
 function ModalOrderStatusIconDelivery({ types }) {
