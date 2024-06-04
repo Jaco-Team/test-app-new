@@ -3,7 +3,7 @@ import * as MyMenu from '../MyMenu/MyMenu.stories';
 import * as FormOrderPC_btn from '../FormOrderPC_btn/FormOrderPC_btn.stories';
 
 export default {
-  title: 'Cart / Модалка оформления заказа',
+  title: 'Cart / ПК / Модалка оформления заказа',
   component: FormOrderPC,
   tags: ['autodocs'],
   argTypes: {

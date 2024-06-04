@@ -1,7 +1,7 @@
 import { ModalCityPC } from './ModalCityPC';
 
 export default {
-  title: 'Header / Модалка выбора города',
+  title: 'Header / ПК / Модалка выбора города',
   component: ModalCityPC,
   tags: ['autodocs'],
   argTypes: {

@@ -1,7 +1,7 @@
 import { FormOrderPC_btn } from './FormOrderPC_btn';
 
 export default {
-  title: 'Cart / Модалка оформления заказа / Элемент выбора',
+  title: 'Cart / ПК / Модалка оформления заказа / Элемент выбора',
   component: FormOrderPC_btn,
   tags: ['autodocs'],
   argTypes: {

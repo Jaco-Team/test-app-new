@@ -1,7 +1,7 @@
 import { TableCartPC_row } from './TableCartPC_row';
 
 export default {
-  title: 'Cart / Корзина / Table / Row',
+  title: 'Cart / ПК / Корзина / Table / Row',
   component: TableCartPC_row,
   tags: ['autodocs'],
   argTypes: {

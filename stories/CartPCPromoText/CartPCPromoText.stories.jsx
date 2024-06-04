@@ -1,7 +1,7 @@
 import { CartPCPromoText } from './CartPCPromoText';
 
 export default {
-  title: 'Cart / Корзина / Promo_Desc',
+  title: 'Cart / ПК / Корзина / Promo_Desc',
   component: CartPCPromoText,
   tags: ['autodocs'],
   argTypes: {

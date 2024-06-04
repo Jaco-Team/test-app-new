@@ -1,5 +1,3 @@
-import React, { useEffect } from 'react';
-
 import Meta from '@/components/meta.js';
 
 import CartMobile from './cartMobile';
@@ -7,8 +5,9 @@ import CartMenuMobile from './cartMenuMobile';
 import CartMapPoints from './cartMapPoints';
 import PayForm from './payForm';
 import DataTimePicker from '@/modules/cartForm/dataTimePicker';
+import ConfirmForm from './confirmForm';
 
-import { useCartStore } from '@/components/store';
+// import { useCartStore } from '@/components/store';
 
 export default function CartPage({ page, cityName }) {
 
@@ -26,7 +25,7 @@ export default function CartPage({ page, cityName }) {
       <CartMenuMobile cityName={cityName} />
       <CartMapPoints />
       <DataTimePicker />
-      
+      <ConfirmForm />
       <PayForm />
     </Meta>
   );

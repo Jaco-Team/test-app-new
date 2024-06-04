@@ -1,0 +1,46 @@
+@import '../global';
+
+.headerMobile {
+  z-index: 1200 !important;
+  background-color: #fff !important;
+  box-shadow: none !important;
+  height: calcSize_mobile(200);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+
+  & > div {
+    padding: 0 !important;
+    min-height: 0 !important;
+    width: calc(100% - calcSize_mobile(160));
+    display: flex;
+    justify-content: space-between;
+
+    & a {
+      text-decoration: none;
+      width: calcSize_mobile(500);
+      height: calcSize_mobile(120);
+
+      & img {
+        width: 100%;
+        height: 100%;
+      }
+    }
+
+    & div {
+      padding: calcSize_mobile(50);
+
+      & svg {
+        height: calcSize_mobile(45);
+        width: calcSize_mobile(90);
+      }
+
+      & svg.burgerActive path {
+        stroke: #dd1a32;
+      }
+
+    }
+  }
+}

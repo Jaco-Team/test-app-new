@@ -1,7 +1,7 @@
 import { TableCartPC_foot } from './TableCartPC_foot';
 
 export default {
-  title: 'Cart / Корзина / Table / Footer',
+  title: 'Cart / ПК / Корзина / Table / Footer',
   component: TableCartPC_foot,
   tags: ['autodocs'],
   argTypes: {

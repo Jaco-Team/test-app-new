@@ -94,14 +94,28 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   openPayForm: false,
 
+  openConfirmForm: false,
+  dopListConfirm: [],
+
   DBClick: false,
 
   // проверка наличия в корзине роллов, пиццы или всего
   cart_is: 'all',
 
+  promoName: '',
+
   ya_metrik: {
     'togliatti': 47085879,
     'samara': 47085879
+  },
+
+  // открытие/закрытие формы подтверждения заказа
+  setConfirmForm: (active) => {
+    const promoName = localStorage.getItem('promo_name');
+
+    const dopListConfirm = get().dopListCart.filter(it => it.count)
+
+    set({ openConfirmForm: active, promoName, dopListConfirm })
   },
 
   // открытие/закрытие формы оплаты онлайн

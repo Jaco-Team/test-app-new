@@ -1,0 +1,177 @@
+@import '../global';
+
+.containerConfirmPC {
+  padding: 0;
+  border-radius: calcSize(40);
+  width: calcSize(1000);
+  overflow: hidden;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .confirmHeader {
+    height: calcSize(120);
+    display: flex;
+    align-items: center;
+    margin-top: calcSize(80);
+    margin-bottom: calcSize(10);
+    position: relative;
+    width: 100%;
+
+    & span {
+      width: 100%;
+      text-align: center;
+      @include MyFonts(50, 500);
+    }
+    & svg {
+      cursor: pointer;
+      left: calcSize(59);
+      position: absolute;
+      width: calcSize(60);
+      height: calcSize(60);
+    }
+  }
+
+  .confirmText {
+    display: flex;
+    text-align: center;
+    width: calcSize(840);
+    height: calcSize(60);
+    line-height: calcSize(34);
+    @include MyFonts(30, 400);
+    margin-bottom: calcSize(50);
+  }
+
+  .confirmAddr {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    width: calcSize(840);
+    height: calcSize(80);
+    margin-bottom: calcSize(10);
+    & span {
+      line-height: calcSize(40);
+      @include MyFonts(40, 500);
+    }
+  }
+
+  .confirmTime {
+    display: flex;
+    align-items: center;
+    height: calcSize(60);
+    line-height: calcSize(40);
+    margin-bottom: calcSize(10);
+    @include MyFonts(40, 500);
+  }
+
+  .confirmText_2 {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    width: calcSize(560);
+    margin-bottom: calcSize(40);
+    @include MyFonts(22, 400);
+    line-height: calcSize(24);
+    color: rgba(0, 0, 0, 0.4) !important;
+  }
+
+  .confirmMessage {
+    display: flex;
+    align-items: center;
+    width: calcSize(840);
+    height: calcSize(160);
+    border-radius: calcSize(40);
+    background: rgb(213, 241, 245);
+    margin-bottom: calcSize(60);
+
+    & svg {
+      margin-left: calcSize(59);
+      width: calcSize(99);
+      height: calcSize(90);
+    }
+
+    & span {
+      width: calcSize(635);
+      margin-left: calcSize(42);
+      @include MyFonts(30, 400);
+    }
+  }
+
+  .cofirmDivider {
+    width: calcSize(920);
+    height: calcSize(2);
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-bottom: calcSize(40);
+  }
+
+  .cofirmTable {
+    width: calcSize(840);
+    display: flex;
+    flex-direction: column;
+    row-gap: calcSize(20);
+    margin-bottom: calcSize(40);
+
+    & div {
+      min-height: calcSize(60);
+      display: flex;
+      align-items: center;
+
+      & span {
+        @include MyFonts(40, 400);
+      }
+
+      & span:first-child {
+        width: calcSize(600);
+      }
+
+      & span:nth-child(2) {
+        min-width: calcSize(40);
+      }
+
+      & span:last-child {
+        margin-left: auto;
+      }
+    }
+  }
+
+  .confirmTotal {
+    width: calcSize(840);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & span:first-child {
+      @include MyFonts(40, 500);
+    }
+
+    & span:last-child {
+      @include MyFonts(50, 500);
+    }
+  }
+
+  .confirmPromo {
+    width: calcSize(840);
+    height: calcSize(60);
+    display: flex;
+    align-items: center;
+
+    & svg {
+      margin-right: calcSize(20);
+      width: calcSize(40);
+      height: calcSize(40);
+    }
+
+    & span {
+      @include MyFonts(30, 400);
+    }
+  }
+
+  .promo {
+    margin-top: calcSize(40);
+  }
+
+  & button:last-child {
+    margin-top: calcSize(60);
+    margin-bottom: calcSize(110);
+  }
+}

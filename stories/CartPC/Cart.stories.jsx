@@ -4,7 +4,7 @@ import * as CartPCPromoInput from '../CartPCPromoInput/CartPCPromoInput.stories'
 import * as CartPCPromoText from '../CartPCPromoText/CartPCPromoText.stories';
 
 export default {
-  title: 'Cart / Корзина',
+  title: 'Cart / ПК / Корзина',
   component: CartPC,
   tags: ['autodocs'],
   argTypes: {

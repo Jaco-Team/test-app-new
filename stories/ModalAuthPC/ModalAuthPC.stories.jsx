@@ -1,7 +1,7 @@
 import { ModalAuthPC } from './ModalAuthPC';
 
 export default {
-  title: 'Header / Модалка Авторизации',
+  title: 'Header / ПК / Модалка Авторизации',
   component: ModalAuthPC,
   tags: ['autodocs'],
   argTypes: {

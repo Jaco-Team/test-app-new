@@ -1,0 +1,416 @@
+@import '../settings';
+
+.cartConfirmFormPC {
+  .MuiDialog-paper {
+    overflow: visible;
+    margin: $MyScale50 0 !important;
+    max-width: none !important;
+    border-radius: $MyScale40;
+
+    .MuiDialogContent-root {
+      padding: 0;
+      border-radius: $MyScale40;
+      width: $MyScale1000;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .closeButton {
+        position: absolute;
+        top: 0;
+        left: -3.3vw;
+        padding: 0;
+        background-color: transparent;
+
+        & svg {
+          width: $MyScale60;
+          height: $MyScale60;
+          overflow: visible;
+          border-radius: $MyScale60;
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+      }
+
+      .confirmHeader {
+        height: $MyScale120;
+        display: flex;
+        align-items: center;
+        margin-top: $MyScale80;
+        margin-bottom: $MyScale10;
+        position: relative;
+        width: 100%;
+
+        & span {
+          width: 100%;
+          text-align: center;
+          @include font50_500();
+        }
+        & svg {
+          cursor: pointer;
+          left: $MyScale59;
+          position: absolute;
+          width: $MyScale60;
+          height: $MyScale60;
+        }
+      }
+
+      .confirmText {
+        display: flex;
+        text-align: center;
+        width: $MyScale840;
+        height: $MyScale60;
+        line-height: $MyScale34;
+        @include font30_400();
+        margin-bottom: $MyScale50;
+      }
+
+      .confirmAddr {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        width: $MyScale840;
+        height: $MyScale80;
+        margin-bottom: $MyScale10;
+        & span {
+          line-height: $MyScale40;
+          @include font40_500();
+        }
+      }
+
+      .confirmTime {
+        display: flex;
+        align-items: center;
+        height: $MyScale60;
+        line-height: $MyScale40;
+        margin-bottom: $MyScale10;
+        @include font40_500();
+      }
+
+      .confirmText_2 {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        width: $MyScale560;
+        margin-bottom: $MyScale40;
+        @include font22_400();
+        line-height: $MyScale24;
+        color: rgba(0, 0, 0, 0.4) !important;
+      }
+
+      .confirmMessage {
+        display: flex;
+        align-items: center;
+        width: $MyScale840;
+        height: $MyScale160;
+        border-radius: $MyScale40;
+        background: rgb(213, 241, 245);
+        margin-bottom: $MyScale60;
+
+        & svg {
+          margin-left: $MyScale59;
+          width: $MyScale99;
+          height: $MyScale90;
+        }
+
+        & span {
+          width: $MyScale635;
+          margin-left: $MyScale42;
+          @include font30_400();
+        }
+      }
+
+      .cofirmDivider {
+        width: $MyScale920;
+        height: $MyScale2;
+        background-color: rgba(0, 0, 0, 0.1);
+        margin-bottom: $MyScale40;
+      }
+
+      .cofirmTable {
+        width: $MyScale840;
+        display: flex;
+        flex-direction: column;
+        row-gap: $MyScale20;
+        margin-bottom: $MyScale40;
+
+        & div {
+          min-height: $MyScale60;
+          display: flex;
+          align-items: center;
+
+          & span {
+            @include font40_400();
+          }
+
+          & span:first-child {
+            width: $MyScale600;
+          }
+
+          & span:nth-child(2) {
+            min-width: $MyScale40;
+          }
+
+          & span:last-child {
+            margin-left: auto;
+          }
+        }
+      }
+
+      .table {
+        margin-bottom: $MyScale20;
+      }
+
+      .confirmTotal {
+        width: $MyScale840;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        & span:first-child {
+          @include font40_500();
+        }
+
+        & span:last-child {
+          @include font50_500();
+        }
+      }
+
+      .confirmPromo {
+        width: $MyScale840;
+        height: $MyScale60;
+        display: flex;
+        align-items: center;
+
+        & svg {
+          margin-right: $MyScale20;
+          width: $MyScale40;
+          height: $MyScale40;
+        }
+
+        & span {
+          @include font30_400();
+        }
+      }
+
+      .promo {
+        margin-top: $MyScale40;
+      }
+
+      .confirmBTN {
+        cursor: pointer;
+        border: 0;
+        padding: 0;
+        width: $MyScale560;
+        height: $MyScale80;
+        border-radius: $MyScale40;
+        background: rgb(204, 0, 51);
+        @include font30_400();
+        color: #fff !important;
+        margin-top: $MyScale60;
+        margin-bottom: $MyScale110;
+        box-shadow:
+          0px $MyScale3 $MyScale1 -$MyScale2 rgba(0, 0, 0, 0.2),
+          0px $MyScale2 $MyScale2 0px rgba(0, 0, 0, 0.14),
+          0px $MyScale1 $MyScale5 0px rgba(0, 0, 0, 0.12);
+
+        &:hover {
+          -webkit-text-decoration: none;
+          text-decoration: none;
+          background-color: rgb(142, 0, 35);
+          box-shadow:
+            0px $MyScale2 $MyScale4 -$MyScale1 rgba(0, 0, 0, 0.2),
+            0px $MyScale4 $MyScale5 0px rgba(0, 0, 0, 0.14),
+            0px $MyScale1 $MyScale10 0px rgba(0, 0, 0, 0.12);
+        }
+      }
+    }
+  }
+}
+
+.cartConfirmFormMobile {
+  & .MuiDrawer-paper {
+    max-height: calc(100% - $MyScale200_mobile);
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+    overflow-y: auto;
+
+    .container {
+      margin-top: $MyScale40_mobile;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 $MyScale80_mobile;
+
+      & .line {
+        height: $MyScale10_mobile;
+        width: $MyScale150_mobile;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: $MyScale5_mobile;
+        margin-bottom: $MyScale80_mobile;
+      }
+
+      & .confirmHeader {
+        height: $MyScale120_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: $MyScale40_mobile;
+        @include font75_700();
+      }
+
+      & .confirmText {
+        height: $MyScale80_mobile;
+        text-align: center;
+        margin-bottom: $MyScale60_mobile;
+        @include font40_400();
+      }
+
+      & .confirmAddr {
+        display: flex;
+        flex-direction: column;
+        text-align: center;
+        height: $MyScale100_mobile;
+        margin-bottom: $MyScale20_mobile;
+        & span {
+          line-height: $MyScale50_mobile;
+          @include font50_500();
+        }
+      }
+
+      & .confirmTime {
+        display: flex;
+        align-items: center;
+        height: $MyScale80_mobile;
+        line-height: $MyScale50_mobile;
+        margin-bottom: $MyScale20_mobile;
+        @include font50_500();
+      }
+
+      & .confirmText_2 {
+        display: flex;
+        align-items: center;
+        text-align: center;
+        margin-bottom: $MyScale40_mobile;
+        @include font25_400();
+        padding: 0 $MyScale180_mobile;
+        color: rgba(0, 0, 0, 0.4) !important;
+      }
+
+      & .confirmMessage {
+        display: flex;
+        align-items: center;
+        height: $MyScale180_mobile;
+        border-radius: $MyScale40_mobile;
+        background: rgb(213, 241, 245);
+        margin-bottom: $MyScale60_mobile;
+
+        & svg {
+          margin-left: $MyScale80_mobile;
+          width: $MyScale120_mobile;
+          height: $MyScale100_mobile;
+        }
+
+        & span {
+          width: $MyScale700_mobile;
+          margin-right: $MyScale60_mobile;
+          margin-left: $MyScale50_mobile;
+          @include font35_400();
+        }
+      }
+
+      & .cofirmDivider {
+        width: $MyScale1090_mobile;
+        height: $MyScale2_mobile;
+        background-color: rgba(0, 0, 0, 0.1);
+        margin-bottom: $MyScale40_mobile;
+      }
+
+      & .cofirmTable {
+        display: flex;
+        flex-direction: column;
+        row-gap: $MyScale20_mobile;
+        margin-bottom: $MyScale40_mobile;
+        width: $MyScale1010_mobile;
+
+        & div {
+          min-height: $MyScale60_mobile;
+          display: flex;
+          align-items: center;
+
+          & span {
+            @include font40_400();
+          }
+
+          & span:first-child {
+            width: $MyScale760_mobile;
+          }
+
+          & span:nth-child(2) {
+            min-width: $MyScale100_mobile;
+          }
+
+          & span:last-child {
+            margin-left: auto;
+          }
+        }
+      }
+
+      & .table {
+        margin-bottom: $MyScale20_mobile;
+      }
+
+      & .confirmTotal {
+        width: $MyScale1010_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+
+        & span:first-child {
+          @include font50_500();
+        }
+
+        & span:last-child {
+          @include font60_600();
+        }
+      }
+
+      & .confirmPromo {
+        height: $MyScale60_mobile;
+        display: flex;
+        align-items: center;
+        align-self: start;
+
+        & svg {
+          margin-right: $MyScale20_mobile;
+          width: $MyScale40_mobile;
+          height: $MyScale40_mobile;
+        }
+
+        & span {
+          @include font30_400();
+        }
+      }
+
+      & .promo {
+        margin-top: $MyScale40_mobile;
+      }
+
+      & .confirmBTN {
+        cursor: pointer;
+        border: 0;
+        width: $MyScale650_mobile;
+        height: $MyScale120_mobile;
+        border-radius: $MyScale60_mobile;
+        margin-bottom: $MyScale200_mobile;
+        margin-top: $MyScale100_mobile;
+        background: rgb(204, 0, 51);
+        @include font50_500();
+        color: #fff !important;
+        box-shadow:
+          0px $MyScale3_mobile $MyScale1_mobile -$MyScale2_mobile rgba(0, 0, 0, 0.2),
+          0px $MyScale2_mobile $MyScale2_mobile 0px rgba(0, 0, 0, 0.14),
+          0px $MyScale1_mobile $MyScale5_mobile 0px rgba(0, 0, 0, 0.12);
+      }
+    }
+  }
+}

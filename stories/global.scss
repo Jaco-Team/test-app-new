@@ -8,8 +8,21 @@ $ColorMain: #cc0033;
   @return calc(100 * calc($size / 2770)) + vw;
 }
 
+@function calcSize_mobile($size) {
+  @return calc(100 * calc($size / 1170)) + vw;
+}
+
 @mixin MyFonts($size: 32, $weight: 400) {
   font-size: calcSize($size) !important;
+  font-family: $Roboto !important;
+  color: $ColorText;
+
+  font-style: normal;
+  font-weight: $weight;
+}
+
+@mixin MyFonts_mobile($size: 32, $weight: 400) {
+  font-size: calcSize_mobile($size) !important;
   font-family: $Roboto !important;
   color: $ColorText;
 

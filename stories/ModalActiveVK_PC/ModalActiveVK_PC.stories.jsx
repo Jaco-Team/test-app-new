@@ -1,7 +1,7 @@
 import { ModalActiveVK_PC } from './ModalActiveVK_PC';
 
 export default {
-  title: 'Header / Модалка VK',
+  title: 'Header / ПК / Модалка VK',
   component: ModalActiveVK_PC,
   tags: ['autodocs'],
   argTypes: {

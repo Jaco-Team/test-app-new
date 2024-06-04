@@ -1,7 +1,7 @@
 import { AlertPC } from './AlertPC';
 
 export default {
-  title: 'Header / Уведомление клиента',
+  title: 'Header / ПК / Уведомление клиента',
   component: AlertPC,
   tags: ['autodocs'],
   parameters: {

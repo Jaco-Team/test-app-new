@@ -1,0 +1,180 @@
+@import '../global';
+
+.containerConfirmMobile {
+  max-height: calc(100% - calcSize_mobile(200));
+  border-radius: calcSize_mobile(80) calcSize_mobile(80) 0 0;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & .line {
+    margin-top: calcSize_mobile(40);
+    height: calcSize_mobile(10);
+    width: calcSize_mobile(150);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: calcSize_mobile(5);
+    margin-bottom: calcSize_mobile(80);
+  }
+
+  & .confirmHeader {
+    height: calcSize_mobile(120);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: calcSize_mobile(40);
+    @include MyFonts_mobile(75, 700);
+  }
+
+  & .confirmText {
+    height: calcSize_mobile(80);
+    text-align: center;
+    margin-bottom: calcSize_mobile(60);
+    line-height: calcSize_mobile(40);
+    @include MyFonts_mobile(40, 400);
+  }
+
+  & .confirmAddr {
+    display: flex;
+    flex-direction: column;
+    text-align: center;
+    height: calcSize_mobile(100);
+    margin-bottom: calcSize_mobile(20);
+    & span {
+      line-height: calcSize_mobile(50);
+      @include MyFonts_mobile(50, 500);
+    }
+  }
+
+  & .confirmTime {
+    display: flex;
+    align-items: center;
+    height: calcSize_mobile(80);
+    line-height: calcSize_mobile(50);
+    margin-bottom: calcSize_mobile(20);
+    @include MyFonts_mobile(50, 500);
+  }
+
+  & .confirmText_2 {
+    display: flex;
+    align-items: center;
+    text-align: center;
+    margin-bottom: calcSize_mobile(40);
+    line-height: calcSize_mobile(30);
+    @include MyFonts_mobile(25, 400);
+    padding: 0 calcSize_mobile(180);
+    color: rgba(0, 0, 0, 0.4) !important;
+  }
+
+  & .confirmMessage {
+    display: flex;
+    align-items: center;
+    height: calcSize_mobile(180);
+    border-radius: calcSize_mobile(40);
+    background: rgb(213, 241, 245);
+    margin-bottom: calcSize_mobile(60);
+
+    & svg {
+      margin-left: calcSize_mobile(80);
+      width: calcSize_mobile(120);
+      height: calcSize_mobile(100);
+    }
+
+    & span {
+      width: calcSize_mobile(700);
+      margin-right: calcSize_mobile(60);
+      margin-left: calcSize_mobile(50);
+      line-height: calcSize_mobile(40);
+      @include MyFonts_mobile(35, 400);
+    }
+  }
+
+  & .cofirmDivider {
+    width: calcSize_mobile(1090);
+    height: calcSize_mobile(2);
+    background-color: rgba(0, 0, 0, 0.1);
+    margin-bottom: calcSize_mobile(40);
+  }
+
+  & .cofirmTable {
+    display: flex;
+    flex-direction: column;
+    row-gap: calcSize_mobile(20);
+    margin-bottom: calcSize_mobile(40);
+    width: calcSize_mobile(1010);
+
+    & div {
+      min-height: calcSize_mobile(60);
+      display: flex;
+      align-items: center;
+
+      & span {
+        @include MyFonts_mobile(40, 400);
+      }
+
+      & span:first-child {
+        width: calcSize_mobile(760);
+      }
+
+      & span:nth-child(2) {
+        min-width: calcSize_mobile(100);
+      }
+
+      & span:last-child {
+        margin-left: auto;
+      }
+    }
+  }
+
+  & .table {
+    margin-bottom: calcSize_mobile(20);
+  }
+
+  & .confirmTotal {
+    width: calcSize_mobile(1010);
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+
+    & span:first-child {
+      @include MyFonts_mobile(50, 500);
+    }
+
+    & span:last-child {
+      @include MyFonts_mobile(60, 600);
+    }
+  }
+
+  & .confirmPromo {
+    height: calcSize_mobile(60);
+    display: flex;
+    align-items: center;
+    width: calcSize_mobile(1010);
+
+    & svg {
+      margin-right: calcSize_mobile(20);
+      width: calcSize_mobile(40);
+      height: calcSize_mobile(40);
+    }
+
+    & span {
+      @include MyFonts_mobile(30, 400);
+    }
+  }
+
+  & .promo {
+    margin-top: calcSize_mobile(40);
+  }
+
+  & .confirmBTN {
+    cursor: pointer;
+    border: 0;
+    width: calcSize_mobile(650);
+    height: calcSize_mobile(120);
+    border-radius: calcSize_mobile(60);
+    margin-bottom: calcSize_mobile(200);
+    margin-top: calcSize_mobile(100);
+    background: rgb(204, 0, 51);
+    @include MyFonts_mobile(50, 500);
+    color: #fff !important;
+  }
+}

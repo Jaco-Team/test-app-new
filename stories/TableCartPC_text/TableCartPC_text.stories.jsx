@@ -1,7 +1,7 @@
 import { TableCartPC_text } from './TableCartPC_text';
 
 export default {
-  title: 'Cart / Корзина / Table / Text',
+  title: 'Cart / ПК / Корзина / Table / Text',
   component: TableCartPC_text,
   tags: ['autodocs'],
   argTypes: {

@@ -1,6 +1,7 @@
 import FormOrder from '@/modules/cartForm/formOrder';
 import PayForm from '@/modules/cart/payForm';
 import DataTimePicker from '@/modules/cartForm/dataTimePicker';
+import ConfirmForm from '@/modules/cart/confirmForm';
 
 import { useCartStore } from '@/components/store.js';
 
@@ -40,6 +41,7 @@ export default function BasketModalPC() {
         </DialogContent>
       </Dialog>
 
+      <ConfirmForm />
       <DataTimePicker />
       <PayForm />
     </>

@@ -1,0 +1,70 @@
+@import '../global';
+
+.navBarMobile {
+  margin-top: calcSize_mobile(200);
+  background-color: #ffffff;
+  height: calcSize_mobile(1260);
+  border-radius: 0 0 calcSize_mobile(80) calcSize_mobile(80);
+  border-top: calcSize_mobile(2) solid rgba(0, 0, 0, 0.1);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  & .listLink {
+    margin-top: calcSize_mobile(80);
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    margin-bottom: calcSize_mobile(100);
+
+    & a {
+      display: flex;
+      align-items: center;
+      text-decoration: none;
+      width: calcSize_mobile(920);
+      height: calcSize_mobile(160);
+      margin-bottom: calcSize_mobile(10);
+      border-radius: calcSize_mobile(40);
+
+      & svg {
+        margin: 0 calcSize_mobile(50);
+        height: calcSize_mobile(100);
+        width: calcSize_mobile(100);
+      }
+
+      & span {
+        @include MyFonts_mobile(50, 500);
+      }
+
+      & .circle {
+        width: calcSize_mobile(80);
+        height: calcSize_mobile(80);
+        border-radius: calcSize_mobile(40);
+        margin-left: auto;
+        margin-right: calcSize_mobile(40);
+        color: #ffffff !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+      }
+
+      & .circle.profile {
+        background: rgba(0, 0, 0, 0.4);
+        @include MyFonts_mobile(32, 400);
+      }
+
+      & .circle.count {
+        background: #dd1a32;
+        @include MyFonts_mobile(44, 400);
+      }
+    }
+  }
+
+  & .line {
+    height: calcSize_mobile(10);
+    width: calcSize_mobile(150);
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: calcSize_mobile(5);
+  }
+}

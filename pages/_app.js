@@ -71,6 +71,8 @@ import '../styles/header/modalSelect.scss'
 import '../styles/header.scss' // этот нужен??
 import '../styles/badge_item.scss'
 
+import '../styles/cart/cartConfirmForm.scss'
+
 //pm2 delete test-app-new && rm -rf test-app-new && git clone https://github.com/vito3315/test-app-new.git && cd test-app-new
 //npm install && npm run build && pm2 start npm --name "test-app-new" -- start
 

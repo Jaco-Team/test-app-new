@@ -3,7 +3,7 @@ import React from 'react';
 import { HeaderPC } from './HeaderPC';
 
 export default {
-  title: 'Header / Header',
+  title: 'Header / ПК / Header',
   component: HeaderPC,
   tags: ['autodocs'],
   argTypes: {

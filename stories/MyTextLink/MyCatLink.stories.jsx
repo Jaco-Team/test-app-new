@@ -3,7 +3,7 @@ import React from 'react';
 import { MyCatLink } from './MyCatLink';
 
 export default {
-  title: 'Header / Категории',
+  title: 'Header / ПК / Категории',
   component: MyCatLink,
   tags: ['autodocs'],
   argTypes: {

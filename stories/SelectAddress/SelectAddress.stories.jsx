@@ -1,7 +1,7 @@
 import { SelectAddress } from './SelectAddress';
 
 export default {
-  title: 'Header / Модалка выбора адреса клиента',
+  title: 'Header / ПК / Модалка выбора адреса клиента',
   component: SelectAddress,
   tags: ['autodocs'],
   argTypes: {

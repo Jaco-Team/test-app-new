@@ -1,7 +1,7 @@
 import { DataTimePickerPC } from './DataTimePickerPC';
 
 export default {
-  title: 'Cart / Модалка выбора даты и времени заказа',
+  title: 'Cart / ПК / Модалка выбора даты и времени заказа',
   component: DataTimePickerPC,
   tags: ['autodocs'],
   argTypes: {

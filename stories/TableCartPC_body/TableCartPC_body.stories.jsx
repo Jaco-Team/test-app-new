@@ -3,7 +3,7 @@ import * as TableCartPC_row from '../TableCartPC_row/TableCartPC_row.stories';
 import * as TableCartPC_foot from '../TableCartPC_foot/TableCartPC_foot.stories';
 
 export default {
-  title: 'Cart / Корзина / Table / Body',
+  title: 'Cart / ПК / Корзина / Table / Body',
   component: TableCartPC_body,
   tags: ['autodocs'],
   argTypes: {

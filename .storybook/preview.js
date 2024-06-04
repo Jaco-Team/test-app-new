@@ -42,6 +42,7 @@ const preview = {
     },
     //layout: 'centered',
   },
+
   decorators: [
     (Story) => (
       <div className={roboto}>
@@ -56,6 +57,8 @@ const preview = {
       },
     }),
   ],
+
+  tags: ['autodocs']
 };
 
 export default preview;
