@@ -65,7 +65,7 @@ export default function CartMenuMobile({ cityName }) {
         setList(type_pay_div);
       }
     }
-  }, [nameList, thisCityRu, orderPic, orderAddr]);
+  }, [nameList, thisCityRu, orderPic, orderAddr, addrList]);
 
   const chooseMenuItem = (item) => {
     if (nameList === 'point' && item.name !== 'Выбрать на карте') {
@@ -109,8 +109,6 @@ export default function CartMenuMobile({ cityName }) {
       setTypePay(item);
     }
   };
-
-  // console.log( 'list', list )
 
   return (
     <SwipeableDrawer

@@ -19,7 +19,7 @@ import MyTextInput from '@/ui/MyTextInput.js';
 import { SwitchIOS as MySwitch } from '@/ui/MySwitch.js';
 import MySelect from '@/ui/MySelect.js';
 
-import { CloseIconMin } from '@/ui/Icons.js';
+import { CloseIconMin, ProfileIconNew } from '@/ui/Icons.js';
 
 import ModalAddr from './modalAddr.jsx';
 
@@ -142,9 +142,9 @@ export default function ProfilePC({ page, this_module, city }){
 
           <Grid item xs={12} className="main_data">
             <div>
-              <div>
-                {shortName}
-              </div>
+              <span>
+                {shortName ? shortName : <ProfileIconNew />}
+              </span>
             </div>
             <div>
               <div style={{ marginTop: '0.1vw' }}>

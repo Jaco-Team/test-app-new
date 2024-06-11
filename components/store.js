@@ -51,7 +51,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   orderPic: 0,
 
   // найти добавляемый промо товар в корзине(items)
-  promoItemsFind: false,
+  //promoItemsFind: false,
 
   // открыть модалку оформления заказа на ПК
   openModalBasket: false,
@@ -111,7 +111,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   // открытие/закрытие формы подтверждения заказа
   setConfirmForm: (active) => {
-    const promoName = localStorage.getItem('promo_name');
+    const promoName = sessionStorage.getItem('promo_name');
 
     const dopListConfirm = get().dopListCart.filter(it => it.count)
 
@@ -164,7 +164,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // получение данных корзины и оформления заказа
   getCartLocalStorage: () => {
 
-    const promoName = localStorage.getItem('promo_name');
+    const promoName = sessionStorage.getItem('promo_name');
     const allItems = get().allItems;
     const cart = JSON.parse(localStorage.getItem('setCart'));
 
@@ -354,8 +354,13 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     //get().setAllItems(json?.all_items);
     //get().changeAllItems();
 
-    get().promoCheck();
-    get().getItems();
+    if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
+      get().getInfoPromo(sessionStorage.getItem('promo_name'), city)
+    } else {
+      get().promoCheck();
+    }
+
+    //get().getItems();
   },
 
   // все товары которые есть на сайте
@@ -385,7 +390,15 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     set({ items, allPriceWithoutPromo });
     
     if(promoInfo) {
-      get().promoCheck();
+      if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
+
+        const city = useCitiesStore.getState().thisCity;
+
+        get().getInfoPromo(sessionStorage.getItem('promo_name'), city)
+      } else {
+        get().promoCheck();
+      }
+      // get().promoCheck();
     } else {
       get().getItems();
     }
@@ -546,7 +559,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     let data;
     const typeOrder = get().typeOrder;
-    const promoName = localStorage.getItem('promo_name');
+    const promoName = sessionStorage.getItem('promo_name');
 
     //самовывоз
     if( typeOrder == 'pic' ) {
@@ -665,7 +678,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   clearCartData: () => {
     localStorage.removeItem('setCart');
-    localStorage.removeItem('promo_name');
+    sessionStorage.removeItem('promo_name');
 
     set({
       items: [],
@@ -714,8 +727,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       set({ cart_is: 'all' })
     } 
 
-    
-
     let itemsOffDops = allItems.filter(item => (parseInt(item.cat_id) !== 7 || item.disabled) && item.cat_id !== undefined );
 
     set({ itemsOffDops });
@@ -732,11 +743,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const items = get().items;
     const promoInfo = get().promoInfo;
     const checkPromo = get().checkPromo;
-    //const itemsPromo = get().itemsWithPromo;
 
     const itemsCount = items.reduce((all, item) => all + item.count, 0);
     
     if( checkPromo?.st === true ) {
+
       if(promoInfo?.promo_action === '2') {
         let itemsWithPromo = get().itemsWithPromo;
 
@@ -749,15 +760,18 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         set({ itemsCount: itemsCount, itemsWithPromo: [] });
       }
 
-      if(promoInfo?.promo_action === '3') {
-        const promoId = promoInfo.items_on_price[0].id;
-        const promo = items.find(item => item.item_id === promoId);
-        if(promo) {
-          set({ promoItemsFind: true });
-        }
-      } else {
-        set({ promoItemsFind: false });
-      }
+      // if(promoInfo?.promo_action === '3') {
+      //   const promoId = promoInfo.items_on_price[0].id;
+      //   const promo = items.find(item => item.item_id === promoId);
+      //   if(promo) {
+      //     set({ promoItemsFind: true });
+      //   }
+      // } else {
+      //   set({ promoItemsFind: false });
+      // }
+
+    } else {
+      set({ itemsCount });
     }
 
     if(!promoInfo?.status_promo) {
@@ -1000,7 +1014,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   },
 
   // добавления товара для корзины
-  plus: (item_id, cat_id) => {
+  plus: (item_id) => {
     let check = false;
     let items = get().items;
     const allItems = get().allItems;
@@ -1047,7 +1061,15 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     set({ items, itemsCount, allPriceWithoutPromo });
     
     if(promoInfo) {
-      get().promoCheck();
+      if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
+
+        const city = useCitiesStore.getState().thisCity;
+
+        get().getInfoPromo(sessionStorage.getItem('promo_name'), city)
+      } else {
+        get().promoCheck();
+      }
+      // get().promoCheck();
     } else {
       get().getItems();
     }
@@ -1124,7 +1146,15 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     set({ items, itemsCount, allPriceWithoutPromo });
     
     if(promoInfo) {
-      get().promoCheck();
+      if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
+
+        const city = useCitiesStore.getState().thisCity;
+
+        get().getInfoPromo(sessionStorage.getItem('promo_name'), city)
+      } else {
+        get().promoCheck();
+      }
+      // get().promoCheck();
     } else {
       get().getItems();
     }
@@ -1160,9 +1190,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         checkPromo: null,
       })
       
-      localStorage.removeItem('promo_name')
-    
-      get().setDataPromoBasket();
+      sessionStorage.removeItem('promo_name')
+
+      setTimeout(() => {
+        get().setDataPromoBasket()
+      }, 100)
       
       return {
         st: false,
@@ -1185,9 +1217,13 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         allPriceWithoutPromo: null, 
       })
       
-      localStorage.setItem('promo_name', promoName)
+      sessionStorage.setItem('promo_name', promoName)
       
       const res = get().promoCheck();
+
+      setTimeout( () => {
+        get().setDataPromoBasket()
+      }, 100 )
       
       set({
         checkPromo: res
@@ -1738,7 +1774,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       get().getInfoPromo(order?.order?.promo_name ?? '', city);
     //}
 
-    const itemsWithPromo = get().itemsWithPromo;
+    //const itemsWithPromo = get().itemsWithPromo;
     
     
     let checkItem = null;
@@ -1818,6 +1854,27 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
     strokeColor: "#000000", 
     fillOpacity: 0.001, 
     strokeWidth: 0 
+  },
+
+  ya_metrik: {
+    'togliatti': 47085879,
+    'samara': 47085879
+  },
+
+  // звонок по телефону при клике на телефон на странице Контакты в мобильной версии
+  clickPhoneMobile: (city) => {
+    window.location.href = `tel:${get().phone.split(/[\s,(),-]+/).join('')}`;
+
+    try {
+      const ym_data = {
+        city
+      }
+
+      ym(get().ya_metrik[city], 'reachGoal', 'call_from_site', ym_data);
+
+    } catch (error) {
+      console.log('clickPhoneMobile', error);
+    }
   },
  
   // получение геопозиции клиента на карте в мобильной версии
@@ -2272,7 +2329,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     let json = await api(this_module, data);
 
     set({
-      shortName: json?.user?.name?.substring(0, 1) + json?.user?.fam?.substring(0, 1),
+      shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
       userInfo: json?.user,
       streets: json?.streets,
       city: city
@@ -3269,6 +3326,133 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
   // стили для меню категории в мобилке, в зависимости от скролла
   cat_position: false,
+  
+  isOpenFilter: false,
+  filterActive: false,
+  transition_menu_pc: '1.1552346570397vw',
+  transition_menu_mobile: '0',
+  CatsItemsCopy: [],
+
+  // фильтр товаров на главной странице
+  filterItems: (res) => {
+
+    if(res === 1) {
+
+      let catsItems = structuredClone(get().CatsItemsCopy);
+
+      catsItems = catsItems.reduce((newItems, cat, index) => {
+  
+        if(index === 0) {
+          cat.items = cat.items.slice(12);
+        } else {
+          cat.items = cat.items.slice(cat.items.length);
+        }
+  
+       return newItems = [...newItems,...[cat]]
+      }, [])
+  
+      set({ CatsItems: catsItems })
+    }
+
+    if(res === 2) {
+
+      let catsItems = structuredClone(get().CatsItemsCopy);
+
+      catsItems = catsItems.reduce((newItems, cat, index) => {
+  
+        if(index === 1) {
+          cat.items = cat.items.slice(30);
+        } else {
+          cat.items = cat.items.slice(cat.items.length);
+        }
+  
+       return newItems = [...newItems,...[cat]]
+      }, [])
+  
+      set({ CatsItems: catsItems })
+    }
+
+    if(res === 3) {
+
+      let catsItems = structuredClone(get().CatsItemsCopy);
+
+      catsItems = catsItems.reduce((newItems, cat, index) => {
+  
+        if(index === 3) {
+          cat.items = cat.items.slice(34);
+        } else {
+          cat.items = cat.items.slice(cat.items.length);
+        }
+  
+       return newItems = [...newItems,...[cat]]
+      }, [])
+  
+      set({ CatsItems: catsItems })
+    }
+
+    if(res === 4) {
+
+      let catsItems = structuredClone(get().CatsItemsCopy);
+
+      catsItems = catsItems.reduce((newItems, cat, index) => {
+  
+        if(index === 6) {
+          cat.items = cat.items.slice(10);
+        } else {
+          cat.items = cat.items.slice(cat.items.length);
+        }
+  
+       return newItems = [...newItems,...[cat]]
+      }, [])
+  
+      set({ CatsItems: catsItems })
+    }
+
+    if(res === 0) {
+
+      let catsItems = structuredClone(get().CatsItemsCopy);
+
+      set({ CatsItems: catsItems })
+    }
+
+  },
+
+  // открыть/закрыть фильтр на главной странице
+  setActiveFilter: (value) => {
+    
+    const matches = useHeaderStore.getState().matches;
+
+    if(value) {
+
+      if(matches) {
+        const filter = document.querySelector('.filterMobile')?.getBoundingClientRect().height;
+
+        const width = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
+
+        const transition_menu_mobile = (100 * ((filter) / width)) + 3.4188034188034 + 'vw';
+
+        set({transition_menu_mobile})
+
+      } else {
+        const filter = document.querySelector('.filterPC')?.getBoundingClientRect().height;
+  
+        const width = document.getElementById('headerNew')?.getBoundingClientRect().width;
+
+        const transition_menu_pc = (100 * ((filter) / width)) + 2.3104693140794 + 'vw';
+
+        set({transition_menu_pc})
+      }
+
+      setTimeout(() => {
+        set({filterActive: value})
+      }, 500);
+      
+    } else {
+      set({ filterActive: value, transition_menu_mobile: '0', transition_menu_pc: '1.1552346570397vw' })
+    }
+
+    set({isOpenFilter: value})
+  },
 
   // установить стили для меню категории в мобилке, в зависимости от скролла
   setMenuCatPosition: (value) => {
@@ -3308,16 +3492,18 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     let activePage = useHeaderStore.getState().activePage;
 
+    let bannerList;
+
     if( activePage == 'akcii' ){
-      json.banners = json?.banners.filter( (item) => parseInt(item.is_active_actii) == 1 );
+      bannerList = json?.banners.filter( (item) => parseInt(item.is_active_actii) == 1 );
     }
 
     if( activePage == 'home' ){
-      json.banners = json?.banners.filter( (item) => parseInt(item.is_active_home) == 1 );
+      bannerList = json?.banners.filter( (item) => parseInt(item.is_active_home) == 1 );
     }
 
     set({
-      bannerList: json?.banners,
+      bannerList,
     });
   },
   
@@ -3333,7 +3519,10 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     set({
       CatsItems: json.items,
-      category: json.main_cat
+      category: json.main_cat,
+
+      // для тестов фильтра на главной
+      CatsItemsCopy:  json.items,
     });
   },
 

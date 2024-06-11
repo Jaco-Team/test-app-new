@@ -71,6 +71,10 @@
 
 .BannerMobile {
 
+  .swiper {
+    margin-top: 0 !important;
+  }
+
   & .item_banner_image {
     width: $MyScale1090_mobile;
     margin: $MyScale200_mobile $MyScale40_mobile 0 $MyScale40_mobile;
@@ -80,23 +84,21 @@
   }
 
   & .swiper-pagination {
-    bottom: 0 !important;
-    top: 0 !important;
     z-index: 3000 !important;
-    position: relative !important;
-    margin-top: $MyScale20_mobile;
+    margin-bottom: $MyScale20_mobile;
     display: flex;
     justify-content: center;
     & .swiper-pagination-bullet {
       width: $MyScale20_mobile;
       height: $MyScale20_mobile;
-      background: rgba(0, 0, 0, 0.1);
       margin-right: $MyScale20_mobile !important;
       margin-left: 0 !important;
-      opacity: 1;
+      background-color: rgb(255, 255, 255);
+      opacity: 0.4;
     }
     & .swiper-pagination-bullet-active {
-      background: rgba(0, 0, 0, 0.3);
+      background-color: rgb(255, 255, 255);
+      opacity: 1;
     }
   }
 }

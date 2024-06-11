@@ -13,7 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 //import JacoLogo from '@/public/Jaco-Logo-PC.png';
 //import JacoLogo from '@/public/Jaco-Logo-120.png';
 //Jaco-Logo-120.png
-import {MapPointIcon, ArrowDownHeaderPC, ArrowUpHeaderPC, BurgerIconPC, IconArrowDown, JacoDocsIcon, LocationHeaderIcon } from '@/ui/Icons.js';
+import {Filter, ArrowDownHeaderPC, ArrowUpHeaderPC, JacoDocsIcon, LocationHeaderIcon } from '@/ui/Icons.js';
 
 import { Link as ScrollLink } from 'react-scroll';
 
@@ -118,7 +118,7 @@ export default React.memo(function NavBarPC({ city }) {
   const [setActiveBasket, openBasket, setActiveModalCity, activePage] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity, state.activePage]);
   const [setThisCityRu, thisCityRu, setThisCity] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu, state.setThisCity]);
   const [ getInfoPromo, getCartLocalStorage ] = useCartStore( state => [ state.getInfoPromo, state.getCartLocalStorage ])
-  const [ category, setCategory ] = useHomeStore((state) => [ state.category, state.setCategory ]);
+  const [ category, setCategory, setActiveFilter, isOpenFilter ] = useHomeStore((state) => [ state.category, state.setCategory, state.setActiveFilter, state.isOpenFilter ]);
 
   if (city == '') return null;
 
@@ -149,8 +149,8 @@ export default React.memo(function NavBarPC({ city }) {
         setActiveModalCity(true);
       }
 
-      if( localStorage.getItem('promo_name') ){
-        getInfoPromo(localStorage.getItem('promo_name'), city)
+      if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
+        getInfoPromo(sessionStorage.getItem('promo_name'), city)
       }
 
       getCartLocalStorage();
@@ -198,7 +198,7 @@ export default React.memo(function NavBarPC({ city }) {
     closeMenu();
   }
 
-  const closeBasket = () => {
+  const handleClose = () => {
     if(openBasket) {
       setActiveBasket(false);
     }
@@ -259,7 +259,7 @@ export default React.memo(function NavBarPC({ city }) {
 
   return (
     <>
-      <AppBar className="headerNew" id="headerNew" elevation={2} onClick={closeBasket}>
+      <AppBar className="headerNew" id="headerNew" elevation={2} onClick={handleClose}>
         <Toolbar>
           <div>
             <MemoLogo city={city} activePage={activePage} />
@@ -301,6 +301,13 @@ export default React.memo(function NavBarPC({ city }) {
             <div className={'chooseCity'} onClick={ () => setActiveModalCity(true) }>
               {thisCityRu}
             </div>
+
+            {activePage === 'home' ?
+              <div className={isOpenFilter ? 'filterHeaderPC active' : 'filterHeaderPC'} onClick={() => setActiveFilter(!isOpenFilter)}>
+                <Filter className='filter_svg' />
+              </div>
+              : null
+            }
 
             <Link href={'/' + city + '/contacts'}  className={activePage === 'contacts' ? 'mapHeaderPC active' : 'mapHeaderPC'}>
               <LocationHeaderIcon className='map_svg' />

@@ -1,7 +1,7 @@
 import { useState, memo } from 'react';
 
 import Link from 'next/link';
-import Image from 'next/image';
+//import Image from 'next/image';
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -10,7 +10,6 @@ import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
 import { BurgerIconMobile, MenuIconMobile, AboutIconMobile, LocationIconMobile, MapContactsMobile } from '@/ui/Icons.js';
-import JacoLogo from '@/public/jaco-logo-mobile.png';
 import { roboto } from '@/ui/Font.js';
 
 import { useHeaderStore, useCitiesStore } from '@/components/store.js';
@@ -31,11 +30,13 @@ const MemoLogo = memo(function MemoLogo({city, activePage}){
           smooth={false}
           offset={-200}
         >
-          <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true}/>
+          {/* <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true}/> */}
+          <img alt="Жако доставка роллов и пиццы" src={'/Jaco-Logo-120.png'} />
         </ScrollLink>
           :
         <Link href={'/' + city}>
-          <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true}/>
+          <img alt="Жако доставка роллов и пиццы" src={'/Jaco-Logo-120.png'} />
+          {/* <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true}/> */}
         </Link>
       }
     </>
@@ -89,22 +90,22 @@ export default memo(function NavBarMobile({ city }) {
 
               <ListItem onClick={() => { setActiveModalCityList(true); setActiveMenu(false); }}>
                 <a>
-                  <MapContactsMobile />
+                  <MapContactsMobile className='otherSVG' />
                   <span>{thisCityRu}</span>
                 </a>
               </ListItem>
 
               <ListItem onClick={() => setActiveMenu(false)}>
                 <Link href={`/${city}/contacts`} style={{background: activePage === 'contacts' ? 'rgba(0, 0, 0, 0.03)' : null}}>
-                  <LocationIconMobile />
+                  <LocationIconMobile  className='otherSVG' />
                   <span style={{color: activePage === 'contacts' ? ' #dd1a32' : null}}>Адреса</span>
                 </Link>
               </ListItem>
 
               <ListItem onClick={() => setActiveMenu(false)}>
-                <Link href={`/${city}/document`} style={{background: activePage === 'other' ? 'rgba(0, 0, 0, 0.03)' : null}}>
+                <Link href={`/${city}/document`} style={{background: activePage === 'document' ? 'rgba(0, 0, 0, 0.03)' : null}}>
                   <AboutIconMobile />
-                  <span style={{color: activePage === 'other' ? ' #dd1a32' : null}}>Жако</span>
+                  <span style={{color: activePage === 'document' ? ' #dd1a32' : null}}>Жако</span>
                 </Link>
               </ListItem>
 

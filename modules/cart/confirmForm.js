@@ -22,9 +22,9 @@ export default function ConfirmForm() {
   const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
 
   const [openConfirmForm, setConfirmForm, orderAddr, itemsCount, allPrice, summDiv, itemsOffDops, dopListCart, free_drive, dateTimeOrder,
-    promoInfo, sdacha, typePay, promoName, createOrder, typeOrder, clearCartData, setPayForm, setActiveModalBasket, dopListConfirm] = useCartStore((state) => [state.openConfirmForm, state.setConfirmForm, state.orderAddr, state.itemsCount, state.allPrice, state.summDiv, state.itemsOffDops,
+    promoInfo, sdacha, typePay, promoName, createOrder, typeOrder, clearCartData, setPayForm, setActiveModalBasket, dopListConfirm, checkPromo] = useCartStore((state) => [state.openConfirmForm, state.setConfirmForm, state.orderAddr, state.itemsCount, state.allPrice, state.summDiv, state.itemsOffDops,
     state.dopListCart, state.free_drive, state.dateTimeOrder, state.promoInfo, state.sdacha, state.typePay, state.promoName, state.createOrder,
-    state.typeOrder, state.clearCartData, state.setPayForm, state.setActiveModalBasket, state.dopListConfirm]);
+    state.typeOrder, state.clearCartData, state.setPayForm, state.setActiveModalBasket, state.dopListConfirm, state.checkPromo]);
 
   function getWord(int, array) {
     return (
@@ -167,7 +167,7 @@ export default function ConfirmForm() {
               </span>
             </div>
 
-            {promoInfo ? promoInfo.status_promo ? 
+            {checkPromo ? checkPromo.st ? 
                 <div className="confirmPromo promo">
                   <CheckAuthMobile />
                   <span>{`Применили промокод ${promoName}`}</span>
@@ -175,7 +175,7 @@ export default function ConfirmForm() {
             : null : null}
 
             {sdacha && typePay?.id === 'cash' ? (
-              <div className={promoInfo ? promoInfo.status_promo ? 'confirmPromo' : 'confirmPromo promo' : 'confirmPromo promo'}>
+              <div className={checkPromo ? checkPromo.st ? 'confirmPromo' : 'confirmPromo promo' : 'confirmPromo promo'}>
                 <CheckAuthMobile />
                 <span>{`Привезём сдачу с ${sdacha} ₽`}</span>
               </div>
@@ -255,7 +255,7 @@ export default function ConfirmForm() {
               </span>
             </div>
 
-            {promoInfo ? promoInfo.status_promo ?
+            {checkPromo ? checkPromo.st ? 
                 <div className="confirmPromo promo">
                   <CheckAuthMobile />
                   <span>{`Применили промокод ${promoName}`}</span>
@@ -263,7 +263,7 @@ export default function ConfirmForm() {
             : null : null}
 
             {sdacha && typePay?.id === 'cash' ? (
-              <div className={promoInfo ? promoInfo.status_promo ? 'confirmPromo' : 'confirmPromo promo' : 'confirmPromo promo'}>
+              <div className={checkPromo ? checkPromo.st ? 'confirmPromo' : 'confirmPromo promo' : 'confirmPromo promo'}>
                 <CheckAuthMobile />
                 <span>{`Привезём сдачу с ${sdacha} ₽`}</span>
               </div>

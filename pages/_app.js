@@ -71,6 +71,8 @@ import '../styles/header/modalSelect.scss'
 import '../styles/header.scss' // этот нужен??
 import '../styles/badge_item.scss'
 
+import '../styles/home/filter.scss'
+
 import '../styles/cart/cartConfirmForm.scss'
 
 //pm2 delete test-app-new && rm -rf test-app-new && git clone https://github.com/vito3315/test-app-new.git && cd test-app-new
@@ -201,6 +203,13 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
       />
       <YandexMetrika 
         yid={95918584}
+        clickmap={true}
+        trackLinks={true}
+        accurateTrackBounce={true}
+        webvisor={true}
+      />
+      <YandexMetrika 
+        yid={97508970}
         clickmap={true}
         trackLinks={true}
         accurateTrackBounce={true}

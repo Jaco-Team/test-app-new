@@ -215,7 +215,7 @@ export default function ModalBannerPC() {
 
                 <div className="List">
                   {openBannerItems?.map((item, key) => (
-                    <CartItemPromo key={item.item_id} data_key={key} item={item} typePromo={typePromo} promo={banner?.info} isAuth={isAuth} />
+                    <CartItemPromo key={key} data_key={key} item={item} typePromo={typePromo} promo={banner?.info} isAuth={isAuth} />
                   ))}
                 </div>
 

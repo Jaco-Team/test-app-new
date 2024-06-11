@@ -436,6 +436,7 @@
   width: 90.975vw !important;
   align-items: center;
   margin: 0 $MyScale125 !important;
+  transition: all 0.5s ease-in-out;
 
   .CardItemPC {
     width: $MyScale600;

@@ -7,6 +7,7 @@
   margin-right: $MyScale40_mobile !important;
   margin-left: $MyScale40_mobile !important;
   margin-top: 0 !important;
+  transition: all 0.5s ease-in-out;
 
   & .CardItemMobile {
     height: $MyScale500_mobile;

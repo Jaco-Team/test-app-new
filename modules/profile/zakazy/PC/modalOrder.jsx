@@ -132,8 +132,6 @@ export default React.memo(function ModalOrder() {
     }
   }, [openModal] )
 
-  //console.log(  )
-
   return (
     <Dialog
       onClose={ () => closeOrder() }

@@ -6,6 +6,7 @@ import ModalCardItemMobile from './cardItem/modalCardItemMobile';
 import ModalBannerPC from './banners/modalBannersPC';
 import ModalBannerMobile from './banners/modalBannersMobile';
 import MenuCatMobile from './menuCatMobile/menuCatMobile'
+import Filter from './filter/filter';
 
 //import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -26,13 +27,13 @@ export default function HomePage({ page, city } ) {
           <>
             <BannersMobile />
             <MenuCatMobile city={city}/>
-            
+            <Filter />
             <ModalBannerMobile />
           </>
         : 
           <>
             <BannersPC />
-            
+            <Filter />
             <ModalBannerPC />
           </>
         }

@@ -87,7 +87,7 @@
             width: $MyScale280;
             margin-left: $MyScale80;
             margin-right: $MyScale120;
-            & > div{
+            & > span{
                 width: $MyScale280;
                 height: $MyScale280;
                 border-radius: $MyScale280;
@@ -96,7 +96,16 @@
                 justify-content: center;
                 align-items: center;
                 @include font110_400();
-                color: #fff;
+                color: #fff !important;
+
+                & svg {
+                  width: $MyScale140;
+                  height: $MyScale140;
+
+                  & path {
+                    fill: #fff;
+                  }
+                }
             }
         }
         & > div:last-child{

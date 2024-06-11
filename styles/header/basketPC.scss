@@ -47,22 +47,26 @@
       justify-content: center;
       background: rgba(0, 0, 0, 0.05);
       border-radius: $MyScale20;
-      @include font30_400();
       text-align: center;
     }
 
-    tr.dopText{
+    tr.dopText {
       padding: 0 $MyScale180 !important;
       height: $MyScale200 !important;
+      & th {
+        @include font30_400();
+      }
     }
 
     span.dopText {
+      @include font30_400();
       margin: $MyScale20 $MyScale35 0 $MyScale40;
       padding: $MyScale40;
     }
 
     & .TableMini {
-      margin: 0.72202166064982vw 1.2635379061372vw 1.0830324909747vw 1.4440433212996vw;
+      margin: 0.72202166064982vw 1.2635379061372vw 1.0830324909747vw
+        1.4440433212996vw;
       border-spacing: 0;
       display: flex;
       flex-direction: column;
@@ -133,17 +137,16 @@
             text-decoration-color: rgba(221, 26, 50, 0.8);
             white-space: nowrap;
           }
-  
+
           & .spanPromo {
             @include font30_400();
-            color: #DD1A32;
+            color: #dd1a32;
             height: 1.4440433212996vw;
             display: flex;
             align-items: center;
             white-space: nowrap;
           }
         }
-
       }
 
       & .CellButton {
@@ -169,7 +172,8 @@
           cursor: default;
           border: none;
         }
-        & > .minus:not([disabled]):hover, .plus:not([disabled]):hover{
+        & > .minus:not([disabled]):hover,
+        .plus:not([disabled]):hover {
           background-color: rgba(0, 0, 0, 0.07) !important;
           cursor: pointer;
         }
@@ -194,7 +198,8 @@
       }
 
       & tfoot {
-        margin: 1.4440433212996vw 0.72202166064982vw 1.0830324909747vw 1.0830324909747vw;
+        margin: 1.4440433212996vw 0.72202166064982vw 1.0830324909747vw
+          1.0830324909747vw;
 
         & tr {
           height: 2.1660649819495vw;
@@ -223,7 +228,7 @@
               justify-content: flex-end;
               height: 2.1660649819495vw;
               @include font40_500();
-              color: rgba(0, 0, 0, 0.40);
+              color: rgba(0, 0, 0, 0.4);
               text-decoration-thickness: 0.10830324909747vw !important;
               text-decoration: line-through;
               text-decoration-color: rgba(221, 26, 50, 0.8);
@@ -238,38 +243,35 @@
     display: flex;
     align-items: center;
     justify-content: space-between;
-    margin-left: 1.8050541516245vw;
-    margin-right: 1.985559566787vw;
-    height: 2.8880866425993vw;
+    margin-left: $MyScale50;
+    margin-right: $MyScale55;
 
     & div:first-child {
-      width: 14.440433212996vw !important;
+      width: $MyScale400 !important;
 
       & .MuiInputBase-root.MuiOutlinedInput-root {
         display: flex;
         align-items: center;
-        height: 2.8880866425993vw;
+        height: $MyScale80;
         border: none;
         border-radius: 0;
         padding: 0;
 
         & .MuiInputAdornment-root {
-          width: 0.72202166064982vw;
-          height: 0.72202166064982vw;
-          margin-right: 1.0830324909747vw;
-          margin-left: 0;
-
+          width: $MyScale20;
+          margin-right: $MyScale30;
+          
           & .circleInput {
-            width: 0.72202166064982vw !important;
-            height: 0.72202166064982vw;
-            border-radius: 0.72202166064982vw;
+            width: $MyScale20 !important;
+            height: $MyScale20;
+            border-radius: $MyScale10;
             background: #76ec3f;
           }
         }
 
         & input {
-          width: 12.996389891697vw;
-          margin-left: 1.4440433212996vw;
+          width: $MyScale300;
+          margin-left: $MyScale40;
           display: flex;
           align-items: center;
           padding: 0;
@@ -278,13 +280,11 @@
             color: rgba(0, 0, 0, 0.4);
           }
         }
+        
         & fieldset {
-          border: 0.10830324909747vw solid rgba(0, 0, 0, 0.2);
-          border-radius: 1.4440433212996vw;
-          width: 14.223826714801vw;
-          height: 2.6714801444043vw;
+          border: $MyScale3 solid rgba(0, 0, 0, 0.2);
+          border-radius: $MyScale40;
           padding: 0;
-          top: -0.10830324909747vw;
         }
       }
     }
@@ -324,7 +324,7 @@
       cursor: pointer;
       & span {
         @include font30_400();
-        color: #ffffff!important;
+        color: #ffffff !important;
         &:first-letter {
           text-transform: uppercase;
         }

@@ -1,3 +1,23 @@
+export function Filter(props) {
+  return (
+    <svg
+    xmlns="http://www.w3.org/2000/svg"
+    width="35"
+    height="35"
+    fill="none"
+    viewBox="0 0 35 35"
+    {...props}
+  >
+    <path
+      fill="#DA1A32"
+      fillOpacity="1"
+      fillRule="evenodd"
+      d="M15.52 35V24.53h2.27v4.11H35v2.28H17.79V35h-2.27zM0 30.92v-2.28h11.25v2.28H0zm8.98-8.21v-4.08H0v-2.27h8.98v-4.14h2.27v10.49H8.98zm6.54-4.08v-2.27H35v2.27H15.52zm8.22-8.19V0h2.27v4.07H35v2.28h-8.99v4.09h-2.27zM0 6.35V4.07h19.47v2.28H0z"
+    ></path>
+  </svg>
+  );
+}
+
 export function Cloud(props) {
   return (
     <svg

@@ -17,7 +17,7 @@ export default function ModalCityMobile() {
 
   const [openCityModal, openCityModalList, setActiveModalCity, setActiveModalCityList, activePage, token] = useHeaderStore((state) => [state.openCityModal, state.openCityModalList, state.setActiveModalCity, state.setActiveModalCityList, state.activePage, state.token]);
 
-  const [getMySavedAddr, setPoint, setAddrDiv, getNewPriceItems] = useCartStore((state) => [state.getMySavedAddr, state.setPoint, state.setAddrDiv, state.getNewPriceItems]);
+  const [getMySavedAddr, setPoint, setAddrDiv, getNewPriceItems, getInfoPromo] = useCartStore((state) => [state.getMySavedAddr, state.setPoint, state.setAddrDiv, state.getNewPriceItems, state.getInfoPromo]);
 
   const [getMap] = useContactStore(state => [state.getMap]);
 
@@ -44,6 +44,10 @@ export default function ModalCityMobile() {
       push(`/${city.link}/${activePage}`);
     } else {
       push(`/${city.link}`);
+    }
+
+    if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
+      getInfoPromo(sessionStorage.getItem('promo_name'), city.link)
     }
   };
 

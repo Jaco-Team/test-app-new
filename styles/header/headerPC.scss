@@ -130,7 +130,7 @@ html:not([data-scroll='0']) .blockShadow {
       }
     }
 
-    & .profileHeaderPC.active,
+    & .filterHeaderPC.active, .profileHeaderPC.active,
     .burgerHeaderPC.active,
     .mapHeaderPC.active,
     .basketCat.min.active {
@@ -139,7 +139,7 @@ html:not([data-scroll='0']) .blockShadow {
         outline-offset: 0;
     }
 
-    & .profileHeaderPC,
+    & .filterHeaderPC, .profileHeaderPC,
     .burgerHeaderPC,
     .mapHeaderPC {
       display: flex;
@@ -150,6 +150,11 @@ html:not([data-scroll='0']) .blockShadow {
       border-radius: $MyScale48;
       margin-right: $MyScale48;
       cursor: pointer;
+
+      & .filter_svg {
+        width: $MyScale35;
+        height: $MyScale35;
+      }
 
       & .profile_svg {
         width: $MyScale30;
@@ -263,9 +268,11 @@ html:not([data-scroll='0']) .blockShadow {
     }
 
     & .chooseCity {
+      text-align: center;
+      width: $MyScale160;
       @include font32_400();
       cursor: pointer;
-      margin-right: $MyScale48;
+      margin-right: $MyScale51;
       &:hover {
         color: $colorMain;
       }

@@ -1,5 +1,5 @@
 import React, { useEffect, useRef } from 'react';
-import { useHomeStore } from '../../../components/store.js';
+import { useHomeStore, useCitiesStore } from '../../../components/store.js';
 // import Image from 'next/image';
 
 import Box from '@mui/material/Box';
@@ -16,7 +16,8 @@ import 'swiper/css/pagination';
 import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
 
 export default (function BannersPC() {
-  const [bannerList, setActiveBanner, activeSlider] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider]);
+  const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider, state.getBanners]);
+  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
   //const [setActiveModalAlert] = useHeaderStore((state) => [state.setActiveModalAlert]);
 
   const swiperRef = useRef(null);
@@ -36,10 +37,15 @@ export default (function BannersPC() {
   }, []);
 
   useEffect(() => {
-    if( bannerList.length > 0 ){
+    if(bannerList?.length > 0){
       const swiper = document.querySelector('.swiper').swiper;
       swiper.activeIndex = 0;
     }
+      
+    if((!bannerList || !bannerList?.length) && thisCity) {
+      getBanners('home', thisCity);
+    }
+
   }, [bannerList]);
 
   // const handleOpen = () => {
@@ -130,7 +136,7 @@ export default (function BannersPC() {
           style={{width: '90.975vw', marginTop: '8.66425vw'}}
           ref={swiperRef}
         >
-          {bannerList.map((item, key) => (
+          {bannerList?.map((item, key) => (
             <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
               {/* <Image alt={item.title} src={"https://storage.yandexcloud.net/site-home-img/"+item.img+"_3700x1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }} /> */}
               <picture>

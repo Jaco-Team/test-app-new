@@ -19,6 +19,15 @@
     color: #fff !important;
     @include font110_400();
     margin-top: $MyScale40_mobile;
+    
+    & svg {
+      width: $MyScale200_mobile;
+      height: $MyScale200_mobile;
+
+      & path {
+        fill: #fff;
+      }
+    }
   }
 
   & .accountName {

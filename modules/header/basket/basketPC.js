@@ -18,12 +18,12 @@ export default function BasketPC() {
   //const [scrollBasket, setScrollBasket] = useState(0);
 
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
-  const [getInfoPromo, checkPromo, allPrice, allPriceWithoutPromo, promoInfo, promoItemsFind, itemsCount, setActiveModalBasket] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice, state.allPriceWithoutPromo, state.promoInfo, state.promoItemsFind, state.itemsCount, state.setActiveModalBasket]);
+  const [getInfoPromo, checkPromo, allPrice, promoInfo, itemsCount, setActiveModalBasket, itemsOffDops] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice, state.promoInfo, state.itemsCount, state.setActiveModalBasket, state.itemsOffDops]);
   const [openBasket, setActiveBasket, targetBasket, isAuth, setActiveModalAuth] = useHeaderStore((state) => [state.openBasket, state.setActiveBasket, state.targetBasket, state.isAuth, state.setActiveModalAuth]);
   
   useEffect(() => {
-    if (localStorage.getItem('promo_name') && localStorage.getItem('promo_name').length > 0) {
-      setPromo(localStorage.getItem('promo_name'));
+    if (sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0) {
+      setPromo(sessionStorage.getItem('promo_name'));
     }
   }, [promoInfo]);
 
@@ -72,7 +72,6 @@ export default function BasketPC() {
 
           <div className="SpacePromoRoot">
             <MyTextInput
-              className="SpacePromo"
               placeholder="Есть промокод"
               value={promo}
               label=""
@@ -81,12 +80,13 @@ export default function BasketPC() {
               func={(event) => setPromo(event.target.value)}
               inputAdornment={
                 <InputAdornment position="end">
-                  {checkPromo ? checkPromo.st === true ? <div className="circleInput"></div> : <div className="circleInput" style={{ background: '#DD1A32' }}></div> : null}
+                  {checkPromo ? checkPromo.st ? <div className="circleInput"></div> : <div className="circleInput" style={{ background: '#DD1A32' }}></div> : null}
                 </InputAdornment>
               }
             />
-            {promoInfo?.items_on_price?.length ? promoItemsFind ? <div>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</div> : null 
-              : promoInfo?.status_promo && itemsCount ? <div>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</div> : null}
+            {checkPromo ? checkPromo.st && itemsOffDops.length ? <div>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</div> : null : null}
+            {/* {promoInfo?.items_on_price?.length ? promoItemsFind ? <div>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</div> : null 
+              : promoInfo?.status_promo && itemsCount ? <div>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</div> : null} */}
           </div>
 
           <div className="DescPromo">

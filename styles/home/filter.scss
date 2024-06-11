@@ -1,0 +1,159 @@
+@import '../settings.scss';
+
+.filterPC {
+  position: absolute;
+  width: $MyScale2520;
+  border-radius: $MyScale40;
+  background-color: rgba(0, 0, 0, 0.05);
+  margin-top: $MyScale32;
+  left: $MyScale125;
+  display: flex;
+  padding: $MyScale40 0;
+  opacity: 0;
+  animation: ani 0.5s forwards;
+
+  & .filterTag {
+    width: $MyScale1684;
+    display: flex;
+    align-items: center;
+    margin: $MyScale20 0;
+
+    & div {
+      display: flex;
+      flex-wrap: wrap;
+      margin-left: $MyScale60;
+      margin-right: $MyScale144;
+      gap: $MyScale20;
+
+      & span {
+        height: $MyScale40;
+        border-radius: $MyScale32;
+        background-color: #fff;
+        @include font30_400();
+        padding: $MyScale10 $MyScale38;
+        color: rgba(0, 0, 0, 0.9) !important;
+        cursor: pointer;
+        border: $MyScale2 solid transparent;
+      }
+
+      & span.active {
+        border: $MyScale2 solid rgba(0, 0, 0, 0.6);
+      }
+    }
+  }
+
+  & .filterDivider {
+    background-color: rgba(0, 0, 0, 0.2);
+    width: $MyScale2;
+  }
+
+  & .filterBadge {
+    width: $MyScale834;
+    display: flex;
+    align-items: flex-start;
+    margin: $MyScale20 0;
+
+    & div {
+      display: flex;
+      flex-wrap: wrap;
+      margin-left: $MyScale60;
+      margin-right: $MyScale188;
+      gap: $MyScale20;
+
+      & span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: $MyScale176;
+        height: $MyScale64;
+        border-radius: $MyScale32;
+        color: #fff !important;
+        @include font22_400();
+        text-transform: uppercase;
+        cursor: pointer;
+      }
+    }
+  }
+}
+
+.filterMobile {
+  position: absolute;
+  left: $MyScale40_mobile;
+  width: $MyScale1020_mobile;
+  border-radius: $MyScale40_mobile;
+  background-color: rgba(0, 0, 0, 0.05);
+  display: flex;
+  flex-direction: column;
+  padding: $MyScale60_mobile $MyScale10_mobile $MyScale60_mobile $MyScale60_mobile;
+  opacity: 0;
+  animation: ani 0.5s forwards;
+  margin: $MyScale20_mobile 0;
+
+   & .filterBadge {
+    display: flex;
+    margin-bottom: $MyScale60_mobile;
+
+    & div {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: $MyScale30_mobile;
+      row-gap: $MyScale40_mobile;
+
+      & span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        width: $MyScale264_mobile;
+        height: $MyScale96_mobile;
+        border-radius: $MyScale48_mobile;
+        color: #fff !important;
+        @include font30_400();
+        text-transform: uppercase;
+      }
+    }
+  }
+
+   & .filterDivider {
+    background-color: rgba(0, 0, 0, 0.2);
+    width: $MyScale970_mobile;
+    height: $MyScale2_mobile;
+  }
+
+  & .filterTag {
+    display: flex;
+    margin-top: $MyScale60_mobile;
+
+    & div {
+      display: flex;
+      flex-wrap: wrap;
+      column-gap: $MyScale30_mobile;
+      row-gap: $MyScale40_mobile;
+
+      & span {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        height: $MyScale96_mobile;
+        border-radius: $MyScale48_mobile;
+        background-color: #fff;
+        @include font40_400();
+        padding: 0 $MyScale63_mobile;
+        color: rgba(0, 0, 0, 0.9) !important;
+        border: $MyScale2_mobile solid transparent;
+      }
+
+      & span.active {
+        border: $MyScale2_mobile solid rgba(0, 0, 0, 0.6);
+      }
+    }
+  }
+}
+
+@keyframes ani {
+  0% {
+    opacity: 0.5;
+  }
+  100% {
+    opacity: 1;
+  }
+}

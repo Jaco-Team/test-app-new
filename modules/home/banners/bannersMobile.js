@@ -1,4 +1,5 @@
 import React, { useEffect, useRef } from 'react';
+import { useHomeStore, useCitiesStore } from '../../../components/store.js';
 
 //import Image from 'next/image';
 import Box from '@mui/material/Box';
@@ -10,11 +11,11 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import { useHomeStore } from '../../../components/store.js';
 // import { VerticalVector } from '@/ui/Icons.js';
 
 export default React.memo(function BannersMobile() {
-  const [bannerList, setActiveBanner, activeSlider] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider]);
+  const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider, state.getBanners]);
+  const [thisCity] = useCitiesStore((state) => [state.thisCity])
   //const [setActiveModalAlert] = useHeaderStore((state) => [state.setActiveModalAlert]);
 
   const swiperRef = useRef(null);
@@ -47,10 +48,15 @@ export default React.memo(function BannersMobile() {
   }, []);
 
   useEffect(() => {
-    if (bannerList.length > 0) {
+    if (bannerList?.length > 0) {
       const swiper = document.querySelector('.swiper').swiper;
       swiper.activeIndex = 0;
     }
+
+    if((!bannerList || !bannerList?.length) && thisCity) {
+      getBanners('home', thisCity);
+    }
+    
   }, [bannerList]);
 
   /*const setActiveTooltip = (active) => {
@@ -117,7 +123,7 @@ export default React.memo(function BannersMobile() {
         scrollbar={{ draggable: true }}
         ref={swiperRef}
       >
-        {bannerList.map((item, key) => (
+        {bannerList?.map((item, key) => (
           <SwiperSlide key={key} onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
             {/* <Image
               alt={item.title}

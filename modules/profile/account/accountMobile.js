@@ -23,7 +23,7 @@ export default function AccountMobile({ city, this_module }) {
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="AccountMobile">
       <div className="accountLogin accountMain" style={{ background: colorAccount.login }}>
-        {shortName}
+        {shortName ? shortName : <AccountMobilePerson />}
       </div>
       <div className="accountName accountMain">
         {userInfo?.name ? userInfo?.name : ''}

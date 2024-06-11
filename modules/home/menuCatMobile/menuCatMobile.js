@@ -3,6 +3,8 @@ import { useHomeStore } from '@/components/store.js';
 import { Link as ScrollLink } from 'react-scroll';
 import Box from '@mui/material/Box';
 
+import {Filter} from '@/ui/Icons.js';
+
 import useCheckCat from '../hooks';
 
 import * as Scroll from 'react-scroll';
@@ -10,7 +12,7 @@ var scroller = Scroll.scroller;
 
 export default function MenuCatMobile({ city }) {
 
-  const [category, cat_position] = useHomeStore((state) => [state.category, state.cat_position]);
+  const [category, cat_position, setActiveFilter, isOpenFilter] = useHomeStore((state) => [state.category, state.cat_position,  state.setActiveFilter, state.isOpenFilter]);
 
   const [catMenu, setCatMenu] = useState(category);
   const [catDopMenu, setCatDopMenu] = useState([]);
@@ -111,6 +113,9 @@ export default function MenuCatMobile({ city }) {
             <span>{item.name}</span>
           </ScrollLink>
         ))}
+        <div className={isOpenFilter ? 'filterSVG activeFilter' : 'filterSVG'} onClick={() => setActiveFilter(!isOpenFilter)}>
+          <Filter />
+        </div>
       </div>
       {catDopMenu.length == 0 ? false : (
         <div className="menuCatDopContainer">

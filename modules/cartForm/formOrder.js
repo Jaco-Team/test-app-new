@@ -55,8 +55,8 @@ export default function FormOrder({ cityName }) {
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
  
-  const [setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, promoItemsFind, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, summDiv, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is, free_drive, setConfirmForm] = useCartStore((state) => [state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
-    state.promoInfo, state.promoItemsFind, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.summDiv, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is, state.free_drive, state.setConfirmForm]);
+  const [setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, summDiv, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is, free_drive, setConfirmForm, getNewPriceItems] = useCartStore((state) => [state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
+    state.promoInfo, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.summDiv, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is, state.free_drive, state.setConfirmForm, state.getNewPriceItems]);
  
   useEffect(() => {
     if (matches) {
@@ -76,8 +76,8 @@ export default function FormOrder({ cityName }) {
   }, [thisCity, cityName]);
 
   useEffect(() => {
-    if (localStorage.getItem('promo_name') && localStorage.getItem('promo_name').length > 0) {
-      setPromo(localStorage.getItem('promo_name'));
+    if (sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0) {
+      setPromo(sessionStorage.getItem('promo_name'));
     }
     
   }, [promoInfo]);
@@ -164,14 +164,15 @@ export default function FormOrder({ cityName }) {
   const chooseItem = (item) => {
 
     if (nameList === 'city') {
+      localStorage.setItem('setCity', JSON.stringify(item));
       setThisCityRu(item.name);
       setAnchorEl(null);
       push(`/${item.link}`);
-      localStorage.setItem('setCity', JSON.stringify(item));
       setPoint(null);
       setAddrDiv(null);
       setSummDiv(0);
       getMySavedAddr(item.link);
+      getNewPriceItems(item.link)
     }
 
     if (nameList === 'point') {
@@ -236,7 +237,7 @@ export default function FormOrder({ cityName }) {
       return;
     }
 
-    if(!items.length) {
+    if(!items.length && !itemsOffDops.length) {
       setActiveModalAlert(true, 'Необходимо добавить товар в корзину', false);
       return;
     }
@@ -481,8 +482,9 @@ export default function FormOrder({ cityName }) {
               Итого: {itemsCount} {getWord(itemsCount)}
             </span>
             <div>
-              <span className={ promoInfo?.items_on_price?.length ? promoItemsFind ? 'promoInfo' : null : promoInfo?.status_promo && itemsOffDops.length ? 'promoInfo' : null }>
-                {new Intl.NumberFormat('ru-RU').format(parseInt(allPriceWithoutPromo_new) + parseInt(NewSummDiv))} ₽
+              {/* <span className={ promoInfo?.items_on_price?.length ? promoItemsFind ? 'promoInfo' : null : promoInfo?.status_promo && itemsOffDops.length ? 'promoInfo' : null }> */}
+              <span className={checkPromo ? checkPromo.st && itemsOffDops.length ? 'promoInfo' : null : null}>
+                {new Intl.NumberFormat('ru-RU').format(parseInt(allPriceWithoutPromo_new))} ₽
               </span>
             </div>
           </div>
@@ -497,12 +499,13 @@ export default function FormOrder({ cityName }) {
               func={ event => setPromo(event.target.value)}
               inputAdornment={
                 <InputAdornment position="end">
-                  {promoInfo ? promoInfo.status_promo ? <div className="circleInput"></div> : <div className="circleInput" style={{ background: '#DD1A32' }}></div> : null}
+                  {checkPromo ? checkPromo.st ? <div className="circleInput"></div> : <div className="circleInput" style={{ background: '#DD1A32' }}></div> : null}
                 </InputAdornment>}
             />
-            {promoInfo?.items_on_price?.length ? promoItemsFind ?
+            {/* {promoInfo?.items_on_price?.length ? promoItemsFind ?
                 <div>{new Intl.NumberFormat('ru-RU').format(parseInt(allPrice) + parseInt(NewSummDiv))}{' '}₽</div> : null : promoInfo?.status_promo && itemsCount ? 
-                <div>{new Intl.NumberFormat('ru-RU').format(parseInt(allPrice) + parseInt(NewSummDiv))}{' '}₽</div> : null}
+                <div>{new Intl.NumberFormat('ru-RU').format(parseInt(allPrice) + parseInt(NewSummDiv))}{' '}₽</div> : null} */}
+                 {checkPromo ? checkPromo.st && itemsOffDops.length ? <div>{new Intl.NumberFormat('ru-RU').format(parseInt(allPrice) + parseInt(NewSummDiv))}{' '}₽</div> : null : null}
           </div>
 
           <div className="CartItemDescPromo">

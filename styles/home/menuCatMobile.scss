@@ -7,6 +7,7 @@
   left: 0;
   top: $MyScale200_mobile;
   background-color: #fff;
+  display: flex;
 
   .menuCat {
     display: flex;
@@ -14,27 +15,20 @@
     margin: $MyScale50_mobile $MyScale40_mobile 0 $MyScale40_mobile;
     height: $MyScale100_mobile;
     overflow: scroll;
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
-    scrollbar-width: none;  /* Firefox */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
+    scrollbar-width: none; /* Firefox */
 
-    &::-webkit-scrollbar { 
-      display: none;  /* Safari and Chrome */
+    &::-webkit-scrollbar {
+      display: none; /* Safari and Chrome */
     }
 
     .Cat {
       display: flex;
       align-items: center;
       justify-content: center;
-      //width: $MyScale250_mobile;
-      padding-left: $MyScale40_mobile;
-      padding-right: $MyScale40_mobile;
+      width: $MyScale220_mobile;
       border-radius: $MyScale20_mobile;
-      margin-right: $MyScale20_mobile;
       background-color: rgba(0, 0, 0, 0.05);
-
-      &:last-child{
-        margin-right: 0!important;
-      }
 
       & span {
         display: flex;
@@ -44,7 +38,8 @@
       }
     }
 
-    .activeCat, .active {
+    .activeCat,
+    .active {
       background: #dd1a32;
 
       & span {
@@ -53,6 +48,35 @@
         text-align: center;
         @include font44_500();
         color: #fff !important;
+      }
+    }
+
+    & .filterSVG {
+      width: $MyScale100_mobile;
+      height: $MyScale100_mobile;
+      border-radius: $MyScale20_mobile;
+      background-color: rgba(0, 0, 0, 0.05);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      & svg {
+        width: $MyScale51_mobile;
+        height: $MyScale51_mobile;
+
+        & path {
+          fill: rgba(0, 0, 0, 0.3);
+        }
+      }
+    }
+
+    & .activeFilter {
+      background-color: rgba(0, 0, 0, 0.1);
+
+      & svg {
+        & path {
+          fill: rgba(0, 0, 0, 0.8);
+        }
       }
     }
   }
@@ -65,7 +89,7 @@
     transition: all 0.1s ease 0s;
 
     scrollbar-width: none; /* Firefox */
-    -ms-overflow-style: none;  /* Internet Explorer 10+ */
+    -ms-overflow-style: none; /* Internet Explorer 10+ */
 
     &::-webkit-scrollbar {
       width: 0;
@@ -112,9 +136,10 @@
         }
       }
 
-      .activeCatDop, .active {
-        background: rgba(0, 0, 0, 0.10);
-  
+      .activeCatDop,
+      .active {
+        background: rgba(0, 0, 0, 0.1);
+
         & span {
           display: flex;
           align-items: center;
@@ -124,7 +149,6 @@
       }
     }
   }
-
 }
 
 .blockShadowMenuCatMobile {

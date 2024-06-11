@@ -9,7 +9,7 @@ const dopText = {
 }
 
 export default function TablePC() {
-  const [itemsCount, promoInfo, allPriceWithoutPromo, promoItemsFind, itemsOffDops, dopListCart, cart_is] = useCartStore((state) => [state.itemsCount, state.promoInfo, state.allPriceWithoutPromo, state.promoItemsFind, state.itemsOffDops, state.dopListCart, state.cart_is]);
+  const [itemsCount, itemsOffDops, dopListCart, cart_is, checkPromo] = useCartStore((state) => [state.itemsCount, state.itemsOffDops, state.dopListCart, state.cart_is, state.checkPromo]);
 
   function getWord(int, array) {
     return (array = array || ['позиция', 'позиции', 'позиций']) && array[(int % 100 > 4 && int % 100 < 20) ? 2 : [2, 0, 1, 1, 1, 2][(int % 10 < 5) ? int % 10 : 5]];
@@ -29,7 +29,7 @@ export default function TablePC() {
         {dopListCart.length ?
           <>
             <tr className='dopText'>
-              {dopText[cart_is]}
+              <th>{dopText[cart_is]}</th>
             </tr>
 
             {dopListCart.map((item, key) => 
@@ -45,7 +45,8 @@ export default function TablePC() {
         <tr>
           <td>Итого: {itemsCount} {getWord(itemsCount)}</td>
           <td>
-          <div className={promoInfo?.items_on_price?.length ? promoItemsFind ? 'promoInfo' : null : promoInfo?.status_promo && itemsOffDops.length ? 'promoInfo' : null}>
+          {/* <div className={promoInfo?.items_on_price?.length ? promoItemsFind ? 'promoInfo' : null : promoInfo?.status_promo && itemsOffDops.length ? 'promoInfo' : null}> */}
+          <div className={checkPromo ? checkPromo.st && itemsOffDops.length ? 'promoInfo' : null : null}>
             {new Intl.NumberFormat('ru-RU').format( parseInt( price1 ) + parseInt( price2 ) )} ₽
           </div>
           </td>

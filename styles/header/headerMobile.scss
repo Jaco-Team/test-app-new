@@ -19,10 +19,10 @@
       text-decoration: none;
       width: $MyScale500_mobile;
       height: $MyScale120_mobile;
+      display: flex;
 
       & img {
-        max-height: 100%;
-        max-width: 100%;
+        align-self: center;
         width: 100%;
         height: auto;
       }
@@ -91,6 +91,13 @@
             margin-right: $MyScale50_mobile;
           }
 
+          & .otherSVG {
+            margin-left: $MyScale40_mobile;
+            height: $MyScale120_mobile;
+            width: $MyScale120_mobile;
+            margin-right: $MyScale40_mobile;
+          }
+
           & span {
             display: flex;
             align-items: center;
@@ -123,6 +130,16 @@
             display: flex;
             align-items: center;
             justify-content: center;
+
+            & svg {
+              width: $MyScale40_mobile;
+              height: $MyScale40_mobile;
+              margin: 0;
+
+              & path {
+                fill: #fff;
+              }
+            }
           }
         }
       }

@@ -1,5 +1,4 @@
 import { useRef, useEffect, memo } from 'react';
-import Link from 'next/link';
 import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
 import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/store.js';
 
@@ -30,7 +29,7 @@ export default function ContactsPageMobile() {
 
   const [setActiveModalCityList] = useHeaderStore((state) => [state.setActiveModalCityList]);
 
-  const [point, phone, disablePointsZone, disable, setActiveModalChoose, getUserPosition, center_map, zones, points_zone, changePointClick, location_user] = useContactStore((state) => [state.point, state.phone, state.disablePointsZone, state.disable, state.setActiveModalChoose, state.getUserPosition, state.center_map, state.zones, state.points_zone, state.changePointClick, state.location_user]);
+  const [point, phone, disablePointsZone, disable, setActiveModalChoose, getUserPosition, center_map, zones, points_zone, changePointClick, location_user, clickPhoneMobile] = useContactStore((state) => [state.point, state.phone, state.disablePointsZone, state.disable, state.setActiveModalChoose, state.getUserPosition, state.center_map, state.zones, state.points_zone, state.changePointClick, state.location_user, state.clickPhoneMobile]);
 
   useEffect(() => {
     if(ref.current && center_map?.center){
@@ -120,8 +119,8 @@ export default function ContactsPageMobile() {
           <Typography component="span">Позвонить и заказать:</Typography>
         </div>
 
-        <div className="ContactsPhone">
-          <Link href={`tel:${phone.split(/[\s,(),-]+/).join('')}`} component="span">{phone}</Link>
+        <div className="ContactsPhone" onClick={() => clickPhoneMobile(thisCityRu)}>
+          <span>{phone}</span>
         </div>
 
         <div className="ContactsLine"></div>
