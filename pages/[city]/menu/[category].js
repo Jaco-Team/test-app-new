@@ -14,11 +14,12 @@ const this_module = 'category';
 
 export default function Home(props) {
 
-  const { city, cats, cities, page, all_items, free_items, need_dop, category } = props.data1;
+  const { city, cats, cities, page, all_items, free_items, need_dop, category, tags } = props.data1;
 
   const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
-  const [ getBanners ] = useHomeStore( state => [ state.getBanners ]);
+  const [ getBanners, setAllTags ] = useHomeStore( state => [ state.getBanners, state.setAllTags ]);
+
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
   const [setActivePage] = useHeaderStore((state) => [state.setActivePage]);
 
@@ -43,6 +44,8 @@ export default function Home(props) {
     if( allItems.length == 0 ){
       setAllItems(all_items);
     }
+
+    setAllTags(tags);
 
     setFreeItems(free_items);
     setNeedDops(need_dop);

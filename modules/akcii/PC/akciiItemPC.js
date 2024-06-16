@@ -62,21 +62,39 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
           <picture>
             <source 
               type="image/webp" 
-              srcSet={`https://cdnimg.jacofood.ru/${thisItem.img_app}_1420x1420.webp`} 
+              srcSet={`
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_366x366.webp 138w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_466x466.webp 146w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_585x585.webp 183w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_585x585.webp 233w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_585x585.webp 292w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_732x732.webp 366w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_1168x1168.webp 584w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_1168x1168.webp 760w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_1420x1420.webp 1875w`} 
               sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
             <source 
               type="image/jpeg" 
-              srcSet={`https://cdnimg.jacofood.ru/${thisItem.img_app}_1420x1420.jpg`} 
+              srcSet={`
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_366x366.jpg 138w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_466x466.jpg 146w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_585x585.jpg 183w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_585x585.jpg 233w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_585x585.jpg 292w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_732x732.jpg 366w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_1168x1168.jpg 584w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_1168x1168.jpg 760w,
+                https://cdnimg.jacofood.ru/${thisItem.img_app}_1420x1420.jpg 1875w`} 
               sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
             <img 
-              alt={item?.name} 
-              title={item?.name} 
-              src={`https://cdnimg.jacofood.ru/${thisItem.img_app}_1420x1420.jpg`} 
+              alt={thisItem?.name} 
+              title={thisItem?.name} 
+              src={`https://cdnimg.jacofood.ru/${thisItem.img_app}_292x292.jpg`} 
               loading="lazy"
             />
           </picture>
-           : 
+            : 
           false
         }
       </div>

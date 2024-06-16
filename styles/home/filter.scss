@@ -18,25 +18,35 @@
     align-items: center;
     margin: $MyScale20 0;
 
-    & div {
+    & > div {
       display: flex;
       flex-wrap: wrap;
       margin-left: $MyScale60;
       margin-right: $MyScale144;
       gap: $MyScale20;
 
-      & span {
-        height: $MyScale40;
+      & .tag{
         border-radius: $MyScale32;
         background-color: #fff;
-        @include font30_400();
         padding: $MyScale10 $MyScale38;
-        color: rgba(0, 0, 0, 0.9) !important;
         cursor: pointer;
         border: $MyScale2 solid transparent;
-      }
+        
 
-      & span.active {
+
+        & span {
+          height: $MyScale40;
+          @include font30_400();
+          color: rgba(0, 0, 0, 0.9) !important;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+        }
+      }
+      
+
+      & .tag.active {
         border: $MyScale2 solid rgba(0, 0, 0, 0.6);
       }
     }
@@ -53,24 +63,31 @@
     align-items: flex-start;
     margin: $MyScale20 0;
 
-    & div {
+    & > div{
       display: flex;
       flex-wrap: wrap;
       margin-left: $MyScale60;
       margin-right: $MyScale188;
       gap: $MyScale20;
+    
 
-      & span {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: $MyScale176;
-        height: $MyScale64;
+      & div.tag {
+        
         border-radius: $MyScale32;
-        color: #fff !important;
-        @include font22_400();
-        text-transform: uppercase;
         cursor: pointer;
+
+        & span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: $MyScale176;
+          height: $MyScale64;
+          
+          color: #fff !important;
+          @include font22_400();
+          text-transform: uppercase;
+          
+        }
       }
     }
   }
@@ -99,16 +116,20 @@
       column-gap: $MyScale30_mobile;
       row-gap: $MyScale40_mobile;
 
-      & span {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        width: $MyScale264_mobile;
-        height: $MyScale96_mobile;
+      & .tag{
         border-radius: $MyScale48_mobile;
-        color: #fff !important;
-        @include font30_400();
-        text-transform: uppercase;
+
+        & span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: $MyScale264_mobile;
+          height: $MyScale96_mobile;
+          
+          color: #fff !important;
+          @include font30_400();
+          text-transform: uppercase;
+        }
       }
     }
   }
@@ -129,21 +150,27 @@
       column-gap: $MyScale30_mobile;
       row-gap: $MyScale40_mobile;
 
-      & span {
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        height: $MyScale96_mobile;
-        border-radius: $MyScale48_mobile;
-        background-color: #fff;
-        @include font40_400();
-        padding: 0 $MyScale63_mobile;
-        color: rgba(0, 0, 0, 0.9) !important;
-        border: $MyScale2_mobile solid transparent;
-      }
+      & .tag{
+        
 
-      & span.active {
-        border: $MyScale2_mobile solid rgba(0, 0, 0, 0.6);
+        & span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: $MyScale96_mobile;
+          
+          background-color: #fff;
+          @include font40_400();
+          padding: 0 $MyScale63_mobile;
+          color: rgba(0, 0, 0, 0.9) !important;
+          border: $MyScale2_mobile solid transparent;
+          border-radius: $MyScale48_mobile;
+        }
+
+        &.active {
+          border: $MyScale2_mobile solid rgba(0, 0, 0, 0.6);
+          border-radius: $MyScale48_mobile;
+        }
       }
     }
   }

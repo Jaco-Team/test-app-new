@@ -29,6 +29,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   free_drive: 0,
   itemsPromo: [],
 
+  checkNewOrder: null,
+
   zones: null,
   center_map: null,
 
@@ -564,7 +566,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     //самовывоз
     if( typeOrder == 'pic' ) {
       data = {
-        type: 'create_order',
+        type: 'create_order_pre',
         token,
         city_id,
         promoName: promoName ?? '',
@@ -578,7 +580,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       };
     } else {
       data = {
-        type: 'create_order',
+        type: 'create_order_pre',
         token,
         city_id,
         promoName: promoName ?? '',
@@ -600,41 +602,31 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     }, 300 )
 
     if( json.st === true ){
+
+      set({
+        checkNewOrder: json?.check
+      })
+
       if( get().typePay.id == 'online' || get().typePay.id == 'sbp' ){
 
-        set({
-          openPayForm: true
-        })
+        //set({
+        //  openPayForm: true
+        //})
 
         const checkout = new window.YooMoneyCheckoutWidget({
-          confirmation_token: json.pay.pay.confirmation.confirmation_token, //Токен, который перед проведением оплаты нужно получить от ЮKassa
-          //return_url: 'https://jacofood.ru/'+this.state.city_name+'/profile', //Ссылка на страницу завершения оплаты, это может быть любая ваша страница
-          //return_url: 'http://localhost:3008/'+city_id+'/zakazy',
+          confirmation_token: json.pay.pay.confirmation.confirmation_token,
 
           error_callback: function(error) {
             console.log(error)
-            //попробовать показать ошибку (смени свою почту в ЛК на ya.ru)
           }
         });
 
         checkout.on('success', () => {
-          //Код, который нужно выполнить после успешной оплаты.
-          
-          console.log('success pay');
-
-          
-
-          //Удаление инициализированного виджета
           checkout.destroy();
           funcClose();
-
-          //document.getElementById('true_order_hidden').click();
         });
     
         checkout.on('fail', () => {
-          //Код, который нужно выполнить после неудачной оплаты.
-          
-          //Удаление инициализированного виджета
           checkout.destroy();
           return 'nothing';
         });
@@ -645,7 +637,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       
         return 'wait_payment';
       }else{
-        try {
+        /*try { повтор
           const city = useCitiesStore.getState().thisCity;
           const city_ru = useCitiesStore.getState().thisCityRu;
     
@@ -660,7 +652,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     
         } catch (error) {
           console.log('createOrder', error);
-        }
+        }*/
 
         return 'to_cart';
       }
@@ -674,6 +666,39 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     // return json;
 
     // get().setCartLocalStorage();
+  },
+
+  // подтверждение заказа
+  trueOrderCash: async(token, point_id, order_id) => {
+
+    if( get().DBClick === true ){
+      return;
+    }else{
+      set({ DBClick: true });
+    }
+
+    let data = {
+      type: 'order_true',
+      token,
+      point_id,
+      order_id
+    };
+
+    const json = await api('cart', data);
+
+    setTimeout( () => {
+      set({ DBClick: false });
+    }, 300 )
+
+    if( json.st === true ){
+
+      
+    }else{
+      //показать ошибку
+      useHeaderStore.getState().setActiveModalAlert(true, json.text, false);
+    }
+
+    return json.st;
   },
 
   clearCartData: () => {
@@ -1192,6 +1217,12 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       
       sessionStorage.removeItem('promo_name')
 
+      const res = get().promoCheck();
+
+      setTimeout( () => {
+        get().setDataPromoBasket()
+      }, 100 )
+
       setTimeout(() => {
         get().setDataPromoBasket()
       }, 100)
@@ -1274,7 +1305,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     my_cart = new_my_cart;  
       
     set({
-      items: my_cart
+      items: my_cart,
+      itemsWithPromo: []
     })
       
     let cart_new_promo = [];    
@@ -3333,88 +3365,83 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
   transition_menu_mobile: '0',
   CatsItemsCopy: [],
 
+  tag_filter: [],
+
+  all_tags: [],
+
+  setAllTags: (tags) =>  {
+    set({
+      all_tags: tags,
+    });
+  },
+
+  filterItemsBadge: (res) =>  {
+    let all_items = useCartStore.getState().allItems;
+
+    if( parseInt(res) ===  2 ){
+      all_items.map( item => {
+        if( parseInt(item.is_new) ===  1 ){
+          document.querySelector('#'+item.link).style.display = 'block';
+        }else{
+          document.querySelector('#'+item.link).style.display = 'none';
+        }
+      } )
+    }
+
+    if( parseInt(res) ===  1 ){
+      all_items.map( item => {
+        if( parseInt(item.is_hit) ===  1 ){
+          document.querySelector('#'+item.link).style.display = 'block';
+        }else{
+          document.querySelector('#'+item.link).style.display = 'none';
+        }
+      } )
+    }
+  },
+
   // фильтр товаров на главной странице
   filterItems: (res) => {
 
-    if(res === 1) {
-
-      let catsItems = structuredClone(get().CatsItemsCopy);
-
-      catsItems = catsItems.reduce((newItems, cat, index) => {
-  
-        if(index === 0) {
-          cat.items = cat.items.slice(12);
-        } else {
-          cat.items = cat.items.slice(cat.items.length);
-        }
-  
-       return newItems = [...newItems,...[cat]]
-      }, [])
-  
-      set({ CatsItems: catsItems })
+    if( res == 0 ){
+      return ;
     }
 
-    if(res === 2) {
+    let this_filter = get().tag_filter;
+    let all_items = useCartStore.getState().allItems;
 
-      let catsItems = structuredClone(get().CatsItemsCopy);
+    if( this_filter.includes(res) ){
+      this_filter = this_filter.filter( item => parseInt(item) != parseInt(res) )
 
-      catsItems = catsItems.reduce((newItems, cat, index) => {
-  
-        if(index === 1) {
-          cat.items = cat.items.slice(30);
-        } else {
-          cat.items = cat.items.slice(cat.items.length);
-        }
-  
-       return newItems = [...newItems,...[cat]]
-      }, [])
-  
-      set({ CatsItems: catsItems })
+      set({
+        tag_filter: this_filter
+      })
+    }else{
+      set({
+        tag_filter: [ ...this_filter, res ]
+      })
     }
 
-    if(res === 3) {
+    this_filter = get().tag_filter;
 
-      let catsItems = structuredClone(get().CatsItemsCopy);
+    let arr = [];
 
-      catsItems = catsItems.reduce((newItems, cat, index) => {
-  
-        if(index === 3) {
-          cat.items = cat.items.slice(34);
-        } else {
-          cat.items = cat.items.slice(cat.items.length);
-        }
-  
-       return newItems = [...newItems,...[cat]]
-      }, [])
-  
-      set({ CatsItems: catsItems })
-    }
+    let check = false;
 
-    if(res === 4) {
+    all_items.map( item => {
+      //check = this_filter.some(r=> item.tags.includes(r)) -- или
+      //check = this_filter.every(r=> item.tags.includes(r)) -- и
 
-      let catsItems = structuredClone(get().CatsItemsCopy);
+      check = this_filter.every(r=> item.tags.includes(r))
 
-      catsItems = catsItems.reduce((newItems, cat, index) => {
-  
-        if(index === 6) {
-          cat.items = cat.items.slice(10);
-        } else {
-          cat.items = cat.items.slice(cat.items.length);
-        }
-  
-       return newItems = [...newItems,...[cat]]
-      }, [])
-  
-      set({ CatsItems: catsItems })
-    }
+      if( check ){
+        arr.push(item)
+        document.querySelector('#'+item.link).style.display = 'block';
+      }else{
+        document.querySelector('#'+item.link).style.display = 'none';
+      }
+    } )
 
-    if(res === 0) {
-
-      let catsItems = structuredClone(get().CatsItemsCopy);
-
-      set({ CatsItems: catsItems })
-    }
-
+    console.log(arr)
   },
 
   // открыть/закрыть фильтр на главной странице

@@ -302,7 +302,7 @@ export default React.memo(function NavBarPC({ city }) {
               {thisCityRu}
             </div>
 
-            {activePage === 'home' ?
+            {activePage === 'home11' ?
               <div className={isOpenFilter ? 'filterHeaderPC active' : 'filterHeaderPC'} onClick={() => setActiveFilter(!isOpenFilter)}>
                 <Filter className='filter_svg' />
               </div>

@@ -247,20 +247,22 @@ export default function FormOrder({ cityName }) {
       return;
     }
 
-    if(typeOrder === 'dev') {
-      setActiveModalBasket(false);
-      setConfirmForm(true);
-    } else {
+    //if(typeOrder === 'dev') {
+      
+    //} else {
       showLoad(true);
   
       const res = await createOrder( token, thisCity, trueOrderCLose );
   
       showLoad(false);
   
-      if( res == 'to_cart' ){
-        trueOrderCLose();
+      if( res == 'to_cart' || res == 'wait_payment' ){
+        //trueOrderCLose();
+
+        setActiveModalBasket(false);
+        setConfirmForm(true);
       }
-    }
+    //}
 
   }
 
@@ -282,12 +284,17 @@ export default function FormOrder({ cityName }) {
         console.log(e)
       }
       
+      /*if( typePay?.id == 'cash' ){
+        
+      }*/
 
       clearCartData();
       //clearOrderList();
       
       setActiveModalBasket(false);
       setPayForm(false);
+      setConfirmForm(false);
+
       push(`/${thisCity}/zakazy`);
 
       setTimeout(() => {

@@ -113,7 +113,7 @@ export default function MenuCatMobile({ city }) {
             <span>{item.name}</span>
           </ScrollLink>
         ))}
-        <div className={isOpenFilter ? 'filterSVG activeFilter' : 'filterSVG'} onClick={() => setActiveFilter(!isOpenFilter)}>
+        <div className={isOpenFilter ? 'filterSVG activeFilter' : 'filterSVG'} onClick={() => setActiveFilter(!isOpenFilter)} style={{display: 'none'}}>
           <Filter />
         </div>
       </div>
