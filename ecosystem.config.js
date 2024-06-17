@@ -21,10 +21,10 @@ module.exports = {
   deploy : {
     production : {
       user : 'root',
-      host : '79.174.86.137',
+      host : '134.0.119.199',
       ref  : 'origin/main',
       repo : 'git@github.com:vito3315/test-app-new.git',
-      path : '/var/www/test-app-new',
+      path : '/root/test-app-new',
       'pre-deploy-local': '',
       'post-deploy' : 'npm run deploy:prod',
       'pre-setup': ''
