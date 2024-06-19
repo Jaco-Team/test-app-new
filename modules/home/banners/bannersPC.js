@@ -29,12 +29,13 @@ export default (function BannersPC() {
 
     const timer = setInterval(() => {
       if(activeSlider){
+        console.log('useEffect swiper.slideNext()')
         swiper.slideNext();
       }
     }, 5000);
     
     return () => clearInterval(timer);
-  }, []);
+  }, [activeSlider]);
 
   useEffect(() => {
     if(bannerList?.length > 0){

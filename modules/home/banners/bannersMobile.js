@@ -45,7 +45,7 @@ export default React.memo(function BannersMobile() {
     }, 5000);
     
     return () => clearInterval(timer);
-  }, []);
+  }, [activeSlider]);
 
   useEffect(() => {
     if (bannerList?.length > 0) {
