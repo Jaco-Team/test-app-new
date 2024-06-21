@@ -2,6 +2,12 @@ import { useState, useEffect } from 'react';
 
 import { useHomeStore, useHeaderStore } from '@/components/store';
 
+import { motion } from 'framer-motion';
+
+import { Search } from '@/ui/Icons.js';
+import MyTextInput from '@/ui/MyTextInput';
+import InputAdornment from '@mui/material/InputAdornment';
+
 const badges = [
   {
     id: '1',
@@ -23,101 +29,146 @@ const badges = [
 export default function Filter() {
   const [tags, setTags] = useState([]);
 
-  const [filterActive, isOpenFilter, filterItems, all_tags, filterItemsBadge] = useHomeStore((state) => [state.filterActive, state.isOpenFilter, state.filterItems, state.all_tags, state.filterItemsBadge]);
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [filterActive, isOpenFilter, filterItems, all_tags, filterItemsBadge, setActiveFilter, tag_filter, text_filter, filterText] = useHomeStore((state) => [state.filterActive, state.isOpenFilter, state.filterItems, state.all_tags, state.filterItemsBadge, state.setActiveFilter,
+    state.tag_filter, state.text_filter, state.filterText]);
 
-  const handleBadge  =  (id)  =>  {
+  const [matches, activePage] = useHeaderStore((state) => [state.matches, state.activePage]);
 
-    filterItemsBadge( parseInt(id) );
-  }
+  const resetTags = () => {
+    const tags_active = tags.map((item) => {
+      item.active = false;
+      return item;
+    });
+
+    setTags(tags_active);
+  };
+
+  const handleBadge = (id) => {
+    filterItemsBadge(parseInt(id));
+
+    if (tag_filter) {
+      resetTags();
+    }
+  };
+
+  const handleText = (event) => {
+    filterText(event);
+
+    if (tag_filter) {
+      resetTags();
+    }
+  };
 
   const handleTag = (id) => {
     const tags_active = tags.map((item) => {
       if (parseInt(item.id) === parseInt(id)) {
         item.active = item?.active ? false : true;
+      } else {
+        item.active = false;
       }
       return item;
     });
 
     setTags(tags_active);
 
-    const res = tags_active.reduce((res, tag) => res + (tag.active ? 1 : 0), 0);
-
-    filterItems( parseInt(id) );
+    filterItems(parseInt(id));
   };
 
   useEffect(() => {
     if (!isOpenFilter) {
-      const tags_active = tags.map((item) => {
-        item.active = false;
-        return item;
-      });
-      setTags(tags_active);
-
-      filterItems(0);
+      resetTags();
     }
   }, [isOpenFilter]);
 
   useEffect(() => {
-    setTags(all_tags)
+    setTags(all_tags);
   }, [all_tags]);
 
+  useEffect(() => {
+    if (activePage !== 'home') {
+      setActiveFilter(false);
+    }
+  }, [activePage]);
+
   return (
-    <div className={matches ? 'filterMobile' : 'filterPC'} style={{ visibility: filterActive ? 'visible' : 'hidden' }}>
+    <>
       {matches ? (
-        <>
+        <div className="filterMobile" style={{ visibility: filterActive ? 'visible' : 'hidden' }}>
           <div className="filterBadge">
             <div>
               {badges?.map((badg, key) => (
-                <div key={key} style={{ backgroundColor: badg.bg }} className={'tag'} onClick={ () =>  handleBadge(badg.id) }>
-                  <span>
-                    {badg.name}
-                  </span>
+                <div key={key} style={{ backgroundColor: badg.bg }} className={'tag'} onClick={() => handleBadge(badg.id)}>
+                  <span>{badg.name}</span>
                 </div>
               ))}
             </div>
           </div>
           <div className="filterDivider" />
           <div className="filterTag">
-            <div>
+            <div className="tags">
               {tags?.map((tag, key) => (
                 <div key={key} onClick={() => handleTag(tag.id)} className={tag?.active ? 'tag active' : 'tag'}>
-                  <span>
-                    {tag.name}
-                  </span>
+                  <span>{tag.name}</span>
                 </div>
               ))}
             </div>
+            <MyTextInput
+              type="text"
+              value={text_filter}
+              func={(event) => handleText(event)}
+              className="inputSearch"
+              startAdornment={
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              }
+            />
           </div>
-        </>
+        </div>
       ) : (
-        <>
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 0.9 }}
+          className="filterPC"
+        >
           <div className="filterTag">
             <div>
               {tags?.map((tag, key) => (
                 <div key={key} onClick={() => handleTag(tag.id)} className={tag?.active ? 'tag active' : 'tag'}>
-                  <span>
-                    {tag.name}
-                  </span>
+                  <span>{tag.name}</span>
                 </div>
               ))}
             </div>
+            <MyTextInput
+              type="text"
+              value={text_filter}
+              func={(event) => handleText(event)}
+              className="inputSearch"
+              startAdornment={
+                <InputAdornment position="start">
+                  <Search />
+                </InputAdornment>
+              }
+            />
           </div>
           <div className="filterDivider" />
           <div className="filterBadge">
             <div>
               {badges?.map((badg, key) => (
-                <div key={key} style={{ backgroundColor: badg.bg }} className={'tag'} onClick={ () =>  handleBadge(badg.id) }>
-                  <span>
-                    {badg.name}
-                  </span>
+                <div
+                  key={key}
+                  style={{ backgroundColor: badg.bg }}
+                  className={'tag'}
+                  onClick={() => handleBadge(badg.id)}
+                >
+                  <span>{badg.name}</span>
                 </div>
-                
               ))}
             </div>
           </div>
-        </>
+        </motion.div>
       )}
-    </div>
+    </>
   );
 }

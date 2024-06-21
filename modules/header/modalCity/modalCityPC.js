@@ -17,7 +17,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import { roboto } from '@/ui/Font.js';
 import { IconClose } from '@/ui/Icons.js';
-import { useHeaderStore, useCitiesStore, useContactStore, useCartStore } from '@/components/store.js';
+import { useHeaderStore, useCitiesStore, useContactStore, useCartStore, useHomeStore } from '@/components/store.js';
 
 export default function ModalCityPC() {
 
@@ -26,7 +26,8 @@ export default function ModalCityPC() {
   const [thisCityList, thisCityRu, setThisCityRu, setThisCity] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu, state.setThisCity]);
   const [openCityModal, setActiveModalCity, activePage] = useHeaderStore((state) => [state.openCityModal, state.setActiveModalCity, state.activePage]);
   const [getMap] = useContactStore((state) => [state.getMap]);
-  const [ getNewPriceItems ] = useCartStore( state => [ state.getNewPriceItems ] )
+  const [getNewPriceItems] = useCartStore( state => [state.getNewPriceItems] )
+  const [resetFilter] = useHomeStore( state => [state.resetFilter] )
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -48,6 +49,7 @@ export default function ModalCityPC() {
     setThisCity(city.link);
     getNewPriceItems(city.link)
     getMap('contacts', city.link);
+    resetFilter();
 
     if(activePage && activePage !== 'home') {
       push(`/${city.link}/${activePage}`);

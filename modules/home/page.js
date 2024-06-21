@@ -22,7 +22,7 @@ export default function HomePage({ page, city } ) {
 
   return (
     <Meta title={page.title} description={page.description}>
-      <div style={{ minHeight: '50vh' }}>
+      <div style={{ minHeight: matches ? '50vh' : '70vh' }}>
         {matches ?
           <>
             <BannersMobile />

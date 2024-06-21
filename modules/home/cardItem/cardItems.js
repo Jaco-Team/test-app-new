@@ -26,7 +26,7 @@ export default React.memo(function CatItems() {
     catygory = pathname.split('menu/')[1];
   }
   
-  const [CatsItems, getItem, closeModal, transition_menu_pc, transition_menu_mobile] = useHomeStore((state) => [state.CatsItems, state.getItem, state.closeModal, state.transition_menu_pc, state.transition_menu_mobile]);
+  const [CatsItems, getItem, closeModal, transition_menu_mobile] = useHomeStore((state) => [state.CatsItems, state.getItem, state.closeModal, state.transition_menu_mobile]);
   const [items] = useCartStore((state) => [state.items]);
   const [matches] = useHeaderStore((state) => [state.matches]);
   const [thisCity] = useCitiesStore( state => [state.thisCity]);
@@ -147,8 +147,15 @@ export default React.memo(function CatItems() {
       name={'cat' + cat.main_id}
       id={'cat' + cat.id}
       className="ContainerCardItemPC"
-      style={{ transform: `translateY(${transition_menu_pc})` }}
+      // style={{ transform: `translateY(${transition_menu_pc})` }}
       ref={(node) => {
+        if (node && key === 0) {
+          node.style.setProperty(
+            'margin-top',
+            '1.1552346570397vw',
+            'important'
+          );
+        }
         if (node && cat === newCats.at(-1)) {
           node.style.setProperty(
             'margin-bottom',

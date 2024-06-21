@@ -20,7 +20,7 @@ export default function FooterMobile({ cityName, active_page }) {
 
   const [ isAuth, setActiveModalAuth ] = useHeaderStore( state => [ state.isAuth, state.setActiveModalAuth ]);
 
-  const [setMenuCatPosition, isOpenFilter] = useHomeStore(state => [state.setMenuCatPosition, state.isOpenFilter]);
+  const [setMenuCatPosition, isOpenFilter, transition_menu_mobile] = useHomeStore(state => [state.setMenuCatPosition, state.isOpenFilter, state.transition_menu_mobile]);
 
   const handlerArrow = () => {
     setShowArrow(window.scrollY > 50);
@@ -58,7 +58,7 @@ export default function FooterMobile({ cityName, active_page }) {
         style={{ bottom: cookie ? '3.4188034188034vw' : '37.094017094017vw', 
                  width: itemsCount && active_page === 'home' ? '64.529914529915vw' : '10.25641025641vw', 
                  left: itemsCount && active_page === 'home' ? '32.051282051282vw' : '86.324786324786vw', 
-                 marginTop: active_page === 'home' && isOpenFilter ? '68.376068376068vw' : active_page === 'home' ? '3.4188034188034vw' : null
+                 marginTop: active_page === 'home' && isOpenFilter ? transition_menu_mobile : active_page === 'home' ? '3.4188034188034vw' : null
                 }}>
 
         <Link href={'/' + cityName + '/cart'} onClick={openBasketMobile} className={itemsCount && active_page === 'home' ? 'BasketFooterMobile' : 'BasketFooterMobileHidden'} >

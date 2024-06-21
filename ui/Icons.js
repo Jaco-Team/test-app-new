@@ -1,20 +1,48 @@
+export function Search(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="48"
+      height="48"
+      fill="none"
+      viewBox="0 0 48 48"
+      {...props}
+    >
+      <defs>
+        <clipPath id="clip5298_3333">
+          <path fill="#fff" fillOpacity="0" d="M0 0H48V48H0z"></path>
+        </clipPath>
+      </defs>
+      <path fill="#FFF" fillOpacity="0" d="M0 0H48V48H0z"></path>
+      <g clipPath="url(#clip5298_3333)">
+        <path
+          fill="#000"
+          fillOpacity="0.2"
+          fillRule="evenodd"
+          d="M39.08 41.14L26.52 28.58c-1 .83-2.15 1.48-3.45 1.94-1.3.47-2.65.7-4.04.7-3.41 0-6.31-1.18-8.68-3.55C7.99 25.31 6.8 22.41 6.8 19c0-3.43 1.19-6.32 3.55-8.68 2.37-2.37 5.26-3.56 8.68-3.56s6.31 1.19 8.68 3.56c2.37 2.36 3.55 5.25 3.55 8.68 0 1.42-.23 2.78-.71 4.08a11.7 11.7 0 01-1.92 3.4l12.56 12.55-2.11 2.11zM19.03 28.22c2.58 0 4.76-.89 6.55-2.68s2.68-3.97 2.68-6.54c0-2.58-.89-4.77-2.68-6.56s-3.97-2.68-6.55-2.68c-2.57 0-4.75.89-6.54 2.68S9.8 16.42 9.8 19c0 2.57.9 4.75 2.69 6.54s3.97 2.68 6.54 2.68z"
+        ></path>
+      </g>
+    </svg>
+  );
+}
+
 export function Filter(props) {
   return (
     <svg
-    xmlns="http://www.w3.org/2000/svg"
-    width="35"
-    height="35"
-    fill="none"
-    viewBox="0 0 35 35"
-    {...props}
-  >
-    <path
-      fill="#DA1A32"
-      fillOpacity="1"
-      fillRule="evenodd"
-      d="M15.52 35V24.53h2.27v4.11H35v2.28H17.79V35h-2.27zM0 30.92v-2.28h11.25v2.28H0zm8.98-8.21v-4.08H0v-2.27h8.98v-4.14h2.27v10.49H8.98zm6.54-4.08v-2.27H35v2.27H15.52zm8.22-8.19V0h2.27v4.07H35v2.28h-8.99v4.09h-2.27zM0 6.35V4.07h19.47v2.28H0z"
-    ></path>
-  </svg>
+      xmlns="http://www.w3.org/2000/svg"
+      width="35"
+      height="35"
+      fill="none"
+      viewBox="0 0 35 35"
+      {...props}
+    >
+      <path
+        fill="#DA1A32"
+        fillOpacity="1"
+        fillRule="evenodd"
+        d="M15.52 35V24.53h2.27v4.11H35v2.28H17.79V35h-2.27zM0 30.92v-2.28h11.25v2.28H0zm8.98-8.21v-4.08H0v-2.27h8.98v-4.14h2.27v10.49H8.98zm6.54-4.08v-2.27H35v2.27H15.52zm8.22-8.19V0h2.27v4.07H35v2.28h-8.99v4.09h-2.27zM0 6.35V4.07h19.47v2.28H0z"
+      ></path>
+    </svg>
   );
 }
 

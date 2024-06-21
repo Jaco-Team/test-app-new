@@ -13,7 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 //import JacoLogo from '@/public/Jaco-Logo-PC.png';
 //import JacoLogo from '@/public/Jaco-Logo-120.png';
 //Jaco-Logo-120.png
-import {Filter, ArrowDownHeaderPC, ArrowUpHeaderPC, JacoDocsIcon, LocationHeaderIcon } from '@/ui/Icons.js';
+import {ArrowDownHeaderPC, ArrowUpHeaderPC, JacoDocsIcon, LocationHeaderIcon } from '@/ui/Icons.js';
 
 import { Link as ScrollLink } from 'react-scroll';
 
@@ -302,12 +302,12 @@ export default React.memo(function NavBarPC({ city }) {
               {thisCityRu}
             </div>
 
-            {activePage === 'home11' ?
+            {/* {activePage === 'home' ?
               <div className={isOpenFilter ? 'filterHeaderPC active' : 'filterHeaderPC'} onClick={() => setActiveFilter(!isOpenFilter)}>
                 <Filter className='filter_svg' />
               </div>
               : null
-            }
+            } */}
 
             <Link href={'/' + city + '/contacts'}  className={activePage === 'contacts' ? 'mapHeaderPC active' : 'mapHeaderPC'}>
               <LocationHeaderIcon className='map_svg' />

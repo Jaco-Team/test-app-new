@@ -3361,97 +3361,181 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
   
   isOpenFilter: false,
   filterActive: false,
-  transition_menu_pc: '1.1552346570397vw',
+  //transition_menu_pc: '1.1552346570397vw',
   transition_menu_mobile: '0',
   CatsItemsCopy: [],
-
-  tag_filter: [],
-
+  // tag_filter: [],
+  tag_filter: '',
+  badge_filter: '',
+  text_filter: '',
   all_tags: [],
 
-  setAllTags: (tags) =>  {
+  // сброс фильтра на главной странице
+  resetFilter: () => {
+
+    const activePage = useHeaderStore.getState().activePage;
+
+    if(activePage === 'home') { 
+      let all_items = useCartStore.getState().allItems;
+      
+      if(all_items.length) {
+
+        all_items.map(item => {
+
+          if(document.querySelector('#'+item.link)) {
+            document.querySelector('#'+item.link).style.display = 'flex'
+          }
+
+        });
+
+      }
+    }
+    
+    set({
+      badge_filter: '',
+      tag_filter: '',
+      text_filter: ''
+    })
+  },
+
+  // установить тэги для фильтра на главной странице
+  setAllTags: (tags) => {
     set({
       all_tags: tags,
     });
   },
 
-  filterItemsBadge: (res) =>  {
-    let all_items = useCartStore.getState().allItems;
+  // фильтр по наименованию товара на главной странице
+  filterText: (event) => {
+    
+    if(!event) {
+      set({ text_filter: '' });
+      get().resetFilter();
 
-    if( parseInt(res) ===  2 ){
-      all_items.map( item => {
-        if( parseInt(item.is_new) ===  1 ){
-          document.querySelector('#'+item.link).style.display = 'block';
-        }else{
+      return;
+    }
+    
+    let text_filter = event.target.value;
+    
+    if(text_filter) {
+      let all_items = useCartStore.getState().allItems;
+
+      let check = false;
+
+      all_items.map(item => {
+       
+        check = item.name.toLowerCase().includes(text_filter.toLowerCase())
+  
+        if(check) {
+          document.querySelector('#'+item.link).style.display = 'flex';
+        } else {
           document.querySelector('#'+item.link).style.display = 'none';
         }
-      } )
-    }
+      })
 
-    if( parseInt(res) ===  1 ){
-      all_items.map( item => {
-        if( parseInt(item.is_hit) ===  1 ){
-          document.querySelector('#'+item.link).style.display = 'block';
-        }else{
-          document.querySelector('#'+item.link).style.display = 'none';
-        }
-      } )
+      set({ text_filter });
+    } else {
+      get().resetFilter();
     }
+    
   },
 
-  // фильтр товаров на главной странице
+  // фильтр товаров по badges на главной странице
+  filterItemsBadge: (res) =>  {
+    let all_items = useCartStore.getState().allItems;
+    const badge_filter = get().badge_filter;
+
+    set({ tag_filter: '', text_filter: '' })
+
+    if(parseInt(res) !== parseInt(badge_filter)) {
+
+      if(parseInt(res) === 2){
+        all_items.map( item => {
+          if( parseInt(item.is_new) ===  1 ){
+            document.querySelector('#'+item.link).style.display = 'flex';
+          }else{
+            document.querySelector('#'+item.link).style.display = 'none';
+          }
+        } )
+      }
+  
+      if(parseInt(res) === 1){
+        all_items.map( item => {
+          if( parseInt(item.is_hit) ===  1 ){
+            document.querySelector('#'+item.link).style.display = 'flex';
+          }else{
+            document.querySelector('#'+item.link).style.display = 'none';
+          }
+        } )
+      } 
+
+      set({ badge_filter: res })
+    } else {
+      get().resetFilter();
+    }
+
+  },
+
+  // фильтр товаров по тэгам на главной странице
   filterItems: (res) => {
 
-    if( res == 0 ){
-      return ;
-    }
+    
+    // let this_filter = get().tag_filter;
+    // let all_items = useCartStore.getState().allItems;
 
-    let this_filter = get().tag_filter;
+    // if( this_filter.includes(res) ){
+    //   this_filter = this_filter.filter( item => parseInt(item) != parseInt(res) )
+
+    //   set({
+      //     tag_filter: this_filter
+      //   })
+      // }else{
+        //   set({
+          //     tag_filter: [ ...this_filter, res ]
+          //   })
+          // }
+          
+    set({ badge_filter: '', text_filter: '' })
+    
     let all_items = useCartStore.getState().allItems;
+    let tag_filter = get().tag_filter;
 
-    if( this_filter.includes(res) ){
-      this_filter = this_filter.filter( item => parseInt(item) != parseInt(res) )
+    //let arr = [];
 
-      set({
-        tag_filter: this_filter
+    if(parseInt(res) !== parseInt(tag_filter)) {
+
+      let check = false;
+
+      all_items.map(item => {
+        //check = this_filter.some(r=> item.tags.includes(r)) -- или
+        //check = this_filter.every(r=> item.tags.includes(r)) -- и
+
+        check = item.tags.includes(res)
+
+        if(check){
+          //arr.push(item)
+          document.querySelector('#'+item.link).style.display = 'flex';
+        }else{
+          document.querySelector('#'+item.link).style.display = 'none';
+        }
       })
-    }else{
-      set({
-        tag_filter: [ ...this_filter, res ]
-      })
+
+      set({ tag_filter: res })
+    } else {
+      get().resetFilter();
     }
 
-    this_filter = get().tag_filter;
-
-    let arr = [];
-
-    let check = false;
-
-    all_items.map( item => {
-      //check = this_filter.some(r=> item.tags.includes(r)) -- или
-      //check = this_filter.every(r=> item.tags.includes(r)) -- и
-
-      check = this_filter.every(r=> item.tags.includes(r))
-
-      if( check ){
-        arr.push(item)
-        document.querySelector('#'+item.link).style.display = 'block';
-      }else{
-        document.querySelector('#'+item.link).style.display = 'none';
-      }
-    } )
-
-    console.log(arr)
+    //console.log(arr)
   },
 
   // открыть/закрыть фильтр на главной странице
   setActiveFilter: (value) => {
     
-    const matches = useHeaderStore.getState().matches;
+    //const matches = useHeaderStore.getState().matches;
 
     if(value) {
 
-      if(matches) {
+      // if(matches) {
         const filter = document.querySelector('.filterMobile')?.getBoundingClientRect().height;
 
         const width = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
@@ -3460,25 +3544,30 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
         set({transition_menu_mobile})
 
-      } else {
-        const filter = document.querySelector('.filterPC')?.getBoundingClientRect().height;
+      // } else {
+      //   const filter = document.querySelector('.filterPC')?.getBoundingClientRect().height;
   
-        const width = document.getElementById('headerNew')?.getBoundingClientRect().width;
+      //   const width = document.getElementById('headerNew')?.getBoundingClientRect().width;
 
-        const transition_menu_pc = (100 * ((filter) / width)) + 2.3104693140794 + 'vw';
+      //   const transition_menu_pc = (100 * ((filter) / width)) + 2.3104693140794 + 'vw';
 
-        set({transition_menu_pc})
-      }
+      //   set({transition_menu_pc})
+      // }
 
       setTimeout(() => {
         set({filterActive: value})
       }, 500);
       
     } else {
-      set({ filterActive: value, transition_menu_mobile: '0', transition_menu_pc: '1.1552346570397vw' })
+      set({ filterActive: value, transition_menu_mobile: '0' })
+      // set({ filterActive: value, transition_menu_mobile: '0', transition_menu_pc: '1.1552346570397vw' })
     }
 
-    set({isOpenFilter: value})
+    set({isOpenFilter: value});
+    
+    if(!value) {
+      get().resetFilter();
+    }
   },
 
   // установить стили для меню категории в мобилке, в зависимости от скролла

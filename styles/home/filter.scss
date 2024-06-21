@@ -1,38 +1,33 @@
 @import '../settings.scss';
 
 .filterPC {
-  position: absolute;
   width: $MyScale2520;
   border-radius: $MyScale40;
   background-color: rgba(0, 0, 0, 0.05);
   margin-top: $MyScale32;
-  left: $MyScale125;
+  margin-left: $MyScale125;
   display: flex;
   padding: $MyScale40 0;
-  opacity: 0;
-  animation: ani 0.5s forwards;
 
   & .filterTag {
     width: $MyScale1684;
     display: flex;
-    align-items: center;
+    flex-direction: column;
     margin: $MyScale20 0;
 
-    & > div {
+    & > div:first-child {
       display: flex;
       flex-wrap: wrap;
       margin-left: $MyScale60;
       margin-right: $MyScale144;
       gap: $MyScale20;
 
-      & .tag{
+      & .tag {
         border-radius: $MyScale32;
         background-color: #fff;
         padding: $MyScale10 $MyScale38;
         cursor: pointer;
         border: $MyScale2 solid transparent;
-        
-
 
         & span {
           height: $MyScale40;
@@ -44,10 +39,40 @@
           align-items: center;
         }
       }
-      
 
       & .tag.active {
         border: $MyScale2 solid rgba(0, 0, 0, 0.6);
+      }
+    }
+
+    & .inputSearch {
+      margin-top: $MyScale40;
+      margin-left: $MyScale60;
+      width: $MyScale1480 !important;
+
+      & .MuiInputBase-root.MuiOutlinedInput-root {
+        width: $MyScale1480 !important;
+        height: $MyScale80 !important;
+        border-radius: $MyScale40;
+        background-color: #fff;
+
+        & input {
+          padding: 0 !important;
+          width: $MyScale1200;
+          margin-left: $MyScale16;
+          @include font30_400();
+        }
+
+        & fieldset {
+          border: none;
+          padding: 0;
+        }
+
+        & svg {
+          width: $MyScale48;
+          height: $MyScale48;
+          margin-left: $MyScale16;
+        }
       }
     }
   }
@@ -63,16 +88,14 @@
     align-items: flex-start;
     margin: $MyScale20 0;
 
-    & > div{
+    & > div {
       display: flex;
       flex-wrap: wrap;
       margin-left: $MyScale60;
       margin-right: $MyScale188;
       gap: $MyScale20;
-    
 
       & div.tag {
-        
         border-radius: $MyScale32;
         cursor: pointer;
 
@@ -82,11 +105,10 @@
           justify-content: center;
           width: $MyScale176;
           height: $MyScale64;
-          
+
           color: #fff !important;
           @include font22_400();
           text-transform: uppercase;
-          
         }
       }
     }
@@ -101,12 +123,13 @@
   background-color: rgba(0, 0, 0, 0.05);
   display: flex;
   flex-direction: column;
-  padding: $MyScale60_mobile $MyScale10_mobile $MyScale60_mobile $MyScale60_mobile;
+  padding: $MyScale60_mobile $MyScale10_mobile $MyScale60_mobile
+    $MyScale60_mobile;
   opacity: 0;
   animation: ani 0.5s forwards;
   margin: $MyScale20_mobile 0;
 
-   & .filterBadge {
+  & .filterBadge {
     display: flex;
     margin-bottom: $MyScale60_mobile;
 
@@ -116,7 +139,7 @@
       column-gap: $MyScale30_mobile;
       row-gap: $MyScale40_mobile;
 
-      & .tag{
+      & .tag {
         border-radius: $MyScale48_mobile;
 
         & span {
@@ -125,7 +148,7 @@
           justify-content: center;
           width: $MyScale264_mobile;
           height: $MyScale96_mobile;
-          
+
           color: #fff !important;
           @include font30_400();
           text-transform: uppercase;
@@ -134,7 +157,7 @@
     }
   }
 
-   & .filterDivider {
+  & .filterDivider {
     background-color: rgba(0, 0, 0, 0.2);
     width: $MyScale970_mobile;
     height: $MyScale2_mobile;
@@ -143,33 +166,60 @@
   & .filterTag {
     display: flex;
     margin-top: $MyScale60_mobile;
+    flex-direction: column;
 
-    & div {
+    & .tags {
       display: flex;
       flex-wrap: wrap;
       column-gap: $MyScale30_mobile;
       row-gap: $MyScale40_mobile;
 
-      & .tag{
-        
+      & .tag {
+        border: $MyScale2_mobile solid transparent;
+        border-radius: $MyScale48_mobile;
 
         & span {
           display: flex;
           align-items: center;
           justify-content: center;
           height: $MyScale96_mobile;
-          
+          border-radius: $MyScale48_mobile;
           background-color: #fff;
           @include font40_400();
           padding: 0 $MyScale63_mobile;
           color: rgba(0, 0, 0, 0.9) !important;
-          border: $MyScale2_mobile solid transparent;
-          border-radius: $MyScale48_mobile;
         }
 
         &.active {
           border: $MyScale2_mobile solid rgba(0, 0, 0, 0.6);
-          border-radius: $MyScale48_mobile;
+        }
+      }
+    }
+
+    & .inputSearch {
+      margin-top: $MyScale60_mobile;
+      width: $MyScale970_mobile;
+
+      & .MuiInputBase-root.MuiOutlinedInput-root {
+        width: $MyScale970_mobile;
+        height: $MyScale100_mobile !important;
+        border-radius: $MyScale48_mobile;
+        background-color: #fff;
+
+        & input {
+          padding: 0 !important;
+          width: $MyScale800_mobile;
+          @include font40_400();
+        }
+
+        & fieldset {
+          border: none;
+          padding: 0;
+        }
+
+        & svg {
+          width: $MyScale48_mobile;
+          height: $MyScale48_mobile;
         }
       }
     }

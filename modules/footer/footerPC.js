@@ -13,7 +13,7 @@ export default React.memo(function FooterPC({ cityName, active_page }) {
   const [showArrow, setShowArrow] = useState(false);
 
   const [links] = useFooterStore((state) => [state.links]);
-  const [transition_menu_pc, isOpenFilter] = useHomeStore((state) => [state.transition_menu_pc, state.isOpenFilter]);
+  const [badge_filter, tag_filter, text_filter] = useHomeStore((state) => [state.badge_filter, state.tag_filter, state.text_filter]);
 
   const handlerArrow = () => setShowArrow(window.scrollY > 50);
 
@@ -25,13 +25,9 @@ export default React.memo(function FooterPC({ cityName, active_page }) {
   };
 
   useEffect(() => {
-    if(isOpenFilter && active_page === 'home') {
-      setShowArrow(true)
-    } else {
-      window.addEventListener('scroll', handlerArrow);
-      return () => window.removeEventListener('scroll', handlerArrow);
-    }
-  }, [isOpenFilter, active_page]);
+    window.addEventListener('scroll', handlerArrow);
+    return () => window.removeEventListener('scroll', handlerArrow);
+  }, []);
 
   useEffect(() => {
     if (!localStorage.getItem('setCookie') && !localStorage.getItem('setCookie')?.length){
@@ -41,7 +37,7 @@ export default React.memo(function FooterPC({ cityName, active_page }) {
 
   return (
     <>
-      <div className={showArrow ? 'ArrowPC' : 'ArrowHidden'} onClick={scrollUp} style={{marginTop: active_page === 'contacts' ? '-4.3321299638989vw' : active_page === 'home' ? transition_menu_pc : null, transform: active_page === 'contacts' ? 'translate(0, -50%)' : null}}>
+      <div className={showArrow ? 'ArrowPC' : 'ArrowHidden'} onClick={scrollUp} style={{marginTop: active_page === 'contacts' || (active_page === 'home' && (badge_filter || tag_filter || text_filter)) ? '-4.3321299638989vw' : null, transform: active_page === 'contacts' ? 'translate(0, -50%)' : null}}>
         <ArrowUp />
       </div>
       <footer className='footerPC' style={{ minHeight: cookie ? '36.101083032491vw' : '45.126353790614vw', marginTop: active_page === 'contacts' ? null : '1.8050541516245vw' }}>
