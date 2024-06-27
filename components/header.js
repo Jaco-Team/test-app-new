@@ -24,11 +24,6 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { useHeaderStore, useHomeStore } from './store.js';
 
-//import { permanentRedirect } from 'next/navigation'
-//import { redirect } from 'next/navigation'
-
-import { usePathname } from 'next/navigation'
-
 export default React.memo(function header({ city, city_list, cats }) {
   
   let thisCityRU = '';
@@ -43,27 +38,21 @@ export default React.memo(function header({ city, city_list, cats }) {
     if (location.protocol !== 'https:' && location.hostname != 'localhost' ) {
       location.replace(`https:${location.href.substring(location.protocol.length)}`);
     }
+
+    console.log( `https://jacofood.ru${location.href.substring(location.origin.length)}` )
+
+    if( location.hostname == 'new.jacofood.ru' ){
+      location.replace(`https://jacofood.ru${location.href.substring(location.origin.length)}`);
+    }
   }
 
 
-  const pathname = usePathname()
-
-  //console.log( 'pathname', pathname );
-
-  //const matchesDev = false;
-  //const matchesDev = useMediaQuery('screen and (max-width: 1170px)');
   const matchesDev = useMediaQuery('screen and (max-width: 800px)');
 
   const [setMatches, matches, checkToken, isShowLoad] = useHeaderStore( state => [state.setMatches, state.matches, state.checkToken, state.isShowLoad] ); 
   const [getItemsCat, category] = useHomeStore( state => [state.getItemsCat, state.category]);
   
   useEffect(() => {
-    //if( category?.length == 0 ){
-      //getItemsCat('home', city);
-
-      //console.log('getItemsCat');
-    //}
-
     checkToken();
   }, []);
 

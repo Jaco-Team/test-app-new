@@ -18,7 +18,10 @@ export default function AkciiPC() {
     <div className="akciiPC">
       <span className="login">Выгодные предложения</span>
       {bannerList?.map((item, key) => (
-        <AkciiItemPC key={key} actia={item} />
+        parseInt(item?.is_active_actii) === 1 ?
+          <AkciiItemPC key={item.id} actia={item} />
+            :
+          false
       ))}
     </div>
   );

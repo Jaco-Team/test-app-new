@@ -52,17 +52,17 @@ export default function ContactsPageMobile() {
             >
 
               {zones?.map((point, key) => 
-                <ContactsPageMobilePointMap key={point.id} point={point} changePointClick={changePointClick} image={point.image} />
+                <ContactsPageMobilePointMap key={point.test} point={point} changePointClick={changePointClick} image={point.image} />
               )}
 
               {points_zone?.map((point, key) => (
-                  <Polygon key={key}
-                    geometry={[point.zone]}
-                    options={point.options}
-                    onClick={() => changePointClick(point.addr)}
-                  />
-                ))
-              }
+                <Polygon 
+                  key={key}
+                  geometry={[point.zone]}
+                  options={point.options}
+                  onClick={() => changePointClick(point.addr)}
+                />
+              ))}
 
               {!location_user ? null :
                 <Placemark

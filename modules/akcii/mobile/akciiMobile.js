@@ -18,7 +18,10 @@ export default function AkciiMobile() {
     <div className="akciiMobile">
       <span className="login">Выгодные предложения</span>
       {bannerList?.map((item, key) => (
-        <AkciiItemMobile key={key} actia={item} />
+        parseInt(item?.is_active_actii) === 1 ?
+          <AkciiItemMobile key={item.id} actia={item} />
+            :
+          false
       ))}
     </div>
   );

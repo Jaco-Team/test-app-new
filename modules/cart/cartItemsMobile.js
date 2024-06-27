@@ -2,10 +2,19 @@ import { memo } from 'react';
 
 import Image from 'next/image';
 
-import { useCartStore } from '@/components/store.js';
+import { useCartStore, useCitiesStore } from '@/components/store.js';
 
 export default memo(function CartItemMobile({ item, count, last }) {
   const [minus, plus, promoInfo] = useCartStore((state) => [state.minus, state.plus, state.promoInfo]);
+  const [ thisCityRu ] = useCitiesStore( state => [state.thisCity, state.thisCityRu]);
+
+  const metrica_param = {
+    city: thisCityRu, 
+    tovar: item.name, 
+    category: '',
+    platform: 'mobile',
+    view: 'Корзина'
+  };
 
   return (
     <div className='CartItems' style={{ borderBottom: last ? 'none' : '0.17094017094017vw solid rgba(0, 0, 0, 0.1)'}}>
@@ -37,9 +46,9 @@ export default memo(function CartItemMobile({ item, count, last }) {
       </div>
 
       <div className="CartItemsButton">
-        <button className="minus" style={{ backgroundColor: item?.disabled ? '#fff' : 'rgba(0, 0, 0, 0.07)', color: item?.disabled ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.8)', }} onClick={() => minus(item?.item_id)} disabled={item?.disabled ? true : false}>–</button>
+        <button className="minus" style={{ backgroundColor: item?.disabled ? '#fff' : 'rgba(0, 0, 0, 0.07)', color: item?.disabled ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.8)', }} onClick={() => { minus(item?.item_id); ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); } } disabled={item?.disabled ? true : false}>–</button>
         <span>{count}</span>
-        <button className="plus" style={{ backgroundColor: item?.disabled || count > 98 ? '#fff' : 'rgba(0, 0, 0, 0.07)', color: item?.disabled || count > 98 ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.8)'}} onClick={() => plus(item?.item_id)} disabled={item?.disabled || count > 98 ? true : false}>+</button>
+        <button className="plus" style={{ backgroundColor: item?.disabled || count > 98 ? '#fff' : 'rgba(0, 0, 0, 0.07)', color: item?.disabled || count > 98 ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.8)'}} onClick={() => { plus(item?.item_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } } disabled={item?.disabled || count > 98 ? true : false}>+</button>
       </div>
 
     </div>

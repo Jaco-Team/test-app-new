@@ -9,7 +9,7 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
-import { BurgerIconMobile, MenuIconMobile, AboutIconMobile, LocationIconMobile, MapContactsMobile } from '@/ui/Icons.js';
+import { BurgerIconMobile, MenuIconMobile, AboutIconMobile, LocationIconMobile, MapContactsMobile, Sale } from '@/ui/Icons.js';
 import { roboto } from '@/ui/Font.js';
 
 import { useHeaderStore, useCitiesStore } from '@/components/store.js';
@@ -85,6 +85,13 @@ export default memo(function NavBarMobile({ city }) {
                 <Link href={'/' + city} style={{background: activePage === 'home' ? 'rgba(0, 0, 0, 0.03)' : null}}>
                   <MenuIconMobile />
                   <span style={{color: activePage === 'home' ? ' #dd1a32' : null}}>Меню</span>
+                </Link>
+              </ListItem>
+
+              <ListItem onClick={() => setActiveMenu(false)}>
+                <Link href={`/${city}/akcii`} style={{background: activePage === 'akcii' ? 'rgba(0, 0, 0, 0.03)' : null}}>
+                  <Sale />
+                  <span style={{color: activePage === 'akcii' ? ' #dd1a32' : null}}>Акции</span>
                 </Link>
               </ListItem>
 

@@ -53,7 +53,8 @@
   & .MuiDrawer-paper {
     margin-top: $MyScale200_mobile;
     background-color: #ffffff;
-    height: $MyScale1260_mobile;
+    //height: $MyScale1260_mobile;
+    height: auto;
     border-radius: 0 0 $MyScale80_mobile $MyScale80_mobile;
     border-top: $MyScale2_mobile solid rgba(0, 0, 0, 0.1);
     box-shadow: none;
@@ -150,6 +151,7 @@
       width: $MyScale150_mobile;
       background: rgba(0, 0, 0, 0.2);
       border-radius: $MyScale5_mobile;
+      margin-bottom: $MyScale40_mobile;
     }
   }
 }

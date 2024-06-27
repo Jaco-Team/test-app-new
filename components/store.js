@@ -106,6 +106,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   promoName: '',
 
+  linkPaySBP: '',
+
   ya_metrik: {
     'togliatti': 47085879,
     'samara': 47085879
@@ -469,6 +471,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // получение времени заказа в оформлении заказа
   getTimesPred: async(point_id, date, typeOrder, cart) => {
 
+    const my_cart = get().items;
+
     const setDate = date ?? dayjs().format('YYYY-MM-DD');
 
     const today = dayjs().format('YYYY-MM-DD');
@@ -476,11 +480,13 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const data = {
       type: 'get_times_pred',
       date: setDate,
-      point_id: point_id ?? get().point_id,
-      type_order: (typeOrder ?? get().typeOrder) == 'pic' ? 1 : 0,
-      cart: JSON.stringify(cart)
+      point_id: point_id,
+      type_order: get().typeOrder == 'pic' ? 1 : 0,
+      cart: JSON.stringify(my_cart)
     };
     
+    console.log( 'data', data )
+
     let json = await api('cart', data);
     json = json?.filter((time) => time.name !== 'В ближайшее время');
     
@@ -493,9 +499,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       const data = {
         type: 'get_times_pred',
         date: tomorrow,
-        point_id: point_id ?? get().point_id,
-        type_order: (typeOrder ?? get().typeOrder) == 'pic' ? 1 : 0,
-        cart: JSON.stringify(cart)
+        point_id: point_id,
+        type_order: get().typeOrder == 'pic' ? 1 : 0,
+        cart: JSON.stringify(my_cart)
       };
       
       let json = await api('cart', data);
@@ -613,27 +619,35 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         //  openPayForm: true
         //})
 
-        const checkout = new window.YooMoneyCheckoutWidget({
-          confirmation_token: json.pay.pay.confirmation.confirmation_token,
+        if( get().typePay.id == 'sbp' ){
+          set({
+            linkPaySBP: json.pay.pay.confirmation.confirmation_data,
+          })
+        }
 
-          error_callback: function(error) {
-            console.log(error)
-          }
-        });
+        if( get().typePay.id == 'online' ){
+          const checkout = new window.YooMoneyCheckoutWidget({
+            confirmation_token: json.pay.pay.confirmation.confirmation_token,
 
-        checkout.on('success', () => {
-          checkout.destroy();
-          funcClose();
-        });
-    
-        checkout.on('fail', () => {
-          checkout.destroy();
-          return 'nothing';
-        });
+            error_callback: function(error) {
+              console.log(error)
+            }
+          });
 
-        setTimeout( () => {
-          checkout.render('payment-form');
-        }, 300 )
+          checkout.on('success', () => {
+            checkout.destroy();
+            funcClose();
+          });
+      
+          checkout.on('fail', () => {
+            checkout.destroy();
+            return 'nothing';
+          });
+
+          setTimeout( () => {
+            checkout.render('payment-form');
+          }, 300 )
+        }
       
         return 'wait_payment';
       }else{
@@ -1346,7 +1360,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       if( promo_info.status_promo === false ){
         return {
           st: false,
-          text: 'Данный промокод не найден или уже активирован'
+          text: 'Не можем найти промокод. Может, его уже кто-то активировал?'
         }
       }
       
@@ -1378,7 +1392,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         }else{
           return {
             st: false,
-            text: 'По данному адресу промокод не работает'
+            text: 'Ой, в этом кафе промокод не работает. Проверьте адрес кафе.'
           }
         }
       }
@@ -1390,14 +1404,14 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           if( allPrice < promo_info.limits.summ.min ){
             return {
               st: false,
-              text: 'Суммы заказа не достаточно для активации промокода'
+              text: 'Эх, не хватает суммы для активации промокода! Может, добавим в корзину что-нибудь ещё?'
             }
           }
 
           if( allPrice > promo_info.limits.summ.max ){
             return {
               st: false,
-              text: 'Сумма заказа больше, чем лимит промокода'
+              text: 'Ой, сумма заказа для этого промокода слишком большая. Пожалуйста, проверьте лимит промокода.'
             }
           }
         }
@@ -1407,7 +1421,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         if( parseInt(promo_info.limits.dows[ this_dow ]) == 0 ){
           return {
             st: false,
-            text: 'Промокод не действует в этот день недели'
+            text: 'К сожалению, сегодня промокод не работает. Пожалуйста, проверьте дни работы промокода.'
           }
         }
       }
@@ -1424,21 +1438,21 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           if( parseInt( promo_info.limits.type_order ) == 1 ){
             return {
               st: false,
-              text: 'Промокод действует только на доставку'
+              text: 'Вот незадача! Этот промокод действует только на доставку.'
             }
           }
 
           if( parseInt( promo_info.limits.type_order ) == 2 ){
             return {
               st: false,
-              text: 'Промокод действует только на самовывоз'
+              text: 'Вот незадача! Этот промокод действует только на самовывоз.'
             }
           }
 
           if( parseInt( promo_info.limits.type_order ) == 3 ){
             return {
               st: false,
-              text: 'Промокод действует только в кафе'
+              text: 'Вот незадача! Этот промокод действует только при заказе в кафе.'
             }
           }
         }
@@ -1448,7 +1462,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         if( parseInt( promo_info.limits.only_kassa ) == 1 ){
           return {
             st: false,
-            text: 'Промокод действует только в кафе'
+            text: 'Вот незадача! Этот промокод действует только при заказе в кафе.'
           }
         }
       }
@@ -3506,6 +3520,12 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
       let check = false;
 
+      let all_tags = get().all_tags;
+
+      let find_tag = all_tags.find(tag => parseInt(tag.id) === parseInt(res));
+
+      ym(47085879, 'reachGoal', 'choose_tag', { tag: find_tag?.name })
+
       all_items.map(item => {
         //check = this_filter.some(r=> item.tags.includes(r)) -- или
         //check = this_filter.every(r=> item.tags.includes(r)) -- и
@@ -3604,9 +3624,9 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       token
     };
 
-    const json = await api(this_module, data);
-
     let activePage = useHeaderStore.getState().activePage;
+
+    const json = await api(this_module, data);
 
     let bannerList;
 

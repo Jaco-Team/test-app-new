@@ -25,7 +25,7 @@ export default function ConfirmForm() {
 
   const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
 
-  const [openPayForm] = useCartStore((state) => [state.openPayForm]);
+  const [openPayForm, linkPaySBP] = useCartStore((state) => [state.openPayForm, state.linkPaySBP]);
 
   const [trueOrderCash, openConfirmForm, setConfirmForm, itemsCount, typePay, createOrder, typeOrder, clearCartData, setPayForm, setActiveModalBasket, checkNewOrder] = useCartStore((state) => [ state.trueOrderCash, state.openConfirmForm, state.setConfirmForm, state.itemsCount,
     state.typePay, state.createOrder, state.typeOrder, state.clearCartData, state.setPayForm, state.setActiveModalBasket, state.checkNewOrder]);
@@ -186,6 +186,18 @@ export default function ConfirmForm() {
               <div id="payment-form" />
             </div>
 
+            { typePay?.id == 'sbp' ? 
+              <iframe
+                src={linkPaySBP}
+                width='100%'
+                height={900}
+                style={{marginTop: 20}}
+                loading="lazy"
+              ></iframe>
+                :
+              false
+            }
+
             { typePay?.id == 'online' || typePay?.id == 'sbp' ? false :
               <button className="confirmBTN" onClick={ () => create_order() }>Заказать</button>
             }
@@ -285,6 +297,18 @@ export default function ConfirmForm() {
               <div className="Line"></div>
               <div id="payment-form" />
             </div>
+
+            { typePay?.id == 'sbp' ? 
+              <iframe
+                src={linkPaySBP}
+                width='100%'
+                height={900}
+                style={{marginTop: 20}}
+                loading="lazy"
+              ></iframe>
+                :
+              false
+            }
 
             { typePay?.id == 'online' || typePay?.id == 'sbp' ? false :
               <button className="confirmBTN" onClick={ () => create_order() }>Заказать</button>
