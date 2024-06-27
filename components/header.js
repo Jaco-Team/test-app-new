@@ -24,8 +24,24 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { useHeaderStore, useHomeStore } from './store.js';
 
+import { initializeApp } from "firebase/app";
+import { getAnalytics } from "firebase/analytics";
+import { getPerformance } from "firebase/performance";
+
 export default React.memo(function header({ city, city_list, cats }) {
   
+  const firebaseConfig = {
+    apiKey: "AIzaSyChAHowCT2C7GRwfcxwt1Pi4SCV4CaVpP4",
+    authDomain: "jacofoodsite.firebaseapp.com",
+    projectId: "jacofoodsite",
+    storageBucket: "jacofoodsite.appspot.com",
+    messagingSenderId: "692082803779",
+    appId: "1:692082803779:web:39a39963cd8bff927000f6"
+  };
+    
+  // Initialize Firebase
+  
+
   let thisCityRU = '';
 
   if( city_list && city_list.length > 0 ) {
@@ -35,6 +51,10 @@ export default React.memo(function header({ city, city_list, cats }) {
   }
 
   if( typeof window != 'undefined' ){
+    const firebaseAPP = initializeApp(firebaseConfig);
+    const analytics = getAnalytics(firebaseAPP);
+    const perf = getPerformance(firebaseAPP);
+
     if (location.protocol !== 'https:' && location.hostname != 'localhost' ) {
       location.replace(`https:${location.href.substring(location.protocol.length)}`);
     }

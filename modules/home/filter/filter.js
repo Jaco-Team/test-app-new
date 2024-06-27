@@ -93,7 +93,7 @@ export default function Filter() {
   return (
     <>
       {matches ? (
-        <div className="filterMobile" style={{ visibility: filterActive ? 'visible' : 'hidden' }}>
+        <div className="filterMobile" id="fullFilter" style={{ visibility: filterActive ? 'visible' : 'hidden' }}>
           <div className="filterBadge">
             <div>
               {badges?.map((badg, key) => (
@@ -132,7 +132,7 @@ export default function Filter() {
           transition={{ duration: 0.9 }}
           className="filterPC"
         >
-          <div className="filterTag">
+          <div className="filterTag" id="fullFilter">
             <div>
               {tags?.map((tag, key) => (
                 <div key={key} onClick={() => handleTag(tag.id)} className={tag?.active ? 'tag active' : 'tag'}>
