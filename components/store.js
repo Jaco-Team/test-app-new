@@ -113,11 +113,23 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     'samara': 47085879
   },
 
+  global_checkout: null,
+
   // открытие/закрытие формы подтверждения заказа
   setConfirmForm: (active) => {
     const promoName = sessionStorage.getItem('promo_name');
 
     const dopListConfirm = get().dopListCart.filter(it => it.count)
+
+    if( active === false ){
+      if( get().global_checkout !== null ){
+        get().global_checkout.destroy();
+
+        set({
+          global_checkout: null
+        })
+      }
+    }
 
     set({ openConfirmForm: active, promoName, dopListConfirm })
   },
@@ -480,14 +492,19 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const data = {
       type: 'get_times_pred',
       date: setDate,
-      point_id: point_id,
+      point_id: point_id ?? get().point_id,
       type_order: get().typeOrder == 'pic' ? 1 : 0,
       cart: JSON.stringify(my_cart)
     };
     
-    console.log( 'data', data )
-
     let json = await api('cart', data);
+
+    if( json.st === false ){
+
+      useHeaderStore.getState().setActiveModalAlert(true, json.text, false);
+      return ;
+    }
+
     json = json?.filter((time) => time.name !== 'В ближайшее время');
     
     if(setDate === today && !json.length) {
@@ -499,7 +516,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       const data = {
         type: 'get_times_pred',
         date: tomorrow,
-        point_id: point_id,
+        point_id: point_id ?? get().point_id,
         type_order: get().typeOrder == 'pic' ? 1 : 0,
         cart: JSON.stringify(my_cart)
       };
@@ -633,6 +650,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
               console.log(error)
             }
           });
+
+          set({
+            global_checkout: checkout
+          })
 
           checkout.on('success', () => {
             checkout.destroy();
