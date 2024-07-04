@@ -9,6 +9,39 @@
   display: flex;
   padding: $MyScale40 0;
 
+  & .search_clear{
+    display: flex;
+    align-items: center;
+    
+    & .tag {
+      height: $MyScale70 !important;
+      width: fit-content;
+      border-radius: 100px;
+      //background-color: #fff;
+      padding: 0 $MyScale38;
+      cursor: pointer;
+      border: $MyScale2 solid transparent;
+
+      margin-top: $MyScale40;
+      margin-left: $MyScale60;
+
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      background-color: rgb(221, 26, 50);
+      & span {
+        height: $MyScale40;
+        @include font30_400();
+        //color: rgba(0, 0, 0, 0.9) !important;
+        color: #fff!important;
+
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+    }
+  }
+
   & .filterTag {
     width: $MyScale1684;
     display: flex;

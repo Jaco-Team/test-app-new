@@ -185,6 +185,10 @@ export default function FormOrder({ cityName }) {
       setSummDiv(item.sum_div ?? 0);
       setAnchorEl(null);
 
+      if( item?.comment.length > 0 ){
+        changeComment(item?.comment)
+      }
+
       if (item.name === 'Добавить новый адрес') {
         openModalAddr(0, thisCity);
         setAddrDiv(null);

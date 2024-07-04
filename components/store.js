@@ -163,7 +163,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     if (typeOrder) {
       get().setTypePay({ id: 'cash', name: 'В кафе' });
       get().setSummDiv(0);
-      get().setSdacha(0);
+      //get().setSdacha(0);
       get().changeComment('');
     } else {
 
@@ -288,7 +288,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     if(event === '') {
       set({ comment: event })
     } else {
-      const comment = event.target.value;
+      const comment = event?.target?.value ?? event;
 
       const len = comment.split(/\r?\n|\r|\n/g)
 
@@ -3513,29 +3513,10 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
   // фильтр товаров по тэгам на главной странице
   filterItems: (res) => {
-
-    
-    // let this_filter = get().tag_filter;
-    // let all_items = useCartStore.getState().allItems;
-
-    // if( this_filter.includes(res) ){
-    //   this_filter = this_filter.filter( item => parseInt(item) != parseInt(res) )
-
-    //   set({
-      //     tag_filter: this_filter
-      //   })
-      // }else{
-        //   set({
-          //     tag_filter: [ ...this_filter, res ]
-          //   })
-          // }
-          
     set({ badge_filter: '', text_filter: '' })
     
     let all_items = useCartStore.getState().allItems;
     let tag_filter = get().tag_filter;
-
-    //let arr = [];
 
     if(parseInt(res) !== parseInt(tag_filter)) {
 
@@ -3563,8 +3544,6 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
       get().scrollToTargetAdjusted();
 
-      //document.getElementById("fullFilter").scrollIntoView({ behavior: "smooth", block: "start", inline: "nearest" });
-
       set({ tag_filter: res })
     } else {
       get().resetFilter();
@@ -3576,9 +3555,16 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
   scrollToTargetAdjusted: () => {
     var element = document.getElementById('fullFilter');
     var headerOffset = 120;
+
+    if( window.outerWidth < 800 ){
+      headerOffset = 300;
+    }
+
     var elementPosition = element.getBoundingClientRect().top;
-    var offsetPosition = elementPosition + window.pageYOffset - headerOffset;
+    var offsetPosition = elementPosition + window.pageYOffset + headerOffset;
   
+    console.log( window.outerWidth )
+
     window.scrollTo({
       top: offsetPosition,
       behavior: "smooth"

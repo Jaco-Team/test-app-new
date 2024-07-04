@@ -9,11 +9,11 @@ import MyTextInput from '@/ui/MyTextInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
 const badges = [
-  {
+  /*{
     id: '1',
     name: 'Хит',
     bg: 'rgb(175, 0, 219)',
-  },
+  },*/
   {
     id: '2',
     name: 'Новинка',
@@ -29,7 +29,7 @@ const badges = [
 export default function Filter() {
   const [tags, setTags] = useState([]);
 
-  const [filterActive, isOpenFilter, filterItems, all_tags, filterItemsBadge, setActiveFilter, tag_filter, text_filter, filterText] = useHomeStore((state) => [state.filterActive, state.isOpenFilter, state.filterItems, state.all_tags, state.filterItemsBadge, state.setActiveFilter,
+  const [filterActive, resetFilter, scrollToTargetAdjusted, isOpenFilter, filterItems, all_tags, filterItemsBadge, setActiveFilter, tag_filter, text_filter, filterText] = useHomeStore((state) => [state.filterActive, state.resetFilter, state.scrollToTargetAdjusted, state.isOpenFilter, state.filterItems, state.all_tags, state.filterItemsBadge, state.setActiveFilter,
     state.tag_filter, state.text_filter, state.filterText]);
 
   const [matches, activePage] = useHeaderStore((state) => [state.matches, state.activePage]);
@@ -60,18 +60,32 @@ export default function Filter() {
   };
 
   const handleTag = (id) => {
-    const tags_active = tags.map((item) => {
-      if (parseInt(item.id) === parseInt(id)) {
-        item.active = item?.active ? false : true;
-      } else {
+    if( parseInt(id) == -1 ){
+      const tags_active = tags.map((item) => {
+        
         item.active = false;
-      }
-      return item;
-    });
+        
+        return item;
+      });
 
-    setTags(tags_active);
+      setTags(tags_active);
 
-    filterItems(parseInt(id));
+      resetFilter();
+      scrollToTargetAdjusted();
+    }else{
+      const tags_active = tags.map((item) => {
+        if (parseInt(item.id) === parseInt(id)) {
+          item.active = item?.active ? false : true;
+        } else {
+          item.active = false;
+        }
+        return item;
+      });
+
+      setTags(tags_active);
+
+      filterItems(parseInt(id));
+    }
   };
 
   useEffect(() => {
@@ -111,6 +125,10 @@ export default function Filter() {
                   <span>{tag.name}</span>
                 </div>
               ))}
+
+              <div onClick={() => handleTag(-1)} className={'tag'}>
+                <span>Очистить</span>
+              </div>
             </div>
             <MyTextInput
               type="text"
@@ -132,41 +150,49 @@ export default function Filter() {
           transition={{ duration: 0.9 }}
           className="filterPC"
         >
-          <div className="filterTag" id="fullFilter">
-            <div>
+          <div className="filterTag" id="fullFilter" style={{ width: '100%' }}>
+            <div style={{ width: '100%' }}>
+              {badges?.map((badg, key) => (
+                
+                <div
+                  key={key}
+                  style={{ backgroundColor: badg.bg, color: '#fff' }}
+                  className={'tag'}
+                  onClick={() => handleBadge(badg.id)}
+                >
+                  <span style={{ color: '#fff!important' }}>{badg.name}</span>
+                </div>
+              ))}
+
               {tags?.map((tag, key) => (
                 <div key={key} onClick={() => handleTag(tag.id)} className={tag?.active ? 'tag active' : 'tag'}>
                   <span>{tag.name}</span>
                 </div>
               ))}
+
+              
             </div>
-            <MyTextInput
-              type="text"
-              value={text_filter}
-              func={(event) => handleText(event)}
-              className="inputSearch"
-              startAdornment={
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              }
-            />
-          </div>
-          <div className="filterDivider" />
-          <div className="filterBadge">
-            <div>
-              {badges?.map((badg, key) => (
-                <div
-                  key={key}
-                  style={{ backgroundColor: badg.bg }}
-                  className={'tag'}
-                  onClick={() => handleBadge(badg.id)}
-                >
-                  <span>{badg.name}</span>
-                </div>
-              ))}
+
+            <div className='search_clear'>
+              <MyTextInput
+                type="text"
+                value={text_filter}
+                func={(event) => handleText(event)}
+                className="inputSearch"
+                startAdornment={
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                }
+              />
+
+              <div onClick={() => handleTag(-1)} className={'tag'}>
+                <span>Очистить</span>
+              </div>
+
             </div>
           </div>
+          
         </motion.div>
       )}
     </>

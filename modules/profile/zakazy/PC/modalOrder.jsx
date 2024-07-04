@@ -103,13 +103,21 @@ export default React.memo(function ModalOrder() {
   }else{
     if( parseInt(modalOrder?.order?.type_order_) == 1 ){
       if( parseInt(modalOrder?.order?.status_order) >= 1 && parseInt(modalOrder?.order?.status_order) <= 5 ){
-        order_status = `Доставим до ${modalOrder?.order?.max_time_order}`;
+        if( parseInt(modalOrder?.order?.is_preorder) == 1 ){
+          order_status = `Доставим ${modalOrder?.order?.max_time_order}`;
+        }else{
+          order_status = `Доставим до ${modalOrder?.order?.max_time_order}`;
+        }
       }else{
         order_status = `Доставили в ${modalOrder?.order?.close_date_time}`;
       }
     }else{
       if( parseInt(modalOrder?.order?.status_order) >= 1 && parseInt(modalOrder?.order?.status_order) <= 3 ){
-        order_status = `Будет готов до ${modalOrder?.order?.max_time_order}`;
+        if( parseInt(modalOrder?.order?.is_preorder) == 1 ){
+          order_status = `Будет готов ${modalOrder?.order?.max_time_order}`;
+        }else{
+          order_status = `Будет готов до ${modalOrder?.order?.max_time_order}`;
+        }
       }else{
         if( parseInt(modalOrder?.order?.status_order) == 4 ){
           order_status = 'Ждёт в кафе, можно забирать';
