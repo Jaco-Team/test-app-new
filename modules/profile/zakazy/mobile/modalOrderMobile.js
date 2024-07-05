@@ -109,30 +109,30 @@ export default React.memo(function ModalOrderMobile() {
   let text_status = '';
 
   if( parseInt(modalOrder?.order?.is_delete) == 1 ){
-    order_status = `Отменили в ${modalOrder?.order?.del_date_time}`;
+    text_status = `Отменили в ${modalOrder?.order?.del_date_time}`;
   }else{
     if( parseInt(modalOrder?.order?.type_order_) == 1 ){
       if( parseInt(modalOrder?.order?.status_order) >= 1 && parseInt(modalOrder?.order?.status_order) <= 5 ){
         if( parseInt(modalOrder?.order?.is_preorder) == 1 ){
-          order_status = `Доставим ${modalOrder?.order?.max_time_order}`;
+          text_status = `Доставим ${modalOrder?.order?.max_time_order}`;
         }else{
-          order_status = `Доставим до ${modalOrder?.order?.max_time_order}`;
+          text_status = `Доставим до ${modalOrder?.order?.max_time_order}`;
         }
       }else{
-        order_status = `Доставили в ${modalOrder?.order?.close_date_time}`;
+        text_status = `Доставили в ${modalOrder?.order?.close_date_time}`;
       }
     }else{
       if( parseInt(modalOrder?.order?.status_order) >= 1 && parseInt(modalOrder?.order?.status_order) <= 3 ){
         if( parseInt(modalOrder?.order?.is_preorder) == 1 ){
-          order_status = `Будет готов ${modalOrder?.order?.max_time_order}`;
+          text_status = `Будет готов ${modalOrder?.order?.max_time_order}`;
         }else{
-          order_status = `Будет готов до ${modalOrder?.order?.max_time_order}`;
+          text_status = `Будет готов до ${modalOrder?.order?.max_time_order}`;
         }
       }else{
         if( parseInt(modalOrder?.order?.status_order) == 4 ){
-          order_status = 'Ждёт в кафе, можно забирать';
+          text_status = 'Ждёт в кафе, можно забирать';
         }else{
-          order_status = `Отдали в ${modalOrder?.order?.close_date_time}`;
+          text_status = `Отдали в ${modalOrder?.order?.close_date_time}`;
         }
       }
     }
