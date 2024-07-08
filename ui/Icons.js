@@ -292,6 +292,36 @@ export function IconInfoRed() {
 //   );
 // }
 
+export function Close(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      width="60"
+      height="60"
+      fill="none"
+      viewBox="0 0 60 60"
+      {...props}
+    >
+      <g>
+        <path
+          stroke="#fff"
+          strokeLinecap="round"
+          strokeMiterlimit="10"
+          strokeWidth="3"
+          d="M17.496 42.5l25-25"
+        ></path>
+        <path
+          stroke="#fff"
+          strokeLinecap="round"
+          strokeMiterlimit="10"
+          strokeWidth="3"
+          d="M42.496 42.5l-25-25"
+        ></path>
+      </g>
+    </svg>
+  );
+}
+
 export function IconClose(props) {
   return (
     <svg

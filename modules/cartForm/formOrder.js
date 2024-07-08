@@ -19,6 +19,9 @@ import { ArrowDownBasketModalPC, ArrowDownCartMobile, CityBasketModalPC, HomeBas
 
 import { roboto } from '@/ui/Font.js';
 
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
+
 const dopText = {
   rolly: 'Не забудьте про соусы, приправы и приборы',
   pizza: 'Попробуйте необычное сочетание пиццы и соуса',
@@ -85,6 +88,12 @@ export default function FormOrder({ cityName }) {
   useEffect(() => {
     check_need_dops();
   }, [])
+
+  useEffect(() => {
+    if( dayjs( new Date ).locale('ru').format('YYYY-MM-DD') > dateTimeOrder?.date ){
+      setDataTimeOrder({ name: 'В ближайшее время', id: -1 });
+    }
+  }, [dateTimeOrder])
 
   const openMenu = (event, nameList) => {
     setNameList(nameList);
@@ -185,7 +194,7 @@ export default function FormOrder({ cityName }) {
       setSummDiv(item.sum_div ?? 0);
       setAnchorEl(null);
 
-      if( item?.comment.length > 0 ){
+      if( item?.comment?.length > 0 ){
         changeComment(item?.comment)
       }
 
@@ -320,7 +329,7 @@ export default function FormOrder({ cityName }) {
     }
   }
 
-  let NewSummDiv = summDiv;
+  let NewSummDiv = orderAddr?.sum_div ?? 0;
 
   let price1 = itemsOffDops.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
   let price2 = dopListCart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);

@@ -213,7 +213,7 @@ export default function ModalCardItemPC() {
                           <div className="itemDesc">
                             <Typography className="ItemTitleSet" variant="h5" component="span">{item.name}</Typography>
                             <Typography variant="h5" component="span" className="ItemDesk">
-                              {item.marc_desc.length > 0 ? item.marc_desc : item.tmp_desc}
+                              {item.marc_desc_full.length > 0 ? item.marc_desc_full : item.tmp_desc}
                             </Typography>
                           </div>
                         </div>
@@ -320,7 +320,7 @@ export default function ModalCardItemPC() {
                 </div>
 
                 <Typography variant="h5" component="span" className="desk ItemDescStart">
-                  {openItem?.marc_desc.length > 0 ? openItem?.marc_desc : openItem?.tmp_desc}
+                  {openItem?.marc_desc_full.length > 0 ? openItem?.marc_desc_full : openItem?.tmp_desc}
                 </Typography>
 
                 {count == 0 ? (

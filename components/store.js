@@ -439,7 +439,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       };
       
       const json = await api('cart', data);
-      set({ pointList: json.points});
+      set({ pointList: json?.points});
     }
 
     set({ openMenuCart: active, nameList });
@@ -454,7 +454,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       };
       
       const json = await api('cart', data);
-      set({ pointList: json.points});
+      set({ pointList: json?.points});
     }
 
     set({ openModalBasket: active });
@@ -469,7 +469,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     
     let json = await api('cart', data);
 
-    json = json.map(date => {
+    json = json?.map(date => {
       if(date.text !== "Сегодня" && date.text !== "Завтра") {
           date.text = dayjs(date.text).locale('ru').format('DD MMM').replace('.', '');
           return date
@@ -485,6 +485,14 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const my_cart = get().items;
 
+    let my_cart_ = my_cart.map( item => {
+      return {
+        id: item.id,
+        item_id: item.id,
+        count: item.count,
+      }
+    } )
+
     const setDate = date ?? dayjs().format('YYYY-MM-DD');
 
     const today = dayjs().format('YYYY-MM-DD');
@@ -494,20 +502,20 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       date: setDate,
       point_id: point_id ?? get().point_id,
       type_order: get().typeOrder == 'pic' ? 1 : 0,
-      cart: JSON.stringify(my_cart)
+      cart: JSON.stringify(my_cart_)
     };
     
     let json = await api('cart', data);
 
-    if( json.st === false ){
+    if( json?.st === false ){
 
-      useHeaderStore.getState().setActiveModalAlert(true, json.text, false);
+      useHeaderStore.getState().setActiveModalAlert(true, json?.text, false);
       return ;
     }
 
     json = json?.filter((time) => time.name !== 'В ближайшее время');
     
-    if(setDate === today && !json.length) {
+    if(setDate === today && !json?.length) {
 
       let tomorrow = new Date();
       tomorrow.setDate(tomorrow.getDate()+1);
@@ -518,7 +526,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         date: tomorrow,
         point_id: point_id ?? get().point_id,
         type_order: get().typeOrder == 'pic' ? 1 : 0,
-        cart: JSON.stringify(my_cart)
+        cart: JSON.stringify(my_cart_)
       };
       
       let json = await api('cart', data);
@@ -558,7 +566,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       const json = await api('cart', data);
 
       if(address) {
-        const findAddr = json.find(addr => addr.street === address.street && addr.home === address.home);
+        const findAddr = json?.find(addr => addr.street === address.street && addr.home === address.home);
 
         if(findAddr) {
           get().setAddrDiv(findAddr);
@@ -624,7 +632,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       set({ DBClick: false });
     }, 300 )
 
-    if( json.st === true ){
+    if( json?.st === true ){
 
       set({
         checkNewOrder: json?.check
@@ -638,7 +646,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
         if( get().typePay.id == 'sbp' ){
           set({
-            linkPaySBP: json.pay.pay.confirmation.confirmation_data,
+            linkPaySBP: json?.pay?.pay?.confirmation?.confirmation_data,
           })
         }
 
@@ -693,7 +701,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       }
     }else{
       //показать ошибку
-      useHeaderStore.getState().setActiveModalAlert(true, json.text, false);
+      useHeaderStore.getState().setActiveModalAlert(true, json?.text, false);
 
       return 'nothing';
     }
@@ -725,15 +733,15 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       set({ DBClick: false });
     }, 300 )
 
-    if( json.st === true ){
+    if( json?.st === true ){
 
       
     }else{
       //показать ошибку
-      useHeaderStore.getState().setActiveModalAlert(true, json.text, false);
+      useHeaderStore.getState().setActiveModalAlert(true, json?.text, false);
     }
 
-    return json.st;
+    return json?.st;
   },
 
   clearCartData: () => {
@@ -1747,8 +1755,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const json = await api(this_module, data);
 
-    json.zones.map((point) => point.image = 'default#image');
-    json.points.map((point) => point.image = 'default#image');
+    json?.zones.map((point) => point.image = 'default#image');
+    json?.points.map((point) => point.image = 'default#image');
 
     let zoomSize;
 
@@ -1760,12 +1768,12 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     set({
       center_map: {
-        center: [json.zones[0].xy_center_map.latitude, json.zones[0].xy_center_map.longitude],
+        center: [json?.zones[0].xy_center_map.latitude, json?.zones[0].xy_center_map.longitude],
         zoom: zoomSize,
         controls: []
       },
-      zones: json.zones,
-      points: json.points,
+      zones: json?.zones,
+      points: json?.points,
     })
 
     setTimeout(() => {
@@ -2321,17 +2329,17 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     let json = await api('profile', data);
 
     set({
-      allStreets: json.streets,
-      infoAboutAddr: json.this_info,
-      cityList: json.cities,
-      active_city: json.city,
-      chooseAddrStreet: json.this_info ?? {},
+      allStreets: json?.streets,
+      infoAboutAddr: json?.this_info,
+      cityList: json?.cities,
+      active_city: json?.city,
+      chooseAddrStreet: json?.this_info ?? {},
       center_map: {
-        center: json.this_info ? [json?.this_info?.xy[0], json?.this_info?.xy[1]] : [json.city_center[0], json.city_center[1]],
+        center: json?.this_info ? [json?.this_info?.xy[0], json?.this_info?.xy[1]] : [json?.city_center[0], json?.city_center[1]],
         zoom: 11.5,
         controls: []
       },
-      zones: json.zones
+      zones: json?.zones
     })
 
   },
@@ -2362,8 +2370,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     let json = await api(this_module, data);
 
     set({ 
-      promoListActive: json.active_list,
-      promoListOld: json.old_list,
+      promoListActive: json?.active_list,
+      promoListOld: json?.old_list,
       city: city
     });
   },
@@ -2471,17 +2479,17 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     set({
       isOpenModalAddr: true,
-      allStreets: json.streets,
-      infoAboutAddr: json.this_info,
-      cityList: json.cities,
-      active_city: json.city,
-      chooseAddrStreet: json.this_info ?? {},
+      allStreets: json?.streets,
+      infoAboutAddr: json?.this_info,
+      cityList: json?.cities,
+      active_city: json?.city,
+      chooseAddrStreet: json?.this_info ?? {},
       center_map: {
-        center: json.this_info ? [json?.this_info?.xy[0], json?.this_info?.xy[1]] : [json.city_center[0], json.city_center[1]],
+        center: json?.this_info ? [json?.this_info?.xy[0], json?.this_info?.xy[1]] : [json?.city_center[0], json?.city_center[1]],
         zoom: 11.5,
         controls: []
       },
-      zones: json.zones
+      zones: json?.zones
     })
   },
   orderDel: async (this_module, userToken, text) => {
@@ -2495,12 +2503,12 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api(this_module, data);
 
-    if( json.st === true ){
+    if( json?.st === true ){
       get().closeModalDel();
       get().closeOrder();
       get().getOrderList('zakazy', get().city, userToken);
     }else{
-      useHeaderStore.getState().setActiveModalAlert(true, json.text, false);
+      useHeaderStore.getState().setActiveModalAlert(true, json?.text, false);
     }
   },
 
@@ -2548,7 +2556,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       json.addrs = json?.addrs[0];
 
       set({
-        chooseAddrStreet: json.addrs,
+        chooseAddrStreet: json?.addrs,
         center_map: {
           center: [json?.addrs?.xy[0], json?.addrs?.xy[1]],
         },
@@ -2608,7 +2616,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api('profile', data);
 
-    if( json.st === true ){
+    if( json?.st === true ){
 
       get().closeModalAddr();
       get().getUserInfo('profile', get().city, token);
@@ -2666,7 +2674,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api('profile', data);
 
-    if( json.st === true ){
+    if( json?.st === true ){
       get().closeModalAddr();
       get().getUserInfo('profile', get().city, token);
 
@@ -2694,7 +2702,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api('profile', data);
 
-    if( json.st === true ){
+    if( json?.st === true ){
       get().getUserInfo('profile', get().city, token);
     }
   },
@@ -2711,8 +2719,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     let json = await api('profile', data);
 
     set({
-      allStreets: json.streets,
-      zones: json.zones,
+      allStreets: json?.streets,
+      zones: json?.zones,
       //chooseAddrStreet: {}
     })
 
@@ -2799,7 +2807,7 @@ export const useFooterStore = createWithEqualityFn((set) => ({
     const json = await api(this_module, data);
 
     set({
-      links: json.page,
+      links: json?.page,
     });
   },
 }), shallow);
@@ -3048,9 +3056,9 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     const res = await api('auth', data);
 
-    if (res.st === false) {
+    if (res?.st === false) {
       set({
-        errTextAuth: res.text,
+        errTextAuth: res?.text,
       });
     } else {
       set({
@@ -3070,15 +3078,15 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
       set({
         errTextAuth: '',
-        token: res.token,
-        userName: get().setNameUser(res.name),
+        token: res?.token,
+        userName: get().setNameUser(res?.name),
 
         isAuth: 'auth'
       });
 
       if (typeof window !== 'undefined') {
-        localStorage.setItem('token', res.token);
-        Cookies.set('token', res.token, { expires: 60 }) //expires 7 days
+        localStorage.setItem('token', res?.token);
+        Cookies.set('token', res?.token, { expires: 60 }) //expires 7 days
       }
     }
   },
@@ -3103,25 +3111,25 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     const json = await api('auth', data);
 
-    if (json.st === false) {
+    if (json?.st === false) {
       set({
-        errTextAuth: json.text,
+        errTextAuth: json?.text,
         loading: false,
       });
     } else {
       set({
         errTextAuth: '',
-        is_sms: json.is_sms,
-        token: json.token,
-        userName: get().setNameUser(json.name),
+        is_sms: json?.is_sms,
+        token: json?.token,
+        userName: get().setNameUser(json?.name),
         openAuthModal: false,
         loading: false,
         isAuth: 'auth'
       });
 
       if (typeof window !== 'undefined') {
-        localStorage.setItem('token', json.token);
-        Cookies.set('token', json.token, { expires: 60 }) //expires 7 days
+        localStorage.setItem('token', json?.token);
+        Cookies.set('token', json?.token, { expires: 60 }) //expires 7 days
       }
     }
   },
@@ -3138,14 +3146,14 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
         const json = await api('auth', data);
 
-        if (json.st === false) {
+        if (json?.st === false) {
           set({
             isAuth: 'none'
           });
         }else{
           set({
             token: token,
-            userName: get().setNameUser(json.user.name),
+            userName: get().setNameUser(json?.user?.name),
             isAuth: 'auth'
           });
 
@@ -3166,14 +3174,14 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
         const json = await api('auth', data);
 
-        if (json.st === false) {
+        if (json?.st === false) {
           set({
             isAuth: 'none'
           });
         }else{
           set({
             token: token2,
-            userName: get().setNameUser(json.user.name),
+            userName: get().setNameUser(json?.user?.name),
             isAuth: 'auth'
           });
 
@@ -3206,7 +3214,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     const json = await api('auth', data);
 
-    if (json.st) {
+    if (json?.st) {
       set({
         errTextAuth: '',
         errTitle: '',
@@ -3215,7 +3223,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       });
     } else {
       set({
-        errTextAuth: json.text,
+        errTextAuth: json?.text,
       });
     }
 
@@ -3251,7 +3259,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     const json = await api('auth', data);
 
-    if (json['st']) {
+    if (json?.st === true) {
       set({
         errTextAuth: '',
         errTitle: '',
@@ -3260,7 +3268,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       });
     } else {
       set({
-        errTextAuth: json.text,
+        errTextAuth: json?.text,
       });
     }
 
@@ -3292,7 +3300,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     const json = await api('auth', data);
 
-    if( json.hasOwnProperty("st") ){
+    if( json?.hasOwnProperty("st") ){
       get().setActiveModalAlert(true, 'Произошла ошибка, попробуйте позже', false);
 
       return ;
@@ -3563,8 +3571,6 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     var elementPosition = element.getBoundingClientRect().top;
     var offsetPosition = elementPosition + window.pageYOffset + headerOffset;
   
-    console.log( window.outerWidth )
-
     window.scrollTo({
       top: offsetPosition,
       behavior: "smooth"
@@ -3677,11 +3683,11 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     //console.table(json.items)
 
     set({
-      CatsItems: json.items,
-      category: json.main_cat,
+      CatsItems: json?.items,
+      category: json?.main_cat,
 
       // для тестов фильтра на главной
-      CatsItemsCopy:  json.items,
+      CatsItemsCopy:  json?.items,
     });
   },
 

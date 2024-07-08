@@ -229,13 +229,29 @@ export default React.memo(function ModalOrderMobile() {
 
           {modalOrder?.order_items?.map((order, key) => (
             <div key={key} className="zakazyOrder"
-              style={{ marginBottom: order === modalOrder?.order_items?.at(-1) ? '8.5470085470085vw' : null,
+              style={{ marginBottom: order === modalOrder?.order_items?.at(-1) && parseInt(modalOrder?.order?.type_order_) !== 1 ? '8.5470085470085vw' : null,
                 height: order.name.length > 29 ? '11.111111111111vw' : '6.8376068376068vw' }}>
               <span>{order.count}</span>
               <span>{order.name}</span>
               <span>{new Intl.NumberFormat('ru-RU').format(order.price)}{' '}₽</span>
             </div>
           ))}
+
+          { parseInt(modalOrder?.order?.type_order_) == 1 ?
+            <div 
+              className="zakazyOrder"
+              style={{ 
+                marginBottom: '8.5470085470085vw',
+                height: '6.8376068376068vw' 
+              }}
+            >
+              <span>1</span>
+              <span>Доставка</span>
+              <span>{new Intl.NumberFormat('ru-RU').format(modalOrder?.order?.sum_div)}{' '}₽</span>
+            </div>
+              :
+            false
+          }
 
           { parseInt(modalOrder?.order?.is_delete) == 0 && parseInt(modalOrder?.order?.status_order) != 6 ? (
             <Button className="zakazyBTN" variant="outlined" onClick={openModalDel}>

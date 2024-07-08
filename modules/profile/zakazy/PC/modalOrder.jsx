@@ -223,6 +223,19 @@ export default React.memo(function ModalOrder() {
                   <span>{new Intl.NumberFormat('ru-RU').format(item.price)}{' '}₽</span>
                 </div>
               )}
+
+              { parseInt(modalOrder?.order?.type_order_) == 1 ?
+                <div>
+                  <div>
+                    <span>1</span>
+                    <span>Доставка</span>
+                  </div>
+                  <span>{new Intl.NumberFormat('ru-RU').format(modalOrder?.order?.sum_div)}{' '}₽</span>
+                </div>
+                  :
+                false
+              }
+
             </Grid>
 
             <Grid item xs={12} className='header_btn'>

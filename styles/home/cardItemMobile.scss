@@ -113,6 +113,13 @@
             align-items: center;
             justify-content: center;
             white-space: nowrap;
+            position: relative;
+
+            & > span:last-child{
+              position: absolute;
+              right: $MyScale40_mobile;
+              @include font75_300();
+            }
           }
 
           & > div {

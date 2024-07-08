@@ -48,8 +48,6 @@ export default memo(function CardItem({ item, count, index}) {
    * 
    */
 
-  console.log( item )
-
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}

@@ -20,7 +20,7 @@
       //background-color: #fff;
       padding: 0 $MyScale38;
       cursor: pointer;
-      border: $MyScale2 solid transparent;
+      border: $MyScale3 solid transparent;
 
       margin-top: $MyScale40;
       margin-left: $MyScale60;
@@ -60,7 +60,7 @@
         background-color: #fff;
         padding: $MyScale10 $MyScale38;
         cursor: pointer;
-        border: $MyScale2 solid transparent;
+        border: $MyScale3 solid transparent;
 
         & span {
           height: $MyScale40;
@@ -72,9 +72,48 @@
           align-items: center;
         }
       }
+      & .tag_ {
+        border-radius: $MyScale32;
+        background-color: #fff;
+        padding: $MyScale10 $MyScale38;
+        cursor: pointer;
+        border: $MyScale3 solid transparent;
+
+        & span {
+          height: $MyScale40;
+          @include font30_400();
+          color: #fff !important;
+
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-transform: uppercase;
+        }
+      }
 
       & .tag.active {
-        border: $MyScale2 solid rgba(0, 0, 0, 0.6);
+        border: $MyScale3 solid rgba(0, 0, 0, 0.4);
+        background-color: rgba(0, 0, 0, 0.025);
+
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around;
+        padding-right: $MyScale10;
+        & svg{
+          width: $MyScale50;
+          height: $MyScale40;
+          padding-left: $MyScale15;
+
+          fill: rgba(0, 0, 0, 0.9);
+          color: rgba(0, 0, 0, 0.9);
+          stroke: rgba(0, 0, 0, 0.9);
+          & path{
+            fill: rgba(0, 0, 0, 0.9);
+            color: rgba(0, 0, 0, 0.9);
+            stroke: rgba(0, 0, 0, 0.9);
+          }
+        }
       }
     }
 
@@ -198,7 +237,7 @@
 
   & .filterTag {
     display: flex;
-    margin-top: $MyScale60_mobile;
+    //margin-top: $MyScale60_mobile;
     flex-direction: column;
 
     & .tags {
@@ -208,7 +247,64 @@
       row-gap: $MyScale40_mobile;
 
       & .tag {
-        border: $MyScale2_mobile solid transparent;
+        border: $MyScale3_mobile solid transparent;
+        border-radius: $MyScale48_mobile;
+        background-color: #fff;
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        
+        
+
+        & span {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          height: $MyScale96_mobile;
+          border-radius: $MyScale48_mobile;
+          @include font40_400();
+          padding: 0 $MyScale63_mobile;
+          color: rgba(0, 0, 0, 0.9) !important;
+        }
+
+        &.active {
+          border: $MyScale3_mobile solid rgba(0, 0, 0, 0.4);
+          //background-color: rgba(0, 0, 0, 0.025);
+
+          justify-content: space-around;
+          padding-right: $MyScale10;
+
+          & span {
+            padding-right: 0;
+            padding-left: $MyScale30_mobile;;
+          }
+
+          & svg{
+            width: $MyScale70_mobile;
+            height: $MyScale70_mobile;
+            padding-left: $MyScale10_mobile;
+  
+            fill: rgba(0, 0, 0, 0.9);
+            color: rgba(0, 0, 0, 0.9);
+            stroke: rgba(0, 0, 0, 0.9);
+            & path{
+              fill: rgba(0, 0, 0, 0.9);
+              color: rgba(0, 0, 0, 0.9);
+              stroke: rgba(0, 0, 0, 0.9);
+            }
+          }
+
+        }
+      }
+      & .search_clear.tag{
+        background-color: rgb(221, 26, 50);
+        & span{
+          color: #fff !important;
+          background-color: rgb(221, 26, 50)!important;
+        }
+      }
+      & .tag_ {
+        border: $MyScale3_mobile solid transparent;
         border-radius: $MyScale48_mobile;
 
         & span {
@@ -217,14 +313,16 @@
           justify-content: center;
           height: $MyScale96_mobile;
           border-radius: $MyScale48_mobile;
-          background-color: #fff;
+          //background-color: #fff;
           @include font40_400();
           padding: 0 $MyScale63_mobile;
-          color: rgba(0, 0, 0, 0.9) !important;
+          color: #fff !important;
+          text-transform: uppercase;
         }
 
         &.active {
-          border: $MyScale2_mobile solid rgba(0, 0, 0, 0.6);
+          border: $MyScale3_mobile solid rgba(0, 0, 0, 0.4);
+          background-color: rgba(0, 0, 0, 0.025);
         }
       }
     }
