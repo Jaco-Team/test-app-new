@@ -38,6 +38,8 @@
         &.small{
             width: 80px;
             height: 30px;
+            padding-left: 15px;
+            padding-right: 15px;
             & > span{
                 @include fonsNew(0.75rem, var(--inter-font));
             }

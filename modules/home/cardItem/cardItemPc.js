@@ -48,6 +48,8 @@ export default memo(function CardItem({ item, count, index}) {
    * 
    */
 
+  console.log( item )
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -97,11 +99,22 @@ export default memo(function CardItem({ item, count, index}) {
             </picture>
 
             
-
-            {parseInt(item.is_new) == 0 ? parseInt(item.is_hit) == 0 ? null :
+            {parseInt(item.is_hit) == 1 ? 
               <BadgeItem size={'big'} type={'hit'} view={'pc'} />
-                  :
+                :
+              false
+            }
+
+            {parseInt(item.is_new) == 1 ? 
               <BadgeItem size={'big'} type={'new'} view={'pc'} />
+                :
+              false
+            }
+
+            {parseInt(item?.is_updated) == 1 ? 
+              <BadgeItem size={'big'} type={'updated'} view={'pc'} />
+                :
+              false
             }
           </div>
 

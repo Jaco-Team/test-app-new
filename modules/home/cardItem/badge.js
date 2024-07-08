@@ -4,6 +4,7 @@ const arrColor = {
   new: { color: '#EE7900', text: 'новинка' },
   hit: { color: '#AF00DB', text: 'хит' },
   sale: { color: '#DB0021', text: 'скидка' }, 
+  updated: { color: '#66BC46', text: 'Обновлено' },
 }
 
 export default function BadgeItem({size, view, type}) {
