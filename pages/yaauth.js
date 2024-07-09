@@ -4,7 +4,7 @@ import Script from 'next/script'
 
 export default React.memo(function Yaauth() {
 
-  useEffect(() => {
+  const loadToken = () => {
     console.log( 'load' )
     YaSendSuggestToken(
       'https://jacofood.ru', 
@@ -12,12 +12,14 @@ export default React.memo(function Yaauth() {
         flag: true
       }
     )
-  }, []);
+  };
 
   return (
     <>
-      <Script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js" />
-      <Script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-token-with-polyfills-latest.js" />
+      <Script 
+        src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-token-with-polyfills-latest.js" 
+        onLoad={ () => loadToken() } 
+      />
     </>
   )
 })
