@@ -70,6 +70,9 @@
           display: flex;
           justify-content: center;
           align-items: center;
+          &:hover{
+            color: #dd1a32 !important;
+          }
         }
       }
       & .tag_ {
@@ -93,8 +96,10 @@
 
       & .tag.active {
         border: $MyScale3 solid rgba(0, 0, 0, 0.4);
-        background-color: rgba(0, 0, 0, 0.025);
-
+        //background-color: rgba(0, 0, 0, 0.025);
+        & span{
+          color: #dd1a32!important;
+        }
         display: flex;
         flex-direction: row;
         align-items: center;
@@ -278,7 +283,9 @@
             padding-right: 0;
             padding-left: $MyScale30_mobile;;
           }
-
+          & span{
+            color: #dd1a32!important;
+          }
           & svg{
             width: $MyScale70_mobile;
             height: $MyScale70_mobile;
@@ -322,7 +329,10 @@
 
         &.active {
           border: $MyScale3_mobile solid rgba(0, 0, 0, 0.4);
-          background-color: rgba(0, 0, 0, 0.025);
+          //background-color: rgba(0, 0, 0, 0.025);
+          & span{
+            color: #dd1a32!important;
+          }
         }
       }
     }

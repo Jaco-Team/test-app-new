@@ -182,7 +182,13 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const promoName = sessionStorage.getItem('promo_name');
     const allItems = get().allItems;
-    const cart = JSON.parse(localStorage.getItem('setCart'));
+    let cart = localStorage.getItem('setCart');
+    
+    if( cart && cart.length > 0 ){
+      cart = JSON.parse(cart);
+    }else{
+      return;
+    }
 
     if( allItems.length == 0 ) {
       return;
@@ -581,6 +587,14 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     }
   },
 
+  check_pay_sbp: async(order_id, point_id) => {
+    const data = {order_id, point_id};
+
+    const json = await api('cart', data);
+
+    return json;
+  },
+
   // создание заказа
   createOrder: async(token, city_id, funcClose) => {
 
@@ -648,6 +662,25 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           set({
             linkPaySBP: json?.pay?.pay?.confirmation?.confirmation_data,
           })
+
+          let timerId = setInterval( async () => {
+
+            const data = {
+              type: 'check_pay_order',
+              order_id: json?.check?.order?.order_id,
+              point_id: json?.check?.order?.point_id,
+              
+            };
+        
+            const res = await api('cart', data);
+        
+            console.log( 'res', res )
+
+            if( res?.st === true ){
+              clearInterval(timerId);
+              funcClose();
+            }
+          }, 3000);
         }
 
         if( get().typePay.id == 'online' ){
@@ -3095,7 +3128,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     localStorage.removeItem('token');
     Cookies.remove('token');
 
-    window.location.href = '/' + city;
+    //window.location.href = '/' + city;
   },
 
   //логирование в форме регистрации
@@ -3300,7 +3333,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     const json = await api('auth', data);
 
-    if( json?.hasOwnProperty("st") ){
+    if( !json || json?.hasOwnProperty("st") ){
       get().setActiveModalAlert(true, 'Произошла ошибка, попробуйте позже', false);
 
       return ;
@@ -3309,6 +3342,9 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     if (json?.st === false) {
       get().setActiveModalAlert(true, json?.text, false);
     }else{
+
+      console.log( 'json', json )
+
       set({
         token: json?.token,
         userName: get().setNameUser(json?.name),
@@ -3650,7 +3686,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     let data = {
       type: 'get_banners',
       city_id: city,
-      token
+      token: token
     };
 
     let activePage = useHeaderStore.getState().activePage;

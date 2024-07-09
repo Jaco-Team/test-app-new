@@ -28,13 +28,31 @@ import { roboto } from '@/ui/Font';
 export default function ModalAuth({ city }) {
   const [form, setForm] = useState(false);
 
-  const [openAuthModal, closeModalAuth, typeLogin, navigate, matches, isAuth, getYandexLinkAuth, yandexAuthCheck] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth, state.typeLogin, state.navigate, state.matches, state.isAuth, state.getYandexLinkAuth, state.yandexAuthCheck]);
+  const [openAuthModal, closeModalAuth, typeLogin, navigate, matches, isAuth, getYandexLinkAuth, yandexAuthCheck, yandexAuthLink] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth, state.typeLogin, state.navigate, state.matches, state.isAuth, state.getYandexLinkAuth, state.yandexAuthCheck, state.yandexAuthLink]);
 
   useEffect( () => {
     if( openAuthModal === true ){
       getYandexLinkAuth(city);
     }
   }, [openAuthModal] )
+
+  useEffect( () => {
+    if( openAuthModal === true && yandexAuthLink.length > 0 ){
+      YaAuthSuggest.init(
+        {
+          client_id: '15b6c4f1191f4243bd23e33893f1f16e',
+          response_type: 'token',
+          redirect_uri: 'https://jacofood.ru/yaauth'
+        },
+        'https://jacofood.ru'
+     )
+     .then(({
+        handler
+     }) => handler())
+     .then(data => console.log('Сообщение с токеном', data))
+     .catch(error => console.log('Обработка ошибки', error));
+    }
+  }, [openAuthModal, yandexAuthLink] )
 
   useEffect( () => {
     let search = window.location.search;
