@@ -10,7 +10,11 @@ import {ClearAuthMobile, DoneAuthMobile, VectorRightAuthMobile, CheckAuthMobile,
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 
+//import { SmartCaptcha } from '@yandex/smart-captcha';
+
 export default function Create({ city, closeModal }) {
+  //const [token, setToken] = useState('');
+
   const [checkPolitika, setCheckPolitika] = useState(false);
   const [checkAccord, setCheckAccord] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
@@ -110,6 +114,8 @@ export default function Create({ city, closeModal }) {
           </Typography>
         </div>
       </div>
+
+      
 
       {!matches ? null : (
         <div className="loginLogin" onClick={ loginLogin.length === 11 && checkAccord && checkPolitika && pwdLogin.length > 5 ? sendsmsNewLogin : null}

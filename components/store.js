@@ -989,10 +989,17 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     let unic_id = [];
     
     let my_cart = get().items;
+    let my_cart_dop = get().itemsOffDops;
     let my_cart_promo = get().itemsPromo;
     let free_items = get().freeItems;
     let all_items = get().allItems;
     
+    //console.log('my_cart', my_cart);
+    //console.log( 'items', get().items );
+
+    //let itemsOffDops = get().itemsOffDops;
+    //let itemsWithPromo = get().itemsWithPromo;
+
     let check_item = all_items.find( (item) => parseInt(item.id) == parseInt(item_id) );
     
     if( parseInt(check_item.id) == 231 || parseInt(check_item.id) == 232 || parseInt(check_item.id) == 233 ){
@@ -1039,6 +1046,33 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     });
 
     my_cart_promo.forEach((item_cart, key) => {
+      
+      let item_info = all_items.find( (item) => parseInt(item.id) == parseInt(item_cart['item_id']) );
+      let check_free = free_items.find( (item) => parseInt(item['item_id']) == parseInt(item_cart['item_id']) );
+      
+      if( check_free && check_free.max_count && parseInt(item_info.type) != 3 ){
+        all_max_count += parseInt(check_free.max_count);
+      }
+      
+      if( parseInt(item_info.id) == 17 || parseInt(item_info.id) == 237 ){
+        my_free_count += parseInt(item_cart['count']);
+      }
+      
+      if( parseInt(item_info.id) == parseInt(item_id) ){
+        this_my_free_count += parseInt(item_cart['count']);
+      }
+
+      free_items.forEach( (item) => {
+        if( parseInt(item_cart['item_id']) == parseInt(item['item_id']) ){
+          item['count_in_cart'] = parseInt(item_cart['count']);
+          
+          free_dops_in_cart.push( item );
+          unic_id.push( parseInt(item['dop_item_id']) );
+        }
+      });
+    });
+
+    my_cart_dop.forEach((item_cart, key) => {
       
       let item_info = all_items.find( (item) => parseInt(item.id) == parseInt(item_cart['item_id']) );
       let check_free = free_items.find( (item) => parseInt(item['item_id']) == parseInt(item_cart['item_id']) );
@@ -1131,7 +1165,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     }
 
     items = items.map((item) => {
-      if( parseInt(item.item_id) === parseInt(item_id) ){
+      if( parseInt(item.item_id) === parseInt(item_id) && parseInt(item.count) + 1 <= max_count ){
         item.count++;
         itemsCount++;
         check = true;
@@ -1145,7 +1179,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     if(!check){
       const item = allItems.find(item => parseInt(item.id) === parseInt(item_id));
 
-      if(item){
+      if( item ){
         item.count = 1;
         itemsCount++;
         item.item_id = item.id;
@@ -1178,24 +1212,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     get().check_need_dops();
 
     get().setCartLocalStorage();
-
-    try {
-      const city = useCitiesStore.getState().thisCity;
-      const city_ru = useCitiesStore.getState().thisCityRu;
-
-      //ym_item = { city: city_ru, item_id: ym_item.item_id, item_name: ym_item.name, price: ym_item.one_price }
-
-      //console.log( { city: city_ru, item_name: ym_item.name, price: ym_item.one_price } )
-
-      //ym(47085879, 'reachGoal', 'add_to_cart', { city: city_ru, tovar: ym_item.name, price: ym_item.one_price });
-
-      //const res = ym(get().ya_metrik[city], 'reachGoal', 'add_to_cart', ym_item);
-
-      //console.log( 'res', res, get().ya_metrik[city] );
-
-    } catch (error) {
-      console.log('plus', error);
-    }
   },
 
   // вычитание товара из корзины
@@ -1263,23 +1279,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     get().check_need_dops();
 
     get().setCartLocalStorage();
-
-    try {
-      const city = useCitiesStore.getState().thisCity;
-      const city_ru = useCitiesStore.getState().thisCityRu;
-
-      ym_item = {
-        city: city_ru,
-        item_id: ym_item.item_id, 
-        item_name: ym_item.name, 
-        price: ym_item.one_price
-      }
-
-      //ym(get().ya_metrik[city], 'reachGoal', 'remove_from_cart', ym_item);
-
-    } catch (error) {
-      console.log('minus', error);
-    }
   },
 
   // получения информации о промике из БД
@@ -3230,7 +3229,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
   // защита
   // создание нового аккаунта или получения смс кода для действующего аккаунта
-  createProfile: async () => {
+  createProfile: async ( token ) => {
 
     if( get().doubleClickSMS === true ){
       return ;
@@ -3243,6 +3242,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     const data = {
       type: 'create_profile',
       number: get().loginLogin,
+      token: token
     };
 
     const json = await api('auth', data);
@@ -3258,6 +3258,8 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       set({
         errTextAuth: json?.text,
       });
+
+      get().setActiveModalAlert(true, json?.text, false);
     }
 
     setTimeout(() => {
@@ -3322,6 +3324,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     set({
       yandexAuthLink: json?.link
+      //yandexAuthLink: '111'
     })
   },
 

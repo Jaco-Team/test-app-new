@@ -23,6 +23,7 @@ const type_pred = [
 
 const type_pay_div = [
   { id: 'cash', name: 'Наличными курьеру' },
+  { id: 'sbp', name: 'СБП на сайте' },
   { id: 'online', name: 'Онлайн на сайте' },
 ];
 
@@ -84,6 +85,10 @@ export default function CartMenuMobile({ cityName }) {
       setActiveMenuCart(false, nameList);
       setAddrDiv(item);
       setId(item.id);
+
+      if( item?.comment?.length > 0 ){
+        changeComment(item?.comment)
+      }
     }
 
     if (nameList === 'addr' && item.name === 'Выбрать на карте') {
@@ -136,8 +141,10 @@ export default function CartMenuMobile({ cityName }) {
               <ListItem
                 onClick={() => chooseMenuItem(item)}
                 key={key}
-                style={{ background: id === item.id ? 'rgba(0, 0, 0, 0.05)' : null,
-                    marginBottom: item === list.at(-1) ? nameList === 'addr' ? '5.1282051282051vw' : '19.82905982906vw' : null}}
+                style={{ 
+                  background: id === item.id ? 'rgba(0, 0, 0, 0.05)' : null,
+                  marginBottom: item === list.at(-1) ? nameList === 'addr' ? '5.1282051282051vw' : '19.82905982906vw' : null
+                }}
               >
                 <div className="containerDiv">
                   {nameList === 'point' ? (

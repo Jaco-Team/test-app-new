@@ -49,7 +49,10 @@ export default function ModalAuth({ city }) {
      .then(({
         handler
      }) => handler())
-     .then(data => console.log('Сообщение с токеном', data))
+     .then(data => {
+        console.log('Сообщение с токеном', data)
+        yandexAuthCheck(data?.token);
+      })
      .catch(error => console.log('Обработка ошибки', error));
     }
   }, [openAuthModal, yandexAuthLink] )

@@ -329,7 +329,7 @@ export default function FormOrder({ cityName }) {
     }
   }
 
-  let NewSummDiv = orderAddr?.sum_div ?? 0;
+  let NewSummDiv = typeOrder == 'pic' ? 0 : orderAddr?.sum_div ?? 0;
 
   let price1 = itemsOffDops.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
   let price2 = dopListCart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
@@ -504,7 +504,7 @@ export default function FormOrder({ cityName }) {
             <div>
               {/* <span className={ promoInfo?.items_on_price?.length ? promoItemsFind ? 'promoInfo' : null : promoInfo?.status_promo && itemsOffDops.length ? 'promoInfo' : null }> */}
               <span className={checkPromo ? checkPromo.st && itemsOffDops.length ? 'promoInfo' : null : null}>
-                {new Intl.NumberFormat('ru-RU').format(parseInt(allPriceWithoutPromo_new))} ₽
+                {new Intl.NumberFormat('ru-RU').format(parseInt(allPriceWithoutPromo_new) + parseInt(NewSummDiv))} ₽
               </span>
             </div>
           </div>
