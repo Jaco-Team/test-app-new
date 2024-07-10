@@ -3324,7 +3324,6 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     set({
       yandexAuthLink: json?.link
-      //yandexAuthLink: '111'
     })
   },
 
@@ -3336,17 +3335,9 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     const json = await api('auth', data);
 
-    if( !json || json?.hasOwnProperty("st") ){
-      get().setActiveModalAlert(true, 'Произошла ошибка, попробуйте позже', false);
-
-      return ;
-    }
-
     if (json?.st === false) {
       get().setActiveModalAlert(true, json?.text, false);
     }else{
-
-      console.log( 'json', json )
 
       set({
         token: json?.token,
