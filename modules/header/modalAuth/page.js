@@ -50,8 +50,8 @@ export default function ModalAuth({ city }) {
         handler
      }) => handler())
      .then(data => {
-        console.log('Сообщение с токеном', data)
-        yandexAuthCheck(data?.token);
+        //console.log('Сообщение с токеном', data)
+        yandexAuthCheck(data?.access_token);
       })
      .catch(error => console.log('Обработка ошибки', error));
     }
