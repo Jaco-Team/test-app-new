@@ -141,7 +141,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   // установить размер сдачи при оплате наличными курьеру
   setSdacha: (sdacha) => {
-    set({ sdacha })
+    set({ 
+      sdacha: sdacha.target.value
+    })
 
     get().setCartLocalStorage();
   },

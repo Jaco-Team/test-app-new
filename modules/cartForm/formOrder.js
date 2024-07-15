@@ -443,7 +443,7 @@ export default function FormOrder({ cityName }) {
                   autoFocus
                   type="number"
                   value={sdacha ? sdacha : ''}
-                  func={(event) => setSdacha(event.target.value)}
+                  func={(event) => setSdacha(event)}
                   variant="outlined"
                   className="sdacha"
                   placeholder="Без сдачи"
@@ -646,7 +646,7 @@ export default function FormOrder({ cityName }) {
                     autoFocus
                     type="number"
                     value={sdacha ? sdacha : ''}
-                    func={(event) => setSdacha(event.target.value)}
+                    func={(event) => setSdacha(event)}
                     variant="outlined"
                     className="sdacha"
                     placeholder="Без сдачи"
