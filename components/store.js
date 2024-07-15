@@ -299,15 +299,16 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       const len = comment.split(/\r?\n|\r|\n/g)
 
       if(len.length > 2) {
-        return
+        return ;
       }
 
       if (comment.length > 50) {
-        const maxText = comment.toString().slice(0, 50);
-        set({ comment: maxText })
-      } else {
-        set({ comment })
+        return ;
       }
+
+      
+      set({ comment })
+      
 
     }
 
