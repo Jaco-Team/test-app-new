@@ -38,22 +38,27 @@ export default function ModalAuth({ city }) {
 
   useEffect( () => {
     if( openAuthModal === true && yandexAuthLink.length > 0 ){
-      YaAuthSuggest.init(
-        {
-          client_id: '15b6c4f1191f4243bd23e33893f1f16e',
-          response_type: 'token',
-          redirect_uri: 'https://jacofood.ru/yaauth'
-        },
-        'https://jacofood.ru'
-     )
-     .then(({
-        handler
-     }) => handler())
-     .then(data => {
-        //console.log('Сообщение с токеном', data)
-        yandexAuthCheck(data?.access_token);
-      })
-     .catch(error => console.log('Обработка ошибки', error));
+      try {
+        YaAuthSuggest.init(
+          {
+            client_id: '15b6c4f1191f4243bd23e33893f1f16e',
+            response_type: 'token',
+            redirect_uri: 'https://jacofood.ru/yaauth'
+          },
+          'https://jacofood.ru'
+        )
+        .then(({
+            handler
+        }) => handler())
+        .then(data => {
+            //console.log('Сообщение с токеном', data)
+            yandexAuthCheck(data?.access_token);
+          })
+        .catch(error => console.log('Обработка ошибки', error));
+      }
+      catch(error) {
+        console.log('Ошибка', error);
+      }
     }
   }, [openAuthModal, yandexAuthLink] )
 
