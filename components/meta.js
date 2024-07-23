@@ -12,6 +12,10 @@ export default function Meta({ title, description, children }) {
         <link rel="apple-touch-icon" href="/apple-touch-icon.png" />
         <link rel="manifest" href="/manifest.webmanifest" />
 
+        <meta name="yandex-verification" content="298ae72b445ff952" />
+        <meta name="yandex-verification" content="7e7652cb40b75404" />
+        <meta name="yandex-verification" content="d4f3544393d9106d" />
+
         { description.length > 0 ?
           <>
             <meta name="description" content={description} />
