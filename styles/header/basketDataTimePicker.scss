@@ -6,7 +6,7 @@
     margin: 0 !important;
     max-width: none !important;
     border-radius: $MyScale40;
-    width: $MyScale760;
+    width: $MyScale1000;
     height: $MyScale900;
 
     & .ContainerDataPickerPC {
@@ -108,7 +108,7 @@
 
       .divBackground {
         position: absolute;
-        width: $MyScale560;
+        width: $MyScale760;
         height: $MyScale100;
         background: rgba(0, 0, 0, 0.05);
         border-radius: $MyScale40;

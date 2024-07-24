@@ -2896,6 +2896,12 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
   isShowLoad: false,
 
+  showClosePoint: false,
+
+  setShowClosePoint: (type) => {
+    set({ showClosePoint: type })
+  },
+ 
   showLoad: (is_show) => {
     set({
       isShowLoad: is_show,

@@ -19,6 +19,9 @@ import SelectAddress from '@/modules/header/selectAddress.js'
 import ModalActiveVK_pc from '@/modules/header/modalActiveVK/modalActiveVK_pc';
 import ModalActiveVK_mobile from '@/modules/header/modalActiveVK/modalActiveVK_mobile';
 
+import ModalPointClose_pc from '@/modules/header/modalPointClose/modalPointClose_pc';
+import ModalPointClose_mobile from '@/modules/header/modalPointClose/modalPointClose_mobile';
+
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
@@ -28,8 +31,15 @@ import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getPerformance } from "firebase/performance";
 
+import { usePathname, useSearchParams } from 'next/navigation'
+
 export default React.memo(function header({ city, city_list, cats }) {
   
+  const pathname = usePathname();
+  const searchParams = useSearchParams();
+
+  const search = searchParams.get('type')
+
   const firebaseConfig = {
     apiKey: "AIzaSyChAHowCT2C7GRwfcxwt1Pi4SCV4CaVpP4",
     authDomain: "jacofoodsite.firebaseapp.com",
@@ -67,7 +77,7 @@ export default React.memo(function header({ city, city_list, cats }) {
 
   const matchesDev = useMediaQuery('screen and (max-width: 800px)');
 
-  const [setMatches, matches, checkToken, isShowLoad] = useHeaderStore( state => [state.setMatches, state.matches, state.checkToken, state.isShowLoad] ); 
+  const [setMatches, matches, checkToken, isShowLoad, setShowClosePoint] = useHeaderStore( state => [state.setMatches, state.matches, state.checkToken, state.isShowLoad, state.setShowClosePoint] ); 
   const [getItemsCat, category] = useHomeStore( state => [state.getItemsCat, state.category]);
   
   useEffect(() => {
@@ -85,6 +95,18 @@ export default React.memo(function header({ city, city_list, cats }) {
       setMatches(matchesDev);
     }
   }, [matchesDev, matches]);
+
+  useEffect(() => {
+    if( search == 'pobeda_close' ){
+      let state = { },
+        title = '',
+        url = window.location.pathname;
+
+      window.history.pushState(state, title, url)
+
+      setShowClosePoint(true);
+    }
+  }, [search]);
 
   return (
     <div className={roboto.variable} style={{ overflow: 'auto' }}>
@@ -104,6 +126,7 @@ export default React.memo(function header({ city, city_list, cats }) {
           <NavBarMobile city={city}/>
           <ModalCityMobile />
           <ModalActiveVK_mobile />
+          <ModalPointClose_mobile />
         </>
         :
         <>
@@ -113,6 +136,7 @@ export default React.memo(function header({ city, city_list, cats }) {
           <BasketModalPC />
           <ModalAddr />
           <ModalActiveVK_pc />
+          <ModalPointClose_pc />
         </>
       }
       

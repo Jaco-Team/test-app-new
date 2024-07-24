@@ -24,14 +24,65 @@ import dayjs from 'dayjs';
 export default function DataTimePicker() {
   const [matches] = useHeaderStore((state) => [state.matches]);
 
-  const [openDataTimePicker, setActiveDataTimePicker, timePreOrder, datePreOrder, getTimesPred, setDataTimeOrder] = useCartStore((state) => [
-    state.openDataTimePicker, state.setActiveDataTimePicker, state.timePreOrder, state.datePreOrder, state.getTimesPred, state.setDataTimeOrder]);
+  const [dateTimeOrder, openDataTimePicker, setActiveDataTimePicker, timePreOrder, datePreOrder, getTimesPred, setDataTimeOrder] = useCartStore((state) => [
+    state.dateTimeOrder, state.openDataTimePicker, state.setActiveDataTimePicker, state.timePreOrder, state.datePreOrder, state.getTimesPred, state.setDataTimeOrder]);
+
+  const [check, setCheck] = useState(false);
 
   const [activeDate, setActiveDate] = useState(0);
   const [activeTime, setActiveTime] = useState(0);
 
   const [slidesDate, setSlidesDate] = useState(null);
   const [slidesTime, setSlidesTime] = useState(null);
+
+  useEffect(() => {
+   
+    if( activeDate == 0 && check === false ){
+      if( dateTimeOrder && openDataTimePicker === true ){
+        const test_date = slidesDate?.findIndex( i => i.date === dateTimeOrder.date);
+
+        if( test_date >= 0 && test_date !== activeDate && activeTime == 0 ) {
+          setActiveDate(test_date);
+          setCheck(true);
+        }
+      }
+    }
+
+  }, [openDataTimePicker, dateTimeOrder, slidesTime, slidesDate]);
+
+  useEffect(() => {
+   
+   if( openDataTimePicker === false ){
+    setCheck(false);
+   }
+
+  }, [openDataTimePicker]);
+
+  useEffect(() => {
+   
+    if( dateTimeOrder && openDataTimePicker === true ){
+      const test_time = slidesTime?.findIndex( i => i.id === dateTimeOrder.id);
+
+      if( test_time >= 0 ) {
+        setActiveTime(test_time)
+      }
+    }
+ 
+   }, [slidesTime, dateTimeOrder]);
+
+  useEffect(() => {
+   
+    if( activeDate > 0 ){
+      if( dateTimeOrder && openDataTimePicker === true ){
+        const test_time = slidesTime?.findIndex( i => i.id === dateTimeOrder.id);
+
+        if( test_time >= 0 ) {
+          setActiveTime(test_time)
+        }
+      }
+    }
+
+  }, [openDataTimePicker, dateTimeOrder, slidesTime, slidesDate, activeDate]);
 
   useEffect(() => {
    
@@ -54,6 +105,7 @@ export default function DataTimePicker() {
 
       setActiveDate(index);
     }
+
     if (data === 'time') {
       setActiveTime(index);
     }
@@ -231,11 +283,13 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
 
   //onClick={chooseData}
 
+  //width: data === 'date' ? '42.735042735043vw' : '35.897435897436vw'
+
   if( matches ){
     return (
       <div className={slides?.length < 4 && data === 'time' ? 'embla_time' : 'embla'}>
         <div className="embla__viewport" ref={emblaRef}>
-          <div className="embla__container" style={{ width: data === 'date' ? '42.735042735043vw' : '35.897435897436vw' }}>
+          <div className="embla__container" style={{ width: data === 'date' ? '42.735042735043vw' : '42.735042735043vw' }}>
             {slides?.map((item, i) => (
               <div className="embla__slide" 
                 key={i}
@@ -246,7 +300,7 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
                 }}
               >
                 {data === 'date' && item?.text !== 'Сегодня' ? <span style={{ textTransform: 'uppercase' }}>{item?.dow}</span> : null}
-                <span>{data === 'time' ? item?.id : item?.text}</span>
+                <span>{data === 'time' ? item?.name : item?.text}</span>
               </div>
             ))}
           </div>
@@ -255,15 +309,17 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
     );
   }
 
+  //width: data === 'date' ? '12.996389891697vw' : '7.2202166064982vw'
+
   return (
     <>
       <div className='embla_button' 
-        style={{transform: 'rotate(90deg)', bottom: '11.552346570397vw', left: data === 'date' ? '8.6642599277978vw' : '15.342960288809vw'}}>
+        style={{transform: 'rotate(90deg)', bottom: '11.552346570397vw', left: data === 'date' ? '8.6642599277978vw' : '18.343vw'}}>
         <ArrowBackIosNewIcon onClick={scrollPrev} />
       </div>
       <div className={slides?.length < 4 && data === 'time' ? 'embla_time' : 'embla'}>
         <div className="embla__viewport" ref={emblaRef}>
-          <div className="embla__container" style={{ width: data === 'date' ? '12.996389891697vw' : '7.2202166064982vw' }}>
+          <div className="embla__container" style={{ width: data === 'date' ? '12.996389891697vw' : '12.996389891697vw' }}>
             {slides?.map((item, i) => 
               <div className="embla__slide" 
                 key={i}
@@ -275,14 +331,14 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
                 }}
               >
                 {data === 'date' && item?.text !== 'Сегодня' ? <span style={{ textTransform: 'uppercase' }}>{item?.dow}</span> : null}
-                <span>{data === 'time' ? item?.id : item?.text}</span>
+                <span>{data === 'time' ? item?.name : item?.text}</span>
               </div>
             )}
           </div>
         </div>
       </div>
       <div className='embla_button' 
-        style={{transform: 'rotate(270deg)', top: '11.552346570397vw', left: data === 'date' ? '8.6642599277978vw' : '15.342960288809vw'}}>
+        style={{transform: 'rotate(270deg)', top: '11.552346570397vw', left: data === 'date' ? '8.6642599277978vw' : '18.343vw'}}>
         <ArrowBackIosNewIcon onClick={scrollNext} />
       </div>
     </>
