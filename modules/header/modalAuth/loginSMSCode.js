@@ -10,14 +10,23 @@ import Box from '@mui/material/Box';
 import AuthCode from 'react-auth-code-input';
 import Timer from './timer';
 
+import {useMaskito} from '@maskito/react';
+import {maskitoWithPlaceholder} from '@maskito/kit';
+
 export default function LoginSMSCode() {
+  const options = {...maskitoWithPlaceholder('••••'), mask: /^\d{0,4}$/};
+  
+  const inputRefMobile = useMaskito({options});
+
   const inputRef = useRef(null);
 
   const [changeCode, createProfile, checkCode, navigate, loginLogin, preTypeLogin, code, matches, timerPage, setTimer, errTextAuth] = useHeaderStore( state => [state.changeCode, state.createProfile, state.checkCode, state.navigate, state.loginLogin, state.preTypeLogin, state.code, state.matches, state.timerPage, state.setTimer, state.errTextAuth]);
 
   useEffect(() => {
     if (timerPage) {
-      inputRef.current.clear();
+      if(!matches) {
+        inputRef.current.clear();
+      }
       changeCode('');
     } 
   }, [changeCode, timerPage]);
@@ -25,7 +34,9 @@ export default function LoginSMSCode() {
   const reSendSMS = () => {
     createProfile();
     setTimer(89);
-    inputRef.current.clear();
+    if(!matches) {
+      inputRef.current.clear();
+    }
     changeCode('');
   };
 
@@ -84,14 +95,16 @@ export default function LoginSMSCode() {
 
         {matches ?
           <input
-            value={code}
-            onChange={(event) => changeCode(event.target.value)}
-            type="text"
-            inputmode="numeric"
-            pattern="[0-9]"
-            autocomplete="one-time-code"
+            ref={inputRefMobile}
+            onInput={(event) => changeCode(event.currentTarget.value)}
             placeholder="• • • •"
-            maxLength={4}
+            // value={code}
+            // onChange={(event) => changeCode(event.target.value)}
+            // type="text"
+            // inputMode="numeric"
+            // pattern="[0-9]"
+            // autoComplete="one-time-code"
+            // maxLength={4}
           />
           :
           <AuthCode

@@ -63,7 +63,6 @@ export default function LoginSMS() {
 
       <div className="loginLogin"
         onClick={ loginLogin.length === 11 && token.length > 0 ? handleNavigate : () => {} }
-        // onClick={handleNavigate}
         style={{
           backgroundColor: loginLogin.length === 11 && token.length > 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)',
           marginTop: matches ? '10.25641025641vw' : 20, 

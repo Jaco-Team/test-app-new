@@ -22,6 +22,8 @@
     "@emotion/styled": "^11.13.0",
     "@fontsource/material-icons": "^5.0.18",
     "@fontsource/roboto": "^5.0.13",
+    "@maskito/kit": "^3.0.0",
+    "@maskito/react": "^3.0.0",
     "@million/lint": "^0.0.73",
     "@mui/icons-material": "^5.16.4",
     "@mui/material": "^5.16.4",

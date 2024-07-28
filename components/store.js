@@ -3065,6 +3065,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   
   // изменение/введение 4-х значного номера подтверждения
   changeCode: (code) => {
+    code = code.replaceAll('•', '');
 
     set({ code });
 
