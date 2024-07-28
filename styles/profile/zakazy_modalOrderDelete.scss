@@ -1,105 +1,151 @@
 @import '../settings';
 
 .modalOrderDelPC {
-  & .container {
-    padding-left: $MyScale100;
-    padding-right: $MyScale100;
-
-    & .closeButton {
-      position: absolute;
-      top: 0;
-      left: -$MyScale80;
-      padding: 0;
-      background-color: transparent;
-
-      & svg {
-        width: $MyScale60;
-        height: $MyScale60;
-        overflow: visible;
-        border-radius: $MyScale60;
-        background-color: rgba(0, 0, 0, 0.5);
-      }
-    }
-  }
-  & .MuiDialog-paper {
-    border-radius: $MyScale40;
-    overflow: visible;
-    margin: 0;
-    width: $MyScale1000;
-    max-width: none !important;
-  }
   & .MuiDialog-container {
     display: flex;
-    align-items: flex-end;
+    align-items: center;
     justify-content: center;
-  }
 
-  & .header_status {
-    height: $MyScale120;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    margin-top: $MyScale80;
-    & > h1 {
-      @include font50_500();
-    }
-  }
+    & .MuiDialog-paper {
+      border-radius: $MyScale40;
+      overflow: visible;
+      margin: 0;
+      width: $MyScale1000;
+      max-width: none !important;
 
-  & .header_text {
-    height: $MyScale120;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    flex-direction: column;
-    & > span {
-      @include font30_400();
-    }
-  }
-  & .header_table {
-    & span {
-      @include font30_400();
-      padding: $MyScale20 $MyScale40_8;
-    }
-    & > div.active {
-      background-color: rgba(0, 0, 0, 0.05);
-    }
-    & > div {
-      margin-top: $MyScale20;
-      height: $MyScale80;
-      border-radius: $MyScale40;
-      border: 2px solid rgba(0, 0, 0, 0.2);
-      display: flex;
-      align-items: center;
-      cursor: pointer;
-    }
-  }
-  & .header_custom_text {
-    margin-top: $MyScale23;
-    margin-bottom: $MyScale100;
-    & input {
-      @include font30_400();
-      height: $MyScale40;
-      padding: 0px $MyScale20 $MyScale20 !important;
-    }
-  }
-  & .header_btn {
-    margin-bottom: $MyScale160;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    & > div {
-      height: $MyScale80;
-      width: $MyScale330;
-      border-radius: $MyScale40;
-      border: 3px solid $colorMain;
-      text-align: center;
-      display: flex;
-      justify-content: center;
-      align-items: center;
-      cursor: pointer;
-      & > span {
-        @include font30_400();
-        color: $colorMain;
+      & .MuiDialogContent-root {
+        display: flex;
+        justify-content: center;
+
+        & .container {
+          width: $MyScale700;
+
+          & .closeButton {
+            position: absolute;
+            top: 0;
+            left: -$MyScale80;
+            padding: 0;
+            background-color: transparent;
+
+            & svg {
+              width: $MyScale60;
+              height: $MyScale60;
+              overflow: visible;
+              border-radius: $MyScale60;
+              background-color: rgba(0, 0, 0, 0.5);
+            }
+          }
+          & .header_status {
+            height: $MyScale120;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-top: $MyScale80;
+            & > h1 {
+              @include font50_500();
+            }
+          }
+
+          & .header_text {
+            height: $MyScale120;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            flex-direction: column;
+            & > span {
+              @include font30_400();
+            }
+          }
+          & .header_table {
+            & span {
+              @include font30_400();
+              padding: $MyScale20 $MyScale40_8;
+            }
+            & > div.active {
+              background-color: rgba(0, 0, 0, 0.05);
+            }
+            & > div {
+              margin-top: $MyScale20;
+              height: $MyScale80;
+              border-radius: $MyScale40;
+              border: $MyScale2 solid rgba(0, 0, 0, 0.2);
+              display: flex;
+              align-items: center;
+              cursor: pointer;
+            }
+          }
+          & .header_custom_text {
+            margin-top: $MyScale20;
+            margin-bottom: $MyScale60;
+
+            .message {
+              margin: 0;
+              width: $MyScale700 !important;
+              height: $MyScale120;
+
+              & .MuiOutlinedInput-notchedOutline {
+                border: $MyScale2 solid rgba(0, 0, 0, 0.2);
+              }
+
+              & .Mui-focused .MuiOutlinedInput-notchedOutline {
+                border: $MyScale2 solid $colorMain;
+              }
+
+              & .MuiInputBase-root.MuiOutlinedInput-root {
+                border-radius: $MyScale40;
+                padding: 0;
+                margin: 0;
+                height: 100%;
+
+                & textarea {
+                  padding: 0 $MyScale40;
+                  @include font30_400();
+                  line-height: $MyScale30;
+                }
+
+                & fieldset {
+                  padding: 0;
+                  top: 0;
+                  & legend {
+                    line-height: 0;
+                  }
+                }
+              }
+            }
+          }
+          & .header_btn {
+            margin-bottom: $MyScale160;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            & > button {
+              border-radius: $MyScale40;
+              text-align: center;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              padding: 0;
+              border: 0;
+              @include font30_400();
+              cursor: pointer;
+            }
+
+            & > button:first-child {
+              height: $MyScale74;
+              width: $MyScale324;
+              border: $MyScale3 solid $colorMain;
+              background-color: #fff;
+              color: $colorMain;
+            }
+
+            & > button:last-child {
+              height: $MyScale80;
+              width: $MyScale330;
+              background-color: $colorMain;
+              color: #ffff;
+            }
+          }
+        }
       }
     }
   }

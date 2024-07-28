@@ -4,7 +4,9 @@ import Link from 'next/link';
 
 import Typography from '@mui/material/Typography';
 
-import { useCartStore, useHomeStore, useFooterStore, useHeaderStore } from '@/components/store.js';
+import { useCartStore, useHomeStore, useFooterStore, 
+  // useHeaderStore 
+} from '@/components/store.js';
 
 import { NewVKIcon, OdnIcon, TGIcon, ArrowUp, BasketFooterMobile } from '@/ui/Icons.js';
 
@@ -18,7 +20,7 @@ export default function FooterMobile({ cityName, active_page }) {
   const [itemsCount, allPrice, allPriceWithoutPromo] = useCartStore((state) => [state.itemsCount, state.allPrice, state.allPriceWithoutPromo]);
   const [links] = useFooterStore((state) => [state.links]);
 
-  const [ isAuth, setActiveModalAuth ] = useHeaderStore( state => [ state.isAuth, state.setActiveModalAuth ]);
+  // const [ isAuth, setActiveModalAuth ] = useHeaderStore( state => [ state.isAuth, state.setActiveModalAuth ]);
 
   const [setMenuCatPosition, isOpenFilter, transition_menu_mobile] = useHomeStore(state => [state.setMenuCatPosition, state.isOpenFilter, state.transition_menu_mobile]);
 
@@ -45,12 +47,12 @@ export default function FooterMobile({ cityName, active_page }) {
     if (!localStorage.getItem('setCookie') && !localStorage.getItem('setCookie')?.length) setCookie(false);
   }, []);
 
-  function openBasketMobile(event){
-    if( isAuth != 'auth' ){
-      event.preventDefault();
-      setActiveModalAuth(true);
-    }
-  }
+  // function openBasketMobile(event){
+  //   if( isAuth != 'auth' ){
+  //     event.preventDefault();
+  //     setActiveModalAuth(true);
+  //   }
+  // }
 
   return (
     <>
@@ -61,7 +63,7 @@ export default function FooterMobile({ cityName, active_page }) {
                  marginTop: active_page === 'home' && isOpenFilter ? transition_menu_mobile : active_page === 'home' ? '3.4188034188034vw' : null
                 }}>
 
-        <Link href={'/' + cityName + '/cart'} onClick={openBasketMobile} className={itemsCount && active_page === 'home' ? 'BasketFooterMobile' : 'BasketFooterMobileHidden'} >
+        <Link href={'/' + cityName + '/cart'} className={itemsCount && active_page === 'home' ? 'BasketFooterMobile' : 'BasketFooterMobileHidden'} >
           <span><BasketFooterMobile /></span>
           <span>{new Intl.NumberFormat('ru-RU').format(allPrice ? allPrice : allPriceWithoutPromo)} ₽</span>
         </Link>

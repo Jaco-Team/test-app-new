@@ -111,7 +111,6 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        //width: $MyScale170_mobile;
 
         span:nth-child(1) {
           margin: 0;
@@ -129,7 +128,6 @@
           justify-content: space-between;
           height: $MyScale60_mobile;
           width: $MyScale100_mobile;
-          //margin-left: $MyScale20_mobile;
           margin-right: $MyScale40_mobile;
 
           svg {
@@ -477,125 +475,149 @@
 .ZakazyModalOrderDelete {
   z-index: 9999;
 
-    & .MuiPaper-root {
-      border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
-      overflow: visible;
-      margin: 0;
+  & .MuiPaper-root {
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+    overflow: visible;
+    margin: 0;
+    padding: 0;
+    width: 100%;
+    max-width: none !important;
+    max-height: calc(100% - $MyScale200_mobile);
+
+    & .MuiDialogContent-root {
       padding: 0;
-      width: 100%;
-      max-width: none !important;
-      max-height: calc(100% - $MyScale200_mobile);
+      overflow: 'hidden';
 
-      & .MuiDialogContent-root {
-        padding: 0;
-        overflow: 'hidden';
+      .ContainerZakazyModalOrderDelete {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
 
-        .ContainerZakazyModalOrderDelete {
+        & .Line {
+          height: $MyScale10_mobile;
+          width: $MyScale150_mobile;
+          background: rgba(0, 0, 0, 0.2);
+          border-radius: $MyScale5_mobile;
+          margin-bottom: $MyScale80_mobile;
+          margin-top: $MyScale40_mobile;
+        }
+
+        & .loginHeader {
+          height: $MyScale120_mobile;
+          margin-bottom: $MyScale60_mobile;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          @include font75_700();
+        }
+
+        & .loginText {
+          height: $MyScale200_mobile;
+          width: $MyScale920_mobile;
           display: flex;
           flex-direction: column;
           align-items: center;
+          @include font40_400();
+          margin-bottom: $MyScale5_mobile;
+        }
 
-          & .Line {
-            height: $MyScale10_mobile;
-            width: $MyScale150_mobile;
-            background: rgba(0, 0, 0, 0.2);
-            border-radius: $MyScale5_mobile;
-            margin-bottom: $MyScale80_mobile;
-            margin-top: $MyScale40_mobile;
-          }
+        & .zakazyAnswer {
+          height: $MyScale120_mobile;
+          width: $MyScale860_mobile;
+          border-radius: $MyScale60_mobile;
+          border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+          margin-bottom: $MyScale20_mobile;
+          display: flex;
+          align-items: center;
+          @include font40_400();
+          padding-left: $MyScale60_mobile;
+        }
 
-          & .loginHeader {
-            height: $MyScale120_mobile;
-            margin-bottom: $MyScale60_mobile;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            @include font75_700();
-          }
+        & .zakazyText {
+          margin-bottom: $MyScale65_mobile;
 
-          & .loginText {
-            height: $MyScale200_mobile;
-            width: $MyScale920_mobile;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            @include font40_400();
-            margin-bottom: $MyScale5_mobile;
-          }
+          .message {
+            margin: 0;
+            height: $MyScale180_mobile;
+            width: $MyScale920_mobile !important;
 
-          & .zakazyAnswer {
-            height: $MyScale120_mobile;
-            width: $MyScale860_mobile;
-            border-radius: $MyScale60_mobile;
-            border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
-            margin-bottom: $MyScale20_mobile;
-            display: flex;
-            align-items: center;
-            @include font40_400();
-            padding-left: $MyScale60_mobile;
-          }
+            & .MuiOutlinedInput-notchedOutline {
+              border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+            }
 
-          & .zakazyText {
-            height: $MyScale120_mobile;
-            width: $MyScale920_mobile;
-            margin-top: $MyScale40_mobile;
-            margin-bottom: $MyScale65_mobile;
+            & .Mui-focused .MuiOutlinedInput-notchedOutline {
+              border: $MyScale3_mobile solid $colorMain;
+            }
 
-            & input {
-              @include font40_400();
-              height: $MyScale60_mobile;
+            & .MuiInputBase-root.MuiOutlinedInput-root {
+              border-radius: $MyScale60_mobile;
               padding: 0;
-              margin: 0 $MyScale40_mobile $MyScale22_mobile $MyScale40_mobile !important;
-            }
-          }
+              margin: 0;
+              height: 100%;
 
-          & .dopText {
-            height: $MyScale120_mobile;
-            width: $MyScale920_mobile;
-            margin-top: $MyScale40_mobile;
-            display: flex;
-            flex-direction: column;
-            align-items: center;
-            @include font40_400();
-            margin-bottom: $MyScale65_mobile;
-          }
-
-          & .buttonBack {
-            width: $MyScale650_mobile;
-            height: $MyScale120_mobile;
-            border-radius: $MyScale60_mobile;
-            margin-bottom: $MyScale40_mobile;
-            padding: 0;
-            text-transform: lowercase;
-
-            & span {
-              @include font50_500();
-              color: #fff !important;
-              &:first-letter {
-                text-transform: capitalize;
+              & textarea {
+                padding: 0 $MyScale60_mobile;
+                @include font40_400();
+                line-height: $MyScale40_mobile;
               }
-            }
-          }
 
-          & .buttonDelete {
-            width: $MyScale650_mobile;
-            height: $MyScale120_mobile;
-            border-radius: $MyScale60_mobile;
-            margin-bottom: $MyScale550_mobile;
-            padding: 0;
-            text-transform: lowercase;
-            border: $MyScale3_mobile solid #dd1a32;
-
-            & span {
-              @include font50_500();
-              color: #dd1a32 !important;
-              &:first-letter {
-                text-transform: capitalize;
+              & fieldset {
+                padding: 0;
+                top: 0;
+                & legend {
+                  line-height: 0;
+                }
               }
             }
           }
         }
+
+        & .dopText {
+          height: $MyScale120_mobile;
+          width: $MyScale920_mobile;
+          margin-top: $MyScale50_mobile;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          @include font40_400();
+          margin-bottom: $MyScale75_mobile;
+        }
+
+        & .buttonBack {
+          width: $MyScale650_mobile;
+          height: $MyScale120_mobile;
+          border-radius: $MyScale60_mobile;
+          margin-bottom: $MyScale40_mobile;
+          padding: 0;
+          text-transform: lowercase;
+
+          & span {
+            @include font50_500();
+            color: #fff !important;
+            &:first-letter {
+              text-transform: capitalize;
+            }
+          }
+        }
+
+        & .buttonDelete {
+          width: $MyScale650_mobile;
+          height: $MyScale120_mobile;
+          border-radius: $MyScale60_mobile;
+          margin-bottom: $MyScale550_mobile;
+          padding: 0;
+          text-transform: lowercase;
+          border: $MyScale3_mobile solid #dd1a32;
+
+          & span {
+            @include font50_500();
+            color: #dd1a32 !important;
+            &:first-letter {
+              text-transform: capitalize;
+            }
+          }
+        }
       }
-    
+    }
   }
 }

@@ -35,6 +35,28 @@ export default function ModalOrderDelete() {
     setChooseType(0);
   }, [openModalDelete] )
 
+  const changeComment = (event) => {
+
+    if(event === '') {
+      setTextDel(event);
+    } else {
+      const comment = event?.target?.value ?? event;
+
+      const len = comment.split(/\r?\n|\r|\n/g)
+
+      if(len.length > 2) {
+        return ;
+      }
+
+      if (comment.length > 50) {
+        return ;
+      }
+
+      setTextDel(comment);
+    }
+
+  }
+
   return (
     <Dialog
       onClose={ closeModalDel }
@@ -69,17 +91,22 @@ export default function ModalOrderDelete() {
             </Grid>
 
             <Grid item xs={12} className='header_custom_text' style={{ visibility: chooseType == 6 ? 'visible' : 'hidden' }}>
-              <MyTextInput variant="standard" value={textDel} func={ e => setTextDel(e.target.value) } />
+              <MyTextInput
+                autoFocus
+                type="text"
+                value={textDel}
+                func={(event) => changeComment(event)}
+                multiline
+                maxRows={3}
+                variant="outlined"
+                className="message"
+                placeholder="Опишите причину отмены"
+              />
             </Grid>
 
             <Grid item xs={12} className='header_btn'>
-              <div onClick={ () => orderDel( 'zakazy', token, chooseType == 6 ? textDel : ans[ chooseType ]['ans'] ) }>
-                <span>Отменить</span>
-              </div>
-                
-              <div onClick={closeModalDel}>
-                <span>Вернуться</span>
-              </div>
+              <button onClick={ () => orderDel( 'zakazy', token, chooseType == 6 ? textDel : ans[ chooseType ]['ans'] ) }>Отменить</button>
+              <button onClick={closeModalDel}>Вернуться</button>
             </Grid>
 
           </Grid>

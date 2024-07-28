@@ -17,7 +17,6 @@
       height: $MyScale70 !important;
       width: fit-content;
       border-radius: 100px;
-      //background-color: #fff;
       padding: 0 $MyScale38;
       cursor: pointer;
       border: $MyScale3 solid transparent;
@@ -29,10 +28,10 @@
       align-items: center;
       justify-content: center;
       background-color: rgb(221, 26, 50);
+
       & span {
         height: $MyScale40;
         @include font30_400();
-        //color: rgba(0, 0, 0, 0.9) !important;
         color: #fff!important;
 
         display: flex;
@@ -61,12 +60,13 @@
         padding: $MyScale10 $MyScale38;
         cursor: pointer;
         border: $MyScale3 solid transparent;
+        display: flex;
+        transition: border 0.5s ease;
 
         & span {
           height: $MyScale40;
           @include font30_400();
           color: rgba(0, 0, 0, 0.9) !important;
-
           display: flex;
           justify-content: center;
           align-items: center;
@@ -75,6 +75,7 @@
           }
         }
       }
+
       & .tag_ {
         border-radius: $MyScale32;
         background-color: #fff;
@@ -95,30 +96,34 @@
       }
 
       & .tag.active {
-        border: $MyScale3 solid rgba(0, 0, 0, 0.4);
-        //background-color: rgba(0, 0, 0, 0.025);
+        padding-right: 0;
+        padding-left: $MyScale16;
+        border: $MyScale3 solid #dd1a32;
+        
         & span{
           color: #dd1a32!important;
         }
-        display: flex;
-        flex-direction: row;
-        align-items: center;
-        justify-content: space-around;
-        padding-right: $MyScale10;
+        
         & svg{
+          animation: ani 0.5s forwards;
           width: $MyScale50;
           height: $MyScale40;
-          padding-left: $MyScale15;
+          padding-left: $MyScale5;
+          padding-right: $MyScale5;
+          align-self: center;
 
           fill: rgba(0, 0, 0, 0.9);
           color: rgba(0, 0, 0, 0.9);
           stroke: rgba(0, 0, 0, 0.9);
+
           & path{
             fill: rgba(0, 0, 0, 0.9);
             color: rgba(0, 0, 0, 0.9);
             stroke: rgba(0, 0, 0, 0.9);
           }
+
         }
+
       }
     }
 
@@ -258,8 +263,7 @@
         display: flex;
         flex-direction: row;
         align-items: center;
-        
-        
+        transition: all 0.5s ease;
 
         & span {
           display: flex;
@@ -270,14 +274,12 @@
           @include font40_400();
           padding: 0 $MyScale63_mobile;
           color: rgba(0, 0, 0, 0.9) !important;
+          transition: color 0.5s ease;
         }
 
         &.active {
-          border: $MyScale3_mobile solid rgba(0, 0, 0, 0.4);
-          //background-color: rgba(0, 0, 0, 0.025);
-
+          border: $MyScale3_mobile solid #dd1a32;
           justify-content: space-around;
-          padding-right: $MyScale10;
 
           & span {
             padding-right: 0;
@@ -287,9 +289,11 @@
             color: #dd1a32!important;
           }
           & svg{
+            animation: ani 0.5s forwards;
             width: $MyScale70_mobile;
             height: $MyScale70_mobile;
             padding-left: $MyScale10_mobile;
+            padding-right: $MyScale16_mobile;
   
             fill: rgba(0, 0, 0, 0.9);
             color: rgba(0, 0, 0, 0.9);
@@ -329,7 +333,6 @@
 
         &.active {
           border: $MyScale3_mobile solid rgba(0, 0, 0, 0.4);
-          //background-color: rgba(0, 0, 0, 0.025);
           & span{
             color: #dd1a32!important;
           }

@@ -19,7 +19,7 @@ export default function BasketPC() {
 
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
   const [getInfoPromo, checkPromo, allPrice, promoInfo, itemsCount, setActiveModalBasket, itemsOffDops] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice, state.promoInfo, state.itemsCount, state.setActiveModalBasket, state.itemsOffDops]);
-  const [openBasket, setActiveBasket, targetBasket, isAuth, setActiveModalAuth] = useHeaderStore((state) => [state.openBasket, state.setActiveBasket, state.targetBasket, state.isAuth, state.setActiveModalAuth]);
+  const [openBasket, setActiveBasket, targetBasket] = useHeaderStore((state) => [state.openBasket, state.setActiveBasket, state.targetBasket]);
   
   useEffect(() => {
     if (sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0) {
@@ -30,15 +30,18 @@ export default function BasketPC() {
   //const listenScrollEvent = (event) => setScrollBasket(event.target.scrollTop);
 
   function openBasketModal(){
-    if( isAuth == 'auth' ){
-      setActiveModalBasket(true); 
-      setActiveBasket(false); 
-      //setScrollBasket(0);
-    }else{
-      setActiveBasket(false); 
-      //setScrollBasket(0);
-      setActiveModalAuth(true);
-    }
+    setActiveModalBasket(true); 
+    setActiveBasket(false); 
+
+    // if( isAuth == 'auth' ){
+    //   setActiveModalBasket(true); 
+    //   setActiveBasket(false); 
+    //   //setScrollBasket(0);
+    // }else{
+    //   setActiveBasket(false); 
+    //   //setScrollBasket(0);
+    //   setActiveModalAuth(true);
+    // }
   }
 
   function setPromoText(event){

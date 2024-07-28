@@ -54,12 +54,12 @@ export default function FormOrder({ cityName }) {
 
   const [openModalAddr, getOrderList] = useProfileStore( state => [state.openModalAddr, state.getOrderList]);
 
-  const [matches, setActiveModalCityList, setActiveModalAlert, token, showLoad] = useHeaderStore((state) => [state.matches, state.setActiveModalCityList, state.setActiveModalAlert, state.token, state.showLoad]);
+  const [matches, setActiveModalCityList, setActiveModalAlert, token, showLoad, isAuth, setActiveModalAuth] = useHeaderStore((state) => [state.matches, state.setActiveModalCityList, state.setActiveModalAlert, state.token, state.showLoad, state.isAuth, state.setActiveModalAuth]);
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
  
-  const [setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, summDiv, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is, free_drive, setConfirmForm, getNewPriceItems] = useCartStore((state) => [state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
-    state.promoInfo, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.summDiv, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is, state.free_drive, state.setConfirmForm, state.getNewPriceItems]);
+  const [setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is, free_drive, setConfirmForm, getNewPriceItems] = useCartStore((state) => [state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
+    state.promoInfo, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is, state.free_drive, state.setConfirmForm, state.getNewPriceItems]);
  
   useEffect(() => {
     if (matches) {
@@ -109,6 +109,13 @@ export default function FormOrder({ cityName }) {
     }
 
     if (nameList === 'point') {
+
+      if(isAuth !== 'auth') {
+        setActiveModalBasket(false); 
+        setActiveModalAuth(true);
+        return;
+      }
+
       if (matches) {
         setActiveMenuCart(true, nameList);
       } else {
@@ -119,6 +126,12 @@ export default function FormOrder({ cityName }) {
     }
 
     if (nameList === 'addr') {
+      if(isAuth !== 'auth') {
+        setActiveModalBasket(false); 
+        setActiveModalAuth(true);
+        return;
+      }
+
       if (matches) {
         setActiveMenuCart(true, nameList);
       } else {
@@ -152,6 +165,12 @@ export default function FormOrder({ cityName }) {
     }
 
     if (nameList === 'pay') {
+      if(isAuth !== 'auth') {
+        setActiveModalBasket(false); 
+        setActiveModalAuth(true);
+        return;
+      }
+
       if ( typeOrder == 'pic' ) {
         setList(type_pay_pic);
       } else {
@@ -166,6 +185,13 @@ export default function FormOrder({ cityName }) {
     }
 
     if (nameList === 'message') {
+      
+      if(isAuth !== 'auth') {
+        setActiveModalBasket(false); 
+        setActiveModalAuth(true);
+        return;
+      }
+
       setActiveMenuCart(true, nameList);
     }
   };
@@ -225,6 +251,12 @@ export default function FormOrder({ cityName }) {
 
   async function create_order() {
     //token, typeOrder, city_id, point_id, addr, typePay, dateTimeOrder, comment, sdacha, promoName
+
+    if(isAuth !== 'auth') {
+      setActiveModalBasket(false); 
+      setActiveModalAuth(true);
+      return;
+    }
     
     if(!thisCityRu) {
       setActiveModalAlert(true, 'Необходимо выбрать город', false);
@@ -252,11 +284,6 @@ export default function FormOrder({ cityName }) {
 
     if(!items.length && !itemsOffDops.length) {
       setActiveModalAlert(true, 'Необходимо добавить товар в корзину', false);
-      return;
-    }
-
-    if(!token || token.length == 0) {
-      setActiveModalAlert(true, 'Необходимо Авторизироваться', false);
       return;
     }
 
@@ -326,6 +353,15 @@ export default function FormOrder({ cityName }) {
       setTimeout( () => {
         getInfoPromo(promo, thisCity)
       }, 300 )
+    }
+  }
+
+  const handleComment = (event) => {
+    if(isAuth !== 'auth') {
+      setActiveModalBasket(false); 
+      setActiveModalAuth(true);
+    } else {
+      changeComment(event)
     }
   }
 
@@ -664,7 +700,7 @@ export default function FormOrder({ cityName }) {
                   autoFocus
                   type="text"
                   value={comment}
-                  func={(event) => changeComment(event)}
+                  func={(event) => handleComment(event)}
                   multiline
                   maxRows={3}
                   variant="outlined"

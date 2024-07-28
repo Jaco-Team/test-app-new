@@ -4,7 +4,7 @@ import { useHomeStore, useHeaderStore } from '@/components/store';
 
 import { motion } from 'framer-motion';
 
-import { Search, IconClose, Close } from '@/ui/Icons.js';
+import { Search, Close } from '@/ui/Icons.js';
 import MyTextInput from '@/ui/MyTextInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
@@ -60,19 +60,13 @@ export default function Filter() {
   };
 
   const handleTag = (id) => {
-    if( parseInt(id) == -1 ){
-      const tags_active = tags.map((item) => {
-        
-        item.active = false;
-        
-        return item;
-      });
-
-      setTags(tags_active);
-
+    if(parseInt(id) == -1){
+      
+      resetTags();
       resetFilter();
       scrollToTargetAdjusted();
-    }else{
+
+    } else {
       const tags_active = tags.map((item) => {
         if (parseInt(item.id) === parseInt(id)) {
           item.active = item?.active ? false : true;
@@ -107,7 +101,7 @@ export default function Filter() {
   return (
     <>
       {matches ? (
-        <div className="filterMobile" id="fullFilter" style={{ visibility: filterActive ? 'visible' : 'hidden' }}>
+        <div className="filterMobile" style={{ visibility: filterActive ? 'visible' : 'hidden' }}>
           
           <div className="filterTag">
             <div className="tags">
@@ -121,7 +115,6 @@ export default function Filter() {
               {tags?.map((tag, key) => (
                 <div key={key} onClick={() => handleTag(tag.id)} className={tag?.active ? 'tag active' : 'tag'}>
                   <span>{tag.name}</span>
-
                   { tag?.active ? <Close /> : false }
                 </div>
               ))}
@@ -150,34 +143,23 @@ export default function Filter() {
           transition={{ duration: 0.9 }}
           className="filterPC"
         >
-          <div className="filterTag" id="fullFilter" style={{ width: '100%' }}>
-            <motion.div style={{ width: '100%' }}>
+          <div className="filterTag" style={{ width: '100%' }}>
+            <div style={{ width: '100%' }}>
+
               {badges?.map((badg, key) => (
-                
-                <div
-                  key={key}
-                  style={{ backgroundColor: badg.bg, color: '#fff' }}
-                  className={'tag_'}
-                  onClick={() => handleBadge(badg.id)}
-                >
-                  <span style={{ color: '#fff!important' }}>{badg.name}</span>
+                <div key={key} style={{ backgroundColor: badg.bg, color: '#fff' }} className={'tag_'} onClick={() => handleBadge(badg.id)}>
+                  <span style={{ color: '#fff' }}>{badg.name}</span>
                 </div>
               ))}
 
               {tags?.map((tag, key) => (
-                <motion.div 
-                  key={key} 
-                  onClick={() => handleTag(tag.id)} 
-                  className={tag?.active ? 'tag active' : 'tag'}
-                >
+                <div key={key}  onClick={() => handleTag(tag.id)} className={tag?.active ? 'tag active' : 'tag'}>
                   <span>{tag.name}</span>
-
                   { tag?.active ? <Close /> : false }
-                </motion.div>
+                </div>
               ))}
-
               
-            </motion.div>
+            </div>
 
             <div className='search_clear'>
               <MyTextInput

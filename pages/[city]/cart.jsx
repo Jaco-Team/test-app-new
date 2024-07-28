@@ -10,13 +10,13 @@ import { roboto } from '@/ui/Font.js';
 import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
 import { api } from '@/components/api.js';
 
-import { useRouter } from 'next/router';
+// import { useRouter } from 'next/router';
 
 const this_module = 'contacts';
 
 export default React.memo(function Cart(props) {
 
-  const { push } = useRouter();
+  // const { push } = useRouter();
 
   const { city, cats, cities, page, all_items, free_items, need_dop } = props.data1;
 
@@ -25,7 +25,7 @@ export default React.memo(function Cart(props) {
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] =
     useCitiesStore((state) => [state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList]);
 
-  const [setActivePage, matches] = useHeaderStore((state) => [state.setActivePage, state.matches]);
+  const [setActivePage] = useHeaderStore((state) => [state.setActivePage]);
 
   useEffect(() => {
 
@@ -50,13 +50,13 @@ export default React.memo(function Cart(props) {
     
     setActivePage('cart');
     
-    if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
+    // if (typeof window !== 'undefined') {
+    //   const token = localStorage.getItem('token');
 
-      if( (!token || token == '') && city.length > 0 ){
-        push(`/${city}`);
-      }
-    }
+    //   if( (!token || token == '') && city.length > 0 ){
+    //     push(`/${city}`);
+    //   }
+    // }
   }, []);
  
   return (

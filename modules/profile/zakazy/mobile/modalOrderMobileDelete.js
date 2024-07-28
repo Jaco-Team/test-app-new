@@ -3,9 +3,7 @@ import { useState } from 'react';
 import { useProfileStore, useHeaderStore } from '@/components/store.js';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
-import Backdrop from '@mui/material/Backdrop';
 import Button from '@mui/material/Button';
 
 import { roboto } from '@/ui/Font.js';
@@ -24,7 +22,7 @@ export default function ModalOrderMobileDelete() {
   const [active, setActive] = useState(0);
   const [text, setText] = useState('');
 
-  const [ token ] = useHeaderStore( state => [ state.token ] )
+  const [token] = useHeaderStore( state => [state.token] )
 
   const [openModalDelete, closeModalDel, orderDel] = useProfileStore((state) => [state.openModalDelete, state.closeModalDel, state.orderDel]);
 
@@ -33,6 +31,28 @@ export default function ModalOrderMobileDelete() {
     setText('');
     closeModalDel();
   };
+
+  const changeComment = (event) => {
+
+    if(event === '') {
+      setText(event);
+    } else {
+      const comment = event?.target?.value ?? event;
+
+      const len = comment.split(/\r?\n|\r|\n/g)
+
+      if(len.length > 2) {
+        return ;
+      }
+
+      if (comment.length > 50) {
+        return ;
+      }
+
+      setText(comment);
+    }
+
+  }
 
   return (
     <SwipeableDrawer
@@ -67,14 +87,18 @@ export default function ModalOrderMobileDelete() {
           {active && active === 6 ?
             <div className="zakazyText">
               <MyTextInput
-                variant="standard"
+                autoFocus
+                type="text"
                 value={text}
-                func={(e) => setText(e.target.value)}
+                func={(event) => changeComment(event)}
+                multiline
+                maxRows={3}
+                variant="outlined"
+                className="message"
+                placeholder="Опишите причину отмены"
               />
             </div>
-              : 
-            null
-          }
+          : null}
 
           <Button className="buttonBack" variant="contained" onClick={close} style={{ marginTop: active ? null : '19.230769230769vw' }}>
             <span>Вернуться к заказу</span>

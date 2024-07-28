@@ -81,25 +81,43 @@ export default function LoginSMSCode() {
       </div>
 
       <div className="loginAutCode">
-        <AuthCode
-          autoFocus={true}
-          allowedCharacters="numeric"
-          length="4"
-          onChange={(data) => changeCode(data)}
-          ref={inputRef}
-          placeholder="•"
-        />
+
+        {matches ?
+          <input
+            value={code}
+            onChange={(event) => changeCode(event.target.value)}
+            type="text"
+            inputmode="numeric"
+            pattern="[0-9]"
+            autocomplete="one-time-code"
+            placeholder="• • • •"
+            maxLength={4}
+          />
+          :
+          <AuthCode
+            autoFocus={true}
+            allowedCharacters="numeric"
+            length="4"
+            onChange={(data) => changeCode(data)}
+            ref={inputRef}
+            placeholder="•"
+          />
+        }
+
         <div className="loginSvg" style={{ backgroundColor: code.length === 4 ? '#DD1A32' : '#fff' }}>
           {code.length === 4 ? (
             <VectorRightAuthMobile className="vectorSvg"
               onClick={code.length === 4 ? checkCode : null}
             />
           ) : (
-            <ClearAuthMobile className="clearSvg" onClick={() => inputRef.current?.clear()} />
+            <ClearAuthMobile className="clearSvg" 
+            onClick={() => matches ? changeCode('') : inputRef.current?.clear()} 
+            
+            />
           )}
         </div>
       </div>
-      
+     
       {timerPage ?
         <div className='loginSubHeader2' onClick={reSendSMS}>
           <Typography component="span" style={{ textDecoration: 'underline', color: '#DD1A32', cursor: 'pointer' }}>

@@ -394,21 +394,26 @@
           position: relative;
           margin-bottom: $MyScale40_mobile;
 
-          & > div {
-            display: flex;
-            flex-direction: row;
+          // & > div {
+          //   display: flex;
+          //   flex-direction: row;
 
             & input {
               margin-bottom: $MyScale20_mobile;
-              width: $MyScale75_mobile;
+              // width: $MyScale75_mobile;
+              width: $MyScale300_mobile;
               height: $MyScale75_mobile;
               padding: 0;
+              padding-left: $MyScale20_mobile;
               text-align: center;
-              margin-right: $MyScale12_mobile;
+              letter-spacing: $MyScale30_mobile;
+              //margin-right: $MyScale12_mobile;
               @include font75_700();
               border: none;
               background-clip: padding-box;
               background-color: #fff;
+
+              text-align: left;
 
               &:focus {
                 appearance: none;
@@ -417,11 +422,12 @@
             }
 
             & > input::placeholder {
-              transform: translate3d(0, $MyScale10_mobile, 0);
+              letter-spacing: 0;
+              transform: translate3d($MyScale20_mobile, $MyScale10_mobile, 0);
               font-size: $MyScale100_mobile;
               color: rgba(0, 0, 0, 0.2) !important;
             }
-          }
+          // }
 
           & .loginSvg {
             margin-bottom: $MyScale30_mobile;

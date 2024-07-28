@@ -165,8 +165,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     if (typeOrder) {
       get().setTypePay({ id: 'cash', name: 'В кафе' });
       get().setSummDiv(0);
-      //get().setSdacha(0);
-      get().changeComment('');
+      // get().setSdacha(0);
+      // get().changeComment('');
     } else {
 
       if(cart?.typePay?.name === 'В кафе') {
@@ -619,7 +619,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         city_id,
         promoName: promoName ?? '',
         sdacha: get().sdacha,
-        comment: get().comment,
+        // comment: get().comment,
+        comment: '',
         typePay: get().typePay.id,
         typeOrder: 1,
         point_id: get().orderPic.id,
@@ -3255,6 +3256,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     };
 
     const json = await api('auth', data);
+    console.log("🚀 === createProfile json:", json);
 
     if (json?.st) {
       set({
@@ -3551,6 +3553,8 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
         } )
       } 
 
+      get().scrollToTargetAdjusted();
+
       set({ badge_filter: res })
     } else {
       get().resetFilter();
@@ -3599,16 +3603,35 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     //console.log(arr)
   },
 
+  // скролл к списку товаров на главной при выборе тега или баджа в фильтре
   scrollToTargetAdjusted: () => {
-    var element = document.getElementById('fullFilter');
-    var headerOffset = 120;
 
-    if( window.outerWidth < 800 ){
-      headerOffset = 300;
+    let offsetPosition;
+
+    const matches = useHeaderStore.getState().matches;
+
+    if(matches) {
+
+      const header = document.querySelector('.headerMobile')?.getBoundingClientRect().height;
+      
+      const banner = document.querySelector('.BannerMobile')?.getBoundingClientRect().height;
+
+      const menu = document.querySelector('.menuCatMobile')?.getBoundingClientRect().height * 0.75;
+      
+      const filter = document.querySelector('.filterMobile')?.getBoundingClientRect().height;
+  
+      offsetPosition = (filter + banner) - (header + menu);
+    
+    } else {
+
+      const header = document.querySelector('.headerNew')?.getBoundingClientRect().height / 2;
+      
+      const banner = document.querySelector('.BannerPC')?.getBoundingClientRect().height;
+      
+      const filter = document.querySelector('.filterPC')?.getBoundingClientRect().height;
+  
+      offsetPosition = filter + banner + header;
     }
-
-    var elementPosition = element.getBoundingClientRect().top;
-    var offsetPosition = elementPosition + window.pageYOffset + headerOffset;
   
     window.scrollTo({
       top: offsetPosition,
