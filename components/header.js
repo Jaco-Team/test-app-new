@@ -25,13 +25,16 @@ import ModalPointClose_mobile from '@/modules/header/modalPointClose/modalPointC
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { useHeaderStore, useHomeStore } from './store.js';
+import { useCartStore, useHeaderStore, useHomeStore } from './store.js';
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
 import { getPerformance } from "firebase/performance";
 
 import { usePathname, useSearchParams } from 'next/navigation'
+
+import dayjs from 'dayjs';
+import 'dayjs/locale/ru';
 
 export default React.memo(function header({ city, city_list, cats }) {
   
@@ -79,7 +82,8 @@ export default React.memo(function header({ city, city_list, cats }) {
 
   const [setMatches, matches, checkToken, isShowLoad, setShowClosePoint] = useHeaderStore( state => [state.setMatches, state.matches, state.checkToken, state.isShowLoad, state.setShowClosePoint] ); 
   const [getItemsCat, category] = useHomeStore( state => [state.getItemsCat, state.category]);
-  
+  const [ setFreeDrive ] = useCartStore( state => [state.setFreeDrive]);
+
   useEffect(() => {
     checkToken();
   }, []);
@@ -97,15 +101,66 @@ export default React.memo(function header({ city, city_list, cats }) {
   }, [matchesDev, matches]);
 
   useEffect(() => {
-    if( search == 'pobeda_close' ){
-      let state = { },
-        title = '',
-        url = window.location.pathname;
+    //1722474061 - 1
+    //1722834305 - 5
+    //1723464732 - 12
+    //1724005098 - 18
+    //if( search == 'pobeda_close' ){
 
-      window.history.pushState(state, title, url)
+      if( dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') >= dayjs( new Date("2024-08-01") ).locale('ru').format('YYYY-MM-DD') && dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2024-08-04") ).locale('ru').format('YYYY-MM-DD') ){
+        if( search == 'pobeda_close_1722474061' ){
+          let state = { },
+            title = '',
+            url = window.location.pathname;
+    
+          window.history.pushState(state, title, url)
+    
+          setFreeDrive(1);
+          localStorage.setItem('freeDrive', '1722474061');
+        }
+      }
 
-      setShowClosePoint(true);
-    }
+      if( dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') >= dayjs( new Date("2024-08-05") ).locale('ru').format('YYYY-MM-DD') && dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2024-08-11") ).locale('ru').format('YYYY-MM-DD') ){
+        if( search == 'pobeda_close_1722834305' ){
+          let state = { },
+            title = '',
+            url = window.location.pathname;
+    
+          window.history.pushState(state, title, url)
+    
+          setFreeDrive(1);
+          localStorage.setItem('freeDrive', '1722474061');
+        }
+      }
+
+      if( dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') >= dayjs( new Date("2024-08-12") ).locale('ru').format('YYYY-MM-DD') && dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2024-08-18") ).locale('ru').format('YYYY-MM-DD') ){
+        if( search == 'pobeda_close_1723464732' ){
+          let state = { },
+            title = '',
+            url = window.location.pathname;
+    
+          window.history.pushState(state, title, url)
+    
+          setFreeDrive(1);
+          localStorage.setItem('freeDrive', '1722474061');
+        }
+      }
+
+      if( dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') >= dayjs( new Date("2024-08-19") ).locale('ru').format('YYYY-MM-DD') && dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2024-08-20") ).locale('ru').format('YYYY-MM-DD') ){
+        if( search == 'pobeda_close_1724005098' ){
+          let state = { },
+            title = '',
+            url = window.location.pathname;
+    
+          window.history.pushState(state, title, url)
+    
+          setFreeDrive(1);
+          localStorage.setItem('freeDrive', '1722474061');
+        }
+      }
+
+      
+    //}
   }, [search]);
 
   return (

@@ -115,6 +115,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   global_checkout: null,
 
+  show_checkFreeDrive: false,
+
   // открытие/закрытие формы подтверждения заказа
   setConfirmForm: (active) => {
     const promoName = sessionStorage.getItem('promo_name');
@@ -236,6 +238,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
         if(cart?.orderAddr) {
           set({ orderAddr: cart?.orderAddr });
+
+          if(cart?.orderAddr?.free_drive) {
+            set({ free_drive: cart?.orderAddr?.free_drive });
+          }
         }
 
         if(cart?.orderPic) {
@@ -265,6 +271,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         if(cart?.summDiv) {
           set({ summDiv: cart?.summDiv });
         }
+
+        
       }
     }
   },
@@ -625,7 +633,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         typeOrder: 1,
         point_id: get().orderPic.id,
         dateTimeOrder: JSON.stringify(get().dateTimeOrder ?? { date: '', name: 'В ближайшее время', id: -1 }),
-        cart: JSON.stringify(get().items)
+        cart: JSON.stringify(get().items),
+        free_drive: get().free_drive
       };
     } else {
       data = {
@@ -640,7 +649,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         typePay: get().typePay.id,
         typeOrder: 0,
         dateTimeOrder: JSON.stringify(get().dateTimeOrder ?? { date: '', name: 'В ближайшее время', id: -1 }),
-        cart: JSON.stringify(get().items)
+        cart: JSON.stringify(get().items),
+        free_drive: get().free_drive
       };
     }
 
@@ -1344,6 +1354,12 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   
   },
 
+  setFreeDrive: (freeDrive) => {
+    set({
+      free_drive: parseInt(freeDrive)
+    })
+  },
+
   // проверка промика
   promoCheck: () => {
 
@@ -1935,6 +1951,21 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     
   },
 
+  checkFreeDrive: async (token) => {
+
+    if(!token) return;
+
+    const data = {
+      type: 'checkFreeDrive',
+      token
+    };
+
+    const json = await api('cart', data);
+
+    set({
+      show_checkFreeDrive: true,
+    })
+  },
 }), shallow);
 
 export const useContactStore = createWithEqualityFn((set, get) => ({

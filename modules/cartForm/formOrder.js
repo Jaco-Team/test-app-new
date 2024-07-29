@@ -58,7 +58,7 @@ export default function FormOrder({ cityName }) {
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
  
-  const [setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is, free_drive, setConfirmForm, getNewPriceItems] = useCartStore((state) => [state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
+  const [setFreeDrive, setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is, free_drive, setConfirmForm, getNewPriceItems] = useCartStore((state) => [state.setFreeDrive, state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
     state.promoInfo, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is, state.free_drive, state.setConfirmForm, state.getNewPriceItems]);
  
   useEffect(() => {
@@ -82,11 +82,34 @@ export default function FormOrder({ cityName }) {
     if (sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0) {
       setPromo(sessionStorage.getItem('promo_name'));
     }
-    
   }, [promoInfo]);
 
   useEffect(() => {
+    let check_free_drive = localStorage.getItem('freeDrive');
+
+    if( 
+        check_free_drive && check_free_drive.length > 0 && check_free_drive == '1722474061' 
+          && 
+        dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2024-08-20") ).locale('ru').format('YYYY-MM-DD')
+      ){
+      setFreeDrive(1);
+    }
+
+  }, [orderAddr, promoInfo])
+
+  useEffect(() => {
     check_need_dops();
+
+    let check_free_drive = localStorage.getItem('freeDrive');
+
+    if( 
+        check_free_drive && check_free_drive.length > 0 && check_free_drive == '1722474061' 
+          && 
+        dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2024-08-20") ).locale('ru').format('YYYY-MM-DD')
+      ){
+      setFreeDrive(1);
+    }
+
   }, [])
 
   useEffect(() => {
@@ -220,6 +243,8 @@ export default function FormOrder({ cityName }) {
       setSummDiv(item.sum_div ?? 0);
       setAnchorEl(null);
 
+      setFreeDrive( parseInt(item?.free_drive) );
+
       if( item?.comment?.length > 0 ){
         changeComment(item?.comment)
       }
@@ -341,6 +366,8 @@ export default function FormOrder({ cityName }) {
         getOrderList('zakazy', thisCity, token);
 
         showLoad(false);
+
+        localStorage.removeItem('freeDrive');
       }, 2000)
     }, 300)
   }

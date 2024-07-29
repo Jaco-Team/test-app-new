@@ -137,13 +137,15 @@ export default React.memo(function NavBarPC({ city }) {
           setThisCityRu(city_.name);
           setThisCity(city_.link);
 
+          const search = window.location.search;
+
           const new_link = pathname.replace(new RegExp(city, 'g'), city_.link);
 
-          router.push(`${new_link}`, { scroll: true });
+          router.push(`${new_link}${search}`, { scroll: true });
 
-          setTimeout( () => {
-            router.refresh();
-          }, 500 ) 
+          //setTimeout( () => {
+            //router.refresh();
+          //}, 500 ) 
         }
       } else {
         setActiveModalCity(true);
