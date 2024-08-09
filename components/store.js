@@ -1842,28 +1842,27 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const orderPic = pointList.find(point => point.name === addr);
 
-    if(typeof ymaps == "undefined"){
-      return ;
-    }
+    ymaps.ready( () => {
 
-    const img = ymaps.templateLayoutFactory.createClass( 
-      "<div class='my-img'>" +
-        "<img alt='' src='/Favikon.png' />" +
-      "</div>"
-    )
-  
-    zones = zones.map(item => {
-      if(item.addr === addr) {
-        item.image = img;
-      } else {
-        item.image = 'default#image';
-      }
-      return item
+      const img = ymaps.templateLayoutFactory.createClass( 
+        "<div class='my-img'>" +
+          "<img alt='' src='/Favikon.png' />" +
+        "</div>"
+      )
+    
+      zones = zones.map(item => {
+        if(item.addr === addr) {
+          item.image = img;
+        } else {
+          item.image = 'default#image';
+        }
+        return item
+      })
+
+      set({ zones, orderPic: orderPic ?? null });
+
+      get().setCartLocalStorage();
     })
-
-    set({ zones, orderPic: orderPic ?? null });
-
-    get().setCartLocalStorage();
 
   },
 
@@ -2128,69 +2127,71 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
     let points_zone = get().points_zone;
     let myAddr = get().myAddr;
 
-    if(typeof ymaps == "undefined"){
-      return ;
-    }
+    
 
-    const img = ymaps.templateLayoutFactory.createClass( 
-      "<div class='my-img'>" +
-        "<img alt='' src='/Favikon.png' />" +
-      "</div>"
-    )
-
-    let center;
-
-    zones = zones.map(item => {
-      if(item.addr === addr) {
-        item.image = img;
-        center = [item.xy_point.latitude, item.xy_point.longitude]
-      } else {
-        item.image = 'default#image';
-      }
-      return item
-    })
-
-    points_zone = points_zone.map(item => {
-      if(disable) {
+    ymaps.ready( () => {
+      const img = ymaps.templateLayoutFactory.createClass( 
+        "<div class='my-img'>" +
+          "<img alt='' src='/Favikon.png' />" +
+        "</div>"
+      )
+  
+      let center;
+  
+      zones = zones.map(item => {
         if(item.addr === addr) {
-          item.options = get().polygon_options_active;
+          item.image = img;
+          center = [item.xy_point.latitude, item.xy_point.longitude]
         } else {
-          item.options = get().polygon_options_default;
+          item.image = 'default#image';
         }
-      } 
-      return item
-    })
-
-    myAddr = myAddr.map(item => {
-      if (item.addr === addr)  {
-        item.color = '#DD1A32'
+        return item
+      })
+  
+      points_zone = points_zone.map(item => {
+        if(disable) {
+          if(item.addr === addr) {
+            item.options = get().polygon_options_active;
+          } else {
+            item.options = get().polygon_options_default;
+          }
+        } 
+        return item
+      })
+  
+      myAddr = myAddr.map(item => {
+        if (item.addr === addr)  {
+          item.color = '#DD1A32'
+        } else {
+          item.color = null;
+        }
+        return item
+      });
+  
+      let zoomSize;
+          
+      if(window.innerWidth < 601) {
+        zoomSize = 11;
       } else {
-        item.color = null;
+        zoomSize = 12;
       }
-      return item
-    });
-
-    let zoomSize;
-        
-    if(window.innerWidth < 601) {
-      zoomSize = 11;
-    } else {
-      zoomSize = 12;
-    }
-
-    set({ 
-      points_zone, 
-      zones, 
-      myAddr, 
-      point: addr,
-      center_map: {
-        center,
-        zoom: zoomSize,
-        controls: [],
-        behaviors: ["drag", "dblClickZoom", "rightMouseButtonMagnifier", "multiTouch"],
-        duration: 1000
-      },
+  
+      set({ 
+        points_zone, 
+        zones, 
+        myAddr, 
+        point: addr,
+        center_map: {
+          center,
+          zoom: zoomSize,
+          controls: [],
+          behaviors: ["drag", "dblClickZoom", "rightMouseButtonMagnifier", "multiTouch"],
+          duration: 1000
+        },
+      })
     })
+
+    
 
   },
 
