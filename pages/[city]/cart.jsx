@@ -39,9 +39,7 @@ export default React.memo(function Cart(props) {
       }, 300);
     }
     
-    if( allItems.length == 0 ){
-      setAllItems(all_items);
-    }
+    setAllItems(all_items);
 
     setFreeItems(free_items);
     setNeedDops(need_dop);

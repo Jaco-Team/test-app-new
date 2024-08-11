@@ -40,11 +40,8 @@ export default function Home(props) {
 
     getBanners(this_module, city);
 
-    if( allItems.length == 0 ){
-      setAllItems(all_items);
+    setAllItems(all_items);
       
-    }
-
     setAllTags(tags);
 
     setFreeItems(free_items);
