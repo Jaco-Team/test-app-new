@@ -35,13 +35,16 @@ export default React.memo(function Legal(props) {
       setThisCity(city);
       setThisCityRu(cities.find((item) => item.link == city)['name']);
       setThisCityList(cities);
-
+      setAllItems(all_items);
+      
       setTimeout(() => {
         changeAllItems();
       }, 300);
     }
 
-    setAllItems(all_items);
+    if( allItems.length == 0 ){
+      setAllItems(all_items);
+    }
 
     setFreeItems(free_items);
     setNeedDops(need_dop);

@@ -33,7 +33,8 @@ export default function Home(props) {
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );
       setThisCityList(cities)
-
+      setAllItems(all_items);
+      
       setTimeout(() => {
         changeAllItems();
       }, 300);
@@ -41,7 +42,9 @@ export default function Home(props) {
 
     getBanners('home', city);
 
-    setAllItems(all_items);
+    if( allItems.length == 0 ){
+      setAllItems(all_items);
+    }
 
     setAllTags(tags);
 
