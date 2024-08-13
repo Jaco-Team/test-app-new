@@ -6,7 +6,7 @@ import 'dayjs/locale/ru';
 
 var isoWeek = require('dayjs/plugin/isoWeek')
 
-import { api } from './api.js';
+import { api, apiAddress } from './api.js';
 
 import Cookies from 'js-cookie'
 
@@ -2357,6 +2357,31 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   yearList: [],
   openModalYear: false,
 
+  isOpenModalAddr_test: false,
+
+   // получение адресов в модалке выбора адреса доставки
+   getAddrList: async (value) => {
+
+    const city = useCitiesStore.getState().thisCityRu;
+
+    console.log("🚀 === city:", city);
+
+    const res = await apiAddress(city, value);
+
+    console.log('getAddrList res', res);
+
+    const allStreets = res?.results?.map(str => str = { name: str.title.text })
+
+    console.log("🚀 === allStreets:", allStreets);
+
+    if(!value) {
+      set({allStreets: []})
+    } else {
+      set({allStreets})
+    }
+
+  },
+
   // установить год в Истории заказов в мобильной версии
   setYear: (year) => {
     set({ year })
@@ -2541,6 +2566,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   closeModalAddr: () => {
     set({
       isOpenModalAddr: false
+      //isOpenModalAddr_test: false
     })
   },
   openModalAddr: async (id, city = '') => {
@@ -2553,6 +2579,10 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     let json = await api('profile', data);
 
     set({
+      // isOpenModalAddr_test: true,
+      // allStreets: [],
+
+
       isOpenModalAddr: true,
       allStreets: json?.streets,
       infoAboutAddr: json?.this_info,
