@@ -6,6 +6,7 @@ import CartMapPoints from './cartMapPoints';
 import PayForm from './payForm';
 import DataTimePicker from '@/modules/cartForm/dataTimePicker';
 import ConfirmForm from './confirmForm';
+import MailForm from './mailForm';
 
 // import { useCartStore } from '@/components/store';
 
@@ -26,6 +27,7 @@ export default function CartPage({ page, cityName }) {
       <CartMapPoints />
       <DataTimePicker />
       <ConfirmForm />
+      <MailForm cityName={cityName} />
       <PayForm />
     </Meta>
   );

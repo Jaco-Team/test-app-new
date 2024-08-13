@@ -117,6 +117,13 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   show_checkFreeDrive: false,
 
+  openMailForm: false,
+
+  // открытие/закрытие формы указание эл почты клиента
+  setMailForm: (active) => {
+    set({ openMailForm: active })
+  },
+
   // открытие/закрытие формы подтверждения заказа
   setConfirmForm: (active) => {
     const promoName = sessionStorage.getItem('promo_name');

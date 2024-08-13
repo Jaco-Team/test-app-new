@@ -346,7 +346,6 @@
           width: $MyScale650_mobile;
           height: $MyScale120_mobile;
           border-radius: $MyScale60_mobile;
-          margin-bottom: $MyScale205_mobile;
           padding: 0;
           text-transform: lowercase;
 
@@ -356,6 +355,25 @@
             text-align: center;
             @include font50_500();
             color: #fff !important;
+            text-transform: capitalize;
+          }
+        }
+
+        & .address_delete {
+          width: $MyScale650_mobile;
+          height: $MyScale120_mobile;
+          border-radius: $MyScale60_mobile;
+          margin-bottom: $MyScale230_mobile;
+          padding: 0;
+          text-transform: lowercase;
+          border: $MyScale3_mobile solid #dd1a32;
+  
+          & span {
+            display: flex;
+            align-items: center;
+            text-align: center;
+            @include font50_500();
+            color: #dd1a32 !important;
             text-transform: capitalize;
           }
         }

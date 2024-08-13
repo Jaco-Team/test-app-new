@@ -24,7 +24,7 @@ const type_pred = [
 const type_pay_div = [
   { id: 'cash', name: 'Наличными курьеру' },
   { id: 'sbp', name: 'СБП на сайте' },
-  { id: 'online', name: 'Онлайн на сайте' },
+  { id: 'online', name: 'Картой на сайте' },
 ];
 
 export default function CartMenuMobile({ cityName }) {

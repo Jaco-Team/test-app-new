@@ -19,8 +19,8 @@ export default function AddressModalMobile() {
 
   const [openModalAddress, setActiveAddressModal] = useProfileStore((state) => [state.openModalAddress, state.setActiveAddressModal]);
 
-  const [chooseAddrStreet, center_map, zones, allStreets, checkStreet, saveNewAddr, infoAboutAddr, active_city, updateAddr ] = 
-  useProfileStore( state => [state.chooseAddrStreet, state.center_map, state.zones, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.active_city, state.updateAddr ] );
+  const [chooseAddrStreet, center_map, zones, allStreets, checkStreet, saveNewAddr, infoAboutAddr, active_city, updateAddr, delAddr ] = 
+  useProfileStore( state => [state.chooseAddrStreet, state.center_map, state.zones, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.active_city, state.updateAddr, state.delAddr ] );
 
   const [ street, setStreet ] = useState('');
   const [ street_, setStreet_ ] = useState('');
@@ -119,6 +119,11 @@ export default function AddressModalMobile() {
       ref2.current.setCenter(chooseAddrStreet?.xy);
     }
   }, [chooseAddrStreet] )
+
+  const handleDelete = () => {
+    delAddr(infoAboutAddr.id, token);
+    setActiveAddressModal(false, 0, '');
+  }
 
   return (
     <SwipeableDrawer
@@ -239,9 +244,16 @@ export default function AddressModalMobile() {
             <MySwitch checked={check} onClick={ (event) => { setCheck(event.target.checked) } } />
           </div>
 
-          <Button className="address_button" variant="contained" onClick={ () => { infoAboutAddr != null ? updateAddr(pd, domophome, et, kv, comment, token, check, nameAddr, cityID) : saveNewAddr(pd, domophome, et, kv, comment, token, check, nameAddr, cityID) } }>
+          <Button className="address_button" style={{ marginBottom: infoAboutAddr !== null ? '5.1282051282051vw' : '17.521367521368vw'}} variant="contained" onClick={ () => { infoAboutAddr != null ? updateAddr(pd, domophome, et, kv, comment, token, check, nameAddr, cityID) : saveNewAddr(pd, domophome, et, kv, comment, token, check, nameAddr, cityID) } }>
             <span>Сохранить</span>
           </Button>
+
+          {infoAboutAddr !== null ?
+            <Button className="address_delete" variant="outlined" onClick={handleDelete}>
+              <span>Удалить</span>
+            </Button>
+          : null}
+
         </div>
       </div>
     </SwipeableDrawer>

@@ -52,14 +52,14 @@ export default function FormOrder({ cityName }) {
 
   const open = Boolean(anchorEl);
 
-  const [openModalAddr, getOrderList] = useProfileStore( state => [state.openModalAddr, state.getOrderList]);
+  const [openModalAddr, getOrderList, userInfo, getUserInfo] = useProfileStore( state => [state.openModalAddr, state.getOrderList, state.userInfo, state.getUserInfo]);
 
   const [matches, setActiveModalCityList, setActiveModalAlert, token, showLoad, isAuth, setActiveModalAuth] = useHeaderStore((state) => [state.matches, state.setActiveModalCityList, state.setActiveModalAlert, state.token, state.showLoad, state.isAuth, state.setActiveModalAuth]);
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
  
-  const [setFreeDrive, setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is, free_drive, setConfirmForm, getNewPriceItems] = useCartStore((state) => [state.setFreeDrive, state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
-    state.promoInfo, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is, state.free_drive, state.setConfirmForm, state.getNewPriceItems]);
+  const [setFreeDrive, setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is, free_drive, setConfirmForm, getNewPriceItems, setMailForm] = useCartStore((state) => [state.setFreeDrive, state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
+    state.promoInfo, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is, state.free_drive, state.setConfirmForm, state.getNewPriceItems, state.setMailForm]);
  
   useEffect(() => {
     if (matches) {
@@ -117,6 +117,12 @@ export default function FormOrder({ cityName }) {
       setDataTimeOrder({ name: 'В ближайшее время', id: -1 });
     }
   }, [dateTimeOrder])
+
+  useEffect(() => {
+    if( token && token.length > 0 ) {
+      getUserInfo('profile', thisCity, token);
+    }
+  }, [token]);
 
   const openMenu = (event, nameList) => {
     setNameList(nameList);
@@ -312,7 +318,12 @@ export default function FormOrder({ cityName }) {
       return;
     }
 
-    //if(typeOrder === 'dev') {
+    if(typePay.id === 'online' && !userInfo.mail) {
+      setMailForm(true);
+      return;
+    }
+
+      //if(typeOrder === 'dev') {
       
     //} else {
       showLoad(true);
