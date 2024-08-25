@@ -192,6 +192,16 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
       <Component {...pageProps} />
     </ThemeProvider>
   )*/
+    console.log(pageProps?.data1?.page, pageProps?.data1?.city);
+
+  if( pageProps?.data1?.city == 'only-pay-page' ){
+    return (
+      <ThemeProvider theme={theme}>
+        <Component {...pageProps} />
+      </ThemeProvider>
+    )
+
+  }
 
   return (
     <ThemeProvider theme={theme}>
@@ -232,7 +242,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
 
       
 
-      { !pageProps || pageProps?.statusCode == 404 || pageProps?.statusCode == 500 || typeof pageProps?.data1?.city === 'undefined' ? false :
+      { !pageProps || pageProps?.statusCode == 404 || pageProps?.statusCode == 500 || typeof pageProps?.data1?.city === 'undefined' || !pageProps?.data1?.page ? false :
         <Header
           city={pageProps?.data1?.city}
           cats={pageProps?.data1?.cats}
