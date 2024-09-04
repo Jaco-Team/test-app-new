@@ -1959,7 +1959,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   checkFreeDrive: async (token) => {
 
-    if(!token) return;
+    /*if(!token) return;
 
     const data = {
       type: 'checkFreeDrive',
@@ -1970,7 +1970,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     set({
       show_checkFreeDrive: true,
-    })
+    })*/
   },
 }), shallow);
 
