@@ -65,17 +65,17 @@
         height: $MyScale51_mobile;
 
         & path {
-          fill: rgba(0, 0, 0, 0.3);
+          fill: rgba(0, 0, 0, 0.8);
         }
       }
     }
 
     & .activeFilter {
-      background-color: rgba(0, 0, 0, 0.1);
+      background-color: #dd1a32;
 
       & svg {
         & path {
-          fill: rgba(0, 0, 0, 0.8);
+          fill: #fff;
         }
       }
     }

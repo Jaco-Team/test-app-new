@@ -196,7 +196,7 @@ export default function AkciiItemPC({ actia }) {
         <Grid className="SecondItem">
           <Typography variant="h5" component="span">{data?.banner?.title}</Typography>
 
-          {data && data?.banner?.text ? <Grid dangerouslySetInnerHTML={{ __html: data?.banner?.text }} /> : null}
+          {data && data?.banner?.text ? <Grid className="FullText" dangerouslySetInnerHTML={{ __html: data?.banner?.text }} /> : null}
         </Grid>
       </Grid>
     </Grid>

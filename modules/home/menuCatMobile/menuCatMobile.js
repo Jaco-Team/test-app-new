@@ -12,7 +12,7 @@ var scroller = Scroll.scroller;
 
 export default function MenuCatMobile({ city }) {
 
-  const [category, cat_position, setActiveFilter, isOpenFilter] = useHomeStore((state) => [state.category, state.cat_position,  state.setActiveFilter, state.isOpenFilter]);
+  const [category, cat_position, setActiveFilter, isOpenFilter, resetFilter] = useHomeStore((state) => [state.category, state.cat_position,  state.setActiveFilter, state.isOpenFilter, state.resetFilter]);
 
   const [catMenu, setCatMenu] = useState(category);
   const [catDopMenu, setCatDopMenu] = useState([]);
@@ -43,6 +43,9 @@ export default function MenuCatMobile({ city }) {
   const chooseCat = (id, scroll) => {
     localStorage.setItem('goTo', id);
 
+    resetFilter();
+    setActiveFilter(false);
+
     const menuCatDop = document.querySelector('.menuCatDop');
 
     if (menuCatDop) {
@@ -69,8 +72,12 @@ export default function MenuCatMobile({ city }) {
 
   const chooseDopCat = (id, scroll) => {
     localStorage.setItem('goTo', id);
+    
 
     if (scroll) {
+      resetFilter();
+      setActiveFilter(false);
+
       getScroll(id);
     }
   };

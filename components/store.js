@@ -3524,22 +3524,26 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
   text_filter: '',
   all_tags: [],
 
+  pageBanner: null,
+
   // сброс фильтра на главной странице
   resetFilter: () => {
 
     const activePage = useHeaderStore.getState().activePage;
 
     if(activePage === 'home') { 
+
+      
       let all_items = useCartStore.getState().allItems;
       
       if(all_items.length) {
 
         all_items.map(item => {
 
-          if(document.querySelector('#'+item.link)) {
-            document.querySelector('#'+item.link).style.display = 'flex'
+          if( document.getElementById(item.link) ){
+            document.querySelector('#'+item.link).style.display = 'flex';
           }
-
+          
         });
 
       }
@@ -3578,12 +3582,15 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
       all_items.map(item => {
        
-        check = item.name.toLowerCase().includes(text_filter.toLowerCase())
-  
-        if(check) {
-          document.querySelector('#'+item.link).style.display = 'flex';
-        } else {
-          document.querySelector('#'+item.link).style.display = 'none';
+        if( document.getElementById(item.link) ){
+
+          check = item.name.toLowerCase().includes(text_filter.toLowerCase())
+    
+          if(check) {
+            document.querySelector('#'+item.link).style.display = 'flex';
+          } else {
+            document.querySelector('#'+item.link).style.display = 'none';
+          }
         }
       })
 
@@ -3605,20 +3612,24 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
       if(parseInt(res) === 2){
         all_items.map( item => {
-          if( parseInt(item.is_new) ===  1 ){
-            document.querySelector('#'+item.link).style.display = 'flex';
-          }else{
-            document.querySelector('#'+item.link).style.display = 'none';
+          if( document.getElementById(item.link) ){
+            if( parseInt(item.is_new) ===  1 ){
+              document.querySelector('#'+item.link).style.display = 'flex';
+            }else{
+              document.querySelector('#'+item.link).style.display = 'none';
+            }
           }
         } )
       }
   
       if(parseInt(res) === 1){
         all_items.map( item => {
-          if( parseInt(item.is_hit) ===  1 ){
-            document.querySelector('#'+item.link).style.display = 'flex';
-          }else{
-            document.querySelector('#'+item.link).style.display = 'none';
+          if( document.getElementById(item.link) ){
+            if( parseInt(item.is_hit) ===  1 ){
+              document.querySelector('#'+item.link).style.display = 'flex';
+            }else{
+              document.querySelector('#'+item.link).style.display = 'none';
+            }
           }
         } )
       } 
@@ -3653,13 +3664,15 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
         //check = this_filter.some(r=> item.tags.includes(r)) -- или
         //check = this_filter.every(r=> item.tags.includes(r)) -- и
 
-        check = item.tags.includes(res)
+        if( document.getElementById(item.link) ){
+          check = item.tags.includes(res)
 
-        if(check){
-          //arr.push(item)
-          document.querySelector('#'+item.link).style.display = 'flex';
-        }else{
-          document.querySelector('#'+item.link).style.display = 'none';
+          if(check){
+            //arr.push(item)
+            document.querySelector('#'+item.link).style.display = 'flex';
+          }else{
+            document.querySelector('#'+item.link).style.display = 'none';
+          }
         }
       })
 
@@ -3802,6 +3815,31 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     set({
       bannerList,
     });
+  },
+
+  getOneBanner: async (this_module, city, link) => {
+    let token = '';
+
+    if (typeof window !== 'undefined') {
+      token = localStorage.getItem('token');
+    }
+
+    let data = {
+      type: 'get_banner_one',
+      city_id: city,
+      name: link,
+      token: token
+    };
+
+    const json = await api(this_module, data);
+
+    if(!json?.banner){
+      window.location.href = '/' + city + '/akcii';
+    }else{
+      set({
+        pageBanner: json?.banner,
+      });
+    }
   },
   
   getItemsCat: async (this_module, city) => {

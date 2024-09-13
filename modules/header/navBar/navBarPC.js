@@ -3,16 +3,12 @@ import React, { useState, useEffect } from 'react';
 import { usePathname } from 'next/navigation'
 import { useRouter } from 'next/navigation'
 import Link from 'next/link';
-//import Image from 'next/image';
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 
-//import JacoLogo from '@/public/Jaco-Logo-PC.png';
-//import JacoLogo from '@/public/Jaco-Logo-120.png';
-//Jaco-Logo-120.png
 import {ArrowDownHeaderPC, ArrowUpHeaderPC, JacoDocsIcon, LocationHeaderIcon, SvgLogo } from '@/ui/Icons.js';
 
 import { Link as ScrollLink } from 'react-scroll';
@@ -118,7 +114,7 @@ export default React.memo(function NavBarPC({ city }) {
   const [setActiveBasket, openBasket, setActiveModalCity, activePage] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity, state.activePage]);
   const [setThisCityRu, thisCityRu, setThisCity] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu, state.setThisCity]);
   const [ getInfoPromo, getCartLocalStorage ] = useCartStore( state => [ state.getInfoPromo, state.getCartLocalStorage ])
-  const [ category, setCategory, setActiveFilter, isOpenFilter ] = useHomeStore((state) => [ state.category, state.setCategory, state.setActiveFilter, state.isOpenFilter ]);
+  const [ category, setCategory, setActiveFilter, isOpenFilter, resetFilter ] = useHomeStore((state) => [ state.category, state.setCategory, state.setActiveFilter, state.isOpenFilter, state.resetFilter ]);
 
   if (city == '') return null;
 
@@ -192,11 +188,13 @@ export default React.memo(function NavBarPC({ city }) {
     setIsOpenCat(false);
 
     setCategory(category);
+    resetFilter();
   };
 
   function chooseCat(id){
     localStorage.setItem('goTo', id)
 
+    resetFilter();
     closeMenu();
   }
 
@@ -283,6 +281,7 @@ export default React.memo(function NavBarPC({ city }) {
                     isDynamic={true}
                     smooth={false}
                     offset={-70}
+                    onClick={resetFilter}
                     //style={{marginRight: item.name === 'Пицца' ? 0 : '18.050541516245vw', width: item.name === 'Напитки' ? '7.2202166064982vw' : '5.7761732851986vw'}}
                   >
                     <span id={'link_' + item.id}>{item.name}</span> 

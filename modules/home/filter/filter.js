@@ -29,8 +29,8 @@ const badges = [
 export default function Filter() {
   const [tags, setTags] = useState([]);
 
-  const [filterActive, resetFilter, scrollToTargetAdjusted, isOpenFilter, filterItems, all_tags, filterItemsBadge, setActiveFilter, tag_filter, text_filter, filterText] = useHomeStore((state) => [state.filterActive, state.resetFilter, state.scrollToTargetAdjusted, state.isOpenFilter, state.filterItems, state.all_tags, state.filterItemsBadge, state.setActiveFilter,
-    state.tag_filter, state.text_filter, state.filterText]);
+  const [filterActive, resetFilter, scrollToTargetAdjusted, isOpenFilter, filterItems, all_tags, filterItemsBadge, setActiveFilter, tag_filter, text_filter, filterText, badge_filter] = useHomeStore((state) => [state.filterActive, state.resetFilter, state.scrollToTargetAdjusted, state.isOpenFilter, state.filterItems, state.all_tags, state.filterItemsBadge, state.setActiveFilter,
+    state.tag_filter, state.text_filter, state.filterText, state.badge_filter]);
 
   const [matches, activePage] = useHeaderStore((state) => [state.matches, state.activePage]);
 
@@ -81,6 +81,13 @@ export default function Filter() {
       filterItems(parseInt(id));
     }
   };
+
+  useEffect(() => {
+    if( badge_filter == '' && text_filter == '' && tag_filter == '') {
+      resetTags();
+      resetFilter();
+    }
+  }, [badge_filter, tag_filter, text_filter]);
 
   useEffect(() => {
     if (!isOpenFilter) {
