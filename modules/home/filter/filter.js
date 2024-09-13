@@ -93,7 +93,7 @@ export default function Filter() {
   }, [all_tags]);
 
   useEffect(() => {
-    if (activePage !== 'home') {
+    if (activePage !== 'home' && activePage != '') {
       setActiveFilter(false);
     }
   }, [activePage]);

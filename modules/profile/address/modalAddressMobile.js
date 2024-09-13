@@ -125,6 +125,27 @@ export default function AddressModalMobile() {
     setActiveAddressModal(false, 0, '');
   }
 
+  const changeComment = (event) => {
+
+    if(event === '') {
+      setComment('')
+    } else {
+      const comment = event?.target?.value ?? event;
+
+      const len = comment.split(/\r?\n|\r|\n/g)
+
+      if(len.length > 2) {
+        return ;
+      }
+
+      if (comment.length > 50) {
+        return ;
+      }
+
+      setComment(comment)
+    }
+  }
+
   return (
     <SwipeableDrawer
       anchor={'bottom'}
@@ -213,7 +234,7 @@ export default function AddressModalMobile() {
               value={comment}
               name="comment"
               placeholder="Комментарий"
-              func={ e => setComment(e.target.value) }
+              func={ event => changeComment(event) }
             />
           </div>
 

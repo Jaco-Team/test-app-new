@@ -77,6 +77,10 @@ export default React.memo(function header({ city, city_list, cats }) {
     if( location.hostname == 'new.jacofood.ru' ){
       location.replace(`https://jacofood.ru${location.href.substring(location.origin.length)}`);
     }
+
+    if( location.hostname == 'www.jacofood.ru' ){
+      location.replace(`https://jacofood.ru${location.href.substring(location.origin.length)}`);
+    }
   }
 
 

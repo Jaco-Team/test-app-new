@@ -9,7 +9,7 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
 import ListItem from '@mui/material/ListItem';
 
-import { BurgerIconMobile, MenuIconMobile, AboutIconMobile, LocationIconMobile, MapContactsMobile, Sale } from '@/ui/Icons.js';
+import { BurgerIconMobile, MenuIconMobile, AboutIconMobile, LocationIconMobile, MapContactsMobile, Sale, SvgLogoMobile } from '@/ui/Icons.js';
 import { roboto } from '@/ui/Font.js';
 
 import { useHeaderStore, useCitiesStore } from '@/components/store.js';
@@ -31,11 +31,11 @@ const MemoLogo = memo(function MemoLogo({city, activePage}){
           offset={-200}
         >
           {/* <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true}/> */}
-          <img alt="Жако доставка роллов и пиццы" src={'/Jaco-Logo-120.png'} />
+          <SvgLogoMobile />
         </ScrollLink>
           :
         <Link href={'/' + city}>
-          <img alt="Жако доставка роллов и пиццы" src={'/Jaco-Logo-120.png'} />
+          <SvgLogoMobile />
           {/* <Image alt="Жако доставка роллов и пиццы" src={JacoLogo} width={200} height={50} priority={true}/> */}
         </Link>
       }

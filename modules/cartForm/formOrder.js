@@ -60,7 +60,7 @@ export default function FormOrder({ cityName }) {
  
   const [setFreeDrive, setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is, free_drive, setConfirmForm, getNewPriceItems, setMailForm] = useCartStore((state) => [state.setFreeDrive, state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
     state.promoInfo, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is, state.free_drive, state.setConfirmForm, state.getNewPriceItems, state.setMailForm]);
- 
+    
   useEffect(() => {
     if (matches) {
       setMessage(comment);
@@ -85,7 +85,7 @@ export default function FormOrder({ cityName }) {
   }, [promoInfo]);
 
   useEffect(() => {
-    let check_free_drive = localStorage.getItem('freeDrive');
+    /*let check_free_drive = localStorage.getItem('freeDrive');
 
     if( 
         check_free_drive && check_free_drive.length > 0 && check_free_drive == '1722474061' 
@@ -93,9 +93,13 @@ export default function FormOrder({ cityName }) {
         dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2024-08-20") ).locale('ru').format('YYYY-MM-DD')
       ){
       setFreeDrive(1);
+    }*/
+
+    if( orderAddr && orderAddr?.comment?.length > 0 && comment?.length == 0 ){
+      changeComment(orderAddr?.comment);
     }
 
-  }, [orderAddr, promoInfo])
+  }, [orderAddr])
 
   useEffect(() => {
     check_need_dops();

@@ -13,7 +13,7 @@ import MenuItem from '@mui/material/MenuItem';
 //import JacoLogo from '@/public/Jaco-Logo-PC.png';
 //import JacoLogo from '@/public/Jaco-Logo-120.png';
 //Jaco-Logo-120.png
-import {ArrowDownHeaderPC, ArrowUpHeaderPC, JacoDocsIcon, LocationHeaderIcon } from '@/ui/Icons.js';
+import {ArrowDownHeaderPC, ArrowUpHeaderPC, JacoDocsIcon, LocationHeaderIcon, SvgLogo } from '@/ui/Icons.js';
 
 import { Link as ScrollLink } from 'react-scroll';
 
@@ -98,11 +98,11 @@ const MemoLogo = React.memo(function MemoLogo({city, activePage}){
           smooth={false}
           offset={-200}
         >
-          <img alt="Жако доставка роллов и пиццы" src={'/Jaco-Logo-120.png'} />
+          <SvgLogo />
         </ScrollLink>
           :
         <Link href={'/' + city} className="logoHeaderPC">
-          <img alt="Жако доставка роллов и пиццы" src={'/Jaco-Logo-120.png'} />
+          <SvgLogo />
         </Link>
       }
     </>
