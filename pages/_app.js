@@ -192,7 +192,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
       <Component {...pageProps} />
     </ThemeProvider>
   )*/
-    console.log(pageProps?.data1?.page, pageProps?.data1?.city);
+    
 
   if( pageProps?.data1?.city == 'only-pay-page' ){
     return (
