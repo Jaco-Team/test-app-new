@@ -42,7 +42,7 @@ export default function FormOrder({ cityName }) {
   const type_pay_pic = [{ id: 'cash', name: 'В кафе' }];
   const type_pay_div = [
     { id: 'cash', name: 'Наличными курьеру' },
-    { id: 'sbp', name: 'СБП на сайте' },
+    //{ id: 'sbp', name: 'СБП на сайте' },
     { id: 'online', name: 'Картой на сайте' },
   ];
   const type_pred = [

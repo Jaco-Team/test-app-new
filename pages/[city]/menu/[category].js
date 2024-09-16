@@ -81,16 +81,10 @@ export async function getServerSideProps({ req, res, query }) {
 
   const data1 = await api('home', data);
 
-  console.log('data1', data1.page)
-
   data1['city'] = query.city;
   data1['category'] = query.category;
 
   if( !data1.page || data1.page == null ){
-    /*return {
-      notFound: true,
-    }*/
-
     return {
       redirect: {
         destination: '/',
