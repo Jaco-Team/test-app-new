@@ -3208,6 +3208,11 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     Cookies.remove('token');
 
     //window.location.href = '/' + city;
+
+    set({
+      isAuth: false,
+      token: ''
+    })
   },
 
   //логирование в форме регистрации
