@@ -138,13 +138,14 @@
 
       .activeCatDop,
       .active {
-        background: rgba(0, 0, 0, 0.1);
+        background: #dd1a32;
 
         & span {
           display: flex;
           align-items: center;
           text-align: center;
           @include font44_500();
+          color: #fff!important;
         }
       }
     }

@@ -8,6 +8,10 @@ import { Search, Close } from '@/ui/Icons.js';
 import MyTextInput from '@/ui/MyTextInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+
+import { roboto } from '@/ui/Font';
+
 const badges = [
   /*{
     id: '1',
@@ -25,6 +29,8 @@ const badges = [
     bg: 'rgb(221, 26, 50)',
   },*/
 ];
+
+
 
 export default function Filter() {
   const [tags, setTags] = useState([]);
@@ -80,6 +86,8 @@ export default function Filter() {
 
       filterItems(parseInt(id));
     }
+
+    setActiveFilter(false);
   };
 
   useEffect(() => {
@@ -89,11 +97,11 @@ export default function Filter() {
     }
   }, [badge_filter, tag_filter, text_filter]);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (!isOpenFilter) {
       resetTags();
     }
-  }, [isOpenFilter]);
+  }, [isOpenFilter]);*/
 
   useEffect(() => {
     setTags(all_tags);
@@ -108,41 +116,59 @@ export default function Filter() {
   return (
     <>
       {matches ? (
-        <div className="filterMobile" style={{ visibility: filterActive ? 'visible' : 'hidden' }}>
-          
-          <div className="filterTag">
-            <div className="tags">
-
-              {badges?.map((badg, key) => (
-                <div key={key} style={{ backgroundColor: badg.bg }} className={'tag_'} onClick={() => handleBadge(badg.id)}>
-                  <span>{badg.name}</span>
-                </div>
-              ))}
-
-              {tags?.map((tag, key) => (
-                <div key={key} onClick={() => handleTag(tag.id)} className={tag?.active ? 'tag active' : 'tag'}>
-                  <span>{tag.name}</span>
-                  { tag?.active ? <Close /> : false }
-                </div>
-              ))}
-
-              <div onClick={() => handleTag(-1)} className={'search_clear tag'}>
-                <span>Очистить</span>
-              </div>
-            </div>
-            <MyTextInput
-              type="text"
-              value={text_filter}
-              func={(event) => handleText(event)}
-              className="inputSearch"
-              startAdornment={
-                <InputAdornment position="start">
-                  <Search />
-                </InputAdornment>
-              }
-            />
+        <SwipeableDrawer
+          anchor={'bottom'}
+          open={filterActive}
+          onClose={() => setActiveFilter(false)}
+          onOpen={() => setActiveFilter(false)}
+          id="modalFilterMobile"
+          className={roboto.variable}
+          disableSwipeToOpen
+        >
+          <div className="containerLine">
+            <div className="lineModalCardMobile"></div>
           </div>
-        </div>
+
+          <div className="filterMobile">
+          
+            <div className="filterTag">
+              <div className="tags">
+
+                {badges?.map((badg, key) => (
+                  <div key={key} style={{ backgroundColor: badg.bg }} className={'tag_'} onClick={() => handleBadge(badg.id)}>
+                    <span>{badg.name}</span>
+                  </div>
+                ))}
+
+                {tags?.map((tag, key) => (
+                  <div key={key} onClick={() => handleTag(tag.id)} className={tag?.active ? 'tag active' : 'tag'}>
+                    <span>{tag.name}</span>
+                    { tag?.active ? <Close /> : false }
+                  </div>
+                ))}
+
+                <div onClick={() => handleTag(-1)} className={'search_clear tag'}>
+                  <span>Очистить</span>
+                </div>
+              </div>
+              <MyTextInput
+                type="text"
+                value={text_filter}
+                func={(event) => handleText(event)}
+                className="inputSearch"
+                startAdornment={
+                  <InputAdornment position="start">
+                    <Search />
+                  </InputAdornment>
+                }
+              />
+            </div>
+          </div>
+        </SwipeableDrawer>
+
+
+
+        
       ) : (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}

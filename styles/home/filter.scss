@@ -197,19 +197,51 @@
   }
 }
 
+#modalFilterMobile{
+  & .MuiDrawer-paper {
+    //max-height: calc(100% - $MyScale200_mobile);
+    //height: fit-content;
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+    overflow: hidden;
+
+    & .containerLine {
+      background-color: #fff;
+      width: 90%;
+      position: fixed;
+      display: flex;
+      justify-content: center;
+      align-items: flex-start;
+      margin-left: 5%;
+      margin-top: $MyScale40_mobile;
+
+      & .lineModalCardMobile {
+        width: $MyScale150_mobile;
+        min-height: $MyScale10_mobile;
+        border-radius: $MyScale5_mobile;
+        background: rgba(0, 0, 0, 0.2);
+      }
+    }
+  }
+}
+
 .filterMobile {
-  position: absolute;
-  left: $MyScale40_mobile;
+  //position: 'block';
+  //left: $MyScale40_mobile;
   width: $MyScale1020_mobile;
   border-radius: $MyScale40_mobile;
-  background-color: rgba(0, 0, 0, 0.05);
-  display: flex;
-  flex-direction: column;
-  padding: $MyScale60_mobile $MyScale10_mobile $MyScale60_mobile
-    $MyScale60_mobile;
+  //background-color: rgba(0, 0, 0, 0.05);
+  //display: flex;
+  //flex-direction: column;
+  padding: $MyScale60_mobile $MyScale10_mobile $MyScale60_mobile $MyScale60_mobile;
   opacity: 0;
   animation: ani 0.5s forwards;
-  margin: $MyScale20_mobile 0;
+  //margin: $MyScale20_mobile 0;
+  margin: 0 auto;
+  top: 30px;
+  position: relative;
+  overflow: scroll;
+  height: $MyScale1300_mobile;
+  padding-bottom: 200px;
 
   & .filterBadge {
     display: flex;
@@ -223,6 +255,7 @@
 
       & .tag {
         border-radius: $MyScale48_mobile;
+        //border-color: rgba(0, 0, 0, 0.05);
 
         & span {
           display: flex;
@@ -257,7 +290,7 @@
       row-gap: $MyScale40_mobile;
 
       & .tag {
-        border: $MyScale3_mobile solid transparent;
+        border: $MyScale3_mobile solid rgba(0, 0, 0, 0.125);
         border-radius: $MyScale48_mobile;
         background-color: #fff;
         display: flex;
@@ -348,6 +381,7 @@
         width: $MyScale970_mobile;
         height: $MyScale100_mobile !important;
         border-radius: $MyScale48_mobile;
+        border: $MyScale3_mobile solid rgba(0, 0, 0, 0.125);
         background-color: #fff;
 
         & input {

@@ -2565,7 +2565,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   },
   closeModalAddr: () => {
     set({
-      isOpenModalAddr: false
+      isOpenModalAddr: false,
+      openModalAddress: false
       //isOpenModalAddr_test: false
     })
   },
@@ -2598,6 +2599,11 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     })
   },
   orderDel: async (this_module, userToken, text) => {
+
+    if( text?.length === 0 ){
+      useHeaderStore.getState().setActiveModalAlert(true, 'Укажите причину отмены заказа', false);
+    }
+
     let data = {
       type: 'close_order',
       user_id: userToken,
@@ -3706,7 +3712,8 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
       const menu = document.querySelector('.menuCatMobile')?.getBoundingClientRect().height * 0.75;
       
-      const filter = document.querySelector('.filterMobile')?.getBoundingClientRect().height;
+      //const filter = document.querySelector('.filterMobile')?.getBoundingClientRect().height;
+      const filter = 0;
   
       offsetPosition = (filter + banner) - (header + menu);
     
@@ -3716,13 +3723,15 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       
       const banner = document.querySelector('.BannerPC')?.getBoundingClientRect().height;
       
-      const filter = document.querySelector('.filterPC')?.getBoundingClientRect().height;
-  
+      //const filter = document.querySelector('.filterPC')?.getBoundingClientRect().height;
+      const filter = 0;
+
       offsetPosition = filter + banner + header;
     }
   
     window.scrollTo({
       top: offsetPosition,
+      //top: 0,
       behavior: "smooth"
     });
   },
@@ -3735,13 +3744,13 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     if(value) {
 
       // if(matches) {
-        const filter = document.querySelector('.filterMobile')?.getBoundingClientRect().height;
+        //const filter = document.querySelector('.filterMobile')?.getBoundingClientRect().height;
 
-        const width = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
+        //const width = document.querySelector('.headerMobile')?.getBoundingClientRect().width;
 
-        const transition_menu_mobile = (100 * ((filter) / width)) + 3.4188034188034 + 'vw';
+        //const transition_menu_mobile = (100 * ((filter) / width)) + 3.4188034188034 + 'vw';
 
-        set({transition_menu_mobile})
+        //set({transition_menu_mobile})
 
       // } else {
       //   const filter = document.querySelector('.filterPC')?.getBoundingClientRect().height;
@@ -3758,14 +3767,14 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       }, 500);
       
     } else {
-      set({ filterActive: value, transition_menu_mobile: '0' })
+      set({ filterActive: value })
       // set({ filterActive: value, transition_menu_mobile: '0', transition_menu_pc: '1.1552346570397vw' })
     }
 
     set({isOpenFilter: value});
     
     if(!value) {
-      get().resetFilter();
+      //get().resetFilter();
     }
   },
 
