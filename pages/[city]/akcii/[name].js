@@ -23,8 +23,6 @@ export default function Home(props) {
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
   const [setActivePage] = useHeaderStore((state) => [state.setActivePage]);
 
-    console.log('props act_name', act_name);
-
   useEffect(() => {
 
     setTimeout( () => {

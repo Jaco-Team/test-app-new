@@ -1323,6 +1323,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         get().setDataPromoBasket()
       }, 100)
       
+      useProfileStore.getState().saveUserActions('remove_promo', '');
+
       return {
         st: false,
         text: '',
@@ -1337,6 +1339,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       };
       
       const json = await api('cart', data);
+
+      useProfileStore.getState().saveUserActions('check_promo', promoName);
 
       set({
         promoInfo: json,
@@ -2902,6 +2906,18 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
         get().thisMAP.geoObjects.remove(object)
       }
     });
+  },
+  saveUserActions: async(event, param) => {
+    let data = {
+      type: 'save_user_actions',
+      user_id: useHeaderStore.getState().token,
+      user_token: localStorage?.getItem('token_tmp') ?? '',
+      city_id: useCitiesStore.getState().thisCity,
+      event: event,
+      data: param,
+    };
+
+    let json = await api('profile', data);
   }
 }), shallow);
 
@@ -3210,6 +3226,9 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   },
 
   signOut: (city) => {
+
+    useProfileStore.getState().saveUserActions('user_log_out', '');
+
     localStorage.removeItem('token');
     Cookies.remove('token');
 
@@ -3251,6 +3270,9 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       });
 
       if (typeof window !== 'undefined') {
+
+        useProfileStore.getState().saveUserActions('user_log_in', '');
+
         localStorage.setItem('token', json?.token);
         Cookies.set('token', json?.token, { expires: 60 }) //expires 7 days
       }
@@ -3259,6 +3281,30 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
   checkToken: async () => {
     if (typeof window !== 'undefined') {
+
+      const token_session = localStorage.getItem('token_tmp');
+
+      if( token_session && token_session.length > 0 ){
+        const this_date = get().formatDate(new Date());
+
+        const [session_, token_, date] = token_session.split('_');
+
+        if( this_date !== date ){
+          const ses_token = 'session_' + Math.random().toString(36).substr(2, 16)+'_'+this_date;
+        
+          localStorage.setItem('token_tmp', ses_token);
+        }
+
+      }else{
+        const date = get().formatDate(new Date());
+
+        const ses_token = 'session_' + Math.random().toString(36).substr(2, 16)+'_'+date;
+        
+        localStorage.setItem('token_tmp', ses_token);
+      }
+
+
+
       const token = localStorage.getItem('token');
 
       if( token && token.length > 0 ){
@@ -3314,8 +3360,23 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
         return ;
       }
-    }
+
+    }    
+  },
+
+  formatDate(date) {
+
+    var dd = date.getDate();
+    if (dd < 10) dd = '0' + dd;
+  
+    var mm = date.getMonth() + 1;
+    if (mm < 10) mm = '0' + mm;
+  
+    var yy = date.getFullYear();
     
+    return yy + '-' + mm + '-' + dd;
+
+    return dd + '.' + mm + '.' + yy;
   },
 
   // защита
@@ -3337,8 +3398,7 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     };
 
     const json = await api('auth', data);
-    console.log("🚀 === createProfile json:", json);
-
+    
     if (json?.st) {
       set({
         errTextAuth: '',
@@ -3605,6 +3665,8 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
         }
       })
 
+      useProfileStore.getState().saveUserActions('choose_tag_text', text_filter);
+
       set({ text_filter });
     } else {
       get().resetFilter();
@@ -3622,6 +3684,9 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     if(parseInt(res) !== parseInt(badge_filter)) {
 
       if(parseInt(res) === 2){
+
+        useProfileStore.getState().saveUserActions('choose_tag', 'Новинка');
+
         all_items.map( item => {
           if( document.getElementById(item.link) ){
             if( parseInt(item.is_new) ===  1 ){
@@ -3670,6 +3735,8 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       let find_tag = all_tags.find(tag => parseInt(tag.id) === parseInt(res));
 
       ym(47085879, 'reachGoal', 'choose_tag', { tag: find_tag?.name })
+
+      useProfileStore.getState().saveUserActions('choose_tag', find_tag?.name);
 
       all_items.map(item => {
         //check = this_filter.some(r=> item.tags.includes(r)) -- или
@@ -3848,8 +3915,13 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     const json = await api(this_module, data);
 
     if(!json?.banner){
+      useProfileStore.getState().saveUserActions('open_page_false', '');
+
       window.location.href = '/' + city + '/akcii';
     }else{
+
+      useProfileStore.getState().saveUserActions('open_page_banner', json?.banner?.name);
+
       set({
         pageBanner: json?.banner,
       });
@@ -3901,6 +3973,8 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     }else{
       get().closeModal();
     }
+
+    useProfileStore.getState().saveUserActions('open_item_home', json?.name);
 
     set({
       isOpenModal: true,
@@ -4011,6 +4085,8 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
           typePromo: 0
         })
       }
+
+      useProfileStore.getState().saveUserActions('open_banner_home', new_banner?.name);
 
       set({ 
         banner: new_banner
