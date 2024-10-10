@@ -36,10 +36,12 @@ export function middleware(request) {
 
   const protocol = request.nextUrl?.protocol;
 
-  if (protocol !== 'https:') {
+  console.log( 'request.nextUrl', request.nextUrl )
+
+  if (protocol !== 'https:' && request.nextUrl.hostname !== 'localhost') {
     const url = new URL(request.nextUrl);
     url.protocol = 'https:';
-    return NextResponse.redirect(url.toString(), 301);
+    //return NextResponse.redirect(url.toString(), 301);
   }
 
 
