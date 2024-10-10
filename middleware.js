@@ -33,5 +33,15 @@ export function middleware(request) {
     return NextResponse.redirect(new URL(request.nextUrl.pathname.toLowerCase(), request.url), 301)
   }
 
+
+  const protocol = request.nextUrl?.protocol;
+
+  if (protocol !== 'https:') {
+    const url = new URL(request.nextUrl);
+    url.protocol = 'https:';
+    return NextResponse.redirect(url.toString(), 301);
+  }
+
+
   return NextResponse.next()
 }
