@@ -148,6 +148,16 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     set({ openPayForm: active })
   },
 
+  clearDataSdacha: (sdacha) => {
+    
+    sdacha = sdacha+'';
+
+    let numbers = sdacha.replace(/[^0-9]/gi, '');
+    numbers = parseInt(numbers.replaceAll(',', ''));
+
+    return numbers;
+  },
+
   // установить размер сдачи при оплате наличными курьеру
   setSdacha: (sdacha) => {
 
@@ -632,6 +642,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const typeOrder = get().typeOrder;
     const promoName = sessionStorage.getItem('promo_name');
 
+    let sdacha = get().sdacha;
+
+    sdacha = get().clearDataSdacha(sdacha);
+
     //самовывоз
     if( typeOrder == 'pic' ) {
       data = {
@@ -639,7 +653,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         token,
         city_id,
         promoName: promoName ?? '',
-        sdacha: get().sdacha,
+        sdacha: 0,
         // comment: get().comment,
         comment: '',
         typePay: get().typePay.id,
@@ -655,7 +669,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         token,
         city_id,
         promoName: promoName ?? '',
-        sdacha: get().sdacha,
+        sdacha: sdacha,
         addr: JSON.stringify(get().orderAddr),
         point_id: get().orderAddr.point_id,
         comment: get().comment,
