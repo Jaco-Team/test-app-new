@@ -23,7 +23,7 @@ const type_pred = [
 
 const type_pay_div = [
   { id: 'cash', name: 'Наличными курьеру' },
-  { id: 'sbp', name: 'СБП на сайте' },
+  //{ id: 'sbp', name: 'СБП на сайте' },
   { id: 'online', name: 'Картой на сайте' },
 ];
 
