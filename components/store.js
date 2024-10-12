@@ -163,11 +163,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     let val = sdacha.target.value;
 
-    let numbers = val.replace(/[^0-9]/gi, '');
-    numbers = parseInt(numbers.replaceAll(',', ''));
+    //let numbers = val.replace(/[^0-9]/gi, '');
+    //numbers = parseInt(numbers.replaceAll(',', ''));
 
     set({ 
-      sdacha: numbers
+      sdacha: val
     })
 
     get().setCartLocalStorage();
