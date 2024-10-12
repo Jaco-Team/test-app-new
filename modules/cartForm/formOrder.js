@@ -519,7 +519,7 @@ export default function FormOrder({ cityName }) {
 
                 <MyTextInput
                   autoFocus
-                  type="number"
+                  type="text"
                   value={sdacha ? sdacha : ''}
                   func={(event) => setSdacha(event)}
                   variant="outlined"
