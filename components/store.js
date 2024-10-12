@@ -644,7 +644,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     let sdacha = get().sdacha;
 
-    sdacha = get().clearDataSdacha(sdacha);
+    //sdacha = get().clearDataSdacha(sdacha);
 
     //самовывоз
     if( typeOrder == 'pic' ) {
