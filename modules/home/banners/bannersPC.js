@@ -42,7 +42,8 @@ export default (function BannersPC() {
       swiper.activeIndex = 0;
     }
       
-    if((!bannerList || !bannerList?.length) && thisCity) {
+    if((!bannerList || bannerList?.length == 0) && thisCity) {
+      console.log( 'getBanners bannerList' )
       getBanners('home', thisCity);
     }
 

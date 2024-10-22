@@ -3893,6 +3893,8 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       token = localStorage.getItem('token');
     }
 
+    console.log( 'get_banners' )
+
     let data = {
       type: 'get_banners',
       city_id: city,
@@ -3909,7 +3911,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       bannerList = json?.banners.filter( (item) => parseInt(item.is_active_actii) == 1 );
     }
 
-    if( activePage == 'home' ){
+    if( activePage == 'home' || activePage == 'category' ){
       bannerList = json?.banners.filter( (item) => parseInt(item.is_active_home) == 1 );
     }
 

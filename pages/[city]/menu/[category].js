@@ -41,8 +41,8 @@ export default function Home(props) {
     }
 
     getBanners('home', city);
-
-    if( allItems.length == 0 ){
+    
+    if( allItems?.length == 0 ){
       setAllItems(all_items);
     }
 

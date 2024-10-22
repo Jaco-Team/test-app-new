@@ -45,14 +45,7 @@ export default React.memo(function header({ city, city_list, cats }) {
 
   const search = searchParams.get('type')
 
-  const firebaseConfig = {
-    apiKey: "AIzaSyChAHowCT2C7GRwfcxwt1Pi4SCV4CaVpP4",
-    authDomain: "jacofoodsite.firebaseapp.com",
-    projectId: "jacofoodsite",
-    storageBucket: "jacofoodsite.appspot.com",
-    messagingSenderId: "692082803779",
-    appId: "1:692082803779:web:39a39963cd8bff927000f6"
-  };
+  
     
   // Initialize Firebase
   
@@ -65,23 +58,7 @@ export default React.memo(function header({ city, city_list, cats }) {
     return ;
   }
 
-  if( typeof window != 'undefined' ){
-    const firebaseAPP = initializeApp(firebaseConfig);
-    const analytics = getAnalytics(firebaseAPP);
-    const perf = getPerformance(firebaseAPP);
-
-    if (location.protocol !== 'https:' && location.hostname != 'localhost' ) {
-      location.replace(`https:${location.href.substring(location.protocol.length)}`);
-    }
-
-    if( location.hostname == 'new.jacofood.ru' ){
-      location.replace(`https://jacofood.ru${location.href.substring(location.origin.length)}`);
-    }
-
-    if( location.hostname == 'www.jacofood.ru' ){
-      location.replace(`https://jacofood.ru${location.href.substring(location.origin.length)}`);
-    }
-  }
+  
 
 
   const matchesDev = useMediaQuery('screen and (max-width: 800px)');
@@ -91,7 +68,36 @@ export default React.memo(function header({ city, city_list, cats }) {
   const [ setFreeDrive ] = useCartStore( state => [state.setFreeDrive]);
 
   useEffect(() => {
-    checkToken();
+    
+
+    if( typeof window != 'undefined' ){
+      const firebaseConfig = {
+        apiKey: "AIzaSyChAHowCT2C7GRwfcxwt1Pi4SCV4CaVpP4",
+        authDomain: "jacofoodsite.firebaseapp.com",
+        projectId: "jacofoodsite",
+        storageBucket: "jacofoodsite.appspot.com",
+        messagingSenderId: "692082803779",
+        appId: "1:692082803779:web:39a39963cd8bff927000f6"
+      };
+
+      const firebaseAPP = initializeApp(firebaseConfig);
+      const analytics = getAnalytics(firebaseAPP);
+      const perf = getPerformance(firebaseAPP);
+  
+      if (location.protocol !== 'https:' && location.hostname != 'localhost' ) {
+        location.replace(`https:${location.href.substring(location.protocol.length)}`);
+      }
+  
+      if( location.hostname == 'new.jacofood.ru' ){
+        location.replace(`https://jacofood.ru${location.href.substring(location.origin.length)}`);
+      }
+  
+      if( location.hostname == 'www.jacofood.ru' ){
+        location.replace(`https://jacofood.ru${location.href.substring(location.origin.length)}`);
+      }
+
+      checkToken();
+    }
   }, []);
 
   useEffect(() => {
@@ -175,6 +181,7 @@ export default React.memo(function header({ city, city_list, cats }) {
       <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" strategy="lazyOnload" />
       <Script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js" strategy="lazyOnload" />
       <Script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-token-with-polyfills-latest.js" strategy="lazyOnload" />
+      <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
       
       <Backdrop
         sx={{ color: '#fff', zIndex: 5000 }}
