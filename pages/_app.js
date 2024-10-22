@@ -78,7 +78,7 @@ import '../styles/cart/cartMailForm.scss'
 
 //pm2 delete test-app-new && rm -rf test-app-new && git clone https://github.com/vito3315/test-app-new.git && cd test-app-new
 //npm install && npm run build && pm2 start npm --name "test-app-new" -- start
-
+import { useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import YandexMetrika from '@/components/YandexMetrika';
@@ -172,9 +172,28 @@ function MetricaSMR(){
 
 function MyApp({ Component, pageProps: { ...pageProps } }) {
 
-  if( typeof window !== "undefined" ){
-    
-  }
+  useEffect( () => {
+    if( typeof window !== "undefined" ){
+      try{
+        !function(){
+          var t=document.createElement("script");
+          t.type="text/javascript",
+          t.async=!0,
+          t.src="https://vk.com/js/api/openapi.js?162",
+          t.onload=function(){
+            VK.Retargeting.Init("VK-RTRG-409134-7MvqQ"),
+            VK.Retargeting.Hit()
+          },
+          document.head.appendChild(t)
+        }();
+      }catch(err){
+        console.log( err )
+      }
+
+      
+    }
+  }, [] )
+  
 
   /*return (
     <ThemeProvider theme={theme}>
@@ -229,19 +248,11 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
       />
       <GoogleTagManager gtmId="UA-148366601-1" />
       
-      <script
-        dangerouslySetInnerHTML={{
-          __html: `
-            !function(){var t=document.createElement("script");t.type="text/javascript",t.async=!0,t.src="https://vk.com/js/api/openapi.js?162",t.onload=function(){VK.Retargeting.Init("VK-RTRG-409134-7MvqQ"),VK.Retargeting.Hit()},document.head.appendChild(t)}();
-          `,
-        }}
-      />
+      
       <noscript><img src="https://vk.com/rtrg?p=VK-RTRG-409134-7MvqQ" style={{position: 'fixed', left: '-999px'}} alt=""/></noscript>
 
       { pageProps?.data1?.city == 'togliatti' ? <MetricaTLT /> : null }
       { pageProps?.data1?.city == 'samara' ? <MetricaSMR /> : null }
-
-      
 
       { !pageProps || pageProps?.statusCode == 404 || pageProps?.statusCode == 500 || typeof pageProps?.data1?.city === 'undefined' || !pageProps?.data1?.page ? false :
         <Header
