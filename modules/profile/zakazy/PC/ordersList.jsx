@@ -1,12 +1,5 @@
 import React from 'react';
 
-import Typography from '@mui/material/Typography';
-
-import Accordion from '@mui/material/Accordion';
-import AccordionSummary from '@mui/material/AccordionSummary';
-import AccordionDetails from '@mui/material/AccordionDetails';
-import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-
 import Table from '@mui/material/Table';
 import TableBody from '@mui/material/TableBody';
 import TableCell from '@mui/material/TableCell';
@@ -27,8 +20,6 @@ export default function OrdersList({ token, this_module, city }){
     city: city
   };
 
-  //blockTable
-
   return (
     <Table>
       <TableHead>
@@ -42,7 +33,7 @@ export default function OrdersList({ token, this_module, city }){
         </TableRow>
       </TableHead>
       <TableBody>
-        {orderList.map( order =>
+        {orderList?.map( order =>
           <OrderItem key={order.order_id} order={order} template={template} getOrder={getOrder} />
         )}
       </TableBody>

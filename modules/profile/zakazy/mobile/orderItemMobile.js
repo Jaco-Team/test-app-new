@@ -2,7 +2,7 @@ import React from 'react';
 
 import { useProfileStore } from '@/components/store.js';
 
-import { ArrowRightMobile, CheckOrderMobile, CalendarOrderMobile, DeleteOrderMobile, CookOrderMobile, EllipseOrderMobile, ErrorOrderMobile, DeliveryModalOrderIcon, ReloadIcon } from '@/ui/Icons.js';
+import { ArrowRightMobile, CheckOrderMobile, CalendarOrderMobile, DeleteOrderMobile, DeliveryModalOrderIcon, ReloadIcon } from '@/ui/Icons.js';
 
 import moment from 'moment';
 import 'moment/locale/ru';
@@ -18,24 +18,16 @@ export default React.memo(function OrderItemMobile({ order, token, this_module, 
   const openOrder = () => getOrder(this_module, city, token, order?.order_id, order?.point_id);
 
   let icon_status = false;
-  //let text_status = '';
-
-  //order.type_order = 2;
-  //order.status_order_ = 2;
-
+  
   if( parseInt(order?.is_delete) === 1 ){
     icon_status = <DeleteOrderMobile fill="#cc0033" />;
-    //text_status = moment(order?.date).format('D MMM').replace('.', '');
   }else{
     if( parseInt(order?.type_order) === 1 && parseInt(order?.status_order_) === 5 ){
       icon_status = <DeliveryModalOrderIcon fill={'#cc0033'} />;
-      //text_status = 'Везем';
     }
 
     if( parseInt(order?.status_order_) < 5 ){
       icon_status = <ReloadIcon fill="#cc0033" />;
-
-      //text_status = 'Готовим';
 
       if( parseInt(order?.type_order) === 2 && parseInt(order?.status_order_) == 4 ){
         //text_status = 'Ждем вас';

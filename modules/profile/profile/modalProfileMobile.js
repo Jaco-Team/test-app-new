@@ -104,16 +104,11 @@ export default function ProfileModalMobile({ city, this_module, setUserDate }) {
     setUser(userInfo);
     setUserDate(`${day} ${month}`);
 
-    console.log(day, month_number);
-
     if( parseInt(day) > 0 && parseInt(month_number) > 0){
       updateUser(this_module, city, token);
 
       onClose();
     }
-
-    
-
   };
 
   const onClose = () => {

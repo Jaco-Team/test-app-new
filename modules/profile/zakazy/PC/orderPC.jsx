@@ -17,7 +17,7 @@ export default function OrderPC({ this_module, city }) {
   const [ token ] = useHeaderStore( state => [ state.token ] )
 
   useEffect(() => {
-    if( token && token.length > 0 ) {
+    if( token && token?.length > 0 ) {
       getOrderList(this_module, city, token);
     }
   }, [token, city]);
@@ -25,7 +25,7 @@ export default function OrderPC({ this_module, city }) {
   useEffect(() => {
 
     const timer = setInterval(() => {
-      if( token && token.length > 0 ) {
+      if( token && token?.length > 0 ) {
         getOrderList(this_module, city, token);
       }
     }, 30 * 1000);

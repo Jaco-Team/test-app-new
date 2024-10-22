@@ -131,7 +131,7 @@ export default React.memo(function ModalOrder() {
   useEffect( () => {
     if( openModal == true ){
       const timer = setInterval(() => {
-        if( token && token.length > 0 ) {
+        if( token && token?.length > 0 ) {
           getOrder('zakazy', thisCity, token, modalOrder?.order?.order_id, modalOrder?.order?.point_id)
         }
       }, 30 * 1000);

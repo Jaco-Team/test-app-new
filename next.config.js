@@ -34,17 +34,7 @@ const nextConfig = {
         source: '/',
         destination: '/togliatti',
         permanent: false,
-      },
-      /*{
-        source: '/togliatti/menu/:path*',
-        destination: '/togliatti',
-        permanent: false,
-      },
-      {
-        source: '/samara/menu/:path*',
-        destination: '/samara',
-        permanent: false,
-      }*/
+      }
     ]
   },
 }

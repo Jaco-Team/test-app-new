@@ -141,7 +141,7 @@ export default React.memo(function ModalOrderMobile() {
   useEffect( () => {
     if( openModal == true ){
       const timer = setInterval(() => {
-        if( token && token.length > 0 ) {
+        if( token && token?.length > 0 ) {
           getOrder('zakazy', thisCity, token, modalOrder?.order?.order_id, modalOrder?.order?.point_id)
         }
       }, 30 * 1000);
@@ -230,7 +230,7 @@ export default React.memo(function ModalOrderMobile() {
           {modalOrder?.order_items?.map((order, key) => (
             <div key={key} className="zakazyOrder"
               style={{ marginBottom: order === modalOrder?.order_items?.at(-1) && parseInt(modalOrder?.order?.type_order_) !== 1 ? '8.5470085470085vw' : null,
-                height: order.name.length > 29 ? '11.111111111111vw' : '6.8376068376068vw' }}>
+                height: order?.name?.length > 29 ? '11.111111111111vw' : '6.8376068376068vw' }}>
               <span>{order.count}</span>
               <span>{order.name}</span>
               <span>{new Intl.NumberFormat('ru-RU').format(order.price)}{' '}₽</span>

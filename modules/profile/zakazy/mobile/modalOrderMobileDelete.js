@@ -41,11 +41,11 @@ export default function ModalOrderMobileDelete() {
 
       const len = comment.split(/\r?\n|\r|\n/g)
 
-      if(len.length > 2) {
+      if(len?.length > 2) {
         return ;
       }
 
-      if (comment.length > 50) {
+      if (comment?.length > 50) {
         return ;
       }
 
@@ -104,7 +104,7 @@ export default function ModalOrderMobileDelete() {
             <span>Вернуться к заказу</span>
           </Button>
           <Button className="buttonDelete" variant="outlined"
-            onClick={ () => orderDel( 'zakazy', token, active === 6 ? text : answers[active].val) }
+            onClick={ () => orderDel( 'zakazy', token, active === 6 ? text : answers[active].val ?? '') }
           >
             <span>Отменить заказ</span>
           </Button>

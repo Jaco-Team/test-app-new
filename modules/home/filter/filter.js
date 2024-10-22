@@ -66,6 +66,7 @@ export default function Filter() {
   };
 
   const handleTag = (id) => {
+
     if(parseInt(id) == -1){
       
       resetTags();

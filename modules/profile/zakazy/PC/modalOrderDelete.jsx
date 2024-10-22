@@ -44,11 +44,11 @@ export default function ModalOrderDelete() {
 
       const len = comment.split(/\r?\n|\r|\n/g)
 
-      if(len.length > 2) {
+      if(len?.length > 2) {
         return ;
       }
 
-      if (comment.length > 50) {
+      if (comment?.length > 50) {
         return ;
       }
 
@@ -105,7 +105,7 @@ export default function ModalOrderDelete() {
             </Grid>
 
             <Grid item xs={12} className='header_btn'>
-              <button onClick={ () => orderDel( 'zakazy', token, chooseType == 6 ? textDel : ans[ chooseType ]['ans'] ) }>Отменить</button>
+              <button onClick={ () => orderDel( 'zakazy', token, chooseType == 6 ? textDel : ans[ chooseType ]['ans'] ?? '' ) }>Отменить</button>
               <button onClick={closeModalDel}>Вернуться</button>
             </Grid>
 

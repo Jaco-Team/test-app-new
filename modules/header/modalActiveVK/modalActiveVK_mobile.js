@@ -42,10 +42,10 @@ export default function ModalActiveVK_mobile() {
         </div>
 
         <div className="loginHeader">
-          <Typography component="span">Подпишитесь на <a href={links?.link_vk} target='_blank'>нашу группу Вконтакте</a>, где мы рассказываем о новинках, проводим конкурсы и разыгрываем вкусные призы.</Typography>
+          <Typography component="span">Подпишитесь на <a href={links?.link_vk ?? ''} target='_blank'>нашу группу Вконтакте</a>, где мы рассказываем о новинках, проводим конкурсы и разыгрываем вкусные призы.</Typography>
         </div>
 
-        <a className="buttons" href={links?.link_vk} target='_blank' onClick={closeModal}>Жако Вконтакте</a>
+        <a className="buttons" href={links?.link_vk ?? ''} target='_blank' onClick={closeModal}>Жако Вконтакте</a>
       </div>
     </SwipeableDrawer>
   );

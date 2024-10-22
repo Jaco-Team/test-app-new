@@ -42,7 +42,7 @@ export default function ProfileMobile({ city, this_module }) {
   }, [setValue, userInfo]);
 
   useEffect(() => {
-    if( token && token.length > 0 ) {
+    if( token && token?.length > 0 ) {
       getUserInfo(this_module, city, token);
     }
   }, [token]);

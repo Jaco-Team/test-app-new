@@ -119,6 +119,27 @@ export default function ModalAddr(){
     }
   }, [chooseAddrStreet] )
 
+  const changeComment = (event) => {
+
+    if(event === '') {
+      setComment('')
+    } else {
+      const comment = event?.target?.value ?? event;
+
+      const len = comment.split(/\r?\n|\r|\n/g)
+
+      if(len.length > 2) {
+        return ;
+      }
+
+      if (comment.length > 50) {
+        return ;
+      }
+
+      setComment(comment)
+    }
+  }
+
   return (
     <Dialog
       onClose={closeModalAddr}
@@ -175,7 +196,7 @@ export default function ModalAddr(){
                 <MyTextInput variant="standard" value={kv} placeholder={'Квартира'} type={'nember'} func={ e => setKv(e.target.value) } />
               </div>
               <div className='comment'>
-                <MyTextInput variant="standard" value={comment} placeholder={'Комментарий курьеру'} func={ e => setComment(e.target.value) } />
+                <MyTextInput variant="standard" value={comment} placeholder={'Комментарий курьеру'} func={ event => changeComment(event) } />
               </div>
               <div className='chooseMain'>
                 <div>
