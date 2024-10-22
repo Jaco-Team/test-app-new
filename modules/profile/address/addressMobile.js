@@ -22,7 +22,7 @@ export default function AddressMobile({ city }) {
       </div>
 
       <List>
-        {streets.map((item, key) => (
+        {streets?.map((item, key) => (
           <ListItem key={key}
             onClick={() => setActiveAddressModal(true, item.id, city)}
             style={{ background: parseInt(item?.is_main) ? 'rgba(0, 0, 0, 0.05)' : null, borderTop: key === 0 ? '0.25641025641026vw solid rgba(0, 0, 0, 0.2)' : 'none'}}

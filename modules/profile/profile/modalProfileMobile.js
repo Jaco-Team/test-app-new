@@ -91,7 +91,7 @@ export default function ProfileModalMobile({ city, this_module, setUserDate }) {
     }
   };
 
-  const chooseData = () => {
+  const chooseData = (userInfo) => {
     const day = slidesDay.find((d, i) => i === activeDay);
     const month = slidesMonth.find((m, i) => i === activeMonth);
     const month_number = mon.find(m => m.mon === month).id;
@@ -181,7 +181,7 @@ export default function ProfileModalMobile({ city, this_module, setUserDate }) {
                 />
               </section>
 
-              <Button className="btnDataTime" variant="contained" onClick={chooseData}>
+              <Button className="btnDataTime" variant="contained" onClick={ () => chooseData( userInfo ) }>
                 <span>Выбрать</span>
               </Button>
 

@@ -78,7 +78,7 @@ export default function AccountModalMobile() {
         :  */}
         <>
           <div className="infoExit">
-            <span>{userInfo?.name ? userInfo?.name + ', ': ''} Вы уверены, что хотите выйти из профиля? Мы не сможем идентифицировать ваши адреса для доставки, удобно подгружать банковские карты, использовать промокоды со скидками и показывать историю ваших заказов для быстрого повтора.</span>
+            <span>{userInfo?.name ? userInfo?.name + ', ' : ''} Вы уверены, что хотите выйти из профиля? Мы не сможем идентифицировать ваши адреса для доставки, удобно подгружать банковские карты, использовать промокоды со скидками и показывать историю ваших заказов для быстрого повтора.</span>
           </div>
           <Button className="buttonModalClose" variant="contained" onClick={() => setActiveAccountModal(false, null)}>
             <span>Остаться</span>

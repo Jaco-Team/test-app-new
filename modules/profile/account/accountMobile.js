@@ -10,8 +10,7 @@ import Button from '@mui/material/Button';
 import { AccountMobileAddress, AccountMobilePromo, AccountMobilePerson, AccountMobileHistory } from '@/ui/Icons.js';
 
 export default function AccountMobile({ city, this_module }) {
-
-  const [ token ] = useHeaderStore( state => [ state.token ]);
+  const [ token, matches ] = useHeaderStore( state => [ state.token, state.matches ]);
   const [ setActiveAccountModal, colorAccount, getUserInfo, userInfo, shortName] = useProfileStore( state => [state.setActiveAccountModal, state.colorAccount, state.getUserInfo, state.userInfo, state.shortName]);
 
   useEffect(() => {
@@ -19,6 +18,8 @@ export default function AccountMobile({ city, this_module }) {
       getUserInfo(this_module, city, token);
     }
   }, [token]);
+
+  
 
   return (
     <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="AccountMobile">

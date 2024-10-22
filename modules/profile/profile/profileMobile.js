@@ -50,9 +50,9 @@ export default function ProfileMobile({ city, this_module }) {
   function saveMainData() {
     let userData = getValues();
 
-    userInfo.name = userData.name;
-    userInfo.fam = userData.fam;
-    userInfo.mail = userData.mail;
+    userInfo.name = userData?.name;
+    userInfo.fam = userData?.fam;
+    userInfo.mail = userData?.mail;
 
     setUser(userInfo);
 

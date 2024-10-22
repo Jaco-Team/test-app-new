@@ -26,12 +26,6 @@ export default function Address(props) {
   const [setActivePage, matches] = useHeaderStore((state) => [state.setActivePage, state.matches]);
 
   useEffect(() => {
-    if (!matches) {
-      push(`/${city}/profile`);
-    }
-  }, [matches]);
-
-  useEffect(() => {
     if( thisCity != city ){
       setThisCity(city);
       setThisCityRu( cities.find( item => item.link == city )['name'] );

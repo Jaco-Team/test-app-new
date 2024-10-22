@@ -3903,7 +3903,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     const json = await api(this_module, data);
 
-    let bannerList;
+    let bannerList = [];
 
     if( activePage == 'akcii' ){
       bannerList = json?.banners.filter( (item) => parseInt(item.is_active_actii) == 1 );

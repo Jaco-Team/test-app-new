@@ -93,19 +93,19 @@ export default function ProfilePC({ page, this_module, city }){
     setUser_m(userInfo?.date_bir_m)
   }, [userInfo]);
 
-  function saveMainData(){
+  function saveMainData(userInfo){
     let userData = getValues();
 
-    userInfo.name = userData.name;
-    userInfo.fam = userData.fam;
-    userInfo.mail = userData.mail;
+    userInfo.name = userData?.name;
+    userInfo.fam = userData?.fam;
+    userInfo.mail = userData?.mail;
 
     setUser(userInfo);
 
     updateUser(this_module, city, token);
   }
 
-  function changeOtherData(type, data){
+  function changeOtherData(type, data, userInfo){
     userInfo[ [type] ] = data === true ? 1 : 0;
 
     setUser(userInfo);
@@ -115,7 +115,7 @@ export default function ProfilePC({ page, this_module, city }){
     updateUser(this_module, city, token);
   }  
 
-  function changeUserData(data, value){
+  function changeUserData(data, value, userInfo){
     userInfo[ [data] ] = value;
 
     setUser(userInfo);
@@ -134,211 +134,169 @@ export default function ProfilePC({ page, this_module, city }){
   }
   
   return (
-      <Grid container spacing={3} style={{ margin: 0, width: '100%' }}>
-        <Grid item className="Profile mainContainer">
-          
-          <Grid item xs={12}>
-            <Typography variant="h5" component="h1">Личные данные</Typography>
-          </Grid>
-
-          <Grid item xs={12} className="main_data">
-            <div>
-              <span>
-                {shortName ? shortName : <ProfileIconNew />}
-              </span>
-            </div>
-            <div>
-              <div style={{ marginTop: '0.1vw' }}>
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <MyTextInput
-                      placeholder="Имя"
-                      onBlur={ () => saveMainData() }
-                      func={onChange}
-                      value={value}
-                    />
-                  )}
-                  name="name"
-                />
-              </div>
-              <div style={{ marginTop: '0.1vw' }}>
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <MyTextInput
-                      placeholder="Фамилия"
-                      onBlur={ () => saveMainData() }
-                      func={onChange}
-                      value={value}
-                    />
-                  )}
-                  name="fam"
-                />
-              </div>
-              <div style={{ marginTop: '-1.2vw' }}>
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <MyTextInput
-                      placeholder=""
-                      readOnly={true}
-                      func={onChange}
-                      value={value}
-                      style={{ cursor: 'default' }}
-                    />
-                  )}
-                  name="login"
-                />
-              </div>
-              <div style={{ marginTop: '-1.2vw' }}>
-                <Controller
-                  control={control}
-                  render={({ field: { onChange, onBlur, value } }) => (
-                    <MyTextInput
-                      placeholder="name@mail.ru"
-                      onBlur={ () => saveMainData() }
-                      func={onChange}
-                      value={value}
-                    />
-                  )}
-                  name="mail"
-                />
-              </div>
-            </div>
-          </Grid>
-
-          <Grid item xs={12} className="check_data">
-            <div>
-              <div>
-                <span>Хочу получать СМС с акциями и скидками</span>
-                <MySwitch checked={ parseInt(isSpam) == 1 ? true : false } onClick={ event => { changeOtherData('spam', event.target.checked) } } />
-              </div>
-              <div style={{ display: 'none' }}>
-                <span>Хочу получать цифровые чеки на электронную почту</span>
-                <MySwitch />
-              </div>
-            </div>
-          </Grid>
-
-          <Grid item xs={12} className="date_data">
-            <div>
-              <div>
-                <span>Подарим промокод на бесплатный ролл ко дню рождения.</span>
-              </div>
-            </div>
-            <div>
-              <div>
-                Дата вашего рождения
-              </div>
-              <div>
-                <div>
-                  <MySelect 
-                    data={arr_d}
-                    className="date_d"
-                    disabled={ userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ? true : false }
-                    value={ user_d }
-                    func={ (event) => changeUserData('date_bir_d', event.target.value) }
-                  />
-                </div>
-                <div>
-                  <MySelect 
-                    data={arr_m}
-                    className="date_m"
-                    disabled={ userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ? true : false }
-                    value={ user_m }
-                    func={ (event) => changeUserData('date_bir_m', event.target.value) }
-                  />
-                </div>
-               </div>
-              <div>
-                Дату рождения можно выбрать только один раз. Будьте внимательны, так как изменить её позже не получится.
-              </div>
-            </div>
-          </Grid>
-
-          { true ? null :
-            <Grid item xs={12} className="bank_table">
-              <Table>
-                <TableHead>
-                  <TableRow>
-                    <TableCell colSpan={3} className="headTable">Мои карты</TableCell>
-                    <TableCell colSpan={2} className="headAddTable">
-                      <span>
-                        Добавить
-                      </span>
-                    </TableCell>
-                  </TableRow>
-                </TableHead>
-                <TableBody>
-                  
-                  <TableRow>
-                    <TableCell>Банк</TableCell>
-                    <TableCell>ХХХ</TableCell>
-                    <TableCell>ФОТО</TableCell>
-                    <TableCell className='chooseCart'><span>Основная</span></TableCell>
-                    <TableCell><CloseIconMin /></TableCell>
-                  </TableRow> 
-                  <TableRow>
-                    <TableCell>Банк</TableCell>
-                    <TableCell>ХХХ</TableCell>
-                    <TableCell>ФОТО</TableCell>
-                    <TableCell></TableCell>
-                    <TableCell><CloseIconMin /></TableCell>
-                  </TableRow> 
-                  <TableRow>
-                    <TableCell>Банк</TableCell>
-                    <TableCell>ХХХ</TableCell>
-                    <TableCell>ФОТО</TableCell>
-                    <TableCell></TableCell>
-                    <TableCell><CloseIconMin /></TableCell>
-                  </TableRow> 
-
-                </TableBody>
-              </Table>
-            </Grid>
-          }
-
-          <Grid item xs={12} className="addr_table">
-            <Table>
-              <TableHead>
-                <TableRow>
-                  <TableCell colSpan={3} className="headTable">Мои адреса</TableCell>
-                  <TableCell colSpan={2} className="headAddTable">
-                    <div className="headAddTable__" onClick={ () => openModalAddr(0, city) }>
-                      <span>Добавить</span>
-                    </div>
-                  </TableCell>
-                </TableRow>
-              </TableHead>
-              <TableBody>
-                
-                {streets?.map( (item, key) =>
-                  <TableRow key={key}>
-                    <TableCell>{item.city_name}</TableCell>
-                    <TableCell>{item.name_street}, д. {item.home}, кв. {item.kv}</TableCell>
-                    <TableCell className={ parseInt(item.is_main) == 1 ? 'ChooseAddr' : '' }>{ parseInt(item.is_main) == 1 ? <div>Основной</div> : false }</TableCell>
-                    <TableCell className='ChangeAddr'><span onClick={ () => openModalAddr(item.id, item.city) }>Изменить</span></TableCell>
-                    <TableCell><CloseIconMin onClick={ () => delAddr(item.id, token) } /></TableCell>
-                  </TableRow> 
-                )}
-              
-              </TableBody>
-            </Table>
-          </Grid>
-
-          <Grid item xs={12} className="log_out">
-            <span style={{ visibility: 'hidden' }}>Удалить аккаунт</span>
-            <Link href={"/"+city} onClick={ () => signOut(city) }>Выйти</Link>
-          </Grid>
-
-        </Grid>
+    <Grid container spacing={3} style={{ margin: 0, width: '100%' }}>
+      <Grid item className="Profile mainContainer">
         
-        <ModalAddr_Test />
+        <Grid item xs={12}>
+          <Typography variant="h5" component="h1">Личные данные</Typography>
+        </Grid>
 
-        <ProfileBreadcrumbs />
-        <ModalAddr />
+        <Grid item xs={12} className="main_data">
+          <div>
+            <span>
+              {shortName ? shortName : <ProfileIconNew />}
+            </span>
+          </div>
+          <div>
+            <div style={{ marginTop: '0.1vw' }}>
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <MyTextInput
+                    placeholder="Имя"
+                    onBlur={ () => saveMainData(userInfo) }
+                    func={onChange}
+                    value={value}
+                  />
+                )}
+                name="name"
+              />
+            </div>
+            <div style={{ marginTop: '0.1vw' }}>
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <MyTextInput
+                    placeholder="Фамилия"
+                    onBlur={ () => saveMainData(userInfo) }
+                    func={onChange}
+                    value={value}
+                  />
+                )}
+                name="fam"
+              />
+            </div>
+            <div style={{ marginTop: '-1.2vw' }}>
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <MyTextInput
+                    placeholder=""
+                    readOnly={true}
+                    func={onChange}
+                    value={value}
+                    style={{ cursor: 'default' }}
+                  />
+                )}
+                name="login"
+              />
+            </div>
+            <div style={{ marginTop: '-1.2vw' }}>
+              <Controller
+                control={control}
+                render={({ field: { onChange, onBlur, value } }) => (
+                  <MyTextInput
+                    placeholder="name@mail.ru"
+                    onBlur={ () => saveMainData(userInfo) }
+                    func={onChange}
+                    value={value}
+                  />
+                )}
+                name="mail"
+              />
+            </div>
+          </div>
+        </Grid>
+
+        <Grid item xs={12} className="check_data">
+          <div>
+            <div>
+              <span>Хочу получать СМС с акциями и скидками</span>
+              <MySwitch checked={ parseInt(isSpam) == 1 ? true : false } onClick={ event => { changeOtherData('spam', event.target.checked, userInfo) } } />
+            </div>
+            <div style={{ display: 'none' }}>
+              <span>Хочу получать цифровые чеки на электронную почту</span>
+              <MySwitch />
+            </div>
+          </div>
+        </Grid>
+
+        <Grid item xs={12} className="date_data">
+          <div>
+            <div>
+              <span>Подарим промокод на бесплатный ролл ко дню рождения.</span>
+            </div>
+          </div>
+          <div>
+            <div>
+              Дата вашего рождения
+            </div>
+            <div>
+              <div>
+                <MySelect 
+                  data={arr_d}
+                  className="date_d"
+                  disabled={ userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ? true : false }
+                  value={ user_d }
+                  func={ (event) => changeUserData('date_bir_d', event.target.value, userInfo) }
+                />
+              </div>
+              <div>
+                <MySelect 
+                  data={arr_m}
+                  className="date_m"
+                  disabled={ userInfo?.date_bir_m > 0 && userInfo?.date_bir_d > 0 ? true : false }
+                  value={ user_m }
+                  func={ (event) => changeUserData('date_bir_m', event.target.value, userInfo) }
+                />
+              </div>
+              </div>
+            <div>
+              Дату рождения можно выбрать только один раз. Будьте внимательны, так как изменить её позже не получится.
+            </div>
+          </div>
+        </Grid>
+
+        <Grid item xs={12} className="addr_table">
+          <Table>
+            <TableHead>
+              <TableRow>
+                <TableCell colSpan={3} className="headTable">Мои адреса</TableCell>
+                <TableCell colSpan={2} className="headAddTable">
+                  <div className="headAddTable__" onClick={ () => openModalAddr(0, city) }>
+                    <span>Добавить</span>
+                  </div>
+                </TableCell>
+              </TableRow>
+            </TableHead>
+            <TableBody>
+              
+              {streets?.map( (item, key) =>
+                <TableRow key={key}>
+                  <TableCell>{item.city_name}</TableCell>
+                  <TableCell>{item.name_street}, д. {item.home}, кв. {item.kv}</TableCell>
+                  <TableCell className={ parseInt(item.is_main) == 1 ? 'ChooseAddr' : '' }>{ parseInt(item.is_main) == 1 ? <div>Основной</div> : false }</TableCell>
+                  <TableCell className='ChangeAddr'><span onClick={ () => openModalAddr(item.id, item.city) }>Изменить</span></TableCell>
+                  <TableCell><CloseIconMin onClick={ () => delAddr(item.id, token) } /></TableCell>
+                </TableRow> 
+              )}
+            
+            </TableBody>
+          </Table>
+        </Grid>
+
+        <Grid item xs={12} className="log_out">
+          <span style={{ visibility: 'hidden' }}>Удалить аккаунт</span>
+          <Link href={"/"+city} onClick={ () => signOut(city) }>Выйти</Link>
+        </Grid>
 
       </Grid>
+      
+      <ModalAddr_Test />
+
+      <ProfileBreadcrumbs />
+      <ModalAddr />
+
+    </Grid>
   )
 }
