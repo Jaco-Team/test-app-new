@@ -2761,6 +2761,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       })
 
       useCartStore.getState().getMySavedAddr(city_id, { street: get().chooseAddrStreet.street, home: get().chooseAddrStreet.home });
+    }else{
+      useHeaderStore.getState().setActiveModalAlert(true, json?.text, false);
     }
 
     setTimeout( () => {
@@ -2818,6 +2820,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       })
 
       useCartStore.getState().getMySavedAddr(city_id, { street: get().chooseAddrStreet.street, home: get().chooseAddrStreet.home });
+    }else{
+      useHeaderStore.getState().setActiveModalAlert(true, json?.text, false);
     }
 
     setTimeout( () => {
