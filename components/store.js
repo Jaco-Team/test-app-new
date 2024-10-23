@@ -595,7 +595,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // получение адресов доставки в оформлении заказа
   getMySavedAddr: async(city_id, address) => {
     if (typeof window !== 'undefined') {
-      const token1 = localStorage.getItem('token');
+      //const token1 = localStorage.getItem('token');
+
+      const token1 = useHeaderStore.getState().token;
 
       const data = {
         type: 'get_my_saved_addr',
