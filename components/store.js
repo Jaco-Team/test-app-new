@@ -3514,11 +3514,11 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       city: city
     };
 
-    /*const json = await api('auth', data);
+    const json = await api('auth', data);
 
     set({
       yandexAuthLink: json?.link
-    })*/
+    })
   },
 
   yandexAuthCheck: async(code) => {
@@ -3533,15 +3533,17 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       get().setActiveModalAlert(true, json?.text, false);
     }else{
 
-      set({
-        token: json?.token,
-        userName: get().setNameUser(json?.name),
-        isAuth: 'auth'
-      });
+      if (json?.st === true) {
+        set({
+          token: json?.token,
+          userName: get().setNameUser(json?.name),
+          isAuth: 'auth'
+        });
 
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('token', json?.token);
-        Cookies.set('token', json?.token, { expires: 60 }) //expires 7 days
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('token', json?.token);
+          Cookies.set('token', json?.token, { expires: 60 }) //expires 7 days
+        }
       }
     }
   },
