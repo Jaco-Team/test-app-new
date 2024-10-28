@@ -128,7 +128,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   setConfirmForm: (active) => {
     const promoName = sessionStorage.getItem('promo_name');
 
-    const dopListConfirm = get().dopListCart.filter(it => it.count)
+    const dopListConfirm = get().dopListCart?.filter(it => it.count)
 
     if( active === false ){
       if( get().global_checkout !== null ){
@@ -229,7 +229,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           let this_item = null;
 
           cart.items = cart?.items?.reduce((newItems, item) => {
-            this_item = allItems.find(it => parseInt(it.id) === parseInt(item.item_id));
+            this_item = allItems?.find(it => parseInt(it.id) === parseInt(item.item_id));
 
             if(this_item) {
               item.one_price = this_item?.price;
@@ -396,7 +396,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     let this_item = null;
 
     cart.map((item, key) => {
-      this_item = allItems.find( it => parseInt(it.id) === parseInt(item.item_id));
+      this_item = allItems?.find( it => parseInt(it.id) === parseInt(item.item_id));
 
       cart[ key ]['one_price'] = this_item?.price;
       cart[ key ]['all_price'] = parseInt(this_item?.price) * parseInt(item.count);
@@ -599,27 +599,30 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
       const token1 = useHeaderStore.getState().token;
 
-      const data = {
-        type: 'get_my_saved_addr',
-        city_id: city_id,
-        token: token1
-      };
-      
-      const json = await api('cart', data);
+      if( token1 && token1?.length > 0 ){
 
-      if(address) {
-        const findAddr = json?.find(addr => addr.street === address.street && addr.home === address.home);
+        const data = {
+          type: 'get_my_saved_addr',
+          city_id: city_id,
+          token: token1
+        };
+        
+        const json = await api('cart', data);
 
-        if(findAddr) {
-          get().setAddrDiv(findAddr);
-          get().setSummDiv(findAddr.sum_div ?? 0);
+        if(address) {
+          const findAddr = json?.find(addr => addr.street === address.street && addr.home === address.home);
+
+          if(findAddr) {
+            get().setAddrDiv(findAddr);
+            get().setSummDiv(findAddr.sum_div ?? 0);
+          }
+
         }
 
+        set({ addrList: json ?? [] });
+
+        get().setCartLocalStorage();
       }
-
-      set({ addrList: json ?? [] });
-
-      get().setCartLocalStorage();
     }
   },
 
@@ -633,6 +636,15 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   // создание заказа
   createOrder: async(token, city_id, funcClose) => {
+
+    if( !token || token?.length == 0 ){
+
+      useHeaderStore.getState().setActiveModalAuth(true);
+
+      set({ DBClick: false });
+
+      return;
+    }
 
     if( get().DBClick === true ){
       return;
@@ -856,8 +868,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const allItems = [...items, ...itemsWithPromo];
 
-    const rolly = !!allItems.find(item => parseInt(item.cat_id) === 4 || parseInt(item.cat_id) === 10 || parseInt(item.cat_id) === 13 || parseInt(item.cat_id) === 12 || parseInt(item.cat_id) === 9);
-    const pizza = !!allItems.find(item => parseInt(item.cat_id) === 14);
+    const rolly = !!allItems?.find(item => parseInt(item.cat_id) === 4 || parseInt(item.cat_id) === 10 || parseInt(item.cat_id) === 13 || parseInt(item.cat_id) === 12 || parseInt(item.cat_id) === 9);
+    const pizza = !!allItems?.find(item => parseInt(item.cat_id) === 14);
 
     if(rolly && !pizza) {
       set({ cart_is: 'rolly' })
@@ -871,7 +883,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       set({ cart_is: 'all' })
     } 
 
-    let itemsOffDops = allItems.filter(item => (parseInt(item.cat_id) !== 7 || item.disabled) && item.cat_id !== undefined );
+    let itemsOffDops = allItems?.filter(item => (parseInt(item.cat_id) !== 7 || item.disabled) && item.cat_id !== undefined );
 
     set({ itemsOffDops });
 
@@ -944,8 +956,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         
     let need_dops = get().needDops;
         
-    my_cart.forEach(el => {
-      let this_item = all_items.find( (item) => item.id == el.item_id );
+    my_cart?.forEach(el => {
+      let this_item = all_items?.find( (item) => item.id == el.item_id );
       
       if( !this_item ){
         return [];
@@ -981,8 +993,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     let my_dops = [],
         add_my_dop = [];
     
-    my_cart.forEach(el => {
-      let this_item = all_items.find( (item) => item.id == el.item_id );
+    my_cart?.forEach(el => {
+      let this_item = all_items?.find( (item) => item.id == el.item_id );
       
       if( !this_item ){
         return [];
@@ -993,10 +1005,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       }
     });
     
-    my_dops.forEach( (my_d) => {
+    my_dops?.forEach( (my_d) => {
       let check_dop = false;
       
-      all_need_dops.forEach( (need_dop) => {
+      all_need_dops?.forEach( (need_dop) => {
         if( parseInt( need_dop.id ) == parseInt( my_d.id ) ){
           check_dop = true;
         }
@@ -1009,8 +1021,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     
     all_need_dops = [...all_need_dops, ...add_my_dop];
     
-    all_need_dops.forEach( (el, key) => {
-      let this_item = my_cart.find( (item) => el.id == item.item_id );
+    all_need_dops?.forEach( (el, key) => {
+      let this_item = my_cart?.find( (item) => el.id == item.item_id );
       
       if( !this_item ){
         all_need_dops[ key ].count = 0;
@@ -1043,7 +1055,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     //let itemsOffDops = get().itemsOffDops;
     //let itemsWithPromo = get().itemsWithPromo;
 
-    let check_item = all_items.find( (item) => parseInt(item.id) == parseInt(item_id) );
+    let check_item = all_items?.find( (item) => parseInt(item.id) == parseInt(item_id) );
     
     if( parseInt(check_item.id) == 231 || parseInt(check_item.id) == 232 || parseInt(check_item.id) == 233 ){
       return 1;
@@ -1061,10 +1073,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     let my_free_count = 0;
     let this_my_free_count = 0;
     
-    my_cart.forEach((item_cart, key) => {
+    my_cart?.forEach((item_cart, key) => {
       
-      let item_info = all_items.find( (item) => parseInt(item.id) == parseInt(item_cart['item_id']) );
-      let check_free = free_items.find( (item) => parseInt(item['item_id']) == parseInt(item_cart['item_id']) );
+      let item_info = all_items?.find( (item) => parseInt(item.id) == parseInt(item_cart['item_id']) );
+      let check_free = free_items?.find( (item) => parseInt(item['item_id']) == parseInt(item_cart['item_id']) );
       
       if( check_free && check_free.max_count && parseInt(item_info.type) != 3 ){
         all_max_count += parseInt(check_free.max_count);
@@ -1078,7 +1090,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         this_my_free_count += parseInt(item_cart['count']);
       }
 
-      free_items.forEach( (item) => {
+      free_items?.forEach( (item) => {
         if( parseInt(item_cart['item_id']) == parseInt(item['item_id']) ){
           item['count_in_cart'] = parseInt(item_cart['count']);
           
@@ -1088,10 +1100,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       });
     });
 
-    my_cart_promo.forEach((item_cart, key) => {
+    my_cart_promo?.forEach((item_cart, key) => {
       
-      let item_info = all_items.find( (item) => parseInt(item.id) == parseInt(item_cart['item_id']) );
-      let check_free = free_items.find( (item) => parseInt(item['item_id']) == parseInt(item_cart['item_id']) );
+      let item_info = all_items?.find( (item) => parseInt(item.id) == parseInt(item_cart['item_id']) );
+      let check_free = free_items?.find( (item) => parseInt(item['item_id']) == parseInt(item_cart['item_id']) );
       
       if( check_free && check_free.max_count && parseInt(item_info.type) != 3 ){
         all_max_count += parseInt(check_free.max_count);
@@ -1105,7 +1117,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         this_my_free_count += parseInt(item_cart['count']);
       }
 
-      free_items.forEach( (item) => {
+      free_items?.forEach( (item) => {
         if( parseInt(item_cart['item_id']) == parseInt(item['item_id']) ){
           item['count_in_cart'] = parseInt(item_cart['count']);
           
@@ -1115,10 +1127,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       });
     });
 
-    my_cart_dop.forEach((item_cart, key) => {
+    my_cart_dop?.forEach((item_cart, key) => {
       
-      let item_info = all_items.find( (item) => parseInt(item.id) == parseInt(item_cart['item_id']) );
-      let check_free = free_items.find( (item) => parseInt(item['item_id']) == parseInt(item_cart['item_id']) );
+      let item_info = all_items?.find( (item) => parseInt(item.id) == parseInt(item_cart['item_id']) );
+      let check_free = free_items?.find( (item) => parseInt(item['item_id']) == parseInt(item_cart['item_id']) );
       
       if( check_free && check_free.max_count && parseInt(item_info.type) != 3 ){
         all_max_count += parseInt(check_free.max_count);
@@ -1132,7 +1144,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         this_my_free_count += parseInt(item_cart['count']);
       }
 
-      free_items.forEach( (item) => {
+      free_items?.forEach( (item) => {
         if( parseInt(item_cart['item_id']) == parseInt(item['item_id']) ){
           item['count_in_cart'] = parseInt(item_cart['count']);
           
@@ -1146,12 +1158,12 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     
     let new_free_dop = [];
     
-    unic_id.forEach( (unic_item, key) => {
-      free_dops_in_cart.forEach( (item_free) => {
+    unic_id?.forEach( (unic_item, key) => {
+      free_dops_in_cart?.forEach( (item_free) => {
         if( parseInt(unic_item) == parseInt(item_free['dop_item_id']) ){
           let check = false;
           
-          new_free_dop.forEach( (el, k) => {
+          new_free_dop?.forEach( (el, k) => {
             if( parseInt( el['item_id'] ) == parseInt(unic_item) ){
               check = true;
               new_free_dop[k]['count'] += item_free['count_in_cart'] * item_free['max_count'];
@@ -1171,10 +1183,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     
     let max_count = 99;
     
-    if( new_free_dop.length > 0 ){
+    if( new_free_dop?.length > 0 ){
       
-      let max_count2 = new_free_dop.find( (item) => parseInt(item['item_id']) == 17 || parseInt(item['item_id']) == 237 );
-          max_count = new_free_dop.find( (item) => parseInt(item['item_id']) == parseInt(item_id) );
+      let max_count2 = new_free_dop?.find( (item) => parseInt(item['item_id']) == 17 || parseInt(item['item_id']) == 237 );
+          max_count = new_free_dop?.find( (item) => parseInt(item['item_id']) == parseInt(item_id) );
       
       if( max_count ){
         max_count = parseInt(max_count['count']);
@@ -1220,7 +1232,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     })
 
     if(!check){
-      const item = allItems.find(item => parseInt(item.id) === parseInt(item_id));
+      const item = allItems?.find(item => parseInt(item.id) === parseInt(item_id));
 
       if( item ){
         item.count = 1;
@@ -1275,7 +1287,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       return item.count > 0 ? newItems = [...newItems,...[item]] : newItems;
     }, [])
 
-    let check_dop = items.filter( (item, key) => parseInt(item.count) > 0 && (parseInt(item.item_id) == 17 || parseInt(item.item_id) == 237) );
+    let check_dop = items?.filter( (item, key) => parseInt(item.count) > 0 && (parseInt(item.item_id) == 17 || parseInt(item.item_id) == 237) );
 
     if( check_dop.length == 0 ){
       check_dop = 1;
@@ -1417,7 +1429,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     let new_my_cart = [];
       
-    my_cart.forEach( (el_cart, key_cart) => {
+    my_cart?.forEach( (el_cart, key_cart) => {
       new_my_cart.push({
         name: el_cart.name,
         item_id: el_cart.item_id,
@@ -1586,7 +1598,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         let this_item = null;
         
         promo_info.limits.items.map((need_item)=>{
-          this_item = new_my_cart.find( (item) => item.item_id == need_item );
+          this_item = new_my_cart?.find( (item) => item.item_id == need_item );
           
           if( this_item ){
             check ++;
@@ -1615,11 +1627,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         if( parseInt(promo_info.sale.cat_sale) == 1 ){
           count_sale = parseInt(promo_info.sale.count_sale);
           
-          my_cart.forEach( (el_cart, key_cart) => {
-            this_item = allItems.find( (item) => item.id == el_cart.item_id );
+          my_cart?.forEach( (el_cart, key_cart) => {
+            this_item = allItems?.find( (item) => item.id == el_cart.item_id );
             
             if( parseInt(this_item.type) != 3 && parseInt(this_item.type) != 4 ){
-              promo_info.sale.sale_action.forEach( (el_promo) => {
+              promo_info.sale.sale_action?.forEach( (el_promo) => {
                 if( parseInt(el_cart.item_id) == parseInt(el_promo) ){
                   
                   if( parseInt(promo_info.sale.type_price) == 1 ){
@@ -1655,11 +1667,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         if( parseInt(promo_info.sale.cat_sale) == 2 ){
           count_sale = parseInt(promo_info.sale.count_sale);
           
-          my_cart.forEach( (el_cart, key_cart) => {
-            this_item = allItems.find( (item) => item.id == el_cart.item_id );
+          my_cart?.forEach( (el_cart, key_cart) => {
+            this_item = allItems?.find( (item) => item.id == el_cart.item_id );
             
             if( parseInt(this_item.type) != 3 && parseInt(this_item.type) != 4 ){
-              promo_info.sale.sale_action.forEach( (el_promo) => {
+              promo_info.sale.sale_action?.forEach( (el_promo) => {
                 if( parseInt(this_item.cat_id) == parseInt(el_promo) ){
                   
                   if( parseInt(promo_info.sale.type_price) == 1 ){
@@ -1695,8 +1707,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         if( parseInt(promo_info.sale.cat_sale) == 3 ){
           count_sale = parseInt(promo_info.sale.count_sale);
           
-          my_cart.forEach( (el_cart, key_cart) => {
-            this_item = allItems.find( (item) => item.id == el_cart.item_id );
+          my_cart?.forEach( (el_cart, key_cart) => {
+            this_item = allItems?.find( (item) => item.id == el_cart.item_id );
             
             if( parseInt(this_item.type) != 3 && parseInt(this_item.type) != 4 ){
               if( parseInt(promo_info.sale.type_price) == 1 ){
@@ -1748,8 +1760,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       //добавление товара
       if( parseInt(promo_info.promo_action) == 2 ){
 
-        promo_info.items_add.forEach((el) => {
-          this_item = allItems.find( (item) => parseInt(item.id) == parseInt(el.item_id) );
+        promo_info?.items_add?.forEach((el) => {
+          this_item = allItems?.find( (item) => parseInt(item.id) == parseInt(el.item_id) );
           
           if( this_item ){
             cart_new_promo.push({
@@ -1785,8 +1797,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       //товар за цену
       if( parseInt(promo_info.promo_action) == 3 ){
         if( promo_info.items_on_price.length > 0 ){
-          my_cart.forEach( (el_cart, key_cart) => {
-            promo_info.items_on_price.forEach( (el_promo) => {
+          my_cart?.forEach( (el_cart, key_cart) => {
+            promo_info?.items_on_price?.forEach( (el_promo) => {
               if( parseInt(el_cart.item_id) == parseInt(el_promo.id) ){
                 my_cart[ key_cart ].new_one_price = parseInt(el_promo.price)
                 my_cart[ key_cart ].all_price = parseInt(el_promo.price) * parseInt(el_cart.count)
@@ -1873,7 +1885,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     let zones = get().zones;
     const pointList = get().pointList;
 
-    const orderPic = pointList.find(point => point.name === addr);
+    const orderPic = pointList?.find(point => point.name === addr);
 
     ymaps.ready( () => {
 
@@ -1940,7 +1952,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     let my_cart = [];
 
     order.order_items.map((item) => {
-      checkItem = allItems.find( it => parseInt(it.id) === parseInt(item.item_id) );
+      checkItem = allItems?.find( it => parseInt(it.id) === parseInt(item.item_id) );
 
       checkItem.count = parseInt(item.count);
       checkItem.one_price = parseInt(checkItem.price);
@@ -2110,7 +2122,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       zoomSize = 11.5;
     }
 
-    json?.zones.forEach((point) => point.image = 'default#image');
+    json?.zones?.forEach((point) => point.image = 'default#image');
 
     set({
       center_map: {
@@ -2140,7 +2152,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
     const pointList = get().myAddr;
 
     if(point) {
-      const pointFind = pointList.find(item => item.addr === point);
+      const pointFind = pointList?.find(item => item.addr === point);
 
       set({ openModalChoose: false })
 
@@ -2240,7 +2252,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       const myAddr = get().myAddr;
       let points_zone = get().points_zone;
 
-      zones.forEach(item => item.image = 'default#image');
+      zones?.forEach(item => item.image = 'default#image');
 
       points_zone = points_zone.map(item => {
         if(disable) {
@@ -2249,7 +2261,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
         return item
       })
       
-      myAddr.forEach(addr => addr.color = null);
+      myAddr?.forEach(addr => addr.color = null);
   
       set({ myAddr, zones, points_zone });
     }
@@ -2266,7 +2278,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
     points_zone = points_zone.map(item => {
       if(get().disable) {
-          const chooseAddr = myAddr.find(addr => addr?.color);
+          const chooseAddr = myAddr?.find(addr => addr?.color);
           if(chooseAddr?.addr === item.addr) {
             item.options = get().polygon_options_active;
           } else {
@@ -2300,7 +2312,7 @@ export const useAkciiStore = createWithEqualityFn((set) => ({
         //добавляет товар
         if( parseInt(new_banner.info.promo_action) == 2 ){
           new_banner.info.items_add.map( (item, key) => {
-            let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
+            let find_item = all_items?.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
 
             new_banner.info.items_add[ key ]['img_app'] = find_item?.img_app
           } )
@@ -2312,7 +2324,7 @@ export const useAkciiStore = createWithEqualityFn((set) => ({
         //товар за цену
         if( parseInt(new_banner.info.promo_action) == 3 ){
           new_banner.info.items_on_price.map( (item, key) => {
-            new_banner.info.items_on_price[ key ]['img_app'] = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.id) )['img_app'];
+            new_banner.info.items_on_price[ key ]['img_app'] = all_items?.find( f_item => parseInt(f_item.id) == parseInt(item.id) )['img_app'];
           } )
 
           return new_banner.actiItems = new_banner.info.items_on_price
@@ -2323,7 +2335,7 @@ export const useAkciiStore = createWithEqualityFn((set) => ({
       } else {
 
         new_banner?.item?.map( (item, key) => {
-          let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
+          let find_item = all_items?.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
 
           if( find_item ){
             new_banner.item[ key ] = find_item;
@@ -2521,20 +2533,24 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     });
   },
   getUserInfo: async (this_module, city, userID) => {
-    let data = {
-      type: 'get_my_info',
-      city_id: city,
-      user_id: userID,
-    };
 
-    let json = await api(this_module, data);
+    if( userID && userID?.length> 0 ){
 
-    set({
-      shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
-      userInfo: json?.user,
-      streets: json?.streets,
-      city: city
-    });
+      let data = {
+        type: 'get_my_info',
+        city_id: city,
+        user_id: userID,
+      };
+
+      let json = await api(this_module, data);
+
+      set({
+        shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
+        userInfo: json?.user,
+        streets: json?.streets,
+        city: city
+      });
+    }
   },
 
   setUser: (user) => {
@@ -3498,11 +3514,11 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       city: city
     };
 
-    const json = await api('auth', data);
+    /*const json = await api('auth', data);
 
     set({
       yandexAuthLink: json?.link
-    })
+    })*/
   },
 
   yandexAuthCheck: async(code) => {
@@ -3758,7 +3774,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
       let all_tags = get().all_tags;
 
-      let find_tag = all_tags.find(tag => parseInt(tag.id) === parseInt(res));
+      let find_tag = all_tags?.find(tag => parseInt(tag.id) === parseInt(res));
 
       ym(47085879, 'reachGoal', 'choose_tag', { tag: find_tag?.name })
 
@@ -3914,11 +3930,11 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     let bannerList = [];
 
     if( activePage == 'akcii' ){
-      bannerList = json?.banners.filter( (item) => parseInt(item.is_active_actii) == 1 );
+      bannerList = json?.banners?.filter( (item) => parseInt(item.is_active_actii) == 1 );
     }
 
     if( activePage == 'home' || activePage == 'category' ){
-      bannerList = json?.banners.filter( (item) => parseInt(item.is_active_home) == 1 );
+      bannerList = json?.banners?.filter( (item) => parseInt(item.is_active_home) == 1 );
     }
 
     set({
@@ -4070,7 +4086,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
         //добавляет товар
         if( parseInt(new_banner.info.promo_action) == 2 ){
           new_banner.info.items_add.map( (item, key) => {
-            let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
+            let find_item = all_items?.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
 
             new_banner.info.items_add[ key ]['img_app'] = find_item?.img_app;
             new_banner.info.items_add[ key ]['price'] = find_item?.price;
@@ -4084,7 +4100,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
         //товар за цену
         if( parseInt(new_banner.info.promo_action) == 3 ){
           new_banner.info.items_on_price.map( (item, key) => {
-            let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.id) );
+            let find_item = all_items?.find( f_item => parseInt(f_item.id) == parseInt(item.id) );
 
             new_banner.info.items_on_price[ key ]['img_app'] = find_item['img_app'];
             new_banner.info.items_on_price[ key ]['price'] = find_item['price'];
@@ -4101,7 +4117,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       }else{
 
         new_banner?.item?.map( (item, key) => {
-          let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
+          let find_item = all_items?.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
 
           if( find_item ){
             new_banner.item[ key ] = find_item;
@@ -4155,7 +4171,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
         //добавляет товар
         if( parseInt(new_banner.info.promo_action) == 2 ){
           new_banner.info.items_add.map( (item, key) => {
-            let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
+            let find_item = all_items?.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
 
             new_banner.info.items_add[ key ]['img_app'] = find_item?.img_app
           } )
@@ -4166,7 +4182,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
         //товар за цену
         if( parseInt(new_banner.info.promo_action) == 3 ){
           new_banner.info.items_on_price.map( (item, key) => {
-            new_banner.info.items_on_price[ key ]['img_app'] = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.id) )['img_app'];
+            new_banner.info.items_on_price[ key ]['img_app'] = all_items?.find( f_item => parseInt(f_item.id) == parseInt(item.id) )['img_app'];
           } )
 
           openBannerItems = new_banner.info.items_on_price;
@@ -4176,7 +4192,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       }else{
 
         new_banner?.item?.map( (item, key) => {
-          let find_item = all_items.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
+          let find_item = all_items?.find( f_item => parseInt(f_item.id) == parseInt(item.item_id) );
 
           if( find_item ){
             new_banner.item[ key ] = find_item;
