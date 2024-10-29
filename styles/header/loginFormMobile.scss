@@ -25,8 +25,8 @@
       }
 
       & .authLogin {
-        height: $MyScale120_mobile;
-        margin-bottom: $MyScale30_mobile;
+        height: $MyScale100_mobile;
+        margin-bottom: $MyScale85_mobile;
         display: flex;
         align-items: center;
         justify-content: center;
@@ -36,70 +36,217 @@
       & .stack {
         flex-direction: row;
         align-items: center;
-        width: $MyScale840_mobile;
-        margin-bottom: $MyScale30_mobile;
+        width: $MyScale910_mobile;
+        margin-bottom: $MyScale120_mobile;
       }
 
       .modalLoginStartMobile {
-        width: $MyScale1000_mobile;
+        width: $MyScale960_mobile;
         padding-bottom: $MyScale551_mobile;
         display: flex;
         flex-direction: column;
         align-items: center;
 
-        & .loginErr {
-          width: $MyScale800_mobile;
-          height: $MyScale50_mobile;
-          display: flex;
-          justify-content: center;
-          align-items: center;
-          text-align: center;
-          margin-bottom: $MyScale30_mobile;
-          & > span {
-            line-height: $MyScale40_mobile;
-            @include font40_400();
-            color: #dd1a32 !important;
-          }
-        }
+        // & .loginErr {
+        //   width: $MyScale800_mobile;
+        //   height: $MyScale50_mobile;
+        //   display: flex;
+        //   justify-content: center;
+        //   align-items: center;
+        //   text-align: center;
+        //   margin-bottom: $MyScale30_mobile;
+        //   & > span {
+        //     line-height: $MyScale40_mobile;
+        //     @include font40_400();
+        //     color: #dd1a32 !important;
+        //   }
+        // }
 
-        & .inputLogin {
-          width: $MyScale760_mobile;
-          height: $MyScale160_mobile;
+        & .inputLogin.lable_position {
+          //width: $MyScale760_mobile;
+          height: $MyScale150_mobile;
           display: flex;
           flex-direction: row;
           justify-content: center;
 
-          & .MuiInputBase-root.MuiInput-root:after {
-            border-bottom: $MyScale2_mobile solid rgba(0, 0, 0, 0.4);
+          & .MuiOutlinedInput-notchedOutline {
+            border: $MyScale2_mobile solid rgba(0, 0, 0, 0.2);
+          }
+          
+          & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
+            & .MuiOutlinedInput-notchedOutline {
+              border: $MyScale3_mobile solid rgba(0, 0, 0, 0.4);
+            }
           }
 
-          & .MuiInputBase-root.MuiInput-root:before {
-            border-bottom: $MyScale2_mobile solid rgba(0, 0, 0, 0.2);
+          & .MuiFormLabel-root.MuiInputLabel-root {
+            color: rgba(0, 0, 0, 0.4) !important;
+            @include font50_400();
+            padding-left: $MyScale40_mobile;
+            top:  $MyScale15_mobile;
           }
 
-          & .MuiInputBase-root.MuiInput-root {
-            width: $MyScale760_mobile;
-            height: 100%;
-            display: flex;
-            align-items: center;
+          & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
+            color: rgba(0, 0, 0, 0.6) !important;
+            @include font50_400();
+            padding-left: $MyScale60_mobile;
+            top:  -$MyScale3_mobile;
+          }
+
+          & .MuiInputBase-root.MuiOutlinedInput-root{
+            width: $MyScale960_mobile;
+            border-radius: $MyScale40_mobile;
+            //height: 100%;
+            // display: flex;
+            // align-items: center;
 
             & input {
+              width: $MyScale680_mobile;
               padding: 0;
               height: $MyScale100_mobile;
-              margin-left: $MyScale60_mobile;
-              @include font75_700();
+              margin-left: $MyScale80_mobile;
+              @include font50_500();
             }
 
             & > input::placeholder {
-              transform: translate3d(0, -$MyScale10_mobile, 0);
-              @include font40_400();
+              // transform: translate3d(0, -$MyScale5_mobile, 0);
+              @include font50_400();
               color: rgba(0, 0, 0, 0.4) !important;
+            }
+
+            & fieldset {
+              padding-left: $MyScale60_mobile;
+              & legend {
+                width: $MyScale200_mobile;
+              }
             }
 
             & svg {
               width: $MyScale60_mobile;
               height: $MyScale60_mobile;
             }
+
+            & .eye_icon {
+              right: -$MyScale5_mobile;
+              bottom: -$MyScale5_mobile;
+              position: absolute;
+              z-index: 5;
+              & svg {
+                width: $MyScale80_mobile;
+                height: $MyScale80_mobile;
+              }
+            }
+
+          }
+        }
+
+        & .inputLogin:not(.lable_position) {
+          //width: $MyScale760_mobile;
+          height: $MyScale150_mobile;
+          display: flex;
+          flex-direction: row;
+          justify-content: center;
+
+          & .MuiOutlinedInput-notchedOutline {
+            border: $MyScale2_mobile solid rgba(0, 0, 0, 0.2);
+          }
+          
+          & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
+            & .MuiOutlinedInput-notchedOutline {
+              border: $MyScale3_mobile solid rgba(0, 0, 0, 0.4);
+            }
+          }
+
+          & .MuiFormLabel-root.MuiInputLabel-root {
+            color: rgba(0, 0, 0, 0.4) !important;
+            @include font50_400();
+            padding-left: $MyScale60_mobile;
+            top:  -$MyScale3_mobile;
+          }
+
+          & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
+            color: rgba(0, 0, 0, 0.6) !important;
+            @include font50_400();
+            padding-left: $MyScale60_mobile;
+            top:  -$MyScale3_mobile;
+          }
+
+          & .MuiInputBase-root.MuiOutlinedInput-root{
+            width: $MyScale960_mobile;
+            border-radius: $MyScale40_mobile;
+            //height: 100%;
+            // display: flex;
+            // align-items: center;
+
+            & input {
+              width: $MyScale760_mobile;
+              padding: 0;
+              height: $MyScale100_mobile;
+              margin-left: $MyScale80_mobile;
+              @include font50_500();
+            }
+
+            & > input::placeholder {
+              //transform: translate3d(0, -$MyScale10_mobile, 0);
+              @include font50_400();
+              color: rgba(0, 0, 0, 0.4) !important;
+            }
+
+            & fieldset {
+              padding-left: $MyScale60_mobile;
+              & legend {
+                width: $MyScale200_mobile;
+              }
+            }
+
+            & svg {
+              width: $MyScale60_mobile;
+              height: $MyScale60_mobile;
+            }
+
+            & .eye_icon {
+              right: -$MyScale5_mobile;
+              bottom: -$MyScale5_mobile;
+              position: absolute;
+              z-index: 5;
+              & svg {
+                width: $MyScale80_mobile;
+                height: $MyScale80_mobile;
+              }
+            }
+          }
+        }
+
+        & .margin_bottom_30 {
+          margin-bottom: $MyScale70_mobile;
+        }
+
+        & .eye_icon {
+          right: -$MyScale5_mobile;
+          bottom: $MyScale5_mobile;
+          position: absolute;
+          width: $MyScale120_mobile;
+          height: $MyScale120_mobile;
+          z-index: 5;
+          // & svg {
+          //   width: $MyScale300_mobile;
+          //   height: $MyScale300_mobile;
+          // }
+        }
+
+        & .loginBox {
+          width: $MyScale920_mobile;
+          height: $MyScale60_mobile;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: $MyScale24_mobile;
+          margin-bottom: $MyScale80_mobile;
+
+          & span {
+            @include font40_400();
+            color: rgba(0, 0, 0, 0.4) !important;
+            cursor: pointer;
           }
         }
 
@@ -109,26 +256,6 @@
           @include font40_400();
           text-align: center;
           margin-top: $MyScale30_mobile;
-        }
-
-        & .startInputBox {
-          width: $MyScale1000_mobile;
-          display: flex;
-          position: relative;
-
-          & .eye_icon {
-            right: 0;
-            position: absolute;
-            width: $MyScale80_mobile;
-            height: $MyScale80_mobile;
-            align-self: center;
-            z-index: 5;
-
-            & svg {
-              height: 100%;
-              width: 100%;
-            }
-          }
         }
 
         & .loginLosePWD {
@@ -144,11 +271,11 @@
         }
 
         & .loginLogin {
-          width: $MyScale650_mobile;
-          height: $MyScale120_mobile;
-          border-radius: $MyScale60_mobile;
-          margin-top: $MyScale40_mobile;
-          margin-bottom: $MyScale10_mobile;
+          width: $MyScale960_mobile;
+          height: $MyScale150_mobile;
+          border-radius: $MyScale75_mobile;
+          //margin-top: $MyScale40_mobile;
+          //margin-bottom: $MyScale10_mobile;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -201,13 +328,14 @@
       }
 
       .modalLoginCreateMobile {
-        width: $MyScale760_mobile;
+        width: $MyScale960_mobile;
         display: flex;
         flex-direction: column;
         align-items: center;
 
         & .loginInfo {
           height: $MyScale60_mobile;
+          margin-top: -$MyScale60_mobile;
           margin-bottom: $MyScale30_mobile;
           display: flex;
           align-items: center;
@@ -216,70 +344,182 @@
           }
         }
 
-        & .inputLogin {
-          width: $MyScale760_mobile;
-          height: $MyScale160_mobile;
+        & .inputLogin.lable_position {
+          //width: $MyScale760_mobile;
+          height: $MyScale150_mobile;
           display: flex;
           flex-direction: row;
           justify-content: center;
 
-          & .MuiInputBase-root.MuiInput-root:after {
-            border-bottom: $MyScale2_mobile solid rgba(0, 0, 0, 0.4);
+          & .MuiOutlinedInput-notchedOutline {
+            border: $MyScale2_mobile solid rgba(0, 0, 0, 0.2);
+          }
+          
+          & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
+            & .MuiOutlinedInput-notchedOutline {
+              border: $MyScale3_mobile solid rgba(0, 0, 0, 0.4);
+            }
           }
 
-          & .MuiInputBase-root.MuiInput-root:before {
-            border-bottom: $MyScale2_mobile solid rgba(0, 0, 0, 0.2);
+          & .MuiFormLabel-root.MuiInputLabel-root {
+            color: rgba(0, 0, 0, 0.4) !important;
+            @include font50_400();
+            padding-left: $MyScale40_mobile;
+            top:  $MyScale15_mobile;
           }
 
-          & .MuiInputBase-root.MuiInput-root {
-            width: $MyScale760_mobile;
-            height: 100%;
-            display: flex;
-            align-items: center;
+          & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
+            color: rgba(0, 0, 0, 0.6) !important;
+            @include font50_400();
+            padding-left: $MyScale60_mobile;
+            top:  -$MyScale3_mobile;
+          }
+
+          & .MuiInputBase-root.MuiOutlinedInput-root{
+            width: $MyScale960_mobile;
+            border-radius: $MyScale40_mobile;
+            //height: 100%;
+            // display: flex;
+            // align-items: center;
 
             & input {
+              width: $MyScale680_mobile;
               padding: 0;
               height: $MyScale100_mobile;
-              @include font75_700();
+              margin-left: $MyScale80_mobile;
+              @include font50_500();
             }
 
             & > input::placeholder {
-              transform: translate3d(0, -$MyScale10_mobile, 0);
-              @include font40_400();
+              // transform: translate3d(0, -$MyScale5_mobile, 0);
+              @include font50_400();
               color: rgba(0, 0, 0, 0.4) !important;
+            }
+
+            & fieldset {
+              padding-left: $MyScale60_mobile;
+              & legend {
+                width: $MyScale200_mobile;
+              }
             }
 
             & svg {
               width: $MyScale60_mobile;
               height: $MyScale60_mobile;
             }
+
+            & .eye_icon {
+              right: -$MyScale5_mobile;
+              bottom: -$MyScale5_mobile;
+              position: absolute;
+              z-index: 5;
+              & svg {
+                width: $MyScale80_mobile;
+                height: $MyScale80_mobile;
+              }
+            }
+
           }
         }
 
-        & .startInputBox {
-          width: $MyScale1000_mobile;
+        & .inputLogin:not(.lable_position) {
+          //width: $MyScale760_mobile;
+          height: $MyScale150_mobile;
           display: flex;
-          position: relative;
+          flex-direction: row;
+          justify-content: center;
 
-          & .eye_icon {
-            right: 0;
-            position: absolute;
-            width: $MyScale80_mobile;
-            height: $MyScale80_mobile;
-            align-self: center;
-            z-index: 5;
+          & .MuiOutlinedInput-notchedOutline {
+            border: $MyScale2_mobile solid rgba(0, 0, 0, 0.2);
+          }
+          
+          & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
+            & .MuiOutlinedInput-notchedOutline {
+              border: $MyScale3_mobile solid rgba(0, 0, 0, 0.4);
+            }
+          }
+
+          & .MuiFormLabel-root.MuiInputLabel-root {
+            color: rgba(0, 0, 0, 0.4) !important;
+            @include font50_400();
+            padding-left: $MyScale60_mobile;
+            top:  -$MyScale3_mobile;
+          }
+
+          & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
+            color: rgba(0, 0, 0, 0.6) !important;
+            @include font50_400();
+            padding-left: $MyScale60_mobile;
+            top:  -$MyScale3_mobile;
+          }
+
+          & .MuiInputBase-root.MuiOutlinedInput-root{
+            width: $MyScale960_mobile;
+            border-radius: $MyScale40_mobile;
+            //height: 100%;
+            // display: flex;
+            // align-items: center;
+
+            & input {
+              width: $MyScale760_mobile;
+              padding: 0;
+              height: $MyScale100_mobile;
+              margin-left: $MyScale80_mobile;
+              @include font50_500();
+            }
+
+            & > input::placeholder {
+              //transform: translate3d(0, -$MyScale10_mobile, 0);
+              @include font50_400();
+              color: rgba(0, 0, 0, 0.4) !important;
+            }
+
+            & fieldset {
+              padding-left: $MyScale60_mobile;
+              & legend {
+                width: $MyScale200_mobile;
+              }
+            }
 
             & svg {
-              height: 100%;
-              width: 100%;
+              width: $MyScale60_mobile;
+              height: $MyScale60_mobile;
+            }
+
+            & .eye_icon {
+              right: -$MyScale5_mobile;
+              bottom: -$MyScale5_mobile;
+              position: absolute;
+              z-index: 5;
+              & svg {
+                width: $MyScale80_mobile;
+                height: $MyScale80_mobile;
+              }
             }
           }
         }
 
-        & .loginLogin {
-          width: $MyScale650_mobile;
+        & .margin_bottom_30 {
+          margin-bottom: $MyScale70_mobile;
+        }
+
+        & .eye_icon {
+          right: -$MyScale5_mobile;
+          bottom: $MyScale5_mobile;
+          position: absolute;
+          width: $MyScale120_mobile;
           height: $MyScale120_mobile;
-          border-radius: $MyScale60_mobile;
+          z-index: 5;
+          // & svg {
+          //   width: $MyScale300_mobile;
+          //   height: $MyScale300_mobile;
+          // }
+        }
+
+        & .loginLogin {
+          width: $MyScale960_mobile;
+          height: $MyScale150_mobile;
+          border-radius: $MyScale75_mobile;
           display: flex;
           align-items: center;
           justify-content: center;
@@ -294,7 +534,7 @@
           display: flex;
           flex-direction: column;
           align-items: center;
-          margin-top: $MyScale80_mobile;
+          margin-top: $MyScale10_mobile;
 
           & .data {
             display: flex;

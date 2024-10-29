@@ -8,10 +8,10 @@ import Button from '@mui/material/Button';
 
 function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
   const [thisItem, setThisItem] = useState({});
-  const [CatsItems] = useHomeStore((state) => [state.CatsItems]);
+  const [CatsItems, getItem] = useHomeStore((state) => [state.CatsItems, state.getItem]);
   const [items, minus, plus, getInfoPromo] = useCartStore((state) => [state.items, state.minus, state.plus, state.getInfoPromo]);
 
-  const [thisCityRu] = useCitiesStore((state) => [ state.thisCityRu ]);
+  const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
 
   const metrica_param = {
     city: thisCityRu, 
@@ -92,6 +92,7 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
               title={thisItem?.name} 
               src={`https://cdnimg.jacofood.ru/${thisItem.img_app}_292x292.jpg`} 
               loading="lazy"
+              onClick={() => getItem('home', thisCity, thisItem.id)}
             />
           </picture>
             : 
@@ -100,9 +101,9 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
       </div>
 
       <div className="itemDesc">
-        <Typography className="ItemName" component="span">{thisItem?.name}</Typography>
+        <Typography className="ItemName" component="span" onClick={() => getItem('home', thisCity, thisItem.id)}>{thisItem?.name}</Typography>
 
-        <Typography component="span" className="ItemDesk">{thisItem?.marc_desc?.length > 0 ? thisItem?.marc_desc : thisItem?.tmp_desc}</Typography>
+        <Typography component="span" className="ItemDesk" onClick={() => getItem('home', thisCity, thisItem.id)}>{thisItem?.marc_desc?.length > 0 ? thisItem?.marc_desc : thisItem?.tmp_desc}</Typography>
 
         {parseInt(typePromo) == 2 ? parseInt(item?.price) == 0 ? false :
           <div className="containerBTNitem">

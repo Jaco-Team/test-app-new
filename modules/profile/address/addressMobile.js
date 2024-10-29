@@ -24,7 +24,7 @@ export default function AddressMobile({ city }) {
       <List>
         {streets?.map((item, key) => (
           <ListItem key={key}
-            onClick={() => setActiveAddressModal(true, item.id, city)}
+            onClick={() => setActiveAddressModal(true, item.id, item.city)}
             style={{ background: parseInt(item?.is_main) ? 'rgba(0, 0, 0, 0.05)' : null, borderTop: key === 0 ? '0.25641025641026vw solid rgba(0, 0, 0, 0.2)' : 'none'}}
           >
             <div className="containerSpan">
@@ -34,7 +34,7 @@ export default function AddressMobile({ city }) {
                     {item.addr_name + ', '}
                   </span>
                 ) : null}
-                {item?.street + ', ' + item?.home + ', кв. ' + item?.kv}
+                {'г. ' + item?.city_name + ', ' + item?.street + ', ' + item?.home + ', кв. ' + item?.kv}
               </span>
 
               {parseInt(item?.is_main) ? (

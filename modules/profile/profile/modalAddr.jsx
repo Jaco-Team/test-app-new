@@ -12,22 +12,23 @@ import Backdrop from '@mui/material/Backdrop';
 import { roboto } from '@/ui/Font.js';
 import { IconClose, PencilModalAddrIcon, HomeModalAddrIcon } from '@/ui/Icons.js';
 import MyTextInput from '@/ui/MyTextInput';
-import MyAutocomplete from '@/ui/MyAutocomplete';
+// import MyAutocomplete from '@/ui/MyAutocomplete';
 import MySelect from '@/ui/MySelect';
 
-import { useProfileStore, useHeaderStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStore, useCitiesStore } from '@/components/store.js';
 
 export default function ModalAddr(){
   const ref2 = useRef();
 
-  const [ clearAddr, chooseAddrStreet, center_map, zones, isOpenModalAddr, closeModalAddr, allStreets, checkStreet, saveNewAddr, infoAboutAddr, cityList, updateStreetList, active_city, updateAddr ] = 
-    useProfileStore( state => [ state.clearAddr, state.chooseAddrStreet, state.center_map, state.zones, state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.cityList, state.updateStreetList, state.active_city, state.updateAddr ] );
+  const [ clearAddr, chooseAddrStreet, center_map, zones, isOpenModalAddr, closeModalAddr, allStreets, checkStreet, saveNewAddr, infoAboutAddr, cityList, updateStreetList, active_city, updateAddr, setClearAddr, openModalAddr, setActiveGetAddressModal] = 
+    useProfileStore( state => [ state.clearAddr, state.chooseAddrStreet, state.center_map, state.zones, state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.cityList, state.updateStreetList, state.active_city, state.updateAddr, state.setClearAddr, state.openModalAddr, state.setActiveGetAddressModal] );
 
+  const [thisCityList] = useCitiesStore((state) => [state.thisCityList]);
   const [ token ] = useHeaderStore( state => [ state.token ] )
 
-  const [ street, setStreet ] = useState('');
-  const [ street_, setStreet_ ] = useState('');
-  const [ home, setHome ] = useState( '' );
+  // const [ street, setStreet ] = useState('');
+  // const [ street_, setStreet_ ] = useState('');
+  // const [ home, setHome ] = useState( '' );
   const [ pd, setPd ] = useState( '' );
   const [ domophome, setDomophome ] = useState(true);
   const [ et, setEt ] = useState('');
@@ -38,18 +39,24 @@ export default function ModalAddr(){
   const [ cityID, setCityID ] = useState(active_city);
 
   useEffect(() => {
-    if(street && street.length > 0 && home.length > 0){
-      checkStreet(street, home, pd, cityID);
-    } else {
-      checkStreet(null);
+    if (chooseAddrStreet?.street && chooseAddrStreet?.street?.length > 0 && chooseAddrStreet?.home?.length > 0) {
+      checkStreet(chooseAddrStreet?.city_name_dop + ' ' +chooseAddrStreet?.street, chooseAddrStreet?.home, pd, cityID);
     }
-  }, [street, home, pd]);
+  }, [pd]);
+
+  // useEffect(() => {
+  //   if(street && street.length > 0 && home.length > 0){
+  //     checkStreet(street, home, pd, cityID);
+  //   } else {
+  //     checkStreet(null);
+  //   }
+  // }, [street, home, pd]);
 
   useEffect( () => {
     if( infoAboutAddr ){
-      setStreet_(infoAboutAddr.street);
-      setStreet({id: infoAboutAddr?.id, name: infoAboutAddr?.street });
-      setHome(infoAboutAddr.home);
+      // setStreet_(infoAboutAddr.street);
+      // setStreet({id: infoAboutAddr?.id, name: infoAboutAddr?.street });
+      // setHome(infoAboutAddr.home);
       setPd(infoAboutAddr.pd);
       setDomophome(parseInt(infoAboutAddr.domophome) == 1 ? true : false);
       setEt(infoAboutAddr.et);
@@ -59,9 +66,9 @@ export default function ModalAddr(){
       setNameAddr(infoAboutAddr.name)
       setCityID(infoAboutAddr.city_id);
     }else{
-      setHome('');
-      setStreet('');
-      setStreet_('')
+      // setHome('');
+      // setStreet('');
+      // setStreet_('')
       setPd('');
       setDomophome(true);
       setEt('');
@@ -75,21 +82,27 @@ export default function ModalAddr(){
   //   updateStreetList(cityID);
   // }, [cityID] )
 
-  function chengeCity(city){
+  function changeCity(city){
+    const city_id = thisCityList.find(({ id }) => parseInt(id) === parseInt(city));
+
+    if(city_id) {
+      openModalAddr(0, city_id?.link);
+    }
+
+    setClearAddr();
     setCityID(city);
     clearAddr();
   }
 
-  //???
   useEffect( () => {
     setCityID(active_city);
   }, [active_city] )
 
   useEffect(() => {
     if( isOpenModalAddr == false ){
-      setStreet('');
-      setStreet_('')
-      setHome('');
+      // setStreet('');
+      // setStreet_('')
+      // setHome('');
       setPd('');
       setDomophome(true);
       setEt('');
@@ -97,7 +110,7 @@ export default function ModalAddr(){
       setComment('');
       setCheck(false)
       setNameAddr('');
-      setCityID(active_city)
+      setCityID(active_city);
     }
   }, [isOpenModalAddr]);
 
@@ -182,19 +195,21 @@ export default function ModalAddr(){
                 <MyTextInput variant="standard" placeholder={'Новый адрес'} inputAdornment={ <PencilModalAddrIcon /> } value={nameAddr} func={ e => setNameAddr(e.target.value) } />
               </div>
               <div className='city'>
-                <MySelect variant="standard" className="city" data={cityList} value={cityID} func={ e => chengeCity(e.target.value) } />
+                <MySelect variant="standard" className="city" data={cityList} value={cityID} func={ e => changeCity(e.target.value) } />
               </div>
-              <div className='street'>
-                <MyAutocomplete placeholder={'Улица'} className="city" data={allStreets} val={street_} onChange={ val => setStreet(val) } variant={'standard'} />
+              <div className='street' onClick={() => setActiveGetAddressModal(true)}>
+                <MyTextInput variant="standard" placeholder={'Улица и номер дома'} value={!chooseAddrStreet?.street ? '' : chooseAddrStreet?.city_name_dop+( chooseAddrStreet?.city_name_dop?.length > 0 ? ', ' : '' )+chooseAddrStreet?.street+', '+chooseAddrStreet?.home} readOnly/>
               </div>
               <div className='street_dop_2'>
-                <MyTextInput variant="standard" value={home} placeholder={'Дом'} func={ e => setHome(e.target.value) } />
+                {/* <MyTextInput variant="standard" value={home} placeholder={'Дом'} func={ e => setHome(e.target.value) } /> */}
                 <MyTextInput variant="standard" value={pd} placeholder={'Подъезд'} type={'nember'} func={ e => setPd(e.target.value) } />
-              </div>
-              <div className='street_dop_2'>
                 <MyTextInput variant="standard" value={et} placeholder={'Этаж'} type={'nember'} func={ e => setEt(e.target.value) } />
                 <MyTextInput variant="standard" value={kv} placeholder={'Квартира'} type={'nember'} func={ e => setKv(e.target.value) } />
               </div>
+              {/* <div className='street_dop_2'>
+                <MyTextInput variant="standard" value={et} placeholder={'Этаж'} type={'nember'} func={ e => setEt(e.target.value) } />
+                <MyTextInput variant="standard" value={kv} placeholder={'Квартира'} type={'nember'} func={ e => setKv(e.target.value) } />
+              </div> */}
               <div className='comment'>
                 <MyTextInput variant="standard" value={comment} placeholder={'Комментарий курьеру'} func={ event => changeComment(event) } />
               </div>

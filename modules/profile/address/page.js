@@ -4,6 +4,7 @@ import Meta from '@/components/meta.js';
 
 import AddressMobile from './addressMobile';
 import AddressModalMobile from './modalAddressMobile';
+import GetAddressMobile from './modalGetAddressMobile';
 
 import { useHeaderStore } from '@/components/store';
 
@@ -25,7 +26,8 @@ export default function AddressPage({ page, this_module, city }) {
       {matches ? (
         <>
           <AddressMobile city={city} />
-          <AddressModalMobile />
+          <AddressModalMobile city={city} />
+          <GetAddressMobile />
         </>
       ) : null }
     </Meta>

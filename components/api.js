@@ -21,18 +21,16 @@ export function api(module = '', data = {}){
 }
 
 export async function apiAddress(city, value){
-  const urlApi = `https://suggest-maps.yandex.ru/v1/suggest?text=${city} ${value}&types=street,house&attrs=uri&results=10&print_address=1&apikey=7362dcac-fc34-4224-ac0d-fb2ee70d5839`;
+  if( city.length > 0 && value.length > 0 ){
+    const urlApi = `https://suggest-maps.yandex.ru/v1/suggest?text=${city},${value}&types=locality,province,area,district,street,house&print_address=1&results=10&apikey=94d7bc02-79e2-4139-b1b3-b2d1b10130cc`;
 
-  try {
-    const res = await fetch(urlApi, {
-      method: 'POST',
-      headers: {
-        'Content-Type': 'application/x-www-form-urlencoded'
-      },
-    });
-    const json = await res.json();
-    return json;
-  } catch (err) {
-    console.log('error', err);
+    try {
+      const res = await fetch(urlApi);
+      const json = await res.json();
+
+      return json;
+    } catch (err) {
+      console.log('error', err);
+    }
   }
 }

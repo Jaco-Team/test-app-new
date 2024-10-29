@@ -72,7 +72,7 @@ export default function ModalCityPC() {
             <IconClose/>
           </IconButton>
 
-          <div className="loginIMG" style={{  marginBottom: thisCityRu.length > 12 ? '1.0830324909747vw' : '2.5270758122744vw' }}>
+          <div className="loginIMG" style={{  marginBottom: thisCityRu?.length > 12 ? '1.0830324909747vw' : '2.5270758122744vw' }}>
             <Image alt="Город" src="/Favicon_city.png" width={240} height={240} priority={true}/>
           </div>
 
@@ -80,8 +80,8 @@ export default function ModalCityPC() {
             <Typography component="span">Вы в городе</Typography>
           </div>
 
-          <div className="loginCity" style={{  marginBottom: thisCityRu.length > 12 ? '1.4440433212996vw' : '2.5270758122744vw', 
-            height: thisCityRu.length > 12 ? '4.6931407942238vw' : '2.1660649819495vw'}}>
+          <div className="loginCity" style={{  marginBottom: thisCityRu?.length > 12 ? '1.4440433212996vw' : '2.5270758122744vw', 
+            height: thisCityRu?.length > 12 ? '4.6931407942238vw' : '2.1660649819495vw'}}>
             <Typography component="span">{thisCityRu}</Typography>
           </div>
 

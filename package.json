@@ -57,6 +57,7 @@
     "react-auth-code-input": "^3.2.1",
     "react-dom": "18.2.0",
     "react-hook-form": "^7.53.1",
+    "react-imask": "^7.6.1",
     "react-scroll": "^1.9.0",
     "sass": "^1.80.3",
     "sharp": "^0.33.5",
@@ -64,6 +65,7 @@
     "swiper": "^9.4.1",
     "typescript": "^5.6.3",
     "ua-parser-js": "^1.0.39",
+    "use-long-press": "^3.2.0",
     "zustand": "^4.5.5"
   },
   "devDependencies": {

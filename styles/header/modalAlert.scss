@@ -75,7 +75,7 @@
     align-items: flex-start;
 
     & .MuiDialog-paper {
-      height: $MyScale120_mobile;
+      height: $MyScale150_mobile;
       overflow: visible;
       margin: 0;
       padding: 0;
@@ -106,22 +106,26 @@
           align-items: center;
           flex-direction: column;
           justify-content: center;
-          height: 100%;
+          min-height: 100%;
+          text-align: center;
 
           & span {
             height: 50%;
-            width: 100%;
+            width: 80%;
             display: flex;
             justify-content: center;
             align-items: flex-end;
             @include font35_400();
             color: #fff !important;
+            margin-top: auto;
           }
 
           & .MuiLinearProgress-root {
             margin-top: $MyScale15_mobile;
             background-color: unset;
             height: $MyScale4_mobile;
+            margin-top: auto;
+            margin-bottom: $MyScale15_mobile;
             width: 70%;
   
             & span {

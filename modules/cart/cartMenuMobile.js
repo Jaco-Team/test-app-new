@@ -186,16 +186,24 @@ export default function CartMenuMobile({ cityName }) {
           </List>
         ) : (
           <div className="CartMessage">
-            <MyTextInput
+            <textarea
+              autoFocus
+              type="text"
+              value={comment}
+              onChange={(event) => changeComment(event)}
+              maxLength={50}
+              rows={2}
+            />
+            {/* <MyTextInput
               autoFocus
               type="text"
               value={comment}
               func={(event) => changeComment(event)}
-              multiline
+              multiline={true}
+              rows={3}
               maxRows={3}
-              variant="outlined"
               className="message"
-            />
+            /> */}
           </div>
         )}
 

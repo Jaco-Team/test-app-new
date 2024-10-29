@@ -24,11 +24,10 @@ import { roboto } from '@/ui/Font';
 //import {placeholder_img} from '@/public/placeholder_img';
 
 export default function ModalCardItemPC() {
-  const [isOpenModal, closeModal, typeModal, openItem, foodValue, navigate, closeTypeModal] = useHomeStore((state) => [state.isOpenModal, state.closeModal, state.typeModal,
-      state.openItem, state.foodValue, state.navigate, state.closeTypeModal]);
+  const [isOpenModal, closeModal, typeModal, openItem, foodValue, navigate, closeTypeModal, getItem] = useHomeStore((state) => [state.isOpenModal, state.closeModal, state.typeModal, state.openItem, state.foodValue, state.navigate, state.closeTypeModal, state.getItem]);
 
   const [links] = useFooterStore((state) => [state.links]);
-  const [thisCityRu] = useCitiesStore((state) => [ state.thisCityRu ]);
+  const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
   const [count, setCount] = useState(0);
   
@@ -168,7 +167,7 @@ export default function ModalCardItemPC() {
                     <div className="List">
                       {openItem?.items.map((item, key) => (
                         <div key={key} className="SetItem" style={{paddingBottom: item === openItem?.items.at(-1) ? '8vw' : '1.444045vw' }}>
-                          <div className="itemNumber">
+                          <div className="itemNumber" onClick={() => getItem('home', thisCity, item.id, 'set')}>
                             <span className="ItemDesk">{key + 1}.</span>
                           </div>
 
@@ -207,12 +206,13 @@ export default function ModalCardItemPC() {
                                 src={`https://cdnimg.jacofood.ru/${item.img_app}_292x292.jpg`} 
                                 //style={{ minHeight: GRID * 1.125, minWidth: GRID * 1.125 }}
                                 loading="lazy"
+                                onClick={() => getItem('home', thisCity, item.id, 'set')}
                               />
                             </picture>
                           </div>
 
-                          <div className="itemDesc">
-                            <Typography className="ItemTitleSet" variant="h5" component="span">{item.name}</Typography>
+                          <div className="itemDesc" onClick={() => getItem('home', thisCity, item.id, 'set')}>
+                            <Typography className="ItemName" variant="h5" component="span">{item.name}</Typography>
                             <Typography variant="h5" component="span" className="ItemDesk">
                               {item.marc_desc.length > 0 ? item.marc_desc : item.tmp_desc}
                             </Typography>

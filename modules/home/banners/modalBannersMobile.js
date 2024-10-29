@@ -17,10 +17,10 @@ import { roboto } from '@/ui/Font';
 function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
 
   const [ thisItem, setThisItem ] = useState({});
-  const [ CatsItems ] = useHomeStore( state => [ state.CatsItems ]);
+  const [ CatsItems, getItem ] = useHomeStore( state => [ state.CatsItems, state.getItem ]);
   const [ items, minus, plus, getInfoPromo ] = useCartStore( state => [ state.items, state.minus, state.plus, state.getInfoPromo ]);
 
-  const [thisCityRu] = useCitiesStore((state) => [ state.thisCityRu ]);
+  const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
 
   let count = 0;
 
@@ -109,16 +109,17 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
               alt={thisItem?.name} 
               title={thisItem?.name} 
               src={`https://cdnimg.jacofood.ru/${thisItem.img_app}_292x292.jpg`}
+              onClick={() => getItem('home', thisCity, thisItem.id)}
             />
           </picture>
         ) : false}
       </div>
 
       <div className="itemDesc">
-        <Typography className="ItemName" variant="h5" component="span">
+        <Typography className="ItemName" variant="h5" component="span" onClick={() => getItem('home', thisCity, thisItem.id)}>
           {thisItem?.name}
         </Typography>
-        <Typography variant="h5" component="span" className="ItemDesk">
+        <Typography variant="h5" component="span" className="ItemDesk" onClick={() => getItem('home', thisCity, thisItem.id)}>
           {thisItem?.marc_desc?.length > 0 ? thisItem?.marc_desc : thisItem?.tmp_desc}
         </Typography>
 

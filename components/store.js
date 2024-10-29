@@ -161,7 +161,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // установить размер сдачи при оплате наличными курьеру
   setSdacha: (sdacha) => {
 
-    let val = sdacha.target.value;
+    let val = sdacha.target.value.replace(/^0+/, '')
 
     //let numbers = val.replace(/[^0-9]/gi, '');
     //numbers = parseInt(numbers.replaceAll(',', ''));
@@ -1213,6 +1213,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         itemsCount++;
         check = true;
 
+        useProfileStore.getState().saveUserActions('plus_item', item.name);
+
         ym_item = item;
         return item;
       }
@@ -1229,6 +1231,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         item.one_price = item.price;
         //item.cat_id = item.cat_id;
         items = [...items, ...[item]];
+
+        useProfileStore.getState().saveUserActions('plus_item', item.name);
       }
 
       ym_item = item;
@@ -1258,22 +1262,38 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   },
 
   // вычитание товара из корзины
-  minus: (item_id) => {
+  minus: (item_id, type) => {
     let items = get().items;
     let itemsCount = get().itemsCount;
     const promoInfo = get().promoInfo;
 
     let ym_item;
 
-    items = items.reduce((newItems, item) => {
-      if(parseInt(item.item_id) === parseInt(item_id)){
-        item.count--;
-        itemsCount--;
+    if(type && type === 'zero') {
+      items = items.reduce((newItems, item) => {
+        if(parseInt(item.item_id) === parseInt(item_id)){
+          itemsCount = itemsCount - item.count;
+          item.count = 0;
 
-        ym_item = item;
-      }
-      return item.count > 0 ? newItems = [...newItems,...[item]] : newItems;
-    }, [])
+          useProfileStore.getState().saveUserActions('minus_item', item.name);
+
+          ym_item = item;
+        }
+        return item.count > 0 ? newItems = [...newItems,...[item]] : newItems;
+      }, [])
+    } else {
+      items = items.reduce((newItems, item) => {
+        if(parseInt(item.item_id) === parseInt(item_id)){
+          item.count--;
+          itemsCount--;
+
+          useProfileStore.getState().saveUserActions('minus_item', item.name);
+
+          ym_item = item;
+        }
+        return item.count > 0 ? newItems = [...newItems,...[item]] : newItems;
+      }, [])
+    }
 
     let check_dop = items.filter( (item, key) => parseInt(item.count) > 0 && (parseInt(item.item_id) == 17 || parseInt(item.item_id) == 237) );
 
@@ -2371,7 +2391,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   zones: [],
 
   openModalAccount: false,
-  colorAccount: {id: 6, login: "rgba(111, 190, 248, 1)", item: 'rgba(111, 190, 248, 0.1)'},
+  // colorAccount: {id: 6, login: "rgba(111, 190, 248, 1)", item: 'rgba(111, 190, 248, 0.1)'},
+  colorAccount: {id: 6, login: "#F86F6F", item: 'rgba(248, 11, 11, 0.1)'},
 
   openModalProfile: false,
   modalName: null,
@@ -2383,29 +2404,78 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   yearList: [],
   openModalYear: false,
 
-  isOpenModalAddr_test: false,
+  openModalGetAddress: false,
+  street_list: [],
+  choose_street: '',
 
-   // получение адресов в модалке выбора адреса доставки
-   getAddrList: async (value) => {
+  // получение адресов в модалке выбора адреса доставки
+  getAddrList: async (value) => {
 
-    const city = useCitiesStore.getState().thisCityRu;
-
-    console.log("🚀 === city:", city);
-
-    const res = await apiAddress(city, value);
-
-    console.log('getAddrList res', res);
-
-    const allStreets = res?.results?.map(str => str = { name: str.title.text })
-
-    console.log("🚀 === allStreets:", allStreets);
-
-    if(!value) {
-      set({allStreets: []})
+    if(!value || value.length == 0) {
+      set({street_list: []})
     } else {
-      set({allStreets})
+      const city_list = useCitiesStore.getState().thisCityList;
+      const city = city_list.find(({ id }) => parseInt(id) === parseInt(get().active_city))?.name;
+
+      if(city) {
+        const res = await apiAddress(city, value);
+        
+        const street_list = res?.results?.map(str => str = { name: str?.title?.text, title: str?.subtitle?.text, full: str })
+  
+        set({
+          street_list: street_list ?? [],
+        })
+
+      }
     }
 
+  },
+
+  //очистить инпут модалку выбора адреса доставки
+  // setStreet: () => {
+  //   set({openModalGetAddress: false, street_list: [], choose_street: ''});
+  // },
+
+  // выбор улицы в модалке выбора адреса доставки
+  chooseStreet: (addr) => {
+
+    if(addr && addr?.full) {
+
+      useHeaderStore.getState().showLoad(true);
+
+      let this_addr = {
+        dop_name: '',
+        street: '',
+        home: '',
+      };
+
+      addr?.full?.address?.component.map(item => {
+        if(item.kind[0] === 'STREET') {
+          this_addr.street = item.name;
+        }
+        if(item.kind[0] === 'HOUSE') {
+          this_addr.home = item.name;
+        }
+        if(item.kind[0] === 'DISTRICT') {
+          this_addr.dop_name = item.name;
+        }
+      });
+
+      get().checkStreet(this_addr.dop_name+' '+this_addr.street, this_addr.home, 0, get().active_city);
+
+    } 
+
+    if(addr && addr?.name) {
+      set({street_list: [], choose_street: addr.name});
+    } else {
+      set({street_list: [], choose_street: addr});
+    }
+   
+  },
+
+  // открытие/закрытие модалки для выбора Адреса доставки
+  setActiveGetAddressModal: (active) => {
+    set({openModalGetAddress: active});
   },
 
   // установить год в Истории заказов в мобильной версии
@@ -2427,20 +2497,33 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     set({ openModalYear: active, yearList })
   },
 
-
-  // открытие/закрытие модалки с указанием адреса в Адресах доставки и при Оформлении заказа в мобильной версии
+  // открытие/закрытие модалки с указанием адреса в Адресах доставки и при Оформлении заказа
   setActiveAddressModal: async (active, id, city = '') => {
 
-    if(active) {
+    if (active) {
 
-      set({ openModalAddress: active, streetId: id, city})
+      if(useHeaderStore.getState().city !== city) {
+        const findCity = useCitiesStore.getState().thisCityList.find(item => item.link === city);
+
+        if(findCity) {
+          useCitiesStore.getState().setThisCity(findCity?.link);
+          useCitiesStore.getState().setThisCityRu(findCity?.name);
+        }
+
+      }
+
+      set({openModalAddress: active, streetId: id, city});
 
       get().getMapMobile(id, city);
-
     } else {
-      set({ openModalAddress: active, streetId: 0,  city: '', infoAboutAddr: null, center_map: null })
+      set({
+        openModalAddress: active,
+        streetId: 0,
+        city: '',
+        infoAboutAddr: null,
+        chooseAddrStreet_xy: null
+      });
     }
-
   },
 
   // карта для модалки выбора адреса доставки в мобильной версии
@@ -2593,7 +2676,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     set({
       isOpenModalAddr: false,
       openModalAddress: false
-      //isOpenModalAddr_test: false
     })
   },
   openModalAddr: async (id, city = '') => {
@@ -2605,8 +2687,14 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api('profile', data);
 
+    // в этом методе openModalAddr с сервера в json.this_info приходит street: "19-й квартал, бульвар Татищева", а потом в методе checkStreet с сервера в json.addrs приходит street: "бульвар Татищева" - как пример, для этого изменения
+    const street = json?.this_info?.street.split(', ');
+
+    if(json?.this_info?.street && street.length && street.length > 1) {
+      json.this_info.street = street[1];
+    }
+
     set({
-      // isOpenModalAddr_test: true,
       // allStreets: [],
 
 
@@ -2656,14 +2744,11 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       center_map: {
         center: [chooseAddrStreet?.xy[0], chooseAddrStreet?.xy[1]],
       },
+      openModalGetAddress: false
     })
   },
 
   checkStreet: async(street, home, pd, city_id) => {
-
-    if( !street || !home || !city_id ){
-      return ;
-    }
 
     if( get().is_fetch === true ){
       setTimeout( () => {
@@ -2675,7 +2760,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     }else{
       set({
         is_fetch: true,
-        chooseAddrStreet: {}
+        //chooseAddrStreet: {}
       })
     }
 
@@ -2689,6 +2774,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api('profile', data);
 
+    useHeaderStore.getState().showLoad(false);
+
     if( json?.addrs?.length == 1 ){
       json.addrs = json?.addrs[0];
 
@@ -2697,6 +2784,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
         center_map: {
           center: [json?.addrs?.xy[0], json?.addrs?.xy[1]],
         },
+        openModalGetAddress: false,
+        choose_street: ''
       })
 
     } else {
@@ -2719,6 +2808,13 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       is_fetch: false
     })
   },
+
+  setClearAddr: () => {
+    set({
+      chooseAddrStreet: {}
+    });
+  },
+
   saveNewAddr: async(pd, domophome, et, kv, comment, token, is_main, nameAddr, city_id) => {
 
     if( get().is_fetch_save_new_addr === true ){
@@ -2796,11 +2892,15 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       is_fetch_save_new_addr: true
     })
 
+    let street = get().chooseAddrStreet;
+
+    street.street_id = street.id;
+
     let data = {
       type: 'update_addr',
       token: token,
       city_id: city_id,
-      street: JSON.stringify( get().chooseAddrStreet ),
+      street: JSON.stringify(street),
       pd: pd,
       domophome: domophome === true ? 1 : 0,
       et: et,
@@ -2868,7 +2968,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     //get().setMapZone(json.zones, json.city_center)
   },
   clearAddr: () => {
-    alert( 'clearAddr' )
     set({
       chooseAddrStreet: {},
       infoAboutAddr: null
@@ -3109,18 +3208,10 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   // изменение/введение логина/телефона
   changeLogin: (event) => {
 
-    if(!event) {
-      set({ loginLogin: '' });
-      return;
-    }
-
     let data = event.target.value;
 
-    if (isNaN(data) && data != '+') {
-      return;
-    }
-
-    if (parseInt(data[0]) == 9) {
+    if (parseInt(data[0]) == 1 || parseInt(data[0]) == 2 || parseInt(data[0]) == 3 || parseInt(data[0]) == 4 || parseInt(data[0]) == 5 || parseInt(data[0]) == 6 || parseInt(data[0]) == 7 || parseInt(data[0]) == 8 || parseInt(data[0]) == 9) {
+      data = data.slice(1);
       data = '8' + data;
     }
 
@@ -3129,26 +3220,18 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       data = '8' + data;
     }
 
-    if (parseInt(data[0]) == '7') {
-      data = data.slice(1);
-      data = '8' + data;
-    }
+    // if (parseInt(data[0]) == '7') {
+    //   data = data.slice(1);
+    //   data = '8' + data;
+    // }
 
-    data = data.split(' ').join('');
-    data = data.split('(').join('');
-    data = data.split(')').join('');
-    data = data.split('-').join('');
-    data = data.split('_').join('');
-
-    if (data.length < 12) {
-      set({ loginLogin: data });
-    }
+    set({loginLogin: data});
   },
 
   // установление пароля при авторизации
   setPwdLogin: (event) => {
     if(event) {
-      set({ pwdLogin: event.target.value });
+      set({pwdLogin: event.target.value.replaceAll(' ', '')});
     } else {
       set({ pwdLogin: event });
     }
@@ -3220,6 +3303,8 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       set({
         errTextAuth: res?.text,
       });
+
+      get().setActiveModalAlert(true, res.text, false);
     } else {
       set({
         errTextAuth: '',
@@ -3271,9 +3356,17 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     set({ loading: true });
 
+    let login = get().loginLogin;
+
+    login = login.split(' ').join('');
+    login = login.split('(').join('');
+    login = login.split(')').join('');
+    login = login.split('-').join('');
+    login = login.split('_').join('');
+
     const data = {
       type: 'site_login',
-      number: get().loginLogin,
+      number: login,
       pwd: get().pwdLogin,
     };
 
@@ -3284,6 +3377,8 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
         errTextAuth: json?.text,
         loading: false,
       });
+
+      get().setActiveModalAlert(true, json.text, false);
     } else {
       set({
         errTextAuth: '',
@@ -3483,6 +3578,8 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       set({
         errTextAuth: json?.text,
       });
+
+      get().setActiveModalAlert(true, json.text, false);
     }
 
     setTimeout(() => {
@@ -3596,6 +3693,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
   openItem: null,
   isOpenModal: false,
   typeModal: 'start',
+  typeModal_dop: 'start',
   foodValue: false,
 
   activeSlider: true,
@@ -3622,6 +3720,25 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
   all_tags: [],
 
   pageBanner: null,
+
+  openItemCard: false,
+  item_card: null,
+
+  // закрытие модалки товара в списке сетов
+  closeItemModal: () => {
+
+    let state = { },
+      title = '',
+      url = window.location.pathname;
+
+    window.history.pushState(state, title, url)
+
+    set({
+      openItemCard: false,
+      foodValue: false,
+      item_card: null
+    });
+  },
 
   // сброс фильтра на главной странице
   resetFilter: () => {
@@ -3876,7 +3993,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     set({cat_position: value})
   },
   
-  setActiveModalCardItemMobile: (active) => {
+  setActiveModalCardItemMobile: (active, type) => {
     if( active == false ){
       let state = { },
         title = '',
@@ -3884,12 +4001,22 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
       window.history.pushState(state, title, url);
 
-      set({
-        openItem: null
-      })
+      if(type && type === 'dop'){
+        set({ item_card: null });
+      } else {
+        set({
+          openItem: null
+        })
+      }
+
     }
 
-    set({ isOpenModal: active });
+    if(type && type === 'dop'){
+      set({ openItemCard: active });
+    } else {
+      set({ isOpenModal: active });
+    }
+
   },
 
   getBanners: async (this_module, city) => {
@@ -3982,7 +4109,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
   },
 
   // получение данных выбранного товара
-  getItem: async (this_module, city, item_id) => {
+  getItem: async (this_module, city, item_id, type) => {
 
     let data = {
       type: 'get_item',
@@ -3998,17 +4125,37 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
           url = window.location.pathname+'?item='+json?.link;
 
       window.history.pushState(state, title, url);
-    }else{
-      get().closeModal();
+    } else {
+
+      if(type && type === 'set') {
+        get().closeItemModal();
+      } else {
+        get().closeModal();
+      }
+ 
     }
 
     useProfileStore.getState().saveUserActions('open_item_home', json?.name);
+  
+    if(type && type === 'set') {
+      set({
+        openItemCard: true,
+        item_card: json,
+        typeModal_dop: 'start',
+      });
+    } else {
+      set({
+        isOpenModal: true,
+        openItem: json,
+        typeModal: 'start',
+      });
+    }
 
-    set({
-      isOpenModal: true,
-      openItem: json,
-      typeModal: 'start',
-    });
+    //set({
+      // isOpenModal: true,
+      // openItem: json,
+      // typeModal: 'start',
+    //});
   },
 
   // закрытие модального окна товара на главной странице
@@ -4037,17 +4184,47 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     } 
   },
 
+  // навигация между модальными окнами товара открытыми в модалке сета
+  navigate_dop: (typeModal_dop) => {
+
+    if(typeModal_dop === 'value') {
+      set({ typeModal_dop, foodValue: true  });
+    } else {
+      set({ typeModal_dop, foodValue: false });
+    } 
+  },
+
   // закрытие БЖУ/Cета товара
   closeTypeModal: (event) => {
 
-    if(event.target.classList.contains("first_text") || !event.target.classList.value || 
-       event.target.classList.contains('MuiDialog-container') || event.target.classList.contains('minus') || 
-       event.target.classList.contains('plus')) {
+    if(event.target.classList.contains("first_text") || 
+      !event.target.classList.value || 
+       event.target.classList.contains('MuiDialog-container') || 
+       event.target.classList.contains('minus') || 
+       event.target.classList.contains('plus') || 
+       event.target.classList.contains('ItemName') || 
+       event.target.classList.contains('ItemDesk')) {
 
       return;
 
     } else {
       get().navigate('start');
+    }
+  },
+
+  // закрытие БЖУ/Cета товара при открытии в сете товара
+  closeTypeModal_dop: (event) => {
+
+    if(event.target.classList.contains("first_text") || 
+      !event.target.classList.value || 
+       event.target.classList.contains('MuiDialog-container') || 
+       event.target.classList.contains('minus') || 
+       event.target.classList.contains('plus')) {
+
+      return;
+
+    } else {
+      get().navigate_dop('start');
     }
   },
 

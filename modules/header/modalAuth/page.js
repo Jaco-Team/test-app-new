@@ -93,7 +93,8 @@ export default function ModalAuth({ city }) {
     closeModal()
   }
 
-  const login = typeLogin === 'loginSMSCode' ? 'Проверочный код' : typeLogin === 'resetPWD' ? 'Новый пароль' : typeLogin === 'createPWD' ? 'Придумайте пароль' : typeLogin === 'finish' ? 'Всё получилось!' : typeLogin === 'loginSMS' ? 'Вход по СМС' : 'Авторизация';
+  const login = typeLogin === 'loginSMSCode' ? 'Проверочный код' : typeLogin === 'resetPWD' ? 'Новый пароль' : typeLogin === 'createPWD' ? 'Придумайте пароль' : typeLogin === 'finish' ? 'Всё получилось!' : typeLogin === 'loginSMS' 
+  ? 'Вход по СМС' : 'Мой Жако';
 
   if( matches ){
     return (
@@ -119,13 +120,13 @@ export default function ModalAuth({ city }) {
             <div className="authLogin">{login}</div>
 
             {typeLogin === 'start' || typeLogin === 'create' ?
-                <Stack className='stack'>
-                  {matches ?
-                    <MySwitchMobile onClick={(event) => changeForm(event.target.checked)} checked={form} />
-                    :
-                    <MySwitchPC onClick={(event) => changeForm(event.target.checked)} checked={form} />
-                  }
-                </Stack>
+              <Stack className='stack'>
+                {matches ?
+                  <MySwitchMobile onClick={(event) => changeForm(event.target.checked)} checked={form} />
+                  :
+                  <MySwitchPC onClick={(event) => changeForm(event.target.checked)} checked={form} />
+                }
+              </Stack>
             : null}
 
             {typeLogin === 'start' ? <Start /> : null}

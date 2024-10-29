@@ -66,41 +66,57 @@
 
       & .CartMessage {
         width: 100%;
-        height: $MyScale400_mobile;
-        margin-bottom: $MyScale117_mobile;
+        height: $MyScale200_mobile;
+        margin-bottom: $MyScale120_mobile;
+        border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
         border-radius: $MyScale40_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: center;
 
-        & .message {
-          width: 100% !important;
-          height: 100%;
-
-          & .MuiInputBase-root.MuiOutlinedInput-root {
-            display: flex;
-            align-items: center;
-            border: none;
-            border-radius: 0;
-            padding: 0;
-
-            & textarea {
-              margin: $MyScale50_mobile;
-              padding: 0;
-              @include font40_400();
-              line-height: normal;
-            }
-
-            & fieldset {
-              border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
-              border-radius: $MyScale40_mobile;
-              height: $MyScale400_mobile;
-              margin-bottom: $MyScale117_mobile;
-              padding: 0;
-              top: 0;
-              & legend {
-                line-height: 0;
-              }
-            }
-          }
+        & textarea {
+          height: $MyScale120_mobile;
+          width: 90%;
+          border: 0 none #FFF;
+          overflow: hidden;
+          outline: none;
+          @include font40_400();
         }
+
+        // & .message {
+        //   height: $MyScale100_mobile !important;
+        //   height: 100%;
+
+        //   & .MuiInputBase-root.MuiOutlinedInput-root {
+        //     display: flex;
+        //     align-items: center;
+        //     border: none;
+        //     border-radius: 0;
+        //     padding: 0;
+            
+
+        //     & input {
+        //       width: $MyScale800_mobile;
+        //       margin: $MyScale50_mobile;
+        //       padding: 0;
+        //       @include font40_400();
+        //       line-height: normal;
+        //       white-space: normal;
+        //     }
+
+        //     & fieldset {
+        //       border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+        //       border-radius: $MyScale40_mobile;
+        //       height: $MyScale200_mobile;
+        //       margin-bottom: $MyScale80_mobile;
+        //       padding: 0;
+        //       top: 0;
+        //       & legend {
+        //         line-height: 0;
+        //       }
+        //     }
+        //   }
+        // }
       }
 
       & ul {

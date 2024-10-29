@@ -1,6 +1,26 @@
 import React from 'react';
 import TextField from '@mui/material/TextField';
 
+import { IMaskInput } from 'react-imask';
+
+const TextMaskCustom = React.forwardRef(
+  function TextMaskCustom(props) {
+    // const { onChange, ...other } = props;
+    return (
+      <IMaskInput
+        {...props}
+        mask="# (000) 000-00-00"
+        definitions={{
+          '#': /[1-9]/,
+        }}
+        // inputRef={ref}
+        // onAccept={(value) => onChange({ target: { name: props.name, value } })}
+        overwrite
+      />
+    );
+  },
+);
+
 export default class MyTextInput extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -17,6 +37,7 @@ export default class MyTextInput extends React.PureComponent {
           readOnly: this.props.readOnly ? this.props.readOnly : false,
           endAdornment: this.props.inputAdornment,
           startAdornment: this.props.startAdornment,
+          inputComponent: this.props.mask ? TextMaskCustom : null,
         }}
         defaultValue={this.props.defaultValue}
         label={this.props.label}

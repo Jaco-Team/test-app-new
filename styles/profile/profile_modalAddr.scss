@@ -28,32 +28,75 @@
   }
 }
 
-.MuiAutocomplete-popper {
-  max-height: $MyScale500;
-  width: $MyScale780 !important;
-  border-radius: $MyScale20 !important;
+.autocompletePC {
 
-  margin-top: $MyScale20 !important;
-  box-shadow: 0px $MyScale20 $MyScale40 $MyScale10 rgba(0, 0, 0, 0.25);
-
-  & .MuiPaper-root {
+  & .MuiAutocomplete-popper {
+    // max-height: $MyScale1000;
+    //width: $MyScale780 !important;
+    width: $MyScale1200 !important;
     border-radius: $MyScale20 !important;
-    background-color: transparent;
-    //margin-top: $MyScale20!important;
+  
+    margin-top: $MyScale20 !important;
+    box-shadow: 0px $MyScale20 $MyScale40 $MyScale10 rgba(0, 0, 0, 0.25);
+  
+    & .MuiPaper-root {
+      border-radius: $MyScale20 !important;
+      background-color: transparent;
+      //margin-top: $MyScale20!important;
+    }
+    & .MuiAutocomplete-listbox {
+      max-height: $MyScale800;
+      padding: 0 !important;
+      border-radius: $MyScale20 !important;
+      background-color: #fff;
+    }
   }
-  & .MuiAutocomplete-listbox {
-    padding: 0 !important;
-    border-radius: $MyScale20 !important;
-    background-color: #fff;
+  
+  & .MuiAutocomplete-option {
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    height: $MyScale200;
+  
+    & span:nth-child(1) {
+      @include font40_400();
+      margin-bottom: $MyScale15;
+    }
+    & span:nth-child(2) {
+      @include font30_400();
+      color: rgba(0, 0, 0, 0.4) !important;
+    }
+    //border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
+    //margin-left: $MyScale40;
+    //margin-right: $MyScale40;
   }
 }
-.MuiAutocomplete-option {
-  height: $MyScale100;
-  @include font30_400();
-  //border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
-  //margin-left: $MyScale40;
-  //margin-right: $MyScale40;
+
+.autocompleteMobile {
+  
+  & .MuiAutocomplete-option {
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start !important;
+    justify-content: center !important;
+    height: $MyScale200_mobile !important;
+
+    & span:nth-child(1) {
+      @include font40_400();
+      margin-bottom: $MyScale15;
+    }
+    & span:nth-child(2) {
+      @include font30_400();
+      color: rgba(0, 0, 0, 0.4) !important;
+    }
+    
+  }
 }
+
+
+
+
 
 .modalAddrPC {
   & .MuiDialogContent-root {
@@ -151,6 +194,14 @@
         width: $MyScale700;
       }
       & .street {
+
+        & .MuiFormControl-root {
+          & .MuiInputBase-root::after {
+          border-width: $MyScale3;
+          border-color: rgba(0, 0, 0, 0.2);
+          }
+        }
+        
         margin-left: $MyScale150;
         margin-top: $MyScale60;
         width: $MyScale700;
@@ -174,8 +225,11 @@
         margin-top: $MyScale60;
         width: $MyScale700;
         & > div {
-          width: $MyScale340 !important;
+          width: $MyScale220 !important;
           &:nth-child(1) {
+            margin-right: $MyScale20;
+          }
+          &:nth-child(2) {
             margin-right: $MyScale20;
           }
         }
@@ -243,4 +297,63 @@
       }
     }
   }
+}
+
+.modalGetAddrPC {
+
+  & .MuiDialog-paper {
+    border-radius: $MyScale40;
+    overflow: visible;
+    margin: 0;
+    width: $MyScale1960;
+    max-width: none !important;
+    height: $MyScale1125;
+
+    & .MuiFormControl-root {
+      & input {
+        height: $MyScale40;
+        padding: $MyScale40 !important;
+        //padding-top: 0 !important;
+        @include font40_400();
+      }
+      & .MuiInputBase-root::before {
+        border-width: $MyScale3;
+        border-color: rgba(0, 0, 0, 0.2);
+      }
+    }
+
+    & .container {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      padding: 0;
+  
+      & .closeButton {
+        position: absolute;
+        top: 0;
+        left: -$MyScale80;
+        padding: 0;
+        background-color: transparent;
+  
+        & svg {
+          width: $MyScale60;
+          height: $MyScale60;
+          overflow: visible;
+          border-radius: $MyScale60;
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+      }
+
+      & span {
+        //align-self: center;
+        @include font75_700();
+      }
+  
+      & .street {
+        margin-top: $MyScale80;
+        width: $MyScale1200;
+      }
+    }
+  }
+ 
 }

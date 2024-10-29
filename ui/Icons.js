@@ -1,3 +1,24 @@
+export function Check(props) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      // width="51.863"
+      // height="37.238"
+      fill="none"
+      viewBox="0 0 51.863 37.238"
+      {...props}
+    >
+      <path
+        fill="#49C71D"
+        fillOpacity="1"
+        fillRule="nonzero"
+        d="M17.62 37.23L0 19.61l3-2.98 14.62 14.63L48.86 0l3 3-34.24 34.23z"
+      />
+    </svg>
+  );
+}
+
+
 export function Search(props) {
   return (
     <svg

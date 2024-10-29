@@ -96,6 +96,7 @@ $MyScale95: 3.4296028880866vw;
 $MyScale96: 3.4657039711191vw;
 $MyScale99: 3.5740072202166vw;
 $MyScale100: 3.6101083032491vw;
+$MyScale105: 3.7906137184116vw;
 $MyScale108: 3.898916967509vw;
 $MyScale110: 3.971119133574vw;
 $MyScale112: 4.043321299639vw;
@@ -187,8 +188,13 @@ $MyScale995: 35.920577617329vw;
 $MyScale1000: 36.101083032491vw;
 $MyScale1016: 36.678700361011vw;
 $MyScale1080: 38.98916967509vw;
+$MyScale1125: 40.613718411552vw;
 $MyScale1200: 43.321299638989vw;
 $MyScale1206: 43.537906137184vw;
+$MyScale1235: 44.584837545126vw;
+$MyScale1237: 44.657039711191vw;
+$MyScale1240: 44.765342960289vw;
+$MyScale1320: 47.653429602888vw;
 $MyScale1480: 53.429602888087vw;
 $MyScale1500: 54.151624548736vw;
 $MyScale1542: 55.667870036vw;
@@ -258,6 +264,7 @@ $MyScale75_mobile: 6.4102564102564vw;
 $MyScale77_mobile: 6.5811965811966vw;
 $MyScale80_mobile: 6.8376068376068vw;
 $MyScale83_mobile: 7.0940170940171vw;
+$MyScale85_mobile: 7.2649572649573vw;
 $MyScale86_mobile: 7.3504273504274vw;
 $MyScale90_mobile: 7.6923076923077vw;
 $MyScale94_mobile: 8.034188034188vw;
@@ -342,6 +349,7 @@ $MyScale420_mobile: 35.897435897436vw;
 $MyScale434_mobile: 37.094017094017vw;
 $MyScale440_mobile: 37.606837606838vw;
 $MyScale450_mobile: 38.461538461538vw;
+$MyScale455_mobile: 38.888888888889vw;
 $MyScale460_mobile: 39.316239316239vw;
 $MyScale470_mobile: 40.17094017094vw;
 $MyScale480_mobile: 41.025641025641vw;
@@ -713,6 +721,27 @@ $MyScale1871_mobile: 159.91452991453vw;
 
   @media (min-width: 1001px) {
     @include fonsNew( $MyScale44, var(--inter-font));
+  }
+}
+
+@mixin font30_500() {
+  font-style: normal;
+  font-weight: 500;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale30_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew( $MyScale38, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew( $MyScale34, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew( $MyScale30, var(--inter-font));
   }
 }
 

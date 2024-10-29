@@ -23,7 +23,6 @@ export default function Profile(props) {
 
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
-
   const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
 
   useEffect(() => {

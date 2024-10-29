@@ -55,15 +55,17 @@ export default function Filter() {
     if (tag_filter) {
       resetTags();
     }
+
+    setActiveFilter(false);
   };
 
-  const handleText = (event) => {
-    filterText(event);
+  // const handleText = (event) => {
+  //   filterText(event);
 
-    if (tag_filter) {
-      resetTags();
-    }
-  };
+  //   if (tag_filter) {
+  //     resetTags();
+  //   }
+  // };
 
   const handleTag = (id) => {
 
@@ -88,7 +90,11 @@ export default function Filter() {
       filterItems(parseInt(id));
     }
 
-    setActiveFilter(false);
+    if(Number(tag_filter) !== Number(id)) {
+      setActiveFilter(false);
+    }
+
+    // setActiveFilter(false);
   };
 
   useEffect(() => {
@@ -152,7 +158,7 @@ export default function Filter() {
                   <span>Очистить</span>
                 </div>
               </div>
-              <MyTextInput
+              {/* <MyTextInput
                 type="text"
                 value={text_filter}
                 func={(event) => handleText(event)}
@@ -162,7 +168,7 @@ export default function Filter() {
                     <Search />
                   </InputAdornment>
                 }
-              />
+              /> */}
             </div>
           </div>
         </SwipeableDrawer>
@@ -196,7 +202,7 @@ export default function Filter() {
             </div>
 
             <div className='search_clear'>
-              <MyTextInput
+              {/* <MyTextInput
                 type="text"
                 value={text_filter}
                 func={(event) => handleText(event)}
@@ -206,7 +212,7 @@ export default function Filter() {
                     <Search />
                   </InputAdornment>
                 }
-              />
+              /> */}
 
               <div onClick={() => handleTag(-1)} className={'tag'}>
                 <span>Очистить</span>

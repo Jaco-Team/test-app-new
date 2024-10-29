@@ -147,62 +147,85 @@
         flex-direction: column;
         align-items: center;
 
-        & .address_street {
+        & .address_city {
+          display: flex;
+          align-items: center;
           width: $MyScale960_mobile;
           height: $MyScale120_mobile;
+          border-radius: $MyScale60_mobile;
+          border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
           margin-bottom: $MyScale40_mobile;
 
-          & div {
-            width: $MyScale960_mobile;
-            height: $MyScale120_mobile;
-            padding: 0;
+          & span {
+            @include font50_500();
+            margin-left: $MyScale60_mobile;
+          }
 
-            & .MuiAutocomplete-endAdornment {
-              display: flex;
-              justify-content: flex-end;
-              align-items: center;
-              margin-right: $MyScale20_mobile;
-            }
-
-            & svg {
-              width: $MyScale57_3_mobile;
-              height: $MyScale57_3_mobile;
-              margin-left: $MyScale51_mobile;
-            }
-
-            & input {
-              margin-left: $MyScale31_35_mobile;
-              max-width: $MyScale650_mobile;
-              height: $MyScale60_mobile;
-              padding: 0;
-              @include font50_500();
-              &:focus ~ fieldset {
-                border: $MyScale3_mobile solid rgba(221, 26, 50, 0.5) !important;
-              }
-            }
-
-            & > input::placeholder {
-              transform: translate3d(0, -0.34188034188034vw, 0);
-              @include font40_400();
-              color: rgba(0, 0, 0, 0.4) !important;
-            }
-
-            & fieldset {
-              padding: 0;
-              border-radius: $MyScale60_mobile;
-              border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
-            }
+          & svg {
+            width: $MyScale21_mobile;
+            height: $MyScale39_mobile;
+            margin-right: $MyScale60_mobile;
+            margin-left: auto;
+            transform: rotate(90deg);
           }
         }
+
+        & textarea {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          width: $MyScale840_mobile;
+          height: $MyScale120_mobile;
+          border-radius: $MyScale60_mobile;
+          border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+          margin-bottom: $MyScale40_mobile;
+          @include font50_500();
+          overflow: hidden;
+          outline: none;
+          padding: $MyScale20_mobile $MyScale60_mobile;
+        }
+        
+        & > textarea::placeholder {
+          transform: translate3d(0, 2.991452991453vw, 0) !important;
+          @include font40_400();
+          color: rgba(0, 0, 0, 0.2) !important;
+        }
+        // & .address_street {
+        //   display: flex;
+        //   align-items: center;
+        //   justify-content: center;
+        //   width: $MyScale960_mobile;
+        //   min-height: $MyScale150_mobile;
+        //   border-radius: $MyScale60_mobile;
+        //   border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+        //   margin-bottom: $MyScale40_mobile;
+
+        //   & textarea {
+        //     height: $MyScale60_mobile;
+        //     width: 95%;
+        //     // border: 0 none #FFF;
+        //     // overflow: hidden;
+        //     // outline: none;
+        //     @include font50_500();
+        //   }
+
+        //   & > textarea::placeholder {
+        //     transform: translate3d(0, 1.2820512820513vw, 0) !important;
+        //     @include font40_400();
+        //     color: rgba(0, 0, 0, 0.2) !important;
+        //   }
+
+        // }
 
         & .address_dop {
           display: flex;
           align-items: center;
           margin-bottom: $MyScale40_mobile;
-          column-gap: $MyScale40_mobile;
+          column-gap: $MyScale30_mobile;
 
           & div {
-            width: $MyScale460_mobile !important;
+            // width: $MyScale460_mobile !important;
+            width: $MyScale300_mobile !important;
             height: $MyScale120_mobile;
             padding: 0;
 
@@ -378,6 +401,82 @@
           }
         }
       }
+    }
+  }
+}
+
+#addressGetModalmodile {
+  z-index: 1300;
+
+  & .MuiDrawer-paper {
+    height: calc(100% - $MyScale200_mobile);
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+
+    .ContainerGetAddressModal {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      overflow-y: auto;
+
+      & .Line {
+        height: $MyScale10_mobile;
+        width: $MyScale150_mobile;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: $MyScale5_mobile;
+        margin-bottom: $MyScale80_mobile;
+        margin-top: $MyScale40_mobile;
+      }
+
+      & .login {
+        margin-bottom: $MyScale60_mobile;
+        height: $MyScale120_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include font75_700();
+      }
+
+      & .address {
+        margin-bottom: $MyScale40_mobile;
+
+        & div {
+          width: $MyScale960_mobile;
+          height: $MyScale120_mobile;
+          padding: 0;
+
+          & input {
+            margin-left: $MyScale60_mobile;
+            width: $MyScale650_mobile;
+            height: $MyScale60_mobile;
+            padding: 0;
+            @include font50_500();
+            &:focus ~ fieldset {
+              border: $MyScale3_mobile solid rgba(221, 26, 50, 0.5) !important;
+            }
+          }
+
+          & > input::placeholder {
+            transform: translate3d(0, -0.34188034188034vw, 0);
+            @include font40_400();
+            color: rgba(0, 0, 0, 0.4) !important;
+          }
+
+          & fieldset {
+            padding: 0;
+            border-radius: $MyScale60_mobile;
+            border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+          }
+
+          & svg {
+            width: $MyScale21_mobile;
+            height: $MyScale39_mobile;
+            margin-right: $MyScale60_mobile;
+            margin-left: auto;
+            transform: rotate(90deg);
+          }
+        }
+      }
+      
     }
   }
 }

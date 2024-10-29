@@ -44,14 +44,15 @@
         flex-direction: row;
         align-items: center;
         width: $MyScale480;
-        margin-bottom: $MyScale15;
+        margin-bottom: $MyScale50;
       }
 
       .modalLoginStartPC {
-        width: $MyScale620;
+        width: $MyScale640;
         display: flex;
         flex-direction: column;
         align-items: center;
+        position: relative;
 
         & .loginErr {
           width: $MyScale560;
@@ -68,94 +69,160 @@
           }
         }
 
-        & .inputLogin {
-          width: $MyScale620;
-          height: $MyScale60;
+        & .inputLogin:not(.lable_position) {
+          height: $MyScale80;
           display: flex;
           flex-direction: row;
           justify-content: center;
-
-          & .MuiInputBase-root.MuiInput-root:after {
-            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.4);
-          }
-
-          & .MuiInputBase-root.MuiInput-root:before {
-            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.2);
-          }
-
-          & .MuiInputBase-root.MuiInput-root {
-            width: $MyScale480;
+          
+          & .MuiInputBase-root.MuiOutlinedInput-root {
+            width: $MyScale510;
+            border-radius: $MyScale20;
 
             & input {
-              padding: 0;
-              height: $MyScale40;
-              margin-bottom: $MyScale20;
-              margin-left: $MyScale40;
-              @include font40_400();
+              width: $MyScale400;
+              height: $MyScale60;
+              margin-left: $MyScale20;
+              @include font30_500();
             }
 
             & > input::placeholder {
-              transform: translate3d(0, -$MyScale4, 0);
+              color: rgba(0, 0, 0, 0.6) !important;
               @include font30_400();
-              color: rgba(0, 0, 0, 0.4) !important;
             }
 
-            & svg {
-              width: $MyScale40;
-              height: $MyScale40;
-              margin-bottom: $MyScale20;
-              cursor: default;
+            & fieldset {
+              padding-left: $MyScale30;
+              & legend {
+                width: $MyScale125;
+              }
+            }
+        
+          }
+
+          & .MuiFormLabel-root.MuiInputLabel-root {
+            color: rgba(0, 0, 0, 0.4) !important;
+            @include font30_400();
+            padding-left: $MyScale120;
+            top:  -$MyScale5;
+          }
+
+          & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
+            color: rgba(0, 0, 0, 0.6) !important;
+            @include font30_400();
+            padding-left: $MyScale120;
+            top:  -$MyScale5;
+          }
+          
+          & .MuiOutlinedInput-notchedOutline {
+            border: $MyScale2 solid rgba(0, 0, 0, 0.2);
+          }
+          
+          & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
+            & .MuiOutlinedInput-notchedOutline {
+              border: $MyScale3 solid rgba(0, 0, 0, 0.4);
             }
           }
         }
 
-        & .resetText {
-          width: $MyScale340;
+        & .inputLogin.lable_position {
           height: $MyScale80;
-          @include font22_400();
-          text-align: center;
-          margin-bottom: $MyScale55;
-        }
-
-        & .startInputBox {
-          width: $MyScale620;
           display: flex;
-          position: relative;
-          height: $MyScale60;
-          padding-top: $MyScale40;
-          margin-bottom: $MyScale10;
+          flex-direction: row;
+          justify-content: center;
+          
+          & .MuiInputBase-root.MuiOutlinedInput-root {
+            width: $MyScale510;
+            border-radius: $MyScale20;
 
-          & .eye_icon {
-            right: 0;
-            bottom: 0;
-            position: absolute;
-            width: $MyScale60;
-            height: $MyScale70;
-            z-index: 5;
-            cursor: pointer;
-            & svg {
-              width: $MyScale60;
+            & input {
+              width: $MyScale400;
               height: $MyScale60;
+              margin-left: $MyScale20;
+              @include font30_500();
+            }
+
+            & > input::placeholder {
+              color: rgba(0, 0, 0, 0.6) !important;
+              @include font30_400();
+            }
+
+            & fieldset {
+              padding-left: $MyScale30;
+              & legend {
+                width: $MyScale125;
+              }
+            }
+          }
+
+          & .MuiFormLabel-root.MuiInputLabel-root {
+            color: rgba(0, 0, 0, 0.4) !important;
+            @include font30_400();
+            padding-left: $MyScale80;
+            top:  $MyScale5;
+          }
+
+          & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
+            color: rgba(0, 0, 0, 0.6) !important;
+            @include font30_400();
+            padding-left: $MyScale120;
+            top:  -$MyScale5;
+          }
+          
+          & .MuiOutlinedInput-notchedOutline {
+            border: $MyScale2 solid rgba(0, 0, 0, 0.2);
+          }
+          
+          & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
+            & .MuiOutlinedInput-notchedOutline {
+              border: $MyScale3 solid rgba(0, 0, 0, 0.4);
             }
           }
         }
 
-        & .loginLosePWD {
-          display: flex;
-          align-items: center;
-          height: $MyScale40;
-          margin-bottom: $MyScale20;
-          margin-top: $MyScale10;
+        & .margin_bottom_30 {
+          margin-bottom: $MyScale30;
+        }
+
+        & .check_icon {
+          width: $MyScale30;
+          height: $MyScale30;
+          margin-left: $MyScale18;
+          cursor: default;
+        }
+
+        & .eye_icon {
+          right: -$MyScale5;
+          bottom: -$MyScale10;
+          position: absolute;
+          width: $MyScale60;
+          height: $MyScale70;
+          z-index: 5;
           cursor: pointer;
+          & svg {
+            width: $MyScale40;
+            height: $MyScale40;
+          }
+        }
+
+        & .loginBox {
+          width: $MyScale480;
+          height: $MyScale40;
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+          margin-top: $MyScale10;
+          margin-bottom: $MyScale40;
+
           & span {
-            text-decoration: underline;
             @include font22_400();
             color: rgba(0, 0, 0, 0.4) !important;
+            cursor: pointer;
           }
         }
 
         & .loginLogin {
-          width: $MyScale400;
+          width: $MyScale480;
           height: $MyScale80;
           border-radius: $MyScale40;
           display: flex;
@@ -165,13 +232,6 @@
           & span {
             @include font30_400();
             color: #ffffff !important;
-          }
-        }
-
-        & .loginOR {
-          height: $MyScale40;
-          & > span {
-            @include font22_400();
           }
         }
 
@@ -196,6 +256,37 @@
           }
         }
 
+        & .resetText {
+          width: $MyScale340;
+          height: $MyScale80;
+          @include font22_400();
+          text-align: center;
+          margin-bottom: $MyScale40;
+        }
+
+        //
+
+        & .loginLosePWD {
+          display: flex;
+          align-items: center;
+          height: $MyScale40;
+          margin-bottom: $MyScale20;
+          margin-top: $MyScale10;
+          cursor: pointer;
+          & span {
+            text-decoration: underline;
+            @include font22_400();
+            color: rgba(0, 0, 0, 0.4) !important;
+          }
+        }
+
+        & .loginOR {
+          height: $MyScale40;
+          & > span {
+            @include font22_400();
+          }
+        }
+
         & .loginSMS {
           height: $MyScale40;
           display: flex;
@@ -212,14 +303,16 @@
       }
 
       .modalLoginCreatePC {
-        width: $MyScale480;
+        width: $MyScale640;
         display: flex;
         flex-direction: column;
         align-items: center;
+        position: relative;
 
         & .loginInfo {
           height: $MyScale80;
-          margin-bottom: $MyScale28;
+          margin-bottom: $MyScale10;
+          margin-top: -$MyScale40;
           display: flex;
           align-items: center;
           & h2 {
@@ -227,91 +320,190 @@
           }
         }
 
-        & .inputLogin {
-          width: $MyScale480;
-          height: $MyScale67;
+        & .inputLogin:not(.lable_position) {
+          height: $MyScale80;
           display: flex;
           flex-direction: row;
           justify-content: center;
-
-          & .MuiInputBase-root.MuiInput-root:after {
-            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.4);
-          }
-
-          & .MuiInputBase-root.MuiInput-root:before {
-            border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.2);
-          }
-
-          & .MuiInputBase-root.MuiInput-root {
-            width: $MyScale480;
+          
+          & .MuiInputBase-root.MuiOutlinedInput-root {
+            width: $MyScale510;
+            border-radius: $MyScale20;
 
             & input {
-              padding: 0;
-              height: $MyScale50;
-              margin-bottom: $MyScale17;
-              margin-left: $MyScale40;
-              @include font40_400();
+              width: $MyScale400;
+              height: $MyScale60;
+              margin-left: $MyScale20;
+              @include font30_500();
             }
 
             & > input::placeholder {
-              transform: translate3d(0, -$MyScale4, 0);
+              color: rgba(0, 0, 0, 0.6) !important;
               @include font30_400();
-              color: rgba(0, 0, 0, 0.4) !important;
             }
 
-            & .vectorInput {
-              position: absolute;
-              height: $MyScale50;
-              width: $MyScale50;
-              border-radius: $MyScale50;
-              right: 0;
-              display: flex;
-              justify-content: center;
-              margin-bottom: $MyScale22;
-              cursor: pointer;
+            & fieldset {
+              padding-left: $MyScale30;
+              & legend {
+                width: $MyScale125;
+              }
+            }
+        
+          }
 
-              & .clearSvg {
-                width: $MyScale50;
-                height: $MyScale50;
-                cursor: pointer;
-              }
-              & .vectorSvg {
-                margin-left: auto;
-                width: $MyScale46;
-                height: $MyScale50;
-                cursor: pointer;
-              }
+          & .MuiFormLabel-root.MuiInputLabel-root {
+            color: rgba(0, 0, 0, 0.4) !important;
+            @include font30_400();
+            padding-left: $MyScale120;
+            top:  -$MyScale5;
+          }
+
+          & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
+            color: rgba(0, 0, 0, 0.6) !important;
+            @include font30_400();
+            padding-left: $MyScale120;
+            top:  -$MyScale5;
+          }
+          
+          & .MuiOutlinedInput-notchedOutline {
+            border: $MyScale2 solid rgba(0, 0, 0, 0.2);
+          }
+          
+          & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
+            & .MuiOutlinedInput-notchedOutline {
+              border: $MyScale3 solid rgba(0, 0, 0, 0.4);
+            }
+          }
+
+          & .vectorInput {
+            position: absolute;
+            height: $MyScale50;
+            width: $MyScale50;
+            border-radius: $MyScale50;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-right: $MyScale12;
+            //margin-bottom: $MyScale22;
+            cursor: pointer;
+
+            // & .clearSvg {
+            //   width: $MyScale50;
+            //   height: $MyScale50;
+            //   cursor: pointer;
+            // }
+            & .vectorSvg {
+              margin-left: auto;
+              width: $MyScale46;
+              height: $MyScale50;
+              cursor: pointer;
             }
           }
         }
 
-        & .startInputBox {
-          width: $MyScale620;
+        & .inputLogin.lable_position {
+          height: $MyScale80;
           display: flex;
-          position: relative;
-          height: $MyScale60;
-          padding-top: $MyScale40;
-          margin-bottom: $MyScale80;
+          flex-direction: row;
+          justify-content: center;
+          
+          & .MuiInputBase-root.MuiOutlinedInput-root {
+            width: $MyScale510;
+            border-radius: $MyScale20;
 
-          & .clear_svg {
-            width: $MyScale50;
-            height: $MyScale50;
-            margin-bottom: $MyScale20;
-            cursor: pointer;
+            & input {
+              width: $MyScale400;
+              height: $MyScale60;
+              margin-left: $MyScale20;
+              @include font30_500();
+            }
+
+            & > input::placeholder {
+              color: rgba(0, 0, 0, 0.6) !important;
+              @include font30_400();
+            }
+
+            & fieldset {
+              padding-left: $MyScale30;
+              & legend {
+                width: $MyScale125;
+              }
+            }
           }
 
-          & .eye_icon {
-            right: 0;
-            bottom: 0;
-            position: absolute;
-            width: $MyScale60;
-            height: $MyScale70;
-            z-index: 5;
-            cursor: pointer;
-            & svg {
-              width: $MyScale60;
-              height: $MyScale60;
+          & .MuiFormLabel-root.MuiInputLabel-root {
+            color: rgba(0, 0, 0, 0.4) !important;
+            @include font30_400();
+            padding-left: $MyScale80;
+            top:  $MyScale5;
+          }
+
+          & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
+            color: rgba(0, 0, 0, 0.6) !important;
+            @include font30_400();
+            padding-left: $MyScale120;
+            top:  -$MyScale5;
+          }
+          
+          & .MuiOutlinedInput-notchedOutline {
+            border: $MyScale2 solid rgba(0, 0, 0, 0.2);
+          }
+          
+          & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
+            & .MuiOutlinedInput-notchedOutline {
+              border: $MyScale3 solid rgba(0, 0, 0, 0.4);
             }
+          }
+
+          & .vectorInput {
+            position: absolute;
+            height: $MyScale50;
+            width: $MyScale50;
+            border-radius: $MyScale50;
+            right: 0;
+            display: flex;
+            justify-content: center;
+            margin-bottom: $MyScale22;
+            cursor: pointer;
+
+            & .clearSvg {
+              width: $MyScale50;
+              height: $MyScale50;
+              cursor: pointer;
+            }
+            & .vectorSvg {
+              margin-left: auto;
+              width: $MyScale46;
+              height: $MyScale50;
+              cursor: pointer;
+            }
+          }
+        }
+
+        & .margin_bottom_30 {
+          margin-bottom: $MyScale30;
+        }
+
+        & .check_icon {
+          width: $MyScale30;
+          height: $MyScale30;
+          margin-right: -$MyScale10;
+          //margin-left: $MyScale18;
+          cursor: default;
+        }
+
+        & .eye_icon {
+          right: -$MyScale5;
+          bottom: -$MyScale10;
+          position: absolute;
+          width: $MyScale60;
+          height: $MyScale70;
+          z-index: 5;
+          cursor: pointer;
+          & svg {
+            width: $MyScale40;
+            height: $MyScale40;
           }
         }
 
@@ -319,6 +511,7 @@
           display: flex;
           flex-direction: column;
           align-items: center;
+          margin-top: $MyScale20;
 
           & .data {
             display: flex;

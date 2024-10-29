@@ -16,8 +16,6 @@ import ModalAddr from '@/modules/profile/profile/modalAddr.jsx';
 import ModalAlert from '@/modules/header/alert';
 import SelectAddress from '@/modules/header/selectAddress.js'
 
-import ModalAddr_Test from '@/modules/profile/profile/modalAddrr_test.jsx';
-
 import ModalActiveVK_pc from '@/modules/header/modalActiveVK/modalActiveVK_pc';
 import ModalActiveVK_mobile from '@/modules/header/modalActiveVK/modalActiveVK_mobile';
 
@@ -39,7 +37,6 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 
 export default React.memo(function header({ city, city_list, cats }) {
-  
   const pathname = usePathname();
   const searchParams = useSearchParams();
 
@@ -206,8 +203,6 @@ export default React.memo(function header({ city, city_list, cats }) {
           <ModalAddr />
           <ModalActiveVK_pc />
           <ModalPointClose_pc />
-
-          <ModalAddr_Test />
         </>
       }
       
