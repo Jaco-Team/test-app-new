@@ -2755,10 +2755,23 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
   // установить выбранный адрес, если похожих адресов больше одного
   setAddress: (chooseAddrStreet) => {
+
+    console.log( 'setAddress chooseAddrStreet', chooseAddrStreet?.xy )
+
+    let zoomSize;
+
+    if(window.innerWidth < 601) {
+      zoomSize = 10.6;
+    } else {
+      zoomSize = 11.5;
+    }
+
     set({
       chooseAddrStreet,
       center_map: {
         center: [chooseAddrStreet?.xy[0], chooseAddrStreet?.xy[1]],
+        zoom: zoomSize,
+        controls: []
       },
       openModalGetAddress: false
     })
@@ -2788,6 +2801,14 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       home: home
     };
 
+    let zoomSize;
+
+    if(window.innerWidth < 601) {
+      zoomSize = 10.6;
+    } else {
+      zoomSize = 11.5;
+    }
+
     let json = await api('profile', data);
 
     useHeaderStore.getState().showLoad(false);
@@ -2795,10 +2816,14 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     if( json?.addrs?.length == 1 ){
       json.addrs = json?.addrs[0];
 
+      console.log( 'checkStreet json?.addrs?.xy', json?.addrs?.xy )
+
       set({
         chooseAddrStreet: json?.addrs,
         center_map: {
           center: [json?.addrs?.xy[0], json?.addrs?.xy[1]],
+          zoom: zoomSize,
+          controls: []
         },
         openModalGetAddress: false,
         choose_street: ''
@@ -3192,6 +3217,10 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   // открытие модального окна формы авторизации
   setActiveModalAuth: (active) => {
     set({ openAuthModal: active });
+
+    if( active === true ){
+      set({ typeLogin: 'start', loginLogin: '', pwdLogin: '' });
+    } 
   },
 
   // навигация между формами авторизации
@@ -3226,8 +3255,8 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
     let data = event.target.value;
 
-    if (parseInt(data[0]) == 1 || parseInt(data[0]) == 2 || parseInt(data[0]) == 3 || parseInt(data[0]) == 4 || parseInt(data[0]) == 5 || parseInt(data[0]) == 6 || parseInt(data[0]) == 7 || parseInt(data[0]) == 8 || parseInt(data[0]) == 9) {
-      data = data.slice(1);
+    if (parseInt(data[0]) == 9) {
+      //data = data.slice(1);
       data = '8' + data;
     }
 
@@ -3236,10 +3265,10 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       data = '8' + data;
     }
 
-    // if (parseInt(data[0]) == '7') {
-    //   data = data.slice(1);
-    //   data = '8' + data;
-    // }
+    if (parseInt(data[0]) == '7') {
+      data = data.slice(1);
+      data = '8' + data;
+    }
 
     set({loginLogin: data});
   },
@@ -3307,9 +3336,18 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
 
   // проверка логина, кода при регистрации/логировании
   checkCode: async () => {
+
+    let login = get().loginLogin;
+
+    login = login.split(' ').join('');
+    login = login.split('(').join('');
+    login = login.split(')').join('');
+    login = login.split('-').join('');
+    login = login.split('_').join('');
+
     const data = {
       type: 'check_profile',
-      number: get().loginLogin,
+      number: login,
       cod: get().code,
     };
 
@@ -3528,9 +3566,17 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       doubleClickSMS: true
     })
 
+    let login = get().loginLogin;
+
+    login = login.split(' ').join('');
+    login = login.split('(').join('');
+    login = login.split(')').join('');
+    login = login.split('-').join('');
+    login = login.split('_').join('');
+
     const data = {
       type: 'create_profile',
-      number: get().loginLogin,
+      number: login,
       token: token
     };
 
@@ -3575,9 +3621,17 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
       get().navigate('loginSMSCode');
     }
 
+    let login = get().loginLogin;
+
+    login = login.split(' ').join('');
+    login = login.split('(').join('');
+    login = login.split(')').join('');
+    login = login.split('-').join('');
+    login = login.split('_').join('');
+
     const data = {
       type: 'sendsmsrp',
-      number: get().loginLogin,
+      number: login,
       pwd: get().pwdLogin
     };
 

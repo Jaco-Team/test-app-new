@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useHeaderStore } from '@/components/store';
 
-import MyTextInput from '@/ui/MyTextInput';
+import MyTextInput, { FormattedInputs } from '@/ui/MyTextInput';
 import {EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, Check} from '@/ui/Icons';
 
 import Typography from '@mui/material/Typography';
@@ -24,7 +24,7 @@ export default function ResetPWD() {
         Укажите свой номер телефона и новый пароль
       </div>
 
-      <MyTextInput
+      <FormattedInputs
         type="text"
         placeholder="8 (000) 000-00-00"
         value={loginLogin}

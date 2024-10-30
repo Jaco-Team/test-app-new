@@ -28,8 +28,8 @@
     "@mui/icons-material": "^5.16.7",
     "@mui/material": "^5.16.7",
     "@mui/styled-engine-sc": "^5.14.12",
-    "@next/bundle-analyzer": "^14.2.16",
-    "@next/third-parties": "^14.2.16",
+    "@next/bundle-analyzer": "^15.0.2",
+    "@next/third-parties": "^15.0.2",
     "@pbe/react-yandex-maps": "^1.2.5",
     "@react-spring/web": "^9.7.5",
     "@sentry/browser": "^8.35.0",
@@ -38,7 +38,7 @@
     "@yandex/smart-captcha": "2.6.0",
     "css-mediaquery": "^0.1.2",
     "dayjs": "^1.11.13",
-    "embla-carousel-react": "8.3.0",
+    "embla-carousel-react": "8.3.1",
     "embla-carousel-wheel-gestures": "8.0.1",
     "firebase": "^11.0.1",
     "framer-motion": "^11.11.10",
@@ -69,7 +69,7 @@
     "zustand": "^4.5.5"
   },
   "devDependencies": {
-    "@chromatic-com/storybook": "^3.1.0",
+    "@chromatic-com/storybook": "^3.2.0",
     "@storybook/addon-essentials": "^8.3.6",
     "@storybook/addon-interactions": "^8.3.6",
     "@storybook/addon-links": "^8.3.6",
@@ -80,7 +80,7 @@
     "@storybook/react": "^8.3.6",
     "@storybook/test": "^8.3.6",
     "eslint": "8.57.1",
-    "eslint-config-next": "15.0.1",
+    "eslint-config-next": "15.0.2",
     "eslint-plugin-storybook": "^0.10.1",
     "storybook": "^8.3.6"
   }

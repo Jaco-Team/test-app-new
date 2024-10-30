@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useHeaderStore } from '@/components/store';
 
-import MyTextInput from '@/ui/MyTextInput';
+import MyTextInput, { FormattedInputs } from '@/ui/MyTextInput';
 import {Check} from '@/ui/Icons';
 
 import Typography from '@mui/material/Typography';
@@ -35,7 +35,7 @@ export default function LoginSMS() {
         Укажите свой номер телефона, мы отправим смс
       </div>
 
-      <MyTextInput
+      <FormattedInputs
         type="text"
         placeholder="8 (000) 000-00-00"
         value={loginLogin}

@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import { useHeaderStore } from '@/components/store';
 
-import MyTextInput from '@/ui/MyTextInput';
+import MyTextInput, { FormattedInputs } from '@/ui/MyTextInput';
 import {YaIcon, EyeShow_modalOrder, EyeHide_modalOrder, Check} from '@/ui/Icons';
 
 import Typography from '@mui/material/Typography';
@@ -13,15 +13,10 @@ export default function Start() {
 
   const [navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, matches, yandexAuthLink, setActiveModalAlert] = useHeaderStore((state) => [state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.logIn, state.matches, state.yandexAuthLink, state.setActiveModalAlert]);
 
-  {/* <div className="loginErr">
-    <Typography component="span">{errTextAuth}</Typography>
-  </div> */}
-  //const focusRef = useRef(null);
-
   return (
     <div className={matches ? 'modalLoginStartMobile' : 'modalLoginStartPC'}>
 
-      <MyTextInput
+      <FormattedInputs
         type="text"
         placeholder="8 (000) 000-00-00"
         value={loginLogin}
@@ -30,6 +25,8 @@ export default function Start() {
         className={loginLogin.length > 0 ? "inputLogin margin_bottom_30" : "inputLogin lable_position margin_bottom_30"}
         mask={true}
         label="Телефон"
+        autoComplete="true"
+        onBlur={(event) => changeLogin(event)}
         inputAdornment={
           <InputAdornment position="end">
             {loginLogin.length === 17 ? (

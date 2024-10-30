@@ -3,23 +3,85 @@ import TextField from '@mui/material/TextField';
 
 import { IMaskInput } from 'react-imask';
 
-const TextMaskCustom = React.forwardRef(
-  function TextMaskCustom(props) {
-    // const { onChange, ...other } = props;
+
+
+const TextMaskCustomNew = React.forwardRef(
+  function TextMaskCustom(props, ref) {
+    const { onChange, ...other } = props;
     return (
       <IMaskInput
-        {...props}
-        mask="# (000) 000-00-00"
-        definitions={{
-          '#': /[1-9]/,
-        }}
-        // inputRef={ref}
-        // onAccept={(value) => onChange({ target: { name: props.name, value } })}
+        {...other}
+        mask="8 (000) 000-00-00"
+        
+        inputRef={ref}
+        onAccept={(value) => onChange({ target: { value } })}
         overwrite
       />
     );
   },
 );
+
+export function FormattedInputs(props) {
+  return (
+    <TextField 
+        InputProps={{
+          readOnly: props.readOnly ? props.readOnly : false,
+          endAdornment: props.inputAdornment,
+          startAdornment: props.startAdornment,
+          inputComponent: props.mask ? TextMaskCustomNew : null,
+        }}
+        defaultValue={props.defaultValue}
+        label={props.label}
+        placeholder={props.placeholder}
+        value={props.value}
+        onChange={props.func}
+        onBlur={props.onBlur ? props.onBlur : null}
+        onKeyDown={props.onKeyDown ? props.onKeyDown : null}
+        disabled={ props.disabled || props.disabled === true ? true : false }
+        variant={ props.variant ? props.variant : "outlined"  }
+        size={'small'} 
+        color='primary'
+        multiline={props.multiline ? props.multiline : false}
+        maxRows={props.maxRows ? props.maxRows : 1}
+        type={ props.type ? props.type : state.type }
+        style={{ width: '100%', zIndex: 3 }} 
+        className={ props.className ? props.className : '' }
+        name={props.name}
+        autoComplete={props.autoComplete ? props.autoComplete : null}
+      />
+  )
+}
+
+const TextMaskCustom = 
+  function TextMaskCustom(props, event) {
+    return (
+      <IMaskInput
+        {...props}
+        mask="{8}(000)000-00-00"
+        autoComplete={true}
+        value={ props.value }
+        // inputRef={ref}
+        // onAccept={(value) => onChange({ target: { name: props.name, value } })}
+        overwrite
+      />
+    );
+  }
+
+export const MyTextMaskCustom = function TextMaskCustom(props) {
+  console.log('props', props)  
+
+  return (
+    <IMaskInput
+      {...props}
+      mask="{8}(000)000-00-00"
+      className={ props.className }
+      value={ props.value }
+      // inputRef={ref}
+      // onAccept={(value) => onChange({ target: { name: props.name, value } })}
+      overwrite
+    />
+  )
+}
 
 export default class MyTextInput extends React.PureComponent {
   constructor(props) {
