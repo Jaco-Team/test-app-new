@@ -3,6 +3,7 @@ import { useState, useEffect } from 'react';
 import { useCartStore, useCitiesStore, useProfileStore } from '@/components/store.js';
 
 import AddressModalMobile from '@/modules/profile/address/modalAddressMobile';
+import GetAddressMobile from '@/modules/profile/address/modalGetAddressMobile';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
@@ -214,6 +215,7 @@ export default function CartMenuMobile({ cityName }) {
         ) : null}
 
         <AddressModalMobile />
+        <GetAddressMobile />
       </div>
     </SwipeableDrawer>
   );
