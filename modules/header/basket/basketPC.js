@@ -11,6 +11,12 @@ import InputAdornment from '@mui/material/InputAdornment';
 import Popover from '@mui/material/Popover';
 import Button from '@mui/material/Button';
 
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import Typography from '@mui/material/Typography';
+
 const dopText = 'Блюда могут содержать ингредиенты, обладающие аллергенными свойствами. Если у вам есть аллергия на какой-либо продукт, пожалуйста, уточняйте состав в меню или на кассе. Обратите внимание, что мы не можем исключить или заменить ингредиенты, но с удовольствием поможем выбрать блюдо с подходящим составом.';
 
 export default function BasketPC() {
@@ -69,7 +75,16 @@ export default function BasketPC() {
       >
         <div>
 
-          <span className='dopText'>{dopText}</span>
+          {/* <span className='dopText'>{dopText}</span> */}
+
+          <Accordion className='dopText_accordion'>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>Об аллергенах</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              {dopText}
+            </AccordionDetails>
+          </Accordion>
 
           <TablePC />
 

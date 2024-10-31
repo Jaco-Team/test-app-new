@@ -30,44 +30,47 @@
 
 .autocompletePC {
 
-  & .MuiAutocomplete-popper {
-    // max-height: $MyScale1000;
-    //width: $MyScale780 !important;
-    width: $MyScale1200 !important;
-    border-radius: $MyScale20 !important;
+  // & .MuiAutocomplete-popper {
+  //   // max-height: $MyScale1000;
+  //   //width: $MyScale780 !important;
+  //   width: $MyScale1200 !important;
+  //   border-radius: $MyScale20 !important;
   
-    margin-top: $MyScale20 !important;
-    box-shadow: 0px $MyScale20 $MyScale40 $MyScale10 rgba(0, 0, 0, 0.25);
+  //   margin-top: $MyScale20 !important;
+  //   box-shadow: 0px $MyScale20 $MyScale40 $MyScale10 rgba(0, 0, 0, 0.25);
   
-    & .MuiPaper-root {
-      border-radius: $MyScale20 !important;
-      background-color: transparent;
-      //margin-top: $MyScale20!important;
-    }
-    & .MuiAutocomplete-listbox {
-      max-height: $MyScale800;
-      padding: 0 !important;
-      border-radius: $MyScale20 !important;
-      background-color: #fff;
-    }
-  }
+  //   & .MuiPaper-root {
+  //     border-radius: $MyScale20 !important;
+  //     background-color: transparent;
+  //     //margin-top: $MyScale20!important;
+  //   }
+  //   & .MuiAutocomplete-listbox {
+  //     max-height: $MyScale800;
+  //     padding: 0 !important;
+  //     border-radius: $MyScale20 !important;
+  //     background-color: #fff;
+  //   }
+  // }
   
   & .MuiAutocomplete-option {
     display: flex !important;
     flex-direction: column;
     align-items: flex-start !important;
     justify-content: center !important;
-    height: $MyScale200;
-  
+    height: $MyScale100;
+    padding: $MyScale60 $MyScale40;
+    
     & span:nth-child(1) {
-      @include font40_400();
-      margin-bottom: $MyScale15;
+      @include font30_400();
+      //margin-bottom: $MyScale5;
+      
     }
     & span:nth-child(2) {
-      @include font30_400();
+      @include font22_400();
       color: rgba(0, 0, 0, 0.4) !important;
+      line-height: $MyScale26;
     }
-    //border-bottom: $MyScale3 solid rgba(0, 0, 0, 0.20);
+    border-bottom: $MyScale2 solid rgba(0, 0, 0, 0.10);
     //margin-left: $MyScale40;
     //margin-right: $MyScale40;
   }
@@ -81,6 +84,7 @@
     align-items: flex-start !important;
     justify-content: center !important;
     height: $MyScale200_mobile !important;
+    border-bottom: $MyScale2_mobile solid rgba(0, 0, 0, 0.10);
 
     & span:nth-child(1) {
       @include font40_400();
@@ -194,17 +198,18 @@
         width: $MyScale700;
       }
       & .street {
-
-        & .MuiFormControl-root {
-          & .MuiInputBase-root::after {
-          border-width: $MyScale3;
-          border-color: rgba(0, 0, 0, 0.2);
-          }
-        }
         
         margin-left: $MyScale150;
         margin-top: $MyScale60;
         width: $MyScale700;
+
+        & .MuiAutocomplete-root {
+
+          & .MuiAutocomplete-endAdornment {
+            top: $MyScale20;
+          }
+        }
+
       }
       & .street_dop_3 {
         margin-left: $MyScale150;
@@ -226,6 +231,15 @@
         width: $MyScale700;
         & > div {
           width: $MyScale220 !important;
+
+          & .MuiInputBase-root.MuiInput-root{
+            input::-webkit-outer-spin-button,
+            input::-webkit-inner-spin-button {
+              -webkit-appearance: none;
+              margin: 0;
+            }
+          }
+
           &:nth-child(1) {
             margin-right: $MyScale20;
           }

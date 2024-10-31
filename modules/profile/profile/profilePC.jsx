@@ -22,7 +22,6 @@ import MySelect from '@/ui/MySelect.js';
 import { CloseIconMin, ProfileIconNew } from '@/ui/Icons.js';
 
 import ModalAddr from './modalAddr.jsx';
-import GetAddress from './modalGetAddress_PC.js';
 
 import { useProfileStore, useHeaderStore } from '@/components/store.js';
 
@@ -292,7 +291,6 @@ export default function ProfilePC({ page, this_module, city }){
 
       </Grid>
       
-      <GetAddress />
       <ProfileBreadcrumbs />
       <ModalAddr />
 

@@ -4206,7 +4206,6 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       }
  
     }
-
     useProfileStore.getState().saveUserActions('open_item_home', json?.name);
   
     if(type && type === 'set') {

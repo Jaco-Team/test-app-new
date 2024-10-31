@@ -245,6 +245,36 @@
       }
     }
 
+    .CartItemDopText_accordion {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: $MyScale40_mobile;
+      text-align: center;
+      @include font40_400();
+      width: $MyScale1090_mobile;
+      box-shadow: unset;
+      margin-top: 0;
+      position: static;
+      
+      & .MuiButtonBase-root.MuiAccordionSummary-root {
+        height: $MyScale180_mobile;
+        padding-left: $MyScale120_mobile;
+
+        & p {
+          @include font40_400();
+        }
+
+        & svg {
+          width: $MyScale80_mobile;
+          height: $MyScale80_mobile;
+        }
+
+      }
+     
+      & .MuiAccordionDetails-root {
+        padding: $MyScale40_mobile $MyScale100_mobile $MyScale100_mobile;
+      }
+    }
+
     .CartItemDopText {
       width: $MyScale1090_mobile;
       min-height: $MyScale280_mobile;

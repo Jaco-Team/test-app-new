@@ -17,6 +17,11 @@ import { SwitchBasketPC as MySwitchPC } from '@/ui/MySwitch.js';
 import { SwitchBasketMobile as MySwitchMobile } from '@/ui/MySwitch.js';
 import { ArrowDownBasketModalPC, ArrowDownCartMobile, CityBasketModalPC, HomeBasketModalPC, PointBasketModalPC, TimeBasketModalPC, CardBasketModalPC, MessageBasketModalPC } from '@/ui/Icons.js';
 
+import Accordion from '@mui/material/Accordion';
+import AccordionSummary from '@mui/material/AccordionSummary';
+import AccordionDetails from '@mui/material/AccordionDetails';
+import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+
 import { roboto } from '@/ui/Font.js';
 
 import dayjs from 'dayjs';
@@ -549,9 +554,18 @@ export default function FormOrder({ cityName }) {
             </Button>
           )}
 
-          <div className="CartItemDopText" style={{ marginBottom: itemsOffDops.length ? null : '3.4188034188034vw' }}>
+          <Accordion className='CartItemDopText_accordion' style={{ marginBottom: itemsOffDops.length ? null : '3.4188034188034vw' }}>
+            <AccordionSummary expandIcon={<ExpandMoreIcon />}>
+              <Typography>Об аллергенах</Typography>
+            </AccordionSummary>
+            <AccordionDetails>
+              {dopText_2}
+            </AccordionDetails>
+          </Accordion>
+
+          {/* <div className="CartItemDopText" style={{ marginBottom: itemsOffDops.length ? null : '3.4188034188034vw' }}>
             <span>{dopText_2}</span>
-          </div>
+          </div> */}
 
           {itemsOffDops.map((item, key) => (
             <CartItemMobile key={key} count={item.count} item={item} last={ item === itemsOffDops.at(-1) ? 'last' : '' }/>

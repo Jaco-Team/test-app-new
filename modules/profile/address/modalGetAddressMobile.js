@@ -1,5 +1,5 @@
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
-import MyAutocomplete_test from '@/ui/MyAutocomplete_test';
+import MyAutocomplete from '@/ui/MyAutocomplete';
 
 import { roboto } from '@/ui/Font.js';
 import { useProfileStore, useHeaderStore } from '@/components/store.js';
@@ -49,13 +49,14 @@ export default function GetAddressMobile() {
           <span className='login'>Адрес доставки</span>
 
           <div className='address'>
-            <MyAutocomplete_test 
+            <MyAutocomplete 
               placeholder={'Улица и номер дома'} 
               data={street_list} 
-              func={event => debouncedSearch(event)} 
-              setStreet={chooseStreet}
+              val={choose_street} 
+              onChange={event => chooseStreet(event)} 
+              func={event => debouncedSearch(event)}
               matches={matches}
-              value={choose_street}
+              className="address"
             />
           </div>
 

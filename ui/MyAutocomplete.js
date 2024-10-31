@@ -1,11 +1,13 @@
 import React, { useState, useEffect } from 'react';
 
 import TextField from '@mui/material/TextField';
-import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+import Autocomplete from '@mui/material/Autocomplete';
 
-const filter = createFilterOptions();
+//import ClearIcon from '@mui/icons-material/Clear';
+//import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
+//const filter = createFilterOptions();
 
-export default function MyAutocomplete({data, placeholder, onChange, val, className, variant, inputAdornment, customPopper, stylePaper}) {
+export default function MyAutocomplete({data, placeholder, onChange, val, func , variant, inputAdornment, matches, className}) {
   const [value, setValue] = useState( val );
 
   useEffect( () => {
@@ -14,7 +16,20 @@ export default function MyAutocomplete({data, placeholder, onChange, val, classN
 
   return (
     <Autocomplete
+
+      onInputChange={(event, value, reason) => {
+
+        if(reason === 'reset') {
+          func('');
+        }
+
+        if(reason === 'input') {
+          func(value);
+        }
+      }}
+
       value={value}
+
       onChange={(event, newValue, reason) => {
         if (typeof newValue === 'string') {
           setValue({
@@ -35,21 +50,27 @@ export default function MyAutocomplete({data, placeholder, onChange, val, classN
       onBlur={ (event, newValue) => {
         onChange(event.target.value)
       } }
-      filterOptions={(options, params) => {
-        const filtered = filter(options, params);
 
-        const { inputValue } = params;
-        // Suggest the creation of a new value
-        const isExisting = options.some((option) => inputValue === option.name);
-        if (inputValue !== '' && !isExisting) {
-          filtered.push({
-            inputValue,
-            name: inputValue,
-          });
-        }
+      filterOptions={(x) => x}
+      // clearIcon={matches ? false : <ClearIcon />}
 
-        return filtered;
-      }}
+      // filterOptions={(options, params) => {
+      //   const filtered = filter(options, params);
+
+      //   const { inputValue } = params;
+
+      //   // Suggest the creation of a new value
+      //   const isExisting = options.some((option) => inputValue === option.name);
+
+      //   if (inputValue !== '' && !isExisting) {
+      //     filtered.push({
+      //       inputValue,
+      //       name: inputValue,
+      //     });
+      //   }
+
+      //   return filtered;
+      // }}
       //selectOnFocus
       //clearOnBlur
       handleHomeEndKeys
@@ -66,13 +87,24 @@ export default function MyAutocomplete({data, placeholder, onChange, val, classN
         // Regular option
         return option.name;
       }}
-      renderOption={(props, option) => <li className='itemAutocomplited' {...props}>{option.name}</li>}
+      // renderOption={(props, option) => <li className='itemAutocomplited' {...props}>{option.name}</li>}
+
+      renderOption={(props, option) =>
+        <div className={matches ? 'autocompleteMobile' : 'autocompletePC'}>
+          <li {...props}>
+            <span>{option.name}</span>
+            {option.title && option.title.length > 0 && <span>{option.title}</span>}
+          </li>
+        </div>
+      }
+
       freeSolo
       
       renderInput={(params) => (
         <TextField {...params} 
           placeholder={placeholder} 
           variant={variant} 
+          classes={className}
           InputProps={{
             ...params.InputProps,
             startAdornment: inputAdornment,
@@ -82,8 +114,8 @@ export default function MyAutocomplete({data, placeholder, onChange, val, classN
 
       
 
-      PopperComponent={customPopper}
-      componentsProps={stylePaper}
+      // PopperComponent={customPopper}
+      // componentsProps={stylePaper}
     />
   );
 }

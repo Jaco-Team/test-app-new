@@ -439,10 +439,37 @@
       & .address {
         margin-bottom: $MyScale40_mobile;
 
+        & .MuiAutocomplete-root {
+
+          & input {
+            max-width: $MyScale800_mobile;
+          }
+
+          & .MuiAutocomplete-endAdornment {
+            right: 0;
+            width: $MyScale60_mobile;
+            height: $MyScale60_mobile;
+            top: $MyScale60_mobile;
+
+            & button {
+              width: 100%;
+              height: 100%;
+
+              & svg {
+                width: $MyScale50_mobile;
+                height: $MyScale50_mobile;
+              }
+            }
+
+          }
+        }
+
         & div {
           width: $MyScale960_mobile;
           height: $MyScale120_mobile;
           padding: 0;
+          display: flex;
+          flex-direction: row;
 
           & input {
             margin-left: $MyScale60_mobile;

@@ -41,6 +41,34 @@
       border-right: solid 0.72202166064982vw #ffffff;
     }
 
+    .dopText_accordion {
+      background: rgba(0, 0, 0, 0.05);
+      border-radius: $MyScale20;
+      text-align: center;
+      @include font30_400();
+      margin: $MyScale20 $MyScale35 0 $MyScale40;
+      box-shadow: unset;
+      
+      & .MuiButtonBase-root.MuiAccordionSummary-root {
+        height: $MyScale120;
+        padding-left: $MyScale80;
+
+        & p {
+          @include font30_400();
+        }
+
+        & svg {
+          width: $MyScale60;
+          height: $MyScale60;
+        }
+
+      }
+
+      & .MuiAccordionDetails-root {
+        padding: $MyScale20 $MyScale60 $MyScale60;
+      }
+    }
+
     .dopText {
       display: flex;
       align-items: center;
