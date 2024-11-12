@@ -2449,7 +2449,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   // },
 
   // выбор улицы в модалке выбора адреса доставки
-  chooseStreet: (addr) => {
+  chooseStreet: (addr, pd) => {
 
     if(addr && addr?.full) {
 
@@ -2473,7 +2473,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
         }
       });
 
-      get().checkStreet(this_addr.dop_name+' '+this_addr.street, this_addr.home, 0, get().active_city);
+      get().checkStreet(this_addr.dop_name+' '+this_addr.street, this_addr.home, pd, get().active_city);
 
     } 
 
@@ -2756,8 +2756,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   // установить выбранный адрес, если похожих адресов больше одного
   setAddress: (chooseAddrStreet) => {
 
-    console.log( 'setAddress chooseAddrStreet', chooseAddrStreet?.xy )
-
     let zoomSize;
 
     if(window.innerWidth < 601) {
@@ -2816,7 +2814,13 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     if( json?.addrs?.length == 1 ){
       json.addrs = json?.addrs[0];
 
-      console.log( 'checkStreet json?.addrs?.xy', json?.addrs?.xy )
+      if( pd?.length > 0 ){
+        if( json?.addrs?.addressLine?.includes('подъезд') ){
+
+        }else{
+          useHeaderStore.getState().setActiveModalAlert(true, 'Адрес найден, но мы не смогли найти подъезд', false);
+        }
+      }
 
       set({
         chooseAddrStreet: json?.addrs,
@@ -2891,6 +2895,12 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     let json = await api('profile', data);
 
     if( json?.st === true ){
+
+      if( json?.addr ){
+        useCartStore.getState().setAddrDiv(json?.addr)
+        useCartStore.getState().setSummDiv(json?.addr?.sum_div)
+        useCartStore.getState().setActiveMenuCart(false, null)
+      }
 
       get().closeModalAddr();
       get().getUserInfo('profile', get().city, token);

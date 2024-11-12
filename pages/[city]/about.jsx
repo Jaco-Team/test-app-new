@@ -2,6 +2,8 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
+import NextCors from 'nextjs-cors';
+
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const AboutPage = dynamic(() => import('@/modules/about/aboutPage'))
 
@@ -56,10 +58,11 @@ export default React.memo(function About(props) {
 })
 
 export async function getServerSideProps({ req, res, query }) {
-  res.setHeader(
-    'Cache-Control',
-    'public, s-maxage=3600, stale-while-revalidate=3600'
-  );
+  res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=3600');
+  res.setHeader('Access-Control-Allow-Origin', '*');
+  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  res.setHeader('Access-Control-Allow-Credentials', 'true');
+  res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
   let data = {
     type: 'get_page_info', 

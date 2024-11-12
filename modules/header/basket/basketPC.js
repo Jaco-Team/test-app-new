@@ -93,6 +93,8 @@ export default function BasketPC() {
               placeholder="Есть промокод"
               value={promo}
               label=""
+              name="promo"
+              id="promo"
               onKeyDown={setPromoText}
               onBlur={() => getInfoPromo(promo, thisCity)}
               func={(event) => setPromo(event.target.value)}

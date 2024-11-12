@@ -32,19 +32,11 @@ export default function AddressModalMobile({ city }) {
   const [ nameAddr, setNameAddr ] = useState('');
   const [ cityID, setCityID ] = useState(active_city);
 
-  useEffect(() => {
+  /*useEffect(() => {
     if (chooseAddrStreet?.street && chooseAddrStreet?.street?.length > 0 && chooseAddrStreet?.home?.length > 0) {
       checkStreet(chooseAddrStreet?.city_name_dop + ' ' +chooseAddrStreet?.street, chooseAddrStreet?.home, pd, cityID);
     }
-  }, [pd]);
-
-  // useEffect(() => {
-  //   if( street && street.length > 0 && home.length > 0 ){
-  //     checkStreet(street, home, pd, cityID);
-  //   } else {
-  //     checkStreet(null);
-  //   }
-  // }, [street, home, pd]);
+  }, [pd]);*/
 
   function clearAddress(){
     // setHome('');
@@ -84,10 +76,6 @@ export default function AddressModalMobile({ city }) {
     }
   }, [infoAboutAddr] )
  
-  //useEffect( () => {
-    //updateStreetList(cityID);
-  //}, [cityID] )
-
   // без этого при смене города, не меняется карта города
   useEffect( () => {
     
@@ -99,18 +87,6 @@ export default function AddressModalMobile({ city }) {
     setClearAddr();
     clearAddr();
   }, [city])
-
-  // function changeCity(city){
-  //   const city_id = thisCityList.find(({ id }) => parseInt(id) === parseInt(city));
-
-  //   if(city_id) {
-  //     getMapMobile(0, city_id?.link);
-  //   }
-
-  //   setClearAddr();
-  //   setCityID(city);
-  //   clearAddr();
-  // }
 
   useEffect( () => {
     setCityID(active_city);
@@ -180,6 +156,16 @@ export default function AddressModalMobile({ city }) {
     }
   }
 
+  const changePD = (event) => {
+    const pd = event?.target?.value ?? event;
+
+    setPd(pd)
+
+    if (chooseAddrStreet?.street && chooseAddrStreet?.street?.length > 0 && chooseAddrStreet?.home?.length > 0) {
+      checkStreet(chooseAddrStreet?.city_name_dop + ' ' +chooseAddrStreet?.street, chooseAddrStreet?.home, pd, cityID);
+    }
+  }
+
   return (
     <SwipeableDrawer
       anchor={'bottom'}
@@ -191,9 +177,6 @@ export default function AddressModalMobile({ city }) {
       disableSwipeToOpen
     >
       <div className="ContainerAddressModal">
-        <div className="Line"></div>
-        <div className="loginHeader">{infoAboutAddr !== null ? 'Редактирование адреса' : 'Новый адрес'}</div>
-
         {!center_map ? null :
           <div className="map" style={{ minHeight: '93.162393162393vw' }} >
             <YMaps query={{ lang: 'ru_RU', apikey: 'f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8' }}>
@@ -233,17 +216,10 @@ export default function AddressModalMobile({ city }) {
             <span>{thisCityRu}</span>
             <VectorRightMobile />
           </div>
-          {/* <div className="address_street" onClick={() => {  setActiveGetAddressModal(true) }}> */}
-            <textarea
-              onClick={() => {  setActiveGetAddressModal(true) }}
-              value={!chooseAddrStreet?.street ? '' : chooseAddrStreet?.city_name_dop+( chooseAddrStreet?.city_name_dop?.length > 0 ? ', ' : '' )+chooseAddrStreet?.street+', '+chooseAddrStreet?.home}
-              placeholder="Улица и номер дома"
-              type="text"
-              rows={3}
-              className="address_street"
-              readOnly
-            />
-          {/* </div> */}
+          <div className="address_city" onClick={() => {  setActiveGetAddressModal(true) }}>
+            <span>{ !chooseAddrStreet?.street ? '' : chooseAddrStreet?.city_name_dop+( chooseAddrStreet?.city_name_dop?.length > 0 ? ', ' : '' )+chooseAddrStreet?.street+', '+chooseAddrStreet?.home }</span>
+            <VectorRightMobile />
+          </div>
 
           {/* <div className="address_dop">
             <MyTextInput
@@ -268,7 +244,7 @@ export default function AddressModalMobile({ city }) {
               name="pd"
               placeholder="Подьезд"
               type="number"
-              func={ e => setPd(e.target.value) }
+              func={ e => changePD(e) }
             />
             <MyTextInput
               value={et}

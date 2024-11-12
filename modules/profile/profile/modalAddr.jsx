@@ -56,14 +56,6 @@ export default function ModalAddr(){
     }
   }, [pd]);
 
-  // useEffect(() => {
-  //   if(street && street.length > 0 && home.length > 0){
-  //     checkStreet(street, home, pd, cityID);
-  //   } else {
-  //     checkStreet(null);
-  //   }
-  // }, [street, home, pd]);
-
   useEffect( () => {
     if( infoAboutAddr ){
       // setStreet_(infoAboutAddr.street);
@@ -175,7 +167,7 @@ export default function ModalAddr(){
     }
   };
 
-  const debouncedSearch = debounce(fetchSearchResults, 700);
+  const debouncedSearch = debounce(fetchSearchResults, 350);
 
   return (
     <Dialog
@@ -227,7 +219,8 @@ export default function ModalAddr(){
                   placeholder={'Улица и номер дома'} 
                   variant={'standard'} 
                   data={street_list} 
-                  val={!chooseAddrStreet?.street ? '' : chooseAddrStreet?.city_name_dop+( chooseAddrStreet?.city_name_dop?.length > 0 ? ', ' : '' )+chooseAddrStreet?.street+', '+chooseAddrStreet?.home} onChange={event => chooseStreet(event)} 
+                  val={!chooseAddrStreet?.street ? '' : chooseAddrStreet?.city_name_dop+( chooseAddrStreet?.city_name_dop?.length > 0 ? ', ' : '' )+chooseAddrStreet?.street+', '+chooseAddrStreet?.home} 
+                  onChange={event => chooseStreet(event, pd)} 
                   func={event => debouncedSearch(event)}
                   matches={matches}
                 />

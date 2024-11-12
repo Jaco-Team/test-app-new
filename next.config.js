@@ -1,7 +1,7 @@
-const MillionLint = require('@million/lint');
+//const MillionLint = require('@million/lint');
 /** @type {import('next').NextConfig} */
 
-const { withAxiom } = require('next-axiom');
+//const { withAxiom } = require('next-axiom');
 
 const nextConfig = {
   trailingSlash: false,
@@ -37,11 +37,26 @@ const nextConfig = {
       }
     ]
   },
+  async headers() {
+    return [
+      {
+        // matching all API routes
+        source: "/:path*",
+        headers: [
+            { key: "Access-Control-Allow-Credentials", value: "true" },
+            { key: "Access-Control-Allow-Origin", value: "*" }, // replace this your actual origin
+            { key: "Access-Control-Allow-Methods", value: "GET,DELETE,PATCH,POST,PUT" },
+            { key: "Access-Control-Allow-Headers", value: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" },
+            { key: "Cross-Origin-Opener-Policy", value: "same-origin" }
+        ]
+      }
+    ]
+}
 }
 
-const withBundleAnalyzer = require('@next/bundle-analyzer')({
+/*const withBundleAnalyzer = require('@next/bundle-analyzer')({
   enabled: process.env.ANALYZE === 'true',
-})
+})*/
 
 // module.exports = MillionLint.next()(withAxiom(nextConfig));
 //module.exports = withAxiom(nextConfig);

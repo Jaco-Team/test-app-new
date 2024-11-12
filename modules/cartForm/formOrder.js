@@ -606,6 +606,8 @@ export default function FormOrder({ cityName }) {
               placeholder="Есть промокод"
               value={promo}
               label=""
+              name="promo"
+              id="promo"
               onKeyDown={setPromoText}
               onBlur={() => getInfoPromo(promo, thisCity)}
               func={ event => setPromo(event.target.value)}

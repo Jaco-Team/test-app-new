@@ -90,7 +90,7 @@ export default function MyAutocomplete({data, placeholder, onChange, val, func ,
       // renderOption={(props, option) => <li className='itemAutocomplited' {...props}>{option.name}</li>}
 
       renderOption={(props, option) =>
-        <div className={matches ? 'autocompleteMobile' : 'autocompletePC'}>
+        <div key={props?.key} className={matches ? 'autocompleteMobile' : 'autocompletePC'}>
           <li {...props}>
             <span>{option.name}</span>
             {option.title && option.title.length > 0 && <span>{option.title}</span>}

@@ -105,6 +105,8 @@ export default class MyTextInput extends React.PureComponent {
         label={this.props.label}
         placeholder={this.props.placeholder}
         value={this.props.value}
+        name={this.props?.name}
+        id={this.props?.id}
         onChange={this.props.func}
         onBlur={this.props.onBlur ? this.props.onBlur : null}
         onKeyDown={this.props.onKeyDown ? this.props.onKeyDown : null}
@@ -117,7 +119,6 @@ export default class MyTextInput extends React.PureComponent {
         type={ this.props.type ? this.props.type : this.state.type }
         style={{ width: '100%', zIndex: 3 }} 
         className={ this.props.className ? this.props.className : '' }
-        name={this.props.name}
         autoComplete={this.props.autoComplete ? this.props.autoComplete : null}
       />
     )
