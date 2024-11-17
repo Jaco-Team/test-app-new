@@ -25,6 +25,12 @@ const nextConfig = {
         port: '',
         pathname: '**',
       },
+      {
+        protocol: 'http',
+        hostname: 'yacdn.jacofood.ru',
+        port: '',
+        pathname: '**',
+      },
     ],
     minimumCacheTTL: 86400,
   },

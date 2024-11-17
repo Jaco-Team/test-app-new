@@ -4,7 +4,7 @@ import Link from 'next/link';
 
 import { useHeaderStore } from '@/components/store';
 
-import MyTextInput from '@/ui/MyTextInput';
+import MyTextInput, { FormattedInputs } from '@/ui/MyTextInput';
 import {Check, DoneAuthMobile, EyeShow_modalOrder, EyeHide_modalOrder, VectorRightAuthMobile } from '@/ui/Icons';
 
 import Typography from '@mui/material/Typography';
@@ -27,7 +27,7 @@ export default function Create({ city, closeModal }) {
         <Typography component="h2">Укажите свой номер телефона</Typography>
       </div>
 
-      <MyTextInput
+      <FormattedInputs
         type="text"
         placeholder="8 (000) 000-00-00"
         value={loginLogin}
@@ -36,6 +36,8 @@ export default function Create({ city, closeModal }) {
         className={loginLogin.length > 0 ? "inputLogin margin_bottom_30" : "inputLogin lable_position margin_bottom_30"}
         mask={true}
         label="Телефон"
+        autoComplete="true"
+        onBlur={(event) => changeLogin(event)}
         inputAdornment={
           <InputAdornment position="end">
             {matches ? (
@@ -53,7 +55,7 @@ export default function Create({ city, closeModal }) {
             )}
           </InputAdornment>
         }
-      /> 
+      />
 
       <MyTextInput
         type={showPassword ? 'text' : 'password'}
@@ -107,8 +109,8 @@ export default function Create({ city, closeModal }) {
       </div>
 
       {!matches ? null : (
-        <div className="loginLogin" onClick={ loginLogin.length === 17 && checkAccord && checkPolitika && pwdLogin.length > 4 ? sendsmsNewLogin : () => setActiveModalAlert(true, 'Укажите телефон, пароль (минимум 5 символов, без пробелов) и согласие с указанными документами', false)}
-          style={{backgroundColor: loginLogin.length === 17 && checkAccord && checkPolitika && pwdLogin.length > 4 ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)'}}>
+        <div className="loginLogin" onClick={ loginLogin.length >= 11 && checkAccord && checkPolitika && pwdLogin.length > 4 ? sendsmsNewLogin : () => setActiveModalAlert(true, 'Укажите телефон, пароль (минимум 5 символов, без пробелов) и согласие с указанными документами', false)}
+          style={{backgroundColor: loginLogin.length >= 11 && checkAccord && checkPolitika && pwdLogin.length > 4 ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)'}}>
           <Typography component="span">
             Отправить
           </Typography>
