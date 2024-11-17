@@ -19,10 +19,10 @@ export default function CartMapPoints() {
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
 
   useEffect(() => {
-    if(ref.current && center_map?.center){
+    if(ref && ref.current && center_map?.center){
       ref.current.setCenter([zones[0].xy_center_map['latitude'], zones[0].xy_center_map['longitude']]);
     }
-  }, [zones]);
+  }, [ref, center_map, zones]);
 
   return (
     <SwipeableDrawer

@@ -81,6 +81,8 @@ import '../styles/cart/cartMailForm.scss'
 import { useEffect } from 'react';
 import { createTheme, ThemeProvider } from '@mui/material/styles';
 
+import Script from 'next/script';
+
 import YandexMetrika from '@/components/YandexMetrika';
 import { GoogleTagManager } from '@next/third-parties/google'
 
@@ -108,7 +110,7 @@ Sentry.init({
 
   // Alternatively, use `process.env.npm_package_version` for a dynamic release version
   // if your build tool supports it.
-  release: "site_new@1.1.12",
+  release: "site_new@1.1.13",
   allowUrls: [/https?:\/\/((cdn|www)\.)?jacofood\.ru/],
   integrations: [
     Sentry.browserTracingIntegration(),
@@ -225,6 +227,11 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
 
   return (
     <ThemeProvider theme={theme}>
+
+      <Script 
+        src="https://api-maps.yandex.ru/2.1/?apikey=f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8&lang=ru_RU" 
+      />
+
       <YandexMetrika 
         yid={47085879}
         clickmap={true}

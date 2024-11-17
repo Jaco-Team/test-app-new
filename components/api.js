@@ -25,7 +25,7 @@ export function api(module = '', data = {}){
 export async function apiAddress(city, value){
   if( city.length > 0 && value.length > 0 ){
     const token = '15826a23-3220-4e58-acdf-05db437d0837';
-    const urlApi = `https://suggest-maps.yandex.ru/v1/suggest?text=${city},${value}&types=locality,province,area,district,street,house&print_address=1&results=10&apikey=${token}`;
+    const urlApi = `https://suggest-maps.yandex.ru/v1/suggest?text=${city},${value}&types=locality,province,area,district,street,house&print_address=1&results=7&apikey=${token}`;
 
     return axios.post(urlApi)
       .then( (response) => {

@@ -33,6 +33,7 @@ export default function GetAddress() {
   const fetchSearchResults = async (term) => {
     try {
       getAddrList(term);
+      
     } catch (error) {
       console.error('Error fetching data:', error);
     } finally {

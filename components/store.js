@@ -2556,7 +2556,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       active_city: json?.city,
       chooseAddrStreet: json?.this_info ?? {},
       center_map: {
-        center: json?.this_info ? [json?.this_info?.xy[0], json?.this_info?.xy[1]] : [json?.city_center[0], json?.city_center[1]],
+        center: json?.this_info?.xy ? [json?.this_info?.xy[0], json?.this_info?.xy[1]] : [json?.city_center[0], json?.city_center[1]],
         zoom: 11.5,
         controls: []
       },
