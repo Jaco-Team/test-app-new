@@ -68,7 +68,7 @@ export default function ModalCardItemMobile() {
    * 
    * <Image 
                   alt={openItem?.name} 
-                  src={'https://cdnimg.jacofood.ru/' + openItem?.img_app + '_732x732.jpg'} 
+                  src={'https://yacdn.jacofood.ru/' + openItem?.img_app + '_732x732.jpg'} 
                   width={732} 
                   height={732} 
                   quality={100}
@@ -105,34 +105,34 @@ export default function ModalCardItemMobile() {
                   <source 
                     type="image/webp" 
                     srcSet={`
-                      https://cdnimg.jacofood.ru/${img_name}_292x292.webp 138w,
-                      https://cdnimg.jacofood.ru/${img_name}_366x366.webp 146w,
-                      https://cdnimg.jacofood.ru/${img_name}_466x466.webp 183w,
-                      https://cdnimg.jacofood.ru/${img_name}_585x585.webp 233w,
-                      https://cdnimg.jacofood.ru/${img_name}_732x732.webp 292w,
-                      https://cdnimg.jacofood.ru/${img_name}_1168x1168.webp 366w,
-                      https://cdnimg.jacofood.ru/${img_name}_1420x1420.webp 584w,
-                      https://cdnimg.jacofood.ru/${img_name}_2000x2000.webp 760w,
-                      https://cdnimg.jacofood.ru/${img_name}_2000x2000.webp 1875w`} 
+                      https://yacdn.jacofood.ru/${img_name}_292x292.webp 138w,
+                      https://yacdn.jacofood.ru/${img_name}_366x366.webp 146w,
+                      https://yacdn.jacofood.ru/${img_name}_466x466.webp 183w,
+                      https://yacdn.jacofood.ru/${img_name}_585x585.webp 233w,
+                      https://yacdn.jacofood.ru/${img_name}_732x732.webp 292w,
+                      https://yacdn.jacofood.ru/${img_name}_1168x1168.webp 366w,
+                      https://yacdn.jacofood.ru/${img_name}_1420x1420.webp 584w,
+                      https://yacdn.jacofood.ru/${img_name}_2000x2000.webp 760w,
+                      https://yacdn.jacofood.ru/${img_name}_2000x2000.webp 1875w`} 
                     sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
                   <source 
                     type="image/jpeg" 
                     srcSet={`
-                      https://cdnimg.jacofood.ru/${img_name}_292x292.jpg 138w,
-                      https://cdnimg.jacofood.ru/${img_name}_366x366.jpg 146w,
-                      https://cdnimg.jacofood.ru/${img_name}_466x466.jpg 183w,
-                      https://cdnimg.jacofood.ru/${img_name}_585x585.jpg 233w,
-                      https://cdnimg.jacofood.ru/${img_name}_732x732.jpg 292w,
-                      https://cdnimg.jacofood.ru/${img_name}_1168x1168.jpg 366w,
-                      https://cdnimg.jacofood.ru/${img_name}_1420x1420.jpg 584w,
-                      https://cdnimg.jacofood.ru/${img_name}_2000x2000.jpg 760w,
-                      https://cdnimg.jacofood.ru/${img_name}_2000x2000.jpg 1875w`} 
+                      https://yacdn.jacofood.ru/${img_name}_292x292.jpg 138w,
+                      https://yacdn.jacofood.ru/${img_name}_366x366.jpg 146w,
+                      https://yacdn.jacofood.ru/${img_name}_466x466.jpg 183w,
+                      https://yacdn.jacofood.ru/${img_name}_585x585.jpg 233w,
+                      https://yacdn.jacofood.ru/${img_name}_732x732.jpg 292w,
+                      https://yacdn.jacofood.ru/${img_name}_1168x1168.jpg 366w,
+                      https://yacdn.jacofood.ru/${img_name}_1420x1420.jpg 584w,
+                      https://yacdn.jacofood.ru/${img_name}_2000x2000.jpg 760w,
+                      https://yacdn.jacofood.ru/${img_name}_2000x2000.jpg 1875w`} 
                     sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
                   <img 
                     alt={openItem?.name} 
                     title={openItem?.name} 
-                    src={`https://cdnimg.jacofood.ru/${img_name}_292x292.jpg`} 
+                    src={`https://yacdn.jacofood.ru/${img_name}_292x292.jpg`} 
                     //style={{ minHeight: GRID * 1.125, minWidth: GRID * 1.125 }}
                     loading="lazy"
                   />
@@ -275,34 +275,34 @@ export default function ModalCardItemMobile() {
                           <source 
                             type="image/webp" 
                             srcSet={`
-                              https://cdnimg.jacofood.ru/${item.img_app}_292x292.webp 138w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_366x366.webp 146w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_466x466.webp 183w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_585x585.webp 233w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_732x732.webp 292w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_1168x1168.webp 366w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_1420x1420.webp 584w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_2000x2000.webp 760w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_2000x2000.webp 1875w`} 
+                              https://yacdn.jacofood.ru/${item.img_app}_292x292.webp 138w,
+                              https://yacdn.jacofood.ru/${item.img_app}_366x366.webp 146w,
+                              https://yacdn.jacofood.ru/${item.img_app}_466x466.webp 183w,
+                              https://yacdn.jacofood.ru/${item.img_app}_585x585.webp 233w,
+                              https://yacdn.jacofood.ru/${item.img_app}_732x732.webp 292w,
+                              https://yacdn.jacofood.ru/${item.img_app}_1168x1168.webp 366w,
+                              https://yacdn.jacofood.ru/${item.img_app}_1420x1420.webp 584w,
+                              https://yacdn.jacofood.ru/${item.img_app}_2000x2000.webp 760w,
+                              https://yacdn.jacofood.ru/${item.img_app}_2000x2000.webp 1875w`} 
                             sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
                           <source 
                             type="image/jpeg" 
                             srcSet={`
-                              https://cdnimg.jacofood.ru/${item.img_app}_292x292.jpg 138w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_366x366.jpg 146w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_466x466.jpg 183w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_585x585.jpg 233w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_732x732.jpg 292w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_1168x1168.jpg 366w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_1420x1420.jpg 584w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_2000x2000.jpg 760w,
-                              https://cdnimg.jacofood.ru/${item.img_app}_2000x2000.jpg 1875w`} 
+                              https://yacdn.jacofood.ru/${item.img_app}_292x292.jpg 138w,
+                              https://yacdn.jacofood.ru/${item.img_app}_366x366.jpg 146w,
+                              https://yacdn.jacofood.ru/${item.img_app}_466x466.jpg 183w,
+                              https://yacdn.jacofood.ru/${item.img_app}_585x585.jpg 233w,
+                              https://yacdn.jacofood.ru/${item.img_app}_732x732.jpg 292w,
+                              https://yacdn.jacofood.ru/${item.img_app}_1168x1168.jpg 366w,
+                              https://yacdn.jacofood.ru/${item.img_app}_1420x1420.jpg 584w,
+                              https://yacdn.jacofood.ru/${item.img_app}_2000x2000.jpg 760w,
+                              https://yacdn.jacofood.ru/${item.img_app}_2000x2000.jpg 1875w`} 
                             sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
                           <img 
                             alt={item.name} 
                             title={item.name} 
-                            src={`https://cdnimg.jacofood.ru/${item.img_app}_292x292.jpg`} 
+                            src={`https://yacdn.jacofood.ru/${item.img_app}_292x292.jpg`} 
                             //style={{ minHeight: GRID * 1.125, minWidth: GRID * 1.125 }}
                             loading="lazy"
                             onClick={() => getItem('home', thisCity, item.id, 'set')}
