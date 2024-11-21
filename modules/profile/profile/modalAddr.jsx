@@ -186,7 +186,7 @@ export default function ModalAddr(){
 
           <div className='mainGrid'>
             <div className='map'>
-              <YMaps query={{ lang: 'ru_RU', apikey: 'f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8' }}>
+              <YMaps query={{ lang: 'ru_RU', apikey: `${process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP}` }}>
                 <Map defaultState={center_map} instanceRef={ref2} width="100%" height="100%">
 
                   { !chooseAddrStreet || Object.entries(chooseAddrStreet).length === 0 ? null :

@@ -45,7 +45,7 @@ export default memo(function RowPC({ item, count, last }) {
   return (
     <tr style={{ borderBottom: last ? 'none' : '0.072202166064982vw solid rgba(0, 0, 0, 0.1)'}}>
       <td className="CellPic">
-        <Image alt={item?.name} src={'https://yacdn.jacofood.ru/' + item?.img_app + '_584x584.jpg'} width={584} height={584} priority={true}/>
+        <Image alt={item?.name} src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}` + item?.img_app + '_584x584.jpg'} width={584} height={584} priority={true}/>
       </td>
       <td className="CellName">
 

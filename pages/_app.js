@@ -229,7 +229,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
     <ThemeProvider theme={theme}>
 
       <Script 
-        src="https://api-maps.yandex.ru/2.1/?apikey=f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8&lang=ru_RU" 
+        src="https://api-maps.yandex.ru/2.1/?apikey=%NEXT_PUBLIC_YANDEX_TOKEN_MAP%&lang=ru_RU" 
       />
 
       <YandexMetrika 

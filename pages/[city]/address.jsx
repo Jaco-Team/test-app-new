@@ -59,7 +59,7 @@ export default function Address(props) {
 
   return (
     <div className={roboto.variable}>
-      <Script src="https://api-maps.yandex.ru/2.1/?apikey=f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8&lang=ru_RU" />
+      <Script src="https://api-maps.yandex.ru/2.1/?apikey=%NEXT_PUBLIC_YANDEX_TOKEN_MAP%&lang=ru_RU" />
       
       <DynamicPage page={page} this_module={this_module} city={city} />
 
