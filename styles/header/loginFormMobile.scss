@@ -192,6 +192,13 @@
               color: rgba(0, 0, 0, 0.4) !important;
             }
 
+            & input:-webkit-autofill,
+            input:-webkit-autofill:hover,
+            input:-webkit-autofill:focus {
+              -webkit-text-fill-color: rgba(0, 0, 0, 0.8);
+              -webkit-box-shadow: 0 0 0px 40rem #ffff inset;
+            }
+
             & fieldset {
               padding-left: $MyScale60_mobile;
               & legend {
@@ -472,6 +479,13 @@
               //transform: translate3d(0, -$MyScale10_mobile, 0);
               @include font50_400();
               color: rgba(0, 0, 0, 0.4) !important;
+            }
+
+            & input:-webkit-autofill,
+            input:-webkit-autofill:hover,
+            input:-webkit-autofill:focus {
+              -webkit-text-fill-color: rgba(0, 0, 0, 0.8);
+              -webkit-box-shadow: 0 0 0px 40rem #ffff inset;
             }
 
             & fieldset {
