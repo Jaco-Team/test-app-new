@@ -42,7 +42,7 @@ export default function CartMapPoints() {
 
         {!center_map ? null :
           <div style={{ minHeight: '80.34188034188vw', width: '100%', marginBottom: '6.8376068376068vw' }} >
-            <YMaps query={{ lang: 'ru_RU', apikey: `${process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP}` }}>
+            <YMaps query={{ lang: 'ru_RU', apikey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP }}>
               <Map 
                 defaultState={center_map} 
                 instanceRef={ref} 

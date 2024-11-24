@@ -143,17 +143,17 @@ export default (function BannersPC() {
               <picture>
                 <source 
                   type="image/webp" 
-                  srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}`+item.img+"_3700x1000.jpg"} 
+                  srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + item.img+"_3700x1000.jpg"} 
                   sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
                 <source 
                   type="image/jpeg" 
-                  srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}`+item.img+"_3700x1000.jpg"} 
+                  srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + item.img+"_3700x1000.jpg"} 
                   sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
                 <img 
                   alt={item?.name} 
                   title={item?.name} 
-                  src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}`+item.img+"_3700x1000.jpg"} 
+                  src={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + item.img+"_3700x1000.jpg"} 
                   loading="lazy"
                   style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }}
                 />
