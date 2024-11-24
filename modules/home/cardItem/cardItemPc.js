@@ -34,11 +34,11 @@ export default memo(function CardItem({ item, count, index}) {
    *  
    * <Image
             alt={item.name}
-<<<<<<< HEAD
+
             src={'${process.env.NEXT_PUBLIC_YANDEX_IMG}' + item.img_app + '_732x732.jpg'}
-=======
+
             src={'https://cdnimg.jacofood.ru/' + item.img_app + '_732x732.jpg'}
->>>>>>> parent of ceba6e4 (111)
+
             width={732}
             height={732}
             priority={false}
@@ -66,7 +66,7 @@ export default memo(function CardItem({ item, count, index}) {
               <source 
                 type="image/webp" 
                 srcSet={`
-<<<<<<< HEAD
+
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_366x366.webp 138w,
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_466x466.webp 146w,
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_585x585.webp 183w,
@@ -76,22 +76,10 @@ export default memo(function CardItem({ item, count, index}) {
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1168x1168.webp 584w,
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1168x1168.webp 760w,
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1420x1420.webp 1875w`} 
-=======
-                  https://cdnimg.jacofood.ru/${item.img_app}_366x366.webp 138w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_466x466.webp 146w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_585x585.webp 183w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_585x585.webp 233w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_585x585.webp 292w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_732x732.webp 366w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_1168x1168.webp 584w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_1168x1168.webp 760w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_1420x1420.webp 1875w`} 
->>>>>>> parent of ceba6e4 (111)
                 sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
               <source 
                 type="image/jpeg" 
                 srcSet={`
-<<<<<<< HEAD
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_366x366.jpg 138w,
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_466x466.jpg 146w,
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_585x585.jpg 183w,
@@ -101,27 +89,14 @@ export default memo(function CardItem({ item, count, index}) {
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1168x1168.jpg 584w,
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1168x1168.jpg 760w,
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1420x1420.jpg 1875w`} 
-=======
-                  https://cdnimg.jacofood.ru/${item.img_app}_366x366.jpg 138w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_466x466.jpg 146w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_585x585.jpg 183w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_585x585.jpg 233w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_585x585.jpg 292w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_732x732.jpg 366w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_1168x1168.jpg 584w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_1168x1168.jpg 760w,
-                  https://cdnimg.jacofood.ru/${item.img_app}_1420x1420.jpg 1875w`} 
->>>>>>> parent of ceba6e4 (111)
                 sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
               <img 
                 alt={item?.name} 
                 title={item?.name} 
-<<<<<<< HEAD
                 src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.jpg`} 
-=======
-                src={`https://cdnimg.jacofood.ru/${item.img_app}_292x292.jpg`} 
->>>>>>> parent of ceba6e4 (111)
+
+                //src={`https://cdnimg.jacofood.ru/${item.img_app}_292x292.jpg`} 
                 loading="lazy"
                 onClick={() => getItem('home', thisCity, item.id)}
                 style={{ cursor: 'pointer' }}
