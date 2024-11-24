@@ -69,7 +69,7 @@ export default React.memo(function header({ city, city_list, cats }) {
 
     if( typeof window != 'undefined' ){
       const firebaseConfig = {
-        apiKey: 'AIzaSyChAHowCT2C7GRwfcxwt1Pi4SCV4CaVpP4',
+        apiKey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_FIREBASE,
         authDomain: "jacofoodsite.firebaseapp.com",
         projectId: "jacofoodsite",
         storageBucket: "jacofoodsite.appspot.com",
@@ -176,7 +176,7 @@ export default React.memo(function header({ city, city_list, cats }) {
 
   return (
     <div className={roboto.variable} style={{ overflow: 'auto' }}>
-      <Script src={"https://api-maps.yandex.ru/2.1/?apikey=111&lang=ru_RU"} />
+      <Script src={"https://api-maps.yandex.ru/2.1/?apikey="+process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP+"&lang=ru_RU"} />
       <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" strategy="lazyOnload" />
       <Script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js" strategy="lazyOnload" />
       <Script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-token-with-polyfills-latest.js" strategy="lazyOnload" />
