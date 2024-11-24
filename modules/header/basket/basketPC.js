@@ -25,7 +25,7 @@ export default function BasketPC() {
 
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
   const [getInfoPromo, checkPromo, allPrice, promoInfo, itemsCount, setActiveModalBasket, itemsOffDops] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice, state.promoInfo, state.itemsCount, state.setActiveModalBasket, state.itemsOffDops]);
-  const [openBasket, setActiveBasket, targetBasket] = useHeaderStore((state) => [state.openBasket, state.setActiveBasket, state.targetBasket]);
+  const [openBasket, setActiveBasket, targetBasket] = useHeaderStore((state) => [state?.openBasket, state?.setActiveBasket, state?.targetBasket]);
   
   useEffect(() => {
     if (sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0) {

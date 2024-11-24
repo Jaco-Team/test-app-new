@@ -60,7 +60,7 @@ export default React.memo(function header({ city, city_list, cats }) {
 
   const matchesDev = useMediaQuery('screen and (max-width: 800px)');
 
-  const [setMatches, matches, checkToken, isShowLoad, setShowClosePoint] = useHeaderStore( state => [state.setMatches, state.matches, state.checkToken, state.isShowLoad, state.setShowClosePoint] ); 
+  const [setMatches11, matches, checkToken, isShowLoad, setShowClosePoint] = useHeaderStore( state => [state?.setMatches11, state?.matches, state?.checkToken, state?.isShowLoad, state?.setShowClosePoint] ); 
   const [getItemsCat, category] = useHomeStore( state => [state.getItemsCat, state.category]);
   const [ setFreeDrive ] = useCartStore( state => [state.setFreeDrive]);
 
@@ -105,7 +105,9 @@ export default React.memo(function header({ city, city_list, cats }) {
 
   useEffect(() => {
     if(matches !== matchesDev) {
-      setMatches(matchesDev);
+      if( setMatches11 ){
+        setMatches11(matchesDev);
+      }
     }
   }, [matchesDev, matches]);
 

@@ -13,7 +13,7 @@ import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 export default function AddressModalMobile({ city }) {
   const ref2 = useRef();
 
-  const [token, setActiveModalCityList] = useHeaderStore( state => [state.token, state.setActiveModalCityList]);
+  const [token, setActiveModalCityList] = useHeaderStore( state => [state?.token, state?.setActiveModalCityList]);
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
   const [openModalAddress, setActiveAddressModal, setClearAddr, clearAddr, setActiveGetAddressModal] = useProfileStore((state) => [state.openModalAddress, state.setActiveAddressModal, state.setClearAddr, state.clearAddr, state.setActiveGetAddressModal]);
 

@@ -14,7 +14,7 @@ import { roboto } from '@/ui/Font.js';
 export default function ModalAlert() {
   const [progress, setProgress] = useState(0);
 
-  const [matches, openModalAlert, setActiveModalAlert, textAlert, statusAlert] = useHeaderStore((state) => [state.matches, state.openModalAlert, state.setActiveModalAlert, state.textAlert, state.statusAlert]);
+  const [matches, openModalAlert, setActiveModalAlert, textAlert, statusAlert] = useHeaderStore((state) => [state?.matches, state?.openModalAlert, state?.setActiveModalAlert, state?.textAlert, state?.statusAlert]);
 
   useEffect(() => {
 

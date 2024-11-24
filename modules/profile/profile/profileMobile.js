@@ -20,7 +20,7 @@ export default function ProfileMobile({ city, this_module }) {
   const [isSpam, setIsSpam] = useState(0);
   
   const [setActiveProfileModal, setUser, userInfo, getUserInfo, updateUser] = useProfileStore((state) => [state.setActiveProfileModal, state.setUser, state.userInfo, state.getUserInfo, state.updateUser]);
-  const [token] = useHeaderStore( state => [ state.token] )
+  const [token] = useHeaderStore( state => [ state?.token] )
 
   const { control, getValues, setValue } = useForm({
     defaultValues: {

@@ -13,8 +13,8 @@ import { IconClose } from '@/ui/Icons';
 import { roboto } from '@/ui/Font.js';
 
 export default function SelectAddress() {
-  const [matches, openModalSelectAddress, setActiveModalSelectAddress, chooseAddrStreet] = useHeaderStore((state) => [state.matches,
-    state.openModalSelectAddress, state.setActiveModalSelectAddress, state.chooseAddrStreet]);
+  const [matches, openModalSelectAddress, setActiveModalSelectAddress, chooseAddrStreet] = useHeaderStore((state) => [state?.matches,
+    state?.openModalSelectAddress, state?.setActiveModalSelectAddress, state?.chooseAddrStreet]);
   const [setAddress] = useProfileStore((state) => [state.setAddress]);
 
   const handleAddress = (addr) => {

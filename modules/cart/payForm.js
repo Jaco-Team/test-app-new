@@ -13,7 +13,7 @@ import { roboto } from '@/ui/Font.js';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 export default function PayForm() {
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStore((state) => [state?.matches]);
   const [openPayForm, setPayForm] = useCartStore((state) => [state.openPayForm, state.setPayForm]);
 
   return (

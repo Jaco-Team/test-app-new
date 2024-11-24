@@ -57,7 +57,7 @@ export default function ProfileModalMobile({ city, this_module, setUserDate }) {
   const [slidesMonth, setSlidesMonth] = useState(data_m);
 
   const [openModalProfile, setActiveProfileModal, modalName, userInfo, setUser, updateUser] = useProfileStore((state) => [state.openModalProfile, state.setActiveProfileModal, state.modalName, state.userInfo, state.setUser, state.updateUser]);
-  const [ token, signOut ] = useHeaderStore( state => [ state.token, state.signOut ] )
+  const [ token, signOut ] = useHeaderStore( state => [ state?.token, state?.signOut ] )
 
   useEffect(() => {
 

@@ -5,8 +5,8 @@ import { CheckAuthMobile } from '@/ui/Icons';
 import Typography from '@mui/material/Typography';
 
 export default function Finish({ closeModal }) {
-  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [thisCity] = useCitiesStore((state) => [state?.thisCity]);
+  const [matches] = useHeaderStore((state) => [state?.matches]);
 
   return (
     <div className={matches ? 'modalLoginFinishMobile' : 'modalLoginFinishPC'}>

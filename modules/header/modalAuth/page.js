@@ -28,7 +28,7 @@ import { roboto } from '@/ui/Font';
 export default function ModalAuth({ city }) {
   const [form, setForm] = useState(false);
 
-  const [openAuthModal, closeModalAuth, typeLogin, navigate, matches, isAuth, getYandexLinkAuth, yandexAuthCheck, yandexAuthLink] = useHeaderStore((state) => [state.openAuthModal, state.closeModalAuth, state.typeLogin, state.navigate, state.matches, state.isAuth, state.getYandexLinkAuth, state.yandexAuthCheck, state.yandexAuthLink]);
+  const [openAuthModal, closeModalAuth, typeLogin, navigate, matches, isAuth, getYandexLinkAuth, yandexAuthCheck, yandexAuthLink] = useHeaderStore((state) => [state?.openAuthModal, state?.closeModalAuth, state?.typeLogin, state?.navigate, state?.matches, state?.isAuth, state?.getYandexLinkAuth, state?.yandexAuthCheck, state?.yandexAuthLink]);
 
   useEffect( () => {
     if( openAuthModal === true ){

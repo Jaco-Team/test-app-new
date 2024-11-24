@@ -15,7 +15,7 @@ import AkciiItemPC from './PC/akciiItemPC';
 import Meta from '@/components/meta.js';
 
 export default function AkciiPage({ page }) {
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStore((state) => [state?.matches]);
 
   const [ pageBanner ] = useHomeStore((state) => [state.pageBanner]);
 

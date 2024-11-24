@@ -28,7 +28,7 @@ export default function AccountModalMobile() {
   //const [value, setValue] = useState('');
 
   const [openModalAccount, setActiveAccountModal, userInfo] = useProfileStore((state) => [state.openModalAccount, state.setActiveAccountModal, state.userInfo]);
-  const [ signOut ] = useHeaderStore( state => [ state.signOut ] )
+  const [ signOut ] = useHeaderStore( state => [ state?.signOut ] )
   const [ thisCity ] = useCitiesStore( state => [ state.thisCity ] )
 
   const { push } = useRouter();

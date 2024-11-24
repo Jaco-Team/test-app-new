@@ -28,7 +28,7 @@ export default React.memo(function CatItems() {
   
   const [CatsItems, getItem, closeModal, transition_menu_mobile] = useHomeStore((state) => [state.CatsItems, state.getItem, state.closeModal, state.transition_menu_mobile]);
   const [items] = useCartStore((state) => [state.items]);
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStore((state) => [state?.matches]);
   const [thisCity] = useCitiesStore( state => [state.thisCity]);
 
   useEffect(() => {

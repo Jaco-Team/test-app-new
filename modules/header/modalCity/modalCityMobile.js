@@ -15,7 +15,7 @@ export default function ModalCityMobile() {
 
   const [thisCityList, thisCityRu, setThisCityRu, setThisCity, thisCity] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu, state.setThisCity, state.thisCity]);
 
-  const [openCityModal, openCityModalList, setActiveModalCity, setActiveModalCityList, activePage, token] = useHeaderStore((state) => [state.openCityModal, state.openCityModalList, state.setActiveModalCity, state.setActiveModalCityList, state.activePage, state.token]);
+  const [openCityModal, openCityModalList, setActiveModalCity, setActiveModalCityList, activePage, token] = useHeaderStore((state) => [state?.openCityModal, state?.openCityModalList, state?.setActiveModalCity, state?.setActiveModalCityList, state?.activePage, state?.token]);
 
   const [getMySavedAddr, setPoint, setAddrDiv, getNewPriceItems, getInfoPromo] = useCartStore((state) => [state.getMySavedAddr, state.setPoint, state.setAddrDiv, state.getNewPriceItems, state.getInfoPromo]);
 

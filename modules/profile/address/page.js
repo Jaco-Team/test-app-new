@@ -13,7 +13,7 @@ import { useRouter } from 'next/router';
 export default function AddressPage({ page, this_module, city }) {
   const { push } = useRouter();
 
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStore((state) => [state?.matches]);
 
   useEffect(() => {
     if (!matches) {

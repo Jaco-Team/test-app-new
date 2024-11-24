@@ -27,7 +27,7 @@ export default function ContactsPageMobile() {
 
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
 
-  const [setActiveModalCityList] = useHeaderStore((state) => [state.setActiveModalCityList]);
+  const [setActiveModalCityList] = useHeaderStore((state) => [state?.setActiveModalCityList]);
 
   const [point, phone, disablePointsZone, disable, setActiveModalChoose, getUserPosition, center_map, zones, points_zone, changePointClick, location_user, clickPhoneMobile] = useContactStore((state) => [state.point, state.phone, state.disablePointsZone, state.disable, state.setActiveModalChoose, state.getUserPosition, state.center_map, state.zones, state.points_zone, state.changePointClick, state.location_user, state.clickPhoneMobile]);
 

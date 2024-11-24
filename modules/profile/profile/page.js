@@ -6,7 +6,7 @@ import ProfileMobile from './profileMobile.js';
 import { useHeaderStore } from '@/components/store';
 
 export default function ProfilePage({ page, this_module, city }) {
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStore((state) => [state?.matches]);
 
   return (
     <Meta title={page.title} description={''}>

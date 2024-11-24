@@ -13,7 +13,7 @@ export default function ModalPointClose_mobile() {
   const [ checkFreeDrive, show_checkFreeDrive ] = useCartStore( state => [ state.checkFreeDrive, state.show_checkFreeDrive ] );
 
   const [open, setOpen] = useState(false);
-  const [ token ] = useHeaderStore( state => [ state.token ] );
+  const [ token ] = useHeaderStore( state => [ state?.token ] );
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

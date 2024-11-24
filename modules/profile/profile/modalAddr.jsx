@@ -36,7 +36,7 @@ export default function ModalAddr(){
     useProfileStore( state => [ state.clearAddr, state.chooseAddrStreet, state.center_map, state.zones, state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.cityList, state.updateStreetList, state.active_city, state.updateAddr, state.setClearAddr, state.openModalAddr, state.getAddrList, state.street_list, state.chooseStreet] );
 
   const [thisCityList] = useCitiesStore((state) => [state.thisCityList]);
-  const [ token, matches ] = useHeaderStore( state => [ state.token, state.matches ] )
+  const [ token, matches ] = useHeaderStore( state => [ state?.token, state?.matches ] )
 
   // const [ street, setStreet ] = useState('');
   // const [ street_, setStreet_ ] = useState('');

@@ -8,9 +8,9 @@ import ListItem from '@mui/material/ListItem';
 
 export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_page }) {
 
-  const [setActiveModalAuth, isAuth] = useHeaderStore((state) => [state.setActiveModalAuth, state.isAuth]);
+  const [setActiveModalAuth, isAuth] = useHeaderStore((state) => [state?.setActiveModalAuth, state?.isAuth]);
   const [shortName, getUserInfo] = useProfileStore((state) => [state.shortName, state.getUserInfo]);
-  const [token] = useHeaderStore(state => [state.token])
+  const [token] = useHeaderStore(state => [state?.token])
 
   useEffect(() => {
     if(token && token.length > 0) {

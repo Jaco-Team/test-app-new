@@ -21,7 +21,7 @@ export default function ConfirmForm() {
 
   const [getOrderList] = useProfileStore((state) => [state.getOrderList]);
 
-  const [matches, token, showLoad] = useHeaderStore((state) => [state.matches, state.token, state.showLoad]);
+  const [matches, token, showLoad] = useHeaderStore((state) => [state?.matches, state?.token, state?.showLoad]);
 
   const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
 

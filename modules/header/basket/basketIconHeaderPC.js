@@ -2,7 +2,7 @@ import { useCartStore, useHeaderStore, useCitiesStore } from '@/components/store
 import { BasketIconNew } from '@/ui/Icons.js';
 
 export default function BasketIconHeaderPC() {
-  const [setActiveBasket, openBasket] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket]);
+  const [setActiveBasket, openBasket] = useHeaderStore((state) => [state?.setActiveBasket, state?.openBasket]);
   const [itemsCount, allPrice, allPriceWithoutPromo, promoInfo, promoCheck, getInfoPromo] = useCartStore((state) => [state.itemsCount, state.allPrice, state.allPriceWithoutPromo, state.promoInfo, state.promoCheck, state.getInfoPromo]);
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
 

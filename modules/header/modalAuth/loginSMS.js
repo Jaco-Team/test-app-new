@@ -11,7 +11,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 import { SmartCaptcha } from '@yandex/smart-captcha';
 
 export default function LoginSMS() {
-  const [changeLogin, loginLogin, checkLoginKey, createProfile, matches, navigate, setTimer, setActiveModalAlert] = useHeaderStore((state) => [state.changeLogin, state.loginLogin, state.checkLoginKey, state.createProfile, state.matches, state.navigate, state.setTimer, state.setActiveModalAlert]);
+  const [changeLogin, loginLogin, checkLoginKey, createProfile, matches, navigate, setTimer, setActiveModalAlert] = useHeaderStore((state) => [state?.changeLogin, state?.loginLogin, state?.checkLoginKey, state?.createProfile, state?.matches, state?.navigate, state?.setTimer, state?.setActiveModalAlert]);
 
   const [token, setToken] = useState('');
 

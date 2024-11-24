@@ -22,7 +22,7 @@ import { roboto } from '@/ui/Font.js';
 import dayjs from 'dayjs';
 
 export default function DataTimePicker() {
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStore((state) => [state?.matches]);
 
   const [dateTimeOrder, openDataTimePicker, setActiveDataTimePicker, timePreOrder, datePreOrder, getTimesPred, setDataTimeOrder] = useCartStore((state) => [
     state.dateTimeOrder, state.openDataTimePicker, state.setActiveDataTimePicker, state.timePreOrder, state.datePreOrder, state.getTimesPred, state.setDataTimeOrder]);

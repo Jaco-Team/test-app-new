@@ -139,7 +139,7 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
 export default function AkciiItemMobile({ actia }) {
   const [dataForActia] = useHomeStore((state) => [state.dataForActia]);
   const [getInfoPromo] = useCartStore((state) => [state.getInfoPromo]);
-  const [setActiveModalAlert, isAuth] = useHeaderStore((state) => [state.setActiveModalAlert, state.isAuth]);
+  const [setActiveModalAlert, isAuth] = useHeaderStore((state) => [state?.setActiveModalAlert, state?.isAuth]);
 
   const data = dataForActia(actia);
 

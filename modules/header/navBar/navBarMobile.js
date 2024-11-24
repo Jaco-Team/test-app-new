@@ -46,7 +46,7 @@ const MemoLogo = memo(function MemoLogo({city, activePage}){
 export default memo(function NavBarMobile({ city }) {
   const [activeMenu, setActiveMenu] = useState(false);
 
-  const [setActiveBasket, openBasket, setActiveModalCityList, activePage] = useHeaderStore( state => [state.setActiveBasket, state.openBasket, state.setActiveModalCityList, state.activePage] );
+  const [setActiveBasket, openBasket, setActiveModalCityList, activePage] = useHeaderStore( state => [state?.setActiveBasket, state?.openBasket, state?.setActiveModalCityList, state?.activePage] );
   
   const [ thisCityRu ] = useCitiesStore( state => [ state.thisCityRu ] );
 

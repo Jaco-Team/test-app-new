@@ -7,7 +7,7 @@ import Typography from '@mui/material/Typography';
 export default React.memo(function PromoCardPC({ item }){
 
   const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ] )
-  const [setActiveModalAlert] = useHeaderStore((state) => [state.setActiveModalAlert]);
+  const [setActiveModalAlert] = useHeaderStore((state) => [state?.setActiveModalAlert]);
 
   const activePromo = async(itemPromo) => {
     const res = await getInfoPromo(itemPromo.promo_name, itemPromo.city_id);

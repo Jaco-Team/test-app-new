@@ -3214,6 +3214,10 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
     set({ matches });
   },
 
+  setMatches11: (matches) => {
+    set({ matches });
+  },
+
   setActivePage: (page) => {
     set({ activePage: page });
   },

@@ -8,7 +8,7 @@ import { useHeaderStore, useCitiesStore, useFooterStore } from '@/components/sto
 export default function DocsBreadcrumbs() {
 
   const [ thisCity ] = useCitiesStore(state => [ state.thisCity ]);
-  const [ activePage ] = useHeaderStore( state => [ state.activePage ] )
+  const [ activePage ] = useHeaderStore( state => [ state?.activePage ] )
   const [links] = useFooterStore((state) => [state.links]);
 
   return (

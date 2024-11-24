@@ -17,7 +17,7 @@ import { IconClose } from '@/ui/Icons.js';
 export default function ModalPointClose_pc() {
 
   const [ checkFreeDrive, show_checkFreeDrive ] = useCartStore( state => [ state.checkFreeDrive, state.show_checkFreeDrive ] );
-  const [ token ] = useHeaderStore( state => [ state.token ] );
+  const [ token ] = useHeaderStore( state => [ state?.token ] );
 
   const [open, setOpen] = useState(false);
 

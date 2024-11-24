@@ -8,7 +8,7 @@ import { useHeaderStore, useFooterStore } from './store';
 const this_module = 'contacts';
 
 export default memo(function Footer({ cityName, active_page }) {
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStore((state) => [state?.matches]);
   const [links, getData] = useFooterStore((state) => [state.links, state.getData]);
 
   useEffect(() => {

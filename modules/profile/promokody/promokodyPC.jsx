@@ -11,7 +11,7 @@ import { useProfileStore, useHeaderStore } from '../../../components/store.js';
 export default function PromokodyPC({ this_module, city }) {
 
   const [ getPromoList, promoListActive ] = useProfileStore( state => [ state.getPromoList, state.promoListActive ]);
-  const [ token ] = useHeaderStore( state => [ state.token ] )
+  const [ token ] = useHeaderStore( state => [ state?.token ] )
 
   useEffect(() => {
     if( token && token.length > 0 ) {

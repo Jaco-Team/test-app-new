@@ -6,7 +6,7 @@ import AccountModalMobile from './modalAccountMobile';
 import { useHeaderStore } from '@/components/store';
 
 export default function AccountPage({ page, this_module, city }) {
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStore((state) => [state?.matches]);
 
   return (
     <Meta title={page.title} description={''}>

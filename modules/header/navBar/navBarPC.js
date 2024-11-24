@@ -111,7 +111,7 @@ export default React.memo(function NavBarPC({ city }) {
   const router = useRouter()
   const pathname = usePathname()
   
-  const [setActiveBasket, openBasket, setActiveModalCity, activePage] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity, state.activePage]);
+  const [setActiveBasket, openBasket, setActiveModalCity, activePage] = useHeaderStore((state) => [state?.setActiveBasket, state?.openBasket, state?.setActiveModalCity, state?.activePage]);
   const [setThisCityRu, thisCityRu, setThisCity] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu, state.setThisCity]);
   const [ getInfoPromo, getCartLocalStorage ] = useCartStore( state => [ state.getInfoPromo, state.getCartLocalStorage ])
   const [ category, setCategory, setActiveFilter, isOpenFilter, resetFilter ] = useHomeStore((state) => [ state.category, state.setCategory, state.setActiveFilter, state.isOpenFilter, state.resetFilter ]);

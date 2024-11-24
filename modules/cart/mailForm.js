@@ -20,7 +20,7 @@ export default function MailForm({cityName}) {
   const [mail, setMail] = useState('');
 
   const [userInfo, setUser, updateUser] = useProfileStore((state) => [state.userInfo, state.setUser, state.updateUser]);
-  const [matches, token] = useHeaderStore((state) => [state.matches, state.token]);
+  const [matches, token] = useHeaderStore((state) => [state?.matches, state?.token]);
   const [openMailForm, setMailForm] = useCartStore((state) => [state.openMailForm, state.setMailForm]);
 
   const changeMail = (event) => {

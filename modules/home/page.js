@@ -16,7 +16,7 @@ import { useHeaderStore } from '@/components/store';
 
 export default function HomePage({ page, city } ) {
 
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStore((state) => [state?.matches]);
 
   return (
     <Meta title={page.title} description={page.description}>

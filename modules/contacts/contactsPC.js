@@ -29,7 +29,7 @@ export default function ContactsPagePC() {
   const [myAddr, phone, disablePointsZone, disable, center_map, zones, getMap, points_zone, changePointClick, changePointNotHover] = useContactStore((state) => [
     state.myAddr, state.phone, state.disablePointsZone, state.disable, state.center_map, state.zones, state.getMap, state.points_zone, state.changePointClick, state.changePointNotHover]);
 
-  const [activePage] = useHeaderStore((state) => [state.activePage]);
+  const [activePage] = useHeaderStore((state) => [state?.activePage]);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
