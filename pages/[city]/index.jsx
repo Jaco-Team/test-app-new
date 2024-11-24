@@ -2,11 +2,11 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-//const DynamicFooter = dynamic(() => import('@/components/footer.js'));
-//const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'));
+const DynamicFooter = dynamic(() => import('@/components/footer.js'));
+const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'));
 
-import Footer from '@/components/footer.js'
-import HomePage from '@/modules/home/page.js'
+//import Footer from '@/components/footer.js'
+//import HomePage from '@/modules/home/page.js'
 
 import { roboto } from '@/ui/Font.js'
 import { api } from '@/components/api.js';
@@ -61,9 +61,9 @@ export default function Home(props) {
 
   return (
     <div className={roboto.variable}>
-      <HomePage page={page} city={city} />
+      <DynamicHomePage page={page} city={city} />
 
-      <Footer cityName={city} active_page={this_module} />
+      <DynamicFooter cityName={city} active_page={this_module} />
     </div>
   )
 }
