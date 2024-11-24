@@ -46,7 +46,11 @@ export default memo(function CartItemMobile({ item, count, last }) {
     <div className='CartItems' style={{ borderBottom: last ? 'none' : '0.17094017094017vw solid rgba(0, 0, 0, 0.1)'}}>
 
       <div className="CartItemsImg">
+<<<<<<< HEAD
         <Image alt={item?.name} src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}` + item?.img_app + '_584x584.jpg'} width={584} height={584} priority={true}/>
+=======
+        <Image alt={item?.name} src={'https://cdnimg.jacofood.ru/' + item?.img_app + '_584x584.jpg'} width={584} height={584} priority={true}/>
+>>>>>>> parent of ceba6e4 (111)
       </div>
 
       <div className="CartItemsName">

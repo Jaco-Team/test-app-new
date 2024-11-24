@@ -65,7 +65,11 @@ export default function ModalItemMobile() {
    * 
    * <Image 
                   alt={openItem?.name} 
+<<<<<<< HEAD
                   src={'${process.env.NEXT_PUBLIC_YANDEX_IMG}' + openItem?.img_app + '_732x732.jpg'} 
+=======
+                  src={'https://cdnimg.jacofood.ru/' + openItem?.img_app + '_732x732.jpg'} 
+>>>>>>> parent of ceba6e4 (111)
                   width={732} 
                   height={732} 
                   quality={100}
@@ -103,6 +107,7 @@ export default function ModalItemMobile() {
                   <source 
                     type="image/webp" 
                     srcSet={`
+<<<<<<< HEAD
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_292x292.webp 138w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_366x366.webp 146w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_466x466.webp 183w,
@@ -112,10 +117,22 @@ export default function ModalItemMobile() {
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_1420x1420.webp 584w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.webp 760w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.webp 1875w`} 
+=======
+                      https://cdnimg.jacofood.ru/${img_name}_292x292.webp 138w,
+                      https://cdnimg.jacofood.ru/${img_name}_366x366.webp 146w,
+                      https://cdnimg.jacofood.ru/${img_name}_466x466.webp 183w,
+                      https://cdnimg.jacofood.ru/${img_name}_585x585.webp 233w,
+                      https://cdnimg.jacofood.ru/${img_name}_732x732.webp 292w,
+                      https://cdnimg.jacofood.ru/${img_name}_1168x1168.webp 366w,
+                      https://cdnimg.jacofood.ru/${img_name}_1420x1420.webp 584w,
+                      https://cdnimg.jacofood.ru/${img_name}_2000x2000.webp 760w,
+                      https://cdnimg.jacofood.ru/${img_name}_2000x2000.webp 1875w`} 
+>>>>>>> parent of ceba6e4 (111)
                     sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
                   <source 
                     type="image/jpeg" 
                     srcSet={`
+<<<<<<< HEAD
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_292x292.jpg 138w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_366x366.jpg 146w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_466x466.jpg 183w,
@@ -125,12 +142,27 @@ export default function ModalItemMobile() {
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_1420x1420.jpg 584w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.jpg 760w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.jpg 1875w`} 
+=======
+                      https://cdnimg.jacofood.ru/${img_name}_292x292.jpg 138w,
+                      https://cdnimg.jacofood.ru/${img_name}_366x366.jpg 146w,
+                      https://cdnimg.jacofood.ru/${img_name}_466x466.jpg 183w,
+                      https://cdnimg.jacofood.ru/${img_name}_585x585.jpg 233w,
+                      https://cdnimg.jacofood.ru/${img_name}_732x732.jpg 292w,
+                      https://cdnimg.jacofood.ru/${img_name}_1168x1168.jpg 366w,
+                      https://cdnimg.jacofood.ru/${img_name}_1420x1420.jpg 584w,
+                      https://cdnimg.jacofood.ru/${img_name}_2000x2000.jpg 760w,
+                      https://cdnimg.jacofood.ru/${img_name}_2000x2000.jpg 1875w`} 
+>>>>>>> parent of ceba6e4 (111)
                     sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
                   <img 
                     alt={item_card?.name} 
                     title={item_card?.name} 
+<<<<<<< HEAD
                     src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_292x292.jpg`} 
+=======
+                    src={`https://cdnimg.jacofood.ru/${img_name}_292x292.jpg`} 
+>>>>>>> parent of ceba6e4 (111)
                     //style={{ minHeight: GRID * 1.125, minWidth: GRID * 1.125 }}
                     loading="lazy"
                   />

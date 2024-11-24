@@ -3084,12 +3084,15 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     });
   },
   saveUserActions: async(event, param) => {
+<<<<<<< HEAD
     const token_tmp = useHeaderStore.setState().token_tmp ?? '';
 
+=======
+>>>>>>> parent of ceba6e4 (111)
     let data = {
       type: 'save_user_actions',
       user_id: useHeaderStore.getState().token,
-      user_token: token_tmp ?? '',
+      user_token: localStorage?.getItem('token_tmp') ?? '',
       city_id: useCitiesStore.getState().thisCity,
       event: event,
       data: param,
@@ -3167,8 +3170,6 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
   isShowLoad: false,
 
   showClosePoint: false,
-
-  token_tmp: '',
 
   setShowClosePoint: (type) => {
     set({ showClosePoint: type })
@@ -3486,27 +3487,14 @@ export const useHeaderStore = createWithEqualityFn((set, get) => ({
           const ses_token = 'session_' + Math.random().toString(36).substr(2, 16)+'_'+this_date;
         
           localStorage.setItem('token_tmp', ses_token);
-
-          set({
-            token_tmp: ses_token
-          })
-        }else{
-          set({
-            token_tmp: token_session
-          })
         }
 
-        
       }else{
         const date = get().formatDate(new Date());
 
         const ses_token = 'session_' + Math.random().toString(36).substr(2, 16)+'_'+date;
         
         localStorage.setItem('token_tmp', ses_token);
-
-        set({
-          token_tmp: ses_token
-        })
       }
 
 

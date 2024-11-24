@@ -26,7 +26,7 @@ const nextConfig = {
         pathname: '**',
       },
       {
-        protocol: 'https',
+        protocol: 'http',
         hostname: 'yacdn.jacofood.ru',
         port: '',
         pathname: '**',
