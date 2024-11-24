@@ -3084,7 +3084,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     });
   },
   saveUserActions: async(event, param) => {
-    const token_tmp = useHeaderStore.setState().token_tmp;
+    const token_tmp = useHeaderStore.setState().token_tmp ?? '';
 
     let data = {
       type: 'save_user_actions',
