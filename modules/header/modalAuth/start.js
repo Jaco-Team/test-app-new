@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useHeaderStore } from '@/components/store';
+import { useHeaderStoreNew } from '@/components/store';
 
 import MyTextInput, { FormattedInputs } from '@/ui/MyTextInput';
 import {YaIcon, EyeShow_modalOrder, EyeHide_modalOrder, Check} from '@/ui/Icons';
@@ -11,7 +11,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 export default function Start() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, matches, yandexAuthLink, setActiveModalAlert] = useHeaderStore((state) => [state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.logIn, state.matches, state.yandexAuthLink, state.setActiveModalAlert]);
+  const [navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, matches, yandexAuthLink, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.navigate, state?.changeLogin, state?.setPwdLogin, state?.loginLogin, state?.pwdLogin, state?.checkLoginKey, state?.logIn, state?.matches, state?.yandexAuthLink, state?.setActiveModalAlert]);
 
   return (
     <div className={matches ? 'modalLoginStartMobile' : 'modalLoginStartPC'}>

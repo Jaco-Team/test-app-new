@@ -12,11 +12,11 @@ import Filter from './filter/filter';
 
 import Meta from '@/components/meta.js';
 
-import { useHeaderStore } from '@/components/store';
+import { useHeaderStoreNew } from '@/components/store';
 
 export default function HomePage({ page, city } ) {
 
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
 
   return (
     <Meta title={page.title} description={page.description}>

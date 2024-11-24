@@ -8,7 +8,7 @@ const DynamicHomePage = dynamic(() => import('@/modules/akcii/page.js'));
 import { roboto } from '@/ui/Font.js'
 import { api } from '@/components/api.js';
 
-import { useHomeStore, useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
+import { useHomeStore, useCitiesStore, useHeaderStoreNew, useCartStore } from '@/components/store.js';
 
 const this_module = 'akcii';
 
@@ -21,7 +21,7 @@ export default function Home(props) {
   const [ getBanners, setAllTags, getOneBanner ] = useHomeStore( state => [ state.getBanners, state.setAllTags, state.getOneBanner ]);
 
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
-  const [setActivePage] = useHeaderStore((state) => [state.setActivePage]);
+  const [setActivePage] = useHeaderStoreNew((state) => [state.setActivePage]);
 
   useEffect(() => {
 

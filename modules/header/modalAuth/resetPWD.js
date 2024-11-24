@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useHeaderStore } from '@/components/store';
+import { useHeaderStoreNew } from '@/components/store';
 
 import MyTextInput, { FormattedInputs } from '@/ui/MyTextInput';
 import {EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, Check} from '@/ui/Icons';
@@ -11,7 +11,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 export default function ResetPWD() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, sendsmsNewLogin, matches, setActiveModalAlert] = useHeaderStore((state) => [state.navigate, state.changeLogin, state.setPwdLogin, state.loginLogin, state.pwdLogin, state.checkLoginKey, state.sendsmsNewLogin, state.matches, state.setActiveModalAlert]);
+  const [navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, sendsmsNewLogin, matches, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.navigate, state?.changeLogin, state?.setPwdLogin, state?.loginLogin, state?.pwdLogin, state?.checkLoginKey, state?.sendsmsNewLogin, state?.matches, state?.setActiveModalAlert]);
 
   // <div className="loginErr">
   //   <Typography component="span">{errTextAuth}</Typography>

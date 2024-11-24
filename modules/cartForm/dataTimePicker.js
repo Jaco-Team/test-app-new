@@ -4,7 +4,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import { flushSync } from 'react-dom';
 
-import { useCartStore, useHeaderStore } from '@/components/store.js';
+import { useCartStore, useHeaderStoreNew } from '@/components/store.js';
 
 import { IconClose } from '@/ui/Icons';
 
@@ -22,7 +22,7 @@ import { roboto } from '@/ui/Font.js';
 import dayjs from 'dayjs';
 
 export default function DataTimePicker() {
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
 
   const [dateTimeOrder, openDataTimePicker, setActiveDataTimePicker, timePreOrder, datePreOrder, getTimesPred, setDataTimeOrder] = useCartStore((state) => [
     state.dateTimeOrder, state.openDataTimePicker, state.setActiveDataTimePicker, state.timePreOrder, state.datePreOrder, state.getTimesPred, state.setDataTimeOrder]);
@@ -220,7 +220,7 @@ export default function DataTimePicker() {
 }
 
 const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStoreNew((state) => [state.matches]);
 
   const [active, setActive] = useState(activeData);
 

@@ -2,7 +2,7 @@ import { useEffect } from 'react';
 
 import Link from 'next/link';
 
-import { useProfileStore, useHeaderStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStoreNew } from '@/components/store.js';
 
 import Box from '@mui/material/Box';
 
@@ -16,7 +16,7 @@ export default function OrderMobile({ city, this_module }) {
 
   const [getOrderList, orderList] = useProfileStore((state) => [state.getOrderList, state.orderList]);
 
-  const [ token ] = useHeaderStore( state => [ state.token ] )
+  const [ token ] = useHeaderStoreNew( state => [ state.token ] )
 
   useEffect(() => {
     if( token && token?.length > 0 ) {

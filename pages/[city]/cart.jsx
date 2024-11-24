@@ -7,7 +7,7 @@ const CartPage = dynamic(() => import('@/modules/cart/page'));
 const LoadMap = dynamic(() => import('@/components/loadMap'));
 
 import { roboto } from '@/ui/Font.js';
-import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
+import { useCitiesStore, useHeaderStoreNew, useCartStore } from '@/components/store.js';
 import { api } from '@/components/api.js';
 
 // import { useRouter } from 'next/router';
@@ -25,7 +25,7 @@ export default React.memo(function Cart(props) {
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] =
     useCitiesStore((state) => [state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList]);
 
-  const [setActivePage] = useHeaderStore((state) => [state.setActivePage]);
+  const [setActivePage] = useHeaderStoreNew((state) => [state.setActivePage]);
 
   useEffect(() => {
 

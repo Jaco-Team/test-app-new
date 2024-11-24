@@ -6,7 +6,7 @@ import { api } from '@/components/api.js';
 
 import {
   useCitiesStore,
-  useHeaderStore,
+  useHeaderStoreNew,
   useCartStore,
 } from '@/components/store.js';
 
@@ -28,7 +28,7 @@ export default React.memo(function Legal(props) {
       state.setThisCityList,
     ]);
 
-  const [setActivePage] = useHeaderStore((state) => [state.setActivePage]);
+  const [setActivePage] = useHeaderStoreNew((state) => [state.setActivePage]);
 
   useEffect(() => {
     if (thisCity != city) {

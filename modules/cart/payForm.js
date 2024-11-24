@@ -1,4 +1,4 @@
-import { useCartStore, useHeaderStore } from '@/components/store.js';
+import { useCartStore, useHeaderStoreNew } from '@/components/store.js';
 
 import Script from 'next/script';
 
@@ -13,7 +13,7 @@ import { roboto } from '@/ui/Font.js';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 export default function PayForm() {
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
   const [openPayForm, setPayForm] = useCartStore((state) => [state.openPayForm, state.setPayForm]);
 
   return (

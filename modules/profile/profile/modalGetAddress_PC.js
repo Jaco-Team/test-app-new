@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useProfileStore, useHeaderStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStoreNew } from '@/components/store.js';
 
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
@@ -26,7 +26,7 @@ const debounce = (func, delay) => {
 
 export default function GetAddress() {
 
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
 
   const [openModalGetAddress, setActiveGetAddressModal, getAddrList, street_list, chooseStreet, choose_street] = useProfileStore(state => [state.openModalGetAddress, state.setActiveGetAddressModal, state.getAddrList, state.street_list, state.chooseStreet, state.choose_street]);
 

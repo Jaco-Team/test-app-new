@@ -10,6 +10,642 @@ import { api, apiAddress } from './api.js';
 
 import Cookies from 'js-cookie'
 
+export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
+  activePage: '',
+  openCityModal: false,
+  openAuthModal: false,
+  openBasket: false,
+  targetBasket: null,
+
+  errTextAuth: '',
+  token: '',
+
+  errTitle: '',
+  errText1: '',
+  errText2: '',
+
+  is_sms: true,
+
+  typeLogin: 'start',
+  // typeLogin: 'startTestAuth',
+  userName: '',
+
+  timer: 89,
+  timerPage: false,
+
+  preTypeLogin: '',
+  loginLogin: '',
+  pwdLogin: '',
+  code: '',
+  genPwd: '',
+  loading: false,
+
+  matches: null,
+
+  openCityModalList: false,
+
+  openModalAlert: false,
+  textAlert: '',
+  statusAlert: false,
+
+  isAuth: 'none',
+
+  yandexAuthLink: '',
+
+  doubleClickSMS: false,
+
+  openModalSelectAddress: false,
+  chooseAddrStreet: [],
+
+  isShowLoad: false,
+
+  showClosePoint: false,
+
+  setShowClosePoint: (type) => {
+    set({ showClosePoint: type })
+  },
+ 
+  showLoad: (is_show) => {
+    set({
+      isShowLoad: is_show,
+    });
+  },
+
+  // открытие/закрытие модалки выбора адреса доставки при условии что есть два и более похожих адреса
+  setActiveModalSelectAddress: (active, chooseAddrStreet) => {
+    set({ openModalSelectAddress: active, chooseAddrStreet})
+  },
+
+  // установить таймер для формы авторизации
+  setTimer: (timer) => {
+    set({ timer })
+
+    if(timer === 0) {
+      set({ timerPage: true })
+    } else {
+      set({ timerPage: false })
+    }
+  },
+
+  // установление таймера 
+  toTime: (seconds) => {
+    let date = new Date(null);
+    date.setSeconds(seconds);
+    date.toISOString().substring(14, 19)
+    return date.toISOString().substring(14, 19);
+  },
+
+  // открытие/закрытие модалки вывода сообщения на клиенте
+  setActiveModalAlert: (active, textAlert, statusAlert) => {
+    set({ openModalAlert: active, textAlert, statusAlert })
+  },
+
+  // установить шиирну экрана устройства, при открытии приложения 
+  setMatches: (matches) => {
+    set({ matches });
+  },
+
+  setMatches11: (matches) => {
+    set({ matches });
+  },
+
+  setActivePage: (page) => {
+    set({ activePage: page });
+  },
+
+   // открытие меню со списком городов
+  setActiveModalCityList: (active) => {
+    set({ openCityModalList: active });
+  },
+
+  // открытие меню с выбором города
+  setActiveModalCity: (active) => {
+    set({ openCityModal: active });
+  },
+
+  // открытие модального окна формы авторизации
+  setActiveModalAuth: (active) => {
+    set({ openAuthModal: active });
+
+    if( active === true ){
+      set({ typeLogin: 'start', loginLogin: '', pwdLogin: '' });
+    } 
+  },
+
+  // навигация между формами авторизации
+  navigate: (typeLogin) => {
+
+    // if (typeLogin === 'create' || typeLogin === 'resetPWD') {
+    //   get().gen_password();
+    // }
+
+    set({ typeLogin, errTextAuth: '', preTypeLogin: get().typeLogin });
+  },
+
+  // закрытие форм авторизации
+  closeModalAuth: () => {
+    set({
+      openAuthModal: false,
+      errTextAuth: '',
+      typeLogin: 'start',
+      // typeLogin: 'startTestAuth',
+      preTypeLogin: '',
+      loginLogin: '',
+      pwdLogin: '',
+      code: '',
+      genPwd: '',
+      timer: 89,
+      timerPage: false,
+    });
+  },
+
+  // изменение/введение логина/телефона
+  changeLogin: (event) => {
+
+    let data = event.target.value;
+
+    if (parseInt(data[0]) == 9) {
+      //data = data.slice(1);
+      data = '8' + data;
+    }
+
+    if (data[0] == '+' && parseInt(data[1]) == '7') {
+      data = data.slice(2);
+      data = '8' + data;
+    }
+
+    if (parseInt(data[0]) == '7') {
+      data = data.slice(1);
+      data = '8' + data;
+    }
+
+    set({loginLogin: data});
+  },
+
+  // установление пароля при авторизации
+  setPwdLogin: (event) => {
+    if(event) {
+      set({pwdLogin: event.target.value.replaceAll(' ', '')});
+    } else {
+      set({ pwdLogin: event });
+    }
+  },
+
+  // запуск функции при нажатии enter в зависимости от формы авторизации
+  checkLoginKey: (type, event) => {
+
+    if (parseInt(event.keyCode) == 13) {
+      if (parseInt(type) == 1) {
+        get().logIn();
+      }
+      if (parseInt(type) == 2) {
+        get().navigate('loginSMSCode');
+        get().setTimer(89);
+
+        setTimeout( () => {
+          get().createProfile();
+        }, 300)
+      }
+
+      if (parseInt(type) == 3) {
+        get().sendsmsNewLogin();
+      }
+
+      // if (parseInt(type) == 4) {
+      //   get().sendsmsNewLogin();
+      // }
+    }
+  },
+  
+  // изменение/введение 4-х значного номера подтверждения
+  changeCode: (code) => {
+    code = code.replaceAll('•', '');
+
+    set({ code });
+
+    if (code.length < 4 || code === '') {
+      set({ errTextAuth: '' });
+    }
+
+    if (code.length === 4) {
+      get().checkCode();
+    }
+  },
+
+  // генерация случаного пароля при регистарции
+  // gen_password: () => {
+  //   let genPwd = '';
+  //   let symbols = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+?';
+  //   for (let i = 0; i < 10; i++) {
+  //     genPwd += symbols.charAt(Math.floor(Math.random() * symbols.length));
+  //   }
+
+  //   set({ genPwd });
+  // },
+
+  // проверка логина, кода при регистрации/логировании
+  checkCode: async () => {
+
+    let login = get().loginLogin;
+
+    login = login.split(' ').join('');
+    login = login.split('(').join('');
+    login = login.split(')').join('');
+    login = login.split('-').join('');
+    login = login.split('_').join('');
+
+    const data = {
+      type: 'check_profile',
+      number: login,
+      cod: get().code,
+    };
+
+    const res = await api('auth', data);
+
+    if (res?.st === false) {
+      set({
+        errTextAuth: res?.text,
+      });
+
+      get().setActiveModalAlert(true, res.text, false);
+    } else {
+      set({
+        errTextAuth: '',
+        errTitle: '',
+        errText1: '',
+        errText2: '',
+      });
+
+      if (get().preTypeLogin === 'create') {
+        set({
+          typeLogin: 'finish',
+        });
+      } else {
+        get().closeModalAuth();
+      }
+
+      set({
+        errTextAuth: '',
+        token: res?.token,
+        userName: get().setNameUser(res?.name),
+
+        isAuth: 'auth'
+      });
+
+      if (typeof window !== 'undefined') {
+        localStorage.setItem('token', res?.token);
+        Cookies.set('token', res?.token, { expires: 60 }) //expires 7 days
+      }
+    }
+  },
+
+  signOut: (city) => {
+
+    useProfileStore.getState().saveUserActions('user_log_out', '');
+
+    localStorage.removeItem('token');
+    Cookies.remove('token');
+
+    //window.location.href = '/' + city;
+
+    set({
+      isAuth: false,
+      token: ''
+    })
+  },
+
+  //логирование в форме регистрации
+  logIn: async () => {
+
+    set({ loading: true });
+
+    let login = get().loginLogin;
+
+    login = login.split(' ').join('');
+    login = login.split('(').join('');
+    login = login.split(')').join('');
+    login = login.split('-').join('');
+    login = login.split('_').join('');
+
+    const data = {
+      type: 'site_login',
+      number: login,
+      pwd: get().pwdLogin,
+    };
+
+    const json = await api('auth', data);
+
+    if (json?.st === false) {
+      set({
+        errTextAuth: json?.text,
+        loading: false,
+      });
+
+      get().setActiveModalAlert(true, json.text, false);
+    } else {
+      set({
+        errTextAuth: '',
+        is_sms: json?.is_sms,
+        token: json?.token,
+        userName: get().setNameUser(json?.name),
+        openAuthModal: false,
+        loading: false,
+        isAuth: 'auth'
+      });
+
+      if (typeof window !== 'undefined') {
+
+        useProfileStore.getState().saveUserActions('user_log_in', '');
+
+        localStorage.setItem('token', json?.token);
+        Cookies.set('token', json?.token, { expires: 60 }) //expires 7 days
+      }
+    }
+  },
+
+  checkToken: async () => {
+    if (typeof window !== 'undefined') {
+
+      const token_session = localStorage.getItem('token_tmp');
+
+      if( token_session && token_session.length > 0 ){
+        const this_date = get().formatDate(new Date());
+
+        const [session_, token_, date] = token_session.split('_');
+
+        if( this_date !== date ){
+          const ses_token = 'session_' + Math.random().toString(36).substr(2, 16)+'_'+this_date;
+        
+          localStorage.setItem('token_tmp', ses_token);
+        }
+
+      }else{
+        const date = get().formatDate(new Date());
+
+        const ses_token = 'session_' + Math.random().toString(36).substr(2, 16)+'_'+date;
+        
+        localStorage.setItem('token_tmp', ses_token);
+      }
+
+
+
+      const token = localStorage.getItem('token');
+
+      if( token && token.length > 0 ){
+        const data = {
+          type: 'check_token',
+          token: token,
+        };
+
+        const json = await api('auth', data);
+
+        if (json?.st === false) {
+          set({
+            isAuth: 'none'
+          });
+        }else{
+          set({
+            token: token,
+            userName: get().setNameUser(json?.user?.name),
+            isAuth: 'auth'
+          });
+
+          localStorage.setItem('token', token);
+          Cookies.set('token', token, { expires: 60 }) //expires 7 days
+        }
+
+        return ;
+      }
+
+      const token2 = Cookies.get('token');
+
+      if( token2 && token2.length > 0 ){
+        const data = {
+          type: 'check_token',
+          token: token2,
+        };
+
+        const json = await api('auth', data);
+
+        if (json?.st === false) {
+          set({
+            isAuth: 'none'
+          });
+        }else{
+          set({
+            token: token2,
+            userName: get().setNameUser(json?.user?.name),
+            isAuth: 'auth'
+          });
+
+          localStorage.setItem('token', token2);
+          Cookies.set('token', token2, { expires: 60 }) //expires 7 days
+        }
+
+        return ;
+      }
+
+    }    
+  },
+
+  formatDate(date) {
+
+    var dd = date.getDate();
+    if (dd < 10) dd = '0' + dd;
+  
+    var mm = date.getMonth() + 1;
+    if (mm < 10) mm = '0' + mm;
+  
+    var yy = date.getFullYear();
+    
+    return yy + '-' + mm + '-' + dd;
+
+    return dd + '.' + mm + '.' + yy;
+  },
+
+  // защита
+  // создание нового аккаунта или получения смс кода для действующего аккаунта
+  createProfile: async ( token ) => {
+
+    if( get().doubleClickSMS === true ){
+      return ;
+    }
+
+    set({
+      doubleClickSMS: true
+    })
+
+    let login = get().loginLogin;
+
+    login = login.split(' ').join('');
+    login = login.split('(').join('');
+    login = login.split(')').join('');
+    login = login.split('-').join('');
+    login = login.split('_').join('');
+
+    const data = {
+      type: 'create_profile',
+      number: login,
+      token: token
+    };
+
+    const json = await api('auth', data);
+    
+    if (json?.st) {
+      set({
+        errTextAuth: '',
+        errTitle: '',
+        errText1: '',
+        errText2: '',
+      });
+    } else {
+      set({
+        errTextAuth: json?.text,
+      });
+
+      get().setActiveModalAlert(true, json?.text, false);
+    }
+
+    setTimeout(() => {
+      set({
+        doubleClickSMS: false
+      })
+    }, 300);
+  },
+
+  // защита
+  // подтвреждение новой регистрации/изменения в существующий аккаунт
+  sendsmsNewLogin: async () => {
+
+    if( get().doubleClickSMS === true ){
+      return ;
+    }
+
+    set({
+      doubleClickSMS: true
+    })
+
+    if(get().typeLogin !== 'loginSMSCode') {
+      set({ timerPage: false, timer: 89 })
+      get().navigate('loginSMSCode');
+    }
+
+    let login = get().loginLogin;
+
+    login = login.split(' ').join('');
+    login = login.split('(').join('');
+    login = login.split(')').join('');
+    login = login.split('-').join('');
+    login = login.split('_').join('');
+
+    const data = {
+      type: 'sendsmsrp',
+      number: login,
+      pwd: get().pwdLogin
+    };
+
+    const json = await api('auth', data);
+
+    if (json?.st === true) {
+      set({
+        errTextAuth: '',
+        errTitle: '',
+        errText1: '',
+        errText2: '',
+      });
+    } else {
+      set({
+        errTextAuth: json?.text,
+      });
+
+      get().setActiveModalAlert(true, json.text, false);
+    }
+
+    setTimeout(() => {
+      set({
+        doubleClickSMS: false
+      })
+    }, 300);
+  },
+
+  getYandexLinkAuth: async(city) => {
+    const data = {
+      type: 'getYaLinkAuth',
+      city: city
+    };
+
+    const json = await api('auth', data);
+
+    set({
+      yandexAuthLink: json?.link
+    })
+  },
+
+  yandexAuthCheck: async(code) => {
+    const data = {
+      type: 'checkAuthYandex',
+      code
+    };
+
+    const json = await api('auth', data);
+
+    if (json?.st === false) {
+      get().setActiveModalAlert(true, json?.text, false);
+    }else{
+
+      if (json?.st === true) {
+        set({
+          token: json?.token,
+          userName: get().setNameUser(json?.name),
+          isAuth: 'auth'
+        });
+
+        if (typeof window !== 'undefined') {
+          localStorage.setItem('token', json?.token);
+          Cookies.set('token', json?.token, { expires: 60 }) //expires 7 days
+        }
+      }
+    }
+  },
+
+  // открытие/закрытие корзины на главное странице
+  setActiveBasket: (active) => {
+    
+    if(!active) {
+      set({ targetBasket: null, openBasket: active });
+    } else {
+      const anchorEl = document.getElementById('headerNew');
+      set({ targetBasket: anchorEl, openBasket: active });
+    }
+
+  },
+
+  // определение инициалов из имени клиента при авторизации
+  setNameUser: (name) => {
+    let userName = '';
+
+    if(name){
+      const nameSplit = name.split(' ');
+
+      if(nameSplit.length === 0) {
+        return name;
+      }
+
+      if(nameSplit.length === 1) {
+        //userName = nameSplit[0][0].toUpperCase() + nameSplit[0][1].toUpperCase()
+        userName = nameSplit[0].toUpperCase();
+      } 
+      
+      if(nameSplit.length > 1 && nameSplit[0] != '' && nameSplit[1] != '') {
+        userName = nameSplit[0][0].toUpperCase() + nameSplit[1][0].toUpperCase()
+      }
+
+    }
+
+    return userName;
+  }
+}), shallow)
+
 export const useCartStore = createWithEqualityFn((set, get) => ({
   items: [],
   //itemsOnDops: [],
@@ -549,7 +1185,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     if( json?.st === false ){
 
-      useHeaderStore.getState().setActiveModalAlert(true, json?.text, false);
+      useHeaderStoreNew.getState().setActiveModalAlert(true, json?.text, false);
       return ;
     }
 
@@ -597,7 +1233,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     if (typeof window !== 'undefined') {
       //const token1 = localStorage.getItem('token');
 
-      const token1 = useHeaderStore.getState().token;
+      const token1 = useHeaderStoreNew.getState().token;
 
       if( token1 && token1?.length > 0 ){
 
@@ -639,7 +1275,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     if( !token || token?.length == 0 ){
 
-      useHeaderStore.getState().setActiveModalAuth(true);
+      useHeaderStoreNew.getState().setActiveModalAuth(true);
 
       set({ DBClick: false });
 
@@ -789,7 +1425,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       }
     }else{
       //показать ошибку
-      useHeaderStore.getState().setActiveModalAlert(true, json?.text, false);
+      useHeaderStoreNew.getState().setActiveModalAlert(true, json?.text, false);
 
       return 'nothing';
     }
@@ -826,7 +1462,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       
     }else{
       //показать ошибку
-      useHeaderStore.getState().setActiveModalAlert(true, json?.text, false);
+      useHeaderStoreNew.getState().setActiveModalAlert(true, json?.text, false);
     }
 
     return json?.st;
@@ -2001,7 +2637,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     useProfileStore.getState().closeOrder();
 
-    const matches = useHeaderStore.getState().matches;
+    const matches = useHeaderStoreNew.getState().matches;
 
     if( matches ){ 
       setTimeout(() => {
@@ -2009,7 +2645,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       }, 500)
       
     }else{
-      useHeaderStore.getState().setActiveBasket(true);  
+      useHeaderStoreNew.getState().setActiveBasket(true);  
     }
     
     
@@ -2095,7 +2731,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       }, 300000);
       
     }, ({ message }) => {
-      useHeaderStore.getState().setActiveModalAlert(true, 'Не удалось определить местоположение. '+message )
+      useHeaderStoreNew.getState().setActiveModalAlert(true, 'Не удалось определить местоположение. '+message )
     }, {
       enableHighAccuracy: true
     })
@@ -2157,7 +2793,7 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       myAddr: json?.zones?.filter((value, index, self) => index === self.findIndex((t) => t.addr === value.addr)),
     })
 
-    const matches = useHeaderStore.getState().matches;
+    const matches = useHeaderStoreNew.getState().matches;
 
     if(matches) {
       setTimeout(() => {
@@ -2453,7 +3089,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     if(addr && addr?.full) {
 
-      useHeaderStore.getState().showLoad(true);
+      useHeaderStoreNew.getState().showLoad(true);
 
       let this_addr = {
         dop_name: '',
@@ -2514,7 +3150,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     if (active) {
 
-      if(useHeaderStore.getState().city !== city) {
+      if(useHeaderStoreNew.getState().city !== city) {
         const findCity = useCitiesStore.getState().thisCityList.find(item => item.link === city);
 
         if(findCity) {
@@ -2731,7 +3367,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   orderDel: async (this_module, userToken, text) => {
 
     if( text?.length === 0 ){
-      useHeaderStore.getState().setActiveModalAlert(true, 'Укажите причину отмены заказа', false);
+      useHeaderStoreNew.getState().setActiveModalAlert(true, 'Укажите причину отмены заказа', false);
     }
 
     let data = {
@@ -2749,7 +3385,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       get().closeOrder();
       get().getOrderList('zakazy', get().city, userToken);
     }else{
-      useHeaderStore.getState().setActiveModalAlert(true, json?.text, false);
+      useHeaderStoreNew.getState().setActiveModalAlert(true, json?.text, false);
     }
   },
 
@@ -2809,7 +3445,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api('profile', data);
 
-    useHeaderStore.getState().showLoad(false);
+    useHeaderStoreNew.getState().showLoad(false);
 
     if( json?.addrs?.length == 1 ){
       json.addrs = json?.addrs[0];
@@ -2818,7 +3454,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
         if( json?.addrs?.addressLine?.includes('подъезд') ){
 
         }else{
-          useHeaderStore.getState().setActiveModalAlert(true, 'Адрес найден, но мы не смогли найти подъезд', false);
+          useHeaderStoreNew.getState().setActiveModalAlert(true, 'Адрес найден, но мы не смогли найти подъезд', false);
         }
       }
 
@@ -2836,11 +3472,11 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     } else {
 
       if(json?.addrs?.length === 0) {
-        useHeaderStore.getState().setActiveModalAlert(true, 'Адрес не найден, или указан не точно', false);
+        useHeaderStoreNew.getState().setActiveModalAlert(true, 'Адрес не найден, или указан не точно', false);
       }
 
       if(json?.addrs?.length > 1) {
-        useHeaderStore.getState().setActiveModalSelectAddress(true, json.addrs);
+        useHeaderStoreNew.getState().setActiveModalSelectAddress(true, json.addrs);
       }
 
       set({
@@ -2911,7 +3547,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
       useCartStore.getState().getMySavedAddr(city_id, { street: get().chooseAddrStreet.street, home: get().chooseAddrStreet.home });
     }else{
-      useHeaderStore.getState().setActiveModalAlert(true, json?.text, false);
+      useHeaderStoreNew.getState().setActiveModalAlert(true, json?.text, false);
     }
 
     setTimeout( () => {
@@ -2974,7 +3610,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
       useCartStore.getState().getMySavedAddr(city_id, { street: get().chooseAddrStreet.street, home: get().chooseAddrStreet.home });
     }else{
-      useHeaderStore.getState().setActiveModalAlert(true, json?.text, false);
+      useHeaderStoreNew.getState().setActiveModalAlert(true, json?.text, false);
     }
 
     setTimeout( () => {
@@ -3084,10 +3720,13 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     });
   },
   saveUserActions: async(event, param) => {
+
+    const token_tmp = await useHeaderStoreNew.getState().token_tmp ?? '';
+
     let data = {
       type: 'save_user_actions',
-      user_id: useHeaderStore.getState().token,
-      user_token: localStorage?.getItem('token_tmp') ?? '',
+      user_id: useHeaderStoreNew.getState().token,
+      user_token: token_tmp ?? '',
       city_id: useCitiesStore.getState().thisCity,
       event: event,
       data: param,
@@ -3113,638 +3752,6 @@ export const useFooterStore = createWithEqualityFn((set) => ({
       links: json?.page,
     });
   },
-}), shallow);
-
-export const useHeaderStore = createWithEqualityFn((set, get) => ({
-  activePage: '',
-  openCityModal: false,
-  openAuthModal: false,
-  openBasket: false,
-  targetBasket: null,
-
-  errTextAuth: '',
-  token: '',
-
-  errTitle: '',
-  errText1: '',
-  errText2: '',
-
-  is_sms: true,
-
-  typeLogin: 'start',
-  // typeLogin: 'startTestAuth',
-  userName: '',
-
-  timer: 89,
-  timerPage: false,
-
-  preTypeLogin: '',
-  loginLogin: '',
-  pwdLogin: '',
-  code: '',
-  genPwd: '',
-  loading: false,
-
-  matches: null,
-
-  openCityModalList: false,
-
-  openModalAlert: false,
-  textAlert: '',
-  statusAlert: false,
-
-  isAuth: 'none',
-
-  yandexAuthLink: '',
-
-  doubleClickSMS: false,
-
-  openModalSelectAddress: false,
-  chooseAddrStreet: [],
-
-  isShowLoad: false,
-
-  showClosePoint: false,
-
-  setShowClosePoint: (type) => {
-    set({ showClosePoint: type })
-  },
- 
-  showLoad: (is_show) => {
-    set({
-      isShowLoad: is_show,
-    });
-  },
-
-  // открытие/закрытие модалки выбора адреса доставки при условии что есть два и более похожих адреса
-  setActiveModalSelectAddress: (active, chooseAddrStreet) => {
-    set({ openModalSelectAddress: active, chooseAddrStreet})
-  },
-
-  // установить таймер для формы авторизации
-  setTimer: (timer) => {
-    set({ timer })
-
-    if(timer === 0) {
-      set({ timerPage: true })
-    } else {
-      set({ timerPage: false })
-    }
-  },
-
-  // установление таймера 
-  toTime: (seconds) => {
-    let date = new Date(null);
-    date.setSeconds(seconds);
-    date.toISOString().substring(14, 19)
-    return date.toISOString().substring(14, 19);
-  },
-
-  // открытие/закрытие модалки вывода сообщения на клиенте
-  setActiveModalAlert: (active, textAlert, statusAlert) => {
-    set({ openModalAlert: active, textAlert, statusAlert })
-  },
-
-  // установить шиирну экрана устройства, при открытии приложения 
-  setMatches: (matches) => {
-    set({ matches });
-  },
-
-  setActivePage: (page) => {
-    set({ activePage: page });
-  },
-
-   // открытие меню со списком городов
-  setActiveModalCityList: (active) => {
-    set({ openCityModalList: active });
-  },
-
-  // открытие меню с выбором города
-  setActiveModalCity: (active) => {
-    set({ openCityModal: active });
-  },
-
-  // открытие модального окна формы авторизации
-  setActiveModalAuth: (active) => {
-    set({ openAuthModal: active });
-
-    if( active === true ){
-      set({ typeLogin: 'start', loginLogin: '', pwdLogin: '' });
-    } 
-  },
-
-  // навигация между формами авторизации
-  navigate: (typeLogin) => {
-
-    // if (typeLogin === 'create' || typeLogin === 'resetPWD') {
-    //   get().gen_password();
-    // }
-
-    set({ typeLogin, errTextAuth: '', preTypeLogin: get().typeLogin });
-  },
-
-  // закрытие форм авторизации
-  closeModalAuth: () => {
-    set({
-      openAuthModal: false,
-      errTextAuth: '',
-      typeLogin: 'start',
-      // typeLogin: 'startTestAuth',
-      preTypeLogin: '',
-      loginLogin: '',
-      pwdLogin: '',
-      code: '',
-      genPwd: '',
-      timer: 89,
-      timerPage: false,
-    });
-  },
-
-  // изменение/введение логина/телефона
-  changeLogin: (event) => {
-
-    let data = event.target.value;
-
-    if (parseInt(data[0]) == 9) {
-      //data = data.slice(1);
-      data = '8' + data;
-    }
-
-    if (data[0] == '+' && parseInt(data[1]) == '7') {
-      data = data.slice(2);
-      data = '8' + data;
-    }
-
-    if (parseInt(data[0]) == '7') {
-      data = data.slice(1);
-      data = '8' + data;
-    }
-
-    set({loginLogin: data});
-  },
-
-  // установление пароля при авторизации
-  setPwdLogin: (event) => {
-    if(event) {
-      set({pwdLogin: event.target.value.replaceAll(' ', '')});
-    } else {
-      set({ pwdLogin: event });
-    }
-  },
-
-  // запуск функции при нажатии enter в зависимости от формы авторизации
-  checkLoginKey: (type, event) => {
-
-    if (parseInt(event.keyCode) == 13) {
-      if (parseInt(type) == 1) {
-        get().logIn();
-      }
-      if (parseInt(type) == 2) {
-        get().navigate('loginSMSCode');
-        get().setTimer(89);
-
-        setTimeout( () => {
-          get().createProfile();
-        }, 300)
-      }
-
-      if (parseInt(type) == 3) {
-        get().sendsmsNewLogin();
-      }
-
-      // if (parseInt(type) == 4) {
-      //   get().sendsmsNewLogin();
-      // }
-    }
-  },
-  
-  // изменение/введение 4-х значного номера подтверждения
-  changeCode: (code) => {
-    code = code.replaceAll('•', '');
-
-    set({ code });
-
-    if (code.length < 4 || code === '') {
-      set({ errTextAuth: '' });
-    }
-
-    if (code.length === 4) {
-      get().checkCode();
-    }
-  },
-
-  // генерация случаного пароля при регистарции
-  // gen_password: () => {
-  //   let genPwd = '';
-  //   let symbols = 'ABCDEFGHIJKLMNOPQRSTUVWXYZabcdefghijklmnopqrstuvwxyz0123456789!@#$%^&*()_+?';
-  //   for (let i = 0; i < 10; i++) {
-  //     genPwd += symbols.charAt(Math.floor(Math.random() * symbols.length));
-  //   }
-
-  //   set({ genPwd });
-  // },
-
-  // проверка логина, кода при регистрации/логировании
-  checkCode: async () => {
-
-    let login = get().loginLogin;
-
-    login = login.split(' ').join('');
-    login = login.split('(').join('');
-    login = login.split(')').join('');
-    login = login.split('-').join('');
-    login = login.split('_').join('');
-
-    const data = {
-      type: 'check_profile',
-      number: login,
-      cod: get().code,
-    };
-
-    const res = await api('auth', data);
-
-    if (res?.st === false) {
-      set({
-        errTextAuth: res?.text,
-      });
-
-      get().setActiveModalAlert(true, res.text, false);
-    } else {
-      set({
-        errTextAuth: '',
-        errTitle: '',
-        errText1: '',
-        errText2: '',
-      });
-
-      if (get().preTypeLogin === 'create') {
-        set({
-          typeLogin: 'finish',
-        });
-      } else {
-        get().closeModalAuth();
-      }
-
-      set({
-        errTextAuth: '',
-        token: res?.token,
-        userName: get().setNameUser(res?.name),
-
-        isAuth: 'auth'
-      });
-
-      if (typeof window !== 'undefined') {
-        localStorage.setItem('token', res?.token);
-        Cookies.set('token', res?.token, { expires: 60 }) //expires 7 days
-      }
-    }
-  },
-
-  signOut: (city) => {
-
-    useProfileStore.getState().saveUserActions('user_log_out', '');
-
-    localStorage.removeItem('token');
-    Cookies.remove('token');
-
-    //window.location.href = '/' + city;
-
-    set({
-      isAuth: false,
-      token: ''
-    })
-  },
-
-  //логирование в форме регистрации
-  logIn: async () => {
-
-    set({ loading: true });
-
-    let login = get().loginLogin;
-
-    login = login.split(' ').join('');
-    login = login.split('(').join('');
-    login = login.split(')').join('');
-    login = login.split('-').join('');
-    login = login.split('_').join('');
-
-    const data = {
-      type: 'site_login',
-      number: login,
-      pwd: get().pwdLogin,
-    };
-
-    const json = await api('auth', data);
-
-    if (json?.st === false) {
-      set({
-        errTextAuth: json?.text,
-        loading: false,
-      });
-
-      get().setActiveModalAlert(true, json.text, false);
-    } else {
-      set({
-        errTextAuth: '',
-        is_sms: json?.is_sms,
-        token: json?.token,
-        userName: get().setNameUser(json?.name),
-        openAuthModal: false,
-        loading: false,
-        isAuth: 'auth'
-      });
-
-      if (typeof window !== 'undefined') {
-
-        useProfileStore.getState().saveUserActions('user_log_in', '');
-
-        localStorage.setItem('token', json?.token);
-        Cookies.set('token', json?.token, { expires: 60 }) //expires 7 days
-      }
-    }
-  },
-
-  checkToken: async () => {
-    if (typeof window !== 'undefined') {
-
-      const token_session = localStorage.getItem('token_tmp');
-
-      if( token_session && token_session.length > 0 ){
-        const this_date = get().formatDate(new Date());
-
-        const [session_, token_, date] = token_session.split('_');
-
-        if( this_date !== date ){
-          const ses_token = 'session_' + Math.random().toString(36).substr(2, 16)+'_'+this_date;
-        
-          localStorage.setItem('token_tmp', ses_token);
-        }
-
-      }else{
-        const date = get().formatDate(new Date());
-
-        const ses_token = 'session_' + Math.random().toString(36).substr(2, 16)+'_'+date;
-        
-        localStorage.setItem('token_tmp', ses_token);
-      }
-
-
-
-      const token = localStorage.getItem('token');
-
-      if( token && token.length > 0 ){
-        const data = {
-          type: 'check_token',
-          token: token,
-        };
-
-        const json = await api('auth', data);
-
-        if (json?.st === false) {
-          set({
-            isAuth: 'none'
-          });
-        }else{
-          set({
-            token: token,
-            userName: get().setNameUser(json?.user?.name),
-            isAuth: 'auth'
-          });
-
-          localStorage.setItem('token', token);
-          Cookies.set('token', token, { expires: 60 }) //expires 7 days
-        }
-
-        return ;
-      }
-
-      const token2 = Cookies.get('token');
-
-      if( token2 && token2.length > 0 ){
-        const data = {
-          type: 'check_token',
-          token: token2,
-        };
-
-        const json = await api('auth', data);
-
-        if (json?.st === false) {
-          set({
-            isAuth: 'none'
-          });
-        }else{
-          set({
-            token: token2,
-            userName: get().setNameUser(json?.user?.name),
-            isAuth: 'auth'
-          });
-
-          localStorage.setItem('token', token2);
-          Cookies.set('token', token2, { expires: 60 }) //expires 7 days
-        }
-
-        return ;
-      }
-
-    }    
-  },
-
-  formatDate(date) {
-
-    var dd = date.getDate();
-    if (dd < 10) dd = '0' + dd;
-  
-    var mm = date.getMonth() + 1;
-    if (mm < 10) mm = '0' + mm;
-  
-    var yy = date.getFullYear();
-    
-    return yy + '-' + mm + '-' + dd;
-
-    return dd + '.' + mm + '.' + yy;
-  },
-
-  // защита
-  // создание нового аккаунта или получения смс кода для действующего аккаунта
-  createProfile: async ( token ) => {
-
-    if( get().doubleClickSMS === true ){
-      return ;
-    }
-
-    set({
-      doubleClickSMS: true
-    })
-
-    let login = get().loginLogin;
-
-    login = login.split(' ').join('');
-    login = login.split('(').join('');
-    login = login.split(')').join('');
-    login = login.split('-').join('');
-    login = login.split('_').join('');
-
-    const data = {
-      type: 'create_profile',
-      number: login,
-      token: token
-    };
-
-    const json = await api('auth', data);
-    
-    if (json?.st) {
-      set({
-        errTextAuth: '',
-        errTitle: '',
-        errText1: '',
-        errText2: '',
-      });
-    } else {
-      set({
-        errTextAuth: json?.text,
-      });
-
-      get().setActiveModalAlert(true, json?.text, false);
-    }
-
-    setTimeout(() => {
-      set({
-        doubleClickSMS: false
-      })
-    }, 300);
-  },
-
-  // защита
-  // подтвреждение новой регистрации/изменения в существующий аккаунт
-  sendsmsNewLogin: async () => {
-
-    if( get().doubleClickSMS === true ){
-      return ;
-    }
-
-    set({
-      doubleClickSMS: true
-    })
-
-    if(get().typeLogin !== 'loginSMSCode') {
-      set({ timerPage: false, timer: 89 })
-      get().navigate('loginSMSCode');
-    }
-
-    let login = get().loginLogin;
-
-    login = login.split(' ').join('');
-    login = login.split('(').join('');
-    login = login.split(')').join('');
-    login = login.split('-').join('');
-    login = login.split('_').join('');
-
-    const data = {
-      type: 'sendsmsrp',
-      number: login,
-      pwd: get().pwdLogin
-    };
-
-    const json = await api('auth', data);
-
-    if (json?.st === true) {
-      set({
-        errTextAuth: '',
-        errTitle: '',
-        errText1: '',
-        errText2: '',
-      });
-    } else {
-      set({
-        errTextAuth: json?.text,
-      });
-
-      get().setActiveModalAlert(true, json.text, false);
-    }
-
-    setTimeout(() => {
-      set({
-        doubleClickSMS: false
-      })
-    }, 300);
-  },
-
-  getYandexLinkAuth: async(city) => {
-    const data = {
-      type: 'getYaLinkAuth',
-      city: city
-    };
-
-    const json = await api('auth', data);
-
-    set({
-      yandexAuthLink: json?.link
-    })
-  },
-
-  yandexAuthCheck: async(code) => {
-    const data = {
-      type: 'checkAuthYandex',
-      code
-    };
-
-    const json = await api('auth', data);
-
-    if (json?.st === false) {
-      get().setActiveModalAlert(true, json?.text, false);
-    }else{
-
-      if (json?.st === true) {
-        set({
-          token: json?.token,
-          userName: get().setNameUser(json?.name),
-          isAuth: 'auth'
-        });
-
-        if (typeof window !== 'undefined') {
-          localStorage.setItem('token', json?.token);
-          Cookies.set('token', json?.token, { expires: 60 }) //expires 7 days
-        }
-      }
-    }
-  },
-
-  // открытие/закрытие корзины на главное странице
-  setActiveBasket: (active) => {
-    
-    if(!active) {
-      set({ targetBasket: null, openBasket: active });
-    } else {
-      const anchorEl = document.getElementById('headerNew');
-      set({ targetBasket: anchorEl, openBasket: active });
-    }
-
-  },
-
-  // определение инициалов из имени клиента при авторизации
-  setNameUser: (name) => {
-    let userName = '';
-
-    if(name){
-      const nameSplit = name.split(' ');
-
-      if(nameSplit.length === 0) {
-        return name;
-      }
-
-      if(nameSplit.length === 1) {
-        //userName = nameSplit[0][0].toUpperCase() + nameSplit[0][1].toUpperCase()
-        userName = nameSplit[0].toUpperCase();
-      } 
-      
-      if(nameSplit.length > 1 && nameSplit[0] != '' && nameSplit[1] != '') {
-        userName = nameSplit[0][0].toUpperCase() + nameSplit[1][0].toUpperCase()
-      }
-
-    }
-
-    return userName;
-  }
 }), shallow);
 
 export const useCitiesStore = createWithEqualityFn((set) => ({
@@ -3825,7 +3832,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
   // сброс фильтра на главной странице
   resetFilter: () => {
 
-    const activePage = useHeaderStore.getState().activePage;
+    const activePage = useHeaderStoreNew.getState().activePage;
 
     if(activePage === 'home') { 
 
@@ -3994,7 +4001,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     let offsetPosition;
 
-    const matches = useHeaderStore.getState().matches;
+    const matches = useHeaderStoreNew.getState().matches;
 
     if(matches) {
 
@@ -4031,7 +4038,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
   // открыть/закрыть фильтр на главной странице
   setActiveFilter: (value) => {
     
-    //const matches = useHeaderStore.getState().matches;
+    //const matches = useHeaderStoreNew.getState().matches;
 
     if(value) {
 
@@ -4116,7 +4123,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       token: token
     };
 
-    let activePage = useHeaderStore.getState().activePage;
+    let activePage = useHeaderStoreNew.getState().activePage;
 
     const json = await api(this_module, data);
 

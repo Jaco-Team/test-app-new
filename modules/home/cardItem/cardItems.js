@@ -2,7 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import Grid from '@mui/material/Grid';
 
-import { useHomeStore, useCartStore, useHeaderStore, useCitiesStore } from '@/components/store.js';
+import { useHomeStore, useCartStore, useHeaderStoreNew, useCitiesStore } from '@/components/store.js';
 
 import CardItemPc from './cardItemPc';
 import CardItemMobile from './cardItemMobile.js';
@@ -28,7 +28,7 @@ export default React.memo(function CatItems() {
   
   const [CatsItems, getItem, closeModal, transition_menu_mobile] = useHomeStore((state) => [state.CatsItems, state.getItem, state.closeModal, state.transition_menu_mobile]);
   const [items] = useCartStore((state) => [state.items]);
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
   const [thisCity] = useCitiesStore( state => [state.thisCity]);
 
   useEffect(() => {

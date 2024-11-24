@@ -1,12 +1,12 @@
-import { useCitiesStore, useHeaderStore } from '@/components/store';
+import { useCitiesStore, useHeaderStoreNew } from '@/components/store';
 
 import Link from 'next/link';
 import { CheckAuthMobile } from '@/ui/Icons';
 import Typography from '@mui/material/Typography';
 
 export default function Finish({ closeModal }) {
-  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [thisCity] = useCitiesStore((state) => [state?.thisCity]);
+  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
 
   return (
     <div className={matches ? 'modalLoginFinishMobile' : 'modalLoginFinishPC'}>

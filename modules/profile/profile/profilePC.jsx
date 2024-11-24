@@ -23,13 +23,13 @@ import { CloseIconMin, ProfileIconNew } from '@/ui/Icons.js';
 
 import ModalAddr from './modalAddr.jsx';
 
-import { useProfileStore, useHeaderStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStoreNew } from '@/components/store.js';
 
 export default function ProfilePC({ page, this_module, city }){
 
   const [ getUserInfo, setUser, userInfo, streets, shortName, updateUser, openModalAddr, delAddr ] = useProfileStore( state => [ state.getUserInfo, state.setUser, state.userInfo, state.streets, state.shortName, state.updateUser, state.openModalAddr, state.delAddr ] );
 
-  const [ token, signOut ] = useHeaderStore( state => [ state.token, state.signOut ] )
+  const [ token, signOut ] = useHeaderStoreNew( state => [ state?.token, state?.signOut ] )
 
   const { control, getValues, setValue } = useForm({
     defaultValues: {

@@ -1,5 +1,5 @@
 import { useEffect, useState, useRef } from 'react';
-import { useProfileStore, useHeaderStore, useCitiesStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStoreNew, useCitiesStore } from '@/components/store.js';
 import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
 
 import Button from '@mui/material/Button';
@@ -13,7 +13,7 @@ import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 export default function AddressModalMobile({ city }) {
   const ref2 = useRef();
 
-  const [token, setActiveModalCityList] = useHeaderStore( state => [state.token, state.setActiveModalCityList]);
+  const [token, setActiveModalCityList] = useHeaderStoreNew( state => [state?.token, state?.setActiveModalCityList]);
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
   const [openModalAddress, setActiveAddressModal, setClearAddr, clearAddr, setActiveGetAddressModal] = useProfileStore((state) => [state.openModalAddress, state.setActiveAddressModal, state.setClearAddr, state.clearAddr, state.setActiveGetAddressModal]);
 
@@ -179,7 +179,7 @@ export default function AddressModalMobile({ city }) {
       <div className="ContainerAddressModal">
         {!center_map ? null :
           <div className="map" style={{ minHeight: '93.162393162393vw' }} >
-            <YMaps query={{ lang: 'ru_RU', apikey: 'f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8' }}>
+            <YMaps query={{ lang: 'ru_RU', apikey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP }}>
               <Map defaultState={center_map} instanceRef={ref2} width="100%" height="100%" style={{ minHeight: '93.162393162393vw' }} >
 
                 { !chooseAddrStreet || Object.entries(chooseAddrStreet).length === 0 ? false :

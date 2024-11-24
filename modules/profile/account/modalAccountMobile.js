@@ -1,4 +1,4 @@
-import { useProfileStore, useHeaderStore, useCitiesStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStoreNew, useCitiesStore } from '@/components/store.js';
 
 import Button from '@mui/material/Button';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
@@ -28,7 +28,7 @@ export default function AccountModalMobile() {
   //const [value, setValue] = useState('');
 
   const [openModalAccount, setActiveAccountModal, userInfo] = useProfileStore((state) => [state.openModalAccount, state.setActiveAccountModal, state.userInfo]);
-  const [ signOut ] = useHeaderStore( state => [ state.signOut ] )
+  const [ signOut ] = useHeaderStoreNew( state => [ state?.signOut ] )
   const [ thisCity ] = useCitiesStore( state => [ state.thisCity ] )
 
   const { push } = useRouter();

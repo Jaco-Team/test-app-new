@@ -5,7 +5,7 @@ import Image from 'next/image';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Typography from '@mui/material/Typography';
 
-import { useCartStore, useHeaderStore } from '@/components/store.js';
+import { useCartStore, useHeaderStoreNew } from '@/components/store.js';
 
 import { roboto } from '@/ui/Font.js';
 
@@ -13,7 +13,7 @@ export default function ModalPointClose_mobile() {
   const [ checkFreeDrive, show_checkFreeDrive ] = useCartStore( state => [ state.checkFreeDrive, state.show_checkFreeDrive ] );
 
   const [open, setOpen] = useState(false);
-  const [ token ] = useHeaderStore( state => [ state.token ] );
+  const [ token ] = useHeaderStoreNew( state => [ state?.token ] );
 
   useEffect(() => {
     if (typeof window !== 'undefined') {

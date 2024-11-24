@@ -7,7 +7,7 @@ const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const DynamicPage = dynamic(() => import('@/modules/profile/address/page'))
 
 import { api } from '@/components/api.js';
-import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
+import { useCitiesStore, useHeaderStoreNew, useCartStore } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js'
 
 import { useRouter } from 'next/router';
@@ -23,7 +23,7 @@ export default function Address(props) {
   const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] = useCitiesStore(state => [state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList]);
-  const [setActivePage, matches] = useHeaderStore((state) => [state.setActivePage, state.matches]);
+  const [setActivePage, matches] = useHeaderStoreNew((state) => [state.setActivePage, state.matches]);
 
   useEffect(() => {
     if( thisCity != city ){
@@ -59,7 +59,7 @@ export default function Address(props) {
 
   return (
     <div className={roboto.variable}>
-      <Script src="https://api-maps.yandex.ru/2.1/?apikey=f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8&lang=ru_RU" />
+      <Script src="https://api-maps.yandex.ru/2.1/?apikey=%NEXT_PUBLIC_YANDEX_TOKEN_MAP%&lang=ru_RU" />
       
       <DynamicPage page={page} this_module={this_module} city={city} />
 

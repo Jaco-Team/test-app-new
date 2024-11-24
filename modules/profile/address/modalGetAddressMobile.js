@@ -2,7 +2,7 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import MyAutocomplete from '@/ui/MyAutocomplete';
 
 import { roboto } from '@/ui/Font.js';
-import { useProfileStore, useHeaderStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStoreNew } from '@/components/store.js';
 
 const debounce = (func, delay) => {
     let timeoutId;
@@ -18,7 +18,7 @@ const debounce = (func, delay) => {
 
 export default function GetAddressMobile() {
 
-    const [matches] = useHeaderStore((state) => [state.matches]);
+    const [matches] = useHeaderStoreNew((state) => [state?.matches]);
 
     const [openModalGetAddress, setActiveGetAddressModal, getAddrList, street_list, chooseStreet, choose_street] = useProfileStore(state => [state.openModalGetAddress, state.setActiveGetAddressModal, state.getAddrList, state.street_list, state.chooseStreet, state.choose_street]);
 

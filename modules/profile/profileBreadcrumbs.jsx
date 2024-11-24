@@ -3,11 +3,11 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 import Link from 'next/link'
 
-import { useHeaderStore, useCitiesStore } from '@/components/store.js';
+import { useHeaderStoreNew, useCitiesStore } from '@/components/store.js';
 
 export default function ProfileBreadcrumbs() {
 
-  const [ activePage ] = useHeaderStore( state => [ state.activePage ] )
+  const [ activePage ] = useHeaderStoreNew( state => [ state.activePage ] )
   const [ thisCity ] = useCitiesStore(state => [ state.thisCity ]);
 
   return (

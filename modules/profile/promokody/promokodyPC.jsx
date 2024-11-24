@@ -6,12 +6,12 @@ import Typography from '@mui/material/Typography';
 import ProfileBreadcrumbs from '../profileBreadcrumbs.jsx';
 import PromoCardPC from './promoCardPC.jsx';
 
-import { useProfileStore, useHeaderStore } from '../../../components/store.js';
+import { useProfileStore, useHeaderStoreNew } from '../../../components/store.js';
 
 export default function PromokodyPC({ this_module, city }) {
 
   const [ getPromoList, promoListActive ] = useProfileStore( state => [ state.getPromoList, state.promoListActive ]);
-  const [ token ] = useHeaderStore( state => [ state.token ] )
+  const [ token ] = useHeaderStoreNew( state => [ state?.token ] )
 
   useEffect(() => {
     if( token && token.length > 0 ) {

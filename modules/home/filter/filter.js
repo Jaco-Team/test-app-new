@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { useHomeStore, useHeaderStore } from '@/components/store';
+import { useHomeStore, useHeaderStoreNew } from '@/components/store';
 
 import { motion } from 'framer-motion';
 
@@ -38,7 +38,7 @@ export default function Filter() {
   const [filterActive, resetFilter, scrollToTargetAdjusted, isOpenFilter, filterItems, all_tags, filterItemsBadge, setActiveFilter, tag_filter, text_filter, filterText, badge_filter] = useHomeStore((state) => [state.filterActive, state.resetFilter, state.scrollToTargetAdjusted, state.isOpenFilter, state.filterItems, state.all_tags, state.filterItemsBadge, state.setActiveFilter,
     state.tag_filter, state.text_filter, state.filterText, state.badge_filter]);
 
-  const [matches, activePage] = useHeaderStore((state) => [state.matches, state.activePage]);
+  const [matches, activePage] = useHeaderStoreNew((state) => [state?.matches, state?.activePage]);
 
   const resetTags = () => {
     const tags_active = tags.map((item) => {

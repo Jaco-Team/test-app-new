@@ -16,7 +16,7 @@ import 'swiper/css/pagination';
 export default React.memo(function BannersMobile() {
   const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider, state.getBanners]);
   const [thisCity] = useCitiesStore((state) => [state.thisCity])
-  //const [setActiveModalAlert] = useHeaderStore((state) => [state.setActiveModalAlert]);
+  //const [setActiveModalAlert] = useHeaderStoreNew((state) => [state.setActiveModalAlert]);
 
   const swiperRef = useRef(null);
 
@@ -127,7 +127,7 @@ export default React.memo(function BannersMobile() {
           <SwiperSlide key={key} onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
             {/* <Image
               alt={item.title}
-              src={'https://storage.yandexcloud.net/site-home-img/' + item.img + '_1000x500.jpg'}
+              src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + item.img + '_1000x500.jpg'}
               width={1000}
               height={500}
               priority={false}
@@ -138,17 +138,17 @@ export default React.memo(function BannersMobile() {
             <picture>
               <source 
                 type="image/webp" 
-                srcSet={'https://storage.yandexcloud.net/site-home-img/' + item.img + '_1000x500.jpg'} 
+                srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + item.img + '_1000x500.jpg'} 
                 sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
               <source 
                 type="image/jpeg" 
-                srcSet={'https://storage.yandexcloud.net/site-home-img/' + item.img + '_1000x500.jpg'} 
+                srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + item.img + '_1000x500.jpg'} 
                 sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
               <img 
                 alt={item?.title} 
                 title={item?.title} 
-                src={'https://storage.yandexcloud.net/site-home-img/' + item.img + '_1000x500.jpg'} 
+                src={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + item.img + '_1000x500.jpg'} 
                 loading="lazy"
                 className="item_banner_image"
               />

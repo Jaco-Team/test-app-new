@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import { useProfileStore, useHeaderStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStoreNew } from '@/components/store.js';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import DialogContent from '@mui/material/DialogContent';
@@ -22,7 +22,7 @@ export default function ModalOrderMobileDelete() {
   const [active, setActive] = useState(0);
   const [text, setText] = useState('');
 
-  const [token] = useHeaderStore( state => [state.token] )
+  const [token] = useHeaderStoreNew( state => [state.token] )
 
   const [openModalDelete, closeModalDel, orderDel] = useProfileStore((state) => [state.openModalDelete, state.closeModalDel, state.orderDel]);
 

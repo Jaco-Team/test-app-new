@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useHeaderStore, useProfileStore } from '@/components/store.js';
+import { useHeaderStoreNew, useProfileStore } from '@/components/store.js';
 
 import Link from 'next/link';
 
@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import { AccountMobileAddress, AccountMobilePromo, AccountMobilePerson, AccountMobileHistory } from '@/ui/Icons.js';
 
 export default function AccountMobile({ city, this_module }) {
-  const [ token, matches ] = useHeaderStore( state => [ state.token, state.matches ]);
+  const [ token, matches ] = useHeaderStoreNew( state => [ state?.token, state?.matches ]);
   const [ setActiveAccountModal, colorAccount, getUserInfo, userInfo, shortName] = useProfileStore( state => [state.setActiveAccountModal, state.colorAccount, state.getUserInfo, state.userInfo, state.shortName]);
 
   useEffect(() => {

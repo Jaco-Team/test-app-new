@@ -1,6 +1,6 @@
 import Link from 'next/link';
 import { useCartStore, 
-  // useHeaderStore 
+  // useHeaderStoreNew 
 } from '@/components/store.js';
 import { BasketIconMobile } from '@/ui/Icons.js';
 import ListItem from '@mui/material/ListItem';
@@ -8,7 +8,7 @@ import ListItem from '@mui/material/ListItem';
 export default function BasketIconHeaderMobile({ setActiveMenu, active_page, city }) {
   const [itemsCount] = useCartStore((state) => [state.itemsCount]);
 
-  // const [setActiveModalAuth] = useHeaderStore((state) => [state.setActiveModalAuth]);
+  // const [setActiveModalAuth] = useHeaderStoreNew((state) => [state.setActiveModalAuth]);
 
   // function openBasketModal(event){
   //   // if( isAuth == 'auth' ){

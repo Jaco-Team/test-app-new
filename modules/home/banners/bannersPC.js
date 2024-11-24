@@ -18,7 +18,7 @@ import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
 export default (function BannersPC() {
   const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider, state.getBanners]);
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
-  //const [setActiveModalAlert] = useHeaderStore((state) => [state.setActiveModalAlert]);
+  //const [setActiveModalAlert] = useHeaderStoreNew((state) => [state.setActiveModalAlert]);
 
   const swiperRef = useRef(null);
 
@@ -139,21 +139,21 @@ export default (function BannersPC() {
         >
           {bannerList?.map((item, key) => (
             <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
-              {/* <Image alt={item.title} src={"https://storage.yandexcloud.net/site-home-img/"+item.img+"_3700x1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }} /> */}
+              {/* <Image alt={item.title} src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}`+item.img+"_3700x1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }} /> */}
               <picture>
                 <source 
                   type="image/webp" 
-                  srcSet={"https://storage.yandexcloud.net/site-home-img/"+item.img+"_3700x1000.jpg"} 
+                  srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + item.img+"_3700x1000.jpg"} 
                   sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
                 <source 
                   type="image/jpeg" 
-                  srcSet={"https://storage.yandexcloud.net/site-home-img/"+item.img+"_3700x1000.jpg"} 
+                  srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + item.img+"_3700x1000.jpg"} 
                   sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
                 <img 
                   alt={item?.name} 
                   title={item?.name} 
-                  src={"https://storage.yandexcloud.net/site-home-img/"+item.img+"_3700x1000.jpg"} 
+                  src={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + item.img+"_3700x1000.jpg"} 
                   loading="lazy"
                   style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }}
                 />

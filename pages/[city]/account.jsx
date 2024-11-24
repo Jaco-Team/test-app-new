@@ -6,7 +6,7 @@ const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const DynamicPage = dynamic(() => import('@/modules/profile/account/page'))
 
 import { api } from '@/components/api.js';
-import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
+import { useCitiesStore, useHeaderStoreNew, useCartStore } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js'
 
 import { useRouter } from 'next/router';
@@ -22,7 +22,7 @@ export default function Account(props) {
   const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
-  const [setActivePage, matches] = useHeaderStore((state) => [state.setActivePage, state.matches]);
+  const [setActivePage, matches] = useHeaderStoreNew((state) => [state.setActivePage, state.matches]);
 
   useEffect(() => {
     if (!matches && city.length > 0) {

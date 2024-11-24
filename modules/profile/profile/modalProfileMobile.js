@@ -4,7 +4,7 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import { flushSync } from 'react-dom';
 
-import { useProfileStore, useHeaderStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStoreNew } from '@/components/store.js';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -57,7 +57,7 @@ export default function ProfileModalMobile({ city, this_module, setUserDate }) {
   const [slidesMonth, setSlidesMonth] = useState(data_m);
 
   const [openModalProfile, setActiveProfileModal, modalName, userInfo, setUser, updateUser] = useProfileStore((state) => [state.openModalProfile, state.setActiveProfileModal, state.modalName, state.userInfo, state.setUser, state.updateUser]);
-  const [ token, signOut ] = useHeaderStore( state => [ state.token, state.signOut ] )
+  const [ token, signOut ] = useHeaderStoreNew( state => [ state?.token, state?.signOut ] )
 
   useEffect(() => {
 

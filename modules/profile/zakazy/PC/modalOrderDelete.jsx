@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { useProfileStore, useHeaderStore } from '@/components/store';
+import { useProfileStore, useHeaderStoreNew } from '@/components/store';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -28,7 +28,7 @@ export default function ModalOrderDelete() {
   const [ chooseType, setChooseType ] = useState(0);
   const [ textDel, setTextDel ] = useState('');
 
-  const [ token ] = useHeaderStore( state => [ state.token ] )
+  const [ token ] = useHeaderStoreNew( state => [ state.token ] )
 
   useEffect( () => {
     setTextDel('');

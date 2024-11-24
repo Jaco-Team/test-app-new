@@ -2,7 +2,7 @@ import { useState } from 'react';
 
 import Link from 'next/link';
 
-import { useHeaderStore } from '@/components/store';
+import { useHeaderStoreNew } from '@/components/store';
 
 import MyTextInput, { FormattedInputs } from '@/ui/MyTextInput';
 import {Check, DoneAuthMobile, EyeShow_modalOrder, EyeHide_modalOrder, VectorRightAuthMobile } from '@/ui/Icons';
@@ -19,7 +19,7 @@ export default function Create({ city, closeModal }) {
   const [checkAccord, setCheckAccord] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const [changeLogin, loginLogin, checkLoginKey, sendsmsNewLogin, matches, setPwdLogin, pwdLogin, setActiveModalAlert] = useHeaderStore((state) => [state.changeLogin, state.loginLogin, state.checkLoginKey, state.sendsmsNewLogin, state.matches, state.setPwdLogin, state.pwdLogin, state.setActiveModalAlert]);
+  const [changeLogin, loginLogin, checkLoginKey, sendsmsNewLogin, matches, setPwdLogin, pwdLogin, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.changeLogin, state?.loginLogin, state?.checkLoginKey, state?.sendsmsNewLogin, state?.matches, state?.setPwdLogin, state?.pwdLogin, state?.setActiveModalAlert]);
 
   return (
     <div className={matches ? 'modalLoginCreateMobile' : 'modalLoginCreatePC'}>

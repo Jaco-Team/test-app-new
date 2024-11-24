@@ -1,6 +1,6 @@
 import { useState } from 'react';
 
-import {useCartStore, useHeaderStore, useProfileStore } from '@/components/store.js';
+import {useCartStore, useHeaderStoreNew, useProfileStore } from '@/components/store.js';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -20,7 +20,7 @@ export default function MailForm({cityName}) {
   const [mail, setMail] = useState('');
 
   const [userInfo, setUser, updateUser] = useProfileStore((state) => [state.userInfo, state.setUser, state.updateUser]);
-  const [matches, token] = useHeaderStore((state) => [state.matches, state.token]);
+  const [matches, token] = useHeaderStoreNew((state) => [state?.matches, state?.token]);
   const [openMailForm, setMailForm] = useCartStore((state) => [state.openMailForm, state.setMailForm]);
 
   const changeMail = (event) => {

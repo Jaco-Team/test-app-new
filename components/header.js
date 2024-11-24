@@ -25,7 +25,7 @@ import ModalPointClose_mobile from '@/modules/header/modalPointClose/modalPointC
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 
-import { useCartStore, useHeaderStore, useHomeStore } from './store.js';
+import { useCartStore, useHeaderStoreNew, useHomeStore } from './store.js';
 
 import { initializeApp } from "firebase/app";
 import { getAnalytics } from "firebase/analytics";
@@ -60,7 +60,7 @@ export default React.memo(function header({ city, city_list, cats }) {
 
   const matchesDev = useMediaQuery('screen and (max-width: 800px)');
 
-  const [setMatches, matches, checkToken, isShowLoad, setShowClosePoint] = useHeaderStore( state => [state.setMatches, state.matches, state.checkToken, state.isShowLoad, state.setShowClosePoint] ); 
+  const [setMatches11, matches, checkToken, isShowLoad, setShowClosePoint] = useHeaderStoreNew( state => [state?.setMatches11, state?.matches, state?.checkToken, state?.isShowLoad, state?.setShowClosePoint] ); 
   const [getItemsCat, category] = useHomeStore( state => [state.getItemsCat, state.category]);
   const [ setFreeDrive ] = useCartStore( state => [state.setFreeDrive]);
 
@@ -69,7 +69,7 @@ export default React.memo(function header({ city, city_list, cats }) {
 
     if( typeof window != 'undefined' ){
       const firebaseConfig = {
-        apiKey: "AIzaSyChAHowCT2C7GRwfcxwt1Pi4SCV4CaVpP4",
+        apiKey: 'AIzaSyChAHowCT2C7GRwfcxwt1Pi4SCV4CaVpP4',
         authDomain: "jacofoodsite.firebaseapp.com",
         projectId: "jacofoodsite",
         storageBucket: "jacofoodsite.appspot.com",
@@ -105,7 +105,9 @@ export default React.memo(function header({ city, city_list, cats }) {
 
   useEffect(() => {
     if(matches !== matchesDev) {
-      setMatches(matchesDev);
+      if( setMatches11 ){
+        setMatches11(matchesDev);
+      }
     }
   }, [matchesDev, matches]);
 
@@ -174,7 +176,7 @@ export default React.memo(function header({ city, city_list, cats }) {
 
   return (
     <div className={roboto.variable} style={{ overflow: 'auto' }}>
-      <Script src="https://api-maps.yandex.ru/2.1/?apikey=f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8&lang=ru_RU" />
+      <Script src={"https://api-maps.yandex.ru/2.1/?apikey=111&lang=ru_RU"} />
       <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" strategy="lazyOnload" />
       <Script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js" strategy="lazyOnload" />
       <Script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-token-with-polyfills-latest.js" strategy="lazyOnload" />

@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { useProfileStore, useCartStore, useHeaderStore, useCitiesStore } from '@/components/store';
+import { useProfileStore, useCartStore, useHeaderStoreNew, useCitiesStore } from '@/components/store';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -93,7 +93,7 @@ export default React.memo(function ModalOrder() {
 
   const [ isShowAddr, setShowAddr ] = useState(true);
 
-  const [ token ] = useHeaderStore( state => [ state.token ] )
+  const [ token ] = useHeaderStoreNew( state => [ state.token ] )
   const [ thisCity ] = useCitiesStore( state => [ state.thisCity ] )
 
   let order_status = '';

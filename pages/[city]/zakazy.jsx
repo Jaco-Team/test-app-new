@@ -6,7 +6,7 @@ const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const DynamicPage = dynamic(() => import('@/modules/profile/zakazy/page'))
 
 import { api } from '@/components/api.js';
-import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
+import { useCitiesStore, useHeaderStoreNew, useCartStore } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js'
 
 import { useRouter } from 'next/router';
@@ -24,7 +24,7 @@ export default function Zakazy(props) {
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
-  const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
+  const [ setActivePage ] = useHeaderStoreNew( state => [ state.setActivePage ] )
 
   useEffect(() => {
     if( thisCity != city ){

@@ -1,6 +1,6 @@
 import { useEffect, useState } from 'react';
 
-import { useProfileStore, useHeaderStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStoreNew } from '@/components/store.js';
 import Link from 'next/link';
 
 import ProfileModalMobile from './modalProfileMobile';
@@ -20,7 +20,7 @@ export default function ProfileMobile({ city, this_module }) {
   const [isSpam, setIsSpam] = useState(0);
   
   const [setActiveProfileModal, setUser, userInfo, getUserInfo, updateUser] = useProfileStore((state) => [state.setActiveProfileModal, state.setUser, state.userInfo, state.getUserInfo, state.updateUser]);
-  const [token] = useHeaderStore( state => [ state.token] )
+  const [token] = useHeaderStoreNew( state => [ state?.token] )
 
   const { control, getValues, setValue } = useForm({
     defaultValues: {

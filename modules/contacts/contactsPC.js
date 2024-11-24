@@ -2,7 +2,7 @@ import React, { useState, useRef, useEffect } from 'react';
 
 import Link from 'next/link';
 
-import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/store.js';
+import { useContactStore, useCitiesStore, useHeaderStoreNew } from '@/components/store.js';
 
 import { MapPointIcon } from '@/ui/Icons.js';
 
@@ -29,7 +29,7 @@ export default function ContactsPagePC() {
   const [myAddr, phone, disablePointsZone, disable, center_map, zones, getMap, points_zone, changePointClick, changePointNotHover] = useContactStore((state) => [
     state.myAddr, state.phone, state.disablePointsZone, state.disable, state.center_map, state.zones, state.getMap, state.points_zone, state.changePointClick, state.changePointNotHover]);
 
-  const [activePage] = useHeaderStore((state) => [state.activePage]);
+  const [activePage] = useHeaderStoreNew((state) => [state?.activePage]);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -110,7 +110,7 @@ export default function ContactsPagePC() {
 
       {!center_map ? null :
         <div style={{ minHeight: '68.231046931408vw', width: '100%' }} >
-          <YMaps query={{ lang: 'ru_RU', apikey: 'f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8' }}>
+          <YMaps query={{ lang: 'ru_RU', apikey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP }}>
             <Map 
               defaultState={center_map} 
               instanceRef={ref}

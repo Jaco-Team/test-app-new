@@ -5,7 +5,7 @@ import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 
 import { useCartStore, useHomeStore, useFooterStore, 
-  // useHeaderStore 
+  // useHeaderStoreNew 
 } from '@/components/store.js';
 
 import { NewVKIcon, OdnIcon, TGIcon, ArrowUp, BasketFooterMobile } from '@/ui/Icons.js';
@@ -20,7 +20,7 @@ export default function FooterMobile({ cityName, active_page }) {
   const [itemsCount, allPrice, allPriceWithoutPromo] = useCartStore((state) => [state.itemsCount, state.allPrice, state.allPriceWithoutPromo]);
   const [links] = useFooterStore((state) => [state.links]);
 
-  // const [ isAuth, setActiveModalAuth ] = useHeaderStore( state => [ state.isAuth, state.setActiveModalAuth ]);
+  // const [ isAuth, setActiveModalAuth ] = useHeaderStoreNew( state => [ state.isAuth, state.setActiveModalAuth ]);
 
   const [setMenuCatPosition, isOpenFilter, transition_menu_mobile] = useHomeStore(state => [state.setMenuCatPosition, state.isOpenFilter, state.transition_menu_mobile]);
 

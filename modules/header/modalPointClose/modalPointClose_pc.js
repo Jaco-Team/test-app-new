@@ -9,7 +9,7 @@ import Typography from '@mui/material/Typography';
 import Box from '@mui/material/Box';
 import Backdrop from '@mui/material/Backdrop';
 
-import { useCartStore, useHeaderStore } from '@/components/store.js';
+import { useCartStore, useHeaderStoreNew } from '@/components/store.js';
 
 import { roboto } from '@/ui/Font.js';
 import { IconClose } from '@/ui/Icons.js';
@@ -17,7 +17,7 @@ import { IconClose } from '@/ui/Icons.js';
 export default function ModalPointClose_pc() {
 
   const [ checkFreeDrive, show_checkFreeDrive ] = useCartStore( state => [ state.checkFreeDrive, state.show_checkFreeDrive ] );
-  const [ token ] = useHeaderStore( state => [ state.token ] );
+  const [ token ] = useHeaderStoreNew( state => [ state?.token ] );
 
   const [open, setOpen] = useState(false);
 

@@ -1,5 +1,5 @@
 import React, { useState, useEffect } from 'react';
-import { useProfileStore, useCartStore, useHeaderStore, useCitiesStore } from '@/components/store';
+import { useProfileStore, useCartStore, useHeaderStoreNew, useCitiesStore } from '@/components/store';
 
 import Button from '@mui/material/Button';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -103,7 +103,7 @@ export default React.memo(function ModalOrderMobile() {
 
   const [ repeatOrder ] = useCartStore( state => [ state.repeatOrder ])
 
-  const [ token ] = useHeaderStore( state => [ state.token ] )
+  const [ token ] = useHeaderStoreNew( state => [ state.token ] )
   const [ thisCity ] = useCitiesStore( state => [ state.thisCity ] )
 
   let text_status = '';

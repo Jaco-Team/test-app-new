@@ -6,14 +6,14 @@ import AddressMobile from './addressMobile';
 import AddressModalMobile from './modalAddressMobile';
 import GetAddressMobile from './modalGetAddressMobile';
 
-import { useHeaderStore } from '@/components/store';
+import { useHeaderStoreNew } from '@/components/store';
 
 import { useRouter } from 'next/router';
 
 export default function AddressPage({ page, this_module, city }) {
   const { push } = useRouter();
 
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
 
   useEffect(() => {
     if (!matches) {

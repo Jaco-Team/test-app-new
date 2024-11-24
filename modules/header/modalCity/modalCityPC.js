@@ -17,14 +17,14 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import { roboto } from '@/ui/Font.js';
 import { IconClose } from '@/ui/Icons.js';
-import { useHeaderStore, useCitiesStore, useContactStore, useCartStore, useHomeStore } from '@/components/store.js';
+import { useHeaderStoreNew, useCitiesStore, useContactStore, useCartStore, useHomeStore } from '@/components/store.js';
 
 export default function ModalCityPC() {
 
   const { push } = useRouter();
 
   const [thisCityList, thisCityRu, setThisCityRu, setThisCity] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu, state.setThisCity]);
-  const [openCityModal, setActiveModalCity, activePage] = useHeaderStore((state) => [state.openCityModal, state.setActiveModalCity, state.activePage]);
+  const [openCityModal, setActiveModalCity, activePage] = useHeaderStoreNew((state) => [state?.openCityModal, state?.setActiveModalCity, state?.activePage]);
   const [getMap] = useContactStore((state) => [state.getMap]);
   const [getNewPriceItems] = useCartStore( state => [state.getNewPriceItems] )
   const [resetFilter] = useHomeStore( state => [state.resetFilter] )

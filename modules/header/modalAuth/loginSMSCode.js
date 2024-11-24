@@ -1,5 +1,5 @@
 import { useRef, useEffect } from 'react';
-import { useHeaderStore } from '@/components/store';
+import { useHeaderStoreNew } from '@/components/store';
 
 import { ClearAuthMobile, VectorRightAuthMobile } from '@/ui/Icons';
 
@@ -20,7 +20,7 @@ export default function LoginSMSCode() {
 
   const inputRef = useRef(null);
 
-  const [changeCode, createProfile, checkCode, navigate, loginLogin, preTypeLogin, code, matches, timerPage, setTimer] = useHeaderStore( state => [state.changeCode, state.createProfile, state.checkCode, state.navigate, state.loginLogin, state.preTypeLogin, state.code, state.matches, state.timerPage, state.setTimer]);
+  const [changeCode, createProfile, checkCode, navigate, loginLogin, preTypeLogin, code, matches, timerPage, setTimer] = useHeaderStoreNew( state => [state?.changeCode, state?.createProfile, state?.checkCode, state?.navigate, state?.loginLogin, state?.preTypeLogin, state?.code, state?.matches, state?.timerPage, state?.setTimer]);
 
   useEffect(() => {
     if (timerPage) {

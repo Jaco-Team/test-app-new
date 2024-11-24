@@ -8,14 +8,14 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 import { roboto } from '@/ui/Font.js';
-import { useHeaderStore, useCitiesStore, useCartStore, useContactStore, useHomeStore } from '@/components/store.js';
+import { useHeaderStoreNew, useCitiesStore, useCartStore, useContactStore, useHomeStore } from '@/components/store.js';
 
 export default function ModalCityMobile() {
   const { push } = useRouter();
 
   const [thisCityList, thisCityRu, setThisCityRu, setThisCity, thisCity] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu, state.setThisCity, state.thisCity]);
 
-  const [openCityModal, openCityModalList, setActiveModalCity, setActiveModalCityList, activePage, token] = useHeaderStore((state) => [state.openCityModal, state.openCityModalList, state.setActiveModalCity, state.setActiveModalCityList, state.activePage, state.token]);
+  const [openCityModal, openCityModalList, setActiveModalCity, setActiveModalCityList, activePage, token] = useHeaderStoreNew((state) => [state?.openCityModal, state?.openCityModalList, state?.setActiveModalCity, state?.setActiveModalCityList, state?.activePage, state?.token]);
 
   const [getMySavedAddr, setPoint, setAddrDiv, getNewPriceItems, getInfoPromo] = useCartStore((state) => [state.getMySavedAddr, state.setPoint, state.setAddrDiv, state.getNewPriceItems, state.getInfoPromo]);
 

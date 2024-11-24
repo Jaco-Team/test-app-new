@@ -1,6 +1,6 @@
 import { useState, useEffect } from 'react';
 
-import { useCartStore, useCitiesStore, useHeaderStore, useProfileStore } from '@/components/store.js';
+import { useCartStore, useCitiesStore, useHeaderStoreNew, useProfileStore } from '@/components/store.js';
 import { useRouter } from 'next/router';
 
 import Menu from '@mui/material/Menu';
@@ -59,7 +59,7 @@ export default function FormOrder({ cityName }) {
 
   const [openModalAddr, getOrderList, userInfo, getUserInfo] = useProfileStore( state => [state.openModalAddr, state.getOrderList, state.userInfo, state.getUserInfo]);
 
-  const [matches, setActiveModalCityList, setActiveModalAlert, token, showLoad, isAuth, setActiveModalAuth] = useHeaderStore((state) => [state.matches, state.setActiveModalCityList, state.setActiveModalAlert, state.token, state.showLoad, state.isAuth, state.setActiveModalAuth]);
+  const [matches, setActiveModalCityList, setActiveModalAlert, token, showLoad, isAuth, setActiveModalAuth] = useHeaderStoreNew((state) => [state?.matches, state?.setActiveModalCityList, state?.setActiveModalAlert, state?.token, state?.showLoad, state?.isAuth, state?.setActiveModalAuth]);
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
  

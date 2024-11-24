@@ -1,7 +1,7 @@
 import Meta from '@/components/meta.js';
 import Link from 'next/link';
 
-import { useHeaderStore } from '@/components/store';
+import { useHeaderStoreNew } from '@/components/store';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -11,7 +11,7 @@ import DocsBreadcrumbs from '@/components/docsBreadcrumbs.js';
 import { ArrowLeftMobile } from '@/ui/Icons.js';
 
 export default function PageText({ page, classNamePC, classNameMobile, cityName }) {
-  const [matches, activePage] = useHeaderStore((state) => [state.matches, state.activePage]);
+  const [matches, activePage] = useHeaderStoreNew((state) => [state.matches, state.activePage]);
 
   return (
     <Meta title={page.title} description={page.description}>

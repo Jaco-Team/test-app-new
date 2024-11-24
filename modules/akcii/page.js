@@ -1,5 +1,5 @@
 import React from 'react';
-import { useHeaderStore, useHomeStore } from '@/components/store';
+import { useHeaderStoreNew, useHomeStore } from '@/components/store';
 
 import AkciiPC from './PC/akciiPC';
 import AkciiMobile from './mobile/akciiMobile';
@@ -15,7 +15,7 @@ import AkciiItemPC from './PC/akciiItemPC';
 import Meta from '@/components/meta.js';
 
 export default function AkciiPage({ page }) {
-  const [matches] = useHeaderStore((state) => [state.matches]);
+  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
 
   const [ pageBanner ] = useHomeStore((state) => [state.pageBanner]);
 

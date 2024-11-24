@@ -8,13 +8,13 @@ import ModalOrder from './modalOrder.jsx';
 import ModalOrderDelete from './modalOrderDelete.jsx';
 import OrdersList from './ordersList.jsx';
 
-import { useProfileStore, useHeaderStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStoreNew } from '@/components/store.js';
 
 export default function OrderPC({ this_module, city }) {
 
   const [getOrderList] = useProfileStore((state) => [state.getOrderList, state.orderList]);
 
-  const [ token ] = useHeaderStore( state => [ state.token ] )
+  const [ token ] = useHeaderStoreNew( state => [ state.token ] )
 
   useEffect(() => {
     if( token && token?.length > 0 ) {

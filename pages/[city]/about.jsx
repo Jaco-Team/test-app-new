@@ -8,7 +8,7 @@ const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const AboutPage = dynamic(() => import('@/modules/about/aboutPage'))
 
 import { roboto } from '@/ui/Font.js'
-import { useCitiesStore, useHeaderStore, useCartStore } from '@/components/store.js';
+import { useCitiesStore, useHeaderStoreNew, useCartStore } from '@/components/store.js';
 import { api } from '@/components/api.js';
 
 const this_module = 'contacts';
@@ -22,7 +22,7 @@ export default React.memo(function About(props) {
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = 
     useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
 
-  const [ setActivePage ] = useHeaderStore( state => [ state.setActivePage ] )
+  const [ setActivePage ] = useHeaderStoreNew( state => [ state.setActivePage ] )
 
   useEffect(() => {
     if( thisCity != city ){

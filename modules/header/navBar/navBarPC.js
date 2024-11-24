@@ -13,7 +13,7 @@ import {ArrowDownHeaderPC, ArrowUpHeaderPC, JacoDocsIcon, LocationHeaderIcon, Sv
 
 import { Link as ScrollLink } from 'react-scroll';
 
-import { useHeaderStore, useCartStore, useCitiesStore, useFooterStore, useHomeStore } from '@/components/store.js';
+import { useHeaderStoreNew, useCartStore, useCitiesStore, useFooterStore, useHomeStore } from '@/components/store.js';
 import useScroll from '../hook.js';
 
 import BasketIconHeaderPC from '../basket/basketIconHeaderPC.js';
@@ -22,7 +22,7 @@ import ProfileIconHeaderPC from '../profile/profileIconHeaderPC.js';
 const MenuBurger = React.memo(function MenuBurger({ anchorEl, city, isOpen, onClose }){
   const [links] = useFooterStore((state) => [state.links]);
   //const [ thisCityRu ] = useCitiesStore( state => [ state.thisCityRu ] );
-  //const [ setActiveModalCity ] = useHeaderStore( state => [ state.setActiveModalCity ] );
+  //const [ setActiveModalCity ] = useHeaderStoreNew( state => [ state.setActiveModalCity ] );
 
   return(
     <Menu id='chooseHeaderCat' anchorEl={anchorEl} open={isOpen} onClose={ () => onClose() } anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} transformOrigin={{ vertical: 'top',  horizontal: 'center' }} autoFocus={false}>
@@ -111,7 +111,7 @@ export default React.memo(function NavBarPC({ city }) {
   const router = useRouter()
   const pathname = usePathname()
   
-  const [setActiveBasket, openBasket, setActiveModalCity, activePage] = useHeaderStore((state) => [state.setActiveBasket, state.openBasket, state.setActiveModalCity, state.activePage]);
+  const [setActiveBasket, openBasket, setActiveModalCity, activePage] = useHeaderStoreNew((state) => [state?.setActiveBasket, state?.openBasket, state?.setActiveModalCity, state?.activePage]);
   const [setThisCityRu, thisCityRu, setThisCity] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu, state.setThisCity]);
   const [ getInfoPromo, getCartLocalStorage ] = useCartStore( state => [ state.getInfoPromo, state.getCartLocalStorage ])
   const [ category, setCategory, setActiveFilter, isOpenFilter, resetFilter ] = useHomeStore((state) => [ state.category, state.setCategory, state.setActiveFilter, state.isOpenFilter, state.resetFilter ]);

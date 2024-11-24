@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
-import { useHomeStore, useCartStore, useHeaderStore, useCitiesStore } from '@/components/store';
+import { useHomeStore, useCartStore, useHeaderStoreNew, useCitiesStore } from '@/components/store';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -63,34 +63,36 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
             <source 
               type="image/webp" 
               srcSet={`
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_366x366.webp 138w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_466x466.webp 146w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_585x585.webp 183w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_585x585.webp 233w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_585x585.webp 292w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_732x732.webp 366w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_1168x1168.webp 584w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_1168x1168.webp 760w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_1420x1420.webp 1875w`} 
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_366x366.webp 138w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_466x466.webp 146w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_585x585.webp 183w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_585x585.webp 233w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_585x585.webp 292w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_732x732.webp 366w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_1168x1168.webp 584w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_1168x1168.webp 760w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_1420x1420.webp 1875w`}
               sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
             <source 
               type="image/jpeg" 
               srcSet={`
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_366x366.jpg 138w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_466x466.jpg 146w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_585x585.jpg 183w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_585x585.jpg 233w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_585x585.jpg 292w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_732x732.jpg 366w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_1168x1168.jpg 584w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_1168x1168.jpg 760w,
-                https://cdnimg.jacofood.ru/${thisItem.img_app}_1420x1420.jpg 1875w`} 
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_366x366.jpg 138w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_466x466.jpg 146w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_585x585.jpg 183w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_585x585.jpg 233w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_585x585.jpg 292w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_732x732.jpg 366w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_1168x1168.jpg 584w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_1168x1168.jpg 760w,
+                ${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_1420x1420.jpg 1875w`} 
               sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
             <img 
               alt={thisItem?.name} 
               title={thisItem?.name} 
-              src={`https://cdnimg.jacofood.ru/${thisItem.img_app}_292x292.jpg`} 
+              src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_292x292.jpg`} 
+
+              //src={`https://cdnimg.jacofood.ru/${thisItem.img_app}_292x292.jpg`} 
               loading="lazy"
               onClick={() => getItem('home', thisCity, thisItem.id)}
             />
@@ -136,7 +138,7 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
 export default function AkciiItemPC({ actia }) {
   const [dataForActia] = useHomeStore((state) => [state.dataForActia]);
   const [getInfoPromo] = useCartStore((state) => [state.getInfoPromo]);
-  const [setActiveModalAlert, isAuth] = useHeaderStore((state) => [state.setActiveModalAlert, state.isAuth]);
+  const [setActiveModalAlert, isAuth] = useHeaderStoreNew((state) => [state?.setActiveModalAlert, state?.isAuth]);
 
   const data = dataForActia(actia);
 
@@ -155,17 +157,17 @@ export default function AkciiItemPC({ actia }) {
       <picture>
         <source 
           type="image/webp" 
-          srcSet={`https://storage.yandexcloud.net/site-home-img/${data?.banner?.img}_3700x1000.webp`} 
+          srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${data?.banner?.img}_3700x1000.webp`} 
           sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
         <source 
           type="image/jpeg" 
-          srcSet={`https://storage.yandexcloud.net/site-home-img/${data?.banner?.img}_3700x1000.jpg`} 
+          srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${data?.banner?.img}_3700x1000.jpg`} 
           sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
         <img 
           alt={data?.banner?.title} 
           title={data?.banner?.title} 
-          src={`https://storage.yandexcloud.net/site-home-img/${data?.banner?.img}_3700x1000.jpg`} 
+          src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${data?.banner?.img}_3700x1000.jpg`} 
           loading="lazy"
         />
       </picture>

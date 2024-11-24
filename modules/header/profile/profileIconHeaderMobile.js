@@ -2,15 +2,15 @@ import { useEffect } from 'react';
 
 import Link from 'next/link';
 
-import { useHeaderStore, useProfileStore } from '@/components/store.js';
+import { useHeaderStoreNew, useProfileStore } from '@/components/store.js';
 import { ProfileIconMobile } from '@/ui/Icons.js';
 import ListItem from '@mui/material/ListItem';
 
 export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_page }) {
 
-  const [setActiveModalAuth, isAuth] = useHeaderStore((state) => [state.setActiveModalAuth, state.isAuth]);
+  const [setActiveModalAuth, isAuth] = useHeaderStoreNew((state) => [state?.setActiveModalAuth, state?.isAuth]);
   const [shortName, getUserInfo] = useProfileStore((state) => [state.shortName, state.getUserInfo]);
-  const [token] = useHeaderStore(state => [state.token])
+  const [token] = useHeaderStoreNew(state => [state?.token])
 
   useEffect(() => {
     if(token && token.length > 0) {

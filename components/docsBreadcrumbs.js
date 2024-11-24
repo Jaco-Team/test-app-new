@@ -3,12 +3,12 @@ import React from 'react';
 import Grid from '@mui/material/Grid';
 import Link from 'next/link'
 
-import { useHeaderStore, useCitiesStore, useFooterStore } from '@/components/store.js';
+import { useHeaderStoreNew, useCitiesStore, useFooterStore } from '@/components/store.js';
 
 export default function DocsBreadcrumbs() {
 
   const [ thisCity ] = useCitiesStore(state => [ state.thisCity ]);
-  const [ activePage ] = useHeaderStore( state => [ state.activePage ] )
+  const [ activePage ] = useHeaderStoreNew( state => [ state?.activePage ] )
   const [links] = useFooterStore((state) => [state.links]);
 
   return (

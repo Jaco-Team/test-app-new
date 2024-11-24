@@ -15,7 +15,7 @@ import MyTextInput from '@/ui/MyTextInput';
 import MyAutocomplete from '@/ui/MyAutocomplete';
 import MySelect from '@/ui/MySelect';
 
-import { useProfileStore, useHeaderStore, useCitiesStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStoreNew, useCitiesStore } from '@/components/store.js';
 
 const debounce = (func, delay) => {
   let timeoutId;
@@ -36,7 +36,7 @@ export default function ModalAddr(){
     useProfileStore( state => [ state.clearAddr, state.chooseAddrStreet, state.center_map, state.zones, state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.cityList, state.updateStreetList, state.active_city, state.updateAddr, state.setClearAddr, state.openModalAddr, state.getAddrList, state.street_list, state.chooseStreet] );
 
   const [thisCityList] = useCitiesStore((state) => [state.thisCityList]);
-  const [ token, matches ] = useHeaderStore( state => [ state.token, state.matches ] )
+  const [ token, matches ] = useHeaderStoreNew( state => [ state?.token, state?.matches ] )
 
   // const [ street, setStreet ] = useState('');
   // const [ street_, setStreet_ ] = useState('');
@@ -186,7 +186,7 @@ export default function ModalAddr(){
 
           <div className='mainGrid'>
             <div className='map'>
-              <YMaps query={{ lang: 'ru_RU', apikey: 'f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8' }}>
+              <YMaps query={{ lang: 'ru_RU', apikey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP }}>
                 <Map defaultState={center_map} instanceRef={ref2} width="100%" height="100%">
 
                   { !chooseAddrStreet || Object.entries(chooseAddrStreet).length === 0 ? null :

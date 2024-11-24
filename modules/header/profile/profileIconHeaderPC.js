@@ -1,11 +1,11 @@
 import Link from 'next/link';
 
-import { useHeaderStore, useCitiesStore } from '@/components/store.js';
+import { useHeaderStoreNew, useCitiesStore } from '@/components/store.js';
 
 import { ProfileIconNew } from '@/ui/Icons.js';
 
 export default function ProfileIconHeaderPC({activeProfile}) {
-  const [setActiveModalAuth, isAuth] = useHeaderStore((state) => [state.setActiveModalAuth, state.isAuth]);
+  const [setActiveModalAuth, isAuth] = useHeaderStoreNew((state) => [state?.setActiveModalAuth, state?.isAuth]);
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
   
   return (

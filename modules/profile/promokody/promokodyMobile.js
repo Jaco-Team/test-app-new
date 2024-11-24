@@ -1,6 +1,6 @@
 import { useEffect } from 'react';
 
-import { useProfileStore, useHeaderStore } from '@/components/store.js';
+import { useProfileStore, useHeaderStoreNew } from '@/components/store.js';
 
 import Link from 'next/link';
 
@@ -13,7 +13,7 @@ import PromoCardMobile from './promoCardMobile';
 export default function PromokodyMobile({ this_module, city }) {
 
   const [ getPromoList, promoListActive ] = useProfileStore( state => [ state.getPromoList, state.promoListActive ]);
-  const [ token ] = useHeaderStore( state => [ state.token ] )
+  const [ token ] = useHeaderStoreNew( state => [ state?.token ] )
 
   useEffect(() => {
     if( token && token.length > 0 ) {

@@ -1,9 +1,9 @@
 import { useEffect } from 'react';
-import { useHeaderStore } from '@/components/store';
+import { useHeaderStoreNew } from '@/components/store';
 import Typography from '@mui/material/Typography';
 
 export default function Timer() {
-  const [toTime, timer, setTimer] = useHeaderStore((state) => [state.toTime, state.timer, state.setTimer]);
+  const [toTime, timer, setTimer] = useHeaderStoreNew((state) => [state?.toTime, state?.timer, state?.setTimer]);
 
   useEffect(() => {
     let interval;

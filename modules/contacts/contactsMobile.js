@@ -1,6 +1,6 @@
 import { useRef, useEffect, memo } from 'react';
 import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
-import { useContactStore, useCitiesStore, useHeaderStore } from '@/components/store.js';
+import { useContactStore, useCitiesStore, useHeaderStoreNew } from '@/components/store.js';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
@@ -27,7 +27,7 @@ export default function ContactsPageMobile() {
 
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
 
-  const [setActiveModalCityList] = useHeaderStore((state) => [state.setActiveModalCityList]);
+  const [setActiveModalCityList] = useHeaderStoreNew((state) => [state?.setActiveModalCityList]);
 
   const [point, phone, disablePointsZone, disable, setActiveModalChoose, getUserPosition, center_map, zones, points_zone, changePointClick, location_user, clickPhoneMobile] = useContactStore((state) => [state.point, state.phone, state.disablePointsZone, state.disable, state.setActiveModalChoose, state.getUserPosition, state.center_map, state.zones, state.points_zone, state.changePointClick, state.location_user, state.clickPhoneMobile]);
 
@@ -42,7 +42,7 @@ export default function ContactsPageMobile() {
 
       {!center_map ? null :
         <div style={{ minHeight: '100vw', width: '100%', marginBottom: '10.25641025641vw' }} >
-          <YMaps query={{ lang: 'ru_RU', apikey: 'f600fbbd-6500-4bf7-a0ab-ec9336f6c7d8' }}>
+          <YMaps query={{ lang: 'ru_RU', apikey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP }}>
             <Map 
               defaultState={center_map} 
               instanceRef={ref} 

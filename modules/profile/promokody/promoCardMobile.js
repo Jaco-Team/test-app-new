@@ -1,11 +1,11 @@
 import Button from '@mui/material/Button';
 
-import { useCartStore, useHeaderStore } from '@/components/store';
+import { useCartStore, useHeaderStoreNew } from '@/components/store';
 
 export default function PromoCardMobile({ item }) {
 
   const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ] )
-  const [setActiveModalAlert] = useHeaderStore((state) => [state.setActiveModalAlert]);
+  const [setActiveModalAlert] = useHeaderStoreNew((state) => [state?.setActiveModalAlert]);
 
   const activePromo = async(itemPromo) => {
     const res = await getInfoPromo(itemPromo.promo_name, itemPromo.city_id);

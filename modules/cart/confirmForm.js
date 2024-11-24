@@ -4,7 +4,7 @@ import { useRouter } from 'next/router';
 
 import Script from 'next/script';
 
-import {useCartStore, useHeaderStore, useCitiesStore, useProfileStore } from '@/components/store.js';
+import {useCartStore, useHeaderStoreNew, useCitiesStore, useProfileStore } from '@/components/store.js';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -21,7 +21,7 @@ export default function ConfirmForm() {
 
   const [getOrderList] = useProfileStore((state) => [state.getOrderList]);
 
-  const [matches, token, showLoad] = useHeaderStore((state) => [state.matches, state.token, state.showLoad]);
+  const [matches, token, showLoad] = useHeaderStoreNew((state) => [state?.matches, state?.token, state?.showLoad]);
 
   const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
 
