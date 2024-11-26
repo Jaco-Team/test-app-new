@@ -98,6 +98,7 @@ function ModalOrderStatusIconPicup({ types }) {
 
 export default React.memo(function ModalOrderMobile() {
   const [isShowAddr, setShowAddr] = useState(false);
+  const [ showTimeWarn, setShowTimeWarn ] = useState(false);
 
   const [openModal, closeOrder, modalOrder, openModalDel, getOrder] = useProfileStore((state) => [state.openModal, state.closeOrder, state.modalOrder, state.openModalDel, state.getOrder]);
 
@@ -150,6 +151,18 @@ export default React.memo(function ModalOrderMobile() {
     }
   }, [openModal] )
 
+  useEffect( () => {
+    if( modalOrder ){
+      if( parseInt(modalOrder?.order?.type_order_) == 2 && modalOrder?.order?.max_time_order_time && modalOrder?.order?.max_time_order_time.length > 3 ){
+        let max_time_order = modalOrder?.order?.max_time_order_time.split(':');
+
+        if( parseInt(max_time_order[0]) >= 21 && parseInt(modalOrder?.order?.status_order) >= 1 && parseInt(modalOrder?.order?.status_order) <= 5 && parseInt(modalOrder?.order?.is_delete) == 0 ){
+          setShowTimeWarn( true )
+        } 
+      }
+    }
+  }, [modalOrder] )
+
   return (
       <SwipeableDrawer
         anchor={'bottom'}
@@ -176,6 +189,16 @@ export default React.memo(function ModalOrderMobile() {
             <ModalOrderStatusIconDelivery types={modalOrder?.order?.types} />
             :
             <ModalOrderStatusIconPicup types={modalOrder?.order?.types} />
+          }
+
+          { showTimeWarn ?
+            <div className='header_warning_time'>
+              <span>
+                Пожалуйста, заберите заказ в кафе до 22:00. В праздничные дни время получения заказа может быть увеличено до 22:30. Обращайте внимание на время, указанное после оформления заказа. Спасибо!
+              </span>
+            </div>
+              :
+            false
           }
 
           <div className="zakazyDivider" />

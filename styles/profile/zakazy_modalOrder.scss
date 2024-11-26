@@ -80,6 +80,13 @@
       @include font40_400();
     }
   }
+  & .header_warning_time{
+    padding-bottom: $MyScale40;
+    & > span {
+      @include font30_400();
+      line-height: $MyScale40;
+    }
+  }
   & .header_addr_table {
     & span {
       @include font40_500();

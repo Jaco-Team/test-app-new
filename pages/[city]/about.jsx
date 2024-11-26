@@ -2,8 +2,6 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-import NextCors from 'nextjs-cors';
-
 const DynamicFooter = dynamic(() => import('@/components/footer.js'))
 const AboutPage = dynamic(() => import('@/modules/about/aboutPage'))
 

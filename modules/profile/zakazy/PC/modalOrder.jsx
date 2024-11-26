@@ -92,6 +92,7 @@ export default React.memo(function ModalOrder() {
   const [ repeatOrder ] = useCartStore( state => [ state.repeatOrder ])
 
   const [ isShowAddr, setShowAddr ] = useState(true);
+  const [ showTimeWarn, setShowTimeWarn ] = useState(false);
 
   const [ token ] = useHeaderStoreNew( state => [ state.token ] )
   const [ thisCity ] = useCitiesStore( state => [ state.thisCity ] )
@@ -140,6 +141,18 @@ export default React.memo(function ModalOrder() {
     }
   }, [openModal] )
 
+  useEffect( () => {
+    if( modalOrder ){
+      if( parseInt(modalOrder?.order?.type_order_) == 2 && modalOrder?.order?.max_time_order_time && modalOrder?.order?.max_time_order_time.length > 3 ){
+        let max_time_order = modalOrder?.order?.max_time_order_time.split(':');
+
+        if( parseInt(max_time_order[0]) >= 21 && parseInt(modalOrder?.order?.status_order) >= 1 && parseInt(modalOrder?.order?.status_order) <= 5 && parseInt(modalOrder?.order?.is_delete) == 0 ){
+          setShowTimeWarn( true )
+        } 
+      }
+    }
+  }, [modalOrder] )
+
   return (
     <Dialog
       onClose={ () => closeOrder() }
@@ -168,6 +181,16 @@ export default React.memo(function ModalOrder() {
               <ModalOrderStatusIconDelivery types={modalOrder?.order?.types} />
                 :
               <ModalOrderStatusIconPicup types={modalOrder?.order?.types} />
+            }
+
+            { showTimeWarn ?
+              <div className='header_warning_time'>
+                <span>
+                  Пожалуйста, заберите заказ в кафе до 22:00. В праздничные дни время получения заказа может быть увеличено до 22:30. Обращайте внимание на время, указанное после оформления заказа. Спасибо!
+                </span>
+              </div>
+                :
+              false
             }
 
             <Grid item xs={12} className='header_addr_table'>

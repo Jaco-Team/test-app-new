@@ -5,9 +5,6 @@ import dynamic from 'next/dynamic'
 const DynamicFooter = dynamic(() => import('@/components/footer.js'));
 const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'));
 
-//import Footer from '@/components/footer.js'
-//import HomePage from '@/modules/home/page.js'
-
 import { roboto } from '@/ui/Font.js'
 import { api } from '@/components/api.js';
 

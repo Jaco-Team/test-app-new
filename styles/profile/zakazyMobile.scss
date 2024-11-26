@@ -266,6 +266,15 @@
         }
       }
 
+      & .header_warning_time {
+        width: $MyScale920_mobile;
+        margin-bottom: $MyScale60_mobile;
+
+        & span{
+          @include font40_400();
+        }
+      }
+
       & .zakazySvgGroup {
         height: $MyScale120_mobile;
         display: flex;

@@ -3413,6 +3413,12 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
   checkStreet: async(street, home, pd, city_id) => {
 
+    if( home?.length == 0 || home == '' ){
+      useHeaderStoreNew.getState().setActiveModalAlert(true, 'Надо ввести улицу и номер дома, например: 40 лет победы 55', false);
+      useHeaderStoreNew.getState().showLoad(false);
+      return ;
+    }
+
     if( get().is_fetch === true ){
       setTimeout( () => {
         get().checkStreet(street, home, pd, city_id)
@@ -3457,6 +3463,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
           useHeaderStoreNew.getState().setActiveModalAlert(true, 'Адрес найден, но мы не смогли найти подъезд', false);
         }
       }
+
+      
 
       set({
         chooseAddrStreet: json?.addrs,
