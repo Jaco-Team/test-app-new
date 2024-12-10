@@ -156,7 +156,7 @@ function MetricaSMR(){
         dangerouslySetInnerHTML={{
           __html: `
             var _tmr = window._tmr || (window._tmr = []);
-            _tmr.push({id: "3321699", type: "pageView", start: (new Date()).getTime()});
+            _tmr.push({id: "3588691", type: "pageView", start: (new Date()).getTime()});
             (function (d, w, id) {
               if (d.getElementById(id)) return;
               var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
@@ -167,7 +167,7 @@ function MetricaSMR(){
           `,
         }}
       />
-      <noscript><div><img src="https://top-fwz1.mail.ru/counter?id=3321699;js=na" style={{position: 'fixed', left: '-9999px'}} alt="Top.Mail.Ru" /></div></noscript>
+      <noscript><div><img src="https://top-fwz1.mail.ru/counter?id=3588691;js=na" style={{position: 'fixed', left: '-9999px'}} alt="Top.Mail.Ru" /></div></noscript>
     </>
   )
 }

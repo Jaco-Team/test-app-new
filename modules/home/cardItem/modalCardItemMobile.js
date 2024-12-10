@@ -85,6 +85,8 @@ export default function ModalCardItemMobile() {
 
   const img_name = openItem?.img_app;
 
+  console.log( 'openItem', openItem )
+
   return (
     <>
       {/* стартовая */}
@@ -149,23 +151,31 @@ export default function ModalCardItemMobile() {
                   />
                 </picture>
 
-                {parseInt(openItem?.is_hit) == 1 ? 
-                  <BadgeItem size={'big'} type={'hit'} view={'pc'} />
-                    :
-                  false
-                }
+                <div className='badgecontainer'>
+                  {parseInt(openItem?.is_hit) == 1 ? 
+                    <BadgeItem size={'big'} type={'hit'} view={'pc'} />
+                      :
+                    false
+                  }
 
-                {parseInt(openItem?.is_new) == 1 ? 
-                  <BadgeItem size={'big'} type={'new'} view={'pc'} />
-                    :
-                  false
-                }
+                  {parseInt(openItem?.is_new) == 1 ? 
+                    <BadgeItem size={'big'} type={'new'} view={'pc'} />
+                      :
+                    false
+                  }
 
-                {parseInt(openItem?.is_updated) == 1 ? 
-                  <BadgeItem size={'big'} type={'updated'} view={'pc'} />
-                    :
-                  false
-                }
+                  {parseInt(openItem?.is_updated) == 1 ? 
+                    <BadgeItem size={'big'} type={'updated'} view={'pc'} />
+                      :
+                    false
+                  }
+
+                  { openItem?.tags?.includes(14) === true ?
+                    <BadgeItem size={'bigshort'} type={'hot'} view={'pc'} />
+                      :
+                    false
+                  }
+                </div>
               </div>
 
               <div className="TitleModalCardMobile" style={{ height: openItem?.name.length > 26 ? '13.675213675214vw' : '6.8376068376068vw' }}>

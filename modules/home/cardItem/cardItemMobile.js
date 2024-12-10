@@ -92,23 +92,31 @@ export default React.memo(function CardItemMobile({ item, count }) {
               />
             </picture>
 
-            {parseInt(item.is_hit) == 1 ? 
-              <BadgeItem size={'small'} type={'hit'} view={'mobile'} />
-                :
-              false
-            }
+            <div className='badgecontainer'>
+              {parseInt(item.is_hit) == 1 ? 
+                <BadgeItem size={'small'} type={'hit'} view={'mobile'} />
+                  :
+                false
+              }
 
-            {parseInt(item.is_new) == 1 ? 
-              <BadgeItem size={'small'} type={'new'} view={'mobile'} />
-                :
-              false
-            }
+              {parseInt(item.is_new) == 1 ? 
+                <BadgeItem size={'small'} type={'new'} view={'mobile'} />
+                  :
+                false
+              }
 
-            {parseInt(item?.is_updated) == 1 ? 
-              <BadgeItem size={'small'} type={'updated'} view={'mobile'} />
-                :
-              false
-            }
+              {parseInt(item?.is_updated) == 1 ? 
+                <BadgeItem size={'small'} type={'updated'} view={'mobile'} />
+                  :
+                false
+              }
+
+              { item?.tags?.includes(14) === true ?
+                <BadgeItem size={'smallshort'} type={'hot'} view={'mobile'} />
+                  :
+                false
+              }
+            </div>
           </div>
 
           <div className="CardInfoItem">

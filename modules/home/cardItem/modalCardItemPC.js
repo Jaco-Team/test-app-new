@@ -146,24 +146,31 @@ export default function ModalCardItemPC() {
                   />
                 </picture>
 
-                
-                {parseInt(openItem?.is_hit) == 1 ? 
-                  <BadgeItem size={'big'} type={'hit'} view={'pc'} />
-                    :
-                  false
-                }
+                <div className='badgecontainer'>
+                  {parseInt(openItem?.is_hit) == 1 ? 
+                    <BadgeItem size={'big'} type={'hit'} view={'pc'} />
+                      :
+                    false
+                  }
 
-                {parseInt(openItem?.is_new) == 1 ? 
-                  <BadgeItem size={'big'} type={'new'} view={'pc'} />
-                    :
-                  false
-                }
+                  {parseInt(openItem?.is_new) == 1 ? 
+                    <BadgeItem size={'big'} type={'new'} view={'pc'} />
+                      :
+                    false
+                  }
 
-                {parseInt(openItem?.is_updated) == 1 ? 
-                  <BadgeItem size={'big'} type={'updated'} view={'pc'} />
-                    :
-                  false
-                }
+                  {parseInt(openItem?.is_updated) == 1 ? 
+                    <BadgeItem size={'big'} type={'updated'} view={'pc'} />
+                      :
+                    false
+                  }
+      
+                  { openItem?.tags?.includes(14) === true ?
+                    <BadgeItem size={'bigshort'} type={'hot'} view={'pc'} />
+                      :
+                    false
+                  }
+                </div>
               </div>
             )}
 

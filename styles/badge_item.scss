@@ -1,10 +1,24 @@
 @import "./settings";
 
+.badgecontainer{
+    position: absolute;
+    top: 20px;
+    left: 20px;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    align-items: flex-start;
+    & > .badge:not(:first-child){
+        margin-top: 5px;
+    }
+}
+
 .badge{
     &.container{
-        position: absolute;
-        top: 20px;
-        left: 20px;
+        //position: absolute;
+        //top: 20px;
+        //left: 20px;
+        position: relative;
         &.mobile{
             top: 0;
             left: -10px;
@@ -20,6 +34,14 @@
         &.small{
             width: 84px;
             height: 34px;
+        }
+        &.smallshort{
+            width: 44px;
+            height: 34px;
+        }
+        &.bigshort{
+            width: 64px;
+            height: 44px;
         }
     }
     & > .box{
@@ -46,5 +68,16 @@
                 @include fonsNew(0.75rem, var(--inter-font));
             }
         }   
+        &.smallshort{
+            width: 40px;
+            height: 30px;
+            & > span{
+                @include fonsNew(0.75rem, var(--inter-font));
+            }
+        }  
+        &.bigshort{
+            width: 60px;
+            height: 40px;
+        }
     }     
 }

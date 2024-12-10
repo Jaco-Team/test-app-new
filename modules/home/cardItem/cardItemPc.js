@@ -52,6 +52,8 @@ export default memo(function CardItem({ item, count, index}) {
    * 
    */
 
+  //console.log( 'item', item?.tags?.includes(14) )
+
   return (
     <motion.div
       initial={{ opacity: 0, scale: 0.9 }}
@@ -66,7 +68,6 @@ export default memo(function CardItem({ item, count, index}) {
               <source 
                 type="image/webp" 
                 srcSet={`
-
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_366x366.webp 138w,
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_466x466.webp 146w,
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_585x585.webp 183w,
@@ -103,24 +104,31 @@ export default memo(function CardItem({ item, count, index}) {
               />
             </picture>
 
-            
-            {parseInt(item.is_hit) == 1 ? 
-              <BadgeItem size={'big'} type={'hit'} view={'pc'} />
-                :
-              false
-            }
+            <div className='badgecontainer'>
+              {parseInt(item.is_hit) == 1 ? 
+                <BadgeItem size={'big'} type={'hit'} view={'pc'} />
+                  :
+                false
+              }
 
-            {parseInt(item.is_new) == 1 ? 
-              <BadgeItem size={'big'} type={'new'} view={'pc'} />
-                :
-              false
-            }
+              {parseInt(item.is_new) == 1 ? 
+                <BadgeItem size={'big'} type={'new'} view={'pc'} />
+                  :
+                false
+              }
 
-            {parseInt(item?.is_updated) == 1 ? 
-              <BadgeItem size={'big'} type={'updated'} view={'pc'} />
-                :
-              false
-            }
+              {parseInt(item?.is_updated) == 1 ? 
+                <BadgeItem size={'big'} type={'updated'} view={'pc'} />
+                  :
+                false
+              }
+
+              { item?.tags?.includes(14) === true ?
+                <BadgeItem size={'bigshort'} type={'hot'} view={'pc'} />
+                  :
+                false
+              }
+            </div>
           </div>
 
           <Typography className="CardNameItem" variant="h5" component="h3" style={{ cursor: 'pointer' }} onClick={() => getItem('home', thisCity, item.id)}>{item.name}</Typography>
