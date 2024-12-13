@@ -11,7 +11,7 @@ import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import Backdrop from '@mui/material/Backdrop';
 
-import { IconClose, ArrowLeftMobile, Cloud, CheckAuthMobile } from '@/ui/Icons';
+import { IconClose, ArrowLeftMobile, Cloud, TimeConfirm, CheckAuthMobile } from '@/ui/Icons';
 import { roboto } from '@/ui/Font.js';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
@@ -94,6 +94,8 @@ export default function ConfirmForm() {
     }
   }, [openConfirmForm]);
 
+  //<span className="confirmText">Чтобы всё прошло по плану, проверьте, пожалуйста, условия получения и состав вашего заказа:</span>
+
   return (
     <>
       {matches ? (
@@ -113,7 +115,7 @@ export default function ConfirmForm() {
 
             <div className="line" />
             <span className="confirmHeader">Подтверждение заказа</span>
-            <span className="confirmText">Чтобы всё прошло по плану, проверьте, пожалуйста, условия получения и состав вашего заказа:</span>
+            
 
             { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ? 
               <div className="confirmAddr">
@@ -132,6 +134,16 @@ export default function ConfirmForm() {
             </span>
             
             <span className="confirmText_2"></span>
+
+            { parseInt( checkNewOrder?.order?.type_order_ ) == 1 && parseInt( checkNewOrder?.order?.is_pred ) == 1 ? 
+              <div className="confirmMessage">
+                <TimeConfirm style={{ fill: '#fff' }} />
+
+                <span>Пожалуйста, будьте по адресу в указанный промежуток времени.</span>
+              </div>
+                :
+              false
+            }
 
             { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ?
               <div className="confirmMessage">
@@ -227,7 +239,7 @@ export default function ConfirmForm() {
               <span>Подтверждение заказа</span>
             </div>
 
-            <span className="confirmText">Чтобы всё прошло по плану, проверьте, пожалуйста, условия получения и состав вашего заказа:</span>
+            
 
             { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ? 
               <div className="confirmAddr">
@@ -246,6 +258,16 @@ export default function ConfirmForm() {
             </span>
             
             <span className="confirmText_2"></span>
+
+            { parseInt( checkNewOrder?.order?.type_order_ ) == 1 && parseInt( checkNewOrder?.order?.is_pred ) == 1 ? 
+              <div className="confirmMessage">
+                <TimeConfirm style={{ fill: '#fff' }} />
+
+                <span>Пожалуйста, будьте по адресу в указанный промежуток времени.</span>
+              </div>
+                :
+              false
+            }
 
             { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ?
               <div className="confirmMessage">

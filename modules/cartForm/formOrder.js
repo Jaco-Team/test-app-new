@@ -437,6 +437,18 @@ export default function FormOrder({ cityName }) {
     typeOrder: typeOrder == 'pic' ? 'Самовывоз' : 'Доставка'
   }*/
 
+  useEffect( () => {
+    if( typePay?.id == 'online' && [1,2,3].includes( parseInt(orderAddr?.point_id) ) ){
+      if( dayjs( new Date ).locale('ru').format('YYYY-MM-DD') >= "2024-12-14" && dayjs( new Date ).locale('ru').format('YYYY-MM-DD') <= "2025-12-20" ){
+        setActiveModalAlert(true, 'По техническим причинам оплата банковской картой временно недоступна. Оплату можно будет осуществить  только наличными. Будем благодарны, если вы подготовите сумму без сдачи.', false);
+      }
+    }
+  }, [typePay, orderAddr] )
+
+ 
+
+  
+
   return (
     <>
       {matches ? (
