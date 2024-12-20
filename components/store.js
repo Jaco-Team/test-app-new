@@ -762,8 +762,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   // открытие/закрытие формы подтверждения заказа
   setConfirmForm: (active) => {
-    const promoName = sessionStorage.getItem('promo_name');
-
+    const promoName = Cookies.get('promo_name');
+    
     const dopListConfirm = get().dopListCart?.filter(it => it.count)
 
     if( active === false ){
@@ -843,7 +843,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // получение данных корзины и оформления заказа
   getCartLocalStorage: () => {
 
-    const promoName = sessionStorage.getItem('promo_name');
+    const promoName = Cookies.get('promo_name');
     const allItems = get().allItems;
     let cart = localStorage.getItem('setCart');
     
@@ -1046,8 +1046,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     //get().setAllItems(json?.all_items);
     //get().changeAllItems();
 
-    if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
-      get().getInfoPromo(sessionStorage.getItem('promo_name'), city)
+    if(Cookies.get('promo_name') && Cookies.get('promo_name').length > 0){
+      get().getInfoPromo(Cookies.get('promo_name'), city)
     } else {
       get().promoCheck();
     }
@@ -1082,11 +1082,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     set({ items, allPriceWithoutPromo });
     
     if(promoInfo) {
-      if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
+      if(Cookies.get('promo_name') && Cookies.get('promo_name').length > 0){
 
         const city = useCitiesStore.getState().thisCity;
 
-        get().getInfoPromo(sessionStorage.getItem('promo_name'), city)
+        get().getInfoPromo(Cookies.get('promo_name'), city)
       } else {
         get().promoCheck();
       }
@@ -1290,7 +1290,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     let data;
     const typeOrder = get().typeOrder;
-    const promoName = sessionStorage.getItem('promo_name');
+    //const promoName = sessionStorage.getItem('promo_name');
+    const promoName = Cookies.get('promo_name');
 
     let sdacha = get().sdacha;
 
@@ -1471,6 +1472,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   clearCartData: () => {
     localStorage.removeItem('setCart');
     sessionStorage.removeItem('promo_name');
+    Cookies.remove('promo_name');
 
     set({
       items: [],
@@ -1891,11 +1893,13 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     set({ items, itemsCount, allPriceWithoutPromo });
     
     if(promoInfo) {
-      if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
+      const promoName = Cookies.get('promo_name');
+      //if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
+      if(Cookies.get('promo_name') && Cookies.get('promo_name').length > 0){
 
         const city = useCitiesStore.getState().thisCity;
 
-        get().getInfoPromo(sessionStorage.getItem('promo_name'), city)
+        get().getInfoPromo(Cookies.get('promo_name'), city)
       } else {
         get().promoCheck();
       }
@@ -1974,11 +1978,11 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     set({ items, itemsCount, allPriceWithoutPromo });
     
     if(promoInfo) {
-      if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
+      if(Cookies.get('promo_name') && Cookies.get('promo_name').length > 0){
 
         const city = useCitiesStore.getState().thisCity;
 
-        get().getInfoPromo(sessionStorage.getItem('promo_name'), city)
+        get().getInfoPromo(Cookies.get('promo_name'), city)
       } else {
         get().promoCheck();
       }
@@ -2002,6 +2006,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       })
       
       sessionStorage.removeItem('promo_name')
+      Cookies.remove('promo_name')
 
       const res = get().promoCheck();
 
@@ -2039,6 +2044,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       })
       
       sessionStorage.setItem('promo_name', promoName)
+      Cookies.set('promo_name', promoName, { expires: 1 })
       
       const res = get().promoCheck();
 

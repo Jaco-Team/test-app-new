@@ -27,6 +27,8 @@ import { roboto } from '@/ui/Font.js';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 
+import Cookies from 'js-cookie'
+
 const dopText = {
   rolly: 'Не забудьте про соусы, приправы и приборы',
   pizza: 'Попробуйте необычное сочетание пиццы и соуса',
@@ -84,8 +86,12 @@ export default function FormOrder({ cityName }) {
   }, [thisCity, cityName]);
 
   useEffect(() => {
-    if (sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0) {
-      setPromo(sessionStorage.getItem('promo_name'));
+    // if (sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0) {
+    //   setPromo(sessionStorage.getItem('promo_name'));
+    // }
+
+    if (Cookies.get('promo_name') && Cookies.get('promo_name').length > 0) {
+      setPromo(Cookies.get('promo_name'));
     }
   }, [promoInfo]);
 
@@ -439,15 +445,11 @@ export default function FormOrder({ cityName }) {
 
   useEffect( () => {
     if( typePay?.id == 'online' && [1,2,3].includes( parseInt(orderAddr?.point_id) ) ){
-      if( dayjs( new Date ).locale('ru').format('YYYY-MM-DD') >= "2024-12-14" && dayjs( new Date ).locale('ru').format('YYYY-MM-DD') <= "2025-12-20" ){
-        setActiveModalAlert(true, 'По техническим причинам оплата банковской картой временно недоступна. Оплату можно будет осуществить  только наличными. Будем благодарны, если вы подготовите сумму без сдачи.', false);
+      if( dayjs( new Date ).locale('ru').format('YYYY-MM-DD') >= "2024-12-14" && dayjs( new Date ).locale('ru').format('YYYY-MM-DD') <= "2025-12-24" ){
+        setActiveModalAlert(true, 'По техническим причинам оплата банковской картой временно недоступна. Оплату можно будет осуществить только наличными. Будем благодарны, если вы подготовите сумму без сдачи.', false);
       }
     }
   }, [typePay, orderAddr] )
-
- 
-
-  
 
   return (
     <>

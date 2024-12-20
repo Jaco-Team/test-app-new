@@ -19,6 +19,8 @@ import useScroll from '../hook.js';
 import BasketIconHeaderPC from '../basket/basketIconHeaderPC.js';
 import ProfileIconHeaderPC from '../profile/profileIconHeaderPC.js';
 
+import Cookies from 'js-cookie'
+
 const MenuBurger = React.memo(function MenuBurger({ anchorEl, city, isOpen, onClose }){
   const [links] = useFooterStore((state) => [state.links]);
   //const [ thisCityRu ] = useCitiesStore( state => [ state.thisCityRu ] );
@@ -147,8 +149,10 @@ export default React.memo(function NavBarPC({ city }) {
         setActiveModalCity(true);
       }
 
-      if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
-        getInfoPromo(sessionStorage.getItem('promo_name'), city)
+      let promo_name = Cookies.get('promo_name');
+
+      if(promo_name && promo_name.length > 0){
+        getInfoPromo(promo_name, city)
       }
 
       getCartLocalStorage();

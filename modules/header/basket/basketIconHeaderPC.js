@@ -1,6 +1,8 @@
 import { useCartStore, useHeaderStoreNew, useCitiesStore } from '@/components/store.js';
 import { BasketIconNew } from '@/ui/Icons.js';
 
+import Cookies from 'js-cookie'
+
 export default function BasketIconHeaderPC() {
   const [setActiveBasket, openBasket] = useHeaderStoreNew((state) => [state?.setActiveBasket, state?.openBasket]);
   const [itemsCount, allPrice, allPriceWithoutPromo, promoInfo, promoCheck, getInfoPromo] = useCartStore((state) => [state.itemsCount, state.allPrice, state.allPriceWithoutPromo, state.promoInfo, state.promoCheck, state.getInfoPromo]);
@@ -9,13 +11,22 @@ export default function BasketIconHeaderPC() {
   const handlerOpenBasket = () => {
     setActiveBasket(!openBasket);
 
-    if(!openBasket && promoInfo) {
-      if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
-        getInfoPromo(sessionStorage.getItem('promo_name'), thisCity)
+    // if(!openBasket && promoInfo) {
+    //   if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
+    //     getInfoPromo(sessionStorage.getItem('promo_name'), thisCity)
+    //   } else {
+    //     promoCheck();
+    //   }
+    // }
+
+    if(!openBasket) {
+
+      if(Cookies.get('promo_name') && Cookies.get('promo_name').length > 0){
+        getInfoPromo(Cookies.get('promo_name'), thisCity)
       } else {
         promoCheck();
       }
-      //promoCheck();
+
     }
   }
 

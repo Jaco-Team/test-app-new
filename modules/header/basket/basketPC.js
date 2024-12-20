@@ -17,6 +17,8 @@ import AccordionDetails from '@mui/material/AccordionDetails';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import Typography from '@mui/material/Typography';
 
+import Cookies from 'js-cookie'
+
 const dopText = 'Блюда могут содержать ингредиенты, обладающие аллергенными свойствами. Если у вам есть аллергия на какой-либо продукт, пожалуйста, уточняйте состав в меню или на кассе. Обратите внимание, что мы не можем исключить или заменить ингредиенты, но с удовольствием поможем выбрать блюдо с подходящим составом.';
 
 export default function BasketPC() {
@@ -28,8 +30,8 @@ export default function BasketPC() {
   const [openBasket, setActiveBasket, targetBasket] = useHeaderStoreNew((state) => [state?.openBasket, state?.setActiveBasket, state?.targetBasket]);
   
   useEffect(() => {
-    if (sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0) {
-      setPromo(sessionStorage.getItem('promo_name'));
+    if (Cookies.get('promo_name') && Cookies.get('promo_name').length > 0) {
+      setPromo(Cookies.get('promo_name'));
     }
   }, [promoInfo]);
 
@@ -48,6 +50,10 @@ export default function BasketPC() {
     //   //setScrollBasket(0);
     //   setActiveModalAuth(true);
     // }
+
+    if (Cookies.get('promo_name') && Cookies.get('promo_name').length > 0) {
+      getInfoPromo(Cookies.get('promo_name'), thisCity)
+    }
   }
 
   function setPromoText(event){
