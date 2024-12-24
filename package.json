@@ -59,7 +59,7 @@
     "react": "18.2.0",
     "react-auth-code-input": "^3.2.1",
     "react-dom": "18.2.0",
-    "react-hook-form": "^7.54.1",
+    "react-hook-form": "^7.54.2",
     "react-imask": "^7.6.1",
     "react-scroll": "^1.9.0",
     "sass": "^1.83.0",
@@ -67,7 +67,7 @@
     "styled-components": "^5.3.11",
     "swiper": "^9.4.1",
     "typescript": "^5.7.2",
-    "ua-parser-js": "^1.0.39",
+    "ua-parser-js": "^1.0.40",
     "use-long-press": "^3.2.0",
     "zustand": "^4.5.5"
   },
