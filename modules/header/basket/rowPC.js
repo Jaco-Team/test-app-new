@@ -63,7 +63,7 @@ export default memo(function RowPC({ item, count, last }) {
           {
             promoInfo?.status_promo && (item?.new_one_price || item?.disabled) ?
               <span className="spanPromo">
-                {item?.disabled ? 'В подарок за ' : null}{new Intl.NumberFormat('ru-RU').format(item?.all_price)}{' '}₽
+                {item?.disabled ? 'По акции за ' : null}{new Intl.NumberFormat('ru-RU').format(item?.all_price)}{' '}₽
               </span>
               : 
             null
