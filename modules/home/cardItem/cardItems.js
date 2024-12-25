@@ -53,7 +53,7 @@ export default React.memo(function CatItems() {
 
   useEffect(() => {
 
-    if( search && search.length > 0 && CatsItems.length > 0 ){
+    if( getItem && search && search.length > 0 && CatsItems.length > 0 ){
       let find_item = null;
 
       CatsItems.map((cat) => {
@@ -65,8 +65,8 @@ export default React.memo(function CatItems() {
         });
       });
 
-      if( find_item ){
-        getItem('home', thisCity, find_item.id);
+      if( find_item && thisCity && find_item?.id ){
+        getItem('home', thisCity, find_item?.id);
 
         let offset = 200;
 
@@ -86,7 +86,7 @@ export default React.memo(function CatItems() {
         closeModal();
       }
     }
-  }, [search, CatsItems]);
+  }, [search, CatsItems, getItem]);
 
   useEffect(() => {
     setTimeout(() => {

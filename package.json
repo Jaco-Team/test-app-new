@@ -1,6 +1,6 @@
 {
   "name": "test-app-new",
-  "version": "1.1.17",
+  "version": "1.1.18",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -25,8 +25,8 @@
     "@maskito/kit": "^3.2.0",
     "@maskito/react": "^3.2.0",
     "@million/lint": "^0.0.73",
-    "@mui/icons-material": "^5.16.12",
-    "@mui/material": "^5.16.12",
+    "@mui/icons-material": "^5.16.13",
+    "@mui/material": "^5.16.13",
     "@mui/styled-engine-sc": "^5.14.12",
     "@next/bundle-analyzer": "^15.1.2",
     "@next/third-parties": "^15.1.2",
