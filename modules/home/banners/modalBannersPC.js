@@ -122,17 +122,17 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
 
               //src={`https://cdnimg.jacofood.ru/${thisItem.img_app}_292x292.jpg`} 
               loading="lazy"
-              onClick={() => getItem('home', thisCity, thisItem.id)}
+              onClick={() => getItem('home', thisCity, thisItem?.id)}
             />
           </picture>
         ) : false}
       </div>
 
       <div className="itemDesc">
-        <Typography className="ItemName" variant="h5" component="span" onClick={() => getItem('home', thisCity, thisItem.id)}>
+        <Typography className="ItemName" variant="h5" component="span" onClick={() => getItem('home', thisCity, thisItem?.id)}>
           {thisItem?.name}
         </Typography>
-        <Typography variant="h5" component="span" className="ItemDesk" onClick={() => getItem('home', thisCity, thisItem.id)}>
+        <Typography variant="h5" component="span" className="ItemDesk" onClick={() => getItem('home', thisCity, thisItem?.id)}>
           {thisItem?.marc_desc?.length > 0 ? thisItem?.marc_desc : thisItem?.tmp_desc}
         </Typography>
 

@@ -4129,8 +4129,6 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       token = localStorage.getItem('token');
     }
 
-    console.log( 'get_banners' )
-
     let data = {
       type: 'get_banners',
       city_id: city,

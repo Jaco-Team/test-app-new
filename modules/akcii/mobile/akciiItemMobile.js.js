@@ -99,7 +99,7 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
 
               //src={`https://cdnimg.jacofood.ru/${thisItem.img_app}_292x292.jpg`}
 
-              onClick={() => getItem('home', thisCity, thisItem.id)}
+              onClick={() => getItem('home', thisCity, thisItem?.id)}
             />
           </picture>
             : 
@@ -108,9 +108,9 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
       </div>
 
       <div className="itemDesc">
-        <Typography className="ItemName" variant="h5" component="span" onClick={() => getItem('home', thisCity, thisItem.id)}>{thisItem?.name}</Typography>
+        <Typography className="ItemName" variant="h5" component="span" onClick={() => getItem('home', thisCity, thisItem?.id)}>{thisItem?.name}</Typography>
 
-        <Typography variant="h5" component="span" className="ItemDesk" onClick={() => getItem('home', thisCity, thisItem.id)}>{thisItem?.marc_desc?.length > 0 ? thisItem?.marc_desc : thisItem?.tmp_desc}</Typography>
+        <Typography variant="h5" component="span" className="ItemDesk" onClick={() => getItem('home', thisCity, thisItem?.id)}>{thisItem?.marc_desc?.length > 0 ? thisItem?.marc_desc : thisItem?.tmp_desc}</Typography>
 
         {parseInt(typePromo) == 2 ? parseInt(item?.price) == 0 ? false :
           <div className="containerBTNItemMobile">
