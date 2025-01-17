@@ -125,6 +125,15 @@ export default function FormOrder({ cityName }) {
       setFreeDrive(1);
     }
 
+    if( addrList && addrList?.length > 0 && orderAddr ){
+      let findAddr = addrList.find( addr => parseInt(addr?.id) == parseInt(orderAddr?.id) );
+
+      if( findAddr ){
+        setAddrDiv(findAddr);
+        setSummDiv(findAddr.sum_div ?? 0);
+      }
+    }
+
   }, [])
 
   useEffect(() => {

@@ -1161,6 +1161,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const my_cart = get().items;
 
+    //проверить
     let my_cart_ = my_cart.map( item => {
       return {
         id: item.id,
@@ -1246,6 +1247,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         const json = await api('cart', data);
 
         if(address) {
+
+          console.log( 'address', address )
+
           const findAddr = json?.find(addr => addr.street === address.street && addr.home === address.home);
 
           if(findAddr) {
