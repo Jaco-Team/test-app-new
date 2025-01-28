@@ -58,17 +58,17 @@ export default memo(function CartItemMobile({ item, count, last }) {
 
         <div>
 
-        <span className={promoInfo?.status_promo && (item?.new_one_price || item?.disabled) ? 'spanCount promoInfo' : 'spanCount'}>
-          {new Intl.NumberFormat('ru-RU').format(parseInt(item?.one_price) * parseInt(count))}{' '}₽
-        </span>
-
-        {promoInfo?.status_promo && (item?.new_one_price || item?.disabled) ?
-          <span className="spanPromo">
-            {item?.disabled ? 'В подарок за ' : null}{new Intl.NumberFormat('ru-RU').format(item?.all_price)}{' '}₽
+          <span className={promoInfo?.status_promo && (item?.new_one_price || item?.disabled) ? 'spanCount promoInfo' : 'spanCount'}>
+            {new Intl.NumberFormat('ru-RU').format(parseInt(item?.one_price) * parseInt(count))}{' '}₽
           </span>
-            : 
-          null
-        }
+
+          {promoInfo?.status_promo && (item?.new_one_price || item?.disabled) ?
+            <span className="spanPromo">
+              {item?.disabled ? 'По акции за ' : null}{new Intl.NumberFormat('ru-RU').format(item?.all_price)}{' '}₽
+            </span>
+              : 
+            null
+          }
 
         </div>
 
