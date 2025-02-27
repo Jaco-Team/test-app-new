@@ -39,7 +39,8 @@ function YandexMetrikaTag({
                 clickmap:${clickmap},
                 trackLinks:${trackLinks},
                 accurateTrackBounce:${accurateTrackBounce},
-                webvisor:${webvisor}
+                webvisor:${webvisor},
+                ecommerce:"dataLayer"
             });
       `,
       }}
