@@ -16,9 +16,9 @@ export function middleware(request) {
   const hostname = request.nextUrl.hostname;
 
   const proto = request.headers.get('x-forwarded-proto');
-  console.log('Hostname:', hostname, 'x-forwarded-proto:', proto);
-  console.log('headers:', request.headers);
-  console.log('Hostname check:', hostname !== 'localhost' && hostname !== '127.0.0.1' && proto !== 'https' );
+  //console.log('Hostname:', hostname, 'x-forwarded-proto:', proto);
+  //console.log('headers:', request.headers);
+  //console.log('Hostname check:', hostname !== 'localhost' && hostname !== '127.0.0.1' && proto !== 'https' );
 
   if( hostname !== 'localhost' && hostname !== '127.0.0.1' && proto !== 'https' ) {
     const url = request.nextUrl.clone();
