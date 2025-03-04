@@ -64,6 +64,18 @@
         line-height: $MyScale60;
         @include font30_400();
 
+        & .count_promo_order{
+          width: $MyScale15!important;
+          height: $MyScale15!important;
+          border-radius: 100px;
+          background-color: #dd1a32;
+          //position: absolute;
+          //top: $MyScale2;
+          //right: $MyScale1;
+          margin-left: $MyScale15;
+          box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* тень для точки */
+        }
+
         @media (max-width: 800px) {
           @include font35_400();
         }
@@ -71,6 +83,10 @@
           @include font30_400();
           text-decoration: none;
           cursor: pointer;
+
+          display: flex;
+          flex-direction: row;
+          align-items: baseline;
 
           @media (max-width: 800px) {
             @include font35_400();

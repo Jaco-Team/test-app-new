@@ -37,6 +37,39 @@ html:not([data-scroll='0']) .blockShadow {
   box-shadow: none !important;
   width: 100%;
 
+  & .profileHeaderPC{
+    width: $MyScale64!important;
+    height: $MyScale64!important;
+    position: relative;
+  }
+  & .accountLogin.accountMain{
+    width: $MyScale64!important;
+    height: $MyScale64!important;
+    border-radius: $MyScale48;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    & > span{
+      @include font25_400();
+      color: #fff!important;
+    }
+    & path{
+      fill: #fff;
+    }
+    
+
+    & .count_promo_order{
+      width: $MyScale15!important;
+      height: $MyScale15!important;
+      border-radius: 100px;
+      background-color: #dd1a32;
+      position: absolute;
+      top: $MyScale2;
+      right: $MyScale1;
+      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* тень для точки */
+    }
+  }
+
   & a {
     text-decoration: none;
   }
@@ -130,13 +163,30 @@ html:not([data-scroll='0']) .blockShadow {
       }
     }
 
-    & .filterHeaderPC.active, .profileHeaderPC.active,
+    & .filterHeaderPC.active, .profileHeaderPC.active1,
     .burgerHeaderPC.active,
     .mapHeaderPC.active,
     .basketCat.min.active {
       background-color: rgba(0, 0, 0, 0.05);
-        outline: rgba(0, 0, 0, 0.05) $MyScale16 solid;
+      outline: $MyScale16 solid rgba(0, 0, 0, 0.05) ;
+      outline-offset: 0;
+    }
+
+    & .profileHeaderPC.active{
+      background-color: rgba(0, 0, 0, 0.05);
+      outline: $MyScale10 solid rgba(0, 0, 0, 0.05) ;
+      outline-offset: 0;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+        outline: rgba(0, 0, 0, 0.1) $MyScale10 solid;
         outline-offset: 0;
+      }
+      &:active {
+        background-color: rgba(0, 0, 0, 0.1);
+        outline: rgba(0, 0, 0, 0.1) $MyScale10 solid;
+        outline-offset: 0;
+      }
     }
 
     & .filterHeaderPC, .profileHeaderPC,

@@ -40,7 +40,22 @@ const nextConfig = {
         source: '/',
         destination: '/togliatti',
         permanent: false,
-      }
+      },
+      {
+        // Захватываем все пути
+        source: '/:path*',
+        // Условие: если хост равен "www.example.com"
+        has: [
+          {
+            type: 'host',
+            value: 'www.jacofood.ru',
+          },
+        ],
+        // Редиректим на домен без "www", сохраняя путь
+        destination: 'https://jacofood.ru/:path*',
+        // Постоянный редирект (HTTP 301)
+        permanent: true,
+      },
     ]
   },
   async headers() {

@@ -404,9 +404,14 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
             isAuth: 'none'
           });
         }else{
+          //console.log( 'token', json, get().setNameUser(json?.user?.name) )
+
+          useProfileStore.getState().setUser(json?.user);
+
           set({
             token: token,
             userName: get().setNameUser(json?.user?.name),
+            shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
             isAuth: 'auth'
           });
 
@@ -432,9 +437,13 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
             isAuth: 'none'
           });
         }else{
+
+          //console.log( 'token2', json, get().setNameUser(json?.user?.name) )
+          useProfileStore.getState().setUser(json?.user);
           set({
             token: token2,
             userName: get().setNameUser(json?.user?.name),
+            shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
             isAuth: 'auth'
           });
 
@@ -3061,6 +3070,9 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   street_list: [],
   choose_street: '',
 
+  count_promo: 0,
+  count_orders: 0,
+
   // получение адресов в модалке выбора адреса доставки
   getAddrList: async (value) => {
 
@@ -3268,6 +3280,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
       let json = await api(this_module, data);
 
+      console.log( 'json', json ) 
+
       set({
         shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
         userInfo: json?.user,
@@ -3275,6 +3289,26 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
         city: city
       });
     }
+  },
+
+  getCountPromos_Orders: async (city) => {
+  
+    if( useHeaderStoreNew.getState().token.length == 0 ){
+      return ;
+    }
+
+    let data = {
+      type: 'get_my_count_orders_promos',
+      city_id: city,
+      user_id: useHeaderStoreNew.getState().token,
+    };
+
+    let json = await api('zakazy', data);
+
+    set({
+      count_promo: parseInt(json?.count_promo),
+      count_orders: parseInt(json?.count_orders),
+    });
   },
 
   setUser: (user) => {

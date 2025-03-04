@@ -10,6 +10,21 @@
     display: flex;
     align-items: center;
     justify-content: center;
+
+    & a{
+      position: relative;
+
+      & > .count_promo_order{
+        width: $MyScale20_mobile!important;
+        height: $MyScale20_mobile!important;
+        border-radius: 100px;
+        background-color: #dd1a32;
+        position: absolute;
+        top: $MyScale30_mobile;
+        right: $MyScale20_mobile;
+        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* тень для точки */
+      }
+    }
   }
 
   & .accountLogin {

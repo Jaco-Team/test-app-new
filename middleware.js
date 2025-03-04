@@ -13,6 +13,14 @@ export const config = {
 }
 
 export function middleware(request) {
+  const hostname = request.nextUrl.hostname;
+
+  if( hostname !== 'localhost' && hostname !== '127.0.0.1' && request.headers.get('x-forwarded-proto') !== 'https' ) {
+    const url = request.nextUrl.clone();
+    url.protocol = 'https';
+    return NextResponse.redirect(url, 301);
+  }
+
   let checkItem = request.nextUrl.search.split('?text');
 
   if( checkItem[1] ){
@@ -43,8 +51,8 @@ export function middleware(request) {
   res.headers.append('Access-Control-Allow-Origin', '*') // replace this your actual origin
   res.headers.append('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT')
   res.headers.append(
-      'Access-Control-Allow-Headers',
-      'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
   )
 
   return res;

@@ -13,6 +13,8 @@ export default function AccountMobile({ city, this_module }) {
   const [ token, matches ] = useHeaderStoreNew( state => [ state?.token, state?.matches ]);
   const [ setActiveAccountModal, colorAccount, getUserInfo, userInfo, shortName] = useProfileStore( state => [state.setActiveAccountModal, state.colorAccount, state.getUserInfo, state.userInfo, state.shortName]);
 
+  const [ count_promo, count_orders ] = useProfileStore( state => [state.count_promo, state.count_orders]);
+
   useEffect(() => {
     if( token && token.length > 0 ) {
       getUserInfo(this_module, city, token);
@@ -40,10 +42,12 @@ export default function AccountMobile({ city, this_module }) {
           <AccountMobilePerson style={{ fill: colorAccount.login }} />
         </Link>
         <Link href={'/' + city + '/promokody'} style={{ background: colorAccount.item }}>
+          { count_promo > 0 ? <div className="count_promo_order" /> : false }
           <span>Промокоды и подарки</span>
           <AccountMobilePromo style={{ fill: colorAccount.login }} />
         </Link>
         <Link href={'/' + city + '/zakazy'} style={{ background: colorAccount.item }}>
+          { count_orders > 0 ? <div className="count_promo_order" /> : false }
           <span>История заказов</span>
           <AccountMobileHistory style={{ fill: colorAccount.login }} />
         </Link>
