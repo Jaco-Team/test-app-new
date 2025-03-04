@@ -15,7 +15,11 @@ export const config = {
 export function middleware(request) {
   const hostname = request.nextUrl.hostname;
 
-  if( hostname !== 'localhost' && hostname !== '127.0.0.1' && request.headers.get('x-forwarded-proto') !== 'https' ) {
+  const proto = request.headers.get('x-forwarded-proto');
+  console.log('Hostname:', hostname, 'x-forwarded-proto:', proto);
+  console.log('Hostname check:', hostname !== 'localhost' && hostname !== '127.0.0.1' && proto !== 'https' );
+
+  if( hostname !== 'localhost' && hostname !== '127.0.0.1' && proto !== 'https' ) {
     const url = request.nextUrl.clone();
     url.protocol = 'https';
     return NextResponse.redirect(url, 301);
