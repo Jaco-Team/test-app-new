@@ -40,6 +40,51 @@
     margin-bottom: $MyScale160_mobile;
     flex-direction: column;
 
+    & .dataItem_ {
+      display: flex;
+      width: $MyScale920_mobile;
+      border-bottom: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+      //justify-content: center;
+      align-items: center;
+      justify-content: space-between;
+
+      & > *{
+        border-width: 0!important;
+        outline: 0;
+      }
+
+      & input{
+        @include font50_500();
+      }
+
+      & .dateText {
+        width: $MyScale400_mobile;
+        height: $MyScale120_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include font30_400();
+        -webkit-clip-path: polygon(11.7% 0%, 100% 0%, 100% 100%, 11.7% 100%, 0% 50%);
+        clip-path: polygon(11.7% 0%, 100% 0%, 100% 100%, 11.7% 100%, 0% 50%);
+        background: rgba(87, 220, 53, 0.15);
+        padding-left: $MyScale100_mobile;
+        padding-right: $MyScale40_mobile;
+      }
+
+      & .dateText_{
+        width: $MyScale400_mobile;
+        height: $MyScale120_mobile;
+        padding-left: $MyScale100_mobile;
+        padding-right: $MyScale40_mobile;
+      }
+      
+      & svg {
+        margin-right: $MyScale17_mobile;
+        width: $MyScale80_mobile;
+        height: $MyScale80_mobile;
+      }
+    }
+
     & .dataItem {
       width: $MyScale920_mobile;
       height: $MyScale160_mobile;

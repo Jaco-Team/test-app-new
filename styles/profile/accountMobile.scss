@@ -15,14 +15,15 @@
       position: relative;
 
       & > .count_promo_order{
-        width: $MyScale20_mobile!important;
-        height: $MyScale20_mobile!important;
+        width: $MyScale50_mobile!important;
+        height: $MyScale50_mobile!important;
         border-radius: 100px;
         background-color: #dd1a32;
         position: absolute;
-        top: $MyScale30_mobile;
+        top: $MyScale20_mobile;
         right: $MyScale20_mobile;
-        box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* тень для точки */
+        border: $MyScale15_mobile solid white;
+        //box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* тень для точки */
       }
     }
   }
@@ -77,7 +78,8 @@
       & span {
         margin-top: $MyScale51_mobile;
         margin-left: $MyScale50_mobile;
-        width: $MyScale340_mobile;
+        //width: $MyScale340_mobile;
+        width: $MyScale280_mobile;
         @include font50_500();
       }
 

@@ -79,7 +79,7 @@ export default React.memo(function header({ city, city_list, cats }) {
 
       const firebaseAPP = initializeApp(firebaseConfig);
       const analytics = getAnalytics(firebaseAPP);
-      const perf = getPerformance(firebaseAPP);
+      //const perf = getPerformance(firebaseAPP);
   
       if (location.protocol !== 'https:' && location.hostname != 'localhost' ) {
         location.replace(`https:${location.href.substring(location.protocol.length)}`);

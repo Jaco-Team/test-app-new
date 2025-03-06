@@ -11,6 +11,9 @@ export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_pa
   const [setActiveModalAuth, isAuth] = useHeaderStoreNew((state) => [state?.setActiveModalAuth, state?.isAuth]);
   const [shortName, getUserInfo] = useProfileStore((state) => [state.shortName, state.getUserInfo]);
   const [token] = useHeaderStoreNew(state => [state?.token])
+  const [ count_promo, count_orders ] = useProfileStore( state => [ state.count_promo, state.count_orders ]);
+
+  console.log( count_promo, count_orders, count_promo > 0 || count_orders > 0 )
 
   useEffect(() => {
     if(token && token.length > 0) {
@@ -36,7 +39,7 @@ export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_pa
       <Link href={'/' + city + '/account'} style={{background: bgColor ? 'rgba(0, 0, 0, 0.03)' : '#fff'}}>
         <ProfileIconMobile />
         <span style={{color: bgColor ? ' #dd1a32' : null}}>Аккаунт</span>
-        <span className="profile">{shortName ? shortName : <ProfileIconMobile />}</span>
+        <span className="profile" style={{ position: 'relative' }}>{shortName ? shortName : <ProfileIconMobile />} { count_promo > 0 || count_orders > 0 ? <div style={{ backgroundColor: '#cc0033', width: 7, height: 7, position: 'absolute', border: '2px solid white', top: -2, right: -2 }} /> : false } </span>
       </Link>
     </ListItem>
   );

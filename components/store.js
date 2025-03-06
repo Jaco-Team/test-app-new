@@ -3329,6 +3329,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     };
 
     let json = await api(this_module, data);
+
+    get().getUserInfo(this_module, city, userToken)
   },
 
   getOrder: async (this_module, city, userToken, order_id, point_id) => {

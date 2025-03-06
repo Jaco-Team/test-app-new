@@ -213,7 +213,7 @@
             }
             & > div:last-child{
                 @include font22_400();
-                margin-top: $MyScale20;
+                margin-top: $MyScale40;
                 height: $MyScale60;
                 display: flex;
                 align-items: center;
@@ -233,12 +233,12 @@
                     }
                 }
                 & fieldset{
-                    border-radius: $MyScale40;
+                    //border-radius: $MyScale40;
                     border-width: $MyScale3;
                 }
 
                 & > div:first-child{
-                    width: $MyScale160;
+                    //width: $MyScale160;
                     height: $MyScale80;
                     margin-right: $MyScale20;
                     & .MuiSelect-select.MuiSelect-outlined.MuiInputBase-input{
@@ -254,7 +254,7 @@
                     }
                 }
                 & > div:last-child{
-                    width: $MyScale320;
+                    width: $MyScale420;
                     height: $MyScale80;
                     & .MuiSelect-select.MuiSelect-outlined.MuiInputBase-input{
                         @include font30_400();
@@ -262,10 +262,14 @@
                         justify-content: center;
                         align-items: center;
                     }
+                    & input{
+                        text-align: center;
+                        cursor: pointer;
+                    }
                     & svg{
-                        width: $MyScale60;
-                        height: $MyScale60;
-                        top: auto;
+                        //width: $MyScale60;
+                        //height: $MyScale60;
+                        //top: auto;
                     }
                 }
             }

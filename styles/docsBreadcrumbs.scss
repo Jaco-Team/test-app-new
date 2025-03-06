@@ -73,7 +73,8 @@
           //top: $MyScale2;
           //right: $MyScale1;
           margin-left: $MyScale15;
-          box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* тень для точки */
+          //border: $MyScale5 solid white;
+          //box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* тень для точки */
         }
 
         @media (max-width: 800px) {

@@ -156,7 +156,7 @@ export default React.memo(function NavBarPC({ city }) {
       if(promo_name && promo_name.length > 0){
         getInfoPromo(promo_name, city)
       }
-
+ 
       getCartLocalStorage();
     }
   }, []);

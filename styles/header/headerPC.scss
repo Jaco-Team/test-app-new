@@ -64,9 +64,10 @@ html:not([data-scroll='0']) .blockShadow {
       border-radius: 100px;
       background-color: #dd1a32;
       position: absolute;
-      top: $MyScale2;
-      right: $MyScale1;
-      box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* тень для точки */
+      top: -$MyScale2;
+      right: -$MyScale5;
+      border: $MyScale5 solid white;
+      //box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* тень для точки */
     }
   }
 

@@ -1,4 +1,4 @@
-import { useState, memo } from 'react';
+import { useState, memo, useEffect } from 'react';
 
 import Link from 'next/link';
 //import Image from 'next/image';
@@ -12,7 +12,7 @@ import ListItem from '@mui/material/ListItem';
 import { BurgerIconMobile, MenuIconMobile, AboutIconMobile, LocationIconMobile, MapContactsMobile, Sale, SvgLogoMobile } from '@/ui/Icons.js';
 import { roboto } from '@/ui/Font.js';
 
-import { useHeaderStoreNew, useCitiesStore } from '@/components/store.js';
+import { useHeaderStoreNew, useCitiesStore, useProfileStore } from '@/components/store.js';
 
 import BasketIconHeaderMobile from '../basket/basketIconHeaderMobile';
 import ProfileIconHeaderMobile from '../profile/profileIconHeaderMobile';
@@ -46,8 +46,9 @@ const MemoLogo = memo(function MemoLogo({city, activePage}){
 export default memo(function NavBarMobile({ city }) {
   const [activeMenu, setActiveMenu] = useState(false);
 
-  const [setActiveBasket, openBasket, setActiveModalCityList, activePage] = useHeaderStoreNew( state => [state?.setActiveBasket, state?.openBasket, state?.setActiveModalCityList, state?.activePage] );
-  
+  const [setActiveBasket, openBasket, setActiveModalCityList, activePage, isAuth] = useHeaderStoreNew( state => [state?.setActiveBasket, state?.openBasket, state?.setActiveModalCityList, state?.activePage, state?.isAuth] );
+  const [ getCountPromos_Orders ] = useProfileStore((state) => [ state.getCountPromos_Orders ]);
+
   const [ thisCityRu ] = useCitiesStore( state => [ state.thisCityRu ] );
 
   if (city == '') {
@@ -64,6 +65,17 @@ export default memo(function NavBarMobile({ city }) {
     }
 
   };
+
+  useEffect(() => {
+    getCountPromos_Orders(city);
+
+    const intervalId = setInterval(() => {
+      getCountPromos_Orders(city);
+    }, 1000 * 30);
+
+    // Очистка интервала при размонтировании компонента
+    return () => clearInterval(intervalId);
+  }, [isAuth]);
 
   return (
     <AppBar position="fixed" className="headerMobile" elevation={2} onClick={close} sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }}>
