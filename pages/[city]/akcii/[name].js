@@ -87,6 +87,26 @@ export async function getServerSideProps({ req, res, query }) {
 
   const data1 = await api('home', data);
 
+  let data2 = {
+    type: 'get_banner_one',
+    city_id: query.city,
+    name: query.name,
+    token: null
+  };
+
+  const json = await api('home', data2);
+
+  if( !json?.banner ){
+    res.writeHead(301, { Location: '/'+query.city+'/akcii' });
+    res.end();
+    // return {
+    //   redirect: {
+    //     destination: '/'+query.city+'/akcii',
+    //     permanent: true,
+    //   },
+    // }
+  }
+
   data1['city'] = query.city;
   data1['act_name'] = query.name;
 

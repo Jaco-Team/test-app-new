@@ -4279,6 +4279,8 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     const json = await api(this_module, data);
 
+    console.log( data, this_module, json?.banner )
+
     if(!json?.banner){
       useProfileStore.getState().saveUserActions('open_page_false', '');
 
