@@ -8,6 +8,8 @@ var isoWeek = require('dayjs/plugin/isoWeek')
 
 import { api, apiAddress } from './api.js';
 
+import useYandexMetrika from './useYandexMetrika';
+
 import Cookies from 'js-cookie'
 
 export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
@@ -254,11 +256,17 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
     login = login.split('-').join('');
     login = login.split('_').join('');
 
-    const data = {
+    const isSpecialUser = Cookies.get('isSpecialUser');
+
+    let data = {
       type: 'check_profile',
       number: login,
       cod: get().code,
     };
+
+    if(isSpecialUser){
+      data.isSpecialUser = true;
+    }
 
     const res = await api('auth', data);
 
@@ -492,11 +500,17 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
     login = login.split('-').join('');
     login = login.split('_').join('');
 
-    const data = {
+    const isSpecialUser = Cookies.get('isSpecialUser');
+
+    let data = {
       type: 'create_profile',
       number: login,
       token: token
     };
+
+    if(isSpecialUser){
+      data.isSpecialUser = true;
+    }
 
     const json = await api('auth', data);
     
@@ -591,10 +605,16 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
   },
 
   yandexAuthCheck: async(code) => {
-    const data = {
+    const isSpecialUser = Cookies.get('isSpecialUser');
+
+    let data = {
       type: 'checkAuthYandex',
       code
     };
+
+    if(isSpecialUser){
+      data.isSpecialUser = true;
+    }
 
     const json = await api('auth', data);
 
@@ -1397,6 +1417,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           })
 
           checkout.on('success', () => {
+            useProfileStore.getState().saveUserActions('true_pay_online_order', '', get().allPrice);
             checkout.destroy();
             funcClose();
           });
@@ -1871,7 +1892,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         itemsCount++;
         check = true;
 
-        useProfileStore.getState().saveUserActions('plus_item', item.name);
+        useProfileStore.getState().saveUserActions('plus_item', item.name, item.one_price);
 
         ym_item = item;
         return item;
@@ -1890,7 +1911,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         //item.cat_id = item.cat_id;
         items = [...items, ...[item]];
 
-        useProfileStore.getState().saveUserActions('plus_item', item.name);
+        useProfileStore.getState().saveUserActions('plus_item', item.name, item.price);
       }
 
       ym_item = item;
@@ -1935,7 +1956,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           itemsCount = itemsCount - item.count;
           item.count = 0;
 
-          useProfileStore.getState().saveUserActions('minus_item', item.name);
+          useProfileStore.getState().saveUserActions('minus_item', item.name, item.one_price);
 
           ym_item = item;
         }
@@ -1947,7 +1968,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           item.count--;
           itemsCount--;
 
-          useProfileStore.getState().saveUserActions('minus_item', item.name);
+          useProfileStore.getState().saveUserActions('minus_item', item.name, item.one_price);
 
           ym_item = item;
         }
@@ -3768,15 +3789,68 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       }
     });
   },
-  saveUserActions: async(event, param) => {
+  saveUserActions: async(event, param, price = 0) => {
+
+    // choose_tag_text
+    // choose_tag
+    // open_page_false - устаревший баннер ( стр Акции )
+    // open_page_banner ( стр Акции )
+    // open_banner_home
+    // open_item_home
+    // user_log_out
+    // user_log_in
+    // plus_item
+    // minus_item
+    // remove_promo
+    // check_promo
+
+    const city = useCitiesStore.getState().thisCity
+    const trackEvent = useYandexMetrika(city);
+
+    if( event == 'plus_item' ){
+      trackEvent('add_item', {
+        productId: param,
+        price: price,
+      });
+    }
+
+    if( event == 'open_item_home' ){
+      trackEvent('open_item', {
+        productId: param,
+        price: price,
+      });
+    }
+
+    if( event == 'open_cart' ){
+      trackEvent('open_cart', {
+        price: price,
+      });
+    }
+
+    if( event == 'cart_confirm' ){
+      trackEvent('cart_confirm', {
+        price: price,
+      });
+    }
+
+    if( event == 'true_pay_online_order' ){
+      trackEvent('true_pay_online_order', {
+        price: price,
+      });
+    }
+    
+
+    
 
     const token_tmp = await useHeaderStoreNew.getState().token_tmp ?? '';
+
+    console.log('event', event, param, price, city);
 
     let data = {
       type: 'save_user_actions',
       user_id: useHeaderStoreNew.getState().token,
       user_token: token_tmp ?? '',
-      city_id: useCitiesStore.getState().thisCity,
+      city_id: city,
       event: event,
       data: param,
     };
@@ -4270,7 +4344,8 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       }
  
     }
-    useProfileStore.getState().saveUserActions('open_item_home', json?.name);
+
+    useProfileStore.getState().saveUserActions('open_item_home', json?.name, json?.price);
   
     if(type && type === 'set') {
       set({

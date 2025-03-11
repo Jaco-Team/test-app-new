@@ -1,4 +1,5 @@
-import { useCallback } from 'react';
+//import { useCallback } from 'react';
+import React, { useState, useCallback, useMemo } from 'react';
 
 /**
  * Кастомный хук для отправки событий в Яндекс Метрику
@@ -18,7 +19,7 @@ import { useCallback } from 'react';
  * @param {object} params - Объект с дополнительными параметрами
  * @returns {function} - Функция для отправки события
  */
-function useYandexMetrika(city, eventName, goalName, params = {}) {
+function useYandexMetrika_(city, eventName, goalName, params = {}) {
   // Функция для определения ID счётчика по городу
   const getCounterIdByCity = (cityName) => {
     switch (cityName.toLowerCase()) {
@@ -45,6 +46,115 @@ function useYandexMetrika(city, eventName, goalName, params = {}) {
   }, [city, eventName, goalName, params]);
 
   return sendMetrikaEvent;
+}
+
+//export default useYandexMetrika;
+
+
+
+function useYandexMetrika(city) {
+  const getCounterIdByCity = (cityName) => {
+    switch (cityName.toLowerCase()) {
+      case 'togliatti':
+        return 47085879;
+      case 'samara':
+        return 47085879;
+      // Добавьте другие города или логику
+      default:
+        return 0; // "город по умолчанию" или 0
+    }
+  };
+
+  // Получаем номер счётчика по городу (или фиксированный, если не нужен динамический)
+  const counterId = getCounterIdByCity(city);
+
+  const trackEvent = (event, params = {}) => {
+    // Пример, когда "Purchase" требует особых данных
+    switch (event) {
+      //открытие карточки товара
+      case 'open_item':
+        // Допустим, хотим для Metрики отдельно "purchaseGoal", а для Pixel — "Purchase"
+        // if (typeof window.ym === 'function') {
+        //   window.ym(counterId, 'reachGoal', 'purchaseGoal', {
+        //     ...params,
+        //     city
+        //   });
+        // }
+        if (typeof window._tmr === 'function') {
+
+          if( city == 'samara' ){
+            window._tmr.push({ type: 'reachGoal', id: 3621394, value: params?.price ?? 0, goal: 'product', params: { product_id: params.productId}});;
+          }
+        }
+        break;
+        
+      //перешел в корзину
+      case 'open_cart':
+        if (typeof window.ym === 'function') {
+          // window.ym(counterId, 'reachGoal', 'addToCart', {
+          //   ...params,
+          //   city
+          // });
+        }
+        if (typeof window._tmr === 'function') {
+
+          if( city == 'samara' ){
+            window._tmr.push({ type: 'reachGoal', id: 3621394, goal: 'zakaz_on'});
+          }
+        }
+        break;
+
+      //подтверждение корзины, переход к оплате
+      case 'cart_confirm':
+        if (typeof window.ym === 'function') {
+          // window.ym(counterId, 'reachGoal', 'addToCart', {
+          //   ...params,
+          //   city
+          // });
+        }
+        if (typeof window._tmr === 'function') {
+
+          if( city == 'samara' ){
+            window._tmr.push({ type: 'reachGoal', id: 3621394, goal: 'zakaz_off'});
+          }
+        }
+        break;
+
+      //успешная онлайн оплата
+      case 'true_pay_online_order':
+        if (typeof window.ym === 'function') {
+          // window.ym(counterId, 'reachGoal', 'addToCart', {
+          //   ...params,
+          //   city
+          // });
+        }
+        if (typeof window._tmr === 'function') {
+
+          if( city == 'samara' ){
+            window._tmr.push({ type: 'reachGoal', id: 3621394, value: params?.price ?? 0, goal: 'zakaz_oplata'});
+          }
+        }
+        break;
+
+      //добавление товара в корзину
+      case 'add_item':
+        if (typeof window.ym === 'function') {
+          // window.ym(counterId, 'reachGoal', 'addToCart', {
+          //   ...params,
+          //   city
+          // });
+        }
+        if (typeof window._tmr === 'function') {
+
+          if( city == 'samara' ){
+            window._tmr.push({ type: 'reachGoal', id: 3621394, value: params?.price ?? 0, goal: 'korzina', params: { product_id: params.productId }});
+          }
+        }
+        break;
+    }
+  };
+
+  return trackEvent;
 }
 
 export default useYandexMetrika;

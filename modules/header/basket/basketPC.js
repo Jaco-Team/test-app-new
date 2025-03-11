@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { useHeaderStoreNew, useCartStore, useCitiesStore } from '@/components/store.js';
+import { useHeaderStoreNew, useCartStore, useCitiesStore, useProfileStore } from '@/components/store.js';
 
 import TablePC from './tablePC';
 
@@ -29,6 +29,8 @@ export default function BasketPC() {
   const [getInfoPromo, checkPromo, allPrice, promoInfo, itemsCount, setActiveModalBasket, itemsOffDops] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice, state.promoInfo, state.itemsCount, state.setActiveModalBasket, state.itemsOffDops]);
   const [openBasket, setActiveBasket, targetBasket] = useHeaderStoreNew((state) => [state?.openBasket, state?.setActiveBasket, state?.targetBasket]);
   
+  const [ saveUserActions ] = useProfileStore((state) => [state.saveUserActions]);
+
   useEffect(() => {
     if (Cookies.get('promo_name') && Cookies.get('promo_name').length > 0) {
       setPromo(Cookies.get('promo_name'));
@@ -50,6 +52,8 @@ export default function BasketPC() {
     //   //setScrollBasket(0);
     //   setActiveModalAuth(true);
     // }
+
+    saveUserActions('open_cart', '', allPrice);
 
     if (Cookies.get('promo_name') && Cookies.get('promo_name').length > 0) {
       getInfoPromo(Cookies.get('promo_name'), thisCity)
