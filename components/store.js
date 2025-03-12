@@ -412,8 +412,6 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
             isAuth: 'none'
           });
         }else{
-          //console.log( 'token', json, get().setNameUser(json?.user?.name) )
-
           useProfileStore.getState().setUser(json?.user);
 
           set({
@@ -446,7 +444,6 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
           });
         }else{
 
-          //console.log( 'token2', json, get().setNameUser(json?.user?.name) )
           useProfileStore.getState().setUser(json?.user);
           set({
             token: token2,
@@ -1716,9 +1713,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     let free_items = get().freeItems;
     let all_items = get().allItems;
     
-    //console.log('my_cart', my_cart);
-    //console.log( 'items', get().items );
-
     //let itemsOffDops = get().itemsOffDops;
     //let itemsWithPromo = get().itemsWithPromo;
 
@@ -2749,6 +2743,10 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
       ym(get().ya_metrik[city], 'reachGoal', 'call_from_site', ym_data);
 
+      if( city == 'samara' ){
+        ym(100325084, 'reachGoal', 'call_from_site', ym_data);
+      }
+
     } catch (error) {
       console.log('clickPhoneMobile', error);
     }
@@ -3301,8 +3299,6 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
       let json = await api(this_module, data);
 
-      console.log( 'json', json ) 
-
       set({
         shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
         userInfo: json?.user,
@@ -3446,6 +3442,10 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       get().closeModalDel();
       get().closeOrder();
       get().getOrderList('zakazy', get().city, userToken);
+
+      if( useCitiesStore.getState().thisCityRu == 'Самара' ) {
+        ym(100325084, 'reachGoal', 'del_order', { text: text });
+      }
     }else{
       useHeaderStoreNew.getState().setActiveModalAlert(true, json?.text, false);
     }
@@ -3839,12 +3839,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       });
     }
     
-
-    
-
     const token_tmp = await useHeaderStoreNew.getState().token_tmp ?? '';
-
-    console.log('event', event, param, price, city);
 
     let data = {
       type: 'save_user_actions',
@@ -4042,6 +4037,10 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
         useProfileStore.getState().saveUserActions('choose_tag', 'Новинка');
 
+        if( useCitiesStore.getState().thisCityRu == 'Самара' ) {
+          ym(100325084, 'reachGoal', 'choose_tag', { tag: 'Новинка' })
+        }
+
         all_items.map( item => {
           if( document.getElementById(item.link) ){
             if( parseInt(item.is_new) ===  1 ){
@@ -4090,6 +4089,10 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       let find_tag = all_tags?.find(tag => parseInt(tag.id) === parseInt(res));
 
       ym(47085879, 'reachGoal', 'choose_tag', { tag: find_tag?.name })
+
+      if( useCitiesStore.getState().thisCityRu == 'Самара' ) {
+        ym(100325084, 'reachGoal', 'choose_tag', { tag: find_tag?.name })
+      }
 
       useProfileStore.getState().saveUserActions('choose_tag', find_tag?.name);
 
@@ -4279,8 +4282,6 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     const json = await api(this_module, data);
 
-    console.log( data, this_module, json?.banner )
-
     if(!json?.banner){
       useProfileStore.getState().saveUserActions('open_page_false', '');
 
@@ -4302,8 +4303,6 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     };
 
     const json = await api(this_module, data);
-
-    //console.table(json.items)
 
     set({
       CatsItems: json?.items,

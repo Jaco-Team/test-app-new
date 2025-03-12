@@ -2,22 +2,51 @@ import { memo, useState } from 'react';
 
 import Image from 'next/image';
 
-import { useCartStore, useCitiesStore } from '@/components/store.js';
+import { useCartStore, useCitiesStore, useHomeStore } from '@/components/store.js';
 
 import { useLongPress } from "use-long-press";
+
+function findById(array, targetId) {
+  for (const item of array) {
+    // Сначала проверяем сам объект
+    if (parseInt(item.id) === parseInt(targetId)) {
+      return item['name'];
+    }
+
+    // Если у объекта есть поле category — спускаемся рекурсивно
+    if (Array.isArray(item.cats)) {
+      const found = findById(item.cats, targetId);
+      if (found) {
+        return found;
+      }
+    }
+  }
+  // Если ничего не найдено, возвращаем null
+  return '';
+}
 
 export default memo(function CartItemMobile({ item, count, last }) {
   const [click, setClick] = useState(true);
 
-  const [minus, plus, promoInfo] = useCartStore((state) => [state.minus, state.plus, state.promoInfo]);
+  const [minus, plus, promoInfo, allItems] = useCartStore((state) => [state.minus, state.plus, state.promoInfo, state.allItems]);
   const [ thisCityRu ] = useCitiesStore( state => [state.thisCity, state.thisCityRu]);
+
+  const [ category ] = useHomeStore((state) => [state.category]);
+
+  const cat_name = findById(category, item?.cat_id);
 
   const metrica_param = {
     city: thisCityRu, 
     tovar: item.name, 
-    category: '',
+    category: cat_name,
     platform: 'mobile',
     view: 'Корзина'
+  };
+
+  const metrica_param_min = {
+    city: thisCityRu, 
+    tovar: item.name, 
+    category: cat_name,
   };
 
   const handleClick = (e) => {
@@ -26,6 +55,10 @@ export default memo(function CartItemMobile({ item, count, last }) {
     if(click) {
       minus(item?.item_id); 
       ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param);
+
+      if( thisCityRu == 'Самара' ){
+        ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+      }
     }
   };
 
@@ -36,11 +69,27 @@ export default memo(function CartItemMobile({ item, count, last }) {
     minus(item?.item_id, 'zero'); 
     ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param);
 
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
+
     setTimeout(() => {
       setClick(true);
     }, 300)
 
   });
+
+  const add_to_cart = () => {
+    plus(item?.item_id); 
+    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param);
+
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
+    }
+  }
+
+
 //<Image alt={item?.name} src={'https://cdnimg.jacofood.ru/' + item?.img_app + '_584x584.jpg'} width={584} height={584} priority={true}/>
   return (
     <div className='CartItems' style={{ borderBottom: last ? 'none' : '0.17094017094017vw solid rgba(0, 0, 0, 0.1)'}}>
@@ -85,7 +134,7 @@ export default memo(function CartItemMobile({ item, count, last }) {
           –
         </button>
         <span>{count}</span>
-        <button className="plus" style={{ backgroundColor: item?.disabled || count > 98 ? '#fff' : 'rgba(0, 0, 0, 0.07)', color: item?.disabled || count > 98 ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.8)'}} onClick={() => { plus(item?.item_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } } disabled={item?.disabled || count > 98 ? true : false}>+</button>
+        <button className="plus" style={{ backgroundColor: item?.disabled || count > 98 ? '#fff' : 'rgba(0, 0, 0, 0.07)', color: item?.disabled || count > 98 ? 'rgba(0, 0, 0, 0.2)' : 'rgba(0, 0, 0, 0.8)'}} onClick={add_to_cart} disabled={item?.disabled || count > 98 ? true : false}>+</button>
       </div>
 
     </div>

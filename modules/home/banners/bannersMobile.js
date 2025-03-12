@@ -1,7 +1,6 @@
 import React, { useEffect, useRef } from 'react';
 import { useHomeStore, useCitiesStore } from '../../../components/store.js';
 
-//import Image from 'next/image';
 import Box from '@mui/material/Box';
 
 import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper';
@@ -11,29 +10,12 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-// import { VerticalVector } from '@/ui/Icons.js';
-
 export default React.memo(function BannersMobile() {
   const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider, state.getBanners]);
-  const [thisCity] = useCitiesStore((state) => [state.thisCity])
-  //const [setActiveModalAlert] = useHeaderStoreNew((state) => [state.setActiveModalAlert]);
+  const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
 
   const swiperRef = useRef(null);
 
-  //const [openTooltip, setOpenTooltip] = useState(false);
-  //const [banner, setBanner] = useState(false);
-
-  /*useEffect(() => {
-    const swiper = document.querySelector('.swiper').swiper;
-
-    const timer = setInterval(() => {
-      if(activeSlider && !openTooltip){
-        swiper.slideNext();
-      }
-    }, 5000);
-
-    return () => clearInterval(timer);
-  }, [openTooltip]);*/
 
   useEffect(() => {
     const swiper = document.querySelector('.swiper').swiper;
@@ -59,56 +41,13 @@ export default React.memo(function BannersMobile() {
     
   }, [bannerList]);
 
-  /*const setActiveTooltip = (active) => {
-    setOpenTooltip(active);
-  };*/
+  const openBanner = (item) => {
+    setActiveBanner(true, item, swiperRef.current.swiper)
 
-  /*useEffect(() => {
-
-    const checkClickOutside = e => {
-
-      const list = e.target.classList.contains("erid_svg_mobile") || e.target.classList.contains("erid_text_mobile") || e.target.classList.contains("erid_banner_mobile")
-
-      if (list) {
-        setActiveTooltip(true);
-        swiperRef.current.swiper.autoplay.stop();
-      } else {
-
-        const copy = e.target.classList.contains("tooltip_banner_mobile") || e.target.classList.contains("tooltip_text_mobile") || e.target.classList.contains("tooltip_copy_mobile")
-
-        if(copy) {
-          setActiveModalAlert(true, 'Ссылка успешно скопирована', true);
-        }
-
-        const item = e.target.classList.contains("item_banner_image");
-
-        if(item && !openTooltip) {
-          setActiveBanner(true, banner, swiperRef.current.swiper)
-        }
-
-        setActiveTooltip(false);
-      }
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'open_banner', {akcia_name: item?.title});
     }
-
-    document.addEventListener("click", checkClickOutside);
-    return () => document.removeEventListener("click", checkClickOutside);
-
-  }, [banner, openTooltip])*/
-
-  /**
-   * 
-   * {!openTooltip ? null :
-              <div className='tooltip_banner_mobile'>
-                <span className='tooltip_text_mobile'>{`Рекламодатель:\n\ООО "Мистер Жако"\n\ИНН 6321390811\n\erid: ${item.erid}`}</span>
-                <span className='tooltip_copy_mobile'>Копировать ссылку</span>
-              </div>
-            }
-
-            <div onClick={() => setActiveTooltip(true)} className="erid_banner_mobile">
-              <span className="erid_text_mobile">Реклама</span>
-              <VerticalVector className='erid_svg_mobile' />
-            </div>
-   */
+  }
 
   return (
     <Box component="div" className="BannerMobile">
@@ -124,7 +63,7 @@ export default React.memo(function BannersMobile() {
         ref={swiperRef}
       >
         {bannerList?.map((item, key) => (
-          <SwiperSlide key={key} onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
+          <SwiperSlide key={key} onClick={() => openBanner(item, swiperRef.current.swiper)}>
             {/* <Image
               alt={item.title}
               src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + item.img + '_1000x500.jpg'}

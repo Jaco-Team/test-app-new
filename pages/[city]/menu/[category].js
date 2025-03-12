@@ -82,6 +82,8 @@ export async function getServerSideProps({ req, res, query }) {
 
   const data1 = await api('home', data);
 
+  console.log( 'query.category', data1 )
+
   data1['city'] = query.city;
   data1['category'] = query.category;
 

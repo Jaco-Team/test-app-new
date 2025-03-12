@@ -34,6 +34,11 @@ export default function ModalItemMobile() {
     view: 'Модалка товара'
   };
 
+  const metrica_param_min = {
+    city: thisCityRu, 
+    tovar: item_card?.name, 
+    category: item_card?.cat_name,
+  };
   
 
   useEffect(() => {
@@ -83,6 +88,24 @@ export default function ModalItemMobile() {
    */
 
   const img_name = item_card?.img_app;
+
+  const add_to_cart = () => {
+    changeCountPlus(item_card?.id);
+    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
+    }
+  }
+
+  const remove_from_cart = () => {
+    changeCountMinus(item_card?.id);
+    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
+  }
 
   return (
     <>
@@ -213,16 +236,16 @@ export default function ModalItemMobile() {
 
           {count == 0 ? (
             <div className="containerBTN_ModalMObile">
-              <Button variant="outlined" onClick={() => { changeCountPlus(item_card?.id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>
+              <Button variant="outlined" onClick={add_to_cart}>
                 {new Intl.NumberFormat('ru-RU').format(item_card?.price)} ₽
               </Button>
             </div>
           ) : (
             <div className="containerBTN_ModalMObile">
               <div>
-                <button className="minus" onClick={() => { changeCountMinus(item_card?.id); ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); } }>–</button>
+                <button className="minus" onClick={remove_from_cart}>–</button>
                 <span>{count + ' ' + 'за' + ' ' + count * parseInt(item_card?.price)}{' '}₽</span>
-                <button className="plus" onClick={() => { changeCountPlus(item_card?.id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>+</button>
+                <button className="plus" onClick={add_to_cart}>+</button>
               </div>
             </div>
           )}

@@ -1,10 +1,8 @@
 import React, { useEffect, useRef } from 'react';
 import { useHomeStore, useCitiesStore } from '../../../components/store.js';
-// import Image from 'next/image';
 
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
-//import Tooltip from '@mui/material/Tooltip';
 
 import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper';
 import { Swiper, SwiperSlide } from 'swiper/react';
@@ -17,12 +15,9 @@ import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
 
 export default (function BannersPC() {
   const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider, state.getBanners]);
-  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
-  //const [setActiveModalAlert] = useHeaderStoreNew((state) => [state.setActiveModalAlert]);
+  const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
 
   const swiperRef = useRef(null);
-
-  // const [openTooltip, setOpenTooltip] = useState(false);
 
   useEffect(() => {
     const swiper = document.querySelector('.swiper').swiper;
@@ -49,72 +44,13 @@ export default (function BannersPC() {
 
   }, [bannerList]);
 
-  // const handleOpen = () => {
-  //   setOpenTooltip(true);
-  // };
- 
-  // const handleClose = () => {
-  //   setOpenTooltip(false);
-  // };
+  const openBanner = (item) => {
+    setActiveBanner(true, item, swiperRef.current.swiper)
 
-  // const handleCopy = (text) => {
-  //   setOpenTooltip(false);
-  //   setActiveModalAlert(true, 'Ссылка успешно скопирована', true);
-  //   //window.prompt("Copy to clipboard: Ctrl+C, Enter", text);
-  //   navigator.clipboard.writeText(text)
-  // }
-
-  /*
-    <div className="Item" style={{ backgroundColor: item.id === '84' ? '#3faad8' : item.id === '80' ? '#B570DF' : item.id === '48' ? '#F45773' : null}}>
-                <div className="Group">
-                  {item.id === '84' ? (
-                    <Button variant="contained" className="ItemOther"><span>1 330</span>1 125 ₽</Button>
-                  ) : item.id === '80' ? (
-                    <Button variant="contained" className="ItemOther">В корзину</Button>
-                  ) : null}
-                  <Typography className="ItemOther spanButton" variant="h5" component="span">Условия акции<KeyboardArrowDownIcon /></Typography>
-                </div>
-              </div>
-  */
-
-  /*
-                    <Tooltip
-                  open={openTooltip}
-                  onOpen={handleOpen}
-                  onClose={handleClose}
-                  title={<span className='spanTitle'>Рекламодатель:<br /> {item?.org}<br /> ИНН {item?.inn}<br /> erid: {item?.erid}<br /> <span style={{ color: '#cc0033', textDecoration: 'underline', cursor: 'pointer' }} onClick={ () => handleCopy(item.erid) }><span>Копировать ссылку</span></span> </span>} 
-                  arrow placement="top" 
-                  className='eridBannerPC'
-                    componentsProps={{
-                      tooltip: {
-                        sx: { 
-                          bgcolor: '#fff', 
-                          color: 'rgba(0, 0, 0, 0.80)',
-                          width: '10.830324909747vw',
-                          borderRadius: '1.0830324909747vw',
-                          p: '1.0830324909747vw',
-                          '& .MuiTooltip-arrow': {
-                            color: '#fff',
-                            '&::before': {
-                              backgroundColor: 'white',
-                            },
-                          },
-                        },
-                      },
-                    }}
-                >
-                  <span className='titleDots'>
-                    <span className="ItemDesk text">Реклама</span>
-                    <span className='spanContainer'>
-                      <span>•</span>
-                      <span>•</span>
-                      <span>•</span>
-                    </span>
-                  </span>
-                </Tooltip>
-  */
-
-                    //
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'open_banner', {akcia_name: item?.title});
+    }
+  }
 
   return (
     <Box component="div" className="BannerPC BannerFontPC">
@@ -138,7 +74,7 @@ export default (function BannersPC() {
           ref={swiperRef}
         >
           {bannerList?.map((item, key) => (
-            <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => setActiveBanner(true, item, swiperRef.current.swiper)}>
+            <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => openBanner(item, swiperRef.current.swiper)}>
               {/* <Image alt={item.title} src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}`+item.img+"_3700x1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }} /> */}
               <picture>
                 <source 

@@ -6,7 +6,7 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
+function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }) {
   const [thisItem, setThisItem] = useState({});
   const [CatsItems, getItem] = useHomeStore((state) => [state.CatsItems, state.getItem]);
   const [items, minus, plus, getInfoPromo] = useCartStore((state) => [state.items, state.minus, state.plus, state.getInfoPromo]);
@@ -19,6 +19,12 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
     category: thisItem?.cat_name,
     platform: 'mobile',
     view: 'Акция'
+  };
+
+  const metrica_param_min = {
+    city: thisCityRu, 
+    tovar: thisItem?.name, 
+    category: thisItem?.cat_name,
   };
 
   let count = 0;
@@ -56,6 +62,27 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
   );
 
   count = count ? count['count'] : 0;
+
+  const add_to_cart = () => {
+    this_plus(thisItem?.id, thisItem?.cat_id); 
+    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
+
+      ym(100325084, 'reachGoal', 'active_actia_all', {akcia_name: bannerTitle}); 
+      ym(100325084, 'reachGoal', 'active_actia_akcii', {akcia_name: bannerTitle});
+    }
+  }
+
+  const remove_from_cart = () => {
+    this_minus(thisItem?.id); 
+    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
+  } 
 
   return (
     <div>
@@ -123,14 +150,14 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }) {
         {parseInt(typePromo) == 2 ? false : count ?
           <div className="containerBTNItemMobile">
             <div variant="contained">
-              <button className="minus" onClick={() => { this_minus(thisItem?.id); ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); } }>–</button>
+              <button className="minus" onClick={remove_from_cart}>–</button>
               <span>{count}</span>
-              <button className="plus" onClick={() => { this_plus(thisItem?.id, thisItem?.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>+</button>
+              <button className="plus" onClick={add_to_cart}>+</button>
             </div>
           </div>
         : parseInt(item?.price) == 0 ? false :
           <div className="containerBTNItemMobile">
-            <Button variant="outlined" onClick={() => { this_plus(thisItem?.id, thisItem?.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>
+            <Button variant="outlined" onClick={add_to_cart}>
               {new Intl.NumberFormat('ru-RU').format(item?.price)} ₽
             </Button>
           </div>
@@ -145,6 +172,8 @@ export default function AkciiItemMobile({ actia }) {
   const [getInfoPromo] = useCartStore((state) => [state.getInfoPromo]);
   const [setActiveModalAlert, isAuth] = useHeaderStoreNew((state) => [state?.setActiveModalAlert, state?.isAuth]);
 
+  const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
+
   const data = dataForActia(actia);
 
   const activePromo = async(item) => {
@@ -156,6 +185,15 @@ export default function AkciiItemMobile({ actia }) {
       setActiveModalAlert(true, 'Промокод активирован', true);
     }
   };
+
+  const activeActia = (item) => {
+    activePromo(item);
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'active_actia_all', {akcia_name: item?.title}); 
+      ym(100325084, 'reachGoal', 'active_actia_akcii', {akcia_name: item?.title}); 
+    }
+  }
 
   return (
     <Grid container className="containerAcciaMobile">
@@ -196,13 +234,14 @@ export default function AkciiItemMobile({ actia }) {
                 typePromo={data?.typePromo}
                 promo={data?.banner?.info}
                 isAuth={isAuth}
+                bannerTitle={data?.banner?.title}
               />
             ))}
           </div>
 
           {parseInt(data?.typePromo) == 0 ? false :
             <div className="containerBTN">
-              <button onClick={() => activePromo(data?.banner?.info)}>Воспользоватся акцией</button>
+              <button onClick={() => activeActia(data?.banner?.info)}>Воспользоватся акцией</button>
             </div>
           }
         </Grid>

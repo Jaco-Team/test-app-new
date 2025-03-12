@@ -37,6 +37,12 @@ export default function ModalCardItemMobile() {
     view: 'Модалка товара'
   };
 
+  const metrica_param_min = {
+    city: thisCityRu, 
+    tovar: openItem?.name, 
+    category: openItem?.cat_name,
+  };
+
   useEffect(() => {
     const items = useCartStore.getState().items;
 
@@ -85,7 +91,31 @@ export default function ModalCardItemMobile() {
 
   const img_name = openItem?.img_app;
 
-  console.log( 'openItem', openItem )
+  const add_to_cart = () => {
+    changeCountPlus(openItem?.id);
+    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
+    }
+  }
+
+  const remove_from_cart = () => {
+    changeCountMinus(openItem?.id);
+    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
+  }
+
+  const sostav_seta = () => {
+    setActiveSet(true)
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'sostav_seta', metrica_param_min);
+    }
+  }
 
   return (
     <>
@@ -186,7 +216,7 @@ export default function ModalCardItemMobile() {
                 <div className="dop_text">
                   {parseInt(openItem?.cat_id) != 4 ? null : (
                     <span className="first_text" style={{ width: parseInt(openItem?.count_part_new) > 9 ? '15.384615384615vw' : '13.675213675214vw' }}
-                      onClick={() => setActiveSet(true)}
+                      onClick={sostav_seta}
                     >
                       {openItem?.count_part_new}
                     </span>
@@ -222,16 +252,16 @@ export default function ModalCardItemMobile() {
 
           {count == 0 ? (
             <div className="containerBTN_ModalMObile">
-              <Button variant="outlined" onClick={() => { changeCountPlus(openItem?.id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>
+              <Button variant="outlined" onClick={add_to_cart}>
                 {new Intl.NumberFormat('ru-RU').format(openItem?.price)} ₽
               </Button>
             </div>
           ) : (
             <div className="containerBTN_ModalMObile">
               <div>
-                <button className="minus" onClick={() => { changeCountMinus(openItem?.id); ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); } }>–</button>
+                <button className="minus" onClick={remove_from_cart}>–</button>
                 <span>{count + ' ' + 'за' + ' ' + count * parseInt(openItem?.price)}{' '}₽</span>
-                <button className="plus" onClick={() => { changeCountPlus(openItem?.id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>+</button>
+                <button className="plus" onClick={add_to_cart}>+</button>
               </div>
             </div>
           )}

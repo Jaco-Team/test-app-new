@@ -19,7 +19,7 @@ import { IconClose } from '@/ui/Icons';
 
 import { roboto } from '@/ui/Font';
 
-function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
+function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }){
 
   const [ thisItem, setThisItem ] = useState({});
   const [ CatsItems, getItem ] = useHomeStore( state => [ state.CatsItems, state.getItem ]);
@@ -35,6 +35,12 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
     category: thisItem?.cat_name,
     platform: 'pc',
     view: 'Баннер'
+  };
+
+  const metrica_param_min = {
+    city: thisCityRu, 
+    tovar: thisItem?.name, 
+    category: thisItem?.cat_name,
   };
 
   useEffect(() => {
@@ -68,6 +74,27 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
   count = items.find( f_item => parseInt(f_item?.item_id) == parseInt( item?.id ) || parseInt(f_item?.item_id) == parseInt( item?.item_id ) );
 
   count = count ? count['count'] : 0;
+
+  const add_to_cart = () => {
+    this_plus(thisItem?.id, thisItem?.cat_id); 
+    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
+
+      ym(100325084, 'reachGoal', 'active_actia_all', {akcia_name: bannerTitle}); 
+      ym(100325084, 'reachGoal', 'active_actia_home', {akcia_name: bannerTitle}); 
+    }
+  }
+
+  const remove_from_cart = () => {
+    this_minus(thisItem?.id); 
+    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
+  }
 
   return (
     <div>
@@ -151,15 +178,15 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
           count ? (
             <div className="containerBTNitem">
               <div variant="contained">
-                <button className="minus" onClick={() => { this_minus(thisItem?.id); ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); } }>–</button>
+                <button className="minus" onClick={remove_from_cart}>–</button>
                 <span>{count}</span>
-                <button className="plus" onClick={() => { this_plus(thisItem?.id, thisItem?.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>+</button>
+                <button className="plus" onClick={add_to_cart}>+</button>
               </div>
             </div>
           ) : (
             parseInt(item?.price) == 0 ? false :
               <div className="containerBTNitem">
-                <Button variant="outlined" className="ModalItemButtonCartPC" onClick={() => { this_plus(thisItem?.id, thisItem?.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>
+                <Button variant="outlined" className="ModalItemButtonCartPC" onClick={add_to_cart}>
                   {new Intl.NumberFormat('ru-RU').format(item?.price)} ₽
                 </Button>
               </div>
@@ -174,6 +201,7 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth }){
 export default function ModalBannerPC() {
   const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ] )
   const [ setActiveModalAlert, isAuth ] = useHeaderStoreNew( state => [ state?.setActiveModalAlert, state?.isAuth ]);
+  const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
 
   const [ setActiveBanner, openModalBanner, banner, openBannerItems, typePromo ] = useHomeStore((state) => [state.setActiveBanner, state.openModalBanner, state.banner, state.openBannerItems, state.typePromo]);
 
@@ -187,6 +215,15 @@ export default function ModalBannerPC() {
       setActiveBanner(false, null);
     }
   };
+
+  const activeActia = () => {
+    activePromo(banner?.info);
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'active_actia_all', {akcia_name: banner?.title}); 
+      ym(100325084, 'reachGoal', 'active_actia_home', {akcia_name: banner?.title}); 
+    }
+  }
 
   return (
     <Dialog
@@ -241,13 +278,13 @@ export default function ModalBannerPC() {
 
                 <div className="List">
                   {openBannerItems?.map((item, key) => (
-                    <CartItemPromo key={key} data_key={key} item={item} typePromo={typePromo} promo={banner?.info} isAuth={isAuth} />
+                    <CartItemPromo key={key} data_key={key} item={item} typePromo={typePromo} promo={banner?.info} isAuth={isAuth} bannerTitle={banner?.title} />
                   ))}
                 </div>
 
                 { parseInt(typePromo) == 0 ? false :
                   <div className='containerBTN'>
-                    <button onClick={ () => activePromo(banner?.info) }>Воспользоватся акцией</button>
+                    <button onClick={ activeActia }>Воспользоватся акцией</button>
                   </div>
                 }
                 

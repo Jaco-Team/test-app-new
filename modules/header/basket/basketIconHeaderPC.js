@@ -6,7 +6,7 @@ import Cookies from 'js-cookie'
 export default function BasketIconHeaderPC() {
   const [setActiveBasket, openBasket] = useHeaderStoreNew((state) => [state?.setActiveBasket, state?.openBasket]);
   const [itemsCount, allPrice, allPriceWithoutPromo, promoInfo, promoCheck, getInfoPromo] = useCartStore((state) => [state.itemsCount, state.allPrice, state.allPriceWithoutPromo, state.promoInfo, state.promoCheck, state.getInfoPromo]);
-  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
+  const [thisCity, thisCityRu] = useCitiesStore( state => [state.thisCity, state.thisCityRu]);
 
   const handlerOpenBasket = () => {
     setActiveBasket(!openBasket);
@@ -18,6 +18,10 @@ export default function BasketIconHeaderPC() {
     //     promoCheck();
     //   }
     // }
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'open_basket'); 
+    }
 
     if(!openBasket) {
 

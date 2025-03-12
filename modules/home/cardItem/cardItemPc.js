@@ -30,29 +30,29 @@ export default memo(function CardItem({ item, count, index}) {
     view: 'Главная'
   };
 
-  /**
-   *  
-   * <Image
-            alt={item.name}
+  const metrica_param_min = {
+    city: thisCityRu, 
+    tovar: item.name, 
+    category: item.cat_name,
+  };
 
-            src={'${process.env.NEXT_PUBLIC_YANDEX_IMG}' + item.img_app + '_732x732.jpg'}
+  const add_to_cart = () => {
+    plus(item.id, item.cat_id)
+    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
 
-            src={'https://cdnimg.jacofood.ru/' + item.img_app + '_732x732.jpg'}
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
+    }
+  }
 
-            width={732}
-            height={732}
-            priority={false}
-            quality={75}
-            loading={'lazy'}
-            onClick={() => getItem('home', thisCity, item.id)}
-            style={{ cursor: 'pointer' }}
-            placeholder="blur"
-            blurDataURL={placeholder_img}
-          />
-   * 
-   */
+  const remove_from_cart = () => {
+    minus(item.id);
+    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
 
-  //console.log( 'item', item?.tags?.includes(14) )
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
+  }
 
   return (
     <motion.div
@@ -158,14 +158,14 @@ export default memo(function CardItem({ item, count, index}) {
           {count ? (
             <div className="containerBTN">
               <div variant="contained">
-                <button className="minus" onClick={() => { minus(item.id); ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); } }>–</button>
+                <button className="minus" onClick={remove_from_cart}>–</button>
                 <span>{count}</span>
-                <button className="plus" onClick={() => { plus(item.id, item.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); }} >+</button>
+                <button className="plus" onClick={add_to_cart} >+</button>
               </div>
             </div>
           ) : (
             <div className="containerBTN">
-              <Button variant="outlined" onClick={() => { plus(item.id, item.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); }} >
+              <Button variant="outlined" onClick={add_to_cart} >
                 {new Intl.NumberFormat('ru-RU').format(item.price)} ₽
               </Button>
             </div>

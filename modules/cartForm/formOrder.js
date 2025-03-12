@@ -384,6 +384,9 @@ export default function FormOrder({ cityName }) {
         }
   
         ym(47085879, 'reachGoal', 'pay_order', ym_data);
+        if( thisCityRu == 'Самара' ){
+          ym(100325084, 'reachGoal', 'pay_order', ym_data);
+        }
       }catch(e){
         console.log(e)
       }

@@ -27,6 +27,12 @@ export default React.memo(function CardItemMobile({ item, count }) {
     view: 'Главная'
   };
 
+  const metrica_param_min = {
+    city: thisCityRu, 
+    tovar: item.name, 
+    category: item.cat_name,
+  };
+
   /**
    * 
    * <Image 
@@ -43,6 +49,24 @@ export default React.memo(function CardItemMobile({ item, count }) {
           />
    * 
    */
+
+  const add_to_cart = () => {
+    plus(item.id, item.cat_id)
+    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
+    }
+  }
+
+  const remove_from_cart = () => {
+    minus(item.id);
+    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
+  }
 
   return (
     <motion.div
@@ -160,14 +184,14 @@ export default React.memo(function CardItemMobile({ item, count }) {
             {count ? (
               <div className="containerBTNMobile">
                 <div variant="contained">
-                  <button className="minus" onClick={() => { minus(item.id); ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); } }>–</button>
+                  <button className="minus" onClick={remove_from_cart}>–</button>
                   <span>{count}</span>
-                  <button className="plus" onClick={() => { plus(item.id, item.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>+</button>
+                  <button className="plus" onClick={add_to_cart}>+</button>
                 </div>
               </div>
             ) : (
               <div className="containerBTNMobile">
-                <Button variant="outlined" onClick={() => { plus(item.id, item.cat_id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } }>
+                <Button variant="outlined" onClick={add_to_cart}>
                   {new Intl.NumberFormat('ru-RU').format(item.price)} ₽
                 </Button>
               </div>

@@ -39,6 +39,12 @@ export default function ModalItemPC() {
     view: 'Модалка товара'
   };
 
+  const metrica_param_min = {
+    city: thisCityRu, 
+    tovar: item_card?.name, 
+    category: item_card?.cat_name,
+  };
+
   useEffect( () => {
 
     const items = useCartStore.getState().items;
@@ -64,6 +70,24 @@ export default function ModalItemPC() {
   };
 
   const img_name = item_card?.img_app;
+
+  const add_to_cart = () => {
+    changeCountPlus(item_card?.id);
+    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
+    }
+  }
+
+  const remove_from_cart = () => {
+    changeCountMinus(item_card?.id);
+    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
+  }
 
   return (
     <Dialog
@@ -248,7 +272,7 @@ export default function ModalItemPC() {
 
                 {count == 0 ? (
                   <div className="containerBTN">
-                    <Button variant="outlined" onClick={typeModal_dop === 'start' ? () => { changeCountPlus(item_card.id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } : () => navigate_dop('start')}
+                    <Button variant="outlined" onClick={typeModal_dop === 'start' ? add_to_cart : () => navigate_dop('start')}
                       disabled={typeModal_dop === 'start' ? false : true}
                     >
                       {new Intl.NumberFormat('ru-RU').format(item_card?.price)} ₽
@@ -259,12 +283,12 @@ export default function ModalItemPC() {
                     <div style={{ backgroundColor: typeModal_dop === 'start' ? '#ffff' : '#E6E6E6' }}
                       onClick={typeModal_dop === 'start' ? null : () => navigate_dop('start')}
                     >
-                      <button className="minus" onClick={typeModal_dop === 'start' ? () => { changeCountMinus(item_card.id); ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); } : () => navigate_dop('start')}
+                      <button className="minus" onClick={typeModal_dop === 'start' ? remove_from_cart : () => navigate_dop('start')}
                         style={{cursor: typeModal_dop === 'start' ? 'pointer' : null}}>–</button>
 
                       <span>{count}</span>
 
-                      <button className="plus" onClick={typeModal_dop === 'start' ? () => { changeCountPlus(item_card.id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } : () => navigate_dop('start')}
+                      <button className="plus" onClick={typeModal_dop === 'start' ? add_to_cart : () => navigate_dop('start')}
                         style={{cursor: typeModal_dop === 'start' ? 'pointer' : null}}>+</button>
                     </div>
                   </div>

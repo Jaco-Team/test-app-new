@@ -39,6 +39,12 @@ export default function ModalCardItemPC() {
     view: 'Модалка товара'
   };
 
+  const metrica_param_min = {
+    city: thisCityRu, 
+    tovar: openItem?.name, 
+    category: openItem?.cat_name,
+  };
+
   useEffect( () => {
 
     const items = useCartStore.getState().items;
@@ -63,26 +69,33 @@ export default function ModalCardItemPC() {
     minus(id);
   };
 
-  
-
-    /**
-     * 
-     * <Image 
-                  alt={openItem?.name} 
-
-                  src={'${process.env.NEXT_PUBLIC_YANDEX_IMG}' + openItem?.img_app + '_1420x1420.jpg'} 
-
-                  src={'https://cdnimg.jacofood.ru/' + openItem?.img_app + '_1420x1420.jpg'} 
-
-                  width={1420} height={1420} 
-                  quality={100}
-                  priority={true} 
-                  //placeholder="blur" 
-                  //blurDataURL={placeholder_img}
-                />
-     */
-
   const img_name = openItem?.img_app;
+
+  const add_to_cart = () => {
+    changeCountPlus(openItem?.id);
+    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
+    }
+  }
+
+  const remove_from_cart = () => {
+    changeCountMinus(openItem?.id);
+    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
+  }
+
+  const sostav_seta = () => {
+    navigate('set')
+
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'sostav_seta', metrica_param_min);
+    }
+  }
 
   return (
     <Dialog
@@ -319,7 +332,7 @@ export default function ModalCardItemPC() {
 
                 <div className="dop">
                   <div className="dop_text">
-                    {parseInt(openItem?.cat_id) != 4 ? null : <span className="first_text" onClick={typeModal === 'start' ? () => navigate('set') : () => navigate('start')}
+                    {parseInt(openItem?.cat_id) != 4 ? null : <span className="first_text" onClick={typeModal === 'start' ? sostav_seta : () => navigate('start')}
                         style={{ cursor: typeModal === 'start' ? 'pointer' : null}}
                       >{openItem?.count_part_new}</span>
                     }
@@ -351,7 +364,7 @@ export default function ModalCardItemPC() {
 
                 {count == 0 ? (
                   <div className="containerBTN">
-                    <Button variant="outlined" onClick={typeModal === 'start' ? () => { changeCountPlus(openItem.id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } : () => navigate('start')}
+                    <Button variant="outlined" onClick={typeModal === 'start' ? add_to_cart : () => navigate('start')}
                       disabled={typeModal === 'start' ? false : true}
                     >
                       {new Intl.NumberFormat('ru-RU').format(openItem?.price)} ₽
@@ -362,12 +375,12 @@ export default function ModalCardItemPC() {
                     <div style={{ backgroundColor: typeModal === 'start' ? '#ffff' : '#E6E6E6' }}
                       onClick={typeModal === 'start' ? null : () => navigate('start')}
                     >
-                      <button className="minus" onClick={typeModal === 'start' ? () => { changeCountMinus(openItem.id); ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); } : () => navigate('start')}
+                      <button className="minus" onClick={typeModal === 'start' ? remove_from_cart : () => navigate('start')}
                         style={{cursor: typeModal === 'start' ? 'pointer' : null}}>–</button>
 
                       <span>{count}</span>
 
-                      <button className="plus" onClick={typeModal === 'start' ? () => { changeCountPlus(openItem.id); ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); } : () => navigate('start')}
+                      <button className="plus" onClick={typeModal === 'start' ? add_to_cart : () => navigate('start')}
                         style={{cursor: typeModal === 'start' ? 'pointer' : null}}>+</button>
                     </div>
                   </div>
