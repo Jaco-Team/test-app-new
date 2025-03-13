@@ -29,7 +29,7 @@ export default memo(function RowPC({ item, count, last }) {
   const [click, setClick] = useState(true);
 
   const [minus, plus, promoInfo] = useCartStore((state) => [state.minus, state.plus, state.promoInfo]);
-  const [ thisCityRu ] = useCitiesStore( state => [state.thisCity, state.thisCityRu]);
+  const [ thisCityRu ] = useCitiesStore( state => [state.thisCityRu]);
 
   const [ category ] = useHomeStore((state) => [state.category]);
   
@@ -80,6 +80,9 @@ export default memo(function RowPC({ item, count, last }) {
   });
 
   const add_to_cart = () => {
+
+    console.log( 'add_to_cart', thisCityRu )
+
     plus(item?.item_id); 
     ym(47085879, 'reachGoal', 'add_to_cart', metrica_param);
 

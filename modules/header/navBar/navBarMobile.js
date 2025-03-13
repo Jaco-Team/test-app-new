@@ -77,6 +77,14 @@ export default memo(function NavBarMobile({ city }) {
     return () => clearInterval(intervalId);
   }, [isAuth]);
 
+  const goToPage = (page) => {
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'Клик в шапке '+page);
+    }
+
+    setActiveMenu(false)
+  }
+
   return (
     <AppBar position="fixed" className="headerMobile" elevation={2} onClick={close} sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }}>
       <Toolbar>
@@ -100,7 +108,7 @@ export default memo(function NavBarMobile({ city }) {
                 </Link>
               </ListItem>
 
-              <ListItem onClick={() => setActiveMenu(false)}>
+              <ListItem onClick={() => goToPage('Акции')}>
                 <Link href={`/${city}/akcii`} style={{background: activePage === 'akcii' ? 'rgba(0, 0, 0, 0.03)' : null}}>
                   <Sale />
                   <span style={{color: activePage === 'akcii' ? ' #dd1a32' : null}}>Акции</span>
@@ -114,7 +122,7 @@ export default memo(function NavBarMobile({ city }) {
                 </a>
               </ListItem>
 
-              <ListItem onClick={() => setActiveMenu(false)}>
+              <ListItem onClick={() => goToPage('Контакты')}>
                 <Link href={`/${city}/contacts`} style={{background: activePage === 'contacts' ? 'rgba(0, 0, 0, 0.03)' : null}}>
                   <LocationIconMobile  className='otherSVG' />
                   <span style={{color: activePage === 'contacts' ? ' #dd1a32' : null}}>Адреса</span>
@@ -128,7 +136,7 @@ export default memo(function NavBarMobile({ city }) {
                 </Link>
               </ListItem>
 
-              <ProfileIconHeaderMobile setActiveMenu={setActiveMenu} city={city} active_page={activePage}/>
+              <ProfileIconHeaderMobile setActiveMenu={setActiveMenu} city={city} active_page={activePage} goToPage={goToPage}/>
 
               <BasketIconHeaderMobile setActiveMenu={setActiveMenu} active_page={activePage} city={city}/>
 

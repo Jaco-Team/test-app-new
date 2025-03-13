@@ -21,35 +21,40 @@ import ProfileIconHeaderPC from '../profile/profileIconHeaderPC.js';
 
 import Cookies from 'js-cookie'
 
-const MenuBurger = React.memo(function MenuBurger({ anchorEl, city, isOpen, onClose }){
+const MenuBurger = React.memo(function MenuBurger({ anchorEl, city, isOpen, onClose, goToPage }){
   const [links] = useFooterStore((state) => [state.links]);
   //const [ thisCityRu ] = useCitiesStore( state => [ state.thisCityRu ] );
   //const [ setActiveModalCity ] = useHeaderStoreNew( state => [ state.setActiveModalCity ] );
 
+  const navigate = (page) => {
+    goToPage(page)
+    onClose();
+  };
+
   return(
     <Menu id='chooseHeaderCat' anchorEl={anchorEl} open={isOpen} onClose={ () => onClose() } anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} transformOrigin={{ vertical: 'top',  horizontal: 'center' }} autoFocus={false}>
          
-      <MenuItem onClick={() => onClose()}>
+      <MenuItem onClick={() => navigate('О компании') }>
         <Link href={`/${city}/about`}><span>О компании</span></Link>
       </MenuItem>
       
-      <MenuItem onClick={() => onClose()}>
+      <MenuItem onClick={() => navigate('Реквизиты')}>
         <Link href={"/"+city+"/company-details"}><span>Реквизиты</span></Link>
       </MenuItem>
 
-      <MenuItem onClick={() => onClose()}>
+      <MenuItem onClick={() => navigate('Публичная оферта')}>
         <Link href={"/"+city+"/publichnaya-oferta"}><span>Публичная оферта</span></Link>
       </MenuItem>
 
-      <MenuItem onClick={() => onClose()}>
+      <MenuItem onClick={() => navigate('Политика')}>
         <Link href={"/"+city+"/politika-konfidencialnosti"}><span>Политика</span></Link>
       </MenuItem>
 
-      <MenuItem onClick={() => onClose()}>
+      <MenuItem onClick={() => navigate('Правила оплаты')}>
         <Link href={"/"+city+"/instpayorders"}><span>Правила оплаты</span></Link>
       </MenuItem>
 
-      <MenuItem onClick={() => onClose()}>
+      <MenuItem onClick={() => navigate('Пищевая ценность')}>
         <Link href={links?.link_allergens ?? links} target="_blank"><span>Пищевая ценность</span></Link>
       </MenuItem>
       
@@ -58,6 +63,12 @@ const MenuBurger = React.memo(function MenuBurger({ anchorEl, city, isOpen, onCl
 })
 
 const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, chooseCat, list, active_page }){
+
+  const thisChooseCat = (name, id) => {
+    chooseCat(name, id)
+    onClose();
+  }
+
   return(
     <Menu id='chooseHeaderCat' anchorEl={anchorEl} open={isOpen} onClose={onClose} anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }} transformOrigin={{ vertical: 'top',  horizontal: 'center' }} autoFocus={false}>
       {list.map((cat, key) => (
@@ -69,12 +80,12 @@ const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, c
               isDynamic={true}
               smooth={false}
               offset={-70}
-              onClick={onClose}
+              onClick={ () => thisChooseCat(cat.name, cat.id) }
             >
               <span id={'link_' + cat.id}>{cat.name}</span>
             </ScrollLink>
           ) : (
-            <Link href={`/${city}`} onClick={() => chooseCat(cat.id)}>
+            <Link href={`/${city}`} onClick={() => chooseCat(cat.name, cat.id)}>
               <span>{cat.name}</span>
             </Link>
           )}
@@ -221,44 +232,6 @@ export default React.memo(function NavBarPC({ city }) {
     }
   }
 
-  /*
-    {catList.map((item, key) =>
-              item.name === 'Пицца' || item.name === 'Напитки' ? (
-                active_page === 'home' ? 
-                  <ScrollLink
-                    key={key}
-                    className={"headerCat "+ (key+1 == catList.length ? 'last' : '') }
-                    to={'cat' + item.id}
-                    spy={true}
-                    isDynamic={true}
-                    smooth={false}
-                    offset={-100}
-                    //style={{marginRight: item.name === 'Пицца' ? 0 : '18.050541516245vw', width: item.name === 'Напитки' ? '7.2202166064982vw' : '5.7761732851986vw'}}
-                  >
-                    <span id={'link_' + item.id}>{item.name}</span> 
-                  </ScrollLink>
-                  :
-                  <Link href={`/${city}`} onClick={() => chooseCat(item.id)} key={key} className={"headerCat "+ (key+1 == catList.length ? 'last' : '') }
-                    //style={{marginRight: item.name === 'Пицца' ? 0 : '18.050541516245vw', width: item.name === 'Напитки' ? '7.2202166064982vw' : '5.7761732851986vw'}}
-                  >
-                    <span>{item.name}</span>
-                  </Link>
-                  
-              ) : (
-                  <React.Fragment key={key}>
-                    <div className={item?.expanded ? item.expanded ? "headerCat activeCat" : 'headerCat' : 'headerCat'} onClick={(event) => openMenu(event, item.id)} 
-                      //style={{ marginRight: '1.4440433212996vw'}}
-                    >
-                      <span>
-                        {item.name} {item?.expanded ? item.expanded ? <ArrowUpHeaderPC /> : <ArrowDownHeaderPC /> : <ArrowDownHeaderPC />}
-                      </span>
-                    </div>
-                  </React.Fragment>
-                )
-              )
-            }
-  */
-
   let activeProfile = false;
   let activeDoc = false;
 
@@ -271,6 +244,25 @@ export default React.memo(function NavBarPC({ city }) {
     }else{
       activeProfile = false;
       activeDoc = true;
+    }
+  }
+
+  const thisChooseCat = (cat_name, cat_id) => {
+    
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'Категория '+cat_name);
+    }
+
+    if( parseInt(cat_id) > 0 ){
+      chooseCat(cat_id)
+    }else{
+      resetFilter();
+    }
+  }
+
+  const goToPage = (page) => {
+    if( thisCityRu == 'Самара' ){
+      ym(100325084, 'reachGoal', 'Клик в шапке '+page);
     }
   }
 
@@ -298,18 +290,18 @@ export default React.memo(function NavBarPC({ city }) {
                     isDynamic={true}
                     smooth={false}
                     offset={-70}
-                    onClick={resetFilter}
+                    onClick={() => thisChooseCat(item.name, -1)}
                     //style={{marginRight: item.name === 'Пицца' ? 0 : '18.050541516245vw', width: item.name === 'Напитки' ? '7.2202166064982vw' : '5.7761732851986vw'}}
                   >
                     <span id={'link_' + item.id}>{item.name}</span> 
                   </ScrollLink>
                     :
-                  <Link href={`/${city}`} onClick={() => chooseCat(item.id)} key={key} className={"headerCat "+ (key+1 == category.length ? 'last' : '') }>
+                  <Link href={`/${city}`} onClick={() => thisChooseCat(item.name, item.id)} key={key} className={"headerCat "+ (key+1 == category.length ? 'last' : '') }>
                     <span>{item.name}</span>
                   </Link>
             )}
 
-            <Link href={`/${city}/akcii`} className={"headerCat link " + (activePage === 'akcii'? 'activeCat' : '')}>
+            <Link href={`/${city}/akcii`} className={"headerCat link " + (activePage === 'akcii'? 'activeCat' : '')} onClick={ () => goToPage('Акции') }>
               <span>Акции</span>
             </Link>
           </div>
@@ -320,14 +312,7 @@ export default React.memo(function NavBarPC({ city }) {
               {thisCityRu}
             </div>
 
-            {/* {activePage === 'home' ?
-              <div className={isOpenFilter ? 'filterHeaderPC active' : 'filterHeaderPC'} onClick={() => setActiveFilter(!isOpenFilter)}>
-                <Filter className='filter_svg' />
-              </div>
-              : null
-            } */}
-
-            <Link href={'/' + city + '/contacts'}  className={activePage === 'contacts' ? 'mapHeaderPC active' : 'mapHeaderPC'}>
+            <Link href={'/' + city + '/contacts'}  className={activePage === 'contacts' ? 'mapHeaderPC active' : 'mapHeaderPC'} onClick={ () => goToPage('Контакты') }>
               <LocationHeaderIcon className='map_svg' />
             </Link>
             
@@ -335,12 +320,12 @@ export default React.memo(function NavBarPC({ city }) {
               <JacoDocsIcon className='burger_svg'/>
             </div>
 
-            <ProfileIconHeaderPC activeProfile={activeProfile} />
+            <ProfileIconHeaderPC activeProfile={activeProfile} goToPage={goToPage} />
 
             <BasketIconHeaderPC />
 
-            <MenuCat anchorEl={anchorEl} isOpen={isOpenCat} onClose={closeMenu} chooseCat={chooseCat} city={city} list={list} active_page={activePage} />
-            <MenuBurger anchorEl={anchorEl} isOpen={isOpenburger} onClose={closeMenuBurger} city={city} />
+            <MenuCat anchorEl={anchorEl} isOpen={isOpenCat} onClose={closeMenu} chooseCat={thisChooseCat} city={city} list={list} active_page={activePage} />
+            <MenuBurger anchorEl={anchorEl} isOpen={isOpenburger} onClose={closeMenuBurger} city={city} goToPage={goToPage} />
           </div>
         </Toolbar>
       </AppBar>

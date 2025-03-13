@@ -2423,6 +2423,42 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
             }
           })
         }
+
+        //все
+        if( parseInt(promo_info.sale.cat_sale) == 7 ){
+          count_sale = parseInt(promo_info.sale.count_sale);
+          
+          my_cart?.forEach( (el_cart, key_cart) => {
+            this_item = allItems?.find( (item) => item.id == el_cart.item_id );
+            
+            if( parseInt(el_cart.all_price) > 0 && parseInt(el_cart.count) > 0 ){
+              if( parseInt(promo_info.sale.type_price) == 1 ){
+                //рубли  
+                
+                if( count_sale > 0 ){
+                  all_price = (parseInt(el_cart.one_price) * parseInt(el_cart.count)) - parseInt(count_sale);
+                  
+                  if( all_price <= 0 ){
+                    all_price = 1;
+                  }
+                  
+                  count_sale -= (parseInt(el_cart.one_price) * parseInt(el_cart.count));
+                  
+                  my_cart[ key_cart ].new_one_price = parseInt(el_cart.one_price)
+                  my_cart[ key_cart ].all_price = all_price;
+                }
+              }else{
+                //проценты  
+
+                all_price = parseInt(el_cart.all_price) - ((parseInt(el_cart.all_price) / 100) * parseInt(count_sale));
+                
+                my_cart[ key_cart ].new_one_price = parseInt(el_cart.one_price)
+                my_cart[ key_cart ].all_price = parseInt(all_price);
+
+              }
+            }
+          })
+        }
         
         tmp = 0;
         allPrice = 0;
@@ -4039,6 +4075,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
         if( useCitiesStore.getState().thisCityRu == 'Самара' ) {
           ym(100325084, 'reachGoal', 'choose_tag', { tag: 'Новинка' })
+          ym(100325084, 'reachGoal', 'Тэг Новинка', { tag: 'Новинка' })
         }
 
         all_items.map( item => {
@@ -4092,6 +4129,8 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
       if( useCitiesStore.getState().thisCityRu == 'Самара' ) {
         ym(100325084, 'reachGoal', 'choose_tag', { tag: find_tag?.name })
+
+        ym(100325084, 'reachGoal', 'Тэг '+find_tag?.name, { tag: find_tag?.name })
       }
 
       useProfileStore.getState().saveUserActions('choose_tag', find_tag?.name);

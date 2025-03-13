@@ -6,14 +6,12 @@ import { useHeaderStoreNew, useProfileStore } from '@/components/store.js';
 import { ProfileIconMobile } from '@/ui/Icons.js';
 import ListItem from '@mui/material/ListItem';
 
-export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_page }) {
+export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_page, goToPage }) {
 
   const [setActiveModalAuth, isAuth] = useHeaderStoreNew((state) => [state?.setActiveModalAuth, state?.isAuth]);
   const [shortName, getUserInfo] = useProfileStore((state) => [state.shortName, state.getUserInfo]);
   const [token] = useHeaderStoreNew(state => [state?.token])
   const [ count_promo, count_orders ] = useProfileStore( state => [ state.count_promo, state.count_orders ]);
-
-  console.log( count_promo, count_orders, count_promo > 0 || count_orders > 0 )
 
   useEffect(() => {
     if(token && token.length > 0) {
@@ -25,7 +23,7 @@ export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_pa
 
   if(isAuth !== 'auth'){
     return (
-      <ListItem onClick={() => { setActiveMenu(false); setActiveModalAuth(true) }}>
+      <ListItem onClick={() => { goToPage('Авторизация'); setActiveModalAuth(true) }}>
         <div style={{background: bgColor ? 'rgba(0, 0, 0, 0.03)' : '#fff'}}>
           <ProfileIconMobile />
           <span>Аккаунт</span>
@@ -35,7 +33,7 @@ export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_pa
   }
 
   return (
-    <ListItem onClick={() => setActiveMenu(false)}>
+    <ListItem onClick={() => goToPage('Аккаунт')}>
       <Link href={'/' + city + '/account'} style={{background: bgColor ? 'rgba(0, 0, 0, 0.03)' : '#fff'}}>
         <ProfileIconMobile />
         <span style={{color: bgColor ? ' #dd1a32' : null}}>Аккаунт</span>

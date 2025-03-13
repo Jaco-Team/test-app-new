@@ -61,6 +61,12 @@ export default function ConfirmForm() {
         };
 
         ym(47085879, 'reachGoal', 'pay_order', ym_data);
+
+        if( thisCityRu == 'Самара' ){
+          ym(100325084, 'reachGoal', 'pay_order', ym_data);
+
+          ym(100325084, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
+        }
       } catch (e) {
         console.log(e);
       }
