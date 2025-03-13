@@ -1,7 +1,7 @@
 import React, { useEffect } from 'react';
 import { useHomeStore, useAkciiStore, useCitiesStore } from '@/components/store';
 
-import AkciiItemMobile from './akciiItemMobile.js';
+import AkciiItemMobile from './akciiItemMobile';
 
 export default function AkciiMobile() {
   const [bannerList, getBanners] = useHomeStore((state) => [state.bannerList, state.getBanners]);

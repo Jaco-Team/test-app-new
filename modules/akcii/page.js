@@ -10,7 +10,7 @@ import ModalCardItemMobile from '../home/cardItem/modalCardItemMobile';
 import ModalItemMobile from '../home/cardItem/modal_item_Mobile';
 
 import AkciiItemPC from './PC/akciiItemPC';
-//import AkciiItemMobile from './mobile/akciiItemMobile';
+import AkciiItemMobile from './mobile/akciiItemMobile';
 
 import Meta from '@/components/meta.js';
 
@@ -23,8 +23,8 @@ export default function AkciiPage({ page }) {
     return (
       <Meta title={page.title} description={page.description}>
         {matches ? 
-          <div className="akciiMobile onePage">
-            <AkciiItemPC actia={pageBanner} /> 
+          <div className="akciiMobile onePage" style={{ marginTop: 100 }}>
+            <AkciiItemMobile actia={pageBanner} /> 
           </div>
             : 
           <div className="akciiPC onePage">
