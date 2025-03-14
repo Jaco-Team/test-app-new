@@ -282,6 +282,7 @@ export default function AddressModalMobile({ city }) {
             <MyTextInput
               value={nameAddr}
               name="customAddrName"
+              autocomplete="customAddrName"
               placeholder="Дать короткое название"
               func={ e => setNameAddr(e.target.value) }
             />

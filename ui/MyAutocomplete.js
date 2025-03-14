@@ -99,13 +99,15 @@ export default function MyAutocomplete({data, placeholder, onChange, val, func ,
       }
 
       freeSolo
-      
+      name={name ?? 'customField'}
+      autocomplete={name ?? 'customField'}
       renderInput={(params) => (
         <TextField {...params} 
           placeholder={placeholder} 
           variant={variant} 
           classes={className}
           name={name ?? 'customField'}
+          autocomplete={name ?? 'customField'}
           InputProps={{
             ...params.InputProps,
             startAdornment: inputAdornment,
