@@ -32,10 +32,10 @@ export default function CartMenuMobile({ cityName }) {
   const [list, setList] = useState([]);
   const [id, setId] = useState(null);
 
-  const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
+  const [thisCityRu, thisCity] = useCitiesStore((state) => [state.thisCityRu, state.thisCity]);
 
   const [openMenuCart, setActiveMenuCart, nameList, setActiveDataTimePicker, setActiveCartMap, pointList, addrList, orderPic, orderAddr,
-    setAddrDiv, setPoint, setTypePay, comment, changeComment, setSummDiv, typeOrder, getMapCart, setDataTimeOrder] = useCartStore((state) => [state.openMenuCart, state.setActiveMenuCart, state.nameList, state.setActiveDataTimePicker, state.setActiveCartMap, state.pointList, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.setTypePay, state.comment, state.changeComment, state.setSummDiv, state.typeOrder, state.getMapCart, state.setDataTimeOrder]);
+    setAddrDiv, setPoint, setTypePay, comment, changeComment, setSummDiv, typeOrder, getMapCart, setDataTimeOrder, getMySavedAddr] = useCartStore((state) => [state.openMenuCart, state.setActiveMenuCart, state.nameList, state.setActiveDataTimePicker, state.setActiveCartMap, state.pointList, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.setTypePay, state.comment, state.changeComment, state.setSummDiv, state.typeOrder, state.getMapCart, state.setDataTimeOrder, state.getMySavedAddr]);
 
   const [setActiveAddressModal] = useProfileStore((state) => [state.setActiveAddressModal]);
 
@@ -115,6 +115,15 @@ export default function CartMenuMobile({ cityName }) {
       setTypePay(item);
     }
   };
+
+  useEffect(() => {
+    console.log( nameList, addrList )
+    if( nameList == 'addr' && addrList.length == 0 ){
+      getMySavedAddr(thisCity);
+    }
+  }, [addrList, nameList])
+
+  
 
   return (
     <SwipeableDrawer
