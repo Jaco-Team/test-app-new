@@ -56,6 +56,24 @@ export default memo(function CartItemMobile({ item, count, last }) {
       minus(item?.item_id); 
       ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param);
 
+      dataLayer.push({
+        "ecommerce": {
+          "currencyCode": "RUB",
+          "remove": {
+            "products": [
+              {
+                "id": item?.item_id,
+                "name": item.name,
+                "category": cat_name,
+                "quantity": 1,
+                //"list": "Аксессуары",
+                "position": 1
+              }
+            ]
+          }
+        }
+      });
+
       if( thisCityRu == 'Самара' ){
         ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
       }
@@ -68,6 +86,24 @@ export default memo(function CartItemMobile({ item, count, last }) {
     
     minus(item?.item_id, 'zero'); 
     ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param);
+
+    dataLayer.push({
+      "ecommerce": {
+        "currencyCode": "RUB",
+        "remove": {
+          "products": [
+            {
+              "id": item?.item_id,
+              "name": item.name,
+              "category": cat_name,
+              "quantity": count,
+              //"list": "Аксессуары",
+              "position": 1
+            }
+          ]
+        }
+      }
+    });
 
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
@@ -83,6 +119,25 @@ export default memo(function CartItemMobile({ item, count, last }) {
     plus(item?.item_id); 
     ym(47085879, 'reachGoal', 'add_to_cart', metrica_param);
 
+    dataLayer.push({
+      "ecommerce": {
+        "currencyCode": "RUB",    
+        "add": {
+          "products": [
+            {
+              "id": item?.item_id,
+              "name": item.name,
+              "price": item?.one_price,
+              //"brand": "Яндекс / Яndex",
+              "category": cat_name,
+              "quantity": 1,
+              //"list": "Выдача категории",
+              "position": 1
+            }
+          ]
+        }
+      }
+    });
 
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 

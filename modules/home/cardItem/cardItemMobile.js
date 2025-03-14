@@ -54,6 +54,26 @@ export default React.memo(function CardItemMobile({ item, count }) {
     plus(item.id, item.cat_id)
     ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
 
+    dataLayer.push({
+      "ecommerce": {
+        "currencyCode": "RUB",    
+        "add": {
+          "products": [
+            {
+              "id": item.id,
+              "name": item.name,
+              "price": item?.price,
+              //"brand": "Яндекс / Яndex",
+              "category": item.cat_name,
+              "quantity": 1,
+              //"list": "Выдача категории",
+              "position": 1
+            }
+          ]
+        }
+      }
+    });
+
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
@@ -62,6 +82,24 @@ export default React.memo(function CardItemMobile({ item, count }) {
   const remove_from_cart = () => {
     minus(item.id);
     ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+
+    dataLayer.push({
+      "ecommerce": {
+        "currencyCode": "RUB",
+        "remove": {
+          "products": [
+            {
+              "id": item.id,
+              "name": item.name,
+              "category": item.cat_name,
+              "quantity": 1,
+              //"list": "Аксессуары",
+              "position": 1
+            }
+          ]
+        }
+      }
+    });
 
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);

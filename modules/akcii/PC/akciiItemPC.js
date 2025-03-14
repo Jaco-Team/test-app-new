@@ -63,6 +63,26 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
     this_plus(thisItem?.id, thisItem?.cat_id); 
     ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
 
+    dataLayer.push({
+      "ecommerce": {
+        "currencyCode": "RUB",    
+        "add": {
+          "products": [
+            {
+              "id": thisItem?.id,
+              "name": thisItem?.name,
+              "price": item?.price,
+              //"brand": "Яндекс / Яndex",
+              "category": thisItem?.cat_name,
+              "quantity": 1,
+              //"list": "Выдача категории",
+              "position": 1
+            }
+          ]
+        }
+      }
+    });
+
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
 
@@ -74,6 +94,24 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
   const remove_from_cart = () => {
     this_minus(thisItem?.id); 
     ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+
+    dataLayer.push({
+      "ecommerce": {
+        "currencyCode": "RUB",
+        "remove": {
+          "products": [
+            {
+              "id": thisItem?.id,
+              "name": thisItem?.name,
+              "category": thisItem?.cat_name,
+              "quantity": 1,
+              //"list": "Аксессуары",
+              "position": 1
+            }
+          ]
+        }
+      }
+    });
 
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);

@@ -217,7 +217,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
         console.log( err )
       }
 
-      
+      window.dataLayer = window.dataLayer || [];
     }
   }, [] )
   

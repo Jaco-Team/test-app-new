@@ -4389,6 +4389,26 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     useProfileStore.getState().saveUserActions('open_item_home', json?.name, json?.price);
   
+    dataLayer.push({
+      "ecommerce": {
+        "currencyCode": "RUB",
+        "detail": {
+          "products": [
+            {
+              "id": item_id,
+              "name" : json?.name,
+              "price": json?.price,
+              //"brand": "Яндекс / Яndex",
+              "category": json?.cat_name,
+              //"variant" : "Красный цвет",
+              //"list": "Результаты поиска",
+              "position": 1
+            }
+          ]
+        }
+      }
+    });
+
     if(type && type === 'set') {
       set({
         openItemCard: true,
