@@ -281,7 +281,7 @@ export default function AddressModalMobile({ city }) {
           <div className="address_name">
             <MyTextInput
               value={nameAddr}
-              name="nameAddr"
+              name="customAddrName"
               placeholder="Дать короткое название"
               func={ e => setNameAddr(e.target.value) }
             />

@@ -7,7 +7,7 @@ import Autocomplete from '@mui/material/Autocomplete';
 //import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 //const filter = createFilterOptions();
 
-export default function MyAutocomplete({data, placeholder, onChange, val, func , variant, inputAdornment, matches, className}) {
+export default function MyAutocomplete({data, placeholder, onChange, val, func , variant, inputAdornment, matches, className, name}) {
   const [value, setValue] = useState( val );
 
   useEffect( () => {
@@ -105,6 +105,7 @@ export default function MyAutocomplete({data, placeholder, onChange, val, func ,
           placeholder={placeholder} 
           variant={variant} 
           classes={className}
+          name={name ?? 'customField'}
           InputProps={{
             ...params.InputProps,
             startAdornment: inputAdornment,

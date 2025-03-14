@@ -56,6 +56,7 @@ export default function GetAddressMobile() {
               onChange={event => chooseStreet(event)} 
               func={event => debouncedSearch(event)}
               matches={matches}
+              name='customAddrChoose'
               className="address"
             />
           </div>
