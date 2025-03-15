@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect, memo } from 'react';
 import { useHeaderStoreNew, useHomeStore } from '@/components/store';
 
 import AkciiPC from './PC/akciiPC';
@@ -14,21 +14,48 @@ import AkciiItemMobile from './mobile/akciiItemMobile';
 
 import Meta from '@/components/meta.js';
 
-export default function AkciiPage({ page }) {
+let click = false;
+
+export default memo(function AkciiPage({ page }) {
   const [matches] = useHeaderStoreNew((state) => [state?.matches]);
 
   const [ pageBanner ] = useHomeStore((state) => [state.pageBanner]);
+
+  useEffect(() => {
+    if( page?.is_one_actia == true && pageBanner && click == false ){
+      dataLayer.push({
+        "ecommerce": {
+          "promoClick": {
+            "promotions": [
+              {
+                "id": pageBanner?.id,          
+                "name": pageBanner?.title,
+                "creative": pageBanner?.name,
+                "position": 1
+              }
+            ]
+          }
+        }
+      });
+
+      click = true;
+
+      setTimeout(() => {
+        click = false;
+      }, 3000)
+    }
+  }, [pageBanner])
 
   if( page?.is_one_actia == true ){
     return (
       <Meta title={page.title} description={page.description}>
         {matches ? 
           <div className="akciiMobile onePage" style={{ marginTop: 100 }}>
-            <AkciiItemMobile actia={pageBanner} /> 
+            <AkciiItemMobile actia={pageBanner} is_one_actia={page?.is_one_actia} /> 
           </div>
             : 
           <div className="akciiPC onePage">
-            <AkciiItemPC actia={pageBanner} />
+            <AkciiItemPC actia={pageBanner} is_one_actia={page?.is_one_actia} />
           </div>
         }
       </Meta>
@@ -52,4 +79,4 @@ export default function AkciiPage({ page }) {
       }
     </Meta>
   );
-}
+})

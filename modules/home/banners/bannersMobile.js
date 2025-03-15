@@ -44,6 +44,21 @@ export default React.memo(function BannersMobile() {
   const openBanner = (item) => {
     setActiveBanner(true, item, swiperRef.current.swiper)
 
+    dataLayer.push({
+      "ecommerce": {
+        "promoClick": {
+          "promotions": [
+            {
+              "id": item?.id,          
+              "name": item?.title,
+              "creative": item?.name,
+              "position": 1
+            }
+          ]
+        }
+      }
+    });
+
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'open_banner', {akcia_name: item?.title});
     }

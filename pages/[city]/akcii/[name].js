@@ -40,7 +40,6 @@ export default function Home(props) {
       }, 300);
     }
 
-    //getBanners('home', city);
     getOneBanner('home', city, act_name);
 
     if( allItems.length == 0 ){
@@ -57,8 +56,6 @@ export default function Home(props) {
     setActivePage('akcii');
     
   }, [city, thisCity]);
-
-  //<DynamicHomePage page={page} city={city} />
 
   page.is_one_actia = true;
 
@@ -99,12 +96,6 @@ export async function getServerSideProps({ req, res, query }) {
   if( !json?.banner ){
     res.writeHead(301, { Location: '/'+query.city+'/akcii' });
     res.end();
-    // return {
-    //   redirect: {
-    //     destination: '/'+query.city+'/akcii',
-    //     permanent: true,
-    //   },
-    // }
   }
 
   data1['city'] = query.city;

@@ -62,6 +62,36 @@ export default function ConfirmForm() {
 
         ym(47085879, 'reachGoal', 'pay_order', ym_data);
 
+        let items = [];
+
+        checkNewOrder?.items?.map( (item, index) => {
+          items.push({
+            "id": item.id,
+            "name": item.name,
+            "price": item.price,
+            //"brand": "Яндекс / Яndex",
+            "category": item.cat_name,
+            //"variant": "Оранжевый цвет",
+            "quantity": item.count,
+            //"list": "Одежда",
+            "position": index
+          })
+        } )
+
+        dataLayer.push({
+          "ecommerce": {
+            "currencyCode": "RUB",
+            "purchase": {
+              "actionField": {
+                "id": checkNewOrder?.order?.order_id,
+                "coupon": checkNewOrder?.order?.promo_name,
+                "revenue": checkNewOrder?.order?.sum_order
+              },
+              "products": items
+            }
+          }
+        });
+
         if( thisCityRu == 'Самара' ){
           ym(100325084, 'reachGoal', 'pay_order', ym_data);
 

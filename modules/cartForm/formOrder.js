@@ -65,8 +65,8 @@ export default function FormOrder({ cityName }) {
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
  
-  const [setFreeDrive, setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is, free_drive, setConfirmForm, getNewPriceItems, setMailForm] = useCartStore((state) => [state.setFreeDrive, state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
-    state.promoInfo, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is, state.free_drive, state.setConfirmForm, state.getNewPriceItems, state.setMailForm]);
+  const [setFreeDrive, setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is, free_drive, setConfirmForm, getNewPriceItems, setMailForm, checkNewOrder] = useCartStore((state) => [state.setFreeDrive, state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
+    state.promoInfo, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is, state.free_drive, state.setConfirmForm, state.getNewPriceItems, state.setMailForm, state.checkNewOrder]);
     
   const [ saveUserActions ] = useProfileStore((state) => [state.saveUserActions]);
 
@@ -383,6 +383,38 @@ export default function FormOrder({ cityName }) {
           typeOrder: typeOrder == 'pic' ? 'Самовывоз' : 'Доставка'
         }
   
+
+        let items = [];
+
+        checkNewOrder?.items?.map( (item, index) => {
+          items.push({
+            "id": item.id,
+            "name": item.name,
+            "price": item.price,
+            //"brand": "Яндекс / Яndex",
+            "category": item.cat_name,
+            //"variant": "Оранжевый цвет",
+            "quantity": item.count,
+            //"list": "Одежда",
+            "position": index
+          })
+        } )
+
+        dataLayer.push({
+          "ecommerce": {
+            "currencyCode": "RUB",
+            "purchase": {
+              "actionField": {
+                "id": checkNewOrder?.order?.order_id,
+                "coupon": checkNewOrder?.order?.promo_name,
+                "revenue": checkNewOrder?.order?.sum_order
+              },
+              "products": items
+            }
+          }
+        });
+
+
         ym(47085879, 'reachGoal', 'pay_order', ym_data);
         if( thisCityRu == 'Самара' ){
           ym(100325084, 'reachGoal', 'pay_order', ym_data);

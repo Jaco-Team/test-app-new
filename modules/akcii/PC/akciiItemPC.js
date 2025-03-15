@@ -2,6 +2,8 @@ import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import { useHomeStore, useCartStore, useHeaderStoreNew, useCitiesStore } from '@/components/store';
 
+import { useRouter } from 'next/router';
+
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -200,7 +202,9 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
   );
 }
 
-export default function AkciiItemPC({ actia }) {
+export default function AkciiItemPC({ actia, is_one_actia }) {
+  const { push } = useRouter();
+
   const [dataForActia] = useHomeStore((state) => [state.dataForActia]);
   const [getInfoPromo] = useCartStore((state) => [state.getInfoPromo]);
   const [setActiveModalAlert, isAuth] = useHeaderStoreNew((state) => [state?.setActiveModalAlert, state?.isAuth]);
@@ -219,12 +223,16 @@ export default function AkciiItemPC({ actia }) {
     }
   };
 
-  const activeActia = (item) => {
+  const activeActia = (item, data_banner) => {
     activePromo(item);
 
     if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'active_actia_all', {akcia_name: item?.title}); 
-      ym(100325084, 'reachGoal', 'active_actia_akcii', {akcia_name: item?.title}); 
+      ym(100325084, 'reachGoal', 'active_actia_all', {akcia_name: data_banner?.banner?.title}); 
+      ym(100325084, 'reachGoal', 'active_actia_akcii', {akcia_name: data_banner?.banner?.title}); 
+    }
+
+    if( parseInt(data_banner?.typePromo ) == 1 && is_one_actia ){
+      push(`/${thisCity}`);
     }
   }
 
@@ -268,7 +276,7 @@ export default function AkciiItemPC({ actia }) {
 
           {parseInt(data?.typePromo) == 0 ? false :
             <div className="containerBTN">
-              <button onClick={() => activeActia(data?.banner?.info)}>Воспользоватся акцией</button>
+              <button onClick={() => activeActia(data?.banner?.info, data)}>Воспользоватся акцией</button>
             </div>
           }
         </Grid>
