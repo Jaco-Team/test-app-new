@@ -1888,7 +1888,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         itemsCount++;
         check = true;
 
-        useProfileStore.getState().saveUserActions('plus_item', item.name, item.one_price);
+        useProfileStore.getState().saveUserActions('plus_item', item.name, item.one_price, item_id);
 
         ym_item = item;
         return item;
@@ -1907,7 +1907,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         //item.cat_id = item.cat_id;
         items = [...items, ...[item]];
 
-        useProfileStore.getState().saveUserActions('plus_item', item.name, item.price);
+        useProfileStore.getState().saveUserActions('plus_item', item.name, item.price, item_id);
       }
 
       ym_item = item;
@@ -3827,7 +3827,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       }
     });
   },
-  saveUserActions: async(event, param, price = 0) => {
+  saveUserActions: async(event, param, price = 0, item_id = 0) => {
 
     // choose_tag_text
     // choose_tag
@@ -3847,7 +3847,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     if( event == 'plus_item' ){
       trackEvent('add_item', {
-        productId: param,
+        productId: item_id,
         price: price,
       });
     }
@@ -3856,6 +3856,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       trackEvent('open_item', {
         productId: param,
         price: price,
+        item_id: item_id
       });
     }
 
