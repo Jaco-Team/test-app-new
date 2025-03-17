@@ -138,7 +138,7 @@ function useYandexMetrika(city) {
         }
         if (typeof window !== 'undefined') {
           if( city == 'samara' ){
-            _tmr.push({ type: 'reachGoal', id: 3621394, value: params?.price ?? 0, goal: 'korzina', params: { product_id: params.productId }});
+            _tmr.push({ type: 'reachGoal', id: 3621394, value: params?.price ?? 0, goal: 'korzina', params: { product_id: params.item_id }});
           }
         }
         break;

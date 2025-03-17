@@ -3847,8 +3847,9 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     if( event == 'plus_item' ){
       trackEvent('add_item', {
-        productId: item_id,
+        productId: param,
         price: price,
+        item_id: item_id
       });
     }
 
