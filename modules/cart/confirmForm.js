@@ -66,13 +66,13 @@ export default function ConfirmForm() {
 
         checkNewOrder?.items?.map( (item, index) => {
           items.push({
-            "id": item.id,
-            "name": item.name,
-            "price": item.price,
+            "id": item?.id ?? 0,
+            "name": item?.name ?? '',
+            "price": item?.price ?? 0,
             //"brand": "Яндекс / Яndex",
-            "category": item.cat_name,
+            "category": item?.cat_name ?? '',
             //"variant": "Оранжевый цвет",
-            "quantity": item.count,
+            "quantity": item?.count ?? 0,
             //"list": "Одежда",
             "position": index
           })
@@ -83,11 +83,11 @@ export default function ConfirmForm() {
             "currencyCode": "RUB",
             "purchase": {
               "actionField": {
-                "id": checkNewOrder?.order?.order_id,
-                "coupon": checkNewOrder?.order?.promo_name,
-                "revenue": checkNewOrder?.order?.sum_order
+                "id": checkNewOrder?.order?.order_id ?? 0,
+                "coupon": checkNewOrder?.order?.promo_name ?? '',
+                "revenue": checkNewOrder?.order?.sum_order ?? 0,
               },
-              "products": items
+              "products": items ?? []
             }
           }
         });
