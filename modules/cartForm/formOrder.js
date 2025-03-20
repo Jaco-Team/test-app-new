@@ -383,41 +383,39 @@ export default function FormOrder({ cityName }) {
           typeOrder: typeOrder == 'pic' ? 'Самовывоз' : 'Доставка'
         }
   
-
-        let items = [];
-
-        checkNewOrder?.items?.map( (item, index) => {
-          items.push({
-            "id": item?.id ?? 0,
-            "name": item?.name ?? '',
-            "price": item?.price ?? '',
-            //"brand": "Яндекс / Яndex",
-            "category": item?.cat_name ?? '',
-            //"variant": "Оранжевый цвет",
-            "quantity": item?.count ?? '',
-            //"list": "Одежда",
-            "position": index
-          })
-        } )
-
-        dataLayer.push({
-          "ecommerce": {
-            "currencyCode": "RUB",
-            "purchase": {
-              "actionField": {
-                "id": checkNewOrder?.order?.order_id ?? 0,
-                "coupon": checkNewOrder?.order?.promo_name ?? '',
-                "revenue": checkNewOrder?.order?.sum_order ?? 0
-              },
-              "products": items ?? []
-            }
-          }
-        });
-
-
         ym(47085879, 'reachGoal', 'pay_order', ym_data);
         if( thisCityRu == 'Самара' ){
           ym(100325084, 'reachGoal', 'pay_order', ym_data);
+
+          let items = [];
+
+          checkNewOrder?.items?.map( (item, index) => {
+            items.push({
+              "id": item?.id ?? 0,
+              "name": item?.name ?? '',
+              "price": item?.price ?? '',
+              //"brand": "Яндекс / Яndex",
+              "category": item?.cat_name ?? '',
+              //"variant": "Оранжевый цвет",
+              "quantity": item?.count ?? '',
+              //"list": "Одежда",
+              "position": index
+            })
+          } )
+
+          dataLayer.push({
+            "ecommerce": {
+              "currencyCode": "RUB",
+              "purchase": {
+                "actionField": {
+                  "id": checkNewOrder?.order?.order_id ?? 0,
+                  "coupon": checkNewOrder?.order?.promo_name ?? '',
+                  "revenue": checkNewOrder?.order?.sum_order ?? 0
+                },
+                "products": items ?? []
+              }
+            }
+          });
 
           ym(100325084, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
         }
