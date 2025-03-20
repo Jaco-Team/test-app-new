@@ -429,14 +429,19 @@ export default function FormOrder({ cityName }) {
         
       }*/
 
-      clearCartData();
-      //clearOrderList();
-      
-      setActiveModalBasket(false);
-      setPayForm(false);
-      setConfirmForm(false);
+      setTimeout(() => {
+        clearCartData();
+        //clearOrderList();
+        
+        setActiveModalBasket(false);
+        setPayForm(false);
+        setConfirmForm(false);
+  
+        push(`/${thisCity}/zakazy`);
+      }, 500)
 
-      push(`/${thisCity}/zakazy`);
+
+      
 
       setTimeout(() => {
         getOrderList('zakazy', thisCity, token);

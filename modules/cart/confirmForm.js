@@ -101,11 +101,13 @@ export default function ConfirmForm() {
         console.log(e);
       }
 
-      clearCartData();
-      setConfirmForm(false);
-      setPayForm(false);
-      push(`/${thisCity}/zakazy`);
-
+      setTimeout( () => {
+        clearCartData();
+        setConfirmForm(false);
+        setPayForm(false);
+        push(`/${thisCity}/zakazy`);
+      }, 500 )
+      
       setTimeout(() => {
         getOrderList('zakazy', thisCity, token);
 
