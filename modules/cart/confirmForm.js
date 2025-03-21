@@ -108,7 +108,7 @@ export default function ConfirmForm() {
         setConfirmForm(false);
         setPayForm(false);
         push(`/${thisCity}/zakazy`);
-      }, 500 )
+      }, 1000 )
       
       setTimeout(() => {
         getOrderList('zakazy', thisCity, token);

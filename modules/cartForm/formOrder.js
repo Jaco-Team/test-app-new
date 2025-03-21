@@ -436,7 +436,7 @@ export default function FormOrder({ cityName }) {
         setConfirmForm(false);
   
         push(`/${thisCity}/zakazy`);
-      }, 500)
+      }, 1000)
 
 
       
