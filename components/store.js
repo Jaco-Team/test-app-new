@@ -3230,6 +3230,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
         if(findCity) {
           useCitiesStore.getState().setThisCity(findCity?.link);
           useCitiesStore.getState().setThisCityRu(findCity?.name);
+
+          city = findCity?.link;
         }
 
       }
