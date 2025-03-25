@@ -60,7 +60,7 @@ export default React.memo(function header({ city, city_list, cats }) {
 
   const matchesDev = useMediaQuery('screen and (max-width: 800px)');
 
-  const [setMatches11, matches, checkToken, isShowLoad, setShowClosePoint] = useHeaderStoreNew( state => [state?.setMatches11, state?.matches, state?.checkToken, state?.isShowLoad, state?.setShowClosePoint] ); 
+  const [setMatches11, matches, checkToken, isShowLoad, setShowClosePoint, isAuth, saveYToken] = useHeaderStoreNew( state => [state?.setMatches11, state?.matches, state?.checkToken, state?.isShowLoad, state?.setShowClosePoint, state.isAuth, state.saveYToken] ); 
   const [getItemsCat, category] = useHomeStore( state => [state.getItemsCat, state.category]);
   const [ setFreeDrive ] = useCartStore( state => [state.setFreeDrive]);
 
@@ -110,6 +110,16 @@ export default React.memo(function header({ city, city_list, cats }) {
       }
     }
   }, [matchesDev, matches]);
+
+  useEffect(() => {
+    if(isAuth == 'auth') {
+      try{
+        ym(47085879, 'getClientID', function(clientID) {
+          saveYToken(clientID);
+        })
+      }catch(e){}
+    }
+  }, [isAuth]);
 
   useEffect(() => {
     //1722474061 - 1

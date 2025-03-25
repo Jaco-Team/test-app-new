@@ -63,6 +63,12 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
 
   showClosePoint: false,
 
+  YToken: '',
+
+  saveYToken(token) {
+    set({ YToken: token });
+  },
+
   setShowClosePoint: (type) => {
     set({ showClosePoint: type })
   },
@@ -1324,6 +1330,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     let sdacha = get().sdacha;
 
+    let ytoken = useHeaderStoreNew.getState().YToken;
+
     //sdacha = get().clearDataSdacha(sdacha);
 
     //самовывоз
@@ -1341,7 +1349,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         point_id: get().orderPic.id,
         dateTimeOrder: JSON.stringify(get().dateTimeOrder ?? { date: '', name: 'В ближайшее время', id: -1 }),
         cart: JSON.stringify(get().items),
-        free_drive: get().free_drive
+        free_drive: get().free_drive,
+        ytoken: ytoken
       };
     } else {
       data = {
@@ -1357,7 +1366,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         typeOrder: 0,
         dateTimeOrder: JSON.stringify(get().dateTimeOrder ?? { date: '', name: 'В ближайшее время', id: -1 }),
         cart: JSON.stringify(get().items),
-        free_drive: get().free_drive
+        free_drive: get().free_drive,
+        ytoken: ytoken
       };
     }
 
