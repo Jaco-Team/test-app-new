@@ -95,8 +95,9 @@ module.exports = withSentryConfig(
     // For all available options, see:
     // https://github.com/getsentry/sentry-webpack-plugin#options
 
-    org: "mister-jaco-llc",
-    project: "site_new",
+    org: "sentry",
+    project: "jacofood-react",
+    sentryUrl: "https://sentry.jacochef.ru/",
 
     // Only print logs for uploading source maps in CI
     silent: !process.env.CI,
