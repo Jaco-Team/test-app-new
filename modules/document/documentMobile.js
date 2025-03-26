@@ -13,6 +13,10 @@ export default function DocumentPageMobile({ cityName }) {
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'Клик в шапке '+page);
     }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'Клик в шапке '+page);
+    }
   }
 
   return (

@@ -38,7 +38,6 @@ export default (function BannersPC() {
     }
       
     if((!bannerList || bannerList?.length == 0) && thisCity) {
-      console.log( 'getBanners bannerList' )
       getBanners('home', thisCity);
     }
 
@@ -64,6 +63,10 @@ export default (function BannersPC() {
 
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'open_banner', {akcia_name: item?.title});
+    }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'open_banner', {akcia_name: item?.title});
     }
   }
 

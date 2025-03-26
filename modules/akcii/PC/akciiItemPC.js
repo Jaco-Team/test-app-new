@@ -91,6 +91,13 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
       ym(100325084, 'reachGoal', 'active_actia_all', {akcia_name: bannerTitle}); 
       ym(100325084, 'reachGoal', 'active_actia_akcii', {akcia_name: bannerTitle}); 
     }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
+
+      ym(100601350, 'reachGoal', 'active_actia_all', {akcia_name: bannerTitle}); 
+      ym(100601350, 'reachGoal', 'active_actia_akcii', {akcia_name: bannerTitle}); 
+    }
   }
 
   const remove_from_cart = () => {
@@ -117,6 +124,10 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
 
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
   } 
 
@@ -229,6 +240,11 @@ export default function AkciiItemPC({ actia, is_one_actia }) {
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'active_actia_all', {akcia_name: data_banner?.banner?.title}); 
       ym(100325084, 'reachGoal', 'active_actia_akcii', {akcia_name: data_banner?.banner?.title}); 
+    }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'active_actia_all', {akcia_name: data_banner?.banner?.title}); 
+      ym(100601350, 'reachGoal', 'active_actia_akcii', {akcia_name: data_banner?.banner?.title}); 
     }
 
     if( parseInt(data_banner?.typePromo ) == 1 && is_one_actia ){

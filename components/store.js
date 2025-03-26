@@ -2795,6 +2795,10 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
         ym(100325084, 'reachGoal', 'call_from_site', ym_data);
       }
 
+      if( city == 'togliatti' ){
+        ym(100601350, 'reachGoal', 'call_from_site', ym_data);
+      }
+
     } catch (error) {
       console.log('clickPhoneMobile', error);
     }
@@ -3441,7 +3445,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   openModalAddr: async (id, city = '') => {
     let data = {
       type: 'get_data_for_streets',
-      city_id: city,
+      city_id: city ? city : get().city,
       street_id: id
     };
 
@@ -3495,6 +3499,9 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
       if( useCitiesStore.getState().thisCityRu == 'Самара' ) {
         ym(100325084, 'reachGoal', 'del_order', { text: text });
+      }
+      if( useCitiesStore.getState().thisCityRu == 'Тольятти' ) {
+        ym(100601350, 'reachGoal', 'del_order', { text: text });
       }
     }else{
       useHeaderStoreNew.getState().setActiveModalAlert(true, json?.text, false);
@@ -4094,6 +4101,11 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
           ym(100325084, 'reachGoal', 'Тэг Новинка', { tag: 'Новинка' })
         }
 
+        if( useCitiesStore.getState().thisCityRu == 'Тольятти' ) {
+          ym(100601350, 'reachGoal', 'choose_tag', { tag: 'Новинка' })
+          ym(100601350, 'reachGoal', 'Тэг Новинка', { tag: 'Новинка' })
+        }
+
         all_items.map( item => {
           if( document.getElementById(item.link) ){
             if( parseInt(item.is_new) ===  1 ){
@@ -4147,6 +4159,12 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
         ym(100325084, 'reachGoal', 'choose_tag', { tag: find_tag?.name })
 
         ym(100325084, 'reachGoal', 'Тэг '+find_tag?.name, { tag: find_tag?.name })
+      }
+
+      if( useCitiesStore.getState().thisCityRu == 'Тольятти' ) {
+        ym(100601350, 'reachGoal', 'choose_tag', { tag: find_tag?.name })
+
+        ym(100601350, 'reachGoal', 'Тэг '+find_tag?.name, { tag: find_tag?.name })
       }
 
       useProfileStore.getState().saveUserActions('choose_tag', find_tag?.name);

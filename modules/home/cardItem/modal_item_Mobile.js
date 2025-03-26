@@ -1,6 +1,5 @@
 import React, { useState, useEffect } from 'react';
 
-//import Image from 'next/image';
 import Link from 'next/link';
 
 import { useHomeStore, useCartStore, useFooterStore, useCitiesStore } from '@/components/store';
@@ -13,8 +12,6 @@ import { IconInfoWhiteMobile } from '@/ui/Icons';
 import BadgeItem from './badge';
 
 import { roboto } from '@/ui/Font';
-
-//import {placeholder_img} from '@/public/placeholder_img';
 
 export default function ModalItemMobile() {
   const [openItemCard, item_card, setActiveModalCardItemMobile] = useHomeStore((state) => [state.openItemCard, state.item_card, state.setActiveModalCardItemMobile]);
@@ -65,27 +62,7 @@ export default function ModalItemMobile() {
 
   const desc = item_card?.marc_desc.length > 0 ? item_card?.marc_desc : item_card?.tmp_desc;
 
-  //const listenScrollSet = (event) => setShadowSet(event.target.scrollTop);
   const listenScrollValue = (event) => setShadowValue(event.target.scrollTop);
-
-  /**
-   * 
-   * <Image 
-                  alt={openItem?.name} 
-
-                  src={'${process.env.NEXT_PUBLIC_YANDEX_IMG}' + openItem?.img_app + '_732x732.jpg'} 
-
-                  src={'https://cdnimg.jacofood.ru/' + openItem?.img_app + '_732x732.jpg'} 
-
-                  width={732} 
-                  height={732} 
-                  quality={100}
-                  //loading="lazy"
-                  priority={true} 
-                  placeholder="blur"
-                  blurDataURL={placeholder_img}
-                />
-   */
 
   const img_name = item_card?.img_app;
 
@@ -116,6 +93,10 @@ export default function ModalItemMobile() {
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
+    }
   }
 
   const remove_from_cart = () => {
@@ -142,6 +123,10 @@ export default function ModalItemMobile() {
 
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
   }
 

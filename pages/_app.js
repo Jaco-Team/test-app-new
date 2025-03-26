@@ -280,7 +280,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
       />
       <GoogleTagManager gtmId="UA-148366601-1" />
       
-      { pageProps?.data1?.city == 'samara' ? 
+      
         <YandexMetrika 
           yid={100325084}
           clickmap={true}
@@ -288,9 +288,17 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
           accurateTrackBounce={true}
           webvisor={true}
         />
-          : 
-        null 
-      }
+          
+
+      
+        <YandexMetrika 
+          yid={100601350}
+          clickmap={true}
+          trackLinks={true}
+          accurateTrackBounce={true}
+          webvisor={true}
+        />
+          
       
       <noscript><img src="https://vk.com/rtrg?p=VK-RTRG-409134-7MvqQ" style={{position: 'fixed', left: '-999px'}} alt=""/></noscript>
 

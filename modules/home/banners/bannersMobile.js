@@ -62,6 +62,10 @@ export default React.memo(function BannersMobile() {
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'open_banner', {akcia_name: item?.title});
     }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'open_banner', {akcia_name: item?.title});
+    }
   }
 
   return (

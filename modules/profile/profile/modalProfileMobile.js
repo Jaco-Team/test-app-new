@@ -64,8 +64,6 @@ export default function ProfileModalMobile({ city, this_module, setUserDate }) {
     //const slidesDay = new Array(dayjs().daysInMonth()).fill(null).map((x, i) => (i + 1).toString());
     const slidesDay = Array.from({length: 31}, (_, i) => i + 1);
 
-    console.log( parseInt(dayjs().format('M')), slidesMonth[ parseInt(dayjs().format('M'))-1 ] )
-
     //const slidesMonth = [...Array(12).keys()].map(key => new Date(0, key).toLocaleString('ru', { month: 'long' }))
 
     const presentDate = dayjs().format('D/MMMM').split('/');

@@ -2,8 +2,6 @@ import { memo } from 'react';
 
 import { motion } from "framer-motion";
 
-//import Image from 'next/image';
-
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
@@ -11,8 +9,6 @@ import Button from '@mui/material/Button';
 import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.js';
 
 import BadgeItem from './badge';
-
-// import {placeholder_img} from '@/public/placeholder_img';
 
 export default memo(function CardItem({ item, count, index}) {
   const [getItem] = useHomeStore((state) => [state.getItem]);
@@ -63,6 +59,10 @@ export default memo(function CardItem({ item, count, index}) {
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
+    }
   }
 
   const remove_from_cart = () => {
@@ -89,6 +89,10 @@ export default memo(function CardItem({ item, count, index}) {
 
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
   }
 

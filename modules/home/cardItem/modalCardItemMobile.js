@@ -118,6 +118,10 @@ export default function ModalCardItemMobile() {
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
+    }
   }
 
   const remove_from_cart = () => {
@@ -145,6 +149,10 @@ export default function ModalCardItemMobile() {
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
   }
 
   const sostav_seta = () => {
@@ -152,6 +160,10 @@ export default function ModalCardItemMobile() {
 
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'sostav_seta', metrica_param_min);
+    }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'sostav_seta', metrica_param_min);
     }
   }
 

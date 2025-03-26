@@ -23,6 +23,10 @@ export default function BasketIconHeaderPC() {
       ym(100325084, 'reachGoal', 'open_basket'); 
     }
 
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'open_basket'); 
+    }
+
     if(!openBasket) {
 
       if(Cookies.get('promo_name') && Cookies.get('promo_name').length > 0){

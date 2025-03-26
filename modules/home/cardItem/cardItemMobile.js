@@ -2,8 +2,6 @@ import React from 'react';
 
 import { motion } from "framer-motion";
 
-//import Image from 'next/image';
-
 import Grid from '@mui/material/Grid';
 import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
@@ -11,8 +9,6 @@ import Typography from '@mui/material/Typography';
 import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.js';
 
 import BadgeItem from './badge';
-
-// import {placeholder_img} from '@/public/placeholder_img';
 
 export default React.memo(function CardItemMobile({ item, count }) {
   const [getItem] = useHomeStore((state) => [state.getItem]);
@@ -32,23 +28,6 @@ export default React.memo(function CardItemMobile({ item, count }) {
     tovar: item.name, 
     category: item.cat_name,
   };
-
-  /**
-   * 
-   * <Image 
-            alt={item.name} 
-            src={'${process.env.NEXT_PUBLIC_VK_IMG}' + item.img_app + '_585x585.jpg'}
-            width={585}
-            height={585}
-            priority={false}
-            quality={75}
-            loading="lazy"
-            onClick={() => getItem('home', thisCity, item.id)}
-            placeholder="blur"
-            blurDataURL={placeholder_img}
-          />
-   * 
-   */
 
   const add_to_cart = () => {
     plus(item.id, item.cat_id)
@@ -77,6 +56,10 @@ export default React.memo(function CardItemMobile({ item, count }) {
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
+    }
   }
 
   const remove_from_cart = () => {
@@ -103,6 +86,10 @@ export default React.memo(function CardItemMobile({ item, count }) {
 
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
   }
 

@@ -77,6 +77,10 @@ export default memo(function RowPC({ item, count, last }) {
       if( thisCityRu == 'Самара' ){
         ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
       }
+
+      if( thisCityRu == 'Тольятти' ){
+        ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
+      }
     }
   };
 
@@ -107,6 +111,10 @@ export default memo(function RowPC({ item, count, last }) {
 
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
+    }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
 
     setTimeout(() => {
@@ -142,6 +150,10 @@ export default memo(function RowPC({ item, count, last }) {
 
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
+    }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
   }
 

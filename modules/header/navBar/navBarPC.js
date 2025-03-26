@@ -253,6 +253,10 @@ export default React.memo(function NavBarPC({ city }) {
       ym(100325084, 'reachGoal', 'Категория '+cat_name);
     }
 
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'Категория '+cat_name);
+    }
+
     if( parseInt(cat_id) > 0 ){
       chooseCat(cat_id)
     }else{
@@ -263,6 +267,10 @@ export default React.memo(function NavBarPC({ city }) {
   const goToPage = (page) => {
     if( thisCityRu == 'Самара' ){
       ym(100325084, 'reachGoal', 'Клик в шапке '+page);
+    }
+
+    if( thisCityRu == 'Тольятти' ){
+      ym(100601350, 'reachGoal', 'Клик в шапке '+page);
     }
   }
 

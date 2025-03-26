@@ -78,6 +78,10 @@ function useYandexMetrika(city) {
           if( city == 'samara' ){
             ym(counterId, 'reachGoal', 'open_item', { tovar: params.productId })
           }
+
+          if( city == 'togliatti' ){
+            ym(100601350, 'reachGoal', 'open_item', { tovar: params.productId })
+          }
         }
         if (typeof window !== 'undefined') {
           if( city == 'samara' ){
@@ -92,6 +96,10 @@ function useYandexMetrika(city) {
           if( city == 'samara' ){
             ym(counterId, 'reachGoal', 'open_card'); 
           }
+
+          if( city == 'togliatti' ){
+            ym(100601350, 'reachGoal', 'open_card'); 
+          }
         }
         if (typeof window !== 'undefined') {
           if( city == 'samara' ){
@@ -105,6 +113,9 @@ function useYandexMetrika(city) {
         if (typeof window !== 'undefined') {
           if( city == 'samara' ){
             ym(counterId, 'reachGoal', 'confirm_card'); 
+          }
+          if( city == 'togliatti' ){
+            ym(100601350, 'reachGoal', 'confirm_card'); 
           }
         }
         if (typeof window !== 'undefined') {
