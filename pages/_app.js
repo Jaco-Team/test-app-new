@@ -110,9 +110,9 @@ Sentry.init({
 
   // Alternatively, use `process.env.npm_package_version` for a dynamic release version
   // if your build tool supports it.
-  release: "site_new@1.1.22",
-  traces_sample_rate: 0.7,
-  profiles_sample_rate: 0.7,
+  release: "site_new@1.1.23",
+  traces_sample_rate: 1,
+  profiles_sample_rate: 1,
   allowUrls: [/https?:\/\/((cdn|www)\.)?jacofood\.ru/],
   integrations: [
     Sentry.browserTracingIntegration(),
