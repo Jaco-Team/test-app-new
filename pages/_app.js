@@ -106,11 +106,11 @@ const theme = createTheme({
 })
 
 Sentry.init({
-  dsn: "https://1a6c09f7a517190201fb5cae351f9ede@o4505941569830912.ingest.us.sentry.io/4507028536229888",
+  dsn: "https://7ce2cfe591e41713764963222cf849f4@sentry.jacochef.ru/5",
 
   // Alternatively, use `process.env.npm_package_version` for a dynamic release version
   // if your build tool supports it.
-  release: "site_new@1.1.23",
+  release: "site_new@1.1.24",
   traces_sample_rate: 1,
   profiles_sample_rate: 1,
   allowUrls: [/https?:\/\/((cdn|www)\.)?jacofood\.ru/],
@@ -280,7 +280,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
       />
       <GoogleTagManager gtmId="UA-148366601-1" />
       
-      
+      { pageProps?.data1?.city == 'samara' ?
         <YandexMetrika 
           yid={100325084}
           clickmap={true}
@@ -288,9 +288,12 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
           accurateTrackBounce={true}
           webvisor={true}
         />
+          :
+        null
+      }
           
 
-      
+      { pageProps?.data1?.city == 'togliatti' ?
         <YandexMetrika 
           yid={100601350}
           clickmap={true}
@@ -298,7 +301,9 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
           accurateTrackBounce={true}
           webvisor={true}
         />
-          
+          :
+        null
+      }
       
       <noscript><img src="https://vk.com/rtrg?p=VK-RTRG-409134-7MvqQ" style={{position: 'fixed', left: '-999px'}} alt=""/></noscript>
 

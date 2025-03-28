@@ -255,14 +255,18 @@ export default function FormOrder({ cityName }) {
 
     if (nameList === 'city') {
       localStorage.setItem('setCity', JSON.stringify(item));
-      setThisCityRu(item.name);
-      setAnchorEl(null);
+      // setThisCityRu(item.name);
+      // setAnchorEl(null);
       push(`/${item.link}`);
-      setPoint(null);
-      setAddrDiv(null);
-      setSummDiv(0);
-      getMySavedAddr(item.link);
-      getNewPriceItems(item.link)
+      // setPoint(null);
+      // setAddrDiv(null);
+      // setSummDiv(0);
+      // getMySavedAddr(item.link);
+      // getNewPriceItems(item.link)
+
+      setTimeout( () => {
+        window.location.reload()
+      }, 1000 )
     }
 
     if (nameList === 'point') {

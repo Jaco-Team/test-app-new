@@ -31,24 +31,28 @@ export default function ModalCityMobile() {
 
   const chooseCity = (city) => {
     localStorage.setItem('setCity', JSON.stringify(city));
-    setActiveModalCityList(false);
-    setThisCityRu(city.name);
-    setThisCity(city.link);
+    // setActiveModalCityList(false);
+    // setThisCityRu(city.name);
+    // setThisCity(city.link);
 
-    getMap('contacts', city.link);
-    setPoint(null);
-    setAddrDiv(null);
-    getMySavedAddr(thisCity);
+    // getMap('contacts', city.link);
+    // setPoint(null);
+    // setAddrDiv(null);
+    // getMySavedAddr(thisCity);
 
-    setActiveFilter(false);
+    // setActiveFilter(false);
 
-    getNewPriceItems(city.link);
+    // getNewPriceItems(city.link);
 
     if(activePage && activePage !== 'home') {
       push(`/${city.link}/${activePage}`);
     } else {
       push(`/${city.link}`);
     }
+
+    setTimeout( () => {
+      window.location.reload()
+    }, 1000 )
 
     if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
       getInfoPromo(sessionStorage.getItem('promo_name'), city.link)

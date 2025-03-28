@@ -1,6 +1,6 @@
 {
   "name": "test-app-new",
-  "version": "1.1.23",
+  "version": "1.1.24",
   "private": true,
   "scripts": {
     "dev": "next dev",
@@ -33,9 +33,9 @@
     "@next/third-parties": "^15.2.4",
     "@pbe/react-yandex-maps": "^1.2.5",
     "@react-spring/web": "^9.7.5",
-    "@sentry/browser": "^9.9.0",
-    "@sentry/cli": "^2.42.5",
-    "@sentry/nextjs": "^9.9.0",
+    "@sentry/browser": "^9.10.0",
+    "@sentry/cli": "^2.43.0",
+    "@sentry/nextjs": "^9.10.0",
     "@yandex/smart-captcha": "2.7.1",
     "axios": "^1.8.4",
     "css-mediaquery": "^0.1.2",
@@ -44,7 +44,7 @@
     "embla-carousel-react": "8.5.2",
     "embla-carousel-wheel-gestures": "8.0.1",
     "firebase": "^11.5.0",
-    "framer-motion": "^12.6.1",
+    "framer-motion": "^12.6.2",
     "js-cookie": "^3.0.5",
     "lodash": "^4.17.21",
     "lodash.debounce": "^4.0.8",
@@ -75,18 +75,18 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^3.2.6",
-    "@storybook/addon-essentials": "^8.6.9",
-    "@storybook/addon-interactions": "^8.6.9",
-    "@storybook/addon-links": "^8.6.9",
-    "@storybook/addon-onboarding": "^8.6.9",
-    "@storybook/addon-themes": "^8.6.9",
-    "@storybook/blocks": "^8.6.9",
-    "@storybook/nextjs": "^8.6.9",
-    "@storybook/react": "^8.6.9",
-    "@storybook/test": "^8.6.9",
+    "@storybook/addon-essentials": "^8.6.10",
+    "@storybook/addon-interactions": "^8.6.10",
+    "@storybook/addon-links": "^8.6.10",
+    "@storybook/addon-onboarding": "^8.6.10",
+    "@storybook/addon-themes": "^8.6.10",
+    "@storybook/blocks": "^8.6.10",
+    "@storybook/nextjs": "^8.6.10",
+    "@storybook/react": "^8.6.10",
+    "@storybook/test": "^8.6.10",
     "eslint": "8.57.1",
     "eslint-config-next": "15.2.4",
     "eslint-plugin-storybook": "^0.12.0",
-    "storybook": "^8.6.9"
+    "storybook": "^8.6.10"
   }
 }

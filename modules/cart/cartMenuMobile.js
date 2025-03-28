@@ -117,7 +117,8 @@ export default function CartMenuMobile({ cityName }) {
   };
 
   useEffect(() => {
-    if( thisCity.length > 0 && nameList == 'addr' && addrList.length == 0 ){
+    console.log('thisCity', thisCity)
+    if( thisCity && thisCity?.length > 0 && nameList == 'addr' && addrList.length == 0 ){
       getMySavedAddr(thisCity);
     }
   }, [addrList, nameList, thisCity])
