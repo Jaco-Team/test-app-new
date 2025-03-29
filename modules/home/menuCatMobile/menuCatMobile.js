@@ -148,12 +148,15 @@ export default function MenuCatMobile({ city }) {
 
                   let scrollContainer = document.querySelector("#menuCatDop");
 
-                  let data = document.querySelector('#linkDOP_'+cat.id).getBoundingClientRect()
+                  if( cat?.id && document.querySelector('#linkDOP_'+cat?.id) ) {
+                    let data = document.querySelector('#linkDOP_'+cat.id).getBoundingClientRect()
 
-                  scrollContainer.scroll({
-                      left: data['x'] + data['width'] - 150,
-                      behavior: 'smooth'
-                  });
+                    scrollContainer.scroll({
+                        left: data['x'] + data['width'] - 150,
+                        behavior: 'smooth'
+                    });
+                  }
+                  
                 } }
               >
                 <span>{cat.short_name}</span>
