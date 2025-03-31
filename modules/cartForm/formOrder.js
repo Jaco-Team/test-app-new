@@ -115,6 +115,22 @@ export default function FormOrder({ cityName }) {
   }, [orderAddr])
 
   useEffect(() => {
+    if( addrList && addrList?.length > 0 && orderAddr ){
+      let findAddr = addrList.find( addr => parseInt(addr?.id) == parseInt(orderAddr?.id) );
+
+      //console.log('findAddr', findAddr)
+
+      if( findAddr ){
+        setAddrDiv(findAddr);
+        setSummDiv(findAddr.sum_div ?? 0);
+      }else{
+        setAddrDiv(null);
+        setSummDiv(0);
+      }
+    }
+  }, [addrList, orderAddr]);
+
+  useEffect(() => {
     check_need_dops();
 
     let check_free_drive = localStorage.getItem('freeDrive');
@@ -127,14 +143,14 @@ export default function FormOrder({ cityName }) {
       setFreeDrive(1);
     }
 
-    if( addrList && addrList?.length > 0 && orderAddr ){
-      let findAddr = addrList.find( addr => parseInt(addr?.id) == parseInt(orderAddr?.id) );
+    // if( addrList && addrList?.length > 0 && orderAddr ){
+    //   let findAddr = addrList.find( addr => parseInt(addr?.id) == parseInt(orderAddr?.id) );
 
-      if( findAddr ){
-        setAddrDiv(findAddr);
-        setSummDiv(findAddr.sum_div ?? 0);
-      }
-    }
+    //   if( findAddr ){
+    //     setAddrDiv(findAddr);
+    //     setSummDiv(findAddr.sum_div ?? 0);
+    //   }
+    // }
 
   }, [])
 
@@ -391,6 +407,7 @@ export default function FormOrder({ cityName }) {
 
         if( thisCityRu == 'Самара' ){
           ym(100325084, 'reachGoal', 'pay_order', ym_data);
+          ym(100325084, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
 
           let items = [];
 
@@ -422,11 +439,12 @@ export default function FormOrder({ cityName }) {
             }
           });
 
-          ym(100325084, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
+          
         }
 
         if( thisCityRu == 'Тольятти' ){
           ym(100601350, 'reachGoal', 'pay_order', ym_data);
+          ym(100601350, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
 
           let items = [];
 
@@ -458,7 +476,7 @@ export default function FormOrder({ cityName }) {
             }
           });
 
-          ym(100601350, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
+          
         }
       }catch(e){
         console.log(e)

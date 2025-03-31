@@ -66,7 +66,8 @@ export default function ConfirmForm() {
 
         if( thisCityRu == 'Самара' ){
           ym(100325084, 'reachGoal', 'pay_order', ym_data);
-
+          ym(100325084, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
+          
           let items = [];
 
           checkNewOrder?.items?.map( (item, index) => {
@@ -97,11 +98,12 @@ export default function ConfirmForm() {
             }
           });
 
-          ym(100325084, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
+          
         }
 
         if( thisCityRu == 'Тольятти' ){
           ym(100601350, 'reachGoal', 'pay_order', ym_data);
+          ym(100601350, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
 
           let items = [];
 
@@ -133,7 +135,7 @@ export default function ConfirmForm() {
             }
           });
 
-          ym(100601350, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
+          
         }
       } catch (e) {
         console.log(e);
