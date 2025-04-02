@@ -2160,8 +2160,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         point_id_pic = 0;
     
     type_order = get().typeOrder == 'pic' ? 1 : 0;
-    point_id_dev = get().orderAddr ? parseInt( get().orderAddr.point_id ) : 0;
-    point_id_pic = parseInt( get().orderPic );
+    point_id_dev = get().orderAddr ? parseInt( get().orderAddr?.point_id ) : 0;
+    point_id_pic = parseInt( get().orderPic?.id );
     
     let this_date = '',
         this_time = '',
@@ -2209,16 +2209,21 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         }
       }
       
-      if( promo_info.limits.point_id != 0 ){
-        if( (type_order == 0 && point_id_dev == promo_info.limits.point_id) || (type_order == 1 && point_id_pic == promo_info.limits.point_id) ){
+      // console.log( 'limits', promo_info.limits.point_id )
+      // console.log( 'type_order', type_order )
+      // console.log( 'point_id_dev', point_id_dev )
+      // console.log( 'point_id_pic', point_id_pic, get().orderPic )
+
+      // if( promo_info.limits.point_id != 0 ){
+      //   if( (type_order == 0 && point_id_dev == promo_info.limits.point_id) || (type_order == 1 && point_id_pic == promo_info.limits.point_id) ){
           
-        }else{
-          return {
-            st: false,
-            text: 'Ой, в этом кафе промокод не работает. Проверьте адрес кафе.'
-          }
-        }
-      }
+      //   }else{
+      //     return {
+      //       st: false,
+      //       text: 'Ой, в этом кафе промокод не работает. Проверьте адрес кафе.'
+      //     }
+      //   }
+      // }
       
       if( promo_info.limits.summ.min != 0 || promo_info.limits.summ.max != 0 ){
         if( allPrice >= promo_info.limits.summ.min && (promo_info.limits.summ.max >= allPrice || promo_info.limits.summ.max == 0) ){
