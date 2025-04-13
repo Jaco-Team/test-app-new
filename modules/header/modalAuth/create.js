@@ -120,7 +120,7 @@ export default function Create({ city }) {
             <span onClick={() => setCheckSpam(!checkSpam)} style={{ backgroundColor: loginLogin.length === 17 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)' }}></span>
           )}
           <Typography component="span" onClick={() => setCheckSpam(!checkSpam)} style={{ lineHeight: matches ? '2.5641025641026vw' : '1.4440433212996vw' }}>
-            Хочу получать быть в курсе акций
+            Хочу быть в курсе акций
           </Typography>
         </div>
       </div>
