@@ -98,6 +98,15 @@ export async function getServerSideProps({ req, res, query }) {
     }
   }
 
+  if( data1?.page == null ){
+    return {
+      redirect: {
+        destination: '/',
+        permanent: false,
+      },
+    }
+  }
+
   data1['city'] = query?.city;
 
   return { props: { data1 } }
