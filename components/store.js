@@ -65,8 +65,14 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
 
   YToken: '',
 
+  checkSpam: false,
+
   saveYToken(token) {
     set({ YToken: token });
+  },
+
+  setCheckSpam(is_spam) {
+    set({ checkSpam: is_spam });
   },
 
   setShowClosePoint: (type) => {
@@ -567,7 +573,8 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
     const data = {
       type: 'sendsmsrp',
       number: login,
-      pwd: get().pwdLogin
+      pwd: get().pwdLogin,
+      checkSpam: get().checkSpam === true ? 1 : 0
     };
 
     const json = await api('auth', data);

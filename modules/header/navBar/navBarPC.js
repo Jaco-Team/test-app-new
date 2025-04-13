@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { usePathname } from 'next/navigation'
-import { useRouter } from 'next/navigation'
+import { useRouter, usePathname, useSearchParams } from 'next/navigation'
 import Link from 'next/link';
 
 import AppBar from '@mui/material/AppBar';
@@ -123,6 +122,9 @@ export default React.memo(function NavBarPC({ city }) {
 
   const router = useRouter()
   const pathname = usePathname()
+  const searchParams = useSearchParams();
+
+  const search_category = searchParams.get('category')
   
   const [setActiveBasket, openBasket, setActiveModalCity, activePage, isAuth] = useHeaderStoreNew((state) => [state?.setActiveBasket, state?.openBasket, state?.setActiveModalCity, state?.activePage, state.isAuth]);
   const [setThisCityRu, thisCityRu, setThisCity] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu, state.setThisCity]);
@@ -138,6 +140,32 @@ export default React.memo(function NavBarPC({ city }) {
   const [isOpenCat, setIsOpenCat] = useState(false);
   const [list, setList] = useState([]);
  
+   
+
+  // useEffect(() => {
+  //   if (typeof window !== "undefined") {
+  //     if( category.length > 0 && search_category.length > 0 ) {
+  //       //console.log( 'search_category', search_category, category ) 
+
+  //       category.map( main_cat => {
+  //         if( main_cat.cats.length > 0 ){
+  //           main_cat.cats.map( cat => {
+  //             if( cat.link === search_category ){
+  //               console.log( 'go_to', cat.name, cat.id ) 
+  //               chooseCat(cat.name, cat.id)
+  //             }
+  //           })
+  //         }else{
+  //           if( main_cat.link === search_category ){
+  //             console.log( 'go_to', main_cat.name, main_cat.id ) 
+  //             chooseCat(main_cat.name, main_cat.id)
+  //           }
+  //         }
+  //       } )
+  //     }
+  //   }
+  // }, [search_category, category]);
+
   useEffect(() => {
     if (typeof window !== "undefined") {
 

@@ -85,13 +85,13 @@ export default React.memo(function header({ city, city_list, cats }) {
         location.replace(`https:${location.href.substring(location.protocol.length)}`);
       }
   
-      if( location.hostname == 'new.jacofood.ru' ){
-        location.replace(`https://jacofood.ru${location.href.substring(location.origin.length)}`);
-      }
+      // if( location.hostname == 'new.jacofood.ru' ){
+      //   location.replace(`https://jacofood.ru${location.href.substring(location.origin.length)}`);
+      // }
   
-      if( location.hostname == 'www.jacofood.ru' ){
-        location.replace(`https://jacofood.ru${location.href.substring(location.origin.length)}`);
-      }
+      // if( location.hostname == 'www.jacofood.ru' ){
+      //   location.replace(`https://jacofood.ru${location.href.substring(location.origin.length)}`);
+      // }
 
       checkToken();
     }

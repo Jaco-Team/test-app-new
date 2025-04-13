@@ -14,12 +14,39 @@ import AkciiItemMobile from './mobile/akciiItemMobile';
 
 import Meta from '@/components/meta.js';
 
+import { useSearchParams } from 'next/navigation'
+//import { set } from 'lodash';
+
 let click = false;
 
 export default memo(function AkciiPage({ page }) {
   const [matches] = useHeaderStoreNew((state) => [state?.matches]);
 
-  const [ pageBanner ] = useHomeStore((state) => [state.pageBanner]);
+  const [ pageBanner, bannerList ] = useHomeStore((state) => [state.pageBanner, state.bannerList]);
+
+  const searchParams = useSearchParams();
+  
+  const search = searchParams.get('akcia')
+
+  useEffect(() => {
+    if( bannerList.length > 0 && search?.length > 0 ) {
+      const targetEl = document.getElementById(`${search}`);
+      if (!targetEl) return;
+    
+      const observer = new ResizeObserver(() => {
+        targetEl.scrollIntoView({ behavior: 'smooth', offset: 100 });
+      });
+      observer.observe(targetEl);
+    
+      let state = { },
+        title = '',
+        url = window.location.pathname;
+
+      window.history.pushState(state, title, url)
+
+      return () => observer.disconnect();
+    }
+  }, [search, bannerList]);
 
   useEffect(() => {
     if( page?.is_one_actia == true && pageBanner && click == false ){

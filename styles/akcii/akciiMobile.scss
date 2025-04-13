@@ -24,6 +24,8 @@
   }
 
   & .containerAcciaMobile {
+    scroll-margin-top: 80px;
+
     justify-content: center;
     margin-bottom: $MyScale40_mobile;
     background-color: rgba(0, 0, 0, 0.03);

@@ -12,14 +12,15 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 //import { SmartCaptcha } from '@yandex/smart-captcha';
 
-export default function Create({ city, closeModal }) {
+export default function Create({ city }) {
   //const [token, setToken] = useState('');
 
   const [checkPolitika, setCheckPolitika] = useState(false);
   const [checkAccord, setCheckAccord] = useState(false);
+  //const [checkSpam, setCheckSpam] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const [changeLogin, loginLogin, checkLoginKey, sendsmsNewLogin, matches, setPwdLogin, pwdLogin, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.changeLogin, state?.loginLogin, state?.checkLoginKey, state?.sendsmsNewLogin, state?.matches, state?.setPwdLogin, state?.pwdLogin, state?.setActiveModalAlert]);
+  const [changeLogin, loginLogin, checkLoginKey, sendsmsNewLogin, matches, setPwdLogin, pwdLogin, setActiveModalAlert, checkSpam, setCheckSpam] = useHeaderStoreNew((state) => [state?.changeLogin, state?.loginLogin, state?.checkLoginKey, state?.sendsmsNewLogin, state?.matches, state?.setPwdLogin, state?.pwdLogin, state?.setActiveModalAlert, state?.checkSpam, state?.setCheckSpam]);
 
   return (
     <div className={matches ? 'modalLoginCreateMobile' : 'modalLoginCreatePC'}>
@@ -33,6 +34,7 @@ export default function Create({ city, closeModal }) {
         value={loginLogin}
         func={(event) => changeLogin(event)}
         onKeyDown={(event) => checkLoginKey(1, event)}
+        //className={loginLogin.length > 0 ? "inputLogin margin_bottom_30" : "inputLogin lable_position margin_bottom_30"}
         className={loginLogin.length > 0 ? "inputLogin margin_bottom_30" : "inputLogin lable_position margin_bottom_30"}
         mask={true}
         label="Телефон"
@@ -43,13 +45,15 @@ export default function Create({ city, closeModal }) {
             {matches ? (
                loginLogin.length === 17 ? <Check className="check_icon" /> : null
             ) : (
-              <div className="vectorInput" style={{ backgroundColor: loginLogin.length === 17 && checkAccord && checkPolitika && pwdLogin.length > 4 ? '#DD1A32' : '#fff' }}>
+              <div className="vectorInput" style={{ backgroundColor: loginLogin.length === 17 && checkAccord && checkPolitika && pwdLogin.length > 4 ? '#DD1A32' : '#e5e5e5' }}>
                 {loginLogin.length === 17 && checkAccord && checkPolitika && pwdLogin.length > 4 ? (
                   <VectorRightAuthMobile className="vectorSvg"
                     onClick={ loginLogin.length === 17 && checkAccord && checkPolitika && pwdLogin.length > 4 ? sendsmsNewLogin : null}
                   />
                 ) : (
-                  loginLogin.length === 17 ? <Check className="check_icon" /> : null
+                  <VectorRightAuthMobile className="vectorSvg_dis"
+                    onClick={ loginLogin.length === 17 && checkAccord && checkPolitika && pwdLogin.length > 4 ? sendsmsNewLogin : null}
+                  />
                 )}
               </div>
             )}
@@ -89,7 +93,7 @@ export default function Create({ city, closeModal }) {
           ) : (
             <span onClick={() => setCheckPolitika(!checkPolitika)} style={{ backgroundColor: loginLogin.length === 17 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)'}}></span>
           )}
-          <Typography component="span" onClick={closeModal}>
+          <Typography component="span" onClick={() => setCheckPolitika(!checkPolitika)}>
             Согласен с{' '}<Link href={'/' + city + '/legal'}>условиями сбора и обработки персональных данных</Link>
           </Typography>
         </div>
@@ -102,8 +106,21 @@ export default function Create({ city, closeModal }) {
           ) : (
             <span onClick={() => setCheckAccord(!checkAccord)} style={{ backgroundColor: loginLogin.length === 17 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)' }}></span>
           )}
-          <Typography component="span" onClick={closeModal} style={{ lineHeight: matches ? '2.5641025641026vw' : '1.4440433212996vw' }}>
+          <Typography component="span" onClick={() => setCheckAccord(!checkAccord)} style={{ lineHeight: matches ? '2.5641025641026vw' : '1.4440433212996vw' }}>
             Принимаю{' '}<Link href={'/' + city + '/politika-konfidencialnosti'}>пользовательское соглашение</Link>
+          </Typography>
+        </div>
+
+        <div className="datareklama">
+          {checkSpam ? (
+            <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckSpam(!checkSpam)}>
+              <DoneAuthMobile />
+            </span>
+          ) : (
+            <span onClick={() => setCheckSpam(!checkSpam)} style={{ backgroundColor: loginLogin.length === 17 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)' }}></span>
+          )}
+          <Typography component="span" onClick={() => setCheckSpam(!checkSpam)} style={{ lineHeight: matches ? '2.5641025641026vw' : '1.4440433212996vw' }}>
+            Хочу получать быть в курсе акций
           </Typography>
         </div>
       </div>

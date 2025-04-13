@@ -19,6 +19,7 @@ export default React.memo(function CatItems() {
   const searchParams = useSearchParams();
 
   const search = searchParams.get('item')
+  const search_category = searchParams.get('category')
 
   let catygory = '';
 
@@ -26,7 +27,7 @@ export default React.memo(function CatItems() {
     catygory = pathname.split('menu/')[1];
   }
   
-  const [CatsItems, getItem, closeModal, transition_menu_mobile] = useHomeStore((state) => [state.CatsItems, state.getItem, state.closeModal, state.transition_menu_mobile]);
+  const [category, CatsItems, getItem, closeModal, transition_menu_mobile] = useHomeStore((state) => [state.category, state.CatsItems, state.getItem, state.closeModal, state.transition_menu_mobile]);
   const [items] = useCartStore((state) => [state.items]);
   const [matches] = useHeaderStoreNew((state) => [state?.matches]);
   const [thisCity] = useCitiesStore( state => [state.thisCity]);
@@ -87,6 +88,59 @@ export default React.memo(function CatItems() {
       }
     }
   }, [search, CatsItems, getItem]);
+
+  useEffect(() => {
+    if (typeof window !== "undefined") {
+      if( category.length > 0 && search_category?.length > 0 ) {
+        //console.log( 'search_category', search_category, category ) 
+
+        let scroll_cat_id = 0;
+
+        category.map( main_cat => {
+          if( main_cat.cats.length > 0 ){
+            main_cat.cats.map( cat => {
+              if( cat.link === search_category ){
+                console.log( 'go_to', cat.name, cat.id ) 
+                scroll_cat_id = cat.id;
+                //chooseCat(cat.name, cat.id)
+              }
+            })
+          }else{
+            if( main_cat.link === search_category ){
+              console.log( 'go_to', main_cat.name, main_cat.id ) 
+              scroll_cat_id = main_cat.id;
+              //chooseCat(main_cat.name, main_cat.id)
+            }
+          }
+        } )
+
+        if( parseInt( scroll_cat_id ) > 0 ){
+          let offset = 70;
+
+          if (document.querySelector('.ContainerCardItemMobile')) {
+            console.log('.ContainerCardItemMobile')
+            offset += 120;
+          }
+  
+          setTimeout(() => {
+            scroller.scrollTo('cat' + scroll_cat_id, {
+              duration: 200,
+              delay: 0,
+              smooth: 'easeInOutQuart',
+              offset: -offset,
+            });
+          }, 150);
+
+          let state = { },
+            title = '',
+            url = window.location.pathname;
+
+          window.history.pushState(state, title, url)
+        }
+
+      }
+    }
+  }, [search_category, category]);
 
   useEffect(() => {
     setTimeout(() => {

@@ -63,9 +63,9 @@ export function middleware(request) {
   // 4. Приводим путь к нижнему регистру, если нет точки (не файл)
   const { pathname } = nextUrl;
   if (!isLowerCase(pathname) && !pathname.includes('.')) {
-    // const lowerUrl = nextUrl.clone();
-    // lowerUrl.pathname = pathname.toLowerCase();
-    // return NextResponse.redirect(lowerUrl, 301);
+    const lowerUrl = nextUrl.clone();
+    lowerUrl.pathname = pathname.toLowerCase();
+    return NextResponse.redirect(lowerUrl, 301);
   }
 
   // 5. Добавляем CORS-заголовки к ответу

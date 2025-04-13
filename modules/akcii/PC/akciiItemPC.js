@@ -253,7 +253,7 @@ export default function AkciiItemPC({ actia, is_one_actia }) {
   }
 
   return (
-    <Grid container className="containerAccia">
+    <Grid container className="containerAccia" id={data?.banner?.link} name={data?.banner?.link}>
       <picture>
         <source 
           type="image/webp" 

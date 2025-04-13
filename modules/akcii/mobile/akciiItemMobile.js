@@ -258,7 +258,7 @@ export default function AkciiItemMobile({ actia, is_one_actia }) {
   }
 
   return (
-    <Grid container className="containerAcciaMobile">
+    <Grid container className="containerAcciaMobile" id={data?.banner?.link} name={data?.banner?.link}>
       <picture>
         <source 
           type="image/webp" 

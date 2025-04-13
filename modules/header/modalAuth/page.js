@@ -176,7 +176,7 @@ export default function ModalAuth({ city }) {
           {typeLogin === 'start' ? <Start /> : null}
           {typeLogin === 'resetPWD' ? <ResetPWD /> : null}
           {typeLogin === 'loginSMS' ? <LoginSMS /> : null}
-          {typeLogin === 'create' ? <Create city={city} closeModal={closeModal} /> : null}
+          {typeLogin === 'create' ? <Create city={city} /> : null}
           {typeLogin === 'loginSMSCode' ? <LoginSMSCode /> : null}
           {typeLogin === 'finish' ? <Finish closeModal={closeModal} /> : null}
 
