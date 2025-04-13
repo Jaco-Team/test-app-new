@@ -578,6 +578,36 @@
               }
             }
           }
+
+          & .datareklama {
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            height: $MyScale60_mobile;
+            width: $MyScale760_mobile;
+            margin-top: $MyScale50_mobile;
+
+            & span:first-child {
+              height: $MyScale60_mobile;
+              width: $MyScale60_mobile;
+              border-radius: $MyScale10_mobile;
+
+              & svg {
+                height: $MyScale60_mobile;
+                width: $MyScale60_mobile;
+              }
+            }
+
+            & span:last-child {
+              width: $MyScale655_mobile;
+              @include font30_400();
+              line-height: $MyScale30_mobile;
+
+              & a {
+                color: #dd1a32;
+              }
+            }
+          }
         }
       }
 
@@ -697,6 +727,11 @@
               height: $MyScale60_mobile;
             }
             & .vectorSvg {
+              margin-left: auto;
+              width: $MyScale57_mobile;
+              height: $MyScale60_mobile;
+            }
+            & .vectorSvg_dis {
               margin-left: auto;
               width: $MyScale57_mobile;
               height: $MyScale60_mobile;
