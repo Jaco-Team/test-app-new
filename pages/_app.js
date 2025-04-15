@@ -151,6 +151,29 @@ function MetricaTLT(){
   )
 }
 
+function MetricaTLT2(){
+  return ( 
+    <>
+      <script
+        dangerouslySetInnerHTML={{
+          __html: `
+            var _tmr = window._tmr || (window._tmr = []);
+            _tmr.push({id: "3637103", type: "pageView", start: (new Date()).getTime()});
+            (function (d, w, id) {
+              if (d.getElementById(id)) return;
+              var ts = d.createElement("script"); ts.type = "text/javascript"; ts.async = true; ts.id = id;
+              ts.src = "https://top-fwz1.mail.ru/js/code.js";
+              var f = function () {var s = d.getElementsByTagName("script")[0]; s.parentNode.insertBefore(ts, s);};
+              if (w.opera == "[object Opera]") { d.addEventListener("DOMContentLoaded", f, false); } else { f(); }
+            })(document, window, "tmr-code");
+          `,
+        }}
+      />
+      <noscript><div><img src="https://top-fwz1.mail.ru/counter?id=3637103;js=na" style={{position: 'fixed', left: '-9999px'}} alt="Top.Mail.Ru" /></div></noscript>
+    </>
+  )
+}
+
 function MetricaSMR(){
   return ( 
     <>
@@ -308,6 +331,8 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
       <noscript><img src="https://vk.com/rtrg?p=VK-RTRG-409134-7MvqQ" style={{position: 'fixed', left: '-999px'}} alt=""/></noscript>
 
       { pageProps?.data1?.city == 'togliatti' ? <MetricaTLT /> : null }
+      { pageProps?.data1?.city == 'togliatti' ? <MetricaTLT2 /> : null }
+      
       { pageProps?.data1?.city == 'samara' ? <MetricaSMR /> : null }
       { pageProps?.data1?.city == 'samara' ? <MetricaSMR2 /> : null }
 

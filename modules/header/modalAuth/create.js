@@ -22,6 +22,19 @@ export default function Create({ city }) {
 
   const [changeLogin, loginLogin, checkLoginKey, sendsmsNewLogin, matches, setPwdLogin, pwdLogin, setActiveModalAlert, checkSpam, setCheckSpam] = useHeaderStoreNew((state) => [state?.changeLogin, state?.loginLogin, state?.checkLoginKey, state?.sendsmsNewLogin, state?.matches, state?.setPwdLogin, state?.pwdLogin, state?.setActiveModalAlert, state?.checkSpam, state?.setCheckSpam]);
 
+  // <div className="datareklama">
+  //         {checkSpam ? (
+  //           <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckSpam(!checkSpam)}>
+  //             <DoneAuthMobile />
+  //           </span>
+  //         ) : (
+  //           <span onClick={() => setCheckSpam(!checkSpam)} style={{ backgroundColor: loginLogin.length === 17 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)' }}></span>
+  //         )}
+  //         <Typography component="span" onClick={() => setCheckSpam(!checkSpam)} style={{ lineHeight: matches ? '2.5641025641026vw' : '1.4440433212996vw' }}>
+  //           Хочу быть в курсе акций
+  //         </Typography>
+  //       </div>
+
   return (
     <div className={matches ? 'modalLoginCreateMobile' : 'modalLoginCreatePC'}>
       <div className="loginInfo">
@@ -111,18 +124,7 @@ export default function Create({ city }) {
           </Typography>
         </div>
 
-        <div className="datareklama">
-          {checkSpam ? (
-            <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckSpam(!checkSpam)}>
-              <DoneAuthMobile />
-            </span>
-          ) : (
-            <span onClick={() => setCheckSpam(!checkSpam)} style={{ backgroundColor: loginLogin.length === 17 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)' }}></span>
-          )}
-          <Typography component="span" onClick={() => setCheckSpam(!checkSpam)} style={{ lineHeight: matches ? '2.5641025641026vw' : '1.4440433212996vw' }}>
-            Хочу быть в курсе акций
-          </Typography>
-        </div>
+        
       </div>
 
       {!matches ? null : (

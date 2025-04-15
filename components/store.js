@@ -574,7 +574,7 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
       type: 'sendsmsrp',
       number: login,
       pwd: get().pwdLogin,
-      checkSpam: get().checkSpam === true ? 1 : 0
+      //checkSpam: get().checkSpam === true ? 1 : 0
     };
 
     const json = await api('auth', data);
