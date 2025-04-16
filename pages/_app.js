@@ -110,7 +110,7 @@ Sentry.init({
 
   // Alternatively, use `process.env.npm_package_version` for a dynamic release version
   // if your build tool supports it.
-  release: "site_new@1.1.27",
+  release: "site_new@1.1.28",
   //traces_sample_rate: 1,
   //profiles_sample_rate: 1,
   allowUrls: [/https?:\/\/((cdn|www)\.)?jacofood\.ru/],
@@ -285,21 +285,24 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
         clickmap={true}
         trackLinks={true}
         accurateTrackBounce={true}
-        webvisor={true}
+        webvisor={false}
+        ecommerce={false}
       />
       <YandexMetrika 
         yid={95918584}
         clickmap={true}
         trackLinks={true}
         accurateTrackBounce={true}
-        webvisor={true}
+        webvisor={false}
+        ecommerce={false}
       />
       <YandexMetrika 
         yid={97508970}
         clickmap={true}
         trackLinks={true}
         accurateTrackBounce={true}
-        webvisor={true}
+        webvisor={false}
+        ecommerce={false}
       />
       <GoogleTagManager gtmId="UA-148366601-1" />
       
@@ -310,6 +313,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
           trackLinks={true}
           accurateTrackBounce={true}
           webvisor={true}
+          ecommerce={true}
         />
           :
         null
@@ -323,6 +327,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
           trackLinks={true}
           accurateTrackBounce={true}
           webvisor={true}
+          ecommerce={true}
         />
           :
         null

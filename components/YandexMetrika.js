@@ -12,6 +12,7 @@ function YandexMetrikaTag({
   trackLinks=true,
   accurateTrackBounce=true,
   webvisor=true,
+  ecommerce=false
 }) {
   /// Tag version of the Yandex Metrika.
   /// Used when there is support for the JavaScript to fully track user.
@@ -22,6 +23,7 @@ function YandexMetrikaTag({
   trackLinks = convertParam(trackLinks, true);
   accurateTrackBounce = convertParam(accurateTrackBounce, true);
   webvisor = convertParam(webvisor, true);
+  ecommerce = ecommerce == true ? "dataLayer" : "false";
 
   // Script that injects Yandex Metrika tag script.
   const scriptInjectorHTML = `
@@ -40,7 +42,7 @@ function YandexMetrikaTag({
                 trackLinks:${trackLinks},
                 accurateTrackBounce:${accurateTrackBounce},
                 webvisor:${webvisor},
-                ecommerce:"dataLayer"
+                ecommerce:"${ecommerce}"
             });
       `,
       }}
@@ -76,6 +78,7 @@ export default function YandexMetrika({
   trackLinks=true,
   accurateTrackBounce=true,
   webvisor=true,
+  ecommerce=false
 }) {
   /// Yandex Metrika service.
   return (
@@ -86,6 +89,7 @@ export default function YandexMetrika({
         trackLinks={trackLinks}
         accuracyTrackBounce={accurateTrackBounce}
         webvisor={webvisor}
+        ecommerce={ecommerce}
       />
       <YandexMetrikaPixel yid={yid} />
     </>
