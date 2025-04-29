@@ -1969,7 +1969,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           itemsCount = itemsCount - item.count;
           item.count = 0;
 
-          useProfileStore.getState().saveUserActions('minus_item', item.name, item.one_price);
+          useProfileStore.getState().saveUserActions('minus_item', item.name, item.one_price, item_id);
 
           ym_item = item;
         }
@@ -1981,7 +1981,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           item.count--;
           itemsCount--;
 
-          useProfileStore.getState().saveUserActions('minus_item', item.name, item.one_price);
+          useProfileStore.getState().saveUserActions('minus_item', item.name, item.one_price, item_id);
 
           ym_item = item;
         }
@@ -4431,7 +4431,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
  
     }
 
-    useProfileStore.getState().saveUserActions('open_item_home', json?.name, json?.price);
+    useProfileStore.getState().saveUserActions('open_item_home', json?.name, json?.price, item_id);
   
     dataLayer.push({
       "ecommerce": {

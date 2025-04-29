@@ -85,6 +85,7 @@ function useYandexMetrika(city) {
         }
         if (typeof window !== 'undefined') {
           if( city == 'samara' ){
+            //console.log('Отправка события в Яндекс Метрика для события:', { type: 'reachGoal', id: 3621394, value: params?.price ?? 0, goal: 'product', params: { product_id: params.item_id}});
             _tmr.push({ type: 'reachGoal', id: 3621394, value: params?.price ?? 0, goal: 'product', params: { product_id: params.item_id}});;
           }
         }
@@ -149,6 +150,7 @@ function useYandexMetrika(city) {
         }
         if (typeof window !== 'undefined') {
           if( city == 'samara' ){
+            //console.log('Отправка события в Яндекс Метрика для события:', { type: 'reachGoal', id: 3621394, value: params?.price ?? 0, goal: 'korzina', params: { product_id: params.item_id }});
             _tmr.push({ type: 'reachGoal', id: 3621394, value: params?.price ?? 0, goal: 'korzina', params: { product_id: params.item_id }});
           }
         }
