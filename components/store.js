@@ -3198,7 +3198,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       };
 
       addr?.full?.address?.component.map(item => {
-        if(item.kind[0] === 'STREET') {
+        if(item.kind[0] === 'STREET' || item.kind[0] === 'LOCALITY') {
           this_addr.street = item.name;
         }
         if(item.kind[0] === 'HOUSE') {
