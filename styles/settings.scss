@@ -1,6 +1,7 @@
 @charset "utf-8";
 
-$Roboto: var(--inter-font);
+//$Roboto: var(--inter-font);
+$Roboto: '"Roboto","Helvetica","Arial",sans-serif';
 $Ubuntu: 'Ubuntu';
 $colorMain: #cc0033;
 $colorText: rgba(0, 0, 0, 0.8);
@@ -423,7 +424,8 @@ $MyScale1871_mobile: 159.91452991453vw;
 
 @mixin fonsNew($size: 1rem, $family: $Roboto) {
   font-size: $size !important;
-  font-family: $family !important;
+  //font-family: $family !important;
+  //font-family: $Roboto !important;
   color: $colorText;
 }
 
