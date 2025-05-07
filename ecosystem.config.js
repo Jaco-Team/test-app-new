@@ -3,7 +3,8 @@ module.exports = {
     {
       name: 'site_new',
       exec_mode: 'cluster',
-      instances: 'max', 
+      //instances: 'max', 
+      instances: '6', 
       script: 'node_modules/next/dist/bin/next',
       args: 'start',
       env_local: {

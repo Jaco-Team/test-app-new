@@ -2,13 +2,66 @@
 
 #modalVKMobileMain {
   & .MuiDrawer-paper {
-    height: 123.07692307692vw;
+    min-height: 123.07692307692vw;
     border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
     background: linear-gradient(#ededed 0%, #ededed 28%, #fff 28%, #fff 100%);
     overflow: hidden;
 
     .ContainerMain {
       margin: $MyScale180_mobile $MyScale260_mobile $MyScale580 $MyScale260_mobile;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      & .loginIMG {
+        height: $MyScale300_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin-bottom: $MyScale60_mobile;
+        & img {
+          height: 100%;
+          width: auto;
+        }
+      }
+
+      & .loginHeader {
+        width: 100%;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        & span {
+          @include font50_500();
+        }
+        & a{
+          @include font50_500();
+          text-decoration: underline;
+          color: rgb(82, 82, 82);
+        }
+      }
+
+      & .buttons {
+        padding: 0;
+        width: $MyScale650_mobile;
+        height: $MyScale120_mobile;
+        border-radius: $MyScale60_mobile;
+        background-color: rgb(0, 119, 255);
+        margin-bottom: $MyScale40_mobile;
+        margin-top: $MyScale80_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        cursor: pointer;
+        text-decoration: none;
+        
+        @include font50_500();
+        color: #ffffff !important;
+          
+      }
+    }
+
+    .ContainerMain_1 {
+      margin: $MyScale180_mobile $MyScale130_mobile $MyScale580 $MyScale130_mobile;
       display: flex;
       flex-direction: column;
       align-items: center;
