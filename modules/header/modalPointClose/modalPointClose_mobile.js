@@ -30,15 +30,15 @@ export default function ModalPointClose_mobile() {
   const [open, setOpen] = useState(false);
   const [ token ] = useHeaderStoreNew( state => [ state?.token ] );
 
-  //const todayStr = getTodayString();
+  const todayStr = getTodayString();
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
       if( localStorage.getItem('setCity') && (!localStorage.getItem('7_9_may') || localStorage.getItem('7_9_may').length == 0) ) {
-        // if (datesToCheck.includes(todayStr)) {
-        //   //checkFreeDrive(token);
-        //   setOpen(true);
-        // }
+        if (datesToCheck.includes(todayStr)) {
+          //checkFreeDrive(token);
+          setOpen(true);
+        }
       }
     }
   }, []);
