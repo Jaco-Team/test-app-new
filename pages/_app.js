@@ -86,7 +86,7 @@ import Script from 'next/script';
 import YandexMetrika from '@/components/YandexMetrika';
 import { GoogleTagManager } from '@next/third-parties/google'
 
-import * as Sentry from "@sentry/browser";
+//import * as Sentry from "@sentry/browser";
 
 import Header from '@/components/header';
 
@@ -105,24 +105,24 @@ const theme = createTheme({
   },
 })
 
-Sentry.init({
-  dsn: "https://7ce2cfe591e41713764963222cf849f4@sentry.jacochef.ru/5",
+// Sentry.init({
+//   dsn: "https://7ce2cfe591e41713764963222cf849f4@sentry.jacochef.ru/5",
 
-  // Alternatively, use `process.env.npm_package_version` for a dynamic release version
-  // if your build tool supports it.
-  release: "site_new@1.1.28",
-  //traces_sample_rate: 1,
-  //profiles_sample_rate: 1,
-  allowUrls: [/https?:\/\/((cdn|www)\.)?jacofood\.ru/],
-  integrations: [
-    Sentry.browserTracingIntegration(),
-    //Sentry.replayIntegration(),
-  ],
+//   // Alternatively, use `process.env.npm_package_version` for a dynamic release version
+//   // if your build tool supports it.
+//   release: "site_new@1.1.28",
+//   //traces_sample_rate: 1,
+//   //profiles_sample_rate: 1,
+//   allowUrls: [/https?:\/\/((cdn|www)\.)?jacofood\.ru/],
+//   integrations: [
+//     Sentry.browserTracingIntegration(),
+//     //Sentry.replayIntegration(),
+//   ],
 
-  // Set `tracePropagationTargets` to control for which URLs distributed tracing should be enabled
-  //tracePropagationTargets: [/^https:\/\/new\.jacofood\.ru/],
+//   // Set `tracePropagationTargets` to control for which URLs distributed tracing should be enabled
+//   //tracePropagationTargets: [/^https:\/\/new\.jacofood\.ru/],
 
-});
+// });
 
 /*export function reportWebVitals(metric) {
   console.log(metric)
