@@ -7,6 +7,7 @@ module.exports = {
       instances: '6', 
       script: 'node_modules/next/dist/bin/next',
       args: 'start',
+      max_memory_restart: '700M',
       env_local: {
         APP_ENV: 'local' // APP_ENV=local
       },
