@@ -1,10 +1,22 @@
-import queryString from 'query-string';
+//import queryString from 'query-string';
+import qs from 'query-string';
 import axios from 'axios';
+import CryptoJS from 'crypto-js';
+
+const urlApi   = 'https://api.jacochef.ru/site/public/index.php/';
 
 export function api(module = '', data = {}){
-  const urlApi = 'https://api.jacochef.ru/site/public/index.php/';
+  const now = Math.floor(Date.now() / 1000);
+  
+  const payload = { ...data, ts: now };
+  const bodyStr = qs.stringify(payload);
 
-  return axios.post(urlApi+module, queryString.stringify(data))
+  const sig = CryptoJS.HmacSHA256(now + bodyStr, 'jaco—food')
+                      .toString(CryptoJS.enc.Hex);
+
+  const body = qs.stringify({ ...payload, sig });
+
+  return axios.post(urlApi+module, body)
     .then( (response) => {
       
       if( typeof response.data == 'string' ){

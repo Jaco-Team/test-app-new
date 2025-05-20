@@ -38,6 +38,7 @@
     "@sentry/nextjs": "^9.16.1",
     "@yandex/smart-captcha": "2.8.0",
     "axios": "^1.9.0",
+    "crypto-js": "^4.2.0",
     "css-mediaquery": "^0.1.2",
     "date-fns": "^4.1.0",
     "dayjs": "^1.11.13",
