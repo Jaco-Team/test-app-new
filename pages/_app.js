@@ -365,6 +365,33 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
       { pageProps?.data1?.city == 'samara' ? <MetricaSMR /> : null }
       { pageProps?.data1?.city == 'samara' ? <MetricaSMR2 /> : null }
 
+      <Script
+        id="roistat-tracking"
+        strategy="afterInteractive"      // загружаем сразу после first paint
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function(w, d, s, h, id) {
+              w.roistatProjectId = id; 
+              w.roistatHost      = h;
+  
+              var p = d.location.protocol === "https:" ? "https://" : "http://";
+              var hasCookie = /^.*roistat_visit=[^;]+(.*)?$/.test(d.cookie);
+              var u  = hasCookie
+                       ? "/dist/module.js"
+                       : "/api/site/1.0/" + id + "/init?referrer=" + encodeURIComponent(d.location.href);
+  
+              var js  = d.createElement(s);
+              js.charset = "UTF-8";
+              js.async   = true;
+              js.src     = p + h + u;
+  
+              var f = d.getElementsByTagName(s)[0];
+              f.parentNode.insertBefore(js, f);
+            })(window, document, 'script', 'cloud.roistat.com', 'fc957532ccc06d91de3b0c8c86e8a749');
+          `,
+        }}
+      />
+
       { !pageProps || pageProps?.statusCode == 404 || pageProps?.statusCode == 500 || typeof pageProps?.data1?.city === 'undefined' || !pageProps?.data1?.page ? false :
         <Header
           city={pageProps?.data1?.city}
