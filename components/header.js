@@ -27,9 +27,9 @@ import CircularProgress from '@mui/material/CircularProgress';
 
 import { useCartStore, useHeaderStoreNew, useHomeStore } from './store.js';
 
-import { initializeApp } from "firebase/app";
-import { getAnalytics } from "firebase/analytics";
-import { getPerformance } from "firebase/performance";
+//import { initializeApp } from "firebase/app";
+//import { getAnalytics } from "firebase/analytics";
+//import { getPerformance } from "firebase/performance";
 
 import { usePathname, useSearchParams } from 'next/navigation'
 
@@ -68,17 +68,17 @@ export default React.memo(function header({ city, city_list, cats }) {
     
 
     if( typeof window != 'undefined' ){
-      const firebaseConfig = {
-        apiKey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_FIREBASE,
-        authDomain: "jacofoodsite.firebaseapp.com",
-        projectId: "jacofoodsite",
-        storageBucket: "jacofoodsite.appspot.com",
-        messagingSenderId: "692082803779",
-        appId: "1:692082803779:web:39a39963cd8bff927000f6"
-      };
+      // const firebaseConfig = {
+      //   apiKey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_FIREBASE,
+      //   authDomain: "jacofoodsite.firebaseapp.com",
+      //   projectId: "jacofoodsite",
+      //   storageBucket: "jacofoodsite.appspot.com",
+      //   messagingSenderId: "692082803779",
+      //   appId: "1:692082803779:web:39a39963cd8bff927000f6"
+      // };
 
-      const firebaseAPP = initializeApp(firebaseConfig);
-      const analytics = getAnalytics(firebaseAPP);
+      //const firebaseAPP = initializeApp(firebaseConfig);
+      //const analytics = getAnalytics(firebaseAPP);
       //const perf = getPerformance(firebaseAPP);
   
       if (location.protocol !== 'https:' && location.hostname != 'localhost' ) {

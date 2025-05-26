@@ -84,7 +84,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 import Script from 'next/script';
 
 import YandexMetrika from '@/components/YandexMetrika';
-import { GoogleTagManager } from '@next/third-parties/google'
+//import { GoogleTagManager } from '@next/third-parties/google'
 
 //import * as Sentry from "@sentry/browser";
 
@@ -295,7 +295,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
     )
 
   }
-
+  //<GoogleTagManager gtmId="UA-148366601-1" />
   return (
     <ThemeProvider theme={theme}>
 
@@ -327,7 +327,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
         webvisor={false}
         ecommerce={false}
       />
-      <GoogleTagManager gtmId="UA-148366601-1" />
+      
       
       { pageProps?.data1?.city == 'samara' ?
         <YandexMetrika 
