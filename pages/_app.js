@@ -384,13 +384,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
       { pageProps?.data1?.city == 'samara' ? <MetricaSMR /> : null }
       { pageProps?.data1?.city == 'samara' ? <MetricaSMR2 /> : null }
 
-      <MetricaRoistat />
-
-      <input
-        type="hidden"
-        name="roistat_visit"
-        value={typeof window !== "undefined" ? window.roistat?.getVisit?.() || "" : ""}
-      />
+      
 
       { !pageProps || pageProps?.statusCode == 404 || pageProps?.statusCode == 500 || typeof pageProps?.data1?.city === 'undefined' || !pageProps?.data1?.page ? false :
         <Header
@@ -402,6 +396,14 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
       }
 
       <Component {...pageProps} />
+
+      <MetricaRoistat />
+
+      <input
+        type="hidden"
+        name="roistat_visit"
+        value={typeof window !== "undefined" ? window.roistat?.getVisit?.() || "" : ""}
+      />
     </ThemeProvider>
   )
 }
