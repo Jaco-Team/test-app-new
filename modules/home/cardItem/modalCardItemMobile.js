@@ -17,6 +17,8 @@ import { roboto } from '@/ui/Font';
 
 //import {placeholder_img} from '@/public/placeholder_img';
 
+import { roistatReady } from '@/components/roistatEvents'
+
 export default function ModalCardItemMobile() {
   const [isOpenModal, openItem, setActiveModalCardItemMobile, getItem] = useHomeStore((state) => [state.isOpenModal, state.openItem, state.setActiveModalCardItemMobile, state.getItem]);
   const [links] = useFooterStore((state) => [state.links]);
@@ -122,6 +124,10 @@ export default function ModalCardItemMobile() {
     if( thisCityRu == 'Тольятти' ){
       ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
+
+    roistatReady(() =>
+      roistat.event.send('add_to_cart'),
+    );
   }
 
   const remove_from_cart = () => {
@@ -153,6 +159,10 @@ export default function ModalCardItemMobile() {
     if( thisCityRu == 'Тольятти' ){
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
+
+    roistatReady(() =>
+      roistat.event.send('remove_from_cart'),
+    );
   }
 
   const sostav_seta = () => {

@@ -13,6 +13,8 @@ import 'swiper/css/pagination';
 
 import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
 
+import { roistatReady } from '@/components/roistatEvents'
+
 export default (function BannersPC() {
   const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider, state.getBanners]);
   const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
@@ -68,6 +70,12 @@ export default (function BannersPC() {
     if( thisCityRu == 'Тольятти' ){
       ym(100601350, 'reachGoal', 'open_banner', {akcia_name: item?.title});
     }
+
+    roistatReady(() =>
+      roistat.event.send('open_banner', {
+        name: item?.title
+      }),
+    );
   }
 
   return (

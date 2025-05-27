@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
+//import Image from 'next/image';
 import { useHomeStore, useCartStore, useHeaderStoreNew, useCitiesStore } from '@/components/store';
 
 import { useRouter } from 'next/router';
@@ -7,6 +7,8 @@ import { useRouter } from 'next/router';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+
+import { roistatReady } from '@/components/roistatEvents'
 
 function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }) {
   const [thisItem, setThisItem] = useState({});
@@ -98,6 +100,18 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
       ym(100601350, 'reachGoal', 'active_actia_all', {akcia_name: bannerTitle}); 
       ym(100601350, 'reachGoal', 'active_actia_akcii', {akcia_name: bannerTitle}); 
     }
+
+    roistatReady(() =>
+      roistat.event.send('add_to_cart', {
+        id: thisItem?.id,
+        name: thisItem?.name,
+        price: item?.price,
+        quantity: 1,
+        category: {
+          "level1": thisItem?.cat_name,
+        },
+      }),
+    );
   }
 
   const remove_from_cart = () => {
@@ -129,6 +143,18 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
     if( thisCityRu == 'Тольятти' ){
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
+
+    roistatReady(() =>
+      roistat.event.send('remove_from_cart', {
+        id: thisItem?.id,
+        name: thisItem?.name,
+        price: item?.price,
+        quantity: 1,
+        category: {
+          "level1": thisItem?.cat_name,
+        },
+      }),
+    );
   } 
 
   return (

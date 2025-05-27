@@ -50,7 +50,10 @@ function useYandexMetrika_(city, eventName, goalName, params = {}) {
 
 //export default useYandexMetrika;
 
-
+const roistatReady = (cb) => {
+  if (typeof window === 'undefined') return;
+  window.onRoistatAllModulesLoaded = cb;
+};
 
 function useYandexMetrika(city) {
   const getCounterIdByCity = (cityName) => {
@@ -83,6 +86,11 @@ function useYandexMetrika(city) {
             ym(100601350, 'reachGoal', 'open_item', { tovar: params.productId })
           }
         }
+
+        roistatReady(() =>
+          roistat.event.send('open_item'),
+        );
+
         if (typeof window !== 'undefined') {
           if( city == 'samara' ){
             //console.log('Отправка события в Яндекс Метрика для события:', { type: 'reachGoal', id: 3621394, value: params?.price ?? 0, goal: 'product', params: { product_id: params.item_id}});
@@ -101,6 +109,10 @@ function useYandexMetrika(city) {
           if( city == 'togliatti' ){
             ym(100601350, 'reachGoal', 'open_card'); 
           }
+
+          roistatReady(() =>
+            roistat.event.send('open_card'),
+          );
         }
         if (typeof window !== 'undefined') {
           if( city == 'samara' ){
@@ -118,6 +130,10 @@ function useYandexMetrika(city) {
           if( city == 'togliatti' ){
             ym(100601350, 'reachGoal', 'confirm_card'); 
           }
+
+          roistatReady(() =>
+            roistat.event.send('confirm_card'),
+          );
         }
         if (typeof window !== 'undefined') {
           if( city == 'samara' ){

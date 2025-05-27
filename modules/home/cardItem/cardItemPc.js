@@ -10,6 +10,8 @@ import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.j
 
 import BadgeItem from './badge';
 
+import { roistatReady } from '@/components/roistatEvents'
+
 export default memo(function CardItem({ item, count, index}) {
   const [getItem] = useHomeStore((state) => [state.getItem]);
   const [thisCity, thisCityRu] = useCitiesStore( state => [state.thisCity, state.thisCityRu]);
@@ -63,6 +65,10 @@ export default memo(function CardItem({ item, count, index}) {
     if( thisCityRu == 'Тольятти' ){
       ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
+
+    roistatReady(() =>
+      roistat.event.send('add_to_cart'),
+    );
   }
 
   const remove_from_cart = () => {
@@ -94,6 +100,10 @@ export default memo(function CardItem({ item, count, index}) {
     if( thisCityRu == 'Тольятти' ){
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
+
+    roistatReady(() =>
+      roistat.event.send('remove_from_cart'),
+    );
   }
 
   return (

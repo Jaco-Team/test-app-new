@@ -13,6 +13,8 @@ import BadgeItem from './badge';
 
 import { roboto } from '@/ui/Font';
 
+import { roistatReady } from '@/components/roistatEvents'
+
 export default function ModalItemMobile() {
   const [openItemCard, item_card, setActiveModalCardItemMobile] = useHomeStore((state) => [state.openItemCard, state.item_card, state.setActiveModalCardItemMobile]);
   const [links] = useFooterStore((state) => [state.links]);
@@ -97,6 +99,10 @@ export default function ModalItemMobile() {
     if( thisCityRu == 'Тольятти' ){
       ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
+
+    roistatReady(() =>
+      roistat.event.send('add_to_cart'),
+    );
   }
 
   const remove_from_cart = () => {
@@ -128,6 +134,10 @@ export default function ModalItemMobile() {
     if( thisCityRu == 'Тольятти' ){
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
+
+    roistatReady(() =>
+      roistat.event.send('remove_from_cart'),
+    );
   }
 
   return (

@@ -3,6 +3,8 @@ import { BasketIconNew } from '@/ui/Icons.js';
 
 import Cookies from 'js-cookie'
 
+import { roistatReady } from '@/components/roistatEvents'
+
 export default function BasketIconHeaderPC() {
   const [setActiveBasket, openBasket] = useHeaderStoreNew((state) => [state?.setActiveBasket, state?.openBasket]);
   const [itemsCount, allPrice, allPriceWithoutPromo, promoInfo, promoCheck, getInfoPromo] = useCartStore((state) => [state.itemsCount, state.allPrice, state.allPriceWithoutPromo, state.promoInfo, state.promoCheck, state.getInfoPromo]);
@@ -19,12 +21,18 @@ export default function BasketIconHeaderPC() {
     //   }
     // }
 
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'open_basket'); 
-    }
+    if( !openBasket == true ){
+      if( thisCityRu == 'Самара' ){
+        ym(100325084, 'reachGoal', 'open_basket'); 
+      }
 
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'open_basket'); 
+      if( thisCityRu == 'Тольятти' ){
+        ym(100601350, 'reachGoal', 'open_basket'); 
+      }
+
+      roistatReady(() =>
+        roistat.event.send('open_basket'),
+      );
     }
 
     if(!openBasket) {

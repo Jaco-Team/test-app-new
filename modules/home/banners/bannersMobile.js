@@ -10,6 +10,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+import { roistatReady } from '@/components/roistatEvents'
+
 export default React.memo(function BannersMobile() {
   const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider, state.getBanners]);
   const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
@@ -66,6 +68,12 @@ export default React.memo(function BannersMobile() {
     if( thisCityRu == 'Тольятти' ){
       ym(100601350, 'reachGoal', 'open_banner', {akcia_name: item?.title});
     }
+
+    roistatReady(() =>
+      roistat.event.send('open_banner', {
+        name: item?.title
+      }),
+    );
   }
 
   return (

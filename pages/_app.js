@@ -386,6 +386,12 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
 
       <MetricaRoistat />
 
+      <input
+        type="hidden"
+        name="roistat_visit"
+        value={typeof window !== "undefined" ? window.roistat?.getVisit?.() || "" : ""}
+      />
+
       { !pageProps || pageProps?.statusCode == 404 || pageProps?.statusCode == 500 || typeof pageProps?.data1?.city === 'undefined' || !pageProps?.data1?.page ? false :
         <Header
           city={pageProps?.data1?.city}
