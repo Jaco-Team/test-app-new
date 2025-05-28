@@ -1357,7 +1357,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         dateTimeOrder: JSON.stringify(get().dateTimeOrder ?? { date: '', name: 'В ближайшее время', id: -1 }),
         cart: JSON.stringify(get().items),
         free_drive: get().free_drive,
-        ytoken: ytoken
+        ytoken: ytoken,
+        rtoken: typeof window !== "undefined" ? window.roistat?.getVisit?.() || 0 : 0,
       };
     } else {
       data = {
@@ -1374,7 +1375,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         dateTimeOrder: JSON.stringify(get().dateTimeOrder ?? { date: '', name: 'В ближайшее время', id: -1 }),
         cart: JSON.stringify(get().items),
         free_drive: get().free_drive,
-        ytoken: ytoken
+        ytoken: ytoken,
+        rtoken: typeof window !== "undefined" ? window.roistat?.getVisit?.() || 0 : 0,
       };
     }
 
