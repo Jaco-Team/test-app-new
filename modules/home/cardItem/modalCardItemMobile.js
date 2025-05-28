@@ -125,9 +125,9 @@ export default function ModalCardItemMobile() {
       ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
 
-    roistatReady(() =>
-      roistat.event.send('add_to_cart'),
-    );
+    //roistatReady(() =>
+      roistat.event.send('add_to_cart');
+    //);
   }
 
   const remove_from_cart = () => {
@@ -160,9 +160,9 @@ export default function ModalCardItemMobile() {
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
 
-    roistatReady(() =>
-      roistat.event.send('remove_from_cart'),
-    );
+    //roistatReady(() =>
+      roistat.event.send('remove_from_cart');
+    //);
   }
 
   const sostav_seta = () => {
@@ -175,6 +175,8 @@ export default function ModalCardItemMobile() {
     if( thisCityRu == 'Тольятти' ){
       ym(100601350, 'reachGoal', 'sostav_seta', metrica_param_min);
     }
+
+    roistat.event.send('sostav_seta');
   }
 
   return (

@@ -84,7 +84,7 @@ export default memo(function CartItemMobile({ item, count, last }) {
         ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
       }
 
-      roistatReady(() =>
+      //roistatReady(() =>
         roistat.event.send('remove_from_cart', {
           id: item?.item_id,
           name: item?.name,
@@ -93,8 +93,8 @@ export default memo(function CartItemMobile({ item, count, last }) {
           category: {
             "level1": cat_name,
           },
-        }),
-      );
+        });
+      //);
     }
   };
 
@@ -131,7 +131,7 @@ export default memo(function CartItemMobile({ item, count, last }) {
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
 
-    roistatReady(() =>
+    //roistatReady(() =>
       roistat.event.send('remove_from_cart', {
         id: item?.item_id,
         name: item?.name,
@@ -140,8 +140,8 @@ export default memo(function CartItemMobile({ item, count, last }) {
         category: {
           "level1": cat_name,
         },
-      }),
-    );
+      });
+    //);
 
     setTimeout(() => {
       setClick(true);
@@ -181,7 +181,7 @@ export default memo(function CartItemMobile({ item, count, last }) {
       ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
 
-    roistatReady(() =>
+    //roistatReady(() =>
       roistat.event.send('add_to_cart', {
         id: item?.id,
         name: item?.name,
@@ -190,8 +190,8 @@ export default memo(function CartItemMobile({ item, count, last }) {
         category: {
           "level1": cat_name,
         },
-      }),
-    );
+      });
+    //);
   }
 
 

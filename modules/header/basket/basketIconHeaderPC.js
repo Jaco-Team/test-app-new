@@ -30,9 +30,9 @@ export default function BasketIconHeaderPC() {
         ym(100601350, 'reachGoal', 'open_basket'); 
       }
 
-      roistatReady(() =>
-        roistat.event.send('open_basket'),
-      );
+      //roistatReady(() =>
+        roistat.event.send('open_basket');
+      //);
     }
 
     if(!openBasket) {

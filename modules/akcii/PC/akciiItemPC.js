@@ -101,7 +101,10 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
       ym(100601350, 'reachGoal', 'active_actia_akcii', {akcia_name: bannerTitle}); 
     }
 
-    roistatReady(() =>
+    roistat.event.send('active_actia_all');
+    roistat.event.send('active_actia_akcii');
+
+    //roistatReady(() =>
       roistat.event.send('add_to_cart', {
         id: thisItem?.id,
         name: thisItem?.name,
@@ -110,8 +113,8 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
         category: {
           "level1": thisItem?.cat_name,
         },
-      }),
-    );
+      });
+    //);
   }
 
   const remove_from_cart = () => {
@@ -144,7 +147,7 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
 
-    roistatReady(() =>
+    //roistatReady(() =>
       roistat.event.send('remove_from_cart', {
         id: thisItem?.id,
         name: thisItem?.name,
@@ -153,8 +156,8 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
         category: {
           "level1": thisItem?.cat_name,
         },
-      }),
-    );
+      });
+    //);
   } 
 
   return (
@@ -272,6 +275,9 @@ export default function AkciiItemPC({ actia, is_one_actia }) {
       ym(100601350, 'reachGoal', 'active_actia_all', {akcia_name: data_banner?.banner?.title}); 
       ym(100601350, 'reachGoal', 'active_actia_akcii', {akcia_name: data_banner?.banner?.title}); 
     }
+
+    roistat.event.send('active_actia_all');
+    roistat.event.send('active_actia_akcii');
 
     if( parseInt(data_banner?.typePromo ) == 1 && is_one_actia ){
       push(`/${thisCity}`);

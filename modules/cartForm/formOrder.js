@@ -405,9 +405,15 @@ export default function FormOrder({ cityName }) {
   
         ym(47085879, 'reachGoal', 'pay_order', ym_data);
 
+        roistat.event.send('pay_order');
+        roistat.event.send('pay_order_'+typeOrder+'_'+typePay?.id);
+
         if( thisCityRu == 'Самара' ){
           ym(100325084, 'reachGoal', 'pay_order', ym_data);
           ym(100325084, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
+
+          roistat.event.send('pay_order_samara');
+          roistat.event.send('pay_order_samara_'+typeOrder+'_'+typePay?.id);
 
           let items = [];
 
@@ -445,6 +451,9 @@ export default function FormOrder({ cityName }) {
         if( thisCityRu == 'Тольятти' ){
           ym(100601350, 'reachGoal', 'pay_order', ym_data);
           ym(100601350, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
+
+          roistat.event.send('pay_order_togliatti');
+          roistat.event.send('pay_order_togliatti_'+typeOrder+'_'+typePay?.id);
 
           let items = [];
 

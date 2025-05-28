@@ -84,9 +84,9 @@ export default memo(function RowPC({ item, count, last }) {
         ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
       }
 
-      roistatReady(() =>
-        roistat.event.send('remove_from_cart'),
-      );
+      //roistatReady(() =>
+        roistat.event.send('remove_from_cart');
+      //);
     }
   };
 
@@ -123,7 +123,7 @@ export default memo(function RowPC({ item, count, last }) {
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
 
-    roistatReady(() =>
+    //roistatReady(() =>
       roistat.event.send('remove_from_cart', {
         id: item?.item_id,
         name: item?.name,
@@ -132,8 +132,8 @@ export default memo(function RowPC({ item, count, last }) {
         category: {
           "level1": cat_name,
         },
-      }),
-    );
+      });
+    //);
 
     setTimeout(() => {
       setClick(true);
@@ -174,9 +174,9 @@ export default memo(function RowPC({ item, count, last }) {
       ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
 
-    roistatReady(() =>
-      roistat.event.send('add_to_cart'),
-    );
+    //roistatReady(() =>
+      roistat.event.send('add_to_cart');
+    //);
   }
 
 //<Image alt={item?.name} src={'https://cdnimg.jacofood.ru/' + item?.img_app + '_584x584.jpg'} width={584} height={584} priority={true}/>

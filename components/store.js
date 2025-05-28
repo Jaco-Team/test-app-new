@@ -3515,6 +3515,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       if( useCitiesStore.getState().thisCityRu == 'Тольятти' ) {
         ym(100601350, 'reachGoal', 'del_order', { text: text });
       }
+
+      roistat.event.send('del_order');
     }else{
       useHeaderStoreNew.getState().setActiveModalAlert(true, json?.text, false);
     }

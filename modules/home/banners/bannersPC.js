@@ -71,11 +71,11 @@ export default (function BannersPC() {
       ym(100601350, 'reachGoal', 'open_banner', {akcia_name: item?.title});
     }
 
-    roistatReady(() =>
+    //roistatReady(() =>
       roistat.event.send('open_banner', {
         name: item?.title
-      }),
-    );
+      });
+    //);
   }
 
   return (

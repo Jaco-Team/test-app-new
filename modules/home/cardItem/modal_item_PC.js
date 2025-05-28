@@ -105,9 +105,9 @@ export default function ModalItemPC() {
       ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
 
-    roistatReady(() =>
-      roistat.event.send('add_to_cart'),
-    );
+    //roistatReady(() =>
+      roistat.event.send('add_to_cart');
+    //);
   }
 
   const remove_from_cart = () => {
@@ -140,9 +140,9 @@ export default function ModalItemPC() {
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
 
-    roistatReady(() =>
-      roistat.event.send('remove_from_cart'),
-    );
+    //roistatReady(() =>
+      roistat.event.send('remove_from_cart');
+    //);
   }
 
   return (
