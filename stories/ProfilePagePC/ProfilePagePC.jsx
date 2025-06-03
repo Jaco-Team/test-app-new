@@ -47,7 +47,7 @@ export const ProfilePagePC = ({ header, user, address, footer, data }) => {
             <span>И</span>
             <div>
               <MyTextInput placeholder="Имя" value={user.name} />
-              <MyTextInput placeholder="Фамилия" value={user.fam} />
+              {/* <MyTextInput placeholder="Фамилия" value={user.fam} /> */}
               <MyTextInput placeholder="" readOnly={true} value={user.login} />
               <MyTextInput placeholder="name@mail.ru" value={user.mail} />
             </div>

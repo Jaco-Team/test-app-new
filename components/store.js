@@ -429,7 +429,8 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
           set({
             token: token,
             userName: get().setNameUser(json?.user?.name),
-            shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
+            // shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
+            shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() : '',
             isAuth: 'auth'
           });
 
@@ -460,7 +461,8 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
           set({
             token: token2,
             userName: get().setNameUser(json?.user?.name),
-            shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
+            // shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
+             shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() : '',
             isAuth: 'auth'
           });
 
@@ -3368,7 +3370,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       let json = await api(this_module, data);
 
       set({
-        shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
+        // shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
+        shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() : '',
         userInfo: json?.user,
         streets: json?.streets,
         city: city
@@ -3399,7 +3402,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   setUser: (user) => {
 
     set({
-      shortName: user?.name?.substring(0, 1) + user?.fam?.substring(0, 1),
+      // shortName: user?.name?.substring(0, 1) + user?.fam?.substring(0, 1),
+      shortName: user?.name?.substring(0, 1),
       userInfo: user,
     });
 

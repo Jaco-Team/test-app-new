@@ -115,9 +115,24 @@
             flex-direction: row;
             flex-wrap: wrap;
             align-items: center;
-            & > div:nth-child(1), div:nth-child(3){
-                margin-right: $MyScale60;   
+
+            // & > div:nth-child(1), div:nth-child(3){
+            //     margin-right: $MyScale60;   
+            // }
+
+            // убрали фамилию из формы профиля
+            & > div:nth-child(1) {
+                width: 100%;
             }
+            & > div:nth-child(2) {
+                width: calc(50% - #{$MyScale30});
+                margin-right: $MyScale60;
+            }
+            & > div:nth-child(3) {
+                width: calc(50% - #{$MyScale30});
+                margin-right: 0;
+            }
+
             & > div{
                 width: $MyScale510;
                 height: $MyScale80;

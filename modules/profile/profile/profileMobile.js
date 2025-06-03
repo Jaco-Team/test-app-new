@@ -77,7 +77,7 @@ export default function ProfileMobile({ city, this_module }) {
   const { control, getValues, setValue } = useForm({
     defaultValues: {
       name: '',
-      fam: '',
+      // fam: '',
       mail: '',
       login: '',
     },
@@ -90,7 +90,7 @@ export default function ProfileMobile({ city, this_module }) {
   useEffect(() => {
 
     setValue('name', userInfo?.name ?? '');
-    setValue('fam', userInfo?.fam ?? '');
+    // setValue('fam', userInfo?.fam ?? '');
     setValue('mail', userInfo?.mail ?? '');
     setIsSpam(userInfo?.spam);
     //setUserDate( userInfo?.date_bir?.length ? userInfo?.date_bir.toLowerCase() : '');
@@ -111,7 +111,7 @@ export default function ProfileMobile({ city, this_module }) {
     let userData = getValues();
 
     userInfo.name = userData?.name;
-    userInfo.fam = userData?.fam;
+    // userInfo.fam = userData?.fam;
     userInfo.mail = userData?.mail;
 
     setUser(userInfo);
@@ -194,7 +194,7 @@ export default function ProfileMobile({ city, this_module }) {
           />
           <EditPencilMobile />
         </div>
-        <div className="dataItem profileMain">
+        {/* <div className="dataItem profileMain">
           <Controller
             control={control}
             render={({ field: { onChange, onBlur, value } }) => (
@@ -208,7 +208,7 @@ export default function ProfileMobile({ city, this_module }) {
             name="fam"
           />
           <EditPencilMobile />
-        </div>
+        </div> */}
         <div className="dataItem profileMain" /*onClick={() => setActiveProfileModal(true, 'phone')}*/>
           <span className="itemSpan">{userInfo?.login ?? ''}</span>
           <LockMobile />

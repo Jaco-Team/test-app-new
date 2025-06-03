@@ -17,7 +17,7 @@ import TableRow from '@mui/material/TableRow';
 
 import MyTextInput from '@/ui/MyTextInput.js';
 import { SwitchIOS as MySwitch } from '@/ui/MySwitch.js';
-import MySelect from '@/ui/MySelect.js';
+// import MySelect from '@/ui/MySelect.js';
 
 import { CloseIconMin, ProfileIconNew } from '@/ui/Icons.js';
 
@@ -85,7 +85,7 @@ export default function ProfilePC({ page, this_module, city }){
   const { control, getValues, setValue } = useForm({
     defaultValues: {
       name: '',
-      fam: '',
+      // fam: '',
       login: '',
       mail: ''
     }
@@ -138,7 +138,7 @@ export default function ProfilePC({ page, this_module, city }){
 
   useEffect(() => {
     setValue("name", userInfo?.name)
-    setValue("fam", userInfo?.fam)
+    // setValue("fam", userInfo?.fam)
     setValue("login", userInfo?.login)
     setValue("mail", userInfo?.mail)
 
@@ -157,7 +157,7 @@ export default function ProfilePC({ page, this_module, city }){
     let userData = getValues();
 
     userInfo.name = userData?.name;
-    userInfo.fam = userData?.fam;
+    // userInfo.fam = userData?.fam;
     userInfo.mail = userData?.mail;
 
     setUser(userInfo);
@@ -259,7 +259,7 @@ export default function ProfilePC({ page, this_module, city }){
                 name="name"
               />
             </div>
-            <div style={{ marginTop: '0.1vw' }}>
+            {/* <div style={{ marginTop: '0.1vw' }}>
               <Controller
                 control={control}
                 render={({ field: { onChange, onBlur, value } }) => (
@@ -272,7 +272,7 @@ export default function ProfilePC({ page, this_module, city }){
                 )}
                 name="fam"
               />
-            </div>
+            </div> */}
             <div style={{ marginTop: '-1.2vw' }}>
               <Controller
                 control={control}

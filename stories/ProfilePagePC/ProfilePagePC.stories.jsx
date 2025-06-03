@@ -38,7 +38,7 @@ export default {
 const user = {
   id: '242066',
   name: 'Икс',
-  fam: '',
+  //fam: '',
   login: '89000000007',
   date_bir: '30 Августа',
   spam: '0',
@@ -50,7 +50,7 @@ const user = {
 const user_active = {
   id: '242066',
   name: 'Икс',
-  fam: 'Иксович',
+  //fam: 'Иксович',
   login: '89000000007',
   date_bir: '30 Августа',
   spam: '0',
