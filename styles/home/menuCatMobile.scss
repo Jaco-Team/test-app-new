@@ -11,47 +11,41 @@
 
   .menuCat {
     display: flex;
-    justify-content: space-between;
+    align-items: center;
+    gap: $MyScale30_mobile;
     margin: $MyScale50_mobile $MyScale40_mobile 0 $MyScale40_mobile;
     height: $MyScale100_mobile;
-    overflow: scroll;
-    -ms-overflow-style: none; /* Internet Explorer 10+ */
-    scrollbar-width: none; /* Firefox */
-
-    &::-webkit-scrollbar {
-      display: none; /* Safari and Chrome */
-    }
 
     .Cat {
+      flex: 1 1 0;
+      min-width: 0;
       display: flex;
       align-items: center;
       justify-content: center;
-      width: $MyScale220_mobile;
       border-radius: $MyScale20_mobile;
       background-color: rgba(0, 0, 0, 0.05);
+      white-space: nowrap;
+      height: $MyScale100_mobile;
 
       & span {
-        display: flex;
-        align-items: center;
         text-align: center;
+        width: 100%;
         @include font44_400();
       }
-    }
 
-    .activeCat,
-    .active {
-      background: #dd1a32;
+      &.activeCat,
+      &.active {
+        background: #dd1a32;
 
-      & span {
-        display: flex;
-        align-items: center;
-        text-align: center;
-        @include font44_500();
-        color: #fff !important;
+        & span {
+          @include font44_500();
+          color: #fff !important;
+        }
       }
     }
 
-    & .filterSVG {
+    .filterSVG {
+      flex: 0 0 auto;
       width: $MyScale100_mobile;
       height: $MyScale100_mobile;
       border-radius: $MyScale20_mobile;
@@ -68,13 +62,11 @@
           fill: rgba(0, 0, 0, 0.8);
         }
       }
-    }
 
-    & .activeFilter {
-      background-color: #dd1a32;
+      &.activeFilter {
+        background-color: #dd1a32;
 
-      & svg {
-        & path {
+        & svg path {
           fill: #fff;
         }
       }
