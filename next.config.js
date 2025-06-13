@@ -34,6 +34,14 @@ const nextConfig = {
     ],
     minimumCacheTTL: 86400,
   },
+  async rewrites() {
+    return [
+      {
+        source: '/sitemap.xml',
+        destination: 'https://storage.yandexcloud.net/jacopublic/sitemap.xml',
+      },
+    ];
+  },
   async redirects() {
     return [
       {
