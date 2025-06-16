@@ -6,5 +6,5 @@ Clean-param: showItem /*
 Clean-param: code /*
 Clean-param: etext /*
 Clean-param: external_browser_redirect /*
-Sitemap: https://jacofood.ru/sitemap.xml
+Sitemap: https://storage.yandexcloud.net/jacopublic/sitemap.xml
 Host: https://jacofood.ru
