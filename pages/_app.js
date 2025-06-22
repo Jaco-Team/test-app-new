@@ -8,6 +8,7 @@ import '../styles/cart/cartMenuMobile.scss'
 import '../styles/cart/cartDataTimePicker.scss'
 import '../styles/cart/cartMapPoints.scss'
 import '../styles/cart/cartPayForm.scss'
+import '../styles/cart/cartDopsForm.scss'
 
 import '../styles/about/aboutPC.scss'
 import '../styles/about/aboutMobile.scss'

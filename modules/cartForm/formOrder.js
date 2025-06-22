@@ -65,8 +65,8 @@ export default function FormOrder({ cityName }) {
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
  
-  const [setFreeDrive, setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is, free_drive, setConfirmForm, getNewPriceItems, setMailForm, checkNewOrder] = useCartStore((state) => [state.setFreeDrive, state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
-    state.promoInfo, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is, state.free_drive, state.setConfirmForm, state.getNewPriceItems, state.setMailForm, state.checkNewOrder]);
+  const [setFreeDrive, setPayForm, setActiveModalBasket, clearCartData, items, itemsCount, promoInfo, itemsOffDops, dopListCart, allPrice, getInfoPromo, checkPromo, setActiveMenuCart, pointList, getMySavedAddr,createOrder, changeAllItems, addrList, orderPic, orderAddr, setAddrDiv, setPoint, getTimesPred, getDataPred, dateTimeOrder, setDataTimeOrder, setActiveDataTimePicker, typePay, setTypePay, changeComment, comment, typeOrder, setTypeOrder, setSummDiv, sdacha, setSdacha, check_need_dops, cart_is, free_drive, setConfirmForm, getNewPriceItems, setMailForm, checkNewOrder, setDopsForm] = useCartStore((state) => [state.setFreeDrive, state.setPayForm, state.setActiveModalBasket, state.clearCartData, state.items, state.itemsCount,
+    state.promoInfo, state.itemsOffDops, state.dopListCart, state.allPrice, state.getInfoPromo, state.checkPromo, state.setActiveMenuCart, state.pointList, state.getMySavedAddr, state.createOrder, state.changeAllItems, state.addrList, state.orderPic, state.orderAddr, state.setAddrDiv, state.setPoint, state.getTimesPred, state.getDataPred, state.dateTimeOrder, state.setDataTimeOrder, state.setActiveDataTimePicker, state.typePay, state.setTypePay, state.changeComment, state.comment, state.typeOrder, state.setTypeOrder, state.setSummDiv, state.sdacha, state.setSdacha, state.check_need_dops, state.cart_is, state.free_drive, state.setConfirmForm, state.getNewPriceItems, state.setMailForm, state.checkNewOrder, state.setDopsForm]);
     
   const [ saveUserActions ] = useProfileStore((state) => [state.saveUserActions]);
 
@@ -366,6 +366,19 @@ export default function FormOrder({ cityName }) {
 
     if(typePay.id === 'online' && !userInfo.mail) {
       setMailForm(true);
+      return;
+    }
+
+    const hasRolly = items.some(item =>
+      [4, 10, 13, 12, 9].includes(Number(item.cat_id))
+    );
+     
+    const hasMainDops = items.some(item =>
+      [19, 18, 22].includes(Number(item.item_id))
+    );
+
+    if (hasRolly && !hasMainDops) {
+      setDopsForm(true);
       return;
     }
 

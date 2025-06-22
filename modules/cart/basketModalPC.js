@@ -3,6 +3,7 @@ import PayForm from '@/modules/cart/payForm';
 import DataTimePicker from '@/modules/cartForm/dataTimePicker';
 import ConfirmForm from '@/modules/cart/confirmForm';
 import MailForm from '@/modules/cart/mailForm';
+import DopsForm from '@/modules/cart/dopsForm';
 
 import { useCartStore } from '@/components/store.js';
 
@@ -42,6 +43,7 @@ export default function BasketModalPC() {
       </Dialog>
 
       <MailForm />
+      <DopsForm />
       <ConfirmForm />
       <DataTimePicker />
       <PayForm />

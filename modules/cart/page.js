@@ -9,7 +9,8 @@ import PayForm from './payForm';
 import DataTimePicker from '@/modules/cartForm/dataTimePicker';
 import ConfirmForm from './confirmForm';
 import MailForm from './mailForm';
-import useYandexMetrika from '@/components/useYandexMetrika';
+import DopsForm from './dopsForm';
+//import useYandexMetrika from '@/components/useYandexMetrika';
 // import { useCartStore } from '@/components/store';
 
 export default memo(function CartPage({ page, cityName }) {
@@ -35,6 +36,7 @@ export default memo(function CartPage({ page, cityName }) {
       <DataTimePicker />
       <ConfirmForm />
       <MailForm cityName={cityName} />
+      <DopsForm />
       <PayForm />
     </Meta>
   );

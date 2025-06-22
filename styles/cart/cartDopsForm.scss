@@ -1,0 +1,401 @@
+@import '../settings';
+
+.cartDopsFormPC {
+  .MuiDialog-paper {
+    overflow: visible;
+    margin: $MyScale50 0 !important;
+    max-width: none !important;
+    border-radius: $MyScale40;
+
+    .MuiDialogContent-root {
+      padding: 0;
+      border-radius: $MyScale40;
+      width: $MyScale1000;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+
+      .closeButton {
+        position: absolute;
+        top: 0;
+        left: -3.3vw;
+        padding: 0;
+        background-color: transparent;
+
+        & svg {
+          width: $MyScale60;
+          height: $MyScale60;
+          overflow: visible;
+          border-radius: $MyScale60;
+          background-color: rgba(0, 0, 0, 0.5);
+        }
+      }
+
+      .dopsHeader {
+        height: $MyScale80;
+        display: flex;
+        align-items: center;
+        text-align: center;
+        @include font50_500();
+      }
+
+      .dopsHeader_2 {
+        margin-top: $MyScale80;
+      }
+
+      .dopsHeader_3 {
+        margin-bottom: $MyScale40;
+      }
+
+     .dopsTable {
+        margin: 0.72202166064982vw 1.2635379061372vw 1.0830324909747vw 1.4440433212996vw;
+        border-spacing: 0;
+        display: flex;
+        flex-direction: column;
+
+        tbody {
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+
+          tr {
+            display: flex;
+            align-items: center;
+            padding: 0 0.72202166064982vw 0.72202166064982vw 0.72202166064982vw;
+            height: 5.7761732851986vw;
+            border-bottom: 0.072202166064982vw solid rgba(0, 0, 0, 0.1);
+
+            &:last-child {
+              border-bottom: none;
+            }
+
+            img {
+              height: 5.7761732851986vw;
+              width: 5.7761732851986vw;
+              border-radius: $MyScale20;
+            }
+          }
+        }
+
+        .CellPic {
+          height: 5.7761732851986vw;
+          width: 5.7761732851986vw;
+          padding: 0;
+          margin-right: 1.4440433212996vw;
+        }
+
+        .CellName {
+          width: 14.440433212996vw;
+          padding: 0;
+          display: flex;
+          flex-direction: column;
+          height: 4.6931407942238vw;
+          justify-content: space-between;
+          margin-right: 0.54151624548736vw;
+
+          .spanName {
+            @include font30_400();
+            height: 2.8880866425993vw;
+            display: flex;
+            align-items: flex-end;
+          }
+
+          div {
+            display: flex;
+
+            .spanCount:not(.promoInfo) {
+              @include font30_400();
+              color: rgba(0, 0, 0, 0.4);
+              height: 1.4440433212996vw;
+              display: flex;
+              align-items: center;
+              margin-right: 0.72202166064982vw;
+            }
+
+            .spanCount.promoInfo {
+              @include font30_400();
+              color: rgba(0, 0, 0, 0.4);
+              height: 1.4440433212996vw;
+              display: flex;
+              align-items: center;
+              margin-right: 0.72202166064982vw;
+              text-decoration-thickness: 0.10830324909747vw !important;
+              text-decoration: line-through;
+              text-decoration-color: rgba(221, 26, 50, 0.8);
+              white-space: nowrap;
+            }
+
+            .spanPromo {
+              @include font30_400();
+              color: #dd1a32;
+              height: 1.4440433212996vw;
+              display: flex;
+              align-items: center;
+              white-space: nowrap;
+            }
+          }
+        }
+
+        .CellButton {
+          width: 8.5198555956679vw;
+          height: 2.7436823104693vw;
+          padding: 0;
+          border-radius: 1.6245487364621vw;
+          border: 0.072202166064982vw solid rgba(0, 0, 0, 0.2);
+          display: flex;
+          justify-content: space-between;
+          align-items: center;
+
+          .minus {
+            width: 2.1660649819495vw;
+            height: 2.1660649819495vw;
+            padding: 0;
+            margin-left: 0.36101083032491vw;
+            @include font44_400();
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 2.1660649819495vw;
+            cursor: default;
+            border: none;
+
+            &:not([disabled]):hover {
+              background-color: rgba(0, 0, 0, 0.07) !important;
+              cursor: pointer;
+            }
+          }
+
+          span {
+            @include font44_400();
+          }
+
+          .plus {
+            width: 2.1660649819495vw;
+            height: 2.1660649819495vw;
+            padding: 0;
+            margin-right: 0.36101083032491vw;
+            @include font60_300();
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            border-radius: 2.1660649819495vw;
+            cursor: default;
+            border: none;
+
+            &:not([disabled]):hover {
+              background-color: rgba(0, 0, 0, 0.07) !important;
+              cursor: pointer;
+            }
+          }
+        }
+      }
+
+      .dopsBTN {
+        cursor: pointer;
+        border: 0;
+        padding: 0;
+        width: $MyScale560;
+        height: $MyScale80;
+        border-radius: $MyScale40;
+        background: rgb(204, 0, 51);
+        @include font30_400();
+        color: #fff !important;
+        margin-top: $MyScale60;
+        margin-bottom: $MyScale110;
+          flex-shrink: 0; 
+        box-shadow:
+          0px $MyScale3 $MyScale1 -$MyScale2 rgba(0, 0, 0, 0.2),
+          0px $MyScale2 $MyScale2 0px rgba(0, 0, 0, 0.14),
+          0px $MyScale1 $MyScale5 0px rgba(0, 0, 0, 0.12);
+
+        &:hover {
+          -webkit-text-decoration: none;
+          text-decoration: none;
+          background-color: rgb(142, 0, 35);
+          box-shadow:
+            0px $MyScale2 $MyScale4 -$MyScale1 rgba(0, 0, 0, 0.2),
+            0px $MyScale4 $MyScale5 0px rgba(0, 0, 0, 0.14),
+            0px $MyScale1 $MyScale10 0px rgba(0, 0, 0, 0.12);
+        }
+      }
+
+    }
+  }
+}
+
+.cartDopsFormMobile {
+  & .MuiDrawer-paper {
+    max-height: calc(100% - $MyScale200_mobile);
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+    overflow-y: auto;
+
+    .container {
+      margin-top: $MyScale40_mobile;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      padding: 0 $MyScale40_mobile;
+
+      & .line {
+        height: $MyScale10_mobile;
+        width: $MyScale150_mobile;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: $MyScale5_mobile;
+        margin-bottom: $MyScale80_mobile;
+      }
+
+      & .dopsHeader {
+        height: $MyScale120_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        @include font75_700();
+      }
+
+      & .dopsHeader_2 {
+        margin-bottom: $MyScale80_mobile;
+      }
+
+      & .dopsItems {
+        width: $MyScale1090_mobile;
+        display: flex;
+        flex-direction: column;
+        margin-bottom: $MyScale80_mobile;
+
+        & .CartItems {
+          width: $MyScale1090_mobile;
+          display: flex;
+          position: relative;
+
+          .CartItemsImg {
+            width: $MyScale200_mobile;
+            height: $MyScale200_mobile;
+            margin-top: $MyScale40_mobile;
+            margin-bottom: $MyScale40_mobile;
+            margin-right: $MyScale40_mobile;
+            & img {
+              object-fit: contain;
+              image-rendering: auto;
+              width: 100%;
+              height: auto;
+            }
+          }
+
+          .CartItemsName {
+            display: flex;
+            flex-direction: column;
+            padding: 0;
+
+            & .spanName {
+              @include font40_400();
+              height: $MyScale100_mobile;
+              width: $MyScale500_mobile;
+              margin-top: $MyScale60_mobile;
+              margin-bottom: $MyScale30_mobile;
+              display: flex;
+              align-items: flex-end;
+            }
+
+            & div {
+              display: flex;
+              min-height: $MyScale40_mobile;
+
+              & .spanCount:not(.promoInfo) {
+                @include font40_400();
+                color: rgba(0, 0, 0, 0.4) !important;
+                height: $MyScale40_mobile;
+                display: flex;
+                align-items: center;
+                margin-right: $MyScale20_mobile;
+              }
+
+              & .spanCount.promoInfo {
+                @include font40_400();
+                color: rgba(0, 0, 0, 0.4) !important;
+                height: $MyScale40_mobile;
+                display: flex;
+                align-items: center;
+                margin-right: $MyScale20_mobile;
+                text-decoration-thickness: $MyScale3_mobile !important;
+                text-decoration: line-through;
+                text-decoration-color: rgba(221, 26, 50, 0.8);
+                white-space: nowrap;
+              }
+
+              & .spanPromo {
+                @include font40_400();
+                color: #dd1a32 !important;
+                height: $MyScale40_mobile;
+                display: flex;
+                align-items: center;
+                white-space: nowrap;
+              }
+            }
+          }
+
+          .CartItemsButton {
+            width: $MyScale350_mobile;
+            height: $MyScale120_mobile;
+            padding: 0;
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: $MyScale80_mobile;
+            right: 0;
+            position: absolute;
+
+            & > .minus {
+              width: $MyScale120_mobile;
+              height: $MyScale120_mobile;
+              padding: 0;
+              @include font55_400();
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: $MyScale120_mobile;
+              border: none;
+            }
+
+            & > span {
+              @include font60_400();
+            }
+
+            & > .plus {
+              width: $MyScale120_mobile;
+              height: $MyScale120_mobile;
+              padding: 0;
+              @include font75_300();
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              border-radius: $MyScale120_mobile;
+              border: none;
+            }
+          }
+        }
+      }
+
+      .dopsButton {
+        width: $MyScale650_mobile;
+        height: $MyScale120_mobile;
+        border-radius: $MyScale60_mobile;
+        margin-bottom: $MyScale205_mobile;
+        padding: 0;
+        text-transform: lowercase;
+
+        & span {
+          display: flex;
+          align-items: center;
+          text-align: center;
+          @include font50_500();
+          color: #fff !important;
+          text-transform: capitalize;
+        }
+      }
+      
+    }
+  }
+}
+
+

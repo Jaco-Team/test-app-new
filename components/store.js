@@ -796,6 +796,13 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   openMailForm: false,
 
+  openDopsForm: false,
+
+  // открытие/закрытие формы для добавления допов в заказ если в корзине есть роллы и нет соевого или имбиря или вассаби
+  setDopsForm: (active) => {
+    set({ openDopsForm: active });
+  },
+
   // открытие/закрытие формы указание эл почты клиента
   setMailForm: (active) => {
     set({ openMailForm: active })
@@ -1724,6 +1731,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     set({
       dopListCart: all_need_dops
     })
+
+ 
   },
 
   check_max_count: (item_id) =>{
