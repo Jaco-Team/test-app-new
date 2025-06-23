@@ -372,12 +372,14 @@ export default function FormOrder({ cityName }) {
     const hasRolly = items.some(item =>
       [4, 10, 13, 12, 9].includes(Number(item.cat_id))
     );
-     
-    const hasMainDops = items.some(item =>
-      [19, 18, 22].includes(Number(item.item_id))
-    );
 
-    if (hasRolly && !hasMainDops) {
+    const has18 = items.some(item => Number(item.item_id) === 17);
+    const has19 = items.some(item => Number(item.item_id) === 19);
+
+    // true, если НЕТ одновременно обоих (хотя бы одного нет)
+    const hasMainDops = !(has18 && has19);
+
+    if (hasRolly && hasMainDops) {
       setDopsForm(true);
       return;
     }
