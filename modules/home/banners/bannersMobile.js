@@ -10,38 +10,39 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import { roistatReady } from '@/components/roistatEvents'
-
 export default React.memo(function BannersMobile() {
   const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider, state.getBanners]);
   const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
 
   const swiperRef = useRef(null);
 
-
   useEffect(() => {
-    const swiper = document.querySelector('.swiper').swiper;
 
-    const timer = setInterval(() => {
-      if(activeSlider){
-        swiper.slideNext();
-      }
-    }, 5000);
-    
-    return () => clearInterval(timer);
-  }, [activeSlider]);
-
-  useEffect(() => {
-    if (bannerList?.length > 0) {
-      const swiper = document.querySelector('.swiper').swiper;
-      swiper.activeIndex = 0;
-    }
-
-    if((!bannerList || !bannerList?.length) && thisCity) {
+    if((!bannerList || !bannerList.length) && thisCity) {
       getBanners('home', thisCity);
     }
-    
-  }, [bannerList]);
+
+  }, [bannerList, thisCity, getBanners]);
+
+  useEffect(() => {
+    const swiper = swiperRef.current?.swiper;
+
+    if (bannerList && bannerList.length > 0 && swiper) {
+
+      swiper.update();
+      swiper.slideTo(0);
+
+      setTimeout(() => {
+        if (activeSlider && swiper.autoplay) {
+          swiper.autoplay.start();
+        }
+      }, 50);
+
+    }
+  
+  }, [bannerList, activeSlider]);
+
+  const homeBanners = bannerList?.filter(item => parseInt(item.is_active_home) === 1);
 
   const openBanner = (item) => {
     setActiveBanner(true, item, swiperRef.current.swiper)
@@ -79,17 +80,18 @@ export default React.memo(function BannersMobile() {
   return (
     <Box component="div" className="BannerMobile">
       <Swiper
+        key={bannerList.length}
         modules={[Autoplay, Navigation, Pagination, A11y, EffectCreative]}
         spaceBetween={0}
         slidesPerView={1}
         loop={true}
-        autoplay={false}
+        autoplay={{ delay: 5000, disableOnInteraction: false }}
         speed={2500}
         pagination={{ clickable: true }}
         scrollbar={{ draggable: true }}
         ref={swiperRef}
       >
-        {bannerList?.map((item, key) => (
+        {homeBanners?.map((item, key) => (
           <SwiperSlide key={key} onClick={() => openBanner(item, swiperRef.current.swiper)}>
             {/* <Image
               alt={item.title}

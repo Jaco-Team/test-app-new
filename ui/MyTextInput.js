@@ -93,6 +93,19 @@ export default class MyTextInput extends React.PureComponent {
   }
   
   render(){
+
+    const inputProps = {
+      autoComplete: this.props.autoComplete || 'on',
+      autoCorrect: this.props.autoCorrect || 'on',
+      autoCapitalize: this.props.autoCapitalize || 'on',
+      spellCheck: this.props.spellCheck || 'true',
+    };
+
+    if (this.props.disableAutofill) {
+      inputProps['data-lpignore'] = 'true';
+      inputProps['data-form-type'] = 'other';
+    }
+
     return (
       <TextField 
         InputProps={{
@@ -100,6 +113,7 @@ export default class MyTextInput extends React.PureComponent {
           endAdornment: this.props.inputAdornment,
           startAdornment: this.props.startAdornment,
           inputComponent: this.props.mask ? TextMaskCustom : null,
+          inputProps: inputProps
         }}
         defaultValue={this.props.defaultValue}
         label={this.props.label}
@@ -119,7 +133,6 @@ export default class MyTextInput extends React.PureComponent {
         type={ this.props.type ? this.props.type : this.state.type }
         style={{ width: '100%', zIndex: 3 }} 
         className={ this.props.className ? this.props.className : '' }
-        autoComplete={this.props.autoComplete ? this.props.autoComplete : null}
       />
     )
   }

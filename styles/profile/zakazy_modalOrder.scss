@@ -72,10 +72,11 @@
     }
   }
   & .header_time {
-    height: $MyScale60;
+    min-height: $MyScale60;
     display: flex;
     justify-content: center;
     align-items: center;
+    text-align: center;
     & > span {
       @include font40_400();
     }

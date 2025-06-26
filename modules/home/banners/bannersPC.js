@@ -13,8 +13,6 @@ import 'swiper/css/pagination';
 
 import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
 
-import { roistatReady } from '@/components/roistatEvents'
-
 export default (function BannersPC() {
   const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider, state.getBanners]);
   const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
@@ -22,28 +20,30 @@ export default (function BannersPC() {
   const swiperRef = useRef(null);
 
   useEffect(() => {
-    const swiper = document.querySelector('.swiper').swiper;
-
-    const timer = setInterval(() => {
-      if(activeSlider){
-        swiper.slideNext();
-      }
-    }, 5000);
-    
-    return () => clearInterval(timer);
-  }, [activeSlider]);
-
-  useEffect(() => {
-    if(bannerList?.length > 0){
-      const swiper = document.querySelector('.swiper').swiper;
-      swiper.activeIndex = 0;
-    }
-      
-    if((!bannerList || bannerList?.length == 0) && thisCity) {
+    if ((!bannerList || bannerList.length === 0) && thisCity) {
       getBanners('home', thisCity);
     }
+  }, [bannerList, thisCity, getBanners]);
 
-  }, [bannerList]);
+  useEffect(() => {
+    const swiper = swiperRef.current?.swiper;
+
+    if (bannerList && bannerList.length > 0 && swiper) {
+
+      swiper.update();
+      swiper.slideTo(0);
+
+      setTimeout(() => {
+        if (activeSlider && swiper.autoplay) {
+          swiper.autoplay.start();
+        }
+      }, 50);
+
+    }
+
+  }, [bannerList, activeSlider]);
+
+  const homeBanners = bannerList?.filter(item => parseInt(item.is_active_home) === 1);
 
   const openBanner = (item) => {
     setActiveBanner(true, item, swiperRef.current.swiper)
@@ -83,11 +83,13 @@ export default (function BannersPC() {
 
       <Grid className="ImgItem">
         <Swiper
+          key={bannerList.length}
           modules={[Autoplay, Navigation, Pagination, A11y, EffectCreative]}
           spaceBetween={0}
           slidesPerView={1}
           loop={true}
-          autoplay={false}
+          //autoplay={false}
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
           speed={2500}
           pagination={{ clickable: true }}
           navigation={{
@@ -99,7 +101,7 @@ export default (function BannersPC() {
           style={{width: '90.975vw', marginTop: '8.66425vw'}}
           ref={swiperRef}
         >
-          {bannerList?.map((item, key) => (
+          {homeBanners?.map((item, key) => (
             <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => openBanner(item, swiperRef.current.swiper)}>
               {/* <Image alt={item.title} src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}`+item.img+"_3700x1000.jpg"} width={ 3700 } height={ 1000 } priority={true} style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }} /> */}
               <picture>

@@ -4336,6 +4336,38 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
   },
 
+  // getBanners: async (this_module, city) => {
+  //   let token = '';
+
+  //   if (typeof window !== 'undefined') {
+  //     token = localStorage.getItem('token');
+  //   }
+
+  //   let data = {
+  //     type: 'get_banners',
+  //     city_id: city,
+  //     token: token
+  //   };
+
+  //   let activePage = useHeaderStoreNew.getState().activePage;
+
+  //   const json = await api(this_module, data);
+
+  //   let bannerList = [];
+
+  //   if( activePage == 'akcii' ){
+  //     bannerList = json?.banners?.filter( (item) => parseInt(item.is_active_actii) == 1 );
+  //   }
+
+  //   if( activePage == 'home' || activePage == 'category' ){
+  //     bannerList = json?.banners?.filter( (item) => parseInt(item.is_active_home) == 1 );
+  //   }
+
+  //   set({
+  //     bannerList,
+  //   });
+  // },
+
   getBanners: async (this_module, city) => {
     let token = '';
 
@@ -4349,22 +4381,10 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       token: token
     };
 
-    let activePage = useHeaderStoreNew.getState().activePage;
-
     const json = await api(this_module, data);
 
-    let bannerList = [];
-
-    if( activePage == 'akcii' ){
-      bannerList = json?.banners?.filter( (item) => parseInt(item.is_active_actii) == 1 );
-    }
-
-    if( activePage == 'home' || activePage == 'category' ){
-      bannerList = json?.banners?.filter( (item) => parseInt(item.is_active_home) == 1 );
-    }
-
     set({
-      bannerList,
+      bannerList: json?.banners ?? [],
     });
   },
 

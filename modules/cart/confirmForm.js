@@ -27,8 +27,8 @@ export default function ConfirmForm() {
 
   const [openPayForm, linkPaySBP] = useCartStore((state) => [state.openPayForm, state.linkPaySBP]);
 
-  const [trueOrderCash, openConfirmForm, setConfirmForm, itemsCount, typePay, createOrder, typeOrder, clearCartData, setPayForm, setActiveModalBasket, checkNewOrder] = useCartStore((state) => [ state.trueOrderCash, state.openConfirmForm, state.setConfirmForm, state.itemsCount,
-    state.typePay, state.createOrder, state.typeOrder, state.clearCartData, state.setPayForm, state.setActiveModalBasket, state.checkNewOrder]);
+  const [trueOrderCash, openConfirmForm, setConfirmForm, itemsCount, typePay, createOrder, typeOrder, clearCartData, setPayForm, setActiveModalBasket, checkNewOrder, orderAddr, itemsOffDops, dopListCart, allPrice, free_drive] = useCartStore((state) => [ state.trueOrderCash, state.openConfirmForm, state.setConfirmForm, state.itemsCount,
+    state.typePay, state.createOrder, state.typeOrder, state.clearCartData, state.setPayForm, state.setActiveModalBasket, state.checkNewOrder, state.orderAddr, state.itemsOffDops, state.dopListCart, state.allPrice, state.free_drive ]);
 
   function getWord(int, array) {
     return (
@@ -163,10 +163,10 @@ export default function ConfirmForm() {
     }, 300);
   }
 
-  const openFormOrder = () => {
-    setConfirmForm(false);
-    setActiveModalBasket(true);
-  };
+  // const openFormOrder = () => {
+  //   setConfirmForm(false);
+  //   setActiveModalBasket(true);
+  // };
 
   //<ArrowLeftMobile onClick={openFormOrder} />
 
@@ -180,6 +180,21 @@ export default function ConfirmForm() {
   }, [openConfirmForm]);
 
   //<span className="confirmText">Чтобы всё прошло по плану, проверьте, пожалуйста, условия получения и состав вашего заказа:</span>
+
+  let price1 = itemsOffDops.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
+  let price2 = dopListCart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
+
+  let allPriceWithoutPromo_new = price1 + price2;
+
+  let NewSummDiv = typeOrder == 'pic' ? 0 : orderAddr?.sum_div ?? 0;
+
+  if(parseInt(free_drive) == 1) {
+    if(parseInt(allPriceWithoutPromo_new) > 0 || parseInt(allPrice) > 0) {
+      NewSummDiv = 0;
+    } else {
+      NewSummDiv = 1;
+    }
+  }
 
   return (
     <>
@@ -251,7 +266,14 @@ export default function ConfirmForm() {
               ))}
             </div>
 
-            
+            <div className="cofirmDivider" />
+
+            {typeOrder == 'pic' ? null : (
+              <div className="confirmDelivery">
+                <span>Доставка:</span>
+                <span>{new Intl.NumberFormat('ru-RU').format(NewSummDiv)} ₽</span>
+              </div>
+            )}
 
             <div className="confirmTotal">
               <span>Итого: {itemsCount} {getWord(itemsCount)}</span>
@@ -374,6 +396,15 @@ export default function ConfirmForm() {
                 </div>
               ))}
             </div>
+
+            <div className="cofirmDivider" />
+
+            {typeOrder == 'pic' ? null : (
+              <div className="confirmDelivery">
+                <span>Доставка:</span>
+                <span>{new Intl.NumberFormat('ru-RU').format(NewSummDiv)} ₽</span>
+              </div>
+            )}
 
             <div className="confirmTotal">
               <span>Итого: {itemsCount} {getWord(itemsCount)}</span>

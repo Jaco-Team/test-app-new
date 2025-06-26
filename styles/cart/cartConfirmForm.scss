@@ -160,6 +160,18 @@
       .table {
         margin-bottom: $MyScale20;
       }
+     
+      .confirmDelivery {
+        width: $MyScale840;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: $MyScale20;
+
+        span {
+          @include font40_500();
+        }
+      }
 
       .confirmTotal {
         width: $MyScale840;
@@ -358,6 +370,18 @@
 
       & .table {
         margin-bottom: $MyScale20_mobile;
+      }
+
+      & .confirmDelivery {
+        width: $MyScale1010_mobile;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        margin-bottom: $MyScale20_mobile;
+
+        & span{
+          @include font50_500();
+        }
       }
 
       & .confirmTotal {

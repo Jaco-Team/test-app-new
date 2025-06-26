@@ -14,10 +14,12 @@ export default function AkciiMobile() {
     }
   }, [thisCity]);
 
+  const akcijaBanners = bannerList?.filter(item => parseInt(item?.is_active_actii) === 1);
+
   return (
     <div className="akciiMobile">
       <span className="login">Выгодные предложения</span>
-      {bannerList?.map((item, key) => (
+      {akcijaBanners?.map((item, key) => (
         parseInt(item?.is_active_actii) === 1 ?
           <AkciiItemMobile key={item.id} actia={item} />
             :

@@ -14,6 +14,67 @@ import LinearProgress from '@mui/material/LinearProgress';
 
 import { roboto } from '@/ui/Font';
 
+// Определение задержки заказа
+function isOrderLate(order) {
+  if (!order?.max_time_order || !order?.status_order) return false;
+
+  const [hour, minute] = order.max_time_order.split(':').map(Number);
+
+  const deadline = new Date();
+
+  deadline.setHours(hour, minute, 0, 0);
+
+  const isActive =
+    (parseInt(order.status_order) >= 1 && parseInt(order.status_order) <= 5) &&
+    parseInt(order.is_delete) === 0;
+
+  const now = new Date();
+
+  return isActive && now > deadline;
+}
+
+// Получение статуса заказа
+function getOrderStatusText(order) {
+
+  if (!order) return '';
+
+  if (parseInt(order?.is_delete) === 1) {
+    return `Отменили в ${order?.del_date_time}`;
+  }
+
+  if (parseInt(order?.type_order_) === 1) {
+    if (parseInt(order?.status_order) >= 1 && parseInt(order?.status_order) <= 5) {
+      if (isOrderLate(order)) {
+        return 'Ваш заказ задерживается, но мы делаем всё возможное, чтобы вы скорее его получили. Благодарим за ожидание!';
+      }
+      if (parseInt(order?.is_preorder) === 1) {
+        return `Доставим ${order?.max_time_order}`;
+      } else {
+        return `Доставим до ${order?.max_time_order}`;
+      }
+    } else {
+      return `Доставили в ${order?.close_date_time}`;
+    }
+  } else {
+    if (parseInt(order?.status_order) >= 1 && parseInt(order?.status_order) <= 3) {
+      if (isOrderLate(order)) {
+        return 'Ваш заказ задерживается, но мы делаем всё возможное, чтобы вы скорее его получили. Благодарим за ожидание!';
+      }
+      if (parseInt(order?.is_preorder) === 1) {
+        return `Будет готов ${order?.max_time_order}`;
+      } else {
+        return `Будет готов до ${order?.max_time_order}`;
+      }
+    } else {
+      if (parseInt(order?.status_order) === 4) {
+        return 'Ждёт в кафе, можно забирать';
+      } else {
+        return `Отдали в ${order?.close_date_time}`;
+      }
+    }
+  }
+}
+
 function ModalOrderStatusIconDelivery({types}){
   return (
     <Grid item xs={12} className='header_status_icon'>
@@ -97,37 +158,7 @@ export default React.memo(function ModalOrder() {
   const [ token ] = useHeaderStoreNew( state => [ state.token ] )
   const [ thisCity ] = useCitiesStore( state => [ state.thisCity ] )
 
-  let order_status = '';
-
-  if( parseInt(modalOrder?.order?.is_delete) == 1 ){
-    order_status = `Отменили в ${modalOrder?.order?.del_date_time}`;
-  }else{
-    if( parseInt(modalOrder?.order?.type_order_) == 1 ){
-      if( parseInt(modalOrder?.order?.status_order) >= 1 && parseInt(modalOrder?.order?.status_order) <= 5 ){
-        if( parseInt(modalOrder?.order?.is_preorder) == 1 ){
-          order_status = `Доставим ${modalOrder?.order?.max_time_order}`;
-        }else{
-          order_status = `Доставим до ${modalOrder?.order?.max_time_order}`;
-        }
-      }else{
-        order_status = `Доставили в ${modalOrder?.order?.close_date_time}`;
-      }
-    }else{
-      if( parseInt(modalOrder?.order?.status_order) >= 1 && parseInt(modalOrder?.order?.status_order) <= 3 ){
-        if( parseInt(modalOrder?.order?.is_preorder) == 1 ){
-          order_status = `Будет готов ${modalOrder?.order?.max_time_order}`;
-        }else{
-          order_status = `Будет готов до ${modalOrder?.order?.max_time_order}`;
-        }
-      }else{
-        if( parseInt(modalOrder?.order?.status_order) == 4 ){
-          order_status = 'Ждёт в кафе, можно забирать';
-        }else{
-          order_status = `Отдали в ${modalOrder?.order?.close_date_time}`;
-        }
-      }
-    }
-  }
+  const order_status = getOrderStatusText(modalOrder?.order);
 
   useEffect( () => {
     if( openModal == true ){

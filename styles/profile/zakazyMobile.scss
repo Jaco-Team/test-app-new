@@ -123,29 +123,71 @@
           height: $MyScale35_mobile;
         }
 
-        & .zakazyEllipse {
-          display: flex;
-          justify-content: space-between;
-          height: $MyScale60_mobile;
-          width: $MyScale100_mobile;
-          margin-right: $MyScale40_mobile;
+        // & .zakazyEllipse {
+        //   display: flex;
+        //   justify-content: space-between;
+        //   height: $MyScale60_mobile;
+        //   width: $MyScale100_mobile;
+        //   margin-right: $MyScale40_mobile;
 
-          svg {
-            width: $MyScale20_mobile;
-            height: $MyScale20_mobile;
-          }
+        //   svg {
+        //     width: $MyScale20_mobile;
+        //     height: $MyScale20_mobile;
+        //   }
 
-          svg:nth-child(1) {
-            align-self: center;
-          }
+        //   svg:nth-child(1) {
+        //     align-self: center;
+        //   }
 
-          svg:nth-child(3) {
-            align-self: center;
-            margin-bottom: $MyScale20_mobile;
-          }
+        //   svg:nth-child(3) {
+        //     align-self: center;
+        //     margin-bottom: $MyScale20_mobile;
+        //   }
+        // }
+      }
+    }
+
+    & .zakazyItemСol {
+      display: flex;
+      align-items: center;
+      height: $MyScale160_mobile;
+      border-bottom: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+
+      & span {
+        @include font50_500();
+      }
+
+      span:nth-child(1) {
+        margin-left: $MyScale40_mobile;
+        width: $MyScale200_mobile;
+        flex-shrink: 0;
+      }
+
+      .zakazyGroupСol {
+        display: flex;
+        align-items: center;
+        flex: 1 1 auto;
+        min-width: 0;
+
+        span:nth-child(1) {
+          flex: 1 1 auto;
+        }
+
+        span:nth-child(2) {
+          margin-right: $MyScale20_mobile;
+          white-space: nowrap;
+        }
+
+        svg {
+          margin-left: $MyScale10_mobile;
+          width: $MyScale21_mobile;
+          height: $MyScale35_mobile;
+          flex-shrink: 0;
+          margin-right: $MyScale80_mobile;
         }
       }
     }
+
   }
 }
 
@@ -249,7 +291,7 @@
       }
 
       & .zakazyTimeText {
-        height: $MyScale80_mobile;
+        min-height: $MyScale80_mobile;
         width: $MyScale920_mobile;
         display: flex;
         align-items: flex-end;

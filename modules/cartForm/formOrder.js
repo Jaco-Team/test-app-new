@@ -761,6 +761,11 @@ export default function FormOrder({ cityName }) {
               onKeyDown={setPromoText}
               onBlur={() => getInfoPromo(promo, thisCity)}
               func={ event => setPromo(event.target.value)}
+              autoComplete="off"
+              autoCorrect="off"
+              autoCapitalize="off"
+              spellCheck="false"
+              disableAutofill={true}
               inputAdornment={
                 <InputAdornment position="end">
                   {checkPromo ? checkPromo.st ? <div className="circleInput"></div> : <div className="circleInput" style={{ background: '#DD1A32' }}></div> : null}
