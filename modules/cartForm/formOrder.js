@@ -587,6 +587,12 @@ export default function FormOrder({ cityName }) {
     }
   }, [typePay, orderAddr] )
 
+  let text_dev = 'Уважаемые клиенты, на сайте указано приблизительное время готовности заказа и доставки. В зависимости от ситуации на дорогах время доставки может быть увеличено. Благодарим за понимание!';
+
+  if( [4,5,7,8].includes( parseInt(orderAddr?.point_id) ) ){
+    text_dev = 'Уважаемые клиенты! Из-за перебоев в работе мобильного интернета возможны задержки в доставке заказов. Благодарим за понимание.';
+  }
+
   return (
     <>
       {matches ? (
@@ -786,7 +792,7 @@ export default function FormOrder({ cityName }) {
           {typeOrder == 'pic' ? 
             <span className="basketDopText">{ parseInt(hours) >= 21 ? 'Заказы на самовывоз выдаются до 22:00' : '' }</span> 
               : 
-            <span className="basketDopText">Уважаемые клиенты, на сайте указано приблизительное время готовности заказа и доставки. В зависимости от ситуации на дорогах время доставки может быть увеличено. Благодарим за понимание!</span>
+            <span className="basketDopText">{text_dev}</span>
           }
 
           <Button className="CartOrder" variant="contained" disabled={!itemsCount} onClick={ () => { create_order(); } }>
@@ -940,7 +946,7 @@ export default function FormOrder({ cityName }) {
             {typeOrder == 'pic' ? 
               <span className="basketDopText">{ parseInt(hours) >= 21 ? 'Заказы на самовывоз выдаются до 22:00' : '' }</span> 
                 : 
-              <span className="basketDopText">Уважаемые клиенты, на сайте указано приблизительное время готовности заказа и доставки. В зависимости от ситуации на дорогах время доставки может быть увеличено. Благодарим за понимание!</span>
+              <span className="basketDopText">{text_dev}</span>
             }
 
             <Button className="basketOrder" variant="contained" onClick={ () => { create_order(); } }>
