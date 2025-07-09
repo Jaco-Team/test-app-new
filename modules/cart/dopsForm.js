@@ -182,7 +182,7 @@ export default function DopsForm() {
 
             <div className="line" />
             <span className="dopsHeader">Кажется,</span>
-            <span className="dopsHeader dopsHeader_2">вы кое-то забыли</span>
+            <span className="dopsHeader dopsHeader_2">вы кое-что забыли</span>
 
             <div className="dopsItems">
               {dopListCart.map((item, key) => (
