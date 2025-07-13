@@ -61,7 +61,7 @@ export default function Home(props) {
 
   return (
     <div className={roboto.variable}>
-      <DynamicHomePage page={page} city={city} />
+      <DynamicHomePage page={page} city={city} banner={props.json.banner} />
 
       <DynamicFooter cityName={city} active_page={this_module} />
     </div>
@@ -110,5 +110,5 @@ export async function getServerSideProps({ req, res, query }) {
     }
   }
 
-  return { props: { data1 } }
+  return { props: { data1, json } }
 }

@@ -19,7 +19,7 @@ import { useSearchParams } from 'next/navigation'
 
 let click = false;
 
-export default memo(function AkciiPage({ page }) {
+export default memo(function AkciiPage({ page, banner }) {
   const [matches] = useHeaderStoreNew((state) => [state?.matches]);
 
   const [ pageBanner, bannerList ] = useHomeStore((state) => [state.pageBanner, state.bannerList]);
@@ -73,9 +73,15 @@ export default memo(function AkciiPage({ page }) {
     }
   }, [pageBanner])
 
+  //console.log('page', page)
+  //console.log('pageBanner', pageBanner, banner)
+
   if( page?.is_one_actia == true ){
     return (
-      <Meta title={page.title} description={page.description}>
+      <Meta 
+        title={banner && banner.seo_title.length > 0 ? banner.seo_title : page.title} 
+        description={banner && banner.seo_desc.length > 0 ? banner.seo_desc : page.description}
+      >
         {matches ? 
           <div className="akciiMobile onePage" style={{ marginTop: 100 }}>
             <AkciiItemMobile actia={pageBanner} is_one_actia={page?.is_one_actia} /> 

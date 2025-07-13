@@ -2461,6 +2461,49 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           })
         }
 
+        //на самый деешвый товар в корзине ( кроме допов )
+        if (parseInt(promo_info.sale.cat_sale) === 444) {
+          count_sale = parseInt(promo_info.sale.count_sale);
+
+          // 1. Находим индекс самой дешёвой позиции,
+          //    исключив type 3 и 4 (допы/напитки)
+          let minIndex = -1;
+          let minPrice = Infinity;
+
+          my_cart.forEach((el_cart, idx) => {
+            const this_item = allItems?.find(it => it.id == el_cart.item_id);
+            if ([3, 4].includes(parseInt(this_item.type))) return; // пропускаем
+            if (parseInt(el_cart.one_price) < minPrice) {
+              minPrice = parseInt(el_cart.one_price);
+              minIndex = idx;
+            }
+          });
+
+          // 2. Если нашли товар — применяем скидку
+          if (minIndex > -1) {
+            const el_cart = my_cart[minIndex];
+
+            if (parseInt(promo_info.sale.type_price) === 1) {
+              // --- скидка фикс. суммой ---
+              let all_price =
+                parseInt(el_cart.one_price) * parseInt(el_cart.count) - count_sale;
+
+              if (all_price <= 0) all_price = 1;
+
+              my_cart[minIndex].new_one_price = parseInt(el_cart.one_price);
+              my_cart[minIndex].all_price = all_price;
+            } else {
+              // --- скидка в процентах ---
+              const all_price =
+                parseInt(el_cart.all_price) -
+                (parseInt(el_cart.all_price) / 100) * count_sale;
+
+              my_cart[minIndex].new_one_price = parseInt(el_cart.one_price);
+              my_cart[minIndex].all_price = parseInt(all_price);
+            }
+          }
+        }
+
         //все
         if( parseInt(promo_info.sale.cat_sale) == 7 ){
           count_sale = parseInt(promo_info.sale.count_sale);
