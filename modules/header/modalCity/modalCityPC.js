@@ -41,6 +41,12 @@ export default function ModalCityPC() {
     localStorage.setItem('setCity', JSON.stringify(city));
   };
 
+  function replaceCity(path, city) {
+    const parts = path.split('/').filter(Boolean);
+    parts[0] = city;
+    return '/' + parts.join('/');
+  }
+
   const chooseCity = (city) => {
     localStorage.setItem('setCity', JSON.stringify(city));
     // setThisCityRu(city.name);
@@ -51,11 +57,13 @@ export default function ModalCityPC() {
     // getMap('contacts', city.link);
     // resetFilter();
 
-    if(activePage && activePage !== 'home') {
-      push(`/${city.link}/${activePage}`);
-    } else {
-      push(`/${city.link}`);
-    }
+    let new_path = replaceCity(window.location.pathname, city.link);
+
+    // if(activePage && activePage !== 'home') {
+    //   push(`/${city.link}/${activePage}`);
+    // } else {
+      push(new_path);
+    //}
 
     setTimeout( () => {
       window.location.reload()

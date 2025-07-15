@@ -216,7 +216,7 @@ export default function DopsForm() {
             </IconButton>
               
             <span className="dopsHeader dopsHeader_2">Кажется,</span>
-            <span className="dopsHeader dopsHeader_3">вы кое-то забыли</span>
+            <span className="dopsHeader dopsHeader_3">вы кое-что забыли</span>
 
             <table className="dopsTable">
               <tbody>
