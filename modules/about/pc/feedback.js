@@ -33,7 +33,7 @@ export default function Feedback() {
         </span>
         <br />
         <br />
-        <span>Знаете, как улучшить блюда? Заполните <Link href={'https://docs.google.com/forms/d/e/1FAIpQLSc_ohjcoYjY6W5oqaGnoDhlSlyT8Y_LEfbHljjqRAqyvpEv1Q/viewform'} target="_blank">анкету.</Link></span>
+        <span>Знаете, как улучшить блюда? Заполните <Link href={'https://b24-rzeh1q.bitrix24site.ru/'} target="_blank">анкету.</Link></span>
       </p>
     </Grid>
   );

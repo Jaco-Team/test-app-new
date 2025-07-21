@@ -12,9 +12,9 @@ export default function Cooperation() {
         <br />
         <span>Бизнес — <Link href={'https://franchise.jacofood.ru/'} target="_blank">стать франчайзи</Link></span>
         <br />
-        <span >Отдел маркетинга — <Link href={'mailto:event.jaco@gmail.com'}>event.jaco@gmail.com</Link> +7 (906) 129-98-33</span>
+        <span >Отдел маркетинга — <Link href={'mailto:event.jaco@yandex.ru'}>event.jaco@yandex.ru</Link> +7 (906) 129-98-33</span>
         <br />
-        <span>Отдел закупок — <Link href={'mailto:zacupci.jaco@gmail.com'}>zacupci.jaco@gmail.com</Link> +7 (903) 333-74-85</span>
+        <span>Отдел закупок — <Link href={'mailto:Zacupci.jaco@yandex.ru'}>Zacupci.jaco@yandex.ru</Link> +7 (903) 333-74-85</span>
       </p>
     </Grid>
   );
