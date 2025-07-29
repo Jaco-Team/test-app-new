@@ -75,7 +75,7 @@ export async function getServerSideProps({ req, res, query }) {
   let data = {
     type: 'get_page_info', 
     city_id: query.city,
-    page: '' 
+    page: 'menu' 
   };
 
   const data1 = await api(this_module, data);
