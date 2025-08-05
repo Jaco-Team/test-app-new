@@ -38,7 +38,7 @@ export default memo(function CardItem({ item, count, index}) {
     plus(item.id, item.cat_id)
     ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
 
-    dataLayer.push({
+    ymDataLayer.push({
       "ecommerce": {
         "currencyCode": "RUB",    
         "add": {
@@ -75,7 +75,7 @@ export default memo(function CardItem({ item, count, index}) {
     minus(item.id);
     ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
 
-    dataLayer.push({
+    ymDataLayer.push({
       "ecommerce": {
         "currencyCode": "RUB",
         "remove": {

@@ -47,7 +47,7 @@ export default React.memo(function BannersMobile() {
   const openBanner = (item) => {
     setActiveBanner(true, item, swiperRef.current.swiper)
 
-    dataLayer.push({
+    ymDataLayer.push({
       "ecommerce": {
         "promoClick": {
           "promotions": [

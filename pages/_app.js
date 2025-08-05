@@ -319,6 +319,10 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
   return (
     <ThemeProvider theme={theme}>
 
+      <Script id="ym-datalayer" strategy="beforeInteractive">
+        {`window.ymDataLayer = window.ymDataLayer || [];`}
+      </Script>
+
       <Script 
         src={"https://api-maps.yandex.ru/2.1/?apikey="+process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP+"&lang=ru_RU"}
       />

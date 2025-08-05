@@ -58,7 +58,7 @@ export default memo(function CartItemMobile({ item, count, last }) {
       minus(item?.item_id); 
       ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param);
 
-      dataLayer.push({
+      ymDataLayer.push({
         "ecommerce": {
           "currencyCode": "RUB",
           "remove": {
@@ -105,7 +105,7 @@ export default memo(function CartItemMobile({ item, count, last }) {
     minus(item?.item_id, 'zero'); 
     ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param);
 
-    dataLayer.push({
+    ymDataLayer.push({
       "ecommerce": {
         "currencyCode": "RUB",
         "remove": {
@@ -153,7 +153,7 @@ export default memo(function CartItemMobile({ item, count, last }) {
     plus(item?.item_id); 
     ym(47085879, 'reachGoal', 'add_to_cart', metrica_param);
 
-    dataLayer.push({
+    ymDataLayer.push({
       "ecommerce": {
         "currencyCode": "RUB",    
         "add": {

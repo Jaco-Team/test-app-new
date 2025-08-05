@@ -23,7 +23,7 @@ function YandexMetrikaTag({
   trackLinks = convertParam(trackLinks, true);
   accurateTrackBounce = convertParam(accurateTrackBounce, true);
   webvisor = convertParam(webvisor, true);
-  ecommerce = ecommerce == true ? "dataLayer" : "false";
+  ecommerce = ecommerce == true ? "ymDataLayer" : "false";
 
   // Script that injects Yandex Metrika tag script.
   const scriptInjectorHTML = `

@@ -87,7 +87,7 @@ export default function DopsForm() {
             })
           } )
 
-          dataLayer.push({
+          ymDataLayer.push({
             "ecommerce": {
               "currencyCode": "RUB",
               "purchase": {
@@ -127,7 +127,7 @@ export default function DopsForm() {
             })
           } )
 
-          dataLayer.push({
+          ymDataLayer.push({
             "ecommerce": {
               "currencyCode": "RUB",
               "purchase": {

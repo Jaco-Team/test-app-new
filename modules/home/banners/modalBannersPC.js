@@ -81,7 +81,7 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
     this_plus(thisItem?.id, thisItem?.cat_id); 
     ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
 
-    dataLayer.push({
+    ymDataLayer.push({
       "ecommerce": {
         "currencyCode": "RUB",    
         "add": {
@@ -135,7 +135,7 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
     this_minus(thisItem?.id); 
     ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
 
-    dataLayer.push({
+    ymDataLayer.push({
       "ecommerce": {
         "currencyCode": "RUB",
         "remove": {

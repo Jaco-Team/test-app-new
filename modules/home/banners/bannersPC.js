@@ -48,7 +48,7 @@ export default (function BannersPC() {
   const openBanner = (item) => {
     setActiveBanner(true, item, swiperRef.current.swiper)
 
-    dataLayer.push({
+    ymDataLayer.push({
       "ecommerce": {
         "promoClick": {
           "promotions": [

@@ -50,7 +50,7 @@ export default memo(function AkciiPage({ page, banner }) {
 
   useEffect(() => {
     if( page?.is_one_actia == true && pageBanner && click == false ){
-      dataLayer.push({
+      ymDataLayer.push({
         "ecommerce": {
           "promoClick": {
             "promotions": [

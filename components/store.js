@@ -4513,7 +4513,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     useProfileStore.getState().saveUserActions('open_item_home', json?.name, json?.price, item_id);
   
-    dataLayer.push({
+    ymDataLayer.push({
       "ecommerce": {
         "currencyCode": "RUB",
         "detail": {

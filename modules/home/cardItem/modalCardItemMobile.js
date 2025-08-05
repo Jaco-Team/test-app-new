@@ -97,7 +97,7 @@ export default function ModalCardItemMobile() {
     changeCountPlus(openItem?.id);
     ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
 
-    dataLayer.push({
+    ymDataLayer.push({
       "ecommerce": {
         "currencyCode": "RUB",    
         "add": {
@@ -134,7 +134,7 @@ export default function ModalCardItemMobile() {
     changeCountMinus(openItem?.id);
     ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
 
-    dataLayer.push({
+    ymDataLayer.push({
       "ecommerce": {
         "currencyCode": "RUB",
         "remove": {

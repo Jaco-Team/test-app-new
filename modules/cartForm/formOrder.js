@@ -446,7 +446,7 @@ export default function FormOrder({ cityName }) {
             })
           } )
 
-          dataLayer.push({
+          ymDataLayer.push({
             "ecommerce": {
               "currencyCode": "RUB",
               "purchase": {
@@ -486,7 +486,7 @@ export default function FormOrder({ cityName }) {
             })
           } )
 
-          dataLayer.push({
+          ymDataLayer.push({
             "ecommerce": {
               "currencyCode": "RUB",
               "purchase": {
