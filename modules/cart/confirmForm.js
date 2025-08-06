@@ -52,7 +52,7 @@ export default function ConfirmForm() {
   function trueOrderCLose() {
     showLoad(true);
 
-    setTimeout(() => {
+    //setTimeout(() => {
       try {
         const ym_data = {
           city: thisCityRu,
@@ -62,8 +62,7 @@ export default function ConfirmForm() {
 
         ym(47085879, 'reachGoal', 'pay_order', ym_data);
 
-        roistat.event.send('pay_order');
-        roistat.event.send('pay_order_'+typeOrder+'_'+typePay?.id);
+        
 
         if( thisCityRu == 'Самара' ){
           ym(100325084, 'reachGoal', 'pay_order', ym_data);
@@ -142,7 +141,8 @@ export default function ConfirmForm() {
             }
           });
 
-          
+          roistat.event.send('pay_order');
+          roistat.event.send('pay_order_'+typeOrder+'_'+typePay?.id);
         }
       } catch (e) {
         console.log(e);
@@ -160,7 +160,7 @@ export default function ConfirmForm() {
 
         showLoad(false);
       }, 2000);
-    }, 300);
+    //}, 300);
   }
 
   // const openFormOrder = () => {

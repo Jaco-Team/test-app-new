@@ -424,81 +424,99 @@ export default function FormOrder({ cityName }) {
         roistat.event.send('pay_order_'+typeOrder+'_'+typePay?.id);
 
         if( thisCityRu == 'Самара' ){
-          ym(100325084, 'reachGoal', 'pay_order', ym_data);
-          ym(100325084, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
 
-          roistat.event.send('pay_order_samara');
-          roistat.event.send('pay_order_samara_'+typeOrder+'_'+typePay?.id);
+          // сразу после успешной оплаты/создания заказа:
+          if (window.ym) {
+            try { 
+              ym(100325084, 'reachGoal', 'pay_order', ym_data);
+              ym(100325084, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
 
-          let items = [];
+              roistat.event.send('pay_order_samara');
+              roistat.event.send('pay_order_samara_'+typeOrder+'_'+typePay?.id);
 
-          checkNewOrder?.items?.map( (item, index) => {
-            items.push({
-              "id": item?.id ?? 0,
-              "name": item?.name ?? '',
-              "price": item?.price ?? '',
-              //"brand": "Яндекс / Яndex",
-              "category": item?.cat_name ?? '',
-              //"variant": "Оранжевый цвет",
-              "quantity": item?.count ?? '',
-              //"list": "Одежда",
-              "position": index
-            })
-          } )
+              let items = [];
 
-          ymDataLayer.push({
-            "ecommerce": {
-              "currencyCode": "RUB",
-              "purchase": {
-                "actionField": {
-                  "id": checkNewOrder?.order?.order_id ?? 0,
-                  "coupon": checkNewOrder?.order?.promo_name ?? '',
-                  "revenue": checkNewOrder?.order?.sum_order ?? 0
-                },
-                "products": items ?? []
-              }
-            }
-          });
+              checkNewOrder?.items?.map( (item, index) => {
+                items.push({
+                  "id": item?.id ?? 0,
+                  "name": item?.name ?? '',
+                  "price": item?.price ?? '',
+                  //"brand": "Яндекс / Яndex",
+                  "category": item?.cat_name ?? '',
+                  //"variant": "Оранжевый цвет",
+                  "quantity": item?.count ?? '',
+                  //"list": "Одежда",
+                  "position": index
+                })
+              } )
+
+              ymDataLayer.push({
+                "ecommerce": {
+                  "currencyCode": "RUB",
+                  "purchase": {
+                    "actionField": {
+                      "id": checkNewOrder?.order?.order_id ?? 0,
+                      "coupon": checkNewOrder?.order?.promo_name ?? '',
+                      "revenue": checkNewOrder?.order?.sum_order ?? 0
+                    },
+                    "products": items ?? []
+                  }
+                }
+              });
+
+            } catch (e) {}
+          }
+
+          
 
           
         }
 
         if( thisCityRu == 'Тольятти' ){
-          ym(100601350, 'reachGoal', 'pay_order', ym_data);
-          ym(100601350, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
 
-          roistat.event.send('pay_order_togliatti');
-          roistat.event.send('pay_order_togliatti_'+typeOrder+'_'+typePay?.id);
+          if (window.ym) {
+            try { 
+              ym(100601350, 'reachGoal', 'pay_order', ym_data);
+              ym(100601350, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
 
-          let items = [];
+              roistat.event.send('pay_order_togliatti');
+              roistat.event.send('pay_order_togliatti_'+typeOrder+'_'+typePay?.id);
 
-          checkNewOrder?.items?.map( (item, index) => {
-            items.push({
-              "id": item?.id ?? 0,
-              "name": item?.name ?? '',
-              "price": item?.price ?? '',
-              //"brand": "Яндекс / Яndex",
-              "category": item?.cat_name ?? '',
-              //"variant": "Оранжевый цвет",
-              "quantity": item?.count ?? '',
-              //"list": "Одежда",
-              "position": index
-            })
-          } )
+              let items = [];
 
-          ymDataLayer.push({
-            "ecommerce": {
-              "currencyCode": "RUB",
-              "purchase": {
-                "actionField": {
-                  "id": checkNewOrder?.order?.order_id ?? 0,
-                  "coupon": checkNewOrder?.order?.promo_name ?? '',
-                  "revenue": checkNewOrder?.order?.sum_order ?? 0
-                },
-                "products": items ?? []
-              }
-            }
-          });
+              checkNewOrder?.items?.map( (item, index) => {
+                items.push({
+                  "id": item?.id ?? 0,
+                  "name": item?.name ?? '',
+                  "price": item?.price ?? '',
+                  //"brand": "Яндекс / Яndex",
+                  "category": item?.cat_name ?? '',
+                  //"variant": "Оранжевый цвет",
+                  "quantity": item?.count ?? '',
+                  //"list": "Одежда",
+                  "position": index
+                })
+              } )
+
+              ymDataLayer.push({
+                "ecommerce": {
+                  "currencyCode": "RUB",
+                  "purchase": {
+                    "actionField": {
+                      "id": checkNewOrder?.order?.order_id ?? 0,
+                      "coupon": checkNewOrder?.order?.promo_name ?? '',
+                      "revenue": checkNewOrder?.order?.sum_order ?? 0
+                    },
+                    "products": items ?? []
+                  }
+                }
+              });
+
+            } catch (e) {}
+          }
+
+
+          
 
           
         }
