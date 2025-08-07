@@ -1367,7 +1367,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         cart: JSON.stringify(get().items),
         free_drive: get().free_drive,
         ytoken: ytoken,
-        rtoken: typeof window !== "undefined" ? window.roistat?.getVisit?.() || 0 : 0,
+        //rtoken: typeof window !== "undefined" ? window.roistat?.getVisit?.() || 0 : 0,
+        rtoken: 0
       };
     } else {
       data = {
@@ -1385,7 +1386,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         cart: JSON.stringify(get().items),
         free_drive: get().free_drive,
         ytoken: ytoken,
-        rtoken: typeof window !== "undefined" ? window.roistat?.getVisit?.() || 0 : 0,
+        //rtoken: typeof window !== "undefined" ? window.roistat?.getVisit?.() || 0 : 0,
+        rtoken: 0
       };
     }
 
@@ -3574,7 +3576,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
         ym(100601350, 'reachGoal', 'del_order', { text: text });
       }
 
-      roistat.event.send('del_order');
+      //roistat.event.send('del_order');
     }else{
       useHeaderStoreNew.getState().setActiveModalAlert(true, json?.text, false);
     }

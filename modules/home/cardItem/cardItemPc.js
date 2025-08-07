@@ -10,7 +10,7 @@ import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.j
 
 import BadgeItem from './badge';
 
-import { roistatReady } from '@/components/roistatEvents'
+//import { roistatReady } from '@/components/roistatEvents'
 
 export default memo(function CardItem({ item, count, index}) {
   const [getItem] = useHomeStore((state) => [state.getItem]);
@@ -67,7 +67,7 @@ export default memo(function CardItem({ item, count, index}) {
     }
 
     //roistatReady(() =>
-      roistat.event.send('add_to_cart')
+      //roistat.event.send('add_to_cart')
     //);
   }
 
@@ -102,7 +102,7 @@ export default memo(function CardItem({ item, count, index}) {
     }
 
     //roistatReady(() =>
-      roistat.event.send('remove_from_cart');
+      //roistat.event.send('remove_from_cart');
     //);
   }
 

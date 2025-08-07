@@ -316,6 +316,15 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
 
   }
   //<GoogleTagManager gtmId="UA-148366601-1" />
+
+  // <MetricaRoistat />
+
+  //     <input
+  //       type="hidden"
+  //       name="roistat_visit"
+  //       value={typeof window !== "undefined" ? window.roistat?.getVisit?.() || "" : ""}
+  //     />
+
   return (
     <ThemeProvider theme={theme}>
 
@@ -402,13 +411,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
 
       <Component {...pageProps} />
 
-      <MetricaRoistat />
-
-      <input
-        type="hidden"
-        name="roistat_visit"
-        value={typeof window !== "undefined" ? window.roistat?.getVisit?.() || "" : ""}
-      />
+      
     </ThemeProvider>
   )
 }

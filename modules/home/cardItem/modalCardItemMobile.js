@@ -17,7 +17,7 @@ import { roboto } from '@/ui/Font';
 
 //import {placeholder_img} from '@/public/placeholder_img';
 
-import { roistatReady } from '@/components/roistatEvents'
+//import { roistatReady } from '@/components/roistatEvents'
 
 export default function ModalCardItemMobile() {
   const [isOpenModal, openItem, setActiveModalCardItemMobile, getItem] = useHomeStore((state) => [state.isOpenModal, state.openItem, state.setActiveModalCardItemMobile, state.getItem]);
@@ -126,7 +126,7 @@ export default function ModalCardItemMobile() {
     }
 
     //roistatReady(() =>
-      roistat.event.send('add_to_cart');
+      //roistat.event.send('add_to_cart');
     //);
   }
 
@@ -161,7 +161,7 @@ export default function ModalCardItemMobile() {
     }
 
     //roistatReady(() =>
-      roistat.event.send('remove_from_cart');
+      //roistat.event.send('remove_from_cart');
     //);
   }
 
@@ -176,7 +176,7 @@ export default function ModalCardItemMobile() {
       ym(100601350, 'reachGoal', 'sostav_seta', metrica_param_min);
     }
 
-    roistat.event.send('sostav_seta');
+    //roistat.event.send('sostav_seta');
   }
 
   return (

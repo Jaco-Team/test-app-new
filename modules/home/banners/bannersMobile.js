@@ -71,9 +71,9 @@ export default React.memo(function BannersMobile() {
     }
 
     //roistatReady(() =>
-      roistat.event.send('open_banner', {
-        name: item?.title
-      });
+      // roistat.event.send('open_banner', {
+      //   name: item?.title
+      // });
     //);
   }
 

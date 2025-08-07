@@ -6,7 +6,7 @@ import { useCartStore, useCitiesStore, useHomeStore } from '@/components/store.j
 
 import { useLongPress } from "use-long-press";
 
-import { roistatReady } from '@/components/roistatEvents'
+//import { roistatReady } from '@/components/roistatEvents'
 
 function findById(array, targetId) {
   for (const item of array) {
@@ -85,15 +85,15 @@ export default memo(function CartItemMobile({ item, count, last }) {
       }
 
       //roistatReady(() =>
-        roistat.event.send('remove_from_cart', {
-          id: item?.item_id,
-          name: item?.name,
-          price: item?.one_price,
-          quantity: 1,
-          category: {
-            "level1": cat_name,
-          },
-        });
+        // roistat.event.send('remove_from_cart', {
+        //   id: item?.item_id,
+        //   name: item?.name,
+        //   price: item?.one_price,
+        //   quantity: 1,
+        //   category: {
+        //     "level1": cat_name,
+        //   },
+        // });
       //);
     }
   };
@@ -132,15 +132,15 @@ export default memo(function CartItemMobile({ item, count, last }) {
     }
 
     //roistatReady(() =>
-      roistat.event.send('remove_from_cart', {
-        id: item?.item_id,
-        name: item?.name,
-        price: item?.one_price,
-        quantity: count,
-        category: {
-          "level1": cat_name,
-        },
-      });
+      // roistat.event.send('remove_from_cart', {
+      //   id: item?.item_id,
+      //   name: item?.name,
+      //   price: item?.one_price,
+      //   quantity: count,
+      //   category: {
+      //     "level1": cat_name,
+      //   },
+      // });
     //);
 
     setTimeout(() => {
@@ -182,15 +182,15 @@ export default memo(function CartItemMobile({ item, count, last }) {
     }
 
     //roistatReady(() =>
-      roistat.event.send('add_to_cart', {
-        id: item?.id,
-        name: item?.name,
-        price: item?.one_price,
-        quantity: 1,
-        category: {
-          "level1": cat_name,
-        },
-      });
+      // roistat.event.send('add_to_cart', {
+      //   id: item?.id,
+      //   name: item?.name,
+      //   price: item?.one_price,
+      //   quantity: 1,
+      //   category: {
+      //     "level1": cat_name,
+      //   },
+      // });
     //);
   }
 

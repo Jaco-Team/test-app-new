@@ -86,7 +86,7 @@ function useYandexMetrika(city) {
             ym(100601350, 'reachGoal', 'open_item', { tovar: params.productId })
           }
 
-          roistat.event.send('open_item');
+          //roistat.event.send('open_item');
         }
 
         
@@ -111,7 +111,7 @@ function useYandexMetrika(city) {
           }
 
           
-          roistat.event.send('open_card');
+          //roistat.event.send('open_card');
         }
 
         if (typeof window !== 'undefined') {
@@ -131,7 +131,7 @@ function useYandexMetrika(city) {
             ym(100601350, 'reachGoal', 'confirm_card'); 
           }
 
-          roistat.event.send('confirm_card');
+          //roistat.event.send('confirm_card');
         }
 
         if (typeof window !== 'undefined') {

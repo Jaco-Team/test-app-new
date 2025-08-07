@@ -23,7 +23,7 @@ import { roboto } from '@/ui/Font';
 
 //import {placeholder_img} from '@/public/placeholder_img';
 
-import { roistatReady } from '@/components/roistatEvents'
+//import { roistatReady } from '@/components/roistatEvents'
 
 export default function ModalItemPC() {
   const [openItemCard, closeItemModal, typeModal_dop, item_card, foodValue, navigate_dop, closeTypeModal_dop] = useHomeStore((state) => [state.openItemCard, state.closeItemModal, state.typeModal_dop, state.item_card, state.foodValue, state.navigate_dop, state.closeTypeModal_dop]);
@@ -106,7 +106,7 @@ export default function ModalItemPC() {
     }
 
     //roistatReady(() =>
-      roistat.event.send('add_to_cart');
+      //roistat.event.send('add_to_cart');
     //);
   }
 
@@ -141,7 +141,7 @@ export default function ModalItemPC() {
     }
 
     //roistatReady(() =>
-      roistat.event.send('remove_from_cart');
+      //roistat.event.send('remove_from_cart');
     //);
   }
 

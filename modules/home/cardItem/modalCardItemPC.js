@@ -23,7 +23,7 @@ import { roboto } from '@/ui/Font';
 
 //import {placeholder_img} from '@/public/placeholder_img';
 
-import { roistatReady } from '@/components/roistatEvents'
+//import { roistatReady } from '@/components/roistatEvents'
 
 export default function ModalCardItemPC() {
   const [isOpenModal, closeModal, typeModal, openItem, foodValue, navigate, closeTypeModal, getItem] = useHomeStore((state) => [state.isOpenModal, state.closeModal, state.typeModal, state.openItem, state.foodValue, state.navigate, state.closeTypeModal, state.getItem]);
@@ -106,7 +106,7 @@ export default function ModalCardItemPC() {
     }
 
     //roistatReady(() =>
-      roistat.event.send('add_to_cart');
+      //roistat.event.send('add_to_cart');
     //);
   }
 
@@ -141,7 +141,7 @@ export default function ModalCardItemPC() {
     }
 
     //roistatReady(() =>
-      roistat.event.send('remove_from_cart');
+      //roistat.event.send('remove_from_cart');
     //);
   }
 
@@ -156,7 +156,7 @@ export default function ModalCardItemPC() {
       ym(100601350, 'reachGoal', 'sostav_seta', metrica_param_min);
     }
 
-    roistat.event.send('sostav_seta');
+    //roistat.event.send('sostav_seta');
   }
 
   return (

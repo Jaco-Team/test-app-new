@@ -19,7 +19,7 @@ import { IconClose } from '@/ui/Icons';
 
 import { roboto } from '@/ui/Font';
 
-import { roistatReady } from '@/components/roistatEvents'
+//import { roistatReady } from '@/components/roistatEvents'
 
 function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }){
 
@@ -115,19 +115,19 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
       ym(100601350, 'reachGoal', 'active_actia_home', {akcia_name: bannerTitle}); 
     }
 
-    roistat.event.send('active_actia_all');
-    roistat.event.send('active_actia_home');
+    //roistat.event.send('active_actia_all');
+    //roistat.event.send('active_actia_home');
 
     //roistatReady(() =>
-      roistat.event.send('add_to_cart', {
-        id: thisItem?.id,
-        name: thisItem?.name,
-        price: thisItem?.price,
-        quantity: 1,
-        category: {
-          "level1": thisItem?.cat_name,
-        },
-      });
+      // roistat.event.send('add_to_cart', {
+      //   id: thisItem?.id,
+      //   name: thisItem?.name,
+      //   price: thisItem?.price,
+      //   quantity: 1,
+      //   category: {
+      //     "level1": thisItem?.cat_name,
+      //   },
+      // });
     //);
   }
 
@@ -162,15 +162,15 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
     }
 
     //roistatReady(() =>
-      roistat.event.send('remove_from_cart', {
-        id: thisItem?.item_id,
-        name: thisItem?.name,
-        price: thisItem?.price,
-        quantity: 1,
-        category: {
-          "level1": thisItem?.cat_name,
-        },
-      });
+      // roistat.event.send('remove_from_cart', {
+      //   id: thisItem?.item_id,
+      //   name: thisItem?.name,
+      //   price: thisItem?.price,
+      //   quantity: 1,
+      //   category: {
+      //     "level1": thisItem?.cat_name,
+      //   },
+      // });
     //);
   }
 

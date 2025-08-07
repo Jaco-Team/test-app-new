@@ -3,7 +3,7 @@ import { BasketIconNew } from '@/ui/Icons.js';
 
 import Cookies from 'js-cookie'
 
-import { roistatReady } from '@/components/roistatEvents'
+//import { roistatReady } from '@/components/roistatEvents'
 
 export default function BasketIconHeaderPC() {
   const [setActiveBasket, openBasket] = useHeaderStoreNew((state) => [state?.setActiveBasket, state?.openBasket]);
@@ -31,7 +31,7 @@ export default function BasketIconHeaderPC() {
       }
 
       //roistatReady(() =>
-        roistat.event.send('open_basket');
+        //roistat.event.send('open_basket');
       //);
     }
 
