@@ -247,48 +247,57 @@ export default function ModalItemPC() {
                           <Link href={links?.link_allergens ?? links} target="_blank" style={{ color: '#DD1A32', cursor: 'pointer'}}>скачать в формате PDF</Link>
                         </Typography>
                       </div>
-                      {item_card?.items.map((item, key) => (
-                        <div key={key} className="ValueItem" style={{ marginBottom: item === item_card?.items.at(-1) ? '8vw' : '0.72202vw' }}>
+                      {(item_card?.items ?? []).map((item, idx, arr) => (
+                        <div
+                          key={idx}
+                          className="ValueItem"
+                          style={{
+                            marginBottom: idx === arr.length - 1 ? '8vw' : '0.72202vw'
+                          }}
+                        >
                           <div className="itemNumber">
-                            <span className="ItemDesk">{key + 1}.</span>
+                            <span className="ItemDesk">{idx + 1}.</span>
                           </div>
 
                           <div className="itemValueColumn">
                             <div className="itemValueRowMain">
-                              <div className="ItemTitleSet">{item.name}</div>
+                              <div className="ItemTitleSet">{item?.name}</div>
 
                               <div>
-                                <span className="ItemTitleStart">{item.kkal}</span>
+                                <span className="ItemTitleStart">{item?.kkal}</span>
                                 <span className="ItemTitleValue">ккал</span>
                               </div>
                             </div>
 
                             <div className="itemValueRow">
-                              <div className="ItemTitleValue">Состав: {item.tmp_desc}</div>
+                              <div className="ItemTitleValue">
+                                Состав: {item?.tmp_desc}
+                              </div>
 
                               <div>
                                 <div>
                                   <span className="ItemTitleValue">белки</span>
                                   <span className="dot"></span>
-                                  <span className="ItemTitleValue">{item.protein} г</span>
+                                  <span className="ItemTitleValue">{item?.protein} г</span>
                                 </div>
 
                                 <div>
                                   <span className="ItemTitleValue">жиры</span>
                                   <span className="dot"></span>
-                                  <span className="ItemTitleValue">{item.fat} г</span>
+                                  <span className="ItemTitleValue">{item?.fat} г</span>
                                 </div>
 
                                 <div>
                                   <span className="ItemTitleValue">углеводы</span>
                                   <span className="dot"></span>
-                                  <span className="ItemTitleValue">{item.carbohydrates} г</span>
+                                  <span className="ItemTitleValue">{item?.carbohydrates} г</span>
                                 </div>
                               </div>
                             </div>
                           </div>
                         </div>
                       ))}
+
                     </div>
                   </div>
                 </div>

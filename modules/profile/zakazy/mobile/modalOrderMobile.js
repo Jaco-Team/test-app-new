@@ -281,15 +281,29 @@ export default React.memo(function ModalOrderMobile() {
             <span>{new Intl.NumberFormat('ru-RU').format(modalOrder?.order?.sum_order)}{' '}₽</span>
           </div>
 
-          {modalOrder?.order_items?.map((order, key) => (
-            <div key={key} className="zakazyOrder"
-              style={{ marginBottom: order === modalOrder?.order_items?.at(-1) && parseInt(modalOrder?.order?.type_order_) !== 1 ? '8.5470085470085vw' : null,
-                height: order?.name?.length > 29 ? '11.111111111111vw' : '6.8376068376068vw' }}>
-              <span>{order.count}</span>
-              <span>{order.name}</span>
-              <span>{new Intl.NumberFormat('ru-RU').format(order.price)}{' '}₽</span>
-            </div>
-          ))}
+          {modalOrder?.order_items?.map((order, idx) => {
+            const len = modalOrder?.order_items?.length ?? 0;
+            const isLast = idx === len - 1;
+            return (
+              <div
+                key={idx}
+                className="zakazyOrder"
+                style={{
+                  marginBottom:
+                    isLast && parseInt(modalOrder?.order?.type_order_) !== 1
+                      ? '8.5470085470085vw'
+                      : null,
+                  height: (order?.name?.length ?? 0) > 29
+                    ? '11.111111111111vw'
+                    : '6.8376068376068vw'
+                }}
+              >
+                <span>{order?.count ?? 0}</span>
+                <span>{order?.name ?? ''}</span>
+                <span>{new Intl.NumberFormat('ru-RU').format(order?.price ?? 0)} ₽</span>
+              </div>
+            );
+          })}
 
           { parseInt(modalOrder?.order?.type_order_) == 1 ?
             <div 

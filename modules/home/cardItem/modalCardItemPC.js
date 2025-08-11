@@ -258,18 +258,26 @@ export default function ModalCardItemPC() {
                     </div>
 
                     <div className="List">
-                      {openItem?.items.map((item, key) => (
-                        <div key={key} className="SetItem" style={{paddingBottom: item === openItem?.items.at(-1) ? '8vw' : '1.444045vw' }}>
-                          <div className="itemNumber" onClick={() => getItem('home', thisCity, item.id, 'set')}>
-                            <span className="ItemDesk">{key + 1}.</span>
+                      {(openItem?.items ?? []).map((item, idx, arr) => (
+                        <div
+                          key={idx}
+                          className="SetItem"
+                          style={{
+                            paddingBottom: idx === arr[arr.length - 1] ? '8vw' : '1.444045vw'
+                          }}
+                        >
+                          <div
+                            className="itemNumber"
+                            onClick={() => getItem('home', thisCity, item.id, 'set')}
+                          >
+                            <span className="ItemDesk">{idx + 1}.</span>
                           </div>
 
                           <div className="itemImg">
                             <picture>
-                              <source 
-                                type="image/webp" 
+                              <source
+                                type="image/webp"
                                 srcSet={`
-
                                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.webp 138w,
                                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_366x366.webp 146w,
                                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_466x466.webp 183w,
@@ -278,12 +286,13 @@ export default function ModalCardItemPC() {
                                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1168x1168.webp 366w,
                                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1420x1420.webp 584w,
                                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.webp 760w,
-                                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.webp 1875w`} 
-                                sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
-                              <source 
-                                type="image/jpeg" 
+                                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.webp 1875w
+                                `}
+                                sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px"
+                              />
+                              <source
+                                type="image/jpeg"
                                 srcSet={`
-
                                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.jpg 138w,
                                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_366x366.jpg 146w,
                                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_466x466.jpg 183w,
@@ -292,29 +301,29 @@ export default function ModalCardItemPC() {
                                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1168x1168.jpg 366w,
                                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1420x1420.jpg 584w,
                                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.jpg 760w,
-                                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.jpg 1875w`} 
-
-                                sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
-
-                              <img 
-                                alt={item.name} 
-                                title={item.name} 
-
-                                src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.jpg`} 
-
-                                //src={`https://cdnimg.jacofood.ru/${item.img_app}_292x292.jpg`} 
-
-                                //style={{ minHeight: GRID * 1.125, minWidth: GRID * 1.125 }}
+                                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.jpg 1875w
+                                `}
+                                sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px"
+                              />
+                              <img
+                                alt={item?.name}
+                                title={item?.name}
+                                src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.jpg`}
                                 loading="lazy"
                                 onClick={() => getItem('home', thisCity, item.id, 'set')}
                               />
                             </picture>
                           </div>
 
-                          <div className="itemDesc" onClick={() => getItem('home', thisCity, item.id, 'set')}>
-                            <Typography className="ItemName" variant="h5" component="span">{item.name}</Typography>
+                          <div
+                            className="itemDesc"
+                            onClick={() => getItem('home', thisCity, item.id, 'set')}
+                          >
+                            <Typography className="ItemName" variant="h5" component="span">
+                              {item?.name}
+                            </Typography>
                             <Typography variant="h5" component="span" className="ItemDesk">
-                              {item.marc_desc.length > 0 ? item.marc_desc : item.tmp_desc}
+                              {(item?.marc_desc?.length ?? 0) > 0 ? item.marc_desc : item?.tmp_desc}
                             </Typography>
                           </div>
                         </div>
@@ -340,42 +349,48 @@ export default function ModalCardItemPC() {
                           <Link href={links?.link_allergens ?? links} target="_blank" style={{ color: '#DD1A32', cursor: 'pointer'}}>скачать в формате PDF</Link>
                         </Typography>
                       </div>
-                      {openItem?.items.map((item, key) => (
-                        <div key={key} className="ValueItem" style={{ marginBottom: item === openItem?.items.at(-1) ? '8vw' : '0.72202vw' }}>
+                     {(openItem?.items ?? []).map((item, idx, arr) => (
+                        <div
+                          key={idx}
+                          className="ValueItem"
+                          style={{
+                            marginBottom: idx === arr.length - 1 ? '8vw' : '0.72202vw'
+                          }}
+                        >
                           <div className="itemNumber">
-                            <span className="ItemDesk">{key + 1}.</span>
+                            <span className="ItemDesk">{idx + 1}.</span>
                           </div>
 
                           <div className="itemValueColumn">
                             <div className="itemValueRowMain">
-                              <div className="ItemTitleSet">{item.name}</div>
+                              <div className="ItemTitleSet">{item?.name}</div>
 
                               <div>
-                                <span className="ItemTitleStart">{item.kkal}</span>
+                                <span className="ItemTitleStart">{item?.kkal}</span>
                                 <span className="ItemTitleValue">ккал</span>
                               </div>
                             </div>
 
                             <div className="itemValueRow">
-                              <div className="ItemTitleValue">Состав: {item.tmp_desc}</div>
+                              <div className="ItemTitleValue">Состав: {item?.tmp_desc}</div>
 
                               <div>
                                 <div>
                                   <span className="ItemTitleValue">белки</span>
                                   <span className="dot"></span>
-                                  <span className="ItemTitleValue">{item.protein} г</span>
+                                  <span className="ItemTitleValue">{item?.protein} г</span>
                                 </div>
 
                                 <div>
                                   <span className="ItemTitleValue">жиры</span>
                                   <span className="dot"></span>
-                                  <span className="ItemTitleValue">{item.fat} г</span>
+                                  <span className="ItemTitleValue">{item?.fat} г</span>
                                 </div>
 
                                 <div>
                                   <span className="ItemTitleValue">углеводы</span>
                                   <span className="dot"></span>
-                                  <span className="ItemTitleValue">{item.carbohydrates} г</span>
+                                  <span className="ItemTitleValue">{item?.carbohydrates} г</span>
                                 </div>
                               </div>
                             </div>

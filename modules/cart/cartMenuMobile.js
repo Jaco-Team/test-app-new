@@ -147,52 +147,56 @@ export default function CartMenuMobile({ cityName }) {
 
         {nameList !== 'message' ? (
           <List>
-            {list?.map((item, key) => (
-              <ListItem
-                onClick={() => chooseMenuItem(item)}
-                key={key}
-                style={{ 
-                  background: id === item.id ? 'rgba(0, 0, 0, 0.05)' : null,
-                  marginBottom: item === list.at(-1) ? nameList === 'addr' ? '5.1282051282051vw' : '19.82905982906vw' : null
-                }}
-              >
-                <div className="containerDiv">
-                  {nameList === 'point' ? (
-                    <div className="containerSpan">
-                      <span>{item.name}</span>
-                      {item?.raion ? <span>{item?.raion}</span> : null}
-                    </div>
-                  ) : (
-                    <div style={{ flexDirection: 'column' }}>
-                      <div style={{ flexDirection: 'row' }}>
-                        <span>
-                          {nameList === 'addr' ? item?.addr_name ? 
-                            <span style={{ textTransform: 'uppercase'}}>
-                              {item.addr_name + ', '}
+            {(list ?? []).map((item, idx, arr) => {
+                const isLast = idx === ((arr?.length ?? 0) - 1);
+
+                return (
+                  <ListItem
+                    onClick={() => chooseMenuItem(item)}
+                    key={idx}
+                    style={{
+                      background: id === item.id ? 'rgba(0, 0, 0, 0.05)' : null,
+                      marginBottom: isLast
+                        ? (nameList === 'addr' ? '5.1282051282051vw' : '19.82905982906vw')
+                        : null
+                    }}
+                  >
+                    <div className="containerDiv">
+                      {nameList === 'point' ? (
+                        <div className="containerSpan">
+                          <span>{item?.name}</span>
+                          {item?.raion ? <span>{item.raion}</span> : null}
+                        </div>
+                      ) : (
+                        <div style={{ flexDirection: 'column' }}>
+                          <div style={{ flexDirection: 'row' }}>
+                            <span>
+                              {nameList === 'addr' && item?.addr_name ? (
+                                <span style={{ textTransform: 'uppercase' }}>
+                                  {item.addr_name + ', '}
+                                </span>
+                              ) : null}
+                              {item?.name}
                             </span>
-                          : null : null}
-                          {item.name}
-                        </span>
-                        {nameList === 'addr' && parseInt(item?.is_main) ? (
-                          <span className="circle">
-                            <HomeCartMobile />
-                          </span>
-                        ) : null}
-                      </div>
-                      {nameList === 'addr' ?
-                        <span className='dopAddrInfo'>
-                          {item?.pd?.length > 0 && parseInt(item?.pd) > 0 ? ('Пд: '+item?.pd + ', ') : ''}
-                          {item?.et?.length > 0 && parseInt(item?.et) > 0 ? ('Этаж: '+item?.et + ', ') : ''}
-                          { parseInt(item?.dom_true) == 0 ? 'Домофон: не работает' : 'Домофон: работает'}
-                        </span>
-                          :
-                        false
-                      }
+                            {nameList === 'addr' && parseInt(item?.is_main) ? (
+                              <span className="circle"><HomeCartMobile /></span>
+                            ) : null}
+                          </div>
+
+                          {nameList === 'addr' ? (
+                            <span className="dopAddrInfo">
+                              {item?.pd && parseInt(item.pd) > 0 ? `Пд: ${item.pd}, ` : ''}
+                              {item?.et && parseInt(item.et) > 0 ? `Этаж: ${item.et}, ` : ''}
+                              {parseInt(item?.dom_true) === 0 ? 'Домофон: не работает' : 'Домофон: работает'}
+                            </span>
+                          ) : null}
+                        </div>
+                      )}
                     </div>
-                  )}
-                </div>
-              </ListItem>
-            ))}
+                  </ListItem>
+                );
+              })
+            }
           </List>
         ) : (
           <div className="CartMessage">

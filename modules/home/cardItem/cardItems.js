@@ -201,21 +201,15 @@ export default React.memo(function CatItems() {
       name={'cat' + cat.main_id}
       id={'cat' + cat.id}
       className="ContainerCardItemPC"
-      // style={{ transform: `translateY(${transition_menu_pc})` }}
       ref={(node) => {
-        if (node && key === 0) {
-          node.style.setProperty(
-            'margin-top',
-            '1.1552346570397vw',
-            'important'
-          );
+        if (!node) return;
+
+        if (key === 0) {
+          node.style.setProperty('margin-top', '1.1552346570397vw', 'important');
         }
-        if (node && cat === newCats.at(-1)) {
-          node.style.setProperty(
-            'margin-bottom',
-            '2.1660649819495vw',
-            'important'
-          );
+
+        if (key === (newCats?.length ?? 0) - 1) {
+          node.style.setProperty('margin-bottom', '2.1660649819495vw', 'important');
         }
       }}
     >

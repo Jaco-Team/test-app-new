@@ -127,13 +127,13 @@ export default function MenuCatMobile({ city }) {
       {catDopMenu.length == 0 ? false : (
         <div className="menuCatDopContainer">
           <div className="menuCatDop" id="menuCatDop" >
-            {catDopMenu.map((cat, key) => (
+            {catDopMenu.map((cat, key, arr) => (
               <ScrollLink
                 key={key}
                 className={'CatDop'}
                 style={{minWidth: cat.name.length > 8 ? '27.350427350427vw' : '21.367521367521vw',
                   marginLeft: key === 0 ? '3.4188034188vw' : '1.7094017094017vw',
-                  marginRight: cat === catDopMenu.at(-1) ? '3.4188034188vw' : 0}}
+                  marginRight: cat === arr[arr.length - 1] ? '3.4188034188vw' : 0}}
                 to={'cat' + cat.id}
                 id={'linkDOP_' + cat.id}
                 spy={true}

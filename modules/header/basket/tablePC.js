@@ -21,10 +21,15 @@ export default function TablePC() {
   return (
     <table className="TableMini">
       <tbody>
-
-        {itemsOffDops.map((item, key) => 
-          <RowPC key={key} count={item.count} item={item} last={item === itemsOffDops.at(-1) ? 'last' : ''} />
-        )}
+       
+        {(itemsOffDops ?? []).map((item, idx, arr) => (
+          <RowPC
+            key={idx}
+            count={item?.count ?? 0}
+            item={item}
+            last={idx === arr.length - 1 ? 'last' : ''}
+          />
+        ))}
 
         {dopListCart.length ?
           <>

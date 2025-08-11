@@ -376,19 +376,26 @@ export default function ModalCardItemMobile() {
           <div className="ContainerSet">
             <div className="ItemModalCardMobileSet" onScroll={listenScrollSet}>
               <div className="ListSet">
-                {openItem?.items.map((item, key) => (
-                  <React.Fragment key={key}>
-                    <div className="SetItem" style={{ marginTop: key === 0 ? '1.7094017094017vw' : '0.85470085470085vw' }} >
-                      <div className="itemIndex" onClick={() => getItem('home', thisCity, item.id, 'set')}>
-                        <span>{key + 1}.</span>
+                {(openItem?.items ?? []).map((item, idx, arr) => (
+                  <React.Fragment key={idx}>
+                    <div
+                      className="SetItem"
+                      style={{
+                        marginTop: idx === 0 ? '1.7094017094017vw' : '0.85470085470085vw'
+                      }}
+                    >
+                      <div
+                        className="itemIndex"
+                        onClick={() => getItem('home', thisCity, item.id, 'set')}
+                      >
+                        <span>{idx + 1}.</span>
                       </div>
 
                       <div className="ImgSet">
                         <picture>
-                          <source 
-                            type="image/webp" 
+                          <source
+                            type="image/webp"
                             srcSet={`
-
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.webp 138w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_366x366.webp 146w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_466x466.webp 183w,
@@ -397,13 +404,13 @@ export default function ModalCardItemMobile() {
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1168x1168.webp 366w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1420x1420.webp 584w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.webp 760w,
-                              ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.webp 1875w`} 
-
-                            sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
-                          <source 
-                            type="image/jpeg" 
+                              ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.webp 1875w
+                            `}
+                            sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px"
+                          />
+                          <source
+                            type="image/jpeg"
                             srcSet={`
-
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.jpg 138w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_366x366.jpg 146w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_466x466.jpg 183w,
@@ -412,26 +419,24 @@ export default function ModalCardItemMobile() {
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1168x1168.jpg 366w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1420x1420.jpg 584w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.jpg 760w,
-                              ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.jpg 1875w`} 
-
-                            sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
-
-                          <img 
-                            alt={item.name} 
-                            title={item.name} 
-
-                            src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.jpg`} 
-
-                            //src={`https://cdnimg.jacofood.ru/${item.img_app}_292x292.jpg`} 
-
-                            //style={{ minHeight: GRID * 1.125, minWidth: GRID * 1.125 }}
+                              ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.jpg 1875w
+                            `}
+                            sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px"
+                          />
+                          <img
+                            alt={item.name}
+                            title={item.name}
+                            src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.jpg`}
                             loading="lazy"
                             onClick={() => getItem('home', thisCity, item.id, 'set')}
                           />
                         </picture>
                       </div>
 
-                      <div className="itemDesc" onClick={() => getItem('home', thisCity, item.id, 'set')}>
+                      <div
+                        className="itemDesc"
+                        onClick={() => getItem('home', thisCity, item.id, 'set')}
+                      >
                         <Typography component="span">{item.name}</Typography>
 
                         <div className="dop_text_set">
@@ -445,7 +450,7 @@ export default function ModalCardItemMobile() {
                       </div>
                     </div>
 
-                    {item === openItem?.items.at(-1) ? null : <div className="SetDivider"></div>}
+                    {idx === arr.length - 1 ? null : <div className="SetDivider"></div>}
                   </React.Fragment>
                 ))}
               </div>

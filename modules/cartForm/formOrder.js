@@ -741,8 +741,13 @@ export default function FormOrder({ cityName }) {
             <span>{dopText_2}</span>
           </div> */}
 
-          {itemsOffDops.map((item, key) => (
-            <CartItemMobile key={key} count={item.count} item={item} last={ item === itemsOffDops.at(-1) ? 'last' : '' }/>
+          {(itemsOffDops ?? []).map((item, idx, arr) => (
+            <CartItemMobile
+              key={idx}
+              count={item?.count ?? 0}
+              item={item}
+              last={idx === arr.length - 1 ? 'last' : ''}
+            />
           ))}
 
           {dopListCart.length ? (
