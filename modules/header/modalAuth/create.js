@@ -107,7 +107,7 @@ export default function Create({ city }) {
             <span onClick={() => setCheckPolitika(!checkPolitika)} style={{ backgroundColor: loginLogin.length === 17 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)'}}></span>
           )}
           <Typography component="span" onClick={() => setCheckPolitika(!checkPolitika)}>
-            Согласен с{' '}<Link href={'/' + city + '/legal'}>условиями сбора и обработки персональных данных</Link>
+            Я даю <Link href={'/' + city + '/legal'}>Согласие</Link> на обработку моих персональных данных в соответствии с Политикой, а также даю согласие на рекламную рассылку, от которой можно отказаться в любой момент
           </Typography>
         </div>
 
@@ -120,7 +120,7 @@ export default function Create({ city }) {
             <span onClick={() => setCheckAccord(!checkAccord)} style={{ backgroundColor: loginLogin.length === 17 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)' }}></span>
           )}
           <Typography component="span" onClick={() => setCheckAccord(!checkAccord)} style={{ lineHeight: matches ? '2.5641025641026vw' : '1.4440433212996vw' }}>
-            Принимаю{' '}<Link href={'/' + city + '/politika-konfidencialnosti'}>пользовательское соглашение</Link>
+            Я даю согласие с <Link href={'/' + city + '/politika-konfidencialnosti'}>Офертой</Link>
           </Typography>
         </div>
 
