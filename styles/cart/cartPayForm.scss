@@ -1,4 +1,4 @@
-@import '../settings';
+@use "../settings" as *;
 
 #payment-form {
   width: 100%;

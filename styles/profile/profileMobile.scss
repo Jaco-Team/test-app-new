@@ -1,4 +1,4 @@
-@import '../settings';
+@use "../settings" as *;
 
 .ProfileMobile {
   margin-top: $MyScale200_mobile;

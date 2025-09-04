@@ -1,4 +1,4 @@
-@import '../settings';
+@use "../settings" as *;
 
 #CartMapPoints {
   z-index: 1400;

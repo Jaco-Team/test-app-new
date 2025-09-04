@@ -1,4 +1,4 @@
-@import "./settings";
+@use "./settings" as *;
 
 .PAGELegal{
     margin-top: 64px!important;

@@ -1,4 +1,4 @@
-@import '../settings';
+@use "../settings" as *;
 
 .PageTextMobile {
   padding-top: 0 !important;

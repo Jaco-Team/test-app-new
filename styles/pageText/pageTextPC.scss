@@ -1,4 +1,4 @@
-@import '../settings';
+@use "../settings" as *;
 
 .PageTextPC {
   margin-top: 64px!important;

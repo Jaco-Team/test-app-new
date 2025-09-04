@@ -1,4 +1,4 @@
-@import '../settings';
+@use "../settings" as *;
 
 .PromokodyMobile {
   margin-top: $MyScale200_mobile;

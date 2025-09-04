@@ -1,4 +1,4 @@
-@import "./settings";
+@use "./settings" as *;
 
 .headerNewMobile{
     z-index: 1200!important;

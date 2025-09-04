@@ -1,5 +1,5 @@
 
-@import "../settings";
+@use "../settings" as *;
 
 .date_d_menu{
     & .MuiMenu-paper{

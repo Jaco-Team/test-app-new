@@ -1,4 +1,4 @@
-@import '../settings';
+@use "../settings" as *;
 
 .pageAboutMobile {
   margin-top: $MyScale200_mobile !important;

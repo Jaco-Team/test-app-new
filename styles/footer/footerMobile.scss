@@ -1,4 +1,4 @@
-@import '../settings';
+@use "../settings" as *;
 
 .footerMobile {
   width: 100%;

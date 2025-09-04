@@ -1,4 +1,4 @@
-@import '../settings';
+@use "../settings" as *;
 
 #simple-popover {
   z-index: 1100;

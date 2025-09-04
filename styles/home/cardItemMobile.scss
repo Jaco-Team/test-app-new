@@ -1,4 +1,4 @@
-@import '../settings.scss';
+@use "../settings" as *;
 
 .ContainerCardItemMobile {
   width: $MyScale1090_mobile !important;

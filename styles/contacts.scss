@@ -1,4 +1,4 @@
-@import "./settings";
+@use "./settings" as *;
 
 .MuiAccordionSummary-content span{
     padding: 0!important;

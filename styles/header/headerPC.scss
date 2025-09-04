@@ -1,4 +1,4 @@
-@import '../settings';
+@use "../settings" as *;
 
 html:not([data-scroll='0']) .blockShadow {
   width: 100%;

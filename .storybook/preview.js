@@ -1,4 +1,4 @@
-/** @type { import('@storybook/react').Preview } */
+/** @type { import('@storybook/nextjs').Preview } */
 import { Roboto } from 'next/font/google';
 
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';

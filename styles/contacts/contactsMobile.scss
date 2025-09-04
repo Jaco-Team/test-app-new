@@ -1,4 +1,4 @@
-@import '../settings';
+@use "../settings" as *;
 
 .ContactsMobile {
   margin-top: $MyScale200_mobile;

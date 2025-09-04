@@ -1,4 +1,4 @@
-@import '../settings';
+@use "../settings" as *;
 
 .MuiInputBase-root {
   & div:focus {

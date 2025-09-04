@@ -1,4 +1,4 @@
-@import '../settings';
+@use "../settings" as *;
 
 .cartDopsFormPC {
   .MuiDialog-paper {
@@ -205,7 +205,7 @@
         margin-bottom: $MyScale110;
           flex-shrink: 0; 
         box-shadow:
-          0px $MyScale3 $MyScale1 -$MyScale2 rgba(0, 0, 0, 0.2),
+          0px $MyScale3 $MyScale1 (-$MyScale2) rgba(0, 0, 0, 0.2),
           0px $MyScale2 $MyScale2 0px rgba(0, 0, 0, 0.14),
           0px $MyScale1 $MyScale5 0px rgba(0, 0, 0, 0.12);
 
@@ -214,7 +214,7 @@
           text-decoration: none;
           background-color: rgb(142, 0, 35);
           box-shadow:
-            0px $MyScale2 $MyScale4 -$MyScale1 rgba(0, 0, 0, 0.2),
+            0px $MyScale2 $MyScale4 (-$MyScale1) rgba(0, 0, 0, 0.2),
             0px $MyScale4 $MyScale5 0px rgba(0, 0, 0, 0.14),
             0px $MyScale1 $MyScale10 0px rgba(0, 0, 0, 0.12);
         }

@@ -1,4 +1,4 @@
-@import "./settings";
+@use "./settings" as *;
 
 .MuiSnackbarContent-root.MuiPaper-elevation6{
     box-shadow: none;
