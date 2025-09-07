@@ -28,7 +28,7 @@ export default memo(function CartPage({ page, cityName }) {
   }, [] );
 
   return (
-    <Meta title={page.title} description={page.description}>
+    <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
       
       <CartMobile cityName={cityName} /> 
       <CartMenuMobile cityName={cityName} />

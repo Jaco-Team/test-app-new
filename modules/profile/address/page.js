@@ -22,7 +22,7 @@ export default function AddressPage({ page, this_module, city }) {
   }, []);
 
   return (
-    <Meta title={page.title} description={''}>
+    <Meta title={page?.title ?? ''} description={''}>
       {matches ? (
         <>
           <AddressMobile city={city} />

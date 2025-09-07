@@ -9,7 +9,7 @@ export default function OrderPage({ page, this_module, city }) {
   const [matches] = useHeaderStoreNew((state) => [state.matches]);
 
   return (
-    <Meta title={page.title} description={''}>
+    <Meta title={page?.title ?? ''} description={''}>
       {matches ? 
         <OrderMobile this_module={this_module} city={city} /> 
           : 

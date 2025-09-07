@@ -79,8 +79,8 @@ export default memo(function AkciiPage({ page, banner }) {
   if( page?.is_one_actia == true ){
     return (
       <Meta 
-        title={banner && banner.seo_title.length > 0 ? banner.seo_title : page.title} 
-        description={banner && banner.seo_desc.length > 0 ? banner.seo_desc : page.description}
+        title={banner && banner?.seo_title?.length > 0 ? banner?.seo_title : page?.title} 
+        description={banner && banner?.seo_desc?.length > 0 ? banner?.seo_desc : page?.description}
       >
         {matches ? 
           <div className="akciiMobile onePage" style={{ marginTop: 100 }}>
@@ -96,7 +96,7 @@ export default memo(function AkciiPage({ page, banner }) {
   }
 
   return (
-    <Meta title={page.title} description={page.description}>
+    <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
       {matches ?
         <>
           <AkciiMobile /> 

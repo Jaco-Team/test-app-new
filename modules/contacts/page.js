@@ -10,7 +10,7 @@ export default function ContactsPage({ page, city }) {
   const [matches] = useHeaderStoreNew((state) => [state?.matches]);
 
   return (
-    <Meta title={page.title} description={page.description}>
+    <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
       {matches ? (
         <>
           <ContactsPageMobile />

@@ -10,7 +10,7 @@ export default function AboutPage({ page, cityName }) {
   //const [matches] = useHeaderStore((state) => [state.matches]);
 
   return (
-    <Meta title={page.title} description={page.description}>
+    <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
       <AboutPagePC />
     </Meta>
   );

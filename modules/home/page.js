@@ -19,7 +19,7 @@ export default function HomePage({ page, city } ) {
   const [matches] = useHeaderStoreNew((state) => [state?.matches]);
 
   return (
-    <Meta title={page.title} description={page.description}>
+    <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
       <div style={{ minHeight: matches ? '50vh' : '70vh' }}>
         {matches ?
           <>

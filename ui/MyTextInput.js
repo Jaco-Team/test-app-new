@@ -68,7 +68,7 @@ const TextMaskCustom =
   }
 
 export const MyTextMaskCustom = function TextMaskCustom(props) {
-  console.log('props', props)  
+  //console.log('props', props)  
 
   return (
     <IMaskInput

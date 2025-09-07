@@ -49,10 +49,10 @@ export default function PageText({ page, classNamePC, classNameMobile, cityName 
     return () => {
       wrapperRef.current?.removeEventListener('click', handleClick);
     };
-  }, [page.content, cityName]);
+  }, [page?.content, cityName]);
 
   return (
-    <Meta title={page.title} description={page.description}>
+    <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
       <Grid container>
         <Grid item className={matches ? classNameMobile ?? classNamePC : classNamePC} style={{ minHeight: activePage === 'jobs' ? '50vh' : null }}>
           {!matches ? null : <Link href={'/' + cityName + '/document' } className='arrow'><ArrowLeftMobile /></Link>}
@@ -63,12 +63,12 @@ export default function PageText({ page, classNamePC, classNameMobile, cityName 
             </Typography>
           </Grid>
 
-          {page && page.content ? (
+          {page && page?.content ? (
             <Grid
               item
               xs={12}
               ref={wrapperRef}
-              dangerouslySetInnerHTML={{ __html: page.content }}
+              dangerouslySetInnerHTML={{ __html: page?.content }}
             />
           ) : null}
         </Grid>
