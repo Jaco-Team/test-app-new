@@ -28,7 +28,11 @@ export default function Profile(props) {
   useEffect(() => {
     if( thisCity != city ){
       setThisCity(city);
-      setThisCityRu( cities.find( item => item.link == city )['name'] );
+      //setThisCityRu( cities.find( item => item.link == city )['name'] );
+
+      const found = Array.isArray(cities) ? cities.find(item => item?.link == city) : null;
+      setThisCityRu( found?.name ?? '' );
+
       setThisCityList(cities)
       setAllItems(all_items);
       
