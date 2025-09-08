@@ -73,7 +73,7 @@ export async function getServerSideProps({ req, res, query }) {
   const city = String(query.city || '');
   let data = {
     type: 'get_page_info',
-    city_id: cityy,
+    city_id: city,
     page: 'company-details',
   };
 
