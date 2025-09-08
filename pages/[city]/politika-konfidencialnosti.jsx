@@ -87,12 +87,17 @@ export async function getServerSideProps({ req, res, query }) {
     }
   }
 
-  data1['city'] = query.city;
+  data1.city = city;
 
-  data1.page.content = data1.page.content.replace(
-    /<a href=\"\//g,
-    '<a href="/' + query.city + '/'
-  );
+  // безопасно работаем с контентом
+  const rawContent = data1?.page?.content ?? '';
+  // если контент пустой — отдадим страницу, но без падения
+  const patchedContent = rawContent.replace(/<a href=\"\//g, `<a href="/${city}/`);
+
+  data1.page = {
+    ...(data1.page ?? {}),
+    content: patchedContent,
+  };
 
   return { props: { data1 } };
 }
