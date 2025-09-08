@@ -67,9 +67,10 @@ export async function getServerSideProps({ req, res, query }) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
   
+  const city = String(query.city || '');
   let data = {
     type: 'get_page_info', 
-    city_id: query.city,
+    city_id: city,
     page: 'contacts' 
   };
 
@@ -84,7 +85,7 @@ export async function getServerSideProps({ req, res, query }) {
     }
   }
 
-  data1['city'] = query.city;
+  data1['city'] = city;
 
   return { props: { data1 } }
 }

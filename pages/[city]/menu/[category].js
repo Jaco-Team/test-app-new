@@ -74,15 +74,16 @@ export async function getServerSideProps({ req, res, query }) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
+  const city = String(query.city || '');
   let data = {
     type: 'get_page_info', 
-    city_id: query.city,
+    city_id: city,
     page: query.category 
   };
 
   const data1 = await api('home', data);
 
-  data1['city'] = query.city;
+  data1['city'] = city;
   data1['category'] = query.category;
 
   if( !data1.page || data1.page == null ){

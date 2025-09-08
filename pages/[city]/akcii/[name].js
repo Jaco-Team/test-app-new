@@ -76,9 +76,10 @@ export async function getServerSideProps({ req, res, query }) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
+  const city = String(query.city || '');
   let data = {
     type: 'get_page_info', 
-    city_id: query.city,
+    city_id: city,
     page: 'akcii'
   };
 
@@ -86,7 +87,7 @@ export async function getServerSideProps({ req, res, query }) {
 
   let data2 = {
     type: 'get_banner_one',
-    city_id: query.city,
+    city_id: city,
     name: query.name,
     token: null
   };
@@ -94,11 +95,11 @@ export async function getServerSideProps({ req, res, query }) {
   const json = await api('home', data2);
 
   if( !json?.banner ){
-    res.writeHead(301, { Location: '/'+query.city+'/akcii' });
+    res.writeHead(301, { Location: '/'+city+'/akcii' });
     res.end();
   }
 
-  data1['city'] = query.city;
+  data1['city'] = city;
   data1['act_name'] = query.name;
 
   if( !data1.page || data1.page == null ){
