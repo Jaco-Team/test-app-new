@@ -3487,6 +3487,9 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api(this_module, data);
 
+    json.order.point_id = point_id;
+    json.order.order_id = order_id;
+
     set({
       modalOrder: json,
       openModal: true,
