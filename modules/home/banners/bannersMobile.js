@@ -70,11 +70,11 @@ export default React.memo(function BannersMobile() {
       ym(100601350, 'reachGoal', 'open_banner', {akcia_name: item?.title});
     }
 
-    //roistatReady(() =>
-      // roistat.event.send('open_banner', {
-      //   name: item?.title
-      // });
-    //);
+    try{
+      roistat.event.send('open_banner', {
+        name: item?.title
+      });
+    } catch(e){ console.log(e) }
   }
 
   return (

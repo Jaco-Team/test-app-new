@@ -15,10 +15,6 @@ import BadgeItem from './badge';
 
 import { roboto } from '@/ui/Font';
 
-//import {placeholder_img} from '@/public/placeholder_img';
-
-//import { roistatReady } from '@/components/roistatEvents'
-
 export default function ModalCardItemMobile() {
   const [isOpenModal, openItem, setActiveModalCardItemMobile, getItem] = useHomeStore((state) => [state.isOpenModal, state.openItem, state.setActiveModalCardItemMobile, state.getItem]);
   const [links] = useFooterStore((state) => [state.links]);
@@ -125,9 +121,17 @@ export default function ModalCardItemMobile() {
       ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
 
-    //roistatReady(() =>
-      //roistat.event.send('add_to_cart');
-    //);
+    try{
+      roistat.event.send('add_to_cart', {
+        id: openItem?.id,
+        name: openItem?.name,
+        price: openItem?.price,
+        quantity: 1,
+        category: {
+          "level1": openItem?.cat_name,
+        },
+      });
+    } catch(e){ console.log(e) }
   }
 
   const remove_from_cart = () => {
@@ -160,9 +164,9 @@ export default function ModalCardItemMobile() {
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
 
-    //roistatReady(() =>
-      //roistat.event.send('remove_from_cart');
-    //);
+    try{
+      roistat.event.send('remove_from_cart');
+    } catch(e){ console.log(e) }
   }
 
   const sostav_seta = () => {
@@ -176,7 +180,9 @@ export default function ModalCardItemMobile() {
       ym(100601350, 'reachGoal', 'sostav_seta', metrica_param_min);
     }
 
-    //roistat.event.send('sostav_seta');
+    try{
+      roistat.event.send('sostav_seta');
+    } catch(e){ console.log(e) }
   }
 
   return (

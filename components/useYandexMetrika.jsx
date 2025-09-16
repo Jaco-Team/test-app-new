@@ -85,11 +85,7 @@ function useYandexMetrika(city) {
           if( city == 'togliatti' ){
             ym(100601350, 'reachGoal', 'open_item', { tovar: params.productId })
           }
-
-          //roistat.event.send('open_item');
         }
-
-        
 
         if (typeof window !== 'undefined') {
           if( city == 'samara' ){
@@ -97,6 +93,13 @@ function useYandexMetrika(city) {
             _tmr.push({ type: 'reachGoal', id: 3621394, value: params?.price ?? 0, goal: 'product', params: { product_id: params.item_id}});;
           }
         }
+
+        if (typeof window !== 'undefined') {
+          try{
+            roistat.event.send('open_item');
+          } catch(e){ console.log(e) }
+        }
+
         break;
         
       //перешел в корзину
@@ -109,9 +112,6 @@ function useYandexMetrika(city) {
           if( city == 'togliatti' ){
             ym(100601350, 'reachGoal', 'open_card'); 
           }
-
-          
-          //roistat.event.send('open_card');
         }
 
         if (typeof window !== 'undefined') {
@@ -119,6 +119,13 @@ function useYandexMetrika(city) {
             _tmr.push({ type: 'reachGoal', id: 3621394, goal: 'zakaz_on'});
           }
         }
+
+        if (typeof window !== 'undefined') {
+          try {
+            roistat.event.send('open_card');
+          } catch(e){ console.log(e) }
+        }
+
         break;
 
       //подтверждение корзины, переход к оплате
@@ -130,8 +137,6 @@ function useYandexMetrika(city) {
           if( city == 'togliatti' ){
             ym(100601350, 'reachGoal', 'confirm_card'); 
           }
-
-          //roistat.event.send('confirm_card');
         }
 
         if (typeof window !== 'undefined') {
@@ -139,6 +144,13 @@ function useYandexMetrika(city) {
             _tmr.push({ type: 'reachGoal', id: 3621394, goal: 'zakaz_off'});
           }
         }
+
+        if (typeof window !== 'undefined') {
+          try {
+            roistat.event.send('confirm_card');
+          } catch(e){ console.log(e) }
+        }
+
         break;
 
       //успешная онлайн оплата

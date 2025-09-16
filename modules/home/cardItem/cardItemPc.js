@@ -9,8 +9,7 @@ import Button from '@mui/material/Button';
 import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.js';
 
 import BadgeItem from './badge';
-
-//import { roistatReady } from '@/components/roistatEvents'
+import { ca } from 'date-fns/locale';
 
 export default memo(function CardItem({ item, count, index}) {
   const [getItem] = useHomeStore((state) => [state.getItem]);
@@ -66,9 +65,17 @@ export default memo(function CardItem({ item, count, index}) {
       ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
 
-    //roistatReady(() =>
-      //roistat.event.send('add_to_cart')
-    //);
+    try {
+      roistat.event.send('add_to_cart', {
+        id: item?.id,
+        name: item?.name,
+        price: item?.price,
+        quantity: 1,
+        category: {
+          "level1": item?.cat_name,
+        },
+      })
+    }catch(e) { console.log(e) }
   }
 
   const remove_from_cart = () => {
@@ -101,9 +108,9 @@ export default memo(function CardItem({ item, count, index}) {
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
 
-    //roistatReady(() =>
-      //roistat.event.send('remove_from_cart');
-    //);
+    try {
+      roistat.event.send('remove_from_cart');
+    }catch(e) { console.log(e) }
   }
 
   return (

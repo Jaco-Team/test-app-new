@@ -317,13 +317,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
   }
   //<GoogleTagManager gtmId="UA-148366601-1" />
 
-  // <MetricaRoistat />
-
-  //     <input
-  //       type="hidden"
-  //       name="roistat_visit"
-  //       value={typeof window !== "undefined" ? window.roistat?.getVisit?.() || "" : ""}
-  //     />
+  
 
   return (
     <ThemeProvider theme={theme}>
@@ -388,6 +382,14 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
           :
         null
       }
+
+      <MetricaRoistat />
+
+      <input
+        type="hidden"
+        name="roistat_visit"
+        value={typeof window !== "undefined" ? window.roistat?.getVisit?.() || "" : ""}
+      />
       
       <noscript><img src="https://vk.com/rtrg?p=VK-RTRG-409134-7MvqQ" style={{position: 'fixed', left: '-999px'}} alt=""/></noscript>
 

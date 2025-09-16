@@ -13,8 +13,6 @@ import BadgeItem from './badge';
 
 import { roboto } from '@/ui/Font';
 
-//import { roistatReady } from '@/components/roistatEvents'
-
 export default function ModalItemMobile() {
   const [openItemCard, item_card, setActiveModalCardItemMobile] = useHomeStore((state) => [state.openItemCard, state.item_card, state.setActiveModalCardItemMobile]);
   const [links] = useFooterStore((state) => [state.links]);
@@ -100,9 +98,17 @@ export default function ModalItemMobile() {
       ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
 
-    //roistatReady(() =>
-      //roistat.event.send('add_to_cart');
-    //);
+    try{
+      roistat.event.send('add_to_cart', {
+        id: item_card?.id,
+        name: item_card?.name,
+        price: item_card?.price,
+        quantity: 1,
+        category: {
+          "level1": item_card?.cat_name,
+        },
+      });
+    } catch(e){ console.log(e) }
   }
 
   const remove_from_cart = () => {
@@ -135,9 +141,9 @@ export default function ModalItemMobile() {
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
 
-    //roistatReady(() =>
-      //roistat.event.send('remove_from_cart');
-    //);
+    try{
+      roistat.event.send('remove_from_cart');
+    } catch(e){ console.log(e) }
   }
 
   return (

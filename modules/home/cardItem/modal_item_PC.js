@@ -21,10 +21,6 @@ import { IconClose, IconInfo } from '@/ui/Icons';
 
 import { roboto } from '@/ui/Font';
 
-//import {placeholder_img} from '@/public/placeholder_img';
-
-//import { roistatReady } from '@/components/roistatEvents'
-
 export default function ModalItemPC() {
   const [openItemCard, closeItemModal, typeModal_dop, item_card, foodValue, navigate_dop, closeTypeModal_dop] = useHomeStore((state) => [state.openItemCard, state.closeItemModal, state.typeModal_dop, state.item_card, state.foodValue, state.navigate_dop, state.closeTypeModal_dop]);
 
@@ -105,9 +101,17 @@ export default function ModalItemPC() {
       ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
     }
 
-    //roistatReady(() =>
-      //roistat.event.send('add_to_cart');
-    //);
+    try{
+      roistat.event.send('add_to_cart', {
+        id: item_card?.id,
+        name: item_card?.name,
+        price: item_card?.price,
+        quantity: 1,
+        category: {
+          "level1": item_card?.cat_name,
+        },
+      });
+    } catch(e){ console.log(e) }
   }
 
   const remove_from_cart = () => {
@@ -140,9 +144,9 @@ export default function ModalItemPC() {
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
 
-    //roistatReady(() =>
-      //roistat.event.send('remove_from_cart');
-    //);
+    try{
+      roistat.event.send('remove_from_cart');
+    } catch(e){ console.log(e) }
   }
 
   return (

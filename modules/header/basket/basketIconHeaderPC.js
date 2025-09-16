@@ -3,8 +3,6 @@ import { BasketIconNew } from '@/ui/Icons.js';
 
 import Cookies from 'js-cookie'
 
-//import { roistatReady } from '@/components/roistatEvents'
-
 export default function BasketIconHeaderPC() {
   const [setActiveBasket, openBasket] = useHeaderStoreNew((state) => [state?.setActiveBasket, state?.openBasket]);
   const [itemsCount, allPrice, allPriceWithoutPromo, promoInfo, promoCheck, getInfoPromo] = useCartStore((state) => [state.itemsCount, state.allPrice, state.allPriceWithoutPromo, state.promoInfo, state.promoCheck, state.getInfoPromo]);
@@ -30,9 +28,9 @@ export default function BasketIconHeaderPC() {
         ym(100601350, 'reachGoal', 'open_basket'); 
       }
 
-      //roistatReady(() =>
-        //roistat.event.send('open_basket');
-      //);
+      try{
+        roistat.event.send('open_basket');
+      } catch(e){ console.log(e) }
     }
 
     if(!openBasket) {

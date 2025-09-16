@@ -14,8 +14,6 @@ import Button from '@mui/material/Button';
 
 import { roboto } from '@/ui/Font';
 
-//import { roistatReady } from '@/components/roistatEvents'
-
 function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }){
 
   const [ thisItem, setThisItem ] = useState({});
@@ -110,20 +108,20 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
       ym(100601350, 'reachGoal', 'active_actia_home', {akcia_name: bannerTitle}); 
     }
 
-    //roistat.event.send('active_actia_all');
-    //roistat.event.send('active_actia_home');
+    try{
+      roistat.event.send('active_actia_all');
+      roistat.event.send('active_actia_home');
 
-    //roistatReady(() =>
-      // roistat.event.send('add_to_cart', {
-      //   id: thisItem?.id,
-      //   name: thisItem?.name,
-      //   price: thisItem?.price,
-      //   quantity: 1,
-      //   category: {
-      //     "level1": thisItem?.cat_name,
-      //   },
-      // });
-    //);
+      roistat.event.send('add_to_cart', {
+        id: thisItem?.id,
+        name: thisItem?.name,
+        price: thisItem?.price,
+        quantity: 1,
+        category: {
+          "level1": thisItem?.cat_name,
+        },
+      });
+    } catch(e){ console.log(e) }
   }
 
   const remove_from_cart = () => {
@@ -156,17 +154,17 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
 
-    //roistatReady(() =>
-      // roistat.event.send('remove_from_cart', {
-      //   id: thisItem?.item_id,
-      //   name: thisItem?.name,
-      //   price: thisItem?.price,
-      //   quantity: 1,
-      //   category: {
-      //     "level1": thisItem?.cat_name,
-      //   },
-      // });
-    //);
+    try{
+      roistat.event.send('remove_from_cart', {
+        id: thisItem?.item_id,
+        name: thisItem?.name,
+        price: thisItem?.price,
+        quantity: 1,
+        category: {
+          "level1": thisItem?.cat_name,
+        },
+      });
+    } catch(e){ console.log(e) }
   } 
 
   return (

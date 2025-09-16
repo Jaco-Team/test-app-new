@@ -22,10 +22,10 @@ export default memo(function CartPage({ page, cityName }) {
     getItems();  
   }, [] );*/
 
-  useEffect( () => {
+  // useEffect( () => {
     //console.log( 'useYandexMetrika()' )
     //useYandexMetrika(cityName, 'cart', 'cart');
-  }, [] );
+  // }, [] );
 
   return (
     <Meta title={page?.title ?? ''} description={page?.description ?? ''}>

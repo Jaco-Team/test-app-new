@@ -8,8 +8,6 @@ import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
-//import { roistatReady } from '@/components/roistatEvents'
-
 function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }) {
   const [thisItem, setThisItem] = useState({});
   const [CatsItems, getItem] = useHomeStore((state) => [state.CatsItems, state.getItem]);
@@ -105,20 +103,20 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
       ym(100601350, 'reachGoal', 'active_actia_akcii', {akcia_name: bannerTitle});
     }
 
-    //roistat.event.send('active_actia_all');
-    //roistat.event.send('active_actia_akcii');
+    try {
+      roistat.event.send('active_actia_all');
+      roistat.event.send('active_actia_akcii');
 
-    //roistatReady(() =>
-      // roistat.event.send('add_to_cart', {
-      //   id: thisItem?.id,
-      //   name: thisItem?.name,
-      //   price: item?.price,
-      //   quantity: 1,
-      //   category: {
-      //     "level1": thisItem?.cat_name,
-      //   },
-      // });
-    //);
+      roistat.event.send('add_to_cart', {
+        id: thisItem?.id,
+        name: thisItem?.name,
+        price: item?.price,
+        quantity: 1,
+        category: {
+          "level1": thisItem?.cat_name,
+        },
+      });
+    } catch(e){ console.log(e) }
   }
 
   const remove_from_cart = () => {
@@ -151,17 +149,17 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
       ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
     }
 
-    //roistatReady(() =>
-      // roistat.event.send('remove_from_cart', {
-      //   id: thisItem?.id,
-      //   name: thisItem?.name,
-      //   price: item?.price,
-      //   quantity: 1,
-      //   category: {
-      //     "level1": thisItem?.cat_name,
-      //   },
-      // });
-    //);
+    try {
+      roistat.event.send('remove_from_cart', {
+        id: thisItem?.id,
+        name: thisItem?.name,
+        price: item?.price,
+        quantity: 1,
+        category: {
+          "level1": thisItem?.cat_name,
+        },
+      });
+    } catch(e){ console.log(e) }
   } 
 
   return (
@@ -281,12 +279,14 @@ export default function AkciiItemMobile({ actia, is_one_actia }) {
       ym(100601350, 'reachGoal', 'active_actia_akcii', {akcia_name: data_banner?.banner?.title}); 
     }
 
-    //roistat.event.send('active_actia_all');
-    //roistat.event.send('active_actia_akcii');
-
     if( parseInt(data_banner?.typePromo ) == 1 && is_one_actia ){
       push(`/${thisCity}`);
     }
+    
+    try {
+      roistat.event.send('active_actia_all');
+      roistat.event.send('active_actia_akcii');
+    } catch(e){ console.log(e) }
   }
 
   return (
