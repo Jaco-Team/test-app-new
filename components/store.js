@@ -3,8 +3,9 @@ import { shallow } from 'zustand/shallow';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
-
-var isoWeek = require('dayjs/plugin/isoWeek')
+import isoWeek from 'dayjs/plugin/isoWeek';
+dayjs.extend(isoWeek);
+dayjs.locale('ru');
 
 import { api, apiAddress } from './api.js';
 
@@ -715,7 +716,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   typeOrder: 'dev',
 
   //0 - обычный / 1 - пред
-  byTime: 0,
+  // byTime: 0,
 
   // даты для заказа
   datePreOrder: null,
@@ -1045,6 +1046,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     set({ dateTimeOrder })
 
     get().setCartLocalStorage();
+    get().promoCheck();
   },
 
   // выбрать адрес доставки
@@ -2124,6 +2126,24 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     })
   },
 
+  // вычисление времени заказа
+  resolvePreorderBase: () => {
+    const dto = get().dateTimeOrder;
+
+    if (!dto || dto.id === -1 || dto.name === 'В ближайшее время') {
+      return dayjs();
+    }
+
+    const dateStr = String(dto.date ?? '').trim();
+    const timeStr = String(dto.id ?? '').trim(); // id = "HH:mm"
+
+    if (dateStr && /^\d{2}:\d{2}$/.test(timeStr)) {
+      return dayjs(`${dateStr} ${timeStr}`);
+    }
+
+    return dayjs();
+  },
+
   // проверка промика
   promoCheck: () => {
 
@@ -2188,18 +2208,24 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     let this_date = '',
         this_time = '',
         this_dow = '';
+
+    const base = get().resolvePreorderBase();
+
+    this_date = base.format('YYYY-MM-DD');
+    this_time = base.format('HH:mm');
+    this_dow = base.isoWeekday(); // 1 (Понедельник) - 7 (Воскресенье)
     
-    dayjs.extend(isoWeek)
+    // dayjs.extend(isoWeek)
     
-    if( parseInt( get().byTime ) == 0 ){
-      this_date = dayjs(new Date()).format("YYYY-MM-DD");
-      this_time = dayjs(new Date()).format("HH:mm");
-      this_dow = dayjs(new Date()).isoWeekday();
-    }else{
-      this_date = dayjs( get().datePreOrder ).format("YYYY-MM-DD");
-      this_time = dayjs( get().timePreOrder ).format("HH:mm");
-      this_dow = parseInt( dayjs( get().datePreOrder ).isoWeekday() );
-    }
+    // if( parseInt( get().byTime ) == 0 ){
+    //   this_date = dayjs(new Date()).format("YYYY-MM-DD");
+    //   this_time = dayjs(new Date()).format("HH:mm");
+    //   this_dow = dayjs(new Date()).isoWeekday();
+    // }else{
+    //   this_date = dayjs( get().datePreOrder ).format("YYYY-MM-DD");
+    //   this_time = dayjs( get().timePreOrder ).format("HH:mm");
+    //   this_dow = parseInt( dayjs( get().datePreOrder ).isoWeekday() );
+    // }
 
     if( promo_info ){
       if( promo_info.status_promo === false ){
@@ -2211,8 +2237,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       
       if( promo_info.limits.date.min && promo_info.limits.date.max ){
         if( this_date >= promo_info.limits.date.min && this_date <= promo_info.limits.date.max ){
-          
+          // console.log('Промокод активен в эту дату.');
         }else{
+          // console.log(promo_info?.promo_text?.false ?? 'Промокод не активен в эту дату.');
           return {
             st: false,
             text: promo_info.promo_text.false
@@ -2222,8 +2249,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       
       if( promo_info.limits.time.min != 0 && promo_info.limits.time.max != 0 ){
         if( this_time >= promo_info.limits.time.min && this_time <= promo_info.limits.time.max ){
-          
+          // console.log('Промокод активен в это время.');
         }else{
+          // console.log(promo_info?.promo_text?.false ?? 'Промокод не активен в это время.');
           return {
             st: false,
             text: promo_info.promo_text.false
@@ -3214,6 +3242,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   count_promo: 0,
   count_orders: 0,
 
+  street_id: 0,
+
   // получение адресов в модалке выбора адреса доставки
   getAddrList: async (value) => {
 
@@ -3548,7 +3578,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
         zoom: 11.5,
         controls: []
       },
-      zones: json?.zones
+      zones: json?.zones,
+      street_id: Number(json?.this_info?.street_id),
     })
   },
   orderDel: async (this_module, userToken, text) => {
@@ -3672,7 +3703,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
           controls: []
         },
         openModalGetAddress: false,
-        choose_street: ''
+        choose_street: '',
+        street_id: Number(json?.addrs?.id),
       })
 
     } else {
@@ -3724,7 +3756,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       type: 'save_new_addr',
       token: token,
       city_id: city_id,
-      street: JSON.stringify( get().chooseAddrStreet ),
+      street: JSON.stringify({id: get().street_id}), //JSON.stringify( get().chooseAddrStreet ),
       pd: pd,
       domophome: domophome === true ? 1 : 0,
       et: et,
@@ -3785,15 +3817,14 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       is_fetch_save_new_addr: true
     })
 
-    let street = get().chooseAddrStreet;
-
-    street.street_id = street.id;
+    //let street = get().chooseAddrStreet;
+    //street.street_id = street.id;
 
     let data = {
       type: 'update_addr',
       token: token,
       city_id: city_id,
-      street: JSON.stringify(street),
+      street: JSON.stringify({street_id: get().street_id}),
       pd: pd,
       domophome: domophome === true ? 1 : 0,
       et: et,

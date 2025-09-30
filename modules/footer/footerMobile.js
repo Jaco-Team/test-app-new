@@ -17,7 +17,7 @@ export default function FooterMobile({ cityName, active_page }) {
   const [cookie, setCookie] = useState(true);
   const [showArrow, setShowArrow] = useState(false);
   
-  const [itemsCount, allPrice, allPriceWithoutPromo] = useCartStore((state) => [state.itemsCount, state.allPrice, state.allPriceWithoutPromo]);
+  const [itemsCount, itemsOffDops, dopListCart] = useCartStore((state) => [state.itemsCount, state.itemsOffDops, state.dopListCart]);
   const [links] = useFooterStore((state) => [state.links]);
 
   // const [ isAuth, setActiveModalAuth ] = useHeaderStoreNew( state => [ state.isAuth, state.setActiveModalAuth ]);
@@ -54,6 +54,20 @@ export default function FooterMobile({ cityName, active_page }) {
   //   }
   // }
 
+  let price1 = itemsOffDops.reduce((all, it) => {
+    const count = Number(it.count || 0);
+    const unit  = Number((it.new_one_price ?? it.one_price) || 0);
+
+    const line = it.all_price != null ? Number(it.all_price) : count * unit;
+
+    return all + line;
+  }, 0);
+
+  let price2 = dopListCart.reduce((all, it) =>
+    all + Number(it.count || 0) * Number(it.one_price || 0), 0);
+
+  let allPriceWithoutPromo_new = price1 + price2;
+
   return (
     <>
       <div className='containerArrowBasket' 
@@ -65,7 +79,7 @@ export default function FooterMobile({ cityName, active_page }) {
 
         <Link href={'/' + cityName + '/cart'} className={itemsCount && active_page === 'home' ? 'BasketFooterMobile' : 'BasketFooterMobileHidden'} >
           <span><BasketFooterMobile /></span>
-          <span>{new Intl.NumberFormat('ru-RU').format(allPrice ? allPrice : allPriceWithoutPromo)} ₽</span>
+          <span>{new Intl.NumberFormat('ru-RU').format(allPriceWithoutPromo_new)} ₽</span>
         </Link>
 
         <div className={showArrow && active_page !== 'cart' ? 'ArrowMobile' : 'ArrowHidden'} onClick={scrollUp} 
