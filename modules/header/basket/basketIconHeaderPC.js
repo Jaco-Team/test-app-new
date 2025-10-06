@@ -22,7 +22,6 @@ export default function BasketIconHeaderPC() {
     all + Number(it.count || 0) * Number(it.one_price || 0), 0);
 
   let allPriceWithoutPromo_new = price1 + price2;
-  console.log("🚀 allPriceWithoutPromo_new:", allPriceWithoutPromo_new);
 
   const handlerOpenBasket = () => {
     setActiveBasket(!openBasket);
@@ -45,7 +44,7 @@ export default function BasketIconHeaderPC() {
       }
 
       try{
-        roistat.event.send('open_basket');
+        // roistat.event.send('open_basket');
       } catch(e){ console.log(e) }
     }
 

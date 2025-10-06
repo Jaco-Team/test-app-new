@@ -1369,8 +1369,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         cart: JSON.stringify(get().items),
         free_drive: get().free_drive,
         ytoken: ytoken,
-        rtoken: typeof window !== "undefined" ? window?.roistat?.getVisit?.() || 0 : 0,
-        // rtoken: 0
+        //rtoken: typeof window !== "undefined" ? window?.roistat?.getVisit?.() || 0 : 0,
+        rtoken: 0
       };
     } else {
       data = {
@@ -1388,8 +1388,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         cart: JSON.stringify(get().items),
         free_drive: get().free_drive,
         ytoken: ytoken,
-        rtoken: typeof window !== "undefined" ? window?.roistat?.getVisit?.() || 0 : 0,
-        // rtoken: 0
+        //rtoken: typeof window !== "undefined" ? window?.roistat?.getVisit?.() || 0 : 0,
+        rtoken: 0
       };
     }
 
@@ -3611,7 +3611,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       }
 
       try {
-        roistat.event.send('del_order');
+        //roistat.event.send('del_order');
       }catch(e) {console.log(e)}
     }else{
       useHeaderStoreNew.getState().setActiveModalAlert(true, json?.text, false);

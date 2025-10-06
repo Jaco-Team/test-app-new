@@ -50,10 +50,10 @@ function useYandexMetrika_(city, eventName, goalName, params = {}) {
 
 //export default useYandexMetrika;
 
-const roistatReady = (cb) => {
-  if (typeof window === 'undefined') return;
-  window.onRoistatAllModulesLoaded = cb;
-};
+// const roistatReady = (cb) => {
+//   if (typeof window === 'undefined') return;
+//   window.onRoistatAllModulesLoaded = cb;
+// };
 
 function useYandexMetrika(city) {
   const getCounterIdByCity = (cityName) => {
@@ -96,7 +96,7 @@ function useYandexMetrika(city) {
 
         if (typeof window !== 'undefined') {
           try{
-            roistat.event.send('open_item');
+            //roistat.event.send('open_item');
           } catch(e){ console.log(e) }
         }
 
@@ -122,7 +122,7 @@ function useYandexMetrika(city) {
 
         if (typeof window !== 'undefined') {
           try {
-            roistat.event.send('open_card');
+            //roistat.event.send('open_card');
           } catch(e){ console.log(e) }
         }
 
@@ -147,7 +147,7 @@ function useYandexMetrika(city) {
 
         if (typeof window !== 'undefined') {
           try {
-            roistat.event.send('confirm_card');
+            //roistat.event.send('confirm_card');
           } catch(e){ console.log(e) }
         }
 

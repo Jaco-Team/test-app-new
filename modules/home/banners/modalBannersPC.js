@@ -114,18 +114,18 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
     }
 
     try{
-      roistat.event.send('active_actia_all');
-      roistat.event.send('active_actia_home');
+      // roistat.event.send('active_actia_all');
+      // roistat.event.send('active_actia_home');
 
-      roistat.event.send('add_to_cart', {
-        id: thisItem?.id,
-        name: thisItem?.name,
-        price: thisItem?.price,
-        quantity: 1,
-        category: {
-          "level1": thisItem?.cat_name,
-        },
-      });
+      // roistat.event.send('add_to_cart', {
+      //   id: thisItem?.id,
+      //   name: thisItem?.name,
+      //   price: thisItem?.price,
+      //   quantity: 1,
+      //   category: {
+      //     "level1": thisItem?.cat_name,
+      //   },
+      // });
     } catch(e){ console.log(e) }
   }
 
@@ -160,15 +160,15 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
     }
 
     try{
-      roistat.event.send('remove_from_cart', {
-        id: thisItem?.item_id,
-        name: thisItem?.name,
-        price: thisItem?.price,
-        quantity: 1,
-        category: {
-          "level1": thisItem?.cat_name,
-        },
-      });
+      // roistat.event.send('remove_from_cart', {
+      //   id: thisItem?.item_id,
+      //   name: thisItem?.name,
+      //   price: thisItem?.price,
+      //   quantity: 1,
+      //   category: {
+      //     "level1": thisItem?.cat_name,
+      //   },
+      // });
     } catch(e){ console.log(e) }
   }
 

@@ -62,15 +62,15 @@ export default React.memo(function CardItemMobile({ item, count }) {
     }
 
     try{
-      roistat.event.send('add_to_cart', {
-        id: item?.id,
-        name: item?.name,
-        price: item?.price,
-        quantity: 1,
-        category: {
-          "level1": item?.cat_name,
-        },
-      });
+      // roistat.event.send('add_to_cart', {
+      //   id: item?.id,
+      //   name: item?.name,
+      //   price: item?.price,
+      //   quantity: 1,
+      //   category: {
+      //     "level1": item?.cat_name,
+      //   },
+      // });
     } catch(e){ console.log(e) }
   }
 
@@ -105,7 +105,7 @@ export default React.memo(function CardItemMobile({ item, count }) {
     }
 
     try{
-      roistat.event.send('remove_from_cart');
+      // roistat.event.send('remove_from_cart');
     } catch(e){ console.log(e) }
   }
 

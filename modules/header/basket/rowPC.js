@@ -83,7 +83,7 @@ export default memo(function RowPC({ item, count, last }) {
       }
 
       try{
-        roistat.event.send('remove_from_cart');
+        // roistat.event.send('remove_from_cart');
       } catch(e){ console.log(e) }
     }
   };
@@ -126,15 +126,15 @@ export default memo(function RowPC({ item, count, last }) {
     }, 300)
 
     try{
-      roistat.event.send('remove_from_cart', {
-        id: item?.item_id,
-        name: item?.name,
-        price: item?.one_price,
-        quantity: count,
-        category: {
-          "level1": cat_name,
-        },
-      });
+      // roistat.event.send('remove_from_cart', {
+      //   id: item?.item_id,
+      //   name: item?.name,
+      //   price: item?.one_price,
+      //   quantity: count,
+      //   category: {
+      //     "level1": cat_name,
+      //   },
+      // });
     } catch(e){ console.log(e) }
   });
 
@@ -172,15 +172,15 @@ export default memo(function RowPC({ item, count, last }) {
     }
 
     try{
-      roistat.event.send('add_to_cart', {
-        id: item?.item_id,
-        name: item?.name,
-        price: item?.one_price,
-        quantity: 1,
-        category: {
-          "level1": cat_name,
-        },
-      });
+      // roistat.event.send('add_to_cart', {
+      //   id: item?.item_id,
+      //   name: item?.name,
+      //   price: item?.one_price,
+      //   quantity: 1,
+      //   category: {
+      //     "level1": cat_name,
+      //   },
+      // });
     } catch(e){ console.log(e) }
   }
 

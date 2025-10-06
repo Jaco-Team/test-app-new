@@ -99,15 +99,15 @@ export default function ModalItemMobile() {
     }
 
     try{
-      roistat.event.send('add_to_cart', {
-        id: item_card?.id,
-        name: item_card?.name,
-        price: item_card?.price,
-        quantity: 1,
-        category: {
-          "level1": item_card?.cat_name,
-        },
-      });
+      // roistat.event.send('add_to_cart', {
+      //   id: item_card?.id,
+      //   name: item_card?.name,
+      //   price: item_card?.price,
+      //   quantity: 1,
+      //   category: {
+      //     "level1": item_card?.cat_name,
+      //   },
+      // });
     } catch(e){ console.log(e) }
   }
 
@@ -142,7 +142,7 @@ export default function ModalItemMobile() {
     }
 
     try{
-      roistat.event.send('remove_from_cart');
+      // roistat.event.send('remove_from_cart');
     } catch(e){ console.log(e) }
   }
 

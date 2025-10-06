@@ -104,18 +104,18 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
     }
 
     try {
-      roistat.event.send('active_actia_all');
-      roistat.event.send('active_actia_akcii');
+      //roistat.event.send('active_actia_all');
+      //roistat.event.send('active_actia_akcii');
 
-      roistat.event.send('add_to_cart', {
-        id: thisItem?.id,
-        name: thisItem?.name,
-        price: item?.price,
-        quantity: 1,
-        category: {
-          "level1": thisItem?.cat_name,
-        },
-      });
+      // roistat.event.send('add_to_cart', {
+      //   id: thisItem?.id,
+      //   name: thisItem?.name,
+      //   price: item?.price,
+      //   quantity: 1,
+      //   category: {
+      //     "level1": thisItem?.cat_name,
+      //   },
+      // });
     } catch(e){ console.log(e) }
   }
 
@@ -150,15 +150,15 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
     }
 
     try {
-      roistat.event.send('remove_from_cart', {
-        id: thisItem?.id,
-        name: thisItem?.name,
-        price: item?.price,
-        quantity: 1,
-        category: {
-          "level1": thisItem?.cat_name,
-        },
-      });
+      // roistat.event.send('remove_from_cart', {
+      //   id: thisItem?.id,
+      //   name: thisItem?.name,
+      //   price: item?.price,
+      //   quantity: 1,
+      //   category: {
+      //     "level1": thisItem?.cat_name,
+      //   },
+      // });
     } catch(e){ console.log(e) }
   } 
 
@@ -284,8 +284,8 @@ export default function AkciiItemMobile({ actia, is_one_actia }) {
     }
     
     try {
-      roistat.event.send('active_actia_all');
-      roistat.event.send('active_actia_akcii');
+      // roistat.event.send('active_actia_all');
+      // roistat.event.send('active_actia_akcii');
     } catch(e){ console.log(e) }
   }
 

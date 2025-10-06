@@ -96,8 +96,8 @@ export default function DopsForm() {
           });
 
           try{
-            roistat.event.send('pay_order_samara');
-            roistat.event.send('pay_order_samara_'+typeOrder+'_'+typePay?.id);
+            // roistat.event.send('pay_order_samara');
+            // roistat.event.send('pay_order_samara_'+typeOrder+'_'+typePay?.id);
           } catch(e){ console.log(e) }
         }
 
@@ -136,14 +136,14 @@ export default function DopsForm() {
           });
 
           try{
-            roistat.event.send('pay_order_togliatti');
-            roistat.event.send('pay_order_togliatti_'+typeOrder+'_'+typePay?.id);
+            // roistat.event.send('pay_order_togliatti');
+            // roistat.event.send('pay_order_togliatti_'+typeOrder+'_'+typePay?.id);
           } catch(e){ console.log(e) }
         }
 
         try{
-          roistat.event.send('pay_order');
-          roistat.event.send('pay_order_'+typeOrder+'_'+typePay?.id);
+          // roistat.event.send('pay_order');
+          // roistat.event.send('pay_order_'+typeOrder+'_'+typePay?.id);
         } catch(e){ console.log(e) }
       }catch(e){
         console.log(e)

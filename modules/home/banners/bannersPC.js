@@ -72,9 +72,9 @@ export default (function BannersPC() {
     }
 
     try{
-      roistat.event.send('open_banner', {
-        name: item?.title
-      });
+      // roistat.event.send('open_banner', {
+      //   name: item?.title
+      // });
     } catch(e){ console.log(e) }
   }
 
