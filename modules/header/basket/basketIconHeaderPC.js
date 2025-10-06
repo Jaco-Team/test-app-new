@@ -6,22 +6,15 @@ import Cookies from 'js-cookie'
 
 export default function BasketIconHeaderPC() {
   const [setActiveBasket, openBasket] = useHeaderStoreNew((state) => [state?.setActiveBasket, state?.openBasket]);
-  const [itemsCount, promoCheck, getInfoPromo, itemsOffDops, dopListCart] = useCartStore((state) => [state.itemsCount, state.promoCheck, state.getInfoPromo, state.itemsOffDops, state.dopListCart]);
+  const [itemsCount, promoCheck, getInfoPromo, itemsOffDops, dopListCart, checkPromo, allPrice] = useCartStore((state) => [state.itemsCount, state.promoCheck, state.getInfoPromo, state.itemsOffDops, state.dopListCart, state.checkPromo, state.allPrice]);
   const [thisCity, thisCityRu] = useCitiesStore( state => [state.thisCity, state.thisCityRu]);
 
-  let price1 = itemsOffDops.reduce((all, it) => {
-    const count = Number(it.count || 0);
-    const unit  = Number((it.new_one_price ?? it.one_price) || 0);
+  let price1 = itemsOffDops.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
+  let price2 = dopListCart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
 
-    const line = it.all_price != null ? Number(it.all_price) : count * unit;
+  let baseTotal = price1 + price2;
 
-    return all + line;
-  }, 0);
-
-  let price2 = dopListCart.reduce((all, it) =>
-    all + Number(it.count || 0) * Number(it.one_price || 0), 0);
-
-  let allPriceWithoutPromo_new = price1 + price2;
+  const totalToShow = (checkPromo?.st && itemsOffDops.length ? allPrice : null) ?? baseTotal;
 
   const handlerOpenBasket = () => {
     setActiveBasket(!openBasket);
@@ -64,7 +57,7 @@ export default function BasketIconHeaderPC() {
       { parseInt(itemsCount) > 0 ? (
         <>
           <BasketIconNew className={'min'} />
-          <span>{new Intl.NumberFormat('ru-RU').format(allPriceWithoutPromo_new)} ₽</span>
+          <span>{new Intl.NumberFormat('ru-RU').format(totalToShow)} ₽</span>
         </>
       ) : (
         <BasketIconNew className={'max'} />
