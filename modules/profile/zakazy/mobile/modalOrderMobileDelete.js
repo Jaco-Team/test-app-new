@@ -54,6 +54,8 @@ export default function ModalOrderMobileDelete() {
 
   }
 
+  const reason = active === 0 ? '' : active === 6 ? text : (answers.find(a => a.id === active)?.val || '');
+
   return (
     <SwipeableDrawer
       anchor={'bottom'}
@@ -104,7 +106,7 @@ export default function ModalOrderMobileDelete() {
             <span>Вернуться к заказу</span>
           </Button>
           <Button className="buttonDelete" variant="outlined"
-            onClick={ () => orderDel( 'zakazy', token, active === 6 ? text : answers[active].val ?? '') }
+            onClick={ () => orderDel( 'zakazy', token, reason)}
           >
             <span>Отменить заказ</span>
           </Button>

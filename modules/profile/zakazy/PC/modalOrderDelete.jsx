@@ -57,6 +57,8 @@ export default function ModalOrderDelete() {
 
   }
 
+  const reason = chooseType === 0 ? '' : chooseType === 6 ? textDel : (ans.find(a => a.id === chooseType)?.ans || '');
+
   return (
     <Dialog
       onClose={ closeModalDel }
@@ -105,7 +107,7 @@ export default function ModalOrderDelete() {
             </Grid>
 
             <Grid item xs={12} className='header_btn'>
-              <button onClick={ () => orderDel( 'zakazy', token, chooseType == 6 ? textDel : ans[ chooseType ]['ans'] ?? '' ) }>Отменить</button>
+              <button onClick={ () => orderDel('zakazy', token, reason) }>Отменить</button>
               <button onClick={closeModalDel}>Вернуться</button>
             </Grid>
 

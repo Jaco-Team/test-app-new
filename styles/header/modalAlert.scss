@@ -1,5 +1,10 @@
 @use "../settings" as *;
 
+.modalAlertMobile.MuiModal-root,
+.modalAlertPC.MuiModal-root {
+  z-index: 99999;
+}
+
 .modalAlertPC {
   & .MuiDialog-container {
     display: flex;

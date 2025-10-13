@@ -161,7 +161,7 @@ export default React.memo(function ModalOrderMobile() {
   const [isShowAddr, setShowAddr] = useState(false);
   const [ showTimeWarn, setShowTimeWarn ] = useState(false);
 
-  const [openModal, closeOrder, modalOrder, openModalDel, getOrder] = useProfileStore((state) => [state.openModal, state.closeOrder, state.modalOrder, state.openModalDel, state.getOrder]);
+  const [openModal, closeOrder, modalOrder, openModalDel, getOrder, getOrderRefresh] = useProfileStore((state) => [state.openModal, state.closeOrder, state.modalOrder, state.openModalDel, state.getOrder, state.getOrderRefresh]);
 
   const [ repeatOrder ] = useCartStore( state => [ state.repeatOrder ])
 
@@ -174,7 +174,8 @@ export default React.memo(function ModalOrderMobile() {
     if( openModal == true ){
       const timer = setInterval(() => {
         if( token && token?.length > 0 ) {
-          getOrder('zakazy', thisCity, token, modalOrder?.order?.order_id, modalOrder?.order?.point_id)
+          //getOrder('zakazy', thisCity, token, modalOrder?.order?.order_id, modalOrder?.order?.point_id)
+          getOrderRefresh('zakazy', thisCity, token, modalOrder?.order?.order_id, modalOrder?.order?.point_id)
         }
       }, 30 * 1000);
       

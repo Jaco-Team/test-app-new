@@ -148,7 +148,7 @@ function ModalOrderStatusIconPicup({types}){
 }
 
 export default React.memo(function ModalOrder() {
-  const [modalOrder, openModal, closeOrder, openModalDel, getOrder] = useProfileStore( state => [ state.modalOrder, state.openModal, state.closeOrder, state.openModalDel, state.getOrder ])
+  const [modalOrder, openModal, closeOrder, openModalDel, getOrder, getOrderRefresh] = useProfileStore( state => [ state.modalOrder, state.openModal, state.closeOrder, state.openModalDel, state.getOrder, state.getOrderRefresh])
 
   const [ repeatOrder ] = useCartStore( state => [ state.repeatOrder ])
 
@@ -164,7 +164,8 @@ export default React.memo(function ModalOrder() {
     if( openModal == true ){
       const timer = setInterval(() => {
         if( token && token?.length > 0 ) {
-          getOrder('zakazy', thisCity, token, modalOrder?.order?.order_id, modalOrder?.order?.point_id)
+          //getOrder('zakazy', thisCity, token, modalOrder?.order?.order_id, modalOrder?.order?.point_id)
+          getOrderRefresh('zakazy', thisCity, token, modalOrder?.order?.order_id, modalOrder?.order?.point_id)
         }
       }, 30 * 1000);
       

@@ -3244,6 +3244,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
   street_id: 0,
 
+  dataOrder: null,
+
   // получение адресов в модалке выбора адреса доставки
   getAddrList: async (value) => {
 
@@ -3523,12 +3525,43 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
     set({
       modalOrder: json,
       openModal: true,
+      dataOrder: { order_id, point_id },
     });
   },
+
+  getOrderRefresh: async (this_module, city, userToken, order_id, point_id) => {
+
+    if (!order_id || !point_id) {
+      const ids = get().dataOrder;
+      order_id = order_id || ids?.order_id;
+      point_id = point_id || ids?.point_id;
+    }
+
+    if (!order_id || !point_id) return;
+
+    const data = { 
+      type: 'get_order', 
+      city_id: city, 
+      user_id: userToken, 
+      order_id, 
+      point_id 
+    };
+
+    const json = await api(this_module, data);
+
+    if (!json?.order) return;
+
+    json.order.point_id = point_id;
+    json.order.order_id = order_id;
+
+    set({ modalOrder: json });
+  },
+
   closeOrder: () => {
     set({
       openModal: false,
       modalOrder: {},
+      dataOrder: null
     });
   },
   openModalDel: () => {
@@ -3584,21 +3617,31 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
   },
   orderDel: async (this_module, userToken, text) => {
 
-    if( text?.length === 0 ){
+    if((!text || !text.trim())){
       useHeaderStoreNew.getState().setActiveModalAlert(true, 'Укажите причину отмены заказа', false);
+      return;
+    }
+    
+    const ids = get().dataOrder;
+    const order_id = ids?.order_id;
+    const point_id = ids?.point_id;
+
+    if (!order_id || !point_id) {
+      useHeaderStoreNew.getState().setActiveModalAlert(true, 'Откройте заказ заново и попробуйте отменить ещё раз', false);
+      return;
     }
 
     let data = {
       type: 'close_order',
       user_id: userToken,
       ans: text,
-      order_id: get().modalOrder?.order?.order_id,
-      point_id: get().modalOrder?.order?.point_id
+      order_id: order_id,
+      point_id: point_id
     };
 
     let json = await api(this_module, data);
 
-    if( json?.st === true ){
+    if(json?.st === true){
       get().closeModalDel();
       get().closeOrder();
       get().getOrderList('zakazy', get().city, userToken);
