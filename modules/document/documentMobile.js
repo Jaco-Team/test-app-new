@@ -84,7 +84,7 @@ export default function DocumentPageMobile({ cityName }) {
             </div>
           </Link>
 
-          <Link href={'https://storage.yandexcloud.net/site-other-data/jaco.pdf'} target="_blank" onClick={handleClick}>
+          <Link href={'https://storage.yandexcloud.net/site-other-data/health_reminder_jaco.pdf'} target="_blank" onClick={handleClick}>
             <div className="linkDocumentMobile">
               <span>Памятка по сохранению здоровья</span>
               <ArrowRightMobile />
