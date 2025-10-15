@@ -29,12 +29,14 @@
           & span {
             @include font50_500();
             margin-left: $MyScale40_mobile;
+            width: $MyScale800_mobile;
           }
 
           & svg {
             width: $MyScale15_mobile;
             height: $MyScale30_mobile;
             margin-right: $MyScale42_24_mobile;
+            flex-shrink: 0;
           }
         }
 

@@ -19,6 +19,16 @@ export default function DocumentPageMobile({ cityName }) {
     }
   }
 
+  const handleClick = () => {
+    if(thisCityRu == 'Самара'){
+      ym(100325084, 'reachGoal', 'health_reminder')
+    }
+
+    if(thisCityRu == 'Тольятти'){
+      ym(100601350, 'reachGoal', 'health_reminder')
+    }
+  };
+
   return (
     <Grid item className="pageDocumentMobile" sx={{ display: { xs: 'flex', md: 'flex', sm: 'none' } }}>
       <div className="containerDocumentMobile">
@@ -70,6 +80,13 @@ export default function DocumentPageMobile({ cityName }) {
           <Link href={links?.link_allergens ?? links} target="_blank" onClick={ () => goToPage('Пищевая ценность') }>
             <div className="linkDocumentMobile">
               <span>Калорийность, состав, БЖУ</span>
+              <ArrowRightMobile />
+            </div>
+          </Link>
+
+          <Link href={'https://storage.yandexcloud.net/site-other-data/jaco.pdf'} target="_blank" onClick={handleClick}>
+            <div className="linkDocumentMobile">
+              <span>Памятка по сохранению здоровья</span>
               <ArrowRightMobile />
             </div>
           </Link>

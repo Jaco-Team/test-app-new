@@ -11,6 +11,12 @@ export default function DocsBreadcrumbs() {
   const [ activePage ] = useHeaderStoreNew( state => [ state?.activePage ] )
   const [links] = useFooterStore((state) => [state.links]);
 
+  const handleClick = () => {
+    const city = (thisCity || '').toLowerCase();
+    const counterId = city === 'togliatti' ? 100601350 : 100325084;
+    ym(counterId, 'reachGoal', 'health_reminder');
+  };
+
   return (
     <Grid item className="DocsBreadcrumbs" style={{ paddingBottom: 15 }}>
       <div>
@@ -31,6 +37,8 @@ export default function DocsBreadcrumbs() {
             <li className={ activePage === 'legal' ? 'activeMarker' : '' }><Link className={ activePage === 'legal' ? 'active' : '' } href={"/"+thisCity+"/legal"}>Согласие на обработку персональных данных</Link></li>
 
             <li><Link className={ activePage === '' ? 'active' : '' } href={links?.link_allergens ?? links} target="_blank">Калорийность, состав, БЖУ</Link></li>
+
+            <li><Link className={ activePage === '' ? 'active' : '' } href={'https://storage.yandexcloud.net/site-other-data/jaco.pdf'} target="_blank" onClick={handleClick}>Памятка по сохранению здоровья</Link></li>
 
           </ul>
         }
