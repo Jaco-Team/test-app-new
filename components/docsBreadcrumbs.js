@@ -16,7 +16,7 @@ export default function DocsBreadcrumbs() {
     const counterId = city === 'togliatti' ? 100601350 : 100325084;
     ym(counterId, 'reachGoal', 'health_reminder');
   };
-
+  
   return (
     <Grid item className="DocsBreadcrumbs" style={{ paddingBottom: 15 }}>
       <div>
@@ -38,7 +38,7 @@ export default function DocsBreadcrumbs() {
 
             <li><Link className={ activePage === '' ? 'active' : '' } href={links?.link_allergens ?? links} target="_blank">Калорийность, состав, БЖУ</Link></li>
 
-            <li><Link className={ activePage === '' ? 'active' : '' } href={'https://storage.yandexcloud.net/site-other-data/health_reminder_jaco.pdf'} target="_blank" onClick={handleClick}>Памятка по сохранению здоровья</Link></li>
+            <li><Link className={ activePage === 'pamiatka_po_sohraneniiu_zdorovia' ? 'active' : '' } href={"/"+thisCity+"/pamiatka_po_sohraneniiu_zdorovia"} onClick={handleClick}>Памятка по сохранению здоровья</Link></li>
 
           </ul>
         }
