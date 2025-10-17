@@ -3,7 +3,7 @@ import React, { useEffect } from 'react';
 import Script from 'next/script';
 import dynamic from 'next/dynamic'
 
-const DynamicFooter = dynamic(() => import('@/components/footer.js'))
+import Footer from '@/components/footer.js'
 const DynamicPage = dynamic(() => import('@/modules/profile/address/page'))
 
 import { api } from '@/components/api.js';
@@ -18,7 +18,7 @@ export default function Address(props) {
 
   const { push } = useRouter();
 
-  const { city, cats, cities, page, all_items, free_items, need_dop } = props.data1;
+  const { city, cats, cities, page, all_items, free_items, need_dop, links } = props.data1;
 
   const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
@@ -67,7 +67,7 @@ export default function Address(props) {
       
       <DynamicPage page={page} this_module={this_module} city={city} />
 
-      <DynamicFooter cityName={city} active_page={this_module} />
+      <Footer cityName={city} active_page={this_module} links={links} />
     </div>
   );
 }
@@ -88,14 +88,26 @@ export async function getServerSideProps({ req, res, query }) {
 
   const data1 = await api('profile', data);
   
+  const redirectCity = city || 'togliatti'; 
+
   if (!data1) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
+    // return {
+    //   redirect: {
+    //     destination: '/',
+    //     permanent: false,
+    //   },
+    // }
+
+    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
   }
+
+  const footer = await api('contacts', {
+    type: 'get_page_info',
+    city_id: city,
+    page: 'info',
+  });
+
+  data1.links = footer?.page || {};
 
   data1['city'] = city;
 

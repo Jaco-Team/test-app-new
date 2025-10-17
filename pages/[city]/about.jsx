@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-const DynamicFooter = dynamic(() => import('@/components/footer.js'))
+import Footer from '@/components/footer.js'
 const AboutPage = dynamic(() => import('@/modules/about/aboutPage'))
 
 import { roboto } from '@/ui/Font.js'
@@ -13,7 +13,7 @@ const this_module = 'contacts';
 
 export default React.memo(function About(props) {
 
-  const { city, cats, cities, page, all_items, free_items, need_dop } = props.data1;
+  const { city, cats, cities, page, all_items, free_items, need_dop, links } = props.data1;
 
   const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
@@ -54,7 +54,7 @@ export default React.memo(function About(props) {
     <div className={roboto.variable}>
       <AboutPage page={page} cityName={city}/>
 
-      <DynamicFooter cityName={city} active_page={'about'}/>
+      <Footer cityName={city} active_page={'about'} links={links} />
     </div>
   )
 })
@@ -66,7 +66,7 @@ export async function getServerSideProps({ req, res, query }) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
-  const city = String(query.city || '');
+  let city = String(query.city || '');
   let data = {
     type: 'get_page_info', 
     city_id: city,
@@ -75,13 +75,17 @@ export async function getServerSideProps({ req, res, query }) {
 
   const data1 = await api(this_module, data);
 
+  const redirectCity = city || 'togliatti'; 
+
   if (!data1) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
+    // return {
+    //   redirect: {
+    //     destination: '/',
+    //     permanent: false,
+    //   },
+    // }
+
+    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
   }
 
   data1.city = city;
@@ -95,6 +99,14 @@ export async function getServerSideProps({ req, res, query }) {
     ...(data1.page ?? {}),
     content: patchedContent,
   };
+
+  const footer = await api('contacts', {
+    type: 'get_page_info',
+    city_id: city,
+    page: 'info',
+  });
+
+  data1.links = footer?.page || {};
 
   return { props: { data1 } };
 }

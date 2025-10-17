@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic'
 
-const DynamicFooter = dynamic(() => import('@/components/footer.js'));
+import Footer from '@/components/footer.js'
 const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'));
 
 import { roboto } from '@/ui/Font.js'
@@ -14,7 +14,7 @@ const this_module = 'home';
 
 export default function Home(props) {
 
-  const { city, cats, cities, page, all_items, free_items, need_dop, tags } = props.data1;
+  const { city, cats, cities, page, all_items, free_items, need_dop, tags, links } = props.data1;
 
   const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
@@ -64,7 +64,7 @@ export default function Home(props) {
     <div className={roboto.variable}>
       <DynamicHomePage page={page} city={city} />
 
-      <DynamicFooter cityName={city} active_page={this_module} />
+      <Footer cityName={city} active_page={this_module} links={links} />
     </div>
   )
 }
@@ -85,14 +85,26 @@ export async function getServerSideProps({ req, res, query }) {
 
   const data1 = await api(this_module, data);
 
+  const redirectCity = city || 'togliatti'; 
+
   if (!data1) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
+    // return {
+    //   redirect: {
+    //     destination: '/',
+    //     permanent: false,
+    //   },
+    // }
+
+    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
   }
+
+  const footer = await api('contacts', {
+    type: 'get_page_info',
+    city_id: city,
+    page: 'info',
+  });
+
+  data1.links = footer?.page || {};
 
   data1['city'] = city;
 

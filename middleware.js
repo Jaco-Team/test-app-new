@@ -47,17 +47,55 @@ export const config = {
 }
 
 export async function middleware(request) {
-  const response = NextResponse.next()
+  //const response = NextResponse.next()
   const { nextUrl } = request
 
-  // --- HTTPS редирект (кроме localhost) ---
+  // === ЕДИНЫЙ РЕДИРЕКТ (ОДИН ШАГ) ===
+  // Собираем финальный URL сразу: https + /togliatti для корня + lower-case + чистка "мусорных" query
+  const target = nextUrl.clone()
+  let changed = false
+
+  // 1) HTTPS — насильно даже на localhost для теста
+  // const proto = request.headers.get('x-forwarded-proto')
+  // if (proto !== 'https') {
+  //   target.protocol = 'https'
+  //   changed = true
+  // }
+
   const proto = request.headers.get('x-forwarded-proto')
   const hostname = nextUrl.hostname
   if (hostname !== 'localhost' && hostname !== '127.0.0.1' && proto !== 'https') {
-    const httpsUrl = nextUrl.clone()
-    httpsUrl.protocol = 'https'
-    return NextResponse.redirect(httpsUrl, 301)
+    target.protocol = 'https'; changed = true
   }
+
+  // 2) Корень -> город по умолчанию
+  if (target.pathname === '/' || target.pathname === '') {
+    target.pathname = '/togliatti'
+    changed = true
+  }
+
+  // 3) Приводим path к lower-case (файлы не трогаем)
+  if (!target.pathname.includes('.') && !isLowerCase(target.pathname)) {
+    target.pathname = target.pathname.toLowerCase()
+    changed = true
+  }
+
+  // 4) Чистим "мусорные" query (UTM не трогаем)
+  if (target.searchParams.has('text') || target.searchParams.has('showItem') ||
+    Array.from(target.searchParams.keys()).some(k => k.startsWith('act_'))) {
+    target.searchParams.delete('text')
+    target.searchParams.delete('showItem')
+    for (const k of Array.from(target.searchParams.keys())) if (k.startsWith('act_')) target.searchParams.delete(k)
+    changed = true
+  }
+
+  // 5) Если что-то поменяли — отдаём ОДИН 308 сразу на конечный URL
+  if (changed && target.toString() !== nextUrl.toString()) {
+    return NextResponse.redirect(target, 308) // ВАЖНО: 308 (постоянный)
+  }
+  // === КОНЕЦ ЕДИНОГО РЕДИРЕКТА ===
+
+  const response = NextResponse.next()
 
   // --- Спец-кука по UTM ---
   const utmParam = nextUrl.searchParams.get('utm')
@@ -67,23 +105,23 @@ export async function middleware(request) {
     })
   }
 
-  // --- Чистим "мусорные" query ---
-  const qs = nextUrl.search
-  if (qs.includes('?text') || qs.includes('?showItem') || qs.includes('?act_')) {
-    const newUrl = nextUrl.clone()
-    newUrl.searchParams.delete('text')
-    newUrl.searchParams.delete('showItem')
-    for (const key of newUrl.searchParams.keys()) if (key.startsWith('act_')) newUrl.searchParams.delete(key)
-    return NextResponse.redirect(newUrl, 301)
-  }
+  // --- Чистим "мусорные" query --- уже сделали выше в едином блок
+  // const qs = nextUrl.search
+  // if (qs.includes('?text') || qs.includes('?showItem') || qs.includes('?act_')) {
+  //   const newUrl = nextUrl.clone()
+  //   newUrl.searchParams.delete('text')
+  //   newUrl.searchParams.delete('showItem')
+  //   for (const key of newUrl.searchParams.keys()) if (key.startsWith('act_')) newUrl.searchParams.delete(key)
+  //   return NextResponse.redirect(newUrl, 301)
+  // }
 
-  // --- Приводим path к lower-case ---
-  const { pathname } = nextUrl
-  if (!isLowerCase(pathname) && !pathname.includes('.')) {
-    const lowerUrl = nextUrl.clone()
-    lowerUrl.pathname = pathname.toLowerCase()
-    return NextResponse.redirect(lowerUrl, 301)
-  }
+  // --- Приводим path к lower-case --- уже сделали выше в едином блок
+  // const { pathname } = nextUrl
+  // if (!isLowerCase(pathname) && !pathname.includes('.')) {
+  //   const lowerUrl = nextUrl.clone()
+  //   lowerUrl.pathname = pathname.toLowerCase()
+  //   return NextResponse.redirect(lowerUrl, 301)
+  // }
 
   // ---------------------- ТРЕКИНГ СЕССИЙ (визитов) ----------------------
   // vid — посетитель на 1 год

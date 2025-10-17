@@ -10,13 +10,13 @@ import {
   useCartStore,
 } from '@/components/store.js';
 
-const DynamicFooter = dynamic(() => import('@/components/footer.js'));
+import Footer from '@/components/footer.js'
 const DynamicPage = dynamic(() => import('@/modules/pageText'));
 
 const this_module = 'contacts';
 
 export default React.memo(function PolitikaKonfidencialnosti(props) {
-  const { city, cats, cities, page, all_items, free_items, need_dop } = props.data1;
+  const { city, cats, cities, page, all_items, free_items, need_dop, links } = props.data1;
 
   const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
@@ -62,7 +62,7 @@ export default React.memo(function PolitikaKonfidencialnosti(props) {
     <div className={roboto.variable}>
       <DynamicPage page={page} classNamePC="PageTextPC" classNameMobile="PageTextMobile" cityName={city}/>
 
-      <DynamicFooter cityName={city} />
+      <Footer cityName={city} links={links} />
     </div>
   );
 });
@@ -83,14 +83,26 @@ export async function getServerSideProps({ req, res, query }) {
 
   const data1 = await api(this_module, data);
 
+  const redirectCity = city || 'togliatti'; 
+
   if (!data1) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
+    // return {
+    //   redirect: {
+    //     destination: '/',
+    //     permanent: false,
+    //   },
+    // }
+
+    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
   }
+
+  const footer = await api('contacts', {
+    type: 'get_page_info',
+    city_id: city,
+    page: 'info',
+  });
+
+  data1.links = footer?.page || {};
 
   data1.city = city;
 

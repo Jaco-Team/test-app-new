@@ -1,26 +1,17 @@
 import React, { useEffect, useState } from 'react';
-
 import Link from 'next/link';
-
 import Typography from '@mui/material/Typography';
-
-import { useCartStore, useHomeStore, useFooterStore, 
-  // useHeaderStoreNew 
-} from '@/components/store.js';
+import {useCartStore, useHomeStore} from '@/components/store.js';
 
 import { NewVKIcon, OdnIcon, TGIcon, ArrowUp, BasketFooterMobile } from '@/ui/Icons.js';
-
 import ModalOrderMobile from '@/modules/profile/zakazy/mobile/modalOrderMobile';
 
-export default function FooterMobile({ cityName, active_page }) {
+export default function FooterMobile({ cityName, active_page, links }) {
 
   const [cookie, setCookie] = useState(true);
   const [showArrow, setShowArrow] = useState(false);
   
   const [itemsCount, itemsOffDops, dopListCart, checkPromo, allPrice] = useCartStore((state) => [state.itemsCount, state.itemsOffDops, state.dopListCart, state.checkPromo, state.allPrice]);
-  const [links] = useFooterStore((state) => [state.links]);
-
-  // const [ isAuth, setActiveModalAuth ] = useHeaderStoreNew( state => [ state.isAuth, state.setActiveModalAuth ]);
 
   const [setMenuCatPosition, isOpenFilter, transition_menu_mobile] = useHomeStore(state => [state.setMenuCatPosition, state.isOpenFilter, state.transition_menu_mobile]);
 
@@ -47,19 +38,14 @@ export default function FooterMobile({ cityName, active_page }) {
     if (!localStorage.getItem('setCookie') && !localStorage.getItem('setCookie')?.length) setCookie(false);
   }, []);
 
-  // function openBasketMobile(event){
-  //   if( isAuth != 'auth' ){
-  //     event.preventDefault();
-  //     setActiveModalAuth(true);
-  //   }
-  // }
-
   let price1 = itemsOffDops.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
   let price2 = dopListCart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
   
   let baseTotal = price1 + price2;
 
   const totalToShow = (checkPromo?.st && itemsOffDops.length ? allPrice : null) ?? baseTotal;
+
+  const ext = (url) => url ? { href: url, target: '_blank', rel: 'noopener noreferrer' } : { href: '/#' };
 
   return (
     <>
@@ -91,12 +77,12 @@ export default function FooterMobile({ cityName, active_page }) {
             }
           }}
         >
-          <div className="icon">
-            { Object.keys(links).length == 0 ? false :
+          <div className="icon" role="navigation" aria-label="Мы в социальных сетях">
+            {Object.keys(links || {}).length === 0 ? false :
               <>
-                <Link href={links?.link_vk ?? ''} target="_blank"><NewVKIcon /></Link>
-                <Link href={links?.link_tg ?? ''} target="_blank"><TGIcon /></Link>
-                <Link href={links?.link_ok ?? ''} target="_blank" style={{ marginRight: 0 }}><OdnIcon /></Link>
+                <Link {...ext(links?.link_vk)} aria-label="Мы ВКонтакте"><NewVKIcon aria-hidden="true" focusable="false" /></Link>
+                <Link {...ext(links?.link_tg)} aria-label="Мы в Telegram"><TGIcon aria-hidden="true" focusable="false" /></Link>
+                <Link {...ext(links?.link_ok)} style={{marginRight:0}} aria-label="Мы в Одноклассниках"><OdnIcon aria-hidden="true" focusable="false" /></Link>
               </>
             }
           </div>
@@ -112,8 +98,10 @@ export default function FooterMobile({ cityName, active_page }) {
             </div>
             <div className="column">
               <Typography component="span">Документы</Typography>
-              { Object.keys(links).length == 0 ? false :
-                <Link href={links?.link_allergens ?? ''} target="_blank">Калорийность, состав, БЖУ</Link>
+              {Object.keys(links || {}).length === 0 ? false :
+                <Link {...ext(links?.link_allergens)}>
+                  Калорийность, состав, БЖУ
+                </Link>
               }
               <Link href={'/' + cityName + '/publichnaya-oferta'}>Публичная оферта</Link>
               <Link href={'/' + cityName + '/politika-konfidencialnosti'}>Политика конфиденциальности</Link>
@@ -130,8 +118,8 @@ export default function FooterMobile({ cityName, active_page }) {
             </div>
             <div className="column">
               <Typography component="span">Франшиза</Typography>
-              <Link href={'https://franchise.jacofood.ru'} target="_blank">Сайт франшизы</Link>
-              <Link href={'https://invest.jacofood.ru'} target="_blank">Сайт для инвестиций</Link>
+              <Link {...ext('https://franchise.jacofood.ru')}>Сайт франшизы</Link>
+              <Link {...ext('https://invest.jacofood.ru')}>Сайт для инвестиций</Link>
             </div>
           </div>
 

@@ -44,11 +44,11 @@ const nextConfig = {
   },
   async redirects() {
     return [
-      {
-        source: '/',
-        destination: '/togliatti',
-        permanent: false,
-      },
+      // {
+      //   source: '/',
+      //   destination: '/togliatti',
+      //   permanent: false,
+      // },
       {
         // Захватываем все пути
         source: '/:path*',

@@ -2,7 +2,7 @@ import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
 
-const DynamicFooter = dynamic(() => import('@/components/footer.js'));
+import Footer from '@/components/footer.js'
 const CartPage = dynamic(() => import('@/modules/cart/page'));
 const LoadMap = dynamic(() => import('@/components/loadMap'));
 
@@ -18,7 +18,7 @@ export default React.memo(function Cart(props) {
 
   // const { push } = useRouter();
 
-  const { city, cats, cities, page, all_items, free_items, need_dop } = props.data1;
+  const { city, cats, cities, page, all_items, free_items, need_dop, links } = props.data1;
 
   const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
@@ -73,7 +73,7 @@ export default React.memo(function Cart(props) {
 
       <CartPage page={page} cityName={city} />
 
-      <DynamicFooter cityName={city} active_page={'cart'} />
+      <Footer cityName={city} active_page={'cart'} links={links} />
     </div>
   );
 });
@@ -94,14 +94,26 @@ export async function getServerSideProps({ req, res, query }) {
 
   const data1 = await api(this_module, data);
 
+  const redirectCity = city || 'togliatti'; 
+
   if (!data1) {
-    return {
-      redirect: {
-        destination: '/',
-        permanent: false,
-      },
-    }
+    // return {
+    //   redirect: {
+    //     destination: '/',
+    //     permanent: false,
+    //   },
+    // }
+
+    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
   }
+
+  const footer = await api('contacts', {
+    type: 'get_page_info',
+    city_id: city,
+    page: 'info',
+  });
+
+  data1.links = footer?.page || {};
 
   data1['city'] = city;
 
