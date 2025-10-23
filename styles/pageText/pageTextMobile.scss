@@ -31,7 +31,7 @@
       @include font40_400();
     }
   }
-  & a{
+  & a:not(.download){
     color: $colorMain;
     line-height: 2rem;
     font-weight: bold;
@@ -44,7 +44,7 @@
     @include font40_500();
   }
 
-  & p, li, span {
+  & p, li, span:not(.download_text) {
     @include font40_400();
     & strong {
       @include font50_500();

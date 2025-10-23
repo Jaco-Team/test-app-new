@@ -71,6 +71,49 @@ export default function PageText({ page, classNamePC, classNameMobile, cityName 
               dangerouslySetInnerHTML={{ __html: page?.content }}
             />
           ) : null}
+
+          { activePage == 'pamiatka_po_sohraneniiu_zdorovia' &&
+            <Grid item xs={12} style={{ paddingBottom: 15 }}>
+              <a
+                className='download'
+                style={!matches ? {
+                  textTransform: 'lowercase',
+                  cursor: 'pointer',
+                  backgroundColor: '#dd1a32',
+                  borderRadius: '1.44404vw',
+                  width: '12.2166vw',
+                  height: '2.88809vw',
+                  padding: '0',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  marginLeft: '3.5vw',
+                  textDecoration: 'none',
+                  fontFamily: 'var(--inter-font)',
+                  
+                } : {
+                  textTransform: 'lowercase',
+                  borderRadius: '5.12821vw',
+                  width: '55.5556vw',
+                  height: '10.2564vw',
+                  marginTop: '8.54701vw',
+                  marginBottom: '29.0598vw',
+                  padding: '0',
+                  backgroundColor: '#dd1a32',
+                  display: 'flex',
+                  alignItems: 'center',
+                  justifyContent: 'center',
+                  textDecoration: 'none',
+                  fontFamily: 'var(--inter-font)',
+                  justifySelf: 'center'
+                }}
+                href="https://storage.yandexcloud.net/site-other-data/health_reminder_jaco.pdf?response-content-disposition=attachment%3B%20filename%3Dhealth_reminder_jaco.pdf"
+              >
+                <span className='download_text' style={{color: '#fff', fontSize: '4.2735vw'}}>Скачать</span>
+              </a>
+            </Grid>
+          }
+
         </Grid>
 
         {!matches ? <DocsBreadcrumbs /> : null}
