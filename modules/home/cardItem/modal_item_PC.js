@@ -245,12 +245,14 @@ export default function ModalItemPC() {
                     </div>
 
                     <div className="List">
-                      <div className="ValueTitle">
-                        <Typography variant="h5" component="h2" className="ItemTitleValue">
-                          Полное описание состава блюд, калорийности и возможных аллергенов можно{' '}
-                          <Link href={links?.link_allergens ?? links} target="_blank" style={{ color: '#DD1A32', cursor: 'pointer'}}>скачать в формате PDF</Link>
-                        </Typography>
-                      </div>
+                      {links?.link_allergens ??
+                        <div className="ValueTitle">
+                          <Typography variant="h5" component="h2" className="ItemTitleValue">
+                            Полное описание состава блюд, калорийности и возможных аллергенов можно{' '}
+                            <Link href={links?.link_allergens} target="_blank" style={{ color: '#DD1A32', cursor: 'pointer'}}>скачать в формате PDF</Link>
+                          </Typography>
+                        </div>
+                      }
                       {(item_card?.items ?? []).map((item, idx, arr) => (
                         <div
                           key={idx}
