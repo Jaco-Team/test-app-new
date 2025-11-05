@@ -1754,7 +1754,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     let check_item = all_items?.find( (item) => parseInt(item.id) == parseInt(item_id) );
     
-    if( parseInt(check_item.id) == 231 || parseInt(check_item.id) == 232 || parseInt(check_item.id) == 233 ){
+    if( parseInt(check_item.id) == 231 || parseInt(check_item.id) == 232 || parseInt(check_item.id) == 233 || parseInt(check_item.id) == 351 ){
       return 1;
     }
     
