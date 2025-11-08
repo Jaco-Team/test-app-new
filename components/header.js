@@ -42,7 +42,8 @@ export default React.memo(function header({ city, city_list, cats }) {
 
   const search = searchParams.get('type')
 
-  
+  // console.log('search', search)
+  // console.log('searchParams', searchParams)
     
   // Initialize Firebase
   
@@ -127,6 +128,19 @@ export default React.memo(function header({ city, city_list, cats }) {
     //1723464732 - 12
     //1724005098 - 18
     //if( search == 'pobeda_close' ){
+
+    if( dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') >= dayjs( new Date("2025-11-08") ).locale('ru').format('YYYY-MM-DD') && dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2025-11-16") ).locale('ru').format('YYYY-MM-DD') ){
+        if( search == 'kuibisheva_close' ){
+          let state = { },
+            title = '',
+            url = window.location.pathname;
+    
+          window.history.pushState(state, title, url)
+    
+          setFreeDrive(1);
+          localStorage.setItem('freeDrive', '1722474061');
+        }
+      }
 
       /*if( dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') >= dayjs( new Date("2024-08-01") ).locale('ru').format('YYYY-MM-DD') && dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2024-08-04") ).locale('ru').format('YYYY-MM-DD') ){
         if( search == 'pobeda_close_1722474061' ){

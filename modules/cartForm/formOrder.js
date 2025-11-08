@@ -98,15 +98,15 @@ export default function FormOrder({ cityName }) {
   }, [promoInfo]);
 
   useEffect(() => {
-    /*let check_free_drive = localStorage.getItem('freeDrive');
+    let check_free_drive = localStorage.getItem('freeDrive');
 
     if( 
         check_free_drive && check_free_drive.length > 0 && check_free_drive == '1722474061' 
           && 
-        dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2024-08-20") ).locale('ru').format('YYYY-MM-DD')
+        dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2025-11-16") ).locale('ru').format('YYYY-MM-DD')
       ){
       setFreeDrive(1);
-    }*/
+    }
 
     if( orderAddr && orderAddr?.comment?.length > 0 && comment?.length == 0 ){
       changeComment(orderAddr?.comment);
@@ -138,7 +138,7 @@ export default function FormOrder({ cityName }) {
     if( 
         check_free_drive && check_free_drive.length > 0 && check_free_drive == '1722474061' 
           && 
-        dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2024-08-20") ).locale('ru').format('YYYY-MM-DD')
+        dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2025-11-16") ).locale('ru').format('YYYY-MM-DD')
       ){
       setFreeDrive(1);
     }
@@ -511,6 +511,7 @@ export default function FormOrder({ cityName }) {
           }
         }
 
+        localStorage.removeItem('freeDrive');
         try{
           // roistat.event.send('pay_order');
           // roistat.event.send('pay_order_'+typeOrder+'_'+typePay?.id);
@@ -530,6 +531,8 @@ export default function FormOrder({ cityName }) {
         setActiveModalBasket(false);
         setPayForm(false);
         setConfirmForm(false);
+
+        localStorage.removeItem('freeDrive');
   
         push(`/${thisCity}/zakazy`);
       }, 1800)
@@ -573,6 +576,8 @@ export default function FormOrder({ cityName }) {
   let price2 = dopListCart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
 
   let allPriceWithoutPromo_new = price1 + price2;
+
+  console.log('free_drive', free_drive)
 
   if( parseInt(free_drive) == 1 ) {
     if( parseInt(allPriceWithoutPromo_new) > 0 || parseInt(allPrice) > 0 ) {

@@ -1520,7 +1520,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     if( json?.st === true ){
 
-      
+      localStorage.removeItem('freeDrive');
     }else{
       //показать ошибку
       useHeaderStoreNew.getState().setActiveModalAlert(true, json?.text, false);
@@ -2368,6 +2368,18 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       set({
         free_drive: parseInt(promo_info.limits.free_drive)
       })
+
+      let check_free_drive = localStorage.getItem('freeDrive');
+      
+      if( 
+          check_free_drive && check_free_drive.length > 0 && check_free_drive == '1722474061' 
+            && 
+          dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2025-11-16") ).locale('ru').format('YYYY-MM-DD')
+        ){
+        set({
+          free_drive: 1
+        })
+      }
 
       let all_price = 0,
           count_sale = 0,

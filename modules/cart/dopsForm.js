@@ -141,6 +141,8 @@ export default function DopsForm() {
           } catch(e){ console.log(e) }
         }
 
+        localStorage.removeItem('freeDrive');
+
         try{
           // roistat.event.send('pay_order');
           // roistat.event.send('pay_order_'+typeOrder+'_'+typePay?.id);
@@ -155,6 +157,8 @@ export default function DopsForm() {
         setPayForm(false);
         setConfirmForm(false);
   
+        localStorage.removeItem('freeDrive');
+
         push(`/${thisCity}/zakazy`);
       }, 1800)
 
