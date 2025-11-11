@@ -295,7 +295,7 @@ export default React.memo(function ModalOrder() {
 
             <Grid item xs={12} className='header_btn'>
               { parseInt(modalOrder?.order?.status_order) > 0 && parseInt(modalOrder?.order?.status_order) < 6 && parseInt(modalOrder?.order?.is_delete) == 0 ? 
-                <div onClick={ () => openModalDel() }>
+                <div onClick={() => openModalDel(modalOrder?.order?.order_id, modalOrder?.order?.point_id)}>
                   <span>Отменить заказ</span>
                 </div>
                   :

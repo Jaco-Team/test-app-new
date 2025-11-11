@@ -323,7 +323,11 @@ export default React.memo(function ModalOrderMobile() {
           }
 
           { parseInt(modalOrder?.order?.is_delete) == 0 && parseInt(modalOrder?.order?.status_order) != 6 ? (
-            <Button className="zakazyBTN" variant="outlined" onClick={openModalDel}>
+            <Button 
+              className="zakazyBTN" 
+              variant="outlined" 
+              onClick={() => openModalDel(modalOrder?.order?.order_id, modalOrder?.order?.point_id)}
+            >
               <span>Отменить заказ</span>
             </Button>
           ) : (

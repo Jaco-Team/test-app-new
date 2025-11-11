@@ -1,5 +1,6 @@
 import { createWithEqualityFn } from 'zustand/traditional';
 import { shallow } from 'zustand/shallow';
+import { persist, createJSONStorage } from 'zustand/middleware';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
@@ -3209,7 +3210,16 @@ export const useAkciiStore = createWithEqualityFn((set) => ({
 
 }), shallow);
 
-export const useProfileStore = createWithEqualityFn((set, get) => ({
+// helper: при отмене заказа order_id/point_id может не сохранится в сторе, возможно на старых телефонах из-за потери состояния, точно не понятно
+const resolveOrderIds = (get) => {
+  const st = get();
+  return {
+    order_id: st?.dataOrder?.order_id ?? st?.modalOrder?.order?.order_id ?? null,
+    point_id: st?.dataOrder?.point_id ?? st?.modalOrder?.order?.point_id ?? null,
+  };
+};
+
+export const useProfileStore = createWithEqualityFn(persist((set, get) => ({
   promoListActive: [],
   promoListOld: [],
   orderList: [],
@@ -3545,8 +3555,9 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     if (!order_id || !point_id) {
       const ids = get().dataOrder;
-      order_id = order_id || ids?.order_id;
-      point_id = point_id || ids?.point_id;
+      const modal = get().modalOrder?.order;
+      order_id = order_id || ids?.order_id || modal?.order_id;
+      point_id = point_id || ids?.point_id || modal?.point_id;
     }
 
     if (!order_id || !point_id) return;
@@ -3576,14 +3587,16 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       dataOrder: null
     });
   },
-  openModalDel: () => {
+  openModalDel: (order_id = null, point_id = null) => {
     set({
-      openModalDelete: true
-    })
+      openModalDelete: true,
+      dataOrder: (order_id && point_id) ? { order_id, point_id } : null,
+    });
   },
   closeModalDel: () => {
     set({
-      openModalDelete: false
+      openModalDelete: false,
+      dataOrder: null,
     })
   },
   closeModalAddr: () => {
@@ -3634,9 +3647,7 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       return;
     }
     
-    const ids = get().dataOrder;
-    const order_id = ids?.order_id;
-    const point_id = ids?.point_id;
+    const { order_id, point_id } = resolveOrderIds(get);
 
     if (!order_id || !point_id) {
       useHeaderStoreNew.getState().setActiveModalAlert(true, 'Откройте заказ заново и попробуйте отменить ещё раз', false);
@@ -3647,8 +3658,8 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
       type: 'close_order',
       user_id: userToken,
       ans: text,
-      order_id: order_id,
-      point_id: point_id
+      order_id,
+      point_id,
     };
 
     let json = await api(this_module, data);
@@ -4076,7 +4087,14 @@ export const useProfileStore = createWithEqualityFn((set, get) => ({
 
     let json = await api('profile', data);
   }
-}), shallow);
+}), 
+  {
+    name: 'profile',                        
+    storage: createJSONStorage(() => sessionStorage), 
+    partialize: (s) => ({ dataOrder: s.dataOrder })
+  }),
+  shallow
+);
 
 export const useFooterStore = createWithEqualityFn((set) => ({
   links: {},

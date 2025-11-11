@@ -64,6 +64,7 @@ export default function ModalOrderMobileDelete() {
       onOpen={() => {}}
       className={'ZakazyModalOrderDelete ' + roboto.variable}
       disableSwipeToOpen
+      style={{ zIndex: 2000 }} 
     >
       <DialogContent>
         <div className="ContainerZakazyModalOrderDelete">
