@@ -3702,7 +3702,8 @@ export const useProfileStore = createWithEqualityFn(persist((set, get) => ({
         zoom: zoomSize,
         controls: []
       },
-      openModalGetAddress: false
+      openModalGetAddress: false,
+      street_id: Number(chooseAddrStreet?.id),
     })
   },
 
