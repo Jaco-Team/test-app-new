@@ -9,6 +9,26 @@ function refDomain(ref) {
   try { return ref ? new URL(ref).hostname.replace(/^www\./, '') : '' } catch { return '' }
 }
 
+function isPageViewRequest(request, url) {
+  const dest   = request.headers.get('sec-fetch-dest') || ''
+  const mode   = request.headers.get('sec-fetch-mode') || ''
+  const accept = request.headers.get('accept') || ''
+
+  const path = url.pathname
+
+  // Явно отсекаем файлы по расширению (icons, manifest, css, js и т.п.)
+  if (path.includes('.')) return false
+
+  // Современные браузеры: только top-level navigation
+  if (dest && dest !== 'document') return false
+  if (mode && mode !== 'navigate') return false
+
+  // Fallback для старых: ожидаем HTML
+  if (!accept.includes('text/html')) return false
+
+  return true
+}
+
 function classifySource({ url, ref, utm }) {
   // 1) Если есть UTM — они главные
   if (utm.utm_source || utm.utm_medium || utm.utm_campaign) {
@@ -49,6 +69,9 @@ export const config = {
 export async function middleware(request) {
   //const response = NextResponse.next()
   const { nextUrl } = request
+
+  // флаг, что это именно загрузка страницы, а не иконка
+  const isPageView = isPageViewRequest(request, nextUrl)
 
   // === ЕДИНЫЙ РЕДИРЕКТ (ОДИН ШАГ) ===
   // Собираем финальный URL сразу: https + /togliatti для корня + lower-case + чистка "мусорных" query
@@ -143,7 +166,9 @@ export async function middleware(request) {
     sid = crypto.randomUUID()
     isNewSession = true
     // первая посадочная в рамках сессии
-    response.cookies.set('sid_lp', nextUrl.pathname + (nextUrl.search || ''), { path: '/', maxAge: 60 * 30, httpOnly: true, sameSite: 'Lax', secure: true })
+    if (isPageView) {
+      response.cookies.set('sid_lp', nextUrl.pathname + (nextUrl.search || ''), { path: '/', maxAge: 60 * 30, httpOnly: true, sameSite: 'Lax', secure: true })
+    }
   }
 
   // обновляем "последнюю активность" и сам sid (скользящее окно)
@@ -151,7 +176,7 @@ export async function middleware(request) {
   response.cookies.set('sid_ts', String(now), { path: '/', maxAge: 60 * 30, httpOnly: true, sameSite: 'Lax', secure: true })
 
   // --- если новая сессия — отправляем визит на Laravel ---
-  if (isNewSession) {
+  if (isNewSession && isPageView) {
     // собираем utm/кликиды
     const utm = {}
     ;['utm_source','utm_medium','utm_campaign','utm_term','utm_content','gclid','yclid']
