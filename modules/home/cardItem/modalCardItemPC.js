@@ -22,7 +22,9 @@ import { IconClose, IconInfo } from '@/ui/Icons';
 import { roboto } from '@/ui/Font';
 
 export default function ModalCardItemPC() {
-  const [isOpenModal, closeModal, typeModal, openItem, foodValue, navigate, closeTypeModal, getItem] = useHomeStore((state) => [state.isOpenModal, state.closeModal, state.typeModal, state.openItem, state.foodValue, state.navigate, state.closeTypeModal, state.getItem]);
+  const [isOpenModal, closeModal, typeModal, openItem, foodValue, navigate, closeTypeModal, getItem] = useHomeStore((state) => {
+    return [state.isOpenModal, state.closeModal, state.typeModal, state.openItem, state.foodValue, state.navigate, state.closeTypeModal, state.getItem];
+  });
 
   const [links] = useFooterStore((state) => [state.links]);
   const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
@@ -427,7 +429,7 @@ export default function ModalCardItemPC() {
                       </span>
                     )}
 
-                    <span className="third_text" style={{paddingLeft: parseInt(openItem?.count_part) == 1 ? 0 : '1.444045vw'}}>
+                    <span className="third_text" style={{paddingLeft: parseInt(openItem?.count_part) == 1 && parseInt(openItem?.cat_id) !== 20 && parseInt(openItem?.cat_id) !== 21 ? 0 : '1.444045vw'}}>
                       {new Intl.NumberFormat('ru-RU').format(openItem?.weight)}
                       {parseInt(openItem?.id) == 17 || parseInt(openItem?.id) == 237 ? ' шт.' : parseInt(openItem?.cat_id) == 6 ? ' л' : ' г'}
                     </span>
@@ -441,8 +443,8 @@ export default function ModalCardItemPC() {
 
                 </div>
 
-                <Typography variant="h5" component="span" className="desk ItemDescStart">
-                  {openItem?.marc_desc_full.length > 0 ? openItem?.marc_desc_full : openItem?.tmp_desc}
+                <Typography variant="h5" component="div" className="desc ItemDescStart">
+                  {(openItem?.marc_desc_full?.length ?? 0) > 0 ? openItem?.marc_desc_full : openItem?.tmp_desc}
                 </Typography>
 
                 {count == 0 ? (
