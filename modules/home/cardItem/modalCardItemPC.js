@@ -60,13 +60,19 @@ export default function ModalCardItemPC() {
   }, [isOpenModal] )
   
   const changeCountPlus = (id) => {
-    setCount(count + 1);
     plus(id, openItem?.cat_id);
+
+    const items = useCartStore.getState().items;
+    const found = items.find(it => parseInt(it.item_id) === parseInt(id));
+    setCount(found ? found.count : 0);
   };
 
   const changeCountMinus = (id) => {
-    setCount(count - 1);
     minus(id);
+
+    const items = useCartStore.getState().items;
+    const found = items.find(it => parseInt(it.item_id) === parseInt(id));
+    setCount(found ? found.count : 0);
   };
 
   const img_name = openItem?.img_app;

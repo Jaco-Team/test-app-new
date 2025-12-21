@@ -800,6 +800,41 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   openDopsForm: false,
 
+  // timestamp последнего обновления корзины
+  cartUpdatedAt: 0,
+
+  // очистить только данные оформления (чтобы не заказать на старый адрес)
+  // товары НЕ трогаем
+  clearCheckoutData: (opts = { touch: true }) => {
+    set({
+      orderAddr: null,
+      orderPic: 0,
+      point_id: null,
+
+      dateTimeOrder: null,
+      typePay: null,
+
+      comment: '',
+      sdacha: '',
+      summDiv: 0,
+
+      free_drive: 0,
+
+      openPayForm: false,
+      openConfirmForm: false,
+
+      linkPaySBP: '',
+    });
+
+    if (get().global_checkout !== null) {
+      try { get().global_checkout.destroy(); } catch(e) {}
+      set({ global_checkout: null });
+    }
+
+    // фиксируем обновление корзины (важно: тут touch:true)
+    get().setCartLocalStorage({ touch: opts.touch });
+  },
+
   // открытие/закрытие формы для добавления допов в заказ если в корзине есть роллы и нет соевого или имбиря или вассаби
   setDopsForm: (active) => {
     set({ openDopsForm: active });
@@ -892,106 +927,137 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   // получение данных корзины и оформления заказа
   getCartLocalStorage: () => {
-
     const promoName = Cookies.get('promo_name');
     const allItems = get().allItems;
+
     let cart = localStorage.getItem('setCart');
-    
-    if( cart && cart.length > 0 ){
-      cart = JSON.parse(cart);
-    }else{
+
+    if (cart && cart.length > 0) {
+      try {
+        cart = JSON.parse(cart);
+      } catch (e) {
+        return;
+      }
+    } else {
       return;
     }
 
-    if( allItems.length == 0 ) {
+    if (allItems.length == 0) {
       return;
     }
+
+    // 3 дня от последнего обновления (updatedAt)
+    const TTL_MS = 3 * 24 * 60 * 60 * 1000;
+    const updatedAt = Number(cart?.updatedAt || 0);
+
+    // если updatedAt нет (старая корзина) — считаем её "протухшей" для адреса/оплаты/времени
+    const expired = !updatedAt || (Date.now() - updatedAt > TTL_MS);
+
+    // сохраним updatedAt в state
+    set({ cartUpdatedAt: updatedAt || 0 });
 
     if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
       const city = JSON.parse(localStorage.getItem('setCity'));
-      
-      if(city?.link === cart?.city?.link) {
 
-          let this_item = null;
+      if (city?.link === cart?.city?.link) {
+        let this_item = null;
 
-          cart.items = cart?.items?.reduce((newItems, item) => {
-            this_item = allItems?.find(it => parseInt(it.id) === parseInt(item.item_id));
+        cart.items = cart?.items?.reduce((newItems, item) => {
+          this_item = allItems?.find(it => parseInt(it.id) === parseInt(item.item_id));
 
-            if(this_item) {
-              item.one_price = this_item?.price;
-              item.all_price = parseInt(this_item?.price) * parseInt(item.count);
-              newItems.push(item);
-            }
-
-            return newItems;
-          }, [])
-
-          const allPriceWithoutPromo = cart.items.reduce((all, it) => all + it.count * it.one_price, 0);
-
-          const itemsCount = cart.items.reduce((all, item) => all + item.count, 0);
-      
-          set({ items: cart.items, allPriceWithoutPromo, itemsCount });
-          
-          if(promoName) {
-
-            get().getInfoPromo(promoName, city?.link)
-
-            //setTimeout(() => {
-              get().getItems();
-              get().check_need_dops();
-            //}, 3000)
-          } else {
-            get().getItems();
-            get().check_need_dops();
+          if (this_item) {
+            item.one_price = this_item?.price;
+            item.all_price = parseInt(this_item?.price) * parseInt(item.count);
+            newItems.push(item);
           }
 
-        if(cart?.orderAddr) {
+          return newItems;
+        }, []);
+
+        const allPriceWithoutPromo = cart.items.reduce((all, it) => all + it.count * it.one_price, 0);
+        const itemsCount = cart.items.reduce((all, item) => all + item.count, 0);
+
+        set({ items: cart.items, allPriceWithoutPromo, itemsCount });
+        
+        if (promoName) {
+          get().getInfoPromo(promoName, city?.link);
+          
+          get().getItems();
+          get().check_need_dops();
+        } else {
+          get().getItems();
+          get().check_need_dops();
+        }
+
+        // если корзина протухла — сбрасываем данные оформления и выходим,
+        // чтобы НЕ применить старый адрес/оплату/дату/коммент ниже.
+        if (expired) {
+          get().clearCheckoutData({ touch: true });
+          return;
+        }
+
+        if (cart?.orderAddr) {
           set({ orderAddr: cart?.orderAddr });
 
-          if(cart?.orderAddr?.free_drive) {
+          if (cart?.orderAddr?.free_drive) {
             set({ free_drive: cart?.orderAddr?.free_drive });
           }
         }
 
-        if(cart?.orderPic) {
+        if (cart?.orderPic) {
           set({ orderPic: cart?.orderPic });
         }
 
-        if(cart?.comment) {
+        if (cart?.comment) {
           set({ comment: cart?.comment });
         }
 
-        if(cart?.typePay) {
+        if (cart?.typePay) {
           set({ typePay: cart?.typePay });
         }
 
-        if(cart?.sdacha) {
+        if (cart?.sdacha) {
           set({ sdacha: cart?.sdacha });
         }
 
-        if(cart?.typeOrder) {
+        if (cart?.typeOrder) {
           set({ typeOrder: cart?.typeOrder });
         }
 
-        if(cart?.dateTimeOrder) {
+        if (cart?.dateTimeOrder) {
           set({ dateTimeOrder: cart?.dateTimeOrder });
         }
 
-        if(cart?.summDiv) {
+        // чтобы 0 тоже применялось корректно
+        if (cart?.summDiv !== undefined && cart?.summDiv !== null) {
           set({ summDiv: cart?.summDiv });
         }
-
-        
       }
     }
   },
 
   // сохранить заполненные/выбранные данные корзины в localStorage
-  setCartLocalStorage: () => {
+  setCartLocalStorage: (opts = { touch: true }) => {
+    if (typeof window === 'undefined') return;
 
     const city = JSON.parse(localStorage.getItem('setCity'));
 
+    // прошлый updatedAt (чтобы при touch:false не обновлять корзину)
+    let prevUpdatedAt = get().cartUpdatedAt || 0;
+
+    if (!prevUpdatedAt) {
+      try {
+        const prev = JSON.parse(localStorage.getItem('setCart') || 'null');
+        prevUpdatedAt = Number(prev?.updatedAt || 0);
+      } catch (e) {}
+    }
+
+    const updatedAt = opts?.touch ? Date.now() : (prevUpdatedAt || Date.now());
+
+    set({ cartUpdatedAt: updatedAt });
+
     const data = {
+      updatedAt,
       city,
       items: get().items,
       sdacha: get().sdacha,
@@ -1002,7 +1068,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       orderAddr: get().orderAddr,
       typeOrder: get().typeOrder,
       dateTimeOrder: get().dateTimeOrder,
-    }
+    };
 
     localStorage.setItem('setCart', JSON.stringify(data));
   },
@@ -1301,16 +1367,19 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
             const findAddr = json?.find(addr => addr.street === address.street && addr.home === address.home);
 
-            if(findAddr) {
-              get().setAddrDiv(findAddr);
-              get().setSummDiv(findAddr.sum_div ?? 0);
+            if (findAddr) {
+              set({ orderAddr: findAddr, summDiv: findAddr.sum_div ?? 0 });
+
+              if (findAddr?.free_drive) {
+                set({ free_drive: findAddr.free_drive });
+              }
             }
 
           }
 
           set({ addrList: json ?? [] });
 
-          get().setCartLocalStorage();
+          get().setCartLocalStorage({ touch: false });
         }
       }
     }
@@ -1325,7 +1394,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   },
 
   // создание заказа
-  createOrder: async(token, city_id, funcClose) => {
+  createOrder: async (token, city_id, funcClose) => {
 
     if( !token || token?.length == 0 ){
 
@@ -1335,6 +1404,31 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
       return;
     }
+
+    // =========================================================
+    // NEW (Шаг 4): страховка от “старого оформления”
+    // Если корзина НЕ обновлялась > 3 дней (или updatedAt отсутствует),
+    // то сбрасываем оформление и НЕ создаём заказ.
+    // =========================================================
+    try {
+      if (typeof window !== 'undefined') {
+        const TTL_MS = 3 * 24 * 60 * 60 * 1000;
+
+        const cartLs = JSON.parse(localStorage.getItem('setCart') || 'null');
+        const updatedAt = Number(cartLs?.updatedAt || 0);
+
+        const expired = !updatedAt || (Date.now() - updatedAt > TTL_MS);
+
+        if (expired) {
+          get().clearCheckoutData({ touch: true });
+
+          // чтобы после сброса можно было сразу повторно нажать
+          set({ DBClick: false });
+
+          return 'nothing';
+        }
+      }
+    } catch (e) {}
 
     if( get().DBClick === true ){
       return;
@@ -1425,9 +1519,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
               point_id: json?.check?.order?.point_id,
               
             };
-        
+
             const res = await api('cart', data);
-        
+
             if( res?.st === true ){
               clearInterval(timerId);
               funcClose();
@@ -1453,7 +1547,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
             checkout.destroy();
             funcClose();
           });
-      
+
           checkout.on('fail', () => {
             checkout.destroy();
             return 'nothing';
@@ -1463,7 +1557,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
             checkout.render('payment-form');
           }, 300 )
         }
-      
+
         return 'wait_payment';
       }else{
         /*try { повтор
@@ -1588,7 +1682,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     get().check_need_dops();
 
-    get().setCartLocalStorage();
+    get().setCartLocalStorage({ touch: false });
 
   },
 
@@ -1904,6 +1998,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   // добавления товара для корзины
   plus: (item_id) => {
     let check = false;
+    let found = false; // отдельный флаг "товар найден в корзине"
     let items = get().items;
     const allItems = get().allItems;
     let itemsCount = get().itemsCount;
@@ -1918,6 +2013,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     }
 
     items = items.map((item) => {
+      if (parseInt(item.item_id) === parseInt(item_id)) {
+        found = true; // отмечаем, что товар уже есть в корзине (даже если лимит)
+      }
+
       if( parseInt(item.item_id) === parseInt(item_id) && parseInt(item.count) + 1 <= max_count ){
         item.count++;
         itemsCount++;
@@ -1931,7 +2030,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       return item;
     })
 
-    if(!check){
+    // добавляем новый товар ТОЛЬКО если его нет в корзине
+    if(!found){
       const item = allItems?.find(item => parseInt(item.id) === parseInt(item_id));
 
       if( item ){
@@ -1939,7 +2039,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         itemsCount++;
         item.item_id = item.id;
         item.one_price = item.price;
-        //item.cat_id = item.cat_id;
         items = [...items, ...[item]];
 
         useProfileStore.getState().saveUserActions('plus_item', item.name, item.price, item_id);
@@ -1954,22 +2053,17 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     
     if(promoInfo) {
       const promoName = Cookies.get('promo_name');
-      //if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
       if(Cookies.get('promo_name') && Cookies.get('promo_name').length > 0){
-
         const city = useCitiesStore.getState().thisCity;
-
         get().getInfoPromo(Cookies.get('promo_name'), city)
       } else {
         get().promoCheck();
       }
-      // get().promoCheck();
     } else {
       get().getItems();
     }
 
     get().check_need_dops();
-
     get().setCartLocalStorage();
   },
 
@@ -2718,13 +2812,13 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     })
 
     setTimeout(() => {
-      get().changePointClick(get().orderPic?.name ?? '');
+      get().changePointClick(get().orderPic?.name ?? '', { touch: false });
     }, 100)
 
   },
 
   // изменение состояния точки по клику на Карте
-  changePointClick: (addr) => {
+  changePointClick: (addr, opts = { touch: true }) => {
     
     let zones = get().zones;
     const pointList = get().pointList;
@@ -2750,7 +2844,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
       set({ zones, orderPic: orderPic ?? null });
 
-      get().setCartLocalStorage();
+      get().setCartLocalStorage({ touch: opts.touch });
     })
 
   },
@@ -2816,6 +2910,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       allPriceWithoutPromo 
     });
     
+    // "повтор заказа" = пользователь обновил корзину.
+    // Поэтому обновляем updatedAt (touch:true).
+    get().setCartLocalStorage({ touch: true });
     
     get().getItems();
     

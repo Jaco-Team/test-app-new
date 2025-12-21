@@ -54,13 +54,21 @@ export default function ModalCardItemMobile() {
   }, [isOpenModal]);
 
   const changeCountPlus = (id) => {
-    setCount(count + 1);
     plus(id, openItem?.cat_id);
+
+    const items = useCartStore.getState().items;
+    const findItems = items.find((it) => parseInt(it.item_id) === parseInt(id));
+
+    setCount(findItems ? findItems.count : 0);
   };
 
   const changeCountMinus = (id) => {
-    setCount(count - 1);
     minus(id);
+
+    const items = useCartStore.getState().items;
+    const findItems = items.find((it) => parseInt(it.item_id) === parseInt(id));
+
+    setCount(findItems ? findItems.count : 0);
   };
 
   const desc = openItem?.marc_desc.length > 0 ? openItem?.marc_desc : openItem?.tmp_desc;
