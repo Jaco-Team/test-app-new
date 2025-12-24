@@ -122,6 +122,13 @@
           width: 100%;
           height: auto;
         }
+        & video {
+          border-radius: $MyScale80_mobile;
+          object-fit: contain;
+          image-rendering: auto;
+          width: 100%;
+          height: auto;
+        }
         & span {
           height: $MyScale60_mobile;
           width: $MyScale240_mobile;

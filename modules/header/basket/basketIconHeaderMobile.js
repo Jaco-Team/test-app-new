@@ -9,7 +9,7 @@ export default function BasketIconHeaderMobile({ setActiveMenu, active_page, cit
   
   const openCart = () => {
     setActiveMenu(false);
-    saveUserActions('open_cart', '', 0);
+    saveUserActions('open_card', '', 0);
   }
 
   return (

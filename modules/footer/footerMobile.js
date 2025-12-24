@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
-import {useCartStore, useHomeStore} from '@/components/store.js';
+import {useCartStore, useHomeStore, useProfileStore} from '@/components/store.js';
 
 import { NewVKIcon, OdnIcon, TGIcon, ArrowUp, BasketFooterMobile } from '@/ui/Icons.js';
 import ModalOrderMobile from '@/modules/profile/zakazy/mobile/modalOrderMobile';
@@ -14,6 +14,7 @@ export default function FooterMobile({ cityName, active_page, links }) {
   const [itemsCount, itemsOffDops, dopListCart, checkPromo, allPrice] = useCartStore((state) => [state.itemsCount, state.itemsOffDops, state.dopListCart, state.checkPromo, state.allPrice]);
 
   const [setMenuCatPosition, isOpenFilter, transition_menu_mobile] = useHomeStore(state => [state.setMenuCatPosition, state.isOpenFilter, state.transition_menu_mobile]);
+  const [ saveUserActions ] = useProfileStore((state) => [state.saveUserActions]);
 
   const handlerArrow = () => {
     setShowArrow(window.scrollY > 50);
@@ -47,6 +48,10 @@ export default function FooterMobile({ cityName, active_page, links }) {
 
   const ext = (url) => url ? { href: url, target: '_blank', rel: 'noopener noreferrer' } : { href: '/#' };
 
+  const openCart = () => {
+    saveUserActions('open_card', '', 0);
+  }
+
   return (
     <>
       <div className='containerArrowBasket' 
@@ -56,7 +61,7 @@ export default function FooterMobile({ cityName, active_page, links }) {
                  marginTop: active_page === 'home' && isOpenFilter ? transition_menu_mobile : active_page === 'home' ? '3.4188034188034vw' : null
                 }}>
 
-        <Link href={'/' + cityName + '/cart'} className={itemsCount && active_page === 'home' ? 'BasketFooterMobile' : 'BasketFooterMobileHidden'} >
+        <Link onClick={openCart} href={'/' + cityName + '/cart'} className={itemsCount && active_page === 'home' ? 'BasketFooterMobile' : 'BasketFooterMobileHidden'} >
           <span><BasketFooterMobile /></span>
           <span>{new Intl.NumberFormat('ru-RU').format(totalToShow)} ₽</span>
         </Link>

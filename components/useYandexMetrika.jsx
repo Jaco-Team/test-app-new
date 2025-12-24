@@ -103,7 +103,7 @@ function useYandexMetrika(city) {
         break;
         
       //перешел в корзину
-      case 'open_cart':
+      case 'open_card':
         if (typeof window !== 'undefined') {
           if( city == 'samara' ){
             ym(counterId, 'reachGoal', 'open_card'); 

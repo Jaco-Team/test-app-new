@@ -4154,8 +4154,8 @@ export const useProfileStore = createWithEqualityFn(persist((set, get) => ({
       });
     }
 
-    if( event == 'open_cart' ){
-      trackEvent('open_cart', {
+    if( event == 'open_card' ){
+      trackEvent('open_card', {
         price: price,
       });
     }

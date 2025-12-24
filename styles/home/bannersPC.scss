@@ -76,6 +76,13 @@
           width: 100%;
           height: auto;
         }
+        & video {
+          border-radius: $MyScale32;
+          object-fit: contain;
+          image-rendering: auto;
+          width: 100%;
+          height: auto;
+        }
 
         & span {
           left: $MyScale160;

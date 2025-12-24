@@ -306,6 +306,8 @@ export default function ModalBannerPC() {
     }
   }
 
+  const hasVideo = Boolean(banner?.type_illustration == 'video');
+
   return (
     <Dialog
       onClose={() => setActiveBanner(false, null)}
@@ -328,23 +330,47 @@ export default function ModalBannerPC() {
                 height={1000}
                 priority={true}
               /> */}
-              <picture>
-                <source 
-                  type="image/webp" 
-                  srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_3700x1000.jpg'} 
-                  sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
-                <source 
-                  type="image/jpeg" 
-                  srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_3700x1000.jpg'} 
-                  sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+              {hasVideo ?
+                <video
+                  // ref={(el) => { if (el) videoRefs.current[s.key] = el; }}
+                  muted
+                  playsInline
+                  autoPlay
+                  loop
+                  preload="auto"
+                  // className="item_banner_image"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    // minHeight: 300,
+                    objectFit: "cover",
+                    pointerEvents: "none",
+                  }}
+                  // onEnded={() => handleVideoEnded(s.key)}
+                  // onCanPlay={() => handleVideoCanPlay(s.key)}
+                >
+                  <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_video_1920x1080.mp4'} type="video/mp4" />
+                  <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_video_1920x1080.webm'} type="video/webm" />
+                </video>
+                  :
+                <picture>
+                  <source 
+                    type="image/webp" 
+                    srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_3700x1000.jpg'} 
+                    sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+                  <source 
+                    type="image/jpeg" 
+                    srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_3700x1000.jpg'} 
+                    sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
-                <img 
-                  alt={banner?.title} 
-                  title={banner?.title} 
-                  src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_3700x1000.jpg'} 
-                  loading="lazy"
-                />
-              </picture>
+                  <img 
+                    alt={banner?.title} 
+                    title={banner?.title} 
+                    src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_3700x1000.jpg'} 
+                    loading="lazy"
+                  />
+                </picture>
+              }
               <Typography className="ItemOther" variant="h5" component="span" onClick={() => setActiveBanner(false, null)}>
                 Условия акции
                 <KeyboardArrowUpIcon />

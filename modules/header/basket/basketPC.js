@@ -53,7 +53,7 @@ export default function BasketPC() {
     //   setActiveModalAuth(true);
     // }
 
-    saveUserActions('open_cart', '', allPrice);
+    saveUserActions('open_card', '', allPrice);
 
     if (Cookies.get('promo_name') && Cookies.get('promo_name').length > 0) {
       getInfoPromo(Cookies.get('promo_name'), thisCity)
