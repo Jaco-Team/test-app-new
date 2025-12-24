@@ -29,8 +29,8 @@
     "@mui/material": "^5.18.0",
     "@mui/styled-engine-sc": "^5.14.12",
     "@mui/x-date-pickers": "^7.29.4",
-    "@next/bundle-analyzer": "^16.1.0",
-    "@next/third-parties": "^16.1.0",
+    "@next/bundle-analyzer": "^16.1.1",
+    "@next/third-parties": "^16.1.1",
     "@pbe/react-yandex-maps": "^1.2.5",
     "@react-spring/web": "^10.0.3",
     "@sentry/browser": "^10.32.1",
@@ -81,7 +81,7 @@
     "@storybook/addon-themes": "^10.1.10",
     "@storybook/nextjs": "^10.1.10",
     "eslint": "9.39.2",
-    "eslint-config-next": "16.1.0",
+    "eslint-config-next": "16.1.1",
     "eslint-plugin-storybook": "^10.1.10",
     "storybook": "^10.1.10"
   }
