@@ -194,11 +194,23 @@ export default function BannersMobile() {
 
   
 
-  const pauseAllVideos = useCallback(() => {
+  const pauseAllVideos_old = useCallback(() => {
     stopAllFailovers();
     Object.values(videoRefs.current).forEach((v) => {
       if (!v) return;
       try { v.pause(); v.currentTime = 0; } catch {}
+    });
+  }, [stopAllFailovers]);
+
+  const pauseAllVideos = useCallback(() => {
+    stopAllFailovers();
+
+    Object.values(videoRefs.current).forEach((v) => {
+      if (!v) return;
+      try {
+        v.pause();
+        // ❌ v.currentTime = 0;  // УБРАТЬ!
+      } catch {}
     });
   }, [stopAllFailovers]);
 
@@ -316,8 +328,20 @@ export default function BannersMobile() {
       video.setAttribute("playsinline", "");
       video.setAttribute("webkit-playsinline", "");
       video.preload = "auto";
-      video.load(); // важно для iOS
+      // video.load(); // важно для iOS
+      if (video.readyState < 2) {
+        video.load(); // ✅ только если данных нет
+      }
       await video.play();
+
+      const nextSlideEl = swiper.slides[swiper.activeIndex + 1];
+      const nextVideo = nextSlideEl?.querySelector("video");
+      if (nextVideo && nextVideo.readyState < 2) {
+        try {
+          nextVideo.preload = "auto";
+          nextVideo.load();
+        } catch {}
+      }
     } catch (e) {
       console.log("VIDEO PLAY FAIL", e);
     }
@@ -394,7 +418,7 @@ export default function BannersMobile() {
           {s.item.type_illustration === "video" ? (
             <video
               ref={(el) => { if (el) videoRefs.current[s.key] = el; }}
-              src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + s.item.img + '_video_1080x1920.mp4'}
+              // src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + s.item.img + '_video_1080x1920.mp4'}
               muted
               playsInline
               // loop
@@ -407,7 +431,7 @@ export default function BannersMobile() {
               onEnded={() => handleVideoEnded(s.key)}
               onCanPlay={() => handleVideoCanPlay(s.key)}
             >
-              {/* <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + s.item.img + '_video_1080x1920.mp4'} type="video/mp4" /> */}
+              <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + s.item.img + '_video_1080x1920.mp4'} type="video/mp4" />
               {/* <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + s.item.img + '_video_1080x1920.webm'} type="video/webm" /> */}
             </video>
           ) : (
