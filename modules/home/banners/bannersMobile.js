@@ -260,7 +260,7 @@ export default function BannersMobile() {
     }, ms);
   }, [slides, disarmVideoFailover]);
 
-  const playIfVideoActive = useCallback(async (swiper) => {
+  const playIfVideoActive_old = useCallback(async (swiper) => {
     if (!swiper) return;
 
     const i = swiper.realIndex;
@@ -276,7 +276,9 @@ export default function BannersMobile() {
     swiper.autoplay?.stop?.();
     pauseAllVideos();
 
-    const video = videoRefs.current[slide.key];
+    // const video = videoRefs.current[slide.key];
+    const activeSlideEl = swiper.slides[swiper.activeIndex];
+    const video = activeSlideEl?.querySelector("video");
     if (!video) return;
 
     armVideoFailover(slide.key);
@@ -287,6 +289,39 @@ export default function BannersMobile() {
       try { video.muted = true; await video.play(); } catch {}
     }
   }, [slides, pauseAllVideos]);
+
+  const playIfVideoActive = useCallback(async (swiper) => {
+    if (!swiper) return;
+
+    // 🔥 берём реальный DOM активного слайда
+    const activeSlideEl = swiper.slides[swiper.activeIndex];
+    const video = activeSlideEl?.querySelector("video");
+
+    // если видео нет → это картинка
+    if (!video) {
+      pauseAllVideos();
+      if (activeSlider) swiper.autoplay?.start?.();
+      return;
+    }
+
+    // это видео
+    swiper.autoplay?.stop?.();
+    pauseAllVideos();
+
+    // failover можно оставить как есть, но ключ не нужен — можно просто таймер на activeIndex
+    armVideoFailover(`active-${swiper.activeIndex}`);
+
+    try {
+      video.muted = true;
+      video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
+      video.preload = "auto";
+      video.load(); // важно для iOS
+      await video.play();
+    } catch (e) {
+      console.log("VIDEO PLAY FAIL", e);
+    }
+  }, [pauseAllVideos, activeSlider, armVideoFailover]);
 
   useEffect(() => {
     const swiper = swiperRef.current?.swiper;
@@ -359,6 +394,7 @@ export default function BannersMobile() {
           {s.item.type_illustration === "video" ? (
             <video
               ref={(el) => { if (el) videoRefs.current[s.key] = el; }}
+              src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + s.item.img + '_video_1080x1920.mp4'}
               muted
               playsInline
               // loop
@@ -371,8 +407,8 @@ export default function BannersMobile() {
               onEnded={() => handleVideoEnded(s.key)}
               onCanPlay={() => handleVideoCanPlay(s.key)}
             >
-              <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + s.item.img + '_video_1080x1920.mp4'} type="video/mp4" />
-              <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + s.item.img + '_video_1080x1920.webm'} type="video/webm" />
+              {/* <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + s.item.img + '_video_1080x1920.mp4'} type="video/mp4" /> */}
+              {/* <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + s.item.img + '_video_1080x1920.webm'} type="video/webm" /> */}
             </video>
           ) : (
             <picture>
