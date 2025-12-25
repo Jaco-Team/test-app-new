@@ -351,7 +351,7 @@ export default function ModalBannerMobile() {
                 // onCanPlay={() => handleVideoCanPlay(s.key)}
               >
                 <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_video_1080x1920.mp4'} type="video/mp4" />
-                <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_video_1080x1920.webm'} type="video/webm" />
+                {/* <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_video_1080x1920.webm'} type="video/webm" /> */}
               </video>
                 :
               <picture>
