@@ -109,7 +109,7 @@ import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
               <picture>
                 <source 
                   type="image/webp" 
-                  srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + item.img+"_3700x1000.jpg"} 
+                  srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + item.img+"_3700x1000.webp"} 
                   sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
                 <source 
                   type="image/jpeg" 
@@ -136,7 +136,7 @@ import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
   );
 });
 
-export default function BannersPC() {
+function BannersPC_old_new() {
   const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [
     state.bannerList,
     state.setActiveBanner,
@@ -420,6 +420,7 @@ export default function BannersPC() {
                   }}
                   muted
                   playsInline
+                  loop
                   preload="auto"
                   style={{
                     width: "100%",
@@ -439,7 +440,7 @@ export default function BannersPC() {
                 <picture>
                   <source 
                     type="image/webp" 
-                    srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.item.img+"_3700x1000.jpg"} 
+                    srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.item.img+"_3700x1000.webp"} 
                     sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
                   <source 
                     type="image/jpeg" 
@@ -463,6 +464,346 @@ export default function BannersPC() {
           <div ref={nextRef} className="swiper-button-next"><NextIcon /></div>
           <div ref={paginationRef} className="swiper-pagination" />
         
+        </Swiper>
+      </Grid>
+    </Box>
+  );
+}
+
+export default function BannersPC() {
+  const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [
+    state.bannerList,
+    state.setActiveBanner,
+    state.activeSlider,
+    state.getBanners,
+  ]);
+
+  const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
+
+  const swiperRef = useRef(null);
+  const videoRefs = useRef({}); // { [slideKey]: HTMLVideoElement }
+  const loadingTimers = useRef({}); // { [slideKey]: timeoutId }
+
+  const prevRef = useRef(null);
+  const nextRef = useRef(null);
+  const paginationRef = useRef(null);
+
+  const playTokenRef = useRef(0);
+
+  // ---------- load banners ----------
+  useEffect(() => {
+    if ((!bannerList || bannerList.length === 0) && thisCity) {
+      getBanners("home", thisCity);
+    }
+  }, [bannerList, thisCity, getBanners]);
+
+  const homeBanners = useMemo(() => {
+    return bannerList?.filter((item) => parseInt(item.is_active_home) === 1) ?? [];
+  }, [bannerList]);
+
+  const slides = useMemo(() => {
+    return homeBanners.map((item) => ({
+      key: `slide-${item.id}`,
+      type: item.type_illustration === "video" ? "video" : "image",
+      item,
+    }));
+  }, [homeBanners]);
+
+  // ---------- init fix ----------
+  useEffect(() => {
+    const swiper = swiperRef.current?.swiper;
+    if (!swiper) return;
+    if (!slides.length) return;
+
+    swiper.update();
+    swiper.loopDestroy();
+    swiper.loopCreate();
+    swiper.updateSlides();
+
+    swiper.pagination?.render?.();
+    swiper.pagination?.update?.();
+    swiper.navigation?.update?.();
+
+    if (activeSlider) swiper.autoplay?.start?.();
+  }, [slides.length, activeSlider]);
+
+  // ---------- timers ----------
+  const stopAllFailovers = useCallback(() => {
+    Object.values(loadingTimers.current).forEach((t) => clearTimeout(t));
+    loadingTimers.current = {};
+  }, []);
+
+  const disarmVideoFailover = useCallback((slideKey) => {
+    clearTimeout(loadingTimers.current[slideKey]);
+    delete loadingTimers.current[slideKey];
+  }, []);
+
+  const armVideoFailover = useCallback(
+    (slideKey, ms = 6000) => {
+      disarmVideoFailover(slideKey);
+
+      loadingTimers.current[slideKey] = setTimeout(() => {
+        const swiper = swiperRef.current?.swiper;
+        if (!swiper) return;
+
+        const active = slides[swiper.realIndex];
+        if (!active || active.key !== slideKey) return;
+
+        swiper.slideNext();
+      }, ms);
+    },
+    [slides, disarmVideoFailover]
+  );
+
+  const pauseAllExcept = useCallback(
+    (exceptEl) => {
+      stopAllFailovers();
+
+      Object.values(videoRefs.current).forEach((v) => {
+        if (!v) return;
+        if (exceptEl && v === exceptEl) return;
+        try {
+          v.pause();
+        } catch {}
+      });
+    },
+    [stopAllFailovers]
+  );
+
+  // ---------- SAFARI SAFE PLAY ----------
+  const safePlay = useCallback(async (video, token) => {
+    if (!video) return false;
+
+    try {
+      video.muted = true;
+      video.playsInline = true;
+      video.setAttribute("playsinline", "");
+      video.setAttribute("webkit-playsinline", "");
+      video.preload = "auto";
+
+      // если закончилось — сброс
+      if (video.ended) {
+        try {
+          video.currentTime = 0;
+        } catch {}
+        try {
+          video.load();
+        } catch {}
+      }
+
+      if (playTokenRef.current !== token) return false;
+
+      await new Promise((r) => requestAnimationFrame(r));
+      if (playTokenRef.current !== token) return false;
+
+      const p = video.play();
+      if (p?.then) await p;
+
+      if (playTokenRef.current !== token) return false;
+
+      return true;
+    } catch (e) {
+      if (e?.name !== "AbortError") console.log("safePlay error:", e?.name, e?.message);
+      return false;
+    }
+  }, []);
+
+  // ---------- MAIN ----------
+  const playIfVideoActive = useCallback(
+    async (swiper) => {
+      if (!swiper) return;
+
+      const i = swiper.realIndex;
+      const slide = slides[i];
+
+      playTokenRef.current += 1;
+      const token = playTokenRef.current;
+
+      // ----- IMAGE -----
+      if (!slide || slide.type !== "video") {
+        pauseAllExcept(null);
+
+        if (activeSlider) {
+          try {
+            swiper.autoplay?.stop?.();
+            setTimeout(() => {
+              if (playTokenRef.current === token) swiper.autoplay?.start?.();
+            }, 80);
+          } catch {}
+        }
+        return;
+      }
+
+      // ----- VIDEO -----
+      swiper.autoplay?.stop?.();
+
+      const video = videoRefs.current[slide.key];
+      if (!video) return;
+
+      pauseAllExcept(video);
+
+      // ✅ всегда сбрасываем ended, чтобы не зависал на последнем кадре
+      if (video.ended) {
+        try { video.currentTime = 0; } catch {}
+      }
+
+      // failover если не запустилось или зависло
+      armVideoFailover(slide.key);
+
+      const ok = await safePlay(video, token);
+
+      if (ok) {
+        // ✅ если стартануло — можно убрать failover (или оставить на крайний случай)
+        disarmVideoFailover(slide.key);
+
+        // ✅ ВАЖНО: видео должно перелистнуть по окончанию
+        video.onended = () => {
+          const s = swiperRef.current?.swiper;
+          if (!s) return;
+          // если в этот момент это все еще активный видео-слайд — едем дальше
+          s.slideNext();
+        };
+      }
+    },
+    [slides, pauseAllExcept, armVideoFailover, safePlay, disarmVideoFailover, activeSlider]
+  );
+
+  // ---------- swiper events ----------
+  useEffect(() => {
+    const swiper = swiperRef.current?.swiper;
+    if (!swiper) return;
+
+    const handler = () => playIfVideoActive(swiper);
+
+    swiper.on("init", handler);
+    swiper.on("slideChangeTransitionEnd", handler);
+
+    setTimeout(handler, 120);
+
+    return () => {
+      swiper.off("init", handler);
+      swiper.off("slideChangeTransitionEnd", handler);
+    };
+  }, [playIfVideoActive]);
+
+  // ---------- open banner ----------
+  const openBanner = useCallback(
+    (item) => {
+      const swiper = swiperRef.current?.swiper;
+      if (!swiper) return;
+
+      swiper.autoplay?.stop?.();
+      setActiveBanner(true, item, swiper);
+
+      ymDataLayer.push({
+        ecommerce: {
+          promoClick: {
+            promotions: [
+              {
+                id: item?.id,
+                name: item?.title,
+                creative: item?.name,
+                position: 1,
+              },
+            ],
+          },
+        },
+      });
+
+      if (thisCityRu === "Самара") ym(100325084, "reachGoal", "open_banner", { akcia_name: item?.title });
+      if (thisCityRu === "Тольятти") ym(100601350, "reachGoal", "open_banner", { akcia_name: item?.title });
+    },
+    [setActiveBanner, thisCityRu]
+  );
+
+  return (
+    <Box component="div" className="BannerPC BannerFontPC">
+      <Grid className="ImgItem">
+        <Swiper
+          key={slides.length}
+          ref={swiperRef}
+          modules={[Autoplay, Navigation, Pagination, A11y, EffectCreative]}
+          slidesPerView={1}
+          loop
+          autoplay={{ delay: 5000, disableOnInteraction: false }}
+          speed={2500}
+          navigation={{
+            prevEl: prevRef.current,
+            nextEl: nextRef.current,
+          }}
+          pagination={{
+            el: paginationRef.current,
+            clickable: true,
+          }}
+          onBeforeInit={(swiper) => {
+            swiper.params.navigation.prevEl = prevRef.current;
+            swiper.params.navigation.nextEl = nextRef.current;
+            swiper.params.pagination.el = paginationRef.current;
+          }}
+          onInit={(swiper) => {
+            swiper.navigation.init();
+            swiper.navigation.update();
+            swiper.pagination.init();
+            swiper.pagination.render();
+            swiper.pagination.update();
+            if (activeSlider) swiper.autoplay.start();
+          }}
+          style={{ width: "90.975vw", marginTop: "8.66425vw" }}
+        >
+          {slides.map((s) => (
+            <SwiperSlide key={s.key} onClick={() => openBanner(s.item)}>
+              {s.type === "video" ? (
+                <video
+                  ref={(el) => {
+                    if (el) videoRefs.current[s.key] = el;
+                  }}
+                  muted
+                  playsInline
+                  // ✅ ВАЖНО: loop убран, иначе ended не сработает
+                  preload="auto"
+                  style={{
+                    width: "100%",
+                    height: "auto",
+                    borderRadius: "1.1552346570397vw",
+                    objectFit: "cover",
+                    pointerEvents: "none",
+                  }}
+                >
+                  <source
+                    src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${s.item.img}_video_1920x1080.mp4`}
+                    type="video/mp4"
+                  />
+                </video>
+              ) : (
+                <picture>
+                  <source 
+                    type="image/webp" 
+                    srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.item.img+"_3700x1000.webp"} 
+                    sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+                  <source 
+                    type="image/jpeg" 
+                    srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.item.img+"_3700x1000.jpg"} 
+                    sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+
+                  <img 
+                    alt={s.item?.name} 
+                    title={s.item?.name} 
+                    src={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.item.img+"_3700x1000.jpg"} 
+                    loading="lazy"
+                    style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }}
+                  />
+                </picture>
+              )}
+            </SwiperSlide>
+          ))}
+
+          <div ref={prevRef} className="swiper-button-prev">
+            <ArrowIcon />
+          </div>
+          <div ref={nextRef} className="swiper-button-next">
+            <NextIcon />
+          </div>
+          <div ref={paginationRef} className="swiper-pagination" />
         </Swiper>
       </Grid>
     </Box>
