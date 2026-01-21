@@ -701,7 +701,7 @@
       flex-direction: column;
 
       & .blockShadowModalCardItemValue {
-        top: $MyScale550_mobile;
+        top: $MyScale668_mobile;
         z-index: 100;
         width: 100%;
         height: $MyScale80_mobile;
@@ -745,11 +745,36 @@
         display: flex;
         align-items: center;
         justify-content: center;
+        margin-bottom: $MyScale40_mobile;
         & span {
           text-align: center;
           @include font30_400();
           color: rgba(0, 0, 0, 0.6) !important;
         }
+      }
+
+      & .ValueModeButtons {
+        width: $MyScale1010_mobile;
+        padding-left: $MyScale80_mobile;
+        display: flex;
+        justify-content: flex-start;
+        gap: $MyScale20_mobile;
+        margin-bottom: $MyScale40_mobile;
+      }
+
+      & .ValueModeBtn {
+        border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
+        background: transparent;
+        border-radius: 9999vw;
+        padding: $MyScale20_mobile $MyScale60_mobile;
+        cursor: pointer;
+        @include font40_400();
+        color: rgba(0, 0, 0, 0.8);
+      }
+
+      & .ValueModeBtn.active {
+        border-color: #DD1A32;
+        color: #DD1A32;
       }
 
       & .lineModalCardMobileValue2 {

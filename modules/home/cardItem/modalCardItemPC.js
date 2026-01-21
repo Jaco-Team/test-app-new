@@ -30,6 +30,7 @@ export default function ModalCardItemPC() {
   const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
   const [count, setCount] = useState(0);
+  const [valueMode, setValueMode] = useState('per100');
   
   const metrica_param = {
     city: thisCityRu, 
@@ -172,6 +173,38 @@ export default function ModalCardItemPC() {
       // roistat.event.send('sostav_seta');
     } catch(e){ console.log(e) }
   }
+
+  useEffect(() => {
+    if (isOpenModal) setValueMode('per100');
+  }, [isOpenModal, openItem?.id]);
+
+  const toNum = (v) => {
+    if (v === null || v === undefined) return NaN;
+    if (typeof v === 'number') return v;
+    return parseFloat(String(v).replace(',', '.'));
+  };
+
+  const fmtKcal = (n) => {
+    if (!Number.isFinite(n)) return '';
+    return new Intl.NumberFormat('ru-RU').format(Math.round(n));
+  };
+
+  const fmtMacro = (n) => {
+    if (!Number.isFinite(n)) return '';
+    return new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(n);
+  };
+
+  // пересчёт "на всё блюдо" из значения "на 100 г"
+  const byWeight = (valStr, weightStr, kind = 'macro') => {
+    const val = toNum(valStr);
+    const w = toNum(weightStr); // граммы
+    if (!Number.isFinite(val) || !Number.isFinite(w)) return '';
+    const res = (val * w) / 100;
+    return kind === 'kcal' ? fmtKcal(res) : fmtMacro(res);
+  };
+
+  const valueItems = (openItem?.items?.length ?? 0) > 0 ? openItem.items : (openItem ? [openItem] : []);
+  const getWeight = (item) => item?.weight ?? openItem?.weight;
 
   return (
     <Dialog
@@ -353,22 +386,43 @@ export default function ModalCardItemPC() {
                 <div className="FirstItem">
                   <div className="Table">
                     <div className="Title">
-                      <Typography variant="h5" component="h2" className="ItemTitleSet">Таблица пищевой ценности (на 100 г):</Typography>
-                    </div>
+                      <Typography variant="h5" component="h2" className="ItemTitleSet">
+                        Таблица пищевой ценности
+                      </Typography>
 
-                    <div className="List">
                       <div className="ValueTitle">
                         <Typography variant="h5" component="h2" className="ItemTitleValue">
                           Полное описание состава блюд, калорийности и возможных аллергенов можно{' '}
                           <Link href={links?.link_allergens ?? links} target="_blank" style={{ color: '#DD1A32', cursor: 'pointer'}}>скачать в формате PDF</Link>
                         </Typography>
                       </div>
-                     {(openItem?.items ?? []).map((item, idx, arr) => (
+
+                      <div className="ValueModeButtons">
+                        <button
+                          type="button"
+                          className={'ValueModeBtn ItemTitleValue ' + (valueMode === 'per100' ? 'active' : '')}
+                          onClick={() => setValueMode('per100')}
+                        >
+                          на 100 г.
+                        </button>
+
+                        <button
+                          type="button"
+                          className={'ValueModeBtn ItemTitleValue ' + (valueMode === 'perDish' ? 'active' : '')}
+                          onClick={() => setValueMode('perDish')}
+                        >
+                          на всё блюдо
+                        </button>
+                      </div>
+                    </div>
+
+                    <div className="List">
+                     {valueItems.map((item, idx, arr) => (
                         <div
                           key={idx}
                           className="ValueItem"
                           style={{
-                            marginBottom: idx === arr.length - 1 ? '8vw' : '0.72202vw'
+                            marginBottom: idx === arr.length - 1 ? '11.552346570397vw' : '0.72202vw'
                           }}
                         >
                           <div className="itemNumber">
@@ -380,7 +434,9 @@ export default function ModalCardItemPC() {
                               <div className="ItemTitleSet">{item?.name}</div>
 
                               <div>
-                                <span className="ItemTitleStart">{item?.kkal}</span>
+                                <span className="ItemTitleStart">
+                                  {valueMode === 'per100' ? item?.kkal : byWeight(item?.kkal, getWeight(item), 'kcal')}
+                                </span>
                                 <span className="ItemTitleValue">ккал</span>
                               </div>
                             </div>
@@ -392,19 +448,25 @@ export default function ModalCardItemPC() {
                                 <div>
                                   <span className="ItemTitleValue">белки</span>
                                   <span className="dot"></span>
-                                  <span className="ItemTitleValue">{item?.protein} г</span>
+                                  <span className="ItemTitleValue">
+                                    {valueMode === 'per100' ? item?.protein : byWeight(item?.protein, getWeight(item))} г
+                                  </span>
                                 </div>
 
                                 <div>
                                   <span className="ItemTitleValue">жиры</span>
                                   <span className="dot"></span>
-                                  <span className="ItemTitleValue">{item?.fat} г</span>
+                                 <span className="ItemTitleValue">
+                                   {valueMode === 'per100' ? item?.fat : byWeight(item?.fat, getWeight(item))} г
+                                 </span>
                                 </div>
 
                                 <div>
                                   <span className="ItemTitleValue">углеводы</span>
                                   <span className="dot"></span>
-                                  <span className="ItemTitleValue">{item?.carbohydrates} г</span>
+                                  <span className="ItemTitleValue">
+                                    {valueMode === 'per100' ? item?.carbohydrates : byWeight(item?.carbohydrates, getWeight(item))} г
+                                  </span>
                                 </div>
                               </div>
                             </div>
@@ -412,6 +474,7 @@ export default function ModalCardItemPC() {
                         </div>
                       ))}
                     </div>
+
                   </div>
                 </div>
               </ClickAwayListener>
@@ -441,7 +504,7 @@ export default function ModalCardItemPC() {
                     </span>
                   </div>
 
-                  <div className="dop_icon" style={{ cursor: typeModal === 'start' ? 'pointer' : null, visibility: openItem?.id === '17' || openItem?.id === '237' ? 'hidden' : 'visible' }} 
+                  <div className="dop_icon" style={{ cursor: typeModal === 'start' ? 'pointer' : null, visibility: openItem?.id === '17' || openItem?.id === '237' || openItem?.id === '351' ? 'hidden' : 'visible' }} 
                     onClick={typeModal === 'start' ? () => navigate('value') : () => navigate('start')}
                   >
                     {foodValue === true ? <IconInfo fill='#DD1A32' /> : <IconInfo fill='rgba(0, 0, 0, 0.2)' />}

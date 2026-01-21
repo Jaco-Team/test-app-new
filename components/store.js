@@ -4801,20 +4801,29 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
   // закрытие БЖУ/Cета товара
   closeTypeModal: (event) => {
+    // target иногда может быть Text node
+    const raw = event?.target;
+    const target = raw?.nodeType === 3 ? raw.parentElement : raw;
 
-    if(event.target.classList.contains("first_text") || 
-      !event.target.classList.value || 
-       event.target.classList.contains('MuiDialog-container') || 
-       event.target.classList.contains('minus') || 
-       event.target.classList.contains('plus') || 
-       event.target.classList.contains('ItemName') || 
-       event.target.classList.contains('ItemDesk')) {
-
+    // 👇 если клик был внутри левой таблицы (FirstItem) — НИЧЕГО не делаем
+    if (target?.closest?.('.FirstItem')) {
       return;
-
-    } else {
-      get().navigate('start');
     }
+
+    // твои старые исключения оставляем
+    if (
+      target?.classList?.contains("first_text") ||
+      !target?.classList?.value ||
+      target?.classList?.contains('MuiDialog-container') ||
+      target?.classList?.contains('minus') ||
+      target?.classList?.contains('plus') ||
+      target?.classList?.contains('ItemName') ||
+      target?.classList?.contains('ItemDesk')
+    ) {
+      return;
+    }
+
+    get().navigate('start');
   },
 
   // закрытие БЖУ/Cета товара при открытии в сете товара

@@ -16,7 +16,9 @@ import BadgeItem from './badge';
 import { roboto } from '@/ui/Font';
 
 export default function ModalCardItemMobile() {
-  const [isOpenModal, openItem, setActiveModalCardItemMobile, getItem] = useHomeStore((state) => [state.isOpenModal, state.openItem, state.setActiveModalCardItemMobile, state.getItem]);
+  const [isOpenModal, openItem, setActiveModalCardItemMobile, getItem] = useHomeStore((state) => {
+    return [state.isOpenModal, state.openItem, state.setActiveModalCardItemMobile, state.getItem];
+  });
   const [links] = useFooterStore((state) => [state.links]);
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
   const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
@@ -26,6 +28,7 @@ export default function ModalCardItemMobile() {
   const [shadowValue, setShadowValue] = useState(0);
   const [activeSet, setActiveSet] = useState(false);
   const [activeValue, setActiveValue] = useState(false);
+  const [valueMode, setValueMode] = useState('per100');
 
   const metrica_param = {
     city: thisCityRu, 
@@ -71,7 +74,7 @@ export default function ModalCardItemMobile() {
     setCount(findItems ? findItems.count : 0);
   };
 
-  const desc = openItem?.marc_desc.length > 0 ? openItem?.marc_desc : openItem?.tmp_desc;
+  const desc = openItem?.marc_desc?.length > 0 ? openItem?.marc_desc : openItem?.tmp_desc;
 
   const listenScrollSet = (event) => setShadowSet(event.target.scrollTop);
   const listenScrollValue = (event) => setShadowValue(event.target.scrollTop);
@@ -193,6 +196,42 @@ export default function ModalCardItemMobile() {
     } catch(e){ console.log(e) }
   }
 
+  useEffect(() => {
+    if (isOpenModal) setValueMode('per100');
+  }, [isOpenModal, openItem?.id]);
+
+  const toNum = (v) => {
+    if (v === null || v === undefined) return NaN;
+    if (typeof v === 'number') return v;
+    return parseFloat(String(v).replace(',', '.'));
+  };
+
+  const fmtKcal = (n) => {
+    if (!Number.isFinite(n)) return '';
+    return new Intl.NumberFormat('ru-RU').format(Math.round(n));
+  };
+
+  const fmtMacro = (n) => {
+    if (!Number.isFinite(n)) return '';
+    return new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(n);
+  };
+
+  // пересчёт "на всё блюдо" из значения "на 100 г"
+  const byWeight = (valStr, weightStr, kind = 'macro') => {
+    const val = toNum(valStr);
+    const w = toNum(weightStr); // граммы
+    if (!Number.isFinite(val) || !Number.isFinite(w)) return '';
+    const res = (val * w) / 100;
+    return kind === 'kcal' ? fmtKcal(res) : fmtMacro(res);
+  };
+
+  const valueItems = (openItem?.items?.length ?? 0) > 0 ? openItem.items : (openItem ? [openItem] : []);
+  const getWeight = (item) => item?.weight ?? openItem?.weight;
+
+  const itemsLen = valueItems.length;
+  const isMany = itemsLen > 1;
+  const isOne = itemsLen < 2;
+
   return (
     <>
       {/* стартовая */}
@@ -311,7 +350,7 @@ export default function ModalCardItemMobile() {
                   </span>
                 </div>
 
-                <div className="dop_icon" onClick={() => setActiveValue(true)} style={{ visibility: openItem?.id === '17' || openItem?.id === '237' ? 'hidden' : 'visible'}}>
+                <div className="dop_icon" onClick={() => setActiveValue(true)} style={{ visibility: openItem?.id === '17' || openItem?.id === '237' || openItem?.id === '351' ? 'hidden' : 'visible'}}>
                   <IconInfoWhiteMobile />
                 </div>
               </div>
@@ -492,9 +531,9 @@ export default function ModalCardItemMobile() {
             <span>Пищевая ценность</span>
           </div>
 
-          <div className="dop_text_value" style={{ marginBottom: openItem?.items.length < 2 ? '10.25641025641vw' : '5.1282051282051vw' }}>
+          <div className="dop_text_value">
             <span>
-              Указана на 100 г. Полное описание состава всех блюд, калорийности
+              Полное описание состава всех блюд, калорийности
               и возможных аллергенов можно{' '}
               <Link href={links?.link_allergens ?? links} target="_blank"
                 ref={(node) => {
@@ -508,15 +547,33 @@ export default function ModalCardItemMobile() {
             </span>
           </div>
 
-          {openItem?.items.length > 1 ? <div className="lineModalCardMobileValue2"></div> : null}
+          <div className="ValueModeButtons">
+            <button
+              type="button"
+              className={'ValueModeBtn ' + (valueMode === 'per100' ? 'active' : '')}
+              onClick={() => setValueMode('per100')}
+            >
+              на 100 г.
+            </button>
+
+            <button
+              type="button"
+              className={'ValueModeBtn ' + (valueMode === 'perDish' ? 'active' : '')}
+              onClick={() => setValueMode('perDish')}
+            >
+              на всё блюдо
+            </button>
+          </div>
+
+          {isMany ? <div className="lineModalCardMobileValue2"></div> : null}
 
           <div className="ContainerValue"
-            style={{ marginRight: openItem?.items.length < 2 ? '6.8376068376068vw' : 0, marginBottom: openItem?.items.length < 2 ? '17.094017094017vw' : 0 }}
+            style={{ marginRight: isOne ? '6.8376068376068vw' : 0, marginBottom: isOne ? '17.094017094017vw' : 0 }}
           >
-            <div className="ItemModalCardMobileValue" style={{ overflowY: openItem?.items.length < 2 ? 'hidden' : 'auto' }} onScroll={listenScrollValue}>
-              {openItem?.items.length > 1 ? (
+            <div className="ItemModalCardMobileValue" style={{ overflowY: isOne ? 'hidden' : 'auto' }} onScroll={listenScrollValue}>
+              {isMany ? (
                 <div className="ListValue">
-                  {openItem?.items.map((item, key) => (
+                  {valueItems.map((item, key) => (
                     <div key={key} className="ValueItem" style={{ marginTop: key === 0 ? '5.1282051282051vw' : '3.4188034188034vw' }}>
                       <div className="itemIndex">
                         <span>{key + 1}.</span>
@@ -529,7 +586,11 @@ export default function ModalCardItemMobile() {
                           </div>
 
                           <div>
-                            <span>{item.kkal}</span>
+                            <span>
+                              {valueMode === 'per100'
+                                ? fmtKcal(toNum(item?.kkal))
+                                : byWeight(item?.kkal, getWeight(item), 'kcal')}
+                            </span>
                             <span>ккал</span>
                           </div>
                         </div>
@@ -543,19 +604,31 @@ export default function ModalCardItemMobile() {
                             <div>
                               <span>белки</span>
                               <span className="dot"></span>
-                              <span>{item.protein} г</span>
+                              <span>
+                                {valueMode === 'per100'
+                                  ? fmtMacro(toNum(item?.protein))
+                                  : byWeight(item?.protein, getWeight(item))} г
+                              </span>
                             </div>
 
                             <div>
                               <span>жиры</span>
                               <span className="dot"></span>
-                              <span>{item.fat} г</span>
+                              <span>
+                                {valueMode === 'per100'
+                                  ? fmtMacro(toNum(item?.fat))
+                                  : byWeight(item?.fat, getWeight(item))} г
+                              </span>
                             </div>
 
                             <div>
                               <span>углеводы</span>
                               <span className="dot"></span>
-                              <span>{item.carbohydrates} г</span>
+                              <span>
+                                {valueMode === 'per100'
+                                  ? fmtMacro(toNum(item?.carbohydrates))
+                                  : byWeight(item?.carbohydrates, getWeight(item))} г
+                              </span>
                             </div>
                           </div>
                         </div>
@@ -565,7 +638,7 @@ export default function ModalCardItemMobile() {
                 </div>
               ) : (
                 <div className="ListValueOne">
-                  {openItem?.items.map((item, key) => (
+                  {valueItems.map((item, key) => (
                     <div key={key} className="ValueItemOne">
                       <div className="itemValueColumn">
                         <div className="itemValueRowMain">
@@ -574,7 +647,11 @@ export default function ModalCardItemMobile() {
                           </div>
 
                           <div>
-                            <span>{item.kkal}</span>
+                            <span>
+                              {valueMode === 'per100'
+                                ? fmtKcal(toNum(item?.kkal))
+                                : byWeight(item?.kkal, getWeight(item), 'kcal')}
+                            </span>
                             <span>ккал</span>
                           </div>
                         </div>
@@ -588,19 +665,31 @@ export default function ModalCardItemMobile() {
                             <div>
                               <span>белки</span>
                               <span className="dot"></span>
-                              <span>{item.protein} г</span>
+                              <span>
+                                {valueMode === 'per100'
+                                  ? fmtMacro(toNum(item?.protein))
+                                  : byWeight(item?.protein, getWeight(item))} г
+                              </span>
                             </div>
 
                             <div>
                               <span>жиры</span>
                               <span className="dot"></span>
-                              <span>{item.fat} г</span>
+                              <span>
+                                {valueMode === 'per100'
+                                  ? fmtMacro(toNum(item?.fat))
+                                  : byWeight(item?.fat, getWeight(item))} г
+                              </span>
                             </div>
 
                             <div>
                               <span>углеводы</span>
                               <span className="dot"></span>
-                              <span>{item.carbohydrates} г</span>
+                              <span>
+                                {valueMode === 'per100'
+                                  ? fmtMacro(toNum(item?.carbohydrates))
+                                  : byWeight(item?.carbohydrates, getWeight(item))} г
+                              </span>
                             </div>
                           </div>
                         </div>

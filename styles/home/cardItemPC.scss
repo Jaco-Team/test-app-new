@@ -59,21 +59,67 @@
       border-top-left-radius: 1.444045vw;
       border-top-right-radius: 1.444045vw;
 
-      & .Title {
-        display: flex;
-        align-items: center;
-        flex-direction: column;
-        height: 5.0545vw;
-        margin-bottom: 0.72202vw;
+     & .Title {
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      height: auto;
+      margin-bottom: 0.72202vw;
+      padding-top: $MyScale80;
 
-        & h2 {
-          width: 100%;
+        > h2 {
+          margin: 0;
           display: flex;
           justify-content: center;
           align-items: center;
-          height: 2.1664vw;
-          margin-top: $MyScale80;
+          width: 100%;
+          height: auto;
         }
+
+        .ValueTitle {
+          margin-top: 0.3249099vw;
+          margin-bottom: $MyScale20;
+          width: 100%;
+          display: flex;
+          justify-content: center;
+        }
+
+        .ValueTitle h2 {
+          margin: 0;
+          display: block;        
+          width: 24.188vw;      
+          text-align: center;
+          height: auto;          
+          line-height: 1.2;
+        }
+
+        .ValueTitle a {
+          white-space: nowrap;
+        }
+
+        .ValueModeButtons {
+          width: 100%;
+          display: flex;
+          justify-content: flex-start;
+          gap: 0.577vw;
+          padding-left: $MyScale150;
+          box-sizing: border-box;
+        }
+
+        .ValueModeBtn {
+          border: 1px solid rgba(0, 0, 0, 0.2);
+          background: transparent;
+          border-radius: 9999vw;
+          padding: $MyScale15 $MyScale40;
+          cursor: pointer;
+          line-height: 1;
+        }
+
+        .ValueModeBtn.active {
+          border-color: #DD1A32;
+          color: #DD1A32;
+        }
+
       }
 
       & .List {
@@ -83,20 +129,6 @@
         align-items: center;
         flex-direction: column;
         overflow-y: auto;
-
-        & .ValueTitle {
-          margin-bottom: 1.66065vw;
-          margin-top: 0.3249099vw;
-          width: 100%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          & h2 {
-            height: 2.1666vw;
-            width: 24.188vw;
-            text-align: center;
-          }
-        }
 
         & .SetItem {
           display: flex;
@@ -250,10 +282,11 @@
 
         &::-webkit-scrollbar-track {
           background: rgba(0, 0, 0, 0.2);
-          margin-bottom: 8.6642599277978vw;
+          margin-bottom: 11.552346570397vw;
           border-right: solid 1.0830324909747vw #ffffff;
         }
       }
+      
     }
   }
 
