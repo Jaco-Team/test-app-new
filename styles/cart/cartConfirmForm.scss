@@ -246,7 +246,7 @@
     max-width: none !important;
     border-radius: $MyScale40;
     overflow: visible;    
-    max-height: 95vh;          
+    max-height: 98vh;          
     display: flex;
     flex-direction: column;
 
@@ -314,11 +314,11 @@
       }
 
       .confirmHeader {
-        height: $MyScale90;
+        height: $MyScale80;
         display: flex;
         align-items: center;
-        margin-top: $MyScale20;
-        margin-bottom: $MyScale10;
+        margin-top: $MyScale15;
+        margin-bottom: $MyScale5;
         position: relative;
         width: 100%;
 
@@ -340,10 +340,10 @@
         display: flex;
         text-align: center;
         width: $MyScale840;
-        height: $MyScale60;
+        height: $MyScale50;
         line-height: $MyScale34;
         @include font30_400();
-        margin-bottom: $MyScale30;
+        margin-bottom: $MyScale20;
       }
 
       .confirmAddr {
@@ -352,7 +352,7 @@
         text-align: center;
         width: $MyScale840;
         //height: $MyScale80;
-        margin-bottom: $MyScale10;
+        margin-bottom: $MyScale5;
         & span {
           line-height: $MyScale40;
           @include font40_500();
@@ -373,7 +373,7 @@
         align-items: center;
         text-align: center;
         width: $MyScale560;
-        margin-bottom: $MyScale20;
+        margin-bottom: $MyScale5;
         @include font22_400();
         line-height: $MyScale24;
         color: rgba(0, 0, 0, 0.4) !important;
@@ -383,10 +383,10 @@
         display: flex;
         align-items: center;
         width: $MyScale840;
-        height: $MyScale160;
+        height: $MyScale145;
         border-radius: $MyScale40;
         background: rgb(213, 241, 245);
-        margin-bottom: $MyScale20;
+        margin-bottom: $MyScale15;
 
         & svg {
           margin-left: $MyScale59;
@@ -405,7 +405,7 @@
         width: $MyScale920;
         height: $MyScale2;
         background-color: rgba(0, 0, 0, 0.1);
-        margin-bottom: $MyScale40;
+        margin-bottom: $MyScale20;
       }
 
       .cofirmTable {
@@ -415,7 +415,7 @@
         row-gap: $MyScale20;
 
         & div {
-          min-height: $MyScale60;
+          min-height: $MyScale50;
           display: flex;
           align-items: center;
           justify-content: space-between;
@@ -440,7 +440,7 @@
       }
 
       .table {
-        margin-bottom: $MyScale20;
+        margin-bottom: $MyScale10;
       }
      
       .confirmDelivery {
@@ -448,7 +448,7 @@
         display: flex;
         align-items: center;
         justify-content: space-between;
-        margin-bottom: $MyScale20;
+        margin-bottom: $MyScale5;
 
         span {
           @include font40_500();
@@ -488,7 +488,7 @@
       }
 
       .promo {
-        margin-top: $MyScale10;
+        margin-top: $MyScale5;
       }
 
       .confirmBTN {
@@ -527,6 +527,10 @@
     max-height: calc(100% - $MyScale200_mobile);
     border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
     overflow-y: auto;
+
+    -webkit-mask-image: -webkit-radial-gradient(white, black);
+    transform: translateZ(0);
+    background-clip: padding-box;
 
     .container {
       margin-top: $MyScale40_mobile;
@@ -866,7 +870,7 @@
       & .cofirmTable {
         display: flex;
         flex-direction: column;
-        row-gap: $MyScale20_mobile;
+        row-gap: $MyScale12_mobile;
         width: $MyScale1010_mobile;
 
         & div {

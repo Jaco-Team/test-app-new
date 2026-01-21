@@ -16,6 +16,8 @@ import { roboto } from '@/ui/Font.js';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
+import CartConfirmMap from '@/modules/cart/cartConfirmMap';
+
 export default function ConfirmForm() {
   const { push } = useRouter();
 
@@ -27,8 +29,10 @@ export default function ConfirmForm() {
 
   const [openPayForm, linkPaySBP] = useCartStore((state) => [state.openPayForm, state.linkPaySBP]);
 
-  const [trueOrderCash, openConfirmForm, setConfirmForm, itemsCount, typePay, createOrder, typeOrder, clearCartData, setPayForm, setActiveModalBasket, checkNewOrder, orderAddr, itemsOffDops, dopListCart, allPrice, free_drive] = useCartStore((state) => [ state.trueOrderCash, state.openConfirmForm, state.setConfirmForm, state.itemsCount,
-    state.typePay, state.createOrder, state.typeOrder, state.clearCartData, state.setPayForm, state.setActiveModalBasket, state.checkNewOrder, state.orderAddr, state.itemsOffDops, state.dopListCart, state.allPrice, state.free_drive ]);
+  const [trueOrderCash, openConfirmForm, setConfirmForm, itemsCount, typePay, createOrder, typeOrder, clearCartData, setPayForm, setActiveModalBasket, checkNewOrder, orderAddr, itemsOffDops, dopListCart, allPrice, free_drive] = useCartStore((state) => {
+    return [ state.trueOrderCash, state.openConfirmForm, state.setConfirmForm, state.itemsCount,
+      state.typePay, state.createOrder, state.typeOrder, state.clearCartData, state.setPayForm, state.setActiveModalBasket, state.checkNewOrder, state.orderAddr, state.itemsOffDops, state.dopListCart, state.allPrice, state.free_drive ];
+    });
 
   function getWord(int, array) {
     return (
@@ -261,6 +265,11 @@ export default function ConfirmForm() {
                   false
                 }
 
+                <CartConfirmMap
+                  open={openConfirmForm}
+                  checkNewOrder={checkNewOrder}
+                />
+
                 <div className="cofirmDivider" />
 
               </div>
@@ -385,6 +394,11 @@ export default function ConfirmForm() {
                   :
                 false
               }
+
+              <CartConfirmMap
+                open={openConfirmForm}
+                checkNewOrder={checkNewOrder}
+              />
 
               <div className="cofirmDivider" />
 
@@ -518,6 +532,11 @@ export default function ConfirmForm() {
                     :
                   false
                 }
+
+                <CartConfirmMap
+                  open={openConfirmForm}
+                  checkNewOrder={checkNewOrder}
+                />
 
                 <div className="cofirmDivider" />
 
@@ -656,6 +675,11 @@ export default function ConfirmForm() {
                   :
                 false
               }
+
+              <CartConfirmMap
+                open={openConfirmForm}
+                checkNewOrder={checkNewOrder}
+              />
 
               <div className="cofirmDivider" />
 
