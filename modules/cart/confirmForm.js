@@ -265,12 +265,10 @@ export default function ConfirmForm() {
                   false
                 }
 
-                <div style={{display: 'none'}}>
-                  <CartConfirmMap
-                    open={openConfirmForm}
-                    checkNewOrder={checkNewOrder}
-                  />
-                </div>
+                <CartConfirmMap
+                  open={openConfirmForm}
+                  checkNewOrder={checkNewOrder}
+                />
 
                 <div className="cofirmDivider" />
 
@@ -397,12 +395,10 @@ export default function ConfirmForm() {
                 false
               }
 
-              <div style={{display: 'none'}}>
-                <CartConfirmMap
-                  open={openConfirmForm}
-                  checkNewOrder={checkNewOrder}
-                />
-              </div>
+              <CartConfirmMap
+                open={openConfirmForm}
+                checkNewOrder={checkNewOrder}
+              />
 
               <div className="cofirmDivider" />
 
@@ -537,12 +533,10 @@ export default function ConfirmForm() {
                   false
                 }
 
-                <div style={{display: 'none'}}>
-                  <CartConfirmMap
-                    open={openConfirmForm}
-                    checkNewOrder={checkNewOrder}
-                  />
-                </div>
+                <CartConfirmMap
+                  open={openConfirmForm}
+                  checkNewOrder={checkNewOrder}
+                />
 
                 <div className="cofirmDivider" />
 
@@ -682,12 +676,10 @@ export default function ConfirmForm() {
                 false
               }
 
-              <div style={{display: 'none'}}>
-                <CartConfirmMap
-                  open={openConfirmForm}
-                  checkNewOrder={checkNewOrder}
-                />
-              </div>
+              <CartConfirmMap
+                open={openConfirmForm}
+                checkNewOrder={checkNewOrder}
+              />
 
               <div className="cofirmDivider" />
 
