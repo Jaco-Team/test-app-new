@@ -553,7 +553,7 @@ export default function ModalCardItemMobile() {
               className={'ValueModeBtn ' + (valueMode === 'per100' ? 'active' : '')}
               onClick={() => setValueMode('per100')}
             >
-              на 100 г.
+              на 100 г
             </button>
 
             <button
