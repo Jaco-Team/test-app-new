@@ -21,7 +21,7 @@ const nextConfig = {
       },
       {
         protocol: 'https',
-        hostname: 'cdnimg.jacofood.ru',
+        hostname: 'mainimg.jacofood.ru',
         port: '',
         pathname: '**',
       },
