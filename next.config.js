@@ -31,6 +31,12 @@ const nextConfig = {
         port: '',
         pathname: '**',
       },
+      {
+        protocol: 'https',
+        hostname: 'topimg.jacofood.ru',
+        port: '',
+        pathname: '**',
+      },
     ],
     minimumCacheTTL: 86400,
   },
