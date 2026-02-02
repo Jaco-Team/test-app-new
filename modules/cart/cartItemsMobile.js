@@ -198,10 +198,14 @@ export default memo(function CartItemMobile({ item, count, last }) {
     <div className='CartItems' style={{ borderBottom: last ? 'none' : '0.17094017094017vw solid rgba(0, 0, 0, 0.1)'}}>
 
       <div className="CartItemsImg">
-        <Image alt={item?.name} src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}` + item?.img_app + '_584x584.jpg'} width={584} height={584} priority={true}/>
+        {/* <Image alt={item?.name} src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}` + item?.img_app + '_584x584.jpg'} width={584} height={584} priority={true}/> */}
 
-        
-
+        <img 
+          alt={item?.name} 
+          title={item?.name} 
+          src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_584x584.jpg`} 
+          loading="lazy"
+        />
       </div>
 
       <div className="CartItemsName">
