@@ -330,7 +330,8 @@ export default function ModalCardItemMobile() {
               <div className="DopModalCardMobile">
                 <div className="dop_text">
                   {parseInt(openItem?.cat_id) != 4 ? null : (
-                    <span className="first_text" style={{ width: parseInt(openItem?.count_part_new) > 9 ? '15.384615384615vw' : '13.675213675214vw' }}
+                    <span className="first_text" 
+                      style={{ width: parseInt(openItem.count_part_new) > 4 && parseInt(openItem.count_part_new) < 9 ? '15.384615384615vw' : parseInt(openItem.count_part_new) > 9 ? '17.094017094017vw' : '13.675213675214vw' }}
                       onClick={sostav_seta}
                     >
                       {openItem?.count_part_new}
@@ -404,7 +405,8 @@ export default function ModalCardItemMobile() {
 
           <div className="dop_text">
             {parseInt(openItem?.cat_id) != 4 ? null : (
-              <span className="first_text" style={{ width: parseInt(openItem?.count_part_new) > 9 ? '15.384615384615vw' : '13.675213675214vw' }}
+              <span className="first_text" 
+                style={{ width: parseInt(openItem.count_part_new) > 4 && parseInt(openItem.count_part_new) < 9 ? '15.384615384615vw' : parseInt(openItem.count_part_new) > 9 ? '17.094017094017vw' : '13.675213675214vw' }}
                 onClick={() => setActiveSet(true)}
               >
                 {openItem?.count_part_new}

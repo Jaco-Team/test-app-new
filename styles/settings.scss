@@ -298,6 +298,7 @@ $MyScale170_mobile: 14.529914529915vw;
 $MyScale172_mobile: 14.700854700855vw;
 $MyScale178_mobile: 15.213675213675vw;
 $MyScale180_mobile: 15.384615384615vw;
+$MyScale190_mobile: 16.2393162393vw;
 $MyScale191_mobile: 16.324786324786vw;
 $MyScale200_mobile: 17.094017094017vw;
 $MyScale204_4_mobile: 17.470085470085vw;
@@ -416,6 +417,7 @@ $MyScale1016_mobile: 86.837606837607vw;
 $MyScale1020_mobile: 87.179487179487vw;
 $MyScale1030_mobile: 88.034188034188vw;
 $MyScale1065_mobile: 91.025641025641vw;
+$MyScale1070_mobile: 91.45299145299vw;
 $MyScale1080_mobile: 92.307692307692vw;
 $MyScale1090_mobile: 93.162393162393vw;
 $MyScale1120_mobile: 95.726495726496vw;
@@ -426,10 +428,16 @@ $MyScale1300_mobile: 111.11111111111vw;
 $MyScale1320_mobile: 112.82051282051vw;
 $MyScale1871_mobile: 159.91452991453vw;
 
+$FontMinMobile: 12px;
+
 @mixin fonsNew($size: 1rem, $family: $Roboto) {
   font-size: $size !important;
   font-family: $family !important;
   color: $colorText;
+
+  @media (max-width: $MyMaxWidth) {
+    font-size: clamp($FontMinMobile, $size, 9999px) !important;
+  }
 }
 
 @mixin fontH1() {

@@ -1,11 +1,20 @@
 import Image from 'next/image';
+import Link from 'next/link';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 
-export default function AboutUs() {
+import {useHeaderStoreNew} from '@/components/store';
+import {ArrowLeftMobile} from '@/ui/Icons.js';
+
+export default function AboutUs({cityName}) {
+  const [matches] = useHeaderStoreNew((state) => [state.matches]);
+
   return (
     <Grid item xs={12} className={'about'}>
+
+      {!matches ? null : <Link href={'/' + cityName + '/document' } className='arrow'><ArrowLeftMobile /></Link>}
+
       <Typography variant="h1">О нас</Typography>
     
       <p>

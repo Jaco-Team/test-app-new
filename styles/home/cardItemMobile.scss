@@ -55,10 +55,10 @@
         & .dop_text {
           padding: 0;
           height: $MyScale40_mobile;
-          width: $MyScale400_mobile;
+          width: $MyScale500_mobile;
           display: flex;
           align-items: center;
-          margin-bottom: $MyScale10_mobile;
+          margin-bottom: $MyScale15_mobile;
 
           & .first_text {
             @include font30_400();
@@ -75,7 +75,7 @@
             align-items: center;
           }
           & .third_text {
-            width: $MyScale120_mobile;
+            width: $MyScale140_mobile;
             color: rgba(0, 0, 0, 0.60) !important;
             @include font30_400();
             display: flex;
@@ -918,6 +918,7 @@
                   display: flex;
                   justify-content: center;
                   flex-direction: column;
+                  padding-top: $MyScale16_mobile;
                   padding-left: $MyScale30_mobile;
                   padding-right: $MyScale30_mobile;
                   padding-bottom: $MyScale107_mobile;

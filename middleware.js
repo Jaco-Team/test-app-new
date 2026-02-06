@@ -61,6 +61,71 @@ function classifySource({ url, ref, utm }) {
   return { source: host, medium: 'referral', campaign: null, term: null, content: null, classifier: 'referral' }
 }
 
+function safeDecodeURIComponent(str) {
+  try { return decodeURIComponent(str) } catch { return str }
+}
+
+// Режем “хвост мусора” в каждом сегменте пути:
+// - если встречаем пробел/контрол (в т.ч. %20, %00, %09, %0a/%0d и т.п.) → обрезаем сегмент до него
+// - если сегмент начинается с & или %26 → считаем, что дальше мусор, обрываем путь на предыдущем сегменте
+// - убираем эмодзи (если попали внутрь сегмента)
+// - убираем хвостовые точки/дефисы
+function sanitizePathname(pathname) {
+  const raw = String(pathname || '')
+  const parts = raw.split('/') // raw сегменты (с %XX внутри)
+  const out = [''] // leading slash
+
+  for (let i = 1; i < parts.length; i++) {
+    const rawSeg = parts[i]
+    if (!rawSeg) continue // убираем пустые сегменты (//) и trailing '/'
+
+    // /&xxx или /%26xxx или /%2526xxx -> обрываем путь на предыдущем сегменте
+    if (/^(?:&|%26|%2526)/i.test(rawSeg)) break
+
+    // 1) literal пробелы/контролы (редко, но бывает)
+    let cut = rawSeg.search(/[\s\x00-\x1F\x7F]/)
+
+    // 2) %20 (space) и любые control-байты %00-%1F, %7F
+    const m1 = rawSeg.search(/%(?:20|0[0-9a-f]|1[0-9a-f]|7f)/i)
+    if (m1 !== -1) cut = cut === -1 ? m1 : Math.min(cut, m1)
+
+    // 3) double-encode: %2520, %2500, %2509, ...
+    const m2 = rawSeg.search(/%25(?:20|0[0-9a-f]|1[0-9a-f]|7f)/i)
+    if (m2 !== -1) cut = cut === -1 ? m2 : Math.min(cut, m2)
+
+    const rawPrefix = cut === -1 ? rawSeg : rawSeg.slice(0, cut)
+    let seg = safeDecodeURIComponent(rawPrefix)
+
+    // если после декода вдруг появились пробелы/контролы — режем по первому
+    seg = seg.split(/[\s\x00-\x1F\x7F]/)[0]
+
+    // вычищаем эмодзи, если вдруг попали в сегмент
+    try { seg = seg.replace(/\p{Extended_Pictographic}+/gu, '') } catch {}
+
+    // хвостовой мусор типа "rolly---" или "rolly..."
+    seg = seg.replace(/[.\-]+$/g, '')
+
+    if (!seg) break
+    out.push(seg)
+  }
+
+  let cleaned = out.join('/')
+
+  // схлопываем /////
+  cleaned = cleaned.replace(/\/{2,}/g, '/')
+
+  // гарантируем leading slash
+  if (!cleaned.startsWith('/')) cleaned = '/' + cleaned
+
+  // убираем trailing slash (кроме корня)
+  if (cleaned.length > 1) cleaned = cleaned.replace(/\/+$/, '')
+
+  // пусто -> корень
+  if (cleaned === '') cleaned = '/'
+
+  return cleaned
+}
+
 export const config = {
   // Не перехватываем статику/служебные файлы
   matcher: ['/((?!_next|favicon.ico|robots.txt|sitemap.xml|images|fonts|static).*)'],
@@ -84,6 +149,13 @@ export async function middleware(request) {
   //   target.protocol = 'https'
   //   changed = true
   // }
+
+  // 0) Санитайзим pathname: /samara/menu/rolly%20asdasd -> /samara/menu/rolly
+  const cleanPath = sanitizePathname(target.pathname)
+  if (cleanPath !== target.pathname) {
+    target.pathname = cleanPath
+    changed = true
+  }
 
   const proto = request.headers.get('x-forwarded-proto')
   const hostname = nextUrl.hostname

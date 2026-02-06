@@ -60,7 +60,7 @@ export default React.memo(function Legal(props) {
 
   return (
     <div className={roboto.variable}>
-      <DynamicPage page={page} classNamePC="PAGELegal"/>
+      <DynamicPage page={page} classNamePC="PAGELegal" classNameMobile="PageTextMobile" cityName={city}/>
 
       <Footer cityName={city} active_page={'legal'} links={links} />
     </div>

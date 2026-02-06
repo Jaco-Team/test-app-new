@@ -39,10 +39,25 @@
         }
     }
     @media (max-width: 960px) {
-        margin-top: $MyScale100_mobile!important;
+        //margin-top: $MyScale100_mobile!important;
+        padding-top: 0px!important;
+        padding-left: 0px!important;
+        margin-left: $MyScale100_mobile !important;
         margin-bottom: 64px; 
         margin-left: $MyScale100_mobile;
         width: $MyScale970_mobile;
+
+        .arrow {
+            margin-top: $MyScale40_mobile;
+            margin-bottom: $MyScale40_mobile;
+            height: $MyScale60_mobile;
+            display: flex;
+
+            & svg {
+            width: $MyScale60_mobile;
+            height: $MyScale60_mobile;
+            }
+        }
 
         & h1, h2{
             @include font75_700();

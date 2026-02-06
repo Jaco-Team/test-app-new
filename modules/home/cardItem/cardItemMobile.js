@@ -193,7 +193,7 @@ export default React.memo(function CardItemMobile({ item, count }) {
 
               {parseInt(item.cat_id) != 4 ? null : (
                 <span className="first_text" 
-                style={{ width: parseInt(item.count_part_new) > 4 && parseInt(item.count_part_new) < 9 ? '11.965811965812vw' : parseInt(item.count_part_new) > 9 ? '13.675213675214vw' : '10.25641025641vw' }}
+                style={{ width: parseInt(item.count_part_new) > 4 && parseInt(item.count_part_new) < 9 ? '14.529914529915vw' : parseInt(item.count_part_new) > 9 ? '16.2393162393vw' : '12.820512820513vw' }}
                 >
                   {item.count_part_new}
                 </span>
@@ -203,7 +203,7 @@ export default React.memo(function CardItemMobile({ item, count }) {
                 <span className="second_text"
                   style={{
                     justifyContent: parseInt(item.cat_id) == 4 ? 'center' : 'flex-start',
-                    width: parseInt(item.cat_id) == 4 ? '10.25641025641vw' : parseInt(item.cat_id) != 14 ? '7.6923076923077vw' : '8.5470085470085vw' 
+                    width: parseInt(item.cat_id) == 4 ? '11.965811965812vw' : parseInt(item.cat_id) != 14 ? '8.5470085470085vw' : '10.25641025641vw' 
                   }}
                 >
                   {parseInt(item.cat_id) == 14 ? item.size_pizza : item.count_part}{' '}

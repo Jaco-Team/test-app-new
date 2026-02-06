@@ -294,7 +294,7 @@ export default React.memo(function ModalOrderMobile() {
                     isLast && parseInt(modalOrder?.order?.type_order_) !== 1
                       ? '8.5470085470085vw'
                       : null,
-                  height: (order?.name?.length ?? 0) > 29
+                  height: (order?.name?.length ?? 0) > 28
                     ? '11.111111111111vw'
                     : '6.8376068376068vw'
                 }}

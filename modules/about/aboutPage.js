@@ -11,7 +11,7 @@ export default function AboutPage({ page, cityName }) {
 
   return (
     <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
-      <AboutPagePC />
+      <AboutPagePC cityName={cityName} />
     </Meta>
   );
 }
