@@ -110,5 +110,9 @@ export async function getServerSideProps({ req, res, query }) {
     return { redirect: { destination: `/${redirectCity}`, permanent: true } }
   }
 
+  if( parseInt(data1?.page?.category_id) == 0 && (query.category != '' || query.category != 'menu') ){
+    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
+  }
+
   return { props: { data1 } }
 }
