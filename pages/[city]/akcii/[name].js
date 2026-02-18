@@ -12,6 +12,9 @@ import { useHomeStore, useCitiesStore, useHeaderStoreNew, useCartStore } from '@
 
 const this_module = 'akcii';
 
+import { normalizeCity } from '@/utils/normalizeCity'
+import { getCookie } from '@/utils/getCookie'
+
 export default function Home(props) {
 
   const { city, cats, cities, page, all_items, free_items, need_dop, act_name, tags, links } = props.data1;
@@ -73,36 +76,51 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps({ req, res, query }) {
-
   res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=3600');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
-  const city = String(query.city || '');
-  let data = {
-    type: 'get_page_info', 
-    city_id: city,
-    page: 'akcii'
-  };
+  // city
+  const cityFromPath = normalizeCity(query?.city);
+  const savedCity = normalizeCity(getCookie(req, 'city'));
+  const city = cityFromPath || savedCity || 'togliatti';
 
-  const data1 = await api('home', data);
-
-  let data2 = {
-    type: 'get_banner_one',
-    city_id: city,
-    name: query.name,
-    token: null
-  };
-
-  const json = await api('home', data2);
-
-  if( !json?.banner ){
-    res.writeHead(301, { Location: '/'+city+'/akcii' });
-    res.end();
+  // если в урле нет города / он null — на главную города
+  if (!cityFromPath) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
   }
 
+  // name акции
+  const actName = String(query?.name || '').trim();
+
+  // страница "акции"
+  const data1 = await api('home', {
+    type: 'get_page_info',
+    city_id: city,
+    page: 'akcii',
+  });
+
+  // если данных страницы нет — на главную города
+  if (!data1 || data1?.page == null) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
+  }
+
+  // баннер конкретной акции
+  const json = await api('home', {
+    type: 'get_banner_one',
+    city_id: city,
+    name: actName,
+    token: null,
+  });
+
+  // если баннер не найден — на список акций
+  if (!json?.banner) {
+    return { redirect: { destination: `/${city}/akcii`, permanent: false } };
+  }
+
+  // футер
   const footer = await api('contacts', {
     type: 'get_page_info',
     city_id: city,
@@ -110,22 +128,8 @@ export async function getServerSideProps({ req, res, query }) {
   });
 
   data1.links = footer?.page || {};
+  data1.city = city;
+  data1.act_name = actName;
 
-  data1['city'] = city;
-  data1['act_name'] = query.name;
-
-  const redirectCity = city || 'togliatti'; 
-
-  if (!data1.page || data1.page == null) {
-    // return {
-    //   redirect: {
-    //     destination: '/',
-    //     permanent: false,
-    //   },
-    // }
-
-    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
-  }
-
-  return { props: { data1, json } }
+  return { props: { data1, json } };
 }

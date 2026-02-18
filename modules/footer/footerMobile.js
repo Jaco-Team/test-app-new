@@ -67,7 +67,7 @@ export default function FooterMobile({ cityName, active_page, links }) {
         </Link>
 
         <div className={showArrow && active_page !== 'cart' ? 'ArrowMobile' : 'ArrowHidden'} onClick={scrollUp} 
-          style={{marginTop: active_page === 'document' || active_page === 'jobs' || active_page === 'contacts' || active_page === 'profile' || active_page === 'account' || active_page === 'address' || active_page === 'zakazy' ? '-10.25641025641vw' : null}}>
+          style={{marginTop: active_page === 'sitemap' || active_page === 'document' || active_page === 'jobs' || active_page === 'contacts' || active_page === 'profile' || active_page === 'account' || active_page === 'address' || active_page === 'zakazy' ? '-10.25641025641vw' : null}}>
           <ArrowUp />
         </div>
 
@@ -112,7 +112,8 @@ export default function FooterMobile({ cityName, active_page, links }) {
               <Link href={'/' + cityName + '/politika-konfidencialnosti'}>Политика конфиденциальности</Link>
               <Link href={'/' + cityName + '/legal'}>Согласие на обработку персональных данных</Link>
               <Link href={'/' + cityName + '/politika-legal'}>Политика в отношении обработки метрических данных</Link>
-              <Link href={'/' + cityName + '/instpayorders'} style={{ marginBottom: 0 }}>Правила оплаты</Link>
+              <Link href={'/' + cityName + '/instpayorders'}>Правила оплаты</Link>
+              <Link href={'/' + cityName + '/sitemap'} style={{ marginBottom: 0 }}>Карта сайта</Link>
             </div>
           </div>
 

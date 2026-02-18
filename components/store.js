@@ -1545,7 +1545,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
           checkout.on('success', () => {
             useProfileStore.getState().saveUserActions('true_pay_online_order', '', get().allPrice);
             checkout.destroy();
-            funcClose();
+            funcClose?.();
           });
 
           checkout.on('fail', () => {
@@ -1997,6 +1997,36 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   // добавления товара для корзины
   plus: (item_id) => {
+    const id = Number(item_id);
+    const isUtensil = (x) => x === 17 || x === 237;
+
+    // если пытаемся добавить приборы — проверяем, есть ли "основные блюда"
+    if (isUtensil(id)) {
+      const cartAll = [...(get().items || []), ...(get().itemsWithPromo || [])];
+      const allItems = get().allItems || [];
+
+      const hasMainDish = cartAll.some((ci) => {
+        const ciId = Number(ci.item_id ?? ci.id);
+        if (isUtensil(ciId)) return false;
+
+        // берём инфу из allItems, если в позиции корзины чего-то нет
+        const full = allItems.find(a => Number(a.id) === ciId);
+        const catId = Number(ci.cat_id ?? full?.cat_id);
+        const type = Number(ci.type ?? full?.type);
+
+        // "не основное": допы(cat 7) + напитки(cat 5/6) + всё с type 3/4 (как в промо)
+        if (catId === 7 || catId === 5 || catId === 6) return false;
+        if (type === 3 || type === 4) return false;
+
+        return true; // это "основное блюдо"
+      });
+
+      if (!hasMainDish) {
+        useHeaderStoreNew.getState().setActiveModalAlert(true, 'Приборы положены только к блюдам', false);
+        return;
+      }
+    }
+
     let check = false;
     let found = false; // отдельный флаг "товар найден в корзине"
     let items = get().items;
@@ -4289,32 +4319,20 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
   // сброс фильтра на главной странице
   resetFilter: () => {
+    const all_items = useCartStore.getState().allItems;
 
-    const activePage = useHeaderStoreNew.getState().activePage;
-
-    if(activePage === 'home') { 
-
-      
-      let all_items = useCartStore.getState().allItems;
-      
-      if(all_items.length) {
-
-        all_items.map(item => {
-
-          if( document.getElementById(item.link) ){
-            document.querySelector('#'+item.link).style.display = 'flex';
-          }
-          
-        });
-
-      }
+    if (all_items?.length) {
+      all_items.forEach((item) => {
+        const el = document.getElementById(item.link);
+        if (el) el.style.display = 'flex';
+      });
     }
-    
+
     set({
       badge_filter: '',
       tag_filter: '',
       text_filter: ''
-    })
+    });
   },
 
   // установить тэги для фильтра на главной странице

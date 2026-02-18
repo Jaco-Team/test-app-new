@@ -190,7 +190,7 @@ export default memo(function CardItem({ item, count, index}) {
             </div>
           </div>
 
-          <Typography className="CardNameItem" variant="h5" component="h3" style={{ cursor: 'pointer' }} onClick={() => getItem('home', thisCity, item.id)}>{item.name}</Typography>
+          <Typography className="CardNameItem" variant="h5" component="span" style={{ cursor: 'pointer' }} onClick={() => getItem('home', thisCity, item.id)}>{item.name}</Typography>
           
           <div className="dop_text" style={{ cursor: 'pointer', justifyContent: parseInt(item.cat_id) == 4 ?  'space-evenly' : 'center' }} onClick={() => getItem('home', thisCity, item.id)}>
             {parseInt(item.cat_id) != 4 ? null : <span className="first_text">{item.count_part_new}</span>}

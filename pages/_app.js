@@ -77,6 +77,8 @@ import '../styles/home/filter.scss'
 import '../styles/cart/cartConfirmForm.scss'
 import '../styles/cart/cartMailForm.scss'
 
+import '../styles/sitemap.scss';
+
 //pm2 delete test-app-new && rm -rf test-app-new && git clone https://github.com/vito3315/test-app-new.git && cd test-app-new
 //npm install && npm run build && pm2 start npm --name "test-app-new" -- start
 import { useEffect } from 'react';

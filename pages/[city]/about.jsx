@@ -11,6 +11,9 @@ import { api } from '@/components/api.js';
 
 const this_module = 'contacts';
 
+import { normalizeCity } from '@/utils/normalizeCity';
+import { getCookie } from '@/utils/getCookie';
+
 export default React.memo(function About(props) {
 
   const { city, cats, cities, page, all_items, free_items, need_dop, links } = props.data1;
@@ -66,39 +69,29 @@ export async function getServerSideProps({ req, res, query }) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
-  let city = String(query.city || '');
-  let data = {
-    type: 'get_page_info', 
+  const cityFromPath = normalizeCity(query?.city);
+  const savedCity = normalizeCity(getCookie(req, 'city'));
+  const city = cityFromPath || savedCity || 'togliatti';
+
+  if (!cityFromPath) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
+  }
+
+  const data1 = await api(this_module, {
+    type: 'get_page_info',
     city_id: city,
-    page: 'about' 
-  };
+    page: 'about',
+  });
 
-  const data1 = await api(this_module, data);
-
-  const redirectCity = city || 'togliatti'; 
-
-  if (!data1) {
-    // return {
-    //   redirect: {
-    //     destination: '/',
-    //     permanent: false,
-    //   },
-    // }
-
-    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
+  if (!data1 || data1?.page == null) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
   }
 
   data1.city = city;
 
-  // безопасно работаем с контентом
   const rawContent = data1?.page?.content ?? '';
-  // если контент пустой — отдадим страницу, но без падения
   const patchedContent = rawContent.replace(/<a href=\"\//g, `<a href="/${city}/`);
-
-  data1.page = {
-    ...(data1.page ?? {}),
-    content: patchedContent,
-  };
+  data1.page = { ...(data1.page ?? {}), content: patchedContent };
 
   const footer = await api('contacts', {
     type: 'get_page_info',

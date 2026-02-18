@@ -15,6 +15,9 @@ const DynamicPage = dynamic(() => import('@/modules/pageText'));
 
 const this_module = 'contacts';
 
+import { normalizeCity } from '@/utils/normalizeCity';
+import { getCookie } from '@/utils/getCookie';
+
 export default React.memo(function PublichnayaOferta(props) {
   const { city, cats, cities, page, all_items, free_items, need_dop, links } = props.data1;
 
@@ -74,26 +77,22 @@ export async function getServerSideProps({ req, res, query }) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
-  const city = String(query.city || '');
-  let data = {
+  const cityFromPath = normalizeCity(query?.city);
+  const savedCity = normalizeCity(getCookie(req, 'city'));
+  const city = cityFromPath || savedCity || 'togliatti';
+
+  if (!cityFromPath) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
+  }
+
+  const data1 = await api('contacts', {
     type: 'get_page_info',
     city_id: city,
     page: 'company-details',
-  };
+  });
 
-  const data1 = await api(this_module, data);
-
-  const redirectCity = city || 'togliatti'; 
-
-  if (!data1) {
-    // return {
-    //   redirect: {
-    //     destination: '/',
-    //     permanent: false,
-    //   },
-    // }
-
-    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
+  if (!data1 || data1?.page == null) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
   }
 
   const footer = await api('contacts', {
@@ -101,19 +100,13 @@ export async function getServerSideProps({ req, res, query }) {
     city_id: city,
     page: 'info',
   });
-
   data1.links = footer?.page || {};
-
   data1.city = city;
 
-  // безопасно работаем с контентом
   const rawContent = data1?.page?.content ?? '';
-  // если контент пустой — отдадим страницу, но без падения
-  const patchedContent = rawContent.replace(/<a href=\"\//g, `<a href="/${city}/`);
-
   data1.page = {
     ...(data1.page ?? {}),
-    content: patchedContent,
+    content: rawContent.replace(/<a href=\"\//g, `<a href="/${city}/`),
   };
 
   return { props: { data1 } };

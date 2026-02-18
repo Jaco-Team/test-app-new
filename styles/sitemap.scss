@@ -1,0 +1,256 @@
+@use "./settings.scss" as *;
+@use "sass:math";
+
+$SitemapText: rgba(82, 82, 82, 1);
+$SitemapLine: rgba(0, 0, 0, 0.06);
+
+$IndentDesktop: math.div($MyScale30, 2);
+$IndentMobile:  math.div($MyScale30_mobile, 2);
+
+$DotSizeDesktop: $MyScale10;
+$DotSizeMobile:  $MyScale12_mobile;
+$DotOpacity: 0.45;
+
+.SitemapWrapMobile { display: none; }
+
+.SitemapLink,
+.SitemapItemLink {
+  color: $SitemapText;
+  text-decoration: none !important;
+  -webkit-tap-highlight-color: transparent;
+
+  &:visited,
+  &:active,
+  &:focus {
+    outline: none;
+  }
+}
+
+.SitemapRootLink,
+.SitemapRootLink:visited,
+.SitemapRootLink:active,
+.SitemapRootLink:focus {
+  text-decoration: underline !important;
+  text-underline-offset: $MyScale5;
+  text-decoration-thickness: $MyScale2;
+}
+
+.SitemapWrap {
+  margin-top: 64px;
+  display: flex;
+  justify-content: flex-start;
+  padding: $MyScale120 0 $MyScale100 0;
+  width: $MyScale2520;
+  margin-left: $MyScale160;
+}
+
+.SitemapInner { width: $MyScale1560; }
+
+.SitemapTitle {
+  @include fontH1();
+  margin: 0 0 $MyScale90 0;
+}
+
+.SitemapTree {
+  display: flex;
+  flex-direction: column;
+  gap: $MyScale70;
+}
+
+.SitemapSectionTitle {
+  @include font30_400();
+  font-weight: 700;
+  text-transform: uppercase;
+  color: $SitemapText;
+  margin: 0 0 $MyScale30 0;
+}
+
+.SitemapRootLink {
+  @include font30_400();
+  font-weight: 700;
+  text-transform: uppercase;
+}
+
+.SitemapList,
+.SitemapItemsList {
+  list-style: none;
+  margin: 0;
+  padding: 0 0 0 $IndentDesktop;
+}
+
+.SitemapLink,
+.SitemapItemLink {
+  @include font35_400();   
+  font-weight: 400;        
+  line-height: 1.35;
+}
+
+.SitemapLi,
+.SitemapItemLi {
+  display: flex;
+  align-items: center;
+  gap: $MyScale20;       
+  padding: $MyScale10 0;
+}
+
+.SitemapLi::before,
+.SitemapItemLi::before {
+  content: "";
+  width: $DotSizeDesktop;
+  height: $DotSizeDesktop;
+  border-radius: 999px; 
+  background: $SitemapText;
+  opacity: $DotOpacity;
+  flex: 0 0 auto;
+  align-items: center;
+}
+
+@media (hover: hover) and (pointer: fine) {
+  .SitemapLi:hover::before,
+  .SitemapItemLi:hover::before {
+    background: $colorMain;
+    opacity: 1;
+  }
+
+  .SitemapLink:hover,
+  .SitemapItemLink:hover,
+  .SitemapRootLink:hover {
+    color: $colorMain;
+  }
+}
+
+.SitemapMenuBlock { margin-top: 0; }
+
+.SitemapCategory {
+  margin-top: $MyScale30;
+  padding-left: $IndentDesktop;
+}
+
+.SitemapCategoryTitle {
+  @include font30_400();
+  font-weight: 600;       
+  text-transform: none;   
+  color: $SitemapText;
+  opacity: 0.85;
+  margin: 0 0 $MyScale15 0;
+}
+
+.SitemapSubCategory {
+  margin-top: $MyScale20;
+  padding-left: $IndentDesktop;
+}
+
+.SitemapSubCategoryTitle {
+  @include font30_400();
+  font-weight: 400;
+  text-transform: none;
+  color: $SitemapText;
+  opacity: 0.65;
+  margin: 0 0 $MyScale10 0;
+}
+
+@media (max-width: $MyMaxWidth) {
+  .SitemapWrap { display: none; }
+  .SitemapWrapMobile { display: block; }
+
+  .SitemapRootLink,
+  .SitemapRootLink:visited,
+  .SitemapRootLink:active,
+  .SitemapRootLink:focus {
+    text-decoration: underline !important;
+    text-underline-offset: $MyScale5_mobile;
+    text-decoration-thickness: $MyScale2_mobile;
+  }
+
+  .SitemapWrapMobile {
+    width: 100%;
+    display: flex;
+    justify-content: center;
+    padding: $MyScale100_mobile 0 $MyScale100_mobile 0;
+  }
+
+  .SitemapInnerMobile { width: 79.059829059829vw; }
+
+  .SitemapTitleMobile {
+    @include fontH2_custom();
+    margin: $MyScale140_mobile 0 $MyScale70_mobile 0;
+  }
+
+  .SitemapTree { gap: $MyScale70_mobile; }
+
+  .SitemapSectionTitle {
+    @include font35_400();
+    font-weight: 700;
+    text-transform: uppercase;
+    margin: 0 0 $MyScale30_mobile 0;
+  }
+
+  .SitemapRootLink {
+    @include font35_400();
+    font-weight: 700;
+    text-transform: uppercase;
+  }
+
+  .SitemapLink,
+  .SitemapItemLink {
+    @include font40_400();
+    font-weight: 400;
+    line-height: 1.35;
+  }
+
+  .SitemapCategory {
+    margin-top: $MyScale30_mobile;
+    padding-left: $IndentMobile;
+  }
+
+  .SitemapCategoryTitle {
+    @include font35_400();
+    font-weight: 600;
+    text-transform: none;
+    opacity: 0.85;
+    margin: 0 0 $MyScale15_mobile 0;
+  }
+
+  .SitemapSubCategory {
+    margin-top: $MyScale20_mobile;
+    padding-left: $IndentMobile;
+  }
+
+  .SitemapSubCategoryTitle {
+    @include font35_400();
+    font-weight: 400;
+    text-transform: none;
+    opacity: 0.65;
+    margin: 0 0 $MyScale10_mobile 0;
+  }
+
+  .SitemapLi:active::before,
+  .SitemapItemLi:active::before {
+    background: $colorMain;
+    opacity: 1;
+  }
+
+  .SitemapList,
+  .SitemapItemsList {
+    list-style: disc;
+    padding-left: $MyScale60_mobile;
+  }
+
+  .SitemapLi,
+  .SitemapItemLi {
+    display: list-item;
+    padding: $MyScale10_mobile 0;
+    @include font40_400();
+  }
+
+  .SitemapLi::before,
+  .SitemapItemLi::before {
+    content: none !important;
+  }
+
+  .SitemapLi::marker,
+  .SitemapItemLi::marker {
+    color: rgba(82, 82, 82, 0.45);
+  }
+
+}

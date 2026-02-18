@@ -15,6 +15,9 @@ const DynamicPage = dynamic(() => import('@/modules/pageText'));
 
 const this_module = 'contacts';
 
+import { normalizeCity } from '@/utils/normalizeCity'
+import { getCookie } from '@/utils/getCookie'
+
 export default React.memo(function Instpayorders(props) {
   const { city, cats, cities, page, all_items, free_items, need_dop, links } = props.data1;
 
@@ -74,26 +77,24 @@ export async function getServerSideProps({ req, res, query }) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
-  const city = String(query.city || '');
-  let data = {
+  const cityFromPath = normalizeCity(query?.city);
+  const savedCity = normalizeCity(getCookie(req, 'city'));
+  const city = cityFromPath || savedCity || 'togliatti';
+
+  // если город невалидный/пустой — уводим на /{city}
+  if (!cityFromPath) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
+  }
+
+  const data1 = await api(this_module, {
     type: 'get_page_info',
     city_id: city,
     page: 'instpayorders',
-  };
+  });
 
-  const data1 = await api(this_module, data);
-
-  const redirectCity = city || 'togliatti'; 
-
-  if (!data1) {
-    // return {
-    //   redirect: {
-    //     destination: '/',
-    //     permanent: false,
-    //   },
-    // }
-
-    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
+  // если бэк ничего не отдал или страница пустая — тоже на /{city}
+  if (!data1 || data1?.page == null) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
   }
 
   const footer = await api('contacts', {
@@ -103,13 +104,14 @@ export async function getServerSideProps({ req, res, query }) {
   });
 
   data1.links = footer?.page || {};
+  data1.city = city;
 
-  data1['city'] = city;
-
-  /*data1.page.content = data1.page.content.replace(
-    /<a href=\"\//g,
-    '<a href="/'+query.city+'/'
-  );*/
+  // фикс относительных ссылок в html-контенте
+  const rawContent = data1?.page?.content ?? '';
+  data1.page = {
+    ...(data1.page ?? {}),
+    content: rawContent.replace(/<a href=\"\//g, `<a href="/${city}/`),
+  };
 
   return { props: { data1 } };
 }

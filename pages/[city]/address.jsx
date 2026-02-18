@@ -14,6 +14,9 @@ import { useRouter } from 'next/router';
 
 const this_module = 'address';
 
+import { normalizeCity } from '@/utils/normalizeCity';
+import { getCookie } from '@/utils/getCookie';
+
 export default function Address(props) {
 
   const { push } = useRouter();
@@ -78,27 +81,23 @@ export async function getServerSideProps({ req, res, query }) {
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
-  
-  const city = String(query.city || '');
-  let data = {
-    type: 'get_page_info', 
+
+  const cityFromPath = normalizeCity(query?.city);
+  const savedCity = normalizeCity(getCookie(req, 'city'));
+  const city = cityFromPath || savedCity || 'togliatti';
+
+  if (!cityFromPath) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
+  }
+
+  const data1 = await api('profile', {
+    type: 'get_page_info',
     city_id: city,
-    page: 'profile'
-  };
+    page: 'profile',
+  });
 
-  const data1 = await api('profile', data);
-  
-  const redirectCity = city || 'togliatti'; 
-
-  if (!data1) {
-    // return {
-    //   redirect: {
-    //     destination: '/',
-    //     permanent: false,
-    //   },
-    // }
-
-    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
+  if (!data1 || data1?.page == null) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
   }
 
   const footer = await api('contacts', {
@@ -108,8 +107,7 @@ export async function getServerSideProps({ req, res, query }) {
   });
 
   data1.links = footer?.page || {};
+  data1.city = city;
 
-  data1['city'] = city;
-
-  return { props: { data1 } }
+  return { props: { data1 } };
 }

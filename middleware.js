@@ -1,5 +1,6 @@
 // middleware.js
 import { NextResponse } from 'next/server'
+import { normalizeCity } from '@/utils/normalizeCity';
 
 function isLowerCase(str) {
   return str === str.toLowerCase()
@@ -175,6 +176,19 @@ export async function middleware(request) {
     changed = true
   }
 
+  // 3.1) Если в пути есть город, которого нет в нашем списке — редиректим на сохранённый в куках или дефолтный
+  const parts = target.pathname.split('/').filter(Boolean)
+  const cityFromPath = normalizeCity(parts[0])
+  let redirectStatus = 308
+
+  if (parts.length > 0 && !cityFromPath) {
+    const saved = normalizeCity(request.cookies.get('city')?.value)
+    target.pathname = `/${saved || 'togliatti'}`
+    target.search = ''
+    changed = true
+    redirectStatus = 307 // ВАЖНО: не permanent
+  }
+
   // 4) Чистим "мусорные" query (UTM не трогаем)
   if (target.searchParams.has('text') || target.searchParams.has('showItem') ||
     Array.from(target.searchParams.keys()).some(k => k.startsWith('act_'))) {
@@ -186,7 +200,9 @@ export async function middleware(request) {
 
   // 5) Если что-то поменяли — отдаём ОДИН 308 сразу на конечный URL
   if (changed && target.toString() !== nextUrl.toString()) {
-    return NextResponse.redirect(target, 308) // ВАЖНО: 308 (постоянный)
+    const res = NextResponse.redirect(target, redirectStatus)
+    if (redirectStatus !== 308) res.headers.set('Cache-Control', 'no-store')
+    return res
   }
   // === КОНЕЦ ЕДИНОГО РЕДИРЕКТА ===
 

@@ -8,6 +8,8 @@
   top: $MyScale200_mobile;
   background-color: #fff;
   display: flex;
+  overflow: visible; 
+  position: sticky;
 
   .menuCat {
     display: flex;
@@ -144,18 +146,29 @@
   }
 }
 
-.blockShadowMenuCatMobile {
-  z-index: 1000;
-  width: 100%;
+.menuCatMobile::after {
+  content: "";
+  position: absolute;
+  left: 0; right: 0;
+  top: 100%;
   height: $MyScale80_mobile;
-  margin-bottom: -$MyScale80_mobile;
-  position: fixed;
-  right: 0;
-  background: linear-gradient(
-    180deg,
-    rgba(115, 115, 115, 0.1) 0%,
-    rgba(83, 92, 84, 0) 100%
-  );
+  background: linear-gradient(180deg, rgba(115,115,115,.1) 0%, rgba(83,92,84,0) 100%);
   mix-blend-mode: multiply;
-  transition: all 0.1s ease 0s;
+  pointer-events: none;
 }
+
+// .blockShadowMenuCatMobile {
+//   z-index: 1000;
+//   width: 100%;
+//   height: $MyScale80_mobile;
+//   margin-bottom: -$MyScale80_mobile;
+//   position: fixed;
+//   right: 0;
+//   background: linear-gradient(
+//     180deg,
+//     rgba(115, 115, 115, 0.1) 0%,
+//     rgba(83, 92, 84, 0) 100%
+//   );
+//   mix-blend-mode: multiply;
+//   transition: all 0.1s ease 0s;
+// }

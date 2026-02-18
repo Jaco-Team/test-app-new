@@ -37,7 +37,7 @@ export default React.memo(function FooterPC({ cityName, active_page, links }) {
 
   return (
     <>
-      <div className={showArrow ? 'ArrowPC' : 'ArrowHidden'} onClick={scrollUp} style={{marginTop: active_page === 'contacts' || (active_page === 'home' && (badge_filter || tag_filter || text_filter)) ? '-4.3321299638989vw' : null, transform: active_page === 'contacts' ? 'translate(0, -50%)' : null}}>
+      <div className={showArrow ? 'ArrowPC' : 'ArrowHidden'} onClick={scrollUp} style={{marginTop: active_page === 'sitemap' || active_page === 'contacts' || (active_page === 'home' && (badge_filter || tag_filter || text_filter)) ? '-4.3321299638989vw' : null, transform: active_page === 'contacts' ? 'translate(0, -50%)' : null}}>
         <ArrowUp />
       </div>
       <footer className='footerPC' style={{ minHeight: cookie ? '36.101083032491vw' : '45.126353790614vw', marginTop: active_page === 'contacts' ? null : '1.8050541516245vw' }}>
@@ -60,6 +60,7 @@ export default React.memo(function FooterPC({ cityName, active_page, links }) {
             <Link href={'/' + cityName + '/legal'}>Согласие на обработку персональных данных</Link>
             <Link href={'/' + cityName + '/politika-legal'}>Политика в отношении обработки метрических данных</Link>
             <Link href={'/' + cityName + '/instpayorders'}>Правила оплаты</Link>
+            <Link href={'/' + cityName + '/sitemap'}>Карта сайта</Link>
           </div>
           <div className="column">
             <Typography component="span">Работа в жако</Typography>

@@ -12,6 +12,9 @@ import { useHomeStore, useCitiesStore, useHeaderStoreNew, useCartStore } from '@
 
 const this_module = 'category';
 
+import { normalizeCity } from '@/utils/normalizeCity'
+import { getCookie } from '@/utils/getCookie'
+
 export default function Home(props) {
 
   const { city, cats, cities, page, all_items, free_items, need_dop, category, tags, links } = props.data1;
@@ -70,21 +73,37 @@ export default function Home(props) {
 }
 
 export async function getServerSideProps({ req, res, query }) {
-
   res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=3600');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
-  const city = String(query.city || '');
-  let data = {
-    type: 'get_page_info', 
-    city_id: city,
-    page: query.category 
-  };
+  const cityFromPath = normalizeCity(query?.city);
+  const savedCity = normalizeCity(getCookie(req, 'city'));
+  const city = cityFromPath || savedCity || 'togliatti';
 
-  const data1 = await api('home', data);
+  if (!cityFromPath) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
+  }
+
+  const category = String(query?.category || '').trim();
+
+  const data1 = await api('home', {
+    type: 'get_page_info',
+    city_id: city,
+    page: category,
+  });
+
+  if (!data1 || data1?.page == null) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
+  }
+
+  // если бэк говорит, что категории нет — уводим на главную города,
+  // но НЕ для '' и не для 'menu'
+  if (parseInt(data1?.page?.category_id, 10) === 0 && category !== '' && category !== 'menu') {
+    return { redirect: { destination: `/${city}`, permanent: false } };
+  }
 
   const footer = await api('contacts', {
     type: 'get_page_info',
@@ -93,26 +112,8 @@ export async function getServerSideProps({ req, res, query }) {
   });
 
   data1.links = footer?.page || {};
+  data1.city = city;
+  data1.category = category;
 
-  data1['city'] = city;
-  data1['category'] = query.category;
-
-  const redirectCity = city || 'togliatti'; 
-
-  if (!data1.page || data1.page == null) {
-    // return {
-    //   redirect: {
-    //     destination: '/',
-    //     permanent: false,
-    //   },
-    // }
-
-    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
-  }
-
-  if( parseInt(data1?.page?.category_id) == 0 && (query.category != '' || query.category != 'menu') ){
-    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
-  }
-
-  return { props: { data1 } }
+  return { props: { data1 } };
 }

@@ -1,12 +1,15 @@
 import { useState, useEffect } from 'react';
 
-import { useHomeStore, useHeaderStoreNew } from '@/components/store';
+import { useHomeStore, useHeaderStoreNew, useCartStore } from '@/components/store';
 
 import { motion } from 'framer-motion';
 
-import { Search, Close } from '@/ui/Icons.js';
-import MyTextInput from '@/ui/MyTextInput';
-import InputAdornment from '@mui/material/InputAdornment';
+import {
+  //Search,
+  Close
+} from '@/ui/Icons.js';
+//import MyTextInput from '@/ui/MyTextInput';
+//import InputAdornment from '@mui/material/InputAdornment';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
@@ -30,23 +33,54 @@ const badges = [
   },*/
 ];
 
-
-
 export default function Filter() {
   const [tags, setTags] = useState([]);
 
-  const [filterActive, resetFilter, scrollToTargetAdjusted, isOpenFilter, filterItems, all_tags, filterItemsBadge, setActiveFilter, tag_filter, text_filter, filterText, badge_filter] = useHomeStore((state) => [state.filterActive, state.resetFilter, state.scrollToTargetAdjusted, state.isOpenFilter, state.filterItems, state.all_tags, state.filterItemsBadge, state.setActiveFilter,
-    state.tag_filter, state.text_filter, state.filterText, state.badge_filter]);
+  // список доступных badges (на category будем фильтровать)
+  const [badgesAvailable, setBadgesAvailable] = useState(badges);
+
+  const [
+    filterActive,
+    resetFilter,
+    scrollToTargetAdjusted,
+    //isOpenFilter,
+    filterItems,
+    all_tags,
+    filterItemsBadge,
+    setActiveFilter,
+    tag_filter,
+    text_filter,
+    //filterText,
+    badge_filter
+  ] = useHomeStore((state) => [
+    state.filterActive,
+    state.resetFilter,
+    state.scrollToTargetAdjusted,
+    //state.isOpenFilter,
+    state.filterItems,
+    state.all_tags,
+    state.filterItemsBadge,
+    state.setActiveFilter,
+    state.tag_filter,
+    state.text_filter,
+    //state.filterText,
+    state.badge_filter
+  ]);
 
   const [matches, activePage] = useHeaderStoreNew((state) => [state?.matches, state?.activePage]);
 
-  const resetTags = () => {
-    const tags_active = tags.map((item) => {
-      item.active = false;
-      return item;
-    });
+  const allItems = useCartStore((s) => s.allItems);
 
-    setTags(tags_active);
+  // фильтр показываем только на страницах с карточками товаров
+  const canShowFilter = activePage === 'home' || activePage === 'category';
+
+  const resetTags = () => {
+    setTags(prev => prev.map(t => ({ ...t, active: false })));
+  };
+
+  //утилита закрытия именно мобильной модалки фильтра
+  const closeMobileFilter = () => {
+    if (matches) setActiveFilter(false);
   };
 
   const handleBadge = (id) => {
@@ -55,50 +89,40 @@ export default function Filter() {
     if (tag_filter) {
       resetTags();
     }
-
-    setActiveFilter(false);
+   
+    closeMobileFilter();
   };
 
   // const handleText = (event) => {
   //   filterText(event);
-
+  //
   //   if (tag_filter) {
   //     resetTags();
   //   }
   // };
 
   const handleTag = (id) => {
-
-    if(parseInt(id) == -1){
-      
+    if (Number(id) === -1) {
       resetTags();
       resetFilter();
       scrollToTargetAdjusted();
 
-    } else {
-      const tags_active = tags.map((item) => {
-        if (parseInt(item.id) === parseInt(id)) {
-          item.active = item?.active ? false : true;
-        } else {
-          item.active = false;
-        }
-        return item;
-      });
-
-      setTags(tags_active);
-
-      filterItems(parseInt(id));
+      closeMobileFilter();
+      return;
     }
 
-    if(Number(tag_filter) !== Number(id)) {
-      setActiveFilter(false);
-    }
+    setTags(prev => prev.map(t => ({
+      ...t,
+      active: Number(t.id) === Number(id) ? !t.active : false,
+    })));
 
-    // setActiveFilter(false);
+    filterItems(Number(id));
+
+    closeMobileFilter();
   };
 
   useEffect(() => {
-    if( badge_filter == '' && text_filter == '' && tag_filter == '') {
+    if (badge_filter == '' && text_filter == '' && tag_filter == '') {
       resetTags();
       resetFilter();
     }
@@ -110,15 +134,115 @@ export default function Filter() {
     }
   }, [isOpenFilter]);*/
 
+  // - home: теги все, badges все
+  // - category: теги только доступные + badges только доступные
   useEffect(() => {
-    setTags(all_tags);
-  }, [all_tags]);
+    // если на этой странице фильтр не нужен — закрываем
+    if (!canShowFilter) {
+      setActiveFilter(false);
+      return;
+    }
+
+    if (!all_tags?.length) {
+      setTags([]);
+      setBadgesAvailable(badges);
+      return;
+    }
+
+    if (activePage !== 'category') {
+      setTags(all_tags.map(t => ({
+        ...t,
+        active: Number(t.id) === Number(tag_filter),
+      })));
+
+      setBadgesAvailable(badges);
+      return;
+    }
+
+    if (typeof window === 'undefined') {
+      setTags(all_tags.map(t => ({
+        ...t,
+        active: Number(t.id) === Number(tag_filter),
+      })));
+      setBadgesAvailable(badges);
+      return;
+    }
+
+    let tries = 0;
+    const MAX_TRIES = 15;
+
+    const computeAvailable = () => {
+      const availableTags = new Set();
+      const availableBadges = new Set();
+
+      (allItems || []).forEach((item) => {
+        if (!item?.link) return;
+
+        // товар считается “на странице”, если его карточка реально в DOM
+        if (document.getElementById(item.link)) {
+          (item.tags || []).forEach((t) => availableTags.add(Number(t)));
+
+          // "Новинка" доступна только если на странице есть хотя бы один is_new=1
+          if (parseInt(item.is_new) === 1) {
+            availableBadges.add('2');
+          }
+
+          // если вернуть "Хит"
+          // if (parseInt(item.is_hit) === 1) availableBadges.add('1');
+        }
+      });
+
+      if (availableTags.size === 0) return false;
+
+      // теги только доступные
+      const filteredTags = all_tags
+        .filter((t) => availableTags.has(Number(t.id)))
+        .map((t) => ({
+          ...t,
+          active: Number(t.id) === Number(tag_filter),
+        }));
+
+      setTags(filteredTags);
+
+      // badges только доступные на category
+      const filteredBadges = badges.filter(b => availableBadges.has(String(b.id)));
+      setBadgesAvailable(filteredBadges);
+
+      return true;
+    };
+
+    const ok = computeAvailable();
+
+    if (!ok) {
+      const timer = setInterval(() => {
+        tries += 1;
+
+        const done = computeAvailable();
+        if (done || tries >= MAX_TRIES) {
+          clearInterval(timer);
+
+          // если так и не нашли карточки
+          if (!done) {
+            setTags(all_tags.map(t => ({
+              ...t,
+              active: Number(t.id) === Number(tag_filter),
+            })));
+            setBadgesAvailable(badges);
+          }
+        }
+      }, 100);
+
+      return () => clearInterval(timer);
+    }
+  }, [all_tags, allItems, activePage, tag_filter, canShowFilter, setActiveFilter]);
 
   useEffect(() => {
     if (activePage !== 'home' && activePage != '') {
       setActiveFilter(false);
     }
   }, [activePage]);
+
+  if (!canShowFilter) return null;
 
   return (
     <>
@@ -137,11 +261,10 @@ export default function Filter() {
           </div>
 
           <div className="filterMobile">
-          
             <div className="filterTag">
               <div className="tags">
 
-                {badges?.map((badg, key) => (
+                {badgesAvailable?.map((badg, key) => (
                   <div key={key} style={{ backgroundColor: badg.bg }} className={'tag_'} onClick={() => handleBadge(badg.id)}>
                     <span>{badg.name}</span>
                   </div>
@@ -150,7 +273,7 @@ export default function Filter() {
                 {tags?.map((tag, key) => (
                   <div key={key} onClick={() => handleTag(tag.id)} className={tag?.active ? 'tag active' : 'tag'}>
                     <span>{tag.name}</span>
-                    { tag?.active ? <Close /> : false }
+                    {tag?.active ? <Close /> : false}
                   </div>
                 ))}
 
@@ -158,6 +281,7 @@ export default function Filter() {
                   <span>Очистить</span>
                 </div>
               </div>
+
               {/* <MyTextInput
                 type="text"
                 value={text_filter}
@@ -172,10 +296,6 @@ export default function Filter() {
             </div>
           </div>
         </SwipeableDrawer>
-
-
-
-        
       ) : (
         <motion.div
           initial={{ opacity: 0, scale: 0.9 }}
@@ -186,19 +306,18 @@ export default function Filter() {
           <div className="filterTag" style={{ width: '100%' }}>
             <div style={{ width: '100%' }}>
 
-              {badges?.map((badg, key) => (
+              {badgesAvailable?.map((badg, key) => (
                 <div key={key} style={{ backgroundColor: badg.bg, color: '#fff' }} className={'tag_'} onClick={() => handleBadge(badg.id)}>
                   <span style={{ color: '#fff' }}>{badg.name}</span>
                 </div>
               ))}
 
               {tags?.map((tag, key) => (
-                <div key={key}  onClick={() => handleTag(tag.id)} className={tag?.active ? 'tag active' : 'tag'}>
+                <div key={key} onClick={() => handleTag(tag.id)} className={tag?.active ? 'tag active' : 'tag'}>
                   <span>{tag.name}</span>
-                  { tag?.active ? <Close /> : false }
+                  {tag?.active ? <Close /> : false}
                 </div>
               ))}
-              
             </div>
 
             <div className='search_clear'>
@@ -220,7 +339,6 @@ export default function Filter() {
 
             </div>
           </div>
-          
         </motion.div>
       )}
     </>

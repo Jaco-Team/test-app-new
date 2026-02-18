@@ -20,6 +20,9 @@ import ListItemButton from '@mui/material/ListItemButton';
 import Divider from '@mui/material/Divider';
 
 import MySwitch from '@/ui/Switch.js';
+
+import Cookies from 'js-cookie';
+
 export default function ContactsPagePC() {
 
   const ref = useRef();
@@ -37,6 +40,7 @@ export default function ContactsPagePC() {
 
   const chooseCity = (city) => {
     localStorage.setItem('setCity', JSON.stringify(city));
+    Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
     setThisCityRu(city.name);
     setThisCity(city.link);
     setAnchorEl(null);

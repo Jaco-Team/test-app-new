@@ -13,6 +13,9 @@ import { useRouter } from 'next/router';
 
 const this_module = 'profile';
 
+import { normalizeCity } from '@/utils/normalizeCity'
+import { getCookie } from '@/utils/getCookie'
+
 export default function Profile(props) {
 
   const { push } = useRouter();
@@ -73,30 +76,31 @@ export default function Profile(props) {
 export async function getServerSideProps({ req, res, query }) {
   res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=3600');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
-  
-  const city = String(query.city || '');
-  let data = {
-    type: 'get_page_info', 
+
+  const cityFromPath = normalizeCity(query?.city);
+  const savedCity = normalizeCity(getCookie(req, 'city'));
+  const city = cityFromPath || savedCity || 'togliatti';
+
+  // если в URL город невалидный (null/пусто/мусор) — уводим на нормальный /{city}
+  if (!cityFromPath) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
+  }
+
+  const data1 = await api(this_module, {
+    type: 'get_page_info',
     city_id: city,
-    page: this_module
-  };
+    page: this_module,
+  });
 
-  const data1 = await api(this_module, data);
-  
-  const redirectCity = city || 'togliatti'; 
-
-  if (!data1) {
-    // return {
-    //   redirect: {
-    //     destination: '/',
-    //     permanent: false,
-    //   },
-    // }
-
-    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
+  // если бек не вернул страницу — уводим на /{city}
+  if (!data1 || !data1.page) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
   }
 
   const footer = await api('contacts', {
@@ -106,8 +110,7 @@ export async function getServerSideProps({ req, res, query }) {
   });
 
   data1.links = footer?.page || {};
+  data1.city = city;
 
-  data1['city'] = city;
-
-  return { props: { data1 } }
+  return { props: { data1 } };
 }

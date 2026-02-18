@@ -19,15 +19,17 @@ import { roboto } from '@/ui/Font.js';
 import { IconClose } from '@/ui/Icons.js';
 import { useHeaderStoreNew, useCitiesStore, useContactStore, useCartStore, useHomeStore } from '@/components/store.js';
 
+import Cookies from 'js-cookie';
+
 export default function ModalCityPC() {
 
   const { push } = useRouter();
 
   const [thisCityList, thisCityRu, setThisCityRu, setThisCity] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu, state.setThisCity]);
   const [openCityModal, setActiveModalCity, activePage] = useHeaderStoreNew((state) => [state?.openCityModal, state?.setActiveModalCity, state?.activePage]);
-  const [getMap] = useContactStore((state) => [state.getMap]);
-  const [getNewPriceItems] = useCartStore( state => [state.getNewPriceItems] )
-  const [resetFilter] = useHomeStore( state => [state.resetFilter] )
+  //const [getMap] = useContactStore((state) => [state.getMap]);
+  //const [getNewPriceItems] = useCartStore( state => [state.getNewPriceItems] )
+  //const [resetFilter] = useHomeStore( state => [state.resetFilter] )
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -39,6 +41,7 @@ export default function ModalCityPC() {
     setActiveModalCity(false);
     const city = thisCityList.find((city) => city.name === thisCityRu);
     localStorage.setItem('setCity', JSON.stringify(city));
+    Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
   };
 
   function replaceCity(path, city) {
@@ -49,6 +52,7 @@ export default function ModalCityPC() {
 
   const chooseCity = (city) => {
     localStorage.setItem('setCity', JSON.stringify(city));
+    Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
     // setThisCityRu(city.name);
     // setAnchorEl(null);
     // setActiveModalCity(false);

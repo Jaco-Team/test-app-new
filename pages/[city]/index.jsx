@@ -12,6 +12,9 @@ import { useHomeStore, useCitiesStore, useHeaderStoreNew, useCartStore } from '@
 
 const this_module = 'home';
 
+import { normalizeCity } from '@/utils/normalizeCity'
+import { getCookie } from '@/utils/getCookie'
+
 export default function Home(props) {
 
   const { city, cats, cities, page, all_items, free_items, need_dop, tags, links } = props.data1;
@@ -76,37 +79,27 @@ export async function getServerSideProps({ req, res, query }) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
-  // city как пришёл (для бэка) + fallback для редиректов
-  const city = String(query?.city || '');
-  const redirectCity = city || 'togliatti';
+  const cityFromPath = normalizeCity(query?.city);
+  const savedCity = normalizeCity(getCookie(req, 'city'));
+  const city = cityFromPath || savedCity || 'togliatti';
 
-  // 1) если города нет — сразу на дефолтный (308)
-  if (!city) {
-    return {
-      redirect: { destination: '/togliatti', permanent: true },
-    }
+  // если город отсутствует/битый (null и т.п.) — уводим на сохранённый или дефолт
+  if (!cityFromPath) {
+    return { redirect: { destination: `/${city}`, permanent: false } }; // 307
   }
 
-  // 2) запрос к бэку
-  const data = {
+  const data1 = await api(this_module, {
     type: 'get_page_info',
     city_id: city,
     page: '',
-  };
-  const data1 = await api(this_module, data);
+  });
 
-  // 3) если данных нет — сразу в /{city} (308), не в '/'
-  if (!data1) {
-    return {
-      redirect: { destination: `/${redirectCity}`, permanent: true },
+  // если бэк не отдал — фоллбек на дефолт, без лупа
+  if (!data1 || data1?.page == null) {
+    if (city !== 'togliatti') {
+      return { redirect: { destination: '/togliatti', permanent: false } };
     }
-  }
-
-  // 4) если страница пустая — тоже сразу в /{city} (308)
-  if (data1?.page == null) {
-    return {
-      redirect: { destination: `/${redirectCity}`, permanent: true },
-    }
+    return { notFound: true };
   }
 
   const footer = await api('contacts', {
@@ -116,8 +109,7 @@ export async function getServerSideProps({ req, res, query }) {
   });
 
   data1.links = footer?.page || {};
-
   data1.city = city;
 
-  return { props: { data1 } }
+  return { props: { data1 } };
 }

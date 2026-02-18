@@ -10,7 +10,8 @@ const Responsibility = dynamic(() => import('./responsibility'), { ssr: false })
 const Feedback = dynamic(() => import('./feedback'), { ssr: false });
 const Cooperation = dynamic(() => import('./cooperation'), { ssr: false });
 
-const AboutBreadcrumbs = dynamic(() => import('./aboutBreadcrumbs'));
+//const AboutBreadcrumbs = dynamic(() => import('./aboutBreadcrumbs'));
+import AboutBreadcrumbs from './aboutBreadcrumbs';
 
 import Grid from '@mui/material/Grid';
 

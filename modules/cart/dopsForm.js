@@ -13,14 +13,18 @@ import { roboto } from '@/ui/Font.js';
 import RowPC from '@/modules/header/basket/rowPC';
 import CartItemMobile from '@/modules/cart/cartItemsMobile';
 
+import { useRouter } from 'next/router';
+
 export default function DopsForm() {
   // console.log('render DopsForm');
+
+  const { push } = useRouter();
 
   const [matches, token, showLoad] = useHeaderStoreNew((state) => [state?.matches, state?.token, state?.showLoad]);
 
   const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
 
-  const [openDopsForm, setDopsForm, dopListCart, createOrder, setConfirmForm, setActiveModalBasket, clearCartData, typePay, typeOrder, checkNewOrder, allPrice] = useCartStore((state) => [state.openDopsForm, state.setDopsForm, state.dopListCart, state.createOrder, state.setConfirmForm, state.setActiveModalBasket, state.clearCartData, state.typePay, state.typeOrder, state.checkNewOrder, state.allPrice]);
+  const [openDopsForm, setDopsForm, dopListCart, createOrder, setConfirmForm, setActiveModalBasket, clearCartData, typePay, typeOrder, checkNewOrder, allPrice, setPayForm] = useCartStore((state) => [state.openDopsForm, state.setDopsForm, state.dopListCart, state.createOrder, state.setConfirmForm, state.setActiveModalBasket, state.clearCartData, state.typePay, state.typeOrder, state.checkNewOrder, state.allPrice, state.setPayForm]);
 
   const [saveUserActions, getOrderList] = useProfileStore((state) => [state.saveUserActions, state.getOrderList]);
 

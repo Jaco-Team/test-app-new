@@ -365,7 +365,7 @@ export default React.memo(function NavBarPC({ city }) {
           </div>
         </Toolbar>
       </AppBar>
-      <div className='blockShadow' />
+      {/* <div className='blockShadow' /> */}
     </>
   );
 })

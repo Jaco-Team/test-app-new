@@ -271,6 +271,7 @@ export default function FormOrder({ cityName }) {
 
     if (nameList === 'city') {
       localStorage.setItem('setCity', JSON.stringify(item));
+      Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
       // setThisCityRu(item.name);
       // setAnchorEl(null);
       push(`/${item.link}`);
@@ -577,7 +578,7 @@ export default function FormOrder({ cityName }) {
 
   let allPriceWithoutPromo_new = price1 + price2;
 
-  console.log('free_drive', free_drive)
+  //console.log('free_drive', free_drive)
 
   if( parseInt(free_drive) == 1 ) {
     if( parseInt(allPriceWithoutPromo_new) > 0 || parseInt(allPrice) > 0 ) {

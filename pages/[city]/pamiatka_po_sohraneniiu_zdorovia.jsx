@@ -15,6 +15,9 @@ const DynamicPage = dynamic(() => import('@/modules/pageText'));
 
 const this_module = 'contacts';
 
+import { normalizeCity } from '@/utils/normalizeCity'
+import { getCookie } from '@/utils/getCookie'
+
 export default React.memo(function PublichnayaOferta(props) {
   const { city, cats, cities, page, all_items, free_items, need_dop, links } = props.data1;
 
@@ -70,30 +73,31 @@ export default React.memo(function PublichnayaOferta(props) {
 export async function getServerSideProps({ req, res, query }) {
   res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=3600');
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
-  const city = String(query.city || '');
-  let data = {
+  const cityFromPath = normalizeCity(query?.city);
+  const savedCity = normalizeCity(getCookie(req, 'city'));
+  const city = cityFromPath || savedCity || 'togliatti';
+
+  // если в пути не было нормального города (null/пусто/мусор) — редиректим на нормальный
+  if (!cityFromPath) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
+  }
+
+  const data1 = await api(this_module, {
     type: 'get_page_info',
     city_id: city,
     page: 'pamiatka_po_sohraneniiu_zdorovia',
-  };
+  });
 
-  const data1 = await api(this_module, data);
-
-  const redirectCity = city || 'togliatti'; 
-
-  if (!data1) {
-    // return {
-    //   redirect: {
-    //     destination: '/',
-    //     permanent: false,
-    //   },
-    // }
-
-    return { redirect: { destination: `/${redirectCity}`, permanent: true } }
+  // если бек ничего не вернул или страница пустая — уводим на /{city}
+  if (!data1 || data1?.page == null) {
+    return { redirect: { destination: `/${city}`, permanent: false } };
   }
 
   const footer = await api('contacts', {
@@ -103,27 +107,14 @@ export async function getServerSideProps({ req, res, query }) {
   });
 
   data1.links = footer?.page || {};
-
   data1.city = city;
 
-  // безопасно работаем с контентом
-  const rawContent = data1?.page?.content ?? '';
-  // если контент пустой — отдадим страницу, но без падения
-  const patchedContent = rawContent.replace(/<a href=\"\//g, `<a href="/${city}/`);
-
+  // патчим ссылки внутри html
+  const rawContent = typeof data1?.page?.content === 'string' ? data1.page.content : '';
   data1.page = {
-    ...(data1.page ?? {}),
-    content: patchedContent,
+    ...(data1.page || {}),
+    content: rawContent.replace(/<a href=\"\//g, `<a href="/${city}/`),
   };
 
   return { props: { data1 } };
-
-  // data1['city'] = query.city;
-
-  // data1.page.content = data1.page.content.replace(
-  //   /<a href=\"\//g,
-  //   '<a href="/' + query.city + '/'
-  // );
-
-  // return { props: { data1 } };
 }

@@ -157,34 +157,46 @@
         @include font50_500();
       }
 
-      span:nth-child(1) {
+      & > span:nth-child(1) {
         margin-left: $MyScale40_mobile;
+        margin-right: $MyScale30_mobile;
         width: $MyScale200_mobile;
         flex-shrink: 0;
+        white-space: nowrap;
       }
 
       .zakazyGroupСol {
-        display: flex;
-        align-items: center;
         flex: 1 1 auto;
         min-width: 0;
 
-        span:nth-child(1) {
-          flex: 1 1 auto;
-        }
+        display: grid;
+        align-items: center;
 
-        span:nth-child(2) {
-          margin-right: $MyScale20_mobile;
-          white-space: nowrap;
-        }
+      
+        grid-template-columns: calc(#{$MyScale170_mobile} + #{$MyScale130_mobile} + #{$MyScale60_mobile}) $MyScale218_mobile auto;
 
-        svg {
-          margin-left: $MyScale10_mobile;
-          width: $MyScale21_mobile;
-          height: $MyScale35_mobile;
-          flex-shrink: 0;
-          margin-right: $MyScale80_mobile;
-        }
+        padding-right: $MyScale80_mobile;
+        column-gap: $MyScale10_mobile;
+      }
+
+      .zakazyGroupСol span:nth-child(1) {
+        justify-self: flex-start;
+
+        white-space: nowrap;
+        overflow: visible;
+        text-overflow: clip;
+      }
+
+      .zakazyGroupСol span:nth-child(2) {
+        justify-self: flex-start;
+        white-space: nowrap;
+      }
+
+      .zakazyGroupСol svg {
+        justify-self: flex-start;
+        width: $MyScale21_mobile;
+        height: $MyScale35_mobile;
+        flex-shrink: 0;
       }
     }
 

@@ -166,7 +166,7 @@ export default function MenuCatMobile({ city }) {
         </div>
       )}
 
-      <div className="blockShadowMenuCatMobile" style={{ position: 'sticky', top: catDopMenu.length != 0 ? '43.735042735043vw' : '31.5786vw' }} /> 
+      {/* <div className="blockShadowMenuCatMobile" style={{ position: 'sticky', top: catDopMenu.length != 0 ? '43.735042735043vw' : '31.5786vw' }} />  */}
       
     </Box>
   );

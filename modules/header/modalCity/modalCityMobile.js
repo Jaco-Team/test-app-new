@@ -10,6 +10,8 @@ import Button from '@mui/material/Button';
 import { roboto } from '@/ui/Font.js';
 import { useHeaderStoreNew, useCitiesStore, useCartStore, useContactStore, useHomeStore } from '@/components/store.js';
 
+import Cookies from 'js-cookie';
+
 export default function ModalCityMobile() {
   const { push } = useRouter();
 
@@ -19,14 +21,15 @@ export default function ModalCityMobile() {
 
   const [getMySavedAddr, setPoint, setAddrDiv, getNewPriceItems, getInfoPromo] = useCartStore((state) => [state.getMySavedAddr, state.setPoint, state.setAddrDiv, state.getNewPriceItems, state.getInfoPromo]);
 
-  const [setActiveFilter] = useHomeStore( state => [state.setActiveFilter] )
+  // const [setActiveFilter] = useHomeStore( state => [state.setActiveFilter] )
 
-  const [getMap] = useContactStore(state => [state.getMap]);
+  // const [getMap] = useContactStore(state => [state.getMap]);
 
   const rightCity = () => {
     setActiveModalCity(false);
     const city = thisCityList.find((city) => city.name === thisCityRu);
     localStorage.setItem('setCity', JSON.stringify(city));
+    Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
   };
 
   function replaceCity(path, city) {
@@ -37,6 +40,7 @@ export default function ModalCityMobile() {
 
   const chooseCity = (city) => {
     localStorage.setItem('setCity', JSON.stringify(city));
+    Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
     // setActiveModalCityList(false);
     // setThisCityRu(city.name);
     // setThisCity(city.link);
