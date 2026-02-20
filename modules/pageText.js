@@ -11,6 +11,8 @@ import DocsBreadcrumbs from '@/components/docsBreadcrumbs.js';
 
 import { ArrowLeftMobile } from '@/ui/Icons.js';
 
+import { reachGoal } from '@/utils/metrika';
+
 export default function PageText({ page, classNamePC, classNameMobile, cityName }) {
   const [matches, activePage] = useHeaderStoreNew((state) => [state.matches, state.activePage]);
 
@@ -29,11 +31,9 @@ export default function PageText({ page, classNamePC, classNameMobile, cityName 
 
       //console.log( link.href, link )
 
-      if( cityName == 'samara' && link.href === 'https://b24-7m199r.bitrix24site.ru/crm_form_1trxt/'){
-        ym(100325084, 'reachGoal', 'go_to_job');
+      if (cityName === 'samara' && link.href === 'https://b24-7m199r.bitrix24site.ru/crm_form_1trxt/') {
+        reachGoal('go_to_job', {}, cityName);
       }
-
-       
 
       //e.preventDefault();
       /* ───────── optionally ─────────

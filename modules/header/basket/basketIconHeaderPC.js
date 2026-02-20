@@ -1,8 +1,10 @@
-import { useMemo } from 'react';
+//import { useMemo } from 'react';
 import { useCartStore, useHeaderStoreNew, useCitiesStore } from '@/components/store.js';
 import { BasketIconNew } from '@/ui/Icons.js';
 
 import Cookies from 'js-cookie'
+
+import { reachGoal } from '@/utils/metrika';
 
 export default function BasketIconHeaderPC() {
   const [setActiveBasket, openBasket] = useHeaderStoreNew((state) => [state?.setActiveBasket, state?.openBasket]);
@@ -28,13 +30,7 @@ export default function BasketIconHeaderPC() {
     // }
 
     if( !openBasket == true ){
-      if( thisCityRu == 'Самара' ){
-        ym(100325084, 'reachGoal', 'open_basket'); 
-      }
-
-      if( thisCityRu == 'Тольятти' ){
-        ym(100601350, 'reachGoal', 'open_basket'); 
-      }
+      reachGoal('open_basket');
 
       try{
         // roistat.event.send('open_basket');

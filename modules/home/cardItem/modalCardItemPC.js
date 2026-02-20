@@ -21,6 +21,8 @@ import { IconClose, IconInfo } from '@/ui/Icons';
 
 import { roboto } from '@/ui/Font';
 
+import { reachGoalSplit } from '@/utils/metrika';
+
 export default function ModalCardItemPC() {
   const [isOpenModal, closeModal, typeModal, openItem, foodValue, navigate, closeTypeModal, getItem] = useHomeStore((state) => {
     return [state.isOpenModal, state.closeModal, state.typeModal, state.openItem, state.foodValue, state.navigate, state.closeTypeModal, state.getItem];
@@ -80,7 +82,7 @@ export default function ModalCardItemPC() {
 
   const add_to_cart = () => {
     changeCountPlus(openItem?.id);
-    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
+    reachGoalSplit('add_to_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
       "ecommerce": {
@@ -101,15 +103,7 @@ export default function ModalCardItemPC() {
         }
       }
     });
-
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
-    }
-
+   
     try{
       // roistat.event.send('add_to_cart', {
       //   id: openItem?.id,
@@ -125,7 +119,7 @@ export default function ModalCardItemPC() {
 
   const remove_from_cart = () => {
     changeCountMinus(openItem?.id);
-    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+    reachGoalSplit('remove_from_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
       "ecommerce": {
@@ -144,15 +138,7 @@ export default function ModalCardItemPC() {
         }
       }
     });
-
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
-    }
-
+   
     try{
       // roistat.event.send('remove_from_cart');
     } catch(e){ console.log(e) }
@@ -161,13 +147,7 @@ export default function ModalCardItemPC() {
   const sostav_seta = () => {
     navigate('set')
 
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'sostav_seta', metrica_param_min);
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'sostav_seta', metrica_param_min);
-    }
+    reachGoalSplit('sostav_seta', metrica_param, metrica_param_min);
 
     try{
       // roistat.event.send('sostav_seta');

@@ -15,6 +15,8 @@ import CartItemMobile from '@/modules/cart/cartItemsMobile';
 
 import { useRouter } from 'next/router';
 
+import { reachGoal, reachGoalMain } from '@/utils/metrika';
+
 export default function DopsForm() {
   // console.log('render DopsForm');
 
@@ -25,6 +27,8 @@ export default function DopsForm() {
   const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
 
   const [openDopsForm, setDopsForm, dopListCart, createOrder, setConfirmForm, setActiveModalBasket, clearCartData, typePay, typeOrder, checkNewOrder, allPrice, setPayForm] = useCartStore((state) => [state.openDopsForm, state.setDopsForm, state.dopListCart, state.createOrder, state.setConfirmForm, state.setActiveModalBasket, state.clearCartData, state.typePay, state.typeOrder, state.checkNewOrder, state.allPrice, state.setPayForm]);
+
+   console.log('ecommerce purchase checkNewOrder:', checkNewOrder);
 
   const [saveUserActions, getOrderList] = useProfileStore((state) => [state.saveUserActions, state.getOrderList]);
 
@@ -55,104 +59,74 @@ export default function DopsForm() {
     showLoad(true);
 
     setTimeout(() => {
-
-      try{
+      try {
         const ym_data = {
           city: thisCityRu,
           type_pay: typePay?.name,
           typeOrder: typeOrder == 'pic' ? 'Самовывоз' : 'Доставка'
+        };
+
+        // Метрика: основной + городской
+        reachGoal('pay_order', ym_data);
+        reachGoal('pay_order_' + typeOrder + '_' + typePay?.id, ym_data);
+
+        // новое событие "Покупка" + защита от повторного отправления цели "Покупка" при повторных кликах или возврате на страницу с помощью браузерных кнопок
+        const orderId = checkNewOrder?.order?.order_id;
+        if (!orderId) {
+          console.warn('YM purchase skipped: no orderId');
+        } else {
+          const key = `ym_purchase_${orderId}`;
+          if (!sessionStorage.getItem(key)) {
+            sessionStorage.setItem(key, '1');
+            reachGoalMain('purchase', ym_data);
+          }
         }
-  
-        ym(47085879, 'reachGoal', 'pay_order', ym_data);
 
-        if( thisCityRu == 'Самара' ){
-          ym(100325084, 'reachGoal', 'pay_order', ym_data);
-          ym(100325084, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
+        // ecommerce purchase (пушим 1 раз — метрика раскидает по подключённым счётчикам)
+        const items = (checkNewOrder?.items ?? []).map((item, index) => ({
+          "id": item?.id ?? 0,
+          "name": item?.name ?? '',
+          "price": item?.price ?? '',
+          "category": item?.cat_name ?? '',
+          "quantity": item?.count ?? '',
+          "position": index
+        }));
 
-          let items = [];
+        console.log('ecommerce purchase items:', items);
 
-          checkNewOrder?.items?.map( (item, index) => {
-            items.push({
-              "id": item?.id ?? 0,
-              "name": item?.name ?? '',
-              "price": item?.price ?? '',
-              //"brand": "Яндекс / Яndex",
-              "category": item?.cat_name ?? '',
-              //"variant": "Оранжевый цвет",
-              "quantity": item?.count ?? '',
-              //"list": "Одежда",
-              "position": index
-            })
-          } )
-
-          ymDataLayer.push({
-            "ecommerce": {
-              "currencyCode": "RUB",
-              "purchase": {
-                "actionField": {
-                  "id": checkNewOrder?.order?.order_id ?? 0,
-                  "coupon": checkNewOrder?.order?.promo_name ?? '',
-                  "revenue": checkNewOrder?.order?.sum_order ?? 0
-                },
-                "products": items ?? []
-              }
+        ymDataLayer.push({
+          "ecommerce": {
+            "currencyCode": "RUB",
+            "purchase": {
+              "actionField": {
+                "id": checkNewOrder?.order?.order_id ?? 0,
+                "coupon": checkNewOrder?.order?.promo_name ?? '',
+                "revenue": checkNewOrder?.order?.sum_order ?? 0
+              },
+              "products": items ?? []
             }
-          });
-
-          try{
-            // roistat.event.send('pay_order_samara');
-            // roistat.event.send('pay_order_samara_'+typeOrder+'_'+typePay?.id);
-          } catch(e){ console.log(e) }
-        }
-
-        if( thisCityRu == 'Тольятти' ){
-          ym(100601350, 'reachGoal', 'pay_order', ym_data);
-          ym(100601350, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
-
-          let items = [];
-
-          checkNewOrder?.items?.map( (item, index) => {
-            items.push({
-              "id": item?.id ?? 0,
-              "name": item?.name ?? '',
-              "price": item?.price ?? '',
-              //"brand": "Яндекс / Яndex",
-              "category": item?.cat_name ?? '',
-              //"variant": "Оранжевый цвет",
-              "quantity": item?.count ?? '',
-              //"list": "Одежда",
-              "position": index
-            })
-          } )
-
-          ymDataLayer.push({
-            "ecommerce": {
-              "currencyCode": "RUB",
-              "purchase": {
-                "actionField": {
-                  "id": checkNewOrder?.order?.order_id ?? 0,
-                  "coupon": checkNewOrder?.order?.promo_name ?? '',
-                  "revenue": checkNewOrder?.order?.sum_order ?? 0
-                },
-                "products": items ?? []
-              }
-            }
-          });
-
-          try{
-            // roistat.event.send('pay_order_togliatti');
-            // roistat.event.send('pay_order_togliatti_'+typeOrder+'_'+typePay?.id);
-          } catch(e){ console.log(e) }
-        }
-
-        localStorage.removeItem('freeDrive');
+          }
+        });
 
         try{
+          if( thisCityRu == 'Самара' ){
+            // roistat.event.send('pay_order_samara');
+            // roistat.event.send('pay_order_samara_'+typeOrder+'_'+typePay?.id);
+          }
+
+          if( thisCityRu == 'Тольятти' ){
+            // roistat.event.send('pay_order_togliatti');
+            // roistat.event.send('pay_order_togliatti_'+typeOrder+'_'+typePay?.id);
+          }
+
           // roistat.event.send('pay_order');
           // roistat.event.send('pay_order_'+typeOrder+'_'+typePay?.id);
         } catch(e){ console.log(e) }
-      }catch(e){
-        console.log(e)
+
+        localStorage.removeItem('freeDrive');
+
+      } catch(e) {
+        console.log(e);
       }
 
       setTimeout(() => {
@@ -160,7 +134,7 @@ export default function DopsForm() {
         setActiveModalBasket(false);
         setPayForm(false);
         setConfirmForm(false);
-  
+
         localStorage.removeItem('freeDrive');
 
         push(`/${thisCity}/zakazy`);

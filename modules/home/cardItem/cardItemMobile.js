@@ -10,6 +10,8 @@ import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.j
 
 import BadgeItem from './badge';
 
+import { reachGoalSplit } from '@/utils/metrika';
+
 export default React.memo(function CardItemMobile({ item, count }) {
   const [getItem] = useHomeStore((state) => [state.getItem]);
   const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
@@ -31,7 +33,7 @@ export default React.memo(function CardItemMobile({ item, count }) {
 
   const add_to_cart = () => {
     plus(item.id, item.cat_id)
-    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
+    reachGoalSplit('add_to_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
       "ecommerce": {
@@ -53,14 +55,6 @@ export default React.memo(function CardItemMobile({ item, count }) {
       }
     });
 
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
-    }
-
     try{
       // roistat.event.send('add_to_cart', {
       //   id: item?.id,
@@ -76,7 +70,7 @@ export default React.memo(function CardItemMobile({ item, count }) {
 
   const remove_from_cart = () => {
     minus(item.id);
-    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+    reachGoalSplit('remove_from_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
       "ecommerce": {
@@ -95,14 +89,6 @@ export default React.memo(function CardItemMobile({ item, count }) {
         }
       }
     });
-
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
-    }
 
     try{
       // roistat.event.send('remove_from_cart');

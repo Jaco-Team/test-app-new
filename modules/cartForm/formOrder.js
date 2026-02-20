@@ -29,6 +29,8 @@ import 'dayjs/locale/ru';
 
 import Cookies from 'js-cookie'
 
+import { reachGoal, reachGoalMain } from '@/utils/metrika';
+
 const dopText = {
   rolly: 'Не забудьте про соусы, приправы и приборы',
   pizza: 'Попробуйте необычное сочетание пиццы и соуса',
@@ -410,136 +412,91 @@ export default function FormOrder({ cityName }) {
     showLoad(true);
 
     setTimeout(() => {
-
-      try{
+      try {
         const ym_data = {
           city: thisCityRu,
           type_pay: typePay?.name,
           //summ: allPrice,
-          typeOrder: typeOrder == 'pic' ? 'Самовывоз' : 'Доставка'
-        }
-  
-        ym(47085879, 'reachGoal', 'pay_order', ym_data);
+          typeOrder: typeOrder == 'pic' ? 'Самовывоз' : 'Доставка',
+        };
 
-        if( thisCityRu == 'Самара' ){
+        // Метрика: основной + городской
+        reachGoal('pay_order', ym_data);
+        reachGoal('pay_order_' + typeOrder + '_' + typePay?.id, ym_data);
 
-          // сразу после успешной оплаты/создания заказа:
-          if (window.ym) {
-            try { 
-              ym(100325084, 'reachGoal', 'pay_order', ym_data);
-              ym(100325084, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
-
-              let items = [];
-
-              checkNewOrder?.items?.map( (item, index) => {
-                items.push({
-                  "id": item?.id ?? 0,
-                  "name": item?.name ?? '',
-                  "price": item?.price ?? '',
-                  //"brand": "Яндекс / Яndex",
-                  "category": item?.cat_name ?? '',
-                  //"variant": "Оранжевый цвет",
-                  "quantity": item?.count ?? '',
-                  //"list": "Одежда",
-                  "position": index
-                })
-              } )
-
-              ymDataLayer.push({
-                "ecommerce": {
-                  "currencyCode": "RUB",
-                  "purchase": {
-                    "actionField": {
-                      "id": checkNewOrder?.order?.order_id ?? 0,
-                      "coupon": checkNewOrder?.order?.promo_name ?? '',
-                      "revenue": checkNewOrder?.order?.sum_order ?? 0
-                    },
-                    "products": items ?? []
-                  }
-                }
-              });
-
-              try {
-                // roistat.event.send('pay_order_samara');
-                // roistat.event.send('pay_order_samara_'+typeOrder+'_'+typePay?.id);
-              } catch(e){ console.log(e) }
-            } catch (e) {}
+        // новое событие "Покупка" + защита от повторного отправления цели "Покупка" при повторных кликах или возврате на страницу с помощью браузерных кнопок
+        const orderId = checkNewOrder?.order?.order_id;
+        if (!orderId) {
+          console.warn('YM purchase skipped: no orderId');
+        } else {
+          const key = `ym_purchase_${orderId}`;
+          if (!sessionStorage.getItem(key)) {
+            sessionStorage.setItem(key, '1');
+            reachGoalMain('purchase', ym_data);
           }
         }
 
-        if( thisCityRu == 'Тольятти' ){
+        // ecommerce purchase
+        let items = [];
+        (checkNewOrder?.items ?? []).map((item, index) => {
+          items.push({
+            id: item?.id ?? 0,
+            name: item?.name ?? '',
+            price: item?.price ?? '',
+            category: item?.cat_name ?? '',
+            quantity: item?.count ?? '',
+            position: index,
+          });
+        });
 
-          if (window.ym) {
-            try { 
-              ym(100601350, 'reachGoal', 'pay_order', ym_data);
-              ym(100601350, 'reachGoal', 'pay_order_'+typeOrder+'_'+typePay?.id, ym_data);
-
-              let items = [];
-
-              checkNewOrder?.items?.map( (item, index) => {
-                items.push({
-                  "id": item?.id ?? 0,
-                  "name": item?.name ?? '',
-                  "price": item?.price ?? '',
-                  //"brand": "Яндекс / Яndex",
-                  "category": item?.cat_name ?? '',
-                  //"variant": "Оранжевый цвет",
-                  "quantity": item?.count ?? '',
-                  //"list": "Одежда",
-                  "position": index
-                })
-              } )
-
-              ymDataLayer.push({
-                "ecommerce": {
-                  "currencyCode": "RUB",
-                  "purchase": {
-                    "actionField": {
-                      "id": checkNewOrder?.order?.order_id ?? 0,
-                      "coupon": checkNewOrder?.order?.promo_name ?? '',
-                      "revenue": checkNewOrder?.order?.sum_order ?? 0
-                    },
-                    "products": items ?? []
-                  }
-                }
-              });
-
-              try {
-                // roistat.event.send('pay_order_togliatti');
-                // roistat.event.send('pay_order_togliatti_'+typeOrder+'_'+typePay?.id);
-              } catch(e){ console.log(e) }
-            } catch (e) {}
+        ymDataLayer.push({
+          "ecommerce": {
+            "currencyCode": "RUB",
+            "purchase": {
+              "actionField": {
+                "id": checkNewOrder?.order?.order_id ?? 0,
+                "coupon": checkNewOrder?.order?.promo_name ?? '',
+                "revenue": checkNewOrder?.order?.sum_order ?? 0
+              },
+             "products": items ?? []
+            }
           }
-        }
+        });
 
         localStorage.removeItem('freeDrive');
-        try{
+
+        try {
+          if (thisCityRu == 'Самара') {
+            // roistat.event.send('pay_order_samara');
+            // roistat.event.send('pay_order_samara_'+typeOrder+'_'+typePay?.id);
+          }
+
+          if (thisCityRu == 'Тольятти') {
+            // roistat.event.send('pay_order_togliatti');
+            // roistat.event.send('pay_order_togliatti_'+typeOrder+'_'+typePay?.id);
+          }
+
           // roistat.event.send('pay_order');
           // roistat.event.send('pay_order_'+typeOrder+'_'+typePay?.id);
-        } catch(e){ console.log(e) }
-      }catch(e){
-        console.log(e)
+        } catch (e) {
+          console.log(e);
+        }
+      } catch (e) {
+        console.log(e);
       }
-      
-      /*if( typePay?.id == 'cash' ){
-        
-      }*/
 
       setTimeout(() => {
         clearCartData();
         //clearOrderList();
-        
+
         setActiveModalBasket(false);
         setPayForm(false);
         setConfirmForm(false);
 
         localStorage.removeItem('freeDrive');
-  
+
         push(`/${thisCity}/zakazy`);
-      }, 1800)
-
-
-      
+      }, 1800);
 
       setTimeout(() => {
         getOrderList('zakazy', thisCity, token);
@@ -547,8 +504,8 @@ export default function FormOrder({ cityName }) {
         showLoad(false);
 
         localStorage.removeItem('freeDrive');
-      }, 2000)
-    }, 300)
+      }, 2000);
+    }, 300);
   }
 
   function setPromoText(event){

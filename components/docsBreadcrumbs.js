@@ -5,6 +5,8 @@ import Link from 'next/link'
 
 import { useHeaderStoreNew, useCitiesStore, useFooterStore } from '@/components/store.js';
 
+import { reachGoal } from '@/utils/metrika';
+
 export default function DocsBreadcrumbs() {
 
   const [ thisCity ] = useCitiesStore(state => [ state.thisCity ]);
@@ -12,11 +14,9 @@ export default function DocsBreadcrumbs() {
   const [links] = useFooterStore((state) => [state.links]);
 
   const handleClick = () => {
-    const city = (thisCity || '').toLowerCase();
-    const counterId = city === 'togliatti' ? 100601350 : 100325084;
-    ym(counterId, 'reachGoal', 'health_reminder');
+    reachGoal('health_reminder');
   };
-  
+
   return (
     <Grid item className="DocsBreadcrumbs" style={{ paddingBottom: 15 }}>
       <div>

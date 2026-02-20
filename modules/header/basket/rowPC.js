@@ -1,10 +1,12 @@
 import { memo, useState } from 'react';
 
-import Image from 'next/image';
+//import Image from 'next/image';
 
 import { useCartStore, useCitiesStore, useHomeStore } from '@/components/store.js';
 
 import { useLongPress } from "use-long-press";
+
+import { reachGoalSplit } from '@/utils/metrika';
 
 function findById(array, targetId) {
   for (const item of array) {
@@ -54,7 +56,7 @@ export default memo(function RowPC({ item, count, last }) {
 
     if(click) {
       minus(item?.item_id); 
-      ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param);
+      reachGoalSplit('remove_from_cart', metrica_param, metrica_param_min);
 
       ymDataLayer.push({
         "ecommerce": {
@@ -74,14 +76,6 @@ export default memo(function RowPC({ item, count, last }) {
         }
       });
 
-      if( thisCityRu == 'Самара' ){
-        ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
-      }
-
-      if( thisCityRu == 'Тольятти' ){
-        ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
-      }
-
       try{
         // roistat.event.send('remove_from_cart');
       } catch(e){ console.log(e) }
@@ -93,7 +87,7 @@ export default memo(function RowPC({ item, count, last }) {
     setClick(false);
     
     minus(item?.item_id, 'zero'); 
-    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param);
+    reachGoalSplit('remove_from_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
       "ecommerce": {
@@ -112,14 +106,6 @@ export default memo(function RowPC({ item, count, last }) {
         }
       }
     });
-
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
-    }
 
     setTimeout(() => {
       setClick(true);
@@ -141,7 +127,7 @@ export default memo(function RowPC({ item, count, last }) {
   const add_to_cart = () => {
 
     plus(item?.item_id); 
-    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param);
+    reachGoalSplit('add_to_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
       "ecommerce": {
@@ -162,14 +148,6 @@ export default memo(function RowPC({ item, count, last }) {
         }
       }
     });
-
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
-    }
 
     try{
       // roistat.event.send('add_to_cart', {

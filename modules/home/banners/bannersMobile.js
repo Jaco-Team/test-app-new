@@ -10,6 +10,8 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
+import { reachGoal } from '@/utils/metrika';
+
 // export default React.memo(function BannersMobile() {
 //   const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider, state.getBanners]);
 //   const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
@@ -388,13 +390,7 @@ export default function BannersMobile() {
       }
     });
 
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'open_banner', {akcia_name: item?.title});
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'open_banner', {akcia_name: item?.title});
-    }
+    reachGoal('open_banner', { akcia_name: item?.title });
 
     try{
       // roistat.event.send('open_banner', {

@@ -1,5 +1,5 @@
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
+//import Image from 'next/image';
 import { useHomeStore, useCartStore, useHeaderStoreNew, useCitiesStore } from '@/components/store';
 
 import { useRouter } from 'next/router';
@@ -7,6 +7,8 @@ import { useRouter } from 'next/router';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
+
+import { reachGoalSplit, reachGoal } from '@/utils/metrika';
 
 function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }) {
   const [thisItem, setThisItem] = useState({});
@@ -67,7 +69,7 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
 
   const add_to_cart = () => {
     this_plus(thisItem?.id, thisItem?.cat_id); 
-    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
+    reachGoalSplit('add_to_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
       "ecommerce": {
@@ -89,19 +91,8 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
       }
     });
 
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
-
-      ym(100325084, 'reachGoal', 'active_actia_all', {akcia_name: bannerTitle}); 
-      ym(100325084, 'reachGoal', 'active_actia_akcii', {akcia_name: bannerTitle});
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
-
-      ym(100601350, 'reachGoal', 'active_actia_all', {akcia_name: bannerTitle}); 
-      ym(100601350, 'reachGoal', 'active_actia_akcii', {akcia_name: bannerTitle});
-    }
+    reachGoal('active_actia_all', { akcia_name: bannerTitle });
+    reachGoal('active_actia_akcii', { akcia_name: bannerTitle });
 
     try {
       //roistat.event.send('active_actia_all');
@@ -120,8 +111,10 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
   }
 
   const remove_from_cart = () => {
+    
     this_minus(thisItem?.id); 
-    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+
+    reachGoalSplit('remove_from_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
       "ecommerce": {
@@ -140,14 +133,6 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
         }
       }
     });
-
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
-    }
 
     try {
       // roistat.event.send('remove_from_cart', {
@@ -252,7 +237,7 @@ export default function AkciiItemMobile({ actia, is_one_actia }) {
   const [getInfoPromo] = useCartStore((state) => [state.getInfoPromo]);
   const [setActiveModalAlert, isAuth] = useHeaderStoreNew((state) => [state?.setActiveModalAlert, state?.isAuth]);
 
-  const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
+  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
 
   const data = dataForActia(actia);
 
@@ -269,15 +254,8 @@ export default function AkciiItemMobile({ actia, is_one_actia }) {
   const activeActia = (item, data_banner) => {
     activePromo(item);
 
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'active_actia_all', {akcia_name: data_banner?.banner?.title}); 
-      ym(100325084, 'reachGoal', 'active_actia_akcii', {akcia_name: data_banner?.banner?.title}); 
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'active_actia_all', {akcia_name: data_banner?.banner?.title}); 
-      ym(100601350, 'reachGoal', 'active_actia_akcii', {akcia_name: data_banner?.banner?.title}); 
-    }
+    reachGoal('active_actia_all',   { akcia_name: data_banner?.banner?.title });
+    reachGoal('active_actia_akcii', { akcia_name: data_banner?.banner?.title });
 
     if( parseInt(data_banner?.typePromo ) == 1 && is_one_actia ){
       push(`/${thisCity}`);

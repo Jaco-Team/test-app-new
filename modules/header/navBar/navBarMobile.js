@@ -19,6 +19,8 @@ import ProfileIconHeaderMobile from '../profile/profileIconHeaderMobile';
 
 import { Link as ScrollLink } from 'react-scroll';
 
+import { reachGoal } from '@/utils/metrika'; 
+
 const MemoLogo = memo(function MemoLogo({city, activePage}){
   return(
     <>
@@ -78,14 +80,7 @@ export default memo(function NavBarMobile({ city }) {
   }, [isAuth]);
 
   const goToPage = (page) => {
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'Клик в шапке '+page);
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'Клик в шапке '+page);
-    }
-
+    reachGoal('Клик в шапке ' + page);
     setActiveMenu(false)
   }
 

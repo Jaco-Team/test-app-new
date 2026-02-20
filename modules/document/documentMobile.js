@@ -2,31 +2,19 @@ import Link from 'next/link';
 import Grid from '@mui/material/Grid';
 import { ArrowRightMobile } from '@/ui/Icons.js';
 
-import { useFooterStore, useCitiesStore } from '@/components/store.js';
+import { useFooterStore } from '@/components/store.js';
+import { reachGoal } from '@/utils/metrika';
 
 export default function DocumentPageMobile({ cityName }) {
 
   const [links] = useFooterStore((state) => [state.links]);
-  const [ thisCityRu ] = useCitiesStore( state => [ state.thisCityRu ] );
 
   const goToPage = (page) => {
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'Клик в шапке '+page);
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'Клик в шапке '+page);
-    }
-  }
+    reachGoal('Клик в шапке ' + page);
+  };
 
   const handleClick = () => {
-    if(thisCityRu == 'Самара'){
-      ym(100325084, 'reachGoal', 'health_reminder')
-    }
-
-    if(thisCityRu == 'Тольятти'){
-      ym(100601350, 'reachGoal', 'health_reminder')
-    }
+    reachGoal('health_reminder');
   };
 
   return (

@@ -11,6 +11,7 @@ dayjs.locale('ru');
 import { api, apiAddress } from './api.js';
 
 import useYandexMetrika from './useYandexMetrika';
+import { reachGoal } from '@/utils/metrika';
 
 import Cookies from 'js-cookie'
 
@@ -1560,22 +1561,20 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
         return 'wait_payment';
       }else{
-        /*try { повтор
-          const city = useCitiesStore.getState().thisCity;
-          const city_ru = useCitiesStore.getState().thisCityRu;
-    
-          const ym_data = {
-            city: city_ru,
-            type_pay: get().typePay.name,
-            //summ: get().allPrice,
-            typeOrder: typeOrder == 'pic' ? 'Самовывоз' : 'Доставка'
-          }
-    
-          ym(get().ya_metrik[city], 'reachGoal', 'pay_order', ym_data);
-    
-        } catch (error) {
-          console.log('createOrder', error);
-        }*/
+
+        // try {
+        //   const city_ru = useCitiesStore.getState().thisCityRu;
+
+        //   const ym_data = {
+        //     city: city_ru,
+        //     type_pay: get().typePay?.name,
+        //     typeOrder: typeOrder === 'pic' ? 'Самовывоз' : 'Доставка',
+        //   };
+
+        //   reachGoal('pay_order', ym_data);
+        // } catch (error) {
+        //   console.log('createOrder', error);
+        // }
 
         return 'to_cart';
       }
@@ -2178,71 +2177,6 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     get().check_need_dops();
 
     get().setCartLocalStorage();
-  },
-
-  // получения информации о промике из БД
-  getInfoPromo: async (promoName, city) => {
-    
-    if( promoName?.length == 0 ){
-      set({
-        promoInfo: null,
-        checkPromo: null,
-      })
-      
-      sessionStorage.removeItem('promo_name')
-      Cookies.remove('promo_name')
-
-      const res = get().promoCheck();
-
-      setTimeout( () => {
-        get().setDataPromoBasket()
-      }, 100 )
-
-      setTimeout(() => {
-        get().setDataPromoBasket()
-      }, 100)
-      
-      useProfileStore.getState().saveUserActions('remove_promo', '');
-
-      return {
-        st: false,
-        text: '',
-      };
-
-    } else {
-      
-      const data = {
-        type: 'get_promo',
-        city_id: city,
-        promo_name: promoName
-      };
-      
-      const json = await api('cart', data);
-
-      useProfileStore.getState().saveUserActions('check_promo', promoName);
-
-      set({
-        promoInfo: json,
-        allPrice: 0,
-        allPriceWithoutPromo: null, 
-      })
-      
-      sessionStorage.setItem('promo_name', promoName)
-      Cookies.set('promo_name', promoName, { expires: 1 })
-      
-      const res = get().promoCheck();
-
-      setTimeout( () => {
-        get().setDataPromoBasket()
-      }, 100 )
-      
-      set({
-        checkPromo: res
-      })
-      
-      return res;
-    }
-  
   },
 
   setFreeDrive: (freeDrive) => {
@@ -3023,23 +2957,11 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
     window.location.href = `tel:${get().phone.split(/[\s,(),-]+/).join('')}`;
 
     try {
-      const ym_data = {
-        city
-      }
-
-      ym(get().ya_metrik[city], 'reachGoal', 'call_from_site', ym_data);
-
-      if( city == 'samara' ){
-        ym(100325084, 'reachGoal', 'call_from_site', ym_data);
-      }
-
-      if( city == 'togliatti' ){
-        ym(100601350, 'reachGoal', 'call_from_site', ym_data);
-      }
-
+      reachGoal('call_from_site', { city }, city);
     } catch (error) {
       console.log('clickPhoneMobile', error);
     }
+
   },
  
   // получение геопозиции клиента на карте в мобильной версии
@@ -3792,16 +3714,13 @@ export const useProfileStore = createWithEqualityFn(persist((set, get) => ({
     let json = await api(this_module, data);
 
     if(json?.st === true){
+      const cityId = useCitiesStore.getState().thisCity;
+
       get().closeModalDel();
       get().closeOrder();
-      get().getOrderList('zakazy', get().city, userToken);
+      get().getOrderList('zakazy', cityId, userToken);
 
-      if( useCitiesStore.getState().thisCityRu == 'Самара' ) {
-        ym(100325084, 'reachGoal', 'del_order', { text: text });
-      }
-      if( useCitiesStore.getState().thisCityRu == 'Тольятти' ) {
-        ym(100601350, 'reachGoal', 'del_order', { text: text });
-      }
+      reachGoal('del_order', { text }, cityId);
 
       try {
         //roistat.event.send('del_order');
@@ -4395,15 +4314,9 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
         useProfileStore.getState().saveUserActions('choose_tag', 'Новинка');
 
-        if( useCitiesStore.getState().thisCityRu == 'Самара' ) {
-          ym(100325084, 'reachGoal', 'choose_tag', { tag: 'Новинка' })
-          ym(100325084, 'reachGoal', 'Тэг Новинка', { tag: 'Новинка' })
-        }
-
-        if( useCitiesStore.getState().thisCityRu == 'Тольятти' ) {
-          ym(100601350, 'reachGoal', 'choose_tag', { tag: 'Новинка' })
-          ym(100601350, 'reachGoal', 'Тэг Новинка', { tag: 'Новинка' })
-        }
+        const cityId = useCitiesStore.getState().thisCity;
+        reachGoal('choose_tag', { tag: 'Новинка' }, cityId);
+        reachGoal('Тэг Новинка', { tag: 'Новинка' }, cityId);
 
         all_items.map( item => {
           if( document.getElementById(item.link) ){
@@ -4452,19 +4365,10 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
       let find_tag = all_tags?.find(tag => parseInt(tag.id) === parseInt(res));
 
-      ym(47085879, 'reachGoal', 'choose_tag', { tag: find_tag?.name })
+      const cityId = useCitiesStore.getState().thisCity;
 
-      if( useCitiesStore.getState().thisCityRu == 'Самара' ) {
-        ym(100325084, 'reachGoal', 'choose_tag', { tag: find_tag?.name })
-
-        ym(100325084, 'reachGoal', 'Тэг '+find_tag?.name, { tag: find_tag?.name })
-      }
-
-      if( useCitiesStore.getState().thisCityRu == 'Тольятти' ) {
-        ym(100601350, 'reachGoal', 'choose_tag', { tag: find_tag?.name })
-
-        ym(100601350, 'reachGoal', 'Тэг '+find_tag?.name, { tag: find_tag?.name })
-      }
+      reachGoal('choose_tag', { tag: find_tag?.name }, cityId);
+      reachGoal(`Тэг ${find_tag?.name}`, { tag: find_tag?.name }, cityId);
 
       useProfileStore.getState().saveUserActions('choose_tag', find_tag?.name);
 

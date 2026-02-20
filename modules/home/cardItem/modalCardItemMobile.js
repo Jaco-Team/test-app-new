@@ -15,6 +15,8 @@ import BadgeItem from './badge';
 
 import { roboto } from '@/ui/Font';
 
+import { reachGoalSplit } from '@/utils/metrika';
+
 export default function ModalCardItemMobile() {
   const [isOpenModal, openItem, setActiveModalCardItemMobile, getItem] = useHomeStore((state) => {
     return [state.isOpenModal, state.openItem, state.setActiveModalCardItemMobile, state.getItem];
@@ -102,7 +104,7 @@ export default function ModalCardItemMobile() {
 
   const add_to_cart = () => {
     changeCountPlus(openItem?.id);
-    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
+    reachGoalSplit('add_to_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
       "ecommerce": {
@@ -124,14 +126,6 @@ export default function ModalCardItemMobile() {
       }
     });
 
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
-    }
-
     try{
       // roistat.event.send('add_to_cart', {
       //   id: openItem?.id,
@@ -147,7 +141,7 @@ export default function ModalCardItemMobile() {
 
   const remove_from_cart = () => {
     changeCountMinus(openItem?.id);
-    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+    reachGoalSplit('remove_from_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
       "ecommerce": {
@@ -167,14 +161,6 @@ export default function ModalCardItemMobile() {
       }
     });
 
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
-    }
-
     try{
       // roistat.event.send('remove_from_cart');
     } catch(e){ console.log(e) }
@@ -183,13 +169,7 @@ export default function ModalCardItemMobile() {
   const sostav_seta = () => {
     setActiveSet(true)
 
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'sostav_seta', metrica_param_min);
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'sostav_seta', metrica_param_min);
-    }
+    reachGoalSplit('sostav_seta', metrica_param, metrica_param_min);
 
     try{
       // roistat.event.send('sostav_seta');

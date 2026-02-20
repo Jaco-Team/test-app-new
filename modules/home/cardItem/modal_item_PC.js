@@ -21,6 +21,8 @@ import { IconClose, IconInfo } from '@/ui/Icons';
 
 import { roboto } from '@/ui/Font';
 
+import { reachGoalSplit } from '@/utils/metrika';
+
 export default function ModalItemPC() {
   const [openItemCard, closeItemModal, typeModal_dop, item_card, foodValue, navigate_dop, closeTypeModal_dop] = useHomeStore((state) => [state.openItemCard, state.closeItemModal, state.typeModal_dop, state.item_card, state.foodValue, state.navigate_dop, state.closeTypeModal_dop]);
 
@@ -71,7 +73,7 @@ export default function ModalItemPC() {
 
   const add_to_cart = () => {
     changeCountPlus(item_card?.id);
-    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
+    reachGoalSplit('add_to_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
       "ecommerce": {
@@ -93,14 +95,6 @@ export default function ModalItemPC() {
       }
     });
 
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
-    }
-
     try{
       // roistat.event.send('add_to_cart', {
       //   id: item_card?.id,
@@ -116,7 +110,7 @@ export default function ModalItemPC() {
 
   const remove_from_cart = () => {
     changeCountMinus(item_card?.id);
-    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+    reachGoalSplit('remove_from_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
       "ecommerce": {
@@ -135,14 +129,6 @@ export default function ModalItemPC() {
         }
       }
     });
-
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
-    }
 
     try{
       // roistat.event.send('remove_from_cart');

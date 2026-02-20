@@ -86,7 +86,7 @@ import { createTheme, ThemeProvider } from '@mui/material/styles';
 
 import Script from 'next/script';
 
-import YandexMetrika from '@/components/YandexMetrika';
+//import YandexMetrika from '@/components/YandexMetrika';
 //import { GoogleTagManager } from '@next/third-parties/google'
 
 //import * as Sentry from "@sentry/browser";
@@ -319,20 +319,60 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
   }
   //<GoogleTagManager gtmId="UA-148366601-1" />
 
-  
+  const city = pageProps?.data1?.city;
+  const cityCounterId = city === 'samara' ? 100325084 : city === 'togliatti' ? 100601350 : null;
 
   return (
     <ThemeProvider theme={theme}>
 
-      <Script id="ym-datalayer" strategy="beforeInteractive">
+      {/* <Script id="ym-datalayer" strategy="beforeInteractive">
         {`window.ymDataLayer = window.ymDataLayer || [];`}
+      </Script> */}
+      <Script id="ym-datalayer" strategy="beforeInteractive">
+        {`window.dataLayer = window.dataLayer || []; window.ymDataLayer = window.dataLayer;`}
       </Script>
+
+      <Script id="ym-init" strategy="afterInteractive">
+        {`
+          (function(m,e,t,r,i,k,a){
+            m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
+            m[i].l=1*new Date();
+            for (var j=0;j<document.scripts.length;j++){ if(document.scripts[j].src===r){ return; } }
+            k=e.createElement(t),a=e.getElementsByTagName(t)[0],k.async=1,k.src=r,a.parentNode.insertBefore(k,a);
+          })(window, document, 'script', 'https://mc.yandex.ru/metrika/tag.js', 'ym');
+
+          ym(47085879, 'init', {
+            clickmap:true,
+            trackLinks:true,
+            accurateTrackBounce:true,
+            webvisor:true,
+            ecommerce:"dataLayer"
+          });
+
+          ${cityCounterId ? `
+            ym(${cityCounterId}, 'init', {
+              clickmap:true,
+              trackLinks:true,
+              accurateTrackBounce:true,
+              ecommerce:"dataLayer"
+            });
+          ` : ''}
+        `}
+      </Script>
+
+      <noscript>
+        <div>
+          <img src="https://mc.yandex.ru/watch/47085879" style={{ position:'absolute', left:'-9999px' }} alt="" />
+          {city === 'samara' ? <img src="https://mc.yandex.ru/watch/100325084" style={{ position:'absolute', left:'-9999px' }} alt="" /> : null}
+          {city === 'togliatti' ? <img src="https://mc.yandex.ru/watch/100601350" style={{ position:'absolute', left:'-9999px' }} alt="" /> : null}
+        </div>
+      </noscript>
 
       <Script 
         src={"https://api-maps.yandex.ru/2.1/?apikey="+process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP+"&lang=ru_RU"}
       />
 
-      <YandexMetrika 
+      {/* <YandexMetrika 
         yid={47085879}
         clickmap={true}
         trackLinks={true}
@@ -357,7 +397,6 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
         ecommerce={false}
       />
       
-      
       { pageProps?.data1?.city == 'samara' ?
         <YandexMetrika 
           yid={100325084}
@@ -370,7 +409,6 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
           :
         null
       }
-          
 
       { pageProps?.data1?.city == 'togliatti' ?
         <YandexMetrika 
@@ -383,7 +421,7 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
         />
           :
         null
-      }
+      } */}
 
       {/* <MetricaRoistat /> */}
 
@@ -402,8 +440,6 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
       { pageProps?.data1?.city == 'samara' ? <MetricaSMR /> : null }
       { pageProps?.data1?.city == 'samara' ? <MetricaSMR2 /> : null }
 
-      
-
       { !pageProps || pageProps?.statusCode == 404 || pageProps?.statusCode == 500 || typeof pageProps?.data1?.city === 'undefined' || !pageProps?.data1?.page ? false :
         <Header
           city={pageProps?.data1?.city}
@@ -414,7 +450,6 @@ function MyApp({ Component, pageProps: { ...pageProps } }) {
       }
 
       <Component {...pageProps} />
-
       
     </ThemeProvider>
   )

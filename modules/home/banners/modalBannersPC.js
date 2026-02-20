@@ -19,6 +19,8 @@ import { IconClose } from '@/ui/Icons';
 
 import { roboto } from '@/ui/Font';
 
+import { reachGoalSplit, reachGoal } from '@/utils/metrika';
+
 function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }){
 
   const [ thisItem, setThisItem ] = useState({});
@@ -77,7 +79,7 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
 
   const add_to_cart = () => {
     this_plus(thisItem?.id, thisItem?.cat_id); 
-    ym(47085879, 'reachGoal', 'add_to_cart', metrica_param); 
+    reachGoalSplit('add_to_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
       "ecommerce": {
@@ -99,19 +101,8 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
       }
     });
 
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'add_to_cart', metrica_param_min); 
-
-      ym(100325084, 'reachGoal', 'active_actia_all', {akcia_name: bannerTitle}); 
-      ym(100325084, 'reachGoal', 'active_actia_home', {akcia_name: bannerTitle}); 
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'add_to_cart', metrica_param_min); 
-
-      ym(100601350, 'reachGoal', 'active_actia_all', {akcia_name: bannerTitle}); 
-      ym(100601350, 'reachGoal', 'active_actia_home', {akcia_name: bannerTitle}); 
-    }
+    reachGoal('active_actia_all', { akcia_name: bannerTitle });
+    reachGoal('active_actia_home', { akcia_name: bannerTitle });
 
     try{
       // roistat.event.send('active_actia_all');
@@ -131,7 +122,7 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
 
   const remove_from_cart = () => {
     this_minus(thisItem?.id); 
-    ym(47085879, 'reachGoal', 'remove_from_cart', metrica_param); 
+    reachGoalSplit('remove_from_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
       "ecommerce": {
@@ -150,14 +141,6 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
         }
       }
     });
-
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'remove_from_cart', metrica_param_min);
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'remove_from_cart', metrica_param_min);
-    }
 
     try{
       // roistat.event.send('remove_from_cart', {
@@ -275,9 +258,10 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
 }
 
 export default function ModalBannerPC() {
+  
   const [ getInfoPromo ] = useCartStore( state => [ state.getInfoPromo ] )
+
   const [ setActiveModalAlert, isAuth ] = useHeaderStoreNew( state => [ state?.setActiveModalAlert, state?.isAuth ]);
-  const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
 
   const [ setActiveBanner, openModalBanner, banner, openBannerItems, typePromo ] = useHomeStore((state) => [state.setActiveBanner, state.openModalBanner, state.banner, state.openBannerItems, state.typePromo]);
 
@@ -295,15 +279,8 @@ export default function ModalBannerPC() {
   const activeActia = () => {
     activePromo(banner?.info);
 
-    if( thisCityRu == 'Самара' ){
-      ym(100325084, 'reachGoal', 'active_actia_all', {akcia_name: banner?.title}); 
-      ym(100325084, 'reachGoal', 'active_actia_home', {akcia_name: banner?.title}); 
-    }
-
-    if( thisCityRu == 'Тольятти' ){
-      ym(100601350, 'reachGoal', 'active_actia_all', {akcia_name: banner?.title}); 
-      ym(100601350, 'reachGoal', 'active_actia_home', {akcia_name: banner?.title}); 
-    }
+    reachGoal('active_actia_all', { akcia_name: banner?.title });
+    reachGoal('active_actia_home', { akcia_name: banner?.title });
   }
 
   const hasVideo = Boolean(banner?.type_illustration == 'video');
