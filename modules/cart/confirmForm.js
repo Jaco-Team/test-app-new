@@ -148,14 +148,65 @@ export default function ConfirmForm() {
 
   //<ArrowLeftMobile onClick={openFormOrder} />
 
+  // useEffect(() => {
+  //   if(openConfirmForm === true) {
+  //     let timerFunc = setTimeout(() => {
+  //       setConfirmForm(false)
+  //     }, 1000 * 60 * 12); //12 минут
+  //     return () => clearTimeout(timerFunc);
+  //   }
+  // }, [openConfirmForm]);
+
   useEffect(() => {
-    if(openConfirmForm === true) {
-      let timerFunc = setTimeout(() => {
-        setConfirmForm(false)
-      }, 1000 * 60 * 12); //12 минут
-      return () => clearTimeout(timerFunc);
+    if (!openConfirmForm) return;
+
+    const TIMEOUT_MS = 1000 * 60 * 10; //10
+
+    const isAfterCutoff = () => {
+      const now = new Date();
+      const cutoff = new Date(now);
+      cutoff.setHours(21, 35, 0, 0); // 21:37:00.000 сегодня
+      return now >= cutoff;
+    };
+
+    const close = () => setConfirmForm(false);
+
+    // 1) если уже поздно — закрываем моментально
+    if (isAfterCutoff()) {
+      close();
+      return;
     }
-  }, [openConfirmForm]);
+
+    const startedAt = Date.now();
+
+    // 2) таймер на 10 минут (через interval, чтобы переживать background/throttle)
+    const interval = setInterval(() => {
+      if (!openConfirmForm) return; // на всякий
+      if (isAfterCutoff()) {
+        close();
+        clearInterval(interval);
+        return;
+      }
+      if (Date.now() - startedAt >= TIMEOUT_MS) {
+        close();
+        clearInterval(interval);
+      }
+    }, 1000);
+
+    // 3) ускоряем реакцию при возвращении на вкладку / разблокировке
+    const onVisible = () => {
+      if (document.visibilityState === 'visible' && isAfterCutoff()) {
+        close();
+        clearInterval(interval);
+      }
+    };
+    document.addEventListener('visibilitychange', onVisible);
+
+    return () => {
+      clearInterval(interval);
+      document.removeEventListener('visibilitychange', onVisible);
+    };
+  }, [openConfirmForm, setConfirmForm]);
 
   //<span className="confirmText">Чтобы всё прошло по плану, проверьте, пожалуйста, условия получения и состав вашего заказа:</span>
 

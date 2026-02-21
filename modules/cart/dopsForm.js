@@ -28,7 +28,7 @@ export default function DopsForm() {
 
   const [openDopsForm, setDopsForm, dopListCart, createOrder, setConfirmForm, setActiveModalBasket, clearCartData, typePay, typeOrder, checkNewOrder, allPrice, setPayForm] = useCartStore((state) => [state.openDopsForm, state.setDopsForm, state.dopListCart, state.createOrder, state.setConfirmForm, state.setActiveModalBasket, state.clearCartData, state.typePay, state.typeOrder, state.checkNewOrder, state.allPrice, state.setPayForm]);
 
-   console.log('ecommerce purchase checkNewOrder:', checkNewOrder);
+  //  console.log('ecommerce purchase checkNewOrder:', checkNewOrder);
 
   const [saveUserActions, getOrderList] = useProfileStore((state) => [state.saveUserActions, state.getOrderList]);
 
@@ -73,7 +73,7 @@ export default function DopsForm() {
         // новое событие "Покупка" + защита от повторного отправления цели "Покупка" при повторных кликах или возврате на страницу с помощью браузерных кнопок
         const orderId = checkNewOrder?.order?.order_id;
         if (!orderId) {
-          console.warn('YM purchase skipped: no orderId');
+          // console.warn('YM purchase skipped: no orderId');
         } else {
           const key = `ym_purchase_${orderId}`;
           if (!sessionStorage.getItem(key)) {
@@ -92,7 +92,7 @@ export default function DopsForm() {
           "position": index
         }));
 
-        console.log('ecommerce purchase items:', items);
+        // console.log('ecommerce purchase items:', items);
 
         ymDataLayer.push({
           "ecommerce": {
