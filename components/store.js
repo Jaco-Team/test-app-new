@@ -1102,6 +1102,71 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
   },
 
+  // получения информации о промике из БД
+  getInfoPromo: async (promoName, city) => {
+    
+    if( promoName?.length == 0 ){
+      set({
+        promoInfo: null,
+        checkPromo: null,
+      })
+      
+      sessionStorage.removeItem('promo_name')
+      Cookies.remove('promo_name')
+
+      const res = get().promoCheck();
+
+      setTimeout( () => {
+        get().setDataPromoBasket()
+      }, 100 )
+
+      setTimeout(() => {
+        get().setDataPromoBasket()
+      }, 100)
+      
+      useProfileStore.getState().saveUserActions('remove_promo', '');
+
+      return {
+        st: false,
+        text: '',
+      };
+
+    } else {
+      
+      const data = {
+        type: 'get_promo',
+        city_id: city,
+        promo_name: promoName
+      };
+      
+      const json = await api('cart', data);
+
+      useProfileStore.getState().saveUserActions('check_promo', promoName);
+
+      set({
+        promoInfo: json,
+        allPrice: 0,
+        allPriceWithoutPromo: null, 
+      })
+      
+      sessionStorage.setItem('promo_name', promoName)
+      Cookies.set('promo_name', promoName, { expires: 1 })
+      
+      const res = get().promoCheck();
+
+      setTimeout( () => {
+        get().setDataPromoBasket()
+      }, 100 )
+      
+      set({
+        checkPromo: res
+      })
+      
+      return res;
+    }
+  
+  },
+
   // установить способо оплаты заказа
   setTypePay: (typePay) => {
     set({ typePay })
