@@ -202,7 +202,6 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
 
             <img 
               alt={thisItem?.name} 
-              title={thisItem?.name} 
 
               src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_292x292.jpg`} 
 
@@ -342,7 +341,6 @@ export default function ModalBannerPC() {
 
                   <img 
                     alt={banner?.title} 
-                    title={banner?.title} 
                     src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_3700x1000.jpg'} 
                     loading="lazy"
                   />

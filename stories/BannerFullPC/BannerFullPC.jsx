@@ -12,7 +12,7 @@ export const BannerFullPC = ({ title, img, text, typePromo, count, items, type }
   return (
     <Grid container justifyContent="center" className='BannerFull' style={{ backgroundColor: type === 'banner' ? null : 'rgba(0, 0, 0, 0.03)', borderRadius: type === 'banner' ? null : '1.1552346570397vw' }}>
       <Grid className="ImgItem">
-        <BannerPCImg title={title} img={img} type={type} />
+        <BannerPCImg img={img} type={type} />
         <span className="ItemOther">
           Условия акции
           <KeyboardArrowUpIcon />
@@ -28,7 +28,6 @@ export const BannerFullPC = ({ title, img, text, typePromo, count, items, type }
               <BannerItemPC
                 key={key}
                 number={key + 1}
-                title={item.title}
                 img_app={item.img_app}
                 desc={item.desc}
                 price={item.price}

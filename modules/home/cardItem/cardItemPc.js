@@ -137,7 +137,6 @@ export default memo(function CardItem({ item, count, index}) {
 
               <img 
                 alt={item?.name} 
-                title={item?.name} 
                 src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.jpg`} 
 
                 //src={`https://cdnimg.jacofood.ru/${item.img_app}_292x292.jpg`} 

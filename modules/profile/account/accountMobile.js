@@ -19,7 +19,7 @@ export default function AccountMobile({ city, this_module }) {
     if( token && token.length > 0 ) {
       getUserInfo(this_module, city, token);
     }
-  }, [token]);
+  }, [token, city]);
 
   
 

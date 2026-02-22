@@ -139,10 +139,10 @@
 
 .ArrowPC {
   z-index: 1000;
-  width: $MyScale120;
-  height: $MyScale120;
-  background-color: rgba(221, 26, 50, 1);
-  border-radius: $MyScale120;
+  width: $MyScale90;
+  height: $MyScale90;
+  background-color: rgba(215, 215, 215, 1);
+  border-radius: 50%;
   box-shadow: 0vw 0.25270758122744vw 0.90252707581227vw rgba(0, 0, 0, 0.25);
   cursor: pointer;
   display: flex;

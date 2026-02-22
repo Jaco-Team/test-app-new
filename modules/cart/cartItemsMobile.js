@@ -180,7 +180,6 @@ export default memo(function CartItemMobile({ item, count, last }) {
 
         <img 
           alt={item?.name} 
-          title={item?.name} 
           src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_584x584.jpg`} 
           loading="lazy"
         />

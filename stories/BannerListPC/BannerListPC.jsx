@@ -45,7 +45,6 @@ export const BannerListPC = ({ bannerList }) => {
           <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => {} }>
             <BannerPCImg 
               img={"https://storage.yandexcloud.net/site-home-img/"+item.img+"_3700x1000.jpg"} 
-              title={item.title}
               type='banner'
             />
           </SwiperSlide>

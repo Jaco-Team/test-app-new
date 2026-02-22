@@ -265,7 +265,6 @@ export default function ModalCardItemMobile() {
 
                   <img 
                     alt={openItem?.name} 
-                    title={openItem?.name} 
 
                     src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_292x292.jpg`} 
 
@@ -460,7 +459,6 @@ export default function ModalCardItemMobile() {
                           />
                           <img
                             alt={item.name}
-                            title={item.name}
                             src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.jpg`}
                             loading="lazy"
                             onClick={() => getItem('home', thisCity, item.id, 'set')}

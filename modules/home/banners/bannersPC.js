@@ -118,7 +118,6 @@ import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
 
 //                 <img 
 //                   alt={item?.name} 
-//                   title={item?.name} 
 //                   src={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + item.img+"_3700x1000.jpg"} 
 //                   loading="lazy"
 //                   style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }}
@@ -449,7 +448,6 @@ import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
 
 //                   <img 
 //                     alt={s.item?.name} 
-//                     title={s.item?.name} 
 //                     src={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.item.img+"_3700x1000.jpg"} 
 //                     loading="lazy"
 //                     style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }}
@@ -786,7 +784,6 @@ export default function BannersPC() {
 
                   <img 
                     alt={s.item?.name} 
-                    title={s.item?.name} 
                     src={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.item.img+"_3700x1000.jpg"} 
                     loading="lazy"
                     style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }}

@@ -169,7 +169,6 @@ export default memo(function RowPC({ item, count, last }) {
         {/* <Image alt={item?.name} src={ process.env.NEXT_PUBLIC_YANDEX_IMG + item?.img_app + '_584x584.jpg'} width={584} height={584} priority={true}/> */}
          <img 
           alt={item?.name} 
-          title={item?.name} 
           src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_584x584.jpg`} 
           loading="lazy"
         />

@@ -11,7 +11,7 @@ dayjs.locale('ru');
 import { api, apiAddress } from './api.js';
 
 import useYandexMetrika from './useYandexMetrika';
-import { reachGoal } from '@/utils/metrika';
+import { reachGoal, setUserIdAll } from '@/utils/metrika';
 
 import Cookies from 'js-cookie'
 
@@ -3591,6 +3591,18 @@ export const useProfileStore = createWithEqualityFn(persist((set, get) => ({
 
       let json = await api(this_module, data);
 
+      const uid = json?.user?.id;
+
+      if (uid) {
+       
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({ event: 'userId', user_id: String(uid) });
+        // console.log('[dataLayer] userId pushed:', uid);
+
+        // добавить id клиента для всех счётчиков
+        setUserIdAll(uid);
+      }
+
       set({
         // shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
         shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() : '',
@@ -3598,6 +3610,7 @@ export const useProfileStore = createWithEqualityFn(persist((set, get) => ({
         streets: json?.streets,
         city: city
       });
+
     }
   },
 

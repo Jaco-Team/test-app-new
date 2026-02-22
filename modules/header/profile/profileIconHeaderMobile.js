@@ -17,7 +17,7 @@ export default function ProfileIconHeaderMobile({ setActiveMenu, city, active_pa
     if(token && token.length > 0) {
       getUserInfo('profile', city, token);
     }
-  }, [token]);
+  }, [token, city]);
 
   let bgColor = active_page === 'account' || active_page === 'profile' || active_page === 'address' || active_page === 'promokody' || active_page === 'zakazy';
 

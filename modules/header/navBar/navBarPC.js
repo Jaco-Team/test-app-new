@@ -346,7 +346,7 @@ export default React.memo(function NavBarPC({ city }) {
               <JacoDocsIcon className='burger_svg'/>
             </div>
 
-            <ProfileIconHeaderPC activeProfile={activeProfile} goToPage={goToPage} />
+            <ProfileIconHeaderPC activeProfile={activeProfile} goToPage={goToPage} city={city}/>
 
             <BasketIconHeaderPC />
 

@@ -119,7 +119,6 @@ import { reachGoal } from '@/utils/metrika';
 
 //               <img 
 //                 alt={item?.title} 
-//                 title={item?.title} 
 //                 src={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + item.img + '_1000x500.jpg'} 
 //                 loading="lazy"
 //                 className="item_banner_image"
@@ -443,7 +442,6 @@ export default function BannersMobile() {
 
                <img 
                  alt={s?.title} 
-                 title={s?.title} 
                  src={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.item.img + '_1000x500.jpg'} 
                  loading="lazy"
                  className="item_banner_image"

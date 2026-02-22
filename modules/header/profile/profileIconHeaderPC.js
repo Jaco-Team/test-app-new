@@ -1,3 +1,4 @@
+import { useEffect } from 'react';
 import Link from 'next/link';
 
 import { useHeaderStoreNew, useCitiesStore, useProfileStore } from '@/components/store.js';
@@ -15,9 +16,16 @@ function ProfileIconHeaderPCNew() {
   );
 }
 
-export default function ProfileIconHeaderPC({activeProfile, goToPage}) {
-  const [setActiveModalAuth, isAuth] = useHeaderStoreNew((state) => [state?.setActiveModalAuth, state?.isAuth]);
+export default function ProfileIconHeaderPC({activeProfile, goToPage, city}) {
+  const [setActiveModalAuth, isAuth, token] = useHeaderStoreNew((state) => [state?.setActiveModalAuth, state?.isAuth, state.token]);
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
+  const [getUserInfo] = useProfileStore((state) => [state.getUserInfo]);
+
+  useEffect(() => {
+    if (token && token.length > 0) {
+      getUserInfo('profile', city, token);
+    }
+  }, [token, city]);
   
   return (
     <div className={'profileHeaderPC '+(activeProfile ? 'active' : '')} >

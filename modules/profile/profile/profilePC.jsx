@@ -134,7 +134,7 @@ export default function ProfilePC({ page, this_module, city }){
     if( token && token.length > 0 ){
       getUserInfo(this_module, city, token);
     }
-  }, [token]);
+  }, [token, city]);
 
   useEffect(() => {
     setValue("name", userInfo?.name)

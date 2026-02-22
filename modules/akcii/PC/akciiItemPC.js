@@ -178,7 +178,6 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
 
             <img 
               alt={thisItem?.name} 
-              title={thisItem?.name} 
               src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${thisItem.img_app}_292x292.jpg`} 
 
               //src={`https://cdnimg.jacofood.ru/${thisItem.img_app}_292x292.jpg`} 
@@ -275,7 +274,6 @@ export default function AkciiItemPC({ actia, is_one_actia }) {
 
         <img 
           alt={data?.banner?.title} 
-          title={data?.banner?.title} 
           src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${data?.banner?.img}_3700x1000.jpg`} 
           loading="lazy"
         />

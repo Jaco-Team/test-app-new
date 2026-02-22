@@ -36,7 +36,6 @@ export const ModalItemPCset = ({number, img_app, title, marc_desc, tmp_desc}) =>
 
         <img 
           alt={title} 
-          title={title} 
           src={`https://cdnimg.jacofood.ru/${img_app}_292x292.jpg`} 
           loading="lazy"
         />

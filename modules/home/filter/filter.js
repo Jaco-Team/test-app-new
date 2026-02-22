@@ -242,6 +242,8 @@ export default function Filter() {
     }
   }, [activePage]);
 
+  const showClear = badge_filter !== '' || text_filter !== '' || tag_filter !== '';
+
   if (!canShowFilter) return null;
 
   return (
@@ -277,9 +279,11 @@ export default function Filter() {
                   </div>
                 ))}
 
-                <div onClick={() => handleTag(-1)} className={'search_clear tag'}>
-                  <span>Очистить</span>
-                </div>
+                {showClear && (
+                  <div onClick={() => handleTag(-1)} className={'search_clear tag'}>
+                    <span>Очистить</span>
+                  </div>
+                )}
               </div>
 
               {/* <MyTextInput
@@ -333,9 +337,11 @@ export default function Filter() {
                 }
               /> */}
 
-              <div onClick={() => handleTag(-1)} className={'tag'}>
-                <span>Очистить</span>
-              </div>
+              {showClear && (
+                <div onClick={() => handleTag(-1)} className={'tag'}>
+                  <span>Очистить</span>
+                </div>
+              )}
 
             </div>
           </div>

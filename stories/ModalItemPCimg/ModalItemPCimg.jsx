@@ -33,7 +33,6 @@ export const ModalItemPCimg = ({ img_name, title }) => {
 
       <img
         alt={title}
-        title={title}
         src={`https://cdnimg.jacofood.ru/${img_name}_292x292.jpg`}
         loading="lazy"
       />

@@ -185,7 +185,6 @@ export default function ModalItemPC() {
 
                   <img 
                     alt={item_card?.name} 
-                    title={item_card?.name} 
                     src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_292x292.jpg`} 
 
                     //src={`https://cdnimg.jacofood.ru/${img_name}_292x292.jpg`} 

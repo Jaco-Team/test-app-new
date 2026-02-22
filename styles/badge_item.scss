@@ -40,8 +40,8 @@
             height: 34px;
         }
         &.bigshort{
-            width: 64px;
-            height: 44px;
+            width: 44px;
+            height: 29px;
         }
     }
     & > .box{
@@ -76,8 +76,16 @@
             }
         }  
         &.bigshort{
-            width: 60px;
-            height: 40px;
+            width: 40px;
+            height: 25px;
+
+             & > span{
+                display: block;
+                @include fonsNew(0.90rem, var(--inter-font));
+                line-height: 1;
+                white-space: nowrap;
+                padding-top: 2px;
+            }
         }
     }     
 }

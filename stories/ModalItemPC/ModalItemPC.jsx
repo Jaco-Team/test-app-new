@@ -13,7 +13,7 @@ export const ModalItemPC = ({ img_name, title, is_new, is_hit, desc, count, type
     <div className="modalItemPC" style={{ background: typeModal === 'start' ? '#FFFFFF' : '#E6E6E6' }}>
       {typeModal !== 'start' ? null : (
         <div className="ImgItem">
-          <ModalItemPCimg img_name={img_name} title={title} />
+          <ModalItemPCimg img_name={img_name} />
           {parseInt(is_new) == 0 ? parseInt(is_hit) == 0 ? null : 
             <Badge size={'big'} type={'hit'} view={'pc'} />
              : 

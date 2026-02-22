@@ -135,7 +135,6 @@ export default React.memo(function CardItemMobile({ item, count }) {
 
               <img 
                 alt={item?.name} 
-                title={item?.name} 
                 src={`${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_292x292.jpg`} 
                 loading="lazy"
                 onClick={() => getItem('home', thisCity, item.id)}

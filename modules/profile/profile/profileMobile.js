@@ -105,7 +105,7 @@ export default function ProfileMobile({ city, this_module }) {
     if( token && token?.length > 0 ) {
       getUserInfo(this_module, city, token);
     }
-  }, [token]);
+  }, [token, city]);
 
   function saveMainData() {
     let userData = getValues();

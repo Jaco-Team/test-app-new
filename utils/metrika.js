@@ -70,3 +70,29 @@ export function reachGoalMain(goal, params) {
     console.warn('YM reachGoalMain error:', e);
   }
 }
+
+// Привязка внутреннего ID пользователя к сессии Метрики.
+// Вызывать только когда пользователь авторизован и id реально известен.
+// Нужно вызвать для основного и городского счётчика, чтобы события в отчётах связывались с одним id.
+export function setUserIdAll(userId) {
+  if (typeof window === 'undefined') return;
+  if (typeof window.ym !== 'function') return;
+
+  const uid = userId === null || userId === undefined ? '' : String(userId).trim();
+  if (!uid) return;
+
+  try {
+    window.ym(MAIN_COUNTER_ID, 'setUserID', uid);
+
+    const city = useCitiesStore.getState().thisCity;
+    const cityCounterId = getCityCounterId(city);
+    if (cityCounterId) {
+      window.ym(cityCounterId, 'setUserID', uid);
+    }
+
+    // лог для проверки в консоли
+    //console.log('[YM] setUserID sent:', uid, 'main:', MAIN_COUNTER_ID, 'city:', cityCounterId || '-');
+  } catch (e) {
+    console.warn('YM setUserID error:', e);
+  }
+}
