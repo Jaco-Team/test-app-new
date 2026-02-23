@@ -1619,9 +1619,24 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
             return 'nothing';
           });
 
-          setTimeout( () => {
+          // setTimeout( () => {
+          //   checkout.render('payment-form');
+          // }, 300 )
+
+          const renderCheckout = (checkout) => {
+            const el = document.getElementById('payment-form');
+            if (!el) return false;
             checkout.render('payment-form');
-          }, 300 )
+            return true;
+          };
+
+          let tries = 0;
+          const timer = setInterval(() => {
+            tries += 1;
+            if (renderCheckout(checkout) || tries >= 20) {
+              clearInterval(timer);
+            }
+          }, 300);
         }
 
         return 'wait_payment';
