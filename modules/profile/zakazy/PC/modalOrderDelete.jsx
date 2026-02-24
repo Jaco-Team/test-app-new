@@ -8,6 +8,7 @@ import Backdrop from '@mui/material/Backdrop';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 import { IconClose } from '@/ui/Icons';
 import MyTextInput from '@/ui/MyTextInput';
@@ -75,7 +76,7 @@ export default function ModalOrderDelete() {
             <IconClose />
           </IconButton>
 
-          <Grid container>
+          <Box>
             <Grid item xs={12} className='header_status'>
               <Typography variant="h5" component="h1">Отменить заказ?</Typography>
             </Grid>
@@ -111,7 +112,7 @@ export default function ModalOrderDelete() {
               <button onClick={closeModalDel}>Вернуться</button>
             </Grid>
 
-          </Grid>
+          </Box>
         </div>
       </DialogContent>
     </Dialog>

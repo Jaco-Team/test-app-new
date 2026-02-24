@@ -8,6 +8,7 @@ import Backdrop from '@mui/material/Backdrop';
 import IconButton from '@mui/material/IconButton';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
+import Box from '@mui/material/Box';
 
 import { IconClose, SharpIcon, CalendarIcon, MyAddrLocationIcon, EyeHide_modalOrder, EyeShow_modalOrder, CartModalOrderIcon, CookModalOrderIcon, DeliveryModalOrderIcon, HomeModalOrderIcon, AddrDotsModalOrderIcon, PicupModalOrderIcon } from '@/ui/Icons';
 import LinearProgress from '@mui/material/LinearProgress';
@@ -201,7 +202,7 @@ export default React.memo(function ModalOrder() {
             <IconClose />
           </IconButton>
 
-          <Grid container>
+          <Box>
             <Grid item xs={12} className='header_status'>
               <Typography variant="h5" component="h1">Заказ {modalOrder?.order?.this_status_order}</Typography>
             </Grid>
@@ -305,7 +306,7 @@ export default React.memo(function ModalOrder() {
               }
             </Grid>
 
-          </Grid>
+          </Box>
         </div>
       </DialogContent>
     </Dialog>

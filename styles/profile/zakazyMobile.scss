@@ -618,8 +618,8 @@
               margin: 0;
               height: 100%;
 
-              & textarea {
-                padding: 0 $MyScale60_mobile;
+              .MuiInputBase-inputMultiline {
+                padding: 0 $MyScale60_mobile !important;
                 @include font40_400();
                 line-height: $MyScale40_mobile;
               }

@@ -273,7 +273,7 @@ export default function FormOrder({ cityName }) {
 
     if (nameList === 'city') {
       localStorage.setItem('setCity', JSON.stringify(item));
-      Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
+      Cookies.set('city', thisCity || '', { expires: 365, path: '/', sameSite: 'Lax' });
       // setThisCityRu(item.name);
       // setAnchorEl(null);
       push(`/${item.link}`);

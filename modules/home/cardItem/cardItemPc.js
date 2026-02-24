@@ -103,7 +103,14 @@ export default memo(function CardItem({ item, count, index}) {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.9 }}
     >
-      <Grid item className={'CardItemPC ' + (count > 0 ? 'active' : '')} style={{ marginRight: (index + 1) % 4 === 0 ? 0 : '1.4440433212996vw' }} sx={{ display: { xs: 'none', sm: 'flex' } }} id={item.link} name={item.link}>
+      <Grid 
+        item 
+        className={'CardItemPC ' + (count > 0 ? 'active' : '')} 
+        style={{ marginRight: (index + 1) % 4 === 0 ? 0 : '1.4440433212996vw' }} 
+        sx={{ display: { xs: 'none', sm: 'flex' } }} 
+        id={item.link} 
+        name={item.link}
+      >
         <div>
 
           <div className='imgItem'>
@@ -134,7 +141,6 @@ export default memo(function CardItem({ item, count, index}) {
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1168x1168.jpg 760w,
                   ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1420x1420.jpg 1875w`} 
                 sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
-
               <img 
                 alt={item?.name} 
                 src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.jpg`} 
@@ -144,6 +150,7 @@ export default memo(function CardItem({ item, count, index}) {
                 onClick={() => getItem('home', thisCity, item.id)}
                 style={{ cursor: 'pointer' }}
               />
+              
             </picture>
 
             <div className='badgecontainer'>

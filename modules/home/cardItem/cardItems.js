@@ -2,6 +2,7 @@ import React, { useEffect, useState } from 'react';
 
 import Grid from '@mui/material/Grid';
 
+
 import { useHomeStore, useCartStore, useHeaderStoreNew, useCitiesStore } from '@/components/store.js';
 
 import CardItemPc from './cardItemPc';
@@ -181,7 +182,7 @@ export default React.memo(function CatItems() {
     return newCats.map((cat, key) => (
       <Grid
         container
-        spacing={2}
+        //spacing={2}
         key={key}
         name={'cat' + cat.main_id}
         id={'cat' + cat.id}
@@ -196,7 +197,7 @@ export default React.memo(function CatItems() {
   return newCats.map((cat, key) => (
     <Grid
       container
-      spacing={2}
+      //spacing={2}
       key={key}
       name={'cat' + cat.main_id}
       id={'cat' + cat.id}
