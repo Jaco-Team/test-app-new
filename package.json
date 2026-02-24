@@ -20,10 +20,10 @@
     "@emotion/react": "^11.14.0",
     "@emotion/styled": "^11.14.1",
     "@fontsource/material-icons": "^5.2.7",
-    "@fontsource/roboto": "^5.2.9",
-    "@maskito/core": "^3.11.1",
-    "@maskito/kit": "^3.11.1",
-    "@maskito/react": "^3.11.1",
+    "@fontsource/roboto": "^5.2.10",
+    "@maskito/core": "^5.1.1",
+    "@maskito/kit": "^5.1.1",
+    "@maskito/react": "^5.1.1",
     "@million/lint": "^1.0.14",
     "@mui/icons-material": "^7.3.8",
     "@mui/material": "^7.3.8",
@@ -32,10 +32,10 @@
     "@mui/x-date-pickers": "^7.29.4",
     "@next/bundle-analyzer": "16.1.6",
     "@next/third-parties": "16.1.6",
-    "@pbe/react-yandex-maps": "^1.2.5",
+    "@pbe/react-yandex-maps": "npm:@limpopo113/react-yandex-maps@1.2.5",
     "@react-spring/web": "^10.0.3",
     "@sentry/browser": "^10.39.0",
-    "@sentry/cli": "^3.2.1",
+    "@sentry/cli": "^3.2.2",
     "@sentry/nextjs": "^10.39.0",
     "@yandex/smart-captcha": "2.9.0",
     "axios": "^1.13.5",
@@ -74,18 +74,21 @@
     "use-sync-external-store": "^1.6.0",
     "zustand": "^5.0.11"
   },
+  "overrides": {
+    "@pbe/react-yandex-maps": "npm:@limpopo113/react-yandex-maps@1.2.5"
+  },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.0.1",
-    "@storybook/addon-docs": "^10.2.10",
-    "@storybook/addon-links": "^10.2.10",
-    "@storybook/addon-onboarding": "^10.2.10",
-    "@storybook/addon-themes": "^10.2.10",
-    "@storybook/nextjs": "^10.2.10",
+    "@storybook/addon-docs": "^10.2.11",
+    "@storybook/addon-links": "^10.2.11",
+    "@storybook/addon-onboarding": "^10.2.11",
+    "@storybook/addon-themes": "^10.2.11",
+    "@storybook/nextjs": "^10.2.11",
     "cross-env": "^10.1.0",
-    "eslint": "^9.39.3",
+    "eslint": "^10.0.2",
     "eslint-config-next": "16.1.6",
-    "eslint-plugin-storybook": "^10.2.10",
-    "storybook": "^10.2.10"
+    "eslint-plugin-storybook": "^10.2.11",
+    "storybook": "^10.2.11"
   },
   "engines": {
     "node": ">=20.9.0"
