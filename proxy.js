@@ -1,4 +1,4 @@
-// middleware.js
+// proxy.js
 import { NextResponse } from 'next/server'
 import { normalizeCity } from '@/utils/normalizeCity';
 
@@ -7,7 +7,7 @@ function isLowerCase(str) {
 }
 
 function refDomain(ref) {
-  try { return ref ? new URL(ref).hostname.replace(/^www\./, '') : '' } catch { return '' }
+  try { return ref ? new URL(ref).hostname.replace(/^www\./, '') : ''; } catch { return '' }
 }
 
 function isPageViewRequest(request, url) {
@@ -132,7 +132,7 @@ export const config = {
   matcher: ['/((?!_next|favicon.ico|robots.txt|sitemap.xml|images|fonts|static).*)'],
 }
 
-export async function middleware(request) {
+export async function proxy(request) {
   //const response = NextResponse.next()
   const { nextUrl } = request
 
