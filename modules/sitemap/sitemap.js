@@ -45,7 +45,7 @@ const normalizeMenu = (category = []) => {
   }));
 };
 
-export default function SitemapContent({ city, sitemap_pages = [], sitemap_category = [] }) {
+export default function SitemapContent({ page, city, sitemap_pages = [], sitemap_category = [] }) {
   const pages = useMemo(() => normalizePages(sitemap_pages), [sitemap_pages]);
   const menu = useMemo(() => normalizeMenu(sitemap_category), [sitemap_category]);
 
@@ -138,7 +138,7 @@ export default function SitemapContent({ city, sitemap_pages = [], sitemap_categ
   );
 
   return (
-    <Meta title="Карта сайта" description="Карта сайта">
+    <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
       {/* Desktop */}
       <div className="SitemapWrap">
         <div className="SitemapInner">

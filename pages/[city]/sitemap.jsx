@@ -22,6 +22,7 @@ export default React.memo(function SiteMap(props) {
     links = {},
     sitemap_pages = [],
     sitemap_category = [],
+    page
   } = props.data1 || {};
 
   const [
@@ -69,6 +70,7 @@ export default React.memo(function SiteMap(props) {
   return (
     <div className={roboto.variable}>
       <DynamicPage
+        page={page}
         city={city}
         sitemap_pages={sitemap_pages}
         sitemap_category={sitemap_category}
@@ -93,7 +95,7 @@ export async function getServerSideProps({ req, res, query }) {
   const data1 = await api('home', {
     type: 'get_page_info',
     city_id: city,
-    page: '',
+    page: 'sitemap',
   });
 
   if (!data1) {
