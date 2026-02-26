@@ -25,7 +25,7 @@ export default function ConfirmForm() {
 
   const [getOrderList] = useProfileStore((state) => [state.getOrderList]);
 
-  const [matches, token, showLoad] = useHeaderStoreNew((state) => [state?.matches, state?.token, state?.showLoad]);
+  const [matches, token, showLoad, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.matches, state?.token, state?.showLoad, state.setActiveModalAlert]);
 
   const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
 
@@ -160,43 +160,51 @@ export default function ConfirmForm() {
   useEffect(() => {
     if (!openConfirmForm) return;
 
-    const TIMEOUT_MS = 1000 * 60 * 10; //10
+    const TIMEOUT_MS = 1000 * 60 * 10;
 
-    const isAfterCutoff = () => {
-      const now = new Date();
-      const cutoff = new Date(now);
-      cutoff.setHours(21, 35, 0, 0); // 21:37:00.000 сегодня
-      return now >= cutoff;
+    const now = new Date();
+    const cutoff = new Date(now);
+    cutoff.setHours(21, 35, 0, 0);
+    const cutoffTs = cutoff.getTime();
+
+    const isAfterCutoff = () => Date.now() >= cutoffTs;
+
+    let closed = false;
+    const close = (reason) => {
+      if (closed) return;
+      closed = true;
+
+      if (reason === 'cutoff') {
+        setActiveModalAlert(true, 'Сегодня заказы больше не принимаются!', false);
+      }
+      setConfirmForm(false);
     };
 
-    const close = () => setConfirmForm(false);
-
-    // 1) если уже поздно — закрываем моментально
     if (isAfterCutoff()) {
-      close();
+      close('cutoff');
       return;
     }
 
     const startedAt = Date.now();
 
-    // 2) таймер на 10 минут (через interval, чтобы переживать background/throttle)
     const interval = setInterval(() => {
-      if (!openConfirmForm) return; // на всякий
+      if (!openConfirmForm) return;
+
       if (isAfterCutoff()) {
-        close();
+        close('cutoff');
         clearInterval(interval);
         return;
       }
+
       if (Date.now() - startedAt >= TIMEOUT_MS) {
-        close();
+        close('timeout');
         clearInterval(interval);
       }
     }, 1000);
 
-    // 3) ускоряем реакцию при возвращении на вкладку / разблокировке
     const onVisible = () => {
       if (document.visibilityState === 'visible' && isAfterCutoff()) {
-        close();
+        close('cutoff');
         clearInterval(interval);
       }
     };
@@ -206,7 +214,7 @@ export default function ConfirmForm() {
       clearInterval(interval);
       document.removeEventListener('visibilitychange', onVisible);
     };
-  }, [openConfirmForm, setConfirmForm]);
+  }, [openConfirmForm, setConfirmForm, setActiveModalAlert]);
 
   //<span className="confirmText">Чтобы всё прошло по плану, проверьте, пожалуйста, условия получения и состав вашего заказа:</span>
 

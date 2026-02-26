@@ -4,9 +4,11 @@ import {useHomeStore} from '@/components/store';
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 
-import { NewVKIcon, OdnIcon, TGIcon, ArrowUp } from '@/ui/Icons.js';
+import { NewVKIcon, OdnIcon, TGIcon, RutubeIcon, ArrowUp } from '@/ui/Icons.js';
 
 export default React.memo(function FooterPC({ cityName, active_page, links }) {
+
+  console.log('render FooterPC links', links);
 
   const [cookie, setCookie] = useState(true);
   const [showArrow, setShowArrow] = useState(false);
@@ -85,8 +87,11 @@ export default React.memo(function FooterPC({ cityName, active_page, links }) {
                   <Link {...ext(links?.link_tg)} aria-label="Мы в Telegram">
                     <TGIcon aria-hidden="true" focusable="false" />
                   </Link>
-                  <Link {...ext(links?.link_ok)} style={{marginRight:0}} aria-label="Мы в Одноклассниках">
+                  <Link {...ext(links?.link_ok)} aria-label="Мы в Одноклассниках">
                     <OdnIcon aria-hidden="true" focusable="false" />
+                  </Link>
+                  <Link {...ext(links?.link_rt)} aria-label="Мы в RuTube">
+                    <RutubeIcon aria-hidden="true" focusable="false" />
                   </Link>
                 </>
               }

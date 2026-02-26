@@ -3,7 +3,7 @@ import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 import {useCartStore, useHomeStore, useProfileStore} from '@/components/store.js';
 
-import { NewVKIcon, OdnIcon, TGIcon, ArrowUp, BasketFooterMobile } from '@/ui/Icons.js';
+import { NewVKIcon, OdnIcon, TGIcon, RutubeIcon, ArrowUp, BasketFooterMobile } from '@/ui/Icons.js';
 import ModalOrderMobile from '@/modules/profile/zakazy/mobile/modalOrderMobile';
 
 export default function FooterMobile({ cityName, active_page, links }) {
@@ -87,7 +87,10 @@ export default function FooterMobile({ cityName, active_page, links }) {
               <>
                 <Link {...ext(links?.link_vk)} aria-label="Мы ВКонтакте"><NewVKIcon aria-hidden="true" focusable="false" /></Link>
                 <Link {...ext(links?.link_tg)} aria-label="Мы в Telegram"><TGIcon aria-hidden="true" focusable="false" /></Link>
-                <Link {...ext(links?.link_ok)} style={{marginRight:0}} aria-label="Мы в Одноклассниках"><OdnIcon aria-hidden="true" focusable="false" /></Link>
+                <Link {...ext(links?.link_ok)} aria-label="Мы в Одноклассниках"><OdnIcon aria-hidden="true" focusable="false" /></Link>
+                <Link {...ext(links?.link_rt)} aria-label="Мы в RuTube">
+                  <RutubeIcon aria-hidden="true" focusable="false" />
+                </Link>
               </>
             }
           </div>

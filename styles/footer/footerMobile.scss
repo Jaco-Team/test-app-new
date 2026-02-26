@@ -36,6 +36,10 @@
           height: 100%;
         }
       }
+
+      & a:last-child {
+        margin-right: 0;
+      }
      
     }
 
