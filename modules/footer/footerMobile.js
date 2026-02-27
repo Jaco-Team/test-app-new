@@ -6,6 +6,8 @@ import {useCartStore, useHomeStore, useProfileStore} from '@/components/store.js
 import { NewVKIcon, OdnIcon, TGIcon, RutubeIcon, ArrowUp, BasketFooterMobile } from '@/ui/Icons.js';
 import ModalOrderMobile from '@/modules/profile/zakazy/mobile/modalOrderMobile';
 
+import { reachGoal } from '@/utils/metrika';
+
 export default function FooterMobile({ cityName, active_page, links }) {
 
   const [cookie, setCookie] = useState(true);
@@ -50,6 +52,7 @@ export default function FooterMobile({ cityName, active_page, links }) {
 
   const openCart = () => {
     saveUserActions('open_card', '', 0);
+    reachGoal('open_basket'); 
   }
 
   return (

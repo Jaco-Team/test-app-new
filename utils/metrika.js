@@ -60,12 +60,16 @@ export function reachGoalSplit(goal, paramsMain, paramsCity) {
 }
 
 // новое событие "Покупка" только в основной счетчик 47085879
-export function reachGoalMain(goal, params) {
+export function reachGoalMain(goal, params, cb) {
   if (typeof window === 'undefined') return;
   if (typeof window.ym !== 'function') return;
 
   try {
-    window.ym(MAIN_COUNTER_ID, 'reachGoal', goal, params);
+    if (typeof cb === 'function') {
+      window.ym(MAIN_COUNTER_ID, 'reachGoal', goal, params, cb);
+    } else {
+      window.ym(MAIN_COUNTER_ID, 'reachGoal', goal, params);
+    }
   } catch (e) {
     console.warn('YM reachGoalMain error:', e);
   }

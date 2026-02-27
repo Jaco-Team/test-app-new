@@ -426,14 +426,16 @@ export default function FormOrder({ cityName }) {
 
         // новое событие "Покупка" + защита от повторного отправления цели "Покупка" при повторных кликах или возврате на страницу с помощью браузерных кнопок
         const orderId = checkNewOrder?.order?.order_id;
-        if (!orderId) {
-          console.warn('YM purchase skipped: no orderId');
-        } else {
+        if (orderId) {
           const key = `ym_purchase_${orderId}`;
           if (!sessionStorage.getItem(key)) {
-            sessionStorage.setItem(key, '1');
-            reachGoalMain('purchase', ym_data);
+            sessionStorage.setItem(key, 'pending');
+            reachGoalMain('purchase', ym_data, () => {
+              sessionStorage.setItem(key, 'sent');
+            });
           }
+        } else {
+          //console.warn('[purchase] missing orderId');
         }
 
         // ecommerce purchase

@@ -1590,7 +1590,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
             if( res?.st === true ){
               clearInterval(timerId);
-              funcClose();
+              funcClose?.();
             }
           }, 3000);
         }
@@ -2968,15 +2968,20 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const matches = useHeaderStoreNew.getState().matches;
 
-    if( matches ){ 
+    if (matches) {
+      // мобилка: сразу open_card + open_basket
+      useProfileStore.getState().saveUserActions('open_card', '', 0);
+      reachGoal('open_basket');
+
       setTimeout(() => {
         window.location.href = '/' + city + '/cart';
-      }, 500)
-      
-    }else{
-      useHeaderStoreNew.getState().setActiveBasket(true);  
+      }, 500);
+    } else {
+      // ПК: только open_card (open_basket будет по кнопке "Оформить заказ")
+      useProfileStore.getState().saveUserActions('open_card', '', 0);
+
+      useHeaderStoreNew.getState().setActiveBasket(true);
     }
-    
     
   },
 

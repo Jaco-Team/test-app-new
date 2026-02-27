@@ -1,15 +1,14 @@
 //import { useMemo } from 'react';
-import { useCartStore, useHeaderStoreNew, useCitiesStore } from '@/components/store.js';
+import { useCartStore, useHeaderStoreNew, useCitiesStore, useProfileStore } from '@/components/store.js';
 import { BasketIconNew } from '@/ui/Icons.js';
 
 import Cookies from 'js-cookie'
-
-import { reachGoal } from '@/utils/metrika';
 
 export default function BasketIconHeaderPC() {
   const [setActiveBasket, openBasket] = useHeaderStoreNew((state) => [state?.setActiveBasket, state?.openBasket]);
   const [itemsCount, promoCheck, getInfoPromo, itemsOffDops, dopListCart, checkPromo, allPrice] = useCartStore((state) => [state.itemsCount, state.promoCheck, state.getInfoPromo, state.itemsOffDops, state.dopListCart, state.checkPromo, state.allPrice]);
   const [thisCity, thisCityRu] = useCitiesStore( state => [state.thisCity, state.thisCityRu]);
+  const [saveUserActions] = useProfileStore((s) => [s.saveUserActions]);
 
   let price1 = itemsOffDops.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
   let price2 = dopListCart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
@@ -29,8 +28,8 @@ export default function BasketIconHeaderPC() {
     //   }
     // }
 
-    if( !openBasket == true ){
-      reachGoal('open_basket');
+    if (!openBasket) {
+      saveUserActions('open_card', '', 0);
 
       try{
         // roistat.event.send('open_basket');

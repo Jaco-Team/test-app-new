@@ -101,7 +101,12 @@ export default React.memo(function CardItemMobile({ item, count }) {
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.9 }}
     >
-      <Grid item className={'CardItemMobile ' + (count > 0 ? 'active' : '')} sx={{ display: { xs: 'flex', md: 'flex', sm: 'flex' } }} id={item.link} name={item.link}>
+      <Grid 
+        className={'CardItemMobile ' + (count > 0 ? 'active' : '')} 
+        sx={{ display: { xs: 'flex', md: 'flex', sm: 'flex' } }} 
+        id={item.link} 
+        name={item.link}
+      >
         <div className="CardContainer">
 
           <div className="CardImg">

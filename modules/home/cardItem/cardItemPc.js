@@ -104,7 +104,6 @@ export default memo(function CardItem({ item, count, index}) {
       transition={{ duration: 0.9 }}
     >
       <Grid 
-        item 
         className={'CardItemPC ' + (count > 0 ? 'active' : '')} 
         style={{ marginRight: (index + 1) % 4 === 0 ? 0 : '1.4440433212996vw' }} 
         sx={{ display: { xs: 'none', sm: 'flex' } }} 

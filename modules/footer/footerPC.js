@@ -8,8 +8,6 @@ import { NewVKIcon, OdnIcon, TGIcon, RutubeIcon, ArrowUp } from '@/ui/Icons.js';
 
 export default React.memo(function FooterPC({ cityName, active_page, links }) {
 
-  console.log('render FooterPC links', links);
-
   const [cookie, setCookie] = useState(true);
   const [showArrow, setShowArrow] = useState(false);
 

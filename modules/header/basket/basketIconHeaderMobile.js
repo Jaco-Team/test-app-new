@@ -2,6 +2,7 @@ import Link from 'next/link';
 import { useCartStore, useProfileStore } from '@/components/store.js';
 import { BasketIconMobile } from '@/ui/Icons.js';
 import ListItem from '@mui/material/ListItem';
+import { reachGoal } from '@/utils/metrika';
 
 export default function BasketIconHeaderMobile({ setActiveMenu, active_page, city }) {
   const [itemsCount] = useCartStore((state) => [state.itemsCount]);
@@ -10,6 +11,7 @@ export default function BasketIconHeaderMobile({ setActiveMenu, active_page, cit
   const openCart = () => {
     setActiveMenu(false);
     saveUserActions('open_card', '', 0);
+    reachGoal('open_basket');
   }
 
   return (
