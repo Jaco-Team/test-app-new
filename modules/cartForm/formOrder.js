@@ -372,6 +372,18 @@ export default function FormOrder({ cityName }) {
       return;
     }
 
+    const promoValue = String(promo ?? '').trim();
+    if (promoValue.length > 0) {
+      showLoad(true);
+      const promoRes = await getInfoPromo(promoValue, thisCity);
+      showLoad(false);
+
+      if (!promoRes?.st) {
+        setActiveModalAlert(true, promoRes?.text ?? 'Промокод не применился', false);
+        return;
+      }
+    }
+
     const hasRolly = items.some(item =>
       [4, 10, 13, 12, 9].includes(Number(item.cat_id))
     );
