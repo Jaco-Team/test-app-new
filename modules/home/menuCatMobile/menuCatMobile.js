@@ -12,11 +12,32 @@ var scroller = Scroll.scroller;
 
 export default function MenuCatMobile({ city }) {
 
-  const [category, cat_position, setActiveFilter, isOpenFilter, resetFilter] = useHomeStore((state) => [state.category, state.cat_position,  state.setActiveFilter, state.isOpenFilter, state.resetFilter]);
+  const [
+    category,
+    cat_position,
+    setActiveFilter,
+    isOpenFilter,
+    resetFilter,
+    tag_filter,
+    text_filter,
+    badge_filter
+  ] = useHomeStore((state) => [
+    state.category,
+    state.cat_position,
+    state.setActiveFilter,
+    state.isOpenFilter,
+    state.resetFilter,
+    state.tag_filter,
+    state.text_filter,
+    state.badge_filter
+  ]);
 
   const [catMenu, setCatMenu] = useState(category);
   const [catDopMenu, setCatDopMenu] = useState([]);
   const [offset, setOffset] = useState(null);
+
+  const isFilterSelected = badge_filter !== '' || tag_filter !== '' || text_filter !== '';
+  const isFilterIconActive = isOpenFilter || isFilterSelected;
 
   let activeID = useCheckCat(category);
   
@@ -120,7 +141,10 @@ export default function MenuCatMobile({ city }) {
             <span>{item.name}</span>
           </ScrollLink>
         ))}
-        <div className={isOpenFilter ? 'filterSVG activeFilter' : 'filterSVG'} onClick={() => setActiveFilter(!isOpenFilter)}>
+        <div
+          className={isFilterIconActive ? 'filterSVG activeFilter' : 'filterSVG'}
+          onClick={() => setActiveFilter(!isOpenFilter)}
+        >
           <Filter />
         </div>
       </div>

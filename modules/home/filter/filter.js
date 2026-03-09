@@ -51,7 +51,8 @@ export default function Filter() {
     tag_filter,
     text_filter,
     //filterText,
-    badge_filter
+    badge_filter,
+    applyCurrentFilters,
   ] = useHomeStore((state) => [
     state.filterActive,
     state.resetFilter,
@@ -64,7 +65,8 @@ export default function Filter() {
     state.tag_filter,
     state.text_filter,
     //state.filterText,
-    state.badge_filter
+    state.badge_filter,
+    state.applyCurrentFilters,
   ]);
 
   const [matches, activePage] = useHeaderStoreNew((state) => [state?.matches, state?.activePage]);
@@ -126,7 +128,7 @@ export default function Filter() {
       resetTags();
       resetFilter();
     }
-  }, [badge_filter, tag_filter, text_filter]);
+  }, [badge_filter, resetFilter, tag_filter, text_filter]);
 
   /*useEffect(() => {
     if (!isOpenFilter) {
@@ -240,7 +242,23 @@ export default function Filter() {
     if (activePage !== 'home' && activePage != '') {
       setActiveFilter(false);
     }
-  }, [activePage]);
+  }, [activePage, setActiveFilter]);
+
+  useEffect(() => {
+    if (!canShowFilter) return;
+    if (!allItems?.length) return;
+
+    const hasFilter =
+      badge_filter !== '' || tag_filter !== '' || text_filter !== '';
+
+    if (!hasFilter) return;
+
+    const timer = setTimeout(() => {
+      applyCurrentFilters();
+    }, 0);
+
+    return () => clearTimeout(timer);
+  }, [canShowFilter, activePage, allItems, badge_filter, tag_filter, text_filter, applyCurrentFilters]);
 
   const showClear = badge_filter !== '' || text_filter !== '' || tag_filter !== '';
 

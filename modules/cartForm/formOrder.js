@@ -683,7 +683,7 @@ export default function FormOrder({ cityName }) {
 
           {typeOrder == 'pic' ? null : (
             <Button className="CartChoose" endIcon={<ArrowDownCartMobile />} onClick={(event) => openMenu(event, 'message')}
-              style={{ marginBottom: '6.8376068376068vw', height: message.length > 20 ? '20.512820512821vw' : '10.25641025641vw' }}>
+              style={{ marginBottom: '6.8376068376068vw', height: message.length > 20 ? '23.931623931624vw' : '10.25641025641vw' }}>
               <div>
                 <Typography component="span">
                   <MessageBasketModalPC />

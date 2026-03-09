@@ -66,7 +66,7 @@
 
       & .CartMessage {
         width: 100%;
-        height: $MyScale200_mobile;
+        height: $MyScale300_mobile;
         margin-bottom: $MyScale120_mobile;
         border: $MyScale3_mobile solid rgba(0, 0, 0, 0.2);
         border-radius: $MyScale40_mobile;
@@ -75,7 +75,7 @@
         justify-content: center;
 
         & textarea {
-          height: $MyScale120_mobile;
+          height: $MyScale200_mobile;
           width: 90%;
           border: 0 none #FFF;
           overflow: hidden;

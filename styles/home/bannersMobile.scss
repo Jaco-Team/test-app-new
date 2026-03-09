@@ -129,20 +129,43 @@
           width: 100%;
           height: auto;
         }
-        & span {
-          height: $MyScale60_mobile;
-          width: $MyScale240_mobile;
-          color: #fff;
-          display: flex;
-          align-items: center;
+
+        & .BannerConditions {
           position: absolute;
           left: $MyScale80_mobile;
-          bottom: $MyScale10_mobile;
+          bottom: $MyScale20_mobile;
+          color: #fff;
+          display: inline-flex;
+          align-items: center;
+          gap: $MyScale10_mobile;
+
+          width: auto;
+          height: auto;
+          max-width: calc(100% - #{$MyScale160_mobile});
+
+          white-space: nowrap;
+          z-index: 2;
+
           & svg {
             width: $MyScale24_mobile;
             height: $MyScale24_mobile;
+            flex-shrink: 0;
           }
         }
+        // & span {
+        //   height: $MyScale60_mobile;
+        //   width: $MyScale240_mobile;
+        //   color: #fff;
+        //   display: flex;
+        //   align-items: center;
+        //   position: absolute;
+        //   left: $MyScale80_mobile;
+        //   bottom: $MyScale10_mobile;
+        //   & svg {
+        //     width: $MyScale24_mobile;
+        //     height: $MyScale24_mobile;
+        //   }
+        // }
       }
 
       & .erid {

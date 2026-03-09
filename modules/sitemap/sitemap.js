@@ -67,6 +67,12 @@ export default function SitemapContent({ page, city, sitemap_pages = [], sitemap
   const pageHref = (link) => `/${city}/${link}`;
   const itemHref = (itemLink) => ({ pathname: `/${city}`, query: { item: itemLink } });
 
+  const handleCategoryClick = (id) => {
+    if (typeof window !== 'undefined' && id) {
+      localStorage.setItem('goTo', String(id));
+    }
+  };
+
   const Tree = () => (
     <div className="SitemapTree">
       {/* Главная */}
@@ -96,9 +102,16 @@ export default function SitemapContent({ page, city, sitemap_pages = [], sitemap
 
         {menu.map((cat) => (
           <div key={cat.id} className="SitemapCategory">
-            <div className="SitemapSectionTitle">{cat.name}</div>
+            <div className="SitemapSectionTitle">
+              <Link
+                className="SitemapRootLink"
+                href={homeHref}
+                onClick={() => handleCategoryClick(cat.id)}
+              >
+                {cat.name}
+              </Link>
+            </div>
 
-            {/* подкатегории */}
             {!!cat.parent_cat?.length ? (
               cat.parent_cat.map((sub) => (
                 <div key={sub.id} className="SitemapSubCategory">
@@ -119,7 +132,6 @@ export default function SitemapContent({ page, city, sitemap_pages = [], sitemap
               ))
             ) : null}
 
-            {/* товары сразу в категории */}
             {!cat.parent_cat?.length && !!cat.items?.length ? (
               <ul className="SitemapItemsList">
                 {cat.items.map((it) => (

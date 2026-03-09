@@ -1088,7 +1088,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         return ;
       }
 
-      if (comment.length > 50) {
+      if (comment.length > 80) {
         return ;
       }
 
@@ -4317,6 +4317,43 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
   openItemCard: false,
   item_card: null,
+
+  // применить сохранённый фильтр к списку товаров на главной
+  applyCurrentFilters: () => {
+    const all_items = useCartStore.getState().allItems;
+    const { badge_filter, tag_filter, text_filter } = get();
+
+    if (!all_items?.length) return;
+
+    all_items.forEach((item) => {
+      const el = document.getElementById(item.link);
+      if (!el) return;
+
+      let visible = true;
+
+      if (badge_filter !== '') {
+        if (parseInt(badge_filter) === 2) {
+          visible = visible && parseInt(item.is_new) === 1;
+        }
+
+        if (parseInt(badge_filter) === 1) {
+          visible = visible && parseInt(item.is_hit) === 1;
+        }
+      }
+
+      if (tag_filter !== '') {
+        visible = visible && item.tags?.includes(Number(tag_filter));
+      }
+
+      if (text_filter !== '') {
+        visible =
+          visible &&
+          item.name?.toLowerCase().includes(text_filter.toLowerCase());
+      }
+
+      el.style.display = visible ? 'flex' : 'none';
+    });
+  },
 
   // закрытие модалки товара в списке сетов
   closeItemModal: () => {

@@ -346,15 +346,18 @@ export default function ModalBannerMobile() {
                 />
               </picture>
             }
-
             
-            <Typography className="ItemTime" variant="h5" component="span" onClick={() => setActiveBanner(false, null)}>
+            <Typography
+              className="ItemTime BannerConditions"
+              variant="h5"
+              component="span"
+              onClick={() => setActiveBanner(false, null)}
+            >
               Условия акции
               <KeyboardArrowUpIcon />
             </Typography>
+            
           </Grid>
-
-          
 
           <Grid className="DescItemMobile">
             <Grid className="FirstItemMobile">

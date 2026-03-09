@@ -189,7 +189,7 @@
               margin: 0;
               width: $MyScale500 !important;
 
-              & .MuiInputBase-root.MuiOutlinedInput-root {
+              & .MuiOutlinedInput-root {
                 display: flex;
                 align-items: center;
                 border: none;
@@ -198,16 +198,25 @@
                 margin: 0;
                 width: 100%;
 
-                & textarea {
+                & .MuiInputBase-inputMultiline {
                   padding: 0;
                   @include font30_400();
                   line-height: $MyScale30;
+                  margin-left: -$MyScale10;
+                }
+
+                & .MuiInputBase-inputMultiline::placeholder {
+                  color: rgba(0, 0, 0, 0.4);
+                  opacity: 1;
+                  font: inherit;
+                  line-height: inherit;
                 }
 
                 & fieldset {
                   border: none;
                   padding: 0;
                   top: 0;
+
                   & legend {
                     line-height: 0;
                   }

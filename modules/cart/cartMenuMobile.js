@@ -204,7 +204,7 @@ export default function CartMenuMobile({ cityName }) {
               type="text"
               value={comment}
               onChange={(event) => changeComment(event)}
-              maxLength={50}
+              maxLength={80}
               rows={2}
             />
             {/* <MyTextInput
