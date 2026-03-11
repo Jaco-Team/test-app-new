@@ -1,6 +1,8 @@
 import { useCitiesStore } from '@/components/store.js';
 
 const MAIN_COUNTER_ID = 47085879;
+const PURCHASE_STORAGE_PREFIX = 'ym_purchase_';
+const PURCHASE_PENDING_TTL_MS = 30 * 1000;
 
 function getCityCounterId(city) {
   if (!city) return null;
@@ -9,6 +11,60 @@ function getCityCounterId(city) {
   if (c === 'samara') return 100325084;
   if (c === 'togliatti') return 100601350;
 
+  return null;
+}
+
+function getPurchaseStorageKey(orderId) {
+  return `${PURCHASE_STORAGE_PREFIX}${orderId}`;
+}
+
+function readPurchaseState(orderId) {
+  if (typeof window === 'undefined' || !orderId) return null;
+
+  try {
+    const raw = window.localStorage.getItem(getPurchaseStorageKey(orderId));
+    if (!raw) return null;
+
+    const parsed = JSON.parse(raw);
+    return parsed && typeof parsed === 'object' ? parsed : null;
+  } catch {
+    return null;
+  }
+}
+
+function writePurchaseState(orderId, status) {
+  if (typeof window === 'undefined' || !orderId) return;
+
+  try {
+    window.localStorage.setItem(
+      getPurchaseStorageKey(orderId),
+      JSON.stringify({ status, ts: Date.now() })
+    );
+  } catch (e) {
+    console.warn('YM purchase storage error:', e);
+  }
+}
+
+function shouldSkipPurchase(orderId) {
+  if (!orderId) return false;
+
+  const state = readPurchaseState(orderId);
+  if (!state?.status) return false;
+
+  if (state.status === 'sent') return true;
+
+  if (state.status === 'pending') {
+    const age = Date.now() - Number(state.ts || 0);
+    return age < PURCHASE_PENDING_TTL_MS;
+  }
+
+  return false;
+}
+
+function getDataLayer() {
+  if (typeof window === 'undefined') return null;
+  if (window.ymDataLayer && typeof window.ymDataLayer.push === 'function') return window.ymDataLayer;
+  if (window.dataLayer && typeof window.dataLayer.push === 'function') return window.dataLayer;
   return null;
 }
 
@@ -73,6 +129,51 @@ export function reachGoalMain(goal, params, cb) {
   } catch (e) {
     console.warn('YM reachGoalMain error:', e);
   }
+}
+
+export function trackPurchase({ orderId, goalParams, ecommerceData }) {
+  if (typeof window === 'undefined') return false;
+
+  if (orderId && shouldSkipPurchase(orderId)) {
+    return false;
+  }
+
+  if (orderId) {
+    writePurchaseState(orderId, 'pending');
+  }
+
+  let finalized = false;
+  const finalize = () => {
+    if (finalized) return;
+    finalized = true;
+    if (orderId) {
+      writePurchaseState(orderId, 'sent');
+    }
+  };
+
+  try {
+    if (typeof window.ym === 'function') {
+      window.ym(MAIN_COUNTER_ID, 'reachGoal', 'purchase', goalParams, finalize);
+
+      const city = useCitiesStore.getState().thisCity;
+      const cityCounterId = getCityCounterId(city);
+      if (cityCounterId) {
+        window.ym(cityCounterId, 'reachGoal', 'purchase', goalParams);
+      }
+    }
+
+    const dataLayer = getDataLayer();
+    if (dataLayer && ecommerceData) {
+      dataLayer.push({ ecommerce: ecommerceData });
+    }
+
+    // Fallback: в некоторых браузерах callback Метрики приходит нестабильно.
+    window.setTimeout(finalize, 1500);
+  } catch (e) {
+    console.warn('YM trackPurchase error:', e);
+  }
+
+  return true;
 }
 
 // Привязка внутреннего ID пользователя к сессии Метрики.

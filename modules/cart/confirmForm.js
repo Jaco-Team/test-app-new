@@ -18,7 +18,7 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import CartConfirmMap from '@/modules/cart/cartConfirmMap';
 
-import { reachGoal, reachGoalMain } from '@/utils/metrika';
+import { reachGoal, trackPurchase } from '@/utils/metrika';
 
 export default function ConfirmForm() {
   const { push } = useRouter();
@@ -70,21 +70,6 @@ export default function ConfirmForm() {
       reachGoal('pay_order', ym_data);
       reachGoal(`pay_order_${typeOrder}_${typePay.id}`, ym_data);
 
-      // новое событие "Покупка" + защита от повторного отправления цели "Покупка" при повторных кликах или возврате на страницу с помощью браузерных кнопок
-      const orderId = checkNewOrder?.order?.order_id;
-      if (orderId) {
-        const key = `ym_purchase_${orderId}`;
-        if (!sessionStorage.getItem(key)) {
-          sessionStorage.setItem(key, 'pending');
-          reachGoalMain('purchase', ym_data, () => {
-            sessionStorage.setItem(key, 'sent');
-          });
-        }
-      } else {
-        //console.warn('[purchase] missing orderId');
-      }
-
-      // 2) ecommerce purchase
       const items = (checkNewOrder?.items ?? []).map((item, index) => ({
         id: item?.id ?? 0,
         name: item?.name ?? '',
@@ -94,8 +79,10 @@ export default function ConfirmForm() {
         position: index,
       }));
 
-      ymDataLayer.push({
-        ecommerce: {
+      trackPurchase({
+        orderId: checkNewOrder?.order?.order_id,
+        goalParams: ym_data,
+        ecommerceData: {
           currencyCode: 'RUB',
           purchase: {
             actionField: {
@@ -103,7 +90,7 @@ export default function ConfirmForm() {
               coupon: checkNewOrder?.order?.promo_name ?? '',
               revenue: checkNewOrder?.order?.sum_order ?? 0,
             },
-            products: items ?? [],
+            products: items,
           },
         },
       });

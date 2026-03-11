@@ -29,7 +29,7 @@ import 'dayjs/locale/ru';
 
 import Cookies from 'js-cookie'
 
-import { reachGoal, reachGoalMain } from '@/utils/metrika';
+import { reachGoal, trackPurchase } from '@/utils/metrika';
 
 const dopText = {
   rolly: 'Не забудьте про соусы, приправы и приборы',
@@ -436,45 +436,29 @@ export default function FormOrder({ cityName }) {
         reachGoal('pay_order', ym_data);
         reachGoal('pay_order_' + typeOrder + '_' + typePay?.id, ym_data);
 
-        // новое событие "Покупка" + защита от повторного отправления цели "Покупка" при повторных кликах или возврате на страницу с помощью браузерных кнопок
-        const orderId = checkNewOrder?.order?.order_id;
-        if (orderId) {
-          const key = `ym_purchase_${orderId}`;
-          if (!sessionStorage.getItem(key)) {
-            sessionStorage.setItem(key, 'pending');
-            reachGoalMain('purchase', ym_data, () => {
-              sessionStorage.setItem(key, 'sent');
-            });
-          }
-        } else {
-          //console.warn('[purchase] missing orderId');
-        }
+        const items = (checkNewOrder?.items ?? []).map((item, index) => ({
+          id: item?.id ?? 0,
+          name: item?.name ?? '',
+          price: item?.price ?? 0,
+          category: item?.cat_name ?? '',
+          quantity: item?.count ?? 0,
+          position: index,
+        }));
 
-        // ecommerce purchase
-        let items = [];
-        (checkNewOrder?.items ?? []).map((item, index) => {
-          items.push({
-            id: item?.id ?? 0,
-            name: item?.name ?? '',
-            price: item?.price ?? '',
-            category: item?.cat_name ?? '',
-            quantity: item?.count ?? '',
-            position: index,
-          });
-        });
-
-        ymDataLayer.push({
-          "ecommerce": {
-            "currencyCode": "RUB",
-            "purchase": {
-              "actionField": {
-                "id": checkNewOrder?.order?.order_id ?? 0,
-                "coupon": checkNewOrder?.order?.promo_name ?? '',
-                "revenue": checkNewOrder?.order?.sum_order ?? 0
+        trackPurchase({
+          orderId: checkNewOrder?.order?.order_id,
+          goalParams: ym_data,
+          ecommerceData: {
+            currencyCode: 'RUB',
+            purchase: {
+              actionField: {
+                id: checkNewOrder?.order?.order_id ?? 0,
+                coupon: checkNewOrder?.order?.promo_name ?? '',
+                revenue: checkNewOrder?.order?.sum_order ?? 0,
               },
-             "products": items ?? []
-            }
-          }
+              products: items,
+            },
+          },
         });
 
         localStorage.removeItem('freeDrive');
