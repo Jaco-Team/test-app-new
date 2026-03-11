@@ -32,7 +32,7 @@ export function initVarioqub() {
   if (typeof window.ymab !== 'function') return;
 
   try {
-    window.ymab(VARIOQUB_CLIENT_ID, 'getFlags', (rawFlags) => {
+    window.ymab(VARIOQUB_CLIENT_ID, 'init', undefined, (rawFlags) => {
       emitFlags(normalizeFlags(rawFlags));
     });
   } catch (error) {
