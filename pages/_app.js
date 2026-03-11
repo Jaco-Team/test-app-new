@@ -81,9 +81,10 @@ import "../styles/cart/cartMailForm.scss";
 
 import "../styles/sitemap.scss";
 
+import { useEffect, useState } from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
 import Script from "next/script";
-import { MetricaExperimentsProvider } from "yandex-metrica-ab-react";
+import { MetricaExperimentsContext, MetricaExperimentsProvider } from "yandex-metrica-ab-react";
 
 import Header from "@/components/header";
 
@@ -93,6 +94,28 @@ const theme = createTheme({
     MuiButtonBase: { defaultProps: { disableRipple: true } },
   },
 });
+
+function ClientMetricaProvider({ children }) {
+  const [mounted, setMounted] = useState(false);
+
+  useEffect(() => {
+    setMounted(true);
+  }, []);
+
+  if (!mounted) {
+    return (
+      <MetricaExperimentsContext.Provider value={{ flags: {}, ready: false }}>
+        {children}
+      </MetricaExperimentsContext.Provider>
+    );
+  }
+
+  return (
+    <MetricaExperimentsProvider clientId="metrika.47085879">
+      {children}
+    </MetricaExperimentsProvider>
+  );
+}
 
 function MetricaTLT() {
   return (
@@ -253,9 +276,9 @@ export default function MyApp({ Component, pageProps }) {
   if ((pageProps)?.data1?.city === "only-pay-page") {
     return (
       <ThemeProvider theme={theme}>
-        <MetricaExperimentsProvider clientId="metrika.47085879">
+        <ClientMetricaProvider>
           <Component {...pageProps} />
-        </MetricaExperimentsProvider>
+        </ClientMetricaProvider>
       </ThemeProvider>
     );
   }
@@ -368,9 +391,9 @@ export default function MyApp({ Component, pageProps }) {
         />
       )}
 
-      <MetricaExperimentsProvider clientId="metrika.47085879">
+      <ClientMetricaProvider>
         <Component {...pageProps} />
-      </MetricaExperimentsProvider>
+      </ClientMetricaProvider>
     </ThemeProvider>
   );
 }
