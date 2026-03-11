@@ -4,11 +4,11 @@ import { motion } from "framer-motion";
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 
 import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.js';
 
 import BadgeItem from './badge';
+import CartCtaButton from '@/ui/CartCtaButton';
 import { reachGoalSplit } from '@/utils/metrika';
 
 export default memo(function CardItem({ item, count, index}) {
@@ -213,9 +213,7 @@ export default memo(function CardItem({ item, count, index}) {
             </div>
           ) : (
             <div className="containerBTN">
-              <Button variant="outlined" onClick={add_to_cart} >
-                {new Intl.NumberFormat('ru-RU').format(item.price)} ₽
-              </Button>
+              <CartCtaButton price={item.price} onClick={add_to_cart} />
             </div>
           )}
         </div>

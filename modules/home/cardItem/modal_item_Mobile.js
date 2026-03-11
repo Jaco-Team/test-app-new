@@ -4,12 +4,12 @@ import Link from 'next/link';
 
 import { useHomeStore, useCartStore, useFooterStore, useCitiesStore } from '@/components/store';
 
-import Button from '@mui/material/Button';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import { IconInfoWhiteMobile } from '@/ui/Icons';
 
 import BadgeItem from './badge';
+import CartCtaButton from '@/ui/CartCtaButton';
 
 import { roboto } from '@/ui/Font';
 
@@ -260,9 +260,7 @@ export default function ModalItemMobile() {
 
           {count == 0 ? (
             <div className="containerBTN_ModalMObile">
-              <Button variant="outlined" onClick={add_to_cart}>
-                {new Intl.NumberFormat('ru-RU').format(item_card?.price)} ₽
-              </Button>
+              <CartCtaButton price={item_card?.price} onClick={add_to_cart} />
             </div>
           ) : (
             <div className="containerBTN_ModalMObile">

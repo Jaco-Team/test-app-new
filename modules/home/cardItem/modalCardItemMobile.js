@@ -6,7 +6,6 @@ import Link from 'next/link';
 import { useHomeStore, useCartStore, useFooterStore, useCitiesStore } from '@/components/store';
 
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import { IconInfoWhiteMobile } from '@/ui/Icons';
@@ -14,6 +13,7 @@ import { IconInfoWhiteMobile } from '@/ui/Icons';
 import BadgeItem from './badge';
 
 import { roboto } from '@/ui/Font';
+import CartCtaButton from '@/ui/CartCtaButton';
 
 import { reachGoalSplit } from '@/utils/metrika';
 
@@ -347,9 +347,7 @@ export default function ModalCardItemMobile() {
 
           {count == 0 ? (
             <div className="containerBTN_ModalMObile">
-              <Button variant="outlined" onClick={add_to_cart}>
-                {new Intl.NumberFormat('ru-RU').format(openItem?.price)} ₽
-              </Button>
+              <CartCtaButton price={openItem?.price} onClick={add_to_cart} />
             </div>
           ) : (
             <div className="containerBTN_ModalMObile">

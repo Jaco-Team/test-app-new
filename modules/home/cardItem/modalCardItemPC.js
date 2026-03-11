@@ -14,12 +14,12 @@ import IconButton from '@mui/material/IconButton';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-import Button from '@mui/material/Button';
 //import { ClickAwayListener } from '@mui/base/ClickAwayListener';
 import ClickAwayListener from '@mui/material/ClickAwayListener';
 import { IconClose, IconInfo } from '@/ui/Icons';
 
 import { roboto } from '@/ui/Font';
+import CartCtaButton from '@/ui/CartCtaButton';
 
 import { reachGoalSplit } from '@/utils/metrika';
 
@@ -496,11 +496,11 @@ export default function ModalCardItemPC() {
 
                 {count == 0 ? (
                   <div className="containerBTN">
-                    <Button variant="outlined" onClick={typeModal === 'start' ? add_to_cart : () => navigate('start')}
+                    <CartCtaButton
+                      price={openItem?.price}
+                      onClick={typeModal === 'start' ? add_to_cart : () => navigate('start')}
                       disabled={typeModal === 'start' ? false : true}
-                    >
-                      {new Intl.NumberFormat('ru-RU').format(openItem?.price)} ₽
-                    </Button>
+                    />
                   </div>
                 ) : (
                   <div className="containerBTN">

@@ -81,10 +81,13 @@ import "../styles/cart/cartMailForm.scss";
 
 import "../styles/sitemap.scss";
 
+import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useRouter } from "next/router";
 import Script from "next/script";
 
 import Header from "@/components/header";
+import { initVarioqub } from "@/utils/varioqub";
 
 const theme = createTheme({
   palette: { primary: { main: "#CC0033" } },
@@ -249,6 +252,22 @@ function MetricaSMR2() {
 }
 
 export default function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+
+  React.useEffect(() => {
+    initVarioqub();
+
+    const handleRouteChange = () => {
+      initVarioqub();
+    };
+
+    router.events.on('routeChangeComplete', handleRouteChange);
+
+    return () => {
+      router.events.off('routeChangeComplete', handleRouteChange);
+    };
+  }, [router.events]);
+
   if ((pageProps)?.data1?.city === "only-pay-page") {
     return (
       <ThemeProvider theme={theme}>
@@ -262,6 +281,15 @@ export default function MyApp({ Component, pageProps }) {
 
   return (
     <ThemeProvider theme={theme}>
+      <Script
+        id="varioqub"
+        strategy="afterInteractive"
+        src="https://abt.s3.yandex.net/expjs/latest/exp.js"
+        onLoad={() => {
+          initVarioqub();
+        }}
+      />
+
       {/* YM init (после интерактива) */}
       <Script id="ym-init" strategy="afterInteractive">
         {`

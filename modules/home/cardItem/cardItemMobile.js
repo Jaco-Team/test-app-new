@@ -3,12 +3,12 @@ import React from 'react';
 import { motion } from "framer-motion";
 
 import Grid from '@mui/material/Grid';
-import Button from '@mui/material/Button';
 import Typography from '@mui/material/Typography';
 
 import { useHomeStore, useCitiesStore, useCartStore } from '@/components/store.js';
 
 import BadgeItem from './badge';
+import CartCtaButton from '@/ui/CartCtaButton';
 
 import { reachGoalSplit } from '@/utils/metrika';
 
@@ -222,9 +222,7 @@ export default React.memo(function CardItemMobile({ item, count }) {
               </div>
             ) : (
               <div className="containerBTNMobile">
-                <Button variant="outlined" onClick={add_to_cart}>
-                  {new Intl.NumberFormat('ru-RU').format(item.price)} ₽
-                </Button>
+                <CartCtaButton price={item.price} onClick={add_to_cart} />
               </div>
             )}
           </div>
