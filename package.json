@@ -72,6 +72,7 @@
     "ua-parser-js": "^2.0.9",
     "use-long-press": "^3.3.0",
     "use-sync-external-store": "^1.6.0",
+    "yandex-metrica-ab-react": "^1.7.0",
     "zustand": "^5.0.11"
   },
   "overrides": {

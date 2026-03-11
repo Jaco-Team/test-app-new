@@ -81,13 +81,11 @@ import "../styles/cart/cartMailForm.scss";
 
 import "../styles/sitemap.scss";
 
-import React from "react";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
-import { useRouter } from "next/router";
 import Script from "next/script";
+import { MetricaExperimentsProvider } from "yandex-metrica-ab-react";
 
 import Header from "@/components/header";
-import { initVarioqub } from "@/utils/varioqub";
 
 const theme = createTheme({
   palette: { primary: { main: "#CC0033" } },
@@ -252,26 +250,12 @@ function MetricaSMR2() {
 }
 
 export default function MyApp({ Component, pageProps }) {
-  const router = useRouter();
-
-  React.useEffect(() => {
-    initVarioqub();
-
-    const handleRouteChange = () => {
-      initVarioqub();
-    };
-
-    router.events.on('routeChangeComplete', handleRouteChange);
-
-    return () => {
-      router.events.off('routeChangeComplete', handleRouteChange);
-    };
-  }, [router.events]);
-
   if ((pageProps)?.data1?.city === "only-pay-page") {
     return (
       <ThemeProvider theme={theme}>
-        <Component {...pageProps} />
+        <MetricaExperimentsProvider clientId="metrika.47085879">
+          <Component {...pageProps} />
+        </MetricaExperimentsProvider>
       </ThemeProvider>
     );
   }
@@ -283,10 +267,30 @@ export default function MyApp({ Component, pageProps }) {
     <ThemeProvider theme={theme}>
       <Script
         id="varioqub"
-        strategy="afterInteractive"
-        src="https://abt.s3.yandex.net/expjs/latest/exp.js"
-        onLoad={() => {
-          initVarioqub();
+        strategy="beforeInteractive"
+        dangerouslySetInnerHTML={{
+          __html: `
+            (function(v,a,r,i,o,q,u,b){
+              v[o]=v[o]||function(){(v[o].a=v[o].a||[]).push(arguments)};
+              q=a.createElement(r);
+              q.async=true;
+              q.src=i;
+              u=a.getElementsByTagName(r)[0];
+              u && u.parentNode && u.parentNode.insertBefore(q,u);
+              q.addEventListener('error', function(){
+                function fn(args){
+                  b=args[args.length - 1];
+                  if(typeof b === 'function'){
+                    b({ flags: {} });
+                  }
+                }
+                (v[o].a || []).forEach(fn);
+                v[o] = function(){
+                  fn(arguments);
+                };
+              });
+            })(window, document, 'script', 'https://abt.s3.yandex.net/expjs/latest/exp.js', 'ymab');
+          `,
         }}
       />
 
@@ -364,7 +368,9 @@ export default function MyApp({ Component, pageProps }) {
         />
       )}
 
-      <Component {...pageProps} />
+      <MetricaExperimentsProvider clientId="metrika.47085879">
+        <Component {...pageProps} />
+      </MetricaExperimentsProvider>
     </ThemeProvider>
   );
 }
