@@ -29,6 +29,7 @@ function findById(array, targetId) {
 
 export default memo(function CartItemMobile({ item, count, last }) {
   const [click, setClick] = useState(true);
+  const displayPrice = parseInt(item?.one_price) * (parseInt(count) > 0 ? parseInt(count) : 1);
 
   const [minus, plus, promoInfo, allItems] = useCartStore((state) => [state.minus, state.plus, state.promoInfo, state.allItems]);
   const thisCityRu = useCitiesStore((s) => s.thisCityRu);
@@ -192,7 +193,7 @@ export default memo(function CartItemMobile({ item, count, last }) {
         <div>
 
           <span className={promoInfo?.status_promo && (item?.new_one_price || item?.disabled) ? 'spanCount promoInfo' : 'spanCount'}>
-            {new Intl.NumberFormat('ru-RU').format(parseInt(item?.one_price) * parseInt(count))}{' '}₽
+            {new Intl.NumberFormat('ru-RU').format(displayPrice)}{' '}₽
           </span>
 
           {promoInfo?.status_promo && (item?.new_one_price || item?.disabled) ?
