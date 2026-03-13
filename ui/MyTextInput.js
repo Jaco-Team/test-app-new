@@ -95,10 +95,12 @@ export default class MyTextInput extends React.PureComponent {
   render(){
 
     const inputProps = {
-      autoComplete: this.props.autoComplete || 'on',
-      autoCorrect: this.props.autoCorrect || 'on',
-      autoCapitalize: this.props.autoCapitalize || 'on',
-      spellCheck: this.props.spellCheck || 'true',
+      autoComplete: this.props.autoComplete ?? 'on',
+      autoCorrect: this.props.autoCorrect ?? 'on',
+      autoCapitalize: this.props.autoCapitalize ?? 'on',
+      spellCheck: this.props.spellCheck ?? true,
+      inputMode: this.props.inputMode ?? undefined,
+      enterKeyHint: this.props.enterKeyHint ?? undefined,
     };
 
     if (this.props.disableAutofill) {

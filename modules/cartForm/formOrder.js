@@ -741,15 +741,17 @@ export default function FormOrder({ cityName }) {
               placeholder="Есть промокод"
               value={promo}
               label=""
-              name="promo"
-              id="promo"
+              name="promo_code_field"
+              id="promo-code-field"
               onKeyDown={setPromoText}
               onBlur={() => getInfoPromo(promo, thisCity)}
               func={ event => setPromo(event.target.value)}
-              autoComplete="off"
+              autoComplete="new-password"
               autoCorrect="off"
-              autoCapitalize="off"
-              spellCheck="false"
+              autoCapitalize="none"
+              spellCheck={false}
+              inputMode="text"
+              enterKeyHint="done"
               disableAutofill={true}
               inputAdornment={
                 <InputAdornment position="end">
