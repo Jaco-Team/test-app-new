@@ -1148,11 +1148,16 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         allPrice: 0,
         allPriceWithoutPromo: null, 
       })
-      
-      sessionStorage.setItem('promo_name', promoName)
-      Cookies.set('promo_name', promoName, { expires: 1 })
-      
+
       const res = get().promoCheck();
+
+      if (res?.st) {
+        sessionStorage.setItem('promo_name', promoName)
+        Cookies.set('promo_name', promoName, { expires: 1 })
+      } else {
+        sessionStorage.removeItem('promo_name')
+        Cookies.remove('promo_name')
+      }
 
       setTimeout( () => {
         get().setDataPromoBasket()

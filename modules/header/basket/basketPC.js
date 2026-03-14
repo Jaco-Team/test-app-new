@@ -106,12 +106,12 @@ export default function BasketPC() {
               placeholder="Есть промокод"
               value={promo}
               label=""
-              name="promo_code_field"
-              id="promo-code-field"
+              name="coupon_token"
+              id="coupon-token"
               onKeyDown={setPromoText}
               onBlur={() => getInfoPromo(promo, thisCity)}
               func={(event) => setPromo(event.target.value)}
-              autoComplete="new-password"
+              autoComplete="off"
               autoCorrect="off"
               autoCapitalize="none"
               spellCheck={false}
