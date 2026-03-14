@@ -131,7 +131,7 @@ export default function BasketPC() {
           </div>
 
           <div className="DescPromo">
-            <span style={{ color: promoInfo?.status_promo ? 'rgba(0, 0, 0, 0.80)' : '#DD1A32'}}>{checkPromo?.text}</span>
+            <span style={{ color: checkPromo?.st === false ? '#DD1A32' : 'rgba(0, 0, 0, 0.80)' }}>{checkPromo?.text}</span>
           </div>
 
           <div className="InCart">

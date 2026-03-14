@@ -765,7 +765,7 @@ export default function FormOrder({ cityName }) {
           </div>
 
           <div className="CartItemDescPromo">
-            <span style={{ color: promoInfo?.status_promo ? 'rgba(0, 0, 0, 0.80)' : '#DD1A32' }}>
+            <span style={{ color: checkPromo?.st === false ? '#DD1A32' : 'rgba(0, 0, 0, 0.80)' }}>
               {checkPromo?.text}
             </span>
           </div>
