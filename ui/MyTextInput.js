@@ -88,11 +88,34 @@ export default class MyTextInput extends React.PureComponent {
     super(props);
         
     this.state = {
-      type: 'text'
+      type: 'text',
+      autofillUnlocked: props.suppressAutofill ? false : true,
     };
   }
+
+  unlockAutofill = () => {
+    if (this.props.suppressAutofill && !this.state.autofillUnlocked) {
+      this.setState({ autofillUnlocked: true });
+    }
+  };
+
+  handleFocus = (event) => {
+    this.unlockAutofill();
+    this.props.onFocus?.(event);
+  };
+
+  handleMouseDown = (event) => {
+    this.unlockAutofill();
+    this.props.onMouseDown?.(event);
+  };
+
+  handleTouchStart = (event) => {
+    this.unlockAutofill();
+    this.props.onTouchStart?.(event);
+  };
   
   render(){
+    const isReadOnly = Boolean(this.props.readOnly) || (this.props.suppressAutofill && !this.state.autofillUnlocked);
 
     const inputProps = {
       autoComplete: this.props.autoComplete ?? 'on',
@@ -111,7 +134,7 @@ export default class MyTextInput extends React.PureComponent {
     return (
       <TextField 
         InputProps={{
-          readOnly: this.props.readOnly ? this.props.readOnly : false,
+          readOnly: isReadOnly,
           endAdornment: this.props.inputAdornment,
           startAdornment: this.props.startAdornment,
           inputComponent: this.props.mask ? TextMaskCustom : null,
@@ -126,6 +149,9 @@ export default class MyTextInput extends React.PureComponent {
         onChange={this.props.func}
         onBlur={this.props.onBlur ? this.props.onBlur : null}
         onKeyDown={this.props.onKeyDown ? this.props.onKeyDown : null}
+        onFocus={this.handleFocus}
+        onMouseDown={this.handleMouseDown}
+        onTouchStart={this.handleTouchStart}
         disabled={ this.props.disabled || this.props.disabled === true ? true : false }
         variant={ this.props.variant ? this.props.variant : "outlined"  }
         size={'small'} 

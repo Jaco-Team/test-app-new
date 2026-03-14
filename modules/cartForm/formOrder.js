@@ -379,8 +379,7 @@ export default function FormOrder({ cityName }) {
       showLoad(false);
 
       if (!promoRes?.st) {
-        setActiveModalAlert(true, promoRes?.text ?? 'Промокод не применился', false);
-        return;
+        // Продолжаем оформление без промокода, если он не активировался.
       }
     }
 
@@ -753,6 +752,7 @@ export default function FormOrder({ cityName }) {
               inputMode="text"
               enterKeyHint="done"
               disableAutofill={true}
+              suppressAutofill={true}
               inputAdornment={
                 <InputAdornment position="end">
                   {checkPromo ? checkPromo.st ? <div className="circleInput"></div> : <div className="circleInput" style={{ background: '#DD1A32' }}></div> : null}
