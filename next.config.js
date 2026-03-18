@@ -94,9 +94,10 @@ const nextConfig = {
 
 
 // Injected content via Sentry wizard below
-
-//const { withSentryConfig } = require("@sentry/nextjs");
-module.exports = nextConfig
+// правка 18.03.26 для glitchtip 
+const { withSentryConfig } = require("@sentry/nextjs");
+module.exports = withSentryConfig(nextConfig, { silent: true });
+//module.exports = nextConfig
 // module.exports = withSentryConfig(
 //   nextConfig,
 //   module.exports,

@@ -2,6 +2,34 @@ import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
+import * as Sentry from "@sentry/nextjs"; // правка 18.03.26 для glitchtip
+export function Custom404() {
+  useEffect(() => {
+    const path = window.location.pathname;
+
+    if (
+      !path.startsWith("/_next/") &&
+      !path.endsWith(".js") &&
+      !path.endsWith(".css") &&
+      !path.endsWith(".png") &&
+      !path.endsWith(".jpg") &&
+      !path.endsWith(".svg")
+    ) {
+      Sentry.captureMessage("404 page opened", {
+        level: "warning",
+        tags: {
+          kind: "not_found",
+        },
+        extra: {
+          path,
+          url: window.location.href,
+        },
+      });
+    }
+  }, []);
+
+  return <h1>404 — Страница не найдена</h1>;
+}
 
 export default function NotFoundPage() {
   const router = useRouter()
