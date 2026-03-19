@@ -13,7 +13,7 @@ export const ConfirmFormMobile = ({city, address, data, time, items, itemsCount,
   return (
     <div className="containerConfirmMobile">
       <div className="line" />
-      <span className="confirmHeader">Подтверждение заказа</span>
+      <span className="confirmHeader">Проверьте заказ</span>
       <span className="confirmText">Чтобы всё прошло по плану, проверьте, пожалуйста, условия получения и состав вашего заказа:</span>
 
       <div className="confirmAddr">
@@ -61,7 +61,7 @@ export const ConfirmFormMobile = ({city, address, data, time, items, itemsCount,
         </div>
       ) : null}
 
-      <button className="confirmBTN">Заказать</button>
+      <button className="confirmBTN">Подтвердить заказ</button>
     </div>
   );
 };

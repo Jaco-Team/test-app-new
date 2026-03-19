@@ -20,6 +20,9 @@ import CartConfirmMap from '@/modules/cart/cartConfirmMap';
 
 import { reachGoal, trackPurchase } from '@/utils/metrika';
 
+const confirmOrderTitle = 'Проверьте заказ';
+const confirmOrderLabel = 'Подтвердить заказ';
+
 export default function ConfirmForm() {
   const { push } = useRouter();
 
@@ -243,7 +246,7 @@ export default function ConfirmForm() {
                 } */}
 
                 <div className="line" />
-                <span className="confirmHeader">Подтверждение заказа</span>
+                <span className="confirmHeader">{confirmOrderTitle}</span>
                 
 
                 { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ? 
@@ -360,7 +363,7 @@ export default function ConfirmForm() {
                 } */}
 
                 {/* { typePay?.id == 'online' || typePay?.id == 'sbp' ? false : */}
-                  <button className="confirmBTN" onClick={ () => create_order() }>Заказать</button>
+                  <button className="confirmBTN" onClick={ () => create_order() }>{confirmOrderLabel}</button>
                 {/* } */}
               </div>
 
@@ -374,7 +377,7 @@ export default function ConfirmForm() {
               }
 
               <div className="line" />
-              <span className="confirmHeader">Подтверждение заказа</span>
+              <span className="confirmHeader">{confirmOrderTitle}</span>
 
               { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ? 
                 <div className="confirmAddr">
@@ -482,7 +485,7 @@ export default function ConfirmForm() {
               }
 
               {/* { typePay?.id == 'online' || typePay?.id == 'sbp' ? false :
-                <button className="confirmBTN" onClick={ () => create_order() }>Заказать</button>
+                <button className="confirmBTN" onClick={ () => create_order() }>{confirmOrderLabel}</button>
               } */}
 
             </div>
@@ -511,7 +514,7 @@ export default function ConfirmForm() {
               <div className="confirmHeaderBlock">
 
                 <div className="confirmHeader">
-                  <span>Подтверждение заказа</span>
+                  <span>{confirmOrderTitle}</span>
                 </div>
 
                 { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ? 
@@ -628,7 +631,7 @@ export default function ConfirmForm() {
                 } */}
 
                 {/* { typePay?.id == 'online' || typePay?.id == 'sbp' ? false : */}
-                  <button className="confirmBTN" onClick={ () => create_order() }>Заказать</button>
+                  <button className="confirmBTN" onClick={ () => create_order() }>{confirmOrderLabel}</button>
                 {/* } */}
 
               </div>
@@ -654,7 +657,7 @@ export default function ConfirmForm() {
               }
 
               <div className="confirmHeader">
-                <span>Подтверждение заказа</span>
+                <span>{confirmOrderTitle}</span>
               </div>
 
               { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ? 
@@ -763,7 +766,7 @@ export default function ConfirmForm() {
               }
 
               {/* { typePay?.id == 'online' || typePay?.id == 'sbp' ? false :
-                <button className="confirmBTN" onClick={ () => create_order() }>Заказать</button>
+                <button className="confirmBTN" onClick={ () => create_order() }>{confirmOrderLabel}</button>
               } */}
 
             </DialogContent>

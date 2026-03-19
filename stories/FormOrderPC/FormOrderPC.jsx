@@ -91,7 +91,7 @@ export const FormOrderPC = ({typeOrder, summ, itemsCount, allPrice, allPriceWith
             доставки может быть увеличено. Благодарим за понимание!
           </span>
         )}
-        <MyButton children="Заказать" variant="cart" size="big" />
+        <MyButton children="Проверить заказ" variant="cart" size="big" />
       </div>
 
       <MyMenu

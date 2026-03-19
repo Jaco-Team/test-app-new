@@ -15,7 +15,7 @@ export const ConfirmFormPC = ({city, address, data, time, items, itemsCount, all
     <div className="containerConfirmPC">
       <div className="confirmHeader">
         <ArrowLeftMobile />
-        <span>Подтверждение заказа</span>
+        <span>Проверьте заказ</span>
       </div>
 
       <span className="confirmText">Чтобы всё прошло по плану, проверьте, пожалуйста, условия получения и состав вашего заказа:</span>
@@ -65,7 +65,7 @@ export const ConfirmFormPC = ({city, address, data, time, items, itemsCount, all
         </div>
       ) : null}
 
-      <MyButton children="Заказать" variant="cart" size="big" />
+      <MyButton children="Подтвердить заказ" variant="cart" size="big" />
     </div>
   );
 };

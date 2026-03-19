@@ -38,6 +38,7 @@ const dopText = {
 }
 
 const dopText_2 = 'Блюда могут содержать ингредиенты, обладающие аллергенными свойствами. Если у вас есть аллергия на какой-либо продукт, пожалуйста, уточняйте состав в меню или на кассе. Обратите внимание, что мы не можем исключить или заменить ингредиенты, но с удовольствием поможем выбрать блюдо с подходящим составом.';
+const reviewOrderLabel = 'Проверить заказ';
 
 export default function FormOrder({ cityName }) {
   const { push } = useRouter();
@@ -777,7 +778,7 @@ export default function FormOrder({ cityName }) {
           }
 
           <Button className="CartOrder" variant="contained" disabled={!itemsCount} onClick={ () => { create_order(); } }>
-            <span>{typeOrder === 'dev' ? 'Подтвердить' : 'Заказать'}</span>
+            <span>{reviewOrderLabel}</span>
           </Button>
         </div>
       ) : (
@@ -931,7 +932,7 @@ export default function FormOrder({ cityName }) {
             }
 
             <Button className="basketOrder" variant="contained" onClick={ () => { create_order(); } }>
-              <span>{typeOrder === 'dev' ? 'Подтвердить' : 'Заказать'}</span>
+              <span>{reviewOrderLabel}</span>
             </Button>
             
           </div>
