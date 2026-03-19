@@ -48,12 +48,14 @@ export default React.memo(function header({ city, city_list, cats }) {
   // Initialize Firebase
   
 
-  let thisCityRU = '';
+  const currentCity = Array.isArray(city_list)
+    ? city_list.find((item) => item?.link == city)
+    : null;
 
-  if( city_list && city_list.length > 0 ) {
-    thisCityRU = city_list.find((item) => item.link == city)['name'];
-  }else{
-    return ;
+  const thisCityRU = currentCity?.name ?? '';
+
+  if (!Array.isArray(city_list) || city_list.length === 0) {
+    return null;
   }
 
   

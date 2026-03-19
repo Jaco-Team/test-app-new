@@ -9,7 +9,7 @@ export default function CartCtaButton({ price, onClick, disabled = false, classN
   const isExperiment = ctaVariant === 'cta_text_price';
   // const isExperiment = true;
 
-  console.log('CartCtaButton', ready, value)
+  // console.log('CartCtaButton', ready, value)
 
   return (
     <Button
