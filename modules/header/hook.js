@@ -1,31 +1,32 @@
 import { useEffect } from 'react';
 
 function useScroll() {
-
-  const debounce = (fn) => {
+  useEffect(() => {
     let frame;
 
-    return (...params) => {
-      if (frame) { 
+    const storeScroll = () => {
+      document.documentElement.dataset.scroll = window.scrollY;
+    };
+
+    const onScroll = () => {
+      if (frame) {
         cancelAnimationFrame(frame);
       }
-      frame = requestAnimationFrame(() => {
-        fn(...params);
-      });
-    } 
-  };
 
-  const storeScroll = () => {
-    document.documentElement.dataset.scroll = window.scrollY;
-  }
+      frame = requestAnimationFrame(storeScroll);
+    };
 
-  useEffect(() => {
-    window.addEventListener('scroll', debounce(storeScroll), { passive: true });
+    onScroll();
+    window.addEventListener('scroll', onScroll, { passive: true });
 
     return () => {
-      window.removeEventListener('scroll', debounce(storeScroll), { passive: true });
+      if (frame) {
+        cancelAnimationFrame(frame);
+      }
+
+      window.removeEventListener('scroll', onScroll);
     };
-  });
+  }, []);
 
   return 0;
 }

@@ -99,7 +99,7 @@ export default React.memo(function FooterPC({ cityName, active_page, links }) {
         </div>
         <div className="ContainerCopyFooter">
           <div className="copy">
-            <Typography component="span" className="copy">{new Date().getFullYear()} © Жако</Typography>
+            <Typography component="span" className="copy" suppressHydrationWarning>{new Date().getFullYear()} © Жако</Typography>
           </div>
         </div>
 

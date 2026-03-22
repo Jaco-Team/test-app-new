@@ -11,16 +11,15 @@ import CardItemMobile from './cardItemMobile.js';
 import * as Scroll from 'react-scroll';
 var scroller = Scroll.scroller;
 
-import { usePathname, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 
 export default React.memo(function CatItems() {
   const [cats, setCats] = useState([]);
 
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const search = searchParams.get('item')
-  const search_category = searchParams.get('category')
+  const router = useRouter();
+  const pathname = typeof router.asPath === 'string' ? router.asPath.split('?')[0] : '';
+  const search = typeof router.query?.item === 'string' ? router.query.item : '';
+  const search_category = typeof router.query?.category === 'string' ? router.query.category : '';
 
   let catygory = '';
 
@@ -55,6 +54,10 @@ export default React.memo(function CatItems() {
 
   useEffect(() => {
 
+    if (!router.isReady) {
+      return;
+    }
+
     if( getItem && search && search.length > 0 && CatsItems.length > 0 ){
       let find_item = null;
 
@@ -88,9 +91,13 @@ export default React.memo(function CatItems() {
         closeModal();
       }
     }
-  }, [search, CatsItems, getItem]);
+  }, [router.isReady, search, CatsItems, getItem, thisCity, closeModal]);
 
   useEffect(() => {
+    if (!router.isReady) {
+      return;
+    }
+
     if (typeof window !== "undefined") {
       if( category.length > 0 && search_category?.length > 0 ) {
         //console.log( 'search_category', search_category, category ) 
@@ -141,7 +148,7 @@ export default React.memo(function CatItems() {
 
       }
     }
-  }, [search_category, category]);
+  }, [router.isReady, search_category, category]);
 
   useEffect(() => {
     setTimeout(() => {

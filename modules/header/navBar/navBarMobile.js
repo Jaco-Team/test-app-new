@@ -45,13 +45,14 @@ const MemoLogo = memo(function MemoLogo({city, activePage}){
   )
 })
 
-export default memo(function NavBarMobile({ city }) {
+export default memo(function NavBarMobile({ city, cityRu }) {
   const [activeMenu, setActiveMenu] = useState(false);
 
   const [setActiveBasket, openBasket, setActiveModalCityList, activePage, isAuth] = useHeaderStoreNew( state => [state?.setActiveBasket, state?.openBasket, state?.setActiveModalCityList, state?.activePage, state?.isAuth] );
   const [ getCountPromos_Orders ] = useProfileStore((state) => [ state.getCountPromos_Orders ]);
 
   const [ thisCityRu ] = useCitiesStore( state => [ state.thisCityRu ] );
+  const displayCityRu = thisCityRu || cityRu || '';
 
   if (city == '') {
     return null;
@@ -117,7 +118,7 @@ export default memo(function NavBarMobile({ city }) {
               <ListItem onClick={() => { setActiveModalCityList(true); setActiveMenu(false); }}>
                 <a>
                   <MapContactsMobile className='otherSVG' />
-                  <span>{thisCityRu}</span>
+                  <span>{displayCityRu}</span>
                 </a>
               </ListItem>
 

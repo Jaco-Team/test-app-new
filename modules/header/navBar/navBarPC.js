@@ -1,6 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
-import { useRouter, usePathname, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 import Link from 'next/link';
 
 import AppBar from '@mui/material/AppBar';
@@ -119,14 +119,11 @@ const MemoLogo = React.memo(function MemoLogo({city, activePage}){
   )
 })
 
-export default React.memo(function NavBarPC({ city }) {
+export default React.memo(function NavBarPC({ city, cityRu }) {
   useScroll();
 
   const router = useRouter()
-  const pathname = usePathname()
-  const searchParams = useSearchParams();
-
-  const search_category = searchParams.get('category')
+  const pathname = typeof router.asPath === 'string' ? router.asPath.split('?')[0] : '';
   
   const [setActiveBasket, openBasket, setActiveModalCity, activePage, isAuth] = useHeaderStoreNew((state) => [state?.setActiveBasket, state?.openBasket, state?.setActiveModalCity, state?.activePage, state.isAuth]);
   const [setThisCityRu, thisCityRu, setThisCity] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu, state.setThisCity]);
@@ -134,6 +131,8 @@ export default React.memo(function NavBarPC({ city }) {
   const [ category, setCategory, setActiveFilter, isOpenFilter, resetFilter ] = useHomeStore((state) => [ state.category, state.setCategory, state.setActiveFilter, state.isOpenFilter, state.resetFilter ]);
 
   const [ getCountPromos_Orders ] = useProfileStore((state) => [ state.getCountPromos_Orders ]);
+
+  const displayCityRu = thisCityRu || cityRu || '';
 
   if (city == '') return null;
 
@@ -182,7 +181,7 @@ export default React.memo(function NavBarPC({ city }) {
 
           const new_link = pathname.replace(new RegExp(city, 'g'), city_.link);
 
-          router.push(`${new_link}${search}`, { scroll: true });
+          router.push(`${new_link}${search}`, undefined, { scroll: true });
 
           //setTimeout( () => {
             //router.refresh();
@@ -335,7 +334,7 @@ export default React.memo(function NavBarPC({ city }) {
           <div>
             
             <div className={'chooseCity'} onClick={ () => setActiveModalCity(true) }>
-              {thisCityRu}
+              {displayCityRu}
             </div>
 
             <Link href={'/' + city + '/contacts'}  className={activePage === 'contacts' ? 'mapHeaderPC active' : 'mapHeaderPC'} onClick={ () => goToPage('Контакты') }>

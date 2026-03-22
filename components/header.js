@@ -31,16 +31,14 @@ import { useCartStore, useHeaderStoreNew, useHomeStore } from './store.js';
 //import { getAnalytics } from "firebase/analytics";
 //import { getPerformance } from "firebase/performance";
 
-import { usePathname, useSearchParams } from 'next/navigation'
+import { useRouter } from 'next/router'
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 
 export default React.memo(function header({ city, city_list, cats }) {
-  const pathname = usePathname();
-  const searchParams = useSearchParams();
-
-  const search = searchParams.get('type')
+  const router = useRouter();
+  const search = typeof router.query?.type === 'string' ? router.query.type : '';
 
   // console.log('search', search)
   // console.log('searchParams', searchParams)
@@ -131,6 +129,10 @@ export default React.memo(function header({ city, city_list, cats }) {
     //1724005098 - 18
     //if( search == 'pobeda_close' ){
 
+    if (!router.isReady) {
+      return;
+    }
+
     if( dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') >= dayjs( new Date("2025-11-08") ).locale('ru').format('YYYY-MM-DD') && dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2025-11-16") ).locale('ru').format('YYYY-MM-DD') ){
         if( search == 'kuibisheva_close' ){
           let state = { },
@@ -198,7 +200,7 @@ export default React.memo(function header({ city, city_list, cats }) {
 
       
     //}
-  }, [search]);
+  }, [router.isReady, search]);
 
   return (
     <div className={roboto.variable} style={{ overflow: 'auto' }}>
@@ -217,7 +219,7 @@ export default React.memo(function header({ city, city_list, cats }) {
 
       {matches ?
         <>
-          <NavBarMobile city={city}/>
+          <NavBarMobile city={city} cityRu={thisCityRU} />
           <ModalCityMobile />
           <ModalActiveVK_mobile />
           <ModalPointClose_mobile />
