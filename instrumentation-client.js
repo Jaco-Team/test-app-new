@@ -29,13 +29,19 @@
 import * as Sentry from "@sentry/nextjs";
 
 Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_GLITCHTIP_DSN,
+  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   environment: process.env.NODE_ENV,
   enabled: process.env.NODE_ENV === "production",
   //enabled:  true,
-  tracesSampleRate: 0,
+  tracesSampleRate: 0.05,
   debug: process.env.NODE_ENV === "development",
   //debug: true
+  integrations: [
+    Sentry.replayIntegration(),
+  ],
+  replaysSessionSampleRate: 0.01,
+  replaysOnErrorSampleRate: 1.0,
+  
 });
 
 export const onRouterTransitionStart = Sentry.captureRouterTransitionStart;
