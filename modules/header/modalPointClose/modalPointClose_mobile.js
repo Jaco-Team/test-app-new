@@ -8,6 +8,7 @@ import Typography from '@mui/material/Typography';
 import { useCartStore, useHeaderStoreNew } from '@/components/store.js';
 
 import { roboto } from '@/ui/Font.js';
+import { getLocalStorageItem, setLocalStorageItem } from '@/utils/browserStorage';
 
 const datesToCheck = [
   '2025-05-07',
@@ -34,7 +35,10 @@ export default function ModalPointClose_mobile() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      if( localStorage.getItem('setCity') && (!localStorage.getItem('7_9_may') || localStorage.getItem('7_9_may').length == 0) ) {
+      const city = getLocalStorageItem('setCity');
+      const mayModal = getLocalStorageItem('7_9_may');
+
+      if( city && (!mayModal || mayModal.length == 0) ) {
         if (datesToCheck.includes(todayStr)) {
           //checkFreeDrive(token);
           setOpen(true);
@@ -50,7 +54,7 @@ export default function ModalPointClose_mobile() {
   }, [show_checkFreeDrive]);
 
   function closeModal() {
-    localStorage.setItem('7_9_may', 'show');
+    setLocalStorageItem('7_9_may', 'show');
     setOpen(false);
   }
 

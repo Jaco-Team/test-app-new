@@ -1,6 +1,7 @@
 import Meta from '@/components/meta.js';
 import React, { useMemo } from 'react';
 import Link from 'next/link';
+import { setLocalStorageItem } from '@/utils/browserStorage';
 
 const cleanLink = (s = '') =>
   String(s).trim().replace(/^\/+/, '').replace(/\/+$/, '').replace(/_+$/g, '');
@@ -69,7 +70,7 @@ export default function SitemapContent({ page, city, sitemap_pages = [], sitemap
 
   const handleCategoryClick = (id) => {
     if (typeof window !== 'undefined' && id) {
-      localStorage.setItem('goTo', String(id));
+      setLocalStorageItem('goTo', String(id));
     }
   };
 

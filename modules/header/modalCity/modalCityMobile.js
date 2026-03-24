@@ -11,6 +11,7 @@ import { roboto } from '@/ui/Font.js';
 import { useHeaderStoreNew, useCitiesStore, useCartStore, useContactStore, useHomeStore } from '@/components/store.js';
 
 import Cookies from 'js-cookie';
+import { getSessionStorageItem, setLocalStorageItem } from '@/utils/browserStorage';
 
 export default function ModalCityMobile() {
   const { push } = useRouter();
@@ -28,7 +29,7 @@ export default function ModalCityMobile() {
   const rightCity = () => {
     setActiveModalCity(false);
     const city = thisCityList.find((city) => city.name === thisCityRu);
-    localStorage.setItem('setCity', JSON.stringify(city));
+    setLocalStorageItem('setCity', JSON.stringify(city));
     Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
   };
 
@@ -39,7 +40,7 @@ export default function ModalCityMobile() {
   }
 
   const chooseCity = (city) => {
-    localStorage.setItem('setCity', JSON.stringify(city));
+    setLocalStorageItem('setCity', JSON.stringify(city));
     Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
     // setActiveModalCityList(false);
     // setThisCityRu(city.name);
@@ -68,8 +69,9 @@ export default function ModalCityMobile() {
       window.location.reload()
     }, 1000 )
 
-    if(sessionStorage.getItem('promo_name') && sessionStorage.getItem('promo_name').length > 0){
-      getInfoPromo(sessionStorage.getItem('promo_name'), city.link)
+    const promoName = getSessionStorageItem('promo_name');
+    if(promoName?.length > 0){
+      getInfoPromo(promoName, city.link)
     }
   };
 

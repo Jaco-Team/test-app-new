@@ -7,6 +7,7 @@ import { NewVKIcon, OdnIcon, TGIcon, RutubeIcon, ArrowUp, BasketFooterMobile } f
 import ModalOrderMobile from '@/modules/profile/zakazy/mobile/modalOrderMobile';
 
 import { reachGoal } from '@/utils/metrika';
+import { getLocalStorageItem, setLocalStorageItem } from '@/utils/browserStorage';
 
 export default function FooterMobile({ cityName, active_page, links }) {
 
@@ -28,7 +29,7 @@ export default function FooterMobile({ cityName, active_page, links }) {
     window.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
 
   const acceptCookie = () => {
-    localStorage.setItem('setCookie', true);
+    setLocalStorageItem('setCookie', true);
     setCookie(true);
   };
 
@@ -38,7 +39,8 @@ export default function FooterMobile({ cityName, active_page, links }) {
   }, []);
 
   useEffect(() => {
-    if (!localStorage.getItem('setCookie') && !localStorage.getItem('setCookie')?.length) setCookie(false);
+    const savedCookie = getLocalStorageItem('setCookie');
+    if (!savedCookie?.length) setCookie(false);
   }, []);
 
   let price1 = itemsOffDops.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);

@@ -8,6 +8,7 @@ const DynamicPage = dynamic(() => import('@/modules/profile/profile/page'))
 import { api } from '@/components/api.js';
 import { useCitiesStore, useHeaderStoreNew, useCartStore } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js'
+import { getLocalStorageItem } from '@/utils/browserStorage';
 
 import { useRouter } from 'next/router';
 
@@ -56,7 +57,7 @@ export default function Profile(props) {
     setActivePage(this_module);
 
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
+      const token = getLocalStorageItem('token');
 
       if( (!token || token == '') && city.length > 0 ){
         push(`/${city}`);

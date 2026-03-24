@@ -12,6 +12,7 @@ import * as Scroll from 'react-scroll';
 var scroller = Scroll.scroller;
 
 import { useRouter } from 'next/router'
+import { getLocalStorageItem, removeLocalStorageItem } from '@/utils/browserStorage';
 
 export default React.memo(function CatItems() {
   const [cats, setCats] = useState([]);
@@ -152,10 +153,11 @@ export default React.memo(function CatItems() {
 
   useEffect(() => {
     setTimeout(() => {
-      if (localStorage.getItem('goTo')) {
-        let hash = localStorage.getItem('goTo');
+      const hash = getLocalStorageItem('goTo');
 
-        localStorage.removeItem('goTo');
+      if (hash) {
+
+        removeLocalStorageItem('goTo');
 
         let offset = 70;
 

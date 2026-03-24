@@ -5,6 +5,7 @@ import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 
 import { NewVKIcon, OdnIcon, TGIcon, RutubeIcon, ArrowUp } from '@/ui/Icons.js';
+import { getLocalStorageItem, setLocalStorageItem } from '@/utils/browserStorage';
 
 export default React.memo(function FooterPC({ cityName, active_page, links }) {
 
@@ -18,7 +19,7 @@ export default React.memo(function FooterPC({ cityName, active_page, links }) {
   const scrollUp = () => window.scrollTo({ left: 0, top: 0, behavior: 'smooth' });
 
   const acceptCookie = () => {
-    localStorage.setItem('setCookie', true);
+    setLocalStorageItem('setCookie', true);
     setCookie(true);
   };
 
@@ -28,7 +29,9 @@ export default React.memo(function FooterPC({ cityName, active_page, links }) {
   }, []);
 
   useEffect(() => {
-    if (!localStorage.getItem('setCookie') && !localStorage.getItem('setCookie')?.length){
+    const savedCookie = getLocalStorageItem('setCookie');
+
+    if (!savedCookie?.length){
       setCookie(false);
     } 
   }, []);

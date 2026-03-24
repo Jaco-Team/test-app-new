@@ -16,6 +16,7 @@ const this_module = 'address';
 
 import { normalizeCity } from '@/utils/normalizeCity';
 import { getCookie } from '@/utils/getCookie';
+import { getLocalStorageItem } from '@/utils/browserStorage';
 
 export default function Address(props) {
 
@@ -56,7 +57,7 @@ export default function Address(props) {
     setActivePage(this_module);
 
     if (typeof window !== 'undefined') {
-      const token = localStorage.getItem('token');
+      const token = getLocalStorageItem('token');
 
       if( (!token || token == '') && city.length > 0 ){
         push(`/${city}`);

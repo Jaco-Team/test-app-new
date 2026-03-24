@@ -20,6 +20,7 @@ import { IconClose } from '@/ui/Icons.js';
 import { useHeaderStoreNew, useCitiesStore, useContactStore, useCartStore, useHomeStore } from '@/components/store.js';
 
 import Cookies from 'js-cookie';
+import { setLocalStorageItem } from '@/utils/browserStorage';
 
 export default function ModalCityPC() {
 
@@ -40,7 +41,7 @@ export default function ModalCityPC() {
   const rightCity = () => {
     setActiveModalCity(false);
     const city = thisCityList.find((city) => city.name === thisCityRu);
-    localStorage.setItem('setCity', JSON.stringify(city));
+    setLocalStorageItem('setCity', JSON.stringify(city));
     Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
   };
 
@@ -51,7 +52,7 @@ export default function ModalCityPC() {
   }
 
   const chooseCity = (city) => {
-    localStorage.setItem('setCity', JSON.stringify(city));
+    setLocalStorageItem('setCity', JSON.stringify(city));
     Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
     // setThisCityRu(city.name);
     // setAnchorEl(null);

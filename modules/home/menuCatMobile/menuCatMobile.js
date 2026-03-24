@@ -9,6 +9,7 @@ import useCheckCat from '../hooks';
 
 import * as Scroll from 'react-scroll';
 var scroller = Scroll.scroller;
+import { setLocalStorageItem } from '@/utils/browserStorage';
 
 export default function MenuCatMobile({ city }) {
 
@@ -62,7 +63,7 @@ export default function MenuCatMobile({ city }) {
   if (city == '') return null;
 
   const chooseCat = (id, scroll) => {
-    localStorage.setItem('goTo', id);
+    setLocalStorageItem('goTo', id);
 
     resetFilter();
     setActiveFilter(false);
@@ -92,7 +93,7 @@ export default function MenuCatMobile({ city }) {
   };
 
   const chooseDopCat = (id, scroll) => {
-    localStorage.setItem('goTo', id);
+    setLocalStorageItem('goTo', id);
     
 
     if (scroll) {

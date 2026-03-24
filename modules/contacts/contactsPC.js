@@ -22,6 +22,7 @@ import Divider from '@mui/material/Divider';
 import MySwitch from '@/ui/Switch.js';
 
 import Cookies from 'js-cookie';
+import { setLocalStorageItem } from '@/utils/browserStorage';
 
 export default function ContactsPagePC() {
 
@@ -39,7 +40,7 @@ export default function ContactsPagePC() {
   const open = Boolean(anchorEl);
 
   const chooseCity = (city) => {
-    localStorage.setItem('setCity', JSON.stringify(city));
+    setLocalStorageItem('setCity', JSON.stringify(city));
     Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
     setThisCityRu(city.name);
     setThisCity(city.link);

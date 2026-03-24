@@ -12,6 +12,7 @@ import Backdrop from '@mui/material/Backdrop';
 import { roboto } from '@/ui/Font.js';
 import { IconClose } from '@/ui/Icons.js';
 import { useFooterStore } from '@/components/store.js';
+import { getLocalStorageItem, setLocalStorageItem } from '@/utils/browserStorage';
 
 export default function ModalActiveVK_pc() {
 
@@ -21,14 +22,17 @@ export default function ModalActiveVK_pc() {
 
   useEffect(() => {
     if (typeof window !== 'undefined') {
-      if( localStorage.getItem('setCity') && (!localStorage.getItem('modalGoupVK') || localStorage.getItem('modalGoupVK').length == 0) ) {
+      const city = getLocalStorageItem('setCity');
+      const modalGroupVK = getLocalStorageItem('modalGoupVK');
+
+      if( city && (!modalGroupVK || modalGroupVK.length == 0) ) {
         setOpen(true);
       }
     }
   }, []);
 
   function closeModal() {
-    localStorage.setItem('modalGoupVK', 'show');
+    setLocalStorageItem('modalGoupVK', 'show');
     setOpen(false);
   }
 

@@ -30,6 +30,7 @@ import 'dayjs/locale/ru';
 import Cookies from 'js-cookie'
 
 import { reachGoal, trackPurchase } from '@/utils/metrika';
+import { getLocalStorageItem, removeLocalStorageItem, setLocalStorageItem } from '@/utils/browserStorage';
 
 const dopText = {
   rolly: 'Не забудьте про соусы, приправы и приборы',
@@ -101,7 +102,7 @@ export default function FormOrder({ cityName }) {
   }, [promoInfo]);
 
   useEffect(() => {
-    let check_free_drive = localStorage.getItem('freeDrive');
+    let check_free_drive = getLocalStorageItem('freeDrive');
 
     if( 
         check_free_drive && check_free_drive.length > 0 && check_free_drive == '1722474061' 
@@ -136,7 +137,7 @@ export default function FormOrder({ cityName }) {
   useEffect(() => {
     check_need_dops();
 
-    let check_free_drive = localStorage.getItem('freeDrive');
+    let check_free_drive = getLocalStorageItem('freeDrive');
 
     if( 
         check_free_drive && check_free_drive.length > 0 && check_free_drive == '1722474061' 
@@ -273,7 +274,7 @@ export default function FormOrder({ cityName }) {
   const chooseItem = (item) => {
 
     if (nameList === 'city') {
-      localStorage.setItem('setCity', JSON.stringify(item));
+      setLocalStorageItem('setCity', JSON.stringify(item));
       Cookies.set('city', thisCity || '', { expires: 365, path: '/', sameSite: 'Lax' });
       // setThisCityRu(item.name);
       // setAnchorEl(null);
@@ -461,7 +462,7 @@ export default function FormOrder({ cityName }) {
           },
         });
 
-        localStorage.removeItem('freeDrive');
+        removeLocalStorageItem('freeDrive');
 
         try {
           if (thisCityRu == 'Самара') {
@@ -491,7 +492,7 @@ export default function FormOrder({ cityName }) {
         setPayForm(false);
         setConfirmForm(false);
 
-        localStorage.removeItem('freeDrive');
+        removeLocalStorageItem('freeDrive');
 
         push(`/${thisCity}/zakazy`);
       }, 1800);
@@ -501,7 +502,7 @@ export default function FormOrder({ cityName }) {
 
         showLoad(false);
 
-        localStorage.removeItem('freeDrive');
+        removeLocalStorageItem('freeDrive');
       }, 2000);
     }, 300);
   }

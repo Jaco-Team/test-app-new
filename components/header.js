@@ -35,6 +35,7 @@ import { useRouter } from 'next/router'
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
+import { setLocalStorageItem } from '@/utils/browserStorage';
 
 export default React.memo(function header({ city, city_list, cats }) {
   const router = useRouter();
@@ -142,7 +143,7 @@ export default React.memo(function header({ city, city_list, cats }) {
           window.history.pushState(state, title, url)
     
           setFreeDrive(1);
-          localStorage.setItem('freeDrive', '1722474061');
+          setLocalStorageItem('freeDrive', '1722474061');
         }
       }
 
@@ -155,7 +156,7 @@ export default React.memo(function header({ city, city_list, cats }) {
           window.history.pushState(state, title, url)
     
           setFreeDrive(1);
-          localStorage.setItem('freeDrive', '1722474061');
+          setLocalStorageItem('freeDrive', '1722474061');
         }
       }
 
@@ -168,7 +169,7 @@ export default React.memo(function header({ city, city_list, cats }) {
           window.history.pushState(state, title, url)
     
           setFreeDrive(1);
-          localStorage.setItem('freeDrive', '1722474061');
+          setLocalStorageItem('freeDrive', '1722474061');
         }
       }
 
@@ -181,7 +182,7 @@ export default React.memo(function header({ city, city_list, cats }) {
           window.history.pushState(state, title, url)
     
           setFreeDrive(1);
-          localStorage.setItem('freeDrive', '1722474061');
+          setLocalStorageItem('freeDrive', '1722474061');
         }
       }
 
@@ -194,7 +195,7 @@ export default React.memo(function header({ city, city_list, cats }) {
           window.history.pushState(state, title, url)
     
           setFreeDrive(1);
-          localStorage.setItem('freeDrive', '1722474061');
+          setLocalStorageItem('freeDrive', '1722474061');
         }
       }*/
 

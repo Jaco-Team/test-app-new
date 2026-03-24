@@ -3,6 +3,7 @@ import Link from 'next/link'
 import { useRouter } from 'next/router'
 import { useEffect, useState } from 'react'
 import * as Sentry from "@sentry/nextjs"; // правка 18.03.26 для glitchtip
+import { getLocalStorageItem } from '@/utils/browserStorage';
 export function Custom404() {
   useEffect(() => {
     const path = window.location.pathname;
@@ -51,7 +52,7 @@ export default function NotFoundPage() {
 
   useEffect(() => {
     try {
-      const raw = localStorage.getItem('myCity')
+      const raw = getLocalStorageItem('myCity')
       if (raw) {
         // чуть-чуть санитайза, чтобы не получить странные символы
         const city = String(raw).trim().toLowerCase().replace(/[^a-z0-9_-]/gi, '')

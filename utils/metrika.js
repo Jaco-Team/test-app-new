@@ -1,4 +1,5 @@
 import { useCitiesStore } from '@/components/store.js';
+import { getLocalStorageItem, setLocalStorageItem } from './browserStorage';
 
 const MAIN_COUNTER_ID = 47085879;
 const PURCHASE_STORAGE_PREFIX = 'ym_purchase_';
@@ -22,7 +23,7 @@ function readPurchaseState(orderId) {
   if (typeof window === 'undefined' || !orderId) return null;
 
   try {
-    const raw = window.localStorage.getItem(getPurchaseStorageKey(orderId));
+    const raw = getLocalStorageItem(getPurchaseStorageKey(orderId));
     if (!raw) return null;
 
     const parsed = JSON.parse(raw);
@@ -36,7 +37,7 @@ function writePurchaseState(orderId, status) {
   if (typeof window === 'undefined' || !orderId) return;
 
   try {
-    window.localStorage.setItem(
+    setLocalStorageItem(
       getPurchaseStorageKey(orderId),
       JSON.stringify({ status, ts: Date.now() })
     );

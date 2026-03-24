@@ -16,6 +16,7 @@ import CartItemMobile from '@/modules/cart/cartItemsMobile';
 import { useRouter } from 'next/router';
 
 import { reachGoal, trackPurchase } from '@/utils/metrika';
+import { removeLocalStorageItem } from '@/utils/browserStorage';
 
 export default function DopsForm() {
   // console.log('render DopsForm');
@@ -110,7 +111,7 @@ export default function DopsForm() {
           // roistat.event.send('pay_order_'+typeOrder+'_'+typePay?.id);
         } catch(e){ console.log(e) }
 
-        localStorage.removeItem('freeDrive');
+        removeLocalStorageItem('freeDrive');
 
       } catch(e) {
         console.log(e);
@@ -122,7 +123,7 @@ export default function DopsForm() {
         setPayForm(false);
         setConfirmForm(false);
 
-        localStorage.removeItem('freeDrive');
+        removeLocalStorageItem('freeDrive');
 
         push(`/${thisCity}/zakazy`);
       }, 1800)
@@ -132,7 +133,7 @@ export default function DopsForm() {
 
         showLoad(false);
 
-        localStorage.removeItem('freeDrive');
+        removeLocalStorageItem('freeDrive');
       }, 2000)
 
     }, 300)

@@ -21,6 +21,7 @@ import ProfileIconHeaderPC from '../profile/profileIconHeaderPC.js';
 import Cookies from 'js-cookie'
 
 import { reachGoal } from '@/utils/metrika';
+import { getLocalStorageJson, setLocalStorageItem } from '@/utils/browserStorage';
 
 const MenuBurger = React.memo(function MenuBurger({ anchorEl, city, isOpen, onClose, goToPage }){
   const [links] = useFooterStore((state) => [state.links]);
@@ -170,8 +171,9 @@ export default React.memo(function NavBarPC({ city, cityRu }) {
   useEffect(() => {
     if (typeof window !== "undefined") {
 
-      if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
-        const city_ = JSON.parse(localStorage.getItem('setCity'));
+      const city_ = getLocalStorageJson('setCity');
+
+      if (city_?.link) {
 
         if (city_.link !== city && city != '') {
           setThisCityRu(city_.name);
@@ -249,7 +251,7 @@ export default React.memo(function NavBarPC({ city, cityRu }) {
   };
 
   function chooseCat(id){
-    localStorage.setItem('goTo', id)
+    setLocalStorageItem('goTo', id)
 
     resetFilter();
     closeMenu();

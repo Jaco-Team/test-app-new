@@ -12,6 +12,14 @@ import { api, apiAddress } from './api.js';
 
 import useYandexMetrika from './useYandexMetrika';
 import { reachGoal, setUserIdAll } from '@/utils/metrika';
+import {
+  getLocalStorageItem,
+  getLocalStorageJson,
+  removeLocalStorageItem,
+  removeSessionStorageItem,
+  setLocalStorageItem,
+  setSessionStorageItem,
+} from '@/utils/browserStorage';
 
 import Cookies from 'js-cookie'
 
@@ -316,7 +324,7 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
       });
 
       if (typeof window !== 'undefined') {
-        localStorage.setItem('token', res?.token);
+        setLocalStorageItem('token', res?.token);
         Cookies.set('token', res?.token, { expires: 60 }) //expires 7 days
       }
     }
@@ -326,7 +334,7 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
 
     useProfileStore.getState().saveUserActions('user_log_out', '');
 
-    localStorage.removeItem('token');
+    removeLocalStorageItem('token');
     Cookies.remove('token');
 
     //window.location.href = '/' + city;
@@ -380,7 +388,7 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
 
         useProfileStore.getState().saveUserActions('user_log_in', '');
 
-        localStorage.setItem('token', json?.token);
+        setLocalStorageItem('token', json?.token);
         Cookies.set('token', json?.token, { expires: 60 }) //expires 7 days
       }
     }
@@ -389,7 +397,7 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
   checkToken: async () => {
     if (typeof window !== 'undefined') {
 
-      const token_session = localStorage.getItem('token_tmp');
+      const token_session = getLocalStorageItem('token_tmp');
 
       if( token_session && token_session.length > 0 ){
         const this_date = get().formatDate(new Date());
@@ -399,7 +407,7 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
         if( this_date !== date ){
           const ses_token = 'session_' + Math.random().toString(36).substr(2, 16)+'_'+this_date;
         
-          localStorage.setItem('token_tmp', ses_token);
+          setLocalStorageItem('token_tmp', ses_token);
         }
 
       }else{
@@ -407,12 +415,12 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
 
         const ses_token = 'session_' + Math.random().toString(36).substr(2, 16)+'_'+date;
         
-        localStorage.setItem('token_tmp', ses_token);
+        setLocalStorageItem('token_tmp', ses_token);
       }
 
 
 
-      const token = localStorage.getItem('token');
+      const token = getLocalStorageItem('token');
 
       if( token && token.length > 0 ){
         const data = {
@@ -437,7 +445,7 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
             isAuth: 'auth'
           });
 
-          localStorage.setItem('token', token);
+          setLocalStorageItem('token', token);
           Cookies.set('token', token, { expires: 60 }) //expires 7 days
         }
 
@@ -469,7 +477,7 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
             isAuth: 'auth'
           });
 
-          localStorage.setItem('token', token2);
+          setLocalStorageItem('token', token2);
           Cookies.set('token', token2, { expires: 60 }) //expires 7 days
         }
 
@@ -645,7 +653,7 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
         });
 
         if (typeof window !== 'undefined') {
-          localStorage.setItem('token', json?.token);
+          setLocalStorageItem('token', json?.token);
           Cookies.set('token', json?.token, { expires: 60 }) //expires 7 days
         }
       }
@@ -907,7 +915,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     set({ typeOrder: typeOrder ? 'pic' : 'dev' })
 
-    const cart = JSON.parse(localStorage.getItem('setCart'));
+    const cart = getLocalStorageJson('setCart');
 
     if (typeOrder) {
       get().setTypePay({ id: 'cash', name: 'В кафе' });
@@ -931,7 +939,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     const promoName = Cookies.get('promo_name');
     const allItems = get().allItems;
 
-    let cart = localStorage.getItem('setCart');
+    let cart = getLocalStorageItem('setCart');
 
     if (cart && cart.length > 0) {
       try {
@@ -957,8 +965,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     // сохраним updatedAt в state
     set({ cartUpdatedAt: updatedAt || 0 });
 
-    if (localStorage.getItem('setCity') && localStorage.getItem('setCity').length > 0) {
-      const city = JSON.parse(localStorage.getItem('setCity'));
+    const city = getLocalStorageJson('setCity');
+
+    if (city?.link) {
 
       if (city?.link === cart?.city?.link) {
         let this_item = null;
@@ -1041,14 +1050,14 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   setCartLocalStorage: (opts = { touch: true }) => {
     if (typeof window === 'undefined') return;
 
-    const city = JSON.parse(localStorage.getItem('setCity'));
+    const city = getLocalStorageJson('setCity');
 
     // прошлый updatedAt (чтобы при touch:false не обновлять корзину)
     let prevUpdatedAt = get().cartUpdatedAt || 0;
 
     if (!prevUpdatedAt) {
       try {
-        const prev = JSON.parse(localStorage.getItem('setCart') || 'null');
+        const prev = getLocalStorageJson('setCart');
         prevUpdatedAt = Number(prev?.updatedAt || 0);
       } catch (e) {}
     }
@@ -1071,7 +1080,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       dateTimeOrder: get().dateTimeOrder,
     };
 
-    localStorage.setItem('setCart', JSON.stringify(data));
+    setLocalStorageItem('setCart', JSON.stringify(data));
   },
 
   // комментарий по заказу при доставке товара
@@ -1111,7 +1120,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         checkPromo: null,
       })
       
-      sessionStorage.removeItem('promo_name')
+      removeSessionStorageItem('promo_name')
       Cookies.remove('promo_name')
 
       const res = get().promoCheck();
@@ -1152,10 +1161,10 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       const res = get().promoCheck();
 
       if (res?.st) {
-        sessionStorage.setItem('promo_name', promoName)
+        setSessionStorageItem('promo_name', promoName)
         Cookies.set('promo_name', promoName, { expires: 1 })
       } else {
-        sessionStorage.removeItem('promo_name')
+        removeSessionStorageItem('promo_name')
         Cookies.remove('promo_name')
       }
 
@@ -1485,7 +1494,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       if (typeof window !== 'undefined') {
         const TTL_MS = 3 * 24 * 60 * 60 * 1000;
 
-        const cartLs = JSON.parse(localStorage.getItem('setCart') || 'null');
+        const cartLs = getLocalStorageJson('setCart');
         const updatedAt = Number(cartLs?.updatedAt || 0);
 
         const expired = !updatedAt || (Date.now() - updatedAt > TTL_MS);
@@ -1699,7 +1708,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     if( json?.st === true ){
 
-      localStorage.removeItem('freeDrive');
+      removeLocalStorageItem('freeDrive');
     }else{
       //показать ошибку
       useHeaderStoreNew.getState().setActiveModalAlert(true, json?.text, false);
@@ -1709,8 +1718,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
   },
 
   clearCartData: () => {
-    localStorage.removeItem('setCart');
-    sessionStorage.removeItem('promo_name');
+    removeLocalStorageItem('setCart');
+    removeSessionStorageItem('promo_name');
     Cookies.remove('promo_name');
 
     set({
@@ -2513,7 +2522,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         free_drive: parseInt(promo_info.limits.free_drive)
       })
 
-      let check_free_drive = localStorage.getItem('freeDrive');
+      let check_free_drive = getLocalStorageItem('freeDrive');
       
       if( 
           check_free_drive && check_free_drive.length > 0 && check_free_drive == '1722474061' 
@@ -4686,7 +4695,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     let token = '';
 
     if (typeof window !== 'undefined') {
-      token = localStorage.getItem('token');
+      token = getLocalStorageItem('token') || '';
     }
 
     let data = {
@@ -4706,7 +4715,7 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     let token = '';
 
     if (typeof window !== 'undefined') {
-      token = localStorage.getItem('token');
+      token = getLocalStorageItem('token') || '';
     }
 
     let data = {
