@@ -1,7 +1,7 @@
 import Head from 'next/head'
 import Link from 'next/link'
 import { useRouter } from 'next/router'
-import { useEffect, useState } from 'react'
+import { useEffect, useState, useRef } from 'react'
 import * as Sentry from "@sentry/nextjs"; // правка 18.03.26 для glitchtip
 import { getLocalStorageItem } from '@/utils/browserStorage';
 export function Custom404() {
@@ -33,6 +33,37 @@ export function Custom404() {
 }
 
 export default function NotFoundPage() {
+ // для Sentry
+ const sentRef = useRef(false);
+
+  useEffect(() => {
+    if (sentRef.current) return;
+    sentRef.current = true;
+
+    const path = window.location.pathname;
+
+    if (
+      !path.startsWith("/_next/") &&
+      !path.match(/\.(js|css|png|jpg|jpeg|svg|ico|webp)$/)
+    ) {
+      // ❗ теперь это ОШИБКА, а не warning
+      Sentry.captureException(
+        new Error(`404 page opened: ${path}`),
+        {
+          tags: {
+            kind: "not_found",
+          },
+          extra: {
+            path,
+            url: window.location.href,
+            referrer: document.referrer,
+            userAgent: navigator.userAgent,
+          },
+        }
+      );
+    }
+  }, []);
+
   const router = useRouter()
   const [homeHref, setHomeHref] = useState('/samara')
 
