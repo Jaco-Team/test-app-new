@@ -33,7 +33,7 @@ Sentry.init({
   environment: process.env.NODE_ENV,
   enabled: process.env.NODE_ENV === "production",
   //enabled:  true,
-  tracesSampleRate: 0.05,
+  tracesSampleRate: 0.5,
   debug: process.env.NODE_ENV === "development",
   //debug: true
   integrations: [
