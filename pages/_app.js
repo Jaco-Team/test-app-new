@@ -81,12 +81,20 @@ import "../styles/cart/cartMailForm.scss";
 
 import "../styles/sitemap.scss";
 
-import { useEffect, useState } from "react";
+import { useEffect, useRef, useState } from "react";
+import * as Sentry from "@sentry/nextjs";
 import { createTheme, ThemeProvider } from "@mui/material/styles";
+import { useRouter } from "next/router";
 import Script from "next/script";
 import { MetricaExperimentsContext, MetricaExperimentsProvider } from "yandex-metrica-ab-react";
 
 import Header from "@/components/header";
+import {
+  getClientNetworkContext,
+  isChunkLoadError,
+  maybeReloadAfterChunkError,
+} from "@/utils/clientMonitoring";
+import { hitAll } from "@/utils/metrika";
 
 const theme = createTheme({
   palette: { primary: { main: "#CC0033" } },
@@ -272,22 +280,160 @@ function MetricaSMR2() {
   );
 }
 
-export default function MyApp({ Component, pageProps }) {
-  if ((pageProps)?.data1?.city === "only-pay-page") {
-    return (
-      <ThemeProvider theme={theme}>
-        <ClientMetricaProvider>
-          <Component {...pageProps} />
-        </ClientMetricaProvider>
-      </ThemeProvider>
-    );
-  }
-
-  const city = (pageProps)?.data1?.city;
-  const cityCounterId = city === "samara" ? 100325084 : city === "togliatti" ? 100601350 : null;
+function AppErrorFallback({ city, resetError }) {
+  const homeHref = city ? `/${city}` : "/";
 
   return (
-    <ThemeProvider theme={theme}>
+    <div
+      style={{
+        minHeight: "100vh",
+        display: "grid",
+        placeItems: "center",
+        padding: "24px",
+        background:
+          "radial-gradient(1200px 600px at 10% -10%, rgba(204, 0, 51, 0.08), transparent 60%), #f7f7f8",
+      }}
+    >
+      <div
+        style={{
+          maxWidth: "560px",
+          width: "100%",
+          background: "#ffffff",
+          border: "1px solid #e5e7eb",
+          borderRadius: "20px",
+          boxShadow: "0 18px 40px rgba(15, 23, 42, 0.08)",
+          padding: "28px 24px",
+          textAlign: "center",
+        }}
+      >
+        <h1 style={{ margin: "0 0 12px", fontSize: "28px" }}>Страница загрузилась с ошибкой</h1>
+        <p style={{ margin: "0 0 20px", color: "#6b7280", lineHeight: 1.5 }}>
+          Похоже, часть скриптов или данных не успела загрузиться из-за нестабильного соединения.
+          Попробуйте обновить страницу.
+        </p>
+
+        <div
+          style={{
+            display: "flex",
+            gap: "12px",
+            justifyContent: "center",
+            flexWrap: "wrap",
+          }}
+        >
+          <button
+            type="button"
+            onClick={() => {
+              resetError();
+              if (typeof window !== "undefined") {
+                window.location.reload();
+              }
+            }}
+            style={{
+              border: "none",
+              borderRadius: "999px",
+              background: "#cc0033",
+              color: "#ffffff",
+              padding: "12px 18px",
+              fontWeight: 700,
+              cursor: "pointer",
+            }}
+          >
+            Обновить страницу
+          </button>
+
+          <a
+            href={homeHref}
+            style={{
+              borderRadius: "999px",
+              border: "1px solid #d1d5db",
+              color: "#111827",
+              padding: "12px 18px",
+              fontWeight: 700,
+              textDecoration: "none",
+            }}
+          >
+            На главную
+          </a>
+        </div>
+      </div>
+    </div>
+  );
+}
+
+export default function MyApp({ Component, pageProps }) {
+  const router = useRouter();
+  const previousPageUrlRef = useRef("");
+  const city = (pageProps)?.data1?.city;
+  const cityCounterId = city === "samara" ? 100325084 : city === "togliatti" ? 100601350 : null;
+  const isOnlyPayPage = city === "only-pay-page";
+
+  useEffect(() => {
+    const handleRouteChangeError = (error, url) => {
+      if (!isChunkLoadError(error)) {
+        return;
+      }
+
+      Sentry.withScope((scope) => {
+        scope.setTag("kind", "chunk_load_error");
+        scope.setTag("source", "routeChangeError");
+        scope.setContext("connectivity", getClientNetworkContext());
+        scope.setExtra("failedRoute", url);
+        Sentry.captureException(error);
+      });
+
+      maybeReloadAfterChunkError({
+        source: "routeChangeError",
+        failedRoute: url,
+      });
+    };
+
+    router.events.on("routeChangeError", handleRouteChangeError);
+
+    return () => {
+      router.events.off("routeChangeError", handleRouteChangeError);
+    };
+  }, [router.events]);
+
+  useEffect(() => {
+    if (isOnlyPayPage || typeof window === "undefined") {
+      return undefined;
+    }
+
+    const initialUrl = window.location.href;
+    previousPageUrlRef.current = initialUrl;
+
+    hitAll(initialUrl, {
+      title: document.title,
+      referer: document.referrer || undefined,
+    });
+
+    const handleRouteChangeComplete = (url) => {
+      const nextUrl = new URL(url, window.location.origin).toString();
+      const referer = previousPageUrlRef.current || document.referrer || undefined;
+
+      window.setTimeout(() => {
+        hitAll(nextUrl, {
+          title: document.title,
+          referer,
+        });
+      }, 0);
+
+      previousPageUrlRef.current = nextUrl;
+    };
+
+    router.events.on("routeChangeComplete", handleRouteChangeComplete);
+
+    return () => {
+      router.events.off("routeChangeComplete", handleRouteChangeComplete);
+    };
+  }, [isOnlyPayPage, router.events]);
+
+  const appContent = isOnlyPayPage ? (
+    <ClientMetricaProvider>
+      <Component {...pageProps} />
+    </ClientMetricaProvider>
+  ) : (
+    <>
       <Script
         id="varioqub"
         strategy="beforeInteractive"
@@ -332,6 +478,7 @@ export default function MyApp({ Component, pageProps }) {
             trackLinks:true,
             accurateTrackBounce:true,
             webvisor:true,
+            defer:true,
             ecommerce:"dataLayer"
           });
 
@@ -340,6 +487,7 @@ export default function MyApp({ Component, pageProps }) {
               clickmap:true,
               trackLinks:true,
               accurateTrackBounce:true,
+              defer:true,
               ecommerce:"dataLayer"
             });
           ` : ''}
@@ -363,6 +511,16 @@ export default function MyApp({ Component, pageProps }) {
         id="ymaps"
         strategy="afterInteractive"
         src={`https://api-maps.yandex.ru/2.1/?apikey=${process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP}&lang=ru_RU`}
+        onLoad={() => {
+          if (typeof window !== "undefined") {
+            window.__JACO_YMAPS_FAILED = false;
+          }
+        }}
+        onError={() => {
+          if (typeof window !== "undefined") {
+            window.__JACO_YMAPS_FAILED = true;
+          }
+        }}
       />
 
       {/* VK noscript */}
@@ -394,6 +552,22 @@ export default function MyApp({ Component, pageProps }) {
       <ClientMetricaProvider>
         <Component {...pageProps} />
       </ClientMetricaProvider>
+    </>
+  );
+
+  return (
+    <ThemeProvider theme={theme}>
+      <Sentry.ErrorBoundary
+        fallback={({ resetError }) => <AppErrorFallback city={city} resetError={resetError} />}
+        beforeCapture={(scope) => {
+          scope.setTag("surface", "app-root");
+          scope.setContext("connectivity", getClientNetworkContext());
+          scope.setExtra("city", city || null);
+          scope.setExtra("pageUrl", typeof window !== "undefined" ? window.location.href : null);
+        }}
+      >
+        {appContent}
+      </Sentry.ErrorBoundary>
     </ThemeProvider>
   );
 }

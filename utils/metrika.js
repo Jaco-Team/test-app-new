@@ -4,6 +4,9 @@ import { getLocalStorageItem, setLocalStorageItem } from './browserStorage';
 const MAIN_COUNTER_ID = 47085879;
 const PURCHASE_STORAGE_PREFIX = 'ym_purchase_';
 const PURCHASE_PENDING_TTL_MS = 30 * 1000;
+const YM_READY_RETRY_DELAY_MS = 250;
+const YM_READY_MAX_RETRIES = 40;
+const USER_ID_SYNC_DELAY_MS = 400;
 
 function getCityCounterId(city) {
   if (!city) return null;
@@ -13,6 +16,59 @@ function getCityCounterId(city) {
   if (c === 'togliatti') return 100601350;
 
   return null;
+}
+
+function getActiveCounterIds(cityOverride) {
+  const ids = [MAIN_COUNTER_ID];
+  const city = cityOverride ?? useCitiesStore.getState().thisCity;
+  const cityCounterId = getCityCounterId(city);
+
+  if (cityCounterId && !ids.includes(cityCounterId)) {
+    ids.push(cityCounterId);
+  }
+
+  return ids;
+}
+
+function runWhenYmReady(callback, attempt = 0) {
+  if (typeof window === 'undefined') return false;
+
+  if (typeof window.ym === 'function') {
+    callback();
+    return true;
+  }
+
+  if (attempt >= YM_READY_MAX_RETRIES) {
+    return false;
+  }
+
+  window.setTimeout(() => {
+    runWhenYmReady(callback, attempt + 1);
+  }, YM_READY_RETRY_DELAY_MS);
+
+  return false;
+}
+
+function normalizeMoney(value) {
+  if (value === null || value === undefined || value === '') return 0;
+
+  const parsed = Number(String(value).replace(/\s+/g, '').replace(',', '.'));
+  return Number.isFinite(parsed) ? parsed : 0;
+}
+
+function normalizeId(value) {
+  if (value === null || value === undefined) return '';
+  return String(value).trim();
+}
+
+function normalizeUrl(url) {
+  if (typeof window === 'undefined') return String(url || '/');
+
+  try {
+    return new URL(url || window.location.href, window.location.origin).toString();
+  } catch {
+    return window.location.href;
+  }
 }
 
 function getPurchaseStorageKey(orderId) {
@@ -69,22 +125,41 @@ function getDataLayer() {
   return null;
 }
 
+export function hitAll(url, options = {}) {
+  if (typeof window === 'undefined') return false;
+
+  const hitUrl = normalizeUrl(url);
+  const hitOptions = {
+    title: options.title || document.title,
+  };
+
+  if (options.referer) {
+    hitOptions.referer = options.referer;
+  }
+
+  if (isObj(options.params)) {
+    hitOptions.params = options.params;
+  }
+
+  return runWhenYmReady(() => {
+    getActiveCounterIds(options.city).forEach((counterId) => {
+      window.ym(counterId, 'hit', hitUrl, hitOptions);
+    });
+  });
+}
+
 /**
  * Шлёт цель в основной счётчик (всегда) + в городской (если определён город)
  */
 export function reachGoal(goal, params) {
   if (typeof window === 'undefined') return;
-  if (typeof window.ym !== 'function') return;
 
   try {
-    window.ym(MAIN_COUNTER_ID, 'reachGoal', goal, params);
-
-    const city = useCitiesStore.getState().thisCity;
-    const cityCounterId = getCityCounterId(city);
-
-    if (cityCounterId) {
-      window.ym(cityCounterId, 'reachGoal', goal, params);
-    }
+    runWhenYmReady(() => {
+      getActiveCounterIds().forEach((counterId) => {
+        window.ym(counterId, 'reachGoal', goal, params);
+      });
+    });
   } catch (e) {
     console.warn('YM reachGoal error:', e);
   }
@@ -97,20 +172,21 @@ function isObj(v) {
 // 2) РАЗДЕЛЬНЫЙ: разные params для основного и городского
 export function reachGoalSplit(goal, paramsMain, paramsCity) {
   if (typeof window === 'undefined') return;
-  if (typeof window.ym !== 'function') return;
 
   const safeMain = isObj(paramsMain) ? paramsMain : {};
   const safeCity = isObj(paramsCity) ? paramsCity : safeMain;
 
   try {
-    window.ym(MAIN_COUNTER_ID, 'reachGoal', goal, safeMain);
+    runWhenYmReady(() => {
+      window.ym(MAIN_COUNTER_ID, 'reachGoal', goal, safeMain);
 
-    const city = useCitiesStore.getState().thisCity; // 'samara' | 'togliatti'
-    const cityCounterId = getCityCounterId(city);
+      const city = useCitiesStore.getState().thisCity;
+      const cityCounterId = getCityCounterId(city);
 
-    if (cityCounterId) {
-      window.ym(cityCounterId, 'reachGoal', goal, safeCity);
-    }
+      if (cityCounterId) {
+        window.ym(cityCounterId, 'reachGoal', goal, safeCity);
+      }
+    });
   } catch (e) {
     console.warn('YM reachGoalSplit error:', e);
   }
@@ -119,57 +195,119 @@ export function reachGoalSplit(goal, paramsMain, paramsCity) {
 // новое событие "Покупка" только в основной счетчик 47085879
 export function reachGoalMain(goal, params, cb) {
   if (typeof window === 'undefined') return;
-  if (typeof window.ym !== 'function') return;
 
   try {
-    if (typeof cb === 'function') {
-      window.ym(MAIN_COUNTER_ID, 'reachGoal', goal, params, cb);
-    } else {
-      window.ym(MAIN_COUNTER_ID, 'reachGoal', goal, params);
-    }
+    runWhenYmReady(() => {
+      if (typeof cb === 'function') {
+        window.ym(MAIN_COUNTER_ID, 'reachGoal', goal, params, cb);
+      } else {
+        window.ym(MAIN_COUNTER_ID, 'reachGoal', goal, params);
+      }
+    });
   } catch (e) {
     console.warn('YM reachGoalMain error:', e);
   }
 }
 
+export function buildPurchasePayload({ order, items, goalParams = {} }) {
+  const orderId = normalizeId(order?.order_id ?? order?.id);
+  const revenue = normalizeMoney(order?.sum_order ?? order?.revenue);
+  const coupon = order?.promo_name ? String(order.promo_name).trim() : '';
+
+  const products = (Array.isArray(items) ? items : []).map((item, index) => ({
+    id: normalizeId(item?.id ?? index + 1),
+    name: item?.name ? String(item.name) : '',
+    price: normalizeMoney(item?.price),
+    category: item?.category ? String(item.category) : '',
+    quantity: normalizeMoney(item?.quantity ?? item?.count),
+    position: index,
+  }));
+
+  return {
+    orderId: orderId || null,
+    goalParams: {
+      ...(isObj(goalParams) ? goalParams : {}),
+      ...(orderId ? { id: orderId, order_id: orderId } : {}),
+      revenue,
+      ...(coupon ? { coupon } : {}),
+    },
+    ecommerceData: {
+      currencyCode: 'RUB',
+      purchase: {
+        actionField: {
+          ...(orderId ? { id: orderId } : {}),
+          ...(coupon ? { coupon } : {}),
+          revenue,
+        },
+        products,
+      },
+    },
+  };
+}
+
 export function trackPurchase({ orderId, goalParams, ecommerceData }) {
   if (typeof window === 'undefined') return false;
 
-  if (orderId && shouldSkipPurchase(orderId)) {
+  const normalizedOrderId = normalizeId(orderId || ecommerceData?.purchase?.actionField?.id);
+  const normalizedRevenue = normalizeMoney(
+    ecommerceData?.purchase?.actionField?.revenue ?? goalParams?.revenue
+  );
+  const safeGoalParams = isObj(goalParams) ? goalParams : {};
+  const safeEcommerceData = isObj(ecommerceData) ? ecommerceData : null;
+  const finalGoalParams = {
+    ...safeGoalParams,
+    ...(normalizedOrderId ? { id: normalizedOrderId, order_id: normalizedOrderId } : {}),
+    revenue: normalizedRevenue,
+  };
+  const finalEcommerceData = safeEcommerceData
+    ? {
+        ...safeEcommerceData,
+        purchase: {
+          ...(isObj(safeEcommerceData.purchase) ? safeEcommerceData.purchase : {}),
+          actionField: {
+            ...(isObj(safeEcommerceData?.purchase?.actionField) ? safeEcommerceData.purchase.actionField : {}),
+            ...(normalizedOrderId ? { id: normalizedOrderId } : {}),
+            revenue: normalizedRevenue,
+          },
+        },
+      }
+    : null;
+
+  if (normalizedOrderId && shouldSkipPurchase(normalizedOrderId)) {
     return false;
   }
 
-  if (orderId) {
-    writePurchaseState(orderId, 'pending');
+  if (normalizedOrderId) {
+    writePurchaseState(normalizedOrderId, 'pending');
   }
 
   let finalized = false;
   const finalize = () => {
     if (finalized) return;
     finalized = true;
-    if (orderId) {
-      writePurchaseState(orderId, 'sent');
+    if (normalizedOrderId) {
+      writePurchaseState(normalizedOrderId, 'sent');
     }
   };
 
   try {
-    if (typeof window.ym === 'function') {
-      window.ym(MAIN_COUNTER_ID, 'reachGoal', 'purchase', goalParams, finalize);
+    runWhenYmReady(() => {
+      window.ym(MAIN_COUNTER_ID, 'reachGoal', 'purchase', finalGoalParams, finalize);
 
       const city = useCitiesStore.getState().thisCity;
       const cityCounterId = getCityCounterId(city);
       if (cityCounterId) {
-        window.ym(cityCounterId, 'reachGoal', 'purchase', goalParams);
+        window.ym(cityCounterId, 'reachGoal', 'purchase', finalGoalParams);
       }
-    }
+    });
 
     const dataLayer = getDataLayer();
-    if (dataLayer && ecommerceData) {
-      dataLayer.push({ ecommerce: ecommerceData });
+    if (dataLayer && finalEcommerceData) {
+      dataLayer.push({ ecommerce: finalEcommerceData });
     }
 
     // Fallback: в некоторых браузерах callback Метрики приходит нестабильно.
-    window.setTimeout(finalize, 1500);
+    window.setTimeout(finalize, 5000);
   } catch (e) {
     console.warn('YM trackPurchase error:', e);
   }
@@ -182,22 +320,29 @@ export function trackPurchase({ orderId, goalParams, ecommerceData }) {
 // Нужно вызвать для основного и городского счётчика, чтобы события в отчётах связывались с одним id.
 export function setUserIdAll(userId) {
   if (typeof window === 'undefined') return;
-  if (typeof window.ym !== 'function') return;
 
   const uid = userId === null || userId === undefined ? '' : String(userId).trim();
   if (!uid) return;
 
   try {
-    window.ym(MAIN_COUNTER_ID, 'setUserID', uid);
+    runWhenYmReady(() => {
+      const counters = getActiveCounterIds();
+      const userParams = { UserID: uid };
 
-    const city = useCitiesStore.getState().thisCity;
-    const cityCounterId = getCityCounterId(city);
-    if (cityCounterId) {
-      window.ym(cityCounterId, 'setUserID', uid);
-    }
+      counters.forEach((counterId) => {
+        window.ym(counterId, 'userParams', userParams);
+      });
 
-    // лог для проверки в консоли
-    //console.log('[YM] setUserID sent:', uid, 'main:', MAIN_COUNTER_ID, 'city:', cityCounterId || '-');
+      if (window.__JACO_YM_USER_ID_TIMER) {
+        window.clearTimeout(window.__JACO_YM_USER_ID_TIMER);
+      }
+
+      window.__JACO_YM_USER_ID_TIMER = window.setTimeout(() => {
+        counters.forEach((counterId) => {
+          window.ym(counterId, 'setUserID', uid);
+        });
+      }, USER_ID_SYNC_DELAY_MS);
+    });
   } catch (e) {
     console.warn('YM setUserID error:', e);
   }

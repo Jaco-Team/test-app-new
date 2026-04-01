@@ -96,7 +96,10 @@ const nextConfig = {
 // Injected content via Sentry wizard below
 // правка 18.03.26 для glitchtip 
 const { withSentryConfig } = require("@sentry/nextjs");
-module.exports = withSentryConfig(nextConfig, { silent: true });
+module.exports = withSentryConfig(nextConfig, {
+  silent: true,
+  tunnelRoute: "/monitoring",
+});
 //module.exports = nextConfig
 // module.exports = withSentryConfig(
 //   nextConfig,

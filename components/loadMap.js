@@ -1,27 +1,58 @@
 //'use_client'
 
-import Script from 'next/script';
-import { useEffect } from 'react';
+import { useEffect, useRef } from 'react';
+import * as Sentry from '@sentry/nextjs';
 
 import { useContactStore } from '@/components/store.js';
+import { getClientNetworkContext, waitForYMapsReady } from '@/utils/clientMonitoring';
 
 export default function LoadMap({ city }) {
   const [getMap] = useContactStore(state => [state.getMap]);
-
-  const gt_data = () => {
-    setTimeout(() => {
-      getMap('contacts', city);
-    }, 300)
-  }
+  const requestedRef = useRef(false);
 
   useEffect(() => {
-    gt_data();
-  }, [])
+    let cancelled = false;
+    requestedRef.current = false;
 
-  return (
-    <Script 
-      src={"https://api-maps.yandex.ru/2.1/?apikey="+process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP+"&lang=ru_RU"}
-      onLoad={gt_data} 
-    />
-  );
+    if (!city) {
+      return undefined;
+    }
+
+    const loadMapData = async () => {
+      const ready = await waitForYMapsReady();
+
+      if (cancelled) {
+        return;
+      }
+
+      if (!ready) {
+        Sentry.captureMessage('Yandex Maps API did not become ready', {
+          level: 'error',
+          tags: {
+            kind: 'ymaps_bootstrap_timeout',
+            source: 'LoadMap',
+          },
+          extra: {
+            city,
+            pageUrl: typeof window !== 'undefined' ? window.location.href : null,
+            ...getClientNetworkContext(),
+          },
+        });
+        return;
+      }
+
+      if (!requestedRef.current) {
+        requestedRef.current = true;
+        getMap('contacts', city);
+      }
+    };
+
+    loadMapData();
+
+    return () => {
+      cancelled = true;
+    };
+  }, [city, getMap]);
+
+  return null;
 }

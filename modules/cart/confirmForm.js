@@ -18,7 +18,7 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import CartConfirmMap from '@/modules/cart/cartConfirmMap';
 
-import { reachGoal, trackPurchase } from '@/utils/metrika';
+import { buildPurchasePayload, reachGoal, trackPurchase } from '@/utils/metrika';
 
 const confirmOrderTitle = 'Проверьте заказ';
 const confirmOrderLabel = 'Подтвердить заказ';
@@ -82,21 +82,13 @@ export default function ConfirmForm() {
         position: index,
       }));
 
-      trackPurchase({
-        orderId: checkNewOrder?.order?.order_id,
-        goalParams: ym_data,
-        ecommerceData: {
-          currencyCode: 'RUB',
-          purchase: {
-            actionField: {
-              id: checkNewOrder?.order?.order_id ?? 0,
-              coupon: checkNewOrder?.order?.promo_name ?? '',
-              revenue: checkNewOrder?.order?.sum_order ?? 0,
-            },
-            products: items,
-          },
-        },
-      });
+      trackPurchase(
+        buildPurchasePayload({
+          order: checkNewOrder?.order,
+          items,
+          goalParams: ym_data,
+        })
+      );
  
       try {
         if (thisCityRu == 'Самара') {

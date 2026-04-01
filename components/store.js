@@ -5,12 +5,14 @@ import { persist, createJSONStorage } from 'zustand/middleware';
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import isoWeek from 'dayjs/plugin/isoWeek';
+import * as Sentry from '@sentry/nextjs';
 dayjs.extend(isoWeek);
 dayjs.locale('ru');
 
 import { api, apiAddress } from './api.js';
 
 import useYandexMetrika from './useYandexMetrika';
+import { getClientNetworkContext } from '@/utils/clientMonitoring';
 import { reachGoal, setUserIdAll } from '@/utils/metrika';
 import {
   getLocalStorageItem,
@@ -22,6 +24,35 @@ import {
 } from '@/utils/browserStorage';
 
 import Cookies from 'js-cookie'
+
+function captureMapStateIssue(message, extra = {}) {
+  Sentry.captureMessage(message, {
+    level: 'error',
+    tags: {
+      kind: 'maps_state_error',
+    },
+    extra: {
+      ...extra,
+      ...getClientNetworkContext(),
+    },
+  });
+}
+
+function withYMapsReady(callback, extra = {}) {
+  if (typeof window === 'undefined') {
+    return false;
+  }
+
+  const ymapsApi = window.ymaps;
+
+  if (!ymapsApi || typeof ymapsApi.ready !== 'function') {
+    captureMapStateIssue('Yandex Maps API is unavailable', extra);
+    return false;
+  }
+
+  ymapsApi.ready(callback);
+  return true;
+}
 
 export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
   activePage: '',
@@ -2848,6 +2879,23 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const json = await api(this_module, data);
 
+    if (!Array.isArray(json?.zones) || json.zones.length === 0) {
+      captureMapStateIssue('Cart map response does not contain zones', {
+        source: 'useCartStore.getMapCart',
+        city,
+        module: this_module,
+        hasJson: Boolean(json),
+      });
+
+      set({
+        center_map: null,
+        zones: [],
+        points: [],
+      });
+
+      return;
+    }
+
     json?.zones.map((point) => point.image = 'default#image');
     json?.points.map((point) => point.image = 'default#image');
 
@@ -2883,9 +2931,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
     const orderPic = pointList?.find(point => point.name === addr);
 
-    ymaps.ready( () => {
+    if (!withYMapsReady(() => {
 
-      const img = ymaps.templateLayoutFactory.createClass( 
+      const img = window.ymaps.templateLayoutFactory.createClass( 
         "<div class='my-img'>" +
           "<img alt='' src='/Favikon.png' />" +
         "</div>"
@@ -2903,7 +2951,12 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       set({ zones, orderPic: orderPic ?? null });
 
       get().setCartLocalStorage({ touch: opts.touch });
-    })
+    }, {
+      source: 'useCartStore.changePointClick',
+      addr,
+    })) {
+      return;
+    }
 
   },
 
@@ -3100,6 +3153,25 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
     const json = await api(this_module, data);
 
+    if (!Array.isArray(json?.zones) || json.zones.length === 0) {
+      captureMapStateIssue('Contacts map response does not contain zones', {
+        source: 'useContactStore.getMap',
+        city,
+        module: this_module,
+        hasJson: Boolean(json),
+      });
+
+      set({
+        center_map: null,
+        zones: [],
+        points_zone: [],
+        myAddr: [],
+        phone: '',
+      });
+
+      return;
+    }
+
     let points_zone = [];
 
     json?.zones.map((point) => {
@@ -3159,7 +3231,16 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
       get().changePointClick(pointFind?.addr);
 
     } else {
-      get().changePointClick(pointList[0].addr);
+      const firstPoint = pointList?.[0];
+
+      if (!firstPoint?.addr) {
+        captureMapStateIssue('Contacts map has no default point to select', {
+          source: 'useContactStore.choosePointMap',
+        });
+        return;
+      }
+
+      get().changePointClick(firstPoint.addr);
     }
 
   },
@@ -3174,8 +3255,8 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
 
     
 
-    ymaps.ready( () => {
-      const img = ymaps.templateLayoutFactory.createClass( 
+    if (!withYMapsReady(() => {
+      const img = window.ymaps.templateLayoutFactory.createClass( 
         "<div class='my-img'>" +
           "<img alt='' src='/Favikon.png' />" +
         "</div>"
@@ -3234,7 +3315,12 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
           duration: 1000
         },
       })
-    })
+    }, {
+      source: 'useContactStore.changePointClick',
+      addr,
+    })) {
+      return;
+    }
 
     
 
@@ -4124,53 +4210,78 @@ export const useProfileStore = createWithEqualityFn(persist((set, get) => ({
   },
 
   setMapZone: (zones, city_center) => {
-    get().thisMAP.geoObjects.removeAll();
+    if (!get().thisMAP?.geoObjects) {
+      captureMapStateIssue('Profile map instance is unavailable', {
+        source: 'useProfileStore.setMapZone',
+      });
+      return;
+    }
 
-    zones.map((zone, key)=>{
-      get().thisMAP.geoObjects.add(
-        new ymaps.Polygon([zone.zone], 
-          {
-            address: '',
-            raion: '',
-          }, 
-          {
-            fillColor: 'rgba(53, 178, 80, 0.15)',
-            strokeColor: '#35B250',
-            strokeWidth: 5,
-            hideIconOnBalloonOpen: false,
-          }
-        )
-      );
-    })
+    if (!withYMapsReady(() => {
+      get().thisMAP.geoObjects.removeAll();
 
-    get().thisMAP.setCenter([city_center[0], city_center[1]], 11);
+      zones.map((zone, key)=>{
+        get().thisMAP.geoObjects.add(
+          new window.ymaps.Polygon([zone.zone], 
+            {
+              address: '',
+              raion: '',
+            }, 
+            {
+              fillColor: 'rgba(53, 178, 80, 0.15)',
+              strokeColor: '#35B250',
+              strokeWidth: 5,
+              hideIconOnBalloonOpen: false,
+            }
+          )
+        );
+      })
+
+      get().thisMAP.setCenter([city_center[0], city_center[1]], 11);
+    }, {
+      source: 'useProfileStore.setMapZone',
+    })) {
+      return;
+    }
   },
   setAddrPoint: (point) => {
+    if (!get().thisMAP?.geoObjects) {
+      captureMapStateIssue('Profile map instance is unavailable', {
+        source: 'useProfileStore.setAddrPoint',
+      });
+      return;
+    }
 
-    let objectManager = new ymaps.ObjectManager();
+    if (!withYMapsReady(() => {
+      let objectManager = new window.ymaps.ObjectManager();
 
-    let json2 = {
-      "type": "FeatureCollection",
-      "features": []
-    };
+      let json2 = {
+        "type": "FeatureCollection",
+        "features": []
+      };
 
-    json2.features.push({
-      type: "Feature",
-      id: -1,
-      geometry: {
-        type: "Point",
-        coordinates: [ point[0], point[1] ]
-      },
-    })
+      json2.features.push({
+        type: "Feature",
+        id: -1,
+        geometry: {
+          type: "Point",
+          coordinates: [ point[0], point[1] ]
+        },
+      })
 
-    objectManager.objects.options.set({
-      iconLayout: 'default#image',
-      iconImageHref: '/Frame.png',
-    });
+      objectManager.objects.options.set({
+        iconLayout: 'default#image',
+        iconImageHref: '/Frame.png',
+      });
 
-    objectManager.add(json2);
+      objectManager.add(json2);
 
-    get().thisMAP.geoObjects.add(objectManager);
+      get().thisMAP.geoObjects.add(objectManager);
+    }, {
+      source: 'useProfileStore.setAddrPoint',
+    })) {
+      return;
+    }
   },
   delAddrPoint: () => {
     let geoObjects = get().thisMAP.geoObjects;

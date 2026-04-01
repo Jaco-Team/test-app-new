@@ -1,6 +1,5 @@
 import React, { useEffect } from 'react';
 
-import Script from 'next/script';
 import dynamic from 'next/dynamic'
 
 import Footer from '@/components/footer.js'
@@ -67,8 +66,6 @@ export default function Address(props) {
 
   return (
     <div className={roboto.variable}>
-      <Script src="https://api-maps.yandex.ru/2.1/?apikey=%NEXT_PUBLIC_YANDEX_TOKEN_MAP%&lang=ru_RU" />
-      
       <DynamicPage page={page} this_module={this_module} city={city} />
 
       <Footer cityName={city} active_page={this_module} links={links} />

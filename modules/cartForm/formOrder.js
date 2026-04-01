@@ -29,7 +29,7 @@ import 'dayjs/locale/ru';
 
 import Cookies from 'js-cookie'
 
-import { reachGoal, trackPurchase } from '@/utils/metrika';
+import { buildPurchasePayload, reachGoal, trackPurchase } from '@/utils/metrika';
 import { getLocalStorageItem, removeLocalStorageItem, setLocalStorageItem } from '@/utils/browserStorage';
 
 const dopText = {
@@ -446,21 +446,13 @@ export default function FormOrder({ cityName }) {
           position: index,
         }));
 
-        trackPurchase({
-          orderId: checkNewOrder?.order?.order_id,
-          goalParams: ym_data,
-          ecommerceData: {
-            currencyCode: 'RUB',
-            purchase: {
-              actionField: {
-                id: checkNewOrder?.order?.order_id ?? 0,
-                coupon: checkNewOrder?.order?.promo_name ?? '',
-                revenue: checkNewOrder?.order?.sum_order ?? 0,
-              },
-              products: items,
-            },
-          },
-        });
+        trackPurchase(
+          buildPurchasePayload({
+            order: checkNewOrder?.order,
+            items,
+            goalParams: ym_data,
+          })
+        );
 
         removeLocalStorageItem('freeDrive');
 

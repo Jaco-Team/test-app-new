@@ -15,7 +15,7 @@ import CartItemMobile from '@/modules/cart/cartItemsMobile';
 
 import { useRouter } from 'next/router';
 
-import { reachGoal, trackPurchase } from '@/utils/metrika';
+import { buildPurchasePayload, reachGoal, trackPurchase } from '@/utils/metrika';
 import { removeLocalStorageItem } from '@/utils/browserStorage';
 
 export default function DopsForm() {
@@ -80,21 +80,13 @@ export default function DopsForm() {
           position: index,
         }));
 
-        trackPurchase({
-          orderId: checkNewOrder?.order?.order_id,
-          goalParams: ym_data,
-          ecommerceData: {
-            currencyCode: 'RUB',
-            purchase: {
-              actionField: {
-                id: checkNewOrder?.order?.order_id ?? 0,
-                coupon: checkNewOrder?.order?.promo_name ?? '',
-                revenue: checkNewOrder?.order?.sum_order ?? 0,
-              },
-              products: items,
-            },
-          },
-        });
+        trackPurchase(
+          buildPurchasePayload({
+            order: checkNewOrder?.order,
+            items,
+            goalParams: ym_data,
+          })
+        );
 
         try{
           if( thisCityRu == 'Самара' ){
