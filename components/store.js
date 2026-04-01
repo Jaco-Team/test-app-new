@@ -1191,7 +1191,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
 
       const res = get().promoCheck();
 
-      if (res?.st) {
+      const shouldPersistPromoName = Boolean(json) && json?.status_promo !== false;
+
+      if (res?.st || shouldPersistPromoName) {
         setSessionStorageItem('promo_name', promoName)
         Cookies.set('promo_name', promoName, { expires: 1 })
       } else {
@@ -1550,7 +1552,8 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
     let data;
     const typeOrder = get().typeOrder;
     //const promoName = sessionStorage.getItem('promo_name');
-    const promoName = Cookies.get('promo_name');
+    const promoNameCandidate = Cookies.get('promo_name');
+    const promoName = get().checkPromo?.st ? promoNameCandidate : '';
 
     let sdacha = get().sdacha;
 
