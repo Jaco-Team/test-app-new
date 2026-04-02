@@ -99,6 +99,12 @@ const { withSentryConfig } = require("@sentry/nextjs");
 module.exports = withSentryConfig(nextConfig, {
   silent: true,
   tunnelRoute: "/monitoring",
+  widenClientFileUpload: true,
+  webpack: {
+    reactComponentAnnotation: {
+      enabled: true,
+    },
+  },
 });
 //module.exports = nextConfig
 // module.exports = withSentryConfig(

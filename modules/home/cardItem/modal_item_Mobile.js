@@ -14,6 +14,7 @@ import CartCtaButton from '@/ui/CartCtaButton';
 import { roboto } from '@/ui/Font';
 
 import { reachGoalSplit } from '@/utils/metrika';
+import { getItemImageUrl, hasItemImage } from '@/utils/itemImage';
 
 export default function ModalItemMobile() {
   const [openItemCard, item_card, setActiveModalCardItemMobile] = useHomeStore((state) => [state.openItemCard, state.item_card, state.setActiveModalCardItemMobile]);
@@ -67,6 +68,8 @@ export default function ModalItemMobile() {
   const listenScrollValue = (event) => setShadowValue(event.target.scrollTop);
 
   const img_name = item_card?.img_app;
+  const hasMainImage = hasItemImage(img_name);
+  const mainImageSrc = getItemImageUrl(img_name, '292x292', 'jpg');
 
   const add_to_cart = () => {
     changeCountPlus(item_card?.id);
@@ -156,7 +159,7 @@ export default function ModalItemMobile() {
                 <picture>
                   <source 
                     type="image/webp" 
-                    srcSet={`
+                    srcSet={hasMainImage ? `
 
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_292x292.webp 138w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_366x366.webp 146w,
@@ -166,11 +169,11 @@ export default function ModalItemMobile() {
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_1168x1168.webp 366w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_1420x1420.webp 584w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.webp 760w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.webp 1875w`} 
+                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.webp 1875w` : undefined} 
                     sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
                   <source 
                     type="image/jpeg" 
-                    srcSet={`
+                    srcSet={hasMainImage ? `
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_292x292.jpg 138w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_366x366.jpg 146w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_466x466.jpg 183w,
@@ -179,14 +182,13 @@ export default function ModalItemMobile() {
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_1168x1168.jpg 366w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_1420x1420.jpg 584w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.jpg 760w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.jpg 1875w`} 
+                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.jpg 1875w` : undefined} 
 
                     sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
                   <img 
-                    alt={item_card?.name} 
-
-                    src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_292x292.jpg`} 
+                    alt={item_card?.name || 'Изображение блюда'} 
+                    src={mainImageSrc} 
 
                     //src={`https://cdnimg.jacofood.ru/${img_name}_292x292.jpg`} 
 

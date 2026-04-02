@@ -38,6 +38,38 @@ function captureMapStateIssue(message, extra = {}) {
   });
 }
 
+function syncSentryUser(user, city = null) {
+  if (!user?.id) {
+    Sentry.setUser(null);
+    Sentry.setTag('auth_state', 'guest');
+    Sentry.setContext('account', {
+      authState: 'guest',
+    });
+
+    if (city != null) {
+      Sentry.setTag('city_id', String(city));
+    }
+
+    return;
+  }
+
+  Sentry.setUser({
+    id: String(user.id),
+  });
+  Sentry.setTag('auth_state', 'authorized');
+
+  if (city != null) {
+    Sentry.setTag('city_id', String(city));
+  }
+
+  Sentry.setContext('account', {
+    authState: 'authorized',
+    hasEmail: Boolean(user.mail),
+    hasBirthday: Boolean(user.date_bir_full || (user.date_bir_d && user.date_bir_m)),
+    marketingOptIn: Number(user.spam) === 1,
+  });
+}
+
 function withYMapsReady(callback, extra = {}) {
   if (typeof window === 'undefined') {
     return false;
@@ -364,6 +396,7 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
   signOut: (city) => {
 
     useProfileStore.getState().saveUserActions('user_log_out', '');
+    syncSentryUser(null, city);
 
     removeLocalStorageItem('token');
     Cookies.remove('token');
@@ -3726,6 +3759,8 @@ export const useProfileStore = createWithEqualityFn(persist((set, get) => ({
         setUserIdAll(uid);
       }
 
+      syncSentryUser(json?.user, city);
+
       set({
         // shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() + json?.user?.fam?.substring(0, 1).toUpperCase() : '',
         shortName: json?.user?.name ? json?.user?.name?.substring(0, 1).toUpperCase() : '',
@@ -3758,6 +3793,7 @@ export const useProfileStore = createWithEqualityFn(persist((set, get) => ({
   },
 
   setUser: (user) => {
+    syncSentryUser(user, get().city);
 
     set({
       // shortName: user?.name?.substring(0, 1) + user?.fam?.substring(0, 1),

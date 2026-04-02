@@ -33,24 +33,81 @@ import {
   isChunkLoadError,
 } from "./utils/clientMonitoring";
 
+function getEnvNumber(name, fallback, { min = Number.NEGATIVE_INFINITY, max = Number.POSITIVE_INFINITY } = {}) {
+  const rawValue = process.env[name];
+
+  if (rawValue == null || rawValue === "") {
+    return fallback;
+  }
+
+  const parsed = Number(rawValue);
+
+  if (!Number.isFinite(parsed)) {
+    return fallback;
+  }
+
+  return Math.min(Math.max(parsed, min), max);
+}
+
+const sentryEnabled = process.env.NODE_ENV === "production" && Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN);
+const tracesSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_TRACES_SAMPLE_RATE", 0.5, { min: 0, max: 1 });
+const profilesSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_PROFILES_SAMPLE_RATE", 0, { min: 0, max: 1 });
+const replaysSessionSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_REPLAYS_SESSION_SAMPLE_RATE", 0.1, { min: 0, max: 1 });
+const replaysOnErrorSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE", 1, { min: 0, max: 1 });
+
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  tunnel: process.env.NODE_ENV === "production" ? "/monitoring" : undefined,
   environment: process.env.NODE_ENV,
-  enabled: process.env.NODE_ENV === "production" && Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN),
-  tracesSampleRate: 0.5,
+  enabled: sentryEnabled,
+  sampleRate: getEnvNumber("NEXT_PUBLIC_SENTRY_ERROR_SAMPLE_RATE", 1, { min: 0, max: 1 }),
+  tracesSampleRate,
   debug: process.env.NODE_ENV === "development",
+  attachStacktrace: true,
+  maxBreadcrumbs: 200,
+  maxValueLength: 1000,
+  normalizeDepth: 6,
+  normalizeMaxBreadth: 1200,
+  initialScope(scope) {
+    scope.setTags({
+      app: "jacofood-web",
+      runtime: "browser",
+    });
+
+    return scope;
+  },
   integrations: [
-    Sentry.replayIntegration(),
+    Sentry.replayIntegration({
+      // Keep form values masked, but make the page itself readable in Replay.
+      maskAllInputs: true,
+      maskAllText: false,
+      blockAllMedia: false,
+      mask: [
+        "[data-sentry-mask]",
+        ".sentry-mask",
+        "[data-sensitive='true']",
+      ],
+      block: [
+        "[data-sentry-block]",
+        ".sentry-block",
+      ],
+    }),
   ],
-  replaysSessionSampleRate: 0.1,
-  replaysOnErrorSampleRate: 1.0,
+  ...(profilesSampleRate > 0 ? { profilesSampleRate } : {}),
+  replaysSessionSampleRate,
+  replaysOnErrorSampleRate,
   beforeSend(event, hint) {
     const network = getClientNetworkContext();
     const originalException = hint?.originalException;
+    const route = typeof window !== "undefined" ? window.location.pathname : "unknown";
+    const pageUrl = typeof window !== "undefined" ? window.location.href : null;
+    const documentVisibility = typeof document !== "undefined" ? document.visibilityState : "unknown";
 
     event.tags = {
       ...event.tags,
+      route,
       online_status: network.online === false ? "offline" : "online",
+      save_data_mode: network.saveData ? "enabled" : "disabled",
     };
 
     if (network.effectiveType && network.effectiveType !== "unknown") {
@@ -60,6 +117,25 @@ Sentry.init({
     event.contexts = {
       ...event.contexts,
       connectivity: network,
+      page: {
+        url: pageUrl,
+        path: route,
+        referrer: typeof document !== "undefined" ? document.referrer || null : null,
+        visibilityState: documentVisibility,
+        viewport:
+          typeof window !== "undefined"
+            ? {
+                width: window.innerWidth,
+                height: window.innerHeight,
+              }
+            : null,
+      },
+    };
+
+    event.extra = {
+      ...event.extra,
+      pageUrl,
+      documentVisibility,
     };
 
     if (isChunkLoadError(originalException || event?.message || event?.exception?.values?.[0]?.value)) {
