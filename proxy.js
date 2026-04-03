@@ -129,16 +129,12 @@ function sanitizePathname(pathname) {
 
 export const config = {
   // Не перехватываем статику/служебные файлы
-  matcher: ['/((?!_next|favicon.ico|robots.txt|sitemap.xml|images|fonts|static|monitoring|error-monitoring).*)'],
+  matcher: ['/((?!_next|favicon.ico|robots.txt|sitemap.xml|images|fonts|static).*)'],
 }
 
 export async function proxy(request) {
   //const response = NextResponse.next()
   const { nextUrl } = request
-
-  if (nextUrl.pathname === '/monitoring' || nextUrl.pathname === '/error-monitoring') {
-    return NextResponse.next()
-  }
 
   // флаг, что это именно загрузка страницы, а не иконка
   const isPageView = isPageViewRequest(request, nextUrl)
