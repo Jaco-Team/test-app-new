@@ -1,6 +1,14 @@
 @charset "utf-8";
 @use "./settings" as *;
 
+:root {
+    --inter-font: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.app-roboto-font {
+    --inter-font: "Roboto", "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
 body{
     margin: 0px;
     font-family: var(--inter-font), sans-serif;
