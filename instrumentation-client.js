@@ -57,7 +57,7 @@ const replaysOnErrorSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_REPLAYS_ON_ERR
 
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
-  tunnel: process.env.NODE_ENV === "production" ? "/monitoring" : undefined,
+  tunnel: process.env.NODE_ENV === "production" ? "/_next/monitoring" : undefined,
   environment: process.env.NODE_ENV,
   enabled: sentryEnabled,
   sampleRate: getEnvNumber("NEXT_PUBLIC_SENTRY_ERROR_SAMPLE_RATE", 1, { min: 0, max: 1 }),
