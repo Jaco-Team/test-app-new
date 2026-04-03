@@ -129,14 +129,14 @@ function sanitizePathname(pathname) {
 
 export const config = {
   // Не перехватываем статику/служебные файлы
-  matcher: ['/((?!_next|favicon.ico|robots.txt|sitemap.xml|images|fonts|static|monitoring).*)'],
+  matcher: ['/((?!_next|favicon.ico|robots.txt|sitemap.xml|images|fonts|static|monitoring|error-monitoring).*)'],
 }
 
 export async function proxy(request) {
   //const response = NextResponse.next()
   const { nextUrl } = request
 
-  if (nextUrl.pathname === '/monitoring') {
+  if (nextUrl.pathname === '/monitoring' || nextUrl.pathname === '/error-monitoring') {
     return NextResponse.next()
   }
 
