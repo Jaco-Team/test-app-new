@@ -1,5 +1,4 @@
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import List from '@mui/material/List';
@@ -88,7 +87,18 @@ export default function ModalCityMobile() {
       >
         <div className="ContainerMain">
           <div className="loginIMG">
-            <Image alt="Город" src="/Favikon.png" width={240} height={240} priority={true}/>
+            <img
+              alt="Город"
+              src="/Favikon.png"
+              width={240}
+              height={240}
+              loading="eager"
+              decoding="async"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = '/jaco-logo-mobile.png';
+              }}
+            />
           </div>
 
           <div className="loginHeader">

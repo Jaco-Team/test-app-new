@@ -2,13 +2,14 @@ import { useState, useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 import { useHeaderStoreNew } from '@/components/store';
+import { importWithRetry } from '@/utils/importWithRetry';
 
-const Start = dynamic(() => import('./start'));
-const Create = dynamic(() => import('./create'));
-const LoginSMSCode = dynamic(() => import('./loginSMSCode'));
-const ResetPWD = dynamic(() => import('./resetPWD'));
-const LoginSMS = dynamic(() => import('./loginSMS'));
-const Finish = dynamic(() => import('./finish'));
+const Start = dynamic(() => importWithRetry(() => import('./start'), { retries: 1, delayMs: 400 }));
+const Create = dynamic(() => importWithRetry(() => import('./create'), { retries: 1, delayMs: 400 }));
+const LoginSMSCode = dynamic(() => importWithRetry(() => import('./loginSMSCode'), { retries: 1, delayMs: 400 }));
+const ResetPWD = dynamic(() => importWithRetry(() => import('./resetPWD'), { retries: 1, delayMs: 400 }));
+const LoginSMS = dynamic(() => importWithRetry(() => import('./loginSMS'), { retries: 1, delayMs: 400 }));
+const Finish = dynamic(() => importWithRetry(() => import('./finish'), { retries: 1, delayMs: 400 }));
 
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';

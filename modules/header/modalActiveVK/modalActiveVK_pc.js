@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import Image from 'next/image';
-
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -51,7 +49,18 @@ export default function ModalActiveVK_pc() {
           </IconButton>
 
           <div className="loginIMG" style={{  marginBottom: '2.5270758122744vw' }}>
-            <Image alt="Город" src="/Favicon_city.png" width={240} height={240} priority={true}/>
+            <img
+              alt="Город"
+              src="/Favicon_city.png"
+              width={240}
+              height={240}
+              loading="eager"
+              decoding="async"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = '/jaco-logo-mobile.png';
+              }}
+            />
           </div>
 
           <div className="loginHeader">

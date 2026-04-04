@@ -1,7 +1,6 @@
 import { useState } from 'react';
 
 import { useRouter } from 'next/router';
-import Image from 'next/image';
 
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
@@ -90,7 +89,18 @@ export default function ModalCityPC() {
           </IconButton>
 
           <div className="loginIMG" style={{  marginBottom: thisCityRu?.length > 12 ? '1.0830324909747vw' : '2.5270758122744vw' }}>
-            <Image alt="Город" src="/Favicon_city.png" width={240} height={240} priority={true}/>
+            <img
+              alt="Город"
+              src="/Favicon_city.png"
+              width={240}
+              height={240}
+              loading="eager"
+              decoding="async"
+              onError={(event) => {
+                event.currentTarget.onerror = null;
+                event.currentTarget.src = '/jaco-logo-mobile.png';
+              }}
+            />
           </div>
 
           <div className="loginHeader">

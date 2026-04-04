@@ -1,7 +1,5 @@
 import React, { useEffect, useState } from 'react';
 
-import Image from 'next/image';
-
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import Typography from '@mui/material/Typography';
 
@@ -42,7 +40,18 @@ export default function ModalActiveVK_mobile() {
     >
       <div className="ContainerMain">
         <div className="loginIMG">
-          <Image alt="Город" src="/Favikon.png" width={240} height={240} priority={true}/>
+          <img
+            alt="Город"
+            src="/Favikon.png"
+            width={240}
+            height={240}
+            loading="eager"
+            decoding="async"
+            onError={(event) => {
+              event.currentTarget.onerror = null;
+              event.currentTarget.src = '/jaco-logo-mobile.png';
+            }}
+          />
         </div>
 
         <div className="loginHeader">

@@ -82,7 +82,7 @@ export default React.memo(function SiteMap(props) {
 });
 
 export async function getServerSideProps({ req, res, query }) {
-  res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=3600');
+  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=60');
 
   const cityFromPath = normalizeCity(query?.city);
   const savedCity = normalizeCity(getCookie(req, 'city'));

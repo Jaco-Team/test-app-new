@@ -25,7 +25,7 @@ export default function LoginSMSCode() {
   useEffect(() => {
     if (timerPage) {
       if(!matches) {
-        inputRef.current.clear();
+        inputRef.current?.clear?.();
       }
       changeCode('');
     } 
@@ -35,7 +35,7 @@ export default function LoginSMSCode() {
     createProfile();
     setTimer(89);
     if(!matches) {
-      inputRef.current.clear();
+      inputRef.current?.clear?.();
     }
     changeCode('');
   };

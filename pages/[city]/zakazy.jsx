@@ -77,7 +77,7 @@ export default function Zakazy(props) {
 }
 
 export async function getServerSideProps({ req, res, query }) {
-  res.setHeader('Cache-Control', 'public, s-maxage=3600, stale-while-revalidate=3600');
+  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=60');
   res.setHeader('Access-Control-Allow-Origin', '*');
   res.setHeader(
     'Access-Control-Allow-Headers',
