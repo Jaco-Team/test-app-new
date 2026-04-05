@@ -7,7 +7,7 @@ const DynamicPage = dynamic(() => import('@/modules/akcii/page.js'))
 
 import { roboto } from '@/ui/Font.js'
 import { api } from '@/components/api.js';
-import { useCitiesStore, useHeaderStoreNew, useCartStore } from '@/components/store.js';
+import { useCitiesStore, useHeaderStoreNew, useCartStore, useHomeStore } from '@/components/store.js';
 
 const this_module = 'akcii';
 
@@ -19,6 +19,7 @@ export default function Akcii(props) {
   const { city, cats, cities, page, all_items, free_items, need_dop, links } = props.data1;
 
   const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
+  const [getItemsCat] = useHomeStore((state) => [state.getItemsCat]);
 
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] = useCitiesStore(state => [state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList]);
   const [setActivePage] = useHeaderStoreNew((state) => [state.setActivePage]);
@@ -45,9 +46,10 @@ export default function Akcii(props) {
 
     setFreeItems(free_items);
     setNeedDops(need_dop);
+    getItemsCat('home', city);
     getCartLocalStorage();
     setActivePage(this_module);
-  }, []);
+  }, [city]);
 
   return (
     <div className={roboto.variable}>

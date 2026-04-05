@@ -96,12 +96,68 @@ import Script from "next/script";
 import { MetricaExperimentsContext, MetricaExperimentsProvider } from "yandex-metrica-ab-react";
 
 import Header from "@/components/header";
+import { useProfileStore } from "@/components/store";
 import {
+  INTERNET_ISSUE_EVENT_NAME,
   getClientNetworkContext,
   isChunkLoadError,
   maybeReloadAfterChunkError,
 } from "@/utils/clientMonitoring";
-import { hitAll } from "@/utils/metrika";
+import { hitAll, reachGoal } from "@/utils/metrika";
+
+const INTERNET_ISSUE_CUSTOM_EVENT = "internet_issue";
+const INTERNET_ISSUE_SAVE_ACTION_DEDUP_MS = 20000;
+
+function buildInternetIssueTrackingPayload(detail = {}) {
+  const network = detail?.network || {};
+
+  return {
+    type: String(detail?.type || "internet_issue").slice(0, 64),
+    source: String(detail?.source || "unknown").slice(0, 64),
+    module: detail?.module ? String(detail.module).slice(0, 64) : undefined,
+    requestType: detail?.requestType ? String(detail.requestType).slice(0, 64) : undefined,
+    status: detail?.status != null ? String(detail.status).slice(0, 32) : undefined,
+    code: detail?.code ? String(detail.code).slice(0, 64) : undefined,
+    resourceTag: detail?.tagName ? String(detail.tagName).slice(0, 32) : undefined,
+    connection: network?.effectiveType ? String(network.effectiveType).slice(0, 32) : undefined,
+    online: network?.online === false ? "0" : "1",
+  };
+}
+
+function buildInternetIssueSignature(detail = {}) {
+  return [
+    detail?.type || "",
+    detail?.source || "",
+    detail?.module || "",
+    detail?.requestType || "",
+    detail?.status || "",
+    detail?.code || "",
+    detail?.resourceUrl || "",
+    detail?.tagName || "",
+  ].join("|");
+}
+
+function buildInternetIssueCustomData(detail = {}) {
+  const payload = {
+    type: detail?.type || "internet_issue",
+    source: detail?.source || "unknown",
+    module: detail?.module || null,
+    requestType: detail?.requestType || null,
+    status: detail?.status ?? null,
+    code: detail?.code || null,
+    url: detail?.resourceUrl || detail?.url || null,
+    pageUrl: detail?.pageUrl || null,
+    retryable: typeof detail?.retryable === "boolean" ? detail.retryable : null,
+    attempt: detail?.attempt || null,
+    network: detail?.network || null,
+  };
+
+  try {
+    return JSON.stringify(payload).slice(0, 480);
+  } catch {
+    return `${payload.type}:${payload.source}`;
+  }
+}
 
 const theme = createTheme({
   palette: { primary: { main: "#CC0033" } },
@@ -370,6 +426,7 @@ function AppErrorFallback({ city, resetError }) {
 export default function MyApp({ Component, pageProps }) {
   const router = useRouter();
   const previousPageUrlRef = useRef("");
+  const internetIssueTrackerRef = useRef({});
   const city = (pageProps)?.data1?.city;
   const cityCounterId = city === "samara" ? 100325084 : city === "togliatti" ? 100601350 : null;
   const isOnlyPayPage = city === "only-pay-page";
@@ -434,6 +491,38 @@ export default function MyApp({ Component, pageProps }) {
       router.events.off("routeChangeComplete", handleRouteChangeComplete);
     };
   }, [isOnlyPayPage, router.events]);
+
+  useEffect(() => {
+    if (typeof window === "undefined") {
+      return undefined;
+    }
+
+    const onInternetIssue = (event) => {
+      const detail = event?.detail || {};
+      const signature = buildInternetIssueSignature(detail);
+      const now = Date.now();
+      const previousTs = internetIssueTrackerRef.current[signature] || 0;
+
+      if (now - previousTs < INTERNET_ISSUE_SAVE_ACTION_DEDUP_MS) {
+        return;
+      }
+
+      internetIssueTrackerRef.current[signature] = now;
+
+      const ymPayload = buildInternetIssueTrackingPayload(detail);
+      reachGoal(INTERNET_ISSUE_CUSTOM_EVENT, ymPayload);
+
+      useProfileStore
+        .getState()
+        .saveUserActions(INTERNET_ISSUE_CUSTOM_EVENT, buildInternetIssueCustomData(detail));
+    };
+
+    window.addEventListener(INTERNET_ISSUE_EVENT_NAME, onInternetIssue);
+
+    return () => {
+      window.removeEventListener(INTERNET_ISSUE_EVENT_NAME, onInternetIssue);
+    };
+  }, []);
 
   const appContent = isOnlyPayPage ? (
     <ClientMetricaProvider>

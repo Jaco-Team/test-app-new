@@ -21,7 +21,7 @@ export default function Home(props) {
 
   const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
-  const [ getBanners, setAllTags ] = useHomeStore( state => [ state.getBanners, state.setAllTags ]);
+  const [ getBanners, setAllTags, seedItemsCatFromPage, getItemsCat ] = useHomeStore( state => [ state.getBanners, state.setAllTags, state.seedItemsCatFromPage, state.getItemsCat ]);
 
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
   const [setActivePage] = useHeaderStoreNew((state) => [state.setActivePage]);
@@ -52,6 +52,9 @@ export default function Home(props) {
       setAllItems(all_items);
     }
 
+    seedItemsCatFromPage(cats, all_items, city);
+    getItemsCat('home', city);
+
     setAllTags(tags);
 
     setFreeItems(free_items);
@@ -61,7 +64,7 @@ export default function Home(props) {
 
     setActivePage('category');
     
-  }, [city, thisCity]);
+  }, [city]);
 
   return (
     <div className={roboto.variable}>

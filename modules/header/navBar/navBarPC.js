@@ -23,6 +23,17 @@ import Cookies from 'js-cookie'
 import { reachGoal } from '@/utils/metrika';
 import { getLocalStorageJson, setLocalStorageItem } from '@/utils/browserStorage';
 
+const buildCategoryHref = (city, categoryLink = '') => {
+  const safeCity = String(city ?? '').trim();
+  const safeCategoryLink = String(categoryLink ?? '').trim();
+
+  if (safeCategoryLink.length > 0) {
+    return `/${safeCity}?category=${encodeURIComponent(safeCategoryLink)}`;
+  }
+
+  return `/${safeCity}`;
+};
+
 const MenuBurger = React.memo(function MenuBurger({ anchorEl, city, isOpen, onClose, goToPage }){
   const [links] = useFooterStore((state) => [state.links]);
   //const [ thisCityRu ] = useCitiesStore( state => [ state.thisCityRu ] );
@@ -66,8 +77,8 @@ const MenuBurger = React.memo(function MenuBurger({ anchorEl, city, isOpen, onCl
 
 const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, chooseCat, list, active_page }){
 
-  const thisChooseCat = (name, id) => {
-    chooseCat(name, id)
+  const thisChooseCat = (name, id, link = '') => {
+    chooseCat(name, id, link)
     onClose();
   }
 
@@ -87,7 +98,10 @@ const MenuCat = React.memo(function MenuCat({ anchorEl, city, isOpen, onClose, c
               <span id={'link_' + cat.id}>{cat.name}</span>
             </ScrollLink>
           ) : (
-            <Link href={`/${city}`} onClick={() => chooseCat(cat.name, cat.id)}>
+            <Link
+              href={buildCategoryHref(city, cat?.link)}
+              onClick={() => chooseCat(cat.name, cat.id, cat?.link)}
+            >
               <span>{cat.name}</span>
             </Link>
           )}
@@ -250,8 +264,17 @@ export default React.memo(function NavBarPC({ city, cityRu }) {
     resetFilter();
   };
 
-  function chooseCat(id){
-    setLocalStorageItem('goTo', id)
+  function chooseCat(id, link = ''){
+    const safeLink = String(link ?? '').trim();
+
+    if (safeLink.length > 0) {
+      setLocalStorageItem('goToCategoryLink', safeLink);
+      setLocalStorageItem('ignoreMenuCategoryOnce', '1');
+    }
+
+    if (parseInt(id) > 0 && safeLink.length === 0) {
+      setLocalStorageItem('goTo', id);
+    }
 
     resetFilter();
     closeMenu();
@@ -278,12 +301,17 @@ export default React.memo(function NavBarPC({ city, cityRu }) {
     }
   }
 
-  const thisChooseCat = (cat_name, cat_id) => {
+  const thisChooseCat = (cat_name, cat_id, cat_link = '') => {
     
     reachGoal(`Категория ${cat_name}`);
 
+    if (String(cat_link ?? '').trim().length > 0) {
+      chooseCat(cat_id, cat_link);
+      return;
+    }
+
     if( parseInt(cat_id) > 0 ){
-      chooseCat(cat_id)
+      chooseCat(cat_id);
     }else{
       resetFilter();
     }
@@ -323,7 +351,12 @@ export default React.memo(function NavBarPC({ city, cityRu }) {
                     <span id={'link_' + item.id}>{item.name}</span> 
                   </ScrollLink>
                     :
-                  <Link href={`/${city}`} onClick={() => thisChooseCat(item.name, item.id)} key={key} className={"headerCat "+ (key+1 == category.length ? 'last' : '') }>
+                  <Link
+                    href={buildCategoryHref(city, item?.link)}
+                    onClick={() => thisChooseCat(item.name, item.id, item?.link)}
+                    key={key}
+                    className={"headerCat "+ (key+1 == category.length ? 'last' : '') }
+                  >
                     <span>{item.name}</span>
                   </Link>
             )}

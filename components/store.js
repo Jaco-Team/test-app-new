@@ -86,6 +86,86 @@ function withYMapsReady(callback, extra = {}) {
   return true;
 }
 
+const BANNERS_CACHE_TTL_MS = 10000;
+let bannersInFlightPromise = null;
+let bannersInFlightKey = '';
+const FOOTER_CACHE_TTL_MS = 30000;
+let footerInFlightPromise = null;
+let footerInFlightKey = '';
+const ITEMS_CAT_CACHE_TTL_MS = 15000;
+const ITEMS_CAT_LOCAL_CACHE_PREFIX = 'itemsCatCacheV2:';
+const ITEMS_CAT_LOCAL_CACHE_TTL_MS = 1000 * 60 * 60 * 12;
+let itemsCatInFlightPromise = null;
+let itemsCatInFlightKey = '';
+
+function getItemsCatCacheKey(city = '') {
+  const safeCity = String(city ?? '').trim().toLowerCase();
+  return safeCity.length > 0 ? `${ITEMS_CAT_LOCAL_CACHE_PREFIX}${safeCity}` : '';
+}
+
+function readItemsCatCache(city = '') {
+  const cacheKey = getItemsCatCacheKey(city);
+  if (!cacheKey) return null;
+
+  const payload = getLocalStorageJson(cacheKey, null);
+  if (!payload || typeof payload !== 'object') return null;
+
+  const loadedAt = Number(payload?.loadedAt || 0);
+  if (!Number.isFinite(loadedAt) || loadedAt <= 0) return null;
+
+  if (Date.now() - loadedAt > ITEMS_CAT_LOCAL_CACHE_TTL_MS) {
+    removeLocalStorageItem(cacheKey);
+    return null;
+  }
+
+  const category = Array.isArray(payload?.category) ? payload.category : [];
+  const items = Array.isArray(payload?.items) ? payload.items : [];
+
+  if (!category.length || !items.length) return null;
+
+  return {
+    category,
+    items,
+    loadedAt,
+  };
+}
+
+function saveItemsCatCache(city = '', category = [], items = []) {
+  const cacheKey = getItemsCatCacheKey(city);
+  if (!cacheKey) return false;
+
+  const safeCategory = Array.isArray(category) ? category : [];
+  const safeItems = Array.isArray(items) ? items : [];
+
+  if (!safeCategory.length || !safeItems.length) return false;
+
+  return setLocalStorageItem(
+    cacheKey,
+    JSON.stringify({
+      loadedAt: Date.now(),
+      category: safeCategory,
+      items: safeItems,
+    }),
+  );
+}
+
+function hasDetailedItemsPayload(items = []) {
+  const safeItems = Array.isArray(items) ? items : [];
+
+  return safeItems.some((item) => {
+    if (!item || typeof item !== 'object') return false;
+
+    return (
+      Object.prototype.hasOwnProperty.call(item, 'marc_desc') ||
+      Object.prototype.hasOwnProperty.call(item, 'tmp_desc') ||
+      Object.prototype.hasOwnProperty.call(item, 'count_part') ||
+      Object.prototype.hasOwnProperty.call(item, 'count_part_new') ||
+      Object.prototype.hasOwnProperty.call(item, 'weight') ||
+      Object.prototype.hasOwnProperty.call(item, 'size_pizza')
+    );
+  });
+}
+
 export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
   activePage: '',
   openCityModal: false,
@@ -4405,21 +4485,75 @@ export const useProfileStore = createWithEqualityFn(persist((set, get) => ({
   shallow
 );
 
-export const useFooterStore = createWithEqualityFn((set) => ({
+export const useFooterStore = createWithEqualityFn((set, get) => ({
   links: {},
+  linksCity: '',
+  linksLoadedAt: 0,
+
+  setLinks: (links, city = '') => {
+    if (!links || typeof links !== 'object' || Array.isArray(links)) {
+      return;
+    }
+
+    set({
+      links,
+      linksCity: city || get().linksCity,
+      linksLoadedAt: Date.now(),
+    });
+  },
 
   getData: async (this_module, city) => {
+    if (!city) {
+      return get().links;
+    }
+
+    const { links, linksCity, linksLoadedAt } = get();
+    const hasLinks = Boolean(links && typeof links === 'object' && Object.keys(links).length > 0);
+    const now = Date.now();
+    const requestKey = String(city);
+
+    if (
+      hasLinks &&
+      linksCity === city &&
+      now - Number(linksLoadedAt || 0) < FOOTER_CACHE_TTL_MS
+    ) {
+      return links;
+    }
+
+    if (footerInFlightPromise && footerInFlightKey === requestKey) {
+      return footerInFlightPromise;
+    }
+
     let data = {
       type: 'get_page_info',
       city_id: city,
       page: 'info',
     };
 
-    const json = await api(this_module, data);
+    footerInFlightKey = requestKey;
 
-    set({
-      links: json?.page,
-    });
+    footerInFlightPromise = api(this_module, data)
+      .then((json) => {
+        if (json?.st === false || !json?.page || typeof json.page !== 'object') {
+          return get().links;
+        }
+
+        set({
+          links: json.page,
+          linksCity: city,
+          linksLoadedAt: Date.now(),
+        });
+
+        return json.page;
+      })
+      .finally(() => {
+        if (footerInFlightKey === requestKey) {
+          footerInFlightPromise = null;
+          footerInFlightKey = '';
+        }
+      });
+
+    return footerInFlightPromise;
   },
 }), shallow);
 
@@ -4446,6 +4580,12 @@ export const useCitiesStore = createWithEqualityFn((set) => ({
 
 export const useHomeStore = createWithEqualityFn((set, get) => ({
   bannerList: [],
+  bannersCity: '',
+  bannersToken: '',
+  bannersLoadedAt: 0,
+  itemsCatCity: '',
+  itemsCatLoadedAt: 0,
+  itemsCatSource: 'none',
   CatsItems: [],
   category: [],
   openItem: null,
@@ -4842,10 +4982,32 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
   // },
 
   getBanners: async (this_module, city) => {
+    if (!city) {
+      return get().bannerList;
+    }
+
     let token = '';
 
     if (typeof window !== 'undefined') {
       token = getLocalStorageItem('token') || '';
+    }
+
+    const requestKey = `${city}|${token}`;
+    const now = Date.now();
+    const { bannerList, bannersCity, bannersToken, bannersLoadedAt } = get();
+
+    if (
+      bannersCity === city &&
+      bannersToken === token &&
+      Array.isArray(bannerList) &&
+      bannerList.length > 0 &&
+      now - Number(bannersLoadedAt || 0) < BANNERS_CACHE_TTL_MS
+    ) {
+      return bannerList;
+    }
+
+    if (bannersInFlightPromise && bannersInFlightKey === requestKey) {
+      return bannersInFlightPromise;
     }
 
     let data = {
@@ -4854,11 +5016,33 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
       token: token
     };
 
-    const json = await api(this_module, data);
+    bannersInFlightKey = requestKey;
 
-    set({
-      bannerList: json?.banners ?? [],
-    });
+    bannersInFlightPromise = api(this_module, data)
+      .then((json) => {
+        if (json?.st === false && !Array.isArray(json?.banners)) {
+          return get().bannerList;
+        }
+
+        const nextBannerList = Array.isArray(json?.banners) ? json.banners : [];
+
+        set({
+          bannerList: nextBannerList,
+          bannersCity: city,
+          bannersToken: token,
+          bannersLoadedAt: Date.now(),
+        });
+
+        return nextBannerList;
+      })
+      .finally(() => {
+        if (bannersInFlightKey === requestKey) {
+          bannersInFlightPromise = null;
+          bannersInFlightKey = '';
+        }
+      });
+
+    return bannersInFlightPromise;
   },
 
   getOneBanner: async (this_module, city, link) => {
@@ -4892,20 +5076,291 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
   },
   
   getItemsCat: async (this_module, city) => {
+    if (!city) {
+      return {
+        category: get().category,
+        items: get().CatsItems,
+      };
+    }
+
+    const now = Date.now();
+    const requestKey = String(city);
+    const storageCache = readItemsCatCache(city);
+    const stateBeforeCache = get();
+
+    if (
+      storageCache &&
+      (
+        stateBeforeCache?.itemsCatCity !== city ||
+        !Array.isArray(stateBeforeCache?.CatsItems) ||
+        stateBeforeCache?.CatsItems.length === 0
+      )
+    ) {
+      set({
+        CatsItems: storageCache.items,
+        category: storageCache.category,
+        CatsItemsCopy: storageCache.items,
+        itemsCatCity: city,
+        itemsCatLoadedAt: storageCache.loadedAt,
+        itemsCatSource: 'cache',
+      });
+    }
+
+    const {
+      CatsItems,
+      category,
+      itemsCatCity,
+      itemsCatLoadedAt,
+      itemsCatSource,
+    } = get();
+
+    if (
+      itemsCatSource === 'api' &&
+      itemsCatCity === city &&
+      Array.isArray(CatsItems) &&
+      CatsItems.length > 0 &&
+      now - Number(itemsCatLoadedAt || 0) < ITEMS_CAT_CACHE_TTL_MS
+    ) {
+      return {
+        category,
+        items: CatsItems,
+      };
+    }
+
+    if (itemsCatInFlightPromise && itemsCatInFlightKey === requestKey) {
+      return itemsCatInFlightPromise;
+    }
+
     let data = {
       type: 'get_items_cat',
       city_id: city,
     };
 
-    const json = await api(this_module, data);
+    itemsCatInFlightKey = requestKey;
+
+    itemsCatInFlightPromise = api(this_module, data)
+      .then((json) => {
+        if (json?.st === false || !Array.isArray(json?.items) || !Array.isArray(json?.main_cat)) {
+          const stateWithFallback = get();
+
+          if (Array.isArray(stateWithFallback?.CatsItems) && stateWithFallback?.CatsItems.length > 0) {
+            return {
+              category: stateWithFallback.category,
+              items: stateWithFallback.CatsItems,
+            };
+          }
+
+          const storageFallback = readItemsCatCache(city);
+
+          if (storageFallback) {
+            set({
+              CatsItems: storageFallback.items,
+              category: storageFallback.category,
+              CatsItemsCopy: storageFallback.items,
+              itemsCatCity: city,
+              itemsCatLoadedAt: storageFallback.loadedAt,
+              itemsCatSource: 'cache',
+            });
+          }
+
+          return {
+            category: get().category,
+            items: get().CatsItems,
+          };
+        }
+
+        set({
+          CatsItems: json?.items,
+          category: json?.main_cat,
+
+          // для тестов фильтра на главной
+          CatsItemsCopy: json?.items,
+          itemsCatCity: city,
+          itemsCatLoadedAt: Date.now(),
+          itemsCatSource: 'api',
+        });
+
+        saveItemsCatCache(city, json?.main_cat, json?.items);
+
+        return {
+          category: json?.main_cat,
+          items: json?.items,
+        };
+      })
+      .finally(() => {
+        if (itemsCatInFlightKey === requestKey) {
+          itemsCatInFlightPromise = null;
+          itemsCatInFlightKey = '';
+        }
+      });
+
+    return itemsCatInFlightPromise;
+  },
+
+  seedItemsCatFromPage: (cats = [], allItems = [], city = '') => {
+    const safeCats = Array.isArray(cats) ? cats : [];
+    const safeAllItems = Array.isArray(allItems) ? allItems : [];
+    const safeCity = String(city ?? '').trim();
+    const { itemsCatSource, itemsCatCity } = get();
+    const currentCatsItems = Array.isArray(get().CatsItems) ? get().CatsItems : [];
+
+    if (
+      currentCatsItems.length > 0 &&
+      (itemsCatSource === 'api' || itemsCatSource === 'cache') &&
+      (safeCity.length === 0 || itemsCatCity === safeCity)
+    ) {
+      return {
+        category: get().category,
+        items: currentCatsItems,
+      };
+    }
+
+    const normalizedCategory = safeCats.map((cat) => {
+      const nestedCats = Array.isArray(cat?.cats) ? cat.cats : [];
+
+      return {
+        ...cat,
+        cats: nestedCats.map((nested) => ({
+          ...nested,
+          cats: Array.isArray(nested?.cats) ? nested.cats : [],
+          parent_id: nested?.parent_id ?? cat?.id ?? '0',
+          main_link: nested?.main_link ?? cat?.main_link ?? cat?.link ?? '',
+        })),
+        parent_id: cat?.parent_id ?? '0',
+        main_link: cat?.main_link ?? cat?.link ?? '',
+      };
+    });
+
+    const hasNestedCategories = normalizedCategory.some((cat) => Array.isArray(cat?.cats) && cat.cats.length > 0);
+    const hasDetailedItems = hasDetailedItemsPayload(safeAllItems);
+
+    if (!hasDetailedItems) {
+      if (normalizedCategory.length > 0) {
+        set({
+          category: normalizedCategory,
+        });
+      }
+
+      return {
+        category: normalizedCategory.length > 0 ? normalizedCategory : get().category,
+        items: currentCatsItems,
+      };
+    }
+
+    const leafCategories = hasNestedCategories
+      ? normalizedCategory.flatMap((mainCat) =>
+          (mainCat.cats || []).map((nested) => ({
+            ...nested,
+            main_id: mainCat.id,
+            main_link: mainCat.main_link || mainCat.link || '',
+            parent_id: nested?.parent_id ?? mainCat.id,
+          })),
+        )
+      : normalizedCategory.map((cat) => ({
+          ...cat,
+          main_id: cat?.main_id ?? cat?.id,
+          main_link: cat?.main_link ?? cat?.link ?? '',
+          parent_id: cat?.parent_id ?? cat?.id,
+        }));
+
+    const itemsByCategory = new Map();
+
+    safeAllItems.forEach((item) => {
+      const catId = String(item?.cat_id ?? '');
+      if (!catId) return;
+
+      if (!itemsByCategory.has(catId)) {
+        itemsByCategory.set(catId, []);
+      }
+
+      itemsByCategory.get(catId).push(item);
+    });
+
+    const currentCatsById = new Map(
+      currentCatsItems.map((cat) => [String(cat?.id ?? ''), cat]).filter(([id]) => id.length > 0),
+    );
+
+    const leafById = new Map(
+      leafCategories.map((cat) => [String(cat?.id ?? ''), cat]).filter(([id]) => id.length > 0),
+    );
+
+    // SSR `cats` иногда содержит только верхний уровень (например: rolly/pizza/zakuski),
+    // а `all_items` — фактические leaf-категории (4, 10, 13 ...). Добавляем недостающие
+    // категории по данным из `all_items`, чтобы не схлопывать выдачу до одной категории.
+    for (const [catId, catItems] of itemsByCategory.entries()) {
+      if (leafById.has(catId)) continue;
+
+      const firstItem = (catItems || [])[0] || {};
+      const currentMeta = currentCatsById.get(catId);
+
+      leafById.set(catId, {
+        id: catId,
+        name: String(currentMeta?.name ?? firstItem?.cat_name ?? '').trim(),
+        main_id: String(currentMeta?.main_id ?? currentMeta?.parent_id ?? catId),
+        main_link: String(currentMeta?.main_link ?? ''),
+        link: String(currentMeta?.link ?? ''),
+        parent_id: String(currentMeta?.parent_id ?? catId),
+      });
+    }
+
+    const categoriesForItems = Array.from(leafById.values());
+
+    const fallbackCatsItems = categoriesForItems
+      .map((cat) => {
+        const catId = String(cat?.id ?? '');
+        const catName = String(cat?.name ?? '');
+        const items = (itemsByCategory.get(catId) || []).map((item) => ({
+          ...item,
+          cat_id: item?.cat_id ?? catId,
+          cat_name: item?.cat_name ?? catName,
+          marc_desc: item?.marc_desc ?? '',
+          tmp_desc: item?.tmp_desc ?? '',
+          count_part: item?.count_part ?? '',
+          count_part_new: item?.count_part_new ?? item?.count_part ?? '',
+          weight: item?.weight ?? 0,
+          size_pizza: item?.size_pizza ?? '',
+          tags: Array.isArray(item?.tags) ? item.tags : [],
+        }));
+
+        return {
+          id: catId,
+          name: catName,
+          main_id: String(cat?.main_id ?? cat?.parent_id ?? cat?.id ?? ''),
+          main_link: String(cat?.main_link ?? cat?.link ?? ''),
+          link: String(cat?.link ?? ''),
+          items,
+        };
+      })
+      .filter((cat) => cat.items.length > 0);
+
+    if (!fallbackCatsItems.length) {
+      return {
+        category: get().category,
+        items: get().CatsItems,
+      };
+    }
+
+    // Не даём фоллбеку деградировать уже загруженный полный список категорий.
+    if (currentCatsItems.length > fallbackCatsItems.length && currentCatsItems.length > 0) {
+      return {
+        category: get().category,
+        items: currentCatsItems,
+      };
+    }
 
     set({
-      CatsItems: json?.items,
-      category: json?.main_cat,
-
-      // для тестов фильтра на главной
-      CatsItemsCopy:  json?.items,
+      category: normalizedCategory,
+      CatsItems: fallbackCatsItems,
+      CatsItemsCopy: fallbackCatsItems,
+      itemsCatCity: safeCity || get().itemsCatCity || '',
+      itemsCatLoadedAt: Date.now(),
+      itemsCatSource: 'seed',
     });
+
+    return {
+      category: normalizedCategory,
+      items: fallbackCatsItems,
+    };
   },
 
   setCategory: (cats) => {

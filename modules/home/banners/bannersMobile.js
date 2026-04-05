@@ -1,5 +1,5 @@
 import React, { useEffect, useMemo, useRef, useCallback } from "react";
-import { useHomeStore, useCitiesStore } from '../../../components/store.js';
+import { useHomeStore } from '../../../components/store.js';
 
 import Box from '@mui/material/Box';
 
@@ -159,8 +159,7 @@ export default function BannersMobile() {
 
   // Храни refs только для видео: { [slideKey]: HTMLVideoElement }
   const videoRefs = useRef({});
-  const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider, state.getBanners]);
-  const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
+  const [bannerList, setActiveBanner, activeSlider] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider]);
 
   const homeBanners = bannerList?.filter(item => parseInt(item.is_active_home) === 1);
 

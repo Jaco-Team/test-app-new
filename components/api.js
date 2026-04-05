@@ -4,9 +4,111 @@ import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import * as Sentry from '@sentry/nextjs';
 
-import { getClientNetworkContext } from '@/utils/clientMonitoring';
+import { emitInternetIssue, getClientNetworkContext } from '@/utils/clientMonitoring';
 
-const urlApi   = 'https://api.jacochef.ru/site/public/index.php/';
+const DEFAULT_API_BASE_URL = 'https://api.jacochef.ru/site/public/index.php/';
+const DEFAULT_API_TIMEOUT_MS = 12000;
+const RETRYABLE_STATUS_CODES = new Set([408, 425, 429, 500, 502, 503, 504]);
+const RETRY_ATTEMPTS = 2;
+const NON_IDEMPOTENT_TYPES = new Set([
+  'checkauthyandex',
+  'create_order',
+  'create_order_pre',
+  'create_profile',
+  'sendsmsrp',
+  'site_login',
+  'trueordercash',
+  'order_true'
+]);
+
+function getApiTimeoutMs() {
+  return DEFAULT_API_TIMEOUT_MS;
+}
+
+function getRequestType(data = {}) {
+  return String(data?.type || '').trim().toLowerCase().replace(/[\s-]+/g, '');
+}
+
+function isMutationRequest(data = {}) {
+  const requestType = getRequestType(data);
+
+  if (!requestType) {
+    return false;
+  }
+
+  if (NON_IDEMPOTENT_TYPES.has(requestType)) {
+    return true;
+  }
+
+  if (requestType.startsWith('get_') || requestType.startsWith('check_')) {
+    return false;
+  }
+
+  return /^(create_|save_|update_|delete_|remove_|add_|send|set)/.test(requestType);
+}
+
+function shouldRetryRequest(data = {}) {
+  if (data?.__disableRetry === true) {
+    return false;
+  }
+
+  if (data?.__forceRetry === true) {
+    return true;
+  }
+
+  return !isMutationRequest(data);
+}
+
+function stripInternalRequestKeys(data = {}) {
+  return Object.fromEntries(
+    Object.entries(data || {}).filter(([key]) => !String(key).startsWith('__')),
+  );
+}
+
+function isRetryableApiError(error) {
+  const status = error?.response?.status;
+
+  if (typeof status === 'number') {
+    return RETRYABLE_STATUS_CODES.has(status);
+  }
+
+  const code = String(error?.code || '').toUpperCase();
+
+  return [
+    'ECONNABORTED',
+    'ECONNREFUSED',
+    'ECONNRESET',
+    'ENETUNREACH',
+    'EAI_AGAIN',
+    'ETIMEDOUT',
+    'ERR_NETWORK',
+  ].includes(code);
+}
+
+function shouldReportInternetIssue(error, data = {}) {
+  const requestType = getRequestType(data);
+
+  if (requestType === 'save_user_actions') {
+    return false;
+  }
+
+  return isRetryableApiError(error);
+}
+
+function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
+
+function attachRequestAttemptMeta(error, meta = {}) {
+  if (error && typeof error === 'object') {
+    error.jacoAttemptMeta = {
+      ...(error.jacoAttemptMeta || {}),
+      ...meta,
+    };
+  }
+
+  return error;
+}
 
 function getSafeRequestMeta(data = {}) {
   return {
@@ -39,6 +141,7 @@ function captureApiError({ module, requestUrl, requestMeta, error, source }) {
     scope.setContext('network', getClientNetworkContext());
     scope.setExtra('requestUrl', requestUrl);
     scope.setExtra('requestMeta', requestMeta);
+    scope.setExtra('attemptMeta', error?.jacoAttemptMeta || null);
     scope.setExtra('responseDataType', typeof error?.response?.data);
     scope.setFingerprint([
       'api-request-failed',
@@ -51,10 +154,63 @@ function captureApiError({ module, requestUrl, requestMeta, error, source }) {
   });
 }
 
+async function postWithRetry({ module, body, data }) {
+  const requestUrl = `${DEFAULT_API_BASE_URL}${module}`;
+  const requestTimeout = getApiTimeoutMs();
+  const canRetry = shouldRetryRequest(data);
+  const attemptsCount = canRetry ? RETRY_ATTEMPTS : 1;
+  let lastError = null;
+
+  for (let attempt = 1; attempt <= attemptsCount; attempt += 1) {
+    try {
+      const response = await axios.post(requestUrl, body, { timeout: requestTimeout });
+
+      if (attempt > 1) {
+        Sentry.addBreadcrumb({
+          category: 'api',
+          level: 'info',
+          message: 'API request recovered via retry',
+          data: {
+            module,
+            attempt,
+            requestUrl,
+          },
+        });
+      }
+
+      return {
+        response,
+        requestUrl,
+        attempt,
+      };
+    } catch (error) {
+      const retryableError = isRetryableApiError(error);
+      const hasAttemptsLeft = attempt < attemptsCount;
+
+      lastError = attachRequestAttemptMeta(error, {
+        module,
+        attempt,
+        requestUrl,
+        retryableError,
+        canRetry,
+      });
+
+      if (!canRetry || !retryableError || !hasAttemptsLeft) {
+        throw lastError;
+      }
+
+      await sleep(250 * attempt);
+    }
+  }
+
+  throw lastError || new Error('API request failed without error details');
+}
+
 export function api(module = '', data = {}){
   const now = Math.floor(Date.now() / 1000);
-  
-  const payload = { ...data, ts: now };
+  const safeData = stripInternalRequestKeys(data);
+
+  const payload = { ...safeData, ts: now };
   const bodyStr = qs.stringify(payload);
 
   const sig = CryptoJS.HmacSHA256(now + bodyStr, 'jaco—food')
@@ -62,10 +218,9 @@ export function api(module = '', data = {}){
 
   const body = qs.stringify({ ...payload, sig });
 
-  return axios.post(urlApi+module, body)
-    .then( (response) => {
-      
-      if( typeof response.data == 'string' ){
+  return postWithRetry({ module, body, data: safeData })
+    .then(({ response }) => {
+      if (typeof response.data == 'string') {
         return {
           st: false,
           text: response.data
@@ -74,16 +229,46 @@ export function api(module = '', data = {}){
 
       return response.data;
     })
-    .catch( (error) => {
+    .catch((error) => {
       console.error(error);
+
+      const lastUrl = error?.jacoAttemptMeta?.requestUrl || `${DEFAULT_API_BASE_URL}${module}`;
+      const responseStatus = error?.response?.status ?? null;
+      const errorCode = String(error?.code || '').toUpperCase() || null;
+      const isRetryable = isRetryableApiError(error);
 
       captureApiError({
         module,
-        requestUrl: urlApi + module,
-        requestMeta: getSafeRequestMeta(data),
+        requestUrl: lastUrl,
+        requestMeta: {
+          ...getSafeRequestMeta(safeData),
+          canRetry: shouldRetryRequest(safeData),
+          timeoutMs: getApiTimeoutMs(),
+          isRetryable,
+        },
         error,
         source: 'api',
       });
+
+      if (shouldReportInternetIssue(error, safeData)) {
+        emitInternetIssue({
+          type: 'api_request_failed',
+          source: 'api',
+          module: module || 'root',
+          requestType: getRequestType(safeData),
+          status: responseStatus,
+          code: errorCode,
+          retryable: isRetryable,
+          attempt: error?.jacoAttemptMeta?.attempt || 1,
+          url: lastUrl,
+          network: getClientNetworkContext(),
+        });
+      }
+
+      return {
+        st: false,
+        text: 'Сервис временно недоступен. Проверьте интернет и попробуйте еще раз.',
+      };
     });
 }
 
@@ -92,7 +277,7 @@ export async function apiAddress(city, value){
 
     const urlApi = `https://suggest-maps.yandex.ru/v1/suggest?text=${city},${value}&types=geo,locality,province,area,district,street,house&print_address=1&results=7&apikey=${process.env.NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST}`;
 
-    return axios.post(urlApi)
+    return axios.post(urlApi, undefined, { timeout: getApiTimeoutMs() })
       .then( (response) => {
         
         if( typeof response.data == 'string' ){

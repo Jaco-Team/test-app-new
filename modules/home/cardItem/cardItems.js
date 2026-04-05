@@ -14,6 +14,27 @@ var scroller = Scroll.scroller;
 import { useRouter } from 'next/router'
 import { getLocalStorageItem, removeLocalStorageItem } from '@/utils/browserStorage';
 
+const normalizeCategoryLink = (value) => {
+  const raw = String(value ?? '').trim();
+  if (!raw) return '';
+
+  const withoutHash = raw.split('#')[0];
+  const withoutQuery = withoutHash.split('?')[0];
+  const withoutOrigin = withoutQuery.replace(/^https?:\/\/[^/]+/i, '');
+  const withoutLeadingSlash = withoutOrigin.replace(/^\/+/, '');
+  const withoutCityMenu = withoutLeadingSlash
+    .replace(/^[^/]+\/menu\//i, '')
+    .replace(/^menu\//i, '');
+
+  const segment = withoutCityMenu.split('/').filter(Boolean).pop() || '';
+
+  try {
+    return decodeURIComponent(segment).toLowerCase();
+  } catch {
+    return segment.toLowerCase();
+  }
+};
+
 export default React.memo(function CatItems() {
   const [cats, setCats] = useState([]);
 
@@ -23,8 +44,9 @@ export default React.memo(function CatItems() {
   const search_category = typeof router.query?.category === 'string' ? router.query.category : '';
 
   let catygory = '';
+  const skipMenuCategoryOnce = typeof window !== 'undefined' && getLocalStorageItem('ignoreMenuCategoryOnce') === '1';
 
-  if(pathname.split('menu/')[1] && pathname.split('menu/')[1].length > 0) {
+  if(!skipMenuCategoryOnce && pathname.split('menu/')[1] && pathname.split('menu/')[1].length > 0) {
     catygory = pathname.split('menu/')[1];
   }
   
@@ -100,7 +122,11 @@ export default React.memo(function CatItems() {
     }
 
     if (typeof window !== "undefined") {
-      if( category.length > 0 && search_category?.length > 0 ) {
+      const pendingCategoryLink = getLocalStorageItem('goToCategoryLink');
+      const effectiveCategoryLink = search_category?.length > 0 ? search_category : pendingCategoryLink;
+      const normalizedTargetLink = normalizeCategoryLink(effectiveCategoryLink);
+
+      if( category.length > 0 && normalizedTargetLink.length > 0 ) {
         //console.log( 'search_category', search_category, category ) 
 
         let scroll_cat_id = 0;
@@ -108,15 +134,13 @@ export default React.memo(function CatItems() {
         category.map( main_cat => {
           if( main_cat.cats.length > 0 ){
             main_cat.cats.map( cat => {
-              if( cat.link === search_category ){
-                console.log( 'go_to', cat.name, cat.id ) 
+              if( normalizeCategoryLink(cat.link) === normalizedTargetLink ){
                 scroll_cat_id = cat.id;
                 //chooseCat(cat.name, cat.id)
               }
             })
           }else{
-            if( main_cat.link === search_category ){
-              console.log( 'go_to', main_cat.name, main_cat.id ) 
+            if( normalizeCategoryLink(main_cat.link) === normalizedTargetLink ){
               scroll_cat_id = main_cat.id;
               //chooseCat(main_cat.name, main_cat.id)
             }
@@ -127,7 +151,6 @@ export default React.memo(function CatItems() {
           let offset = 70;
 
           if (document.querySelector('.ContainerCardItemMobile')) {
-            console.log('.ContainerCardItemMobile')
             offset += 120;
           }
   
@@ -140,12 +163,19 @@ export default React.memo(function CatItems() {
             });
           }, 150);
 
-          let state = { },
-            title = '',
-            url = window.location.pathname;
+          if (search_category?.length > 0 && typeof router.replace === 'function') {
+            router.replace(window.location.pathname, undefined, { shallow: true, scroll: false });
+          } else {
+            let state = { },
+              title = '',
+              url = window.location.pathname;
 
-          window.history.pushState(state, title, url)
+            window.history.pushState(state, title, url)
+          }
         }
+
+        removeLocalStorageItem('goToCategoryLink');
+        removeLocalStorageItem('ignoreMenuCategoryOnce');
 
       }
     }

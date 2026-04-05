@@ -47,6 +47,37 @@ function normalizeResourceUrl(resourceUrl) {
   }
 }
 
+export const INTERNET_ISSUE_EVENT_NAME = "jaco:internet-issue";
+const INTERNET_ISSUE_DEDUP_WINDOW_MS = 15000;
+
+function normalizeIssueValue(value) {
+  if (value === null || value === undefined) {
+    return null;
+  }
+
+  if (typeof value === "number" || typeof value === "boolean") {
+    return value;
+  }
+
+  if (typeof value === "string") {
+    return value.slice(0, 300);
+  }
+
+  return getErrorText(value).slice(0, 300);
+}
+
+function getIssueSignature(payload) {
+  return [
+    payload?.type || "unknown_type",
+    payload?.source || "unknown_source",
+    payload?.module || "",
+    payload?.status || "",
+    payload?.code || "",
+    payload?.resourceUrl || "",
+    payload?.tagName || "",
+  ].join("|");
+}
+
 export function getClientNetworkContext() {
   if (typeof window === "undefined" || typeof navigator === "undefined") {
     return {};
@@ -61,6 +92,52 @@ export function getClientNetworkContext() {
     rttMs: typeof connection?.rtt === "number" ? connection.rtt : null,
     saveData: Boolean(connection?.saveData),
   };
+}
+
+export function emitInternetIssue(payload = {}) {
+  if (typeof window === "undefined") {
+    return false;
+  }
+
+  try {
+    const safePayload = {
+      type: normalizeIssueValue(payload.type) || "internet_issue",
+      source: normalizeIssueValue(payload.source) || "unknown",
+      module: normalizeIssueValue(payload.module),
+      requestType: normalizeIssueValue(payload.requestType),
+      status: normalizeIssueValue(payload.status),
+      code: normalizeIssueValue(payload.code),
+      resourceUrl: normalizeIssueValue(payload.resourceUrl),
+      tagName: normalizeIssueValue(payload.tagName),
+      retryable: typeof payload.retryable === "boolean" ? payload.retryable : null,
+      attempt: normalizeIssueValue(payload.attempt),
+      pageUrl: typeof window !== "undefined" ? window.location.href : null,
+      network: payload.network || getClientNetworkContext(),
+      ts: Date.now(),
+    };
+
+    const signature = getIssueSignature(safePayload);
+    const previousTs = window.__JACO_INTERNET_ISSUE_CACHE?.[signature] || 0;
+
+    if (Date.now() - previousTs < INTERNET_ISSUE_DEDUP_WINDOW_MS) {
+      return false;
+    }
+
+    window.__JACO_INTERNET_ISSUE_CACHE = {
+      ...(window.__JACO_INTERNET_ISSUE_CACHE || {}),
+      [signature]: Date.now(),
+    };
+
+    window.dispatchEvent(
+      new CustomEvent(INTERNET_ISSUE_EVENT_NAME, {
+        detail: safePayload,
+      }),
+    );
+
+    return true;
+  } catch {
+    return false;
+  }
 }
 
 export function isChunkLoadError(value) {
@@ -121,6 +198,12 @@ export function installGlobalSentryHandlers(Sentry) {
       level: "warning",
       data: getClientNetworkContext(),
     });
+
+    emitInternetIssue({
+      type: "browser_offline",
+      source: "window_event",
+      network: getClientNetworkContext(),
+    });
   });
 
   window.addEventListener("online", () => {
@@ -172,6 +255,14 @@ export function installGlobalSentryHandlers(Sentry) {
             resourceUrl: normalizedResourceUrl,
           });
 
+          emitInternetIssue({
+            type: "chunk_asset_failed",
+            source: "resource_error",
+            resourceUrl: normalizedResourceUrl,
+            tagName,
+            network: getClientNetworkContext(),
+          });
+
           return;
         }
 
@@ -185,10 +276,26 @@ export function installGlobalSentryHandlers(Sentry) {
           fingerprint: ["resource-load-error", tagName, normalizedResourceUrl],
         });
 
+        emitInternetIssue({
+          type: "resource_load_failed",
+          source: "resource_error",
+          resourceUrl: normalizedResourceUrl,
+          tagName,
+          network: getClientNetworkContext(),
+        });
+
         return;
       }
 
       if (isChunkLoadError(event?.error || event?.message || event?.filename)) {
+        emitInternetIssue({
+          type: "chunk_runtime_error",
+          source: "window_error",
+          code: event?.message || null,
+          resourceUrl: event?.filename || null,
+          network: getClientNetworkContext(),
+        });
+
         maybeReloadAfterChunkError({
           source: "window_error",
           filename: event?.filename || null,
@@ -202,6 +309,13 @@ export function installGlobalSentryHandlers(Sentry) {
     if (!isChunkLoadError(event?.reason)) {
       return;
     }
+
+    emitInternetIssue({
+      type: "chunk_unhandled_rejection",
+      source: "unhandledrejection",
+      code: getErrorText(event?.reason),
+      network: getClientNetworkContext(),
+    });
 
     maybeReloadAfterChunkError({
       source: "unhandledrejection",

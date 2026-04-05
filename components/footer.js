@@ -5,22 +5,31 @@ import {useHeaderStoreNew, useFooterStore} from './store';
 
 export default memo(function Footer({ cityName, active_page, links }) {
   const [matches] = useHeaderStoreNew((state) => [state?.matches]);
-  const [storeLinks, getData] = useFooterStore((state) => [state.links, state.getData]);
+  const [storeLinks, getData, setLinks] = useFooterStore((state) => [state.links, state.getData, state.setLinks]);
+  const hasStoreLinks = Boolean(storeLinks && Object.keys(storeLinks).length > 0);
+  const hasPropLinks = Boolean(links && Object.keys(links).length > 0);
 
   useEffect(() => {
-    if (JSON.stringify(storeLinks) === JSON.stringify({})) {
+    if (hasPropLinks) {
+      setLinks(links, cityName);
+      return;
+    }
+
+    if (!hasStoreLinks && cityName) {
       getData('contacts', cityName);
     }
-    
-  }, [cityName, getData, storeLinks]);
+
+  }, [cityName, getData, hasPropLinks, hasStoreLinks, links, setLinks]);
+
+  const resolvedLinks = hasPropLinks ? links : storeLinks;
 
   if( matches ){
     return (
-      <FooterMobile cityName={cityName} active_page={active_page} links={links} />
+      <FooterMobile cityName={cityName} active_page={active_page} links={resolvedLinks} />
     );
   }
 
   return (
-    <FooterPC cityName={cityName} active_page={active_page} links={links} />
+    <FooterPC cityName={cityName} active_page={active_page} links={resolvedLinks} />
   );
 })

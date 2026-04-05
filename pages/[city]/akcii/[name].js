@@ -21,7 +21,7 @@ export default function Home(props) {
 
   const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
-  const [ getBanners, setAllTags, getOneBanner ] = useHomeStore( state => [ state.getBanners, state.setAllTags, state.getOneBanner ]);
+  const [ getBanners, setAllTags, getOneBanner, getItemsCat ] = useHomeStore( state => [ state.getBanners, state.setAllTags, state.getOneBanner, state.getItemsCat ]);
 
   const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
   const [setActivePage] = useHeaderStoreNew((state) => [state.setActivePage]);
@@ -57,12 +57,13 @@ export default function Home(props) {
 
     setFreeItems(free_items);
     setNeedDops(need_dop);
+    getItemsCat('home', city);
 
     getCartLocalStorage();
 
     setActivePage('akcii');
     
-  }, [city, thisCity]);
+  }, [city]);
 
   page.is_one_actia = true;
 

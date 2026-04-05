@@ -1,5 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
-import { useHomeStore, useCitiesStore } from '../../../components/store.js';
+import { useHomeStore } from '../../../components/store.js';
 
 import 'swiper/css';
 import 'swiper/css/navigation';
@@ -469,14 +469,11 @@ import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
 // }
 
 export default function BannersPC() {
-  const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [
+  const [bannerList, setActiveBanner, activeSlider] = useHomeStore((state) => [
     state.bannerList,
     state.setActiveBanner,
     state.activeSlider,
-    state.getBanners,
   ]);
-
-  const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
 
   const swiperRef = useRef(null);
   const videoRefs = useRef({}); // { [slideKey]: HTMLVideoElement }
@@ -487,13 +484,6 @@ export default function BannersPC() {
   const paginationRef = useRef(null);
 
   const playTokenRef = useRef(0);
-
-  // ---------- load banners ----------
-  useEffect(() => {
-    if ((!bannerList || bannerList.length === 0) && thisCity) {
-      getBanners("home", thisCity);
-    }
-  }, [bannerList, thisCity, getBanners]);
 
   const homeBanners = useMemo(() => {
     return bannerList?.filter((item) => parseInt(item.is_active_home) === 1) ?? [];
@@ -710,7 +700,7 @@ export default function BannersPC() {
 
       reachGoal('open_banner', { akcia_name: item?.title });
     },
-    [setActiveBanner, thisCityRu]
+    [setActiveBanner]
   );
 
   return (
