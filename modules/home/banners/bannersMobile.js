@@ -12,6 +12,21 @@ import 'swiper/css/pagination';
 
 import { reachGoal } from '@/utils/metrika';
 
+const getValidBannerMediaKey = (item) => {
+  const raw = String(item?.img ?? "").trim();
+
+  if (!raw) {
+    return null;
+  }
+
+  const normalized = raw.toLowerCase();
+  if (normalized === "undefined" || normalized === "null") {
+    return null;
+  }
+
+  return raw;
+};
+
 // export default React.memo(function BannersMobile() {
 //   const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider, state.getBanners]);
 //   const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
@@ -161,7 +176,15 @@ export default function BannersMobile() {
   const videoRefs = useRef({});
   const [bannerList, setActiveBanner, activeSlider] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider]);
 
-  const homeBanners = bannerList?.filter(item => parseInt(item.is_active_home) === 1);
+  const homeBanners = useMemo(() => {
+    return (bannerList ?? []).filter((item) => {
+      if (parseInt(item.is_active_home) !== 1) {
+        return false;
+      }
+
+      return Boolean(getValidBannerMediaKey(item));
+    });
+  }, [bannerList]);
 
   const loadingTimers = useRef({}); // { [slideKey]: timeoutId }
 
@@ -227,6 +250,7 @@ export default function BannersMobile() {
       key: `img-${item.id}`,
       type: "image",
       item,
+      mediaKey: getValidBannerMediaKey(item),
     }));
 
     return [...imageSlides];
@@ -240,6 +264,7 @@ export default function BannersMobile() {
         img: 'Testovyi_videoprianik',
         type_illustration: 'video'
       },
+      mediaKey: "Testovyi_videoprianik",
     }));
 
     return [...imageSlides, ...videoSlides];
@@ -425,23 +450,23 @@ export default function BannersMobile() {
               onEnded={() => handleVideoEnded(s.key)}
               onCanPlay={() => handleVideoCanPlay(s.key)}
             >
-              <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + s.item.img + '_video_1080x1920.mp4'} type="video/mp4" />
+              <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + s.mediaKey + '_video_1080x1920.mp4'} type="video/mp4" />
               {/* <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + s.item.img + '_video_1080x1920.webm'} type="video/webm" /> */}
             </video>
           ) : (
             <picture>
                <source 
                  type="image/webp" 
-                 srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.item.img + '_1000x500.jpg'} 
+                 srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.mediaKey + '_1000x500.jpg'} 
                  sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
                <source 
                  type="image/jpeg" 
-                 srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.item.img + '_1000x500.jpg'} 
+                 srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.mediaKey + '_1000x500.jpg'} 
                  sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
                <img 
                  alt={s?.title} 
-                 src={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.item.img + '_1000x500.jpg'} 
+                 src={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.mediaKey + '_1000x500.jpg'} 
                  loading="lazy"
                  className="item_banner_image"
                />

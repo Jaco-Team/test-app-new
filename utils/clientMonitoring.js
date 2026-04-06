@@ -47,6 +47,16 @@ function normalizeResourceUrl(resourceUrl) {
   }
 }
 
+function isInvalidResourceUrl(resourceUrl) {
+  const normalized = String(resourceUrl || "").toLowerCase();
+
+  if (!normalized) {
+    return true;
+  }
+
+  return /\/(undefined|null)(?:_|\/|\.|$)/i.test(normalized);
+}
+
 export const INTERNET_ISSUE_EVENT_NAME = "jaco:internet-issue";
 const INTERNET_ISSUE_DEDUP_WINDOW_MS = 15000;
 
@@ -260,6 +270,31 @@ export function installGlobalSentryHandlers(Sentry) {
             source: "resource_error",
             resourceUrl: normalizedResourceUrl,
             tagName,
+            network: getClientNetworkContext(),
+          });
+
+          return;
+        }
+
+        if (isInvalidResourceUrl(normalizedResourceUrl)) {
+          Sentry.captureMessage(`Resource has invalid URL: ${tagName}`, {
+            level: "warning",
+            tags: {
+              kind: "resource_invalid_url",
+              resource_tag: tagName,
+            },
+            extra,
+            fingerprint: ["resource-invalid-url", tagName, normalizedResourceUrl],
+          });
+
+          emitInternetIssue({
+            type: "resource_invalid_url",
+            source: "resource_data_error",
+            module: "resource_loader",
+            code: "invalid_resource_url",
+            resourceUrl: normalizedResourceUrl,
+            tagName,
+            retryable: false,
             network: getClientNetworkContext(),
           });
 

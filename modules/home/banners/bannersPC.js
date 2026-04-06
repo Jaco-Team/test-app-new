@@ -15,6 +15,21 @@ import { reachGoal } from '@/utils/metrika';
 
 import { ArrowIcon, NextIcon } from '@/ui/Icons.js';
 
+const getValidBannerMediaKey = (item) => {
+  const raw = String(item?.img ?? "").trim();
+
+  if (!raw) {
+    return null;
+  }
+
+  const normalized = raw.toLowerCase();
+  if (normalized === "undefined" || normalized === "null") {
+    return null;
+  }
+
+  return raw;
+};
+
 // (function BannersPC_old() {
 //   const [bannerList, setActiveBanner, activeSlider, getBanners] = useHomeStore((state) => [state.bannerList, state.setActiveBanner, state.activeSlider, state.getBanners]);
 //   const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
@@ -486,7 +501,13 @@ export default function BannersPC() {
   const playTokenRef = useRef(0);
 
   const homeBanners = useMemo(() => {
-    return bannerList?.filter((item) => parseInt(item.is_active_home) === 1) ?? [];
+    return (bannerList ?? []).filter((item) => {
+      if (parseInt(item.is_active_home) !== 1) {
+        return false;
+      }
+
+      return Boolean(getValidBannerMediaKey(item));
+    });
   }, [bannerList]);
 
   const slides = useMemo(() => {
@@ -494,6 +515,7 @@ export default function BannersPC() {
       key: `slide-${item.id}`,
       type: item.type_illustration === "video" ? "video" : "image",
       item,
+      mediaKey: getValidBannerMediaKey(item),
     }));
   }, [homeBanners]);
 
@@ -757,7 +779,7 @@ export default function BannersPC() {
                   }}
                 >
                   <source
-                    src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${s.item.img}_video_1920x1080.mp4`}
+                    src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${s.mediaKey}_video_1920x1080.mp4`}
                     type="video/mp4"
                   />
                 </video>
@@ -765,16 +787,16 @@ export default function BannersPC() {
                 <picture>
                   <source 
                     type="image/webp" 
-                    srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.item.img+"_3700x1000.webp"} 
+                    srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.mediaKey+"_3700x1000.webp"} 
                     sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
                   <source 
                     type="image/jpeg" 
-                    srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.item.img+"_3700x1000.jpg"} 
+                    srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.mediaKey+"_3700x1000.jpg"} 
                     sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
                   <img 
                     alt={s.item?.name} 
-                    src={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.item.img+"_3700x1000.jpg"} 
+                    src={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.mediaKey+"_3700x1000.jpg"} 
                     loading="lazy"
                     style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }}
                   />

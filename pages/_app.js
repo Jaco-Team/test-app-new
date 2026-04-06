@@ -138,25 +138,35 @@ function buildInternetIssueSignature(detail = {}) {
 }
 
 function buildInternetIssueCustomData(detail = {}) {
-  const payload = {
-    type: detail?.type || "internet_issue",
-    source: detail?.source || "unknown",
-    module: detail?.module || null,
-    requestType: detail?.requestType || null,
-    status: detail?.status ?? null,
-    code: detail?.code || null,
-    url: detail?.resourceUrl || detail?.url || null,
-    pageUrl: detail?.pageUrl || null,
-    retryable: typeof detail?.retryable === "boolean" ? detail.retryable : null,
-    attempt: detail?.attempt || null,
-    network: detail?.network || null,
+  const network = detail?.network || {};
+  const safeEncode = (value, maxLen = 120) => {
+    if (value === null || typeof value === "undefined") {
+      return "";
+    }
+
+    const normalized = String(value).replace(/\s+/g, " ").trim().slice(0, maxLen);
+    return encodeURIComponent(normalized);
   };
 
-  try {
-    return JSON.stringify(payload).slice(0, 480);
-  } catch {
-    return `${payload.type}:${payload.source}`;
-  }
+  const parts = [
+    `type=${safeEncode(detail?.type || "internet_issue", 64)}`,
+    `source=${safeEncode(detail?.source || "unknown", 64)}`,
+    `module=${safeEncode(detail?.module || "", 64)}`,
+    `requestType=${safeEncode(detail?.requestType || "", 64)}`,
+    `status=${safeEncode(detail?.status ?? "", 32)}`,
+    `code=${safeEncode(detail?.code || "", 64)}`,
+    `url=${safeEncode(detail?.resourceUrl || detail?.url || "", 140)}`,
+    `pageUrl=${safeEncode(detail?.pageUrl || "", 140)}`,
+    `retryable=${safeEncode(typeof detail?.retryable === "boolean" ? String(detail.retryable) : "", 8)}`,
+    `attempt=${safeEncode(detail?.attempt || "", 8)}`,
+    `online=${safeEncode(network?.online === false ? "0" : "1", 1)}`,
+    `effectiveType=${safeEncode(network?.effectiveType || "", 16)}`,
+    `downlink=${safeEncode(network?.downlinkMbps ?? "", 12)}`,
+    `rtt=${safeEncode(network?.rttMs ?? "", 12)}`,
+    `saveData=${safeEncode(network?.saveData === true ? "1" : "0", 1)}`,
+  ];
+
+  return parts.join("|").slice(0, 480);
 }
 
 const theme = createTheme({
@@ -206,15 +216,6 @@ function MetricaTLT() {
           `,
         }}
       />
-      <noscript>
-        <div>
-          <img
-            src="https://top-fwz1.mail.ru/counter?id=3321706;js=na"
-            style={{ position: "fixed", left: "-9999px" }}
-            alt="Top.Mail.Ru"
-          />
-        </div>
-      </noscript>
     </>
   );
 }
@@ -237,15 +238,6 @@ function MetricaTLT2() {
           `,
         }}
       />
-      <noscript>
-        <div>
-          <img
-            src="https://top-fwz1.mail.ru/counter?id=3637103;js=na"
-            style={{ position: "fixed", left: "-9999px" }}
-            alt="Top.Mail.Ru"
-          />
-        </div>
-      </noscript>
     </>
   );
 }
@@ -268,15 +260,6 @@ function MetricaTLT3() {
           `,
         }}
       />
-      <noscript>
-        <div>
-          <img
-            src="https://top-fwz1.mail.ru/counter?id=3646239;js=na"
-            style={{ position: "fixed", left: "-9999px" }}
-            alt="Top.Mail.Ru"
-          />
-        </div>
-      </noscript>
     </>
   );
 }
@@ -299,15 +282,6 @@ function MetricaSMR() {
           `,
         }}
       />
-      <noscript>
-        <div>
-          <img
-            src="https://top-fwz1.mail.ru/counter?id=3588691;js=na"
-            style={{ position: "fixed", left: "-9999px" }}
-            alt="Top.Mail.Ru"
-          />
-        </div>
-      </noscript>
     </>
   );
 }
@@ -330,15 +304,6 @@ function MetricaSMR2() {
           `,
         }}
       />
-      <noscript>
-        <div>
-          <img
-            src="https://top-fwz1.mail.ru/counter?id=3621394;js=na"
-            style={{ position: "absolute", left: "-9999px" }}
-            alt="Top.Mail.Ru"
-          />
-        </div>
-      </noscript>
     </>
   );
 }
@@ -590,18 +555,6 @@ export default function MyApp({ Component, pageProps }) {
         `}
       </Script>
 
-      <noscript>
-        <div>
-          <img src="https://mc.yandex.ru/watch/47085879" style={{ position: "absolute", left: "-9999px" }} alt="" />
-          {city === "samara" ? (
-            <img src="https://mc.yandex.ru/watch/100325084" style={{ position: "absolute", left: "-9999px" }} alt="" />
-          ) : null}
-          {city === "togliatti" ? (
-            <img src="https://mc.yandex.ru/watch/100601350" style={{ position: "absolute", left: "-9999px" }} alt="" />
-          ) : null}
-        </div>
-      </noscript>
-
       {/* карты */}
       <Script
         id="ymaps"
@@ -618,11 +571,6 @@ export default function MyApp({ Component, pageProps }) {
           }
         }}
       />
-
-      {/* VK noscript */}
-      <noscript>
-        <img src="https://vk.com/rtrg?p=VK-RTRG-409134-7MvqQ" style={{ position: "fixed", left: "-999px" }} alt="" />
-      </noscript>
 
       {/* Top.Mail по городу */}
       {city === "togliatti" ? <MetricaTLT /> : null}

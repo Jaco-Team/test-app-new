@@ -10,6 +10,21 @@ import Button from '@mui/material/Button';
 
 import { reachGoal, reachGoalSplit } from '@/utils/metrika';
 
+const getValidBannerMediaKey = (banner) => {
+  const raw = String(banner?.img ?? "").trim();
+
+  if (!raw) {
+    return null;
+  }
+
+  const normalized = raw.toLowerCase();
+  if (normalized === "undefined" || normalized === "null") {
+    return null;
+  }
+
+  return raw;
+};
+
 function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }) {
   const [thisItem, setThisItem] = useState({});
   const [CatsItems, getItem] = useHomeStore((state) => [state.CatsItems, state.getItem]);
@@ -233,6 +248,7 @@ export default function AkciiItemPC({ actia, is_one_actia }) {
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
 
   const data = dataForActia(actia);
+  const bannerMediaKey = getValidBannerMediaKey(data?.banner);
 
   const activePromo = async(item) => {
     const res = await getInfoPromo(item.name, item.city_id);
@@ -262,22 +278,24 @@ export default function AkciiItemPC({ actia, is_one_actia }) {
 
   return (
     <Grid container className="containerAccia" id={data?.banner?.link} name={data?.banner?.link}>
-      <picture>
-        <source 
-          type="image/webp" 
-          srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${data?.banner?.img}_3700x1000.webp`} 
-          sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
-        <source 
-          type="image/jpeg" 
-          srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${data?.banner?.img}_3700x1000.jpg`} 
-          sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+      {bannerMediaKey ? (
+        <picture>
+          <source 
+            type="image/webp" 
+            srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${bannerMediaKey}_3700x1000.webp`} 
+            sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
+          <source 
+            type="image/jpeg" 
+            srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${bannerMediaKey}_3700x1000.jpg`} 
+            sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
-        <img 
-          alt={data?.banner?.title} 
-          src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${data?.banner?.img}_3700x1000.jpg`} 
-          loading="lazy"
-        />
-      </picture>
+          <img 
+            alt={data?.banner?.title} 
+            src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${bannerMediaKey}_3700x1000.jpg`} 
+            loading="lazy"
+          />
+        </picture>
+      ) : null}
 
       <Grid className="DescItem">
         <Grid className="FirstItem">

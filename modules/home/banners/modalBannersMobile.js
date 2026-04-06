@@ -16,6 +16,21 @@ import { roboto } from '@/ui/Font';
 
 import { reachGoalSplit, reachGoal } from '@/utils/metrika';
 
+const getValidBannerMediaKey = (item) => {
+  const raw = String(item?.img ?? "").trim();
+
+  if (!raw) {
+    return null;
+  }
+
+  const normalized = raw.toLowerCase();
+  if (normalized === "undefined" || normalized === "null") {
+    return null;
+  }
+
+  return raw;
+};
+
 function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }){
 
   const [ thisItem, setThisItem ] = useState({});
@@ -286,6 +301,9 @@ export default function ModalBannerMobile() {
   }
 
   const hasVideo = Boolean(banner?.type_illustration == 'video');
+  const bannerMediaKey = getValidBannerMediaKey(banner);
+  const showVideo = Boolean(hasVideo && bannerMediaKey);
+  const showImage = Boolean(!hasVideo && bannerMediaKey);
 
   return (
     <SwipeableDrawer
@@ -306,7 +324,7 @@ export default function ModalBannerMobile() {
               priority={true}
             /> */}
 
-            {hasVideo ?
+            {showVideo ?
               <video
                 // ref={(el) => { if (el) videoRefs.current[s.key] = el; }}
                 muted
@@ -325,26 +343,27 @@ export default function ModalBannerMobile() {
                 // onEnded={() => handleVideoEnded(s.key)}
                 // onCanPlay={() => handleVideoCanPlay(s.key)}
               >
-                <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_video_1080x1920.mp4'} type="video/mp4" />
+                <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + bannerMediaKey + '_video_1080x1920.mp4'} type="video/mp4" />
                 {/* <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_video_1080x1920.webm'} type="video/webm" /> */}
               </video>
-                :
+                : showImage ? 
               <picture>
                 <source 
                   type="image/webp" 
-                  srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_1000x500.jpg'} 
+                  srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + bannerMediaKey + '_1000x500.jpg'} 
                   sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
                 <source 
                   type="image/jpeg" 
-                  srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_1000x500.jpg'} 
+                  srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + bannerMediaKey + '_1000x500.jpg'} 
                   sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
 
                 <img 
                   alt={banner?.title} 
-                  src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_1000x500.jpg'} 
+                  src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + bannerMediaKey + '_1000x500.jpg'} 
                   loading="lazy"
                 />
               </picture>
+                : null
             }
             
             <Typography

@@ -4465,13 +4465,43 @@ export const useProfileStore = createWithEqualityFn(persist((set, get) => ({
     
     const token_tmp = await useHeaderStoreNew.getState().token_tmp ?? '';
 
+    const normalizeActionData = (value) => {
+      if (value === null || typeof value === 'undefined') {
+        return '';
+      }
+
+      let rawValue = '';
+
+      if (typeof value === 'string') {
+        rawValue = value;
+      } else {
+        try {
+          rawValue = JSON.stringify(value);
+        } catch {
+          rawValue = String(value);
+        }
+      }
+
+      const normalized = rawValue.replace(/\s+/g, ' ').trim();
+
+      if (normalized.length === 0) {
+        return '';
+      }
+
+      if (/[<>"'{}\[\]\n\r\t]/.test(normalized)) {
+        return `enc:${encodeURIComponent(normalized).slice(0, 472)}`;
+      }
+
+      return normalized.slice(0, 480);
+    };
+
     let data = {
       type: 'save_user_actions',
       user_id: useHeaderStoreNew.getState().token,
       user_token: token_tmp ?? '',
       city_id: city,
       event: event,
-      data: param,
+      data: normalizeActionData(param),
     };
 
     let json = await api('profile', data);
