@@ -149,6 +149,23 @@ function saveItemsCatCache(city = '', category = [], items = []) {
   );
 }
 
+const hotStores =
+  typeof globalThis !== 'undefined'
+    ? (globalThis.__JACO_HOT_STORES__ = globalThis.__JACO_HOT_STORES__ || {})
+    : null;
+
+function reuseHotStore(key, store) {
+  if (process.env.NODE_ENV === 'production' || !hotStores) {
+    return store;
+  }
+
+  if (!hotStores[key]) {
+    hotStores[key] = store;
+  }
+
+  return hotStores[key];
+}
+
 function hasDetailedItemsPayload(items = []) {
   const safeItems = Array.isArray(items) ? items : [];
 
@@ -166,7 +183,7 @@ function hasDetailedItemsPayload(items = []) {
   });
 }
 
-export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
+export const useHeaderStoreNew = reuseHotStore('header', createWithEqualityFn((set, get) => ({
   activePage: '',
   openCityModal: false,
   openAuthModal: false,
@@ -840,9 +857,9 @@ export const useHeaderStoreNew = createWithEqualityFn((set, get) => ({
 
     return userName;
   }
-}), shallow)
+}), shallow))
 
-export const useCartStore = createWithEqualityFn((set, get) => ({
+export const useCartStore = reuseHotStore('cart', createWithEqualityFn((set, get) => ({
   items: [],
   //itemsOnDops: [],
   itemsOffDops: [],
@@ -2180,7 +2197,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
         if( parseInt(item_cart['item_id']) == parseInt(item['item_id']) ){
           item['count_in_cart'] = parseInt(item_cart['count']);
           
-          free_dops_in_cart.push( item );
+          // free_dops_in_cart.push( item );
           unic_id.push( parseInt(item['dop_item_id']) );
         }
       });
@@ -2213,7 +2230,7 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       })
     });
     
-    let max_count = 99;
+    let max_count = 99;  
     
     if( new_free_dop?.length > 0 ){
       
@@ -3183,9 +3200,9 @@ export const useCartStore = createWithEqualityFn((set, get) => ({
       show_checkFreeDrive: true,
     })*/
   },
-}), shallow);
+}), shallow));
 
-export const useContactStore = createWithEqualityFn((set, get) => ({
+export const useContactStore = reuseHotStore('contact', createWithEqualityFn((set, get) => ({
   myAddr: [],
   phone: '',
   disable: true,
@@ -3495,9 +3512,9 @@ export const useContactStore = createWithEqualityFn((set, get) => ({
     set({ points_zone });
   },
 
-}), shallow);
+}), shallow));
 
-export const useAkciiStore = createWithEqualityFn((set) => ({
+export const useAkciiStore = reuseHotStore('akcii', createWithEqualityFn((set) => ({
   actii: [],
  
   getAktia: (bannerList) => {
@@ -3558,7 +3575,7 @@ export const useAkciiStore = createWithEqualityFn((set) => ({
     
   },
 
-}), shallow);
+}), shallow));
 
 // helper: при отмене заказа order_id/point_id может не сохранится в сторе, возможно на старых телефонах из-за потери состояния, точно не понятно
 const resolveOrderIds = (get) => {
@@ -3569,7 +3586,7 @@ const resolveOrderIds = (get) => {
   };
 };
 
-export const useProfileStore = createWithEqualityFn(persist((set, get) => ({
+export const useProfileStore = reuseHotStore('profile', createWithEqualityFn(persist((set, get) => ({
   promoListActive: [],
   promoListOld: [],
   orderList: [],
@@ -4513,9 +4530,9 @@ export const useProfileStore = createWithEqualityFn(persist((set, get) => ({
     partialize: (s) => ({ dataOrder: s.dataOrder })
   }),
   shallow
-);
+));
 
-export const useFooterStore = createWithEqualityFn((set, get) => ({
+export const useFooterStore = reuseHotStore('footer', createWithEqualityFn((set, get) => ({
   links: {},
   linksCity: '',
   linksLoadedAt: 0,
@@ -4585,9 +4602,9 @@ export const useFooterStore = createWithEqualityFn((set, get) => ({
 
     return footerInFlightPromise;
   },
-}), shallow);
+}), shallow));
 
-export const useCitiesStore = createWithEqualityFn((set) => ({
+export const useCitiesStore = reuseHotStore('cities', createWithEqualityFn((set) => ({
   thisCity: null,
   thisCityRu: '',
   thisCityList: [],
@@ -4606,9 +4623,9 @@ export const useCitiesStore = createWithEqualityFn((set) => ({
       thisCityList: cityList,
     });
   },
-}), shallow);
+}), shallow));
 
-export const useHomeStore = createWithEqualityFn((set, get) => ({
+export const useHomeStore = reuseHotStore('home', createWithEqualityFn((set, get) => ({
   bannerList: [],
   bannersCity: '',
   bannersToken: '',
@@ -5694,4 +5711,4 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
     }
   },
 
-}), shallow);
+}), shallow));

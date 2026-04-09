@@ -322,7 +322,7 @@ export default function ModalCardItemMobile() {
                   {parseInt(openItem?.cat_id) == 5 || parseInt(openItem?.cat_id) == 6 || parseInt(openItem?.cat_id) == 7 || parseInt(openItem?.cat_id) == 15 ? null : (
                     <span className="second_text">
                       {parseInt(openItem?.cat_id) == 14 ? openItem?.size_pizza : openItem?.count_part}
-                      {parseInt(openItem?.cat_id) == 14 ? ' см' : parseInt(openItem?.cat_id) == 6 ? ' л' : ' шт.'}
+                      {parseInt(openItem?.cat_id) == 14 ? ' см*' : parseInt(openItem?.cat_id) == 6 ? ' л' : ' шт.'}
                     </span>
                   )}
 

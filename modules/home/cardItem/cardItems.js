@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 import Grid from '@mui/material/Grid';
 
@@ -36,8 +36,6 @@ const normalizeCategoryLink = (value) => {
 };
 
 export default React.memo(function CatItems() {
-  const [cats, setCats] = useState([]);
-
   const router = useRouter();
   const pathname = typeof router.asPath === 'string' ? router.asPath.split('?')[0] : '';
   const search = typeof router.query?.item === 'string' ? router.query.item : '';
@@ -55,25 +53,25 @@ export default React.memo(function CatItems() {
   const [matches] = useHeaderStoreNew((state) => [state?.matches]);
   const [thisCity] = useCitiesStore( state => [state.thisCity]);
 
-  useEffect(() => {
-    const catsCount = CatsItems.map((cat) => {
-      cat.items.map((item) => {
-        item.count = 0;
-        if (items.length) {
-          items.map((it) => {
-            if (it.item_id === item.id) {
-              item.count = it.count;
-              return it;
-            }
-          });
-        }
-        return item;
-      });
-      return cat;
-    });
+  const cartCountById = useMemo(
+    () =>
+      new Map(
+        (items || []).map((item) => [Number(item?.item_id), Number(item?.count) || 0]),
+      ),
+    [items],
+  );
 
-    setCats(catsCount);
-  }, [items, CatsItems]);
+  const cats = useMemo(
+    () =>
+      (CatsItems || []).map((cat) => ({
+        ...cat,
+        items: (cat?.items || []).map((item) => ({
+          ...item,
+          count: cartCountById.get(Number(item?.id)) || 0,
+        })),
+      })),
+    [CatsItems, cartCountById],
+  );
 
   useEffect(() => {
 

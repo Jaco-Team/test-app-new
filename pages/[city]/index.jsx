@@ -26,25 +26,29 @@ export default function Home(props) {
   const [setActivePage] = useHeaderStoreNew((state) => [state?.setActivePage]);
 
   useEffect(() => {
+    if (thisCity === city && allItems.length > 0) {
+      return;
+    }
+
+    const found = Array.isArray(cities) ? cities.find(item => item?.link == city) : null;
+
+    setThisCity(city);
+    setThisCityRu(found?.name ?? '');
+    setThisCityList(cities);
+    setAllItems(all_items);
+
+    const timer = setTimeout(() => {
+      changeAllItems();
+    }, 300);
+
+    return () => clearTimeout(timer);
+  }, [allItems.length, all_items, changeAllItems, cities, city, setAllItems, setThisCity, setThisCityList, setThisCityRu, thisCity]);
+
+  useEffect(() => {
 
     setTimeout( () => {
       window.scrollTo(0, 0);
     }, 100 )
-
-    if( thisCity != city ){
-      setThisCity(city);
-      //setThisCityRu( cities.find( item => item.link == city )['name'] );
-
-      const found = Array.isArray(cities) ? cities.find(item => item?.link == city) : null;
-      setThisCityRu( found?.name ?? '' );
-
-      setThisCityList(cities)
-      setAllItems(all_items);
-      
-      setTimeout(() => {
-        changeAllItems();
-      }, 300);
-    }
 
     getBanners(this_module, city);
 
@@ -64,7 +68,7 @@ export default function Home(props) {
 
     setActivePage('home');
     
-  }, [city]);
+  }, [allItems.length, all_items, cats, city, free_items, getBanners, getCartLocalStorage, getItemsCat, need_dop, seedItemsCatFromPage, setActivePage, setAllItems, setAllTags, setFreeItems, setNeedDops, tags]);
   
   return (
     <div className={roboto.variable}>

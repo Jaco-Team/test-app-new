@@ -40,7 +40,7 @@ export default function MenuCatMobile({ city }) {
   const isFilterSelected = badge_filter !== '' || tag_filter !== '' || text_filter !== '';
   const isFilterIconActive = isOpenFilter || isFilterSelected;
 
-  let activeID = useCheckCat(category);
+  const activeID = useCheckCat(category);
   
   useEffect(() => {
     if( parseInt(activeID.id) !== parseInt(activeID.parent_id) ){
@@ -54,7 +54,7 @@ export default function MenuCatMobile({ city }) {
     }else{
       setCatDopMenu([]);
     }
-  }, [activeID]);
+  }, [activeID, catMenu]);
 
   useEffect(() => {
     setCatMenu(category);
@@ -105,9 +105,8 @@ export default function MenuCatMobile({ city }) {
   };
 
   const getScroll = (id) => {
-    const header = document.querySelector('.headerMobile').getBoundingClientRect().height;
-
-    const menu = document.querySelector('.menuCatMobile').getBoundingClientRect().height;
+    const header = document.querySelector('.headerMobile')?.getBoundingClientRect?.().height || 0;
+    const menu = document.querySelector('.menuCatMobile')?.getBoundingClientRect?.().height || 0;
 
     const offset = -(header + menu);
 
@@ -171,10 +170,10 @@ export default function MenuCatMobile({ city }) {
 
                   chooseDopCat(cat.id, null);
 
-                  let scrollContainer = document.querySelector("#menuCatDop");
+                  const scrollContainer = document.querySelector("#menuCatDop");
 
-                  if( cat?.id && document.querySelector('#linkDOP_'+cat?.id) ) {
-                    let data = document.querySelector('#linkDOP_'+cat.id).getBoundingClientRect()
+                  if( scrollContainer && cat?.id && document.querySelector('#linkDOP_'+cat?.id) ) {
+                    const data = document.querySelector('#linkDOP_'+cat.id).getBoundingClientRect()
 
                     scrollContainer.scroll({
                         left: data['x'] + data['width'] - 150,
