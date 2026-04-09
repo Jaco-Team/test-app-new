@@ -34,10 +34,45 @@ export default function ConfirmForm() {
 
   const [openPayForm, linkPaySBP] = useCartStore((state) => [state.openPayForm, state.linkPaySBP]);
 
-  const [trueOrderCash, openConfirmForm, setConfirmForm, itemsCount, typePay, createOrder, typeOrder, clearCartData, setPayForm, setActiveModalBasket, checkNewOrder, orderAddr, itemsOffDops, dopListCart, allPrice, free_drive] = useCartStore((state) => {
-    return [ state.trueOrderCash, state.openConfirmForm, state.setConfirmForm, state.itemsCount,
-      state.typePay, state.createOrder, state.typeOrder, state.clearCartData, state.setPayForm, state.setActiveModalBasket, state.checkNewOrder, state.orderAddr, state.itemsOffDops, state.dopListCart, state.allPrice, state.free_drive ];
-    });
+  const [
+    trueOrderCash,
+    openConfirmForm,
+    setConfirmForm,
+    itemsCount,
+    typePay,
+    //createOrder,
+    typeOrder,
+    clearCartData,
+    setPayForm,
+    //setActiveModalBasket,
+    checkNewOrder,
+    orderAddr,
+    itemsOffDops,
+    dopListCart,
+    allPrice,
+    free_drive,
+    dateTimeOrder,
+  ] = useCartStore((state) => {
+    return [
+      state.trueOrderCash,
+      state.openConfirmForm,
+      state.setConfirmForm,
+      state.itemsCount,
+      state.typePay,
+      //state.createOrder,
+      state.typeOrder,
+      state.clearCartData,
+      state.setPayForm,
+      //state.setActiveModalBasket,
+      state.checkNewOrder,
+      state.orderAddr,
+      state.itemsOffDops,
+      state.dopListCart,
+      state.allPrice,
+      state.free_drive,
+      state.dateTimeOrder,
+    ];
+  });
 
   function getWord(int, array) {
     return (
@@ -146,14 +181,36 @@ export default function ConfirmForm() {
 
     const TIMEOUT_MS = 1000 * 60 * 10;
 
-    const now = new Date();
+    const getNow = () => new Date(Date.now());
+
+    const formatYMD = (date) => {
+      const y = date.getFullYear();
+      const m = String(date.getMonth() + 1).padStart(2, '0');
+      const d = String(date.getDate()).padStart(2, '0');
+      return `${y}-${m}-${d}`;
+    };
+
+    const isTodayOrder = () => {
+      const dto = dateTimeOrder;
+
+      // "В ближайшее время" / дата не выбрана = считаем заказом на сегодня
+      if (!dto?.date || dto?.name === 'В ближайшее время' || dto?.id === -1) {
+        return true;
+      }
+
+      return dto.date === formatYMD(getNow());
+    };
+
+    const shouldCheckCutoff = isTodayOrder();
+
+    const now = getNow();
     const cutoff = new Date(now);
     cutoff.setHours(21, 35, 0, 0);
-    const cutoffTs = cutoff.getTime();
 
-    const isAfterCutoff = () => Date.now() >= cutoffTs;
+    const isAfterCutoff = () => Date.now() >= cutoff.getTime();
 
     let closed = false;
+
     const close = (reason) => {
       if (closed) return;
       closed = true;
@@ -161,10 +218,12 @@ export default function ConfirmForm() {
       if (reason === 'cutoff') {
         setActiveModalAlert(true, 'Сегодня заказы больше не принимаются!', false);
       }
+
       setConfirmForm(false);
     };
 
-    if (isAfterCutoff()) {
+    // cutoff проверяем только для заказа НА СЕГОДНЯ
+    if (shouldCheckCutoff && isAfterCutoff()) {
       close('cutoff');
       return;
     }
@@ -174,7 +233,7 @@ export default function ConfirmForm() {
     const interval = setInterval(() => {
       if (!openConfirmForm) return;
 
-      if (isAfterCutoff()) {
+      if (shouldCheckCutoff && isAfterCutoff()) {
         close('cutoff');
         clearInterval(interval);
         return;
@@ -187,18 +246,23 @@ export default function ConfirmForm() {
     }, 1000);
 
     const onVisible = () => {
-      if (document.visibilityState === 'visible' && isAfterCutoff()) {
+      if (
+        document.visibilityState === 'visible' &&
+        shouldCheckCutoff &&
+        isAfterCutoff()
+      ) {
         close('cutoff');
         clearInterval(interval);
       }
     };
+
     document.addEventListener('visibilitychange', onVisible);
 
     return () => {
       clearInterval(interval);
       document.removeEventListener('visibilitychange', onVisible);
     };
-  }, [openConfirmForm, setConfirmForm, setActiveModalAlert]);
+  }, [openConfirmForm, dateTimeOrder, setConfirmForm, setActiveModalAlert]);
 
   //<span className="confirmText">Чтобы всё прошло по плану, проверьте, пожалуйста, условия получения и состав вашего заказа:</span>
 

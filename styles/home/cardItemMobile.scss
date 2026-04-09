@@ -10,7 +10,8 @@
   transition: all 0.5s ease-in-out;
 
   & .CardItemMobile {
-    height: $MyScale500_mobile;
+    min-height: $MyScale500_mobile;
+    height: auto;
     margin-bottom: $MyScale10_mobile !important;
     padding: 0 !important;
     width: $MyScale1090_mobile;
@@ -21,13 +22,14 @@
       mix-blend-mode: multiply;
       display: flex;
       width: 100%;
-      align-items: center;
+      align-items: stretch;
 
       & .CardImg {
         width: $MyScale500_mobile;
         height: $MyScale500_mobile;
         margin-right: $MyScale40_mobile;
         position: relative;
+
         & img {
           object-fit: contain;
           image-rendering: auto;
@@ -37,58 +39,78 @@
       }
 
       & .CardInfoItem {
+        display: flex;
         flex-direction: column;
         width: $MyScale530_mobile;
         height: 100%;
+        min-width: 0;
+        padding-bottom: $MyScale10_mobile;
+        box-sizing: border-box;
 
         & .CardNameItem {
-          height: $MyScale100_mobile;
+          min-height: $MyScale100_mobile;
+          height: auto;
           @include font44_500();
           display: flex;
           justify-content: flex-start;
           align-items: flex-end;
           margin-top: $MyScale40_mobile;
           margin-bottom: $MyScale10_mobile;
-          line-height: $MyScale55_mobile;
+          line-height: 1.2;
+          min-width: 0;
         }
 
         & .dop_text {
           padding: 0;
-          height: $MyScale40_mobile;
-          width: $MyScale500_mobile;
+          width: 100%;
           display: flex;
           align-items: center;
+          flex-wrap: nowrap;
+          gap: $MyScale20_mobile;
           margin-bottom: $MyScale15_mobile;
+          min-height: 14px;
+          height: auto;
+          min-width: 0;
+
+          & .first_text,
+          & .second_text,
+          & .third_text {
+            @include font30_400();
+            width: auto !important;
+            min-width: 0;
+            min-height: 14px;
+            line-height: 1.2;
+            display: flex;
+            align-items: center;
+            white-space: nowrap;
+            flex: 0 0 auto;
+            color: rgba(0, 0, 0, 0.60) !important;
+          }
 
           & .first_text {
-            @include font30_400();
             border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
-            color: rgba(0, 0, 0, 0.60) !important;
-            display: flex;
-            align-items: center;
+            padding-right: $MyScale20_mobile;
           }
+
           & .second_text {
-            @include font30_400();
             border-right: $MyScale1_mobile solid rgba(0, 0, 0, 0.6);
-            color: rgba(0, 0, 0, 0.60) !important;
-            display: flex;
-            align-items: center;
+            padding-right: $MyScale20_mobile;
           }
+
           & .third_text {
-            width: $MyScale140_mobile;
-            color: rgba(0, 0, 0, 0.60) !important;
-            @include font30_400();
-            display: flex;
-            align-items: center;
+            padding-right: 0;
           }
         }
 
         .desc_text {
           width: 100%;
-          height: $MyScale130_mobile;
+          min-width: 0;
+          height: auto;
+          min-height: calc(1.25em * 3);
           margin-bottom: $MyScale30_mobile;
           color: rgba(0, 0, 0, 0.6) !important;
           @include font35_400();
+          line-height: 1.25;
           -webkit-line-clamp: 3;
           display: -webkit-box;
           -webkit-box-orient: vertical;
@@ -99,6 +121,7 @@
           display: flex;
           align-items: center;
           justify-content: flex-start;
+          flex-shrink: 0;
 
           & > button {
             width: $MyScale410_mobile;
@@ -115,7 +138,7 @@
             white-space: nowrap;
             position: relative;
 
-            & > span:last-child{
+            & > span:last-child {
               position: absolute;
               right: $MyScale40_mobile;
               @include font75_300();
@@ -144,6 +167,7 @@
               height: $MyScale90_mobile;
               border-radius: $MyScale90_mobile;
             }
+
             & > .plus {
               padding: 0;
               margin-right: $MyScale10_mobile;
@@ -158,6 +182,7 @@
               height: $MyScale90_mobile;
               border-radius: $MyScale90_mobile;
             }
+
             & > span {
               display: flex;
               align-items: center;
@@ -1067,6 +1092,22 @@
             }
           }
         }
+      }
+
+      & .ValueFootnoteMobile {
+        width: $MyScale1010_mobile;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        text-align: center;
+        margin-bottom: $MyScale60_mobile;
+      }
+      
+      & .ItemPizzaMobile {
+        margin: 0;
+        line-height: normal;
+        color: rgba(0, 0, 0, 0.6) !important;
+        @include font30_400();
       }
     }
   }

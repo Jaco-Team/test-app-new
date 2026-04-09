@@ -19,11 +19,13 @@ $MyScale10: 0.36101083032491vw;
 $MyScale11: 0.3971119133574vw;
 $MyScale12: 0.43321299638989vw;
 $MyScale13: 0.46931407942238vw;
+$MyScale14: 0.5054vw;
 $MyScale15: 0.54151624548736vw;
 $MyScale16: 0.57761732851986vw;
 $MyScale17: 0.61371841155235vw;
 $MyScale18: 0.64981949458484vw;
 $MyScale20: 0.72202166064982vw;
+$MyScale21: 0.7581vw;
 $MyScale22: 0.7942238267148vw;
 $MyScale22_7: 0.81949458483755vw;
 $MyScale23: 0.83032490974729vw;
@@ -222,6 +224,7 @@ $MyScale8_mobile: 0.68376068376068vw;
 $MyScale10_mobile: 0.85470085470085vw;
 $MyScale12_mobile: 1.025641025641vw;
 $MyScale13_mobile: 1.1111111111111vw;
+$MyScale14_mobile: 1.1966vw;
 $MyScale15_mobile: 1.2820512820513vw;
 $MyScale16_mobile: 1.3675213675214vw;
 $MyScale17_mobile: 1.4529914529915vw;
@@ -482,6 +485,27 @@ $FontMinMobile: 12px;
 
   @media (max-width: $MyMaxWidth) {
     @include fonsNew($MyScale15_mobile, var(--inter-font));
+  }
+}
+
+@mixin font21_400() {
+  font-style: normal;
+  font-weight: 400;
+  
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale21_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew( $MyScale29, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew( $MyScale25, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew( $MyScale21, var(--inter-font));
   }
 }
 

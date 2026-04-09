@@ -5583,8 +5583,8 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
           new_banner.info.items_on_price.map( (item, key) => {
             let find_item = all_items?.find( f_item => parseInt(f_item.id) == parseInt(item.id) );
 
-            new_banner.info.items_on_price[ key ]['img_app'] = find_item['img_app'];
-            new_banner.info.items_on_price[ key ]['price'] = find_item['price'];
+            new_banner.info.items_on_price[key]['img_app'] = find_item?.img_app;
+            new_banner.info.items_on_price[key]['price'] = find_item?.price;
           } )
 
           set({
@@ -5620,10 +5620,12 @@ export const useHomeStore = createWithEqualityFn((set, get) => ({
 
     if(swiper) set({ swiper });
 
-    if(active) {
-      get().swiper.autoplay.stop();
+    const currentSwiper = swiper ?? get().swiper;
+
+    if (active) {
+      currentSwiper?.autoplay?.stop?.();
     } else {
-      get().swiper.autoplay.start();
+      currentSwiper?.autoplay?.start?.();
     }
     
     set({ 

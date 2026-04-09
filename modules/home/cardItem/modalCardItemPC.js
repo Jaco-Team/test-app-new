@@ -455,6 +455,14 @@ export default function ModalCardItemPC() {
                       ))}
                     </div>
 
+                    {parseInt(openItem?.cat_id) === 14 && (
+                      <div className="ValueFootnote">
+                        <Typography component="p" className="ItemPizza">
+                          * Размер заготовки. После&nbsp;выпекания возможно изменение размера на&nbsp;1–2&nbsp;см.
+                        </Typography>
+                      </div>
+                    )}
+
                   </div>
                 </div>
               </ClickAwayListener>

@@ -59,7 +59,7 @@
       border-top-left-radius: 1.444045vw;
       border-top-right-radius: 1.444045vw;
 
-     & .Title {
+      & .Title {
       display: flex;
       align-items: center;
       flex-direction: column;
@@ -123,7 +123,7 @@
       }
 
       & .List {
-        height: 100%;
+        height: calc(100% - #{$MyScale40});
         width: 100%;
         display: flex;
         align-items: center;
@@ -285,6 +285,19 @@
           margin-bottom: 11.552346570397vw;
           border-right: solid 1.0830324909747vw #ffffff;
         }
+      }
+
+      & .ValueFootnote {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: $MyScale40;
+        display: flex;
+        justify-content: center;
+        align-items: center;
+        padding: 0 $MyScale40;
+        box-sizing: border-box;
+        text-align: center;
       }
       
     }
@@ -458,6 +471,10 @@
 }
 
 .ModalFontPC {
+  & .ItemPizza {
+    @include font21_400();
+    color: rgba(0, 0, 0, 0.6) !important;
+  }
   & .ItemTitleStart {
     @include font50_400();
   }

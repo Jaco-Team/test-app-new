@@ -547,8 +547,14 @@ export default function ModalCardItemMobile() {
 
           {isMany ? <div className="lineModalCardMobileValue2"></div> : null}
 
-          <div className="ContainerValue"
-            style={{ marginRight: isOne ? '6.8376068376068vw' : 0, marginBottom: isOne ? '17.094017094017vw' : 0 }}
+          <div 
+            className="ContainerValue"
+            style={{
+              marginRight: isOne ? '6.8376068376068vw' : 0,
+              marginBottom: isOne
+                ? (parseInt(openItem?.cat_id) === 14 ? '6.8376068376068vw' : '17.094017094017vw')
+                : 0
+            }}
           >
             <div className="ItemModalCardMobileValue" style={{ overflowY: isOne ? 'hidden' : 'auto' }} onScroll={listenScrollValue}>
               {isMany ? (
@@ -680,6 +686,15 @@ export default function ModalCardItemMobile() {
               )}
             </div>
           </div>
+
+          {parseInt(openItem?.cat_id) === 14 && (
+            <div className="ValueFootnoteMobile">
+              <Typography component="p" className="ItemPizzaMobile">
+                * Размер заготовки. После&nbsp;выпекания возможно изменение размера на&nbsp;1–2&nbsp;см.
+              </Typography>
+            </div>
+          )}
+
         </div>
       </SwipeableDrawer>
     </>
