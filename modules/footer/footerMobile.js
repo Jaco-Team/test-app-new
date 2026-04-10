@@ -22,7 +22,16 @@ export default function FooterMobile({ cityName, active_page, links }) {
   const handlerArrow = () => {
     setShowArrow(window.scrollY > 50);
 
-    setMenuCatPosition(window.scrollY > 200);
+    const currentCatPosition = useHomeStore.getState().cat_position;
+
+    if (!currentCatPosition && window.scrollY > 220) {
+      setMenuCatPosition(true);
+      return;
+    }
+
+    if (currentCatPosition && window.scrollY < 180) {
+      setMenuCatPosition(false);
+    }
   }
 
   const scrollUp = () =>

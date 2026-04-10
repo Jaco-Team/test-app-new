@@ -1,14 +1,11 @@
 import React, { useState, useEffect } from 'react';
 import { useHomeStore } from '@/components/store.js';
-import { Link as ScrollLink } from 'react-scroll';
 import Box from '@mui/material/Box';
 
 import {Filter} from '@/ui/Icons.js';
 
 import useCheckCat from '../hooks';
 
-import * as Scroll from 'react-scroll';
-var scroller = Scroll.scroller;
 import { setLocalStorageItem } from '@/utils/browserStorage';
 
 export default function MenuCatMobile({ city }) {
@@ -33,18 +30,58 @@ export default function MenuCatMobile({ city }) {
     state.badge_filter
   ]);
 
-  const [catMenu, setCatMenu] = useState(category);
   const [catDopMenu, setCatDopMenu] = useState([]);
-  const [offset, setOffset] = useState(null);
+  const [pressedCatId, setPressedCatId] = useState(null);
+  const [pressedSubId, setPressedSubId] = useState(null);
 
   const isFilterSelected = badge_filter !== '' || tag_filter !== '' || text_filter !== '';
   const isFilterIconActive = isOpenFilter || isFilterSelected;
 
   const activeID = useCheckCat(category);
+  const activeIdNum = Number(activeID?.id) || 0;
+  const activeParentIdNum = Number(activeID?.parent_id) || 0;
+  const resolvedActiveCatId = pressedCatId;
+  const resolvedActiveSubId = pressedSubId;
+
+  useEffect(() => {
+    if (!activeIdNum && !activeParentIdNum) {
+      const top =
+        typeof window !== 'undefined'
+          ? (window.scrollY || document.documentElement.scrollTop || 0)
+          : 0;
+
+      if (top <= 5) {
+        setPressedCatId(null);
+        setPressedSubId(null);
+
+        const firstCatWithSubs = (category || []).find(
+          (item) => Array.isArray(item?.cats) && item.cats.length > 0,
+        );
+        setCatDopMenu(firstCatWithSubs?.cats || []);
+      }
+
+      return;
+    }
+
+    if (activeParentIdNum > 0 && activeParentIdNum !== activeIdNum) {
+      setPressedCatId(activeParentIdNum);
+      setPressedSubId(activeIdNum || null);
+      return;
+    }
+
+    if (activeIdNum > 0) {
+      setPressedCatId(activeIdNum);
+      setPressedSubId(null);
+    }
+  }, [activeIdNum, activeParentIdNum, category]);
   
   useEffect(() => {
+    if (!Number(activeID?.id) && !Number(activeID?.parent_id)) {
+      return;
+    }
+
     if( parseInt(activeID.id) !== parseInt(activeID.parent_id) ){
-      let chooseItem = catMenu.find( item => parseInt(item.id) == parseInt(activeID.parent_id) );
+      let chooseItem = category.find( item => parseInt(item.id) == parseInt(activeID.parent_id) );
 
       if( chooseItem ){
         setCatDopMenu(chooseItem.cats);
@@ -54,16 +91,31 @@ export default function MenuCatMobile({ city }) {
     }else{
       setCatDopMenu([]);
     }
-  }, [activeID, catMenu]);
+  }, [activeID, category]);
 
   useEffect(() => {
-    setCatMenu(category);
-  }, [category]);
+    if (!resolvedActiveSubId) {
+      return;
+    }
+
+    const scrollContainer = document.querySelector('#menuCatDop');
+    const activeNode = document.querySelector('#linkDOP_' + resolvedActiveSubId);
+
+    if (scrollContainer && activeNode?.getBoundingClientRect) {
+      const data = activeNode.getBoundingClientRect();
+
+      scrollContainer.scroll({
+        left: data['x'] + data['width'] - 150,
+        behavior: 'smooth'
+      });
+    }
+  }, [resolvedActiveSubId, catDopMenu.length]);
 
   if (city == '') return null;
 
   const chooseCat = (id, scroll) => {
     setLocalStorageItem('goTo', id);
+    setPressedCatId(Number(id) || null);
 
     resetFilter();
     setActiveFilter(false);
@@ -74,50 +126,80 @@ export default function MenuCatMobile({ city }) {
       menuCatDop.scrollLeft = 0;
     }
 
-    const newCatMenu = catMenu.map((cat) => {
-      if (cat.id === id) {
-        if(cat.cats.length > 0) {
-          setCatDopMenu(cat.cats);
-        } else {
-          setCatDopMenu([]);
-        }
-      } 
-      return cat;
-    });
+    const selectedCat = category.find((cat) => parseInt(cat.id) == parseInt(id));
+    const selectedSubs = Array.isArray(selectedCat?.cats) ? selectedCat.cats : [];
 
-    setCatMenu(newCatMenu);
+    if(selectedSubs.length > 0) {
+      setCatDopMenu(selectedSubs);
+      setPressedSubId(Number(selectedSubs[0]?.id) || null);
+    } else {
+      setCatDopMenu([]);
+      setPressedSubId(null);
+    }
 
     if (scroll) {
-      getScroll(id);
+      const targetId = Number(selectedSubs[0]?.id) || Number(id);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => getScroll(targetId));
+      });
     }
   };
 
   const chooseDopCat = (id, scroll) => {
     setLocalStorageItem('goTo', id);
+    setPressedSubId(Number(id) || null);
+
+    const selectedSub = category
+      .flatMap((cat) => (Array.isArray(cat?.cats) ? cat.cats : []))
+      .find((cat) => parseInt(cat.id) == parseInt(id));
+
+    if (selectedSub?.parent_id) {
+      setPressedCatId(Number(selectedSub.parent_id) || null);
+    }
     
 
     if (scroll) {
       resetFilter();
       setActiveFilter(false);
 
-      getScroll(id);
+      requestAnimationFrame(() => {
+        requestAnimationFrame(() => getScroll(id));
+      });
     }
   };
 
-  const getScroll = (id) => {
+  const getScroll = (id, attempt = 0) => {
+    if (!id) {
+      return;
+    }
+
     const header = document.querySelector('.headerMobile')?.getBoundingClientRect?.().height || 0;
-    const menu = document.querySelector('.menuCatMobile')?.getBoundingClientRect?.().height || 0;
+    const menuElement = document.querySelector('.menuCatMobile');
+    const menu = menuElement?.getBoundingClientRect?.().height || 0;
 
-    const offset = -(header + menu);
+    const target =
+      document.getElementById('cat' + id) ||
+      document.getElementsByName('cat' + id)?.[0];
 
-    setOffset(offset);
+    if (!target?.getBoundingClientRect) {
+      return;
+    }
 
-    scroller.scrollTo('cat' + id, {
-      duration: 0,
-      delay: 0,
-      smooth: 'easeInOutQuart',
-      offset,
-    });
+    const desiredTop = header + menu;
+    const currentTop = target.getBoundingClientRect().top;
+    const delta = currentTop - desiredTop;
+
+    if (Math.abs(delta) > 1) {
+      window.scrollBy({
+        top: delta,
+        left: 0,
+        behavior: 'auto',
+      });
+    }
+
+    if (attempt < 4) {
+      requestAnimationFrame(() => getScroll(id, attempt + 1));
+    }
   };
 
   return (
@@ -125,21 +207,15 @@ export default function MenuCatMobile({ city }) {
      style={{position: cat_position ? 'fixed' : 'sticky'}}
     >
       <div className="menuCat" style={{ marginBottom: catDopMenu.length == 0 ? '1.7094017094017vw' : '2.5641025641026vw' }}>
-        {catMenu.map((item, key) => (
-          <ScrollLink
+        {category.map((item, key) => (
+          <div
             key={key}
-            className={'Cat'}
-            to={'cat' + item.id}
+            className={resolvedActiveCatId === Number(item.id) ? 'Cat active' : 'Cat'}
             id={'link_' + item.id}
-            spy={true}
-            isDynamic={true}
-            smooth={false}
-            offset={offset}
             onClick={() => chooseCat(item.id, 'scroll')}
-            //onSetActive={() => chooseCat(item.id, null)}
           >
             <span>{item.name}</span>
-          </ScrollLink>
+          </div>
         ))}
         <div
           className={isFilterIconActive ? 'filterSVG activeFilter' : 'filterSVG'}
@@ -152,39 +228,17 @@ export default function MenuCatMobile({ city }) {
         <div className="menuCatDopContainer">
           <div className="menuCatDop" id="menuCatDop" >
             {catDopMenu.map((cat, key, arr) => (
-              <ScrollLink
+              <div
                 key={key}
-                className={'CatDop'}
+                className={resolvedActiveSubId === Number(cat.id) ? 'CatDop active' : 'CatDop'}
                 style={{minWidth: cat.name.length > 8 ? '27.350427350427vw' : '21.367521367521vw',
                   marginLeft: key === 0 ? '3.4188034188vw' : '1.7094017094017vw',
                   marginRight: cat === arr[arr.length - 1] ? '3.4188034188vw' : 0}}
-                to={'cat' + cat.id}
                 id={'linkDOP_' + cat.id}
-                spy={true}
-                isDynamic={true}
-                smooth={false}
-                offset={offset}
                 onClick={() => chooseDopCat(cat.id, 'scroll')}
-                //onSetActive={() => chooseDopCat(cat.id, null)}
-                onSetActive={ () => {
-
-                  chooseDopCat(cat.id, null);
-
-                  const scrollContainer = document.querySelector("#menuCatDop");
-
-                  if( scrollContainer && cat?.id && document.querySelector('#linkDOP_'+cat?.id) ) {
-                    const data = document.querySelector('#linkDOP_'+cat.id).getBoundingClientRect()
-
-                    scrollContainer.scroll({
-                        left: data['x'] + data['width'] - 150,
-                        behavior: 'smooth'
-                    });
-                  }
-                  
-                } }
               >
                 <span>{cat.short_name}</span>
-              </ScrollLink>
+              </div>
             ))}
           </div>
         </div>

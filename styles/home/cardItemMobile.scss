@@ -756,7 +756,7 @@
         align-items: center;
         justify-content: center;
         margin-bottom: $MyScale30_mobile;
-
+        flex-shrink: 0;
         & span {
           text-align: center;
           @include font70_400();
@@ -766,11 +766,12 @@
       & .dop_text_value {
         width: $MyScale1010_mobile;
         padding: 0;
-        max-height: $MyScale60_mobile;
+        min-height: $MyScale60_mobile;
         display: flex;
         align-items: center;
         justify-content: center;
         margin-bottom: $MyScale40_mobile;
+        flex-shrink: 0;
         & span {
           text-align: center;
           @include font30_400();
@@ -780,9 +781,8 @@
 
       & .ValueModeButtons {
         width: $MyScale1010_mobile;
-        padding-left: $MyScale80_mobile;
         display: flex;
-        justify-content: flex-start;
+        justify-content: center;
         gap: $MyScale20_mobile;
         margin-bottom: $MyScale40_mobile;
       }

@@ -21,7 +21,7 @@ function useCheckCat(CatsItems) {
         return;
       }
 
-      if (Math.abs(thisPOS - lastPOSRef.current) <= 200) {
+      if (Math.abs(thisPOS - lastPOSRef.current) <= 4) {
         return;
       }
 
@@ -68,6 +68,11 @@ function useCheckCat(CatsItems) {
         ) {
           setActiveID({ id: max.id, parent_id: max.parent_id });
         }
+      } else if (thisPOS <= 5) {
+        const prev = activeIDRef.current;
+        if (Number(prev?.id) !== 0 || Number(prev?.parent_id) !== 0) {
+          setActiveID({ id: 0, parent_id: 0 });
+        }
       }
 
       lastPOSRef.current = thisPOS;
@@ -80,28 +85,6 @@ function useCheckCat(CatsItems) {
       window.removeEventListener('scroll', scrollFunc);
     };
   }, [CatsItems]);
-
-  useEffect(() => {
-    if (typeof document === 'undefined') {
-      return;
-    }
-
-    const timer = window.setTimeout(() => {
-      Array.from(document.querySelectorAll('.Cat')).forEach((element) => element.classList.remove('active'));
-
-      if (activeID.parent_id) {
-        document.querySelector('#link_' + activeID.parent_id)?.classList.add('active');
-      }
-
-      if (activeID.id) {
-        document.querySelector('#link_' + activeID.id)?.classList.add('active');
-      }
-    }, 200);
-
-    return () => {
-      window.clearTimeout(timer);
-    };
-  }, [activeID]);
 
   return activeID;
 }

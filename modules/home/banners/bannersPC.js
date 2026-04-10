@@ -757,7 +757,7 @@ export default function BannersPC() {
             swiper.pagination.update();
             if (activeSlider) swiper.autoplay.start();
           }}
-          style={{ width: "90.975vw", marginTop: "8.66425vw" }}
+          style={{ width: "90.975vw", marginTop: "8.66425vw", marginLeft: "4.5126353790614vw", marginRight: "4.5126353790614vw" }}
         >
           {slides.map((s) => (
             <SwiperSlide key={s.key} onClick={() => openBanner(s.item)}>
