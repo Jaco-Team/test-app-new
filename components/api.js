@@ -6,7 +6,7 @@ import * as Sentry from '@sentry/nextjs';
 
 import { emitInternetIssue, getClientNetworkContext } from '@/utils/clientMonitoring';
 
-const DEFAULT_API_BASE_URL = 'https://api.jacochef.ru/site/public/index.php/';
+const DEFAULT_API_BASE_URL = 'https://api2.jacochef.ru/site/public/index.php/';
 const DEFAULT_API_TIMEOUT_MS = 12000;
 const AUTH_API_TIMEOUT_MS = 20000;
 const MIN_API_TIMEOUT_MS = 3000;

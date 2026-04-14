@@ -31,8 +31,13 @@ export default function LoginSMSCode() {
     } 
   }, [changeCode, timerPage]);
 
-  const reSendSMS = () => {
-    createProfile();
+  const reSendSMS = async () => {
+    const isSent = await createProfile();
+
+    if (!isSent) {
+      return;
+    }
+
     setTimer(89);
     if(!matches) {
       inputRef.current?.clear?.();

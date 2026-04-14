@@ -3,7 +3,7 @@ import { useState } from 'react';
 import { useHeaderStoreNew } from '@/components/store';
 
 import MyTextInput, { FormattedInputs } from '@/ui/MyTextInput';
-import {YaIcon, EyeShow_modalOrder, EyeHide_modalOrder, Check} from '@/ui/Icons';
+import {EyeShow_modalOrder, EyeHide_modalOrder, Check} from '@/ui/Icons';
 
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -11,7 +11,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 export default function Start() {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, matches, yandexAuthLink, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.navigate, state?.changeLogin, state?.setPwdLogin, state?.loginLogin, state?.pwdLogin, state?.checkLoginKey, state?.logIn, state?.matches, state?.yandexAuthLink, state?.setActiveModalAlert]);
+  const [navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, matches, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.navigate, state?.changeLogin, state?.setPwdLogin, state?.loginLogin, state?.pwdLogin, state?.checkLoginKey, state?.logIn, state?.matches, state?.setActiveModalAlert]);
 
   return (
     <div className={matches ? 'modalLoginStartMobile' : 'modalLoginStartPC'}>
@@ -73,16 +73,6 @@ export default function Start() {
       >
         <Typography component="span">Войти</Typography>
       </div>
-
-      <a className="loginLoginYa" 
-        href={ yandexAuthLink }
-        style={{ textDecoration: 'none', display: 'none' }}
-        //onClick={() => signIn('yandex', { callbackUrl: `${host}/${thisCity}/zakazy`, scope: 'default_phone', response_type: 'code' })}
-      >
-        <YaIcon />
-        <Typography component="span">Войти с Яндекс ID</Typography>
-      </a>
-     
     </div>
   );
 }

@@ -384,12 +384,14 @@ export const useHeaderStoreNew = reuseHotStore('header', createWithEqualityFn((s
         get().logIn();
       }
       if (parseInt(type) == 2) {
-        get().navigate('loginSMSCode');
-        get().setTimer(89);
+        void (async () => {
+          const isSent = await get().createProfile();
 
-        setTimeout( () => {
-          get().createProfile();
-        }, 300)
+          if (isSent) {
+            get().navigate('loginSMSCode');
+            get().setTimer(89);
+          }
+        })();
       }
 
       if (parseInt(type) == 3) {
@@ -668,7 +670,7 @@ export const useHeaderStoreNew = reuseHotStore('header', createWithEqualityFn((s
   createProfile: async ( token ) => {
 
     if( get().doubleClickSMS === true ){
-      return ;
+      return false;
     }
 
     set({
@@ -704,6 +706,14 @@ export const useHeaderStoreNew = reuseHotStore('header', createWithEqualityFn((s
         errText1: '',
         errText2: '',
       });
+
+      setTimeout(() => {
+        set({
+          doubleClickSMS: false
+        })
+      }, 300);
+
+      return true;
     } else {
       set({
         errTextAuth: json?.text,
@@ -717,6 +727,8 @@ export const useHeaderStoreNew = reuseHotStore('header', createWithEqualityFn((s
         doubleClickSMS: false
       })
     }, 300);
+
+    return false;
   },
 
   // защита

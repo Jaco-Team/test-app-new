@@ -1,4 +1,4 @@
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import { useHeaderStoreNew } from '@/components/store';
@@ -24,10 +24,52 @@ export default function LoginSMS() {
 
   const [token, setToken] = useState('');
   const [captchaError, setCaptchaError] = useState('');
+  const [isSubmitting, setIsSubmitting] = useState(false);
+  const captchaContainerRef = useRef(null);
 
-  const canSubmit = useMemo(() => loginLogin.length === 17 && token.length > 0 && captchaError.length === 0, [loginLogin.length, token, captchaError]);
+  const canSubmit = useMemo(() => loginLogin.length === 17 && token.length > 0 && captchaError.length === 0 && !isSubmitting, [loginLogin.length, token, captchaError, isSubmitting]);
 
   const isAppWebView = typeof window !== 'undefined' && !/^https?:$/.test(window.location.protocol);
+
+  useEffect(() => {
+    if (typeof window === 'undefined') {
+      return undefined;
+    }
+
+    const root = captchaContainerRef.current;
+    if (!root) {
+      return undefined;
+    }
+
+    const hasCaptchaWidget = () => {
+      return Boolean(
+        root.querySelector('iframe, input[name=\"smart-token\"], [data-smart-captcha], .smart-captcha') ||
+        root.childElementCount > 0
+      );
+    };
+
+    const markWidgetReady = () => {
+      if (hasCaptchaWidget() && captchaError === 'Не удалось загрузить капчу. Проверьте интернет и попробуйте ещё раз.') {
+        setCaptchaError('');
+      }
+    };
+
+    markWidgetReady();
+
+    const observer = new MutationObserver(markWidgetReady);
+    observer.observe(root, { childList: true, subtree: true });
+
+    const timeoutId = window.setTimeout(() => {
+      if (!hasCaptchaWidget() && token.length === 0 && captchaError.length === 0) {
+        setCaptchaError('Не удалось загрузить капчу. Проверьте интернет и попробуйте ещё раз.');
+      }
+    }, 8000);
+
+    return () => {
+      observer.disconnect();
+      window.clearTimeout(timeoutId);
+    };
+  }, [captchaError, token]);
 
   const handleCaptchaSuccess = (captchaToken) => {
     setCaptchaError('');
@@ -39,14 +81,26 @@ export default function LoginSMS() {
     setCaptchaError('Капча временно недоступна. Проверьте интернет и попробуйте ещё раз.');
   };
 
-  const handleNavigate = () => {
-    navigate('loginSMSCode');
-    setTimer(89);
+  const handleNavigate = async () => {
+    if (isSubmitting) {
+      return;
+    }
 
-    setTimeout( () => {
-      createProfile(token);
-    }, 300)
-  }
+    setIsSubmitting(true);
+
+    try {
+      const isSent = await createProfile(token);
+
+      if (!isSent) {
+        return;
+      }
+
+      navigate('loginSMSCode');
+      setTimer(89);
+    } finally {
+      setIsSubmitting(false);
+    }
+  };
 
   const handlePhoneEnter = (event) => {
     if (event.key !== 'Enter') {
@@ -94,7 +148,7 @@ export default function LoginSMS() {
         }
       /> 
 
-      <div style={{ marginTop: 20 }}>
+      <div ref={captchaContainerRef} style={{ marginTop: 20 }}>
         <SmartCaptcha 
           sitekey="ysc1_1E96JpaPgfXfQRj6D9nNuEXcojKLSn528gKwiUyD1f8b2761" 
           webview={isAppWebView}
@@ -118,7 +172,7 @@ export default function LoginSMS() {
           marginTop: matches ? '10.25641025641vw' : 20, 
           marginBottom: 20
         }}>
-        <Typography component="span">Получить СМС</Typography>
+        <Typography component="span">{isSubmitting ? 'Отправляем...' : 'Получить СМС'}</Typography>
       </div>
 
     </div>
