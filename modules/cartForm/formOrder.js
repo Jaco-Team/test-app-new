@@ -51,6 +51,10 @@ export default function FormOrder({ cityName }) {
   const [message, setMessage] = useState('');
 
   const type_pay_pic = [{ id: 'cash', name: 'В кафе' }];
+  const type_pay_pic_new = [
+    { id: 'cash', name: 'В кафе' }, 
+    { id: 'online', name: 'Картой на сайте' }
+  ];
   const type_pay_div = [
     { id: 'cash', name: 'Наличными курьеру' },
     //{ id: 'sbp', name: 'СБП на сайте' },
@@ -247,7 +251,11 @@ export default function FormOrder({ cityName }) {
       }
 
       if ( typeOrder == 'pic' ) {
-        setList(type_pay_pic);
+        if(parseInt(userInfo?.id) == 103162 || parseInt(userInfo?.id) == 17622){
+          setList(type_pay_pic_new);
+        }else{
+          setList(type_pay_pic);
+        }
       } else {
         setList(type_pay_div);
       }
