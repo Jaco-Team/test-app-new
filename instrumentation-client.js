@@ -49,7 +49,20 @@ function getEnvNumber(name, fallback, { min = Number.NEGATIVE_INFINITY, max = Nu
   return Math.min(Math.max(parsed, min), max);
 }
 
-const sentryEnabled = process.env.NODE_ENV === "production" && Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN);
+function getEnvBoolean(name, fallback) {
+  const rawValue = process.env[name];
+
+  if (rawValue == null || rawValue === "") {
+    return fallback;
+  }
+
+  return ["1", "true", "yes", "on"].includes(String(rawValue).toLowerCase());
+}
+
+const hasSentryDsn = Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN);
+const sentryEnabled =
+  hasSentryDsn &&
+  getEnvBoolean("NEXT_PUBLIC_SENTRY_ENABLED", process.env.NODE_ENV !== "test");
 const tracesSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_TRACES_SAMPLE_RATE", 0.5, { min: 0, max: 1 });
 const profilesSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_PROFILES_SAMPLE_RATE", 0, { min: 0, max: 1 });
 const replaysSessionSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_REPLAYS_SESSION_SAMPLE_RATE", 0.1, { min: 0, max: 1 });
@@ -61,6 +74,7 @@ Sentry.init({
   enabled: sentryEnabled,
   sampleRate: getEnvNumber("NEXT_PUBLIC_SENTRY_ERROR_SAMPLE_RATE", 1, { min: 0, max: 1 }),
   tracesSampleRate,
+  enableLogs: true,
   debug: process.env.NODE_ENV === "development",
   attachStacktrace: true,
   maxBreadcrumbs: 200,

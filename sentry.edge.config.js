@@ -5,37 +5,20 @@
 
 import * as Sentry from "@sentry/nextjs";
 
-function getEnvNumber(name, fallback, { min = Number.NEGATIVE_INFINITY, max = Number.POSITIVE_INFINITY } = {}) {
-  const rawValue = process.env[name];
-
-  if (rawValue == null || rawValue === "") {
-    return fallback;
-  }
-
-  const parsed = Number(rawValue);
-
-  if (!Number.isFinite(parsed)) {
-    return fallback;
-  }
-
-  return Math.min(Math.max(parsed, min), max);
-}
+const dsn = process.env.SENTRY_DSN || process.env.NEXT_PUBLIC_SENTRY_DSN;
 
 Sentry.init({
-  dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
+  dsn,
+  enabled: Boolean(dsn),
   environment: process.env.NODE_ENV,
-  tracesSampleRate: getEnvNumber("SENTRY_EDGE_TRACES_SAMPLE_RATE", 0, { min: 0, max: 1 }),
-  enabled: process.env.NODE_ENV === "production" && Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN),
-  debug: process.env.NODE_ENV === "development",
-  attachStacktrace: true,
-  maxBreadcrumbs: 200,
-  maxValueLength: 1000,
-  normalizeDepth: 6,
-  normalizeMaxBreadth: 1200,
-  initialScope: {
-    tags: {
-      app: "jacofood-web",
-      runtime: "edge",
-    },
-  },
+
+  // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
+  tracesSampleRate: 1,
+
+  // Enable logs to be sent to Sentry
+  enableLogs: true,
+
+  // Enable sending user PII (Personally Identifiable Information)
+  // https://docs.sentry.io/platforms/javascript/guides/nextjs/configuration/options/#sendDefaultPii
+  sendDefaultPii: true,
 });
