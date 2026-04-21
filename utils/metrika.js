@@ -177,6 +177,10 @@ export function reachGoalSplit(goal, paramsMain, paramsCity) {
   const safeCity = isObj(paramsCity) ? paramsCity : safeMain;
 
   try {
+    if(goal == 'add_to_cart'){
+      tgp('event','HbWMUPHc-UVXQB2SU');
+    }
+
     runWhenYmReady(() => {
       window.ym(MAIN_COUNTER_ID, 'reachGoal', goal, safeMain);
 

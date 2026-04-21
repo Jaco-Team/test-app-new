@@ -556,6 +556,25 @@ export default function MyApp({ Component, pageProps }) {
         `}
       </Script>
 
+      <Script id="telegram-pixel" strategy="afterInteractive">
+        {`
+          (function(t,l,g,r,m){
+            t[g] || (
+              g = t[g] = function() {
+                g.run ? g.run.apply(g, arguments) : g.queue.push(arguments);
+              },
+              g.queue = [],
+              t = l.createElement(r),
+              t.async = true,
+              t.src = m,
+              l = l.getElementsByTagName(r)[0],
+              l.parentNode.insertBefore(t, l)
+            );
+          })(window, document, 'tgp', 'script', 'https://telegram.org/js/pixel.js');
+          tgp('init', 'HbWMUPHc');
+        `}
+      </Script>
+
       {/* карты */}
       <Script
         id="ymaps"
@@ -602,6 +621,7 @@ export default function MyApp({ Component, pageProps }) {
 
   return (
     <ThemeProvider theme={theme}>
+      
       <Sentry.ErrorBoundary
         fallback={({ resetError }) => <AppErrorFallback city={city} resetError={resetError} />}
         beforeCapture={(scope) => {

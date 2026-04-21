@@ -107,7 +107,8 @@ export default function ConfirmForm() {
       // 1) цели: основной + городской
       reachGoal('pay_order', ym_data);
       reachGoal(`pay_order_${typeOrder}_${typePay.id}`, ym_data);
-
+      tgp('event','HbWMUPHc-UVXQB2SU');
+      
       const items = (checkNewOrder?.items ?? []).map((item, index) => ({
         id: item?.id ?? 0,
         name: item?.name ?? '',
