@@ -4,7 +4,11 @@ import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import * as Sentry from '@sentry/nextjs';
 
-import { emitInternetIssue, getClientNetworkContext } from '@/utils/clientMonitoring';
+import {
+  emitInternetIssue,
+  getClientNetworkContext,
+  isCustomSentryMonitoringEnabled,
+} from '@/utils/clientMonitoring';
 
 const DEFAULT_API_BASE_URL = 'https://api2.jacochef.ru/site/public/index.php/';
 const DEFAULT_API_TIMEOUT_MS = 12000;
@@ -165,6 +169,10 @@ function getSafeRequestMeta(data = {}) {
 }
 
 function captureApiError({ module, requestUrl, requestMeta, error, source }) {
+  if (!isCustomSentryMonitoringEnabled()) {
+    return;
+  }
+
   Sentry.withScope((scope) => {
     const status = error?.response?.status ?? null;
     const code = error?.code ?? null;
@@ -294,7 +302,7 @@ export function api(module = '', data = {}){
         source: 'api',
       });
 
-      if (shouldReportInternetIssue(error, safeData)) {
+      if (isCustomSentryMonitoringEnabled() && shouldReportInternetIssue(error, safeData)) {
         emitInternetIssue({
           type: 'api_request_failed',
           source: 'api',

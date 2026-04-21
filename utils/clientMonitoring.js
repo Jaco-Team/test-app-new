@@ -60,6 +60,16 @@ function isInvalidResourceUrl(resourceUrl) {
 export const INTERNET_ISSUE_EVENT_NAME = "jaco:internet-issue";
 const INTERNET_ISSUE_DEDUP_WINDOW_MS = 15000;
 
+export function isCustomSentryMonitoringEnabled() {
+  const rawValue = process.env.NEXT_PUBLIC_SENTRY_CUSTOM_MONITORING_ENABLED;
+
+  if (rawValue == null || rawValue === "") {
+    return true;
+  }
+
+  return ["1", "true", "yes", "on"].includes(String(rawValue).toLowerCase());
+}
+
 function normalizeIssueValue(value) {
   if (value === null || value === undefined) {
     return null;
@@ -105,6 +115,10 @@ export function getClientNetworkContext() {
 }
 
 export function emitInternetIssue(payload = {}) {
+  if (!isCustomSentryMonitoringEnabled()) {
+    return false;
+  }
+
   if (typeof window === "undefined") {
     return false;
   }
@@ -191,6 +205,10 @@ export function maybeReloadAfterChunkError(context = {}) {
 }
 
 export function installGlobalSentryHandlers(Sentry) {
+  if (!isCustomSentryMonitoringEnabled()) {
+    return;
+  }
+
   if (typeof window === "undefined") {
     return;
   }

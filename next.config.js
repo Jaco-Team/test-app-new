@@ -157,13 +157,15 @@ const nextConfig = {
 // Injected content via Sentry wizard below
 
 const { withSentryConfig } = require("@sentry/nextjs");
+const sentryOrg = process.env.SENTRY_ORG || "mister-jaco-llc";
+const sentryProject = process.env.SENTRY_PROJECT || "jacofood";
 
 module.exports = withSentryConfig(nextConfig, {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
-  org: "mister-jaco-llc",
-  project: "jacofood",
+  org: sentryOrg,
+  project: sentryProject,
 
   // Only print logs for uploading source maps in CI
   silent: !process.env.CI,
@@ -173,12 +175,6 @@ module.exports = withSentryConfig(nextConfig, {
 
   // Upload a larger set of source maps for prettier stack traces (increases build time)
   widenClientFileUpload: true,
-
-  // Route browser requests to Sentry through a Next.js rewrite to circumvent ad-blockers.
-  // This can increase your server load as well as your hosting bill.
-  // Note: Check that the configured route will not match with your Next.js middleware, otherwise reporting of client-
-  // side errors will fail.
-  tunnelRoute: "/monitoring",
 
   webpack: {
     // Enables automatic instrumentation of Vercel Cron Monitors. (Does not yet work with App Router route handlers.)

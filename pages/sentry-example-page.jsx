@@ -15,29 +15,11 @@ export default function Page() {
 
   useEffect(() => {
     Sentry.logger.info("Sentry example page loaded");
-
     async function checkConnectivity() {
-      const client = Sentry.getClient();
-
-      if (!client?.getDsn() || client.getOptions().enabled === false) {
-        setIsConnected(false);
-        return;
-      }
-
-      // `diagnoseSdkConnectivity` sends an empty POST request, which looks like a
-      // failing event when a Next.js tunnel is configured.
-      if (client.getOptions().tunnel) {
-        setIsConnected(true);
-        return;
-      }
-
       const result = await Sentry.diagnoseSdkConnectivity();
       setIsConnected(result !== "sentry-unreachable");
     }
-
-    checkConnectivity().catch(() => {
-      setIsConnected(false);
-    });
+    checkConnectivity();
   }, []);
 
   return (
@@ -86,23 +68,8 @@ export default function Page() {
 
         <button
           type="button"
-          onClick={async () => {
-            Sentry.logger.info("User clicked the button, throwing a sample error");
-            await Sentry.startSpan(
-              {
-                name: "Example Frontend/Backend Span",
-                op: "test",
-              },
-              async () => {
-                const res = await fetch("/api/sentry-example-api");
-                if (!res.ok) {
-                  setHasSentError(true);
-                }
-              },
-            );
-            throw new SentryExampleFrontendError(
-              "This error is raised on the frontend of the example page.",
-            );
+          onClick={() => {
+            myUndefinedFunction();
           }}
           disabled={!isConnected}
         >

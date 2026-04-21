@@ -63,10 +63,12 @@ const hasSentryDsn = Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN);
 const sentryEnabled =
   hasSentryDsn &&
   getEnvBoolean("NEXT_PUBLIC_SENTRY_ENABLED", process.env.NODE_ENV !== "test");
-const tracesSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_TRACES_SAMPLE_RATE", 0.5, { min: 0, max: 1 });
+const tracesSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_TRACES_SAMPLE_RATE", 0, { min: 0, max: 1 });
 const profilesSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_PROFILES_SAMPLE_RATE", 0, { min: 0, max: 1 });
-const replaysSessionSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_REPLAYS_SESSION_SAMPLE_RATE", 0.1, { min: 0, max: 1 });
-const replaysOnErrorSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE", 1, { min: 0, max: 1 });
+const replaysSessionSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_REPLAYS_SESSION_SAMPLE_RATE", 0, { min: 0, max: 1 });
+const replaysOnErrorSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE", 0, { min: 0, max: 1 });
+const enableLogs = getEnvBoolean("NEXT_PUBLIC_SENTRY_ENABLE_LOGS", false);
+const enableReplay = replaysSessionSampleRate > 0 || replaysOnErrorSampleRate > 0;
 
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
@@ -74,7 +76,7 @@ Sentry.init({
   enabled: sentryEnabled,
   sampleRate: getEnvNumber("NEXT_PUBLIC_SENTRY_ERROR_SAMPLE_RATE", 1, { min: 0, max: 1 }),
   tracesSampleRate,
-  enableLogs: true,
+  enableLogs,
   debug: process.env.NODE_ENV === "development",
   attachStacktrace: true,
   maxBreadcrumbs: 200,
@@ -89,23 +91,25 @@ Sentry.init({
 
     return scope;
   },
-  integrations: [
-    Sentry.replayIntegration({
-      // Keep form values masked, but make the page itself readable in Replay.
-      maskAllInputs: true,
-      maskAllText: false,
-      blockAllMedia: false,
-      mask: [
-        "[data-sentry-mask]",
-        ".sentry-mask",
-        "[data-sensitive='true']",
-      ],
-      block: [
-        "[data-sentry-block]",
-        ".sentry-block",
-      ],
-    }),
-  ],
+  integrations: enableReplay
+    ? [
+        Sentry.replayIntegration({
+          // Keep form values masked, but make the page itself readable in Replay.
+          maskAllInputs: true,
+          maskAllText: false,
+          blockAllMedia: false,
+          mask: [
+            "[data-sentry-mask]",
+            ".sentry-mask",
+            "[data-sensitive='true']",
+          ],
+          block: [
+            "[data-sentry-block]",
+            ".sentry-block",
+          ],
+        }),
+      ]
+    : [],
   ...(profilesSampleRate > 0 ? { profilesSampleRate } : {}),
   replaysSessionSampleRate,
   replaysOnErrorSampleRate,

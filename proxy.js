@@ -129,7 +129,7 @@ function sanitizePathname(pathname) {
 
 export const config = {
   // Не перехватываем статику/служебные файлы
-  matcher: ['/((?!_next|favicon.ico|robots.txt|sitemap.xml|images|fonts|static).*)'],
+  matcher: ['/((?!api|monitoring|_next|favicon.ico|robots.txt|sitemap.xml|images|fonts|static).*)'],
 }
 
 export async function proxy(request) {

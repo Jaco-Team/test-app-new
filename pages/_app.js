@@ -100,6 +100,7 @@ import { useProfileStore } from "@/components/store";
 import {
   INTERNET_ISSUE_EVENT_NAME,
   getClientNetworkContext,
+  isCustomSentryMonitoringEnabled,
   isChunkLoadError,
   maybeReloadAfterChunkError,
 } from "@/utils/clientMonitoring";
@@ -458,7 +459,7 @@ export default function MyApp({ Component, pageProps }) {
   }, [isOnlyPayPage, router.events]);
 
   useEffect(() => {
-    if (typeof window === "undefined") {
+    if (typeof window === "undefined" || !isCustomSentryMonitoringEnabled()) {
       return undefined;
     }
 
