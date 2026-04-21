@@ -15,6 +15,10 @@ export default function OnlyPayPage() {
       
       //console.log( 'token 55', token )
 
+      if (typeof window.YooMoneyCheckoutWidget !== 'function') {
+        return;
+      }
+
       const checkout = new window.YooMoneyCheckoutWidget({
         confirmation_token: token,
 

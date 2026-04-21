@@ -38,6 +38,60 @@ function captureMapStateIssue(message, extra = {}) {
   });
 }
 
+function loadScriptOnce(src) {
+  if (typeof document === 'undefined') {
+    return Promise.resolve(false);
+  }
+
+  const existing = document.querySelector(`script[src="${src}"]`);
+  if (existing) {
+    if (existing.dataset.loaded === 'true') {
+      return Promise.resolve(true);
+    }
+
+    return new Promise((resolve) => {
+      existing.addEventListener('load', () => {
+        existing.dataset.loaded = 'true';
+        resolve(true);
+      }, { once: true });
+      existing.addEventListener('error', () => resolve(false), { once: true });
+    });
+  }
+
+  return new Promise((resolve) => {
+    const script = document.createElement('script');
+    script.src = src;
+    script.async = true;
+    script.onload = () => {
+      script.dataset.loaded = 'true';
+      resolve(true);
+    };
+    script.onerror = () => resolve(false);
+    document.head.appendChild(script);
+  });
+}
+
+async function ensureYooMoneyCheckoutWidget(maxAttempts = 15, delayMs = 150) {
+  if (typeof window === 'undefined') {
+    return null;
+  }
+
+  if (typeof window.YooMoneyCheckoutWidget === 'function') {
+    return window.YooMoneyCheckoutWidget;
+  }
+
+  await loadScriptOnce('https://yookassa.ru/checkout-widget/v1/checkout-widget.js');
+
+  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
+    if (typeof window.YooMoneyCheckoutWidget === 'function') {
+      return window.YooMoneyCheckoutWidget;
+    }
+    await new Promise((resolve) => setTimeout(resolve, delayMs));
+  }
+
+  return null;
+}
+
 function syncSentryUser(user, city = null) {
   if (!user?.id) {
     Sentry.setUser(null);
@@ -1786,7 +1840,29 @@ export const useCartStore = reuseHotStore('cart', createWithEqualityFn((set, get
         }
 
         if( get().typePay.id == 'online' ){
-          const checkout = new window.YooMoneyCheckoutWidget({
+          const YooMoneyCheckoutWidget = await ensureYooMoneyCheckoutWidget();
+          if (!YooMoneyCheckoutWidget) {
+            useHeaderStoreNew.getState().setActiveModalAlert(
+              true,
+              'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.',
+              false
+            );
+
+            Sentry.captureMessage('YooMoney checkout widget constructor is unavailable', {
+              level: 'error',
+              tags: {
+                kind: 'payment_widget_error',
+              },
+              extra: {
+                paymentType: get()?.typePay?.id || null,
+                hasToken: Boolean(json?.pay?.pay?.confirmation?.confirmation_token),
+              },
+            });
+
+            return 'wait_payment';
+          }
+
+          const checkout = new YooMoneyCheckoutWidget({
             confirmation_token: json.pay.pay.confirmation.confirmation_token,
 
             error_callback: function(error) {
