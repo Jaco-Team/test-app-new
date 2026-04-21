@@ -304,7 +304,7 @@ export default function ModalCardItemMobile() {
                 </div>
               </div>
 
-              <div className="TitleModalCardMobile" style={{ height: openItem?.name.length > 26 ? '13.675213675214vw' : '6.8376068376068vw' }}>
+              <div className="TitleModalCardMobile" style={{ height: (openItem?.name?.length || 0) > 26 ? '13.675213675214vw' : '6.8376068376068vw' }}>
                 <span>{openItem?.name}</span>
               </div>
 
