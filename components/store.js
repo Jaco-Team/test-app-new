@@ -3185,8 +3185,33 @@ export const useCartStore = reuseHotStore('cart', createWithEqualityFn((set, get
     const city = useCitiesStore.getState().thisCity;
 
     const allItems = get().allItems;
+    const orderItems = Array.isArray(order?.order_items) ? order.order_items : [];
 
     if( allItems.length == 0 ){
+      return;
+    }
+
+    const missingItemIds = orderItems
+      .filter((item) => !allItems?.find((it) => parseInt(it.id) === parseInt(item.item_id)))
+      .map((item) => item?.item_id);
+
+    if (missingItemIds.length > 0) {
+      Sentry.captureMessage('repeatOrder contains unavailable items', {
+        level: 'warning',
+        tags: {
+          kind: 'repeat_order_missing_items',
+        },
+        extra: {
+          missingItemIds,
+          orderId: order?.order?.order_id || null,
+        },
+      });
+
+      useHeaderStoreNew.getState().setActiveModalAlert(
+        true,
+        'Не удалось повторить заказ: одна или несколько позиций больше не в продаже.',
+        false
+      );
       return;
     }
 
@@ -3218,20 +3243,34 @@ export const useCartStore = reuseHotStore('cart', createWithEqualityFn((set, get
     //const itemsWithPromo = get().itemsWithPromo;
     
     
-    let checkItem = null;
-    let my_cart = [];
+    const my_cart = [];
 
-    order.order_items.map((item) => {
-      checkItem = allItems?.find( it => parseInt(it.id) === parseInt(item.item_id) );
-
-      checkItem.count = parseInt(item.count);
-      checkItem.one_price = parseInt(checkItem.price);
-      checkItem.item_id = parseInt(checkItem.id);
-
-      if( checkItem ){
-        my_cart.push(checkItem);
+    orderItems.forEach((item) => {
+      const sourceItem = allItems?.find((it) => parseInt(it.id) === parseInt(item.item_id));
+      if (!sourceItem) {
+        return;
       }
-    })
+
+      const count = parseInt(item?.count) > 0 ? parseInt(item.count) : 1;
+      const price = parseInt(sourceItem?.price) || 0;
+      const itemId = parseInt(sourceItem?.id);
+
+      my_cart.push({
+        ...sourceItem,
+        count,
+        one_price: price,
+        item_id: itemId,
+      });
+    });
+
+    if (my_cart.length === 0) {
+      useHeaderStoreNew.getState().setActiveModalAlert(
+        true,
+        'Не удалось повторить заказ: товары больше недоступны.',
+        false
+      );
+      return;
+    }
 
     const allPriceWithoutPromo = my_cart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
     const itemsCount = my_cart.reduce((all, it) => parseInt(all) + parseInt(it.count), 0);
