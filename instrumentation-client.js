@@ -63,18 +63,18 @@ const hasSentryDsn = Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN);
 const sentryEnabled =
   hasSentryDsn &&
   getEnvBoolean("NEXT_PUBLIC_SENTRY_ENABLED", process.env.NODE_ENV !== "test");
-const tracesSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_TRACES_SAMPLE_RATE", 0, { min: 0, max: 1 });
-const profilesSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_PROFILES_SAMPLE_RATE", 0, { min: 0, max: 1 });
-const replaysSessionSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_REPLAYS_SESSION_SAMPLE_RATE", 0, { min: 0, max: 1 });
-const replaysOnErrorSampleRate = getEnvNumber("NEXT_PUBLIC_SENTRY_REPLAYS_ON_ERROR_SAMPLE_RATE", 0, { min: 0, max: 1 });
-const enableLogs = getEnvBoolean("NEXT_PUBLIC_SENTRY_ENABLE_LOGS", false);
+const tracesSampleRate = 0.1;
+const profilesSampleRate = 0.1;
+const replaysSessionSampleRate = 0.1;
+const replaysOnErrorSampleRate = 0.1;
+const enableLogs = 0.1;
 const enableReplay = replaysSessionSampleRate > 0 || replaysOnErrorSampleRate > 0;
 
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   environment: process.env.NODE_ENV,
   enabled: sentryEnabled,
-  sampleRate: getEnvNumber("NEXT_PUBLIC_SENTRY_ERROR_SAMPLE_RATE", 1, { min: 0, max: 1 }),
+  sampleRate: 0.1,
   tracesSampleRate,
   enableLogs,
   debug: process.env.NODE_ENV === "development",
