@@ -119,6 +119,10 @@ function getResourceDebugContext(target, rawResourceUrl, normalizedResourceUrl) 
   };
 }
 
+function shouldSkipResourceSentryByTag(tagName) {
+  return tagName === "img";
+}
+
 function isInvalidResourceUrl(resourceUrl) {
   const normalized = String(resourceUrl || "").toLowerCase();
 
@@ -328,6 +332,7 @@ export function installGlobalSentryHandlers(Sentry) {
         }
 
         const tagName = String(target.tagName || "resource").toLowerCase();
+        const skipResourceSentry = shouldSkipResourceSentryByTag(tagName);
         const normalizedResourceUrl = normalizeResourceUrl(resourceUrl);
         const resourceDebugContext = getResourceDebugContext(target, resourceUrl, normalizedResourceUrl);
         const extra = {
@@ -373,15 +378,17 @@ export function installGlobalSentryHandlers(Sentry) {
         }
 
         if (isInvalidResourceUrl(normalizedResourceUrl)) {
-          Sentry.captureMessage(`Resource has invalid URL: ${tagName}`, {
-            level: "warning",
-            tags: {
-              kind: "resource_invalid_url",
-              ...sentryTags,
-            },
-            extra,
-            fingerprint: ["resource-invalid-url", tagName, normalizedResourceUrl],
-          });
+          if (!skipResourceSentry) {
+            Sentry.captureMessage(`Resource has invalid URL: ${tagName}`, {
+              level: "warning",
+              tags: {
+                kind: "resource_invalid_url",
+                ...sentryTags,
+              },
+              extra,
+              fingerprint: ["resource-invalid-url", tagName, normalizedResourceUrl],
+            });
+          }
 
           emitInternetIssue({
             type: "resource_invalid_url",
@@ -397,15 +404,17 @@ export function installGlobalSentryHandlers(Sentry) {
           return;
         }
 
-        Sentry.captureMessage(`Resource failed to load: ${tagName}`, {
-          level: "error",
-          tags: {
-            kind: "resource_load_error",
-            ...sentryTags,
-          },
-          extra,
-          fingerprint: ["resource-load-error", tagName, normalizedResourceUrl],
-        });
+        if (!skipResourceSentry) {
+          Sentry.captureMessage(`Resource failed to load: ${tagName}`, {
+            level: "error",
+            tags: {
+              kind: "resource_load_error",
+              ...sentryTags,
+            },
+            extra,
+            fingerprint: ["resource-load-error", tagName, normalizedResourceUrl],
+          });
+        }
 
         emitInternetIssue({
           type: "resource_load_failed",
