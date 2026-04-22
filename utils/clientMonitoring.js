@@ -47,6 +47,78 @@ function normalizeResourceUrl(resourceUrl) {
   }
 }
 
+function truncateTelemetryValue(value, maxLength = 500) {
+  if (value === null || value === undefined) {
+    return null;
+  }
+
+  return String(value).slice(0, maxLength);
+}
+
+function getElementSelector(target) {
+  if (!target) {
+    return null;
+  }
+
+  const tagName = typeof target.tagName === "string" ? target.tagName.toLowerCase() : "resource";
+  const idPart = target.id ? `#${target.id}` : "";
+  const classPart =
+    typeof target.className === "string" && target.className.trim()
+      ? `.${target.className.trim().split(/\s+/).slice(0, 3).join(".")}`
+      : "";
+
+  return truncateTelemetryValue(`${tagName}${idPart}${classPart}`, 240);
+}
+
+function getResourceDebugContext(target, rawResourceUrl, normalizedResourceUrl) {
+  const pageUrl = typeof window !== "undefined" ? window.location.href : "";
+  const pagePath = typeof window !== "undefined" ? window.location.pathname : "";
+  const pageHost = typeof window !== "undefined" ? window.location.host : "";
+
+  let resourceHost = null;
+  let resourcePath = null;
+  let resourceProtocol = null;
+  let resourceOrigin = null;
+  let resourceScope = "unknown";
+
+  try {
+    const parsed = new URL(normalizedResourceUrl, window.location.origin);
+    resourceHost = parsed.host || null;
+    resourcePath = parsed.pathname || null;
+    resourceProtocol = parsed.protocol || null;
+    resourceOrigin = parsed.origin || null;
+    resourceScope = parsed.origin === window.location.origin ? "first_party" : "third_party";
+  } catch {
+    resourceScope = "unknown";
+  }
+
+  return {
+    pageUrl: truncateTelemetryValue(pageUrl, 700),
+    pagePath: truncateTelemetryValue(pagePath, 260),
+    pageHost: truncateTelemetryValue(pageHost, 260),
+    documentReferrer: truncateTelemetryValue(typeof document !== "undefined" ? document.referrer : "", 700),
+    documentReadyState: truncateTelemetryValue(typeof document !== "undefined" ? document.readyState : "", 80),
+    resourceUrl: truncateTelemetryValue(normalizedResourceUrl, 700),
+    rawResourceUrl: truncateTelemetryValue(rawResourceUrl, 700),
+    resourceHost: truncateTelemetryValue(resourceHost, 260),
+    resourcePath: truncateTelemetryValue(resourcePath, 500),
+    resourceProtocol: truncateTelemetryValue(resourceProtocol, 80),
+    resourceOrigin: truncateTelemetryValue(resourceOrigin, 260),
+    resourceScope,
+    elementSelector: getElementSelector(target),
+    elementBaseURI: truncateTelemetryValue(target?.baseURI, 700),
+    elementType: truncateTelemetryValue(target?.type, 120),
+    elementRel: truncateTelemetryValue(target?.rel, 120),
+    elementCrossOrigin: truncateTelemetryValue(target?.crossOrigin, 120),
+    elementReferrerPolicy: truncateTelemetryValue(target?.referrerPolicy, 120),
+    elementIntegrity: truncateTelemetryValue(target?.integrity, 220),
+    elementFetchPriority: truncateTelemetryValue(target?.fetchPriority, 120),
+    elementAsync: typeof target?.async === "boolean" ? target.async : null,
+    elementDefer: typeof target?.defer === "boolean" ? target.defer : null,
+    elementNoncePresent: Boolean(target?.nonce),
+  };
+}
+
 function isInvalidResourceUrl(resourceUrl) {
   const normalized = String(resourceUrl || "").toLowerCase();
 
@@ -257,11 +329,17 @@ export function installGlobalSentryHandlers(Sentry) {
 
         const tagName = String(target.tagName || "resource").toLowerCase();
         const normalizedResourceUrl = normalizeResourceUrl(resourceUrl);
+        const resourceDebugContext = getResourceDebugContext(target, resourceUrl, normalizedResourceUrl);
         const extra = {
           tagName,
-          resourceUrl: normalizedResourceUrl,
-          pageUrl: window.location.href,
+          ...resourceDebugContext,
           ...getClientNetworkContext(),
+        };
+        const sentryTags = {
+          resource_tag: tagName,
+          resource_scope: resourceDebugContext.resourceScope || "unknown",
+          resource_host: resourceDebugContext.resourceHost || "unknown",
+          page_path: resourceDebugContext.pagePath || "unknown",
         };
 
         if (normalizedResourceUrl.includes("/_next/static/")) {
@@ -272,7 +350,7 @@ export function installGlobalSentryHandlers(Sentry) {
             tags: {
               kind: "chunk_load_error",
               source: "resource_error",
-              resource_tag: tagName,
+              ...sentryTags,
             },
             extra,
             fingerprint: ["chunk-load-error", normalizedResourceUrl],
@@ -299,7 +377,7 @@ export function installGlobalSentryHandlers(Sentry) {
             level: "warning",
             tags: {
               kind: "resource_invalid_url",
-              resource_tag: tagName,
+              ...sentryTags,
             },
             extra,
             fingerprint: ["resource-invalid-url", tagName, normalizedResourceUrl],
@@ -323,7 +401,7 @@ export function installGlobalSentryHandlers(Sentry) {
           level: "error",
           tags: {
             kind: "resource_load_error",
-            resource_tag: tagName,
+            ...sentryTags,
           },
           extra,
           fingerprint: ["resource-load-error", tagName, normalizedResourceUrl],
