@@ -4051,6 +4051,8 @@ export const useProfileStore = reuseHotStore('profile', createWithEqualityFn(per
 
     let json = await api(this_module, data);
 
+    if (!json?.order) return;
+
     json.order.point_id = point_id;
     json.order.order_id = order_id;
 
