@@ -1,12 +1,14 @@
 /** @type { import('@storybook/nextjs').StorybookConfig } */
 const config = {
   stories: [
-    "../stories/**/*.stories.@(js|jsx|mjs|ts|tsx)",
+    "../stories/{app,pages,widgets,features,entities,shared}/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)",
+    "../stories/legacy/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)",
   ],
 
   addons: [
     "@storybook/addon-onboarding",
     "@storybook/addon-links",
+    "storybook/viewport",
     "@chromatic-com/storybook",
     "@storybook/addon-docs"
   ],

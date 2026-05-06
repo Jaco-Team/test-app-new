@@ -1,0 +1,10 @@
+@use '../global' as *;
+
+picture {
+  & img {
+    object-fit: contain;
+    image-rendering: auto;
+    width: 100%;
+    height: auto;
+  }
+}
