@@ -1,4 +1,4 @@
-import { HeaderPC } from '../HeaderPC/HeaderPC';
+import { HeaderPC } from '../../widgets/HeaderPC/HeaderPC';
 import { MapPC } from '../MapPC/MapPC';
 import { MenuContactsPC } from '../MenuContactsPC/MenuContactsPC';
 import { FooterPC } from '../FooterPC/FooterPC';

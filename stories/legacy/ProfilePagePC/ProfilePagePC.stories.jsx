@@ -1,5 +1,5 @@
 import { ProfilePagePC } from './ProfilePagePC';
-import * as HeaderPC from '../HeaderPC/HeaderPC.stories';
+import * as HeaderPC from '../../widgets/HeaderPC/HeaderPC.stories';
 import * as ProfileAddrPC from '../ProfileAddrPC/ProfileAddrPC.stories';
 import * as BreadСrumbsPC from '../BreadСrumbsPC/BreadСrumbsPC.stories';
 import * as FooterPC from '../FooterPC/FooterPC.stories';

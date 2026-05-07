@@ -1,4 +1,4 @@
-import { HeaderPC } from '../HeaderPC/HeaderPC';
+import { HeaderPC } from '../../widgets/HeaderPC/HeaderPC';
 import { BannerListPC } from '../BannerListPC/BannerListPC';
 import { BoxItemHomePC } from '../BoxItemHomePC/BoxItemHomePC';
 import { FooterPC } from '../FooterPC/FooterPC';

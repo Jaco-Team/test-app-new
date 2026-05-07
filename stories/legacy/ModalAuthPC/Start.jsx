@@ -2,7 +2,7 @@ import MyTextInput from '../MyTextInput/MyTextInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { MyButton } from '../MyButton/MyButton';
-import { IconPC } from '../IconPC/IconPC';
+import { IconPC } from '../../shared/IconPC/IconPC';
 
 export default function Start({ showPassword, errTextAuth, loginLogin, pwdLogin }) {
   return (

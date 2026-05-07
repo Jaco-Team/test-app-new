@@ -2,7 +2,7 @@ import MyTextInput from '../MyTextInput/MyTextInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { MyButton } from '../MyButton/MyButton';
-import { IconPC } from '../IconPC/IconPC';
+import { IconPC } from '../../shared/IconPC/IconPC';
 
 export default function LoginSMS({ errTextAuth, loginLogin }) {
   return (
@@ -18,7 +18,7 @@ export default function LoginSMS({ errTextAuth, loginLogin }) {
         className="inputLogin"
         inputAdornment={<InputAdornment position="end">{loginLogin.length === 11 ? <IconPC icon="check" element='auth' /> : <IconPC icon="clear" element='auth' />}</InputAdornment>}
       />
-      
+
       <div className="loginLogin">
         <MyButton children="Получить СМС" variant={loginLogin.length === 11 ? "primary" : "auth"} size="large" />
       </div>

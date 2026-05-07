@@ -1,25 +1,53 @@
-import React from 'react';
-import PropTypes from 'prop-types';
+import React, { MouseEvent } from 'react';
 import './MyMenu.scss';
 import { IconPC } from '../IconPC/IconPC';
-
 import Link from 'next/link';
 import Menu from '@mui/material/Menu';
 import Paper from '@mui/material/Paper';
 
-export const MyMenu = ({ anchorEl, isOpen, onClose, list, type }) => {
+interface MenuItem {
+  link?: string;
+  title?: string;
+  name?: string;
+  addr_name?: string;
+  is_main?: string;
+  pd?: string;
+  et?: string;
+  dom_true?: string;
+}
 
+interface SubCatItem {
+  id: string;
+  name: string;
+  link: string;
+}
+
+interface CatItem {
+  id: string;
+  name: string;
+  cats: SubCatItem[];
+}
+
+interface MyMenuProps {
+  anchorEl: HTMLElement | null;
+  isOpen: boolean;
+  onClose: () => void;
+  list: MenuItem[] | CatItem[] | SubCatItem[];
+  type: 'cat' | 'form_order' | 'contacts' | 'modal';
+}
+
+export const MyMenu: React.FC<MyMenuProps> = ({ anchorEl, isOpen, onClose, list, type }) => {
   if (type !== 'form_order') {
     if (!anchorEl && isOpen === true) {
       return (
         <Paper className="MyMenuPaper">
           <ul className="MyMenu">
-            {list.map((item) => (
-              <li key={item.link} onClick={onClose}>
+            {(list as SubCatItem[]).map((item: SubCatItem) => (
+              <li key={item.id || item.link} onClick={onClose}>
                 {type === 'cat' ? (
-                  <Link href={item.link}>{item.title}</Link>
+                  <Link href={item.link || '/'}>{item.name || item.title}</Link>
                 ) : (
-                  <span>{item.title}</span>
+                  <span>{item.name || item.title}</span>
                 )}
               </li>
             ))}
@@ -41,12 +69,12 @@ export const MyMenu = ({ anchorEl, isOpen, onClose, list, type }) => {
           marginTop: type === 'cat' ? '1.4440433212996vw' : '0.72202166064982vw',
         }}
       >
-        {list.map((item, key) => (
-          <li key={key} onClick={onClose}>
+        {(list as SubCatItem[]).map((item: SubCatItem, index: number) => (
+          <li key={item.id || item.link || index} onClick={onClose}>
             {type === 'cat' ? (
-              <Link href={item.link}>{item.title}</Link>
+              <Link href={item.link || '/'}>{item.name || item.title}</Link>
             ) : (
-              <span>{item.title}</span>
+              <span>{item.name || item.title}</span>
             )}
           </li>
         ))}
@@ -55,12 +83,11 @@ export const MyMenu = ({ anchorEl, isOpen, onClose, list, type }) => {
   }
 
   if (type === 'form_order') {
-
     if (!anchorEl && isOpen === true) {
       return (
         <Paper className="MyMenuPaper_FormOrder">
           <ul className="MyMenu_FormOrder">
-            {list.map((item, key) => (
+            {(list as MenuItem[]).map((item: MenuItem, key: number) => (
               <li key={key} onClick={onClose} className='menuItem'>
                 <div>
                   <div className='containerSpan'>
@@ -72,7 +99,7 @@ export const MyMenu = ({ anchorEl, isOpen, onClose, list, type }) => {
                       ) : null}
                       {item.name}
                     </span>
-                    {parseInt(item?.is_main) ? (
+                    {parseInt(item?.is_main || '0') ? (
                       <span className="home">
                         <IconPC icon='home' element="form_order" />
                       </span>
@@ -80,13 +107,13 @@ export const MyMenu = ({ anchorEl, isOpen, onClose, list, type }) => {
                   </div>
                   {item.name !== 'Добавить новый адрес' ? (
                     <span className="dopAddrInfo">
-                      {item?.pd?.length > 0 && parseInt(item?.pd) > 0
-                        ? 'Пд: ' + item?.pd + ', '
+                      {item?.pd && item?.pd.length > 0 && parseInt(item.pd) > 0
+                        ? 'Пд: ' + item.pd + ', '
                         : ''}
-                      {item?.et?.length > 0 && parseInt(item?.et) > 0
-                        ? 'Этаж: ' + item?.et + ', '
+                      {item?.et && item?.et.length > 0 && parseInt(item.et) > 0
+                        ? 'Этаж: ' + item.et + ', '
                         : ''}
-                      {item?.dom_true ? parseInt(item?.dom_true) == 0
+                      {item?.dom_true ? parseInt(item.dom_true) === 0
                         ? 'Домофон: не работает'
                         : 'Домофон: работает'
                         : ''
@@ -110,7 +137,7 @@ export const MyMenu = ({ anchorEl, isOpen, onClose, list, type }) => {
         onClose={onClose}
         className="MyMenu_FormOrder"
       >
-        {list.map((item, key) => (
+        {(list as MenuItem[]).map((item: MenuItem, key: number) => (
           <li key={key} onClick={onClose} className='menuItem'>
             <div>
               <div className='containerSpan'>
@@ -122,7 +149,7 @@ export const MyMenu = ({ anchorEl, isOpen, onClose, list, type }) => {
                   ) : null}
                   {item.name}
                 </span>
-                {parseInt(item?.is_main) ? (
+                {parseInt(item?.is_main || '0') ? (
                   <span className="home">
                     <IconPC icon='home' element="form_order" />
                   </span>
@@ -130,13 +157,13 @@ export const MyMenu = ({ anchorEl, isOpen, onClose, list, type }) => {
               </div>
               {item.name !== 'Добавить новый адрес' ? (
                 <span className="dopAddrInfo">
-                  {item?.pd?.length > 0 && parseInt(item?.pd) > 0
-                    ? 'Пд: ' + item?.pd + ', '
+                  {item?.pd && item?.pd.length > 0 && parseInt(item.pd) > 0
+                    ? 'Пд: ' + item.pd + ', '
                     : ''}
-                  {item?.et?.length > 0 && parseInt(item?.et) > 0
-                    ? 'Этаж: ' + item?.et + ', '
+                  {item?.et && item?.et.length > 0 && parseInt(item.et) > 0
+                    ? 'Этаж: ' + item.et + ', '
                     : ''}
-                  {item?.dom_true ? parseInt(item?.dom_true) == 0
+                  {item?.dom_true ? parseInt(item.dom_true) === 0
                     ? 'Домофон: не работает'
                     : 'Домофон: работает'
                     : ''
@@ -151,12 +178,6 @@ export const MyMenu = ({ anchorEl, isOpen, onClose, list, type }) => {
       </Menu>
     );
   }
-};
 
-MyMenu.propTypes = {
-  list: PropTypes.array,
-  onClose: PropTypes.func,
-  isOpen: PropTypes.bool,
-  anchorEl: PropTypes.node,
-  type: PropTypes.string.isRequired,
+  return null;
 };

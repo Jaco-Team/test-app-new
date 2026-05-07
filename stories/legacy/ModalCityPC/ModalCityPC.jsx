@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 
 import { MyButton } from '../MyButton/MyButton';
-import { MyMenu } from '../MyMenu/MyMenu';
+import { MyMenu } from '../../shared/MyMenu/MyMenu';
 
 import './ModalCityPC.scss';
 
@@ -40,7 +40,7 @@ export const ModalCityPC = ({ city }) => {
       </div>
 
       <MyMenu list={cityList} isOpen={isOpen} anchorEl={anchorEl} onClose={closeMenu} type='city' />
-     
+
     </div>
   );
 };

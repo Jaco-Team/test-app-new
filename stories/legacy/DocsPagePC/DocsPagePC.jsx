@@ -1,4 +1,4 @@
-import { HeaderPC } from '../HeaderPC/HeaderPC';
+import { HeaderPC } from '../../widgets/HeaderPC/HeaderPC';
 import { BreadСrumbsPC } from '../BreadСrumbsPC/BreadСrumbsPC';
 import { FooterPC } from '../FooterPC/FooterPC';
 

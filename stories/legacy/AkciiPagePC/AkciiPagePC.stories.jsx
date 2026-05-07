@@ -1,5 +1,5 @@
 import { AkciiPagePC } from './AkciiPagePC';
-import * as HeaderPC from '../HeaderPC/HeaderPC.stories';
+import * as HeaderPC from '../../widgets/HeaderPC/HeaderPC.stories';
 import * as BannerFullPC from '../BannerFullPC/BannerFullPC.stories';
 import * as FooterPC from '../FooterPC/FooterPC.stories';
 

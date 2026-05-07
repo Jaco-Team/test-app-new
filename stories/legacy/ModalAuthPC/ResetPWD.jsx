@@ -2,7 +2,7 @@ import MyTextInput from '../MyTextInput/MyTextInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { MyButton } from '../MyButton/MyButton';
-import { IconPC } from '../IconPC/IconPC';
+import { IconPC } from '../../shared/IconPC/IconPC';
 
 export default function ResetPWD({ showPassword, errTextAuth, loginLogin, pwdLogin }) {
   return (
@@ -30,7 +30,7 @@ export default function ResetPWD({ showPassword, errTextAuth, loginLogin, pwdLog
         />
         {showPassword ? <IconPC icon="eyeShow" element='auth' /> : <IconPC icon="eyeHide" element='auth' /> }
       </div>
-      
+
       <div className="loginLogin">
         <MyButton children="Сменить пароль" variant={loginLogin.length === 11 && pwdLogin.length > 1 ?"primary" : "auth"} size="large" />
       </div>

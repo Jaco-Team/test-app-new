@@ -1,4 +1,4 @@
-@use '../global' as *;
+@use '../../shared/global' as *;
 
 .navBarMobile {
   margin-top: calcSize_mobile(200);

@@ -1,8 +1,9 @@
-@use '../global' as *;
+@use '../../shared/global' as *;
 
 .blockShadow {
   width: 100%;
   height: calcSize(80);
+  position: fixed;
   position: fixed;
   top: calcSize(128);
   left: 0;

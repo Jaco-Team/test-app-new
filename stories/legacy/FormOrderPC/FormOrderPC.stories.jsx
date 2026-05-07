@@ -1,5 +1,5 @@
 import { FormOrderPC } from './FormOrderPC';
-import * as MyMenu from '../MyMenu/MyMenu.stories';
+import * as MyMenu from '../../shared/MyMenu/MyMenu.stories';
 import * as FormOrderPC_btn from '../FormOrderPC_btn/FormOrderPC_btn.stories';
 
 export default {

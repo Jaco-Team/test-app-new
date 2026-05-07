@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
 
 import MyTextInput from '../MyTextInput/MyTextInput';
-import { MyMenu } from '../MyMenu/MyMenu';
+import { MyMenu } from '../../shared/MyMenu/MyMenu';
 import { MySwitch } from '../MySwitch/MySwitch';
 import { PencilModalAddrIcon, HomeModalAddrIcon } from '../Icons';
 import { MyButton } from '../MyButton/MyButton';

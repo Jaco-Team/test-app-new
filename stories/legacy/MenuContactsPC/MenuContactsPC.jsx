@@ -2,7 +2,7 @@ import { useState } from 'react';
 import PropTypes from 'prop-types';
 import './MenuContactsPC.scss';
 
-import { MyMenu } from '../MyMenu/MyMenu';
+import { MyMenu } from '../../shared/MyMenu/MyMenu';
 import { MySwitch } from '../MySwitch/MySwitch';
 import { ArrowDownHeaderPC, MapPointIcon } from '../Icons';
 

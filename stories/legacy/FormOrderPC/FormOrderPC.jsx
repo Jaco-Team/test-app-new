@@ -4,7 +4,7 @@ import PropTypes from 'prop-types';
 import { MySwitch } from '../MySwitch/MySwitch';
 import { FormOrderPC_btn } from '../FormOrderPC_btn/FormOrderPC_btn';
 import { MyButton } from '../MyButton/MyButton';
-import { MyMenu } from '../MyMenu/MyMenu';
+import { MyMenu } from '../../shared/MyMenu/MyMenu';
 
 import './FormOrderPC.scss';
 

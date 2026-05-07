@@ -1,4 +1,4 @@
-import { IconPC } from '../IconPC/IconPC';
+import { IconPC } from '../../shared/IconPC/IconPC';
 
 export default function Finish() {
   return (

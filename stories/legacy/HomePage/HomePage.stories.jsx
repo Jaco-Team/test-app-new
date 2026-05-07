@@ -1,6 +1,6 @@
 import { HomePage } from './HomePage';
 
-import * as HeaderPC from '../HeaderPC/HeaderPC.stories';
+import * as HeaderPC from '../../widgets/HeaderPC/HeaderPC.stories';
 import * as BannerListPC from '../BannerListPC/BannerListPC.stories';
 import * as BoxItemHomePC from '../BoxItemHomePC/BoxItemHomePC.stories';
 import * as FooterPC from '../FooterPC/FooterPC.stories';

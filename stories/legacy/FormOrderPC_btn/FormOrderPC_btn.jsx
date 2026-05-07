@@ -1,6 +1,6 @@
 import PropTypes from 'prop-types';
 
-import { IconPC } from '../IconPC/IconPC';
+import { IconPC } from '../../shared/IconPC/IconPC';
 import { ArrowDownBasketModalPC } from '../Icons';
 
 import MyTextInput from '../MyTextInput/MyTextInput';
