@@ -20,6 +20,7 @@ interface SubCatItem {
   id: string;
   name: string;
   link: string;
+  title?: string;
 }
 
 interface CatItem {
