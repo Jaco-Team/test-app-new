@@ -36,6 +36,8 @@ Default local URLs:
 - Desktop: `991+`
 
 Tablet is a separate required design variant.
+Indexed FSD stories should expose `Mobile`, `Tablet`, and `Desktop` stories
+using the shared Storybook viewport helper.
 
 ## Storybook Structure
 

@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { MapPC } from './MapPC';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Страница Контакты / Карта',
   component: MapPC,
@@ -1311,3 +1312,15 @@ Disable.args = {
   points_zone: points_zone_disable,
   type_map: 'disable',
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

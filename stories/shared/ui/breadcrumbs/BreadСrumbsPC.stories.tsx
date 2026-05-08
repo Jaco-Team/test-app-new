@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { BreadСrumbsPC } from './BreadСrumbsPC';
 
+import { responsiveStoryParameters } from '../../lib/storybook/responsive';
 export default {
   title: 'Элементы / BreadСrumbs',
   component: BreadСrumbsPC,
@@ -119,3 +120,15 @@ About.args = {
   list: listAbout,
   title: 'О Компании',
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { BannerFullPC } from './BannerFullPC';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Акции / Акция',
   component: BannerFullPC,
@@ -82,3 +83,15 @@ Page.args = {
   ],
   type: 'page',
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Banner.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Banner.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Banner.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

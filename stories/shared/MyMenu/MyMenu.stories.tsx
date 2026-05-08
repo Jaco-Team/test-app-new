@@ -1,5 +1,6 @@
 import React from 'react';
 
+import { responsiveStoryParameters } from '../lib/storybook/responsive';
 import { MyMenu } from './MyMenu';
 
 export default {
@@ -142,3 +143,15 @@ Form_Order_Address.args = {
   anchorEl: null,
   type: 'form_order',
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Category.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Category.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Category.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

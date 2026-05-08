@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { AlertPC } from './AlertPC';
 
+import { responsiveStoryParameters } from '../../lib/storybook/responsive';
 export default {
   title: 'Header / ПК / Уведомление клиента',
   component: AlertPC,
@@ -33,3 +34,15 @@ Error.args = {
   status: false,
   text: 'Необходимо выбрать Адрес доставки',
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Basic.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Basic.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Basic.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

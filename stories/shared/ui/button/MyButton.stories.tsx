@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 
+import { responsiveStoryParameters } from '../../lib/storybook/responsive';
 import { MyButton } from './MyButton';
 
 export default {
@@ -126,4 +127,14 @@ Modal_Active.args = {
   element: 'modal',
 };
 
+export const Mobile = Template.bind({});
+Mobile.args = Primary.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
 
+export const Tablet = Template.bind({});
+Tablet.args = Primary.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Primary.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

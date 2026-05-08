@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { responsiveStoryParameters } from '../../lib/storybook/responsive';
 import { ScrollTopButton } from './ScrollTopButton';
 
 const meta = {
@@ -15,4 +16,19 @@ export const Visible: Story = {
   args: {
     visible: true,
   },
+};
+
+export const Mobile: Story = {
+  args: Visible.args,
+  parameters: responsiveStoryParameters.Mobile,
+};
+
+export const Tablet: Story = {
+  args: Visible.args,
+  parameters: responsiveStoryParameters.Tablet,
+};
+
+export const Desktop: Story = {
+  args: Visible.args,
+  parameters: responsiveStoryParameters.Desktop,
 };

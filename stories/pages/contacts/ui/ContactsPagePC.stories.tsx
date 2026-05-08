@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { ContactsPagePC } from './ContactsPagePC';
 
+import { responsiveStoryParameters } from '../../../shared/lib/storybook/responsive';
 import * as MenuContactsPC from '../../../features/contacts/ui/contacts-menu/MenuContactsPC.stories';
 import * as MapPC from '../../../widgets/contacts/ui/map/MapPC.stories';
 
@@ -50,3 +51,15 @@ Cookie.args = {
   menu: MenuContactsPC.Default.args,
   map: MapPC.Default.args
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

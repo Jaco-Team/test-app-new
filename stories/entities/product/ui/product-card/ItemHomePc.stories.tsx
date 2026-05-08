@@ -1,6 +1,7 @@
 // @ts-nocheck
 import React from 'react';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 import { ItemHomePc } from './ItemHomePc';
 
 export default {
@@ -112,3 +113,15 @@ Badge.args = {
   is_new: '1',
   is_hit: '0'
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

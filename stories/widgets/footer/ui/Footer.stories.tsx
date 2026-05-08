@@ -1,5 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
+import { responsiveStoryParameters } from '../../../shared/lib/storybook/responsive';
 import { Footer } from './Footer';
 
 const links = {
@@ -43,4 +44,19 @@ export const Arrow: Story = {
     ...Default.args,
     arrow: true,
   },
+};
+
+export const Mobile: Story = {
+  args: Default.args,
+  parameters: responsiveStoryParameters.Mobile,
+};
+
+export const Tablet: Story = {
+  args: Default.args,
+  parameters: responsiveStoryParameters.Tablet,
+};
+
+export const Desktop: Story = {
+  args: Default.args,
+  parameters: responsiveStoryParameters.Desktop,
 };

@@ -3,6 +3,7 @@ import { ModalItemPClist } from './ModalItemPClist';
 import * as ModalItemPCset from '../../../../entities/product/ui/set-item/ModalItemPCset.stories';
 import * as ModalItemPCvalue from '../../../../entities/product/ui/nutrition/ModalItemPCvalue.stories';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Главная страница / Товар / Модальное окно Товара / Список товаров',
   component: ModalItemPClist,
@@ -44,3 +45,15 @@ Value.args = {
   type: 'value',
   link_allergens: "https://storage.yandexcloud.net/site-other-data/jaco_2024_03_23.pdf"
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Set.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Set.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Set.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

@@ -3,6 +3,7 @@ import { TableCartPC_body } from './TableCartPC_body';
 import * as TableCartPC_row from '../../../../entities/cart/ui/cart-row/TableCartPC_row.stories';
 import * as TableCartPC_foot from '../cart-table-footer/TableCartPC_foot.stories';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Cart / ПК / Корзина / Table / Body',
   component: TableCartPC_body,
@@ -59,3 +60,15 @@ Promo.args = {
   dopItemsCount: 5,
   footerData: TableCartPC_foot.Promo.args
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

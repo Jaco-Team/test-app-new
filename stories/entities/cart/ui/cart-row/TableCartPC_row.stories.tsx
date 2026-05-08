@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { TableCartPC_row } from './TableCartPC_row';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Cart / ПК / Корзина / Table / Row',
   component: TableCartPC_row,
@@ -98,3 +99,15 @@ Count.args = {
   all_price: '',
   count: '99',
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Item.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Item.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Item.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

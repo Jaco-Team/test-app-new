@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { ModalAuthPC } from './ModalAuthPC';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Header / ПК / Модалка Авторизации',
   component: ModalAuthPC,
@@ -271,3 +272,15 @@ LoginSMSCode_End_Timer.args = {
 Finish.args = {
   typeLogin: 'finish',
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Start.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Start.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Start.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

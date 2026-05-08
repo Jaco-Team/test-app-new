@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { ModalOrderPC } from './ModalOrderPC';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Профиль / Заказы / Модалка заказа',
   component: ModalOrderPC,
@@ -327,3 +328,15 @@ Show_address.args = {
   isShowAddr: true,
   city: 'Комсомольск-на-Амуре',
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Delivery.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Delivery.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Delivery.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

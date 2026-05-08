@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { DataTimePickerPC } from './DataTimePickerPC';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Cart / ПК / Модалка выбора даты и времени заказа',
   component: DataTimePickerPC,
@@ -224,3 +225,15 @@ Time.args = {
   slidesDate,
   slidesTime: slidesTime.slice(0, 3),
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

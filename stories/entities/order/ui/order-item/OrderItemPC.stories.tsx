@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { OrderItemPC } from './OrderItemPC';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Профиль / Заказы / Заказ',
   component: OrderItemPC,
@@ -83,3 +84,15 @@ Delete.args = {
 Reload.args = {
   order: order_reload,
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Check.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Check.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Check.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

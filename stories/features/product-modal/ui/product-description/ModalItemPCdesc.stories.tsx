@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { ModalItemPCdesc } from './ModalItemPCdesc';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Главная страница / Товар / Модальное окно Товара / Описание',
   component: ModalItemPCdesc,
@@ -114,3 +115,15 @@ Variant_4.args = {
   marc_desc: '',
   tmp_desc: ''
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Variant_1.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Variant_1.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Variant_1.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

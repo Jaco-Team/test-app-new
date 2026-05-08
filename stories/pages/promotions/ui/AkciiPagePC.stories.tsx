@@ -2,6 +2,7 @@
 import { AkciiPagePC } from './AkciiPagePC';
 import * as BannerFullPC from '../../../widgets/promotions/ui/promotion-detail/BannerFullPC.stories';
 
+import { responsiveStoryParameters } from '../../../shared/lib/storybook/responsive';
 export default {
   title: 'Акции / Страница Акции',
   component: AkciiPagePC,
@@ -41,3 +42,15 @@ ArrowUp.args = {
 Cookie.args = {
   actia: BannerFullPC.Page.args
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

@@ -3,6 +3,7 @@ import { FormOrderPC } from './FormOrderPC';
 import * as MyMenu from '../../../../shared/MyMenu/MyMenu.stories';
 import * as FormOrderPC_btn from '../order-form-button/FormOrderPC_btn.stories';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Cart / ПК / Модалка оформления заказа',
   component: FormOrderPC,
@@ -127,3 +128,15 @@ Pikcup_Active.args = {
   online: '',
   comment: ''
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Delivery.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Delivery.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Delivery.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

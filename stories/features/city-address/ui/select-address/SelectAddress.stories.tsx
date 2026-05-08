@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { SelectAddress } from './SelectAddress';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Header / ПК / Модалка выбора адреса клиента',
   component: SelectAddress,
@@ -22,3 +23,15 @@ Default.args = {
     { addressLine: 'Россия, Самара, посёлок Сорокины Хутора, Зелёная улица, 5' },
   ],
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

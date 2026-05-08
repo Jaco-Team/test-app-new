@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { CartPCPromoInput } from './CartPCPromoInput';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Cart / ПК / Корзина / Promo_Input',
   component: CartPCPromoInput,
@@ -71,3 +72,15 @@ Promo_False.args = {
   promo: 'КОКО',
   checkPromo: { st: false },
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

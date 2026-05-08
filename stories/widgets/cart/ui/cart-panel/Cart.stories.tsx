@@ -4,6 +4,7 @@ import * as TableCartPC from '../cart-table/TableCartPC.stories';
 import * as CartPCPromoInput from '../../../../features/cart/ui/promo-input/CartPCPromoInput.stories';
 import * as CartPCPromoText from '../../../../features/cart/ui/promo-text/CartPCPromoText.stories';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Cart / ПК / Корзина',
   component: CartPC,
@@ -61,3 +62,15 @@ Promo_False.args = {
   openBasket: true,
   desc: CartPCPromoText.Promo_False.args,
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

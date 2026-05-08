@@ -3,6 +3,7 @@ import { ProfilePagePC } from './ProfilePagePC';
 import * as ProfileAddrPC from '../../../entities/profile/ui/address-card/ProfileAddrPC.stories';
 import * as BreadСrumbsPC from '../../../shared/ui/breadcrumbs/BreadСrumbsPC.stories';
 
+import { responsiveStoryParameters } from '../../../shared/lib/storybook/responsive';
 export default {
   title: 'Профиль / Личные данные / Страница Личные данные',
   component: ProfilePagePC,
@@ -88,3 +89,15 @@ ArrowUp.args = {
 //
 //   address: ProfileAddrPC.Default.args,
 // };
+
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

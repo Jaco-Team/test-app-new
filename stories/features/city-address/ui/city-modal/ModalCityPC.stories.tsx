@@ -1,6 +1,7 @@
 // @ts-nocheck
 import { ModalCityPC } from './ModalCityPC';
 
+import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
 export default {
   title: 'Header / ПК / Модалка выбора города',
   component: ModalCityPC,
@@ -24,3 +25,15 @@ Default.args = {
 Long_title_city.args = {
   city: 'Комсомольск-на-Амуре',
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.parameters = responsiveStoryParameters.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.parameters = responsiveStoryParameters.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.parameters = responsiveStoryParameters.Desktop;

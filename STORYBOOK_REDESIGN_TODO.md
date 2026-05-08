@@ -7,7 +7,7 @@
 - Migration target is Storybook-first FSD + TypeScript.
 - Existing legacy stories in `stories/legacy` are the main source to port.
 - Porting means creating new/refactored FSD TypeScript components and stories, not adapters that import legacy components.
-- Header and Footer migration is out of scope for this pass and should remain unchanged.
+- Header and Footer are part of the new Storybook FSD layer; old helper files stay on disk as reference until replacement is verified.
 - After all relevant UI is ported and verified in Storybook, the base app can be upgraded and rewired to consume the Storybook components.
 
 ## Current Baseline
@@ -25,7 +25,7 @@
 - Tablet: `668-990`.
 - Desktop: `991+`.
 
-Each migrated UI element should have explicit stories for every applicable breakpoint.
+Each indexed FSD story should expose explicit `Mobile`, `Tablet`, and `Desktop` representations using the shared Storybook viewport helper.
 
 ## Migration Rules
 
@@ -46,6 +46,7 @@ Each migrated UI element should have explicit stories for every applicable break
 - Record props, states, fixtures, images, and interactions used by each legacy story.
 - Mark whether the source exists only in Storybook or mirrors code from `modules`, `ui`, or `styles`.
 - Decide the responsive requirements for each item: mobile, tablet, desktop.
+- Keep the core hint current: mobile `320-667`, tablet `668-990`, desktop `991+`.
 
 ## Step 2: Shared Foundation
 
@@ -170,6 +171,7 @@ Each migrated UI element should have explicit stories for every applicable break
 
 - Add mobile stories for components currently represented only as PC legacy stories when the app has mobile equivalents.
 - Add tablet stories for every migrated page/widget that participates in layout.
+- Keep `Mobile`, `Tablet`, and `Desktop` smoke stories present in every indexed FSD story file, even when the component still needs deeper responsive refactoring.
 - Confirm Storybook viewports use only project ranges:
   - `mobileMin` / `mobileMax`.
   - `tabletMin` / `tabletMax`.
