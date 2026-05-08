@@ -1,0 +1,48 @@
+// @ts-nocheck
+
+import { IconPC } from '../../shared/IconPC/IconPC';
+import { ArrowDownBasketModalPC } from '../Icons';
+
+import MyTextInput from '../../../../shared/ui/text-input/MyTextInput';
+import './FormOrderPC_btn.scss';
+
+export const FormOrderPC_btn = ({text, icon, placeholder, open, ...props}) => {
+  return (
+    <>
+      {icon !== 'comment' ? (
+        <div className="btnChoice" {...props}>
+          <IconPC icon={icon} element="form_order" />
+          {icon !== 'sdacha' ? (
+            <>
+              <span style={{color: text ? 'rgba(0, 0, 0, 0.8)' : 'rgba(0, 0, 0, 0.4)'}}>{text ? text : placeholder}</span>
+              {open ? <ArrowDownBasketModalPC style={{ transform: 'rotate(180deg)' }} /> : <ArrowDownBasketModalPC />}
+            </>
+          ) : (
+            <MyTextInput
+              autoFocus
+              type="number"
+              value={text}
+              variant="outlined"
+              className="sdacha"
+              placeholder={placeholder}
+            />
+          )}
+        </div>
+      ) : (
+        <div className="comment">
+          <IconPC icon={icon} element="form_order" />
+          <MyTextInput
+            autoFocus
+            value={text}
+            multiline
+            maxRows={3}
+            variant="outlined"
+            className="message"
+            placeholder={placeholder}
+          />
+        </div>
+      )}
+    </>
+  );
+};
+

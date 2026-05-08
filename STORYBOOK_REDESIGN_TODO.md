@@ -6,6 +6,8 @@
 - The base app must keep working while migration happens.
 - Migration target is Storybook-first FSD + TypeScript.
 - Existing legacy stories in `stories/legacy` are the main source to port.
+- Porting means creating new/refactored FSD TypeScript components and stories, not adapters that import legacy components.
+- Header and Footer migration is out of scope for this pass and should remain unchanged.
 - After all relevant UI is ported and verified in Storybook, the base app can be upgraded and rewired to consume the Storybook components.
 
 ## Current Baseline
@@ -29,8 +31,10 @@ Each migrated UI element should have explicit stories for every applicable break
 
 - Do not modify the base app during Storybook migration.
 - Do not move legacy files destructively until the FSD replacement is complete.
+- Do not import legacy components from new FSD stories except temporarily during analysis.
 - Port behavior and states from legacy stories, not only visual markup.
 - New source should be TypeScript: `.tsx` components and `.stories.tsx` stories.
+- Legacy-derived migrated files may start with deferred type checking during the bulk port; remove those markers slice-by-slice while refactoring each component to clean typed props.
 - Keep fixtures in `stories/fixtures`.
 - Keep styles colocated with Storybook components unless an established shared style exists.
 - Use FSD dependency direction: `app -> pages -> widgets -> features -> entities -> shared`.
@@ -207,6 +211,14 @@ For each item in `stories/legacy`:
 6. Add required responsive variants.
 7. Run TypeScript check and Storybook verification when practical.
 8. Mark the legacy item as ported.
+
+Bulk port status:
+
+- Non-header/non-footer legacy Storybook files were copied into new FSD layer folders as parallel `.tsx` / `.stories.tsx` files.
+- Existing `stories/legacy` files remain unchanged as reference material.
+- Existing Header and Footer Storybook work remains unchanged.
+- TypeScript check passes after this bulk inventory pass.
+- Next quality step: remove deferred type-check markers and refactor props/imports/styles slice-by-slice.
 
 ## Phase 2: Scan App Code For Missing Storybook Coverage
 

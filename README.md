@@ -65,6 +65,10 @@ Do not add new work to `stories/legacy`. Migrate legacy stories into FSD layers
 - `stories/README_FSD.md`: FSD Storybook structure.
 - `STORYBOOK_REDESIGN_TODO.md`: staged redesign todo.
 
+## Migration Status
+
+The current Storybook migration is parallel to the app runtime. Non-header/non-footer legacy Storybook concepts are being moved into new FSD TypeScript paths under `stories/`, while `stories/legacy` stays available as reference until each slice is refactored and verified.
+
 ## Storybook Static
 
 `storybook-static` is a generated static Storybook build. It can be used as a reference for previously built legacy stories, but source migration should happen from `stories/legacy` into typed FSD files under `stories/`.
