@@ -1,7 +1,7 @@
 // @ts-nocheck
 import MyTextInput from '../../../../shared/ui/text-input/MyTextInput';
 import InputAdornment from '@mui/material/InputAdornment';
-import { IconPC } from '../../shared/IconPC/IconPC';
+import { IconPC } from '../../../../shared/IconPC/IconPC';
 
 export default function Create({ showPassword, checkPolitika, checkAccord, loginLogin, pwdLogin, city }) {
   return (

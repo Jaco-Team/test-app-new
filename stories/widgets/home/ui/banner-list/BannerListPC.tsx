@@ -8,7 +8,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import { ArrowIcon, NextIcon } from '../Icons';
+import { ArrowIcon, NextIcon } from '../../../../shared/Icons.js';
 
 import { BannerPCImg } from '../../../../entities/promotion/ui/promotion-image/BannerPCImg';
 

@@ -2,7 +2,7 @@
 import { useState } from 'react';
 
 import { MyButton } from '../../../../shared/ui/button/MyButton';
-import { MyMenu } from '../../shared/MyMenu/MyMenu';
+import { MyMenu } from '../../../../shared/MyMenu/MyMenu';
 
 import './ModalCityPC.scss';
 

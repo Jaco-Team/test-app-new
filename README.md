@@ -49,6 +49,8 @@ New Storybook work belongs in:
 - `stories/shared`
 
 Do not add new work to `stories/legacy`. Migrate legacy stories into FSD layers
+and index only FSD story locations from `.storybook/main.mjs`; legacy and old
+top-level helper stories stay on disk as reference.
 
 ## Development Notes
 
@@ -67,7 +69,7 @@ Do not add new work to `stories/legacy`. Migrate legacy stories into FSD layers
 
 ## Migration Status
 
-The current Storybook migration is parallel to the app runtime. Non-header/non-footer legacy Storybook concepts are being moved into new FSD TypeScript paths under `stories/`, while `stories/legacy` stays available as reference until each slice is refactored and verified.
+The current Storybook migration is parallel to the app runtime. Legacy Storybook concepts are being moved into new FSD TypeScript paths under `stories/`, while `stories/legacy` stays available as reference until each slice is refactored and verified. New Header/Footer Storybook styles should use module-system Sass via `@use` and must not import legacy Sass with deprecated `@import`.
 
 ## Storybook Static
 

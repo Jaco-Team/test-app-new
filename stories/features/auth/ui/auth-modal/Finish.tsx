@@ -1,5 +1,5 @@
 // @ts-nocheck
-import { IconPC } from '../../shared/IconPC/IconPC';
+import { IconPC } from '../../../../shared/IconPC/IconPC';
 
 export default function Finish() {
   return (

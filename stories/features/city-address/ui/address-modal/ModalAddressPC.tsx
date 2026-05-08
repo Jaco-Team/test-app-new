@@ -4,9 +4,9 @@ import { useState, useRef } from 'react';
 import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
 
 import MyTextInput from '../../../../shared/ui/text-input/MyTextInput';
-import { MyMenu } from '../../shared/MyMenu/MyMenu';
+import { MyMenu } from '../../../../shared/MyMenu/MyMenu';
 import { MySwitch } from '../../../../shared/ui/switch/MySwitch';
-import { PencilModalAddrIcon, HomeModalAddrIcon } from '../Icons';
+import { PencilModalAddrIcon, HomeModalAddrIcon } from '../../../../shared/Icons.js';
 import { MyButton } from '../../../../shared/ui/button/MyButton';
 
 import './ModalAddressPC.scss';

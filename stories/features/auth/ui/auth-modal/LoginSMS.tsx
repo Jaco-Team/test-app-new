@@ -3,7 +3,7 @@ import MyTextInput from '../../../../shared/ui/text-input/MyTextInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { MyButton } from '../../../../shared/ui/button/MyButton';
-import { IconPC } from '../../shared/IconPC/IconPC';
+import { IconPC } from '../../../../shared/IconPC/IconPC';
 
 export default function LoginSMS({ errTextAuth, loginLogin }) {
   return (

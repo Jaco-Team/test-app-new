@@ -1,6 +1,6 @@
 // @ts-nocheck
 import './ModalItemPCdesc.scss';
-import { IconPC } from '../../shared/IconPC/IconPC';
+import { IconPC } from '../../../../shared/IconPC/IconPC';
 
 export const ModalItemPCdesc = ({ title_desk, cat_id, typeModal, count_part_new, size_pizza, count_part, weight, id, foodValue, marc_desc, tmp_desc }) => {
   return (

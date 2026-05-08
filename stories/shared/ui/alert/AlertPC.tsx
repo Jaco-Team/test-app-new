@@ -1,7 +1,7 @@
 // @ts-nocheck
 import IconButton from '@mui/material/IconButton';
 import LinearProgress from '@mui/material/LinearProgress';
-import { IconClose } from '../Icons';
+import { IconClose } from '../../Icons.js';
 
 import './AlertPC.scss';
 
@@ -18,4 +18,3 @@ export const AlertPC = ({ text, status }) => {
     </div>
   );
 };
-

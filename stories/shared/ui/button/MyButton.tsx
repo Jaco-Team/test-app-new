@@ -1,7 +1,7 @@
 // @ts-nocheck
 import './MyButton.scss';
 
-import { VectorCity } from '../Icons';
+import { VectorCity } from '../../Icons.js';
 
 export const MyButton = ({ variant, size, children, arrow, isOpen, typeModal, element, count, ...props }) => {
 
@@ -35,4 +35,3 @@ export const MyButton = ({ variant, size, children, arrow, isOpen, typeModal, el
   }
 
 };
-

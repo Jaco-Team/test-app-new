@@ -1,4 +1,4 @@
-@use '../global' as *;
+@use '../../../../shared/global' as *;
 
 .containerConfirmMobile {
   max-height: calc(100% - calcSize_mobile(200));

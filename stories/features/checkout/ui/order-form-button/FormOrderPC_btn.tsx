@@ -1,7 +1,7 @@
 // @ts-nocheck
 
-import { IconPC } from '../../shared/IconPC/IconPC';
-import { ArrowDownBasketModalPC } from '../Icons';
+import { IconPC } from '../../../../shared/IconPC/IconPC';
+import { ArrowDownBasketModalPC } from '../../../../shared/Icons.js';
 
 import MyTextInput from '../../../../shared/ui/text-input/MyTextInput';
 import './FormOrderPC_btn.scss';
