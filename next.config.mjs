@@ -1,7 +1,6 @@
-//const MillionLint = require('@million/lint');
 /** @type {import('next').NextConfig} */
 
-//const { withAxiom } = require('next-axiom');
+import { withSentryConfig } from '@sentry/nextjs';
 
 const nextConfig = {
   trailingSlash: false,
@@ -85,19 +84,10 @@ const nextConfig = {
 }
 }
 
-/*const withBundleAnalyzer = require('@next/bundle-analyzer')({
-  enabled: process.env.ANALYZE === 'true',
-})*/
-
-// module.exports = MillionLint.next()(withAxiom(nextConfig));
-//module.exports = withAxiom(nextConfig);
-
-
-
 // Injected content via Sentry wizard below
 // правка 18.03.26 для glitchtip 
-// const { withSentryConfig } = require("@sentry/nextjs");
-// module.exports = withSentryConfig(nextConfig, {
+// Старый вариант конфигурации Sentry оставлен как справка.
+// export default withSentryConfig(nextConfig, {
 //   silent: true,
 //   widenClientFileUpload: true,
 //   webpack: {
@@ -106,10 +96,8 @@ const nextConfig = {
 //     },
 //   },
 // });
-//module.exports = nextConfig
-// module.exports = withSentryConfig(
+// withSentryConfig(
 //   nextConfig,
-//   module.exports,
 //   {
 //     // For all available options, see:
 //     // https://github.com/getsentry/sentry-webpack-plugin#options
@@ -155,12 +143,10 @@ const nextConfig = {
 
 
 // Injected content via Sentry wizard below
-
-const { withSentryConfig } = require("@sentry/nextjs");
 const sentryOrg = process.env.SENTRY_ORG || "mister-jaco-llc";
 const sentryProject = process.env.SENTRY_PROJECT || "jacofood";
 
-module.exports = withSentryConfig(nextConfig, {
+export default withSentryConfig(nextConfig, {
   // For all available options, see:
   // https://www.npmjs.com/package/@sentry/webpack-plugin#options
 
