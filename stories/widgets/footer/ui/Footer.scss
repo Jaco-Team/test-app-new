@@ -1,0 +1,86 @@
+@use '../../../shared/global' as *;
+
+.footerPC {
+  width: 100%;
+  background-color: rgba(0, 0, 0, 0.07);
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+
+  .ContainerPCFooter {
+    display: flex;
+    align-items: flex-start;
+
+    .column {
+      display: flex;
+      flex-direction: column;
+      width: calcSize(440);
+      min-height: calcSize(600);
+      margin-top: calcSize(120);
+      margin-right: calcSize(40);
+
+      span {
+        @include MyFonts(30, 700);
+        padding: calcSize(30) 0 calcSize(15);
+        text-transform: uppercase;
+        color: rgba(82, 82, 82, 1);
+      }
+
+      a {
+        @include MyFonts(30, 400);
+        text-decoration: none;
+        padding: calcSize(15) 0;
+        color: rgba(82, 82, 82, 1);
+      }
+    }
+
+    .column:nth-child(4) {
+      margin-right: calcSize(210);
+    }
+
+    .container {
+      margin-top: calcSize(90);
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      padding: 0;
+    }
+
+    .icon {
+      width: 100%;
+      display: flex;
+
+      a {
+        width: calcSize(100);
+        height: calcSize(100);
+        margin-right: calcSize(60);
+
+        svg {
+          width: 100%;
+          height: 100%;
+        }
+      }
+    }
+  }
+
+  .ContainerCopyFooter {
+    width: 100%;
+
+    div.copy {
+      height: calcSize(120);
+      margin-top: calcSize(50);
+      margin-right: calcSize(125);
+      margin-bottom: calcSize(110);
+      display: flex;
+      justify-content: flex-end;
+      align-items: flex-end;
+    }
+
+    span {
+      @include MyFonts(22, 400);
+      color: rgba(0, 0, 0, 0.4);
+      position: unset;
+    }
+  }
+}

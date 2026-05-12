@@ -1,7 +1,11 @@
 User-agent: *
 Disallow: /*cart*
 Disallow: /*profile*
+Disallow: /*document*
+Disallow: /*undefined*
+Disallow: /*yaauth*
 Disallow: /*?
+
 Clean-param: showItem /*
 Clean-param: code /*
 Clean-param: etext /*

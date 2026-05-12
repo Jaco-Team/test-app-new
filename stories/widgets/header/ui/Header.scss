@@ -1,0 +1,257 @@
+@use '../../../shared/global' as *;
+
+.blockShadow,
+.blockShadowPad {
+  width: 100%;
+  height: calcSize(80);
+  position: fixed;
+  top: calcSize(128);
+  left: 0;
+  background: linear-gradient(180deg, rgba(115, 115, 115, 0.1) 0%, rgba(83, 92, 84, 0) 100%);
+  mix-blend-mode: multiply;
+  transition: all 0.1s ease 0s;
+  z-index: 2;
+}
+
+.blockShadowPad {
+  height: calcSize_pad(60);
+  top: calcSize_pad(90);
+}
+
+.HeaderPC,
+.HeaderPad,
+.headerMobile {
+  background-color: #fff !important;
+  box-shadow: none !important;
+
+  a {
+    text-decoration: none;
+  }
+}
+
+.HeaderPC {
+  height: calcSize(128);
+
+  > div {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    height: calcSize(128);
+    min-height: calcSize(128);
+    padding: 0;
+    margin: 0 calcSize(125);
+
+    > div {
+      display: flex;
+      align-items: center;
+      height: calcSize(128);
+    }
+  }
+
+  .logoPC {
+    display: flex;
+    width: calcSize(373.55);
+    height: calcSize(112);
+    margin: 0 calcSize(20) 0 calcSize(32);
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  .akcia {
+    margin-right: calcSize(16);
+
+    p {
+      margin: 0;
+    }
+  }
+
+  .city {
+    margin-right: calcSize(48);
+
+    p {
+      margin: 0;
+    }
+  }
+}
+
+.HeaderPad {
+  height: calcSize_pad(90);
+  position: fixed;
+  inset: 0 0 auto;
+  z-index: 1100;
+
+  .header-container {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    height: 100%;
+    padding: 0 calcSize_pad(40);
+    margin: 0 auto;
+  }
+
+  .left-section,
+  .right-section,
+  .icons-group {
+    display: flex;
+    align-items: center;
+    height: 100%;
+  }
+
+  .left-section {
+    gap: calcSize_pad(30);
+  }
+
+  .right-section {
+    gap: calcSize_pad(20);
+  }
+
+  .logoPad {
+    display: flex;
+    width: calcSize_pad(250);
+    height: calcSize_pad(75);
+    cursor: pointer;
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+  }
+
+  .categories {
+    display: flex;
+    gap: calcSize_pad(16);
+
+    .MyCatLink {
+      font-size: calcSize_pad(14);
+      white-space: nowrap;
+    }
+  }
+
+  .icons-group {
+    gap: calcSize_pad(15);
+
+    .IconHeaderPC {
+      margin: 0;
+
+      svg {
+        width: calcSize_pad(24);
+        height: calcSize_pad(24);
+      }
+    }
+  }
+}
+
+.headerMobile {
+  z-index: 1200 !important;
+  height: calcSize_mobile(200);
+  overflow: hidden;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  position: fixed;
+
+  > div {
+    display: flex;
+    justify-content: space-between;
+    width: calc(100% - calcSize_mobile(160));
+    min-height: 0 !important;
+    padding: 0 !important;
+  }
+
+  .logoPC {
+    width: calcSize_mobile(500);
+    height: calcSize_mobile(120);
+
+    img {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  svg {
+    width: calcSize_mobile(90);
+    height: calcSize_mobile(45);
+  }
+}
+
+.categoryMenu {
+  display: contents;
+}
+
+.headerBurgerButton,
+.burger-menu {
+  align-items: center;
+  background: transparent;
+  border: 0;
+  cursor: pointer;
+  display: inline-flex;
+  justify-content: center;
+  padding: 0;
+
+  .burgerActive path,
+  & .burgerActive path {
+    stroke: #dd1a32;
+  }
+}
+
+@media (min-width: 801px) and (max-width: 990px) {
+  .HeaderPad {
+    height: calcSize_pad(80);
+
+    .header-container {
+      padding: 0 calcSize_pad(30);
+    }
+
+    .left-section {
+      gap: calcSize_pad(20);
+    }
+
+    .logoPad {
+      width: calcSize_pad(200);
+      height: calcSize_pad(60);
+    }
+
+    .categories {
+      gap: calcSize_pad(12);
+
+      .MyCatLink {
+        font-size: calcSize_pad(12);
+      }
+    }
+
+    .icons-group {
+      gap: calcSize_pad(12);
+    }
+  }
+}
+
+@media (min-width: 668px) and (max-width: 800px) {
+  .HeaderPad {
+    height: calcSize_pad(70);
+
+    .header-container {
+      padding: 0 calcSize_pad(20);
+    }
+
+    .categories {
+      display: none;
+    }
+
+    .burger-menu {
+      display: inline-flex;
+      margin-right: calcSize_pad(15);
+      padding: calcSize_pad(8);
+    }
+
+    .logoPad {
+      width: calcSize_pad(180);
+      height: calcSize_pad(55);
+    }
+  }
+}
