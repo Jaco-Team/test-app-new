@@ -10,4 +10,21 @@
   margin-top: calcSize(32);
   margin-bottom: calcSize(60);
   row-gap: calcSize(32);
+
+  @media (max-width: 1000px) {
+    justify-content: center;
+    gap: calcSize(20);
+
+    & > * {
+      flex: 0 0 calc(50% - calcSize(20));
+      max-width: calc(50% - calcSize(20));
+    }
+  }
+
+  @media (max-width: 800px) {
+    & > * {
+      flex: 0 0 100%;
+      max-width: 100%;
+    }
+  }
 }
