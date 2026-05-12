@@ -8,6 +8,9 @@
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "eslint . --quiet || true",
+    "typecheck": "tsc --noEmit",
+    "test:storybook": "vitest --project storybook",
+    "prepare": "husky",
     "oxc": "npx oxlint@latest",
     "win": "next dev -p 3008",
     "storybook": "storybook dev -p 6007",
@@ -101,14 +104,25 @@
     "@storybook/addon-links": "^10.3.6",
     "@storybook/addon-onboarding": "^10.3.6",
     "@storybook/addon-themes": "^10.3.6",
-    "@storybook/nextjs": "^10.3.6",
+    "@storybook/addon-vitest": "^10.3.6",
+    "@storybook/nextjs-vite": "^10.3.6",
+    "@vitest/browser-playwright": "^4.1.6",
     "cross-env": "^10.1.0",
     "eslint": "^9.39.0",
     "eslint-config-next": "16.2.4",
     "eslint-plugin-storybook": "^10.3.6",
-    "storybook": "^10.3.6"
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "playwright": "^1.60.0",
+    "prettier": "^3.8.3",
+    "storybook": "^10.3.6",
+    "vitest": "^4.1.6"
   },
   "engines": {
     "node": ">=20.9.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,json,md,scss,css}": "prettier --write",
+    "*.{js,jsx,ts,tsx,mjs,cjs}": "eslint --fix"
   }
 }

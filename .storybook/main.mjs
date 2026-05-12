@@ -1,4 +1,4 @@
-/** @type { import('@storybook/nextjs').StorybookConfig } */
+/** @type { import('@storybook/nextjs-vite').StorybookConfig } */
 const config = {
   stories: [
     "../stories/{app,pages}/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)",
@@ -11,11 +11,12 @@ const config = {
     "@storybook/addon-links",
     "storybook/viewport",
     "@chromatic-com/storybook",
-    "@storybook/addon-docs"
+    "@storybook/addon-docs",
+    "@storybook/addon-vitest"
   ],
 
   framework: {
-    name: "@storybook/nextjs",
+    name: "@storybook/nextjs-vite",
     options: {},
   },
 
