@@ -1,9 +1,9 @@
 import { useState } from 'react';
 
-import { MySwitch } from '../../../../shared/ui/switch/MySwitch';
+import { MySwitch } from '@stories/shared/ui/switch/MySwitch';
 import { FormOrderPC_btn } from '../order-form-button/FormOrderPC_btn';
-import { MyButton } from '../../../../shared/ui/button/MyButton';
-import { MyMenu } from '../../../../shared/MyMenu/MyMenu';
+import { MyButton } from '@stories/shared/ui/button/MyButton';
+import { MyMenu } from '@stories/shared/MyMenu/MyMenu';
 
 import './FormOrderPC.scss';
 

@@ -1,11 +1,11 @@
 import { HomePage } from './HomePage';
 
-import { responsiveStoryParameters } from '../../../shared/lib/storybook/responsive';
-import * as BannerListPC from '../../../widgets/home/ui/banner-list/BannerListPC.stories';
-import * as BoxItemHomePC from '../../../widgets/home/ui/product-grid/BoxItemHomePC.stories';
+import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
+import * as BannerListPC from '@stories/widgets/home/ui/banner-list/BannerListPC.stories';
+import * as BoxItemHomePC from '@stories/widgets/home/ui/product-grid/BoxItemHomePC.stories';
 
 export default {
-  title: 'Главная страница / Главная',
+  title: 'Страницы / Главная',
   component: HomePage,
   tags: ['autodocs'],
   parameters: {
@@ -53,12 +53,12 @@ ArrowUp.args = {
 
 export const Mobile = Template.bind({});
 Mobile.args = Default.args;
-Mobile.parameters = responsiveStoryParameters.Mobile;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
 export const Tablet = Template.bind({});
 Tablet.args = Default.args;
-Tablet.parameters = responsiveStoryParameters.Tablet;
+Tablet.globals = responsiveStoryGlobals.Tablet;
 
 export const Desktop = Template.bind({});
 Desktop.args = Default.args;
-Desktop.parameters = responsiveStoryParameters.Desktop;
+Desktop.globals = responsiveStoryGlobals.Desktop;

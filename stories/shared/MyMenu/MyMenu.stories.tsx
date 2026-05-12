@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { responsiveStoryParameters } from '../lib/storybook/responsive';
+import { responsiveStoryGlobals } from '../lib/storybook/responsive';
 import { MyMenu } from './MyMenu';
 
 export default {
-  title: 'Элементы / Меню',
+  title: 'Общие элементы / Меню',
   component: MyMenu,
   tags: ['autodocs'],
   argTypes: {
@@ -146,12 +146,12 @@ Form_Order_Address.args = {
 
 export const Mobile = Template.bind({});
 Mobile.args = Category.args;
-Mobile.parameters = responsiveStoryParameters.Mobile;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
 export const Tablet = Template.bind({});
 Tablet.args = Category.args;
-Tablet.parameters = responsiveStoryParameters.Tablet;
+Tablet.globals = responsiveStoryGlobals.Tablet;
 
 export const Desktop = Template.bind({});
 Desktop.args = Category.args;
-Desktop.parameters = responsiveStoryParameters.Desktop;
+Desktop.globals = responsiveStoryGlobals.Desktop;

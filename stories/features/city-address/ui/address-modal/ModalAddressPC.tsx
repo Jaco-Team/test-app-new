@@ -2,11 +2,11 @@ import { useState, useRef } from 'react';
 
 import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
 
-import MyTextInput from '../../../../shared/ui/text-input/MyTextInput';
-import { MyMenu } from '../../../../shared/MyMenu/MyMenu';
-import { MySwitch } from '../../../../shared/ui/switch/MySwitch';
-import { PencilModalAddrIcon, HomeModalAddrIcon } from '../../../../shared/Icons.js';
-import { MyButton } from '../../../../shared/ui/button/MyButton';
+import MyTextInput from '@stories/shared/ui/text-input/MyTextInput';
+import { MyMenu } from '@stories/shared/MyMenu/MyMenu';
+import { MySwitch } from '@stories/shared/ui/switch/MySwitch';
+import { PencilModalAddrIcon, HomeModalAddrIcon } from '@stories/shared/Icons.js';
+import { MyButton } from '@stories/shared/ui/button/MyButton';
 
 import './ModalAddressPC.scss';
 

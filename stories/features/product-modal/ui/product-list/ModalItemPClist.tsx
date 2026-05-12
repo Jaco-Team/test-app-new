@@ -1,6 +1,6 @@
 import Link from 'next/link';
-import { ModalItemPCset } from '../../../../entities/product/ui/set-item/ModalItemPCset';
-import { ModalItemPCvalue } from '../../../../entities/product/ui/nutrition/ModalItemPCvalue';
+import { ModalItemPCset } from '@stories/entities/product/ui/set-item/ModalItemPCset';
+import { ModalItemPCvalue } from '@stories/entities/product/ui/nutrition/ModalItemPCvalue';
 import './ModalItemPClist.scss';
 
 export const ModalItemPClist = ({ set, type, value, link_allergens }: Record<string, any>) => {

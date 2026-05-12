@@ -1,10 +1,10 @@
 import { ModalItemPClist } from './ModalItemPClist';
-import * as ModalItemPCset from '../../../../entities/product/ui/set-item/ModalItemPCset.stories';
-import * as ModalItemPCvalue from '../../../../entities/product/ui/nutrition/ModalItemPCvalue.stories';
+import * as ModalItemPCset from '@stories/entities/product/ui/set-item/ModalItemPCset.stories';
+import * as ModalItemPCvalue from '@stories/entities/product/ui/nutrition/ModalItemPCvalue.stories';
 
-import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
+import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
-  title: 'Главная страница / Товар / Модальное окно Товара / Список товаров',
+  title: 'Фичи / Модалка товара / Список товаров',
   component: ModalItemPClist,
   tags: ['autodocs'],
   argTypes: {
@@ -47,12 +47,12 @@ Value.args = {
 
 export const Mobile = Template.bind({});
 Mobile.args = Set.args;
-Mobile.parameters = responsiveStoryParameters.Mobile;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
 export const Tablet = Template.bind({});
 Tablet.args = Set.args;
-Tablet.parameters = responsiveStoryParameters.Tablet;
+Tablet.globals = responsiveStoryGlobals.Tablet;
 
 export const Desktop = Template.bind({});
 Desktop.args = Set.args;
-Desktop.parameters = responsiveStoryParameters.Desktop;
+Desktop.globals = responsiveStoryGlobals.Desktop;

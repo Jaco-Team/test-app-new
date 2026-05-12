@@ -1,4 +1,4 @@
-import { BannerFullPC } from '../../../widgets/promotions/ui/promotion-detail/BannerFullPC';
+import { BannerFullPC } from '@stories/widgets/promotions/ui/promotion-detail/BannerFullPC';
 
 import './AkciiPagePC.scss';
 

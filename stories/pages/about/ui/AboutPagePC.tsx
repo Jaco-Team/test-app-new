@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { BreadСrumbsPC } from '../../../shared/ui/breadcrumbs/BreadСrumbsPC';
+import { BreadСrumbsPC } from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Scrollbar } from 'swiper';

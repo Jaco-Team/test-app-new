@@ -1,4 +1,4 @@
-import { OrderItemPC } from '../../../../entities/order/ui/order-item/OrderItemPC';
+import { OrderItemPC } from '@stories/entities/order/ui/order-item/OrderItemPC';
 import './TableOrdersPC.scss';
 
 export const TableOrdersPC = ({ order }: Record<string, any>) => {

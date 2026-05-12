@@ -1,6 +1,6 @@
 import type React from 'react';
-import { MyButton } from '../../../../shared/ui/button/MyButton';
-import {SharpIcon, CalendarIcon, MyAddrLocationIcon, EyeHide_modalOrder, EyeShow_modalOrder, CartModalOrderIcon, CookModalOrderIcon, DeliveryModalOrderIcon, HomeModalOrderIcon, AddrDotsModalOrderIcon, PicupModalOrderIcon} from '../../../../shared/Icons.js';
+import { MyButton } from '@stories/shared/ui/button/MyButton';
+import {SharpIcon, CalendarIcon, MyAddrLocationIcon, EyeHide_modalOrder, EyeShow_modalOrder, CartModalOrderIcon, CookModalOrderIcon, DeliveryModalOrderIcon, HomeModalOrderIcon, AddrDotsModalOrderIcon, PicupModalOrderIcon} from '@stories/shared/Icons.js';
 import LinearProgress from '@mui/material/LinearProgress';
 import './ModalOrderPC.scss';
 

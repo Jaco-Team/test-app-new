@@ -1,9 +1,9 @@
-import { BreadСrumbsPC } from '../../../shared/ui/breadcrumbs/BreadСrumbsPC';
-import { MySwitch } from '../../../shared/ui/switch/MySwitch';
-import { ProfileAddrPC } from '../../../entities/profile/ui/address-card/ProfileAddrPC';
-import { MyButton } from '../../../shared/ui/button/MyButton';
-import MySelect from '../../../shared/ui/select/MySelect';
-import MyTextInput from '../../../shared/ui/text-input/MyTextInput';
+import { BreadСrumbsPC } from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC';
+import { MySwitch } from '@stories/shared/ui/switch/MySwitch';
+import { ProfileAddrPC } from '@stories/entities/profile/ui/address-card/ProfileAddrPC';
+import { MyButton } from '@stories/shared/ui/button/MyButton';
+import MySelect from '@stories/shared/ui/select/MySelect';
+import MyTextInput from '@stories/shared/ui/text-input/MyTextInput';
 
 import './ProfilePagePC.scss';
 

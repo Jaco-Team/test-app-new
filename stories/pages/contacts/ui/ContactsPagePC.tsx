@@ -1,5 +1,5 @@
-import { MapPC } from '../../../widgets/contacts/ui/map/MapPC';
-import { MenuContactsPC } from '../../../features/contacts/ui/contacts-menu/MenuContactsPC';
+import { MapPC } from '@stories/widgets/contacts/ui/map/MapPC';
+import { MenuContactsPC } from '@stories/features/contacts/ui/contacts-menu/MenuContactsPC';
 
 import './ContactsPagePC.scss';
 

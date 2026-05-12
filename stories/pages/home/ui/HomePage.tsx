@@ -1,5 +1,5 @@
-import { BannerListPC } from '../../../widgets/home/ui/banner-list/BannerListPC';
-import { BoxItemHomePC } from '../../../widgets/home/ui/product-grid/BoxItemHomePC';
+import { BannerListPC } from '@stories/widgets/home/ui/banner-list/BannerListPC';
+import { BoxItemHomePC } from '@stories/widgets/home/ui/product-grid/BoxItemHomePC';
 
 import './HomePage.scss';
 

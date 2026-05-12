@@ -1,8 +1,8 @@
-import MyTextInput from '../../../../shared/ui/text-input/MyTextInput';
+import MyTextInput from '@stories/shared/ui/text-input/MyTextInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
-import { MyButton } from '../../../../shared/ui/button/MyButton';
-import { IconPC } from '../../../../shared/IconPC/IconPC';
+import { MyButton } from '@stories/shared/ui/button/MyButton';
+import { IconPC } from '@stories/shared/IconPC/IconPC';
 
 export default function Start({ showPassword, errTextAuth, loginLogin, pwdLogin }) {
   return (

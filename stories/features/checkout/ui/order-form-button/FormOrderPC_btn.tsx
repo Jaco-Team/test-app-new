@@ -1,8 +1,8 @@
 
-import { IconPC } from '../../../../shared/IconPC/IconPC';
-import { ArrowDownBasketModalPC } from '../../../../shared/Icons.js';
+import { IconPC } from '@stories/shared/IconPC/IconPC';
+import { ArrowDownBasketModalPC } from '@stories/shared/Icons.js';
 
-import MyTextInput from '../../../../shared/ui/text-input/MyTextInput';
+import MyTextInput from '@stories/shared/ui/text-input/MyTextInput';
 import './FormOrderPC_btn.scss';
 
 export const FormOrderPC_btn = ({text, icon, placeholder, open, ...props}: Record<string, any>) => {

@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { responsiveStoryParameters } from '../../lib/storybook/responsive';
+import { responsiveStoryGlobals } from '../../lib/storybook/responsive';
 import { MyButton } from './MyButton';
 
 export default {
-  title: 'Элементы / Кнопки',
+  title: 'Общие элементы / Кнопки',
   component: MyButton,
   tags: ['autodocs'],
   argTypes: {
@@ -128,12 +128,12 @@ Modal_Active.args = {
 
 export const Mobile = Template.bind({});
 Mobile.args = Primary.args;
-Mobile.parameters = responsiveStoryParameters.Mobile;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
 export const Tablet = Template.bind({});
 Tablet.args = Primary.args;
-Tablet.parameters = responsiveStoryParameters.Tablet;
+Tablet.globals = responsiveStoryGlobals.Tablet;
 
 export const Desktop = Template.bind({});
 Desktop.args = Primary.args;
-Desktop.parameters = responsiveStoryParameters.Desktop;
+Desktop.globals = responsiveStoryGlobals.Desktop;

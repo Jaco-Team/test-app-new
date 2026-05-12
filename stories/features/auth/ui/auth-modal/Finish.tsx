@@ -1,4 +1,4 @@
-import { IconPC } from '../../../../shared/IconPC/IconPC';
+import { IconPC } from '@stories/shared/IconPC/IconPC';
 
 export default function Finish() {
   return (

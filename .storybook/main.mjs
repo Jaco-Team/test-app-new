@@ -1,3 +1,8 @@
+import path from "node:path";
+import { fileURLToPath } from "node:url";
+
+const dirname = path.dirname(fileURLToPath(import.meta.url));
+
 /** @type { import('@storybook/nextjs-vite').StorybookConfig } */
 const config = {
   stories: [
@@ -26,6 +31,17 @@ const config = {
 
   typescript: {
     reactDocgen: "react-docgen-typescript"
-  }
+  },
+
+  viteFinal: async (config) => ({
+    ...config,
+    resolve: {
+      ...config.resolve,
+      alias: {
+        ...config.resolve?.alias,
+        "@stories": path.resolve(dirname, "../stories"),
+      },
+    },
+  })
 };
 export default config;

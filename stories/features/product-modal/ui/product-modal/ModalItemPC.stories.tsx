@@ -1,11 +1,11 @@
 import { ModalItemPC } from './ModalItemPC';
 import * as ModalItemPCdesc from '../product-description/ModalItemPCdesc.stories';
-import * as MyButton from '../../../../shared/ui/button/MyButton.stories';
+import * as MyButton from '@stories/shared/ui/button/MyButton.stories';
 import * as ModalItemPClist from '../product-list/ModalItemPClist.stories';
 
-import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
+import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
-  title: 'Главная страница / Товар / Модальное окно Товара / Варианты модальных окон',
+  title: 'Фичи / Модалка товара / Варианты',
   component: ModalItemPC,
   tags: ['autodocs'],
   argTypes: {
@@ -192,12 +192,12 @@ Badge.args = {
 
 export const Mobile = Template.bind({});
 Mobile.args = Start_1.args;
-Mobile.parameters = responsiveStoryParameters.Mobile;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
 export const Tablet = Template.bind({});
 Tablet.args = Start_1.args;
-Tablet.parameters = responsiveStoryParameters.Tablet;
+Tablet.globals = responsiveStoryGlobals.Tablet;
 
 export const Desktop = Template.bind({});
 Desktop.args = Start_1.args;
-Desktop.parameters = responsiveStoryParameters.Desktop;
+Desktop.globals = responsiveStoryGlobals.Desktop;

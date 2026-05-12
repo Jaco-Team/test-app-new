@@ -20,6 +20,9 @@
     "paths": {
       "@/*": [
         "./*"
+      ],
+      "@stories/*": [
+        "./stories/*"
       ]
     },
     "plugins": [

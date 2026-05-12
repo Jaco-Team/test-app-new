@@ -1,9 +1,9 @@
 import { BoxItemHomePC } from './BoxItemHomePC';
-import * as ItemHomePc from '../../../../entities/product/ui/product-card/ItemHomePc.stories';
+import * as ItemHomePc from '@stories/entities/product/ui/product-card/ItemHomePc.stories';
 
-import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
+import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
-  title: 'Главная страница / Товар / Список',
+  title: 'Виджеты / Главная / Список товаров',
   component: BoxItemHomePC,
   tags: ['autodocs'],
   parameters: {
@@ -26,12 +26,12 @@ Default.args = {
 
 export const Mobile = Template.bind({});
 Mobile.args = Default.args;
-Mobile.parameters = responsiveStoryParameters.Mobile;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
 export const Tablet = Template.bind({});
 Tablet.args = Default.args;
-Tablet.parameters = responsiveStoryParameters.Tablet;
+Tablet.globals = responsiveStoryGlobals.Tablet;
 
 export const Desktop = Template.bind({});
 Desktop.args = Default.args;
-Desktop.parameters = responsiveStoryParameters.Desktop;
+Desktop.globals = responsiveStoryGlobals.Desktop;

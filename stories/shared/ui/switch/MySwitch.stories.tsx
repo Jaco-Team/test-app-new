@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { responsiveStoryParameters } from '../../lib/storybook/responsive';
+import { responsiveStoryGlobals } from '../../lib/storybook/responsive';
 import { MySwitch } from './MySwitch';
 
 export default {
-  title: 'Элементы / Switch',
+  title: 'Общие элементы / Switch',
   component: MySwitch,
   tags: ['autodocs'],
   argTypes: {
@@ -35,12 +35,12 @@ IOS.args = {
 
 export const Mobile = Template.bind({});
 Mobile.args = Auth.args;
-Mobile.parameters = responsiveStoryParameters.Mobile;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
 export const Tablet = Template.bind({});
 Tablet.args = Auth.args;
-Tablet.parameters = responsiveStoryParameters.Tablet;
+Tablet.globals = responsiveStoryGlobals.Tablet;
 
 export const Desktop = Template.bind({});
 Desktop.args = Auth.args;
-Desktop.parameters = responsiveStoryParameters.Desktop;
+Desktop.globals = responsiveStoryGlobals.Desktop;

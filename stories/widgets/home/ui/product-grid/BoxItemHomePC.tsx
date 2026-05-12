@@ -1,4 +1,4 @@
-import { ItemHomePc } from '../../../../entities/product/ui/product-card/ItemHomePc';
+import { ItemHomePc } from '@stories/entities/product/ui/product-card/ItemHomePc';
 
 import './BoxItemHomePC.scss';
 

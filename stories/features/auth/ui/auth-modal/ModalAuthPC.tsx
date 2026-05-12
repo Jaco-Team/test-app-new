@@ -4,7 +4,7 @@ import LoginSMS from './LoginSMS';
 import Create from './Create';
 import LoginSMSCode from './LoginSMSCode';
 import Finish from './Finish';
-import { MySwitch } from '../../../../shared/ui/switch/MySwitch';
+import { MySwitch } from '@stories/shared/ui/switch/MySwitch';
 import './ModalAuthPC.scss';
 
 export const ModalAuthPC = ({ typeLogin, data }: Record<string, any>) => {

@@ -1,6 +1,6 @@
 import './DataTimePickerPC.scss';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
-import { MyButton } from '../../../../shared/ui/button/MyButton';
+import { MyButton } from '@stories/shared/ui/button/MyButton';
 
 export const DataTimePickerPC = ({ slidesTime, slidesDate }: Record<string, any>) => {
   return (

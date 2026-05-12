@@ -2,8 +2,8 @@
 import Grid from '@mui/material/Grid';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
-import { BannerPCImg } from '../../../../entities/promotion/ui/promotion-image/BannerPCImg';
-import { BannerItemPC } from '../../../../entities/promotion/ui/promotion-card/BannerItemPC';
+import { BannerPCImg } from '@stories/entities/promotion/ui/promotion-image/BannerPCImg';
+import { BannerItemPC } from '@stories/entities/promotion/ui/promotion-card/BannerItemPC';
 
 import './BannerFullPC.scss';
 

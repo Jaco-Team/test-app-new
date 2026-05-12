@@ -1,6 +1,6 @@
 
-import { MyButton } from '../../../../shared/ui/button/MyButton';
-import MyTextInput from '../../../../shared/ui/text-input/MyTextInput';
+import { MyButton } from '@stories/shared/ui/button/MyButton';
+import MyTextInput from '@stories/shared/ui/text-input/MyTextInput';
 import './ModalOrderDeletePC.scss';
 
 const ans = [

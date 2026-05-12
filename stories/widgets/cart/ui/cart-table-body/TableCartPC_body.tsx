@@ -1,7 +1,7 @@
 
 import './TableCartPC_body.scss';
-import { TableCartPC_text } from '../../../../entities/cart/ui/cart-text/TableCartPC_text';
-import { TableCartPC_row } from '../../../../entities/cart/ui/cart-row/TableCartPC_row';
+import { TableCartPC_text } from '@stories/entities/cart/ui/cart-text/TableCartPC_text';
+import { TableCartPC_row } from '@stories/entities/cart/ui/cart-row/TableCartPC_row';
 import { TableCartPC_foot } from '../cart-table-footer/TableCartPC_foot';
 
 export const TableCartPC_body = ({ items, dopItems, itemsCount, dopItemsCount, footerData }: Record<string, any>) => {

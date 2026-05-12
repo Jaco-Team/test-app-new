@@ -1,5 +1,5 @@
-import { PromokodyPC } from '../../../entities/profile/ui/promo-code-list/PromokodyPC';
-import { BreadСrumbsPC } from '../../../shared/ui/breadcrumbs/BreadСrumbsPC';
+import { PromokodyPC } from '@stories/entities/profile/ui/promo-code-list/PromokodyPC';
+import { BreadСrumbsPC } from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC';
 
 import './PromokodyPagePC.scss';
 

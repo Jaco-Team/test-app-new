@@ -1,9 +1,9 @@
 import { useState } from 'react';
 import './MenuContactsPC.scss';
 
-import { MyMenu } from '../../../../shared/MyMenu/MyMenu';
-import { MySwitch } from '../../../../shared/ui/switch/MySwitch';
-import { ArrowDownHeaderPC, MapPointIcon } from '../../../../shared/Icons.js';
+import { MyMenu } from '@stories/shared/MyMenu/MyMenu';
+import { MySwitch } from '@stories/shared/ui/switch/MySwitch';
+import { ArrowDownHeaderPC, MapPointIcon } from '@stories/shared/Icons.js';
 
 const cityList = [
   { title: 'Тольятти' },

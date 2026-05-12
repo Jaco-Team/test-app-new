@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
 import AuthCode from 'react-auth-code-input';
-import { IconPC } from '../../../../shared/IconPC/IconPC';
+import { IconPC } from '@stories/shared/IconPC/IconPC';
 
 export default function LoginSMSCode({
   errTextAuth,

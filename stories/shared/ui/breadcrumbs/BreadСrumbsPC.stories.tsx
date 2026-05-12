@@ -2,9 +2,9 @@ import type { Meta, StoryObj } from '@storybook/react';
 
 import { BreadСrumbsPC } from './BreadСrumbsPC';
 
-import { responsiveStoryParameters } from '../../lib/storybook/responsive';
+import { responsiveStoryGlobals } from '../../lib/storybook/responsive';
 const meta = {
-  title: 'Элементы / BreadСrumbs',
+  title: 'Общие элементы / Хлебные крошки',
   component: BreadСrumbsPC,
   tags: ['autodocs'],
   argTypes: {
@@ -129,15 +129,15 @@ export const About: Story = {
 
 export const Mobile: Story = {
   args: Default.args,
-  parameters: responsiveStoryParameters.Mobile,
+  globals: responsiveStoryGlobals.Mobile,
 };
 
 export const Tablet: Story = {
   args: Default.args,
-  parameters: responsiveStoryParameters.Tablet,
+  globals: responsiveStoryGlobals.Tablet,
 };
 
 export const Desktop: Story = {
   args: Default.args,
-  parameters: responsiveStoryParameters.Desktop,
+  globals: responsiveStoryGlobals.Desktop,
 };

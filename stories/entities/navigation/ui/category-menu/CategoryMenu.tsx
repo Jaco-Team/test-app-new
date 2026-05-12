@@ -1,7 +1,7 @@
 import React, { useState } from 'react';
 
-import { MyCatLink } from '../../../../shared/MyTextLink/MyCatLink';
-import { MyMenu } from '../../../../shared/MyMenu/MyMenu';
+import { MyCatLink } from '@stories/shared/MyTextLink/MyCatLink';
+import { MyMenu } from '@stories/shared/MyMenu/MyMenu';
 
 export interface CategoryMenuItem {
   id: string;

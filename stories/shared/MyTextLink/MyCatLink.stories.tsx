@@ -1,10 +1,10 @@
 import React from 'react';
 
-import { responsiveStoryParameters } from '../lib/storybook/responsive';
+import { responsiveStoryGlobals } from '../lib/storybook/responsive';
 import { MyCatLink } from './MyCatLink';
 
 export default {
-  title: 'Header / ПК / Категории',
+  title: 'Общие элементы / Категории',
   component: MyCatLink,
   tags: ['autodocs'],
   argTypes: {
@@ -60,12 +60,12 @@ NoBorderedArrow.args = {
 
 export const Mobile = Template.bind({});
 Mobile.args = Bordered.args;
-Mobile.parameters = responsiveStoryParameters.Mobile;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
 export const Tablet = Template.bind({});
 Tablet.args = Bordered.args;
-Tablet.parameters = responsiveStoryParameters.Tablet;
+Tablet.globals = responsiveStoryGlobals.Tablet;
 
 export const Desktop = Template.bind({});
 Desktop.args = Bordered.args;
-Desktop.parameters = responsiveStoryParameters.Desktop;
+Desktop.globals = responsiveStoryGlobals.Desktop;

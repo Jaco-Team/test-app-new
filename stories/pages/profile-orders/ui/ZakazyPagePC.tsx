@@ -1,5 +1,5 @@
-import { TableOrdersPC } from '../../../widgets/orders/ui/orders-table/TableOrdersPC';
-import { BreadСrumbsPC } from '../../../shared/ui/breadcrumbs/BreadСrumbsPC';
+import { TableOrdersPC } from '@stories/widgets/orders/ui/orders-table/TableOrdersPC';
+import { BreadСrumbsPC } from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC';
 
 import './ZakazyPagePC.scss';
 

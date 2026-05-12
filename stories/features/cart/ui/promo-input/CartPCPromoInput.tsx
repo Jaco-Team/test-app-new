@@ -1,4 +1,4 @@
-import MyTextInput from '../../../../shared/ui/text-input/MyTextInput';
+import MyTextInput from '@stories/shared/ui/text-input/MyTextInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import './CartPCPromoInput.scss';
 

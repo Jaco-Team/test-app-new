@@ -1,8 +1,8 @@
 
-import { Badge } from '../../../../entities/product/ui/badge/Badge';
+import { Badge } from '@stories/entities/product/ui/badge/Badge';
 import { ModalItemPCimg } from '../product-image/ModalItemPCimg';
 import { ModalItemPCdesc } from '../product-description/ModalItemPCdesc';
-import { MyButton } from '../../../../shared/ui/button/MyButton';
+import { MyButton } from '@stories/shared/ui/button/MyButton';
 import { ModalItemPClist } from '../product-list/ModalItemPClist';
 
 import './ModalItemPC.scss';

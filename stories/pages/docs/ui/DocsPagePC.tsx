@@ -1,4 +1,4 @@
-import { BreadСrumbsPC } from '../../../shared/ui/breadcrumbs/BreadСrumbsPC';
+import { BreadСrumbsPC } from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC';
 
 import Grid from '@mui/material/Grid';
 

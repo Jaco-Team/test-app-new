@@ -1,8 +1,8 @@
 import { AlertPC } from './AlertPC';
 
-import { responsiveStoryParameters } from '../../lib/storybook/responsive';
+import { responsiveStoryGlobals } from '../../lib/storybook/responsive';
 export default {
-  title: 'Header / ПК / Уведомление клиента',
+  title: 'Общие элементы / Уведомления',
   component: AlertPC,
   tags: ['autodocs'],
   parameters: {
@@ -36,12 +36,12 @@ Error.args = {
 
 export const Mobile = Template.bind({});
 Mobile.args = Basic.args;
-Mobile.parameters = responsiveStoryParameters.Mobile;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
 export const Tablet = Template.bind({});
 Tablet.args = Basic.args;
-Tablet.parameters = responsiveStoryParameters.Tablet;
+Tablet.globals = responsiveStoryGlobals.Tablet;
 
 export const Desktop = Template.bind({});
 Desktop.args = Basic.args;
-Desktop.parameters = responsiveStoryParameters.Desktop;
+Desktop.globals = responsiveStoryGlobals.Desktop;

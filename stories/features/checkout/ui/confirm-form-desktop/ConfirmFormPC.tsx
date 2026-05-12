@@ -1,6 +1,6 @@
 import './ConfirmFormPC.scss';
 
-import { MyButton } from '../../../../shared/ui/button/MyButton';
+import { MyButton } from '@stories/shared/ui/button/MyButton';
 import { ArrowLeftMobile, Cloud, CheckAuthMobile } from '@/ui/Icons';
 
 export const ConfirmFormPC = ({city, address, data, time, items, itemsCount, allPrice, promo, sdacha}: Record<string, any>) => {

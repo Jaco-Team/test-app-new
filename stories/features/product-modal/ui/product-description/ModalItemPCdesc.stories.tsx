@@ -1,8 +1,8 @@
 import { ModalItemPCdesc } from './ModalItemPCdesc';
 
-import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
+import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
-  title: 'Главная страница / Товар / Модальное окно Товара / Описание',
+  title: 'Фичи / Модалка товара / Описание',
   component: ModalItemPCdesc,
   tags: ['autodocs'],
   argTypes: {
@@ -117,12 +117,12 @@ Variant_4.args = {
 
 export const Mobile = Template.bind({});
 Mobile.args = Variant_1.args;
-Mobile.parameters = responsiveStoryParameters.Mobile;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
 export const Tablet = Template.bind({});
 Tablet.args = Variant_1.args;
-Tablet.parameters = responsiveStoryParameters.Tablet;
+Tablet.globals = responsiveStoryGlobals.Tablet;
 
 export const Desktop = Template.bind({});
 Desktop.args = Variant_1.args;
-Desktop.parameters = responsiveStoryParameters.Desktop;
+Desktop.globals = responsiveStoryGlobals.Desktop;

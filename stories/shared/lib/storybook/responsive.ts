@@ -1,24 +1,32 @@
-export const mobileViewport = {
+export const mobileGlobals = {
   viewport: {
-    defaultViewport: 'mobileMin',
+    value: 'mobileMin',
+    isRotated: false,
   },
 };
 
-export const tabletViewport = {
+export const tabletGlobals = {
   viewport: {
-    defaultViewport: 'tabletMin',
+    value: 'tabletMin',
+    isRotated: false,
   },
 };
 
-export const desktopViewport = {
+export const desktopGlobals = {
   viewport: {
-    defaultViewport: 'desktopMin',
+    value: 'desktopMin',
+    isRotated: false,
   },
+};
+
+export const responsiveStoryGlobals = {
+  Mobile: mobileGlobals,
+  Tablet: tabletGlobals,
+  Desktop: desktopGlobals,
 };
 
 export const responsiveStoryParameters = {
-  Mobile: mobileViewport,
-  Tablet: tabletViewport,
-  Desktop: desktopViewport,
+  Mobile: { viewport: {} },
+  Tablet: { viewport: {} },
+  Desktop: { viewport: {} },
 };
-

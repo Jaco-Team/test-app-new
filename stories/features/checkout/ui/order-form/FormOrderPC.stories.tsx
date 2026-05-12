@@ -1,10 +1,10 @@
 import { FormOrderPC } from './FormOrderPC';
-import * as MyMenu from '../../../../shared/MyMenu/MyMenu.stories';
+import * as MyMenu from '@stories/shared/MyMenu/MyMenu.stories';
 import * as FormOrderPC_btn from '../order-form-button/FormOrderPC_btn.stories';
 
-import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
+import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
-  title: 'Cart / ПК / Модалка оформления заказа',
+  title: 'Фичи / Оформление заказа / Форма',
   component: FormOrderPC,
   tags: ['autodocs'],
   argTypes: {
@@ -130,12 +130,12 @@ Pikcup_Active.args = {
 
 export const Mobile = Template.bind({});
 Mobile.args = Delivery.args;
-Mobile.parameters = responsiveStoryParameters.Mobile;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
 export const Tablet = Template.bind({});
 Tablet.args = Delivery.args;
-Tablet.parameters = responsiveStoryParameters.Tablet;
+Tablet.globals = responsiveStoryGlobals.Tablet;
 
 export const Desktop = Template.bind({});
 Desktop.args = Delivery.args;
-Desktop.parameters = responsiveStoryParameters.Desktop;
+Desktop.globals = responsiveStoryGlobals.Desktop;
