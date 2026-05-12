@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ProfileAddrPC } from './ProfileAddrPC';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Start from './Start';
 import ResetPWD from './ResetPWD';
 import LoginSMS from './LoginSMS';
@@ -8,7 +7,7 @@ import Finish from './Finish';
 import { MySwitch } from '../../../../shared/ui/switch/MySwitch';
 import './ModalAuthPC.scss';
 
-export const ModalAuthPC = ({ typeLogin, data }) => {
+export const ModalAuthPC = ({ typeLogin, data }: Record<string, any>) => {
     const login = typeLogin === 'loginSMSCode' ? 'Проверочный код' : typeLogin === 'resetPWD' ? 'Новый пароль' : typeLogin === 'createPWD' ? 'Придумайте пароль' : typeLogin === 'finish' ? 'Всё получилось!' : typeLogin === 'loginSMS' ? 'Вход по СМС' : 'Авторизация';
 
   return (

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ModalItemPClist } from './ModalItemPClist';
 import * as ModalItemPCset from '../../../../entities/product/ui/set-item/ModalItemPCset.stories';
 import * as ModalItemPCvalue from '../../../../entities/product/ui/nutrition/ModalItemPCvalue.stories';

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { CloseButton } from './CloseButton';
 
 import { responsiveStoryParameters } from '../../lib/storybook/responsive';

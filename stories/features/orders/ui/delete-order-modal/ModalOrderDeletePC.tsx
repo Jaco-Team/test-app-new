@@ -1,4 +1,3 @@
-// @ts-nocheck
 
 import { MyButton } from '../../../../shared/ui/button/MyButton';
 import MyTextInput from '../../../../shared/ui/text-input/MyTextInput';
@@ -13,7 +12,7 @@ const ans = [
   { id: 6, ans: 'Другое' },
 ];
 
-export const ModalOrderDeletePC = ({ variant, text }) => {
+export const ModalOrderDeletePC = ({ variant, text }: Record<string, any>) => {
   return (
     <div className="modalOrderDeletePC">
       <span className="header_status">Отменить заказ?</span>

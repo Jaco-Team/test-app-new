@@ -1,4 +1,3 @@
-// @ts-nocheck
 
 import { Badge } from '../../../../entities/product/ui/badge/Badge';
 import { ModalItemPCimg } from '../product-image/ModalItemPCimg';
@@ -8,7 +7,7 @@ import { ModalItemPClist } from '../product-list/ModalItemPClist';
 
 import './ModalItemPC.scss';
 
-export const ModalItemPC = ({ img_name, title, is_new, is_hit, desc, count, typeModal, list }) => {
+export const ModalItemPC = ({ img_name, title, is_new, is_hit, desc, count, typeModal, list }: Record<string, any>) => {
   return (
     <div className="modalItemPC" style={{ background: typeModal === 'start' ? '#FFFFFF' : '#E6E6E6' }}>
       {typeModal !== 'start' ? null : (

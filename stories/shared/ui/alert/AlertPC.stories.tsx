@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { AlertPC } from './AlertPC';
 
 import { responsiveStoryParameters } from '../../lib/storybook/responsive';

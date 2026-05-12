@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Image from 'next/image';
 
 import { BreadСrumbsPC } from '../../../shared/ui/breadcrumbs/BreadСrumbsPC';
@@ -33,7 +32,7 @@ const arrayImage = [
   },
 ];
 
-export const AboutPagePC = ({ header, data, footer }) => {
+export const AboutPagePC = ({ header, data, footer }: Record<string, any>) => {
   return (
     <>
       {header ? null : null}

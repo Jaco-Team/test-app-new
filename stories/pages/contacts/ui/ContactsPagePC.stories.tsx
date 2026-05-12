@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ContactsPagePC } from './ContactsPagePC';
 
 import { responsiveStoryParameters } from '../../../shared/lib/storybook/responsive';

@@ -1,8 +1,7 @@
-// @ts-nocheck
 import Image from 'next/image';
 import './BannerPCImg.scss';
 
-export const BannerPCImg = ({ img, title, type }) => {
+export const BannerPCImg = ({ img, title, type }: Record<string, any>) => {
   return (
     <Image 
       alt={title} 

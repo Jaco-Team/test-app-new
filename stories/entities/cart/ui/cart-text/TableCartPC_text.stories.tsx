@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { TableCartPC_text } from './TableCartPC_text';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

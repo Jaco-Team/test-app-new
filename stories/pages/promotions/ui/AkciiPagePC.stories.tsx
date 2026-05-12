@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { AkciiPagePC } from './AkciiPagePC';
 import * as BannerFullPC from '../../../widgets/promotions/ui/promotion-detail/BannerFullPC.stories';
 

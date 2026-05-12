@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState } from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
 import AuthCode from 'react-auth-code-input';
@@ -35,7 +34,7 @@ export default function LoginSMSCode({
         <AuthCode
           autoFocus={true}
           allowedCharacters="numeric"
-          length="4"
+          length={4}
           onChange={(data) => changeCode(data)}
           placeholder="•"
         />

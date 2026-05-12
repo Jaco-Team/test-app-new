@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ModalItemPCvalue } from './ModalItemPCvalue';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

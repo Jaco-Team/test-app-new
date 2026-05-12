@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { BannerFullPC } from './BannerFullPC';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

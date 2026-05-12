@@ -1,9 +1,19 @@
-// @ts-nocheck
-import {useState} from 'react';
+import { Fragment, useState } from 'react';
 import { Link as ScrollLink } from 'react-scroll';
 import './BreadСrumbsPC.scss';
 
-export const BreadСrumbsPC = ({ activePage, list, title }) => {
+interface BreadCrumbsItem {
+  link?: string;
+  text: string;
+}
+
+interface BreadCrumbsPCProps {
+  activePage: string;
+  list: BreadCrumbsItem[];
+  title: string;
+}
+
+export const BreadСrumbsPC = ({ activePage, list, title }: BreadCrumbsPCProps) => {
   const [activeLink, setActiveLink] = useState('');
   const [notActiveLink, setNotActiveLink] = useState('');
 
@@ -12,13 +22,13 @@ export const BreadСrumbsPC = ({ activePage, list, title }) => {
       <span>{title}</span>
       <ul>
         {list.map((item, key) => (
-          <>
+          <Fragment key={`${item.text}-${key}`}>
             {activePage !== 'about' ? (
-              <li key={key} className={activePage === item.link ? 'activeMarker' : ''}>
+              <li className={activePage === item.link ? 'activeMarker' : ''}>
                 <a className={activePage === item.link ? 'active' : ''}>{item.text}</a>
               </li>
             ) : (
-              <li key={key} className={activeLink === item.text && activeLink !== notActiveLink ? 'activeMarker' : ''}>
+              <li className={activeLink === item.text && activeLink !== notActiveLink ? 'activeMarker' : ''}>
                 <ScrollLink 
                   to={`tag${key + 1}`} 
                   activeClass="active" 
@@ -32,15 +42,9 @@ export const BreadСrumbsPC = ({ activePage, list, title }) => {
                 </ScrollLink>
               </li>
             )}
-          </>
+          </Fragment>
         ))}
       </ul>
     </div>
   );
-};
-
-BreadСrumbsPC.propTypes = {
-  activePage: PropTypes.string.isRequired,
-  list: PropTypes.array,
-  title: PropTypes.string.isRequired,
 };

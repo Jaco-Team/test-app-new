@@ -1,9 +1,8 @@
-// @ts-nocheck
 import Image from 'next/image';
 
 import './BannerItemPC.scss';
 
-export const BannerItemPC = ({number, title, img_app, desc, typePrice, price, count}) => {
+export const BannerItemPC = ({number, title, img_app, desc, typePrice, price, count}: Record<string, any>) => {
 
   return (
     <div className="itemBannerPCNew BannerFontPC">

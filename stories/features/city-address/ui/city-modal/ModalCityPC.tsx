@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState } from 'react';
 
 import { MyButton } from '../../../../shared/ui/button/MyButton';
@@ -8,7 +7,7 @@ import './ModalCityPC.scss';
 
 const cityList = [{title: 'Тольятти'}, {title: 'Самара'}, {title: 'Комсомольск-на-Амуре'}];
 
-export const ModalCityPC = ({ city }) => {
+export const ModalCityPC = ({ city }: Record<string, any>) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 

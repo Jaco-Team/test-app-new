@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 import Image from 'next/image';
 
@@ -6,7 +5,7 @@ import './ItemHomePc.scss';
 import { placeholder_img } from '@/public/placeholder_img';
 import { Badge } from '../badge/Badge';
 
-export const ItemHomePc = ({title, img, weight, description, price, count, is_new, is_hit}) => {
+export const ItemHomePc = ({title, img, weight, description, price, count, is_new, is_hit}: Record<string, any>) => {
   return (
     <div
       className={['ItemHomePc', parseInt(count) > 0 ? 'active' : ''].join(' ')}

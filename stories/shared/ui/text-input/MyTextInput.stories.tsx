@@ -1,4 +1,3 @@
-// @ts-nocheck
 import MyTextInput from './MyTextInput';
 
 import { responsiveStoryParameters } from '../../lib/storybook/responsive';

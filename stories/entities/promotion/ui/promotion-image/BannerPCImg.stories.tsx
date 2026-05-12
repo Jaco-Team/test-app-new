@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { BannerPCImg } from './BannerPCImg';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

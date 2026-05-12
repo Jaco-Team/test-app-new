@@ -1,15 +1,20 @@
-// @ts-nocheck
-
+import type React from 'react';
 import { MyButton } from '../../../../shared/ui/button/MyButton';
 import {SharpIcon, CalendarIcon, MyAddrLocationIcon, EyeHide_modalOrder, EyeShow_modalOrder, CartModalOrderIcon, CookModalOrderIcon, DeliveryModalOrderIcon, HomeModalOrderIcon, AddrDotsModalOrderIcon, PicupModalOrderIcon} from '../../../../shared/Icons.js';
 import LinearProgress from '@mui/material/LinearProgress';
 import './ModalOrderPC.scss';
 
+const OrderCartIcon = CartModalOrderIcon as React.ComponentType<Record<string, unknown>>;
+const OrderCookIcon = CookModalOrderIcon as React.ComponentType<Record<string, unknown>>;
+const OrderDeliveryIcon = DeliveryModalOrderIcon as React.ComponentType<Record<string, unknown>>;
+const OrderHomeIcon = HomeModalOrderIcon as React.ComponentType<Record<string, unknown>>;
+const OrderPicupIcon = PicupModalOrderIcon as React.ComponentType<Record<string, unknown>>;
+
 function ModalOrderStatusIconDelivery({ types }) {
   return (
     <div className="header_status_icon">
       <div className={parseInt(types?.type1) == 1 || parseInt(types?.type1) == 0 ? 'active' : ''}>
-        <CartModalOrderIcon fill={'#fff'} />
+        <OrderCartIcon fill={'#fff'} />
       </div>
       {parseInt(types?.type2) == 1 || parseInt(types?.type2) == -1 ? (
         <LinearProgress variant="determinate" className={parseInt(types?.type2) == -1 ? '' : 'active'} value={parseInt(types?.type2) == 1 ? 100 : 0} />
@@ -18,7 +23,7 @@ function ModalOrderStatusIconDelivery({ types }) {
       )}
 
       <div className={parseInt(types?.type2) == 1 || parseInt(types?.type2) == 0 ? 'active' : ''}>
-        <CookModalOrderIcon fill={'#fff'} />
+        <OrderCookIcon fill={'#fff'} />
       </div>
       {parseInt(types?.type3) == 1 || parseInt(types?.type3) == -1 ? (
         <LinearProgress variant="determinate" className={parseInt(types?.type3) == -1 ? '' : 'active'} value={parseInt(types?.type3) == 1 ? 100 : 0} />
@@ -27,7 +32,7 @@ function ModalOrderStatusIconDelivery({ types }) {
       )}
 
       <div className={parseInt(types?.type3) == 1 || parseInt(types?.type3) == 0 ? 'active' : ''}>
-        <DeliveryModalOrderIcon fill={'#fff'} />
+        <OrderDeliveryIcon fill={'#fff'} />
       </div>
       {parseInt(types?.type4) == 1 || parseInt(types?.type4) == -1 ? (
         <LinearProgress variant="determinate" className={parseInt(types?.type4) == -1 ? '' : 'active'} value={parseInt(types?.type4) == 1 ? 100 : 0} />
@@ -35,7 +40,7 @@ function ModalOrderStatusIconDelivery({ types }) {
         <LinearProgress />
       )}
       <div className={parseInt(types?.type4) == 1 || parseInt(types?.type4) == 0 ? 'active' : ''}>
-        <HomeModalOrderIcon fill={'#fff'} />
+        <OrderHomeIcon fill={'#fff'} />
       </div>
     </div>
   );
@@ -45,7 +50,7 @@ function ModalOrderStatusIconPicup({ types }) {
   return (
     <div className="header_status_icon">
       <div className={parseInt(types?.type1) == 1 || parseInt(types?.type1) == 0 ? 'active' : ''}>
-        <CartModalOrderIcon fill={'#fff'} />
+        <OrderCartIcon fill={'#fff'} />
       </div>
       {parseInt(types?.type2) == 1 || parseInt(types?.type2) == -1 ? (
         <LinearProgress variant="determinate" className={parseInt(types?.type2) == -1 ? '' : 'active'} value={parseInt(types?.type2) == 1 ? 100 : 0} />
@@ -54,7 +59,7 @@ function ModalOrderStatusIconPicup({ types }) {
       )}
 
       <div className={parseInt(types?.type2) == 1 || parseInt(types?.type2) == 0 ? 'active' : ''}>
-        <CookModalOrderIcon fill={'#fff'} />
+        <OrderCookIcon fill={'#fff'} />
       </div>
       {parseInt(types?.type3) == 1 || parseInt(types?.type3) == -1 ? (
         <LinearProgress variant="determinate" className={parseInt(types?.type3) == -1 ? '' : 'active'} value={parseInt(types?.type3) == 1 ? 100 : 0} />
@@ -63,7 +68,7 @@ function ModalOrderStatusIconPicup({ types }) {
       )}
 
       <div className={parseInt(types?.type3) == 1 || parseInt(types?.type3) == 0 ? 'active' : ''}>
-        <PicupModalOrderIcon fill={'#fff'} />
+        <OrderPicupIcon fill={'#fff'} />
       </div>
       {parseInt(types?.type4) == 1 || parseInt(types?.type4) == -1 ? (
         <LinearProgress variant="determinate" className={parseInt(types?.type4) == -1 ? '' : 'active'} value={parseInt(types?.type4) == 1 ? 100 : 0} />
@@ -71,13 +76,13 @@ function ModalOrderStatusIconPicup({ types }) {
         <LinearProgress />
       )}
       <div className={parseInt(types?.type4) == 1 || parseInt(types?.type4) == 0 ? 'active' : ''}>
-        <HomeModalOrderIcon fill={'#fff'} />
+        <OrderHomeIcon fill={'#fff'} />
       </div>
     </div>
   );
 }
 
-export const ModalOrderPC = ({ modalOrder, isShowAddr, city }) => {
+export const ModalOrderPC = ({ modalOrder, isShowAddr, city }: Record<string, any>) => {
   let order_status = '';
 
   if (parseInt(modalOrder?.order?.is_delete) == 1) {
@@ -158,4 +163,3 @@ export const ModalOrderPC = ({ modalOrder, isShowAddr, city }) => {
     </div>
   );
 };
-

@@ -1,10 +1,9 @@
-// @ts-nocheck
 import { TableOrdersPC } from '../../../widgets/orders/ui/orders-table/TableOrdersPC';
 import { BreadСrumbsPC } from '../../../shared/ui/breadcrumbs/BreadСrumbsPC';
 
 import './ZakazyPagePC.scss';
 
-export const ZakazyPagePC = ({ header, orders, footer, data }) => {
+export const ZakazyPagePC = ({ header, orders, footer, data }: Record<string, any>) => {
   return (
     <>
       {header ? null : null}

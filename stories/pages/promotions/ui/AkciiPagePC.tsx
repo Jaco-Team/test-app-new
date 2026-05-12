@@ -1,10 +1,9 @@
-// @ts-nocheck
 import { BannerFullPC } from '../../../widgets/promotions/ui/promotion-detail/BannerFullPC';
 
 import './AkciiPagePC.scss';
 
-export const AkciiPagePC = ({ header, actia, footer }) => {
-  const bannerList = Array.from(Array(4).keys()).fill(actia);
+export const AkciiPagePC = ({ header, actia, footer }: Record<string, any>) => {
+  const bannerList = Array.from({ length: 4 }, () => actia);
 
   return (
     <>

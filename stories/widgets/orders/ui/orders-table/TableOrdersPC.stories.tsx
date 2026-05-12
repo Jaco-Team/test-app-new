@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { TableOrdersPC } from './TableOrdersPC';
 import * as OrderItemPC from '../../../../entities/order/ui/order-item/OrderItemPC.stories';
 

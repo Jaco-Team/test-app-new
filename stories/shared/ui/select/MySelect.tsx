@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 
 import FormControl from '@mui/material/FormControl';
@@ -6,10 +5,23 @@ import InputLabel from '@mui/material/InputLabel';
 import Select from '@mui/material/Select';
 import MenuItem from '@mui/material/MenuItem';
 
-export default class MySelect extends React.PureComponent {
-  constructor(props) {
-    super(props);
-  }
+type SelectItem = {
+  id: string | number;
+  name: string;
+};
+
+type MySelectProps = {
+  label?: string;
+  className?: Record<string, unknown>;
+  value?: unknown;
+  variant?: 'outlined' | 'filled' | 'standard';
+  disabled?: boolean;
+  func?: (event: unknown) => void;
+  multiple?: boolean;
+  data?: SelectItem[];
+};
+
+export default class MySelect extends React.PureComponent<MySelectProps> {
 
   render() {
     return (
@@ -22,7 +34,7 @@ export default class MySelect extends React.PureComponent {
           style={{ width: '100%', zIndex: 3 }}
           variant={this.props?.variant ? this.props?.variant : 'outlined'}
           disabled={this.props?.disabled || this.props?.disabled === true ? true : false}
-          onChange={this.props?.func}
+          onChange={this.props?.func as never}
           multiple={this.props?.multiple && this.props?.multiple === true ? true : false}
         >
           {this.props?.data?.map((item, key) => (

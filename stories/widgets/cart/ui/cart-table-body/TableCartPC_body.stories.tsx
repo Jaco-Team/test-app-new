@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { TableCartPC_body } from './TableCartPC_body';
 import * as TableCartPC_row from '../../../../entities/cart/ui/cart-row/TableCartPC_row.stories';
 import * as TableCartPC_foot from '../cart-table-footer/TableCartPC_foot.stories';
@@ -13,7 +12,7 @@ export default {
       type: 'array',
       description: 'Товары в корзине за исключением допов',
     },
-    items: {
+    itemsCount: {
       type: 'number',
       description: 'Число товаров в корзине без допов',
     },

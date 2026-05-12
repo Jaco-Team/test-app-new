@@ -1,15 +1,15 @@
-// @ts-nocheck
 import React from 'react';
 import FormControlLabel from '@mui/material/FormControlLabel';
 
 import { AuthSwitchPC, BasketSwitchPC, IOSSwitch } from './MySwitch_styled';
 
-export class MySwitch extends React.PureComponent {
-  constructor(props) {
-    super(props);
+type MySwitchProps = {
+  type?: 'auth' | 'cart' | 'ios' | string;
+  checked?: boolean;
+  onClick?: React.MouseEventHandler<HTMLButtonElement>;
+};
 
-    this.state = {};
-  }
+export class MySwitch extends React.PureComponent<MySwitchProps> {
 
   render() {
     if (this.props.type === 'auth') {
@@ -33,6 +33,7 @@ export class MySwitch extends React.PureComponent {
     if (this.props.type === 'ios') {
       return (
         <FormControlLabel
+          label=""
           style={{ zIndex: 3 }}
           control={
             <IOSSwitch
@@ -45,4 +46,3 @@ export class MySwitch extends React.PureComponent {
     }
   }
 }
-

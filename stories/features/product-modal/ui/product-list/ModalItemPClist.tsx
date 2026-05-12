@@ -1,11 +1,10 @@
-// @ts-nocheck
 import Link from 'next/link';
 import { ModalItemPCset } from '../../../../entities/product/ui/set-item/ModalItemPCset';
 import { ModalItemPCvalue } from '../../../../entities/product/ui/nutrition/ModalItemPCvalue';
 import './ModalItemPClist.scss';
 
-export const ModalItemPClist = ({ set, type, value, link_allergens }) => {
-  const arrayItem = Array.from(Array(8).keys()).fill(type === 'set' ? set : value);
+export const ModalItemPClist = ({ set, type, value, link_allergens }: Record<string, any>) => {
+  const arrayItem = Array.from({ length: 8 }, () => type === 'set' ? set : value);
 
   return (
     <div className="table">

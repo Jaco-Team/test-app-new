@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { HomePage } from './HomePage';
 
 import { responsiveStoryParameters } from '../../../shared/lib/storybook/responsive';

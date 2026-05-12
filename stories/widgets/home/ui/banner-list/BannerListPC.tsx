@@ -1,4 +1,3 @@
-// @ts-nocheck
 import './BannerListPC.scss';
 
 import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper';
@@ -12,7 +11,7 @@ import { ArrowIcon, NextIcon } from '../../../../shared/Icons.js';
 
 import { BannerPCImg } from '../../../../entities/promotion/ui/promotion-image/BannerPCImg';
 
-export const BannerListPC = ({ bannerList }) => {
+export const BannerListPC = ({ bannerList }: Record<string, any>) => {
 
   /*const swiperRef = useRef(null);
 
@@ -42,9 +41,10 @@ export const BannerListPC = ({ bannerList }) => {
         scrollbar={{ draggable: true }}
       >
         {bannerList.map((item, key) => (
-          <SwiperSlide key={key} dataswiperautoplay="2000" onClick={() => {} }>
+          <SwiperSlide key={key} data-swiper-autoplay="2000" onClick={() => {} }>
             <BannerPCImg 
               img={"https://storage.yandexcloud.net/site-home-img/"+item.img+"_3700x1000.jpg"} 
+              title={item.title}
               type='banner'
             />
           </SwiperSlide>
@@ -55,4 +55,3 @@ export const BannerListPC = ({ bannerList }) => {
     </div>
   );
 };
-

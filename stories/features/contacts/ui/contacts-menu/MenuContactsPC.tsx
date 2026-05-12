@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState } from 'react';
 import './MenuContactsPC.scss';
 
@@ -12,7 +11,7 @@ const cityList = [
   { title: 'Комсомольск-на-Амуре' },
 ];
 
-export const MenuContactsPC = ({ city, points, phone, disable, active }) => {
+export const MenuContactsPC = ({ city, points, phone, disable, active }: Record<string, any>) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isOpen, setIsOpen] = useState(false);
 

@@ -26,6 +26,11 @@
 - Second stage: rebuild the base app from Storybook components.
 - Final stage: move backend behavior from the custom implementation to Laravel.
 
+## Language
+
+- Chat with the user in English by default.
+- Write documentation, code comments, UI labels, and Storybook titles in Russian unless the surrounding file clearly uses another language.
+
 ## Local Notes
 
 - Do not run format, lint, prettier, or eslint commands unless explicitly requested.

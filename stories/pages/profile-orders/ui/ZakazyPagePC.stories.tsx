@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ZakazyPagePC } from './ZakazyPagePC';
 import * as TableOrdersPC from '../../../widgets/orders/ui/orders-table/TableOrdersPC.stories';
 import * as BreadСrumbsPC from '../../../shared/ui/breadcrumbs/BreadСrumbsPC.stories';

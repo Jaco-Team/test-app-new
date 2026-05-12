@@ -1,7 +1,6 @@
-// @ts-nocheck
 import './ModalItemPCimg.scss';
 
-export const ModalItemPCimg = ({ img_name, title }) => {
+export const ModalItemPCimg = ({ img_name, title }: Record<string, any>) => {
   return (
     <picture>
       <source

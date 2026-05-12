@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ModalAuthPC } from './ModalAuthPC';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

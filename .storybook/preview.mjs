@@ -1,8 +1,13 @@
 /** @type { import('@storybook/nextjs').Preview } */
-import { Roboto } from 'next/font/google';
-
 import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
 import { withThemeFromJSXProvider } from '@storybook/addon-themes';
+
+import '@fontsource/roboto/100.css';
+import '@fontsource/roboto/300.css';
+import '@fontsource/roboto/400.css';
+import '@fontsource/roboto/500.css';
+import '@fontsource/roboto/700.css';
+import '@fontsource/roboto/900.css';
 
 const viewports = {
   mobileMin: {
@@ -47,10 +52,6 @@ const viewports = {
   },
 };
 
-// import '@fontsource/roboto/300.css';
-// import '@fontsource/roboto/400.css';
-// import '@fontsource/roboto/500.css';
-// import '@fontsource/roboto/700.css';
 // import '@fontsource/material-icons';
 
 const theme = createTheme({
@@ -66,12 +67,6 @@ const theme = createTheme({
       },
     },
   },
-});
-
-export const roboto = Roboto({
-  weight: ['100', '300', '400', '500', '700', '900'],
-  subsets: ['latin'],
-  variable: '--inter-font',
 });
 
 const preview = {
@@ -105,7 +100,7 @@ const preview = {
 
   decorators: [
     (Story) => (
-      <div className={roboto}>
+      <div>
         <Story />
       </div>
     ),

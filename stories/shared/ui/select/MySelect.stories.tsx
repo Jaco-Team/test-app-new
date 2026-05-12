@@ -1,4 +1,3 @@
-// @ts-nocheck
 import MySelect from './MySelect';
 
 import { responsiveStoryParameters } from '../../lib/storybook/responsive';

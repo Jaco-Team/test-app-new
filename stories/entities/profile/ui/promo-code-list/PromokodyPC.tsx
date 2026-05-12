@@ -1,7 +1,6 @@
-// @ts-nocheck
 import './PromokodyPC.scss';
 
-export const PromokodyPC = ({ promokody }) => {
+export const PromokodyPC = ({ promokody }: Record<string, any>) => {
   return (
     <div className="promoCardPC">
       <span className="title">{promokody.promo_action_text}</span>

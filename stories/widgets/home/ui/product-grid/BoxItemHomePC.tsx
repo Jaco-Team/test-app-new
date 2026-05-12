@@ -1,10 +1,9 @@
-// @ts-nocheck
 import { ItemHomePc } from '../../../../entities/product/ui/product-card/ItemHomePc';
 
 import './BoxItemHomePC.scss';
 
-export const BoxItemHomePC = ({ cardItem }) => {
-  const arrayCard = Array.from(Array(16).keys()).fill(cardItem);
+export const BoxItemHomePC = ({ cardItem }: Record<string, any>) => {
+  const arrayCard = Array.from({ length: 16 }, () => cardItem);
 
   return (
     <div className="containerItemHomePC">

@@ -1,7 +1,6 @@
-// @ts-nocheck
 import './SelectAddress.scss';
 
-export const SelectAddress = ({ list }) => {
+export const SelectAddress = ({ list }: Record<string, any>) => {
   return (
     <div className="modalSelectPC">
       <span>Выбор адреса</span>

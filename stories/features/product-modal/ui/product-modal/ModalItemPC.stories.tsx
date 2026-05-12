@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ModalItemPC } from './ModalItemPC';
 import * as ModalItemPCdesc from '../product-description/ModalItemPCdesc.stories';
 import * as MyButton from '../../../../shared/ui/button/MyButton.stories';

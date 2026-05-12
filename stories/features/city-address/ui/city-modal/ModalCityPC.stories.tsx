@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ModalCityPC } from './ModalCityPC';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

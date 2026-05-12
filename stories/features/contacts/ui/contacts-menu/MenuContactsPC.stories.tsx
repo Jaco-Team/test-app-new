@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { MenuContactsPC } from './MenuContactsPC';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

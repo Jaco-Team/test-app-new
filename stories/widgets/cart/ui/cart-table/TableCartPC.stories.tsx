@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { TableCartPC } from './TableCartPC';
 import * as TableCartPC_body from '../cart-table-body/TableCartPC_body.stories';
 

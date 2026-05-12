@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { BoxItemHomePC } from './BoxItemHomePC';
 import * as ItemHomePc from '../../../../entities/product/ui/product-card/ItemHomePc.stories';
 

@@ -1,10 +1,9 @@
-// @ts-nocheck
 import './ConfirmFormPC.scss';
 
 import { MyButton } from '../../../../shared/ui/button/MyButton';
 import { ArrowLeftMobile, Cloud, CheckAuthMobile } from '@/ui/Icons';
 
-export const ConfirmFormPC = ({city, address, data, time, items, itemsCount, allPrice, promo, sdacha}) => {
+export const ConfirmFormPC = ({city, address, data, time, items, itemsCount, allPrice, promo, sdacha}: Record<string, any>) => {
   function getWord(int, array) {
     return (
       (array = array || ['позиция', 'позиции', 'позиций']) && array[int % 100 > 4 && int % 100 < 20 ? 2 : [2, 0, 1, 1, 1, 2][int % 10 < 5 ? int % 10 : 5]]
@@ -47,7 +46,7 @@ export const ConfirmFormPC = ({city, address, data, time, items, itemsCount, all
       </div>
 
       <div className="confirmTotal">
-        <span>Итого: {itemsCount} {getWord(itemsCount)}</span>
+        <span>Итого: {itemsCount} {getWord(itemsCount, undefined)}</span>
         <span>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</span>
       </div>
 
@@ -69,4 +68,3 @@ export const ConfirmFormPC = ({city, address, data, time, items, itemsCount, all
     </div>
   );
 };
-

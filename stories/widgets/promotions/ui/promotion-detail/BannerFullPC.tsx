@@ -1,4 +1,3 @@
-// @ts-nocheck
 
 import Grid from '@mui/material/Grid';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
@@ -8,7 +7,7 @@ import { BannerItemPC } from '../../../../entities/promotion/ui/promotion-card/B
 
 import './BannerFullPC.scss';
 
-export const BannerFullPC = ({ title, img, text, typePromo, count, items, type }) => {
+export const BannerFullPC = ({ title, img, text, typePromo, count, items, type }: Record<string, any>) => {
   return (
     <Grid container justifyContent="center" className='BannerFull' style={{ backgroundColor: type === 'banner' ? null : 'rgba(0, 0, 0, 0.03)', borderRadius: type === 'banner' ? null : '1.1552346570397vw' }}>
       <Grid className="ImgItem">

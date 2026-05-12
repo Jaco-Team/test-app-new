@@ -1,8 +1,7 @@
-// @ts-nocheck
 import Image from 'next/image';
 import './TableCartPC_row.scss';
 
-export const TableCartPC_row = ({ last, title, img_app, status_promo, new_one_price, all_price, one_price, count, disabled}) => {
+export const TableCartPC_row = ({ last, title, img_app, status_promo, new_one_price, all_price, one_price, count, disabled}: Record<string, any>) => {
   return (
     <tr className='rowTableCartPC' style={{ borderBottom: last ? 'none' : '0.072202166064982vw solid rgba(0, 0, 0, 0.1)' }}>
       <Image alt={title} src={'https://cdnimg.jacofood.ru/' + img_app + '_584x584.jpg'} width={584} height={584} priority={true} />

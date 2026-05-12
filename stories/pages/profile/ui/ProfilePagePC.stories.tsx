@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ProfilePagePC } from './ProfilePagePC';
 import * as ProfileAddrPC from '../../../entities/profile/ui/address-card/ProfileAddrPC.stories';
 import * as BreadСrumbsPC from '../../../shared/ui/breadcrumbs/BreadСrumbsPC.stories';

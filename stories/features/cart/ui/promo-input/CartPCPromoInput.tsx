@@ -1,9 +1,8 @@
-// @ts-nocheck
 import MyTextInput from '../../../../shared/ui/text-input/MyTextInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import './CartPCPromoInput.scss';
 
-export const CartPCPromoInput = ({promo, checkPromo, items_on_price, status_promo, itemsCount, allPrice, promoItemsFind }) => {
+export const CartPCPromoInput = ({promo, checkPromo, items_on_price, status_promo, itemsCount, allPrice, promoItemsFind }: Record<string, any>) => {
   return (
     <div className="promoInput">
       <MyTextInput

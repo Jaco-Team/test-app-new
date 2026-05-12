@@ -1,8 +1,7 @@
-// @ts-nocheck
 import { ReloadIcon, CheckIcon, CloseIcon_old } from '@/ui/Icons.js';
 import './OrderItemPC.scss';
 
-export const OrderItemPC = ({ order }) => {
+export const OrderItemPC = ({ order }: Record<string, any>) => {
   return (
     <tr className='orderItemPC'>
       <td>

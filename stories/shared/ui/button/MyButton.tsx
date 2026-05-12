@@ -1,9 +1,19 @@
-// @ts-nocheck
 import './MyButton.scss';
 
 import { VectorCity } from '../../Icons.js';
 
-export const MyButton = ({ variant, size, children, arrow, isOpen, typeModal, element, count, ...props }) => {
+type MyButtonProps = {
+  variant?: string;
+  size?: string;
+  children?: React.ReactNode;
+  arrow?: boolean;
+  isOpen?: boolean;
+  typeModal?: string;
+  element?: string;
+  count?: number;
+} & React.ButtonHTMLAttributes<HTMLButtonElement>;
+
+export const MyButton = ({ variant, size, children, arrow, isOpen, typeModal, element, count = 0, ...props }: MyButtonProps) => {
 
   if(!element) {
     const back = variant === 'city' && isOpen ? 'rgba(0, 0, 0, 0.05)' : variant === 'primary' || variant === 'cart' ? '#da1a32' : variant === 'auth' ? 'rgba(0, 0, 0, 0.1)' : '#fff';
@@ -21,7 +31,7 @@ export const MyButton = ({ variant, size, children, arrow, isOpen, typeModal, el
       <>
         {count === 0 ? (
           <button className='modalBTN' disabled={typeModal === 'start' ? false : true}>
-            {new Intl.NumberFormat('ru-RU').format(children)} ₽
+            {new Intl.NumberFormat('ru-RU').format(Number(children))} ₽
           </button>
         ) : (
           <div className='containerModalBTN'>

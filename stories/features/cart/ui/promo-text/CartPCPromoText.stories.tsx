@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { CartPCPromoText } from './CartPCPromoText';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

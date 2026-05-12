@@ -1,4 +1,3 @@
-// @ts-nocheck
 
 import { IconPC } from '../../../../shared/IconPC/IconPC';
 import { ArrowDownBasketModalPC } from '../../../../shared/Icons.js';
@@ -6,7 +5,7 @@ import { ArrowDownBasketModalPC } from '../../../../shared/Icons.js';
 import MyTextInput from '../../../../shared/ui/text-input/MyTextInput';
 import './FormOrderPC_btn.scss';
 
-export const FormOrderPC_btn = ({text, icon, placeholder, open, ...props}) => {
+export const FormOrderPC_btn = ({text, icon, placeholder, open, ...props}: Record<string, any>) => {
   return (
     <>
       {icon !== 'comment' ? (

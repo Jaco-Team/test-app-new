@@ -1,4 +1,3 @@
-// @ts-nocheck
 import React from 'react';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

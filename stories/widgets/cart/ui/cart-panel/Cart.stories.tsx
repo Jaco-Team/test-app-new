@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { CartPC } from './CartPC';
 import * as TableCartPC from '../cart-table/TableCartPC.stories';
 import * as CartPCPromoInput from '../../../../features/cart/ui/promo-input/CartPCPromoInput.stories';

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ModalAddressPC } from './ModalAddressPC';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

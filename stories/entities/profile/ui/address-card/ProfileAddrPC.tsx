@@ -1,8 +1,7 @@
-// @ts-nocheck
 import { CloseIconMin } from '@/ui/Icons.js';
 import './ProfileAddrPC.scss';
 
-export const ProfileAddrPC = ({ address }) => {
+export const ProfileAddrPC = ({ address }: Record<string, any>) => {
   return (
     <tr className="profileAddrPC">
       <td>{address?.city_name}</td>

@@ -28,11 +28,11 @@ type AuthIcon = 'ya' | 'eyeShow' | 'eyeHide' | 'clear' | 'check' | 'vector_rigth
 type ProductIcon = 'value';
 type FormOrderIcon = 'city' | 'home' | 'time' | 'card' | 'comment' | 'sdacha' | 'point';
 
-type IconType = HeaderIcon | AuthIcon | ProductIcon | FormOrderIcon;
+type IconType = HeaderIcon | AuthIcon | ProductIcon | FormOrderIcon | string;
 
 interface IconPCProps {
   icon: IconType;
-  element: 'header' | 'auth' | 'product' | 'form_order';
+  element: 'header' | 'auth' | 'product' | 'form_order' | 'modal' | 'cat' | 'contacts' | string;
   count?: string;
   foodValue?: boolean;
 }

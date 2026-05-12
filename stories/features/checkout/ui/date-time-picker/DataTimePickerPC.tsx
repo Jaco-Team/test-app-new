@@ -1,9 +1,8 @@
-// @ts-nocheck
 import './DataTimePickerPC.scss';
 import ArrowBackIosNewIcon from '@mui/icons-material/ArrowBackIosNew';
 import { MyButton } from '../../../../shared/ui/button/MyButton';
 
-export const DataTimePickerPC = ({ slidesTime, slidesDate }) => {
+export const DataTimePickerPC = ({ slidesTime, slidesDate }: Record<string, any>) => {
   return (
     <div className="dataTimePickerPC">
       <span className="pikerLogin">Выберите дату и время</span>

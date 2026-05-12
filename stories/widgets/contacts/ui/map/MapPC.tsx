@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useRef, useEffect } from 'react';
 
 import {YMaps, Map, Placemark, Polygon, SearchControl, ZoomControl} from '@pbe/react-yandex-maps';
@@ -6,8 +5,8 @@ import './MapPC.scss';
 
 // ymaps в storybook не работает, сделал костыль для активной иконки, но не совсем работает
 
-export const MapPC = ({ center_map, zones, points_zone, type_map }) => {
-  const ref = useRef();
+export const MapPC = ({ center_map, zones, points_zone, type_map }: Record<string, any>) => {
+  const ref = useRef<any>(null);
 
   useEffect(() => {
     if (ref.current && center_map?.center) {
@@ -25,8 +24,8 @@ export const MapPC = ({ center_map, zones, points_zone, type_map }) => {
           height="100%"
           className="mapPC"
         >
-          <SearchControl options={{ float: 'left' }} />
-          <ZoomControl options={{ float: 'left' }} />
+          <SearchControl options={{ float: 'left' } as any} />
+          <ZoomControl options={{ float: 'left' } as any} />
 
           {zones?.map((point, key) => (
             <Placemark
@@ -51,11 +50,10 @@ export const MapPC = ({ center_map, zones, points_zone, type_map }) => {
         </Map>
       </YMaps>
       {type_map !== 'active' ? null : (
-        <div class="my-img">
+        <div className="my-img">
           <img alt="" src="/Favikon.png" />
         </div>
       )}
     </div>
   );
 };
-

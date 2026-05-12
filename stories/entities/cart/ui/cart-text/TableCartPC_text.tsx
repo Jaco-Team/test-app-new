@@ -1,4 +1,3 @@
-// @ts-nocheck
 import './TableCartPC_text.scss';
 
 const dopText = {
@@ -9,7 +8,7 @@ const dopText = {
     'Блюда могут содержать ингредиенты, обладающие аллергенными свойствами. Если у вас есть аллергия на какой-либо продукт, пожалуйста, уточняйте состав в меню или на кассе. Обратите внимание, что мы не можем исключить или заменить ингредиенты, но с удовольствием поможем выбрать блюдо с подходящим составом.',
 };
 
-export const TableCartPC_text = ({ text }) => {
+export const TableCartPC_text = ({ text }: Record<string, any>) => {
   return (
     <>
       {text === 'allergens' ? (

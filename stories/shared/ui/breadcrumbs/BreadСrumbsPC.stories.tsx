@@ -1,8 +1,9 @@
-// @ts-nocheck
+import type { Meta, StoryObj } from '@storybook/react';
+
 import { BreadСrumbsPC } from './BreadСrumbsPC';
 
 import { responsiveStoryParameters } from '../../lib/storybook/responsive';
-export default {
+const meta = {
   title: 'Элементы / BreadСrumbs',
   component: BreadСrumbsPC,
   tags: ['autodocs'],
@@ -16,11 +17,14 @@ export default {
       description: 'Заголовок списка',
     },
     list: {
-      type: 'array',
+      control: 'object',
       description: 'Данные для списка ссылок',
     },
   },
-};
+} satisfies Meta<typeof BreadСrumbsPC>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
 
 const listDocs = [
   {
@@ -91,44 +95,49 @@ const listAbout = [
   },
 ];
 
-const Template = (args) => <BreadСrumbsPC {...args} />;
-export const Default = Template.bind({});
-export const Active = Template.bind({});
-export const Profile = Template.bind({});
-export const About = Template.bind({});
-
-Default.args = {
-  activePage: ' ',
-  list: listDocs,
-  title: 'Документы',
+export const Default: Story = {
+  args: {
+    activePage: ' ',
+    list: listDocs,
+    title: 'Документы',
+  },
 };
 
-Active.args = {
-  activePage: 'publichnaya-oferta',
-  list: listDocs,
-  title: 'Документы',
+export const Active: Story = {
+  args: {
+    activePage: 'publichnaya-oferta',
+    list: listDocs,
+    title: 'Документы',
+  },
 };
 
-Profile.args = {
-  activePage: '',
-  list: listProfile,
-  title: 'Личный кабинет',
+export const Profile: Story = {
+  args: {
+    activePage: '',
+    list: listProfile,
+    title: 'Личный кабинет',
+  },
 };
 
-About.args = {
-  activePage: 'about',
-  list: listAbout,
-  title: 'О Компании',
+export const About: Story = {
+  args: {
+    activePage: 'about',
+    list: listAbout,
+    title: 'О Компании',
+  },
 };
 
-export const Mobile = Template.bind({});
-Mobile.args = Default.args;
-Mobile.parameters = responsiveStoryParameters.Mobile;
+export const Mobile: Story = {
+  args: Default.args,
+  parameters: responsiveStoryParameters.Mobile,
+};
 
-export const Tablet = Template.bind({});
-Tablet.args = Default.args;
-Tablet.parameters = responsiveStoryParameters.Tablet;
+export const Tablet: Story = {
+  args: Default.args,
+  parameters: responsiveStoryParameters.Tablet,
+};
 
-export const Desktop = Template.bind({});
-Desktop.args = Default.args;
-Desktop.parameters = responsiveStoryParameters.Desktop;
+export const Desktop: Story = {
+  args: Default.args,
+  parameters: responsiveStoryParameters.Desktop,
+};

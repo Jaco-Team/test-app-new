@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { PromokodyPagePC } from './PromokodyPagePC';
 import * as PromokodyPC from '../../../entities/profile/ui/promo-code-list/PromokodyPC.stories';
 import * as BreadСrumbsPC from '../../../shared/ui/breadcrumbs/BreadСrumbsPC.stories';

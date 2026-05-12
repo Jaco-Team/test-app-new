@@ -1,4 +1,3 @@
-// @ts-nocheck
 
 import './CartPC.scss';
 import { TableCartPC } from '../cart-table/TableCartPC';
@@ -7,7 +6,7 @@ import { CartPCPromoText } from '../../../../features/cart/ui/promo-text/CartPCP
 import { TableCartPC_text } from '../../../../entities/cart/ui/cart-text/TableCartPC_text';
 import { MyButton } from '../../../../shared/ui/button/MyButton';
 
-export const CartPC = ({ data, openBasket, promo, desc }) => {
+export const CartPC = ({ data, openBasket, promo, desc }: Record<string, any>) => {
   return (
     <>
       {openBasket ? <div className="blockShadowBasket" /> : false}

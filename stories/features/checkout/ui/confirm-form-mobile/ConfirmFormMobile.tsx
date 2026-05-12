@@ -1,8 +1,7 @@
-// @ts-nocheck
 import './ConfirmFormMobile.scss';
 import { Cloud, CheckAuthMobile } from '@/ui/Icons';
 
-export const ConfirmFormMobile = ({city, address, data, time, items, itemsCount, allPrice, promo, sdacha}) => {
+export const ConfirmFormMobile = ({city, address, data, time, items, itemsCount, allPrice, promo, sdacha}: Record<string, any>) => {
 
   function getWord(int, array) {
     return (
@@ -43,7 +42,7 @@ export const ConfirmFormMobile = ({city, address, data, time, items, itemsCount,
       </div>
 
       <div className="confirmTotal">
-        <span>Итого: {itemsCount} {getWord(itemsCount)}</span>
+        <span>Итого: {itemsCount} {getWord(itemsCount, undefined)}</span>
         <span>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</span>
       </div>
 
@@ -65,4 +64,3 @@ export const ConfirmFormMobile = ({city, address, data, time, items, itemsCount,
     </div>
   );
 };
-

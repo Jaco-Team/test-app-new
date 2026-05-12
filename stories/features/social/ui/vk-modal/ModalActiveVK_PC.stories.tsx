@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ModalActiveVK_PC } from './ModalActiveVK_PC';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

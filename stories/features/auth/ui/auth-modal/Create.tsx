@@ -1,4 +1,3 @@
-// @ts-nocheck
 import MyTextInput from '../../../../shared/ui/text-input/MyTextInput';
 import InputAdornment from '@mui/material/InputAdornment';
 import { IconPC } from '../../../../shared/IconPC/IconPC';

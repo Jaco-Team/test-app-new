@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { BreadСrumbsPC } from '../../../shared/ui/breadcrumbs/BreadСrumbsPC';
 import { MySwitch } from '../../../shared/ui/switch/MySwitch';
 import { ProfileAddrPC } from '../../../entities/profile/ui/address-card/ProfileAddrPC';
@@ -8,8 +7,8 @@ import MyTextInput from '../../../shared/ui/text-input/MyTextInput';
 
 import './ProfilePagePC.scss';
 
-export const ProfilePagePC = ({ header, user, address, footer, data }) => {
-  const addrList = address ? Array.from(Array(4).keys()).fill(address) : [];
+export const ProfilePagePC = ({ header, user, address, footer, data }: Record<string, any>) => {
+  const addrList = address ? Array.from({ length: 4 }, () => address) : [];
 
   const arr_m = [
     { name: 'Января', id: 1 },

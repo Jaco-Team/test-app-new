@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { MapPC } from './MapPC';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

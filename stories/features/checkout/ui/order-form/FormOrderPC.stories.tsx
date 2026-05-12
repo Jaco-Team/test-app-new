@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { FormOrderPC } from './FormOrderPC';
 import * as MyMenu from '../../../../shared/MyMenu/MyMenu.stories';
 import * as FormOrderPC_btn from '../order-form-button/FormOrderPC_btn.stories';

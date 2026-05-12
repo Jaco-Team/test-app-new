@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState } from 'react';
 
 import { MySwitch } from '../../../../shared/ui/switch/MySwitch';
@@ -8,7 +7,7 @@ import { MyMenu } from '../../../../shared/MyMenu/MyMenu';
 
 import './FormOrderPC.scss';
 
-export const FormOrderPC = ({typeOrder, summ, itemsCount, allPrice, allPriceWithoutPromo_new, hours, list, list_address, address, online, comment}) => {
+export const FormOrderPC = ({typeOrder, summ, itemsCount, allPrice, allPriceWithoutPromo_new, hours, list, list_address, address, online, comment}: Record<string, any>) => {
   const [anchorEl, setAnchorEl] = useState(null);
   const [isOpenCat, setIsOpenCat] = useState(false);
   const [type, setType] = useState('default');
@@ -78,7 +77,7 @@ export const FormOrderPC = ({typeOrder, summ, itemsCount, allPrice, allPriceWith
         )}
 
         <div className="total" style={{marginTop: typeOrder == 'pickup' ? '2.1660649819495vw' : '0.72202166064982vw'}}>
-          <span>Итого: {itemsCount} {getWord(itemsCount)}</span>
+        <span>Итого: {itemsCount} {getWord(itemsCount, undefined)}</span>
           <span>{new Intl.NumberFormat('ru-RU').format(allPrice ? parseInt(allPrice) + parseInt(summ) : parseInt(allPriceWithoutPromo_new) + parseInt(summ))}{' '}₽</span>
         </div>
 
@@ -105,4 +104,3 @@ export const FormOrderPC = ({typeOrder, summ, itemsCount, allPrice, allPriceWith
     </>
   );
 };
-

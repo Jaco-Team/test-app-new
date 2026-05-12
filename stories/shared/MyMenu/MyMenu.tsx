@@ -34,7 +34,7 @@ interface MyMenuProps {
   isOpen: boolean;
   onClose: () => void;
   list: MenuItem[] | CatItem[] | SubCatItem[];
-  type: 'cat' | 'form_order' | 'contacts' | 'modal';
+  type?: 'cat' | 'form_order' | 'contacts' | 'modal' | 'city' | string;
 }
 
 export const MyMenu: React.FC<MyMenuProps> = ({ anchorEl, isOpen, onClose, list, type }) => {

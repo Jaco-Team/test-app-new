@@ -1,10 +1,34 @@
-// @ts-nocheck
 import React from 'react';
 import TextField from '@mui/material/TextField';
-//import PropTypes from 'prop-types';
+import type { TextFieldVariants } from '@mui/material/TextField';
 
-export default class MyTextInput extends React.PureComponent {
-  constructor(props) {
+type MyTextInputProps = {
+  autoFocus?: boolean;
+  readOnly?: boolean;
+  inputAdornment?: React.ReactNode;
+  startAdornment?: React.ReactNode;
+  defaultValue?: unknown;
+  label?: string;
+  placeholder?: string;
+  value?: unknown;
+  func?: React.ChangeEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onBlur?: React.FocusEventHandler<HTMLInputElement | HTMLTextAreaElement>;
+  onKeyDown?: React.KeyboardEventHandler<HTMLDivElement>;
+  disabled?: boolean;
+  variant?: TextFieldVariants;
+  multiline?: boolean;
+  maxRows?: number;
+  type?: string;
+  className?: string;
+  name?: string;
+};
+
+type MyTextInputState = {
+  type: string;
+};
+
+export default class MyTextInput extends React.PureComponent<MyTextInputProps, MyTextInputState> {
+  constructor(props: MyTextInputProps) {
     super(props);
         
     this.state = {
@@ -15,6 +39,7 @@ export default class MyTextInput extends React.PureComponent {
   render(){
     return (
       <TextField 
+        autoFocus={this.props.autoFocus}
         InputProps={{
           readOnly: this.props.readOnly ? this.props.readOnly : false,
           endAdornment: this.props.inputAdornment,

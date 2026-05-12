@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { SelectAddress } from './SelectAddress';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

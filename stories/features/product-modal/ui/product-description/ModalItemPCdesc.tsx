@@ -1,8 +1,7 @@
-// @ts-nocheck
 import './ModalItemPCdesc.scss';
 import { IconPC } from '../../../../shared/IconPC/IconPC';
 
-export const ModalItemPCdesc = ({ title_desk, cat_id, typeModal, count_part_new, size_pizza, count_part, weight, id, foodValue, marc_desc, tmp_desc }) => {
+export const ModalItemPCdesc = ({ title_desk, cat_id, typeModal, count_part_new, size_pizza, count_part, weight, id, foodValue, marc_desc, tmp_desc }: Record<string, any>) => {
   return (
     <div>
       <div className='titleItem'>{title_desk}</div>

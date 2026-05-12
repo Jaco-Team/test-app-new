@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { Badge } from './Badge';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

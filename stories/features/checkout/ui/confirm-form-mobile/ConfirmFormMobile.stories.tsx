@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ConfirmFormMobile } from './ConfirmFormMobile';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

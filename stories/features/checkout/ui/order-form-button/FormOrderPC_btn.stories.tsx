@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { FormOrderPC_btn } from './FormOrderPC_btn';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

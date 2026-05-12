@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { DocsPagePC } from './DocsPagePC';
 import * as BreadСrumbsPC from '../../../shared/ui/breadcrumbs/BreadСrumbsPC.stories';
 

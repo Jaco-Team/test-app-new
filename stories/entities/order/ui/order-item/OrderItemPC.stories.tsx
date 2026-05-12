@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { OrderItemPC } from './OrderItemPC';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

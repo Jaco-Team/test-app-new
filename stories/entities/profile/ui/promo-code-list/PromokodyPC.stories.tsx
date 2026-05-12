@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { PromokodyPC } from './PromokodyPC';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

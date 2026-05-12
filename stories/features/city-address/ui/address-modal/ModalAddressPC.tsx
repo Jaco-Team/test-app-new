@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { useState, useRef } from 'react';
 
 import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
@@ -13,8 +12,8 @@ import './ModalAddressPC.scss';
 
 const cityList = [{ title: 'Тольятти' }, { title: 'Самара' }, { title: 'Комсомольск-на-Амуре' }];
 
-export const ModalAddressPC = ({allStreets, chooseAddrStreet, center_map, zones, nameAddr, city, street, home, pd, et, kv, comment}) => {
-  const ref = useRef();
+export const ModalAddressPC = ({allStreets, chooseAddrStreet, center_map, zones, nameAddr, city, street, home, pd, et, kv, comment}: Record<string, any>) => {
+  const ref = useRef<any>(null);
 
   const [anchorElCity, setAnchorElCity] = useState(null);
   const [anchorElStreet, setAnchorElStreet] = useState(null);
@@ -72,7 +71,7 @@ export const ModalAddressPC = ({allStreets, chooseAddrStreet, center_map, zones,
                 strokeColor: '#35B250',
                 strokeWidth: 5,
                 hideIconOnBalloonOpen: false,
-              }}
+              } as any}
             />
           </Map>
         </YMaps>
@@ -152,4 +151,3 @@ export const ModalAddressPC = ({allStreets, chooseAddrStreet, center_map, zones,
     </div>
   );
 };
-

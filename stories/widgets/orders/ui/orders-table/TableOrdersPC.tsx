@@ -1,9 +1,8 @@
-// @ts-nocheck
 import { OrderItemPC } from '../../../../entities/order/ui/order-item/OrderItemPC';
 import './TableOrdersPC.scss';
 
-export const TableOrdersPC = ({ order }) => {
-  const orderList = Array.from(Array(10).keys()).fill(order);
+export const TableOrdersPC = ({ order }: Record<string, any>) => {
+  const orderList = Array.from({ length: 10 }, () => order);
 
   return (
     <table className='tableOrdersPC'>

@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ConfirmFormPC } from './ConfirmFormPC';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';

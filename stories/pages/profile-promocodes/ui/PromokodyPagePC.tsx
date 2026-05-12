@@ -1,11 +1,10 @@
-// @ts-nocheck
 import { PromokodyPC } from '../../../entities/profile/ui/promo-code-list/PromokodyPC';
 import { BreadСrumbsPC } from '../../../shared/ui/breadcrumbs/BreadСrumbsPC';
 
 import './PromokodyPagePC.scss';
 
-export const PromokodyPagePC = ({ header, promokod, footer, data }) => {
-  const arrayPromokod = Array.from(Array(8).keys()).fill(promokod);
+export const PromokodyPagePC = ({ header, promokod, footer, data }: Record<string, any>) => {
+  const arrayPromokod = Array.from({ length: 8 }, () => promokod);
 
   return (
     <>

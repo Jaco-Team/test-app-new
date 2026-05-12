@@ -1,7 +1,6 @@
-// @ts-nocheck
 import './ModalItemPCset.scss';
 
-export const ModalItemPCset = ({number, img_app, title, marc_desc, tmp_desc}) => {
+export const ModalItemPCset = ({number, img_app, title, marc_desc, tmp_desc}: Record<string, any>) => {
   return (
     <div className="setItem">
       <span className="itemNumber">{number}.</span>

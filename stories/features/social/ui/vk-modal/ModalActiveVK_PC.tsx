@@ -1,7 +1,6 @@
-// @ts-nocheck
 import './ModalActiveVK_PC.scss';
 
-export const ModalActiveVK_PC = ({ link }) => {
+export const ModalActiveVK_PC = ({ link }: Record<string, any>) => {
   return (
     <div className="modalVK_PC">
       <img alt="Город" src={'/Favicon_city.png'} />

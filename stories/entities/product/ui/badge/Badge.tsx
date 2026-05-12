@@ -1,4 +1,3 @@
-// @ts-nocheck
 import Typography from '@mui/material/Typography';
 
 const arrColor = {
@@ -9,7 +8,7 @@ const arrColor = {
 
 import './Badge.scss';
 
-export const Badge = ({size, view, type}) => {
+export const Badge = ({size, view, type}: Record<string, any>) => {
   return (
     <div className={'badge container '+size }>
       <div className={'shadow'} />

@@ -1,13 +1,12 @@
-// @ts-nocheck
 
 import './TableCartPC_body.scss';
 import { TableCartPC_text } from '../../../../entities/cart/ui/cart-text/TableCartPC_text';
 import { TableCartPC_row } from '../../../../entities/cart/ui/cart-row/TableCartPC_row';
 import { TableCartPC_foot } from '../cart-table-footer/TableCartPC_foot';
 
-export const TableCartPC_body = ({ items, dopItems, itemsCount, dopItemsCount, footerData }) => {
-  const itemsOffDops = Array.from(Array(itemsCount).keys()).fill(items);
-  const dopListCart = Array.from(Array(dopItemsCount).keys()).fill(dopItems);
+export const TableCartPC_body = ({ items, dopItems, itemsCount, dopItemsCount, footerData }: Record<string, any>) => {
+  const itemsOffDops = Array.from({ length: itemsCount }, () => items);
+  const dopListCart = Array.from({ length: dopItemsCount }, () => dopItems);
 
   return (
     <tbody>

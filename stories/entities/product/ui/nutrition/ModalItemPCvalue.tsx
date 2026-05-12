@@ -1,7 +1,6 @@
-// @ts-nocheck
 import './ModalItemPCvalue.scss';
 
-export const ModalItemPCvalue = ({ number, kkal, title, protein, tmp_desc, fat, carbohydrates }) => {
+export const ModalItemPCvalue = ({ number, kkal, title, protein, tmp_desc, fat, carbohydrates }: Record<string, any>) => {
   return (
     <div className="valueItem">
       <span className="itemNumber">{number}.</span>

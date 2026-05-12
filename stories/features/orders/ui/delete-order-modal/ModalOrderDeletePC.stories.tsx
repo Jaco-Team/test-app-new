@@ -1,4 +1,3 @@
-// @ts-nocheck
 import { ModalOrderDeletePC } from './ModalOrderDeletePC';
 
 import { responsiveStoryParameters } from '../../../../shared/lib/storybook/responsive';
