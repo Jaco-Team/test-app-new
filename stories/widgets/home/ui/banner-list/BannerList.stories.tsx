@@ -1,34 +1,24 @@
-import { BannerListPC } from './BannerListPC';
+import { BannerList } from './BannerList';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
+import banner from '../../../../fixtures/banners.togliatti.json';
 export default {
   title: 'Акции / Лист баннеров на главной',
-  component: BannerListPC,
+  component: BannerList,
   tags: ['autodocs'],
-  argTypes: {
-    
-  },
+  argTypes: {},
 };
 
-const Template = (args) => <BannerListPC {...args} />;
+const Template = (args) => <BannerList {...args} />;
 export const OneImg = Template.bind({});
 export const TwoImg = Template.bind({});
 
 OneImg.args = {
-  bannerList: [{
-    title: 'НОВОЕ КОМБО: пицца Пепперони + сет Атлантида!',
-    img: 'Kombo1_Tlt',
-  }]
+  bannerList: banner.bannersList,
 };
 
 TwoImg.args = {
-  bannerList: [{
-    title: 'НОВОЕ КОМБО: пицца Пепперони + сет Атлантида!',
-    img: 'Kombo1_Tlt',
-  }, {
-    title: 'НОВОЕ КОМБО: пицца Пепперони + сет Атлантида!',
-    img: 'Kombo1_Tlt',
-  }]
+  bannerList: banner.bannersList,
 };
 
 export const Mobile = Template.bind({});

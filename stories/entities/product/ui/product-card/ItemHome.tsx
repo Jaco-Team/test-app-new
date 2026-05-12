@@ -1,11 +1,20 @@
 import React from 'react';
 import Image from 'next/image';
 
-import './ItemHomePc.scss';
+import './ItemHome.scss';
 import { placeholder_img } from '@/public/placeholder_img';
 import { Badge } from '../badge/Badge';
 
-export const ItemHomePc = ({title, img, weight, description, price, count, is_new, is_hit}: Record<string, any>) => {
+export const ItemHome = ({
+  title,
+  img_app,
+  weight,
+  description,
+  price,
+  count,
+  is_new,
+  is_hit,
+}: Record<string, any>) => {
   return (
     <div
       className={['ItemHomePc', parseInt(count) > 0 ? 'active' : ''].join(' ')}
@@ -13,7 +22,11 @@ export const ItemHomePc = ({title, img, weight, description, price, count, is_ne
       <div className="BlockIMG">
         <Image
           alt={title}
-          src={img.length > 0 ? 'https://cdnimg.jacofood.ru/' + img + '_732x732.jpg' : placeholder_img}
+          src={
+            img_app?.length > 0
+              ? 'https://cdnimg.jacofood.ru/' + img_app + '_732x732.jpg'
+              : placeholder_img
+          }
           width={732}
           height={732}
           priority={false}
@@ -24,12 +37,13 @@ export const ItemHomePc = ({title, img, weight, description, price, count, is_ne
           blurDataURL={placeholder_img}
         />
 
-        {parseInt(is_new) == 0 ? parseInt(is_hit) == 0 ? null : (
+        {parseInt(is_new) == 0 ? (
+          parseInt(is_hit) == 0 ? null : (
             <Badge size={'big'} type={'hit'} view={'pc'} />
-          ) : (
-            <Badge size={'big'} type={'new'} view={'pc'} />
+          )
+        ) : (
+          <Badge size={'big'} type={'new'} view={'pc'} />
         )}
-
       </div>
       <span className="title">{title}</span>
       <span className="weight">{weight}</span>
@@ -48,4 +62,3 @@ export const ItemHomePc = ({title, img, weight, description, price, count, is_ne
     </div>
   );
 };
-

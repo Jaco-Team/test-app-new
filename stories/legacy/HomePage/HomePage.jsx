@@ -1,7 +1,7 @@
-import { HeaderPC } from '../../widgets/HeaderPC/HeaderPC';
+import { HeaderPC } from '../../widgets/Header/HeaderPC';
 import { BannerListPC } from '../BannerListPC/BannerListPC';
 import { BoxItemHomePC } from '../BoxItemHomePC/BoxItemHomePC';
-import { FooterPC } from '../FooterPC/FooterPC';
+import { FooterPC } from '../../widgets/Footer/Footer';
 
 import PropTypes from 'prop-types';
 import './HomePage.scss';

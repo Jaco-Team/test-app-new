@@ -1,7 +1,7 @@
 @use '../../../../shared/global' as *;
 
 .HomeImgPC {
-  & .swiper{
+  & .swiper {
     width: calcSize(2520);
     height: calcSize(682);
   }
@@ -31,8 +31,9 @@
       opacity: 1;
     }
   }
-  
-  .swiper-button-prev, .swiper-button-prev{
+
+  .swiper-button-prev,
+  .swiper-button-prev {
     width: calcSize(60) !important;
     height: calcSize(682) !important;
     top: 0 !important;
@@ -55,17 +56,17 @@
   .swiper-button-next {
     margin-right: calcSize(40) !important;
   }
-  
+
   .swiper-button-next:after,
   .swiper-button-prev:after {
     content: '' !important;
   }
-  
+
   .swiper-button-prev:focus,
   .swiper-button-next:focus {
     outline: none !important;
   }
-  
+
   .swiper-button-prev:active,
   .swiper-button-next:active {
     outline: none !important;

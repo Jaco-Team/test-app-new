@@ -1,67 +1,78 @@
+import React from 'react';
 import Link from 'next/link';
-import Typography from '@mui/material/Typography';
-
-import { NewVKIcon, OdnIcon, TGIcon } from '../../../shared/Icons.js';
-import { FooterCookie } from '../../../shared/ui/footer-cookie/FooterCookie';
-import { ScrollTopButton } from '../../../shared/ui/scroll-top/ScrollTopButton';
 
 import './Footer.scss';
-
-interface FooterLinks {
-  link_vk?: string;
-  link_ok?: string;
-  link_tg?: string;
-  link_allergens?: string;
-}
-
-interface FooterProps {
-  cookie?: boolean;
-  arrow?: boolean;
-  cityName: string;
-  links?: FooterLinks;
-  page?: string;
-}
-
-export function Footer({ cookie = true, arrow = false, cityName, links = {}, page = 'default' }: FooterProps) {
+import { NewVKIcon, OdnIcon, TGIcon } from '../../../shared/Icons.js';
+import Typography from '@mui/material/Typography';
+import { FooterProps } from '@/stories/widgets/footer/model/types';
+import { FooterArrowUp } from '@/stories/widgets/FooterArrowUp/FooterArrowUp';
+import { FooterCookie } from '@/stories/widgets/FooterCookie/FooterCookie';
+export const Footer: React.FC<FooterProps> = ({
+  cookie = false,
+  arrow = false,
+  cityName,
+  links = {
+    link_allergens: undefined,
+    link_vk: undefined,
+    link_tg: undefined,
+  },
+  page,
+}) => {
   const hasLinks = Object.keys(links).length > 0;
+  const footerMinHeight = cookie ? '36.101083032491vw' : '45.126353790614vw';
+  const marginTop = page === 'contacts' ? undefined : '1.8050541516245vw';
 
   return (
     <>
-      <ScrollTopButton visible={arrow} page={page} />
+      <FooterArrowUp arrow={arrow} page={page} />
       {!cookie && <FooterCookie cityName={cityName} />}
+
       <footer
         className="footerPC"
         style={{
-          minHeight: cookie ? '36.101083032491vw' : '45.126353790614vw',
-          marginTop: page === 'contacts' ? undefined : '1.8050541516245vw',
+          minHeight: footerMinHeight,
+          marginTop,
         }}
       >
         <div className="ContainerPCFooter">
+          {/* Колонка 1: Жако */}
           <div className="column">
             <Typography component="span">Жако</Typography>
             <Link href={`/${cityName}/about`}>О Компании</Link>
             <Link href={`/${cityName}/company-details`}>Реквизиты</Link>
             <Link href={`/${cityName}/contacts`}>Контакты</Link>
           </div>
+
+          {/* Колонка 2: Документы */}
           <div className="column">
             <Typography component="span">Документы</Typography>
-            {hasLinks && (
-              <Link href={links.link_allergens ?? ''} target="_blank">
+            {hasLinks && links.link_allergens && (
+              <Link href={links.link_allergens} target="_blank">
                 Калорийность, состав, БЖУ
               </Link>
             )}
-            <Link href={`/${cityName}/publichnaya-oferta`}>Публичная оферта</Link>
-            <Link href={`/${cityName}/politika-konfidencialnosti`}>Политика конфиденциальности</Link>
-            <Link href={`/${cityName}/legal`}>Согласие на обработку персональных данных</Link>
+            <Link href={`/${cityName}/publichnaya-oferta`}>
+              Публичная оферта
+            </Link>
+            <Link href={`/${cityName}/politika-konfidencialnosti`}>
+              Политика конфиденциальности
+            </Link>
+            <Link href={`/${cityName}/legal`}>
+              Согласие на обработку персональных данных
+            </Link>
             <Link href={`/${cityName}/politika-legal`}>
               Политика в отношении обработки метрических данных
             </Link>
             <Link href={`/${cityName}/instpayorders`}>Правила оплаты</Link>
           </div>
+
+          {/* Колонка 3: Работа в жако */}
           <div className="column">
             <Typography component="span">Работа в жако</Typography>
             <Link href={`/${cityName}/jobs`}>Вакансии</Link>
           </div>
+
+          {/* Колонка 4: Франшиза */}
           <div className="column">
             <Typography component="span">Франшиза</Typography>
             <Link href="https://franchise.jacofood.ru" target="_blank">
@@ -71,24 +82,38 @@ export function Footer({ cookie = true, arrow = false, cityName, links = {}, pag
               Сайт для инвестиций
             </Link>
           </div>
+
+          {/* Иконки социальных сетей */}
           <div className="container">
             <div className="icon">
               {hasLinks && (
                 <>
-                  <Link href={links.link_vk ?? ''} target="_blank">
-                    <NewVKIcon />
-                  </Link>
-                  <Link href={links.link_tg ?? ''} target="_blank">
-                    <TGIcon />
-                  </Link>
-                  <Link href={links.link_ok ?? ''} target="_blank" style={{ marginRight: 0 }}>
-                    <OdnIcon />
-                  </Link>
+                  {links.link_vk && (
+                    <Link href={links.link_vk} target="_blank">
+                      <NewVKIcon />
+                    </Link>
+                  )}
+                  {links.link_tg && (
+                    <Link href={links.link_tg} target="_blank">
+                      <TGIcon />
+                    </Link>
+                  )}
+                  {links.link_ok && (
+                    <Link
+                      href={links.link_vk}
+                      target="_blank"
+                      style={{ marginRight: 0 }}
+                    >
+                      <OdnIcon />
+                    </Link>
+                  )}
                 </>
               )}
             </div>
           </div>
         </div>
+
+        {/* Копирайт */}
         <div className="ContainerCopyFooter">
           <div className="copy">
             <Typography component="span" className="copy">
@@ -99,4 +124,4 @@ export function Footer({ cookie = true, arrow = false, cityName, links = {}, pag
       </footer>
     </>
   );
-}
+};

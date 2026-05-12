@@ -1,106 +1,186 @@
-import React, { useState } from 'react';
+import React, { useState, MouseEvent } from 'react';
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
 
-import { CategoryMenu, CategoryMenuItem } from '../../../entities/navigation/ui/category-menu/CategoryMenu';
-import { IconPC } from '../../../shared/IconPC/IconPC';
+import './Header.scss';
 import { MyCatLink } from '../../../shared/MyTextLink/MyCatLink';
+import { IconPC } from '../../../shared/IconPC/IconPC';
+import { MyMenu } from '../../../shared/MyMenu/MyMenu';
 import { BurgerIconMobile } from '../../../shared/Icons.js';
+import headerData from '../../../fixtures/header.togliatti.json';
+import { CatItem, HeaderProps, SubCatItem } from '../model/types';
 import { NavBarMobile } from '../../NavBarMobile/NavBarMobile';
 
-import './Header.scss';
+const MAIN_CATS_TOGLIATTI: CatItem[] = headerData.main_cat;
 
-export type HeaderViewport = 'mobile' | 'tablet' | 'desktop';
-
-export interface HeaderProps {
-  viewport?: HeaderViewport;
-  categories: CategoryMenuItem[];
-  cityName?: string;
-  basketTotal?: string;
-  scroll?: boolean;
-  activeMenu?: boolean;
-  mobileMenu?: React.ComponentProps<typeof NavBarMobile>;
-}
-
-export function Header({
+export const Header: React.FC<HeaderProps> = ({
   viewport = 'desktop',
-  categories,
-  cityName = 'Тольятти',
-  basketTotal = '0',
   scroll = false,
+  count = '0',
   activeMenu = false,
-  mobileMenu,
-}: HeaderProps) {
-  const [isMobileMenuOpen, setIsMobileMenuOpen] = useState(activeMenu);
+  menu,
+  onMenuToggle,
+}) => {
+  const [isMenuOpen, setIsMenuOpen] = useState(activeMenu);
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [isOpenCat, setIsOpenCat] = useState<boolean>(false);
+  const [currentSubCats, setCurrentSubCats] = useState<SubCatItem[]>([]);
+
   const isMobile = viewport === 'mobile';
   const isTablet = viewport === 'tablet';
 
+  // Обработчики для мобильного/планшетного меню
+  const handleMenuToggle = () => {
+    const newState = !isMenuOpen;
+    setIsMenuOpen(newState);
+    onMenuToggle?.(newState);
+  };
+
+  const handleCloseMenu = () => {
+    setIsMenuOpen(false);
+    onMenuToggle?.(false);
+  };
+
+  // Обработчики для десктопного меню категорий
+  const openMenu = (
+    event: MouseEvent<HTMLElement>,
+    cats: SubCatItem[]
+  ): void => {
+    setAnchorEl(event.currentTarget);
+    setCurrentSubCats(cats);
+    setIsOpenCat(true);
+  };
+
+  const closeMenu = (): void => {
+    setAnchorEl(null);
+    setIsOpenCat(false);
+    setCurrentSubCats([]);
+  };
+
+  // Мобильная версия
   if (isMobile) {
     return (
       <>
         <AppBar className="headerMobile">
           <Toolbar>
-            <a className="logoPC">
-              <img alt="Жако доставка роллов и пиццы" src="/jaco-logo-mobile.png" />
+            <a className="logoPC" href="/">
+              <img
+                alt="Жако доставка роллов и пиццы"
+                src="/jaco-logo-mobile.png"
+              />
             </a>
-            <button
-              className="headerBurgerButton"
-              type="button"
-              aria-label="Открыть меню"
-              onClick={() => setIsMobileMenuOpen((value) => !value)}
-            >
-              <BurgerIconMobile className={isMobileMenuOpen ? 'burgerActive' : undefined} />
-            </button>
+            <div className="burger-wrapper" onClick={handleMenuToggle}>
+              <BurgerIconMobile
+                className={isMenuOpen ? 'burgerActive' : undefined}
+              />
+            </div>
           </Toolbar>
         </AppBar>
 
-        {isMobileMenuOpen && mobileMenu && <NavBarMobile {...mobileMenu} />}
+        {isMenuOpen && <div className="backdrop" onClick={handleCloseMenu} />}
+        <div className={`navMenuWrapper ${isMenuOpen ? 'open' : 'closed'}`}>
+          {menu && <NavBarMobile {...menu} onClose={handleCloseMenu} />}
+        </div>
       </>
     );
   }
 
-  return (
-    <>
-      <AppBar className={isTablet ? 'HeaderPad' : 'HeaderPC'}>
-        <Toolbar>
-          <div className={isTablet ? 'header-container' : undefined}>
-            <div className={isTablet ? 'left-section' : undefined}>
-              <a className={isTablet ? 'logoPad' : 'logoPC'}>
-                <img alt="Жако доставка роллов и пиццы" src="/Jaco-Logo-120.png" />
-              </a>
-
-              <CategoryMenu items={categories} withPromo={!isTablet} />
-            </div>
-
-            <div className={isTablet ? 'right-section' : undefined}>
-              {isTablet && (
-                <button
-                  className="burger-menu"
-                  type="button"
-                  aria-label="Открыть меню"
-                  onClick={() => setIsMobileMenuOpen((value) => !value)}
-                >
-                  <BurgerIconMobile className={isMobileMenuOpen ? 'burgerActive' : undefined} />
-                </button>
-              )}
-
-              <div className={isTablet ? 'icons-group' : undefined}>
-                <a className="city">
-                  <MyCatLink>{cityName}</MyCatLink>
+  // Планшетная версия
+  if (isTablet) {
+    return (
+      <>
+        <AppBar className="HeaderPad">
+          <Toolbar>
+            <div className="header-container">
+              <div className="left-section">
+                <a className="logoPad" href="/">
+                  <img
+                    alt="Жако доставка роллов и пиццы"
+                    src="/Jaco-Logo-120.png"
+                  />
                 </a>
-                <IconPC icon="location" element="header" />
-                <IconPC icon="docs" element="header" />
-                <IconPC icon="profile" element="header" />
-                <IconPC icon="basket" count={basketTotal} element="header" />
+              </div>
+
+              <div className="right-section">
+                <div className="burger-menu" onClick={handleMenuToggle}>
+                  <BurgerIconMobile
+                    className={isMenuOpen ? 'burgerActive' : undefined}
+                  />
+                </div>
+
+                <div className="icons-group">
+                  <div className="city-wrapper">
+                    <a className="city">
+                      <MyCatLink children="Тольятти" />
+                    </a>
+                    <IconPC icon="location" element="header" />
+                  </div>
+                  <IconPC icon="docs" element="header" />
+                  <IconPC icon="profile" element="header" />
+                  <IconPC icon="basket" count={count} element="header" />
+                </div>
               </div>
             </div>
+          </Toolbar>
+        </AppBar>
+
+        {scroll && <div className="blockShadowPad" />}
+
+        {isMenuOpen && menu && (
+          <NavBarMobile {...menu} onClose={handleCloseMenu} />
+        )}
+      </>
+    );
+  }
+
+  // Десктопная версия
+  return (
+    <>
+      <AppBar className="HeaderPC">
+        <Toolbar>
+          <div>
+            <a className="logoPC" href="/">
+              <img
+                alt="Жако доставка роллов и пиццы"
+                src="/Jaco-Logo-120.png"
+              />
+            </a>
+
+            {MAIN_CATS_TOGLIATTI.map((item: CatItem) => (
+              <MyCatLink
+                key={item.id}
+                children={item.name}
+                arrow={item.cats && item.cats.length > 0}
+                onClick={(e: MouseEvent<HTMLElement>) => openMenu(e, item.cats)}
+              />
+            ))}
+
+            <a className="akcia" href="/promotions">
+              <MyCatLink children="Акции" bordered={true} />
+            </a>
+          </div>
+          <div>
+            <a className="city" href="#">
+              <MyCatLink children="Тольятти" />
+            </a>
+            <IconPC icon="location" element="header" />
+            <IconPC icon="docs" element="header" />
+            <IconPC icon="profile" element="header" />
+            <IconPC icon="basket" count={count} element="header" />
           </div>
         </Toolbar>
       </AppBar>
 
-      {scroll && <div className={isTablet ? 'blockShadowPad' : 'blockShadow'} />}
-      {isMobileMenuOpen && isTablet && mobileMenu && <NavBarMobile {...mobileMenu} />}
+      {scroll && <div className="blockShadow" />}
+
+      <MyMenu
+        list={currentSubCats}
+        isOpen={isOpenCat}
+        anchorEl={anchorEl}
+        onClose={closeMenu}
+        type="cat"
+      />
     </>
   );
-}
+};

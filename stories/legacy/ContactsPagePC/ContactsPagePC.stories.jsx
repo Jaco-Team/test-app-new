@@ -1,9 +1,9 @@
 import { ContactsPagePC } from './ContactsPagePC';
 
-import * as HeaderPC from '../../widgets/HeaderPC/HeaderPC.stories';
+import * as HeaderPC from '../../widgets/Header/HeaderPC.stories';
 import * as MenuContactsPC from '../MenuContactsPC/MenuContactsPC.stories';
 import * as MapPC from '../MapPC/MapPC.stories';
-import * as FooterPC from '../FooterPC/FooterPC.stories';
+import * as FooterPC from '../../widgets/Footer/Footer.stories';
 
 export default {
   title: 'Страница Контакты / Контакты',

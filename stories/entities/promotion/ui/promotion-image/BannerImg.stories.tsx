@@ -1,9 +1,9 @@
-import { BannerPCImg } from './BannerPCImg';
+import { BannerImg } from './BannerImg';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
   title: 'Акции / Изображение',
-  component: BannerPCImg,
+  component: BannerImg,
   tags: ['autodocs'],
   argTypes: {
     title: {
@@ -21,7 +21,7 @@ export default {
   },
 };
 
-const Template = (args) => <BannerPCImg {...args} />;
+const Template = (args) => <BannerImg {...args} />;
 export const Default = Template.bind({});
 
 Default.args = {

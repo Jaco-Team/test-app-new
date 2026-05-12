@@ -1,9 +1,9 @@
 import Image from 'next/image';
 
 import PropTypes from 'prop-types';
-import { HeaderPC } from '../../widgets/HeaderPC/HeaderPC';
+import { HeaderPC } from '../../widgets/Header/HeaderPC';
 import { BreadСrumbsPC } from '../BreadСrumbsPC/BreadСrumbsPC';
-import { FooterPC } from '../FooterPC/FooterPC';
+import { FooterPC } from '../../widgets/Footer/Footer';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Scrollbar } from 'swiper';
@@ -117,8 +117,8 @@ export const AboutPagePC = ({ header, data, footer }) => {
               <span>
                 <strong>Прозрачное ценообразование.</strong> Возможно, для вас
                 это станет открытием, но бесплатной доставки и бесплатных
-                приправ не существует. Расходы на них распределяются между
-                всеми клиентами кафе за счет повышения стоимости блюд.
+                приправ не существует. Расходы на них распределяются между всеми
+                клиентами кафе за счет повышения стоимости блюд.
                 <br />У нас вы платите лишь за те приправы, которые
                 действительно нужны. А за доставку платит только тот, кто ею
                 пользуется. Благодаря этому цены на блюда ниже.
@@ -154,7 +154,13 @@ export const AboutPagePC = ({ header, data, footer }) => {
                     priority={true}
                     style={{ width: '100%', height: 'auto' }}
                   />
-                  <p style={{ whiteSpace: 'normal', textAlign: 'center', fontWeight: 300 }}>
+                  <p
+                    style={{
+                      whiteSpace: 'normal',
+                      textAlign: 'center',
+                      fontWeight: 300,
+                    }}
+                  >
                     {item.comment}
                   </p>
                 </SwiperSlide>
@@ -164,13 +170,23 @@ export const AboutPagePC = ({ header, data, footer }) => {
           <div id={'tag4'}>
             <h2>Время приготовления заказа</h2>
             <p>
-              <span>Скорость приготовления блюда почти так же важна, как и его качество.</span>
+              <span>
+                Скорость приготовления блюда почти так же важна, как и его
+                качество.
+              </span>
               <br />
               <br />
-              <span>Наша информационная система “Жако Шеф” учитывает загруженность кафе по многим показателям и показывает примерное время приготовления заказа.</span>
+              <span>
+                Наша информационная система “Жако Шеф” учитывает загруженность
+                кафе по многим показателям и показывает примерное время
+                приготовления заказа.
+              </span>
               <br />
               <br />
-              <span>Узнать статус заказа и примерное время его готовности вы можете в личном кабинете на сайте.</span>
+              <span>
+                Узнать статус заказа и примерное время его готовности вы можете
+                в личном кабинете на сайте.
+              </span>
             </p>
           </div>
           <div id={'tag5'}>
@@ -209,7 +225,10 @@ export const AboutPagePC = ({ header, data, footer }) => {
               style={{ width: '100%', height: 'auto' }}
             />
 
-            <p style={{ textAlign: 'center' }}>А это Наталия, менеджер кафе на Цветном (Тольятти). Всех заряжает оптимизмом!</p>
+            <p style={{ textAlign: 'center' }}>
+              А это Наталия, менеджер кафе на Цветном (Тольятти). Всех заряжает
+              оптимизмом!
+            </p>
           </div>
           <div id={'tag6'}>
             <h2>Социальная и экологическая ответственность</h2>
@@ -246,18 +265,31 @@ export const AboutPagePC = ({ header, data, footer }) => {
           <div id={'tag7'}>
             <h2>Обратная связь</h2>
             <p>
-              <span>Мы всегда открыты к диалогу. Нас интересует мнение по вкусу и качеству блюд, обслуживанию в кафе, доставке. <br /></span>
-              <br />
-              <span>Для связи с вами мы создали группы в социальных сетях и Telegram-канал. <br />
+              <span>
+                Мы всегда открыты к диалогу. Нас интересует мнение по вкусу и
+                качеству блюд, обслуживанию в кафе, доставке. <br />
               </span>
               <br />
-              <a href={'https://vk.com/jacofood_tlt'} target="_blank">Жако в Тольятти Вконтакте</a>
+              <span>
+                Для связи с вами мы создали группы в социальных сетях и
+                Telegram-канал. <br />
+              </span>
               <br />
-              <a href={'https://vk.com/jacofood_smr'} target="_blank">Жако в Самаре Вконтакте</a>
+              <a href={'https://vk.com/jacofood_tlt'} target="_blank">
+                Жако в Тольятти Вконтакте
+              </a>
               <br />
-              <a href={'https://t.me/jacofood'} target="_blank">Жако в Телеграм</a>
+              <a href={'https://vk.com/jacofood_smr'} target="_blank">
+                Жако в Самаре Вконтакте
+              </a>
               <br />
-              <a href={'https://ok.ru/group/54671948841166'} target="_blank">Жако в Одноклассниках</a>
+              <a href={'https://t.me/jacofood'} target="_blank">
+                Жако в Телеграм
+              </a>
+              <br />
+              <a href={'https://ok.ru/group/54671948841166'} target="_blank">
+                Жако в Одноклассниках
+              </a>
               <br />
               <br />
               <span>
@@ -268,29 +300,61 @@ export const AboutPagePC = ({ header, data, footer }) => {
               </span>
               <br />
               <br />
-              <span>Знаете, как улучшить блюда? Заполните{' '}
-                <a href={'https://docs.google.com/forms/d/e/1FAIpQLSc_ohjcoYjY6W5oqaGnoDhlSlyT8Y_LEfbHljjqRAqyvpEv1Q/viewform'} target="_blank">анкету.</a>
+              <span>
+                Знаете, как улучшить блюда? Заполните{' '}
+                <a
+                  href={
+                    'https://docs.google.com/forms/d/e/1FAIpQLSc_ohjcoYjY6W5oqaGnoDhlSlyT8Y_LEfbHljjqRAqyvpEv1Q/viewform'
+                  }
+                  target="_blank"
+                >
+                  анкету.
+                </a>
               </span>
             </p>
           </div>
           <div id={'tag8'}>
             <h2>Сотрудничество</h2>
             <p>
-              <span>Работа — в{' '}
-                <a href={'https://vk.com/@jaco_blog-pismo-71-soiskatelyam-o-rabote-v-kafe-zhako'} target="_blank">кафе</a>{' '}и{' '}
-                <a href={'https://vk.com/@jaco_blog-pismo-68-soiskatelyam-o-rabote-v-upravlyauschei-kompanii-zha'} target="_blank">Управляющей компании</a>
+              <span>
+                Работа — в{' '}
+                <a
+                  href={
+                    'https://vk.com/@jaco_blog-pismo-71-soiskatelyam-o-rabote-v-kafe-zhako'
+                  }
+                  target="_blank"
+                >
+                  кафе
+                </a>{' '}
+                и{' '}
+                <a
+                  href={
+                    'https://vk.com/@jaco_blog-pismo-68-soiskatelyam-o-rabote-v-upravlyauschei-kompanii-zha'
+                  }
+                  target="_blank"
+                >
+                  Управляющей компании
+                </a>
               </span>
               <br />
-              <span>Бизнес —{' '}
-                <a href={'https://franchise.jacofood.ru/'} target="_blank">стать франчайзи</a>
+              <span>
+                Бизнес —{' '}
+                <a href={'https://franchise.jacofood.ru/'} target="_blank">
+                  стать франчайзи
+                </a>
               </span>
               <br />
-              <span>Отдел маркетинга —{' '}
-                <a href={'mailto:event.jaco@gmail.com'}>event.jaco@gmail.com</a>{' '}+7 (906) 129-98-33
+              <span>
+                Отдел маркетинга —{' '}
+                <a href={'mailto:event.jaco@gmail.com'}>event.jaco@gmail.com</a>{' '}
+                +7 (906) 129-98-33
               </span>
               <br />
-              <span>Отдел закупок —{' '}
-                <a href={'mailto:zacupci.jaco@gmail.com'}>zacupci.jaco@gmail.com</a>{' '}
+              <span>
+                Отдел закупок —{' '}
+                <a href={'mailto:zacupci.jaco@gmail.com'}>
+                  zacupci.jaco@gmail.com
+                </a>{' '}
                 +7 (903) 333-74-85
               </span>
             </p>

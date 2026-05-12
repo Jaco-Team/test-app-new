@@ -1,6 +1,6 @@
-import { HeaderPC } from '../../widgets/HeaderPC/HeaderPC';
+import { HeaderPC } from '../../widgets/Header/HeaderPC';
 import { BannerFullPC } from '../BannerFullPC/BannerFullPC';
-import { FooterPC } from '../FooterPC/FooterPC';
+import { FooterPC } from '../../widgets/Footer/Footer';
 
 import PropTypes from 'prop-types';
 import './AkciiPagePC.scss';

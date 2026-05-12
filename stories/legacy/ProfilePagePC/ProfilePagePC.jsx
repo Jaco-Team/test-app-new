@@ -1,6 +1,6 @@
-import { HeaderPC } from '../../widgets/HeaderPC/HeaderPC';
+import { HeaderPC } from '../../widgets/Header/HeaderPC';
 import { BreadСrumbsPC } from '../BreadСrumbsPC/BreadСrumbsPC';
-import { FooterPC } from '../FooterPC/FooterPC';
+import { FooterPC } from '../../widgets/Footer/Footer';
 import { MySwitch } from '../MySwitch/MySwitch';
 import { ProfileAddrPC } from '../ProfileAddrPC/ProfileAddrPC';
 import { MyButton } from '../MyButton/MyButton';
@@ -57,22 +57,31 @@ export const ProfilePagePC = ({ header, user, address, footer, data }) => {
             <MySwitch type="ios" />
           </div>
           <div className="profile_date">
-            <div className="promokod">Подарим промокод на бесплатный ролл ко дню рождения.</div>
+            <div className="promokod">
+              Подарим промокод на бесплатный ролл ко дню рождения.
+            </div>
             <div>
               <div>Дата вашего рождения</div>
               <div className="profile_select">
                 <MySelect
                   data={arr_d}
-                  disabled={user?.date_bir_m > 0 && user?.date_bir_d > 0 ? true : false}
+                  disabled={
+                    user?.date_bir_m > 0 && user?.date_bir_d > 0 ? true : false
+                  }
                   value={user.date_bir_d}
                 />
                 <MySelect
                   data={arr_m}
-                  disabled={user?.date_bir_m > 0 && user?.date_bir_d > 0 ? true : false}
+                  disabled={
+                    user?.date_bir_m > 0 && user?.date_bir_d > 0 ? true : false
+                  }
                   value={user.date_bir_m}
                 />
               </div>
-              <div className="last_text">Дату рождения можно выбрать только один раз. Будьте внимательны, так как изменить её позже не получится.</div>
+              <div className="last_text">
+                Дату рождения можно выбрать только один раз. Будьте внимательны,
+                так как изменить её позже не получится.
+              </div>
             </div>
           </div>
           <table className="profile_table">

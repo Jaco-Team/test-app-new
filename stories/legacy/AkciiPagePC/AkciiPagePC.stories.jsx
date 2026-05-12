@@ -1,7 +1,7 @@
 import { AkciiPagePC } from './AkciiPagePC';
-import * as HeaderPC from '../../widgets/HeaderPC/HeaderPC.stories';
+import * as HeaderPC from '../../widgets/Header/HeaderPC.stories';
 import * as BannerFullPC from '../BannerFullPC/BannerFullPC.stories';
-import * as FooterPC from '../FooterPC/FooterPC.stories';
+import * as FooterPC from '../../widgets/Footer/Footer.stories';
 
 export default {
   title: 'Акции / Страница Акции',

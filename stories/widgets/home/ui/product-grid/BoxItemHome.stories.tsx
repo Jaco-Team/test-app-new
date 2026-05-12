@@ -1,10 +1,11 @@
-import { BoxItemHomePC } from './BoxItemHomePC';
-import * as ItemHomePc from '@stories/entities/product/ui/product-card/ItemHomePc.stories';
+import { BoxItemHome } from './BoxItemHome';
+import * as ItemHome from '@stories/entities/product/ui/product-card/ItemHome.stories';
+import banner from '../../../../fixtures/banners.togliatti.json';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
   title: 'Виджеты / Главная / Список товаров',
-  component: BoxItemHomePC,
+  component: BoxItemHome,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
@@ -17,11 +18,11 @@ export default {
   },
 };
 
-const Template = (args) => <BoxItemHomePC {...args} />;
+const Template = (args) => <BoxItemHome {...args} />;
 export const Default = Template.bind({});
 
 Default.args = {
-  cardItem: ItemHomePc.Default.args,
+  cardItem: banner.itemsList,
 };
 
 export const Mobile = Template.bind({});

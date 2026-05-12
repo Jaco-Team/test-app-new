@@ -1,5 +1,6 @@
 @use '../../../shared/global' as *;
 
+// Общие стили для теней
 .blockShadow,
 .blockShadowPad {
   width: 100%;
@@ -7,7 +8,11 @@
   position: fixed;
   top: calcSize(128);
   left: 0;
-  background: linear-gradient(180deg, rgba(115, 115, 115, 0.1) 0%, rgba(83, 92, 84, 0) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(115, 115, 115, 0.1) 0%,
+    rgba(83, 92, 84, 0) 100%
+  );
   mix-blend-mode: multiply;
   transition: all 0.1s ease 0s;
   z-index: 2;
@@ -18,71 +23,82 @@
   top: calcSize_pad(90);
 }
 
-.HeaderPC,
-.HeaderPad,
-.headerMobile {
+// ==================== ДЕСКТОП ====================
+.HeaderPC {
+  height: calcSize(128);
   background-color: #fff !important;
   box-shadow: none !important;
 
   a {
     text-decoration: none;
   }
-}
-
-.HeaderPC {
-  height: calcSize(128);
 
   > div {
     display: flex;
-    align-items: center;
+    flex-direction: row;
     justify-content: space-between;
+    align-items: center;
     height: calcSize(128);
     min-height: calcSize(128);
     padding: 0;
-    margin: 0 calcSize(125);
+    margin-left: calcSize(125);
+    margin-right: calcSize(125);
 
     > div {
       display: flex;
+      flex-direction: row;
       align-items: center;
       height: calcSize(128);
     }
-  }
 
-  .logoPC {
-    display: flex;
-    width: calcSize(373.55);
-    height: calcSize(112);
-    margin: 0 calcSize(20) 0 calcSize(32);
-    cursor: pointer;
+    .logoPC {
+      width: calcSize(373.55);
+      height: calcSize(112);
+      margin-right: calcSize(20);
+      display: flex;
+      margin-left: calcSize(32);
+      cursor: pointer;
 
-    img {
-      width: 100%;
-      height: 100%;
+      img {
+        width: calcSize(373.55);
+        height: calcSize(112);
+      }
     }
-  }
 
-  .akcia {
-    margin-right: calcSize(16);
-
-    p {
-      margin: 0;
+    .akcia {
+      margin-right: calcSize(16);
+      p {
+        margin: 0;
+      }
     }
-  }
 
-  .city {
-    margin-right: calcSize(48);
-
-    p {
-      margin: 0;
+    .city {
+      margin-right: calcSize(48);
+      p {
+        margin: 0;
+      }
     }
   }
 }
 
+// ==================== ПЛАНШЕТ ====================
 .HeaderPad {
   height: calcSize_pad(90);
+  background-color: #fff !important;
+  box-shadow: none !important;
   position: fixed;
-  inset: 0 0 auto;
+  top: 0;
+  left: 0;
+  right: 0;
   z-index: 1100;
+
+  a {
+    text-decoration: none;
+  }
+
+  > div {
+    padding: 0;
+  }
 
   .header-container {
     display: flex;
@@ -123,16 +139,6 @@
     }
   }
 
-  .categories {
-    display: flex;
-    gap: calcSize_pad(16);
-
-    .MyCatLink {
-      font-size: calcSize_pad(14);
-      white-space: nowrap;
-    }
-  }
-
   .icons-group {
     gap: calcSize_pad(15);
 
@@ -145,61 +151,234 @@
       }
     }
   }
+
+  .city-wrapper {
+    display: flex;
+    align-items: center;
+    gap: calcSize_pad(8);
+  }
+
+  .burger-menu {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    background: transparent;
+    border: 0;
+    cursor: pointer;
+    padding: calcSize_pad(8);
+
+    svg {
+      width: calcSize_pad(30);
+      height: calcSize_pad(30);
+    }
+
+    .burgerActive path {
+      stroke: #dd1a32;
+    }
+  }
 }
 
+// ==================== МОБИЛЬНЫЙ ====================
+// ==================== МОБИЛЬНЫЙ ====================
 .headerMobile {
-  z-index: 1200 !important;
+  z-index: 1201 !important; // Увеличил z-index чтобы быть выше меню
+  background-color: #fff !important;
+  box-shadow: none !important;
   height: calcSize_mobile(200);
   overflow: hidden;
   display: flex;
   align-items: center;
   justify-content: center;
   position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
 
   > div {
+    padding: 0 !important;
+    min-height: 0 !important;
+    width: calc(100% - calcSize_mobile(160));
     display: flex;
     justify-content: space-between;
-    width: calc(100% - calcSize_mobile(160));
-    min-height: 0 !important;
-    padding: 0 !important;
+    align-items: center;
+
+    a {
+      text-decoration: none;
+      width: calcSize_mobile(500);
+      height: calcSize_mobile(120);
+      display: flex;
+      align-items: center;
+
+      img {
+        width: 100%;
+        height: 100%;
+        object-fit: contain;
+      }
+    }
+
+    .burger-wrapper {
+      padding: calcSize_mobile(50);
+      cursor: pointer;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: all 0.3s ease;
+      z-index: 1202; // Бургер выше шапки
+      position: relative;
+
+      svg {
+        height: calcSize_mobile(45);
+        width: calcSize_mobile(90);
+        transition: all 0.3s ease;
+      }
+
+      svg.burgerActive path {
+        stroke: #dd1a32;
+      }
+
+      .closeIcon {
+        height: calcSize_mobile(45);
+        width: calcSize_mobile(45);
+
+        path {
+          stroke: #333;
+          transition: stroke 0.3s ease;
+        }
+
+        &:hover path {
+          stroke: #dd1a32;
+        }
+      }
+    }
+  }
+}
+
+// Бэкдроп (затемнение фона) - под шапкой
+.backdrop {
+  position: fixed;
+  top: calcSize_mobile(200); // Начинается после шапки
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1199;
+  animation: fadeIn 0.3s ease;
+
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+}
+
+// Обертка для меню навигации - под шапкой
+.navMenuWrapper {
+  position: fixed;
+  top: calcSize_mobile(200); // Начинается после шапки
+  left: 0;
+  right: 0;
+  z-index: 1200;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+  background-color: #fff; // Добавил фон для меню
+  max-height: calc(100vh - calcSize_mobile(200)); // Ограничиваем высоту
+  overflow-y: auto; // Добавляем прокрутку если нужно
+
+  &.open {
+    transform: translateY(0);
+    animation: slideIn 0.3s ease;
+    border-radius: 0 0 6.83761vw 6.83761vw !important;
   }
 
-  .logoPC {
-    width: calcSize_mobile(500);
-    height: calcSize_mobile(120);
+  &.closed {
+    transform: translateY(-100%);
+    animation: slideOut 0.3s ease;
+  }
 
-    img {
-      width: 100%;
-      height: 100%;
+  @keyframes slideIn {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
     }
   }
 
-  svg {
-    width: calcSize_mobile(90);
-    height: calcSize_mobile(45);
+  @keyframes slideOut {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-100%);
+    }
   }
 }
 
-.categoryMenu {
-  display: contents;
-}
+// Бэкдроп (затемнение фона)
+.backdrop {
+  position: fixed;
+  top: calcSize_mobile(200);
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1199;
+  animation: fadeIn 0.3s ease;
 
-.headerBurgerButton,
-.burger-menu {
-  align-items: center;
-  background: transparent;
-  border: 0;
-  cursor: pointer;
-  display: inline-flex;
-  justify-content: center;
-  padding: 0;
-
-  .burgerActive path,
-  & .burgerActive path {
-    stroke: #dd1a32;
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
   }
 }
 
+// Обертка для меню навигации
+.navMenuWrapper {
+  position: fixed;
+  top: calcSize_mobile(200);
+  left: 0;
+  right: 0;
+  z-index: 1200;
+  transform: translateY(-100%);
+  transition: transform 0.3s ease;
+
+  &.open {
+    transform: translateY(0);
+    animation: slideIn 0.3s ease;
+  }
+
+  &.closed {
+    transform: translateY(-100%);
+    animation: slideOut 0.3s ease;
+  }
+
+  @keyframes slideIn {
+    from {
+      transform: translateY(-100%);
+    }
+    to {
+      transform: translateY(0);
+    }
+  }
+
+  @keyframes slideOut {
+    from {
+      transform: translateY(0);
+    }
+    to {
+      transform: translateY(-100%);
+    }
+  }
+}
+
+// ==================== МЕДИА-ЗАПРОСЫ ====================
+// Планшетная версия (широкий планшет)
 @media (min-width: 801px) and (max-width: 990px) {
   .HeaderPad {
     height: calcSize_pad(80);
@@ -217,20 +396,18 @@
       height: calcSize_pad(60);
     }
 
-    .categories {
-      gap: calcSize_pad(12);
-
-      .MyCatLink {
-        font-size: calcSize_pad(12);
-      }
-    }
-
     .icons-group {
       gap: calcSize_pad(12);
+
+      .IconHeaderPC svg {
+        width: calcSize_pad(22);
+        height: calcSize_pad(22);
+      }
     }
   }
 }
 
+// Планшетная версия (узкий планшет/большой телефон)
 @media (min-width: 668px) and (max-width: 800px) {
   .HeaderPad {
     height: calcSize_pad(70);
@@ -239,19 +416,55 @@
       padding: 0 calcSize_pad(20);
     }
 
-    .categories {
-      display: none;
-    }
-
-    .burger-menu {
-      display: inline-flex;
-      margin-right: calcSize_pad(15);
-      padding: calcSize_pad(8);
+    .left-section {
+      gap: calcSize_pad(15);
     }
 
     .logoPad {
       width: calcSize_pad(180);
       height: calcSize_pad(55);
     }
+
+    .burger-menu {
+      margin-right: calcSize_pad(15);
+      padding: calcSize_pad(8);
+    }
+
+    .icons-group {
+      gap: calcSize_pad(10);
+    }
+  }
+}
+
+// Адаптация мобильной версии для планшетов
+@media (min-width: 768px) and (max-width: 990px) {
+  .headerMobile {
+    height: calcSize_mobile(160);
+
+    > div {
+      width: calc(100% - calcSize_mobile(120));
+    }
+
+    .logoPC {
+      width: calcSize_mobile(350);
+      height: calcSize_mobile(90);
+    }
+
+    .burger-wrapper {
+      padding: calcSize_mobile(30);
+
+      svg {
+        height: calcSize_mobile(35);
+        width: calcSize_mobile(70);
+      }
+    }
+  }
+
+  .backdrop {
+    top: calcSize_mobile(160);
+  }
+
+  .navMenuWrapper {
+    top: calcSize_mobile(160);
   }
 }

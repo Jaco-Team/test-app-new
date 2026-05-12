@@ -1,4 +1,4 @@
-@use '../global' as *;
+@use '../../shared/global' as *;
 
 .FooterLegal {
   width: calcSize(1560);
@@ -7,7 +7,7 @@
   border-radius: calcSize(40) calcSize(40) 0 0;
   position: sticky;
   bottom: 0;
-  right: calc( calc( 100% - calcSize(1560) ) / 2);
+  right: calc(calc(100% - calcSize(1560)) / 2);
   transition: all 0.5s ease 0s;
   z-index: 5;
 

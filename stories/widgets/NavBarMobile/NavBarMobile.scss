@@ -1,7 +1,6 @@
 @use '../../shared/global' as *;
 
 .navBarMobile {
-  margin-top: calcSize_mobile(200);
   background-color: #ffffff;
   height: calcSize_mobile(1260);
   border-radius: 0 0 calcSize_mobile(80) calcSize_mobile(80);

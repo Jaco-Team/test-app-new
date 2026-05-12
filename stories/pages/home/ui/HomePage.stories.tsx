@@ -1,8 +1,12 @@
+// @ts-nocheck
 import { HomePage } from './HomePage';
 
-import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
-import * as BannerListPC from '@stories/widgets/home/ui/banner-list/BannerListPC.stories';
-import * as BoxItemHomePC from '@stories/widgets/home/ui/product-grid/BoxItemHomePC.stories';
+import {
+  responsiveStoryGlobals,
+  responsiveStoryParameters,
+} from '@stories/shared/lib/storybook/responsive';
+import * as BannerList from '@stories/widgets/home/ui/banner-list/BannerList.stories';
+import * as BoxItemHome from '@stories/widgets/home/ui/product-grid/BoxItemHome.stories';
 
 export default {
   title: 'Страницы / Главная',
@@ -37,18 +41,18 @@ export const Cookie = Template.bind({});
 export const ArrowUp = Template.bind({});
 
 Default.args = {
-  banners: BannerListPC.TwoImg.args,
-  container: BoxItemHomePC.Default.args,
+  banners: BannerList.TwoImg.args,
+  container: BoxItemHome.Default.args,
 };
 
 Cookie.args = {
-  banners: BannerListPC.TwoImg.args,
-  container: BoxItemHomePC.Default.args,
+  banners: BannerList.TwoImg.args,
+  container: BoxItemHome.Default.args,
 };
 
 ArrowUp.args = {
-  banners: BannerListPC.TwoImg.args,
-  container: BoxItemHomePC.Default.args,
+  banners: BannerList.TwoImg.args,
+  container: BoxItemHome.Default.args,
 };
 
 export const Mobile = Template.bind({});
