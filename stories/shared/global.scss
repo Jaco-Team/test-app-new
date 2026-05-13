@@ -9,7 +9,7 @@ $ColorMain: #cc0033;
 }
 
 @function calcSize_mobile($size) {
-  @return calc(100 * calc($size / 1170)) + vw;
+  @return calc(100 * calc($size / 870)) + vw;
 }
 
 @function calcSize_pad($size) {

@@ -8,17 +8,34 @@ import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
 import { ArrowIcon, NextIcon } from '@stories/shared/Icons.js';
-import { bannerListProps } from '@stories/widgets/home/ui/banner-list/model/types';
 import { BannerImg } from '@stories/entities/promotion/ui/promotion-image/BannerImg';
 import { JSX } from 'react';
-
+import { PromoModal } from '@stories/widgets/home/ui/banner-modal/PromoModal';
+import { useEffect, useState } from 'react';
 export const BannerList: ({
   bannerList,
 }: {
   bannerList: any;
 }) => JSX.Element = ({ bannerList }) => {
+  const [isModalOpen, setIsModalOpen] = useState(false);
+  const [item, setItem] = useState({});
   return (
     <div className="HomeImgPC">
+      <PromoModal
+        isOpen={isModalOpen}
+        onClose={() => setIsModalOpen(false)}
+        title="Влюбиться по-новому"
+        subtitle="Филадельфия опалённая с молодым шпинатом"
+        badgeText="НОВИНКА"
+        price={529}
+        bannerImage={`https://storage.yandexcloud.net/site-home-img/${item.img}_3700x1000.jpg`}
+        productImage="https://mainimg.jacofood.ru/Filadelfiia_opalionnaia_732x732.webp"
+        productName="Филадельфия опалённая"
+        productDescription="Опалённый лосось, сливочный творожный сыр..."
+        marketingTitle={item.title}
+        marketingDescription={item.text}
+        endDate="31.05.2026"
+      />
       <Swiper
         modules={[Autoplay, Navigation, Pagination, A11y, EffectCreative]}
         spaceBetween={0}
@@ -34,7 +51,14 @@ export const BannerList: ({
         scrollbar={{ draggable: true }}
       >
         {bannerList.map((item, key) => (
-          <SwiperSlide key={key} data-swiper-autoplay="2000" onClick={() => {}}>
+          <SwiperSlide
+            key={key}
+            data-swiper-autoplay="2000"
+            onClick={() => {
+              setItem(item);
+              setIsModalOpen(true);
+            }}
+          >
             <BannerImg
               img={
                 item.type_illustration === 'video'

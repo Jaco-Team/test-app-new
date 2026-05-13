@@ -37,20 +37,8 @@ export default {
 
 const Template = (args) => <HomePage {...args} />;
 export const Default = Template.bind({});
-export const Cookie = Template.bind({});
-export const ArrowUp = Template.bind({});
 
 Default.args = {
-  banners: BannerList.TwoImg.args,
-  container: BoxItemHome.Default.args,
-};
-
-Cookie.args = {
-  banners: BannerList.TwoImg.args,
-  container: BoxItemHome.Default.args,
-};
-
-ArrowUp.args = {
   banners: BannerList.TwoImg.args,
   container: BoxItemHome.Default.args,
 };
@@ -61,7 +49,7 @@ Mobile.globals = responsiveStoryGlobals.Mobile;
 
 export const Tablet = Template.bind({});
 Tablet.args = Default.args;
-Tablet.globals = responsiveStoryGlobals.Tablet;
+Tablet.globals = responsiveStoryGlobals.Desktop;
 
 export const Desktop = Template.bind({});
 Desktop.args = Default.args;
