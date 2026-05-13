@@ -37,6 +37,8 @@ const normalizeCategoryLink = (value) => {
 
 export default React.memo(function CatItems() {
   const router = useRouter();
+  const isRouterReady = router.isReady;
+  const replaceRoute = router.replace;
   const pathname = typeof router.asPath === 'string' ? router.asPath.split('?')[0] : '';
   const search = typeof router.query?.item === 'string' ? router.query.item : '';
   const search_category = typeof router.query?.category === 'string' ? router.query.category : '';
@@ -75,7 +77,7 @@ export default React.memo(function CatItems() {
 
   useEffect(() => {
 
-    if (!router.isReady) {
+    if (!isRouterReady) {
       return;
     }
 
@@ -112,10 +114,14 @@ export default React.memo(function CatItems() {
         closeModal();
       }
     }
-  }, [router.isReady, search, CatsItems, getItem, thisCity, closeModal]);
+  }, [isRouterReady, search, CatsItems, getItem, thisCity, closeModal]);
 
   useEffect(() => {
-    if (!router.isReady) {
+    if (!isRouterReady) {
+      return;
+    }
+
+    if (!Array.isArray(CatsItems) || CatsItems.length === 0) {
       return;
     }
 
@@ -146,38 +152,64 @@ export default React.memo(function CatItems() {
         } )
 
         if( parseInt( scroll_cat_id ) > 0 ){
-          let offset = 70;
+          const targetNodeId = 'cat' + scroll_cat_id;
+          let attemptsLeft = 12;
 
-          if (document.querySelector('.ContainerCardItemMobile')) {
-            offset += 120;
-          }
-  
-          setTimeout(() => {
-            scroller.scrollTo('cat' + scroll_cat_id, {
-              duration: 200,
-              delay: 0,
-              smooth: 'easeInOutQuart',
-              offset: -offset,
-            });
-          }, 150);
+          const cleanupCategoryState = () => {
+            if (search_category?.length > 0 && typeof replaceRoute === 'function') {
+              replaceRoute(window.location.pathname, undefined, { shallow: true, scroll: false });
+            } else {
+              let state = { },
+                title = '',
+                url = window.location.pathname;
 
-          if (search_category?.length > 0 && typeof router.replace === 'function') {
-            router.replace(window.location.pathname, undefined, { shallow: true, scroll: false });
-          } else {
-            let state = { },
-              title = '',
-              url = window.location.pathname;
+              window.history.pushState(state, title, url)
+            }
 
-            window.history.pushState(state, title, url)
-          }
+            removeLocalStorageItem('goToCategoryLink');
+            removeLocalStorageItem('ignoreMenuCategoryOnce');
+          };
+
+          const tryScrollToCategory = () => {
+            const targetNode = document.getElementById(targetNodeId);
+
+            if (!targetNode && attemptsLeft > 0) {
+              attemptsLeft -= 1;
+              setTimeout(tryScrollToCategory, 120);
+              return;
+            }
+
+            if (!targetNode) {
+              return;
+            }
+
+            let offset = 70;
+
+            if (document.querySelector('.ContainerCardItemMobile')) {
+              offset += 120;
+            }
+
+            setTimeout(() => {
+              scroller.scrollTo(targetNodeId, {
+                duration: 200,
+                delay: 0,
+                smooth: 'easeInOutQuart',
+                offset: -offset,
+              });
+            }, 150);
+
+            cleanupCategoryState();
+          };
+
+          tryScrollToCategory();
+        } else if (normalizedTargetLink.length > 0) {
+          removeLocalStorageItem('goToCategoryLink');
+          removeLocalStorageItem('ignoreMenuCategoryOnce');
         }
-
-        removeLocalStorageItem('goToCategoryLink');
-        removeLocalStorageItem('ignoreMenuCategoryOnce');
 
       }
     }
-  }, [router.isReady, search_category, category]);
+  }, [isRouterReady, replaceRoute, search_category, category, CatsItems]);
 
   useEffect(() => {
     setTimeout(() => {
