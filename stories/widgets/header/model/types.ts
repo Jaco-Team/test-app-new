@@ -35,7 +35,7 @@ export interface HeaderProps {
   /** Активация мобильного меню (для mobile и tablet) */
   activeMenu?: boolean;
   /** Настройки мобильного меню */
-  menu?: NavBarMobileProps;
+  menu?: NavBarMenuProps;
   /** Колбек при клике на бургер меню */
   onMenuToggle?: (state: boolean) => void;
 }
