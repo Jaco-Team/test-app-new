@@ -26,7 +26,7 @@ export const BannerFullPC = ({
       }}
     >
       <Grid className="ImgItem">
-        <BannerImg img={img} type={type} />
+        <BannerImg img={img} title={title} type={type} />
         <span className="ItemOther">
           Условия акции
           <KeyboardArrowUpIcon />
