@@ -1,9 +1,9 @@
 import { HomePage } from './HomePage';
 
-import * as HeaderPC from '../../widgets/HeaderPC/HeaderPC.stories';
+import * as HeaderPC from '../../widgets/Header/HeaderPC.stories';
 import * as BannerListPC from '../BannerListPC/BannerListPC.stories';
-import * as BoxItemHomePC from '../BoxItemHomePC/BoxItemHomePC.stories';
-import * as FooterPC from '../FooterPC/FooterPC.stories';
+
+import * as FooterPC from '../../widgets/Footer/Footer.stories';
 
 export default {
   title: 'Главная страница / Главная',
@@ -48,12 +48,12 @@ Cookie.args = {
   header: HeaderPC.Default.args,
   banners: BannerListPC.TwoImg.args,
   container: BoxItemHomePC.Default.args,
-  footer: {...FooterPC.Default.args, cookie: false}
+  footer: { ...FooterPC.Default.args, cookie: false },
 };
 
 ArrowUp.args = {
   header: HeaderPC.Default.args,
   banners: BannerListPC.TwoImg.args,
   container: BoxItemHomePC.Default.args,
-  footer: {...FooterPC.Default.args, arrow: true}
+  footer: { ...FooterPC.Default.args, arrow: true },
 };

@@ -1,0 +1,372 @@
+@use '../../../../shared/global' as *;
+
+.ItemHomePc {
+  width: calcSize(600);
+  height: calcSize(984);
+  //border: 1px solid red;
+  border-radius: calcSize(32);
+
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  mix-blend-mode: multiply;
+
+  &.active {
+    background-color: rgba($color: #000000, $alpha: 0.05);
+    height: calcSize(1016);
+  }
+
+  & .BlockIMG {
+    mix-blend-mode: multiply;
+    & > img {
+      width: calcSize(600);
+      height: calcSize(600);
+      cursor: pointer;
+    }
+    & > .badge {
+      position: absolute;
+      top: calcSize(20);
+      left: calcSize(20);
+    }
+  }
+
+  & .title {
+    @include MyFonts(44, 400);
+    text-align: center;
+    width: calcSize(536);
+    height: calcSize(96);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+  & .weight {
+    @include MyFonts(22, 400);
+    line-height: calcSize(64);
+    color: rgba($color: #000000, $alpha: 0.4);
+    text-align: center;
+    width: calcSize(536);
+    height: calcSize(64);
+  }
+  & .description {
+    @include MyFonts(26, 400);
+    line-height: calcSize(30);
+    color: rgba($color: #000000, $alpha: 0.6);
+    text-align: center;
+    width: calcSize(536);
+    height: calcSize(96);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+  & .btn_price {
+    width: calcSize(384);
+    height: calcSize(96);
+    border: 0px solid transparent;
+    border-radius: 100px;
+    background-color: rgba($color: #000000, $alpha: 0.05);
+    @include MyFonts(32, 400);
+    line-height: calcSize(40);
+    margin-top: calcSize(27);
+    cursor: pointer;
+  }
+  & .btn_count {
+    width: calcSize(384);
+    height: calcSize(96);
+    border: 0px solid transparent;
+    border-radius: 100px;
+    background-color: #fff;
+    margin-top: calcSize(27);
+    margin-bottom: calcSize(32);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    & > span {
+      @include MyFonts(32, 400);
+      line-height: calcSize(40);
+    }
+    & button {
+      width: calcSize(80);
+      height: calcSize(80);
+      border-radius: 100px;
+      background-color: rgba($color: #000000, $alpha: 0.05);
+      border: 0px solid transparent;
+      line-height: calcSize(56);
+      cursor: pointer;
+
+      &.plus {
+        @include MyFonts(60, 400);
+        margin-right: calcSize(7);
+      }
+      &.minus {
+        @include MyFonts(44, 400);
+        margin-left: calcSize(7);
+      }
+    }
+  }
+
+  // Адаптив до 1000px (вертикальный layout)
+  @media (max-width: 1000px) {
+    width: calcSize_pad(450);
+    height: calcSize_pad(850);
+
+    &.active {
+      height: calcSize_pad(880);
+    }
+
+    & .BlockIMG {
+      & > img {
+        width: calcSize_pad(450);
+        height: calcSize_pad(450);
+      }
+    }
+
+    & .title {
+      @include MyFonts(36, 400);
+      width: calcSize_pad(400);
+      height: calcSize_pad(80);
+    }
+
+    & .weight {
+      @include MyFonts(20, 400);
+      width: calcSize_pad(400);
+      height: calcSize_pad(50);
+    }
+
+    & .description {
+      @include MyFonts(22, 400);
+      width: calcSize_pad(400);
+      height: calcSize_pad(80);
+    }
+
+    & .btn_price {
+      width: calcSize_pad(300);
+      height: calcSize_pad(80);
+      @include MyFonts(28, 400);
+    }
+
+    & .btn_count {
+      width: calcSize_pad(300);
+      height: calcSize_pad(80);
+      margin-bottom: calcSize_pad(20);
+
+      & > span {
+        @include MyFonts(28, 400);
+      }
+
+      & button {
+        width: calcSize_pad(65);
+        height: calcSize_pad(65);
+
+        &.plus {
+          @include MyFonts(50, 400);
+        }
+        &.minus {
+          @include MyFonts(36, 400);
+        }
+      }
+    }
+  }
+
+  // Адаптив до 800px (горизонтальный layout для планшетов)
+  @media (max-width: 800px) {
+    flex-direction: row;
+    width: calcSize_mobile(700);
+    height: calcSize_mobile(350);
+    padding: calcSize_mobile(20);
+
+    &.active {
+      height: calcSize_mobile(380);
+    }
+
+    & .BlockIMG {
+      flex-shrink: 0;
+      & > img {
+        width: calcSize_mobile(300);
+        height: calcSize_mobile(300);
+      }
+      & > .badge {
+        top: calcSize_mobile(10);
+        left: calcSize_mobile(10);
+      }
+    }
+
+    & .title {
+      @include MyFonts(28, 400);
+      width: calcSize_mobile(350);
+      height: auto;
+      text-align: left;
+      justify-content: flex-start;
+      margin-left: calcSize_mobile(20);
+      margin-top: calcSize_mobile(10);
+    }
+
+    & .weight {
+      @include MyFonts(18, 400);
+      width: calcSize_mobile(350);
+      height: auto;
+      line-height: calcSize_mobile(40);
+      text-align: left;
+      margin-left: calcSize_mobile(20);
+    }
+
+    & .description {
+      @include MyFonts(20, 400);
+      width: calcSize_mobile(350);
+      height: auto;
+      line-height: calcSize_mobile(24);
+      text-align: left;
+      margin-left: calcSize_mobile(20);
+      margin-top: calcSize_mobile(10);
+    }
+
+    & .btn_price {
+      width: calcSize_mobile(250);
+      height: calcSize_mobile(70);
+      @include MyFonts(24, 400);
+      margin-top: calcSize_mobile(20);
+      margin-left: calcSize_mobile(20);
+    }
+
+    & .btn_count {
+      width: calcSize_mobile(250);
+      height: calcSize_mobile(70);
+      margin-top: calcSize_mobile(15);
+      margin-left: calcSize_mobile(20);
+      margin-bottom: 0;
+
+      & > span {
+        @include MyFonts(24, 400);
+      }
+
+      & button {
+        width: calcSize_mobile(55);
+        height: calcSize_mobile(55);
+
+        &.plus {
+          @include MyFonts(40, 400);
+        }
+        &.minus {
+          @include MyFonts(32, 400);
+        }
+      }
+    }
+  }
+
+  // Адаптив для мобильных (до 667px) - как на изображении
+  @media (max-width: 667px) {
+    flex-direction: row;
+    width: 100%;
+    max-width: calcSize_mobile(700);
+    height: auto;
+    min-height: calcSize_mobile(320);
+    padding: calcSize_mobile(16);
+    border-radius: calcSize_mobile(20);
+    align-items: flex-start;
+
+    &.active {
+      height: auto;
+      min-height: calcSize_mobile(350);
+    }
+
+    & .BlockIMG {
+      flex-shrink: 0;
+      position: relative;
+      width: calcSize_mobile(160);
+      height: calcSize_mobile(160);
+
+      & > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: calcSize_mobile(12);
+      }
+      & > .badge {
+        top: calcSize_mobile(8);
+        left: calcSize_mobile(8);
+      }
+    }
+
+    & .title {
+      @include MyFonts(22, 600);
+      width: 100%;
+      max-width: calcSize_mobile(300);
+      height: auto;
+      text-align: left;
+      justify-content: flex-start;
+      margin: 0 0 calcSize_mobile(8) 0;
+      padding-left: calcSize_mobile(16);
+      line-height: calcSize_mobile(26);
+    }
+
+    & .weight {
+      @include MyFonts(14, 400);
+      width: 100%;
+      max-width: calcSize_mobile(300);
+      height: auto;
+      line-height: calcSize_mobile(20);
+      text-align: left;
+      margin: 0 0 calcSize_mobile(8) 0;
+      padding-left: calcSize_mobile(16);
+      color: rgba($color: #000000, $alpha: 0.5);
+    }
+
+    & .description {
+      @include MyFonts(14, 400);
+      width: 100%;
+      max-width: calcSize_mobile(300);
+      height: auto;
+      line-height: calcSize_mobile(18);
+      text-align: left;
+      margin: 0 0 calcSize_mobile(12) 0;
+      padding-left: calcSize_mobile(16);
+      color: rgba($color: #000000, $alpha: 0.6);
+      -webkit-line-clamp: 2;
+    }
+
+    & .btn_price {
+      width: calcSize_mobile(200);
+      height: calcSize_mobile(56);
+      @include MyFonts(20, 600);
+      margin-top: auto;
+      margin-left: calcSize_mobile(16);
+      border-radius: calcSize_mobile(28);
+    }
+
+    & .btn_count {
+      display: none; // Скрываем счетчик на мобильных, показываем только цену
+    }
+  }
+
+  // Очень маленькие экраны (до 375px)
+  @media (max-width: 375px) {
+    padding: calcSize_mobile(12);
+
+    & .BlockIMG {
+      width: calcSize_mobile(140);
+      height: calcSize_mobile(140);
+    }
+
+    & .title {
+      @include MyFonts(18, 600);
+      padding-left: calcSize_mobile(12);
+    }
+
+    & .weight {
+      @include MyFonts(12, 400);
+      padding-left: calcSize_mobile(12);
+    }
+
+    & .description {
+      @include MyFonts(12, 400);
+      padding-left: calcSize_mobile(12);
+    }
+
+    & .btn_price {
+      width: calcSize_mobile(160);
+      height: calcSize_mobile(48);
+      @include MyFonts(18, 600);
+      margin-left: calcSize_mobile(12);
+    }
+  }
+}

@@ -1,7 +1,7 @@
-import { HeaderPC } from '../../widgets/HeaderPC/HeaderPC';
+import { HeaderPC } from '../../widgets/Header/HeaderPC';
 import { MapPC } from '../MapPC/MapPC';
 import { MenuContactsPC } from '../MenuContactsPC/MenuContactsPC';
-import { FooterPC } from '../FooterPC/FooterPC';
+import { FooterPC } from '../../widgets/Footer/Footer';
 
 import PropTypes from 'prop-types';
 import './ContactsPagePC.scss';

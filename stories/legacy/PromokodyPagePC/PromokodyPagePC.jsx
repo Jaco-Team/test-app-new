@@ -1,7 +1,7 @@
-import { HeaderPC } from '../../widgets/HeaderPC/HeaderPC';
+import { HeaderPC } from '../../widgets/Header/HeaderPC';
 import { PromokodyPC } from '../PromokodyPC/PromokodyPC';
 import { BreadСrumbsPC } from '../BreadСrumbsPC/BreadСrumbsPC';
-import { FooterPC } from '../FooterPC/FooterPC';
+import { FooterPC } from '../../widgets/Footer/Footer';
 
 import PropTypes from 'prop-types';
 import './PromokodyPagePC.scss';

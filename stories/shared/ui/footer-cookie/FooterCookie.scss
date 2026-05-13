@@ -1,0 +1,52 @@
+@use '../../global' as *;
+
+.FooterLegal {
+  width: calcSize(1560);
+  background: #ffffff;
+  box-shadow: 0 calcSize(-10) calcSize(50) 0 rgba(0, 0, 0, 0.05);
+  border-radius: calcSize(40) calcSize(40) 0 0;
+  position: sticky;
+  bottom: 0;
+  right: calc((100% - calcSize(1560)) / 2);
+  transition: all 0.5s ease 0s;
+  z-index: 5;
+
+  .containerLegal {
+    display: flex;
+    align-items: center;
+  }
+
+  .text {
+    width: calcSize(995);
+    margin: calcSize(80) 0 calcSize(80) calcSize(120);
+
+    p {
+      @include MyFonts(30, 400);
+      line-height: calcSize(40);
+      margin: 0;
+    }
+
+    .link {
+      text-decoration: underline;
+      color: rgba(221, 26, 50, 1);
+    }
+  }
+
+  .buttonAccept {
+    width: calcSize(280);
+    height: calcSize(80);
+    margin-left: calcSize(45);
+    background: rgba(221, 26, 50, 1);
+    border-radius: calcSize(20);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    border: 0;
+    cursor: pointer;
+
+    span {
+      @include MyFonts(30, 400);
+      color: #ffffff;
+    }
+  }
+}

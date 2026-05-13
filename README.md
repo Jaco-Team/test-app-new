@@ -1,22 +1,81 @@
+# test-app-new
+
 This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
 
 ## Getting Started
 
-First, run the development server:
+Base app:
 
 ```bash
 npm run dev
-# or
-yarn dev
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Storybook:
 
-You can start editing the page by modifying `pages/index.js`. The page auto-updates as you edit the file.
+```bash
+npm run storybook
+```
 
-[API routes](https://nextjs.org/docs/api-routes/introduction) can be accessed on [http://localhost:3000/api/hello](http://localhost:3000/api/hello). This endpoint can be edited in `pages/api/hello.js`.
+Default local URLs:
 
-The `pages/api` directory is mapped to `/api/*`. Files in this directory are treated as [API routes](https://nextjs.org/docs/api-routes/introduction) instead of React pages.
+- App: `http://localhost:3000`
+- Storybook: `http://localhost:6007`
+
+## Redesign Direction
+
+- First transfer current design and behavior into Storybook.
+- Keep the base app unchanged during the Storybook transfer stage.
+- Use FSD + TypeScript for new Storybook work.
+- Later, rebuild the base app from Storybook components.
+- Final stage: migrate backend behavior from the custom implementation to Laravel.
+
+## Storybook Breakpoints
+
+- Mobile: `320-667`
+- Tablet: `668-990`
+- Desktop: `991+`
+
+Tablet is a separate required design variant.
+Indexed FSD stories should expose `Mobile`, `Tablet`, and `Desktop` stories
+using the shared Storybook viewport helper.
+
+## Storybook Structure
+
+New Storybook work belongs in:
+
+- `stories/app`
+- `stories/pages`
+- `stories/widgets`
+- `stories/features`
+- `stories/entities`
+- `stories/shared`
+
+Do not add new work to `stories/legacy`. Migrate legacy stories into FSD layers
+and index only FSD story locations from `.storybook/main.mjs`; legacy and old
+top-level helper stories stay on disk as reference.
+
+## Development Notes
+
+- Keep changes scoped and simple.
+- Prefer existing project patterns before adding abstractions.
+- Update README or task docs when workflow or project direction changes.
+- For Storybook behavior changes, add or run relevant automatic Storybook checks when practical.
+- Use Chrome MCP against the already-running local Storybook when visual or interaction verification is needed.
+- TypeScript is configured with `tsconfig.json`; legacy JS remains allowed during migration.
+
+## Existing Docs
+
+- `AGENTS.md`: project instructions for Codex.
+- `stories/README_FSD.md`: FSD Storybook structure.
+- `STORYBOOK_REDESIGN_TODO.md`: staged redesign todo.
+
+## Migration Status
+
+The current Storybook migration is parallel to the app runtime. Legacy Storybook concepts are being moved into new FSD TypeScript paths under `stories/`, while `stories/legacy` stays available as reference until each slice is refactored and verified. New Header/Footer Storybook styles should use module-system Sass via `@use` and must not import legacy Sass with deprecated `@import`.
+
+## Storybook Static
+
+`storybook-static` is a generated static Storybook build. It can be used as a reference for previously built legacy stories, but source migration should happen from `stories/legacy` into typed FSD files under `stories/`.
 
 ## Learn More
 

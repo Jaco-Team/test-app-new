@@ -1,7 +1,8 @@
 import { IconPC } from './IconPC';
 
+import { responsiveStoryGlobals } from '../lib/storybook/responsive';
 export default {
-  title: 'Элементы / Иконки',
+  title: 'Общие элементы / Иконки',
   component: IconPC,
   tags: ['autodocs'],
   argTypes: {
@@ -169,3 +170,15 @@ Point.args = {
   icon: 'point',
   element: 'form_order',
 };
+
+export const Mobile = Template.bind({});
+Mobile.args = Location.args;
+Mobile.globals = responsiveStoryGlobals.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Location.args;
+Tablet.globals = responsiveStoryGlobals.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Location.args;
+Desktop.globals = responsiveStoryGlobals.Desktop;

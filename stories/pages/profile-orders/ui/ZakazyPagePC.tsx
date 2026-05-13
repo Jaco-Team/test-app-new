@@ -1,0 +1,23 @@
+import { TableOrdersPC } from '@stories/widgets/orders/ui/orders-table/TableOrdersPC';
+import { BreadСrumbsPC } from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC';
+
+import './ZakazyPagePC.scss';
+
+export const ZakazyPagePC = ({ header, orders, footer, data }: Record<string, any>) => {
+  return (
+    <>
+      {header ? null : null}
+      <div className="zakazyPC">
+        <div className="zakazyTablePC">
+          <div className="title">История заказов</div>
+          <TableOrdersPC {...orders} />
+        </div>
+        <div>
+          <BreadСrumbsPC {...data} />
+        </div>
+      </div>
+      {footer ? null : null}
+    </>
+  );
+};
+

@@ -8,6 +8,9 @@
     "analyze": "ANALYZE=true npm run build",
     "start": "next start",
     "lint": "eslint . --quiet || true",
+    "typecheck": "tsc --noEmit",
+    "test:storybook": "vitest --project storybook",
+    "prepare": "husky",
     "oxc": "npx oxlint@latest",
     "win": "next dev -p 3008",
     "storybook": "storybook dev -p 6007",
@@ -73,7 +76,9 @@
     "next": "16.2.6",
     "next-axiom": "^1.10.0",
     "next-ssl-redirect-middleware": "^0.1.5",
+    "next-video": "^2.7.1",
     "next-yandex-metrika": "^1.0.0",
+    "prop-types": "^15.8.1",
     "query-string": "^9.3.1",
     "react": "^19.2.6",
     "react-auth-code-input": "^3.2.1",
@@ -101,14 +106,25 @@
     "@storybook/addon-links": "^10.3.6",
     "@storybook/addon-onboarding": "^10.3.6",
     "@storybook/addon-themes": "^10.3.6",
-    "@storybook/nextjs": "^10.3.6",
+    "@storybook/addon-vitest": "^10.3.6",
+    "@storybook/nextjs-vite": "^10.3.6",
+    "@vitest/browser-playwright": "^4.1.6",
     "cross-env": "^10.1.0",
     "eslint": "^9.39.0",
     "eslint-config-next": "16.2.6",
     "eslint-plugin-storybook": "^10.3.6",
-    "storybook": "^10.3.6"
+    "husky": "^9.1.7",
+    "lint-staged": "^16.4.0",
+    "playwright": "^1.60.0",
+    "prettier": "^3.8.3",
+    "storybook": "^10.3.6",
+    "vitest": "^4.1.6"
   },
   "engines": {
     "node": ">=20.9.0"
+  },
+  "lint-staged": {
+    "*.{js,jsx,ts,tsx,mjs,cjs,json,md,scss,css}": "prettier --write",
+    "*.{js,jsx,ts,tsx,mjs,cjs}": "eslint --fix"
   }
 }

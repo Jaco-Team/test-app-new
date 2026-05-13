@@ -1,6 +1,6 @@
-import { HeaderPC } from '../../widgets/HeaderPC/HeaderPC';
+import { HeaderPC } from '../../widgets/Header/HeaderPC';
 import { BreadСrumbsPC } from '../BreadСrumbsPC/BreadСrumbsPC';
-import { FooterPC } from '../FooterPC/FooterPC';
+import { FooterPC } from '../../widgets/Footer/Footer';
 
 import Grid from '@mui/material/Grid';
 import PropTypes from 'prop-types';
@@ -14,7 +14,13 @@ export const DocsPagePC = ({ header, page, footer, data }) => {
       <Grid container>
         <div item className="docsPagePC">
           <h1>{page ? page.page_h : ''}</h1>
-          {page && page.content ? <Grid item xs={12} dangerouslySetInnerHTML={{ __html: page.content }} /> : null}
+          {page && page.content ? (
+            <Grid
+              item
+              xs={12}
+              dangerouslySetInnerHTML={{ __html: page.content }}
+            />
+          ) : null}
         </div>
         <div>
           <BreadСrumbsPC {...data} />

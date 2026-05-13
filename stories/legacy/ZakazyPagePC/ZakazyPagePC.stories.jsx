@@ -1,8 +1,8 @@
 import { ZakazyPagePC } from './ZakazyPagePC';
-import * as HeaderPC from '../../widgets/HeaderPC/HeaderPC.stories';
+import * as HeaderPC from '../../widgets/Header/HeaderPC.stories';
 import * as TableOrdersPC from '../TableOrdersPC/TableOrdersPC.stories';
 import * as BreadСrumbsPC from '../BreadСrumbsPC/BreadСrumbsPC.stories';
-import * as FooterPC from '../FooterPC/FooterPC.stories';
+import * as FooterPC from '../../widgets/Footer/Footer.stories';
 
 export default {
   title: 'Профиль / Заказы / Страница заказы',

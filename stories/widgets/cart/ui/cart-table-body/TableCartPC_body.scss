@@ -1,0 +1,6 @@
+@use '../../../../shared/global' as *;
+
+tbody {
+  display: flex;
+  flex-direction: column;
+}
