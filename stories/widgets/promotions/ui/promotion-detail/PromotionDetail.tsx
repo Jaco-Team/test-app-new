@@ -14,7 +14,7 @@ export interface PromotionDetailProps {
   title: string;
   img: string;
   text: string;
-  typePromo: string;
+  typePromo: string | number;
   count: number;
   items: PromotionItem[];
   type?: 'banner' | 'page' | string;
@@ -42,7 +42,7 @@ export const PromotionDetail = ({
   const descriptionClassName = isMobile
     ? 'FirstItem FirstItemMobile'
     : 'SecondItem';
-  const promoType = Number.parseInt(typePromo, 10);
+  const promoType = Number.parseInt(String(typePromo), 10);
 
   const composition = (
     <div className={compositionClassName}>

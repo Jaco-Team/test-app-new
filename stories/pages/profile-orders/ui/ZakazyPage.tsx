@@ -1,5 +1,6 @@
 import { TableOrders } from '@stories/widgets/orders/ui/orders-table/TableOrders';
 import { BreadCrumbs } from '@stories/shared/ui/breadcrumbs/BreadCrumbs';
+import type { BreadcrumbsData } from '@stories/fixtures/breadcrumbs';
 
 import './ZakazyPage.scss';
 
@@ -11,7 +12,7 @@ interface ZakazyPageProps {
     };
   };
   footer?: unknown;
-  data: Record<string, unknown>;
+  data: BreadcrumbsData;
 }
 
 export const ZakazyPage = ({

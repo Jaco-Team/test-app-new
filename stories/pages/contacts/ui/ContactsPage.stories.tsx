@@ -16,19 +16,19 @@ const meta = {
   },
   argTypes: {
     header: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для шапки ПК',
     },
     menu: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для меню на странице Контакты ПК',
     },
     map: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для карты на странице Контакты ПК',
     },
     footer: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для футера ПК',
     },
   },

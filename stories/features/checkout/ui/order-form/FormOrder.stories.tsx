@@ -39,11 +39,11 @@ const meta = {
       description: 'Адрес клиента или точки',
     },
     list: {
-      type: 'object',
+      control: 'object',
       description: 'Список для выбора',
     },
     list_address: {
-      type: 'object',
+      control: 'object',
       description: 'Список адресов для выбора',
     },
     online: {

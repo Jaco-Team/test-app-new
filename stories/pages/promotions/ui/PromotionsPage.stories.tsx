@@ -12,15 +12,15 @@ const meta = {
   },
   argTypes: {
     header: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для шапки',
     },
     actia: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для акции',
     },
     footer: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для футера',
     },
   },

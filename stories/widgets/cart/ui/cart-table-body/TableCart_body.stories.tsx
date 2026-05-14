@@ -13,7 +13,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     items: {
-      type: 'array',
+      control: 'object',
       description: 'Товары в корзине за исключением допов',
     },
     itemsCount: {
@@ -21,7 +21,7 @@ const meta = {
       description: 'Число товаров в корзине без допов',
     },
     dopItems: {
-      type: 'array',
+      control: 'object',
       description: 'Дополнительные товары в корзине',
     },
     dopItemsCount: {
@@ -29,7 +29,7 @@ const meta = {
       description: 'Число доп товаров в корзине',
     },
     footerData: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для футера таблицы',
     },
   },

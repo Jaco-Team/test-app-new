@@ -1,5 +1,6 @@
 import { Promokody } from '@stories/entities/profile/ui/promo-code-list/Promokody';
 import { BreadCrumbs } from '@stories/shared/ui/breadcrumbs/BreadCrumbs';
+import type { BreadcrumbsData } from '@stories/fixtures/breadcrumbs';
 
 import './PromokodyPage.scss';
 
@@ -9,7 +10,7 @@ interface PromokodyPageProps {
     promokody: Record<string, unknown>;
   };
   footer?: unknown;
-  data: Record<string, unknown>;
+  data: BreadcrumbsData;
 }
 
 export const PromokodyPage = ({

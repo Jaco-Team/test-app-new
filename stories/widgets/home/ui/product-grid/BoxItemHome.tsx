@@ -4,8 +4,13 @@ import './BoxItemHome.scss';
 import React, { useState } from 'react';
 import { placeholder_img } from '@/public/placeholder_img';
 import ProductModal from '@stories/entities/product/ui/product-modal/ProductModal';
+import type { ProductItem } from '@stories/entities/product/ui/product-card/model/types';
 
-export const BoxItemHome = ({ cards }: Record<string, any>) => {
+interface BoxItemHomeProps {
+  cards: ProductItem[];
+}
+
+export const BoxItemHome = ({ cards }: BoxItemHomeProps) => {
   const [isOpenModal, setIsOpenModal] = useState(false);
   return (
     <>

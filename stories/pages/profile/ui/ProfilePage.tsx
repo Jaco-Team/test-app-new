@@ -4,6 +4,7 @@ import { ProfileAddr } from '@stories/entities/profile/ui/address-card/ProfileAd
 import { MyButton } from '@stories/shared/ui/button/MyButton';
 import MySelect from '@stories/shared/ui/select/MySelect';
 import MyTextInput from '@stories/shared/ui/text-input/MyTextInput';
+import type { BreadcrumbsData } from '@stories/fixtures/breadcrumbs';
 
 import './ProfilePage.scss';
 
@@ -26,7 +27,7 @@ interface ProfilePageProps {
     address: ProfileAddressItem;
   } | null;
   footer?: unknown;
-  data: Record<string, unknown>;
+  data: BreadcrumbsData;
 }
 
 export const ProfilePage = ({

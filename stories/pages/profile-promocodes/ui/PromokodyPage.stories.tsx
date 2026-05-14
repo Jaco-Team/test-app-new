@@ -13,19 +13,19 @@ const meta = {
   },
   argTypes: {
     header: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для шапки ПК',
     },
     promokod: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для Промокода',
     },
     data: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для меню страницы на ПК',
     },
     footer: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для футера ПК',
     },
   },

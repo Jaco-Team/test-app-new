@@ -14,7 +14,7 @@ export const ItemHome = ({
   weight,
   marc_desc,
   price,
-  count,
+  count = '0',
   is_new,
   is_hit,
   count_part,
@@ -64,7 +64,7 @@ export const ItemHome = ({
           </div>
         ) : (
           <button className="btn_price">
-            {new Intl.NumberFormat('ru-RU').format(price)} ₽
+            {new Intl.NumberFormat('ru-RU').format(Number(price))} ₽
           </button>
         )}
       </div>

@@ -9,7 +9,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     order: {
-      type: 'array',
+      control: 'object',
       description: 'Заказ клиента',
     },
   },

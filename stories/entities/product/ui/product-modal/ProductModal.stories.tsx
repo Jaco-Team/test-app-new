@@ -1,47 +1,104 @@
 import React from 'react';
 import { Meta, StoryFn } from '@storybook/react';
-import { ProductModal, PromoModalProps } from './ProductModal';
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
+import ProductModal from '@stories/entities/product/ui/product-modal/ProductModal';
+import { ProductModalProps } from '@stories/entities/product/ui/product-modal/model/types';
 
 export default {
-  title: 'Product / Product Modal',
+  title: 'Сущности / Товар / Модалка',
   component: ProductModal,
   tags: ['autodocs'],
   argTypes: {
     isOpen: { control: 'boolean' },
     onClose: { action: 'closed' },
-    title: { control: 'text' },
-    subtitle: { control: 'text' },
-    badgeText: { control: 'text' },
-    price: { control: 'number' },
+    productImage: { control: 'text' },
     productName: { control: 'text' },
+    rollsCount: { control: 'number' },
+    piecesCount: { control: 'number' },
+    weight: { control: 'number' },
     productDescription: { control: 'text' },
+    price: { control: 'number' },
+    rollsData: { control: 'object' }, // ✅ Исправлено: object вместо просто rollsData
+    relatedProducts: { control: 'object' },
   },
-} as Meta<PromoModalProps>;
+} as Meta<ProductModalProps>;
 
-const Template: StoryFn<PromoModalProps> = (args) => <ProductModal {...args} />;
+const Template: StoryFn<ProductModalProps> = (args) => (
+  <ProductModal {...args} />
+);
 
 export const Default = Template.bind({});
 Default.args = {
   isOpen: true,
   onClose: () => console.log('Close modal'),
-  title: 'Влюбиться по-новому',
-  subtitle: 'Филадельфия опалённая с молодым шпинатом',
-  badgeText: 'НОВИНКА',
-  price: 529,
-  bannerImage: '/images/sushi-banner.jpg',
   productImage: '/images/sushi-product.jpg',
   productName: 'Филадельфия опалённая',
+  rollsCount: 4,
+  piecesCount: 32,
+  weight: 1129,
   productDescription:
     'Опалённый лосось, сливочный творожный сыр и молодой шпинат под сладким соусом унаги с ароматным чёрным кунжутом',
-  marketingTitle:
-    'Филадельфия опалённая — весенняя новинка, разжигающая чувства!',
-  marketingDescription: `
-    <p>Позвольте себе влюбиться заново!</p>
-    <p>Премиальный лосось обжигается пламенем до лёгкого аромата гриля и идеально раскрывается в сочетании с мягким сливочным вкусом творожного сыра. Сочный молодой шпинат добавляет композиции весенней свежести, а соус унаги и чёрный кунжут — приятное послевкусие 🔥</p>
-    <p>Филадельфия опалённая — любовь с первого кусочка! ❤️</p>
-  `,
-  endDate: '31.05.2026',
+  price: 529,
+  rollsData: [
+    {
+      id: 1,
+      name: 'Цезарь с курицей запечённый унаги',
+      description:
+        'Куринное филе, запечённое со специями, салат айсберг, творожный сыр, румяная сырная шапочка с унаги и кунжутом',
+      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
+      calories: 191,
+      ingredients:
+        'куриное филе, салат айсберг, творожный сыр, соус с сыром, соус унаги, кунжут',
+      nutrition: {
+        proteins: 7.1,
+        fats: 8.0,
+        carbohydrates: 22.9,
+      },
+    },
+    {
+      id: 2,
+      name: 'Филадельфия Лайт',
+      description:
+        'Нежное сочетание тающего во рту слабосолёного лосося и творожного сыра с приятным сливочным послевкусием',
+      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
+      calories: 175,
+      ingredients: 'слабосолёный лосось, творожный сыр',
+      nutrition: {
+        proteins: 5.9,
+        fats: 9.6,
+        carbohydrates: 16.3,
+      },
+    },
+    {
+      id: 3,
+      name: 'Аквиланг запечённый унаги',
+      description:
+        'Отборная креветка, нежный творожный сыр, румяная сырная шапочка с сладким унаги и ароматным кунжутом',
+      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
+      calories: 220,
+      ingredients:
+        'отборная креветка, творожный сыр, соус с сыром, соус унаги, кунжут',
+      nutrition: {
+        proteins: 6.7,
+        fats: 11.7,
+        carbohydrates: 22.1,
+      },
+    },
+    {
+      id: 4,
+      name: 'Калифорния с лососем Люкс',
+      description:
+        'Классический ролл с лососем, авокадо и огурцом в икре тобико',
+      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
+      calories: 185,
+      ingredients: 'лосось, авокадо, огурец, икра тобико, рис, нори',
+      nutrition: {
+        proteins: 6.2,
+        fats: 7.5,
+        carbohydrates: 24.3,
+      },
+    },
+  ],
   relatedProducts: [
     {
       id: 1,

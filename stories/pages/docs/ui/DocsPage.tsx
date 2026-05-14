@@ -1,4 +1,5 @@
 import { BreadCrumbs } from '@stories/shared/ui/breadcrumbs/BreadCrumbs';
+import type { BreadcrumbsData } from '@stories/fixtures/breadcrumbs';
 
 import './DocsPage.scss';
 
@@ -11,7 +12,7 @@ interface DocsPageProps {
   header?: unknown;
   page?: DocsPageContent;
   footer?: unknown;
-  data: Record<string, unknown>;
+  data: BreadcrumbsData;
 }
 
 export const DocsPage = ({ header, page, footer, data }: DocsPageProps) => {

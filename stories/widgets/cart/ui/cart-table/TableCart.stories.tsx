@@ -13,7 +13,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     data: {
-      type: 'array',
+      control: 'object',
       description: 'Данные для коризны',
     },
   },

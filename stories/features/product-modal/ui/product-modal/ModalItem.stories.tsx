@@ -36,15 +36,15 @@ const meta = {
       description: 'Значение бейджа Хит',
     },
     desc: {
-      type: 'object',
+      control: 'object',
       description: 'Описание товара для сетов',
     },
     count: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для кнопки',
     },
     list: {
-      type: 'object',
+      control: 'object',
       description: 'Список товаров',
     },
     typeModal: {

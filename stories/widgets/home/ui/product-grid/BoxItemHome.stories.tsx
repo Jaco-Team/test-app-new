@@ -11,8 +11,8 @@ const meta = {
     layout: 'fullscreen',
   },
   argTypes: {
-    cardItem: {
-      type: 'object',
+    cards: {
+      control: 'object',
       description: 'Данные по умолчанию для карточки товара ПК',
     },
   },
@@ -22,7 +22,7 @@ export default meta;
 type Story = StoryObj<typeof meta>;
 
 const defaultArgs = {
-  cardItem: homeProductCards,
+  cards: homeProductCards,
 };
 
 export const Default: Story = {

@@ -17,23 +17,23 @@ const meta = {
   },
   argTypes: {
     header: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для шапки ПК',
     },
     data: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для меню страницы на ПК',
     },
     user: {
-      type: 'object',
+      control: 'object',
       description: 'Личные данные пользователя',
     },
     address: {
-      type: 'object',
+      control: 'object',
       description: 'Данные адреса клиента',
     },
     footer: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для футера ПК',
     },
   },

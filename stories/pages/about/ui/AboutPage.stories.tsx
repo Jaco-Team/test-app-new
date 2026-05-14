@@ -12,15 +12,15 @@ const meta = {
   },
   argTypes: {
     header: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для шапки ПК',
     },
     data: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для оглавления страницы',
     },
     footer: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для футера ПК',
     },
     cityName: {

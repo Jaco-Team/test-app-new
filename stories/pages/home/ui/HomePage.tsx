@@ -1,15 +1,17 @@
 import { BannerList } from '@stories/widgets/home/ui/banner-list/BannerList';
 import { BoxItemHome } from '@stories/widgets/home/ui/product-grid/BoxItemHome';
+import type { Banner } from '@stories/widgets/home/ui/banner-list/model/types';
+import type { ProductItem } from '@stories/entities/product/ui/product-card/model/types';
 
 import './HomePage.scss';
 
 interface HomePageProps {
   header?: unknown;
   banners?: {
-    bannerList?: unknown[];
+    bannerList?: Banner[];
   };
   container?: {
-    cardItem?: unknown[];
+    cardItem?: ProductItem[];
   };
   footer?: unknown;
 }
@@ -24,9 +26,9 @@ export const HomePage = ({
     <div className="homePC">
       {header ? null : null}
       <div className="containerBanner">
-        <BannerList {...banners} />
+        <BannerList bannerList={banners?.bannerList ?? []} />
       </div>
-      <BoxItemHome cards={container?.cardItem} />
+      <BoxItemHome cards={container?.cardItem ?? []} />
       {footer ? null : null}
     </div>
   );

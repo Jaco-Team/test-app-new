@@ -12,11 +12,11 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     set: {
-      type: 'object',
+      control: 'object',
       description: 'Список товаров сета',
     },
     value: {
-      type: 'object',
+      control: 'object',
       description: 'Список товаров сета',
     },
     type: {

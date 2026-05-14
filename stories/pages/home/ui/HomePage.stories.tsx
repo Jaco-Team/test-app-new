@@ -15,19 +15,19 @@ const meta = {
   },
   argTypes: {
     header: {
-      type: 'object',
+      control: 'object',
       description: 'Данные по умолчанию для шапки ПК',
     },
     banners: {
-      type: 'array',
+      control: 'object',
       description: 'Данные по умолчанию для баннера ПК',
     },
     container: {
-      type: 'object',
+      control: 'object',
       description: 'Данные по умолчанию для контейнера карточек товара ПК',
     },
     footer: {
-      type: 'object',
+      control: 'object',
       description: 'Данные по умолчанию для футера ПК',
     },
   },

@@ -1,6 +1,6 @@
 export interface Banner {
   /** ID баннера */
-  id: string;
+  id: string | number;
   /** Название акции */
   name: string;
   /** Ссылка (slug) */
@@ -16,9 +16,9 @@ export interface Banner {
   /** Тип иллюстрации ('img' или другое) */
   type_illustration: string;
   /** ID города (1 - Тольятти, -1 - все города) */
-  city_id: string;
+  city_id: string | number;
   /** ID промокода (0 если нет) */
-  promo_id: string;
+  promo_id: string | number;
   /** Дата начала акции (YYYY-MM-DD) */
   date_start: string;
   /** Дата окончания акции (YYYY-MM-DD) */
@@ -44,7 +44,8 @@ export interface Banner {
   /** Дополнительная информация (массив) */
   info: BannerInfo[];
   /** Список товаров в акции */
-  item: BannerItem[];
+  item?: BannerItem[];
+  items?: BannerItem[];
 }
 
 export interface BannerItem {

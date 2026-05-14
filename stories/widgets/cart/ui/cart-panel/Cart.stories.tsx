@@ -14,7 +14,7 @@ const meta = {
   tags: ['autodocs'],
   argTypes: {
     data: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для коризны',
     },
     openBasket: {
@@ -22,11 +22,11 @@ const meta = {
       description: 'Открытие корзины',
     },
     promo: {
-      type: 'object',
+      control: 'object',
       description: 'Данные промокода',
     },
     desk: {
-      type: 'object',
+      control: 'object',
       description: 'Данные промокода',
     },
   },
