@@ -1,5 +1,4 @@
-/** @type { import('@storybook/nextjs').Preview } */
-import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
+import { ThemeProvider, CssBaseline } from '@mui/material';
 import { withThemeFromJSXProvider } from '@storybook/addon-themes';
 
 import '@fontsource/roboto/100.css';
@@ -9,66 +8,10 @@ import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import '@fontsource/roboto/900.css';
 
-const viewports = {
-  mobileMin: {
-    name: 'Mobile min (320)',
-    styles: {
-      width: '320px',
-      height: '667px',
-    },
-    type: 'mobile',
-  },
-  mobileMax: {
-    name: 'Mobile max (667)',
-    styles: {
-      width: '667px',
-      height: '900px',
-    },
-    type: 'mobile',
-  },
-  tabletMin: {
-    name: 'Tablet min (668)',
-    styles: {
-      width: '668px',
-      height: '900px',
-    },
-    type: 'tablet',
-  },
-  tabletMax: {
-    name: 'Tablet max (990)',
-    styles: {
-      width: '990px',
-      height: '900px',
-    },
-    type: 'tablet',
-  },
-  desktopMin: {
-    name: 'Desktop min (991+)',
-    styles: {
-      width: '991px',
-      height: '900px',
-    },
-    type: 'desktop',
-  },
-};
+import { storybookMuiTheme } from './presets/mui-theme.mjs';
+import { defaultViewportId, storybookViewports } from './presets/viewports.mjs';
 
-// import '@fontsource/material-icons';
-
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#CC0033',
-    },
-  },
-  components: {
-    MuiButtonBase: {
-      defaultProps: {
-        disableRipple: true,
-      },
-    },
-  },
-});
-
+/** @type { import('@storybook/nextjs').Preview } */
 const preview = {
   parameters: {
     controls: {
@@ -86,14 +29,13 @@ const preview = {
       },
     },
     viewport: {
-      options: viewports,
+      options: storybookViewports,
     },
-    //layout: 'centered',
   },
 
   initialGlobals: {
     viewport: {
-      value: 'desktopMin',
+      value: defaultViewportId,
       isRotated: false,
     },
   },
@@ -108,12 +50,12 @@ const preview = {
       GlobalStyles: CssBaseline,
       Provider: ThemeProvider,
       themes: {
-        theme,
+        theme: storybookMuiTheme,
       },
     }),
   ],
 
-  tags: ['autodocs']
+  tags: ['autodocs'],
 };
 
 export default preview;

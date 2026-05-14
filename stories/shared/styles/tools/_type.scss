@@ -1,0 +1,33 @@
+@use '../settings' as settings;
+@use 'math' as math-tools;
+
+@mixin font(
+  $size,
+  $weight: settings.$font-weight-regular,
+  $viewport: desktop,
+  $color: settings.$color-text-primary,
+  $line-height: null
+) {
+  font-family: settings.$font-family-base !important;
+  font-size: math-tools.design-size($size, $viewport) !important;
+  font-style: normal;
+  font-weight: $weight;
+  color: $color;
+
+  @if $line-height != null {
+    line-height: math-tools.design-size($line-height, $viewport);
+  }
+}
+
+@mixin text-truncate($lines: 1) {
+  overflow: hidden;
+
+  @if $lines == 1 {
+    white-space: nowrap;
+    text-overflow: ellipsis;
+  } @else {
+    display: -webkit-box;
+    -webkit-line-clamp: $lines;
+    -webkit-box-orient: vertical;
+  }
+}

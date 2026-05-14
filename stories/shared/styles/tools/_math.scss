@@ -1,0 +1,42 @@
+@use 'sass:math';
+@use 'sass:meta';
+@use '../settings' as settings;
+
+@function number($value) {
+  @if meta.type-of($value) == 'number' and not math.is-unitless($value) {
+    @return math.div($value, $value * 0 + 1);
+  }
+
+  @return $value;
+}
+
+@function round-decimal($value, $precision: settings.$design-size-precision) {
+  @return math.div(math.round($value * $precision), $precision);
+}
+
+@function px-to-rem($value, $base: 16) {
+  @return round-decimal(math.div(number($value), number($base))) * 1rem;
+}
+
+@function px-to-vw($value, $viewport-width) {
+  @return round-decimal(
+      math.div(number($value), number($viewport-width)) * 100
+    ) *
+    1vw;
+}
+
+@function design-size($value, $viewport: desktop) {
+  @if $viewport == mobile {
+    @return px-to-vw($value, settings.$design-width-mobile);
+  }
+
+  @if $viewport == tablet {
+    @return px-to-vw($value, settings.$design-width-tablet);
+  }
+
+  @return px-to-vw($value, settings.$design-width-desktop);
+}
+
+@function aspect-ratio($width, $height) {
+  @return round-decimal(math.div(number($width), number($height)));
+}

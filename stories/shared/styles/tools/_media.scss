@@ -1,0 +1,45 @@
+@use 'sass:map';
+@use '../settings' as settings;
+
+@mixin respond($viewport) {
+  $config: map.get(settings.$breakpoints, $viewport);
+
+  @if $config == null {
+    @error "Unknown viewport. Use mobile, tablet, or desktop.";
+  }
+
+  $min: map.get($config, min);
+  $max: map.get($config, max);
+
+  @if $min and $max {
+    @media (min-width: $min) and (max-width: $max) {
+      @content;
+    }
+  } @else if $min {
+    @media (min-width: $min) {
+      @content;
+    }
+  } @else if $max {
+    @media (max-width: $max) {
+      @content;
+    }
+  }
+}
+
+@mixin respond-from($width) {
+  @media (min-width: $width) {
+    @content;
+  }
+}
+
+@mixin respond-until($width) {
+  @media (max-width: $width) {
+    @content;
+  }
+}
+
+@mixin respond-between($min, $max) {
+  @media (min-width: $min) and (max-width: $max) {
+    @content;
+  }
+}

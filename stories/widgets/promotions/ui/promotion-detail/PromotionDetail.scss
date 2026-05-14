@@ -71,8 +71,10 @@
 
   & .ImgItem {
     position: relative;
+    width: calcSize(2520);
+
     > div {
-      width: calcSize(2520);
+      width: 100%;
     }
     & img {
       cursor: default;

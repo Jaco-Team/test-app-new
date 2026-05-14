@@ -1,3 +1,4 @@
+/** Идентификаторы viewport синхронизированы с `.storybook/presets/viewports.mjs`. */
 export type ResponsiveViewport = 'mobile' | 'tablet' | 'desktop';
 
 export const mobileGlobals = {
