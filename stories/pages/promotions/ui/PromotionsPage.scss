@@ -1,0 +1,51 @@
+@use '../../../shared/global' as *;
+
+.akciiPage {
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh;
+  margin: 0 calcSize(125);
+  row-gap: calcSize(96);
+
+  & .login {
+    height: calcSize(256);
+    width: calcSize(1206);
+    margin-top: calcSize(320);
+    margin-bottom: calcSize(128);
+    @include MyFonts(120, 500);
+    margin-left: calcSize(34);
+    line-height: calcSize(140);
+  }
+}
+
+.akciiPage--tablet {
+  min-height: 60vh;
+  margin: 0 calcSize(64);
+  row-gap: calcSize(56);
+
+  & .login {
+    width: auto;
+    height: auto;
+    margin-top: calcSize(220);
+    margin-bottom: calcSize(72);
+    margin-left: 0;
+    @include MyFonts(80, 500);
+    line-height: calcSize(96);
+  }
+}
+
+.akciiPage--mobile {
+  min-height: 50vh;
+  margin: 0 3.4188vw;
+  row-gap: calcSize(40);
+
+  & .login {
+    width: 51.2821vw;
+    height: 17.094vw;
+    margin-top: 27.3504vw;
+    margin-bottom: 10.2564vw;
+    margin-left: 3.76068vw;
+    @include MyFonts_mobile(42, 500);
+    line-height: normal;
+  }
+}

@@ -1,13 +1,13 @@
 @use '../../../../shared/global' as *;
 
-.itemBannerPCNew{
+.promotionProductItem {
   width: calcSize(980);
   height: calcSize(340);
 
   display: flex;
   flex-direction: row;
 
-  & .number{
+  & .number {
     width: calcSize(60);
     height: calcSize(30);
     @include MyFonts(40, 400);
@@ -16,7 +16,7 @@
     text-align: end;
   }
 
-  & img{
+  & img {
     width: calcSize(280);
     height: calcSize(280);
     object-fit: contain;
@@ -24,18 +24,18 @@
     mix-blend-mode: multiply;
   }
 
-  & .itemDesc{
+  & .itemDesc {
     display: flex;
     justify-content: flex-start;
     flex-direction: column;
     margin-left: calcSize(40);
-    
-    & .title{
+
+    & .title {
       width: calcSize(600);
       height: calcSize(120);
       @include MyFonts(40, 400);
     }
-    & .desc{
+    & .desc {
       width: calcSize(600);
       height: calcSize(120);
       @include MyFonts(25, 400);
@@ -45,12 +45,12 @@
       -webkit-line-clamp: 3;
       -webkit-box-orient: vertical;
     }
-    & div.price.button{
+    & div.price.button {
       display: flex;
       align-items: center;
-      justify-content: space-between!important;
+      justify-content: space-between !important;
     }
-    & button.price.button{
+    & button.price.button {
       border: calcSize(3) solid rgba(0, 0, 0, 0.2);
       &:hover {
         background-color: #f2f2f2;
@@ -66,12 +66,12 @@
       }
     }
 
-    & .price{
+    & .price {
       width: calcSize(255);
       height: calcSize(60);
 
-      &.text{
-        & > span{
+      &.text {
+        & > span {
           @include MyFonts(30, 400);
           color: rgba(0, 0, 0, 0.6) !important;
         }
@@ -82,7 +82,7 @@
         height: calcSize(60);
         border-radius: calcSize(45);
         color: rgba(0, 0, 0, 0.6) !important;
-        
+
         @include MyFonts(30, 400);
         line-height: calcSize(40);
         display: flex;
@@ -90,7 +90,7 @@
         justify-content: center;
         white-space: nowrap;
         cursor: pointer;
-        
+
         & > button {
           width: calcSize(255);
           border-radius: calcSize(45);
@@ -99,7 +99,7 @@
           align-items: center;
           height: calcSize(60);
           margin-bottom: 0 !important;
-      
+
           &.minus {
             padding: 0;
             display: flex;
@@ -107,7 +107,7 @@
             align-items: center;
             border: none;
             background-color: #e6e6e6;
-      
+
             @include MyFonts(50, 300);
             width: calcSize(60);
             height: calcSize(60);
@@ -122,16 +122,15 @@
             align-items: center;
             border: none;
             background-color: #e6e6e6;
-      
+
             @include MyFonts(50, 300);
             width: calcSize(60);
             height: calcSize(60);
             border-radius: calcSize(40);
             cursor: pointer;
           }
-          
         }
-      
+
         & > span {
           color: rgba(0, 0, 0, 0.6) !important;
           @include MyFonts(30, 400);
@@ -140,81 +139,95 @@
     }
   }
 
-  @media (max-width: 667px) {
+  @media (max-width: 800px) {
     width: 100%;
-    min-height: calcSize_mobile(330);
+    min-height: 0;
     height: auto;
+    margin-bottom: 1.7094vw;
     display: grid;
-    grid-template-columns: calcSize_mobile(54) calcSize_mobile(300) minmax(0, 1fr);
-    column-gap: calcSize_mobile(24);
+    grid-template-columns: 5.12821vw 24.7863vw minmax(0, 1fr);
+    column-gap: 3.4188vw;
     align-items: start;
 
     & .number {
       width: auto;
       height: auto;
-      @include MyFonts_mobile(34, 400);
-      line-height: calcSize_mobile(42);
-      padding-top: calcSize_mobile(18);
+      font-size: 2.5641vw !important;
+      font-weight: 400;
+      line-height: normal;
+      padding-top: 2.5641vw;
+      text-align: end;
+    }
+
+    & .itemImg {
+      width: 24.7863vw;
     }
 
     & img {
-      width: calcSize_mobile(280);
-      height: calcSize_mobile(280);
+      width: 100%;
+      height: auto;
+      border-radius: 0 !important;
     }
 
     & .itemDesc {
       min-width: 0;
       margin-left: 0;
-      padding-top: calcSize_mobile(14);
+      padding-top: 0;
 
       & .title {
         width: 100%;
         height: auto;
-        min-height: calcSize_mobile(70);
-        @include MyFonts_mobile(34, 400);
-        line-height: calcSize_mobile(40);
+        min-height: 8.54701vw;
+        font-size: 3.4188vw !important;
+        font-weight: 400;
+        line-height: normal;
       }
 
       & .desc {
         width: 100%;
         height: auto;
-        min-height: calcSize_mobile(82);
-        @include MyFonts_mobile(24, 400);
-        line-height: calcSize_mobile(30);
-        -webkit-line-clamp: 3;
+        min-height: 10.2564vw;
+        font-size: 2.13675vw !important;
+        font-weight: 400;
+        line-height: 3.4188vw;
+        -webkit-line-clamp: 4;
       }
 
       & .price {
-        width: calcSize_mobile(240);
-        height: calcSize_mobile(58);
+        width: 20.5128vw;
+        height: 5.98291vw;
 
         &.text > span {
-          @include MyFonts_mobile(30, 400);
+          font-size: 2.5641vw !important;
+          font-weight: 400;
         }
 
         &.button {
-          width: calcSize_mobile(240);
-          height: calcSize_mobile(58);
-          border-radius: calcSize_mobile(45);
-          @include MyFonts_mobile(30, 400);
-          line-height: calcSize_mobile(38);
+          width: 20.5128vw;
+          height: 5.98291vw;
+          border-radius: 3.84615vw;
+          font-size: 2.5641vw !important;
+          font-weight: 400;
+          line-height: normal;
 
           & > button {
-            width: calcSize_mobile(240);
-            height: calcSize_mobile(58);
-            border-radius: calcSize_mobile(45);
+            width: 20.5128vw;
+            height: 5.98291vw;
+            border-radius: 3.84615vw;
 
             &.minus,
             &.plus {
-              width: calcSize_mobile(58);
-              height: calcSize_mobile(58);
-              border-radius: calcSize_mobile(40);
-              @include MyFonts_mobile(48, 300);
+              width: 5.12821vw;
+              height: 5.12821vw;
+              border-radius: 3.4188vw;
+              font-size: 4.2735vw !important;
+              font-weight: 300;
             }
           }
 
           & > span {
-            @include MyFonts_mobile(30, 400);
+            font-size: 2.5641vw !important;
+            font-weight: 400;
           }
         }
       }
@@ -290,9 +303,6 @@
   }
 }
 
-
-
-
 .itemBannerPC {
   display: flex;
   margin-bottom: calcSize(20);
@@ -341,9 +351,7 @@
   }
 }
 
-
-
-.BannerFontPC {
+.promotionProductItemFont {
   & .ItemTitle {
     @include MyFonts(50, 500);
   }
@@ -366,5 +374,56 @@
 
   & .ItemTime {
     @include MyFonts(22, 400);
+  }
+}
+
+@media (max-width: 800px) {
+  .promotionProductItem.itemBannerPC {
+    & .itemDesc {
+      width: auto;
+
+      & span {
+        margin-left: 0;
+      }
+    }
+
+    & .ItemName {
+      width: 100%;
+      height: auto;
+      min-height: 8.54701vw;
+      font-size: 3.4188vw !important;
+      font-weight: 400;
+      line-height: normal;
+    }
+
+    & .ItemDesk {
+      width: 100%;
+      height: auto;
+      min-height: 10.2564vw;
+      font-size: 2.13675vw !important;
+      font-weight: 400;
+      line-height: 3.4188vw;
+    }
+  }
+}
+
+@media (max-width: 800px) {
+  .promotionProductItem.itemBannerPC.promotionProductItemFont .ItemName {
+    width: 100%;
+    height: auto;
+    min-height: 8.54701vw;
+    margin-left: 0;
+    font-size: 3.4188vw !important;
+    font-weight: 400;
+    line-height: normal;
+  }
+  .promotionProductItem.itemBannerPC.promotionProductItemFont .ItemDesk {
+    width: 100%;
+    height: auto;
+    min-height: 10.2564vw;
+    margin-left: 0;
+    font-size: 2.13675vw !important;
+    font-weight: 400;
+    line-height: 3.4188vw;
   }
 }

@@ -1,9 +1,9 @@
-import { BannerItemPC } from './BannerItemPC';
+import { PromotionProductItem } from './PromotionProductItem';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
   title: 'Акции / Товар акции',
-  component: BannerItemPC,
+  component: PromotionProductItem,
   tags: ['autodocs'],
   argTypes: {
     number: {
@@ -36,12 +36,12 @@ export default {
       control: {
         type: 'radio',
       },
-      options: ['text', 'active']
+      options: ['text', 'active'],
     },
   },
 };
 
-const Template = (args) => <BannerItemPC {...args} />;
+const Template = (args) => <PromotionProductItem {...args} />;
 
 export const Default = Template.bind({});
 export const Promo = Template.bind({});

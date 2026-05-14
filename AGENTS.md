@@ -1,5 +1,12 @@
 # Project Codex Instructions
 
+## Non-Negotiable Output Rule
+
+- NEVER show code diffs in chat. This includes unified diffs, patch hunks, before/after snippets, generated patches, colored patch output, copied file bodies, and apply_patch contents or output.
+- File edits must happen silently through tools. Chat may only contain short status updates and concise recaps.
+- The only exception is when the user explicitly says `show diff`, `paste code`, or directly asks to see file contents.
+- If a tool would expose patch contents in chat, avoid that tool for the edit when a non-diff file operation can safely do the job.
+
 ## Scope
 
 - Current redesign work is Storybook-first.

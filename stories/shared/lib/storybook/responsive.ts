@@ -1,3 +1,5 @@
+export type ResponsiveViewport = 'mobile' | 'tablet' | 'desktop';
+
 export const mobileGlobals = {
   viewport: {
     value: 'mobileMin',

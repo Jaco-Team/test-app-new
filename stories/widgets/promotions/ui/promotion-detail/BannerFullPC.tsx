@@ -2,7 +2,7 @@ import Grid from '@mui/material/Grid';
 import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import { BannerImg } from '@stories/entities/promotion/ui/promotion-image/BannerImg';
-import { BannerItemPC } from '@stories/entities/promotion/ui/promotion-card/BannerItemPC';
+import { PromotionProductItem } from '@stories/entities/promotion/ui/promotion-card/PromotionProductItem';
 
 import './BannerFullPC.scss';
 
@@ -39,7 +39,7 @@ export const BannerFullPC = ({
 
           <div className="List">
             {items?.map((item, key) => (
-              <BannerItemPC
+              <PromotionProductItem
                 key={key}
                 number={key + 1}
                 img_app={item.img_app}
