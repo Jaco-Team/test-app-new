@@ -2,7 +2,7 @@ import { PromoModal } from './PromoModal';
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 
 export default {
-  title: 'Promo / Promo Modal',
+  title: 'Акции / Модалка баннера',
   component: PromoModal,
   tags: ['autodocs'],
   argTypes: {

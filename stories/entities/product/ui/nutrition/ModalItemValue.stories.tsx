@@ -1,9 +1,9 @@
-import { ModalItemPCvalue } from './ModalItemPCvalue';
+import { ModalItemValue } from './ModalItemValue';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
   title: 'Сущности / Товар / БЖУ',
-  component: ModalItemPCvalue,
+  component: ModalItemValue,
   tags: ['autodocs'],
   argTypes: {
     number: {
@@ -37,7 +37,7 @@ export default {
   },
 };
 
-const Template = (args) => <ModalItemPCvalue {...args} />;
+const Template = (args) => <ModalItemValue {...args} />;
 export const Default = Template.bind({});
 export const LongText = Template.bind({});
 

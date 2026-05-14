@@ -1,6 +1,14 @@
-import './ModalItemPCvalue.scss';
+import './ModalItemValue.scss';
 
-export const ModalItemPCvalue = ({ number, kkal, title, protein, tmp_desc, fat, carbohydrates }: Record<string, any>) => {
+export const ModalItemValue = ({
+  number,
+  kkal,
+  title,
+  protein,
+  tmp_desc,
+  fat,
+  carbohydrates,
+}: Record<string, any>) => {
   return (
     <div className="valueItem">
       <span className="itemNumber">{number}.</span>
@@ -41,4 +49,3 @@ export const ModalItemPCvalue = ({ number, kkal, title, protein, tmp_desc, fat, 
     </div>
   );
 };
-

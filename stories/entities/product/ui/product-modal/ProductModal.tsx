@@ -1,45 +1,71 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import './ProductModal.scss';
-import { ModalItemPCvalue } from '@stories/entities/product/ui/nutrition/ModalItemPCvalue';
+import { ModalItemValue } from '@stories/entities/product/ui/nutrition/ModalItemValue';
+import {
+  ProductModalProps,
+  RollItem,
+} from '@stories/entities/product/ui/product-modal/model/types';
 
-interface RelatedProduct {
-  id: number;
-  name: string;
-  description: string;
-  price: number;
-  image: string;
-  rollsCount: number;
-  piecesCount: number;
-  weight: number;
-}
-
-interface RollItem {
-  id: number;
-  name: string;
-  description: string;
-  image: string;
-  calories?: number;
-  ingredients?: string;
-  nutrition?: {
-    proteins: number;
-    fats: number;
-    carbohydrates: number;
-  };
-}
-
-interface ProductModalProps {
-  isOpen: boolean;
-  onClose: () => void;
-  productImage?: string;
-  productName?: string;
-  rollsCount?: number;
-  piecesCount?: number;
-  weight?: number;
-  productDescription?: string;
-  price?: number;
-  relatedProducts?: RelatedProduct[];
-}
+const defaultRollsData: RollItem[] = [
+  {
+    id: 1,
+    name: 'Цезарь с курицей запечённый унаги',
+    description:
+      'Куринное филе, запечённое со специями, салат айсберг, творожный сыр, румяная сырная шапочка с унаги и кунжутом',
+    image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
+    calories: 191,
+    ingredients:
+      'куриное филе, салат айсберг, творожный сыр, соус с сыром, соус унаги, кунжут',
+    nutrition: {
+      proteins: 7.1,
+      fats: 8.0,
+      carbohydrates: 22.9,
+    },
+  },
+  {
+    id: 2,
+    name: 'Филадельфия Лайт',
+    description:
+      'Нежное сочетание тающего во рту слабосолёного лосося и творожного сыра с приятным сливочным послевкусием',
+    image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
+    calories: 175,
+    ingredients: 'слабосолёный лосось, творожный сыр',
+    nutrition: {
+      proteins: 5.9,
+      fats: 9.6,
+      carbohydrates: 16.3,
+    },
+  },
+  {
+    id: 3,
+    name: 'Аквиланг запечённый унаги',
+    description:
+      'Отборная креветка, нежный творожный сыр, румяная сырная шапочка с сладким унаги и ароматным кунжутом',
+    image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
+    calories: 220,
+    ingredients:
+      'отборная креветка, творожный сыр, соус с сыром, соус унаги, кунжут',
+    nutrition: {
+      proteins: 6.7,
+      fats: 11.7,
+      carbohydrates: 22.1,
+    },
+  },
+  {
+    id: 4,
+    name: 'Калифорния с лососем Люкс',
+    description: 'Классический ролл с лососем, авокадо и огурцом в икре тобико',
+    image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
+    calories: 185,
+    ingredients: 'лосось, авокадо, огурец, икра тобико, рис, нори',
+    nutrition: {
+      proteins: 6.2,
+      fats: 7.5,
+      carbohydrates: 24.3,
+    },
+  },
+];
 
 export const ProductModal: React.FC<ProductModalProps> = ({
   isOpen,
@@ -51,7 +77,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   weight = 1129,
   productDescription = 'Цезарь с курицей запечённый унаги, Филадельфия Лайт, Аквиланг запечённый унаги, Калифорния с лососем Люкс',
   price = 1429,
-  relatedProducts = [],
+  rollsData = defaultRollsData,
 }) => {
   const [activeView, setActiveView] = useState<'main' | 'rolls' | 'nutrition'>(
     'main'
@@ -59,68 +85,6 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   const [nutritionView, setNutritionView] = useState<'per100' | 'perDish'>(
     'per100'
   );
-
-  // Sample data for rolls in the set
-  const rollsData: RollItem[] = [
-    {
-      id: 1,
-      name: 'Цезарь с курицей запечённый унаги',
-      description:
-        'Куринное филе, запечённое со специями, салат айсберг, творожный сыр, румяная сырная шапочка с унаги и кунжутом',
-      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
-      calories: 191,
-      ingredients:
-        'куриное филе, салат айсберг, творожный сыр, соус с сыром, соус унаги, кунжут',
-      nutrition: {
-        proteins: 7.1,
-        fats: 8.0,
-        carbohydrates: 22.9,
-      },
-    },
-    {
-      id: 2,
-      name: 'Филадельфия Лайт',
-      description:
-        'Нежное сочетание тающего во рту слабосолёного лосося и творожного сыра с приятным сливочным послевкусием',
-      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
-      calories: 175,
-      ingredients: 'слабосолёный лосось, творожный сыр',
-      nutrition: {
-        proteins: 5.9,
-        fats: 9.6,
-        carbohydrates: 16.3,
-      },
-    },
-    {
-      id: 3,
-      name: 'Аквиланг запечённый унаги',
-      description:
-        'Отборная креветка, нежный творожный сыр, румяная сырная шапочка с сладким унаги и ароматным кунжутом',
-      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
-      calories: 220,
-      ingredients:
-        'отборная креветка, творожный сыр, соус с сыром, соус унаги, кунжут',
-      nutrition: {
-        proteins: 6.7,
-        fats: 11.7,
-        carbohydrates: 22.1,
-      },
-    },
-    {
-      id: 4,
-      name: 'Калифорния с лососем Люкс',
-      description:
-        'Классический ролл с лососем, авокадо и огурцом в икре тобико',
-      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
-      calories: 185,
-      ingredients: 'лосось, авокадо, огурец, икра тобико, рис, нори',
-      nutrition: {
-        proteins: 6.2,
-        fats: 7.5,
-        carbohydrates: 24.3,
-      },
-    },
-  ];
 
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
@@ -293,21 +257,6 @@ export const ProductModal: React.FC<ProductModalProps> = ({
         <h2 className="ProductModal-nutrition-title">
           Таблица пищевой ценности
         </h2>
-        <button
-          className="ProductModal-back-btn"
-          onClick={handleBack}
-          aria-label="Назад"
-        >
-          <svg width="24" height="24" viewBox="0 0 24 24" fill="none">
-            <path
-              d="M15 18L9 12L15 6"
-              stroke="currentColor"
-              strokeWidth="2"
-              strokeLinecap="round"
-              strokeLinejoin="round"
-            />
-          </svg>
-        </button>
       </div>
 
       <p className="ProductModal-nutrition-subtitle">
@@ -334,7 +283,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
       <div className="ProductModal-nutrition-list">
         {rollsData.map((roll, index) => (
-          <ModalItemPCvalue
+          <ModalItemValue
             number={index + 1}
             kkal={roll.calories}
             tmp_desc={roll.ingredients}

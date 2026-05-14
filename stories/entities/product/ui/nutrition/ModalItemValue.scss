@@ -3,10 +3,9 @@
 .valueItem {
   display: flex;
   min-height: calcSize(300);
-  width: calcSize(994);
+  width: 100%;
 
   & .itemNumber {
-    width: calcSize(60);
     height: calcSize(30);
     text-align: right;
     margin-right: calcSize(40);
@@ -18,7 +17,7 @@
   & .itemValueColumn {
     display: flex;
     flex-direction: column;
-    width: calcSize(894);
+    width: 100%;
     border: calcSize(3) solid #b2b2b2;
     border-radius: calcSize(30);
 
@@ -31,7 +30,7 @@
         @include MyFonts(40, 400);
         min-height: calcSize(149.5);
         border-right: calcSize(3) solid #b2b2b2;
-        width: calcSize(718.5);
+        width: 100%;
         padding-left: calcSize(30);
         line-height: calcSize(47);
         display: flex;
@@ -58,11 +57,11 @@
     & .itemValueRow {
       display: flex;
       align-items: center;
-      
+
       & > div:first-child {
         min-height: calcSize(144.5);
         @include MyFonts(22, 400);
-        width: calcSize(538.5);
+        width: 100%;
         border-right: calcSize(3) solid #b2b2b2;
         line-height: calcSize(26);
         padding-left: calcSize(30);
@@ -73,13 +72,13 @@
       }
 
       & > div:last-child {
-        width: calcSize(355.5);
+        width: 100%;
         display: flex;
         align-items: center;
         flex-direction: column;
 
         & div {
-          width: calcSize(300);
+          width: 100%;
           display: flex;
           justify-content: space-between;
 
