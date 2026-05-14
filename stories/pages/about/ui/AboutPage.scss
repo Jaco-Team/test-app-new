@@ -1,0 +1,176 @@
+@use '../../../shared/global' as *;
+
+.about-page {
+  display: flex;
+  flex-direction: column;
+  min-height: 70vh;
+  margin-top: calcSize(128);
+  mix-blend-mode: multiply;
+
+  &__row {
+    display: flex;
+    flex-direction: row;
+    width: 100%;
+    margin: 0;
+    align-items: flex-start;
+  }
+
+  &__main {
+    flex: 1;
+    min-width: 0;
+    z-index: 3;
+
+    img {
+      border-radius: calcSize(40);
+    }
+
+    a {
+      text-decoration: none;
+      color: $ColorMain;
+    }
+
+    h2 {
+      padding-top: calcSize(10);
+    }
+  }
+
+  &__sidebar {
+    flex-shrink: 0;
+  }
+
+  &__section--closing p {
+    margin: 0;
+  }
+
+  &__caption {
+    text-align: center;
+  }
+
+  &__swiper-caption {
+    white-space: normal;
+    text-align: center;
+    font-weight: 300;
+  }
+
+  &__back {
+    margin-top: calcSize(40);
+    margin-bottom: calcSize(40);
+    height: calcSize(60);
+    display: flex;
+    align-items: center;
+    color: inherit;
+
+    & svg {
+      width: calcSize(60);
+      height: calcSize(60);
+    }
+  }
+
+  &--mobile {
+    .about-page__sidebar {
+      display: none;
+    }
+
+    .about-page__main {
+      margin-top: calcSize(64);
+      margin-bottom: calcSize(64);
+      margin-left: calcSize_mobile(100);
+      width: min(100%, calcSize_mobile(970));
+      padding-top: 0;
+      padding-left: 0;
+
+      h1,
+      h2 {
+        @include MyFonts_mobile(75, 600);
+        text-align: start;
+        width: 100%;
+      }
+
+      p,
+      li,
+      span {
+        @include MyFonts_mobile(35, 400);
+        line-height: 1.5;
+      }
+
+      a {
+        color: $ColorMain;
+        line-height: 2rem;
+        font-weight: bold;
+      }
+    }
+
+    .about-page__back {
+      margin-top: calcSize_mobile(40);
+      margin-bottom: calcSize_mobile(40);
+      height: calcSize_mobile(60);
+
+      & svg {
+        width: calcSize_mobile(60);
+        height: calcSize_mobile(60);
+      }
+    }
+  }
+
+  &--tablet {
+    .about-page__sidebar {
+      display: none;
+    }
+
+    .about-page__main {
+      margin-top: calcSize(96);
+      margin-bottom: calcSize(96);
+      margin-left: calcSize(64);
+      margin-right: calcSize(64);
+      width: auto;
+      max-width: tablet-size(1560);
+
+      h1,
+      h2 {
+        @include MyFonts_tablet(56, 600);
+        text-align: start;
+      }
+
+      p,
+      li,
+      span {
+        @include MyFonts_tablet(28, 400);
+        line-height: 1.5;
+      }
+
+      a {
+        color: $ColorMain;
+        font-weight: 600;
+      }
+    }
+  }
+
+  &--desktop {
+    margin-top: calcSize(128);
+
+    .about-page__main {
+      margin-top: calcSize(120);
+      margin-bottom: calcSize(140);
+      margin-left: calcSize(125);
+      max-width: calcSize(1560);
+      padding-top: 0;
+      padding-left: 0;
+
+      h1,
+      h2 {
+        @include MyFonts(75, 700);
+      }
+
+      p,
+      li,
+      span {
+        @include MyFonts(30, 400);
+        line-height: 1.5;
+      }
+    }
+
+    .about-page__sidebar {
+      margin-top: calcSize(120);
+    }
+  }
+}

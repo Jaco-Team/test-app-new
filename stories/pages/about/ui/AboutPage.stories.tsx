@@ -1,10 +1,11 @@
-import { AboutPagePC } from './AboutPagePC';
+import { AboutPage } from './AboutPage';
 import * as BreadСrumbsPC from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC.stories';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
+
 export default {
   title: 'Страницы / О компании',
-  component: AboutPagePC,
+  component: AboutPage,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
@@ -16,41 +17,58 @@ export default {
     },
     data: {
       type: 'object',
-      description: 'Данные для меню страницы на ПК',
+      description: 'Данные для оглавления страницы',
     },
     footer: {
       type: 'object',
       description: 'Данные для футера ПК',
     },
+    cityName: {
+      type: 'string',
+      description: 'Город в URL (для мобильной ссылки «назад»)',
+    },
+    viewport: {
+      control: 'inline-radio',
+      options: ['mobile', 'tablet', 'desktop'],
+      description: 'Вариант вёрстки (как на странице акций)',
+    },
   },
 };
 
-const Template = (args) => <AboutPagePC {...args} />;
+const Template = (args) => <AboutPage {...args} />;
+
 export const Default = Template.bind({});
 export const ArrowUp = Template.bind({});
-// export const Cookie = Template.bind({});
 
 Default.args = {
   data: BreadСrumbsPC.About.args,
+  cityName: 'togliatti',
+  viewport: 'desktop',
 };
 
 ArrowUp.args = {
-  data: BreadСrumbsPC.About.args
+  data: BreadСrumbsPC.About.args,
+  cityName: 'togliatti',
+  viewport: 'desktop',
 };
 
-// Cookie.args = {
-////   actia: BannerFullPC.Page.args,
-//
-// };
-
 export const Mobile = Template.bind({});
-Mobile.args = Default.args;
+Mobile.args = {
+  ...Default.args,
+  viewport: 'mobile',
+};
 Mobile.globals = responsiveStoryGlobals.Mobile;
 
 export const Tablet = Template.bind({});
-Tablet.args = Default.args;
+Tablet.args = {
+  ...Default.args,
+  viewport: 'tablet',
+};
 Tablet.globals = responsiveStoryGlobals.Tablet;
 
 export const Desktop = Template.bind({});
-Desktop.args = Default.args;
+Desktop.args = {
+  ...Default.args,
+  viewport: 'desktop',
+};
 Desktop.globals = responsiveStoryGlobals.Desktop;

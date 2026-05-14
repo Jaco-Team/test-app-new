@@ -2,18 +2,22 @@ import { Fragment, useState } from 'react';
 import { Link as ScrollLink } from 'react-scroll';
 import './BreadСrumbsPC.scss';
 
-interface BreadCrumbsItem {
+export interface BreadCrumbsItem {
   link?: string;
   text: string;
 }
 
-interface BreadCrumbsPCProps {
+export interface BreadCrumbsPCProps {
   activePage: string;
   list: BreadCrumbsItem[];
   title: string;
 }
 
-export const BreadСrumbsPC = ({ activePage, list, title }: BreadCrumbsPCProps) => {
+export const BreadСrumbsPC = ({
+  activePage,
+  list,
+  title,
+}: BreadCrumbsPCProps) => {
   const [activeLink, setActiveLink] = useState('');
   const [notActiveLink, setNotActiveLink] = useState('');
 
@@ -25,16 +29,24 @@ export const BreadСrumbsPC = ({ activePage, list, title }: BreadCrumbsPCProps) 
           <Fragment key={`${item.text}-${key}`}>
             {activePage !== 'about' ? (
               <li className={activePage === item.link ? 'activeMarker' : ''}>
-                <a className={activePage === item.link ? 'active' : ''}>{item.text}</a>
+                <a className={activePage === item.link ? 'active' : ''}>
+                  {item.text}
+                </a>
               </li>
             ) : (
-              <li className={activeLink === item.text && activeLink !== notActiveLink ? 'activeMarker' : ''}>
-                <ScrollLink 
-                  to={`tag${key + 1}`} 
-                  activeClass="active" 
-                  spy={true} 
-                  smooth={true} 
-                  offset={-65} 
+              <li
+                className={
+                  activeLink === item.text && activeLink !== notActiveLink
+                    ? 'activeMarker'
+                    : ''
+                }
+              >
+                <ScrollLink
+                  to={`tag${key + 1}`}
+                  activeClass="active"
+                  spy={true}
+                  smooth={true}
+                  offset={-65}
                   onSetActive={() => setActiveLink(item.text)}
                   onSetInactive={() => setNotActiveLink(item.text)}
                 >
