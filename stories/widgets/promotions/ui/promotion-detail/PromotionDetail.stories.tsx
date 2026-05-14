@@ -1,8 +1,12 @@
+import type { Meta, StoryObj } from '@storybook/react';
 import { PromotionDetail } from './PromotionDetail';
-import akciiSamara from '@stories/fixtures/akcii.samara.json';
-
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
-export default {
+import {
+  promotionBannerArgs,
+  promotionPageArgs,
+} from '@stories/fixtures/promotions';
+
+const meta = {
   title: 'Акции / Акция',
   component: PromotionDetail,
   tags: ['autodocs'],
@@ -32,30 +36,30 @@ export default {
       description: 'Компонент сайта где размещена акция',
     },
   },
+} satisfies Meta<typeof PromotionDetail>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+export const Banner: Story = {
+  args: promotionBannerArgs,
 };
 
-const Template = (args) => <PromotionDetail {...args} />;
-export const Banner = Template.bind({});
-export const Page = Template.bind({});
-
-Banner.args = {
-  ...akciiSamara,
-  type: 'banner',
+export const Page: Story = {
+  args: promotionPageArgs,
 };
 
-Page.args = {
-  ...akciiSamara,
-  type: 'page',
+export const Mobile: Story = {
+  args: promotionBannerArgs,
+  globals: responsiveStoryGlobals.Mobile,
 };
 
-export const Mobile = Template.bind({});
-Mobile.args = Banner.args;
-Mobile.globals = responsiveStoryGlobals.Mobile;
+export const Tablet: Story = {
+  args: promotionBannerArgs,
+  globals: responsiveStoryGlobals.Tablet,
+};
 
-export const Tablet = Template.bind({});
-Tablet.args = Banner.args;
-Tablet.globals = responsiveStoryGlobals.Tablet;
-
-export const Desktop = Template.bind({});
-Desktop.args = Banner.args;
-Desktop.globals = responsiveStoryGlobals.Desktop;
+export const Desktop: Story = {
+  args: promotionBannerArgs,
+  globals: responsiveStoryGlobals.Desktop,
+};

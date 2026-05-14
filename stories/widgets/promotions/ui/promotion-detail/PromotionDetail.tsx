@@ -1,8 +1,25 @@
-import Grid from '@mui/material/Grid';
 import { BannerImg } from '@stories/entities/promotion/ui/promotion-image/BannerImg';
 import { PromotionProductItem } from '@stories/entities/promotion/ui/promotion-card/PromotionProductItem';
 
 import './PromotionDetail.scss';
+
+type PromotionItem = {
+  title: string;
+  img_app: string;
+  desc: string;
+  price: string;
+};
+
+export interface PromotionDetailProps {
+  title: string;
+  img: string;
+  text: string;
+  typePromo: string;
+  count: number;
+  items: PromotionItem[];
+  type?: 'banner' | 'page' | string;
+  viewport?: 'mobile' | 'tablet' | 'desktop';
+}
 
 export const PromotionDetail = ({
   title,
@@ -13,7 +30,7 @@ export const PromotionDetail = ({
   items,
   type,
   viewport = 'desktop',
-}: Record<string, any>) => {
+}: PromotionDetailProps) => {
   const isMobile = viewport === 'mobile';
   const containerClassName = isMobile
     ? 'BannerFull BannerFull--mobile containerAcciaMobile'
@@ -25,9 +42,10 @@ export const PromotionDetail = ({
   const descriptionClassName = isMobile
     ? 'FirstItem FirstItemMobile'
     : 'SecondItem';
+  const promoType = Number.parseInt(typePromo, 10);
 
   const composition = (
-    <Grid className={compositionClassName}>
+    <div className={compositionClassName}>
       {isMobile ? (
         <h2 className="itemTitle">Состав</h2>
       ) : (
@@ -43,54 +61,49 @@ export const PromotionDetail = ({
             img_app={item.img_app}
             desc={item.desc}
             price={item.price}
-            typePrice={parseInt(typePromo) == 2 ? 'text' : 'active'}
+            typePrice={promoType === 2 ? 'text' : 'active'}
             count={count}
           />
         ))}
       </div>
 
-      {parseInt(typePromo) == 0 ? (
+      {promoType === 0 ? (
         false
       ) : (
         <div className="containerBTN">
           <button className="buttonPromo">Воспользоватся акцией</button>
         </div>
       )}
-    </Grid>
+    </div>
   );
 
   const description = (
-    <Grid className={descriptionClassName}>
-      <span
-        className={isMobile ? 'title' : 'title'}
-        style={{ marginBottom: '1.2vw' }}
-      >
+    <div className={descriptionClassName}>
+      <span className="title" style={{ marginBottom: '1.2vw' }}>
         {title}
       </span>
 
-      <Grid className="FullText" dangerouslySetInnerHTML={{ __html: text }} />
-    </Grid>
+      <div className="FullText" dangerouslySetInnerHTML={{ __html: text }} />
+    </div>
   );
 
   return (
-    <Grid
-      container
-      justifyContent="center"
+    <div
       className={containerClassName}
       style={{
         backgroundColor: type === 'banner' ? null : 'rgba(0, 0, 0, 0.03)',
         borderRadius: type === 'banner' ? null : '1.1552346570397vw',
       }}
     >
-      <Grid className="ImgItem">
+      <div className="ImgItem">
         <BannerImg img={img} title={title} type={type} />
         {/* <span className="ItemOther">Условия акции</span> */}
-      </Grid>
+      </div>
 
-      <Grid className={descClassName}>
+      <div className={descClassName}>
         {isMobile ? description : composition}
         {isMobile ? composition : description}
-      </Grid>
-    </Grid>
+      </div>
+    </div>
   );
 };

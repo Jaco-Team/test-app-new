@@ -1,14 +1,12 @@
-// @ts-nocheck
+import type { Meta, StoryObj } from '@storybook/react';
 import { HomePage } from './HomePage';
-
 import {
   responsiveStoryGlobals,
   responsiveStoryParameters,
 } from '@stories/shared/lib/storybook/responsive';
-import * as BannerList from '@stories/widgets/home/ui/banner-list/BannerList.stories';
-import * as BoxItemHome from '@stories/widgets/home/ui/product-grid/BoxItemHome.stories';
+import { homeBannerList, homeProductCards } from '@stories/fixtures/home';
 
-export default {
+const meta = {
   title: 'Страницы / Главная',
   component: HomePage,
   tags: ['autodocs'],
@@ -33,24 +31,34 @@ export default {
       description: 'Данные по умолчанию для футера ПК',
     },
   },
+} satisfies Meta<typeof HomePage>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+const defaultArgs = {
+  banners: { bannerList: homeBannerList },
+  container: { cardItem: homeProductCards },
 };
 
-const Template = (args) => <HomePage {...args} />;
-export const Default = Template.bind({});
-
-Default.args = {
-  banners: BannerList.TwoImg.args,
-  container: BoxItemHome.Default.args,
+export const Default: Story = {
+  args: defaultArgs,
 };
 
-export const Mobile = Template.bind({});
-Mobile.args = Default.args;
-Mobile.globals = responsiveStoryGlobals.Mobile;
+export const Mobile: Story = {
+  args: defaultArgs,
+  parameters: responsiveStoryParameters.Mobile,
+  globals: responsiveStoryGlobals.Mobile,
+};
 
-export const Tablet = Template.bind({});
-Tablet.args = Default.args;
-Tablet.globals = responsiveStoryGlobals.Desktop;
+export const Tablet: Story = {
+  args: defaultArgs,
+  parameters: responsiveStoryParameters.Tablet,
+  globals: responsiveStoryGlobals.Tablet,
+};
 
-export const Desktop = Template.bind({});
-Desktop.args = Default.args;
-Desktop.globals = responsiveStoryGlobals.Desktop;
+export const Desktop: Story = {
+  args: defaultArgs,
+  parameters: responsiveStoryParameters.Desktop,
+  globals: responsiveStoryGlobals.Desktop,
+};

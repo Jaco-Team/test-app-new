@@ -1,9 +1,9 @@
+import type { Meta, StoryObj } from '@storybook/react';
 import { BoxItemHome } from './BoxItemHome';
-import * as ItemHome from '@stories/entities/product/ui/product-card/ItemHome.stories';
-import banner from '../../../../fixtures/banners.togliatti.json';
-
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
-export default {
+import { homeProductCards } from '@stories/fixtures/home';
+
+const meta = {
   title: 'Виджеты / Главная / Список товаров',
   component: BoxItemHome,
   tags: ['autodocs'],
@@ -16,23 +16,30 @@ export default {
       description: 'Данные по умолчанию для карточки товара ПК',
     },
   },
+} satisfies Meta<typeof BoxItemHome>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+const defaultArgs = {
+  cardItem: homeProductCards,
 };
 
-const Template = (args) => <BoxItemHome {...args} />;
-export const Default = Template.bind({});
-
-Default.args = {
-  cardItem: banner.itemsList,
+export const Default: Story = {
+  args: defaultArgs,
 };
 
-export const Mobile = Template.bind({});
-Mobile.args = Default.args;
-Mobile.globals = responsiveStoryGlobals.Mobile;
+export const Mobile: Story = {
+  args: defaultArgs,
+  globals: responsiveStoryGlobals.Mobile,
+};
 
-export const Tablet = Template.bind({});
-Tablet.args = Default.args;
-Tablet.globals = responsiveStoryGlobals.Tablet;
+export const Tablet: Story = {
+  args: defaultArgs,
+  globals: responsiveStoryGlobals.Tablet,
+};
 
-export const Desktop = Template.bind({});
-Desktop.args = Default.args;
-Desktop.globals = responsiveStoryGlobals.Desktop;
+export const Desktop: Story = {
+  args: defaultArgs,
+  globals: responsiveStoryGlobals.Desktop,
+};

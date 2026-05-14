@@ -4,9 +4,7 @@ import { applyStorybookViteResolve } from './presets/vite-storybook.mjs';
 /** @type { import('@storybook/nextjs-vite').StorybookConfig } */
 const config = {
   stories: [
-    '../stories/{app,pages}/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)',
-    '../stories/{widgets,features,entities}/**/ui/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)',
-    '../stories/shared/{ui,IconPC,MyMenu,MyTextLink}/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)',
+    '../stories/{app,pages,widgets,features,entities,shared}/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)',
   ],
 
   addons: [

@@ -1,51 +1,85 @@
 @use '../../../shared/global' as *;
 
-.akciiPage {
+.promotions-page {
   display: flex;
   flex-direction: column;
   min-height: 70vh;
-  margin: 0 calcSize(125);
-  row-gap: calcSize(96);
+  margin-top: calcSize(128);
+  mix-blend-mode: multiply;
 
-  & .login {
-    height: calcSize(256);
-    width: calcSize(1206);
-    margin-top: calcSize(320);
-    margin-bottom: calcSize(128);
+  &__title {
+    width: min(100%, calcSize(1206));
+    margin-top: calcSize(120);
+    margin-bottom: calcSize(64);
+    margin-left: calcSize(159);
     @include MyFonts(120, 500);
-    margin-left: calcSize(34);
     line-height: calcSize(140);
   }
-}
 
-.akciiPage--tablet {
-  min-height: 60vh;
-  margin: 0 calcSize(64);
-  row-gap: calcSize(56);
-
-  & .login {
-    width: auto;
-    height: auto;
-    margin-top: calcSize(220);
-    margin-bottom: calcSize(72);
-    margin-left: 0;
-    @include MyFonts(80, 500);
-    line-height: calcSize(96);
+  &__list {
+    display: flex;
+    flex-direction: column;
+    row-gap: calcSize(96);
+    margin-left: calcSize(125);
+    margin-right: calcSize(125);
+    margin-bottom: calcSize(120);
   }
-}
 
-.akciiPage--mobile {
-  min-height: 50vh;
-  margin: 0 3.4188vw;
-  row-gap: calcSize(40);
+  &--tablet {
+    min-height: 60vh;
 
-  & .login {
-    width: 51.2821vw;
-    height: 17.094vw;
-    margin-top: 27.3504vw;
-    margin-bottom: 10.2564vw;
-    margin-left: 3.76068vw;
-    @include MyFonts_mobile(42, 500);
-    line-height: normal;
+    .promotions-page__title {
+      width: auto;
+      margin-top: calcSize(96);
+      margin-bottom: calcSize(56);
+      margin-left: calcSize(64);
+      margin-right: calcSize(64);
+      @include MyFonts_tablet(80, 500);
+      line-height: calcSize(96);
+    }
+
+    .promotions-page__list {
+      row-gap: calcSize(56);
+      margin-left: calcSize(64);
+      margin-right: calcSize(64);
+      margin-bottom: calcSize(96);
+    }
+  }
+
+  &--mobile {
+    min-height: 50vh;
+    margin-top: calcSize_mobile(64);
+
+    .promotions-page__title {
+      width: 100%;
+      max-width: 76vw;
+      margin-top: calcSize_mobile(64);
+      margin-bottom: calcSize_mobile(40);
+      margin-left: 3.76068vw;
+      @include MyFonts_mobile(42, 500);
+      line-height: 1.2;
+    }
+
+    .promotions-page__list {
+      row-gap: calcSize(40);
+      margin-left: 3.4188vw;
+      margin-right: 3.4188vw;
+      margin-bottom: calcSize_mobile(64);
+    }
+  }
+
+  &--desktop {
+    .promotions-page__title {
+      margin-top: calcSize(120);
+      margin-bottom: calcSize(64);
+      margin-left: calcSize(159);
+    }
+
+    .promotions-page__list {
+      row-gap: calcSize(96);
+      margin-left: calcSize(125);
+      margin-right: calcSize(125);
+      margin-bottom: calcSize(120);
+    }
   }
 }

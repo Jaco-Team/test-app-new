@@ -1,7 +1,7 @@
 import { useState } from 'react';
 import LinearProgress from '@mui/material/LinearProgress';
 import AuthCode from 'react-auth-code-input';
-import { IconPC } from '@stories/shared/IconPC/IconPC';
+import { Icon } from '@stories/shared/Icon/Icon';
 
 export default function LoginSMSCode({
   errTextAuth,
@@ -9,7 +9,6 @@ export default function LoginSMSCode({
   timerPage,
   code,
 }) {
-
   const [result, setResult] = useState(code);
 
   const changeCode = (res) => {
@@ -48,9 +47,9 @@ export default function LoginSMSCode({
           }}
         >
           {result.length === 4 ? (
-            <IconPC icon="vector_rigth" element="auth" />
+            <Icon icon="vector_rigth" element="auth" />
           ) : (
-            <IconPC icon="clear" element="auth" />
+            <Icon icon="clear" element="auth" />
           )}
         </div>
       </div>

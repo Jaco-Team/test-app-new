@@ -5,7 +5,7 @@ import Toolbar from '@mui/material/Toolbar';
 
 import './Header.scss';
 import { MyCatLink } from '../../../shared/MyTextLink/MyCatLink';
-import { IconPC } from '../../../shared/IconPC/IconPC';
+import { Icon } from '../../../shared/Icon/Icon';
 import { MyMenu } from '../../../shared/MyMenu/MyMenu';
 import { BurgerIconMobile } from '../../../shared/Icons.js';
 import headerData from '../../../fixtures/header.togliatti.json';
@@ -114,11 +114,11 @@ export const Header: React.FC<HeaderProps> = ({
                     <a className="city">
                       <MyCatLink children="Тольятти" />
                     </a>
-                    <IconPC icon="location" element="header" />
+                    <Icon icon="location" element="header" />
                   </div>
-                  <IconPC icon="docs" element="header" />
-                  <IconPC icon="profile" element="header" />
-                  <IconPC icon="basket" count={count} element="header" />
+                  <Icon icon="docs" element="header" />
+                  <Icon icon="profile" element="header" />
+                  <Icon icon="basket" count={count} element="header" />
                 </div>
               </div>
             </div>
@@ -164,10 +164,10 @@ export const Header: React.FC<HeaderProps> = ({
             <a className="city" href="#">
               <MyCatLink children="Тольятти" />
             </a>
-            <IconPC icon="location" element="header" />
-            <IconPC icon="docs" element="header" />
-            <IconPC icon="profile" element="header" />
-            <IconPC icon="basket" count={count} element="header" />
+            <Icon icon="location" element="header" />
+            <Icon icon="docs" element="header" />
+            <Icon icon="profile" element="header" />
+            <Icon icon="basket" count={count} element="header" />
           </div>
         </Toolbar>
       </AppBar>

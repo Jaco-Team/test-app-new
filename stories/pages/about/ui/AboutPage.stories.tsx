@@ -1,9 +1,9 @@
+import type { Meta, StoryObj } from '@storybook/react';
 import { AboutPage } from './AboutPage';
-import * as BreadСrumbsPC from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC.stories';
-
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
+import { breadcrumbsAbout } from '@stories/fixtures/breadcrumbs';
 
-export default {
+const meta = {
   title: 'Страницы / О компании',
   component: AboutPage,
   tags: ['autodocs'],
@@ -33,42 +33,45 @@ export default {
       description: 'Вариант вёрстки (как на странице акций)',
     },
   },
-};
+} satisfies Meta<typeof AboutPage>;
 
-const Template = (args) => <AboutPage {...args} />;
+export default meta;
+type Story = StoryObj<typeof meta>;
 
-export const Default = Template.bind({});
-export const ArrowUp = Template.bind({});
-
-Default.args = {
-  data: BreadСrumbsPC.About.args,
+const defaultArgs = {
+  data: breadcrumbsAbout,
   cityName: 'togliatti',
-  viewport: 'desktop',
+  viewport: 'desktop' as const,
 };
 
-ArrowUp.args = {
-  data: BreadСrumbsPC.About.args,
-  cityName: 'togliatti',
-  viewport: 'desktop',
+export const Default: Story = {
+  args: defaultArgs,
 };
 
-export const Mobile = Template.bind({});
-Mobile.args = {
-  ...Default.args,
-  viewport: 'mobile',
+export const ArrowUp: Story = {
+  args: defaultArgs,
 };
-Mobile.globals = responsiveStoryGlobals.Mobile;
 
-export const Tablet = Template.bind({});
-Tablet.args = {
-  ...Default.args,
-  viewport: 'tablet',
+export const Mobile: Story = {
+  args: {
+    ...defaultArgs,
+    viewport: 'mobile',
+  },
+  globals: responsiveStoryGlobals.Mobile,
 };
-Tablet.globals = responsiveStoryGlobals.Tablet;
 
-export const Desktop = Template.bind({});
-Desktop.args = {
-  ...Default.args,
-  viewport: 'desktop',
+export const Tablet: Story = {
+  args: {
+    ...defaultArgs,
+    viewport: 'tablet',
+  },
+  globals: responsiveStoryGlobals.Tablet,
 };
-Desktop.globals = responsiveStoryGlobals.Desktop;
+
+export const Desktop: Story = {
+  args: {
+    ...defaultArgs,
+    viewport: 'desktop',
+  },
+  globals: responsiveStoryGlobals.Desktop,
+};

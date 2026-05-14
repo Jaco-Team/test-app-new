@@ -1,8 +1,9 @@
+import type { Meta, StoryObj } from '@storybook/react';
 import { PromotionsPage } from './PromotionsPage';
-import * as PromotionDetail from '@stories/widgets/promotions/ui/promotion-detail/PromotionDetail.stories';
-
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
-export default {
+import { promotionPageArgs } from '@stories/fixtures/promotions';
+
+const meta = {
   title: 'Страницы / Акции',
   component: PromotionsPage,
   tags: ['autodocs'],
@@ -23,45 +24,48 @@ export default {
       description: 'Данные для футера',
     },
   },
+} satisfies Meta<typeof PromotionsPage>;
+
+export default meta;
+type Story = StoryObj<typeof meta>;
+
+const defaultArgs = {
+  actia: promotionPageArgs,
+  viewport: 'desktop' as const,
 };
 
-const Template = (args) => <PromotionsPage {...args} />;
-export const Default = Template.bind({});
-export const ArrowUp = Template.bind({});
-export const Cookie = Template.bind({});
-
-Default.args = {
-  actia: PromotionDetail.Page.args,
-  viewport: 'desktop',
+export const Default: Story = {
+  args: defaultArgs,
 };
 
-ArrowUp.args = {
-  actia: PromotionDetail.Page.args,
-  viewport: 'desktop',
+export const ArrowUp: Story = {
+  args: defaultArgs,
 };
 
-Cookie.args = {
-  actia: PromotionDetail.Page.args,
-  viewport: 'desktop',
+export const Cookie: Story = {
+  args: defaultArgs,
 };
 
-export const Mobile = Template.bind({});
-Mobile.args = {
-  ...Default.args,
-  viewport: 'mobile',
+export const Mobile: Story = {
+  args: {
+    ...defaultArgs,
+    viewport: 'mobile',
+  },
+  globals: responsiveStoryGlobals.Mobile,
 };
-Mobile.globals = responsiveStoryGlobals.Mobile;
 
-export const Tablet = Template.bind({});
-Tablet.args = {
-  ...Default.args,
-  viewport: 'tablet',
+export const Tablet: Story = {
+  args: {
+    ...defaultArgs,
+    viewport: 'tablet',
+  },
+  globals: responsiveStoryGlobals.Tablet,
 };
-Tablet.globals = responsiveStoryGlobals.Tablet;
 
-export const Desktop = Template.bind({});
-Desktop.args = {
-  ...Default.args,
-  viewport: 'desktop',
+export const Desktop: Story = {
+  args: {
+    ...defaultArgs,
+    viewport: 'desktop',
+  },
+  globals: responsiveStoryGlobals.Desktop,
 };
-Desktop.globals = responsiveStoryGlobals.Desktop;

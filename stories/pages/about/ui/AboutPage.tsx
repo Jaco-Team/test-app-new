@@ -1,5 +1,5 @@
-import { BreadСrumbsPC } from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC';
-import type { BreadCrumbsPCProps } from '@stories/pages/about/model/types';
+import { BreadCrumbs } from '@stories/shared/ui/breadcrumbs/BreadCrumbs';
+import type { BreadCrumbsProps } from '@stories/pages/about/model/types';
 import type { ResponsiveViewport } from '@stories/shared/lib/storybook/responsive';
 import { AboutIntro } from '@stories/widgets/about/ui/about-intro/AboutIntro';
 import { AboutExcellentDishes } from '@stories/widgets/about/ui/about-excellent-dishes/AboutExcellentDishes';
@@ -17,7 +17,7 @@ import './AboutPage.scss';
 export interface AboutPageProps {
   header?: unknown;
   /** Аргументы для бокового оглавления (как в сторис хлебных крошек «О компании»). */
-  data: BreadCrumbsPCProps;
+  data: BreadCrumbsProps;
   footer?: unknown;
   cityName?: string;
   viewport?: ResponsiveViewport;
@@ -51,7 +51,7 @@ export const AboutPage = ({
             className="about-page__sidebar"
             aria-label="Оглавление раздела"
           >
-            <BreadСrumbsPC {...data} />
+            <BreadCrumbs {...data} />
           </aside>
         </div>
       </div>

@@ -1,1 +1,1 @@
-export type { BreadCrumbsPCProps } from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC';
+export type { BreadCrumbsProps } from '@stories/shared/ui/breadcrumbs/BreadCrumbs';

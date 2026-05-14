@@ -2,9 +2,14 @@ import MyTextInput from '@stories/shared/ui/text-input/MyTextInput';
 import InputAdornment from '@mui/material/InputAdornment';
 
 import { MyButton } from '@stories/shared/ui/button/MyButton';
-import { IconPC } from '@stories/shared/IconPC/IconPC';
+import { Icon } from '@stories/shared/Icon/Icon';
 
-export default function Start({ showPassword, errTextAuth, loginLogin, pwdLogin }) {
+export default function Start({
+  showPassword,
+  errTextAuth,
+  loginLogin,
+  pwdLogin,
+}) {
   return (
     <div className="modalLoginPC">
       <span className="loginErr">{errTextAuth}</span>
@@ -15,7 +20,15 @@ export default function Start({ showPassword, errTextAuth, loginLogin, pwdLogin 
         variant="standard"
         value={loginLogin}
         className="inputLogin"
-        inputAdornment={<InputAdornment position="end">{loginLogin.length === 11 ? <IconPC icon="check" element='auth' /> : <IconPC icon="clear" element='auth' />}</InputAdornment>}
+        inputAdornment={
+          <InputAdornment position="end">
+            {loginLogin.length === 11 ? (
+              <Icon icon="check" element="auth" />
+            ) : (
+              <Icon icon="clear" element="auth" />
+            )}
+          </InputAdornment>
+        }
       />
 
       <div className="inputBox">
@@ -25,20 +38,37 @@ export default function Start({ showPassword, errTextAuth, loginLogin, pwdLogin 
           variant="standard"
           value={pwdLogin}
           className="inputLogin"
-          inputAdornment={<InputAdornment position="end">{pwdLogin.length > 1 ? <IconPC icon="check" element='auth' /> : <IconPC icon="clear" element='auth' />}</InputAdornment>}
+          inputAdornment={
+            <InputAdornment position="end">
+              {pwdLogin.length > 1 ? (
+                <Icon icon="check" element="auth" />
+              ) : (
+                <Icon icon="clear" element="auth" />
+              )}
+            </InputAdornment>
+          }
         />
-        {showPassword ? <IconPC icon="eyeShow" element='auth' /> : <IconPC icon="eyeHide" element='auth' /> }
+        {showPassword ? (
+          <Icon icon="eyeShow" element="auth" />
+        ) : (
+          <Icon icon="eyeHide" element="auth" />
+        )}
       </div>
 
       <span className="loginLosePWD">Забыли пароль?</span>
-      <MyButton children="Войти" variant={loginLogin.length === 11 && pwdLogin.length > 1 ?"primary" : "auth"} size="large" />
+      <MyButton
+        children="Войти"
+        variant={
+          loginLogin.length === 11 && pwdLogin.length > 1 ? 'primary' : 'auth'
+        }
+        size="large"
+      />
       <span className="loginOR">или</span>
       <a className="loginLoginYa">
-        <IconPC icon="ya" element='auth' />
+        <Icon icon="ya" element="auth" />
         <span>Войти с Яндекс ID</span>
       </a>
       <span className="loginSMS">Вход по СМС</span>
-
     </div>
   );
 }

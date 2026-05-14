@@ -1,7 +1,7 @@
 import React, { useEffect, useState } from 'react';
 import Image from 'next/image';
 import './ProductModal.scss';
-import { ModalItemPCvalue } from '@stories/entities/product/ui/nutrition/ModalItemPCvalue';
+import { ModalItemValue } from '@stories/entities/product/ui/nutrition/ModalItemValue';
 
 interface RelatedProduct {
   id: number;
@@ -334,7 +334,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
       <div className="ProductModal-nutrition-list">
         {rollsData.map((roll, index) => (
-          <ModalItemPCvalue
+          <ModalItemValue
             number={index + 1}
             kkal={roll.calories}
             tmp_desc={roll.ingredients}
