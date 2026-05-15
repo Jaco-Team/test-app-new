@@ -1,3 +1,4 @@
+import { morskoiSetItems } from '@stories/fixtures/product-modal';
 import { ModalItemSet } from './ModalItemSet';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
@@ -33,23 +34,9 @@ const Template = (args) => <ModalItemSet {...args} />;
 export const Default = Template.bind({});
 export const LongText = Template.bind({});
 
-Default.args = {
-  number: 1,
-  title: 'Гавайи жареный',
-  img_app: 'Gavaii_zharenyi20220726',
-  marc_desc:
-    'Белое куриное филе, солнечный медовый ананас, лёгкий творожный сыр, белый соус, обжаренные сухарики',
-  tmp_desc: '',
-};
+Default.args = morskoiSetItems[0];
 
-LongText.args = {
-  number: 1,
-  title: 'Цезарь с курицей запечённый унаги',
-  img_app: 'Cezar_s_kuricei_zapechionnyi_unagi',
-  marc_desc:
-    'Куриное филе, запечённое со специями, салат айсберг, творожный сыр, румяная сырная шапочка с унаги и кунжутом и куриное филе, запечённое со специями, салат айсберг творожный сыр, румяная сырная шапочка с унаги и кунжутом',
-  tmp_desc: '',
-};
+LongText.args = morskoiSetItems[3];
 
 export const Mobile = Template.bind({});
 Mobile.args = Default.args;

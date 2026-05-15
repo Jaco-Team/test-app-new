@@ -54,9 +54,9 @@
 .product-modal {
   background: #fff;
   border-radius: 24px;
-  width: 90%;
-  max-width: 1300px;
-  max-height: 90vh;
+  width: min(71vw, 967px);
+  max-width: 967px;
+  max-height: 650px;
   overflow-y: auto;
   position: relative;
   animation: slideUp 0.225s ease;
@@ -85,8 +85,7 @@
 
   @media (min-width: 960px) {
     flex-direction: row;
-    max-height: 90vh;
-    height: 90vh;
+    height: min(72vh, 651px);
   }
 
   @media (max-width: 768px) {
@@ -104,7 +103,7 @@
     flex-shrink: 0;
 
     @media (min-width: 960px) {
-      width: 55%;
+      width: 67.34%;
     }
 
     @media (max-width: 768px) {
@@ -128,8 +127,8 @@
     justify-content: space-between;
 
     @media (min-width: 960px) {
-      width: 45%;
-      padding: 40px 50px;
+      width: 32.66%;
+      padding: 98px 39px 72px 18px;
     }
 
     @media (max-width: 768px) {
@@ -138,10 +137,10 @@
   }
 
   &-title {
-    font-size: 32px;
-    font-weight: 700;
+    font-size: 26px;
+    font-weight: 400;
     color: #1a1a1a;
-    margin: 0 0 20px 0;
+    margin: 0 0 16px 0;
     line-height: 1.2;
 
     @media (max-width: 768px) {
@@ -155,8 +154,8 @@
     display: flex;
     align-items: flex-start;
     justify-content: space-between;
-    margin-bottom: 24px;
-    gap: 12px;
+    margin-bottom: 19px;
+    gap: 0;
 
     @media (max-width: 768px) {
       margin-bottom: 20px;
@@ -167,8 +166,8 @@
       display: flex;
       align-items: center;
       flex-wrap: wrap;
-      gap: 10px;
-      font-size: 16px;
+      gap: 0;
+      font-size: 14px;
       color: rgba(0, 0, 0, 0.5);
 
       @media (max-width: 768px) {
@@ -190,6 +189,7 @@
 
     &-divider {
       color: rgba(0, 0, 0, 0.3);
+      margin: 0 5px;
     }
 
     &-item {
@@ -224,10 +224,10 @@
   }
 
   &-description {
-    font-size: 16px;
+    font-size: 14px;
     color: rgba(0, 0, 0, 0.6);
-    line-height: 1.6;
-    margin: 0 0 32px 0;
+    line-height: 1.46;
+    margin: 0 0 19px 0;
     flex: 1;
 
     @media (max-width: 768px) {
@@ -239,11 +239,11 @@
 
   &-price-btn {
     width: 100%;
-    padding: 16px 32px;
+    padding: 10px 32px;
     background: transparent;
     border: 1px solid #0003;
     border-radius: 100px;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 400;
     color: #0009;
     cursor: pointer;
@@ -268,7 +268,7 @@
 .product-modal-nutrition-view {
   padding: 40px 50px;
   display: flex;
-  margin: 39px;
+  margin: 20px;
   flex-direction: column;
   border-radius: 20px 20px 0 0;
   height: 100%;
@@ -277,7 +277,7 @@
   background: #fff;
   position: absolute;
   top: 0;
-  width: 55%;
+  width: calc(67.34% - 40px);
   z-index: 10;
 
   @media (max-width: 960px) {

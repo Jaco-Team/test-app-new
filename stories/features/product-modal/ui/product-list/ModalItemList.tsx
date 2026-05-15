@@ -3,15 +3,25 @@ import { ModalItemSet } from '@stories/entities/product/ui/set-item/ModalItemSet
 import { ModalItemValue } from '@stories/entities/product/ui/nutrition/ModalItemValue';
 import './ModalItemList.scss';
 
+const toList = (items: unknown) => {
+  if (Array.isArray(items)) {
+    return items;
+  }
+
+  if (items && typeof items === 'object' && Object.keys(items).length > 0) {
+    return [items];
+  }
+
+  return [];
+};
+
 export const ModalItemList = ({
   set,
   type,
   value,
   link_allergens,
 }: Record<string, any>) => {
-  const arrayItem = Array.from({ length: 8 }, () =>
-    type === 'set' ? set : value
-  );
+  const arrayItem = type === 'set' ? toList(set) : toList(value);
 
   return (
     <div className="table">
@@ -33,9 +43,9 @@ export const ModalItemList = ({
         )}
         {arrayItem.map((item, key) =>
           type === 'set' ? (
-            <ModalItemSet key={key} {...item} number={key + 1} />
+            <ModalItemSet key={item.id ?? key} {...item} number={key + 1} />
           ) : (
-            <ModalItemValue key={key} {...item} number={key + 1} />
+            <ModalItemValue key={item.id ?? key} {...item} number={key + 1} />
           )
         )}
       </div>

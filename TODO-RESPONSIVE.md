@@ -337,6 +337,8 @@
 - Миграция идет Storybook-first: не менять core Next.js приложение и не тянуть новые изменения в `stories/legacy`.
 - Новые/мигрируемые компоненты держать в `stories/{app,pages,widgets,features,entities,shared}` по FSD-направлению зависимостей: `app -> pages -> widgets -> features -> entities -> shared`.
 - UI в core уже responsive; новые Storybook компоненты должны повторять layout/поведение core UI, но оставаться в новом Storybook TS/TSX + SCSS дизайне, naming и typing patterns.
+- Визуальная идентичность обязательна: перенос считается готовым только если Storybook на соответствующих breakpoints повторяет core/live UI по размерам, paddings, typography, order/reshuffle, image variants и scroll/overlay behavior, а не просто не ломается.
+- Story data/stubs/images держать в fixtures/shared data рядом с доменом; story files должны импортировать и комбинировать fixtures, а не дублировать payloads. При миграции обновлять fixture на live-site текст и изображения.
 - Reference для визуальной сверки: Storybook `http://localhost:6007/` и production `https://jacofood.ru/samara`.
 - Проверять mobile `320-667`, tablet `668-990`, desktop `991+`; tablet - отдельная вариация, не растянутый mobile/desktop.
 - Если рядом есть suffix variations `PC`, `Tablet`, `Mobile`, допустимо переименовывать `PC` в `Desktop`.
