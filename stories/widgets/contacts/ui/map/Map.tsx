@@ -9,15 +9,11 @@ import {
   ZoomControl,
 } from '@pbe/react-yandex-maps';
 import './Map.scss';
+import { MapProps } from '@stories/widgets/contacts/ui/map/model/types';
 
 // ymaps в storybook не работает, сделал костыль для активной иконки, но не совсем работает
 
-export const Map = ({
-  center_map,
-  zones,
-  points_zone,
-  type_map,
-}: Record<string, any>) => {
+export const Map = ({ center_map, zones, points_zone, type_map }: MapProps) => {
   const ref = useRef<any>(null);
 
   useEffect(() => {

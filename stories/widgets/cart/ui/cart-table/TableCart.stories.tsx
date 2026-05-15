@@ -1,62 +1,44 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { TableCart } from './TableCart';
-import {
-  tableCartActiveArgs,
-  tableCartDefaultArgs,
-  tableCartPromoArgs,
-} from '@stories/fixtures/cart';
+import * as TableCart_body from '../cart-table-body/TableCart_body.stories';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
-const meta = {
+export default {
   title: 'Виджеты / Корзина / Таблица',
   component: TableCart,
   tags: ['autodocs'],
   argTypes: {
     data: {
-      control: 'object',
+      type: 'array',
       description: 'Данные для коризны',
     },
   },
-} satisfies Meta<typeof TableCart>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
-  args: {
-    ...tableCartDefaultArgs,
-  },
 };
 
-export const Active: Story = {
-  args: {
-    ...tableCartActiveArgs,
-  },
+const Template = (args) => <TableCart {...args} />;
+export const Default = Template.bind({});
+export const Active = Template.bind({});
+export const Promo = Template.bind({});
+
+Default.args = {
+  data: TableCart_body.Default.args,
 };
 
-export const Promo: Story = {
-  args: {
-    ...tableCartPromoArgs,
-  },
+Active.args = {
+  data: TableCart_body.Active.args,
 };
 
-export const Mobile: Story = {
-  args: {
-    ...tableCartDefaultArgs,
-  },
-  globals: responsiveStoryGlobals.Mobile,
+Promo.args = {
+  data: TableCart_body.Promo.args,
 };
 
-export const Tablet: Story = {
-  args: {
-    ...tableCartDefaultArgs,
-  },
-  globals: responsiveStoryGlobals.Tablet,
-};
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
-export const Desktop: Story = {
-  args: {
-    ...tableCartDefaultArgs,
-  },
-  globals: responsiveStoryGlobals.Desktop,
-};
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.globals = responsiveStoryGlobals.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.globals = responsiveStoryGlobals.Desktop;

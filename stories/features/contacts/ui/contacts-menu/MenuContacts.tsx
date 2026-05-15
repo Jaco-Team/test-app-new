@@ -1,38 +1,42 @@
-import { useState } from 'react';
+import { useState, MouseEvent } from 'react';
 import './MenuContacts.scss';
 
 import { MyMenu } from '@stories/shared/MyMenu/MyMenu';
 import { MySwitch } from '@stories/shared/ui/switch/MySwitch';
-import { ArrowDownHeaderPC, MapPointIcon } from '@stories/shared/Icons';
+import { ArrowDownHeaderPC, MapPointIcon } from '@stories/shared/Icons.js';
+import {
+  CityItem,
+  MenuContactsProps,
+} from '@stories/features/contacts/ui/contacts-menu/model/types';
 
-const cityList = [
+const cityList: CityItem[] = [
   { title: 'Тольятти' },
   { title: 'Самара' },
   { title: 'Комсомольск-на-Амуре' },
 ];
 
 export const MenuContacts = ({
-  city,
-  points,
-  phone,
-  disable,
-  active,
-}: Record<string, any>) => {
-  const [anchorEl, setAnchorEl] = useState(null);
-  const [isOpen, setIsOpen] = useState(false);
+  city = '',
+  points = [],
+  phone = '',
+  disable = false,
+  active = false,
+}: MenuContactsProps) => {
+  const [anchorEl, setAnchorEl] = useState<HTMLElement | null>(null);
+  const [isOpen, setIsOpen] = useState<boolean>(false);
 
-  function openMenu(event) {
+  const openMenu = (event: MouseEvent<HTMLElement>): void => {
     setAnchorEl(event.currentTarget);
     setIsOpen(true);
-  }
+  };
 
-  function closeMenu() {
+  const closeMenu = (): void => {
     setAnchorEl(null);
     setIsOpen(false);
-  }
+  };
 
   return (
-    <div className="contact-menu">
+    <div className="сontactPC">
       <div className="chooseCity" onClick={openMenu}>
         <span>{city}</span>
         <ArrowDownHeaderPC />
@@ -41,10 +45,12 @@ export const MenuContacts = ({
       <div className="listAddr">
         <h2>Адреса кафе:</h2>
         <ul>
-          {points.map((point, key) => (
+          {points.map((point, key: number) => (
             <li key={key}>
               <MapPointIcon />
-              <span style={{ color: key === 0 && active ? '#dd1a32' : null }}>
+              <span
+                style={{ color: key === 0 && active ? '#dd1a32' : undefined }}
+              >
                 {point.addr}
               </span>
             </li>

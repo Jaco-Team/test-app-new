@@ -1,6 +1,6 @@
 @use '../../global' as *;
 
-.breadcrumbs {
+.breadCrumbsPC {
   margin-left: calcSize(160);
   width: calcSize(840);
   background-color: rgba(0, 0, 0, 0.07);
@@ -19,7 +19,7 @@
     text-transform: uppercase;
 
     @media (max-width: 800px) {
-      @include MyFonts(35, 700);
+      @include MyFonts(42, 700);
     }
   }
 

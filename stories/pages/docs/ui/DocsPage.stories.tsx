@@ -1,9 +1,10 @@
-import type { Meta, StoryObj } from '@storybook/react';
+import { Meta, StoryFn } from '@storybook/react';
 import { DocsPage } from './DocsPage';
+import { DocsPageProps, PageData } from './model/types';
+import * as BreadCrumbs from '@stories/shared/ui/breadcrumbs/BreadCrumbs.stories';
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
-import { breadcrumbsDocs } from '@stories/fixtures/breadcrumbs';
 
-const meta = {
+export default {
   title: 'Страницы / Документы',
   component: DocsPage,
   tags: ['autodocs'],
@@ -12,28 +13,25 @@ const meta = {
   },
   argTypes: {
     header: {
-      control: 'object',
+      type: 'object',
       description: 'Данные для шапки ПК',
     },
     page: {
-      control: 'object',
+      type: 'object',
       description: 'Данные для страницы Документы на ПК',
     },
     footer: {
-      control: 'object',
+      type: 'object',
       description: 'Данные для футера ПК',
     },
     data: {
-      control: 'object',
+      type: 'object',
       description: 'Данные для меню страницы на ПК',
     },
   },
-} satisfies Meta<typeof DocsPage>;
+} as Meta<DocsPageProps>;
 
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-const page = {
+const page: PageData = {
   id: '49',
   page_id: '32',
   city_id: '-1',
@@ -45,30 +43,69 @@ const page = {
   date_time_update: '2024-03-21 00:00:00',
 };
 
-const defaultArgs = {
+const Template: StoryFn<DocsPageProps> = (args) => <DocsPage {...args} />;
+
+export const Default = Template.bind({});
+Default.args = {
   page,
-  data: { ...breadcrumbsDocs, activePage: 'instpayorders' },
+  data: {
+    ...BreadCrumbs.Default.args,
+    activePage: 'instpayorders',
+    links: [
+      {
+        text: 'О компании',
+        href: '/about',
+      },
+      {
+        text: 'Вакансии',
+        href: '/vacancies',
+      },
+      {
+        text: 'Публичная оферта',
+        href: '/offer',
+      },
+      {
+        text: 'Политика конфиденциальности',
+        href: '/privacy',
+      },
+      {
+        text: 'Правила оплаты',
+        href: '/payment-rules',
+      },
+      {
+        text: 'Согласие на обработку персональных данных',
+        href: '/personal-data',
+      },
+      {
+        text: 'Политика в отношении обработки метрических данных',
+        href: '/metrics-policy',
+      },
+      {
+        text: 'Калорийность, состав, БЖУ',
+        href: '/nutrition',
+      },
+      {
+        text: 'Памятка по сохранению здоровья',
+        href: '/health',
+      },
+    ],
+  },
 };
 
-export const Default: Story = {
-  args: defaultArgs,
+export const ArrowUp = Template.bind({});
+ArrowUp.args = {
+  page,
+  data: { ...BreadCrumbs.Default.args, activePage: 'instpayorders' },
 };
 
-export const ArrowUp: Story = {
-  args: defaultArgs,
-};
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
-export const Mobile: Story = {
-  args: defaultArgs,
-  globals: responsiveStoryGlobals.Mobile,
-};
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.globals = responsiveStoryGlobals.Tablet;
 
-export const Tablet: Story = {
-  args: defaultArgs,
-  globals: responsiveStoryGlobals.Tablet,
-};
-
-export const Desktop: Story = {
-  args: defaultArgs,
-  globals: responsiveStoryGlobals.Desktop,
-};
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.globals = responsiveStoryGlobals.Desktop;

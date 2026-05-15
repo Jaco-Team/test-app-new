@@ -1,11 +1,13 @@
+// TableCart.tsx
 import './TableCart.scss';
 import { TableCart_body } from '../cart-table-body/TableCart_body';
-// import { Icon } from '../Icon/Icon';
-// import { MyMenu } from '../MyMenu/MyMenu';
+import { TableCartProps } from '@stories/widgets/cart/ui/cart-table/model/types';
 
-export const TableCart = ({ data }: Record<string, any>) => {
+// Интерфейс для пропсов компонента TableCart
+
+export const TableCart = ({ data = {} }: TableCartProps) => {
   return (
-    <table className="tableCart">
+    <table className="tableCartPC">
       <TableCart_body {...data} />
     </table>
   );

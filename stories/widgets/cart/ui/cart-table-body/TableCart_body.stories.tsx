@@ -1,19 +1,15 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { TableCart_body } from './TableCart_body';
-import {
-  tableCartBodyActiveArgs,
-  tableCartBodyDefaultArgs,
-  tableCartBodyPromoArgs,
-} from '@stories/fixtures/cart';
+import * as TableCart_row from '@stories/entities/cart/ui/cart-row/TableCart_row.stories';
+import * as TableCart_foot from '../cart-table-footer/TableCart_foot.stories';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
-const meta = {
+export default {
   title: 'Виджеты / Корзина / Тело таблицы',
   component: TableCart_body,
   tags: ['autodocs'],
   argTypes: {
     items: {
-      control: 'object',
+      type: 'array',
       description: 'Товары в корзине за исключением допов',
     },
     itemsCount: {
@@ -21,7 +17,7 @@ const meta = {
       description: 'Число товаров в корзине без допов',
     },
     dopItems: {
-      control: 'object',
+      type: 'array',
       description: 'Дополнительные товары в корзине',
     },
     dopItemsCount: {
@@ -29,50 +25,49 @@ const meta = {
       description: 'Число доп товаров в корзине',
     },
     footerData: {
-      control: 'object',
+      type: 'object',
       description: 'Данные для футера таблицы',
     },
   },
-} satisfies Meta<typeof TableCart_body>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
-  args: {
-    ...tableCartBodyDefaultArgs,
-  },
 };
 
-export const Active: Story = {
-  args: {
-    ...tableCartBodyActiveArgs,
-  },
+const Template = (args) => <TableCart_body {...args} />;
+export const Default = Template.bind({});
+export const Active = Template.bind({});
+export const Promo = Template.bind({});
+
+Default.args = {
+  items: [],
+  itemsCount: 0,
+  dopItems: TableCart_row.Dop.args,
+  dopItemsCount: 5,
+  footerData: TableCart_foot.Default.args,
 };
 
-export const Promo: Story = {
-  args: {
-    ...tableCartBodyPromoArgs,
-  },
+Active.args = {
+  items: TableCart_row.Item.args,
+  itemsCount: 3,
+  dopItems: TableCart_row.Dop.args,
+  dopItemsCount: 5,
+  footerData: TableCart_foot.Active.args,
 };
 
-export const Mobile: Story = {
-  args: {
-    ...tableCartBodyDefaultArgs,
-  },
-  globals: responsiveStoryGlobals.Mobile,
+Promo.args = {
+  items: TableCart_row.Promo.args,
+  itemsCount: 3,
+  dopItems: TableCart_row.Dop.args,
+  dopItemsCount: 5,
+  footerData: TableCart_foot.Promo.args,
 };
 
-export const Tablet: Story = {
-  args: {
-    ...tableCartBodyDefaultArgs,
-  },
-  globals: responsiveStoryGlobals.Tablet,
-};
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
-export const Desktop: Story = {
-  args: {
-    ...tableCartBodyDefaultArgs,
-  },
-  globals: responsiveStoryGlobals.Desktop,
-};
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.globals = responsiveStoryGlobals.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.globals = responsiveStoryGlobals.Desktop;

@@ -1,20 +1,16 @@
-import type { Meta, StoryObj } from '@storybook/react';
 import { Cart } from './Cart';
-import {
-  cartPanelActiveArgs,
-  cartPanelDefaultArgs,
-  cartPanelPromoFalseArgs,
-  cartPanelPromoTrueArgs,
-} from '@stories/fixtures/cart';
+import * as TableCart from '../cart-table/TableCart.stories';
+import * as CartPCPromoInput from '@stories/features/cart/ui/promo-input/CartPromoInput.stories';
+import * as CartPCPromoText from '@stories/features/cart/ui/promo-text/CartPromoText.stories';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
-const meta = {
+export default {
   title: 'Виджеты / Корзина / Панель',
   component: Cart,
   tags: ['autodocs'],
   argTypes: {
     data: {
-      control: 'object',
+      type: 'object',
       description: 'Данные для коризны',
     },
     openBasket: {
@@ -22,60 +18,58 @@ const meta = {
       description: 'Открытие корзины',
     },
     promo: {
-      control: 'object',
+      type: 'object',
       description: 'Данные промокода',
     },
     desk: {
-      control: 'object',
+      type: 'object',
       description: 'Данные промокода',
     },
   },
-} satisfies Meta<typeof Cart>;
-
-export default meta;
-type Story = StoryObj<typeof meta>;
-
-export const Default: Story = {
-  args: {
-    ...cartPanelDefaultArgs,
-  },
 };
 
-export const Active: Story = {
-  args: {
-    ...cartPanelActiveArgs,
-  },
+const Template = (args) => <Cart {...args} />;
+export const Default = Template.bind({});
+export const Active = Template.bind({});
+export const Promo_True = Template.bind({});
+export const Promo_False = Template.bind({});
+
+Default.args = {
+  data: TableCart.Default.args,
+  promo: CartPCPromoInput.Default.args,
+  openBasket: true,
+  desc: {},
 };
 
-export const Promo_True: Story = {
-  args: {
-    ...cartPanelPromoTrueArgs,
-  },
+Active.args = {
+  data: TableCart.Active.args,
+  promo: CartPCPromoInput.Default.args,
+  openBasket: true,
+  desc: {},
 };
 
-export const Promo_False: Story = {
-  args: {
-    ...cartPanelPromoFalseArgs,
-  },
+Promo_True.args = {
+  data: TableCart.Promo.args,
+  promo: CartPCPromoInput.Promo_True.args,
+  openBasket: true,
+  desc: CartPCPromoText.Promo_True.args,
 };
 
-export const Mobile: Story = {
-  args: {
-    ...cartPanelDefaultArgs,
-  },
-  globals: responsiveStoryGlobals.Mobile,
+Promo_False.args = {
+  data: TableCart.Active.args,
+  promo: CartPCPromoInput.Promo_False.args,
+  openBasket: true,
+  desc: CartPCPromoText.Promo_False.args,
 };
 
-export const Tablet: Story = {
-  args: {
-    ...cartPanelDefaultArgs,
-  },
-  globals: responsiveStoryGlobals.Tablet,
-};
+export const Mobile = Template.bind({});
+Mobile.args = Default.args;
+Mobile.globals = responsiveStoryGlobals.Mobile;
 
-export const Desktop: Story = {
-  args: {
-    ...cartPanelDefaultArgs,
-  },
-  globals: responsiveStoryGlobals.Desktop,
-};
+export const Tablet = Template.bind({});
+Tablet.args = Default.args;
+Tablet.globals = responsiveStoryGlobals.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Default.args;
+Desktop.globals = responsiveStoryGlobals.Desktop;

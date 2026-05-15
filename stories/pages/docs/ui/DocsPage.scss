@@ -10,6 +10,24 @@
   mix-blend-mode: multiply;
   min-height: 50vh;
 
+  @media (max-width: 800px) {
+    margin-top: calcSize(248) !important;
+    margin-bottom: calcSize(140) !important;
+    margin-left: calcSize(125) !important;
+
+    .breadCrumbsPC {
+      display: none;
+    }
+  }
+
+  &-back {
+    display: none;
+    @media (max-width: 800px) {
+      display: block;
+      cursor: pointer;
+    }
+  }
+
   & h2 {
     padding-top: calcSize(10);
   }
