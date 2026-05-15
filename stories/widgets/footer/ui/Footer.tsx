@@ -2,7 +2,7 @@ import React from 'react';
 import Link from 'next/link';
 
 import './Footer.scss';
-import { NewVKIcon, OdnIcon, TGIcon } from '../../../shared/Icons.js';
+import { NewVKIcon, OdnIcon, TGIcon } from '../../../shared/Icons';
 import Typography from '@mui/material/Typography';
 import { FooterProps } from '@/stories/widgets/footer/model/types';
 import { FooterArrowUp } from '@/stories/widgets/FooterArrowUp/FooterArrowUp';
@@ -28,13 +28,13 @@ export const Footer: React.FC<FooterProps> = ({
       {!cookie && <FooterCookie cityName={cityName} />}
 
       <footer
-        className="footerPC"
+        className="footer"
         style={{
           minHeight: footerMinHeight,
           marginTop,
         }}
       >
-        <div className="ContainerPCFooter">
+        <div className="footer__container">
           {/* Колонка 1: Жако */}
           <div className="column">
             <Typography component="span">Жако</Typography>

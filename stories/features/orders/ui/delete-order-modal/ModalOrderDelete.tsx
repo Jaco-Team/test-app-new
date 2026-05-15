@@ -13,7 +13,7 @@ const ans = [
 
 export const ModalOrderDelete = ({ variant, text }: Record<string, any>) => {
   return (
-    <div className="modalOrderDeletePC">
+    <div className="delete-order-modal">
       <span className="header_status">Отменить заказ?</span>
       <div className="header_text">
         <span>Вы можете отменить в любой момент.</span>

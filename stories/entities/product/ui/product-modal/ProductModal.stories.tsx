@@ -18,7 +18,7 @@ export default {
     weight: { control: 'number' },
     productDescription: { control: 'text' },
     price: { control: 'number' },
-    rollsData: { control: 'object' }, // ✅ Исправлено: object вместо просто rollsData
+    rollsData: { control: 'object' },
     relatedProducts: { control: 'object' },
   },
 } as Meta<ProductModalProps>;
@@ -30,15 +30,15 @@ const Template: StoryFn<ProductModalProps> = (args) => (
 export const Default = Template.bind({});
 Default.args = {
   isOpen: true,
-  onClose: () => console.log('Close modal'),
-  productImage: '/images/sushi-product.jpg',
-  productName: 'Филадельфия опалённая',
+  onClose: () => {},
+  productImage: 'https://mainimg.jacofood.ru/Morskoi_set_732x732.webp',
+  productName: 'Морской сет',
   rollsCount: 4,
   piecesCount: 32,
-  weight: 1129,
+  weight: 1122,
   productDescription:
-    'Опалённый лосось, сливочный творожный сыр и молодой шпинат под сладким соусом унаги с ароматным чёрным кунжутом',
-  price: 529,
+    'Жако Люкс, Филадельфия Лайт, Цезарь с лососем запечённый унаги, Калифорния с креветкой запечённый унаги',
+  price: 1489,
   rollsData: [
     {
       id: 1,

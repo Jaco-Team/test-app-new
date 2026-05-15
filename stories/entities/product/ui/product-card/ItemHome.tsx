@@ -21,7 +21,9 @@ export const ItemHome = ({
 }: ProductItem) => {
   return (
     <div
-      className={['ItemHomePc', parseInt(count) > 0 ? 'active' : ''].join(' ')}
+      className={['product-card', parseInt(count) > 0 ? 'active' : ''].join(
+        ' '
+      )}
     >
       <div className="BlockIMG">
         <Image

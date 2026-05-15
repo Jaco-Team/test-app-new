@@ -11,7 +11,7 @@ export default function Create({
   city,
 }) {
   return (
-    <div className="modalLoginPC">
+    <div className="auth-modal__login">
       <span className="loginInfo">Укажите свой номер телефона</span>
 
       <MyTextInput

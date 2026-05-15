@@ -12,7 +12,7 @@ export const PromotionProductItem = ({
   count,
 }: Record<string, any>) => {
   return (
-    <div className="promotionProductItem itemBannerPC promotionProductItemFont">
+    <div className="promotionProductItem promotion-card--banner promotionProductItemFont">
       <span className="number itemNumber">{number}.</span>
 
       <div className="itemImg">

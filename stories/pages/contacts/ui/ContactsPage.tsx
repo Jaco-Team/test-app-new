@@ -19,7 +19,7 @@ export const ContactsPage = ({
   return (
     <>
       {header ? null : null}
-      <div className="boxContactsPC">
+      <div className="contacts-page">
         <MenuContacts {...menu} />
         <Map {...map} />
       </div>

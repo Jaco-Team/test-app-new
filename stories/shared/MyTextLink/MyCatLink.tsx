@@ -1,6 +1,6 @@
 import React, { AnchorHTMLAttributes, HTMLAttributes } from 'react';
 import './MyCatLink.scss';
-import { ArrowDownHeaderPC } from '../Icons.js';
+import { ArrowDownHeaderPC } from '../Icons';
 
 interface MyCatLinkProps {
   variant?: 'link' | 'text';
@@ -22,15 +22,14 @@ export const MyCatLink: React.FC<MyCatLinkProps> = ({
   children,
   ...props
 }) => {
-  const className = ['MyCatLink', bordered ? 'bordered' : ''].filter(Boolean).join(' ');
+  const className = ['MyCatLink', bordered ? 'bordered' : '']
+    .filter(Boolean)
+    .join(' ');
 
   if (variant === 'link') {
     const linkProps = props as LinkProps;
     return (
-      <a
-        className={className}
-        {...linkProps}
-      >
+      <a className={className} {...linkProps}>
         {children}
         {arrow && <ArrowDownHeaderPC />}
       </a>
@@ -39,10 +38,7 @@ export const MyCatLink: React.FC<MyCatLinkProps> = ({
 
   const textProps = props as TextProps;
   return (
-    <p
-      className={className}
-      {...textProps}
-    >
+    <p className={className} {...textProps}>
       {children}
       {arrow && <ArrowDownHeaderPC />}
     </p>

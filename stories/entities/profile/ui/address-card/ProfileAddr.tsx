@@ -1,9 +1,9 @@
-import { CloseIconMin } from '@/ui/Icons.js';
+import { CloseIconMin } from '@stories/shared/compat/CoreIcons';
 import './ProfileAddr.scss';
 
 export const ProfileAddr = ({ address }: Record<string, any>) => {
   return (
-    <tr className="profileAddrPC">
+    <tr className="address-card-row">
       <td>{address?.city_name}</td>
       <td>
         {address?.name_street}, д. {address?.home}, кв. {address?.kv}

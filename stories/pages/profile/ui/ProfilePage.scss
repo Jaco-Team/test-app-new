@@ -1,9 +1,9 @@
 @use '../../../shared/global' as *;
 
-.profilePC {
+.profile-page {
   display: flex;
 
-  .profileContainerPC {
+  .profile-page__container {
     width: calcSize(1560);
     margin-top: calcSize(300);
     margin-left: calcSize(125);

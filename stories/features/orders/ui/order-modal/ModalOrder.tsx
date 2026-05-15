@@ -12,7 +12,7 @@ import {
   HomeModalOrderIcon,
   AddrDotsModalOrderIcon,
   PicupModalOrderIcon,
-} from '@stories/shared/Icons.js';
+} from '@stories/shared/Icons';
 import LinearProgress from '@mui/material/LinearProgress';
 import './ModalOrder.scss';
 
@@ -211,7 +211,7 @@ export const ModalOrder = ({
     }
   }
   return (
-    <div className="modalOrderPC">
+    <div className="order-modal">
       <span className="header_status">
         Заказ {modalOrder?.order?.this_status_order}
       </span>

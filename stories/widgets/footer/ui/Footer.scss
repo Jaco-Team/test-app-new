@@ -1,6 +1,6 @@
 @use '../../../shared/global' as *;
 
-.footerPC {
+.footer {
   width: 100%;
   background-color: rgba(0, 0, 0, 0.07);
   position: relative;
@@ -12,7 +12,7 @@
     padding: 8.5vw 10.5vw 10.2vw 10.2vw;
   }
 
-  & .ContainerPCFooter {
+  & .footer__container {
     display: flex;
     align-items: flex-start;
 

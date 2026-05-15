@@ -14,7 +14,7 @@ export const Cart = ({
   return (
     <>
       {openBasket ? <div className="blockShadowBasket" /> : false}
-      <div className="cartPC">
+      <div className="cart-panel">
         <TableCart_text text="allergens" />
         <TableCart {...data} />
         <CartPromoInput {...promo} />

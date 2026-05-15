@@ -1,55 +1,106 @@
 @use '../../../../shared/global' as *;
 
 .setItem {
-  display: flex;
-  width: calcSize(980);
-  height: calcSize(240);
+  display: grid;
+  grid-template-columns: 36px 132px minmax(0, 1fr);
+  gap: 18px;
+  width: 100%;
+  min-height: 132px;
+  align-items: start;
 
-  & .itemNumber {
-    width: calcSize(60);
+  .itemNumber {
     display: flex;
-    flex-direction: column;
-    align-items: flex-end;
-    margin-right: calcSize(20);
-    @include MyFonts(25, 400);
+    justify-content: flex-end;
     color: rgba(0, 0, 0, 0.6) !important;
+    font-family: $Roboto !important;
+    font-size: 18px !important;
+    font-weight: 400;
+    line-height: 1.2;
   }
 
-  & picture {
-    width: calcSize(240);
-    & img {
+  picture {
+    display: block;
+    width: 132px;
+    aspect-ratio: 1;
+
+    img {
+      width: 100%;
+      height: 100%;
       object-fit: contain;
       image-rendering: auto;
-      width: 100%;
-      height: auto;
     }
   }
 
-  & .itemDesc {
-    width: calcSize(600);
+  .itemDesc {
     display: flex;
+    min-width: 0;
     flex-direction: column;
-    justify-content: flex-start;
-    margin-left: calcSize(60);
+    gap: 10px;
 
-    & span {
-      display: flex;
-      align-items: center;
-      height: 50%;
+    span {
+      display: block;
       text-align: left;
     }
 
-    & span:nth-child(1) {
-      @include MyFonts(40, 400);
+    span:nth-child(1) {
+      font-family: $Roboto !important;
+      font-size: 24px !important;
+      font-weight: 400;
+      line-height: 1.15;
+      color: $ColorText;
     }
 
-    & span:nth-child(2) {
-      @include MyFonts(25, 400);
-      color: rgba(0, 0, 0, 0.6) !important;
-      overflow: hidden;
+    span:nth-child(2) {
       display: -webkit-box;
-      -webkit-line-clamp: 3;
+      overflow: hidden;
+      color: rgba(0, 0, 0, 0.6) !important;
+      font-family: $Roboto !important;
+      font-size: 16px !important;
+      font-weight: 400;
+      line-height: 1.35;
       -webkit-box-orient: vertical;
+      -webkit-line-clamp: 3;
+    }
+  }
+
+  @include tablet {
+    grid-template-columns: 30px 112px minmax(0, 1fr);
+    gap: 14px;
+    min-height: 112px;
+
+    picture {
+      width: 112px;
+    }
+
+    .itemDesc span:nth-child(1) {
+      font-size: 21px !important;
+    }
+  }
+
+  @include mobile {
+    grid-template-columns: 24px 84px minmax(0, 1fr);
+    gap: 10px;
+    min-height: 92px;
+
+    .itemNumber {
+      font-size: 15px !important;
+    }
+
+    picture {
+      width: 84px;
+    }
+
+    .itemDesc {
+      gap: 6px;
+
+      span:nth-child(1) {
+        font-size: 18px !important;
+      }
+
+      span:nth-child(2) {
+        font-size: 13px !important;
+        line-height: 1.3;
+      }
     }
   }
 }

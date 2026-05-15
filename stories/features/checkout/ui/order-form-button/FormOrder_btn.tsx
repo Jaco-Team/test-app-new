@@ -1,5 +1,5 @@
 import { Icon } from '@stories/shared/Icon/Icon';
-import { ArrowDownBasketModalPC } from '@stories/shared/Icons.js';
+import { ArrowDownBasketModalPC } from '@stories/shared/Icons';
 
 import MyTextInput from '@stories/shared/ui/text-input/MyTextInput';
 import './FormOrder_btn.scss';

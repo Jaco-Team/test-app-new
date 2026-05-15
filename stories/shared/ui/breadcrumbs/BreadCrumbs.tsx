@@ -18,7 +18,7 @@ export const BreadCrumbs = ({ activePage, list, title }: BreadCrumbsProps) => {
   const [notActiveLink, setNotActiveLink] = useState('');
 
   return (
-    <div className="breadCrumbsPC">
+    <div className="breadcrumbs">
       <span>{title}</span>
       <ul>
         {list.map((item, key) => (

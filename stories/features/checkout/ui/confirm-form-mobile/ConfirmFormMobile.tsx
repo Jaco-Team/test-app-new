@@ -1,11 +1,25 @@
 import './ConfirmFormMobile.scss';
-import { Cloud, CheckAuthMobile } from '@/ui/Icons';
+import { Cloud, CheckAuthMobile } from '@stories/shared/compat/CoreIcons';
 
-export const ConfirmFormMobile = ({city, address, data, time, items, itemsCount, allPrice, promo, sdacha}: Record<string, any>) => {
-
+export const ConfirmFormMobile = ({
+  city,
+  address,
+  data,
+  time,
+  items,
+  itemsCount,
+  allPrice,
+  promo,
+  sdacha,
+}: Record<string, any>) => {
   function getWord(int, array) {
     return (
-      (array = array || ['позиция', 'позиции', 'позиций']) && array[int % 100 > 4 && int % 100 < 20 ? 2 : [2, 0, 1, 1, 1, 2][int % 10 < 5 ? int % 10 : 5]]
+      (array = array || ['позиция', 'позиции', 'позиций']) &&
+      array[
+        int % 100 > 4 && int % 100 < 20
+          ? 2
+          : [2, 0, 1, 1, 1, 2][int % 10 < 5 ? int % 10 : 5]
+      ]
     );
   }
 
@@ -13,7 +27,10 @@ export const ConfirmFormMobile = ({city, address, data, time, items, itemsCount,
     <div className="containerConfirmMobile">
       <div className="line" />
       <span className="confirmHeader">Проверьте заказ</span>
-      <span className="confirmText">Чтобы всё прошло по плану, проверьте, пожалуйста, условия получения и состав вашего заказа:</span>
+      <span className="confirmText">
+        Чтобы всё прошло по плану, проверьте, пожалуйста, условия получения и
+        состав вашего заказа:
+      </span>
 
       <div className="confirmAddr">
         <span>Доставим по адресу:</span>
@@ -22,11 +39,16 @@ export const ConfirmFormMobile = ({city, address, data, time, items, itemsCount,
 
       <span className="confirmTime">{`Время доставки: ${data + ', '}${time}`}</span>
 
-      <span className="confirmText_2">Указано примерное время доставки, может меняться в зависимости от погодных условий и трафика.</span>
+      <span className="confirmText_2">
+        Указано примерное время доставки, может меняться в зависимости от
+        погодных условий и трафика.
+      </span>
 
       <div className="confirmMessage">
         <Cloud />
-        <span>Из-за погодных условий сегодня курьер может ехать дольше, чем обычно</span>
+        <span>
+          Из-за погодных условий сегодня курьер может ехать дольше, чем обычно
+        </span>
       </div>
 
       <div className="cofirmDivider" />
@@ -42,7 +64,9 @@ export const ConfirmFormMobile = ({city, address, data, time, items, itemsCount,
       </div>
 
       <div className="confirmTotal">
-        <span>Итого: {itemsCount} {getWord(itemsCount, undefined)}</span>
+        <span>
+          Итого: {itemsCount} {getWord(itemsCount, undefined)}
+        </span>
         <span>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</span>
       </div>
 

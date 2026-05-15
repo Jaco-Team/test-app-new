@@ -2,7 +2,7 @@ import { Icon } from '@stories/shared/Icon/Icon';
 
 export default function Finish() {
   return (
-    <div className="modalLoginPC">
+    <div className="auth-modal__login">
       <div className="loginFinish">
         <Icon icon="check" element="auth" />
       </div>

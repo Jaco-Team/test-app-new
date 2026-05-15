@@ -1,9 +1,9 @@
 @use '../../../shared/global' as *;
 
-.promokodyPC {
+.profile-promocodes-page {
   display: flex;
 
-  & .promokodyContainerPC {
+  & .profile-promocodes-page__container {
     width: calcSize(1560);
     margin-top: calcSize(300);
     margin-left: calcSize(125);
@@ -14,7 +14,7 @@
       margin-bottom: calcSize(80);
     }
 
-    & .promoListPC {
+    & .profile-promocodes-page__list {
       display: flex;
       flex-wrap: wrap;
       justify-content: space-between;

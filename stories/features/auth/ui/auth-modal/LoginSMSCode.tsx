@@ -16,7 +16,7 @@ export default function LoginSMSCode({
   };
 
   return (
-    <div className="modalLoginPC">
+    <div className="auth-modal__login">
       <span className="loginErr">{errTextAuth}</span>
       <span className="loginSubHeader">{loginLogin}</span>
 

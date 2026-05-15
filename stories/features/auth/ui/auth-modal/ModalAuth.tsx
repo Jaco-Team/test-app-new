@@ -22,7 +22,7 @@ export const ModalAuth = ({ typeLogin, data }: Record<string, any>) => {
               : 'Авторизация';
 
   return (
-    <div className="modalAuthPC">
+    <div className="auth-modal">
       <span className="authLogin">{login}</span>
       {typeLogin === 'start' || typeLogin === 'create' ? (
         <MySwitch type="auth" />

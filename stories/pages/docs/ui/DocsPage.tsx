@@ -19,8 +19,8 @@ export const DocsPage = ({ header, page, footer, data }: DocsPageProps) => {
   return (
     <>
       {header ? null : null}
-      <div className="docsPagePC__layout">
-        <div className="docsPagePC">
+      <div className="docs-page__layout">
+        <div className="docs-page">
           <h1>{page ? page.page_h : ''}</h1>
           {page && page.content ? (
             <div dangerouslySetInnerHTML={{ __html: page.content }} />

@@ -15,7 +15,7 @@ export const TableOrders = ({ order }: TableOrdersProps) => {
   const orderList = Array.from({ length: 10 }, () => order);
 
   return (
-    <table className="tableOrdersPC">
+    <table className="orders-table">
       <thead>
         <tr>
           <th>статус заказа</th>

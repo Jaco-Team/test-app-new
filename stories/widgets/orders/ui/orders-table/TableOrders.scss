@@ -1,6 +1,6 @@
 @use '../../../../shared/global' as *;
 
-.tableOrdersPC {
+.orders-table {
   margin-bottom: calcSize(140);
 
   @media (max-width: 960px) {

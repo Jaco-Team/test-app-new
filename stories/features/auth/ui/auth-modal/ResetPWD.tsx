@@ -11,7 +11,7 @@ export default function ResetPWD({
   pwdLogin,
 }) {
   return (
-    <div className="modalLoginPC">
+    <div className="auth-modal__login">
       <span className="loginErr">{errTextAuth}</span>
       <span className="resetText">
         Укажите свой номер телефона и новый пароль

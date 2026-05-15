@@ -5,10 +5,7 @@ import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
 import MyTextInput from '@stories/shared/ui/text-input/MyTextInput';
 import { MyMenu } from '@stories/shared/MyMenu/MyMenu';
 import { MySwitch } from '@stories/shared/ui/switch/MySwitch';
-import {
-  PencilModalAddrIcon,
-  HomeModalAddrIcon,
-} from '@stories/shared/Icons.js';
+import { PencilModalAddrIcon, HomeModalAddrIcon } from '@stories/shared/Icons';
 import { MyButton } from '@stories/shared/ui/button/MyButton';
 
 import './ModalAddress.scss';
@@ -62,7 +59,7 @@ export const ModalAddress = ({
   }
 
   return (
-    <div className="modalAddressPC">
+    <div className="address-modal">
       <div className="map">
         <YMaps
           query={{

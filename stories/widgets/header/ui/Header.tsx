@@ -7,7 +7,7 @@ import './Header.scss';
 import { MyCatLink } from '../../../shared/MyTextLink/MyCatLink';
 import { Icon } from '../../../shared/Icon/Icon';
 import { MyMenu } from '../../../shared/MyMenu/MyMenu';
-import { BurgerIconMobile } from '../../../shared/Icons.js';
+import { BurgerIconMobile } from '../../../shared/Icons';
 import headerData from '../../../fixtures/header.togliatti.json';
 import { CatItem, HeaderProps, SubCatItem } from '../model/types';
 import { NavBarMobile } from '../../NavBarMobile/NavBarMobile';
@@ -64,7 +64,7 @@ export const Header: React.FC<HeaderProps> = ({
       <>
         <AppBar className="headerMobile">
           <Toolbar>
-            <a className="logoPC" href="/">
+            <a className="site-header__logo" href="/">
               <img
                 alt="Жако доставка роллов и пиццы"
                 src="/jaco-logo-mobile.png"
@@ -137,10 +137,10 @@ export const Header: React.FC<HeaderProps> = ({
   // Десктопная версия
   return (
     <>
-      <AppBar className="HeaderPC">
+      <AppBar className="site-header">
         <Toolbar>
           <div>
-            <a className="logoPC" href="/">
+            <a className="site-header__logo" href="/">
               <img
                 alt="Жако доставка роллов и пиццы"
                 src="/Jaco-Logo-120.png"

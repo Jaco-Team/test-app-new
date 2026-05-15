@@ -1,5 +1,5 @@
 import { setProjectAnnotations } from '@storybook/nextjs-vite';
 
-import * as previewAnnotations from './preview.mjs';
+import * as previewAnnotations from './preview.tsx';
 
 setProjectAnnotations([previewAnnotations]);

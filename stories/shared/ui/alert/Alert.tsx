@@ -1,6 +1,6 @@
 import IconButton from '@mui/material/IconButton';
 import LinearProgress from '@mui/material/LinearProgress';
-import { IconClose } from '../../Icons.js';
+import { IconClose } from '../../Icons';
 
 import './Alert.scss';
 

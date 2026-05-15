@@ -7,7 +7,7 @@ import 'swiper/css';
 import 'swiper/css/navigation';
 import 'swiper/css/pagination';
 
-import { ArrowIcon, NextIcon } from '@stories/shared/Icons.js';
+import { ArrowIcon, NextIcon } from '@stories/shared/Icons';
 import { BannerImg } from '@stories/entities/promotion/ui/promotion-image/BannerImg';
 import { JSX } from 'react';
 import { PromoModal } from '@stories/widgets/home/ui/banner-modal/PromoModal';
@@ -19,7 +19,7 @@ export const BannerList: ({ bannerList }: bannerListProps) => JSX.Element = ({
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [item, setItem] = useState<Banner | null>(null);
   return (
-    <div className="HomeImgPC">
+    <div className="banner-list">
       <PromoModal
         isOpen={isModalOpen}
         onClose={() => setIsModalOpen(false)}

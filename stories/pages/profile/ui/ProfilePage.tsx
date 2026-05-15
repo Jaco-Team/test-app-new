@@ -66,8 +66,8 @@ export const ProfilePage = ({
   return (
     <>
       {header ? null : null}
-      <div className="profilePC">
-        <div className="profileContainerPC">
+      <div className="profile-page">
+        <div className="profile-page__container">
           <div className="profile_title">Личные данные</div>
           <div className="profile_data">
             <span>И</span>

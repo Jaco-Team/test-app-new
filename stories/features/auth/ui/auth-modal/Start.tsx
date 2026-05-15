@@ -11,7 +11,7 @@ export default function Start({
   pwdLogin,
 }) {
   return (
-    <div className="modalLoginPC">
+    <div className="auth-modal__login">
       <span className="loginErr">{errTextAuth}</span>
 
       <MyTextInput

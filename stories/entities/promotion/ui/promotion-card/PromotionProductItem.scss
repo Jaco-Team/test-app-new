@@ -303,7 +303,7 @@
   }
 }
 
-.itemBannerPC {
+.promotion-card--banner {
   display: flex;
   margin-bottom: calcSize(20);
 
@@ -378,7 +378,7 @@
 }
 
 @media (max-width: 800px) {
-  .promotionProductItem.itemBannerPC {
+  .promotionProductItem.promotion-card--banner {
     & .itemDesc {
       width: auto;
 
@@ -408,7 +408,8 @@
 }
 
 @media (max-width: 800px) {
-  .promotionProductItem.itemBannerPC.promotionProductItemFont .ItemName {
+  .promotionProductItem.promotion-card--banner.promotionProductItemFont
+    .ItemName {
     width: 100%;
     height: auto;
     min-height: 8.54701vw;
@@ -417,7 +418,8 @@
     font-weight: 400;
     line-height: normal;
   }
-  .promotionProductItem.itemBannerPC.promotionProductItemFont .ItemDesk {
+  .promotionProductItem.promotion-card--banner.promotionProductItemFont
+    .ItemDesk {
     width: 100%;
     height: auto;
     min-height: 10.2564vw;

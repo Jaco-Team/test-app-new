@@ -26,7 +26,7 @@ export const ModalCity = ({ city }: Record<string, any>) => {
   }
 
   return (
-    <div className="modalCityPC">
+    <div className="city-modal">
       <img alt="Город" src={'/Favicon_city.png'} />
       <span>Вы в городе</span>
       <span>{city}</span>

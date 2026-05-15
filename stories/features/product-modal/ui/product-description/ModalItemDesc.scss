@@ -1,53 +1,107 @@
 @use '../../../../shared/global' as *;
 
 .titleItem {
-  margin-bottom: calcSize(20);
-  @include MyFonts(50, 400);
+  margin: 0 0 18px;
+  font-family: $Roboto !important;
+  font-size: clamp(28px, 2.1vw, 42px) !important;
+  font-weight: 400;
+  line-height: 1.1;
+  color: $ColorText;
 }
 
 .dop {
   display: flex;
   align-items: center;
-  width: calcSize(560);
   justify-content: space-between;
-  margin-bottom: calcSize(40);
+  gap: 16px;
+  width: min(100%, 420px);
+  margin-bottom: 28px;
 
   .dop_text {
-    width: calcSize(400);
     display: flex;
     align-items: center;
+    min-width: 0;
+    gap: 14px;
+    font-family: $Roboto !important;
+    font-size: clamp(15px, 1.1vw, 20px) !important;
+    color: rgba(0, 0, 0, 0.6);
+    white-space: nowrap;
 
-    & span {
-      @include MyFonts(25, 400);
+    span {
+      font: inherit !important;
+      padding: 0 !important;
     }
 
-    & .first_text {
-      text-decoration: underline;
+    .first_text {
       color: #dd1a32 !important;
-      padding-right: calcSize(40);
+      text-decoration: underline;
     }
 
-    & .divider {
-      height: calcSize(20);
-      width: calcSize(1);
-      background-color: rgba(0, 0, 0, 0.6);
-
-      @media (min-width: 801px) and (max-width: 1000px) {
-        height: calc(calcSize(20) * 2);
-        width: calc(calcSize(1) * 2);
-      }
+    .divider {
+      width: 1px;
+      height: 18px;
+      flex: 0 0 1px;
+      background-color: rgba(0, 0, 0, 0.28);
     }
   }
 
-  & .dop_icon {
+  .dop_icon {
     display: flex;
     align-items: center;
+    flex: 0 0 auto;
   }
 }
 
 .desc {
-  display: flex;
-  width: calcSize(560);
-  @include MyFonts(30, 400);
+  display: block;
+  width: min(100%, 520px);
+  font-family: $Roboto !important;
+  font-size: clamp(17px, 1.35vw, 24px) !important;
+  font-weight: 400;
+  line-height: 1.45;
   color: rgba(0, 0, 0, 0.6) !important;
+}
+
+@include tablet {
+  .titleItem {
+    font-size: 34px !important;
+  }
+
+  .dop {
+    width: 100%;
+  }
+
+  .desc {
+    width: 100%;
+    font-size: 20px !important;
+  }
+}
+
+@include mobile {
+  .titleItem {
+    margin-bottom: 14px;
+    font-size: 28px !important;
+    text-align: center;
+  }
+
+  .dop {
+    width: 100%;
+    justify-content: center;
+    margin-bottom: 22px;
+
+    .dop_text {
+      flex-wrap: wrap;
+      justify-content: center;
+      gap: 8px 12px;
+      font-size: 16px !important;
+      white-space: normal;
+    }
+  }
+
+  .desc {
+    width: 100%;
+    font-size: 16px !important;
+    line-height: 1.45;
+    text-align: center;
+  }
 }

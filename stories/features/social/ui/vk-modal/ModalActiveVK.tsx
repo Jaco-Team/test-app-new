@@ -2,7 +2,7 @@ import './ModalActiveVK.scss';
 
 export const ModalActiveVK = ({ link }: Record<string, any>) => {
   return (
-    <div className="modalVK_PC">
+    <div className="vk-modal">
       <img alt="Город" src={'/Favicon_city.png'} />
       <span>
         Подпишитесь на{' '}

@@ -49,7 +49,7 @@ export const BannerImg = ({
         preload="auto"
         autoPlay={autoPlay}
         loop={loop}
-        className="BannerPCImg"
+        className="promotion-image"
         style={{
           borderRadius,
           objectFit: 'cover',
@@ -78,7 +78,7 @@ export const BannerImg = ({
         src={img}
         fill
         priority={true}
-        className="BannerPCImg"
+        className="promotion-image"
         style={{ borderRadius, objectFit: 'cover' }}
         sizes="100vw"
       />

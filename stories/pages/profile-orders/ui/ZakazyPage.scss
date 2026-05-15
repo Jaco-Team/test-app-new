@@ -1,9 +1,9 @@
 @use '../../../shared/global' as *;
 
-.zakazyPC {
+.profile-orders-page {
   display: flex;
 
-  .zakazyTablePC {
+  .profile-orders-page__table {
     margin-top: calcSize(300);
     margin-left: calcSize(125);
 

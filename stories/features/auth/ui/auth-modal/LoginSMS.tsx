@@ -6,7 +6,7 @@ import { Icon } from '@stories/shared/Icon/Icon';
 
 export default function LoginSMS({ errTextAuth, loginLogin }) {
   return (
-    <div className="modalLoginPC">
+    <div className="auth-modal__login">
       <span className="loginErr">{errTextAuth}</span>
       <span className="resetText">
         Укажите свой номер телефона, мы отправим смс

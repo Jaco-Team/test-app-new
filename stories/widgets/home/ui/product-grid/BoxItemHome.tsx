@@ -19,7 +19,7 @@ export const BoxItemHome = ({ cards }: BoxItemHomeProps) => {
         onClose={() => setIsOpenModal(false)}
         productImage="https://mainimg.jacofood.ru/Atlantida_set_292x292.jpg"
       />
-      <div className="containerItemHomePC" onClick={() => setIsOpenModal(true)}>
+      <div className="product-grid__item" onClick={() => setIsOpenModal(true)}>
         {cards.map((item, key) => (
           <ItemHome key={key} {...item} />
         ))}

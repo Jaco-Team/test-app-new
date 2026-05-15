@@ -24,10 +24,10 @@ export const PromokodyPage = ({
   return (
     <>
       {header ? null : null}
-      <div className="promokodyPC">
-        <div className="promokodyContainerPC">
+      <div className="profile-promocodes-page">
+        <div className="profile-promocodes-page__container">
           <div className="header">Мои промокоды</div>
-          <div className="promoListPC">
+          <div className="profile-promocodes-page__list">
             {arrayPromokod.map((item, key) => (
               <Promokody key={key} {...item} />
             ))}

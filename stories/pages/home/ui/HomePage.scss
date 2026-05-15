@@ -1,13 +1,57 @@
 @use '../../../shared/global' as *;
 
-.homePC {
+.home-page {
   min-height: 50vh;
   display: flex;
   flex-direction: column;
   align-items: center;
+  background: #fff;
 
-  .containerBanner {
+  &__banner {
     width: calcSize(2520);
     margin-top: calcSize(128);
+  }
+
+  &__categories {
+    width: calcSize(2520);
+    margin-top: calcSize(56);
+  }
+}
+
+@include tablet {
+  .home-page {
+    &__banner,
+    &__categories {
+      width: calc(100vw - 48px);
+      max-width: 920px;
+    }
+
+    &__banner {
+      margin-top: 32px;
+    }
+
+    &__categories {
+      margin-top: 20px;
+    }
+  }
+}
+
+@include mobile {
+  .home-page {
+    align-items: stretch;
+
+    &__banner {
+      width: 100%;
+      margin-top: 0;
+    }
+
+    &__categories {
+      position: sticky;
+      top: 0;
+      z-index: 3;
+      width: 100%;
+      margin-top: 0;
+      background: #fff;
+    }
   }
 }

@@ -3,7 +3,7 @@ import './MenuContacts.scss';
 
 import { MyMenu } from '@stories/shared/MyMenu/MyMenu';
 import { MySwitch } from '@stories/shared/ui/switch/MySwitch';
-import { ArrowDownHeaderPC, MapPointIcon } from '@stories/shared/Icons.js';
+import { ArrowDownHeaderPC, MapPointIcon } from '@stories/shared/Icons';
 
 const cityList = [
   { title: 'Тольятти' },
@@ -32,7 +32,7 @@ export const MenuContacts = ({
   }
 
   return (
-    <div className="сontactPC">
+    <div className="contact-menu">
       <div className="chooseCity" onClick={openMenu}>
         <span>{city}</span>
         <ArrowDownHeaderPC />

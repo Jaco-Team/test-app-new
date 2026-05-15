@@ -19,7 +19,7 @@ import {
   CardBasketModalPC,
   MessageBasketModalPC,
   PointBasketModalPC,
-} from '../Icons.js';
+} from '../Icons';
 import MoneyIcon from '@mui/icons-material/Money';
 
 // Типы для иконок в разных элементах
@@ -69,7 +69,7 @@ export const Icon: React.FC<IconProps> = ({
   if (element === 'header') {
     return (
       <div
-        className={['IconHeaderPC', parseInt(count) > 0 ? 'active' : '']
+        className={['header-icon', parseInt(count) > 0 ? 'active' : '']
           .filter(Boolean)
           .join(' ')}
       >
@@ -91,20 +91,20 @@ export const Icon: React.FC<IconProps> = ({
   if (element === 'auth') {
     return (
       <>
-        {icon === 'ya' && <YaIcon className="IconAuthPC" />}
+        {icon === 'ya' && <YaIcon className="auth-icon" />}
         {icon === 'eyeShow' && (
-          <EyeShow_modalOrder className="IconAuthPC" fill="black" />
+          <EyeShow_modalOrder className="auth-icon" fill="black" />
         )}
-        {icon === 'eyeHide' && <EyeHide_modalOrder className="IconAuthPC" />}
-        {icon === 'clear' && <ClearAuthMobile className="IconAuthPC" />}
-        {icon === 'check' && <CheckAuthMobile className="IconAuthPC" />}
+        {icon === 'eyeHide' && <EyeHide_modalOrder className="auth-icon" />}
+        {icon === 'clear' && <ClearAuthMobile className="auth-icon" />}
+        {icon === 'check' && <CheckAuthMobile className="auth-icon" />}
         {icon === 'vector_rigth' && (
-          <div className="IconAuthPC_vector">
+          <div className="auth-icon__vector">
             <VectorRightAuthMobile />
           </div>
         )}
         {icon === 'done' && (
-          <div className="IconAuthPC_done">
+          <div className="auth-icon__done">
             <DoneAuthMobile />
           </div>
         )}

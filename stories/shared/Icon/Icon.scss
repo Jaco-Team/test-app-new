@@ -1,6 +1,6 @@
 @use '../global' as *;
 
-.IconHeaderPC {
+.header-icon {
   display: flex;
   align-items: center;
   border-radius: calcSize(48);
@@ -66,13 +66,13 @@
   }
 }
 
-.IconAuthPC {
+.auth-icon {
   width: calcSize(40);
   height: calcSize(40);
   cursor: pointer;
 }
 
-.IconAuthPC_vector {
+.auth-icon__vector {
   height: calcSize(40);
   width: calcSize(40);
   border-radius: calcSize(40);
@@ -89,7 +89,7 @@
   }
 }
 
-.IconAuthPC_done {
+.auth-icon__done {
   height: calcSize(40);
   width: calcSize(40);
   border-radius: calcSize(10);

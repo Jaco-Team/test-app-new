@@ -1,37 +1,123 @@
 @use '../../../../shared/global' as *;
 
-.modalItemPC {
-  border-radius: calcSize(32);
-  overflow: visible;
-  margin: 0;
-  width: calcSize(1960);
-  max-width: none !important;
-  display: flex;
+.modal-item {
+  --modal-item-radius: 24px;
 
-  & .ImgItem {
+  display: grid;
+  grid-template-columns: minmax(0, 1.16fr) minmax(320px, 0.84fr);
+  width: min(92vw, 1280px);
+  min-height: min(720px, 90vh);
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: var(--modal-item-radius);
+  background: #ffffff;
+
+  &.modal-item--detail {
+    grid-template-columns: minmax(0, 1.1fr) minmax(320px, 0.9fr);
+    background: #e6e6e6;
+  }
+
+  &__image {
     position: relative;
-    width: calcSize(1240);
-    height: calcSize(1240);
-    margin: calcSize(40);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    min-width: 0;
+    min-height: 0;
+    padding: clamp(18px, 2vw, 40px);
+    background: #ffffff;
 
-    & > .badge {
+    picture {
+      display: block;
+      width: 100%;
+      max-width: 620px;
+      aspect-ratio: 1;
+    }
+
+    img {
+      width: 100%;
+      height: 100%;
+      object-fit: contain;
+    }
+
+    .badge {
       position: absolute;
-      top: calcSize(40);
-      left: calcSize(40);
+      top: clamp(18px, 2vw, 40px);
+      left: clamp(18px, 2vw, 40px);
     }
   }
 
-  & .FirstItem {
-    width: calcSize(1320);
-    height: calcSize(1320);
-    position: relative;
-    overflow-y: hidden;
+  &__list {
+    min-width: 0;
+    min-height: 0;
+    padding: clamp(20px, 2.8vw, 40px);
+    overflow: hidden;
   }
 
-  & .SecondItem {
-    margin: calcSize(200) 0;
+  &__details {
     display: flex;
+    min-width: 0;
     flex-direction: column;
     justify-content: space-between;
+    gap: 28px;
+    padding: clamp(36px, 6vw, 120px) clamp(24px, 4vw, 56px);
+    background: #ffffff;
+  }
+
+  &--detail &__details {
+    background: #e6e6e6;
+  }
+
+  @include tablet {
+    width: min(92vw, 880px);
+    min-height: auto;
+    grid-template-columns: minmax(0, 1fr) minmax(300px, 0.9fr);
+
+    &.modal-item--detail {
+      grid-template-columns: 1fr;
+    }
+
+    &__image {
+      padding: 28px;
+    }
+
+    &__list {
+      min-height: 520px;
+      padding: 28px;
+    }
+
+    &__details {
+      padding: 48px 32px;
+    }
+  }
+
+  @include mobile {
+    width: 100%;
+    min-height: 100vh;
+    grid-template-columns: 1fr;
+    border-radius: 0;
+
+    &.modal-item--detail {
+      grid-template-columns: 1fr;
+    }
+
+    &__image {
+      min-height: 300px;
+      padding: 24px 20px 12px;
+
+      picture {
+        max-width: 320px;
+      }
+    }
+
+    &__list {
+      min-height: 58vh;
+      padding: 18px 16px 0;
+    }
+
+    &__details {
+      gap: 24px;
+      padding: 18px 20px 28px;
+    }
   }
 }

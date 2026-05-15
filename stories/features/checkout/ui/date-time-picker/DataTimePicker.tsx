@@ -7,7 +7,7 @@ export const DataTimePicker = ({
   slidesDate,
 }: Record<string, any>) => {
   return (
-    <div className="dataTimePickerPC">
+    <div className="date-time-picker">
       <span className="pikerLogin">Выберите дату и время</span>
       <section className="sandbox__carousel">
         <DataTime slides={slidesDate} data={'date'} active={1} />

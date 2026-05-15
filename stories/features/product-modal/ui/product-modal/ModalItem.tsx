@@ -18,29 +18,28 @@ export const ModalItem = ({
 }: Record<string, any>) => {
   return (
     <div
-      className="modalItemPC"
-      style={{ background: typeModal === 'start' ? '#FFFFFF' : '#E6E6E6' }}
+      className={`modal-item modal-item--${typeModal === 'start' ? 'start' : 'detail'}`}
     >
       {typeModal !== 'start' ? null : (
-        <div className="ImgItem">
+        <div className="modal-item__image">
           <ModalItemImg img_name={img_name} />
           {parseInt(is_new) == 0 ? (
             parseInt(is_hit) == 0 ? null : (
-              <Badge size={'big'} type={'hit'} view={'pc'} />
+              <Badge size={'big'} type={'hit'} view={'desktop'} />
             )
           ) : (
-            <Badge size={'big'} type={'new'} view={'pc'} />
+            <Badge size={'big'} type={'new'} view={'desktop'} />
           )}
         </div>
       )}
 
       {typeModal === 'start' ? null : (
-        <div className="FirstItem">
+        <div className="modal-item__list">
           <ModalItemList {...list} />
         </div>
       )}
 
-      <div className="SecondItem">
+      <div className="modal-item__details">
         <ModalItemDesc {...desc} />
         <MyButton {...count} />
       </div>

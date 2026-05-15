@@ -1,7 +1,11 @@
 import './ConfirmForm.scss';
 
 import { MyButton } from '@stories/shared/ui/button/MyButton';
-import { ArrowLeftMobile, Cloud, CheckAuthMobile } from '@/ui/Icons';
+import {
+  ArrowLeftMobile,
+  Cloud,
+  CheckAuthMobile,
+} from '@stories/shared/compat/CoreIcons';
 
 export const ConfirmForm = ({
   city,
@@ -26,7 +30,7 @@ export const ConfirmForm = ({
   }
 
   return (
-    <div className="containerConfirmPC">
+    <div className="confirm-form">
       <div className="confirmHeader">
         <ArrowLeftMobile />
         <span>Проверьте заказ</span>

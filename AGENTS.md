@@ -20,6 +20,16 @@
 - Do not add new work to `stories/legacy`; migrate from it into FSD layers when needed.
 - Follow dependency direction: `app -> pages -> widgets -> features -> entities -> shared`.
 
+## Storybook Style Framework
+
+- Use `stories/pages/about/ui/AboutPage.scss` as the current page-level reference.
+- Import shared Sass with `@use '<relative>/shared/global' as *;`.
+- Keep tokens, functions, and mixins under `stories/shared/styles`, exported through `stories/shared/global.scss`.
+- Use one kebab-case block per component/page and BEM-style elements/modifiers, for example `about-page`, `about-page__main`, `about-page--desktop`.
+- Do not introduce new `PC` suffixes or legacy class hooks in FSD Storybook files. If `PC` is a viewport variant alongside Mobile and Tablet, name the FSD variant Desktop. Existing legacy names should stay in `stories/legacy` until migrated.
+- Rewire TSX class names and SCSS selectors together. Do not leave compatibility duplicate selectors unless a consuming component still requires them.
+- Keep SCSS beside its owning component; only shared primitives belong in `stories/shared/styles`.
+
 ## Responsive Targets
 
 - Mobile: `320px` through `667px`.

@@ -4,7 +4,11 @@ import {
   responsiveStoryGlobals,
   responsiveStoryParameters,
 } from '@stories/shared/lib/storybook/responsive';
-import { homeBannerList, homeProductCards } from '@stories/fixtures/home';
+import {
+  homeBannerList,
+  homeCategoryMenu,
+  homeProductCards,
+} from '@stories/fixtures/home';
 
 const meta = {
   title: 'Страницы / Главная',
@@ -39,6 +43,7 @@ type Story = StoryObj<typeof meta>;
 const defaultArgs = {
   banners: { bannerList: homeBannerList },
   container: { cardItem: homeProductCards },
+  categories: homeCategoryMenu,
 };
 
 export const Default: Story = {

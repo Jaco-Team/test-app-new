@@ -47,7 +47,8 @@
     & * {
       color: #fff;
     }
-    &:hover, :active {
+    &:hover,
+    :active {
       background-color: rgba($color: #000000, $alpha: 0.2) !important;
     }
   }
@@ -140,7 +141,7 @@
 }
 
 button:disabled,
-button[disabled]{
+button[disabled] {
   pointer-events: none;
   cursor: unset;
 }
@@ -181,5 +182,51 @@ button[disabled]{
 
   & > span {
     @include MyFonts(40, 400);
+  }
+}
+
+.modal-item {
+  .modalBTN {
+    width: 100%;
+    max-width: 420px;
+    height: 56px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 999px;
+    font-size: 20px !important;
+  }
+
+  .containerModalBTN {
+    width: 100%;
+    max-width: 420px;
+    height: 56px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 999px;
+
+    > button {
+      width: 44px;
+      height: 44px;
+      border-radius: 44px;
+      font-size: 28px !important;
+    }
+
+    > button:nth-child(1) {
+      margin-left: 6px;
+    }
+
+    > button:nth-child(3) {
+      margin-right: 6px;
+    }
+
+    > span {
+      font-size: 22px !important;
+    }
+  }
+
+  @include mobile {
+    .modalBTN,
+    .containerModalBTN {
+      max-width: none;
+      height: 58px;
+    }
   }
 }

@@ -1,6 +1,6 @@
 @use '../../../../shared/global' as *;
 
-.modalAuthPC {
+.auth-modal {
   border-radius: calcSize(40);
   width: calcSize(680);
   height: calcSize(800);
@@ -8,7 +8,7 @@
   flex-direction: column;
   align-items: center;
 
-  & .modalLoginPC {
+  & .auth-modal__login {
     margin-top: calcSize(15);
     width: calcSize(620);
     display: flex;

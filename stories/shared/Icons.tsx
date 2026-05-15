@@ -76,7 +76,6 @@ export function IconRuble(props) {
 export function VKIcon(props) {
   return (
     <svg
-      alt="vk_icon"
       style={props.style}
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 448 512"

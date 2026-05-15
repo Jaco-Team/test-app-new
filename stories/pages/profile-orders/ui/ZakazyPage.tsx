@@ -24,8 +24,8 @@ export const ZakazyPage = ({
   return (
     <>
       {header ? null : null}
-      <div className="zakazyPC">
-        <div className="zakazyTablePC">
+      <div className="profile-orders-page">
+        <div className="profile-orders-page__table">
           <div className="title">История заказов</div>
           <TableOrders {...orders} />
         </div>

@@ -1,9 +1,13 @@
-import { ReloadIcon, CheckIcon, CloseIcon_old } from '@/ui/Icons.js';
+import {
+  ReloadIcon,
+  CheckIcon,
+  CloseIcon_old,
+} from '@stories/shared/compat/CoreIcons';
 import './OrderItem.scss';
 
 export const OrderItem = ({ order }: Record<string, any>) => {
   return (
-    <tr className="orderItemPC">
+    <tr className="order-item-row">
       <td>
         {parseInt(order.is_delete) == 1 ? (
           <CloseIcon_old />

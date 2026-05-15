@@ -30,7 +30,7 @@ export const Map = ({
   }, [zones]);
 
   return (
-    <div className="mapPC">
+    <div className="contact-map">
       <YMaps
         query={{
           lang: 'ru_RU',
@@ -42,7 +42,7 @@ export const Map = ({
           instanceRef={ref}
           width="100%"
           height="100%"
-          className="mapPC"
+          className="contact-map"
         >
           <SearchControl options={{ float: 'left' } as any} />
           <ZoomControl options={{ float: 'left' } as any} />

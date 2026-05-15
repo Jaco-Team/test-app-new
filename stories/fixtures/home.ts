@@ -1,9 +1,11 @@
 import bannersData from './banners.togliatti.json';
 import homeProductsData from './home-products.togliatti.json';
+import { MAIN_CATS_TOGLIATTI } from './header.togliatti';
 import type { ProductItem } from '@stories/entities/product/ui/product-card/model/types';
 import type { Banner } from '@stories/widgets/home/ui/banner-list/model/types';
 
 export const homeBannerList = bannersData.bannersList as Banner[];
+export const homeCategoryMenu = MAIN_CATS_TOGLIATTI;
 export const homeProductCards: ProductItem[] = homeProductsData.allItems
   .slice(0, 24)
   .map((name, index) => ({
