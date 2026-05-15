@@ -5,9 +5,9 @@ import Toolbar from '@mui/material/Toolbar';
 
 import './Header.scss';
 import { MyCatLink } from '../../../shared/MyTextLink/MyCatLink';
-import { IconPC } from '../../../shared/IconPC/IconPC';
+import { Icon } from '../../../shared/Icon/Icon';
 import { MyMenu } from '../../../shared/MyMenu/MyMenu';
-import { BurgerIconMobile } from '../../../shared/Icons.js';
+import { BurgerIconMobile } from '../../../shared/Icons';
 import headerData from '../../../fixtures/header.togliatti.json';
 import { CatItem, HeaderProps, SubCatItem } from '../model/types';
 import { NavBarMobile } from '../../NavBarMobile/NavBarMobile';
@@ -64,7 +64,7 @@ export const Header: React.FC<HeaderProps> = ({
       <>
         <AppBar className="headerMobile">
           <Toolbar>
-            <a className="logoPC" href="/">
+            <a className="site-header__logo" href="/">
               <img
                 alt="Жако доставка роллов и пиццы"
                 src="/jaco-logo-mobile.png"
@@ -114,11 +114,11 @@ export const Header: React.FC<HeaderProps> = ({
                     <a className="city">
                       <MyCatLink children="Тольятти" />
                     </a>
-                    <IconPC icon="location" element="header" />
+                    <Icon icon="location" element="header" />
                   </div>
-                  <IconPC icon="docs" element="header" />
-                  <IconPC icon="profile" element="header" />
-                  <IconPC icon="basket" count={count} element="header" />
+                  <Icon icon="docs" element="header" />
+                  <Icon icon="profile" element="header" />
+                  <Icon icon="basket" count={count} element="header" />
                 </div>
               </div>
             </div>
@@ -137,10 +137,10 @@ export const Header: React.FC<HeaderProps> = ({
   // Десктопная версия
   return (
     <>
-      <AppBar className="HeaderPC">
+      <AppBar className="site-header">
         <Toolbar>
           <div>
-            <a className="logoPC" href="/">
+            <a className="site-header__logo" href="/">
               <img
                 alt="Жако доставка роллов и пиццы"
                 src="/Jaco-Logo-120.png"
@@ -164,10 +164,10 @@ export const Header: React.FC<HeaderProps> = ({
             <a className="city" href="#">
               <MyCatLink children="Тольятти" />
             </a>
-            <IconPC icon="location" element="header" />
-            <IconPC icon="docs" element="header" />
-            <IconPC icon="profile" element="header" />
-            <IconPC icon="basket" count={count} element="header" />
+            <Icon icon="location" element="header" />
+            <Icon icon="docs" element="header" />
+            <Icon icon="profile" element="header" />
+            <Icon icon="basket" count={count} element="header" />
           </div>
         </Toolbar>
       </AppBar>

@@ -24,7 +24,7 @@
 }
 
 // ==================== ДЕСКТОП ====================
-.HeaderPC {
+.site-header {
   height: calcSize(128);
   background-color: #fff !important;
   box-shadow: none !important;
@@ -51,7 +51,7 @@
       height: calcSize(128);
     }
 
-    .logoPC {
+    .site-header__logo {
       width: calcSize(373.55);
       height: calcSize(112);
       margin-right: calcSize(20);
@@ -142,7 +142,7 @@
   .icons-group {
     gap: calcSize_pad(15);
 
-    .IconHeaderPC {
+    .header-icon {
       margin: 0;
 
       svg {
@@ -399,7 +399,7 @@
     .icons-group {
       gap: calcSize_pad(12);
 
-      .IconHeaderPC svg {
+      .header-icon svg {
         width: calcSize_pad(22);
         height: calcSize_pad(22);
       }
@@ -445,7 +445,7 @@
       width: calc(100% - calcSize_mobile(120));
     }
 
-    .logoPC {
+    .site-header__logo {
       width: calcSize_mobile(350);
       height: calcSize_mobile(90);
     }

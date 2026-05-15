@@ -2,7 +2,7 @@ import './SelectAddress.scss';
 
 export const SelectAddress = ({ list }: Record<string, any>) => {
   return (
-    <div className="modalSelectPC">
+    <div className="select-address-modal">
       <span>Выбор адреса</span>
       <ul>
         {list?.map((addr, key) => (
@@ -12,4 +12,3 @@ export const SelectAddress = ({ list }: Record<string, any>) => {
     </div>
   );
 };
-

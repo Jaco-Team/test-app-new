@@ -136,24 +136,24 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
   const renderMainView = () => (
     <>
-      <div className="ProductModal-image">
+      <div className="product-modal-image">
         <Image
           src={productImage}
           alt={productName}
           width={585}
           height={585}
           priority
-          className="ProductModal-image-main"
+          className="product-modal-image-main"
         />
       </div>
 
-      <div className="ProductModal-content">
-        <h2 className="ProductModal-title">{productName}</h2>
+      <div className="product-modal-content">
+        <h2 className="product-modal-title">{productName}</h2>
 
-        <div className="ProductModal-meta">
-          <div className="ProductModal-meta-text">
+        <div className="product-modal-meta">
+          <div className="product-modal-meta-text">
             <span
-              className="ProductModal-meta-link"
+              className="product-modal-meta-link"
               onClick={handleRollsClick}
               role="button"
               tabIndex={0}
@@ -161,13 +161,13 @@ export const ProductModal: React.FC<ProductModalProps> = ({
             >
               {rollsCount} ролла
             </span>
-            <span className="ProductModal-meta-divider">|</span>
-            <span className="ProductModal-meta-item">{piecesCount} шт.</span>
-            <span className="ProductModal-meta-divider">|</span>
-            <span className="ProductModal-meta-item">{weight} г</span>
+            <span className="product-modal-meta-divider">|</span>
+            <span className="product-modal-meta-item">{piecesCount} шт.</span>
+            <span className="product-modal-meta-divider">|</span>
+            <span className="product-modal-meta-item">{weight} г</span>
           </div>
           <button
-            className="ProductModal-info-btn"
+            className="product-modal-info-btn"
             onClick={handleInfoClick}
             aria-label="Информация"
           >
@@ -195,9 +195,9 @@ export const ProductModal: React.FC<ProductModalProps> = ({
           </button>
         </div>
 
-        <p className="ProductModal-description">{productDescription}</p>
+        <p className="product-modal-description">{productDescription}</p>
 
-        <button className="ProductModal-price-btn">
+        <button className="product-modal-price-btn">
           {new Intl.NumberFormat('ru-RU').format(price)} ₽
         </button>
       </div>
@@ -205,13 +205,13 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   );
 
   const renderRollsView = () => (
-    <div className="ProductModal-rolls-view">
-      <div className="ProductModal-rolls-header">
-        <h2 className="ProductModal-rolls-title">
+    <div className="product-modal-rolls-view">
+      <div className="product-modal-rolls-header">
+        <h2 className="product-modal-rolls-title">
           Сет состоит из {rollsCount} роллов:
         </h2>
         <button
-          className="ProductModal-back-btn"
+          className="product-modal-back-btn"
           onClick={handleBack}
           aria-label="Назад"
         >
@@ -227,11 +227,11 @@ export const ProductModal: React.FC<ProductModalProps> = ({
         </button>
       </div>
 
-      <div className="ProductModal-rolls-list">
+      <div className="product-modal-rolls-list">
         {rollsData.map((roll, index) => (
-          <div key={roll.id} className="ProductModal-roll-item">
-            <span className="ProductModal-roll-number">{index + 1}.</span>
-            <div className="ProductModal-roll-image">
+          <div key={roll.id} className="product-modal-roll-item">
+            <span className="product-modal-roll-number">{index + 1}.</span>
+            <div className="product-modal-roll-image">
               <Image
                 src={roll.image}
                 alt={roll.name}
@@ -239,9 +239,9 @@ export const ProductModal: React.FC<ProductModalProps> = ({
                 height={120}
               />
             </div>
-            <div className="ProductModal-roll-content">
-              <h3 className="ProductModal-roll-name">{roll.name}</h3>
-              <p className="ProductModal-roll-description">
+            <div className="product-modal-roll-content">
+              <h3 className="product-modal-roll-name">{roll.name}</h3>
+              <p className="product-modal-roll-description">
                 {roll.description}
               </p>
             </div>
@@ -252,38 +252,39 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   );
 
   const renderNutritionView = () => (
-    <div className="ProductModal-nutrition-view">
-      <div className="ProductModal-nutrition-header">
-        <h2 className="ProductModal-nutrition-title">
+    <div className="product-modal-nutrition-view">
+      <div className="product-modal-nutrition-header">
+        <h2 className="product-modal-nutrition-title">
           Таблица пищевой ценности
         </h2>
       </div>
 
-      <p className="ProductModal-nutrition-subtitle">
+      <p className="product-modal-nutrition-subtitle">
         Полное описание состава блюда, калорийности и возможных аллергенов можно{' '}
-        <a href="#" className="ProductModal-nutrition-link">
+        <a href="#" className="product-modal-nutrition-link">
           скачать в формате PDF
         </a>
       </p>
 
-      <div className="ProductModal-nutrition-toggle">
+      <div className="product-modal-nutrition-toggle">
         <button
-          className={`ProductModal-nutrition-toggle-btn ${nutritionView === 'per100' ? 'active' : ''}`}
+          className={`product-modal-nutrition-toggle-btn ${nutritionView === 'per100' ? 'active' : ''}`}
           onClick={() => handleNutritionToggle('per100')}
         >
           на 100 г
         </button>
         <button
-          className={`ProductModal-nutrition-toggle-btn ${nutritionView === 'perDish' ? 'active' : ''}`}
+          className={`product-modal-nutrition-toggle-btn ${nutritionView === 'perDish' ? 'active' : ''}`}
           onClick={() => handleNutritionToggle('perDish')}
         >
           на всё блюдо
         </button>
       </div>
 
-      <div className="ProductModal-nutrition-list">
+      <div className="product-modal-nutrition-list">
         {rollsData.map((roll, index) => (
           <ModalItemValue
+            key={roll.id}
             number={index + 1}
             kkal={roll.calories}
             tmp_desc={roll.ingredients}
@@ -298,9 +299,9 @@ export const ProductModal: React.FC<ProductModalProps> = ({
   );
 
   return (
-    <div className="ProductModal-overlay" onClick={handleOverlayClick}>
+    <div className="product-modal-overlay" onClick={handleOverlayClick}>
       <button
-        className="ProductModal-close"
+        className="product-modal-close"
         onClick={activeView !== 'main' ? handleBack : onClose}
         aria-label="Закрыть"
       >
@@ -321,7 +322,7 @@ export const ProductModal: React.FC<ProductModalProps> = ({
         </svg>
       </button>
 
-      <div className="ProductModal" onClick={(e) => e.stopPropagation()}>
+      <div className="product-modal" onClick={(e) => e.stopPropagation()}>
         {renderMainView()}
         {activeView === 'rolls' && renderRollsView()}
         {activeView === 'nutrition' && renderNutritionView()}

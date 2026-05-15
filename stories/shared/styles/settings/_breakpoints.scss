@@ -1,0 +1,19 @@
+$breakpoint-mobile-min: 320px;
+$breakpoint-mobile-max: 667px;
+$breakpoint-tablet-min: 668px;
+$breakpoint-tablet-max: 990px;
+$breakpoint-desktop-min: 991px;
+
+$breakpoints: (
+  mobile: (
+    min: $breakpoint-mobile-min,
+    max: $breakpoint-mobile-max,
+  ),
+  tablet: (
+    min: $breakpoint-tablet-min,
+    max: $breakpoint-tablet-max,
+  ),
+  desktop: (
+    min: $breakpoint-desktop-min,
+  ),
+);

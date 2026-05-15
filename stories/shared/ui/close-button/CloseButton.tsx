@@ -1,5 +1,5 @@
 import IconButton from '@mui/material/IconButton';
-import { IconClose } from '../../Icons.js';
+import { IconClose } from '../../Icons';
 import './CloseButton.scss';
 
 export const CloseButton = () => {

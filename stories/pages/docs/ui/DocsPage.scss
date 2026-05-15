@@ -1,6 +1,11 @@
 @use '../../../shared/global' as *;
 
-.docsPagePC {
+.docs-page__layout {
+  display: flex;
+  align-items: flex-start;
+}
+
+.docs-page {
   z-index: 3;
   mix-blend-mode: multiply;
   min-height: 50vh;

@@ -1,6 +1,6 @@
 @use '../../../../shared/global' as *;
 
-.cartPC {
+.cart-panel {
   height: 100vh;
   width: calcSize(1000);
   border-top: calcSize(2) solid rgba(0, 0, 0, 0.2);

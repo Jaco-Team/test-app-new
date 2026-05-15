@@ -1,4 +1,4 @@
-import { MapRender } from '@stories/widgets/contacts/ui/map/MapRender';
+import { Map } from '@stories/widgets/contacts/ui/map/Map';
 import { MenuContacts } from '@stories/features/contacts/ui/contacts-menu/MenuContacts';
 
 import './ContactsPage.scss';
@@ -14,9 +14,9 @@ export const ContactsPage = ({
   return (
     <>
       {header ? null : null}
-      <div className="boxContactsPC">
+      <div className="contacts-page">
         <MenuContacts {...menu} />
-        <MapRender {...map} />
+        <Map {...map} />
       </div>
       {footer ? null : null}
     </>

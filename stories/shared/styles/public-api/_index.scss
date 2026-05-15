@@ -1,0 +1,158 @@
+@use '../settings' as settings;
+@use '../tools' as tools;
+
+$Roboto: settings.$font-family-base;
+$ColorText: settings.$color-text-primary;
+$ColorMain: settings.$color-brand-primary;
+
+$viewport-mobile-design: settings.$design-width-mobile;
+$viewport-tablet-design: settings.$design-width-tablet;
+$viewport-desktop-design: settings.$design-width-desktop;
+
+$breakpoint-mobile-max: settings.$breakpoint-mobile-max;
+$breakpoint-tablet-min: settings.$breakpoint-tablet-min;
+$breakpoint-tablet-max: settings.$breakpoint-tablet-max;
+$breakpoint-desktop-min: settings.$breakpoint-desktop-min;
+
+@function strip-unit($value) {
+  @return tools.number($value);
+}
+
+@function vw-from($size, $design-width) {
+  @return tools.px-to-vw($size, $design-width);
+}
+
+@function calcSize($size) {
+  @return calc(100 * calc($size / 2770)) + vw;
+}
+
+@function calcSize_mobile($size) {
+  @return calc(100 * calc($size / 870)) + vw;
+}
+
+@function calcSize_pad($size) {
+  @return ($size * 0.09765625vw);
+}
+
+@function desktop-size($size) {
+  @return tools.design-size($size, desktop);
+}
+
+@function tablet-size($size) {
+  @return tools.design-size($size, tablet);
+}
+
+@function mobile-size($size) {
+  @return tools.design-size($size, mobile);
+}
+
+@function rem($px, $base: 16) {
+  @return tools.px-to-rem($px, $base);
+}
+
+@mixin MyFonts($size: 32, $weight: 400) {
+  font-size: calcSize($size) !important;
+  font-family: $Roboto !important;
+  color: $ColorText;
+
+  font-style: normal;
+  font-weight: $weight;
+}
+
+@mixin MyFonts_mobile($size: 32, $weight: 400) {
+  font-size: calcSize_mobile($size) !important;
+  font-family: $Roboto !important;
+  color: $ColorText;
+
+  font-style: normal;
+  font-weight: $weight;
+}
+
+@mixin MyFonts_tablet($size: 32, $weight: 400) {
+  font-size: calcSize_pad($size) !important;
+  font-family: $Roboto !important;
+  color: $ColorText;
+
+  font-style: normal;
+  font-weight: $weight;
+}
+
+@mixin fonsNew($size: 1rem, $family: settings.$font-family-base) {
+  font-size: $size !important;
+  font-family: $family !important;
+  color: settings.$color-text-primary;
+}
+
+@mixin mobile-only {
+  @include tools.respond(mobile) {
+    @content;
+  }
+}
+@mixin tablet-only {
+  @include tools.respond(tablet) {
+    @content;
+  }
+}
+@mixin desktop-only {
+  @include tools.respond(desktop) {
+    @content;
+  }
+}
+@mixin up-tablet {
+  @include tools.respond-from(settings.$breakpoint-tablet-min) {
+    @content;
+  }
+}
+@mixin down-tablet {
+  @include tools.respond-until(settings.$breakpoint-tablet-max) {
+    @content;
+  }
+}
+@mixin mobile {
+  @include tools.respond(mobile) {
+    @content;
+  }
+}
+@mixin smallTablet {
+  @include tools.respond-between(settings.$breakpoint-tablet-min, 800px) {
+    @content;
+  }
+}
+@mixin tablet {
+  @include tools.respond(tablet) {
+    @content;
+  }
+}
+@mixin desktop {
+  @include tools.respond(desktop) {
+    @content;
+  }
+}
+
+@mixin reset-button {
+  @include tools.button-reset;
+}
+@mixin interactive-control {
+  @include tools.interactive-target;
+}
+@mixin focus-ring($color: rgba(settings.$color-brand-primary, 0.32)) {
+  @include tools.focus-ring($color);
+}
+@mixin line-clamp($lines) {
+  @include tools.text-truncate($lines);
+}
+@mixin image-contain {
+  @include tools.media-contain;
+}
+@mixin image-cover {
+  @include tools.media-cover;
+}
+@mixin absolute-fill {
+  @include tools.absolute-fill;
+}
+@mixin flex-center {
+  @include tools.flex-center;
+}
+@mixin scroll-hidden {
+  @include tools.hide-scrollbar;
+}

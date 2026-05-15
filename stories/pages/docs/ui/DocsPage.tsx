@@ -1,4 +1,4 @@
-import { BreadCrumbs } from '@stories/shared/ui/breadcrumbs/BreadСrumbs';
+import { BreadCrumbs } from '@stories/shared/ui/breadcrumbs/BreadCrumbs';
 import Grid from '@mui/material/Grid';
 import './DocsPage.scss';
 import { useEffect, useState, useRef } from 'react';
@@ -11,7 +11,7 @@ export const DocsPage = ({ header, page, footer, data }: DocsPageProps) => {
     <>
       {header ? null : null}
       <Grid container>
-        <div className="docsPagePC">
+        <div className="docs-page">
           {open ? (
             <div
               style={{
@@ -25,7 +25,7 @@ export const DocsPage = ({ header, page, footer, data }: DocsPageProps) => {
             </div>
           ) : page?.content ? (
             <>
-              <div className="docsPagePC-back" onClick={() => setOpen(!open)}>
+              <div className="docs-page-back" onClick={() => setOpen(!open)}>
                 <svg
                   xmlns="http://www.w3.org/2000/svg"
                   width="40"

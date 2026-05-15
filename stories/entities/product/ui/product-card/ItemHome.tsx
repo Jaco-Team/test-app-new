@@ -14,14 +14,16 @@ export const ItemHome = ({
   weight,
   marc_desc,
   price,
-  count,
+  count = '0',
   is_new,
   is_hit,
   count_part,
 }: ProductItem) => {
   return (
     <div
-      className={['ItemHomePc', parseInt(count) > 0 ? 'active' : ''].join(' ')}
+      className={['product-card', parseInt(count) > 0 ? 'active' : ''].join(
+        ' '
+      )}
     >
       <div className="BlockIMG">
         <Image
@@ -64,7 +66,7 @@ export const ItemHome = ({
           </div>
         ) : (
           <button className="btn_price">
-            {new Intl.NumberFormat('ru-RU').format(price)} ₽
+            {new Intl.NumberFormat('ru-RU').format(Number(price))} ₽
           </button>
         )}
       </div>

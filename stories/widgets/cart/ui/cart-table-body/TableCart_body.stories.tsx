@@ -1,5 +1,5 @@
 import { TableCart_body } from './TableCart_body';
-import * as TableCartPC_row from '@stories/entities/cart/ui/cart-row/TableCart_row.stories';
+import * as TableCart_row from '@stories/entities/cart/ui/cart-row/TableCart_row.stories';
 import * as TableCart_foot from '../cart-table-footer/TableCart_foot.stories';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
@@ -39,23 +39,23 @@ export const Promo = Template.bind({});
 Default.args = {
   items: [],
   itemsCount: 0,
-  dopItems: TableCartPC_row.Dop.args,
+  dopItems: TableCart_row.Dop.args,
   dopItemsCount: 5,
   footerData: TableCart_foot.Default.args,
 };
 
 Active.args = {
-  items: TableCartPC_row.Item.args,
+  items: TableCart_row.Item.args,
   itemsCount: 3,
-  dopItems: TableCartPC_row.Dop.args,
+  dopItems: TableCart_row.Dop.args,
   dopItemsCount: 5,
   footerData: TableCart_foot.Active.args,
 };
 
 Promo.args = {
-  items: TableCartPC_row.Promo.args,
+  items: TableCart_row.Promo.args,
   itemsCount: 3,
-  dopItems: TableCartPC_row.Dop.args,
+  dopItems: TableCart_row.Dop.args,
   dopItemsCount: 5,
   footerData: TableCart_foot.Promo.args,
 };

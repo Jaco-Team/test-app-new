@@ -1,47 +1,36 @@
-import path from "node:path";
-import { fileURLToPath } from "node:url";
-
-const dirname = path.dirname(fileURLToPath(import.meta.url));
+import { publicDir, storiesSrcDir } from './presets/paths.mjs';
+import { applyStorybookViteResolve } from './presets/vite-storybook.mjs';
 
 /** @type { import('@storybook/nextjs-vite').StorybookConfig } */
 const config = {
   stories: [
-    "../stories/{app,pages}/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)",
-    "../stories/{widgets,features,entities}/**/ui/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)",
-    "../stories/shared/{ui,IconPC,MyMenu,MyTextLink}/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)",
+    '../stories/{app,pages,widgets,features,entities,shared}/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)',
   ],
 
   addons: [
-    "@storybook/addon-onboarding",
-    "@storybook/addon-links",
-    "storybook/viewport",
-    "@chromatic-com/storybook",
-    "@storybook/addon-docs",
-    "@storybook/addon-vitest"
+    '@storybook/addon-onboarding',
+    '@storybook/addon-links',
+    'storybook/viewport',
+    '@chromatic-com/storybook',
+    '@storybook/addon-docs',
+    '@storybook/addon-vitest',
   ],
 
   framework: {
-    name: "@storybook/nextjs-vite",
+    name: '@storybook/nextjs-vite',
     options: {},
   },
 
   docs: {},
 
-  staticDirs: ["../public"],
+  staticDirs: [{ from: publicDir, to: '/' }],
 
   typescript: {
-    reactDocgen: "react-docgen-typescript"
+    reactDocgen: 'react-docgen-typescript',
   },
 
-  viteFinal: async (config) => ({
-    ...config,
-    resolve: {
-      ...config.resolve,
-      alias: {
-        ...config.resolve?.alias,
-        "@stories": path.resolve(dirname, "../stories"),
-      },
-    },
-  })
+  viteFinal: async (viteConfig) =>
+    applyStorybookViteResolve(viteConfig, storiesSrcDir),
 };
+
 export default config;

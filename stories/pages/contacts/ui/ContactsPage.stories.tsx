@@ -2,7 +2,7 @@ import { ContactsPage } from './ContactsPage';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 import * as MenuContacts from '@stories/features/contacts/ui/contacts-menu/MenuContacts.stories';
-import * as MapRender from '@stories/widgets/contacts/ui/map/MapRender.stories';
+import * as Map from '@stories/widgets/contacts/ui/map/Map.stories';
 
 export default {
   title: 'Страницы / Контакты',
@@ -38,17 +38,17 @@ export const Cookie = Template.bind({});
 
 Default.args = {
   menu: MenuContacts.Default.args,
-  map: MapRender.Default.args,
+  map: Map.Default.args,
 };
 
 ArrowUp.args = {
   menu: MenuContacts.Default.args,
-  map: MapRender.Default.args,
+  map: Map.Default.args,
 };
 
 Cookie.args = {
   menu: MenuContacts.Default.args,
-  map: MapRender.Default.args,
+  map: Map.Default.args,
 };
 
 export const Mobile = Template.bind({});

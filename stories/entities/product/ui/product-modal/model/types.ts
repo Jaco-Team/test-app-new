@@ -34,5 +34,5 @@ export interface ProductModalProps {
   productDescription?: string;
   price?: number;
   relatedProducts?: RelatedProduct[];
-  rollsData: RollItem[];
+  rollsData?: RollItem[];
 }

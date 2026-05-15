@@ -1,15 +1,18 @@
-import { IconPC } from '@stories/shared/IconPC/IconPC';
+import { Icon } from '@stories/shared/Icon/Icon';
 
 export default function Finish() {
   return (
-    <div className="modalLoginPC">
+    <div className="auth-modal__login">
       <div className="loginFinish">
-        <IconPC icon="check" element="auth" />
+        <Icon icon="check" element="auth" />
       </div>
 
       <div className="loginText">
         <span>Ваш аккаунт зарегистрирован.</span>
-        <span>Теперь вы можете сохранять свои адреса, привязать банковскую карту и повторять прежние заказы.</span>
+        <span>
+          Теперь вы можете сохранять свои адреса, привязать банковскую карту и
+          повторять прежние заказы.
+        </span>
       </div>
 
       <a href="/" className="loginLink">

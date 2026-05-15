@@ -54,12 +54,21 @@ Do not add new work to `stories/legacy`. Migrate legacy stories into FSD layers
 and index only FSD story locations from `.storybook/main.mjs`; legacy and old
 top-level helper stories stay on disk as reference.
 
+## Storybook Style Framework
+
+- Import shared Sass through `@use '<relative>/shared/global' as *;`.
+- Keep shared tokens and mixins in `stories/shared/styles`; expose them through `stories/shared/global.scss`.
+- Use the About page style as the current page reference: one kebab-case block, BEM elements and modifiers, and viewport modifiers such as `about-page--desktop`.
+- Do not add new `PC`/legacy class hooks in FSD Storybook code. If `PC` is a viewport variant alongside Mobile and Tablet, name the FSD variant Desktop. Keep old names only inside `stories/legacy` while they are still reference material.
+- Keep component SCSS local to the component folder and rewire TSX class names together with the matching SCSS selectors.
+- Prefer `Mobile`, `Tablet`, and `Desktop` stories using the shared Storybook viewport helper for indexed FSD stories.
+
 ## Development Notes
 
 - Keep changes scoped and simple.
 - Prefer existing project patterns before adding abstractions.
 - Update README or task docs when workflow or project direction changes.
-- For Storybook behavior changes, add or run relevant automatic Storybook checks when practical.
+- For Storybook behavior changes, run `npm run typecheck` and relevant Storybook checks when practical.
 - Use Chrome MCP against the already-running local Storybook when visual or interaction verification is needed.
 - TypeScript is configured with `tsconfig.json`; legacy JS remains allowed during migration.
 

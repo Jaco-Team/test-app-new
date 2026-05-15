@@ -1,6 +1,6 @@
 @use '../../global' as *;
 
-.ArrowPC {
+.scroll-top-button {
   z-index: 1000;
   width: calcSize(120);
   height: calcSize(120);
@@ -24,7 +24,7 @@
   display: none;
 }
 
-.ArrowPC,
+.scroll-top-button,
 .ArrowHidden {
   border: 0;
   cursor: pointer;

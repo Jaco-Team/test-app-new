@@ -1,27 +1,37 @@
 @use '../../../../shared/global' as *;
 
-.containerItemHomePC {
+.product-grid__item {
   display: flex;
   flex-wrap: wrap;
   justify-content: space-between;
   width: calcSize(2520);
-  align-items: center;
-  margin: 0 calcSize(125);
-  margin-top: calcSize(32);
-  margin-bottom: calcSize(60);
+  align-items: flex-start;
+  margin: calcSize(32) calcSize(125) calcSize(60);
   row-gap: calcSize(32);
+}
 
-  @media (max-width: 1000px) {
+@include tablet {
+  .product-grid__item {
+    width: calc(100vw - 48px);
+    max-width: 920px;
+    margin: 24px auto 48px;
+    gap: 22px;
     justify-content: center;
-    gap: calcSize(20);
 
     & > * {
-      flex: 0 0 calc(50% - calcSize(20));
-      max-width: calc(50% - calcSize(20));
+      flex: 0 0 calc(50% - 11px);
+      max-width: calc(50% - 11px);
     }
   }
+}
 
-  @media (max-width: 800px) {
+@include mobile {
+  .product-grid__item {
+    width: calc(100vw - 28px);
+    margin: 8px auto 32px;
+    gap: 4px;
+    justify-content: flex-start;
+
     & > * {
       flex: 0 0 100%;
       max-width: 100%;

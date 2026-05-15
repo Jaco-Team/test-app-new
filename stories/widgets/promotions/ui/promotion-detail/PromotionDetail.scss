@@ -1,0 +1,374 @@
+@use '../../../../shared/global' as *;
+
+.BannerFull {
+  width: calcSize(2520) !important;
+
+  & .DescItem {
+    display: flex;
+    justify-content: space-between;
+    margin-top: calcSize(60);
+    margin-bottom: calcSize(60);
+
+    & > .FirstItem {
+      width: calcSize(1080);
+      & > .title {
+        width: calcSize(1080);
+        height: calcSize(60);
+        @include MyFonts(50, 500);
+        line-height: calcSize(50);
+        margin-bottom: calcSize(30);
+        margin-left: calcSize(60);
+        display: block;
+      }
+      & .buttonPromo {
+        margin-left: calcSize(60);
+        margin-top: calcSize(30);
+        width: calcSize(420);
+        border-radius: calcSize(45);
+        border: calcSize(3) solid rgba(0, 0, 0, 0.2);
+        color: rgba(0, 0, 0, 0.6) !important;
+        height: calcSize(80);
+
+        @include MyFonts(30, 400);
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        white-space: nowrap;
+
+        cursor: pointer;
+
+        &:hover {
+          background-color: #f2f2f2;
+          border: calcSize(2) solid #cccccc;
+        }
+        &:target {
+          background-color: #f2f2f2;
+          border: calcSize(2) solid #cccccc;
+        }
+        &:active {
+          background-color: #f2f2f2;
+          border: calcSize(2) solid #cccccc;
+        }
+      }
+    }
+    & > .SecondItem {
+      width: calcSize(1080);
+      & > .title {
+        @include MyFonts(50, 500);
+      }
+      & p,
+      span {
+        @include MyFonts(30, 400);
+        line-height: calcSize(40);
+      }
+      & strong,
+      b {
+        @include MyFonts(40, 500);
+        line-height: calcSize(40);
+      }
+    }
+  }
+
+  & .ImgItem {
+    position: relative;
+    width: calcSize(2520);
+
+    > div {
+      width: 100%;
+    }
+    & img {
+      cursor: default;
+    }
+    & span {
+      left: calcSize(160);
+      bottom: calcSize(90);
+      position: absolute;
+      height: calcSize(80);
+      width: calcSize(400);
+      display: flex;
+      align-items: center;
+      cursor: pointer;
+      @include MyFonts(30, 400);
+      color: #fff !important;
+      & svg {
+        width: calcSize(25);
+        height: calcSize(25);
+      }
+    }
+  }
+}
+
+.BannerFull--tablet {
+  width: 100% !important;
+  max-width: none;
+
+  & .DescItem {
+    width: 100%;
+    column-gap: calcSize_pad(48);
+    align-items: flex-start;
+    justify-content: flex-start;
+    margin-top: calcSize_pad(48);
+    margin-bottom: calcSize_pad(56);
+    padding: 0;
+    box-sizing: border-box;
+
+    & > .FirstItem,
+    & > .SecondItem {
+      width: calc((100% - calcSize_pad(48)) / 2);
+      min-width: 0;
+    }
+
+    & > .FirstItem {
+      & > .title {
+        width: 100%;
+        height: auto;
+        margin-left: 0;
+        margin-bottom: calcSize_pad(24);
+        font-size: calcSize_pad(38) !important;
+        line-height: calcSize_pad(44);
+      }
+
+      & .List {
+        display: flex;
+        flex-direction: column;
+        row-gap: calcSize_pad(24);
+      }
+
+      & .buttonPromo {
+        width: 100%;
+        max-width: calcSize_pad(360);
+        height: calcSize_pad(68);
+        margin-left: 0;
+        margin-top: calcSize_pad(28);
+        border-radius: calcSize_pad(40);
+        font-size: calcSize_pad(24) !important;
+      }
+    }
+
+    & > .SecondItem {
+      & > .title {
+        display: block;
+        width: 100%;
+        font-size: calcSize_pad(38) !important;
+        line-height: calcSize_pad(44);
+      }
+
+      & p,
+      & span {
+        font-size: calcSize_pad(24) !important;
+        line-height: calcSize_pad(34);
+      }
+
+      & strong,
+      & b {
+        font-size: calcSize_pad(28) !important;
+        line-height: calcSize_pad(36);
+      }
+    }
+  }
+
+  & .promotionProductItem {
+    display: grid;
+    grid-template-columns: calcSize_pad(34) calcSize_pad(116) minmax(0, 1fr);
+    column-gap: calcSize_pad(16);
+    width: 100%;
+    height: auto;
+    min-height: calcSize_pad(152);
+    align-items: start;
+
+    & .number {
+      width: auto;
+      height: auto;
+      padding-top: calcSize_pad(8);
+      font-size: calcSize_pad(24) !important;
+      line-height: calcSize_pad(30);
+    }
+
+    & img {
+      width: calcSize_pad(116);
+      height: calcSize_pad(116);
+    }
+
+    & .itemDesc {
+      min-width: 0;
+      margin-left: 0;
+
+      & .title {
+        width: 100%;
+        height: auto;
+        min-height: calcSize_pad(52);
+        font-size: calcSize_pad(24) !important;
+        line-height: calcSize_pad(28);
+      }
+
+      & .desc {
+        width: 100%;
+        height: auto;
+        min-height: calcSize_pad(52);
+        font-size: calcSize_pad(18) !important;
+        line-height: calcSize_pad(24);
+      }
+
+      & .price {
+        width: calcSize_pad(150);
+        height: calcSize_pad(44);
+
+        &.text > span {
+          font-size: calcSize_pad(22) !important;
+        }
+
+        &.button {
+          width: calcSize_pad(150);
+          height: calcSize_pad(44);
+          border-radius: calcSize_pad(28);
+          font-size: calcSize_pad(22) !important;
+          line-height: calcSize_pad(28);
+
+          & > button {
+            width: calcSize_pad(150);
+            height: calcSize_pad(44);
+            border-radius: calcSize_pad(28);
+
+            &.minus,
+            &.plus {
+              width: calcSize_pad(44);
+              height: calcSize_pad(44);
+              border-radius: calcSize_pad(24);
+              font-size: calcSize_pad(34) !important;
+            }
+          }
+
+          & > span {
+            font-size: calcSize_pad(22) !important;
+          }
+        }
+      }
+    }
+  }
+
+  & .ImgItem {
+    width: 100%;
+
+    & .promotion-image {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 3700 / 1000;
+      object-fit: cover;
+    }
+
+    & span {
+      left: calcSize_pad(52);
+      bottom: calcSize_pad(30);
+      width: calcSize_pad(260);
+      height: calcSize_pad(52);
+      font-size: calcSize_pad(22) !important;
+    }
+  }
+}
+
+.BannerFull--mobile {
+  width: 100% !important;
+  justify-content: center;
+  margin-bottom: 3.4188vw !important;
+  border-radius: 0 0 3.4188vw 3.4188vw !important;
+  scroll-margin-top: 80px;
+
+  & .ImgItem {
+    width: 100%;
+
+    & .promotion-image {
+      width: 100%;
+      height: auto;
+      aspect-ratio: 1000 / 500;
+      object-fit: cover;
+      border-radius: 3.4188vw 3.4188vw 0 0 !important;
+    }
+  }
+
+  & .DescItemMobile {
+    width: calc(100% - 5.12821vw);
+    max-width: calc(100% - 5.12821vw);
+    margin-top: 3.4188vw;
+    margin-bottom: 0;
+    display: flex;
+    flex-direction: column;
+  }
+
+  & .DescItemMobile > .FirstItemMobile {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 5.12821vw;
+
+    & .title {
+      font-size: 4.2735vw !important;
+      font-weight: 500;
+      line-height: normal;
+      margin-bottom: 0.854701vw !important;
+    }
+
+    & .FullText {
+      & p,
+      & li,
+      & a,
+      & span,
+      & strong,
+      & b {
+        font-size: 3.4188vw !important;
+        font-weight: 400;
+        line-height: normal;
+      }
+    }
+  }
+
+  & .DescItemMobile > .SecondItemMobile {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+
+    & > .itemTitle {
+      height: auto;
+      width: auto;
+      margin-left: 0;
+      margin-bottom: 0.854701vw;
+      font-size: 4.2735vw !important;
+      font-weight: 500;
+      line-height: normal;
+    }
+
+    & .List {
+      display: flex;
+      flex-direction: column;
+    }
+
+    & .buttonPromo {
+      width: 100%;
+      max-width: 56vw;
+      height: 8.5vw;
+      margin-left: 0;
+      margin-top: 2.4vw;
+      border-radius: 4.2vw;
+      @include MyFonts_mobile(22, 400);
+    }
+  }
+}
+
+.BannerFull.BannerFull--mobile .DescItemMobile > .FirstItemMobile > .title {
+  width: 100%;
+  height: auto;
+  margin-left: 0;
+  font-size: 4.2735vw !important;
+  font-weight: 500;
+  line-height: normal;
+}
+.BannerFull.BannerFull--mobile
+  .DescItemMobile
+  > .SecondItemMobile
+  > .itemTitle {
+  width: 100%;
+  height: auto;
+  margin-left: 0;
+  font-size: 4.2735vw !important;
+  font-weight: 500;
+  line-height: normal;
+}

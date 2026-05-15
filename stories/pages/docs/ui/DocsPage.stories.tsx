@@ -1,7 +1,7 @@
 import { Meta, StoryFn } from '@storybook/react';
 import { DocsPage } from './DocsPage';
 import { DocsPageProps, PageData } from './model/types';
-import * as BreadСrumbs from '@stories/shared/ui/breadcrumbs/BreadСrumbs.stories';
+import * as BreadCrumbs from '@stories/shared/ui/breadcrumbs/BreadCrumbs.stories';
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 
 export default {
@@ -49,7 +49,7 @@ export const Default = Template.bind({});
 Default.args = {
   page,
   data: {
-    ...BreadСrumbs.Default.args,
+    ...BreadCrumbs.Default.args,
     activePage: 'instpayorders',
     links: [
       {
@@ -95,7 +95,7 @@ Default.args = {
 export const ArrowUp = Template.bind({});
 ArrowUp.args = {
   page,
-  data: { ...BreadСrumbs.Default.args, activePage: 'instpayorders' },
+  data: { ...BreadCrumbs.Default.args, activePage: 'instpayorders' },
 };
 
 export const Mobile = Template.bind({});

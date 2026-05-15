@@ -21,5 +21,7 @@ export interface DocsPageProps {
   header?: Record<string, any> | null;
   page?: PageData | null;
   footer?: Record<string, any> | null;
-  data?: BreadcrumbsData;
+  data: BreadcrumbsData & {
+    links: Array<{ text: string; href?: string; onClick?: () => void }>;
+  };
 }

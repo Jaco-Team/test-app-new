@@ -1,6 +1,6 @@
 import React, { MouseEvent } from 'react';
 import './MyMenu.scss';
-import { IconPC } from '../IconPC/IconPC';
+import { Icon } from '../Icon/Icon';
 import Link from 'next/link';
 import Menu from '@mui/material/Menu';
 import Paper from '@mui/material/Paper';
@@ -37,7 +37,13 @@ interface MyMenuProps {
   type?: 'cat' | 'form_order' | 'contacts' | 'modal' | 'city' | string;
 }
 
-export const MyMenu: React.FC<MyMenuProps> = ({ anchorEl, isOpen, onClose, list, type }) => {
+export const MyMenu: React.FC<MyMenuProps> = ({
+  anchorEl,
+  isOpen,
+  onClose,
+  list,
+  type,
+}) => {
   if (type !== 'form_order') {
     if (!anchorEl && isOpen === true) {
       return (
@@ -65,9 +71,16 @@ export const MyMenu: React.FC<MyMenuProps> = ({ anchorEl, isOpen, onClose, list,
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
         autoFocus={false}
-        className={type === 'contacts' ? "MyMenu Contacts" : type === 'modal' ? "MyMenu Modal" : "MyMenu"}
+        className={
+          type === 'contacts'
+            ? 'MyMenu Contacts'
+            : type === 'modal'
+              ? 'MyMenu Modal'
+              : 'MyMenu'
+        }
         style={{
-          marginTop: type === 'cat' ? '1.4440433212996vw' : '0.72202166064982vw',
+          marginTop:
+            type === 'cat' ? '1.4440433212996vw' : '0.72202166064982vw',
         }}
       >
         {(list as SubCatItem[]).map((item: SubCatItem, index: number) => (
@@ -89,9 +102,9 @@ export const MyMenu: React.FC<MyMenuProps> = ({ anchorEl, isOpen, onClose, list,
         <Paper className="MyMenuPaper_FormOrder">
           <ul className="MyMenu_FormOrder">
             {(list as MenuItem[]).map((item: MenuItem, key: number) => (
-              <li key={key} onClick={onClose} className='menuItem'>
+              <li key={key} onClick={onClose} className="menuItem">
                 <div>
-                  <div className='containerSpan'>
+                  <div className="containerSpan">
                     <span>
                       {item?.addr_name ? (
                         <span style={{ textTransform: 'uppercase' }}>
@@ -102,7 +115,7 @@ export const MyMenu: React.FC<MyMenuProps> = ({ anchorEl, isOpen, onClose, list,
                     </span>
                     {parseInt(item?.is_main || '0') ? (
                       <span className="home">
-                        <IconPC icon='home' element="form_order" />
+                        <Icon icon="home" element="form_order" />
                       </span>
                     ) : null}
                   </div>
@@ -114,11 +127,11 @@ export const MyMenu: React.FC<MyMenuProps> = ({ anchorEl, isOpen, onClose, list,
                       {item?.et && item?.et.length > 0 && parseInt(item.et) > 0
                         ? 'Этаж: ' + item.et + ', '
                         : ''}
-                      {item?.dom_true ? parseInt(item.dom_true) === 0
-                        ? 'Домофон: не работает'
-                        : 'Домофон: работает'
-                        : ''
-                      }
+                      {item?.dom_true
+                        ? parseInt(item.dom_true) === 0
+                          ? 'Домофон: не работает'
+                          : 'Домофон: работает'
+                        : ''}
                     </span>
                   ) : (
                     false
@@ -139,9 +152,9 @@ export const MyMenu: React.FC<MyMenuProps> = ({ anchorEl, isOpen, onClose, list,
         className="MyMenu_FormOrder"
       >
         {(list as MenuItem[]).map((item: MenuItem, key: number) => (
-          <li key={key} onClick={onClose} className='menuItem'>
+          <li key={key} onClick={onClose} className="menuItem">
             <div>
-              <div className='containerSpan'>
+              <div className="containerSpan">
                 <span>
                   {item?.addr_name ? (
                     <span style={{ textTransform: 'uppercase' }}>
@@ -152,7 +165,7 @@ export const MyMenu: React.FC<MyMenuProps> = ({ anchorEl, isOpen, onClose, list,
                 </span>
                 {parseInt(item?.is_main || '0') ? (
                   <span className="home">
-                    <IconPC icon='home' element="form_order" />
+                    <Icon icon="home" element="form_order" />
                   </span>
                 ) : null}
               </div>
@@ -164,11 +177,11 @@ export const MyMenu: React.FC<MyMenuProps> = ({ anchorEl, isOpen, onClose, list,
                   {item?.et && item?.et.length > 0 && parseInt(item.et) > 0
                     ? 'Этаж: ' + item.et + ', '
                     : ''}
-                  {item?.dom_true ? parseInt(item.dom_true) === 0
-                    ? 'Домофон: не работает'
-                    : 'Домофон: работает'
-                    : ''
-                  }
+                  {item?.dom_true
+                    ? parseInt(item.dom_true) === 0
+                      ? 'Домофон: не работает'
+                      : 'Домофон: работает'
+                    : ''}
                 </span>
               ) : (
                 false

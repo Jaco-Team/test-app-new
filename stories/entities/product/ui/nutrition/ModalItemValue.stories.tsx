@@ -1,3 +1,4 @@
+import { morskoiSetItems } from '@stories/fixtures/product-modal';
 import { ModalItemValue } from './ModalItemValue';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
@@ -42,25 +43,13 @@ export const Default = Template.bind({});
 export const LongText = Template.bind({});
 
 Default.args = {
-  number: 1,
-  title: 'Гавайи жареный',
-  kkal: '173',
-  tmp_desc:
-    'Состав: куриное филе, ананас, творожный сыр, панировочные сухари, соус белый',
-  protein: '4,9',
-  fat: '8,9',
-  carbohydrates: '18,6',
+  ...morskoiSetItems[0],
+  tmp_desc: morskoiSetItems[0].marc_desc,
 };
 
 LongText.args = {
-  number: 1,
-  title: 'Филадельфия с лососем запечённый спайси',
-  kkal: '173',
-  tmp_desc:
-    'Состав: вода, сахар, концентрированный апельсиновый сок, регулятор кислотности, лимонная кислота, консервант сорбат калия ароматизаторы, антиокислитель аскорбиновая кислота, стабилизатор гуммиарабик, подсластители (сукралоза, ацесульфам калия), красители (бета-апо-8` каротиновый альдегид (C30), каротины).',
-  protein: '4,9',
-  fat: '8,9',
-  carbohydrates: '18,6',
+  ...morskoiSetItems[3],
+  tmp_desc: morskoiSetItems[3].marc_desc,
 };
 
 export const Mobile = Template.bind({});

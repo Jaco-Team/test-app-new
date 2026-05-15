@@ -44,7 +44,7 @@ export const TableCart_row = ({
 
   return (
     <tr
-      className="rowTableCartPC"
+      className="rowTableCart"
       style={{
         borderBottom:
           last === 'last'

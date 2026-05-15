@@ -67,10 +67,10 @@ export const PromoModal: React.FC<PromoModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="PromoModal-overlay" onClick={onClose}>
-      <div className="PromoModal" onClick={(e) => e.stopPropagation()}>
+    <div className="promo-modal-overlay" onClick={onClose}>
+      <div className="promo-modal" onClick={(e) => e.stopPropagation()}>
         <button
-          className="PromoModal-close"
+          className="promo-modal-close"
           onClick={onClose}
           aria-label="Закрыть"
         >
@@ -78,12 +78,12 @@ export const PromoModal: React.FC<PromoModalProps> = ({
         </button>
 
         <div
-          className="PromoModal-banner"
+          className="promo-modal-banner"
           style={{ background: `url('${bannerImage}') no-repeat center/cover` }}
         >
-          <div className="PromoModal-banner-content">
-            <div className="PromoModal-banner-text">
-              <div className="PromoModal-conditions">
+          <div className="promo-modal-banner-content">
+            <div className="promo-modal-banner-text">
+              <div className="promo-modal-conditions">
                 <span>Условия акции</span>
                 <svg
                   className="MuiSvgIcon-root MuiSvgIcon-fontSizeMedium css-q7mezt"
@@ -99,12 +99,12 @@ export const PromoModal: React.FC<PromoModalProps> = ({
           </div>
         </div>
 
-        <div className="PromoModal-body">
-          <div className="PromoModal-composition">
-            <h3 className="PromoModal-section-title">Состав</h3>
-            <div className="PromoModal-composition-item">
-              <span className="PromoModal-composition-number">1.</span>
-              <div className="PromoModal-composition-image">
+        <div className="promo-modal-body">
+          <div className="promo-modal-composition">
+            <h3 className="promo-modal-section-title">Состав</h3>
+            <div className="promo-modal-composition-item">
+              <span className="promo-modal-composition-number">1.</span>
+              <div className="promo-modal-composition-image">
                 <Image
                   src={productImage}
                   alt={productName}
@@ -112,24 +112,24 @@ export const PromoModal: React.FC<PromoModalProps> = ({
                   height={120}
                 />
               </div>
-              <div className="PromoModal-composition-info">
-                <h4 className="PromoModal-composition-name">{productName}</h4>
-                <p className="PromoModal-composition-description">
+              <div className="promo-modal-composition-info">
+                <h4 className="promo-modal-composition-name">{productName}</h4>
+                <p className="promo-modal-composition-description">
                   {productDescription}
                 </p>
-                <span className="PromoModal-composition-price">{price} ₽</span>
+                <span className="promo-modal-composition-price">{price} ₽</span>
               </div>
             </div>
           </div>
 
-          <div className="PromoModal-description">
-            <h3 className="PromoModal-description-title">{marketingTitle}</h3>
+          <div className="promo-modal-description">
+            <h3 className="promo-modal-description-title">{marketingTitle}</h3>
             <div
-              className="PromoModal-description-text"
+              className="promo-modal-description-text"
               dangerouslySetInnerHTML={{ __html: marketingDescription }}
             />
             {endDate && (
-              <p className="PromoModal-end-date">
+              <p className="promo-modal-end-date">
                 Новинка доступна для заказа до {endDate} г.
               </p>
             )}
@@ -137,12 +137,12 @@ export const PromoModal: React.FC<PromoModalProps> = ({
         </div>
 
         {relatedProducts.length > 0 && (
-          <div className="PromoModal-related">
-            <h3 className="PromoModal-related-title">Попробуйте также</h3>
-            <div className="PromoModal-related-list">
+          <div className="promo-modal-related">
+            <h3 className="promo-modal-related-title">Попробуйте также</h3>
+            <div className="promo-modal-related-list">
               {relatedProducts.map((product) => (
-                <div key={product.id} className="PromoModal-related-item">
-                  <div className="PromoModal-related-image">
+                <div key={product.id} className="promo-modal-related-item">
+                  <div className="promo-modal-related-image">
                     <Image
                       src={product.image}
                       alt={product.name}
@@ -150,11 +150,11 @@ export const PromoModal: React.FC<PromoModalProps> = ({
                       height={150}
                     />
                   </div>
-                  <p className="PromoModal-related-meta">
+                  <p className="promo-modal-related-meta">
                     {product.rollsCount} ролла | {product.piecesCount} шт. |{' '}
                     {product.weight} г
                   </p>
-                  <p className="PromoModal-related-name">{product.name}</p>
+                  <p className="promo-modal-related-name">{product.name}</p>
                 </div>
               ))}
             </div>

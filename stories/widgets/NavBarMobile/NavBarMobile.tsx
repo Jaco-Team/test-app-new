@@ -6,7 +6,7 @@ import {
   MapContactsMobile,
   ProfileIconMobile,
   BasketIconMobile,
-} from '../../shared/Icons.js';
+} from '../../shared/Icons';
 import './NavBarMobile.scss';
 
 type ActivePageType =
