@@ -1,9 +1,14 @@
 import { PromokodyPC } from '@stories/entities/profile/ui/promo-code-list/PromokodyPC';
-import { BreadСrumbsPC } from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC';
+import { BreadRumbs } from '@stories/shared/ui/breadcrumbs/BreadСrumbs';
 
 import './PromokodyPagePC.scss';
 
-export const PromokodyPagePC = ({ header, promokod, footer, data }: Record<string, any>) => {
+export const PromokodyPagePC = ({
+  header,
+  promokod,
+  footer,
+  data,
+}: Record<string, any>) => {
   const arrayPromokod = Array.from({ length: 8 }, () => promokod);
 
   return (
@@ -19,11 +24,10 @@ export const PromokodyPagePC = ({ header, promokod, footer, data }: Record<strin
           </div>
         </div>
         <div>
-          <BreadСrumbsPC {...data} />
+          <BreadRumbs {...data} />
         </div>
       </div>
       {footer ? null : null}
     </>
   );
 };
-

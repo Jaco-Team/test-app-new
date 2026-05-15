@@ -1,9 +1,14 @@
 import { TableOrdersPC } from '@stories/widgets/orders/ui/orders-table/TableOrdersPC';
-import { BreadСrumbsPC } from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC';
+import { BreadCrumbs } from '@stories/shared/ui/breadcrumbs/BreadCrumbs';
 
 import './ZakazyPagePC.scss';
 
-export const ZakazyPagePC = ({ header, orders, footer, data }: Record<string, any>) => {
+export const ZakazyPagePC = ({
+  header,
+  orders,
+  footer,
+  data,
+}: Record<string, any>) => {
   return (
     <>
       {header ? null : null}
@@ -13,11 +18,10 @@ export const ZakazyPagePC = ({ header, orders, footer, data }: Record<string, an
           <TableOrdersPC {...orders} />
         </div>
         <div>
-          <BreadСrumbsPC {...data} />
+          <BreadCrumbs {...data} />
         </div>
       </div>
       {footer ? null : null}
     </>
   );
 };
-

@@ -1,10 +1,12 @@
-import { AboutPagePC } from './AboutPagePC';
-import * as BreadСrumbs from '@stories/shared/ui/breadcrumbs/BreadСrumbs.stories';
+import { ContactsPage } from './ContactsPage';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
+import * as MenuContacts from '@stories/features/contacts/ui/contacts-menu/MenuContacts.stories';
+import * as MapRender from '@stories/widgets/contacts/ui/map/MapRender.stories';
+
 export default {
-  title: 'Страницы / О компании',
-  component: AboutPagePC,
+  title: 'Страницы / Контакты',
+  component: ContactsPage,
   tags: ['autodocs'],
   parameters: {
     layout: 'fullscreen',
@@ -14,9 +16,13 @@ export default {
       type: 'object',
       description: 'Данные для шапки ПК',
     },
-    data: {
+    menu: {
       type: 'object',
-      description: 'Данные для меню страницы на ПК',
+      description: 'Данные для меню на странице Контакты ПК',
+    },
+    map: {
+      type: 'object',
+      description: 'Данные для карты на странице Контакты ПК',
     },
     footer: {
       type: 'object',
@@ -25,23 +31,25 @@ export default {
   },
 };
 
-const Template = (args) => <AboutPagePC {...args} />;
+const Template = (args) => <ContactsPage {...args} />;
 export const Default = Template.bind({});
 export const ArrowUp = Template.bind({});
-// export const Cookie = Template.bind({});
+export const Cookie = Template.bind({});
 
 Default.args = {
-  data: BreadСrumbs.About.args,
+  menu: MenuContacts.Default.args,
+  map: MapRender.Default.args,
 };
 
 ArrowUp.args = {
-  data: BreadСrumbs.About.args,
+  menu: MenuContacts.Default.args,
+  map: MapRender.Default.args,
 };
 
-// Cookie.args = {
-////   actia: BannerFullPC.Page.args,
-//
-// };
+Cookie.args = {
+  menu: MenuContacts.Default.args,
+  map: MapRender.Default.args,
+};
 
 export const Mobile = Template.bind({});
 Mobile.args = Default.args;

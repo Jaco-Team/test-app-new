@@ -1,6 +1,6 @@
 import { ModalItemPClist } from './ModalItemPClist';
 import * as ModalItemPCset from '@stories/entities/product/ui/set-item/ModalItemPCset.stories';
-import * as ModalItemPCvalue from '@stories/entities/product/ui/nutrition/ModalItemPCvalue.stories';
+import * as ModalItemValue from '@stories/entities/product/ui/nutrition/ModalItemValue.stories';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
@@ -23,7 +23,7 @@ export default {
     link_allergens: {
       type: 'string',
       description: 'Ссылка на скачивание',
-    }
+    },
   },
 };
 
@@ -35,14 +35,15 @@ Set.args = {
   value: {},
   set: ModalItemPCset.Default.args,
   type: 'set',
-  link_allergens: ''
+  link_allergens: '',
 };
 
 Value.args = {
-  value: ModalItemPCvalue.Default.args,
+  value: ModalItemValue.Default.args,
   set: {},
   type: 'value',
-  link_allergens: "https://storage.yandexcloud.net/site-other-data/jaco_2024_03_23.pdf"
+  link_allergens:
+    'https://storage.yandexcloud.net/site-other-data/jaco_2024_03_23.pdf',
 };
 
 export const Mobile = Template.bind({});

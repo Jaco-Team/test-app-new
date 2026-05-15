@@ -1,12 +1,12 @@
-import { CartPC } from './CartPC';
-import * as TableCartPC from '../cart-table/TableCartPC.stories';
-import * as CartPCPromoInput from '@stories/features/cart/ui/promo-input/CartPCPromoInput.stories';
-import * as CartPCPromoText from '@stories/features/cart/ui/promo-text/CartPCPromoText.stories';
+import { Cart } from './Cart';
+import * as TableCart from '../cart-table/TableCart.stories';
+import * as CartPCPromoInput from '@stories/features/cart/ui/promo-input/CartPromoInput.stories';
+import * as CartPCPromoText from '@stories/features/cart/ui/promo-text/CartPromoText.stories';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
   title: 'Виджеты / Корзина / Панель',
-  component: CartPC,
+  component: Cart,
   tags: ['autodocs'],
   argTypes: {
     data: {
@@ -28,35 +28,35 @@ export default {
   },
 };
 
-const Template = (args) => <CartPC {...args} />;
+const Template = (args) => <Cart {...args} />;
 export const Default = Template.bind({});
 export const Active = Template.bind({});
 export const Promo_True = Template.bind({});
 export const Promo_False = Template.bind({});
 
 Default.args = {
-  data: TableCartPC.Default.args,
+  data: TableCart.Default.args,
   promo: CartPCPromoInput.Default.args,
   openBasket: true,
-  desc: {}
+  desc: {},
 };
 
 Active.args = {
-  data: TableCartPC.Active.args,
+  data: TableCart.Active.args,
   promo: CartPCPromoInput.Default.args,
   openBasket: true,
-  desc: {}
+  desc: {},
 };
 
 Promo_True.args = {
-  data: TableCartPC.Promo.args,
+  data: TableCart.Promo.args,
   promo: CartPCPromoInput.Promo_True.args,
   openBasket: true,
   desc: CartPCPromoText.Promo_True.args,
 };
 
 Promo_False.args = {
-  data: TableCartPC.Active.args,
+  data: TableCart.Active.args,
   promo: CartPCPromoInput.Promo_False.args,
   openBasket: true,
   desc: CartPCPromoText.Promo_False.args,

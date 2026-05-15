@@ -1,28 +1,34 @@
-import { BoxItemHome } from './BoxItemHome';
-import * as ItemHome from '@stories/entities/product/ui/product-card/ItemHome.stories';
-import banner from '../../../../fixtures/banners.togliatti.json';
+import { TableCart } from './TableCart';
+import * as TableCart_body from '../cart-table-body/TableCart_body.stories';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
-  title: 'Виджеты / Главная / Список товаров',
-  component: BoxItemHome,
+  title: 'Виджеты / Корзина / Таблица',
+  component: TableCart,
   tags: ['autodocs'],
-  parameters: {
-    layout: 'fullscreen',
-  },
   argTypes: {
-    cards: {
-      type: 'object',
-      description: 'Данные по умолчанию для карточки товара ПК',
+    data: {
+      type: 'array',
+      description: 'Данные для коризны',
     },
   },
 };
 
-const Template = (args) => <BoxItemHome {...args} />;
+const Template = (args) => <TableCart {...args} />;
 export const Default = Template.bind({});
+export const Active = Template.bind({});
+export const Promo = Template.bind({});
 
 Default.args = {
-  cards: banner.itemsList,
+  data: TableCart_body.Default.args,
+};
+
+Active.args = {
+  data: TableCart_body.Active.args,
+};
+
+Promo.args = {
+  data: TableCart_body.Promo.args,
 };
 
 export const Mobile = Template.bind({});
