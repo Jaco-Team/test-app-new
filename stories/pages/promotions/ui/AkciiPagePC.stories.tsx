@@ -11,15 +11,15 @@ export default {
   },
   argTypes: {
     header: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для шапки ПК',
     },
     actia: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для акции на ПК',
     },
     footer: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для футера ПК',
     },
   },
@@ -35,11 +35,11 @@ Default.args = {
 };
 
 ArrowUp.args = {
-  actia: BannerFullPC.Page.args
+  actia: BannerFullPC.Page.args,
 };
 
 Cookie.args = {
-  actia: BannerFullPC.Page.args
+  actia: BannerFullPC.Page.args,
 };
 
 export const Mobile = Template.bind({});

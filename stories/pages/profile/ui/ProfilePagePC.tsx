@@ -1,4 +1,4 @@
-import { BreadRumbs } from '@stories/shared/ui/breadcrumbs/BreadСrumbs';
+import { BreadCrumbs } from '@stories/shared/ui/breadcrumbs/BreadСrumbs';
 import { MySwitch } from '@stories/shared/ui/switch/MySwitch';
 import { ProfileAddrPC } from '@stories/entities/profile/ui/address-card/ProfileAddrPC';
 import { MyButton } from '@stories/shared/ui/button/MyButton';
@@ -103,7 +103,7 @@ export const ProfilePagePC = ({
           <MyButton children="Выйти" variant="secondary" size="large" />
         </div>
         <div>
-          <BreadRumbs {...data} />
+          <BreadCrumbs {...data} />
         </div>
       </div>
       {footer ? null : null}

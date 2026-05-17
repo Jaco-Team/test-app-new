@@ -1,6 +1,6 @@
 import { PromokodyPagePC } from './PromokodyPagePC';
 import * as PromokodyPC from '@stories/entities/profile/ui/promo-code-list/PromokodyPC.stories';
-import * as BreadСrumbsPC from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC.stories';
+import * as BreadCrumbsStories from '@stories/shared/ui/breadcrumbs/BreadСrumbs.stories';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
@@ -12,19 +12,19 @@ export default {
   },
   argTypes: {
     header: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для шапки ПК',
     },
     promokod: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для Промокода',
     },
     data: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для меню страницы на ПК',
     },
     footer: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для футера ПК',
     },
   },
@@ -37,12 +37,12 @@ export const ArrowUp = Template.bind({});
 
 Default.args = {
   promokod: PromokodyPC.Default.args,
-  data: { ...BreadСrumbsPC.Profile.args, activePage: 'promokody' },
+  data: { ...BreadCrumbsStories.Profile.args, activePage: 'promokody' },
 };
 
 ArrowUp.args = {
   promokod: PromokodyPC.Default.args,
-  data: { ...BreadСrumbsPC.Profile.args, activePage: 'promokody' }
+  data: { ...BreadCrumbsStories.Profile.args, activePage: 'promokody' },
 };
 
 // Cookie.args = {

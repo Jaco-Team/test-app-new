@@ -17,6 +17,8 @@ export interface ProductItem {
   weight: string;
   /** Цена в рублях */
   price: string;
+  /** Количество товара в корзине */
+  count: string;
   /** Ссылка (slug) на товар */
   link: string;
   /** Название изображения для приложения */

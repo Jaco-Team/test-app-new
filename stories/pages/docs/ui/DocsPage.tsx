@@ -21,7 +21,7 @@ export const DocsPage = ({ header, page, footer, data }: DocsPageProps) => {
               }}
               onClick={() => setOpen(!open)}
             >
-              <BreadCrumbsPage links={data.links} />
+              <BreadCrumbsPage links={data?.links || []} />
             </div>
           ) : page?.content ? (
             <>
@@ -60,9 +60,7 @@ export const DocsPage = ({ header, page, footer, data }: DocsPageProps) => {
               </div>
               <h1>{page?.page_h ?? ''}</h1>
               <div dangerouslySetInnerHTML={{ __html: page.content }} />
-              <div>
-                <BreadCrumbs {...data} />
-              </div>
+              <div>{data ? <BreadCrumbs {...data} /> : null}</div>
             </>
           ) : null}
         </div>

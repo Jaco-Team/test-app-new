@@ -1,6 +1,6 @@
 import Image from 'next/image';
 
-import { BreadСrumbs } from '@stories/shared/ui/breadcrumbs/BreadСrumbs';
+import { BreadCrumbs } from '@stories/shared/ui/breadcrumbs/BreadСrumbs';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
 import { Autoplay, Scrollbar } from 'swiper';

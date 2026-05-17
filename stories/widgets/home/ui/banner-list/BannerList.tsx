@@ -11,14 +11,14 @@ import { ArrowIcon, NextIcon } from '@stories/shared/Icons.js';
 import { BannerImg } from '@stories/entities/promotion/ui/promotion-image/BannerImg';
 import { JSX } from 'react';
 import { PromoModal } from '@stories/widgets/home/ui/banner-modal/PromoModal';
-import { useEffect, useState } from 'react';
-export const BannerList: ({
+import { useState } from 'react';
+import { Banner, bannerListProps } from './model/types';
+
+export const BannerList: ({ bannerList }: bannerListProps) => JSX.Element = ({
   bannerList,
-}: {
-  bannerList: any;
-}) => JSX.Element = ({ bannerList }) => {
+}) => {
   const [isModalOpen, setIsModalOpen] = useState(false);
-  const [item, setItem] = useState({});
+  const [item, setItem] = useState<Banner | null>(null);
   return (
     <div className="HomeImgPC">
       <PromoModal
@@ -28,12 +28,12 @@ export const BannerList: ({
         subtitle="Филадельфия опалённая с молодым шпинатом"
         badgeText="НОВИНКА"
         price={529}
-        bannerImage={`https://storage.yandexcloud.net/site-home-img/${item.img}_3700x1000.jpg`}
+        bannerImage={`https://storage.yandexcloud.net/site-home-img/${item?.img || ''}_3700x1000.jpg`}
         productImage="https://mainimg.jacofood.ru/Filadelfiia_opalionnaia_732x732.webp"
         productName="Филадельфия опалённая"
         productDescription="Опалённый лосось, сливочный творожный сыр..."
-        marketingTitle={item.title}
-        marketingDescription={item.text}
+        marketingTitle={item?.title || ''}
+        marketingDescription={item?.text || ''}
         endDate="31.05.2026"
       />
       <Swiper

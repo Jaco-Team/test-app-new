@@ -19,10 +19,11 @@ export const ItemHome = ({
   is_hit,
   count_part,
 }: ProductItem) => {
+  const itemCount = Number.parseInt(count || '0', 10) || 0;
+  const itemPrice = Number.parseInt(price || '0', 10) || 0;
+
   return (
-    <div
-      className={['ItemHomePc', parseInt(count) > 0 ? 'active' : ''].join(' ')}
-    >
+    <div className={['ItemHomePc', itemCount > 0 ? 'active' : ''].join(' ')}>
       <div className="BlockIMG">
         <Image
           alt={name}
@@ -56,7 +57,7 @@ export const ItemHome = ({
         </span>
         <span className="description">{marc_desc}</span>
 
-        {parseInt(count) > 0 ? (
+        {itemCount > 0 ? (
           <div className="btn_count">
             <button className="minus">–</button>
             <span>{count}</span>
@@ -64,7 +65,7 @@ export const ItemHome = ({
           </div>
         ) : (
           <button className="btn_price">
-            {new Intl.NumberFormat('ru-RU').format(price)} ₽
+            {new Intl.NumberFormat('ru-RU').format(itemPrice)} ₽
           </button>
         )}
       </div>

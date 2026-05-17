@@ -13,8 +13,16 @@ export interface PageData {
 }
 
 export interface BreadcrumbsData {
-  activePage?: string;
-  [key: string]: any;
+  activePage: string;
+  title: string;
+  list: Array<{
+    link?: string;
+    text: string;
+  }>;
+  links?: Array<{
+    href: string;
+    text: string;
+  }>;
 }
 
 export interface DocsPageProps {

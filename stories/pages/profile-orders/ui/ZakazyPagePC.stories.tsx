@@ -1,6 +1,6 @@
 import { ZakazyPagePC } from './ZakazyPagePC';
 import * as TableOrdersPC from '@stories/widgets/orders/ui/orders-table/TableOrdersPC.stories';
-import * as BreadСrumbsPC from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC.stories';
+import * as BreadCrumbsStories from '@stories/shared/ui/breadcrumbs/BreadСrumbs.stories';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
@@ -12,19 +12,19 @@ export default {
   },
   argTypes: {
     header: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для шапки ПК',
     },
     orders: {
-      type: 'object',
+      control: 'object',
       description: 'Список заказов клиента на ПК',
     },
     data: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для меню страницы на ПК',
     },
     footer: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для футера ПК',
     },
   },
@@ -37,12 +37,12 @@ export const ArrowUp = Template.bind({});
 
 Default.args = {
   orders: TableOrdersPC.Default.args,
-  data: { ...BreadСrumbsPC.Profile.args, activePage: 'zakazy' },
+  data: { ...BreadCrumbsStories.Profile.args, activePage: 'zakazy' },
 };
 
 ArrowUp.args = {
   orders: TableOrdersPC.Default.args,
-  data: { ...BreadСrumbsPC.Profile.args, activePage: 'zakazy' }
+  data: { ...BreadCrumbsStories.Profile.args, activePage: 'zakazy' },
 };
 
 // Cookie.args = {

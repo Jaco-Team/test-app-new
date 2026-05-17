@@ -1,6 +1,6 @@
 import { ProfilePagePC } from './ProfilePagePC';
 import * as ProfileAddrPC from '@stories/entities/profile/ui/address-card/ProfileAddrPC.stories';
-import * as BreadСrumbsPC from '@stories/shared/ui/breadcrumbs/BreadСrumbsPC.stories';
+import * as BreadCrumbsStories from '@stories/shared/ui/breadcrumbs/BreadСrumbs.stories';
 
 import { responsiveStoryGlobals } from '@stories/shared/lib/storybook/responsive';
 export default {
@@ -12,23 +12,23 @@ export default {
   },
   argTypes: {
     header: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для шапки ПК',
     },
     data: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для меню страницы на ПК',
     },
     user: {
-      type: 'object',
+      control: 'object',
       description: 'Личные данные пользователя',
     },
     address: {
-      type: 'object',
+      control: 'object',
       description: 'Данные адреса клиента',
     },
     footer: {
-      type: 'object',
+      control: 'object',
       description: 'Данные для футера ПК',
     },
   },
@@ -66,25 +66,25 @@ export const ArrowUp = Template.bind({});
 
 Default.args = {
   user,
-  data: { ...BreadСrumbsPC.Profile.args, activePage: 'profile' },
+  data: { ...BreadCrumbsStories.Profile.args, activePage: 'profile' },
   address: null,
 };
 
 Active.args = {
   user: user_active,
-  data: { ...BreadСrumbsPC.Profile.args, activePage: 'profile' },
+  data: { ...BreadCrumbsStories.Profile.args, activePage: 'profile' },
   address: ProfileAddrPC.Default.args,
 };
 
 ArrowUp.args = {
   user: user_active,
-  data: { ...BreadСrumbsPC.Profile.args, activePage: 'profile' },
+  data: { ...BreadCrumbsStories.Profile.args, activePage: 'profile' },
   address: ProfileAddrPC.Default.args,
 };
 
 // Cookie.args = {
 //   user: user_active,
-////   data: { ...BreadСrumbsPC.Profile.args, activePage: 'profile' },
+////   data: { ...BreadCrumbsStories.Profile.args, activePage: 'profile' },
 //
 //   address: ProfileAddrPC.Default.args,
 // };

@@ -1,5 +1,5 @@
 import { PromokodyPC } from '@stories/entities/profile/ui/promo-code-list/PromokodyPC';
-import { BreadRumbs } from '@stories/shared/ui/breadcrumbs/BreadСrumbs';
+import { BreadCrumbs } from '@stories/shared/ui/breadcrumbs/BreadСrumbs';
 
 import './PromokodyPagePC.scss';
 
@@ -24,7 +24,7 @@ export const PromokodyPagePC = ({
           </div>
         </div>
         <div>
-          <BreadRumbs {...data} />
+          <BreadCrumbs {...data} />
         </div>
       </div>
       {footer ? null : null}
