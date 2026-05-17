@@ -1,4 +1,4 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
 .modalAuthPC {
   & .MuiDialog-paper {
@@ -539,7 +539,7 @@
           align-items: center;
           margin-top: $MyScale20;
 
-          & .datareklama{
+          & .datareklama {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -647,7 +647,7 @@
         }
 
         & .loginSubHeader2 {
-          height: $MyScale80;
+          min-height: $MyScale80;
           margin-bottom: $MyScale28;
           display: flex;
           align-items: center;
@@ -715,7 +715,7 @@
               width: $MyScale46;
               height: $MyScale50;
             }
-            & .vectorSvg_dis{
+            & .vectorSvg_dis {
               margin-left: auto;
               width: $MyScale46;
               height: $MyScale50;

@@ -3,40 +3,58 @@ import { useState } from 'react';
 import { useHeaderStoreNew } from '@/components/store';
 
 import MyTextInput, { FormattedInputs } from '@/ui/MyTextInput';
-import {EyeShow_modalOrder, EyeHide_modalOrder, Check} from '@/ui/Icons';
+import { EyeShow_modalOrder, EyeHide_modalOrder, Check } from '@/ui/Icons';
 
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 
 export default function Start() {
   const [showPassword, setShowPassword] = useState(false);
-
-  const [navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, matches, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.navigate, state?.changeLogin, state?.setPwdLogin, state?.loginLogin, state?.pwdLogin, state?.checkLoginKey, state?.logIn, state?.matches, state?.setActiveModalAlert]);
+  const [
+    navigate,
+    changeLogin,
+    setPwdLogin,
+    loginLogin,
+    pwdLogin,
+    checkLoginKey,
+    logIn,
+    matches,
+    setActiveModalAlert,
+  ] = useHeaderStoreNew((state) => [
+    state?.navigate,
+    state?.changeLogin,
+    state?.setPwdLogin,
+    state?.loginLogin,
+    state?.pwdLogin,
+    state?.checkLoginKey,
+    state?.logIn,
+    state?.matches,
+    state?.setActiveModalAlert,
+  ]);
 
   return (
     <div className={matches ? 'modalLoginStartMobile' : 'modalLoginStartPC'}>
-
       <FormattedInputs
         type="text"
         placeholder="8 (000) 000-00-00"
         value={loginLogin}
         func={(event) => changeLogin(event)}
         onKeyDown={(event) => checkLoginKey(1, event)}
-        className={loginLogin.length > 0 ? "inputLogin margin_bottom_30" : "inputLogin lable_position margin_bottom_30"}
+        className={
+          loginLogin.length > 0
+            ? 'inputLogin margin_bottom_30'
+            : 'inputLogin lable_position margin_bottom_30'
+        }
         mask={true}
         label="Телефон"
         autoComplete="true"
         onBlur={(event) => changeLogin(event)}
         inputAdornment={
           <InputAdornment position="end">
-            {loginLogin.length === 17 ? (
-              <Check className="check_icon"  />
-            ) : (
-              null
-            )}
+            {loginLogin.length === 17 ? <Check className="check_icon" /> : null}
           </InputAdornment>
         }
-      /> 
+      />
 
       <MyTextInput
         type={showPassword ? 'text' : 'password'}
@@ -44,7 +62,9 @@ export default function Start() {
         value={pwdLogin}
         func={(event) => setPwdLogin(event)}
         onKeyDown={(event) => checkLoginKey(1, event)}
-        className={pwdLogin.length > 0 ? "inputLogin " : "inputLogin lable_position"}
+        className={
+          pwdLogin.length > 0 ? 'inputLogin ' : 'inputLogin lable_position'
+        }
         label="Пароль"
         inputAdornment={
           <InputAdornment position="end">
@@ -59,17 +79,35 @@ export default function Start() {
             )}
           </InputAdornment>
         }
-      /> 
+      />
 
-      <div className='loginBox'>
-        <Typography component="span" onClick={() => navigate('resetPWD')}>Не помню пароль</Typography>
-        <Typography component="span" onClick={() => navigate('loginSMS')}>Вход по СМС</Typography>
+      <div className="loginBox">
+        <Typography component="span" onClick={() => navigate('resetPWD')}>
+          Не помню пароль
+        </Typography>
+        <Typography component="span" onClick={() => navigate('loginSMS')}>
+          Вход по СМС
+        </Typography>
       </div>
 
-      <div 
+      <div
         className="loginLogin"
-        onClick={loginLogin.length === 17 && pwdLogin.length > 4 ? () => logIn() : () => setActiveModalAlert(true, 'Укажите телефон и пароль (минимум 5 символов, без пробелов)', false)}
-        style={{backgroundColor: loginLogin.length === 17 && pwdLogin.length > 4 ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)'}}
+        onClick={
+          loginLogin.length === 17 && pwdLogin.length > 4
+            ? () => logIn()
+            : () =>
+                setActiveModalAlert(
+                  true,
+                  'Укажите телефон и пароль (минимум 5 символов, без пробелов)',
+                  false
+                )
+        }
+        style={{
+          backgroundColor:
+            loginLogin.length === 17 && pwdLogin.length > 4
+              ? '#DD1A32'
+              : 'rgba(0, 0, 0, 0.1)',
+        }}
       >
         <Typography component="span">Войти</Typography>
       </div>
