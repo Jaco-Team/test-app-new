@@ -1,0 +1,52 @@
+@use './tokens' as *;
+
+@function ui-fluid-expanded($size) {
+  @return calc(100 * calc($size / 1385)) + vw;
+}
+
+@function ui-fluid-compact($size) {
+  @return calc(100 * calc($size / 870)) + vw;
+}
+
+@function ui-fluid-regular($size) {
+  @return calc(100 * calc($size / 668)) + vw;
+}
+
+@mixin ui-compact {
+  @media (min-width: $ui-compact-min) and (max-width: $ui-compact-max) {
+    @content;
+  }
+}
+
+@mixin ui-regular {
+  @media (min-width: $ui-regular-min) and (max-width: $ui-regular-max) {
+    @content;
+  }
+}
+
+@mixin ui-expanded {
+  @media (min-width: $ui-expanded-min) {
+    @content;
+  }
+}
+
+@mixin ui-type(
+  $compact-size,
+  $regular-size: $compact-size,
+  $expanded-size: $regular-size,
+  $weight: 400
+) {
+  font-family: $ui-font-family;
+  font-size: ui-fluid-compact($compact-size);
+  font-style: normal;
+  font-weight: $weight;
+  letter-spacing: 0;
+
+  @include ui-regular {
+    font-size: ui-fluid-regular($regular-size);
+  }
+
+  @include ui-expanded {
+    font-size: ui-fluid-expanded($expanded-size);
+  }
+}

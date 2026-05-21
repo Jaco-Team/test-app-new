@@ -1,0 +1,64 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+.ui-surface {
+  background: $ui-surface;
+  &--tone-plain {
+    background: $ui-surface;
+  }
+  &--tone-muted {
+    background: $ui-surface-muted;
+  }
+  &--tone-outlined {
+    border: 1px solid $ui-border;
+  }
+  &--tone-brand {
+    background: $ui-brand;
+    color: #fff;
+  }
+  &--radius-none {
+    border-radius: 0;
+  }
+  &--radius-sm {
+    border-radius: 8px;
+  }
+  &--radius-md {
+    border-radius: 16px;
+  }
+  &--radius-lg {
+    border-radius: 24px;
+  }
+  &--padding-none {
+    padding: 0;
+  }
+  &--padding-sm {
+    padding: ui-fluid-compact(16);
+  }
+  &--padding-md {
+    padding: ui-fluid-compact(24);
+  }
+  &--padding-lg {
+    padding: ui-fluid-compact(36);
+  }
+  @include ui-regular {
+    &--padding-sm {
+      padding: ui-fluid-regular(16);
+    }
+    &--padding-md {
+      padding: ui-fluid-regular(24);
+    }
+    &--padding-lg {
+      padding: ui-fluid-regular(36);
+    }
+  }
+  @include ui-expanded {
+    &--padding-sm {
+      padding: ui-fluid-expanded(16);
+    }
+    &--padding-md {
+      padding: ui-fluid-expanded(24);
+    }
+    &--padding-lg {
+      padding: ui-fluid-expanded(36);
+    }
+  }
+}

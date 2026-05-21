@@ -1,0 +1,40 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+.ui-text {
+  margin: 0;
+  color: $ui-text;
+  letter-spacing: 0;
+  &--body {
+    @include ui-type(28, 32, 32, 400);
+  }
+  &--caption {
+    @include ui-type(22, 24, 24, 400);
+  }
+  &--title {
+    @include ui-type(36, 42, 42, 500);
+  }
+  &--headline {
+    @include ui-type(46, 52, 58, 500);
+  }
+  &--tone-primary {
+    color: $ui-text;
+  }
+  &--tone-muted {
+    color: $ui-text-muted;
+  }
+  &--tone-brand {
+    color: $ui-brand;
+  }
+  &--tone-inverse {
+    color: #fff;
+  }
+  &--weight-regular {
+    font-weight: 400;
+  }
+  &--weight-medium {
+    font-weight: 500;
+  }
+  &--weight-bold {
+    font-weight: 700;
+  }
+}

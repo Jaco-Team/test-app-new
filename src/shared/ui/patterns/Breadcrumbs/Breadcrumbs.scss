@@ -1,0 +1,49 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+.ui-breadcrumbs {
+  width: 100%;
+  overflow: hidden;
+  &__list {
+    display: flex;
+    align-items: center;
+    gap: ui-fluid-compact(10);
+    margin: 0;
+    padding: 0;
+    list-style: none;
+    white-space: nowrap;
+    overflow: auto;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+  &__item {
+    display: flex;
+    align-items: center;
+    gap: ui-fluid-compact(10);
+    color: $ui-text-muted;
+    @include ui-type(22, 24, 24, 400);
+  }
+  &__item:not(:last-child)::after {
+    content: '/';
+    color: $ui-text-subtle;
+  }
+  &__link {
+    color: $ui-text-muted;
+    text-decoration: none;
+  }
+  .ui-breadcrumbs__current {
+    color: $ui-text;
+  }
+  @include ui-regular {
+    &__list,
+    &__item {
+      gap: ui-fluid-regular(10);
+    }
+  }
+  @include ui-expanded {
+    &__list,
+    &__item {
+      gap: ui-fluid-expanded(10);
+    }
+  }
+}

@@ -1,5 +1,5 @@
 /** @type { import('@storybook/nextjs').Preview } */
-import { ThemeProvider, CssBaseline, createTheme } from '@mui/material';
+import { DesignSystemProvider, uiTheme } from '../src/shared/ui/foundation';
 import { withThemeFromJSXProvider } from '@storybook/addon-themes';
 
 import '@fontsource/roboto/100.css';
@@ -54,21 +54,6 @@ const viewports = {
 
 // import '@fontsource/material-icons';
 
-const theme = createTheme({
-  palette: {
-    primary: {
-      main: '#CC0033',
-    },
-  },
-  components: {
-    MuiButtonBase: {
-      defaultProps: {
-        disableRipple: true,
-      },
-    },
-  },
-});
-
 const preview = {
   parameters: {
     controls: {
@@ -105,15 +90,14 @@ const preview = {
       </div>
     ),
     withThemeFromJSXProvider({
-      GlobalStyles: CssBaseline,
-      Provider: ThemeProvider,
+      Provider: DesignSystemProvider,
       themes: {
-        theme,
+        theme: uiTheme,
       },
     }),
   ],
 
-  tags: ['autodocs']
+  tags: ['autodocs'],
 };
 
 export default preview;

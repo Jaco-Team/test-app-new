@@ -1,0 +1,63 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+.ui-select {
+  display: flex;
+  flex-direction: column;
+  gap: ui-fluid-compact(10);
+  width: 100%;
+  &__label {
+    @include ui-type(24, 24, 24, 400);
+    color: $ui-text-muted;
+  }
+  &__control {
+    width: 100%;
+    min-height: ui-fluid-compact(76);
+    border: 1px solid $ui-border;
+    border-radius: 8px;
+    background: #fff;
+    color: $ui-text;
+    padding: 0 ui-fluid-compact(22);
+    outline: 0;
+    @include ui-type(28, 28, 28, 400);
+  }
+  &__control:focus {
+    border-color: $ui-brand;
+    box-shadow: 0 0 0 2px rgba(218, 26, 50, 0.12);
+  }
+  &__helper {
+    @include ui-type(22, 22, 22, 400);
+    color: $ui-text-muted;
+  }
+  &--density-compact .ui-select__control {
+    min-height: ui-fluid-compact(64);
+  }
+  &--density-expanded .ui-select__control {
+    min-height: ui-fluid-compact(92);
+  }
+  @include ui-regular {
+    gap: ui-fluid-regular(10);
+    &__control {
+      min-height: ui-fluid-regular(76);
+      padding: 0 ui-fluid-regular(22);
+    }
+    &--density-compact .ui-select__control {
+      min-height: ui-fluid-regular(64);
+    }
+    &--density-expanded .ui-select__control {
+      min-height: ui-fluid-regular(92);
+    }
+  }
+  @include ui-expanded {
+    gap: ui-fluid-expanded(10);
+    &__control {
+      min-height: ui-fluid-expanded(76);
+      padding: 0 ui-fluid-expanded(22);
+    }
+    &--density-compact .ui-select__control {
+      min-height: ui-fluid-expanded(64);
+    }
+    &--density-expanded .ui-select__control {
+      min-height: ui-fluid-expanded(92);
+    }
+  }
+}

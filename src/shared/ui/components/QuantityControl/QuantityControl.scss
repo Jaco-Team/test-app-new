@@ -1,0 +1,148 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+
+.ui-quantity-control {
+  display: inline-flex;
+  align-items: center;
+  justify-content: space-between;
+  border-radius: 999px;
+  background: #fff;
+  color: $ui-text;
+  font-family: $ui-font-family;
+
+  button {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.05);
+    color: inherit;
+    cursor: pointer;
+    line-height: 1;
+    transition:
+      background-color 180ms ease,
+      opacity 180ms ease;
+  }
+
+  button:hover {
+    background: rgba(0, 0, 0, 0.09);
+  }
+  button:disabled {
+    cursor: default;
+    opacity: 0.45;
+  }
+  span {
+    min-width: 2ch;
+    text-align: center;
+    font-weight: 400;
+  }
+  &--disabled {
+    opacity: 0.55;
+  }
+  &--size-sm {
+    width: ui-fluid-compact(260);
+    height: ui-fluid-compact(68);
+    font-size: ui-fluid-compact(28);
+  }
+  &--size-md {
+    width: ui-fluid-compact(320);
+    height: ui-fluid-compact(80);
+    font-size: ui-fluid-compact(32);
+  }
+  &--size-lg {
+    width: ui-fluid-compact(384);
+    height: ui-fluid-compact(96);
+    font-size: ui-fluid-compact(36);
+  }
+  &--size-sm button {
+    width: ui-fluid-compact(54);
+    height: ui-fluid-compact(54);
+    font-size: ui-fluid-compact(36);
+    margin: 0 ui-fluid-compact(7);
+  }
+  &--size-md button {
+    width: ui-fluid-compact(64);
+    height: ui-fluid-compact(64);
+    font-size: ui-fluid-compact(44);
+    margin: 0 ui-fluid-compact(8);
+  }
+  &--size-lg button {
+    width: ui-fluid-compact(80);
+    height: ui-fluid-compact(80);
+    font-size: ui-fluid-compact(54);
+    margin: 0 ui-fluid-compact(8);
+  }
+
+  @include ui-regular {
+    &--size-sm {
+      width: ui-fluid-regular(190);
+      height: ui-fluid-regular(51);
+      font-size: ui-fluid-regular(24);
+    }
+    &--size-md {
+      width: ui-fluid-regular(234);
+      height: ui-fluid-regular(63);
+      font-size: ui-fluid-regular(30);
+    }
+    &--size-lg {
+      width: ui-fluid-regular(275);
+      height: ui-fluid-regular(69);
+      font-size: ui-fluid-regular(32);
+    }
+    &--size-sm button {
+      width: ui-fluid-regular(42);
+      height: ui-fluid-regular(42);
+      font-size: ui-fluid-regular(30);
+      margin: 0 ui-fluid-regular(5);
+    }
+    &--size-md button {
+      width: ui-fluid-regular(51);
+      height: ui-fluid-regular(51);
+      font-size: ui-fluid-regular(40);
+      margin: 0 ui-fluid-regular(6);
+    }
+    &--size-lg button {
+      width: ui-fluid-regular(57);
+      height: ui-fluid-regular(57);
+      font-size: ui-fluid-regular(44);
+      margin: 0 ui-fluid-regular(6);
+    }
+  }
+
+  @include ui-expanded {
+    &--size-sm {
+      width: ui-fluid-expanded(300);
+      height: ui-fluid-expanded(76);
+      font-size: ui-fluid-expanded(28);
+    }
+    &--size-md {
+      width: ui-fluid-expanded(384);
+      height: ui-fluid-expanded(96);
+      font-size: ui-fluid-expanded(32);
+    }
+    &--size-lg {
+      width: ui-fluid-expanded(420);
+      height: ui-fluid-expanded(104);
+      font-size: ui-fluid-expanded(36);
+    }
+    &--size-sm button {
+      width: ui-fluid-expanded(64);
+      height: ui-fluid-expanded(64);
+      font-size: ui-fluid-expanded(40);
+      margin: 0 ui-fluid-expanded(7);
+    }
+    &--size-md button {
+      width: ui-fluid-expanded(80);
+      height: ui-fluid-expanded(80);
+      font-size: ui-fluid-expanded(54);
+      margin: 0 ui-fluid-expanded(8);
+    }
+    &--size-lg button {
+      width: ui-fluid-expanded(88);
+      height: ui-fluid-expanded(88);
+      font-size: ui-fluid-expanded(58);
+      margin: 0 ui-fluid-expanded(8);
+    }
+  }
+}

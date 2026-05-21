@@ -1,0 +1,94 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+.ui-input {
+  display: flex;
+  flex-direction: column;
+  gap: ui-fluid-compact(10);
+  width: 100%;
+  color: $ui-text;
+  &__label {
+    @include ui-type(24, 24, 24, 400);
+    color: $ui-text-muted;
+  }
+  &__control {
+    display: flex;
+    align-items: center;
+    gap: ui-fluid-compact(12);
+    width: 100%;
+    min-height: ui-fluid-compact(76);
+    border: 1px solid $ui-border;
+    border-radius: 8px;
+    background: #fff;
+    padding: 0 ui-fluid-compact(22);
+    transition:
+      border-color 180ms ease,
+      box-shadow 180ms ease;
+  }
+  &__field {
+    width: 100%;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    background: transparent;
+    color: $ui-text;
+    @include ui-type(28, 28, 28, 400);
+  }
+  &__field::placeholder {
+    color: $ui-text-subtle;
+  }
+  &__helper {
+    @include ui-type(22, 22, 22, 400);
+    color: $ui-text-muted;
+  }
+  &__adornment {
+    display: inline-flex;
+    color: $ui-text-muted;
+  }
+  &:focus-within .ui-input__control {
+    border-color: $ui-brand;
+    box-shadow: 0 0 0 2px rgba(218, 26, 50, 0.12);
+  }
+  &--tone-error .ui-input__control {
+    border-color: #c62828;
+  }
+  &--tone-error .ui-input__helper {
+    color: #c62828;
+  }
+  &--tone-success .ui-input__control {
+    border-color: #2e7d32;
+  }
+  &--density-compact .ui-input__control {
+    min-height: ui-fluid-compact(64);
+  }
+  &--density-expanded .ui-input__control {
+    min-height: ui-fluid-compact(92);
+  }
+  @include ui-regular {
+    gap: ui-fluid-regular(10);
+    &__control {
+      gap: ui-fluid-regular(12);
+      min-height: ui-fluid-regular(76);
+      padding: 0 ui-fluid-regular(22);
+    }
+    &--density-compact .ui-input__control {
+      min-height: ui-fluid-regular(64);
+    }
+    &--density-expanded .ui-input__control {
+      min-height: ui-fluid-regular(92);
+    }
+  }
+  @include ui-expanded {
+    gap: ui-fluid-expanded(10);
+    &__control {
+      gap: ui-fluid-expanded(12);
+      min-height: ui-fluid-expanded(76);
+      padding: 0 ui-fluid-expanded(22);
+    }
+    &--density-compact .ui-input__control {
+      min-height: ui-fluid-expanded(64);
+    }
+    &--density-expanded .ui-input__control {
+      min-height: ui-fluid-expanded(92);
+    }
+  }
+}

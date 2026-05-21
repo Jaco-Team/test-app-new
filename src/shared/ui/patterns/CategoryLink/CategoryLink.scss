@@ -1,0 +1,49 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+.ui-category-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: ui-fluid-compact(10);
+  min-height: ui-fluid-compact(64);
+  padding: 0 ui-fluid-compact(24);
+  border-radius: 999px;
+  color: $ui-text;
+  text-decoration: none;
+  background: #fff;
+  border: 1px solid transparent;
+  cursor: pointer;
+  @include ui-type(28, 30, 30, 400);
+  & svg {
+    width: ui-fluid-compact(20);
+    height: auto;
+  }
+  &--tone-bordered {
+    border-color: $ui-border;
+  }
+  &--tone-active {
+    background: $ui-brand;
+    color: #fff;
+    border-color: $ui-brand;
+  }
+  &--tone-active svg path {
+    stroke: #fff;
+    stroke-opacity: 1;
+  }
+  @include ui-regular {
+    gap: ui-fluid-regular(10);
+    min-height: ui-fluid-regular(64);
+    padding: 0 ui-fluid-regular(24);
+    & svg {
+      width: ui-fluid-regular(20);
+    }
+  }
+  @include ui-expanded {
+    gap: ui-fluid-expanded(10);
+    min-height: ui-fluid-expanded(64);
+    padding: 0 ui-fluid-expanded(24);
+    & svg {
+      width: ui-fluid-expanded(20);
+    }
+  }
+}

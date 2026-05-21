@@ -1,0 +1,83 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+
+.ui-price {
+  display: inline-flex;
+  align-items: baseline;
+  gap: ui-fluid-compact(12);
+  font-family: $ui-font-family;
+  letter-spacing: 0;
+  white-space: nowrap;
+
+  &__current {
+    color: $ui-text;
+    font-weight: 500;
+  }
+  &__old {
+    color: $ui-text-subtle;
+    text-decoration: line-through;
+    font-weight: 400;
+  }
+  &--size-sm {
+    font-size: ui-fluid-compact(24);
+  }
+  &--size-md {
+    font-size: ui-fluid-compact(32);
+  }
+  &--size-lg {
+    font-size: ui-fluid-compact(40);
+  }
+  &--size-sm .ui-price__old {
+    font-size: ui-fluid-compact(20);
+  }
+  &--size-md .ui-price__old {
+    font-size: ui-fluid-compact(24);
+  }
+  &--size-lg .ui-price__old {
+    font-size: ui-fluid-compact(28);
+  }
+
+  @include ui-regular {
+    gap: ui-fluid-regular(12);
+    &--size-sm {
+      font-size: ui-fluid-regular(24);
+    }
+    &--size-md {
+      font-size: ui-fluid-regular(32);
+    }
+    &--size-lg {
+      font-size: ui-fluid-regular(40);
+    }
+    &--size-sm .ui-price__old {
+      font-size: ui-fluid-regular(20);
+    }
+    &--size-md .ui-price__old {
+      font-size: ui-fluid-regular(24);
+    }
+    &--size-lg .ui-price__old {
+      font-size: ui-fluid-regular(28);
+    }
+  }
+
+  @include ui-expanded {
+    gap: ui-fluid-expanded(12);
+    &--size-sm {
+      font-size: ui-fluid-expanded(24);
+    }
+    &--size-md {
+      font-size: ui-fluid-expanded(32);
+    }
+    &--size-lg {
+      font-size: ui-fluid-expanded(40);
+    }
+    &--size-sm .ui-price__old {
+      font-size: ui-fluid-expanded(20);
+    }
+    &--size-md .ui-price__old {
+      font-size: ui-fluid-expanded(24);
+    }
+    &--size-lg .ui-price__old {
+      font-size: ui-fluid-expanded(28);
+    }
+  }
+}

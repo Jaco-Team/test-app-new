@@ -1,0 +1,176 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+.ui-button {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: ui-fluid-compact(12);
+  border: 1px solid transparent;
+  border-radius: 999px;
+  cursor: pointer;
+  font-family: $ui-font-family;
+  letter-spacing: 0;
+  white-space: nowrap;
+  transition:
+    background-color 180ms ease,
+    border-color 180ms ease,
+    color 180ms ease,
+    opacity 180ms ease;
+  &__label {
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
+  &__icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    flex: 0 0 auto;
+  }
+  &--full {
+    width: 100%;
+  }
+  &--density-compact {
+    min-height: ui-fluid-compact(64);
+    padding: 0 ui-fluid-compact(28);
+    font-size: ui-fluid-compact(26);
+  }
+  &--density-regular {
+    min-height: ui-fluid-compact(80);
+    padding: 0 ui-fluid-compact(36);
+    font-size: ui-fluid-compact(30);
+  }
+  &--density-expanded {
+    min-height: ui-fluid-compact(96);
+    padding: 0 ui-fluid-compact(44);
+    font-size: ui-fluid-compact(34);
+  }
+  &--size-sm {
+    min-width: ui-fluid-compact(220);
+  }
+  &--size-md {
+    min-width: ui-fluid-compact(320);
+  }
+  &--size-lg {
+    min-width: ui-fluid-compact(400);
+  }
+  &--size-xl {
+    min-width: ui-fluid-compact(560);
+  }
+  &--tone-primary,
+  &--tone-cart {
+    background: $ui-brand;
+    color: #fff;
+  }
+  &--tone-primary:hover,
+  &--tone-cart:hover {
+    background: $ui-brand-hover;
+  }
+  &--tone-primary:active,
+  &--tone-cart:active,
+  &--tone-primary.ui-button--active,
+  &--tone-cart.ui-button--active {
+    background: $ui-brand-active;
+  }
+  &--tone-secondary {
+    background: #fff;
+    border-color: $ui-brand;
+    color: $ui-brand;
+  }
+  &--tone-secondary:hover {
+    background: rgba(0, 0, 0, 0.05);
+    border-color: $ui-brand-hover;
+    color: $ui-brand-hover;
+  }
+  &--tone-secondary:active,
+  &--tone-secondary.ui-button--active {
+    background: $ui-brand-active;
+    border-color: $ui-brand-active;
+    color: #fff;
+  }
+  &--tone-neutral {
+    background: #fff;
+    border-color: $ui-border;
+    color: $ui-text;
+  }
+  &--tone-neutral:hover,
+  &--tone-neutral.ui-button--active {
+    background: rgba(0, 0, 0, 0.05);
+  }
+  &--tone-muted {
+    background: rgba(0, 0, 0, 0.05);
+    color: $ui-text;
+  }
+  &--tone-muted:hover {
+    background: rgba(0, 0, 0, 0.09);
+  }
+  &--tone-muted:active,
+  &--tone-muted.ui-button--active {
+    background: rgba(0, 0, 0, 0.12);
+  }
+  &:disabled,
+  &[aria-disabled='true'] {
+    cursor: default;
+    pointer-events: none;
+    opacity: 0.55;
+  }
+  @include ui-regular {
+    gap: ui-fluid-regular(12);
+    &--density-compact {
+      min-height: ui-fluid-regular(64);
+      padding: 0 ui-fluid-regular(28);
+      font-size: ui-fluid-regular(26);
+    }
+    &--density-regular {
+      min-height: ui-fluid-regular(80);
+      padding: 0 ui-fluid-regular(36);
+      font-size: ui-fluid-regular(30);
+    }
+    &--density-expanded {
+      min-height: ui-fluid-regular(96);
+      padding: 0 ui-fluid-regular(44);
+      font-size: ui-fluid-regular(34);
+    }
+    &--size-sm {
+      min-width: ui-fluid-regular(220);
+    }
+    &--size-md {
+      min-width: ui-fluid-regular(320);
+    }
+    &--size-lg {
+      min-width: ui-fluid-regular(400);
+    }
+    &--size-xl {
+      min-width: ui-fluid-regular(560);
+    }
+  }
+  @include ui-expanded {
+    gap: ui-fluid-expanded(12);
+    &--density-compact {
+      min-height: ui-fluid-expanded(64);
+      padding: 0 ui-fluid-expanded(28);
+      font-size: ui-fluid-expanded(26);
+    }
+    &--density-regular {
+      min-height: ui-fluid-expanded(80);
+      padding: 0 ui-fluid-expanded(36);
+      font-size: ui-fluid-expanded(30);
+    }
+    &--density-expanded {
+      min-height: ui-fluid-expanded(96);
+      padding: 0 ui-fluid-expanded(44);
+      font-size: ui-fluid-expanded(34);
+    }
+    &--size-sm {
+      min-width: ui-fluid-expanded(220);
+    }
+    &--size-md {
+      min-width: ui-fluid-expanded(320);
+    }
+    &--size-lg {
+      min-width: ui-fluid-expanded(400);
+    }
+    &--size-xl {
+      min-width: ui-fluid-expanded(560);
+    }
+  }
+}

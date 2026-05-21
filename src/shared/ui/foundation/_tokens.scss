@@ -1,0 +1,20 @@
+$ui-font-family: var(--inter-font, Roboto, Arial, sans-serif);
+$ui-text: rgba(0, 0, 0, 0.8);
+$ui-text-muted: rgba(0, 0, 0, 0.6);
+$ui-text-subtle: rgba(0, 0, 0, 0.45);
+$ui-brand: #da1a32;
+$ui-brand-hover: #c7172d;
+$ui-brand-active: #b11528;
+$ui-surface: #ffffff;
+$ui-surface-muted: #f7f7f7;
+$ui-border: rgba(0, 0, 0, 0.2);
+$ui-disabled: rgba(0, 0, 0, 0.1);
+$ui-overlay: rgba(0, 0, 0, 0.42);
+
+$ui-compact-min: 320px;
+$ui-compact-max: 667px;
+$ui-regular-min: 668px;
+$ui-regular-max: 990px;
+$ui-expanded-min: 991px;
+$ui-large-min: 1200px;
+$ui-xl-min: 1536px;

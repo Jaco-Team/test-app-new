@@ -1,0 +1,96 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+.ui-switch {
+  display: inline-flex;
+  align-items: center;
+  gap: ui-fluid-compact(14);
+  background: transparent;
+  cursor: pointer;
+  color: $ui-text;
+  &__track {
+    position: relative;
+    display: inline-flex;
+    width: ui-fluid-compact(82);
+    height: ui-fluid-compact(44);
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.18);
+    transition: background-color 180ms ease;
+  }
+  &__thumb {
+    position: absolute;
+    top: ui-fluid-compact(4);
+    left: ui-fluid-compact(4);
+    width: ui-fluid-compact(36);
+    height: ui-fluid-compact(36);
+    border-radius: 50%;
+    background: #fff;
+    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    transition: transform 180ms ease;
+  }
+  &__label {
+    @include ui-type(26, 28, 28, 400);
+  }
+  &--checked .ui-switch__track {
+    background: $ui-brand;
+  }
+  &--checked .ui-switch__thumb {
+    transform: translateX(ui-fluid-compact(38));
+  }
+  &--tone-neutral.ui-switch--checked .ui-switch__track {
+    background: $ui-text-muted;
+  }
+  &--size-sm .ui-switch__track {
+    width: ui-fluid-compact(68);
+    height: ui-fluid-compact(36);
+  }
+  &--size-sm .ui-switch__thumb {
+    width: ui-fluid-compact(28);
+    height: ui-fluid-compact(28);
+  }
+  &--size-sm.ui-switch--checked .ui-switch__thumb {
+    transform: translateX(ui-fluid-compact(32));
+  }
+  &--size-lg .ui-switch__track {
+    width: ui-fluid-compact(98);
+    height: ui-fluid-compact(52);
+  }
+  &--size-lg .ui-switch__thumb {
+    width: ui-fluid-compact(44);
+    height: ui-fluid-compact(44);
+  }
+  &--size-lg.ui-switch--checked .ui-switch__thumb {
+    transform: translateX(ui-fluid-compact(46));
+  }
+  @include ui-regular {
+    gap: ui-fluid-regular(14);
+    &__track {
+      width: ui-fluid-regular(82);
+      height: ui-fluid-regular(44);
+    }
+    &__thumb {
+      top: ui-fluid-regular(4);
+      left: ui-fluid-regular(4);
+      width: ui-fluid-regular(36);
+      height: ui-fluid-regular(36);
+    }
+    &--checked .ui-switch__thumb {
+      transform: translateX(ui-fluid-regular(38));
+    }
+  }
+  @include ui-expanded {
+    gap: ui-fluid-expanded(14);
+    &__track {
+      width: ui-fluid-expanded(82);
+      height: ui-fluid-expanded(44);
+    }
+    &__thumb {
+      top: ui-fluid-expanded(4);
+      left: ui-fluid-expanded(4);
+      width: ui-fluid-expanded(36);
+      height: ui-fluid-expanded(36);
+    }
+    &--checked .ui-switch__thumb {
+      transform: translateX(ui-fluid-expanded(38));
+    }
+  }
+}

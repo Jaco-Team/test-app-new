@@ -1,0 +1,86 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+
+.ui-badge {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: fit-content;
+  border-radius: 999px;
+  color: #fff;
+  font-family: $ui-font-family;
+  font-weight: 400;
+  letter-spacing: 0;
+  line-height: 1;
+  white-space: nowrap;
+  box-shadow:
+    0 0 0 1px rgba(255, 255, 255, 0.65),
+    0 8px 18px rgba(0, 0, 0, 0.12);
+
+  &--tone-new {
+    background: #ee7900;
+  }
+  &--tone-hit {
+    background: #af00db;
+  }
+  &--tone-sale {
+    background: #db0021;
+  }
+  &--tone-neutral {
+    background: rgba(0, 0, 0, 0.55);
+  }
+  &--tone-success {
+    background: #2e7d32;
+  }
+  &--size-sm {
+    min-height: ui-fluid-compact(34);
+    padding: 0 ui-fluid-compact(14);
+    font-size: ui-fluid-compact(18);
+  }
+  &--size-md {
+    min-height: ui-fluid-compact(42);
+    padding: 0 ui-fluid-compact(18);
+    font-size: ui-fluid-compact(22);
+  }
+  &--size-lg {
+    min-height: ui-fluid-compact(52);
+    padding: 0 ui-fluid-compact(22);
+    font-size: ui-fluid-compact(26);
+  }
+
+  @include ui-regular {
+    &--size-sm {
+      min-height: ui-fluid-regular(34);
+      padding: 0 ui-fluid-regular(14);
+      font-size: ui-fluid-regular(18);
+    }
+    &--size-md {
+      min-height: ui-fluid-regular(42);
+      padding: 0 ui-fluid-regular(18);
+      font-size: ui-fluid-regular(22);
+    }
+    &--size-lg {
+      min-height: ui-fluid-regular(52);
+      padding: 0 ui-fluid-regular(22);
+      font-size: ui-fluid-regular(26);
+    }
+  }
+
+  @include ui-expanded {
+    &--size-sm {
+      min-height: ui-fluid-expanded(34);
+      padding: 0 ui-fluid-expanded(14);
+      font-size: ui-fluid-expanded(18);
+    }
+    &--size-md {
+      min-height: ui-fluid-expanded(42);
+      padding: 0 ui-fluid-expanded(18);
+      font-size: ui-fluid-expanded(22);
+    }
+    &--size-lg {
+      min-height: ui-fluid-expanded(52);
+      padding: 0 ui-fluid-expanded(22);
+      font-size: ui-fluid-expanded(26);
+    }
+  }
+}

@@ -1,0 +1,75 @@
+@use '../../foundation/formulas' as *;
+.ui-inline {
+  display: flex;
+  flex-direction: row;
+  &--wrap {
+    flex-wrap: wrap;
+  }
+  &--align-start {
+    align-items: flex-start;
+  }
+  &--align-center {
+    align-items: center;
+  }
+  &--align-end {
+    align-items: flex-end;
+  }
+  &--align-stretch {
+    align-items: stretch;
+  }
+  &--justify-start {
+    justify-content: flex-start;
+  }
+  &--justify-center {
+    justify-content: center;
+  }
+  &--justify-end {
+    justify-content: flex-end;
+  }
+  &--justify-between {
+    justify-content: space-between;
+  }
+  &--gap-none {
+    gap: 0;
+  }
+  &--gap-xs {
+    gap: ui-fluid-compact(8);
+  }
+  &--gap-sm {
+    gap: ui-fluid-compact(12);
+  }
+  &--gap-md {
+    gap: ui-fluid-compact(20);
+  }
+  &--gap-lg {
+    gap: ui-fluid-compact(32);
+  }
+  @include ui-regular {
+    &--gap-xs {
+      gap: ui-fluid-regular(8);
+    }
+    &--gap-sm {
+      gap: ui-fluid-regular(12);
+    }
+    &--gap-md {
+      gap: ui-fluid-regular(20);
+    }
+    &--gap-lg {
+      gap: ui-fluid-regular(32);
+    }
+  }
+  @include ui-expanded {
+    &--gap-xs {
+      gap: ui-fluid-expanded(8);
+    }
+    &--gap-sm {
+      gap: ui-fluid-expanded(12);
+    }
+    &--gap-md {
+      gap: ui-fluid-expanded(20);
+    }
+    &--gap-lg {
+      gap: ui-fluid-expanded(32);
+    }
+  }
+}

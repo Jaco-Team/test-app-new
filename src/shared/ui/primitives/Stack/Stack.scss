@@ -1,0 +1,72 @@
+@use '../../foundation/formulas' as *;
+.ui-stack {
+  display: flex;
+  flex-direction: column;
+  &--full {
+    width: 100%;
+  }
+  &--align-stretch {
+    align-items: stretch;
+  }
+  &--align-start {
+    align-items: flex-start;
+  }
+  &--align-center {
+    align-items: center;
+  }
+  &--align-end {
+    align-items: flex-end;
+  }
+  &--gap-none {
+    gap: 0;
+  }
+  &--gap-xs {
+    gap: ui-fluid-compact(8);
+  }
+  &--gap-sm {
+    gap: ui-fluid-compact(12);
+  }
+  &--gap-md {
+    gap: ui-fluid-compact(20);
+  }
+  &--gap-lg {
+    gap: ui-fluid-compact(32);
+  }
+  &--gap-xl {
+    gap: ui-fluid-compact(48);
+  }
+  @include ui-regular {
+    &--gap-xs {
+      gap: ui-fluid-regular(8);
+    }
+    &--gap-sm {
+      gap: ui-fluid-regular(12);
+    }
+    &--gap-md {
+      gap: ui-fluid-regular(20);
+    }
+    &--gap-lg {
+      gap: ui-fluid-regular(32);
+    }
+    &--gap-xl {
+      gap: ui-fluid-regular(48);
+    }
+  }
+  @include ui-expanded {
+    &--gap-xs {
+      gap: ui-fluid-expanded(8);
+    }
+    &--gap-sm {
+      gap: ui-fluid-expanded(12);
+    }
+    &--gap-md {
+      gap: ui-fluid-expanded(20);
+    }
+    &--gap-lg {
+      gap: ui-fluid-expanded(32);
+    }
+    &--gap-xl {
+      gap: ui-fluid-expanded(48);
+    }
+  }
+}

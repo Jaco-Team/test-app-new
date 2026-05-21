@@ -1,0 +1,61 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+.ui-alert {
+  position: relative;
+  display: grid;
+  gap: ui-fluid-compact(12);
+  padding: ui-fluid-compact(24);
+  border-radius: 12px;
+  background: $ui-surface-muted;
+  border: 1px solid transparent;
+  overflow: hidden;
+  color: $ui-text;
+  &__title {
+    margin: 0;
+    @include ui-type(30, 32, 32, 500);
+  }
+  &__body {
+    @include ui-type(26, 28, 28, 400);
+    color: $ui-text-muted;
+  }
+  &__action {
+    display: flex;
+    justify-content: flex-start;
+  }
+  &__progress {
+    position: absolute;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    height: 3px;
+    background: rgba(0, 0, 0, 0.08);
+  }
+  &__progress span {
+    display: block;
+    height: 100%;
+    background: currentColor;
+  }
+  &--tone-info {
+    border-color: rgba(0, 0, 0, 0.12);
+  }
+  &--tone-success {
+    border-color: #2e7d32;
+    color: #2e7d32;
+  }
+  &--tone-warning {
+    border-color: #ed6c02;
+    color: #ed6c02;
+  }
+  &--tone-error {
+    border-color: #c62828;
+    color: #c62828;
+  }
+  @include ui-regular {
+    gap: ui-fluid-regular(12);
+    padding: ui-fluid-regular(24);
+  }
+  @include ui-expanded {
+    gap: ui-fluid-expanded(12);
+    padding: ui-fluid-expanded(24);
+  }
+}

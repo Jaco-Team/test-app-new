@@ -1,0 +1,20 @@
+@use '../../foundation/formulas' as *;
+
+.ui-product-card-story {
+  width: calc(100vw - 22px);
+  max-width: ui-fluid-compact(810);
+}
+
+@include ui-regular {
+  .ui-product-card-story {
+    width: calc(100vw - 46px);
+    max-width: ui-fluid-regular(622);
+  }
+}
+
+@include ui-expanded {
+  .ui-product-card-story {
+    width: ui-fluid-expanded(300);
+    max-width: none;
+  }
+}

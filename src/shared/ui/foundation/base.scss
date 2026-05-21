@@ -1,0 +1,39 @@
+@use './tokens' as *;
+
+:root {
+  --ui-font-family: #{$ui-font-family};
+  --ui-color-brand: #{$ui-brand};
+  --ui-color-brand-hover: #{$ui-brand-hover};
+  --ui-color-brand-active: #{$ui-brand-active};
+  --ui-color-text: #{$ui-text};
+  --ui-color-text-muted: #{$ui-text-muted};
+  --ui-color-surface: #{$ui-surface};
+  --ui-color-surface-muted: #{$ui-surface-muted};
+  --ui-color-border: #{$ui-border};
+  --ui-transition-fast: 120ms ease;
+  --ui-transition-base: 180ms ease;
+}
+
+*,
+*::before,
+*::after {
+  box-sizing: border-box;
+}
+
+body {
+  margin: 0;
+  font-family: var(--ui-font-family);
+  color: var(--ui-color-text);
+  background: var(--ui-color-surface);
+}
+
+button,
+input,
+textarea,
+select {
+  font: inherit;
+}
+
+button {
+  border: 0;
+}

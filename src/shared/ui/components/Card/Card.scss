@@ -1,0 +1,68 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+
+.ui-card {
+  border-radius: 8px;
+  background: $ui-surface;
+  color: $ui-text;
+  overflow: hidden;
+  transition:
+    background-color 180ms ease,
+    box-shadow 180ms ease,
+    border-color 180ms ease;
+
+  &--tone-plain {
+    background: $ui-surface;
+  }
+  &--tone-muted {
+    background: $ui-surface-muted;
+  }
+  &--tone-outlined {
+    border: 1px solid rgba(0, 0, 0, 0.12);
+  }
+  &--tone-elevated {
+    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+  }
+  &--interactive {
+    cursor: pointer;
+  }
+  &--interactive:hover {
+    background: rgba(0, 0, 0, 0.035);
+  }
+  &--padding-none {
+    padding: 0;
+  }
+  &--padding-sm {
+    padding: ui-fluid-compact(16);
+  }
+  &--padding-md {
+    padding: ui-fluid-compact(24);
+  }
+  &--padding-lg {
+    padding: ui-fluid-compact(36);
+  }
+
+  @include ui-regular {
+    &--padding-sm {
+      padding: ui-fluid-regular(16);
+    }
+    &--padding-md {
+      padding: ui-fluid-regular(24);
+    }
+    &--padding-lg {
+      padding: ui-fluid-regular(36);
+    }
+  }
+
+  @include ui-expanded {
+    &--padding-sm {
+      padding: ui-fluid-expanded(16);
+    }
+    &--padding-md {
+      padding: ui-fluid-expanded(24);
+    }
+    &--padding-lg {
+      padding: ui-fluid-expanded(36);
+    }
+  }
+}

@@ -15,7 +15,9 @@
     "incremental": true,
     "paths": {
       "@/*": ["./*"],
-      "@stories/*": ["./stories/*"]
+      "@stories/*": ["./stories/*"],
+      "@src/*": ["./src/*"],
+      "@ui/*": ["./src/shared/ui/*"]
     },
     "plugins": [
       {
