@@ -1840,6 +1840,16 @@ export const useCartStore = reuseHotStore('cart', createWithEqualityFn((set, get
         }
 
         if( get().typePay.id == 'online' ){
+          if (get().global_checkout !== null) {
+            try {
+              get().global_checkout.destroy();
+            } catch (e) {}
+
+            set({
+              global_checkout: null
+            });
+          }
+
           const YooMoneyCheckoutWidget = await ensureYooMoneyCheckoutWidget();
           if (!YooMoneyCheckoutWidget) {
             useHeaderStoreNew.getState().setActiveModalAlert(
@@ -1890,9 +1900,10 @@ export const useCartStore = reuseHotStore('cart', createWithEqualityFn((set, get
           // }, 300 )
 
           const renderCheckout = (checkout) => {
-            const el = document.getElementById('payment-form');
+            const targetId = document.getElementById('payment-form-confirm') ? 'payment-form-confirm' : 'payment-form';
+            const el = document.getElementById(targetId);
             if (!el) return false;
-            checkout.render('payment-form');
+            checkout.render(targetId);
             return true;
           };
 
@@ -3470,8 +3481,9 @@ export const useContactStore = reuseHotStore('contact', createWithEqualityFn((se
     })
 
     const matches = useHeaderStoreNew.getState().matches;
+    const isPhoneWidth = typeof window !== 'undefined' && window.innerWidth <= 667;
 
-    if(matches) {
+    if(matches && isPhoneWidth) {
       setTimeout(() => {
         get().choosePointMap(false);
       }, 300)
@@ -3545,14 +3557,10 @@ export const useContactStore = reuseHotStore('contact', createWithEqualityFn((se
         return item
       })
   
-      myAddr = myAddr.map(item => {
-        if (item.addr === addr)  {
-          item.color = '#DD1A32'
-        } else {
-          item.color = null;
-        }
-        return item
-      });
+      myAddr = myAddr.map((item) => ({
+        ...item,
+        color: item.addr === addr ? '#DD1A32' : 'rgba(0, 0, 0, 0.8)',
+      }));
   
       let zoomSize;
           

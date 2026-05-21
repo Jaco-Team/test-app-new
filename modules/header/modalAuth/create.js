@@ -12,7 +12,7 @@ import InputAdornment from '@mui/material/InputAdornment';
 
 //import { SmartCaptcha } from '@yandex/smart-captcha';
 
-export default function Create({ city }) {
+export default function Create({ city, isMobileAuth = false }) {
   //const [token, setToken] = useState('');
 
   const [checkPolitika, setCheckPolitika] = useState(false);
@@ -20,7 +20,8 @@ export default function Create({ city }) {
   //const [checkSpam, setCheckSpam] = useState(false);
   const [showPassword, setShowPassword] = useState(false);
 
-  const [changeLogin, loginLogin, checkLoginKey, sendsmsNewLogin, matches, setPwdLogin, pwdLogin, setActiveModalAlert, checkSpam, setCheckSpam] = useHeaderStoreNew((state) => [state?.changeLogin, state?.loginLogin, state?.checkLoginKey, state?.sendsmsNewLogin, state?.matches, state?.setPwdLogin, state?.pwdLogin, state?.setActiveModalAlert, state?.checkSpam, state?.setCheckSpam]);
+  const [changeLogin, loginLogin, checkLoginKey, sendsmsNewLogin, setPwdLogin, pwdLogin, setActiveModalAlert, checkSpam, setCheckSpam] = useHeaderStoreNew((state) => [state?.changeLogin, state?.loginLogin, state?.checkLoginKey, state?.sendsmsNewLogin, state?.setPwdLogin, state?.pwdLogin, state?.setActiveModalAlert, state?.checkSpam, state?.setCheckSpam]);
+  const matches = isMobileAuth;
 
   // <div className="datareklama">
   //         {checkSpam ? (

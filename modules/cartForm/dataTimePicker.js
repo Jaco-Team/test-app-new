@@ -4,7 +4,9 @@ import useEmblaCarousel from 'embla-carousel-react';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
 import { flushSync } from 'react-dom';
 
-import { useCartStore, useHeaderStoreNew } from '@/components/store.js';
+import { useCartStore } from '@/components/store.js';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 import { IconClose } from '@/ui/Icons';
 
@@ -22,7 +24,7 @@ import { roboto } from '@/ui/Font.js';
 import dayjs from 'dayjs';
 
 export default function DataTimePicker() {
-  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
+  const useMobilePicker = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
 
   const [dateTimeOrder, openDataTimePicker, setActiveDataTimePicker, timePreOrder, datePreOrder, getTimesPred, setDataTimeOrder] = useCartStore((state) => [
     state.dateTimeOrder, state.openDataTimePicker, state.setActiveDataTimePicker, state.timePreOrder, state.datePreOrder, state.getTimesPred, state.setDataTimeOrder]);
@@ -129,7 +131,7 @@ export default function DataTimePicker() {
     setActiveDataTimePicker(false);
   };
 
-  if( matches ){
+  if( useMobilePicker ){
     return (
       <Dialog
         onClose={chooseData}
@@ -151,6 +153,7 @@ export default function DataTimePicker() {
                 data={'date'}
                 activeData={activeDate}
                 chooseData={chooseData}
+                isMobileLayout={useMobilePicker}
               />
 
               <DataTime
@@ -159,6 +162,7 @@ export default function DataTimePicker() {
                 data={'time'}
                 activeData={activeTime}
                 chooseData={chooseData}
+                isMobileLayout={useMobilePicker}
               />
             </section>
 
@@ -196,6 +200,7 @@ export default function DataTimePicker() {
               data={'date'}
               activeData={activeDate}
               chooseData={chooseData}
+              isMobileLayout={useMobilePicker}
             />
 
             <DataTime
@@ -204,6 +209,7 @@ export default function DataTimePicker() {
               data={'time'}
               activeData={activeTime}
               chooseData={chooseData}
+              isMobileLayout={useMobilePicker}
 
             />
           </section>
@@ -219,9 +225,8 @@ export default function DataTimePicker() {
   );
 }
 
-const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
-  const [matches] = useHeaderStoreNew((state) => [state.matches]);
-
+const DataTime = ({ slides, chooseItem, data, activeData, chooseData, isMobileLayout = false }) => {
+  const isTabletLayout = useMediaQuery(`screen and (min-width: ${BREAKPOINTS.tabletMin}px) and (max-width: ${BREAKPOINTS.tabletMax}px)`);
   const [active, setActive] = useState(activeData);
 
   const [emblaRef, emblaApi] = useEmblaCarousel({
@@ -285,7 +290,7 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
 
   //width: data === 'date' ? '42.735042735043vw' : '35.897435897436vw'
 
-  if( matches ){
+  if( isMobileLayout ){
     return (
       <div className={slides?.length < 4 && data === 'time' ? 'embla_time' : 'embla'}>
         <div className="embla__viewport" ref={emblaRef}>
@@ -310,16 +315,22 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
   }
 
   //width: data === 'date' ? '12.996389891697vw' : '7.2202166064982vw'
+  const arrowLeft = data === 'date'
+    ? (isTabletLayout ? '10.909090909091vw' : '8.6642599277978vw')
+    : (isTabletLayout ? '23.090909090909vw' : '18.343vw');
+  const arrowOffset = isTabletLayout ? '14.545454545455vw' : '11.552346570397vw';
+  const containerWidth = isTabletLayout ? '16.363636363636vw' : '12.996389891697vw';
+  const dateMarginLeft = isTabletLayout ? '1.8181818181818vw' : '1.4440433212996vw';
 
   return (
     <>
       <div className='embla_button' 
-        style={{transform: 'rotate(90deg)', bottom: '11.552346570397vw', left: data === 'date' ? '8.6642599277978vw' : '18.343vw'}}>
+        style={{transform: 'rotate(90deg)', bottom: arrowOffset, left: arrowLeft}}>
         <ArrowBackIosNewIcon onClick={scrollPrev} />
       </div>
       <div className={slides?.length < 4 && data === 'time' ? 'embla_time' : 'embla'}>
         <div className="embla__viewport" ref={emblaRef}>
-          <div className="embla__container" style={{ width: data === 'date' ? '12.996389891697vw' : '12.996389891697vw' }}>
+          <div className="embla__container" style={{ width: data === 'date' ? containerWidth : containerWidth }}>
             {slides?.map((item, i) => 
               <div className="embla__slide" 
                 key={i}
@@ -327,7 +338,7 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
                 style={{ 
                   justifyContent: data === 'date' ? item?.text === 'Сегодня' ? 'flex-end' : 'space-between' : 'center',
                   color: i !== active ? 'rgba(0, 0, 0, 0.20)' : 'rgba(0, 0, 0, 0.8)',
-                  marginLeft: data === 'date' ? '1.4440433212996vw' : null
+                  marginLeft: data === 'date' ? dateMarginLeft : null
                 }}
               >
                 {data === 'date' && item?.text !== 'Сегодня' ? <span style={{ textTransform: 'uppercase' }}>{item?.dow}</span> : null}
@@ -338,7 +349,7 @@ const DataTime = ({ slides, chooseItem, data, activeData, chooseData }) => {
         </div>
       </div>
       <div className='embla_button' 
-        style={{transform: 'rotate(270deg)', top: '11.552346570397vw', left: data === 'date' ? '8.6642599277978vw' : '18.343vw'}}>
+        style={{transform: 'rotate(270deg)', top: arrowOffset, left: arrowLeft}}>
         <ArrowBackIosNewIcon onClick={scrollNext} />
       </div>
     </>

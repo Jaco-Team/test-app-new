@@ -67,10 +67,14 @@ export default function Promokody(props) {
   }, []);
 
   return (
-    <div className={roboto.variable}>
-      <DynamicPage page={page} this_module={this_module} city={city} />
+    <div className={`${roboto.variable} promokodyTabletPage`}>
+      <div className="promokodyTabletPageContent">
+        <DynamicPage page={page} this_module={this_module} city={city} />
+      </div>
 
-      <Footer cityName={city} links={links} />
+      <div className="promokodyTabletPageFooter">
+        <Footer cityName={city} links={links} />
+      </div>
     </div>
   );
 }

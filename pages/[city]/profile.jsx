@@ -66,10 +66,14 @@ export default function Profile(props) {
   }, []);
 
   return (
-    <div className={roboto.variable}>
-      <DynamicPage page={page} this_module={this_module} city={city} />
+    <div className={`${roboto.variable} profileTabletPage`}>
+      <div className="profileTabletPageContent">
+        <DynamicPage page={page} this_module={this_module} city={city} />
+      </div>
 
-      <Footer cityName={city} links={links} />
+      <div className="profileTabletPageFooter">
+        <Footer cityName={city} links={links} />
+      </div>
     </div>
   );
 }

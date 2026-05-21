@@ -309,11 +309,19 @@
           color: #dd1a32;
         }
         
-        & div {
+        & > div {
           display: flex;
-          align-items: center;
+          align-items: flex-start;
+          flex-direction: column;
           width: 100%;
           padding: $MyScale20 $MyScale60;
+
+          & > div {
+            display: flex;
+            align-items: center;
+            width: 100%;
+            padding: 0;
+          }
           
           & span:not(.dopAddrInfo) {
             //width: 100%;
@@ -334,6 +342,231 @@
               width: $MyScale60;
               height: $MyScale60;
             }
+          }
+
+        }
+      }
+    }
+  }
+}
+
+@include tablet-only {
+  .modalBasketMainPC {
+    .MuiDialog-paper {
+      margin: tablet-vw(50) 0 !important;
+      border-radius: tablet-vw(40);
+
+      .MuiDialogContent-root {
+        border-radius: tablet-vw(40);
+        width: tablet-vw(1000);
+        height: tablet-vw(1650);
+
+        .modalBasketPC {
+          .closeButtonBasketPC {
+            left: -tablet-vw(73);
+
+            & svg {
+              width: tablet-vw(60);
+              height: tablet-vw(60);
+              border-radius: tablet-vw(60);
+            }
+          }
+
+          .modalBasketContainer {
+            margin: tablet-vw(80) tablet-vw(80) 0 tablet-vw(80);
+
+            > .MuiStack-root {
+              width: tablet-vw(800) !important;
+              margin-bottom: tablet-vw(80) !important;
+              justify-content: center;
+            }
+
+            .basketHeader {
+              height: tablet-vw(120);
+              margin-bottom: tablet-vw(40);
+            }
+
+            .basketChoose {
+              width: tablet-vw(680);
+              height: tablet-vw(80);
+              border-radius: tablet-vw(40);
+              border: tablet-vw(2) solid rgba(0, 0, 0, 0.2);
+              margin-bottom: tablet-vw(40);
+
+              & > div {
+                margin-left: tablet-vw(30);
+                width: tablet-vw(560);
+
+                span:first-child {
+                  width: tablet-vw(60);
+                  height: tablet-vw(60);
+                }
+
+                span:nth-child(2) {
+                  display: block;
+                  height: tablet-vw(60);
+                  line-height: tablet-vw(60);
+                  color: rgba(0, 0, 0, 0.8);
+                  margin-left: tablet-vw(70);
+                  margin-right: 0;
+                  padding-top: tablet-vw(2);
+                  box-sizing: border-box;
+                  &:first-letter {
+                    text-transform: uppercase;
+                  }
+                }
+
+                span:nth-child(3) {
+                  display: block;
+                  height: tablet-vw(60);
+                  line-height: tablet-vw(60);
+                  margin-right: 0;
+                  padding-top: tablet-vw(2);
+                  box-sizing: border-box;
+                  color: rgba(0, 0, 0, 0.4) !important;
+                  &:first-letter {
+                    text-transform: uppercase;
+                  }
+                }
+
+                & .sdacha {
+                  & .MuiInputBase-root.MuiOutlinedInput-root {
+                    & input {
+                      line-height: tablet-vw(30);
+                      margin-left: tablet-vw(70);
+                    }
+
+                    & fieldset {
+                      height: tablet-vw(60);
+                    }
+                  }
+                }
+              }
+
+              .svg_addr {
+                right: tablet-vw(43);
+
+                svg {
+                  width: tablet-vw(22);
+                  height: tablet-vw(11);
+                }
+              }
+
+              & .MuiButton-endIcon {
+                margin-right: tablet-vw(43);
+                margin-left: tablet-vw(10);
+                display: flex;
+                align-items: center;
+                line-height: 0;
+                overflow: visible;
+
+                & svg {
+                  width: tablet-vw(22);
+                  height: tablet-vw(11);
+                  display: block;
+                  overflow: visible;
+                }
+              }
+            }
+
+            .basketMessage {
+              width: tablet-vw(676);
+              height: tablet-vw(120);
+              border-radius: tablet-vw(40);
+              border: tablet-vw(2) solid rgba(0, 0, 0, 0.2);
+              margin-bottom: tablet-vw(40);
+
+              span {
+                margin-left: tablet-vw(30);
+                width: tablet-vw(60);
+                height: tablet-vw(60);
+                margin-right: tablet-vw(20);
+              }
+
+              .message {
+                width: tablet-vw(500) !important;
+
+                & .MuiOutlinedInput-root {
+                  & .MuiInputBase-inputMultiline {
+                    line-height: tablet-vw(30);
+                    margin-left: -tablet-vw(10);
+                  }
+                }
+              }
+            }
+
+            .basketLine {
+              width: tablet-vw(920);
+              height: tablet-vw(2);
+            }
+
+            .basketDelivery {
+              margin-top: tablet-vw(40);
+              height: tablet-vw(60);
+            }
+
+            .basketTotal {
+              height: tablet-vw(60);
+            }
+
+            .basketDopText {
+              line-height: tablet-vw(30);
+              margin-top: tablet-vw(30);
+            }
+
+            .basketOrder {
+              width: tablet-vw(560);
+              height: tablet-vw(80);
+              border-radius: tablet-vw(40);
+              margin-top: tablet-vw(30);
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #basketChooseModal {
+    & div.MuiPaper-root.MuiMenu-paper {
+      margin-top: tablet-vw(20);
+      border-radius: tablet-vw(20);
+      width: tablet-vw(680);
+      box-shadow: tablet-vw(10) tablet-vw(20) tablet-vw(30) tablet-vw(5) rgba(0, 0, 0, 0.2);
+
+      & ul {
+        & li {
+          min-height: tablet-vw(100);
+
+          & > div {
+            display: flex;
+            align-items: flex-start;
+            flex-direction: column;
+            width: 100%;
+            padding: tablet-vw(20) tablet-vw(60);
+
+            & .dopAddrInfo {
+              padding-top: 0 !important;
+              margin-top: tablet-vw(4);
+            }
+
+            & > div {
+              display: flex;
+              align-items: center;
+              width: 100%;
+              padding: 0;
+            }
+
+            & .circle {
+              margin-left: tablet-vw(20);
+              width: tablet-vw(60);
+              height: tablet-vw(60);
+
+              & svg {
+                width: tablet-vw(60);
+                height: tablet-vw(60);
+              }
+            }
+
           }
         }
       }

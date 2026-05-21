@@ -33,6 +33,7 @@
       box-sizing: border-box;
       border: $MyScale2 solid rgba(0, 0, 0, 0.25);
       text-transform: lowercase;
+      color: $colorText !important;
       
       display: flex;
       align-items: center;
@@ -42,6 +43,7 @@
       & span {
         @include font50_500();
         padding-left: $MyScale50;
+        color: $colorText !important;
         &:first-letter {
           text-transform: uppercase;
         }
@@ -50,6 +52,7 @@
         padding-right: $MyScale44;
         & svg{
           @include font50_500();
+          color: $colorText !important;
         }
       }
       &:hover {
@@ -240,6 +243,7 @@
           width: 100%;
           height: 100%;
           text-decoration: none;
+          color: $colorText !important;
           
           display: flex;
           align-items: center;
@@ -247,6 +251,11 @@
           @include font30_400();
           &:hover {
             color: $colorMain;
+          }
+          &:visited,
+          &:active,
+          &:focus {
+            color: $colorText !important;
           }
           
         }
@@ -282,6 +291,7 @@
           width: 100%;
           min-width: max-content;
           text-decoration: none;
+          color: $colorText !important;
           
           width: 100%;
           display: block;
@@ -290,6 +300,11 @@
           &:hover {
             color: $colorMain;
           }
+          &:visited,
+          &:active,
+          &:focus {
+            color: $colorText !important;
+          }
         }
       }
     }
@@ -297,5 +312,146 @@
     //   width: calc(100% - 100px);
     //   margin-top: 60px;
     // }
+  }
+}
+
+@include tablet-only {
+  .Contact_{
+    margin-top: tablet-vw(128)!important;
+    min-height: tablet-vw(900);
+    height: 85%;
+
+    & .Contact {
+      box-shadow: tablet-vw(10) tablet-vw(20) tablet-vw(40) tablet-vw(15) rgba(0, 0, 0, 0.15);
+      border-radius: tablet-vw(80);
+      top: tablet-vw(60);
+      right: tablet-vw(125);
+      width: calc(tablet-vw(800) - tablet-vw(100) * 2);
+      padding: tablet-vw(91);
+      padding-left: tablet-vw(100);
+      padding-right: tablet-vw(100);
+      padding-bottom: tablet-vw(72);
+    
+      & button.chooseCity {
+        height: tablet-vw(90);
+        border-radius: tablet-vw(45);
+        border: tablet-vw(2) solid rgba(0, 0, 0, 0.25);
+        color: $colorText !important;
+
+        & span {
+          padding-left: tablet-vw(50);
+          color: $colorText !important;
+        }
+        & span:last-child{
+          padding-right: tablet-vw(44);
+          & svg {
+            color: $colorText !important;
+          }
+        }
+      }
+    
+      & .listAddrPoint {
+        margin-top: tablet-vw(60);
+    
+        & h2 {
+          height: tablet-vw(50);
+          line-height: tablet-vw(50);
+        }
+    
+        & ul {
+          & > div {
+            margin-top: tablet-vw(40);
+
+            & svg{
+              width: tablet-vw(50);
+              height: tablet-vw(66);
+            }
+
+            & > div {
+              margin-left: tablet-vw(40);
+              height: tablet-vw(60);
+            }
+          }
+        }
+
+        & hr{
+          height: tablet-vw(2);
+          margin-top: tablet-vw(80);
+        }
+      }
+    
+      & .listInfo {
+        margin-top: tablet-vw(50);
+
+        & *:nth-child(3) {
+          margin-top: tablet-vw(20);
+        }
+
+        & span {
+          height: tablet-vw(50);
+          line-height: tablet-vw(50);
+        }
+
+        & h2 {
+          height: tablet-vw(100);
+          line-height: tablet-vw(100);
+        }
+
+        & hr {
+          margin-top: tablet-vw(40);
+          margin-bottom: tablet-vw(28);
+          height: tablet-vw(2);
+        }
+      }
+    
+      & .switch {
+        height: tablet-vw(100);
+      }
+    }
+  }
+
+  #chooseCityContact {
+    & div.MuiPaper-root.MuiMenu-paper {
+      border-radius: tablet-vw(20)!important;
+      margin-top: tablet-vw(20)!important;
+      width: tablet-vw(680);
+      right: tablet-vw(190);
+      box-shadow: tablet-vw(10) tablet-vw(10) tablet-vw(30) tablet-vw(5) rgba(0, 0, 0, 0.2);
+      
+      & ul {
+        & li {
+          height: tablet-vw(80);
+        }
+      }
+    }
+  }
+
+  #chooseCityContact_ {
+    & div.MuiPaper-root.MuiMenu-paper {
+      border-radius: tablet-vw(20)!important;
+      margin-top: tablet-vw(20)!important;
+      width: tablet-vw(680)!important;
+      box-shadow: tablet-vw(10) tablet-vw(10) tablet-vw(30) tablet-vw(5) rgba(0, 0, 0, 0.2);
+      right: tablet-vw(190);
+
+      & ul {
+        & li {
+          height: tablet-vw(100);
+          width: tablet-vw(600);
+        }
+      }
+    }
+  }
+
+  // На планшете фиксируем цвет текста пунктов меню как на ПК
+  #chooseCityContact,
+  #chooseCityContact_ {
+    & li,
+    & li a,
+    & li a:visited,
+    & li a:active,
+    & li a:focus {
+      color: $colorText !important;
+    }
   }
 }

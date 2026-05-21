@@ -2,6 +2,7 @@ import { useState, useEffect } from 'react';
 
 import { useCartStore, useCitiesStore, useHeaderStoreNew, useProfileStore } from '@/components/store.js';
 import { useRouter } from 'next/router';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
@@ -28,6 +29,7 @@ import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 
 import Cookies from 'js-cookie'
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 import { buildPurchasePayload, reachGoal, trackPurchase } from '@/utils/metrika';
 import { getLocalStorageItem, removeLocalStorageItem, setLocalStorageItem } from '@/utils/browserStorage';
@@ -69,7 +71,8 @@ export default function FormOrder({ cityName }) {
 
   const [openModalAddr, getOrderList, userInfo, getUserInfo] = useProfileStore( state => [state.openModalAddr, state.getOrderList, state.userInfo, state.getUserInfo]);
 
-  const [matches, setActiveModalCityList, setActiveModalAlert, token, showLoad, isAuth, setActiveModalAuth] = useHeaderStoreNew((state) => [state?.matches, state?.setActiveModalCityList, state?.setActiveModalAlert, state?.token, state?.showLoad, state?.isAuth, state?.setActiveModalAuth]);
+  const [setActiveModalCityList, setActiveModalAlert, token, showLoad, isAuth, setActiveModalAuth] = useHeaderStoreNew((state) => [state?.setActiveModalCityList, state?.setActiveModalAlert, state?.token, state?.showLoad, state?.isAuth, state?.setActiveModalAuth]);
+  const isMobileOrder = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
 
   const [thisCityList, thisCity, thisCityRu, setThisCityRu] = useCitiesStore((state) => [state.thisCityList, state.thisCity, state.thisCityRu, state.setThisCityRu]);
  
@@ -79,10 +82,10 @@ export default function FormOrder({ cityName }) {
   const [ saveUserActions ] = useProfileStore((state) => [state.saveUserActions]);
 
   useEffect(() => {
-    if (matches) {
+    if (isMobileOrder) {
       setMessage(comment);
     }
-  }, [matches, comment]);
+  }, [isMobileOrder, comment]);
 
   useEffect(() => {
     if (thisCity !== cityName) {
@@ -178,7 +181,7 @@ export default function FormOrder({ cityName }) {
     setNameList(nameList);
 
     if (nameList === 'city') {
-      if (matches) {
+      if (isMobileOrder) {
         setSummDiv(0);
         setActiveModalCityList(true);
       } else {
@@ -195,7 +198,7 @@ export default function FormOrder({ cityName }) {
         return;
       }
 
-      if (matches) {
+      if (isMobileOrder) {
         setActiveMenuCart(true, nameList);
       } else {
         const points = pointList.filter((point) => point.name_ru === thisCityRu);
@@ -211,7 +214,7 @@ export default function FormOrder({ cityName }) {
         return;
       }
 
-      if (matches) {
+      if (isMobileOrder) {
         setActiveMenuCart(true, nameList);
       } else {
         setAnchorEl(event.currentTarget);
@@ -232,7 +235,7 @@ export default function FormOrder({ cityName }) {
         getDataPred();
         getTimesPred(point_id, null, typeOrder == 'pic' ? 1 : 0, []);
 
-        if (matches) {
+        if (isMobileOrder) {
           setActiveMenuCart(true, nameList);
         } else {
           setAnchorEl(event.currentTarget);
@@ -260,7 +263,7 @@ export default function FormOrder({ cityName }) {
         setList(type_pay_div);
       }
 
-      if (matches) {
+      if (isMobileOrder) {
         setActiveMenuCart(true, nameList);
       } else {
         setAnchorEl(event.currentTarget);
@@ -571,7 +574,7 @@ export default function FormOrder({ cityName }) {
 
   return (
     <>
-      {matches ? (
+      {isMobileOrder ? (
         <div className="CartMobileContainer">
           <div className="CartMobileText">Оформить заказ</div>
 

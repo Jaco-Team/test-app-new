@@ -8,10 +8,11 @@ import {EyeShow_modalOrder, EyeHide_modalOrder, Check} from '@/ui/Icons';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 
-export default function Start() {
+export default function Start({ isMobileAuth = false }) {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, matches, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.navigate, state?.changeLogin, state?.setPwdLogin, state?.loginLogin, state?.pwdLogin, state?.checkLoginKey, state?.logIn, state?.matches, state?.setActiveModalAlert]);
+  const [navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, logIn, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.navigate, state?.changeLogin, state?.setPwdLogin, state?.loginLogin, state?.pwdLogin, state?.checkLoginKey, state?.logIn, state?.setActiveModalAlert]);
+  const matches = isMobileAuth;
 
   return (
     <div className={matches ? 'modalLoginStartMobile' : 'modalLoginStartPC'}>

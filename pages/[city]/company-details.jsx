@@ -62,10 +62,14 @@ export default React.memo(function PublichnayaOferta(props) {
   }, []);
 
   return (
-    <div className={roboto.variable}>
-      <DynamicPage page={page} classNamePC="PageTextPC" classNameMobile="PageTextMobile" cityName={city}/>
+    <div className={`${roboto.variable} companyDetailsTabletPage`}>
+      <div className="companyDetailsTabletPageContent">
+        <DynamicPage page={page} classNamePC="PageTextPC" classNameMobile="PageTextMobile" cityName={city}/>
+      </div>
 
-      <Footer cityName={city} links={links} />
+      <div className="companyDetailsTabletPageFooter">
+        <Footer cityName={city} links={links} />
+      </div>
     </div>
   );
 });

@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect } from 'react';
+import React, { useState, useRef, useEffect, useMemo } from 'react';
 
 import Link from 'next/link';
 
@@ -10,6 +10,7 @@ import { YMaps, Map, Placemark, Polygon, SearchControl, ZoomControl } from '@pbe
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
 import Button from '@mui/material/Button';
 import Menu from '@mui/material/Menu';
@@ -23,6 +24,7 @@ import MySwitch from '@/ui/Switch.js';
 
 import Cookies from 'js-cookie';
 import { setLocalStorageItem } from '@/utils/browserStorage';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 export default function ContactsPagePC() {
 
@@ -36,6 +38,28 @@ export default function ContactsPagePC() {
   const [activePage] = useHeaderStoreNew((state) => [state?.activePage]);
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const isTabletContacts = useMediaQuery(
+    `screen and (min-width: ${BREAKPOINTS.tabletMin}px) and (max-width: ${BREAKPOINTS.tabletMax}px)`,
+  );
+  const mapHeight = isTabletContacts ? '85.9090909091vw' : '68.231046931408vw';
+  const mapState = useMemo(() => {
+    if (!center_map) {
+      return null;
+    }
+
+    const tabletZoom = Math.min(center_map?.zoom ?? 11.5, 10.9);
+    const tabletLngShift = 0.08;
+    const nextCenter =
+      isTabletContacts && Array.isArray(center_map?.center) && center_map.center.length === 2
+        ? [center_map.center[0], center_map.center[1] + tabletLngShift]
+        : center_map.center;
+
+    return {
+      ...center_map,
+      center: nextCenter,
+      zoom: isTabletContacts ? tabletZoom : center_map?.zoom,
+    };
+  }, [center_map, isTabletContacts]);
 
   const open = Boolean(anchorEl);
 
@@ -49,10 +73,26 @@ export default function ContactsPagePC() {
   };
 
   useEffect(() => {
-    if(ref.current && center_map?.center){
-      ref.current.setCenter(center_map?.center, center_map?.zoom, { duration: center_map?.duration} );
+    if(ref.current && mapState?.center){
+      const centerDuration = mapState?.duration ?? 1000;
+
+      if (isTabletContacts) {
+        if (typeof ref.current.setCenter === 'function') {
+          ref.current.setCenter(mapState.center, mapState.zoom, {
+            duration: 700,
+            timingFunction: 'ease-out',
+            checkZoomRange: false,
+          });
+          return;
+        }
+      }
+
+      ref.current.setCenter(mapState?.center, mapState?.zoom, {
+        duration: centerDuration,
+        timingFunction: 'ease-in-out',
+      });
     }
-  }, [center_map])
+  }, [mapState, isTabletContacts])
 
   return (
     <Box className="Contact_">
@@ -114,14 +154,14 @@ export default function ContactsPagePC() {
       </div>
 
       {!center_map ? null :
-        <div style={{ minHeight: '68.231046931408vw', width: '100%' }} >
+        <div style={{ height: mapHeight, width: '100%' }} >
           <YMaps query={{ lang: 'ru_RU', apikey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP }}>
             <Map 
-              defaultState={center_map} 
+              defaultState={mapState} 
               instanceRef={ref}
               width="100%" 
-              height="100%" 
-              style={{ minHeight: '68.231046931408vw' }}
+              height={mapHeight}
+              style={{ height: mapHeight }}
               onClick={(event) => changePointNotHover(event)}
             >
               <SearchControl options={{ float: "left" }} />

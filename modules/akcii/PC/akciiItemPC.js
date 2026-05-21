@@ -162,7 +162,7 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
       <span className="itemNumber">{data_key + 1}.</span>
 
       <div className="itemImg">
-        {thisItem?.img_app ? 
+       {thisItem?.img_app ? 
           <picture>
             <source 
               type="image/webp" 
@@ -208,7 +208,7 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
       <div className="itemDesc">
         <Typography className="ItemName" component="span" onClick={() => getItem('home', thisCity, thisItem?.id)}>{thisItem?.name}</Typography>
 
-        <Typography component="span" className="ItemDesk" onClick={() => getItem('home', thisCity, thisItem?.id)}>{thisItem?.marc_desc?.length > 0 ? thisItem?.marc_desc : thisItem?.tmp_desc}</Typography>
+        <Typography component="div" className="ItemDesk" onClick={() => getItem('home', thisCity, thisItem?.id)}>{thisItem?.marc_desc?.length > 0 ? thisItem?.marc_desc : thisItem?.tmp_desc}</Typography>
 
         {parseInt(typePromo) == 2 ? parseInt(item?.price) == 0 ? false :
           <div className="containerBTNitem">

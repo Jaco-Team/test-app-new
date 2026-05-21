@@ -48,7 +48,7 @@ export default function ModalActiveVK_pc() {
             <IconClose/>
           </IconButton>
 
-          <div className="loginIMG" style={{  marginBottom: '2.5270758122744vw' }}>
+          <div className="loginIMG loginIMG--vk">
             <img
               alt="Город"
               src="/Favicon_city.png"

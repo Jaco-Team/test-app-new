@@ -15,7 +15,7 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import Button from '@mui/material/Button';
 
-import { IconClose } from '@/ui/Icons';
+import { Close as CloseIcon } from '@/ui/Icons';
 
 import { roboto } from '@/ui/Font';
 
@@ -314,7 +314,7 @@ export default function ModalBannerPC() {
       <DialogContent style={{ padding: 0, overflow: 'hidden' }}>
         <Box component="div" className="BannerPC BannerFontPC">
           <IconButton className="iconBTN" onClick={() => setActiveBanner(false, null)}>
-            <IconClose />
+            <CloseIcon />
           </IconButton>
 
           <Grid container justifyContent="center">
@@ -392,7 +392,7 @@ export default function ModalBannerPC() {
               </Grid>
 
               <Grid className="SecondItem">
-                <Typography className="ItemTitle" variant="h5" component="span" style={{ marginBottom: '1.2vw' }}>
+                <Typography className="ItemTitle SecondItemTitle" variant="h5" component="span">
                   {banner?.title}
                 </Typography>
 

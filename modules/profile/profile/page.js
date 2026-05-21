@@ -1,16 +1,17 @@
 import Meta from '@/components/meta.js';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import ProfilePC from './profilePC.jsx';
 import ProfileMobile from './profileMobile.js';
 
-import { useHeaderStoreNew } from '@/components/store';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 export default function ProfilePage({ page, this_module, city }) {
-  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
+  const isMobileProfile = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
 
   return (
     <Meta title={page?.title ?? ''} description={''}>
-      {matches ? <ProfileMobile city={city} this_module={this_module}/> : <ProfilePC page={page} this_module={this_module} city={city} />}
+      {isMobileProfile ? <ProfileMobile city={city} this_module={this_module}/> : <ProfilePC page={page} this_module={this_module} city={city} />}
     </Meta>
   );
 }

@@ -76,6 +76,31 @@
   }
 }
 
+@include tablet-only {
+  .modalAlertPC {
+    & .MuiDialog-container {
+      & .MuiDialog-paper {
+        height: tablet-vw(125);
+
+        & .MuiDialogContent-root {
+          & button {
+            left: tablet-vw(60);
+            width: tablet-vw(40);
+            height: tablet-vw(40);
+          }
+
+          & .containerAlert {
+            & .MuiLinearProgress-root {
+              margin-top: tablet-vw(15);
+              height: tablet-vw(4);
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
 .modalAlertMobile {
   & .MuiDialog-container {
     display: flex;

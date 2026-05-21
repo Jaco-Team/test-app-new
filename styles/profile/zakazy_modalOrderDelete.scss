@@ -151,3 +151,100 @@
     }
   }
 }
+
+@include tablet-only {
+  .modalOrderDelPC {
+    & .MuiDialog-container {
+      & .MuiDialog-paper {
+        border-radius: tablet-vw(40);
+        width: tablet-vw(1000);
+
+        & .MuiDialogContent-root {
+          border-radius: tablet-vw(40) !important;
+
+          & .container {
+            width: tablet-vw(700);
+
+            & .closeButton {
+              left: tablet-vw(-80);
+
+              & svg {
+                width: tablet-vw(60);
+                height: tablet-vw(60);
+                border-radius: tablet-vw(60);
+              }
+            }
+
+            & .header_status {
+              height: tablet-vw(120);
+              margin-top: tablet-vw(80);
+            }
+
+            & .header_text {
+              height: tablet-vw(120);
+            }
+
+            & .header_table {
+              & span {
+                padding: tablet-vw(20) tablet-vw(40.8);
+              }
+
+              & > div {
+                margin-top: tablet-vw(20);
+                height: tablet-vw(80);
+                border-radius: tablet-vw(40);
+                border: tablet-vw(2) solid rgba(0, 0, 0, 0.2);
+              }
+            }
+
+            & .header_custom_text {
+              margin-top: tablet-vw(20);
+              margin-bottom: tablet-vw(60);
+
+              .message {
+                width: tablet-vw(700) !important;
+                height: tablet-vw(120);
+
+                & .MuiOutlinedInput-notchedOutline {
+                  border: tablet-vw(2) solid rgba(0, 0, 0, 0.2);
+                }
+
+                & .Mui-focused .MuiOutlinedInput-notchedOutline {
+                  border: tablet-vw(2) solid $colorMain;
+                }
+
+                & .MuiInputBase-root.MuiOutlinedInput-root {
+                  border-radius: tablet-vw(40);
+
+                  .MuiInputBase-inputMultiline {
+                    padding: 0 tablet-vw(40) !important;
+                    line-height: tablet-vw(30);
+                  }
+                }
+              }
+            }
+
+            & .header_btn {
+              margin-bottom: tablet-vw(160);
+
+              & > button {
+                border-radius: tablet-vw(40);
+              }
+
+              & > button:first-child {
+                height: tablet-vw(74);
+                width: tablet-vw(324);
+                border: tablet-vw(3) solid $colorMain;
+              }
+
+              & > button:last-child {
+                height: tablet-vw(80);
+                width: tablet-vw(330);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+}

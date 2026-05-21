@@ -1,5 +1,5 @@
 import React, { useEffect, memo } from 'react';
-import { useHeaderStoreNew, useHomeStore } from '@/components/store';
+import { useHomeStore } from '@/components/store';
 
 import AkciiPC from './PC/akciiPC';
 import AkciiMobile from './mobile/akciiMobile';
@@ -13,6 +13,8 @@ import AkciiItemPC from './PC/akciiItemPC';
 import AkciiItemMobile from './mobile/akciiItemMobile';
 
 import Meta from '@/components/meta.js';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 import { useSearchParams } from 'next/navigation'
 //import { set } from 'lodash';
@@ -20,7 +22,7 @@ import { useSearchParams } from 'next/navigation'
 let click = false;
 
 export default memo(function AkciiPage({ page, banner }) {
-  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
+  const isMobileAkciiLayout = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
 
   const [ pageBanner, bannerList ] = useHomeStore((state) => [state.pageBanner, state.bannerList]);
 
@@ -82,7 +84,7 @@ export default memo(function AkciiPage({ page, banner }) {
         title={banner && banner?.seo_title?.length > 0 ? banner?.seo_title : page?.title} 
         description={banner && banner?.seo_desc?.length > 0 ? banner?.seo_desc : page?.description}
       >
-        {matches ? 
+        {isMobileAkciiLayout ? 
           <div className="akciiMobile onePage" style={{ marginTop: 100 }}>
             <AkciiItemMobile actia={pageBanner} is_one_actia={page?.is_one_actia} /> 
           </div>
@@ -97,7 +99,7 @@ export default memo(function AkciiPage({ page, banner }) {
 
   return (
     <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
-      {matches ?
+      {isMobileAkciiLayout ?
         <>
           <AkciiMobile /> 
           <ModalItemMobile />

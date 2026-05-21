@@ -1,12 +1,52 @@
 
 @use "../settings" as *;
 
+.promokodyTabletPage {
+    @include tablet-only {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.promokodyTabletPageContent {
+    @include tablet-only {
+        flex: 1 0 auto;
+    }
+}
+
+.promokodyTabletPageFooter {
+    @include tablet-only {
+        margin-top: auto;
+    }
+}
+
+.profilePagePCWrap {
+    @include tablet-only {
+        flex-wrap: nowrap !important;
+        align-items: flex-start;
+        justify-content: flex-start;
+        column-gap: tablet-vw(90);
+        padding-right: tablet-vw(80);
+        box-sizing: border-box;
+    }
+
+    @media (min-width: 991px) and (max-width: 1100px) {
+        flex-wrap: nowrap !important;
+        align-items: flex-start;
+        justify-content: flex-start;
+        column-gap: tablet-vw(90);
+        padding-right: tablet-vw(80);
+        box-sizing: border-box;
+    }
+}
+
 .Promokody{ 
     margin-top: 64px!important;
     z-index: 3;
     mix-blend-mode: multiply;
     
-    @media (min-width: 800px) {
+    @include desktop-up {
         margin-top: $MyScale280!important;
         margin-bottom: 140px!important;
         padding-top: 0px!important;
@@ -14,6 +54,15 @@
         margin-left: $MyScale125!important;
         width: $MyScale1560!important;
         padding-left: 0px!important;
+    }
+
+    @include tablet-only {
+        margin-top: tablet-vw(280)!important;
+        margin-bottom: tablet-vw(140)!important;
+        padding-top: 0!important;
+        margin-left: tablet-vw(80)!important;
+        width: tablet-vw(1400)!important;
+        padding-left: 0!important;
     }
 
     & h1, h2{
@@ -25,12 +74,27 @@
         align-items: center;
         color: rgba(0, 0, 0, 0.8)!important;
     }
+
+    @include tablet-only {
+        & h1, & h2 {
+            @include font75_700();
+            height: tablet-vw(100);
+            color: rgba(0, 0, 0, 0.8) !important;
+        }
+    }
+
     & .mainContainer{
         padding-top: 0!important; 
         padding-bottom: 36px!important; ;
     }
+
+    @include tablet-only {
+        & .mainContainer {
+            padding-bottom: tablet-vw(36) !important;
+        }
+    }
     
-    @media (max-width: 960px) {
+    @include mobile-only {
         margin-top: 64px!important;
         margin-bottom: 64px; 
         padding-left: 24px!important;
@@ -42,6 +106,13 @@
         flex-flow: row wrap!important;
         margin-top: $MyScale80;
     }
+
+    @include tablet-only {
+        & > div.promo_list_active{
+            margin-top: tablet-vw(80);
+        }
+    }
+
     & .promoCard{
         display: flex;
         flex-direction: column;
@@ -107,6 +178,60 @@
             align-items: center;
             justify-content: center;
             cursor: pointer;
+        }
+    }
+
+    @include tablet-only {
+        & .promoCard{
+            border-radius: tablet-vw(80);
+            margin-top: tablet-vw(40);
+            width: tablet-vw(760);
+
+            &:nth-child(odd) {
+                margin-right: tablet-vw(40);
+            }
+
+            & .title{
+                @include font50_500();
+                width: tablet-vw(680);
+                padding-left: tablet-vw(40);
+                margin-top: tablet-vw(60);
+                letter-spacing: tablet-vw(1);
+            }
+
+            & .text{
+                @include font30_400();
+                margin-top: tablet-vw(40);
+                margin-left: tablet-vw(40);
+                margin-right: tablet-vw(40);
+                letter-spacing: tablet-vw(1);
+                line-height: tablet-vw(40);
+            }
+            & .endText{
+                @include font30_400();
+                margin-top: tablet-vw(40);
+                margin-left: tablet-vw(40);
+                margin-right: tablet-vw(40);
+                letter-spacing: tablet-vw(1);
+                line-height: tablet-vw(40);
+            }
+            & .endDate{
+                @include font50_500();
+                line-height: tablet-vw(65);
+            }
+            & .name{
+                margin-left: tablet-vw(60);
+                margin-bottom: tablet-vw(60);
+                margin-top: tablet-vw(20);
+                border-radius: tablet-vw(40);
+                height: tablet-vw(160);
+                width: tablet-vw(640);
+
+                & > span{
+                    @include font50_500();
+                    line-height: tablet-vw(60);
+                }
+            }
         }
     }
 }

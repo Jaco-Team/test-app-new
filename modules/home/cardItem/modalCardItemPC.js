@@ -22,6 +22,7 @@ import { roboto } from '@/ui/Font';
 import CartCtaButton from '@/ui/CartCtaButton';
 
 import { reachGoalSplit } from '@/utils/metrika';
+
 import { getItemImageUrl, hasItemImage } from '@/utils/itemImage';
 
 export default function ModalCardItemPC() {
@@ -78,10 +79,6 @@ export default function ModalCardItemPC() {
     const found = items.find(it => parseInt(it.item_id) === parseInt(id));
     setCount(found ? found.count : 0);
   };
-
-  const img_name = openItem?.img_app;
-  const hasMainImage = hasItemImage(img_name);
-  const mainImageSrc = getItemImageUrl(img_name, '292x292', 'jpg');
 
   const add_to_cart = () => {
     changeCountPlus(openItem?.id);
@@ -189,6 +186,10 @@ export default function ModalCardItemPC() {
   const valueItems = (openItem?.items?.length ?? 0) > 0 ? openItem.items : (openItem ? [openItem] : []);
   const getWeight = (item) => item?.weight ?? openItem?.weight;
 
+  const img_name = openItem?.img_app;
+  const hasMainImage = hasItemImage(img_name);
+  const mainImageSrc = getItemImageUrl(img_name, '292x292', 'jpg');
+
   return (
     <Dialog
       onClose={(event, reason) => reason === 'backdropClick' && typeModal === 'start' ? closeModal() : navigate('start')}
@@ -198,7 +199,7 @@ export default function ModalCardItemPC() {
       slotProps={{ timeout: 500 }}
       scroll="body"
     >
-      <DialogContent style={{ padding: 0, borderRadius: '1.444045vw', overflow: 'hidden', background: typeModal === 'start' ? '#FFFFFF' : '#E6E6E6'}}>
+      <DialogContent className="modalDialogContent" style={{ background: typeModal === 'start' ? '#FFFFFF' : '#E6E6E6' }}>
         <Box component="div" className="modalItemPC ModalFontPC">
 
           <IconButton className="closeButton" onClick={closeModal}>
@@ -208,7 +209,7 @@ export default function ModalCardItemPC() {
           <Grid container>
             {typeModal !== 'start' ? null : (
               <div className="ImgItem">
-                <picture>
+                 <picture>
                   <source 
                     type="image/webp" 
                     srcSet={hasMainImage ? `
@@ -289,10 +290,7 @@ export default function ModalCardItemPC() {
                       {(openItem?.items ?? []).map((item, idx, arr) => (
                         <div
                           key={idx}
-                          className="SetItem"
-                          style={{
-                            paddingBottom: idx === arr[arr.length - 1] ? '8vw' : '1.444045vw'
-                          }}
+                          className={'SetItem ' + (idx === arr.length - 1 ? 'setItemLast' : '')}
                         >
                           <div
                             className="itemNumber"
@@ -400,10 +398,7 @@ export default function ModalCardItemPC() {
                      {valueItems.map((item, idx, arr) => (
                         <div
                           key={idx}
-                          className="ValueItem"
-                          style={{
-                            marginBottom: idx === arr.length - 1 ? '11.552346570397vw' : '0.72202vw'
-                          }}
+                          className={'ValueItem ' + (idx === arr.length - 1 ? 'valueItemLastLong' : '')}
                         >
                           <div className="itemNumber">
                             <span className="ItemDesk">{idx + 1}.</span>
@@ -480,13 +475,20 @@ export default function ModalCardItemPC() {
                     }
 
                     {parseInt(openItem?.cat_id) == 5 || parseInt(openItem?.cat_id) == 6 || parseInt(openItem?.cat_id) == 7 || parseInt(openItem?.cat_id) == 15 ? null : (
-                      <span className="second_text" style={{padding: parseInt(openItem?.cat_id) == 4 ? '0 0.577vw' : '0 1.444045vw 0 0' }}>
+                      <span className={'second_text ' + (parseInt(openItem?.cat_id) == 4 ? 'dopSecondSet' : 'dopSecondDefault')}>
                         {parseInt(openItem?.cat_id) == 14 ? openItem?.size_pizza : openItem?.count_part}
                         {parseInt(openItem?.cat_id) == 14 ? ' см*' : parseInt(openItem?.cat_id) == 6 ? ' л' : ' шт.'}
                       </span>
                     )}
 
-                    <span className="third_text" style={{paddingLeft: parseInt(openItem?.count_part) == 1 && parseInt(openItem?.cat_id) !== 20 && parseInt(openItem?.cat_id) !== 21 ? 0 : '1.444045vw'}}>
+                    <span
+                      className={
+                        'third_text ' +
+                        (parseInt(openItem?.count_part) == 1 && parseInt(openItem?.cat_id) !== 20 && parseInt(openItem?.cat_id) !== 21
+                          ? 'dopThirdNoPad'
+                          : 'dopThirdPad')
+                      }
+                    >
                       {new Intl.NumberFormat('ru-RU').format(openItem?.weight)}
                       {parseInt(openItem?.id) == 17 || parseInt(openItem?.id) == 237 ? ' шт.' : parseInt(openItem?.cat_id) == 6 ? ' л' : ' г'}
                     </span>

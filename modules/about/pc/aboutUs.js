@@ -3,17 +3,17 @@ import Link from 'next/link';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
-
-import {useHeaderStoreNew} from '@/components/store';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 import {ArrowLeftMobile} from '@/ui/Icons.js';
 
 export default function AboutUs({cityName}) {
-  const [matches] = useHeaderStoreNew((state) => [state.matches]);
+  const isMobileAbout = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
 
   return (
     <Grid item xs={12} className={'about'}>
 
-      {!matches ? null : <Link href={'/' + cityName + '/document' } className='arrow'><ArrowLeftMobile /></Link>}
+      {!isMobileAbout ? null : <Link href={'/' + cityName + '/document' } className='arrow'><ArrowLeftMobile /></Link>}
 
       <Typography variant="h1">О нас</Typography>
     

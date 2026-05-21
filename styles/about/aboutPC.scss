@@ -1,5 +1,25 @@
 @use "../settings" as *;
 
+.aboutPagePCWrap {
+    @include tablet-only {
+        flex-wrap: nowrap !important;
+        align-items: flex-start;
+        justify-content: flex-start;
+        column-gap: tablet-vw(60);
+        padding-right: tablet-vw(80);
+        box-sizing: border-box;
+    }
+
+    @media (min-width: 991px) and (max-width: 1100px) {
+        flex-wrap: nowrap !important;
+        align-items: flex-start;
+        justify-content: flex-start;
+        column-gap: tablet-vw(60);
+        padding-right: tablet-vw(80);
+        box-sizing: border-box;
+    }
+}
+
 .PAGEabout{
     margin-top: 64px!important;
     z-index: 3;
@@ -17,7 +37,7 @@
         padding-top: $MyScale10;
     }
 
-    @media (min-width: 961px) {
+    @include desktop-up {
         margin-top: $MyScale380!important;
         margin-bottom: 140px!important;
         padding-top: 0px!important;
@@ -38,7 +58,35 @@
             line-height: 1.5;
         }
     }
-    @media (max-width: 960px) {
+
+    @media (min-width: 991px) and (max-width: 1100px) {
+        margin-top: tablet-vw(380)!important;
+        margin-bottom: tablet-vw(140)!important;
+        margin-left: tablet-vw(80)!important;
+        width: tablet-vw(1400)!important;
+        padding-left: 0!important;
+    }
+    @include tablet-only {
+        margin-top: tablet-vw(380)!important;
+        margin-bottom: tablet-vw(140)!important;
+        padding-top: 0px!important;
+
+        margin-left: tablet-vw(80)!important;
+        width: tablet-vw(1400)!important;
+        padding-left: 0px!important;
+
+        & h1, h2{
+            @include font75_700();
+            text-align: start;
+            width: 100%;
+            font-weight: 600;
+        }
+        & p, li, span{
+            @include font30_400();
+            line-height: 1.5;
+        }
+    }
+    @include mobile-only {
         //margin-top: $MyScale100_mobile!important;
         padding-top: 0px!important;
         padding-left: 0px!important;
@@ -88,13 +136,31 @@
     z-index: 3;
     mix-blend-mode: multiply;
 
-    @media (min-width: 800px) {
+    @include desktop-up {
         margin-top: $MyScale280!important;
         margin-bottom: 140px!important;
         padding-top: 0px!important;
 
         margin-left: $MyScale125!important;
         width: $MyScale1560!important;
+        padding-left: 0px!important;
+    }
+
+    @media (min-width: 991px) and (max-width: 1100px) {
+        margin-top: tablet-vw(280)!important;
+        margin-bottom: tablet-vw(140)!important;
+        margin-left: tablet-vw(80)!important;
+        width: tablet-vw(1400)!important;
+        padding-left: 0!important;
+    }
+
+    @include tablet-only {
+        margin-top: tablet-vw(280)!important;
+        margin-bottom: tablet-vw(140)!important;
+        padding-top: 0px!important;
+
+        margin-left: tablet-vw(80)!important;
+        width: tablet-vw(1400)!important;
         padding-left: 0px!important;
     }
 
@@ -115,7 +181,7 @@
         color: $colorMain;
     }
     
-    @media (max-width: 960px) {
+    @include mobile-only {
         margin-top: 64px!important;
         margin-bottom: 64px; 
         margin-left: 0px;
@@ -136,7 +202,7 @@
         @include font30_400();
         line-height: 1.5;
 
-        @media (max-width: 960px) {
+        @include mobile-only {
             @include font35_400();
         }
     }

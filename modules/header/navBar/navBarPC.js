@@ -140,7 +140,14 @@ export default React.memo(function NavBarPC({ city, cityRu }) {
   const router = useRouter()
   const pathname = typeof router.asPath === 'string' ? router.asPath.split('?')[0] : '';
   
-  const [setActiveBasket, openBasket, setActiveModalCity, activePage, isAuth] = useHeaderStoreNew((state) => [state?.setActiveBasket, state?.openBasket, state?.setActiveModalCity, state?.activePage, state.isAuth]);
+  const [setActiveBasket, openBasket, setActiveModalCity, activePage, isAuth, openCityModal] = useHeaderStoreNew((state) => [
+    state?.setActiveBasket,
+    state?.openBasket,
+    state?.setActiveModalCity,
+    state?.activePage,
+    state.isAuth,
+    state?.openCityModal,
+  ]);
   const [setThisCityRu, thisCityRu, setThisCity] = useCitiesStore((state) => [state.setThisCityRu, state.thisCityRu, state.setThisCity]);
   const [ getInfoPromo, getCartLocalStorage ] = useCartStore( state => [ state.getInfoPromo, state.getCartLocalStorage ])
   const [ category, setCategory, setActiveFilter, isOpenFilter, resetFilter ] = useHomeStore((state) => [ state.category, state.setCategory, state.setActiveFilter, state.isOpenFilter, state.resetFilter ]);
@@ -368,7 +375,10 @@ export default React.memo(function NavBarPC({ city, cityRu }) {
 
           <div>
             
-            <div className={'chooseCity'} onClick={ () => setActiveModalCity(true) }>
+            <div
+              className={'chooseCity' + (openCityModal ? ' chooseCity--open' : '')}
+              onClick={() => setActiveModalCity(true)}
+            >
               {displayCityRu}
             </div>
 

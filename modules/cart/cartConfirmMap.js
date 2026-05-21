@@ -1,6 +1,8 @@
 import { useEffect, useMemo, useRef, useState, useCallback } from 'react';
 import { YMaps, Map, Placemark } from '@pbe/react-yandex-maps';
-import { useCartStore, useHeaderStoreNew } from '@/components/store.js';
+import useMediaQuery from '@mui/material/useMediaQuery';
+import { useCartStore } from '@/components/store.js';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 const BRAND = '#cc0033';
 
@@ -49,19 +51,19 @@ export default function CartConfirmMap({ open = true, checkNewOrder }) {
 
   const [visible, setVisible] = useState(false);
 
-  const [matches] = useHeaderStoreNew((s) => [s.matches]);
+  const isMobileConfirmMap = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
   const [typePay] = useCartStore((s) => [s.typePay]);
 
-  const wrapWidth = matches ? (typePay?.id === 'cash' ? '93%' : '100%') : '84%';
-  const wrapMB = matches ? '3.4188034188vw' : '0.7220216606vw';
-  const radius = matches ? '4.2735042735vw' : '1.4440433213vw';
+  const wrapWidth = isMobileConfirmMap ? (typePay?.id === 'cash' ? '93%' : '100%') : '84%';
+  const wrapMB = isMobileConfirmMap ? '3.4188034188vw' : '0.7220216606vw';
+  const radius = isMobileConfirmMap ? '4.2735042735vw' : '1.4440433213vw';
  
-  const mapH = matches ? 'clamp(120px, 18svh, 240px)' : 'clamp(160px, 19vh, 300px)';
+  const mapH = isMobileConfirmMap ? 'clamp(120px, 18svh, 240px)' : 'clamp(160px, 19vh, 300px)';
 
   const fromCoord = useMemo(() => parseXY(checkNewOrder?.point_xy), [checkNewOrder?.point_xy]);
   const toCoord = useMemo(() => parseXY(checkNewOrder?.order?.xy), [checkNewOrder?.order?.xy]);
 
-  const cafeSize = matches ? 32 : 34;
+  const cafeSize = isMobileConfirmMap ? 32 : 34;
   const cafeOffset = useMemo(() => {
     const half = Math.round(cafeSize / 2);
     const tweakY = 2;
@@ -69,7 +71,7 @@ export default function CartConfirmMap({ open = true, checkNewOrder }) {
   }, [cafeSize]);
 
   const targetHref = useMemo(() => svgToDataUrl(makeTargetSvg()), []);
-  const targetSize = matches ? 28 : 28;
+  const targetSize = isMobileConfirmMap ? 28 : 28;
 
   const initialState = useMemo(() => {
     if (fromCoord && toCoord) {
@@ -103,7 +105,7 @@ export default function CartConfirmMap({ open = true, checkNewOrder }) {
     setVisible(false);
     disableBehaviors(m);
 
-    const delay = matches ? 260 : 120;
+    const delay = isMobileConfirmMap ? 260 : 120;
 
     setTimeout(() => {
       requestAnimationFrame(() => {
@@ -114,9 +116,9 @@ export default function CartConfirmMap({ open = true, checkNewOrder }) {
             if (fromCoord && toCoord) {
               const bounds = calcBounds(fromCoord, toCoord);
 
-              const top = cafeSize + (matches ? 10 : 10);
-              const bottom = matches ? 34 : 28;
-              const side = matches ? 12 : 12;
+              const top = cafeSize + (isMobileConfirmMap ? 10 : 10);
+              const bottom = isMobileConfirmMap ? 34 : 28;
+              const side = isMobileConfirmMap ? 12 : 12;
 
               const onEnd = () => {
                 try { m.events?.remove('actionend', onEnd); } catch {}
@@ -137,7 +139,7 @@ export default function CartConfirmMap({ open = true, checkNewOrder }) {
                   fittedRef.current = true;
                   setVisible(true);
                 }
-              }, matches ? 700 : 450);
+              }, isMobileConfirmMap ? 700 : 450);
 
               return;
             }
@@ -154,7 +156,7 @@ export default function CartConfirmMap({ open = true, checkNewOrder }) {
         });
       });
     }, delay);
-  }, [open, matches, fromCoord, toCoord, cafeSize, disableBehaviors]);
+  }, [open, isMobileConfirmMap, fromCoord, toCoord, cafeSize, disableBehaviors]);
 
   useEffect(() => {
     fittedRef.current = false;
@@ -269,7 +271,6 @@ export default function CartConfirmMap({ open = true, checkNewOrder }) {
     </div>
   );
 }
-
 
 
 

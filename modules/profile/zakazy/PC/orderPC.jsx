@@ -37,6 +37,7 @@ export default function OrderPC({ this_module, city }) {
     <Grid
       container
       spacing={3}
+      className="profilePagePCWrap"
       style={{ margin: 0, width: '100%' }}
     >
       <Grid item className="Zakazy mainContainer">

@@ -1,4 +1,5 @@
 @charset "utf-8";
+@use "sass:math";
 
 $Roboto: var(--inter-font);
 $Ubuntu: 'Ubuntu';
@@ -213,6 +214,51 @@ $MyScale2525: 91.15523465704vw;
 
 //$MyMaxWidth: 1170px;
 $MyMaxWidth: 800px;
+
+// Единые диапазоны для трех режимов
+$bp-mobile-min: 320px;
+$bp-mobile-max: 667px;
+$bp-tablet-min: 668px;
+$bp-tablet-max: 990px;
+$bp-desktop-min: 991px;
+$tablet-base-width: 2200;
+
+@mixin mobile-only {
+  @media (min-width: $bp-mobile-min) and (max-width: $bp-mobile-max) {
+    @content;
+  }
+}
+
+@mixin tablet-only {
+  @media (min-width: $bp-tablet-min) and (max-width: $bp-tablet-max) {
+    @content;
+  }
+}
+
+@mixin desktop-up {
+  @media (min-width: $bp-desktop-min) {
+    @content;
+  }
+}
+
+@function tablet-vw($px) {
+  @return math.div($px, $tablet-base-width) * 100vw;
+}
+
+@function tablet-font-vw($px) {
+  @return tablet-vw($px);
+}
+
+// Горизонтальные поля главной на планшете (ПК-номинал 125px; уменьшение ~60% → 40%)
+$tablet-home-gutter-px: 50;
+
+@function tablet-home-side() {
+  @return tablet-vw($tablet-home-gutter-px);
+}
+
+@function tablet-home-side-total() {
+  @return tablet-vw($tablet-home-gutter-px * 2);
+}
 
 $MyScale1_mobile: 0.085470085470085vw;
 $MyScale2_mobile: 0.17094017094017vw;
@@ -447,15 +493,16 @@ $FontMinMobile: 12px;
   font-style: normal;
   font-weight: 700;
 
-  @media (max-width: 800px) {
+  @media (max-width: $bp-mobile-max) {
     @include fonsNew(1.7rem, var(--inter-font));
   }
 
-  @media (min-width: 801px) and (max-width: 1000px) {
-    @include fonsNew( 5.2vw, var(--inter-font));
+  @media (min-width: $bp-tablet-min) and (max-width: $bp-tablet-max) {
+    font-size: tablet-font-vw(144);
+    font-family: var(--inter-font);
   }
 
-  @media (min-width: 1001px) {
+  @media (min-width: $bp-desktop-min) {
     @include fonsNew( 2.6vw, var(--inter-font));
   }
 }
@@ -464,16 +511,32 @@ $FontMinMobile: 12px;
   font-style: normal;
   font-weight: 700;
 
-  @media (max-width: 800px) {
+  @media (max-width: $bp-mobile-max) {
     @include fonsNew(1.2rem, var(--inter-font));
   }
 
-  @media (min-width: 801px) and (max-width: 1000px) {
-    @include fonsNew( 2.8vw, var(--inter-font));
+  @media (min-width: $bp-tablet-min) and (max-width: $bp-tablet-max) {
+    font-size: tablet-font-vw(78);
+    font-family: var(--inter-font);
   }
 
-  @media (min-width: 1001px) {
+  @media (min-width: $bp-desktop-min) {
     @include fonsNew( 2vw, var(--inter-font));
+  }
+}
+
+@mixin font-three-mode($mobile-size, $tablet-px, $desktop-size, $family: var(--inter-font)) {
+  @media (max-width: $bp-mobile-max) {
+    @include fonsNew($mobile-size, $family);
+  }
+
+  @media (min-width: $bp-tablet-min) and (max-width: $bp-tablet-max) {
+    font-size: tablet-font-vw($tablet-px);
+    font-family: $family;
+  }
+
+  @media (min-width: $bp-desktop-min) {
+    @include fonsNew($desktop-size, $family);
   }
 }
 
@@ -483,693 +546,220 @@ $FontMinMobile: 12px;
 
   // @include fonsNew(0.64981949458484vw, var(--inter-font));
 
-  @media (max-width: $MyMaxWidth) {
+  @media (max-width: $bp-mobile-max) {
     @include fonsNew($MyScale15_mobile, var(--inter-font));
+  }
+
+  @media (min-width: $bp-tablet-min) and (max-width: $bp-tablet-max) {
+    font-size: tablet-font-vw(15);
+    font-family: var(--inter-font);
+  }
+
+  @media (min-width: $bp-desktop-min) {
+    @include fonsNew($MyScale15, var(--inter-font));
   }
 }
 
 @mixin font21_400() {
   font-style: normal;
   font-weight: 400;
-  
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale21_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale29, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale25, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale21, var(--inter-font));
-  }
+  @include font-three-mode($MyScale21_mobile, 21, $MyScale21);
 }
 
 @mixin font18_400() {
   font-style: normal;
   font-weight: 400;
-  
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale18_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale26, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale22, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale18, var(--inter-font));
-  }
+  @include font-three-mode($MyScale18_mobile, 18, $MyScale18);
 }
 
 @mixin font20_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale20_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale28, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale24, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale20, var(--inter-font));
-  }
+  @include font-three-mode($MyScale20_mobile, 20, $MyScale20);
 }
 
 @mixin font22_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale22_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale30, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale26, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale22, var(--inter-font));
-  }
+  @include font-three-mode($MyScale22_mobile, 22, $MyScale22);
 }
 
 @mixin font22_400_() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale22_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale30, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale26, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale22, var(--inter-font));
-  }
+  @include font-three-mode($MyScale22_mobile, 22, $MyScale22);
 }
 
 @mixin font25_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale25_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale33, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale29, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale25, var(--inter-font));
-  }
+  @include font-three-mode($MyScale25_mobile, 25, $MyScale25);
 }
 
 @mixin font26_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale26_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale34, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale30, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale26, var(--inter-font));
-  }
+  @include font-three-mode($MyScale26_mobile, 26, $MyScale26);
 }
 
 @mixin font30_700() {
   font-style: normal;
   font-weight: 700;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale30_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale38, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale34, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale30, var(--inter-font));
-  }
+  @include font-three-mode($MyScale30_mobile, 30, $MyScale30);
 }
 
 @mixin font30_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale30_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale38, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale34, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale30, var(--inter-font));
-  }
+  @include font-three-mode($MyScale30_mobile, 30, $MyScale30);
 }
 
 @mixin font32_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale32_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale40, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale36, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale32, var(--inter-font));
-  }
+  @include font-three-mode($MyScale32_mobile, 32, $MyScale32);
 }
 
 @mixin font35_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale35_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale43, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale39, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale35, var(--inter-font));
-  }
+  @include font-three-mode($MyScale35_mobile, 35, $MyScale35);
 }
 
 @mixin font35_700() {
   font-style: normal;
   font-weight: 700;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale35_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale43, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale39, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale35, var(--inter-font));
-  }
+  @include font-three-mode($MyScale35_mobile, 35, $MyScale35);
 }
 
 @mixin font44_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale44_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale52, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale48, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale44, var(--inter-font));
-  }
+  @include font-three-mode($MyScale44_mobile, 44, $MyScale44);
 }
 
 @mixin font30_500() {
   font-style: normal;
   font-weight: 500;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale30_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale38, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale34, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale30, var(--inter-font));
-  }
+  @include font-three-mode($MyScale30_mobile, 30, $MyScale30);
 }
 
 @mixin font44_500() {
   font-style: normal;
   font-weight: 500;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale44_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale52, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale48, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale44, var(--inter-font));
-  }
+  @include font-three-mode($MyScale44_mobile, 44, $MyScale44);
 }
 
 @mixin font50_500() {
   font-style: normal;
   font-weight: 500;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale50_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale58, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale54, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale50, var(--inter-font));
-  }
+  @include font-three-mode($MyScale50_mobile, 50, $MyScale50);
 }
 
 @mixin font50_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale50_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale58, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale54, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale50, var(--inter-font));
-  }
+  @include font-three-mode($MyScale50_mobile, 50, $MyScale50);
 }
 
 @mixin font50_300() {
   font-style: normal;
   font-weight: 300;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale50_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale58, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale54, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale50, var(--inter-font));
-  }
+  @include font-three-mode($MyScale50_mobile, 50, $MyScale50);
 }
 
 @mixin font40_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale40_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale48, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale44, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale40, var(--inter-font));
-  }
+  @include font-three-mode($MyScale40_mobile, 40, $MyScale40);
 }
 
 @mixin font40_500() {
   font-style: normal;
   font-weight: 500;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale40_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale48, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale44, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale40, var(--inter-font));
-  }
+  @include font-three-mode($MyScale40_mobile, 40, $MyScale40);
 }
 
 @mixin font55_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale55_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale63, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale59, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale55, var(--inter-font));
-  }
+  @include font-three-mode($MyScale55_mobile, 55, $MyScale55);
 }
 
 @mixin font60_300() {
   font-style: normal;
   font-weight: 300;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale60_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale68, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale64, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale60, var(--inter-font));
-  }
+  @include font-three-mode($MyScale60_mobile, 60, $MyScale60);
 }
 
 @mixin font60_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale60_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale68, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale64, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale60, var(--inter-font));
-  }
+  @include font-three-mode($MyScale60_mobile, 60, $MyScale60);
 }
 
 @mixin font60_500() {
   font-style: normal;
   font-weight: 500;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale60_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale68, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale64, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale60, var(--inter-font));
-  }
+  @include font-three-mode($MyScale60_mobile, 60, $MyScale60);
 }
 
 @mixin font60_600() {
   font-style: normal;
   font-weight: 600;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale60_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale68, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale64, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale60, var(--inter-font));
-  }
+  @include font-three-mode($MyScale60_mobile, 60, $MyScale60);
 }
 
 @mixin font70_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale70_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale78, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale74, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale70, var(--inter-font));
-  }
+  @include font-three-mode($MyScale70_mobile, 70, $MyScale70);
 }
 
 @mixin font70_500() {
   font-style: normal;
   font-weight: 500;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale70_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 900px) {
-    @include fonsNew( $MyScale78, var(--inter-font));
-  }
-
-  @media (min-width: 901px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale74, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale70, var(--inter-font));
-  }
+  @include font-three-mode($MyScale70_mobile, 70, $MyScale70);
 }
 
 @mixin font75_300() {
   font-style: normal;
   font-weight: 300;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale75_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale83, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale75, var(--inter-font));
-  }
+  @include font-three-mode($MyScale75_mobile, 75, $MyScale75);
 }
 
 @mixin font75_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale75_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale83, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale75, var(--inter-font));
-  }
+  @include font-three-mode($MyScale75_mobile, 75, $MyScale75);
 }
 
 @mixin font75_700() {
   font-style: normal;
   font-weight: 700;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale75_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale83, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale75, var(--inter-font));
-  }
+  @include font-three-mode($MyScale75_mobile, 75, $MyScale75);
 }
 
 @mixin font100_300() {
   font-style: normal;
   font-weight: 300;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale100_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale108, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale100, var(--inter-font));
-  }
+  @include font-three-mode($MyScale100_mobile, 100, $MyScale100);
 }
 
 @mixin font110_400() {
   font-style: normal;
   font-weight: 400;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale110_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale118, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale110, var(--inter-font));
-  }
+  @include font-three-mode($MyScale110_mobile, 110, $MyScale110);
 }
 
 @mixin font120_700() {
   font-style: normal;
   font-weight: 700;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale120_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale128, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale120, var(--inter-font));
-  }
+  @include font-three-mode($MyScale120_mobile, 120, $MyScale120);
 }
 
 @mixin font120_500() {
   font-style: normal;
   font-weight: 500;
-
-  @media (max-width: 800px) {
-    @include fonsNew($MyScale120_mobile, var(--inter-font));
-  }
-
-  @media (min-width: 801px) and (max-width: 1000px) {
-    @include fonsNew( $MyScale128, var(--inter-font));
-  }
-
-  @media (min-width: 1001px) {
-    @include fonsNew( $MyScale120, var(--inter-font));
-  }
+  @include font-three-mode($MyScale120_mobile, 120, $MyScale120);
 }

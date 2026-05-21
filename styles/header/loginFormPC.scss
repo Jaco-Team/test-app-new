@@ -1,4 +1,4 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
 .modalAuthPC {
   & .MuiDialog-paper {
@@ -43,6 +43,7 @@
       & .stack {
         flex-direction: row;
         align-items: center;
+        justify-content: center;
         width: $MyScale480;
         margin-bottom: $MyScale50;
       }
@@ -268,6 +269,22 @@
           @include font22_400();
           text-align: center;
           margin-bottom: $MyScale40;
+        }
+
+        & .captchaWrapSMS {
+          width: $MyScale510;
+          margin-top: $MyScale20;
+          margin-bottom: $MyScale10;
+          display: flex;
+          justify-content: center;
+          overflow: hidden;
+          height: $MyScale110;
+        }
+
+        & .captchaScaleSMS {
+          width: 302px;
+          transform: scale(1);
+          transform-origin: top center;
         }
 
         //
@@ -539,7 +556,7 @@
           align-items: center;
           margin-top: $MyScale20;
 
-          & .datareklama{
+          & .datareklama {
             display: flex;
             align-items: center;
             justify-content: space-between;
@@ -715,7 +732,7 @@
               width: $MyScale46;
               height: $MyScale50;
             }
-            & .vectorSvg_dis{
+            & .vectorSvg_dis {
               margin-left: auto;
               width: $MyScale46;
               height: $MyScale50;
@@ -896,6 +913,932 @@
           & span {
             @include font30_400();
             color: #ffffff !important;
+          }
+        }
+      }
+    }
+  }
+}
+
+@include tablet-only {
+  .modalAuthPC {
+    & .MuiDialog-paper {
+      overflow: visible;
+      margin: 0 !important;
+      max-width: none !important;
+      border-radius: tablet-vw(40);
+      width: tablet-vw(680);
+      height: tablet-vw(800);
+
+      & .ContainerModalAuthPC {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+
+        & .closeButton {
+          position: absolute !important;
+          top: 0 !important;
+          left: tablet-vw(-73) !important;
+          padding: 0 !important;
+          background-color: transparent;
+
+          & svg {
+            width: tablet-vw(60);
+            height: tablet-vw(60);
+            overflow: visible;
+            border-radius: tablet-vw(60);
+            background-color: rgba(0, 0, 0, 0.5);
+          }
+        }
+
+        & .authLogin {
+          height: tablet-vw(60);
+          margin-top: tablet-vw(60);
+          margin-bottom: tablet-vw(50);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          @include font50_500();
+        }
+
+        & .stack {
+          flex-direction: row;
+          align-items: center;
+          justify-content: center;
+          width: tablet-vw(480);
+          margin-bottom: tablet-vw(50);
+        }
+
+        .modalLoginStartPC {
+          width: tablet-vw(640);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          position: relative;
+
+          & .loginErr {
+            width: tablet-vw(560);
+            text-align: center;
+            height: tablet-vw(40);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: tablet-vw(15);
+            & > span {
+              line-height: tablet-vw(25);
+              @include font22_400();
+              color: #dd1a32 !important;
+            }
+          }
+
+          & .inputLogin:not(.lable_position) {
+            height: tablet-vw(80);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            & .MuiInputBase-root.MuiOutlinedInput-root {
+              width: tablet-vw(510);
+              border-radius: tablet-vw(20);
+
+              & input {
+                width: tablet-vw(400);
+                height: tablet-vw(60);
+                margin-left: tablet-vw(10);
+                @include font30_500();
+              }
+
+              & > input::placeholder {
+                color: rgba(0, 0, 0, 0.6) !important;
+                @include font30_400();
+              }
+
+              & input:-webkit-autofill,
+              input:-webkit-autofill:hover,
+              input:-webkit-autofill:focus {
+                -webkit-text-fill-color: rgba(0, 0, 0, 0.8);
+                -webkit-box-shadow: 0 0 0px 40rem #ffff inset;
+              }
+
+              & fieldset {
+                padding-left: tablet-vw(30);
+                & legend {
+                  width: tablet-vw(125);
+                }
+              }
+            }
+
+            & .MuiFormLabel-root.MuiInputLabel-root {
+              color: rgba(0, 0, 0, 0.4) !important;
+              @include font30_400();
+              padding-left: tablet-vw(100) !important;
+              top: tablet-vw(10) !important;
+            }
+
+            & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
+              color: rgba(0, 0, 0, 0.6) !important;
+              @include font30_400();
+              padding-left: tablet-vw(100) !important;
+              top: tablet-vw(-5);
+            }
+
+            & .MuiOutlinedInput-notchedOutline {
+              border: tablet-vw(2) solid rgba(0, 0, 0, 0.2);
+            }
+
+            & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
+              & .MuiOutlinedInput-notchedOutline {
+                border: tablet-vw(3) solid rgba(0, 0, 0, 0.4);
+              }
+            }
+          }
+
+          & .inputLogin.lable_position {
+            height: tablet-vw(80);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            & .MuiInputBase-root.MuiOutlinedInput-root {
+              width: tablet-vw(510);
+              border-radius: tablet-vw(20);
+
+              & input {
+                width: tablet-vw(400);
+                height: tablet-vw(60);
+                margin-left: tablet-vw(10);
+                @include font30_500();
+              }
+
+              & > input::placeholder {
+                color: rgba(0, 0, 0, 0.6) !important;
+                @include font30_400();
+              }
+
+              & fieldset {
+                padding-left: tablet-vw(30);
+                & legend {
+                  width: tablet-vw(125);
+                }
+              }
+            }
+
+            & .MuiFormLabel-root.MuiInputLabel-root {
+              color: rgba(0, 0, 0, 0.4) !important;
+              @include font30_400();
+              padding-left: tablet-vw(70) !important;
+              top: tablet-vw(-5) !important;
+            }
+
+            & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
+              color: rgba(0, 0, 0, 0.6) !important;
+              @include font30_400();
+              padding-left: tablet-vw(100) !important;
+              top: tablet-vw(10) !important;
+            }
+
+            & .MuiOutlinedInput-notchedOutline {
+              border: tablet-vw(2) solid rgba(0, 0, 0, 0.2);
+            }
+
+            & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
+              & .MuiOutlinedInput-notchedOutline {
+                border: tablet-vw(3) solid rgba(0, 0, 0, 0.4);
+              }
+            }
+          }
+
+          & .margin_bottom_30 {
+            margin-bottom: tablet-vw(30);
+          }
+
+          & .check_icon {
+            width: tablet-vw(30);
+            height: tablet-vw(30);
+            right: tablet-vw(25) !important;
+            bottom: tablet-vw(25) !important;
+            position: absolute !important;
+          }
+
+          & .eye_icon {
+            right: tablet-vw(0) !important;
+            bottom: tablet-vw(-2) !important;
+            position: absolute;
+            width: tablet-vw(60);
+            height: tablet-vw(70);
+            z-index: 5;
+            & svg {
+              width: tablet-vw(40);
+              height: tablet-vw(40);
+            }
+          }
+
+          & .loginBox {
+            width: tablet-vw(480);
+            height: tablet-vw(40);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-top: tablet-vw(10);
+            margin-bottom: tablet-vw(40);
+
+            & span {
+              @include font22_400();
+              color: rgba(0, 0, 0, 0.4) !important;
+              cursor: pointer;
+            }
+          }
+
+          & .loginLogin {
+            width: tablet-vw(480);
+            height: tablet-vw(80);
+            border-radius: tablet-vw(40);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            & span {
+              @include font30_400();
+              color: #ffffff !important;
+            }
+          }
+
+          & .loginLoginYa {
+            width: tablet-vw(400);
+            height: tablet-vw(60);
+            border-radius: tablet-vw(30);
+            margin-bottom: tablet-vw(30);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #000;
+            cursor: pointer;
+            & span {
+              @include font22_400();
+              color: #ffffff !important;
+            }
+            & svg {
+              width: tablet-vw(36);
+              height: tablet-vw(36);
+              margin-right: tablet-vw(12);
+            }
+          }
+
+          & .resetText {
+            width: tablet-vw(340);
+            height: tablet-vw(80);
+            @include font22_400();
+            text-align: center;
+            margin-bottom: tablet-vw(40);
+          }
+
+          & .captchaWrapSMS {
+            width: tablet-vw(510);
+            margin-top: tablet-vw(20);
+            margin-bottom: tablet-vw(10);
+            display: flex;
+            justify-content: center;
+            overflow: hidden;
+            height: tablet-vw(170) !important;
+          }
+
+          & .captchaScaleSMS {
+            width: 302px;
+            transform: scale(0.59);
+            transform-origin: top center;
+          }
+
+          //
+
+          & .loginLosePWD {
+            display: flex;
+            align-items: center;
+            height: tablet-vw(40);
+            margin-bottom: tablet-vw(20);
+            margin-top: tablet-vw(10);
+            cursor: pointer;
+            & span {
+              text-decoration: underline;
+              @include font22_400();
+              color: rgba(0, 0, 0, 0.4) !important;
+            }
+          }
+
+          & .loginOR {
+            height: tablet-vw(40);
+            & > span {
+              @include font22_400();
+            }
+          }
+
+          & .loginSMS {
+            height: tablet-vw(40);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            & span {
+              text-decoration: underline;
+              @include font22_400();
+              cursor: pointer;
+              color: rgba(0, 0, 0, 0.4) !important;
+            }
+          }
+        }
+
+        .modalLoginCreatePC {
+          width: tablet-vw(640);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          position: relative;
+
+          & .loginInfo {
+            height: tablet-vw(80);
+            margin-bottom: tablet-vw(10);
+            margin-top: tablet-vw(-40);
+            display: flex;
+            align-items: center;
+            & h2 {
+              @include font30_400();
+            }
+          }
+
+          & .inputLogin:not(.lable_position) {
+            height: tablet-vw(80);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            & .MuiInputBase-root.MuiOutlinedInput-root {
+              width: tablet-vw(510);
+              border-radius: tablet-vw(20);
+
+              & input {
+                width: tablet-vw(400);
+                height: tablet-vw(60);
+                margin-left: tablet-vw(10) !important;
+                @include font30_500();
+              }
+
+              & > input::placeholder {
+                color: rgba(0, 0, 0, 0.6) !important;
+                @include font30_400();
+              }
+
+              & input:-webkit-autofill,
+              input:-webkit-autofill:hover,
+              input:-webkit-autofill:focus {
+                -webkit-text-fill-color: rgba(0, 0, 0, 0.8);
+                -webkit-box-shadow: 0 0 0px 40rem #ffff inset;
+              }
+
+              & fieldset {
+                padding-left: tablet-vw(30);
+                & legend {
+                  width: tablet-vw(125);
+                }
+              }
+            }
+
+            & .MuiFormLabel-root.MuiInputLabel-root {
+              color: rgba(0, 0, 0, 0.4) !important;
+              @include font30_400();
+              padding-left: tablet-vw(100) !important;
+              top: tablet-vw(10) !important;
+            }
+
+            & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
+              color: rgba(0, 0, 0, 0.6) !important;
+              @include font30_400();
+              padding-left: tablet-vw(100) !important;
+              top: tablet-vw(-5);
+            }
+
+            & .MuiOutlinedInput-notchedOutline {
+              border: tablet-vw(2) solid rgba(0, 0, 0, 0.2);
+            }
+
+            & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
+              & .MuiOutlinedInput-notchedOutline {
+                border: tablet-vw(3) solid rgba(0, 0, 0, 0.4);
+              }
+            }
+
+            & .vectorInput {
+              position: absolute;
+              height: tablet-vw(50);
+              width: tablet-vw(50);
+              border-radius: tablet-vw(50);
+              right: 0;
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              margin-right: tablet-vw(12);
+              //margin-bottom: tablet-vw(22);
+              cursor: pointer;
+
+              // & .clearSvg {
+              //   width: tablet-vw(50);
+              //   height: tablet-vw(50);
+              //   cursor: pointer;
+              // }
+              & .vectorSvg {
+                margin-left: auto;
+                width: tablet-vw(46);
+                height: tablet-vw(50);
+                cursor: pointer;
+              }
+
+              & .vectorSvg_dis {
+                margin-left: auto;
+                width: tablet-vw(46);
+                height: tablet-vw(50);
+                cursor: pointer;
+              }
+            }
+          }
+
+          & .inputLogin.lable_position {
+            height: tablet-vw(80);
+            display: flex;
+            flex-direction: row;
+            justify-content: center;
+
+            & .MuiInputBase-root.MuiOutlinedInput-root {
+              width: tablet-vw(510);
+              border-radius: tablet-vw(20);
+
+              & input {
+                width: tablet-vw(400);
+                height: tablet-vw(60);
+                margin-left: tablet-vw(10);
+                @include font30_500();
+              }
+
+              & > input::placeholder {
+                color: rgba(0, 0, 0, 0.6) !important;
+                @include font30_400();
+              }
+
+              & fieldset {
+                padding-left: tablet-vw(30);
+                & legend {
+                  width: tablet-vw(125);
+                }
+              }
+            }
+
+            & .MuiFormLabel-root.MuiInputLabel-root {
+              color: rgba(0, 0, 0, 0.4) !important;
+              @include font30_400();
+              padding-left: tablet-vw(70) !important;
+              top: tablet-vw(-5) !important;
+            }
+
+            & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
+              color: rgba(0, 0, 0, 0.6) !important;
+              @include font30_400();
+              padding-left: tablet-vw(100) !important;
+              top: tablet-vw(10) !important;
+            }
+
+            & .MuiOutlinedInput-notchedOutline {
+              border: tablet-vw(2) solid rgba(0, 0, 0, 0.2);
+            }
+
+            & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
+              & .MuiOutlinedInput-notchedOutline {
+                border: tablet-vw(3) solid rgba(0, 0, 0, 0.4);
+              }
+            }
+
+            & .vectorInput {
+              position: absolute;
+              height: tablet-vw(50);
+              width: tablet-vw(50);
+              border-radius: tablet-vw(50);
+              right: 0;
+              display: flex;
+              justify-content: center;
+              //margin-bottom: tablet-vw(22);
+              margin-right: tablet-vw(12);
+              cursor: pointer;
+
+              & .clearSvg {
+                width: tablet-vw(50);
+                height: tablet-vw(50);
+                cursor: pointer;
+              }
+              & .vectorSvg {
+                margin-left: auto;
+                width: tablet-vw(46);
+                height: tablet-vw(50);
+                cursor: pointer;
+              }
+              & .vectorSvg_dis {
+                margin-left: auto;
+                width: tablet-vw(46);
+                height: tablet-vw(50);
+                cursor: pointer;
+              }
+            }
+          }
+
+          & .margin_bottom_30 {
+            margin-bottom: tablet-vw(30);
+          }
+
+          & .check_icon {
+            width: tablet-vw(30);
+            height: tablet-vw(30);
+            margin-right: tablet-vw(-10);
+            //margin-left: tablet-vw(18);
+            cursor: default;
+          }
+
+          & .eye_icon {
+            right: tablet-vw(0) !important;
+            bottom: tablet-vw(-2) !important;
+            position: absolute;
+            width: tablet-vw(60);
+            height: tablet-vw(70);
+            z-index: 5;
+            cursor: pointer;
+            & svg {
+              width: tablet-vw(40);
+              height: tablet-vw(40);
+            }
+          }
+
+          & .loginData {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            margin-top: tablet-vw(20);
+
+            & .datareklama {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              height: tablet-vw(40);
+              width: tablet-vw(455);
+              margin-top: tablet-vw(20);
+
+              & span:first-child {
+                height: tablet-vw(40);
+                width: tablet-vw(40);
+                border-radius: tablet-vw(10);
+
+                & svg {
+                  height: tablet-vw(40);
+                  width: tablet-vw(40);
+                }
+              }
+
+              & span:last-child {
+                height: tablet-vw(40);
+                width: tablet-vw(395);
+                @include font18_400();
+                line-height: normal;
+
+                & a {
+                  color: #dd1a32;
+                }
+              }
+            }
+
+            & .data {
+              display: flex;
+              align-items: center;
+              justify-content: space-between;
+              //height: tablet-vw(40);
+              width: tablet-vw(455);
+
+              & span:first-child {
+                height: tablet-vw(40);
+                width: tablet-vw(40);
+                border-radius: tablet-vw(10);
+                display: flex;
+                align-items: center;
+                justify-content: center;
+                line-height: 0;
+
+                & svg {
+                  height: tablet-vw(40);
+                  width: tablet-vw(40);
+                  display: block;
+                }
+              }
+
+              & span:last-child {
+                //height: tablet-vw(120);
+                width: tablet-vw(395);
+                @include font18_400();
+                line-height: normal;
+
+                & a {
+                  color: #dd1a32;
+                }
+              }
+            }
+          }
+        }
+
+        .modalLoginSMSCodePC {
+          width: tablet-vw(580);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & .loginErr {
+            width: tablet-vw(560);
+            height: tablet-vw(40);
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            margin-bottom: tablet-vw(30);
+            text-align: center;
+            & > span {
+              line-height: tablet-vw(25);
+              @include font22_400();
+              color: #dd1a32 !important;
+            }
+          }
+
+          & .loginSubHeader {
+            height: tablet-vw(60);
+            margin-bottom: tablet-vw(12);
+
+            & span {
+              @include font40_400();
+            }
+          }
+
+          & .loginLine {
+            width: tablet-vw(360);
+            height: tablet-vw(6);
+            margin-bottom: tablet-vw(27);
+            border-radius: tablet-vw(3);
+
+            & span {
+              border-radius: tablet-vw(3);
+              height: tablet-vw(6);
+            }
+          }
+
+          & .loginSubHeader2 {
+            height: tablet-vw(80);
+            margin-bottom: tablet-vw(28);
+            display: flex;
+            align-items: center;
+
+            & span {
+              @include font30_400();
+            }
+          }
+
+          & .loginAutCode {
+            height: tablet-vw(77);
+            width: tablet-vw(480);
+            border-bottom: tablet-vw(2) solid rgba(0, 0, 0, 0.4);
+            display: flex;
+            align-items: flex-end;
+            justify-content: center;
+            position: relative;
+            margin-bottom: tablet-vw(40);
+
+            & > div {
+              display: flex;
+              flex-direction: row;
+              margin-bottom: tablet-vw(22);
+
+              & input {
+                width: tablet-vw(50);
+                height: tablet-vw(50);
+                padding: 0;
+                @include font50_500();
+                border: none;
+                background-clip: padding-box;
+                background-color: #fff;
+
+                &:focus {
+                  appearance: none;
+                  outline: 0;
+                }
+              }
+
+              & > input::placeholder {
+                text-align: center;
+                font-size: tablet-vw(80);
+                transform: translate3d(0, tablet-vw(13), 0);
+                color: rgba(0, 0, 0, 0.2) !important;
+              }
+            }
+
+            & .loginSvg {
+              position: absolute;
+              height: tablet-vw(50);
+              width: tablet-vw(50);
+              border-radius: tablet-vw(50);
+              right: 0;
+              display: flex;
+              justify-content: center;
+              margin-bottom: tablet-vw(22);
+              cursor: pointer;
+
+              & .clearSvg {
+                width: tablet-vw(50);
+                height: tablet-vw(50);
+              }
+              & .vectorSvg {
+                margin-left: auto;
+                width: tablet-vw(46);
+                height: tablet-vw(50);
+              }
+              & .vectorSvg_dis {
+                margin-left: auto;
+                width: tablet-vw(46);
+                height: tablet-vw(50);
+              }
+            }
+          }
+
+          & .loginTimer {
+            height: tablet-vw(80);
+            margin-bottom: tablet-vw(28);
+            display: flex;
+            align-items: center;
+
+            & span {
+              @include font30_400();
+              color: rgba(0, 0, 0, 0.4) !important;
+            }
+          }
+
+          & .loginPrev {
+            display: flex;
+            align-items: center;
+            height: tablet-vw(40) !important;
+
+            & span {
+              text-decoration: underline;
+              @include font30_400();
+            }
+          }
+        }
+
+        .modalLoginPwdPC {
+          width: tablet-vw(620);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & .loginSubHeader {
+            width: tablet-vw(500);
+            text-align: center;
+            height: tablet-vw(80);
+            margin-bottom: tablet-vw(50);
+
+            & span {
+              line-height: tablet-vw(40);
+              @include font30_400();
+            }
+          }
+
+          & .inputBox {
+            width: tablet-vw(620);
+            display: flex;
+            position: relative;
+
+            & .inputLogin {
+              height: tablet-vw(80);
+              display: flex;
+              flex-direction: row;
+              justify-content: center;
+
+              & .MuiInputBase-root.MuiInput-root:after {
+                border-bottom: tablet-vw(2) solid rgba(0, 0, 0, 0.4);
+              }
+
+              & .MuiInputBase-root.MuiInput-root:before {
+                border-bottom: tablet-vw(2) solid rgba(0, 0, 0, 0.2);
+              }
+
+              & .MuiInputBase-root.MuiInput-root {
+                width: tablet-vw(480);
+
+                & input {
+                  align-self: center;
+                  padding: 0;
+                  height: tablet-vw(40);
+                  margin-left: tablet-vw(20);
+                  @include font40_400();
+                }
+
+                & > input::placeholder {
+                  transform: translate3d(0, tablet-vw(-4), 0);
+                  @include font30_400();
+                  color: rgba(0, 0, 0, 0.4) !important;
+                }
+
+                & svg {
+                  width: tablet-vw(45);
+                  height: tablet-vw(45);
+                  cursor: pointer;
+                }
+              }
+
+              & .MuiInputAdornment-root {
+                margin: 0;
+
+                & .groupCheckPass {
+                  width: tablet-vw(20);
+                  display: flex;
+                  flex-direction: column;
+                  & span {
+                    height: tablet-vw(10);
+                    margin-bottom: tablet-vw(3);
+                  }
+                }
+              }
+            }
+            & .eye_icon {
+              right: 0;
+              position: absolute;
+              width: tablet-vw(60);
+              height: tablet-vw(60);
+              z-index: 5;
+              align-self: center;
+
+              & svg {
+                height: 100%;
+                width: 100%;
+                cursor: pointer;
+              }
+            }
+          }
+
+          & .loginLogin {
+            width: tablet-vw(400);
+            height: tablet-vw(80);
+            border-radius: tablet-vw(40);
+            margin-top: tablet-vw(70);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            cursor: pointer;
+            & span {
+              @include font30_400();
+              color: #ffffff !important;
+            }
+          }
+        }
+
+        .modalLoginFinishPC {
+          width: tablet-vw(580);
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+
+          & .loginSVG {
+            width: tablet-vw(120);
+            height: tablet-vw(120);
+            margin-bottom: tablet-vw(40);
+            svg {
+              width: 100%;
+              height: 100%;
+            }
+          }
+
+          & .loginSubHeader {
+            width: tablet-vw(580);
+            text-align: center;
+            height: tablet-vw(160);
+            margin-bottom: tablet-vw(40);
+            display: flex;
+            flex-direction: column;
+
+            & span {
+              line-height: tablet-vw(40);
+              @include font30_400();
+            }
+          }
+
+          & .loginLogin {
+            text-decoration: none;
+            width: tablet-vw(400);
+            height: tablet-vw(80);
+            border-radius: tablet-vw(40);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            background-color: #dd1a32;
+            cursor: pointer;
+            & span {
+              @include font30_400();
+              color: #ffffff !important;
+            }
           }
         }
       }

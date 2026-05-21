@@ -326,6 +326,10 @@
           display: flex;
           flex-direction: column;
 
+          & .SecondItemTitle {
+            margin-bottom: $MyScale33;
+          }
+
           & div {
             & p {
               @include font40_400();
@@ -441,4 +445,236 @@
 .swiper-button-prev:active,
 .swiper-button-next:active {
   outline: none !important;
+}
+
+@media (min-width: $bp-tablet-min) and (max-width: $bp-tablet-max) {
+  .eridBannerPC {
+    right: tablet-vw(380);
+    bottom: tablet-vw(40);
+    width: tablet-vw(200);
+    height: tablet-vw(50);
+    border-radius: tablet-vw(50);
+
+    & .spanContainer {
+      margin-right: tablet-vw(30);
+      line-height: tablet-vw(10);
+    }
+  }
+
+  .BannerPC .BannerMediaPC {
+    border-radius: tablet-vw(32);
+  }
+
+  .BannerPC .swiper {
+    width: calc(100% - #{tablet-home-side-total()}) !important;
+    margin-top: tablet-vw(128) !important;
+    margin-left: tablet-home-side() !important;
+    margin-right: tablet-home-side() !important;
+  }
+
+  .BannerPC .swiper-slide img,
+  .BannerPC .swiper-slide video {
+    border-radius: tablet-vw(32) !important;
+  }
+
+  .swiper {
+    margin-top: tablet-vw(128) !important;
+  }
+
+  .swiper-pagination {
+    bottom: tablet-vw(32) !important;
+
+    & .swiper-pagination-bullet {
+      width: tablet-vw(16);
+      height: tablet-vw(16);
+      margin-right: tablet-vw(32) !important;
+    }
+  }
+
+  .swiper-button-prev,
+  .swiper-button-next {
+    width: tablet-vw(60) !important;
+    height: 24.581vw !important;
+  }
+
+  .swiper-button-prev {
+    padding-left: tablet-vw(40) !important;
+  }
+
+  .swiper-button-next {
+    padding-right: tablet-vw(40) !important;
+  }
+
+  .swiper-button-prev svg,
+  .swiper-button-next svg {
+    width: tablet-vw(50.67);
+    height: tablet-vw(50.67);
+    border-radius: tablet-vw(50.67);
+  }
+
+  .modalBannerPC {
+    & .MuiDialog-paper {
+      width: calc(100% - #{tablet-vw(200)});
+      margin: tablet-vw(80) auto;
+      border-radius: tablet-vw(32);
+      overflow: visible;
+      max-width: none !important;
+
+      .BannerPC {
+        & .iconBTN {
+          top: 0;
+          left: tablet-vw(-80);
+          width: tablet-vw(60);
+          height: tablet-vw(60);
+          padding: tablet-vw(0);
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          border-radius: tablet-vw(60);
+          background-color: rgba(0, 0, 0, 0.5);
+
+          & svg {
+            width: 100%;
+            height: 100%;
+            background-color: transparent;
+          }
+        }
+
+        & .ImgItem {
+          & img,
+          & video {
+            border-radius: tablet-vw(32);
+            width: 100%;
+            height: auto;
+          }
+
+          & span {
+            left: tablet-vw(90);
+            bottom: tablet-vw(20);
+            height: tablet-vw(80);
+            width: tablet-vw(400);
+
+            & svg {
+              width: tablet-vw(25);
+              height: tablet-vw(25);
+            }
+          }
+        }
+
+        & .DescItem {
+          width: calc(100% - #{tablet-vw(80)});
+          margin-top: tablet-vw(60);
+          margin-bottom: tablet-vw(60);
+          display: flex;
+          flex-direction: row;
+          justify-content: space-between;
+        }
+
+        & .DescItem .FirstItem {
+          width: 50%;
+          min-width: 0;
+        }
+
+        & .DescItem .SecondItem {
+          width: 48%;
+          min-width: 0;
+        }
+
+        & .DescItem .SecondItem .SecondItemTitle {
+          margin-bottom: tablet-vw(33);
+        }
+
+        & .DescItem .FirstItem .Title {
+          margin-left: tablet-vw(30);
+          margin-bottom: tablet-vw(30);
+        }
+
+        & .DescItem .FirstItem .List > div {
+          margin-bottom: tablet-vw(20);
+          display: grid;
+          grid-template-columns: tablet-vw(60) tablet-vw(280) minmax(0, 1fr);
+          column-gap: tablet-vw(20);
+          align-items: start;
+        }
+
+        & .DescItem .FirstItem .List .itemNumber {
+          width: auto;
+          margin-top: tablet-vw(10);
+        }
+
+        & .DescItem .FirstItem .List .itemImg {
+          width: tablet-vw(280);
+          min-width: tablet-vw(280);
+
+          & img {
+            width: 100%;
+            height: auto;
+            display: block;
+          }
+        }
+
+        & .DescItem .FirstItem .List .itemDesc {
+          width: tablet-vw(580) !important;
+          min-width: 0;
+          display: flex;
+          flex-direction: column;
+          align-items: flex-start;
+
+          & .ItemName {
+            margin-bottom: tablet-vw(8);
+            white-space: nowrap;
+            overflow: hidden;
+            text-overflow: ellipsis;
+          }
+
+          & .ItemDesk {
+            margin-bottom: tablet-vw(24);
+          }
+        }
+
+        & .DescItem .FirstItem .List .itemDesc > span {
+          height: auto;
+          min-height: 0;
+          margin-left: tablet-vw(24) !important;
+          line-height: 1.25;
+          display: block;
+          text-align: left;
+        }
+
+        & .DescItem .FirstItem .containerBTNitem > button,
+        & .DescItem .FirstItem .containerBTNitem > div,
+        & .DescItem .FirstItem .containerBTNitem > span,
+        & .DescItem .FirstItem .containerBTN > button {
+          margin-left: tablet-vw(30) !important;
+        }
+
+        & .DescItem .FirstItem .containerBTNitem > button,
+        & .DescItem .FirstItem .containerBTNitem > div,
+        & .DescItem .FirstItem .containerBTNitem > span {
+          width: tablet-vw(240);
+          height: tablet-vw(70);
+        }
+
+        & .DescItem .FirstItem .containerBTN > button {
+          width: tablet-vw(400);
+          height: tablet-vw(80);
+        }
+
+        & .DescItem .FirstItem .containerBTNitem > div > .minus,
+        & .DescItem .FirstItem .containerBTNitem > div > .plus {
+          width: tablet-vw(60);
+          height: tablet-vw(60);
+          border-radius: tablet-vw(40);
+        }
+
+        & .DescItem .FirstItem .containerBTNitem > div > .minus {
+          margin-left: tablet-vw(8);
+        }
+
+        & .DescItem .FirstItem .containerBTNitem > div > .plus {
+          margin-right: tablet-vw(8);
+        }
+      }
+    }
+  }
 }

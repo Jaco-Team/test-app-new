@@ -12,6 +12,8 @@
     "win": "next dev -p 3008",
     "storybook": "storybook dev -p 6007",
     "build-storybook": "storybook build",
+    "pw:install": "playwright install chromium",
+    "pw:smoke": "playwright test tests/smoke/responsive-smoke.spec.js",
     "deploy:local": "next build && pm2 startOrRestart ecosystem.config.js --env local",
     "deploy:dev": "next build && pm2 startOrRestart ecosystem.config.js --env development",
     "deploy:prod": "npm update && next build && pm2 startOrRestart ecosystem.config.js --env production"
@@ -97,6 +99,7 @@
   },
   "devDependencies": {
     "@chromatic-com/storybook": "^5.1.2",
+    "@playwright/test": "^1.59.1",
     "@storybook/addon-docs": "^10.3.5",
     "@storybook/addon-links": "^10.3.5",
     "@storybook/addon-onboarding": "^10.3.5",

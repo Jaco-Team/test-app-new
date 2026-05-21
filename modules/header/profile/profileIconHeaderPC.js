@@ -17,7 +17,12 @@ function ProfileIconHeaderPCNew() {
 }
 
 export default function ProfileIconHeaderPC({activeProfile, goToPage, city}) {
-  const [setActiveModalAuth, isAuth, token] = useHeaderStoreNew((state) => [state?.setActiveModalAuth, state?.isAuth, state.token]);
+  const [setActiveModalAuth, isAuth, token, openAuthModal] = useHeaderStoreNew((state) => [
+    state?.setActiveModalAuth,
+    state?.isAuth,
+    state.token,
+    state?.openAuthModal,
+  ]);
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
   const [getUserInfo] = useProfileStore((state) => [state.getUserInfo]);
 
@@ -27,8 +32,16 @@ export default function ProfileIconHeaderPC({activeProfile, goToPage, city}) {
     }
   }, [token, city]);
   
+  const authModalOpen = Boolean(openAuthModal) && isAuth !== 'auth';
+
   return (
-    <div className={'profileHeaderPC '+(activeProfile ? 'active' : '')} >
+    <div
+      className={
+        'profileHeaderPC ' +
+        (activeProfile ? 'active ' : '') +
+        (authModalOpen ? 'profileHeaderPC--authOpen' : '')
+      }
+    >
       {isAuth === 'auth' ? 
         <Link href={'/' + thisCity + '/zakazy'} onClick={ () => goToPage('Заказы') }><ProfileIconHeaderPCNew /></Link> 
           : 

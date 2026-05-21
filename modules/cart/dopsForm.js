@@ -6,6 +6,7 @@ import IconButton from '@mui/material/IconButton';
 import Backdrop from '@mui/material/Backdrop';
 import Button from '@mui/material/Button';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { IconClose } from '@/ui/Icons';
 import { roboto } from '@/ui/Font.js';
@@ -17,13 +18,15 @@ import { useRouter } from 'next/router';
 
 import { buildPurchasePayload, reachGoal, trackPurchase } from '@/utils/metrika';
 import { removeLocalStorageItem } from '@/utils/browserStorage';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 export default function DopsForm() {
   // console.log('render DopsForm');
 
   const { push } = useRouter();
+  const isMobileDops = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
 
-  const [matches, token, showLoad] = useHeaderStoreNew((state) => [state?.matches, state?.token, state?.showLoad]);
+  const [token, showLoad] = useHeaderStoreNew((state) => [state?.token, state?.showLoad]);
 
   const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
 
@@ -134,7 +137,7 @@ export default function DopsForm() {
 
   return (
     <>
-      {matches ? (
+      {isMobileDops ? (
         <SwipeableDrawer
           anchor={'bottom'}
           open={openDopsForm}

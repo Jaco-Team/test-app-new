@@ -8,10 +8,11 @@ import {EyeShow_modalOrder, EyeHide_modalOrder, ClearAuthMobile, Check} from '@/
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 
-export default function ResetPWD() {
+export default function ResetPWD({ isMobileAuth = false }) {
   const [showPassword, setShowPassword] = useState(false);
 
-  const [navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, sendsmsNewLogin, matches, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.navigate, state?.changeLogin, state?.setPwdLogin, state?.loginLogin, state?.pwdLogin, state?.checkLoginKey, state?.sendsmsNewLogin, state?.matches, state?.setActiveModalAlert]);
+  const [navigate, changeLogin, setPwdLogin, loginLogin, pwdLogin, checkLoginKey, sendsmsNewLogin, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.navigate, state?.changeLogin, state?.setPwdLogin, state?.loginLogin, state?.pwdLogin, state?.checkLoginKey, state?.sendsmsNewLogin, state?.setActiveModalAlert]);
+  const matches = isMobileAuth;
 
   // <div className="loginErr">
   //   <Typography component="span">{errTextAuth}</Typography>

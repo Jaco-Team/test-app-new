@@ -1,12 +1,52 @@
 
 @use "../settings" as *;
 
+.zakazyTabletPage {
+    @include tablet-only {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.zakazyTabletPageContent {
+    @include tablet-only {
+        flex: 1 0 auto;
+    }
+}
+
+.zakazyTabletPageFooter {
+    @include tablet-only {
+        margin-top: auto;
+    }
+}
+
+.profilePagePCWrap {
+    @include tablet-only {
+        flex-wrap: nowrap !important;
+        align-items: flex-start;
+        justify-content: flex-start;
+        column-gap: tablet-vw(90);
+        padding-right: tablet-vw(80);
+        box-sizing: border-box;
+    }
+
+    @media (min-width: 991px) and (max-width: 1100px) {
+        flex-wrap: nowrap !important;
+        align-items: flex-start;
+        justify-content: flex-start;
+        column-gap: tablet-vw(90);
+        padding-right: tablet-vw(80);
+        box-sizing: border-box;
+    }
+}
+
 .Zakazy{ 
     margin-top: 64px!important;
     z-index: 3;
     mix-blend-mode: multiply;
 
-    @media (min-width: 800px) {
+    @include desktop-up {
         margin-top: $MyScale280!important;
         margin-bottom: 140px!important;
         padding-top: 0px!important;
@@ -16,22 +56,52 @@
         padding-left: 0px!important;
     }
 
+    @include tablet-only {
+        margin-top: tablet-vw(280)!important;
+        margin-bottom: tablet-vw(140)!important;
+        padding-top: 0!important;
+        margin-left: tablet-vw(80)!important;
+        width: tablet-vw(1400)!important;
+        padding-left: 0!important;
+    }
+
     & h1, h2{
         @include fontH1();
         text-align: start;
         width: 100%;
         color: rgba(0, 0, 0, 0.8)!important;
     }
+
+    @include tablet-only {
+        & h1, & h2 {
+            @include font75_700();
+            color: rgba(0, 0, 0, 0.8)!important;
+        }
+    }
     & .mainContainer{
         padding-top: 0!important; 
         padding-bottom: 36px!important; ;
     }
+
+    @include tablet-only {
+        & .mainContainer {
+            padding-bottom: tablet-vw(36) !important;
+        }
+    }
+
     & svg.MuiSvgIcon-root{
         width: $MyScale40;
         height: $MyScale40;
     }
 
-    @media (max-width: 960px) {
+    @include tablet-only {
+        & svg.MuiSvgIcon-root {
+            width: tablet-vw(40);
+            height: tablet-vw(40);
+        }
+    }
+
+    @include mobile-only {
         margin-top: 64px!important;
         margin-bottom: 64px; 
         padding-left: 24px!important;
@@ -54,6 +124,17 @@
         }
         
     }
+
+    @include tablet-only {
+        & > div:last-child {
+            margin-top: tablet-vw(80);
+
+            & > div {
+                margin-bottom: tablet-vw(50);
+            }
+        }
+    }
+
     & .blockTitle{
         padding: 0px;
         height: 4.9vw;
@@ -62,9 +143,19 @@
             color: rgba(0, 0, 0, 0.8)!important;
         }
     }
+
+    @include tablet-only {
+        & .blockTitle {
+            height: tablet-vw(100);
+            & span {
+                @include font75_700();
+            }
+        }
+    }
+
     & .blockTable{
         padding: 0;
-        @media (max-width: 960px) {
+        @include mobile-only {
             overflow: scroll;
         }
         & th{
@@ -73,7 +164,7 @@
             padding-bottom: 8px;
             border-width: 3px;
             @include font22_400();
-            @media (max-width: 960px) {
+            @include mobile-only {
                 border-width: 2px;
             }
             white-space: nowrap;
@@ -85,7 +176,7 @@
             padding-bottom: 2%;
             white-space: nowrap;
             @include font30_400();
-            @media (max-width: 960px) {
+            @include mobile-only {
                 border-width: 2px;
             }
             & span{
@@ -95,7 +186,7 @@
                 padding: 0.7vw 2.7vw;
                 border-radius: 1.5vw;
                 @include font30_400();
-                @media (max-width: 960px) {
+                @include mobile-only {
                     border: 2px solid #e5e5e5;
                     border-radius: 60px;
                 }
@@ -110,7 +201,7 @@
                     padding-right: 20px;
                     width: 2.2vw;
                     height: 2.2vw;
-                    @media (max-width: 960px) {
+                    @include mobile-only {
                         width: 30px;
                         height: 30px;
                         padding-right: 10px;
@@ -120,6 +211,67 @@
             &:last-child{
                 text-align: right;
                 padding-right: 0;
+            }
+        }
+    }
+
+    @include tablet-only {
+        & .blockTable {
+            & th {
+                padding: tablet-vw(0) !important;
+            }
+
+            & th {
+                border-width: tablet-vw(2);
+            }
+
+            & td {
+                border-width: tablet-vw(2);
+                padding-top: tablet-vw(20);
+                padding-bottom: tablet-vw(20);
+                vertical-align: middle;
+                @include font30_400();
+                line-height: tablet-vw(36);
+
+                & span {
+                    border: tablet-vw(2) solid #e5e5e5;
+                    border-radius: tablet-vw(40);
+                    padding: tablet-vw(15) tablet-vw(55);
+                    line-height: tablet-vw(36);
+                    display: inline-flex;
+                    align-items: center;
+                    justify-content: center;
+                }
+
+                &:first-child > div {
+                    align-items: center;
+                    margin-bottom: 0;
+                    & svg {
+                        width: tablet-vw(48);
+                        height: tablet-vw(48);
+                        padding-right: tablet-vw(20);
+                        display: block;
+                        overflow: visible;
+                        flex-shrink: 0;
+                    }
+                }
+
+                & > span {
+                    align-self: center;
+                }
+            }
+
+             & thead th.MuiTableCell-root {
+                padding-top: 0 !important;
+                padding-bottom: tablet-vw(8) !important;
+                line-height: tablet-vw(26) !important;
+                height: auto !important;
+                vertical-align: bottom !important;
+            }
+
+            & thead th.MuiTableCell-root > * {
+                margin: 0 !important;
+                line-height: inherit !important;
             }
         }
     }

@@ -1,16 +1,17 @@
 import Meta from '@/components/meta.js';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import AccountMobile from './accountMobile';
 import AccountModalMobile from './modalAccountMobile';
 
-import { useHeaderStoreNew } from '@/components/store';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 export default function AccountPage({ page, this_module, city }) {
-  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
+  const isMobileAccount = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
 
   return (
     <Meta title={page?.title ?? ''} description={''}>
-      {matches ? (
+      {isMobileAccount ? (
         <>
           <AccountMobile city={city} this_module={this_module} />
           <AccountModalMobile />

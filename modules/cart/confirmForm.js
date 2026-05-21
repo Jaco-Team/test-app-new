@@ -10,6 +10,7 @@ import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import IconButton from '@mui/material/IconButton';
 import Backdrop from '@mui/material/Backdrop';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { IconClose, ArrowLeftMobile, Cloud, TimeConfirm, CheckAuthMobile } from '@/ui/Icons';
 import { roboto } from '@/ui/Font.js';
@@ -19,16 +20,18 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import CartConfirmMap from '@/modules/cart/cartConfirmMap';
 
 import { buildPurchasePayload, reachGoal, trackPurchase } from '@/utils/metrika';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 const confirmOrderTitle = 'Проверьте заказ';
 const confirmOrderLabel = 'Подтвердить заказ';
 
 export default function ConfirmForm() {
   const { push } = useRouter();
+  const isMobileConfirm = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
 
   const [getOrderList] = useProfileStore((state) => [state.getOrderList]);
 
-  const [matches, token, showLoad, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.matches, state?.token, state?.showLoad, state.setActiveModalAlert]);
+  const [token, showLoad, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.token, state?.showLoad, state.setActiveModalAlert]);
 
   const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
 
@@ -284,7 +287,7 @@ export default function ConfirmForm() {
 
   return (
     <>
-      {matches ? (
+      {isMobileConfirm ? (
         <SwipeableDrawer
           anchor={'bottom'}
           open={openConfirmForm}
@@ -404,7 +407,7 @@ export default function ConfirmForm() {
 
                 {/* <div className="ContainerCart" style={{width: '100%'}}>
                   <div className="Line"></div>
-                  <div id="payment-form" />
+                  <div id="payment-form-confirm" />
                 </div> */}
 
                 {/* { typePay?.id == 'sbp' ? 
@@ -526,7 +529,7 @@ export default function ConfirmForm() {
 
               <div className="ContainerCart" style={{width: '100%'}}>
                 <div className="Line"></div>
-                <div id="payment-form" />
+                <div id="payment-form-confirm" />
               </div>
 
               { typePay?.id == 'sbp' ? 
@@ -672,7 +675,7 @@ export default function ConfirmForm() {
 
                 {/* <div className="ContainerCart" style={{width: '100%'}}>
                   <div className="Line"></div>
-                  <div id="payment-form" />
+                  <div id="payment-form-confirm" />
                 </div> */}
 
                 {/* { typePay?.id == 'sbp' ? 
@@ -807,7 +810,7 @@ export default function ConfirmForm() {
 
               <div className="ContainerCart" style={{width: '100%'}}>
                 <div className="Line"></div>
-                <div id="payment-form" />
+                <div id="payment-form-confirm" />
               </div>
 
               { typePay?.id == 'sbp' ? 

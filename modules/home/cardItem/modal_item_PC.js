@@ -22,6 +22,7 @@ import { roboto } from '@/ui/Font';
 import CartCtaButton from '@/ui/CartCtaButton';
 
 import { reachGoalSplit } from '@/utils/metrika';
+
 import { getItemImageUrl, hasItemImage } from '@/utils/itemImage';
 
 export default function ModalItemPC() {
@@ -69,10 +70,6 @@ export default function ModalItemPC() {
     setCount(count - 1);
     minus(id);
   };
-
-  const img_name = item_card?.img_app;
-  const hasMainImage = hasItemImage(img_name);
-  const mainImageSrc = getItemImageUrl(img_name, '292x292', 'jpg');
 
   const add_to_cart = () => {
     changeCountPlus(item_card?.id);
@@ -138,6 +135,10 @@ export default function ModalItemPC() {
     } catch(e){ console.log(e) }
   }
 
+  const img_name = item_card?.img_app;
+  const hasMainImage = hasItemImage(img_name);
+  const mainImageSrc = getItemImageUrl(img_name, '292x292', 'jpg');
+
   return (
     <Dialog
       onClose={(event, reason) => reason === 'backdropClick' && typeModal_dop === 'start' ? closeItemModal() : navigate_dop('start')}
@@ -147,7 +148,7 @@ export default function ModalItemPC() {
       slotProps={{ timeout: 500 }}
       scroll="body"
     >
-      <DialogContent style={{ padding: 0, borderRadius: '1.444045vw', overflow: 'hidden', background: typeModal_dop === 'start' ? '#FFFFFF' : '#E6E6E6'}}>
+      <DialogContent className="modalDialogContent" style={{ background: typeModal_dop === 'start' ? '#FFFFFF' : '#E6E6E6' }}>
         <Box component="div" className="modalItemPC ModalFontPC">
 
           <IconButton className="closeButton" onClick={closeItemModal}>
@@ -244,10 +245,7 @@ export default function ModalItemPC() {
                       {(item_card?.items ?? []).map((item, idx, arr) => (
                         <div
                           key={idx}
-                          className="ValueItem"
-                          style={{
-                            marginBottom: idx === arr.length - 1 ? '8vw' : '0.72202vw'
-                          }}
+                          className={'ValueItem ' + (idx === arr.length - 1 ? 'valueItemLastShort' : '')}
                         >
                           <div className="itemNumber">
                             <span className="ItemDesk">{idx + 1}.</span>
@@ -305,13 +303,13 @@ export default function ModalItemPC() {
                 <div className="dop">
                   <div className="dop_text">
                     {parseInt(item_card?.cat_id) == 5 || parseInt(item_card?.cat_id) == 6 || parseInt(item_card?.cat_id) == 7 || parseInt(item_card?.cat_id) == 15 ? null : (
-                      <span className="second_text" style={{padding: parseInt(item_card?.cat_id) == 4 ? '0 0.577vw' : '0 1.444045vw 0 0' }}>
+                      <span className={'second_text ' + (parseInt(item_card?.cat_id) == 4 ? 'dopSecondSet' : 'dopSecondDefault')}>
                         {parseInt(item_card?.cat_id) == 14 ? item_card?.size_pizza : item_card?.count_part}
                         {parseInt(item_card?.cat_id) == 14 ? ' см' : parseInt(item_card?.cat_id) == 6 ? ' л' : ' шт.'}
                       </span>
                     )}
 
-                    <span className="third_text" style={{paddingLeft: parseInt(item_card?.count_part) == 1 ? 0 : '1.444045vw'}}>
+                    <span className={'third_text ' + (parseInt(item_card?.count_part) == 1 ? 'dopThirdNoPad' : 'dopThirdPad')}>
                       {new Intl.NumberFormat('ru-RU').format(item_card?.weight)}
                       {parseInt(item_card?.id) == 17 || parseInt(item_card?.id) == 237 ? ' шт.' : parseInt(item_card?.cat_id) == 6 ? ' л' : ' г'}
                     </span>

@@ -1,20 +1,23 @@
 import { useEffect, useState } from 'react';
 
 import { useHeaderStoreNew } from '@/components/store.js';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Backdrop from '@mui/material/Backdrop';
 import LinearProgress from '@mui/material/LinearProgress';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { IconClose } from '@/ui/Icons';
 import { roboto } from '@/ui/Font.js';
 
 export default function ModalAlert() {
   const [progress, setProgress] = useState(0);
+  const isMobileAlert = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
 
-  const [matches, openModalAlert, setActiveModalAlert, textAlert, statusAlert] = useHeaderStoreNew((state) => [state?.matches, state?.openModalAlert, state.setActiveModalAlert, state?.textAlert, state?.statusAlert]);
+  const [openModalAlert, setActiveModalAlert, textAlert, statusAlert] = useHeaderStoreNew((state) => [state?.openModalAlert, state.setActiveModalAlert, state?.textAlert, state?.statusAlert]);
 
   useEffect(() => {
 
@@ -51,7 +54,7 @@ export default function ModalAlert() {
   return (
     <Dialog 
       onClose={() => setActiveModalAlert(false, '', false)}
-      className={matches ? 'modalAlertMobile ' + roboto.variable : 'modalAlertPC ' + roboto.variable}
+      className={isMobileAlert ? 'modalAlertMobile ' + roboto.variable : 'modalAlertPC ' + roboto.variable}
       open={openModalAlert}
       slots={Backdrop}
       slotProps={{ timeout: 500 }}

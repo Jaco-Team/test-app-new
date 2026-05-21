@@ -770,7 +770,7 @@ export function BasketIconNew(props) {
       width="41.801"
       height="34.883"
       fill="none"
-      viewBox="0 0 42 34.883"
+      viewBox="-1 -1 44 37"
       {...props}
     >
       <path

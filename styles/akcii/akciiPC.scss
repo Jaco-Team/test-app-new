@@ -57,7 +57,7 @@
           display: flex;
           flex-direction: column;
 
-          & div {
+          & > div {
             display: flex;
             margin-bottom: $MyScale20;
             height: $MyScale280;
@@ -104,6 +104,8 @@
                 min-height: $MyScale110;
                 @include font25_400();
                 line-height: $MyScale32;
+                margin-left: $MyScale40;
+                text-align: left;
               }
             }
           }
@@ -263,6 +265,163 @@
         & div {
           & p {
             @include font40_400();
+          }
+        }
+      }
+    }
+  }
+}
+
+@include tablet-only {
+  .akciiPC {
+    margin: 0 tablet-vw(125);
+
+    &.onePage{
+      margin-top: tablet-vw(200);
+    }
+
+    & .login {
+      height: tablet-vw(256);
+      width: tablet-vw(1206);
+      margin-top: tablet-vw(320);
+      margin-bottom: tablet-vw(224);
+      margin-left: tablet-vw(34);
+    }
+
+    & img {
+      border-radius: tablet-vw(32) tablet-vw(32) 0 0;
+    }
+
+    & .containerAccia {
+      scroll-margin-top: tablet-vw(100);
+      margin-bottom: tablet-vw(96);
+      border-radius: 0 0 tablet-vw(32) tablet-vw(32);
+
+      & .DescItem {
+        margin-top: tablet-vw(60);
+        margin-bottom: tablet-vw(60);
+        //width: tablet-vw(2260);
+
+        & .FirstItem {
+          width: tablet-vw(980);
+          margin-right: tablet-vw(60);
+
+          & .title {
+            margin-left: tablet-vw(30);
+            margin-bottom: tablet-vw(30);
+          }
+
+          & .List {
+            & > div {
+              margin-bottom: tablet-vw(20);
+              min-height: tablet-vw(280);
+              align-items: flex-start;
+
+              .itemNumber {
+                width: tablet-vw(60);
+                margin-top: tablet-vw(30);
+              }
+
+              .itemImg {
+                width: tablet-vw(280);
+              }
+
+              .itemDesc {
+                width: tablet-vw(600);
+
+                & span {
+                  margin-left: tablet-vw(40);
+                }
+
+                & span.ItemName {
+                  min-height: tablet-vw(70);
+                  display: flex;
+                  align-items: center;
+                }
+
+                & .ItemDesk {
+                  margin-left: tablet-vw(40);
+                  min-height: 0;
+                  line-height: tablet-vw(32);
+                  display: block;
+                  max-height: calc(#{tablet-vw(32)} * 3);
+                  overflow: hidden;
+                  text-overflow: ellipsis;
+                  white-space: normal;
+                  margin-bottom: tablet-vw(20);
+                }
+              }
+            }
+          }
+
+          .containerBTNitem {
+            & > button {
+              margin-left: tablet-vw(30);
+              width: tablet-vw(240);
+              border-radius: tablet-vw(45);
+              border: tablet-vw(3) solid rgba(0, 0, 0, 0.2);
+              height: tablet-vw(70);
+              line-height: tablet-vw(20) !important;
+
+              &:hover,
+              &:target,
+              &:active {
+                border: tablet-vw(2) solid #cccccc;
+              }
+            }
+
+            & > div {
+              margin-left: tablet-vw(30);
+              width: tablet-vw(240);
+              border-radius: tablet-vw(45);
+              height: tablet-vw(70);
+
+              & > .minus {
+                margin-left: tablet-vw(8);
+                width: tablet-vw(60);
+                height: tablet-vw(60);
+                border-radius: tablet-vw(40);
+                padding-top: tablet-vw(5) !important;
+              }
+
+              & > .plus {
+                margin-right: tablet-vw(8);
+                width: tablet-vw(60);
+                height: tablet-vw(60);
+                border-radius: tablet-vw(40);
+              }
+            }
+
+            & > span {
+              margin-left: tablet-vw(30);
+              height: tablet-vw(70);
+            }
+          }
+
+          .containerBTN {
+            margin-top: tablet-vw(20);
+
+            & > button {
+              margin-left: tablet-vw(30);
+              width: tablet-vw(400);
+              border-radius: tablet-vw(45);
+              border: tablet-vw(3) solid rgba(0, 0, 0, 0.2);
+              height: tablet-vw(80);
+
+              &:hover,
+              &:target,
+              &:active {
+                border: tablet-vw(2) solid #cccccc;
+              }
+            }
+          }
+        }
+
+        & .SecondItem {
+          width: tablet-vw(1080);
+
+          & span {
+            margin-bottom: tablet-vw(33);
           }
         }
       }

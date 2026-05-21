@@ -17,7 +17,7 @@ import Grid from '@mui/material/Grid';
 
 export default function AboutPagePC({cityName}) {
   return (
-    <Grid container spacing={3} style={{ width: '100%', margin: 0 }}>
+    <Grid container spacing={3} className="aboutPagePCWrap" style={{ width: '100%', margin: 0 }}>
       <Grid item className="PAGEabout" style={{ paddingBottom: 15 }}>
         <AboutUs cityName={cityName} />
         <ExcellentDishes />

@@ -89,3 +89,102 @@
         }
     }     
 }
+
+@include tablet-only {
+  .badgecontainer {
+    top: tablet-vw(20);
+    left: tablet-vw(20);
+
+    & > .badge:not(:first-child) {
+      margin-top: tablet-vw(5);
+    }
+  }
+
+  .badge {
+    &.container {
+      &.mobile {
+        top: 0;
+        left: tablet-vw(-10);
+      }
+    }
+
+    & > .shadow {
+      width: tablet-vw(114);
+      height: tablet-vw(44);
+      border-radius: tablet-vw(30);
+      padding-left: tablet-vw(15);
+      padding-right: tablet-vw(15);
+
+      &.small {
+        width: tablet-vw(84);
+        height: tablet-vw(34);
+      }
+
+      &.smallshort {
+        width: tablet-vw(44);
+        height: tablet-vw(34);
+      }
+
+      &.bigshort {
+        width: tablet-vw(44);
+        height: tablet-vw(29);
+      }
+    }
+
+    & > .box {
+      width: tablet-vw(110);
+      height: tablet-vw(40);
+      border-radius: tablet-vw(30);
+      top: tablet-vw(2);
+      left: tablet-vw(2);
+      padding-left: tablet-vw(15);
+      padding-right: tablet-vw(15);
+
+      & > span {
+        font-size: tablet-font-vw(22) !important;
+      }
+
+      &.small {
+        width: tablet-vw(80);
+        height: tablet-vw(30);
+
+        & > span {
+          font-size: tablet-font-vw(16.5) !important;
+        }
+      }
+
+      &.smallshort {
+        width: tablet-vw(40);
+        height: tablet-vw(30);
+
+        & > span {
+          font-size: tablet-font-vw(16.5) !important;
+        }
+      }
+
+      &.bigshort {
+        width: tablet-vw(60);
+        height: tablet-vw(40);
+
+        & > span {
+          font-size: tablet-font-vw(19.8) !important;
+          padding-top: tablet-vw(2);
+        }
+      }
+    }
+  }
+}
+
+@include tablet-only {
+  .badge > .box.big {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  .badge > .box.big > .MuiTypography-root {
+    margin: 0 !important;
+    line-height: 1 !important;
+    transform: translateY(tablet-vw(1)); // 0.5–1.5 подбери
+  }
+}

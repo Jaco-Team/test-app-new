@@ -167,3 +167,109 @@
 .ArrowHidden {
   display: none;
 }
+
+@include tablet-only {
+  .footerPC {
+    margin-top: tablet-vw(40) !important;
+
+    & .ContainerPCFooter {
+      width: calc(100% - #{tablet-home-side-total()});
+      margin-left: tablet-home-side();
+      margin-right: tablet-home-side();
+
+      & .column:nth-child(4) {
+        margin-right: tablet-vw(210);
+      }
+
+      & .column {
+        width: tablet-vw(440);
+        min-height: tablet-vw(600);
+        margin-right: tablet-vw(40);
+        margin-top: tablet-vw(120);
+
+        & span {
+          @include font30_700();
+          padding: tablet-vw(30) 0 tablet-vw(15) 0;
+        }
+
+        & a {
+          @include font30_400();
+          padding: tablet-vw(15) 0;
+        }
+      }
+
+      & .container {
+        margin-top: tablet-vw(90);
+
+        & .icon {
+          & a {
+            width: tablet-vw(100);
+            height: tablet-vw(100);
+            margin-right: tablet-vw(60);
+          }
+        }
+      }
+    }
+
+    & .ContainerCopyFooter {
+      & div.copy {
+        margin-top: tablet-vw(50);
+        margin-bottom: tablet-vw(110);
+        height: tablet-vw(120);
+        margin-right: tablet-home-side();
+
+        & span {
+          @include font22_400();
+        }
+      }
+    }
+
+    & .FooterLegal {
+      width: tablet-vw(1560);
+      border-radius: tablet-vw(40) tablet-vw(40) 0 0;
+
+      & .containerLegal {
+        & .text {
+          width: tablet-vw(995);
+          margin-top: tablet-vw(80);
+          margin-bottom: tablet-vw(80);
+          margin-left: tablet-vw(120);
+
+          p {
+            @include font30_400();
+            line-height: tablet-vw(40);
+          }
+        }
+
+        & .buttonAccept {
+          margin-left: tablet-vw(45);
+          width: tablet-vw(280);
+          height: tablet-vw(80);
+          border-radius: tablet-vw(20);
+
+          & span {
+            @include font30_400();
+          }
+        }
+      }
+    }
+  }
+
+  .footerPC.footerPC--contacts {
+    margin-top: 0 !important;
+  }
+
+  .ArrowPC {
+    width: tablet-vw(90);
+    height: tablet-vw(90);
+    box-shadow: 0 tablet-vw(7) tablet-vw(25) rgba(0, 0, 0, 0.25);
+    left: tablet-vw(1950) !important;
+    bottom: tablet-vw(60) !important;
+    z-index: 99999 !important;
+
+    & svg {
+      width: tablet-vw(60);
+      height: tablet-vw(60);
+    }
+  }
+}

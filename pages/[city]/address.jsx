@@ -26,7 +26,7 @@ export default function Address(props) {
   const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] = useCitiesStore(state => [state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList]);
-  const [setActivePage, matches] = useHeaderStoreNew((state) => [state.setActivePage, state.matches]);
+  const [setActivePage] = useHeaderStoreNew((state) => [state.setActivePage]);
 
   useEffect(() => {
     if( thisCity != city ){

@@ -68,10 +68,14 @@ export default function Zakazy(props) {
   }, []);
 
   return (
-    <div className={roboto.variable}>
-      <DynamicPage page={page} this_module={this_module} city={city} />
+    <div className={`${roboto.variable} zakazyTabletPage`}>
+      <div className="zakazyTabletPageContent">
+        <DynamicPage page={page} this_module={this_module} city={city} />
+      </div>
 
-      <Footer cityName={city} active_page={this_module} links={links} />
+      <div className="zakazyTabletPageFooter">
+        <Footer cityName={city} active_page={this_module} links={links} />
+      </div>
     </div>
   );
 }

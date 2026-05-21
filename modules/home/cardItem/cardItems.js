@@ -3,7 +3,8 @@ import React, { useEffect, useMemo } from 'react';
 import Grid from '@mui/material/Grid';
 
 
-import { useHomeStore, useCartStore, useHeaderStoreNew, useCitiesStore } from '@/components/store.js';
+import { useHomeStore, useCartStore, useCitiesStore } from '@/components/store.js';
+import { useHomeMobileLayout } from '@/utils/useHomeMobileLayout';
 
 import CardItemPc from './cardItemPc';
 import CardItemMobile from './cardItemMobile.js';
@@ -50,7 +51,7 @@ export default React.memo(function CatItems() {
   
   const [category, CatsItems, getItem, closeModal, transition_menu_mobile] = useHomeStore((state) => [state.category, state.CatsItems, state.getItem, state.closeModal, state.transition_menu_mobile]);
   const [items] = useCartStore((state) => [state.items]);
-  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
+  const isHomeMobile = useHomeMobileLayout();
   const [thisCity] = useCitiesStore( state => [state.thisCity]);
 
   const cartCountById = useMemo(
@@ -215,7 +216,7 @@ export default React.memo(function CatItems() {
     newCats = cats
   }
 
-  if (matches) {
+  if (isHomeMobile) {
     return newCats.map((cat, key) => (
       <Grid
         container
@@ -238,21 +239,10 @@ export default React.memo(function CatItems() {
       key={key}
       name={'cat' + cat.main_id}
       id={'cat' + cat.id}
-      className="ContainerCardItemPC"
-      ref={(node) => {
-        if (!node) return;
-
-        if (key === 0) {
-          node.style.setProperty('margin-top', '1.1552346570397vw', 'important');
-        }
-
-        if (key === (newCats?.length ?? 0) - 1) {
-          node.style.setProperty('margin-bottom', '2.1660649819495vw', 'important');
-        }
-      }}
+      className={`ContainerCardItemPC ${key === 0 ? 'ContainerCardItemPC--first' : ''} ${key === (newCats?.length ?? 0) - 1 ? 'ContainerCardItemPC--last' : ''}`}
     >
       {cat.items.map((it, k) => (
-        <CardItemPc key={k} index={k} item={it} count={it.count} />
+        <CardItemPc key={k} item={it} count={it.count} />
       ))}
     </Grid>
   ));

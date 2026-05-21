@@ -119,3 +119,56 @@
     }
   }
 }
+
+@include tablet-only {
+  .dataTimePickerPC {
+    & .MuiDialog-paper {
+      border-radius: tablet-vw(40);
+      width: tablet-vw(1000);
+      height: tablet-vw(900);
+
+      & .ContainerDataPickerPC {
+        & .closeButton {
+          left: -tablet-vw(80);
+
+          & svg {
+            width: tablet-vw(60);
+            height: tablet-vw(60);
+            border-radius: tablet-vw(60);
+          }
+        }
+
+        & .pikerLogin {
+          height: tablet-vw(60);
+          margin-top: tablet-vw(80);
+          margin-bottom: tablet-vw(140);
+        }
+
+        .embla_button {
+          height: tablet-vw(60);
+          width: tablet-vw(60);
+        }
+
+        .embla__container {
+          height: tablet-vw(300);
+          width: tablet-vw(360) !important;
+        }
+
+        .btnDataTime {
+          width: tablet-vw(560);
+          height: tablet-vw(80);
+          border-radius: tablet-vw(40);
+          margin-top: tablet-vw(160);
+        }
+
+        .divBackground {
+          width: tablet-vw(760);
+          height: tablet-vw(100);
+          border-radius: tablet-vw(40);
+          left: tablet-vw(100);
+          top: tablet-vw(380);
+        }
+      }
+    }
+  }
+}

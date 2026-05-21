@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 
 import { useHomeStore, useHeaderStoreNew, useCartStore } from '@/components/store';
+import { useHomeMobileLayout } from '@/utils/useHomeMobileLayout';
 
 import { motion } from 'framer-motion';
 
@@ -69,7 +70,8 @@ export default function Filter() {
     state.applyCurrentFilters,
   ]);
 
-  const [matches, activePage] = useHeaderStoreNew((state) => [state?.matches, state?.activePage]);
+  const [activePage] = useHeaderStoreNew((state) => [state?.activePage]);
+  const isHomeMobile = useHomeMobileLayout();
 
   const allItems = useCartStore((s) => s.allItems);
 
@@ -82,7 +84,7 @@ export default function Filter() {
 
   //утилита закрытия именно мобильной модалки фильтра
   const closeMobileFilter = () => {
-    if (matches) setActiveFilter(false);
+    if (isHomeMobile) setActiveFilter(false);
   };
 
   const handleBadge = (id) => {
@@ -266,7 +268,7 @@ export default function Filter() {
 
   return (
     <>
-      {matches ? (
+      {isHomeMobile ? (
         <SwipeableDrawer
           anchor={'bottom'}
           open={filterActive}
@@ -325,8 +327,8 @@ export default function Filter() {
           transition={{ duration: 0.9 }}
           className="filterPC"
         >
-          <div className="filterTag" style={{ width: '100%' }}>
-            <div style={{ width: '100%' }}>
+          <div className="filterTag filterTag--full">
+            <div className="filterTagItems">
 
               {badgesAvailable?.map((badg, key) => (
                 <div key={key} style={{ backgroundColor: badg.bg, color: '#fff' }} className={'tag_'} onClick={() => handleBadge(badg.id)}>

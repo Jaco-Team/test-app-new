@@ -13,14 +13,15 @@ import Timer from './timer';
 import {useMaskito} from '@maskito/react';
 import {maskitoWithPlaceholder} from '@maskito/kit';
 
-export default function LoginSMSCode() {
+export default function LoginSMSCode({ isMobileAuth = false }) {
   const options = {...maskitoWithPlaceholder('••••'), mask: /^\d{0,4}$/};
   
   const inputRefMobile = useMaskito({options});
 
   const inputRef = useRef(null);
 
-  const [changeCode, createProfile, checkCode, navigate, loginLogin, preTypeLogin, code, matches, timerPage, setTimer] = useHeaderStoreNew( state => [state?.changeCode, state?.createProfile, state?.checkCode, state?.navigate, state?.loginLogin, state?.preTypeLogin, state?.code, state?.matches, state?.timerPage, state?.setTimer]);
+  const [changeCode, createProfile, checkCode, navigate, loginLogin, preTypeLogin, code, timerPage, setTimer] = useHeaderStoreNew( state => [state?.changeCode, state?.createProfile, state?.checkCode, state?.navigate, state?.loginLogin, state?.preTypeLogin, state?.code, state?.timerPage, state?.setTimer]);
+  const matches = isMobileAuth;
 
   useEffect(() => {
     if (timerPage) {

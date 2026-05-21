@@ -1,6 +1,46 @@
 
 @use "../settings" as *;
 
+.profileTabletPage {
+    @include tablet-only {
+        min-height: 100vh;
+        display: flex;
+        flex-direction: column;
+    }
+}
+
+.profileTabletPageContent {
+    @include tablet-only {
+        flex: 1 0 auto;
+    }
+}
+
+.profileTabletPageFooter {
+    @include tablet-only {
+        margin-top: auto;
+    }
+}
+
+.profilePagePCWrap {
+    @include tablet-only {
+        flex-wrap: nowrap !important;
+        align-items: flex-start;
+        justify-content: flex-start;
+        column-gap: tablet-vw(90);
+        padding-right: tablet-vw(80);
+        box-sizing: border-box;
+    }
+
+    @media (min-width: 991px) and (max-width: 1100px) {
+        flex-wrap: nowrap !important;
+        align-items: flex-start;
+        justify-content: flex-start;
+        column-gap: tablet-vw(90);
+        padding-right: tablet-vw(80);
+        box-sizing: border-box;
+    }
+}
+
 .date_d_menu{
     & .MuiMenu-paper{
         border-radius: $MyScale20!important;
@@ -20,6 +60,7 @@
         }
     }
 }
+
 .date_m_menu{
     & .MuiMenu-paper{
         border-radius: $MyScale20!important;
@@ -45,7 +86,7 @@
     z-index: 3;
     mix-blend-mode: multiply;
 
-    @media (min-width: 800px) {
+    @include desktop-up {
         margin-top: $MyScale280!important;
         margin-bottom: 140px!important;
         padding-top: 0px!important;
@@ -55,18 +96,34 @@
         padding-left: 0px!important;
     }
 
+    @include tablet-only {
+        margin-top: tablet-vw(280)!important;
+        margin-bottom: tablet-vw(140)!important;
+        padding-top: 0!important;
+        margin-left: tablet-vw(80)!important;
+        width: tablet-vw(1400)!important;
+        padding-left: 0!important;
+    }
+
     & h1, h2{
         @include fontH1();
         text-align: start;
         width: 100%;
         color: rgba(0, 0, 0, 0.8)!important;
     }
+
+    @include tablet-only {
+        & h1, & h2 {
+            @include font75_700();
+            color: rgba(0, 0, 0, 0.8)!important;
+        }
+    }
     & .mainContainer{
         padding-top: 0!important; 
         padding-bottom: 36px!important; ;
     }
     
-    @media (max-width: 960px) {
+    @include mobile-only {
         margin-top: 64px!important;
         margin-bottom: 64px; 
         padding-left: 24px!important;
@@ -472,6 +529,323 @@
             justify-content: center;
             align-items: center;
             text-decoration: none;
+        }
+    }
+
+    @include tablet-only {
+        & > div:first-child{
+            height: tablet-vw(100);
+        }
+
+        & .main_data{
+            margin-top: tablet-vw(80);
+
+            & > div:first-child{
+                width: tablet-vw(280);
+                margin-left: tablet-vw(80);
+                margin-right: tablet-vw(120);
+
+                & > span{
+                    width: tablet-vw(280);
+                    height: tablet-vw(280);
+                    border-radius: tablet-vw(280);
+                    @include font110_400();
+
+                    & svg {
+                        width: tablet-vw(140);
+                        height: tablet-vw(140);
+                    }
+                }
+            }
+
+            & > div:last-child{
+                width: tablet-vw(1080);
+                display: flex;
+                flex-direction: column;
+                align-items: stretch;
+                gap: tablet-vw(20);
+                
+                & > div:nth-child(1),
+                & > div:nth-child(2),
+                & > div:nth-child(3) {
+                    width: 100%;
+                    margin-right: 0;
+                    margin-top: 0 !important;
+                }
+
+                & > div{
+                    width: 100%;
+                    height: tablet-vw(80);
+
+                    & .MuiInputBase-sizeSmall{
+                        height: tablet-vw(80);
+                        width: 100%;
+
+                        & > input{
+                            height: tablet-vw(80);
+                            padding-left: tablet-vw(40);
+                            @include font30_400();
+                            line-height: tablet-vw(80);
+                        }
+                    }
+
+                    & fieldset{
+                        border-radius: tablet-vw(80);
+                        border-width: tablet-vw(3);
+                    }
+                }
+            }
+        }
+
+        & .check_data{
+            margin-top: tablet-vw(60);
+            & > div{
+                width: tablet-vw(670);
+                margin-left: tablet-vw(480);
+
+                & > div{
+                    width: 100%;
+                    height: tablet-vw(80);
+                    display: flex;
+                    align-items: center;
+                    justify-content: space-between;
+                    gap: tablet-vw(24);
+
+                    & > span{
+                        @include font30_400();
+                        line-height: tablet-vw(38);
+                        display: block;
+                        white-space: normal;
+                        overflow-wrap: anywhere;
+                        max-width: calc(100% - #{tablet-vw(90)});
+                    }
+
+                    & > label{
+                        margin: 0 !important;
+                        flex-shrink: 0;
+                        margin-left: auto !important;
+                    }
+                    &:last-child{
+                        margin-top: tablet-vw(20);
+                    }
+                }
+            }
+        }
+
+        & .date_data{
+            margin-top: tablet-vw(100);
+            & > div:first-child{
+                width: tablet-vw(440);
+                margin-right: tablet-vw(80);
+
+                & > div{
+                    width: tablet-vw(390);
+                    height: tablet-vw(208);
+                    margin-top: tablet-vw(20);
+
+                    &::after {
+                        border: tablet-vw(104) solid transparent;
+                        border-left: tablet-vw(50) solid rgba(87, 220, 53, 0.3);
+                    }
+                    & > span{
+                        @include font30_400();
+                        padding: 0 tablet-vw(43);
+                    }
+                }
+            }
+            & > div:last-child{
+                width: tablet-vw(1080);
+
+                & > div:first-child{
+                    height: tablet-vw(80);
+                    @include font30_400();
+                }
+                & > div:last-child{
+                    @include font22_400();
+                    margin-top: tablet-vw(40);
+                    min-height: tablet-vw(60);
+                    line-height: tablet-vw(30);
+                }
+                & > div:not(:last-child):not(:first-child){
+                    width: tablet-vw(420);
+                    height: tablet-vw(80);
+
+                    & .MuiTextField-root,
+                    & .MuiFormControl-root{
+                        width: tablet-vw(420);
+                        max-width: tablet-vw(420);
+                    }
+
+                    & .MuiInputBase-sizeSmall{
+                        height: tablet-vw(80) !important;
+                        width: tablet-vw(420);
+                        max-width: tablet-vw(420);
+                        &.MuiOutlinedInput-root{
+                            border-radius: tablet-vw(40) !important;
+                        }
+                        & > input{
+                            height: tablet-vw(80) !important;
+                            @include font30_400();
+                            line-height: tablet-vw(80) !important;
+                            text-align: center;
+                        }
+                    }
+
+                    & .MuiInputBase-root.MuiOutlinedInput-root{
+                        width: tablet-vw(420) !important;
+                        max-width: tablet-vw(420) !important;
+                        height: tablet-vw(80) !important;
+                        border-radius: tablet-vw(40) !important;
+
+                        & > input{
+                            height: tablet-vw(80) !important;
+                            line-height: tablet-vw(80) !important;
+                            @include font30_400();
+                            text-align: center;
+                        }
+                    }
+                    & fieldset{
+                        border-width: tablet-vw(3);
+                        border-radius: tablet-vw(40);
+                    }
+
+                    & > div:first-child{
+                        height: tablet-vw(80);
+                        margin-right: tablet-vw(20);
+                        & .MuiSelect-select.MuiSelect-outlined.MuiInputBase-input{
+                            @include font30_400();
+                        }
+                        & svg{
+                            width: tablet-vw(60);
+                            height: tablet-vw(60);
+                        }
+                    }
+                    & > div:last-child{
+                        width: tablet-vw(420);
+                        height: tablet-vw(80);
+                        & .MuiSelect-select.MuiSelect-outlined.MuiInputBase-input{
+                            @include font30_400();
+                        }
+                    }
+                }
+            }
+        }
+
+        & .bank_table{
+            margin-top: tablet-vw(110);
+            & .headTable{
+                @include font40_500();
+            }
+            & .headAddTable > div{
+                border: tablet-vw(3) solid #e5e5e5;
+                border-radius: tablet-vw(40);
+                width: calc(#{tablet-vw(300)} - #{tablet-vw(3)} * 2);
+                height: tablet-vw(80);
+                & span{
+                    @include font30_400();
+                }
+            }
+            & td{
+                @include font30_400();
+            }
+            & tr > td:last-child{
+                width: tablet-vw(66);
+                & svg{
+                    width: tablet-vw(60)!important;
+                    height: tablet-vw(60)!important;
+                }
+            }
+            .chooseCart{
+                & span{
+                    @include font30_400();
+                    padding: tablet-vw(14) tablet-vw(55);
+                    border-radius: tablet-vw(40);
+                }
+            }
+            & thead th{
+                padding-bottom: tablet-vw(23);
+            }
+            & tbody tr{
+                height: tablet-vw(120);
+            }
+        }
+
+        & .addr_table{
+            margin-top: tablet-vw(100);
+            & .headTable{
+                @include font40_500();
+            }
+            & .headAddTable > div{
+                border: tablet-vw(3) solid #e5e5e5;
+                border-radius: tablet-vw(40);
+                width: calc(#{tablet-vw(300)} - #{tablet-vw(3)} * 2);
+                height: calc(#{tablet-vw(80)} - #{tablet-vw(3)} * 2);
+                & span{
+                    @include font30_400();
+                }
+            }
+            & td{
+                @include font30_400();
+            }
+            & tr > td:nth-child(1){
+                width: tablet-vw(300);
+                padding-right: tablet-vw(20);
+            }
+            & tr > td:nth-child(2){
+                width: tablet-vw(720);
+                padding-right: tablet-vw(20);
+            }
+            & tr > td:nth-child(3){
+                width: tablet-vw(240);
+                padding-right: tablet-vw(20);
+            }
+            & tr > td:nth-child(4){
+                width: tablet-vw(160);
+                padding-right: tablet-vw(40);
+            }
+            & tr > td:nth-child(5){
+                width: tablet-vw(60);
+            }
+            & tr > td:last-child{
+                & svg{
+                    width: tablet-vw(60)!important;
+                    height: tablet-vw(60)!important;
+                }
+            }
+            .ChangeAddr span{
+                @include font30_400();
+            }
+            .ChooseAddr{
+                & > div{
+                    height: tablet-vw(60);
+                    width: tablet-vw(240);
+                    border-radius: tablet-vw(30);
+                }
+                & span{
+                    @include font30_400();
+                }
+            }
+            & thead th{
+                padding-bottom: tablet-vw(23);
+                height: tablet-vw(80);
+            }
+            & tbody tr{
+                height: tablet-vw(120);
+            }
+        }
+
+        & .log_out{
+            padding-top: tablet-vw(160);
+
+            & span, & a{
+                @include font30_400();
+            }
+
+            & a{
+                border-radius: tablet-vw(40);
+                width: calc(#{tablet-vw(400)} - 2px);
+                height: calc(#{tablet-vw(80)} - 2px);
+            }
         }
     }
 }

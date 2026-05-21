@@ -1,4 +1,5 @@
 import React, { useEffect } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import dynamic from 'next/dynamic'
 
@@ -16,6 +17,7 @@ const this_module = 'account';
 
 import { normalizeCity } from '@/utils/normalizeCity';
 import { getCookie } from '@/utils/getCookie';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 export default function Account(props) {
 
@@ -26,13 +28,14 @@ export default function Account(props) {
   const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
 
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
-  const [setActivePage, matches] = useHeaderStoreNew((state) => [state.setActivePage, state.matches]);
+  const [setActivePage] = useHeaderStoreNew((state) => [state.setActivePage]);
+  const isMobileAccountRoute = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
 
   useEffect(() => {
-    if (!matches && city.length > 0) {
+    if (!isMobileAccountRoute && city.length > 0) {
       push(`/${city}/profile`);
     }
-  }, [matches, city]);
+  }, [isMobileAccountRoute, city, push]);
 
   useEffect(() => {
     if( thisCity != city ){

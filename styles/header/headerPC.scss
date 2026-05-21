@@ -207,6 +207,24 @@ html:not([data-scroll='0']) .headerNew::after {
       }
     }
 
+    // Гость + открыта модалка входа — тот же визуал, что у .active (класса active на маршруте нет)
+    & .profileHeaderPC.profileHeaderPC--authOpen {
+      background-color: rgba(0, 0, 0, 0.05);
+      outline: $MyScale10 solid rgba(0, 0, 0, 0.05);
+      outline-offset: 0;
+
+      &:hover {
+        background-color: rgba(0, 0, 0, 0.1);
+        outline: rgba(0, 0, 0, 0.1) $MyScale10 solid;
+        outline-offset: 0;
+      }
+      &:active {
+        background-color: rgba(0, 0, 0, 0.1);
+        outline: rgba(0, 0, 0, 0.1) $MyScale10 solid;
+        outline-offset: 0;
+      }
+    }
+
     & .filterHeaderPC, .profileHeaderPC,
     .burgerHeaderPC,
     .mapHeaderPC {
@@ -292,11 +310,10 @@ html:not([data-scroll='0']) .headerNew::after {
         width: $MyScale41_8;
         height: $MyScale34_88;
         fill: #fff;
-        stroke: #fff;
+        stroke: none;
         & path {
           fill: #fff;
-          stroke: #fff;
-          stroke-opacity: 0.1;
+          stroke: none;
         }
       }
     }
@@ -318,8 +335,7 @@ html:not([data-scroll='0']) .headerNew::after {
         fill: $colorMain;
         & path {
           fill: $colorMain !important;
-          stroke: $colorMain;
-          stroke-opacity: 0.1;
+          stroke: none;
         }
       }
 
@@ -344,10 +360,18 @@ html:not([data-scroll='0']) .headerNew::after {
       &:hover {
         color: $colorMain;
       }
+
+      &.chooseCity--open {
+        color: $colorMain;
+      }
     }
 
     & .link.activeCat {
       border-color: #dd1a32;
+    }
+
+    & .headerCat.link.activeCat span {
+      color: $colorMain;
     }
 
     & .activeCat {
@@ -375,6 +399,345 @@ html:not([data-scroll='0']) .headerNew::after {
       & p {
         color: #dd1a32;
       }
+    }
+  }
+}
+
+@media (min-width: 668px) and (max-width: 990px) {
+  .headerNew {
+    height: tablet-vw(128);
+
+    & .profileHeaderPC {
+      position: relative;
+    }
+
+    & .accountLogin.accountMain {
+      width: tablet-vw(48) !important;
+      height: tablet-vw(48) !important;
+      border-radius: tablet-vw(48);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+
+      & > span {
+        font-size: tablet-font-vw(25) !important;
+        font-family: var(--inter-font) !important;
+        font-weight: 400;
+        color: #fff !important;
+      }
+
+      & path {
+        fill: #fff;
+      }
+
+      & .count_promo_order {
+        width: tablet-vw(15) !important;
+        height: tablet-vw(15) !important;
+        border-radius: tablet-vw(100);
+        background-color: #dd1a32;
+        position: absolute;
+        top: -tablet-vw(2);
+        right: -tablet-vw(5);
+        border: tablet-vw(5) solid #fff;
+      }
+    }
+
+    & > div {
+      height: tablet-vw(128);
+      min-height: tablet-vw(128);
+      margin-left: tablet-home-side();
+      margin-right: tablet-home-side();
+    }
+
+    & .logoHeaderPC {
+      width: tablet-vw(373_55);
+      height: tablet-vw(112);
+      margin-right: tablet-vw(20);
+      margin-left: tablet-vw(32);
+    }
+
+    & .headerCat {
+      width: tablet-vw(192);
+      height: tablet-vw(64);
+      line-height: tablet-vw(40);
+      margin-right: tablet-vw(16);
+
+      & span {
+        font-size: tablet-font-vw(32) !important;
+        font-family: var(--inter-font) !important;
+        font-weight: 400;
+        color: $colorText;
+
+        & svg {
+          width: tablet-vw(20);
+          height: tablet-vw(20);
+          margin-top: tablet-vw(8);
+          margin-left: tablet-vw(8);
+        }
+      }
+    }
+
+    & .headerCat.link {
+      width: tablet-vw(192);
+      height: tablet-vw(64);
+      border-radius: tablet-vw(100);
+      border: tablet-vw(2) solid rgba(0, 0, 0, 0.2);
+    }
+
+
+    & .filterHeaderPC, .profileHeaderPC,
+    .burgerHeaderPC,
+    .mapHeaderPC {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: tablet-vw(56);
+      height: tablet-vw(56);
+      border-radius: tablet-vw(56);
+      margin-right: tablet-vw(24) !important;
+      line-height: 0;
+      overflow: visible;
+
+      & .filter_svg {
+        width: tablet-vw(41);
+        height: tablet-vw(41);
+        display: block;
+      }
+
+      & .profile_svg {
+        width: tablet-vw(35);
+        height: tablet-vw(33);
+        display: block;
+      }
+
+      & .burger_svg {
+        width: tablet-vw(45);
+        height: tablet-vw(40);
+        display: block;
+      }
+
+      & .map_svg {
+        width: tablet-vw(35);
+        height: tablet-vw(44);
+        display: block;
+      }
+    }
+
+    & .chooseCity {
+      text-align: center;
+      width: tablet-vw(160);
+      margin-right: tablet-vw(51);
+      font-size: tablet-font-vw(32) !important;
+      font-family: var(--inter-font) !important;
+      font-weight: 400;
+      color: $colorText;
+    }
+
+    & .basketCat {
+      margin-right: tablet-vw(32);
+    }
+
+    & .basketCat.max {
+      width: tablet-vw(217);
+      height: tablet-vw(64);
+      background-color: #dd1a32;
+      border-radius: tablet-vw(45);
+      display: flex;
+      align-items: center;
+      transition: all 0.2s ease 0s;
+      line-height: 0;
+      overflow: visible;
+
+      & span {
+        font-size: tablet-font-vw(25) !important;
+        font-family: var(--inter-font) !important;
+        font-weight: 400;
+        color: #ffffff !important;
+        text-align: center;
+      }
+
+      & svg {
+        width: tablet-vw(41.8);
+        height: tablet-vw(34.88);
+        fill: #fff;
+        stroke: none;
+        display: block;
+
+        & path {
+          fill: #fff;
+          stroke: none;
+        }
+      }
+    }
+
+    & .basketCat.min {
+      width: tablet-vw(56);
+      height: tablet-vw(56);
+      border-radius: tablet-vw(100);
+      background-color: #fff;
+      transition: all 0.2s ease 0s;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+
+      & svg {
+        width: tablet-vw(49);
+        height: tablet-vw(41);
+        fill: $colorMain;
+
+        & path {
+          fill: $colorMain !important;
+          stroke: none;
+        }
+      }
+    }
+
+    & .activeProfileCat {
+      width: tablet-vw(80);
+      height: tablet-vw(80);
+      border-radius: tablet-vw(80);
+      background: #6fbef8;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-right: tablet-vw(40);
+
+      & a {
+        & span {
+          font-size: tablet-font-vw(30) !important;
+          font-family: var(--inter-font) !important;
+          font-weight: 400;
+          color: #ffffff;
+        }
+      }
+    }
+
+    & .link.activeCat {
+      border-color: #dd1a32;
+    }
+
+    & .headerCat.link.activeCat span {
+      color: $colorMain !important;
+    }
+
+    & .activeCat {
+      & span {
+        color: #dd1a32;
+
+        & svg path {
+          stroke: #dd1a32;
+          stroke-opacity: 1;
+        }
+      }
+    }
+
+    & .activeCatSvg {
+      & svg path {
+        stroke: #dd1a32;
+        stroke-opacity: 1;
+      }
+    }
+
+    & .activeCatMap {
+      & svg path:first-child {
+        fill: #dd1a32;
+        fill-opacity: 1;
+      }
+
+      & p {
+        color: #dd1a32;
+      }
+    }
+
+    // Планшет (тач): отключаем ПК-ховер/аутлайн — базовые стили без @media всё равно применяются
+    & .headerCat span:hover {
+      color: $colorText !important;
+
+      & svg path {
+        stroke: $colorText !important;
+        stroke-opacity: 1 !important;
+      }
+    }
+
+    & .headerCat.activeCat span:hover {
+      color: #dd1a32 !important;
+
+      & svg path {
+        stroke: #dd1a32 !important;
+        stroke-opacity: 1 !important;
+      }
+    }
+
+    & .headerCat.link:hover {
+      border: tablet-vw(2) solid rgba(0, 0, 0, 0.2) !important;
+
+      & span {
+        color: $colorText !important;
+      }
+    }
+
+    & .headerCat.link.activeCat:hover {
+      border: tablet-vw(2) solid $colorMain !important;
+
+      & span {
+        color: $colorMain !important;
+      }
+    }
+
+    // На таче после тапа часто висит :hover — псевдокласс всё равно матчится, это не «ПК-мышь».
+    // Сначала снимаем серую подложку у неактивных при :hover/:active (иначе липнет как на десктопе).
+    & .filterHeaderPC:hover,
+    & .filterHeaderPC:active,
+    & .profileHeaderPC:hover,
+    & .profileHeaderPC:active,
+    & .burgerHeaderPC:hover,
+    & .burgerHeaderPC:active,
+    & .mapHeaderPC:hover,
+    & .mapHeaderPC:active {
+      background-color: transparent !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    // Та же ширина @media, что выше: общее *:hover transparent перебивает базовый .*.active — без
+    // .active:hover серый «активной страницы» пропадает после тапа (залипший :hover сильнее по !important).
+    & .filterHeaderPC.active:hover,
+    & .filterHeaderPC.active:active,
+    & .profileHeaderPC.active1:hover,
+    & .profileHeaderPC.active1:active,
+    & .burgerHeaderPC.active:hover,
+    & .burgerHeaderPC.active:active,
+    & .mapHeaderPC.active:hover,
+    & .mapHeaderPC.active:active,
+    & .basketCat.min.active:hover,
+    & .basketCat.min.active:active {
+      background-color: rgba(0, 0, 0, 0.05) !important;
+      outline: tablet-vw(10) solid rgba(0, 0, 0, 0.05) !important;
+      outline-offset: 0 !important;
+    }
+
+    & .profileHeaderPC.active:hover,
+    & .profileHeaderPC.active:active,
+    & .profileHeaderPC.profileHeaderPC--authOpen:hover,
+    & .profileHeaderPC.profileHeaderPC--authOpen:active {
+      background-color: rgba(0, 0, 0, 0.05) !important;
+      outline: tablet-vw(10) solid rgba(0, 0, 0, 0.05) !important;
+      outline-offset: 0 !important;
+    }
+
+    & .basketCat.min:hover,
+    & .basketCat.min:active {
+      background-color: #fff !important;
+      outline: none !important;
+      box-shadow: none !important;
+    }
+
+    & .chooseCity:hover {
+      color: $colorText !important;
+    }
+
+    & .chooseCity.chooseCity--open {
+      color: $colorMain !important;
     }
   }
 }
@@ -417,6 +780,44 @@ html:not([data-scroll='0']) .headerNew::after {
 
             &:hover {
               color: #dd1a32;
+            }
+          }
+        }
+      }
+    }
+  }
+}
+
+@media (min-width: 668px) and (max-width: 990px) {
+  #chooseHeaderCat {
+    & div.MuiPaper-root.MuiMenu-paper {
+      border-radius: tablet-vw(20);
+      width: tablet-vw(400);
+      box-shadow: tablet-vw(10) tablet-vw(20) tablet-vw(30) tablet-vw(5) rgba(0, 0, 0, 0.2);
+      margin-top: tablet-vw(50);
+
+      & ul {
+        margin: tablet-vw(10);
+
+        & li {
+          min-height: tablet-vw(80);
+          border-radius: tablet-vw(10);
+
+          &:hover {
+            background-color: transparent !important;
+          }
+
+          & a {
+            & span {
+              min-height: tablet-vw(80);
+              font-size: tablet-font-vw(30) !important;
+              font-family: var(--inter-font) !important;
+              font-weight: 400;
+              color: $colorText;
+
+              &:hover {
+                color: $colorText !important;
+              }
             }
           }
         }

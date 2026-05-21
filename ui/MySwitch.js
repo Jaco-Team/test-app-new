@@ -126,6 +126,24 @@ const BasketSwitchPC = styled(Switch)(({ theme }) => ({
       content: "'Доставка'",
     },
   },
+
+  '@media (min-width: 668px) and (max-width: 990px)': {
+    width: '36.363636363636vw', // tablet-vw(800) with base 2200
+    height: '3.6363636363636vw', // tablet-vw(80)
+    borderRadius: '1.8181818181818vw', // tablet-vw(40)
+    fontSize: '1.3636363636364vw', // tablet-font-vw(30)
+
+    '& .MuiSwitch-switchBase.Mui-checked': {
+      transform: 'translateX(18.181818181818vw)', // tablet-vw(400)
+      padding: 0,
+    },
+
+    '& .MuiSwitch-thumb': {
+      width: '18.181818181818vw', // tablet-vw(400)
+      height: '3.6363636363636vw', // tablet-vw(80)
+      borderRadius: '1.8181818181818vw', // tablet-vw(40)
+    },
+  },
 }));
 
 const BasketSwitchMobile = styled(Switch)(({ theme }) => ({
@@ -391,6 +409,29 @@ const AuthSwitchPC = styled(Switch)(({ theme }) => ({
     },
     '&:before': {
       content: "'Вход'",
+    },
+  },
+
+  '@media (min-width: 668px) and (max-width: 990px)': {
+    width: '21.818181818182vw', // tablet-vw(480)
+    height: '2.7272727272727vw', // tablet-vw(60)
+    borderRadius: '1.3636363636364vw', // tablet-vw(30)
+    fontSize: '1.3636363636364vw', // tablet-font-vw(30)
+
+    '& .MuiSwitch-switchBase.Mui-checked': {
+      transform: 'translateX(10.909090909091vw)', // tablet-vw(240)
+      padding: 0,
+    },
+
+    '& .MuiSwitch-thumb': {
+      width: '10.909090909091vw', // tablet-vw(240)
+      height: '2.7272727272727vw', // tablet-vw(60)
+      borderRadius: '1.3636363636364vw', // tablet-vw(30)
+    },
+
+    '& .MuiSwitch-track': {
+      paddingLeft: '4.5454545454545vw', // tablet-vw(100)
+      paddingRight: '1.5909090909091vw', // tablet-vw(35)
     },
   },
 }));

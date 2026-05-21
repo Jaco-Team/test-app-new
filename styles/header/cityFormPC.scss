@@ -191,9 +191,15 @@
 
         & .loginIMG {
           height: 7.2202166064982vw;
+          margin-bottom: 2.5270758122744vw;
           display: flex;
           align-items: center;
           justify-content: center;
+
+          &.loginIMG--long {
+            margin-bottom: 1.0830324909747vw;
+          }
+
           & > img {
             height: 100%;
             width: auto;
@@ -214,8 +220,16 @@
 
         & .loginCity {
           width: 18.050541516245vw;
+          margin-bottom: 2.5270758122744vw;
+          height: 2.1660649819495vw;
           display: flex;
           justify-content: center;
+
+          &.loginCity--long {
+            margin-bottom: 1.4440433212996vw;
+            height: 4.6931407942238vw;
+          }
+
           & span {
             line-height: 2.7075812274368vw;
             @include font75_700();
@@ -290,6 +304,146 @@
         &:hover {
           background-color: #ffffff;
           color: #dd1a32;
+        }
+      }
+    }
+  }
+}
+
+@include tablet-only {
+  .modalVKPCMain {
+    & .MuiDialog-paper {
+      border-radius: tablet-vw(38);
+
+      .MuiDialogContent-root {
+        border-radius: tablet-vw(38);
+        width: tablet-vw(680);
+        min-height: tablet-vw(800);
+
+        .modalCityPC {
+          margin: tablet-vw(60) tablet-vw(140) tablet-vw(80) tablet-vw(140);
+
+          & .closeButton {
+            left: tablet-vw(-80);
+
+            & svg {
+              width: tablet-vw(60);
+              height: tablet-vw(60);
+              border-radius: tablet-vw(60);
+            }
+          }
+
+          & .loginIMG {
+            height: tablet-vw(200);
+            margin-bottom: tablet-vw(40);
+
+            &.loginIMG--vk {
+              margin-top: tablet-vw(12);
+              margin-bottom: tablet-vw(58);
+            }
+          }
+
+          & .loginHeader {
+            margin-bottom: tablet-vw(40);
+          }
+
+          & .buttons {
+            width: tablet-vw(400);
+            height: tablet-vw(80);
+            border-radius: tablet-vw(40);
+            margin-bottom: tablet-vw(20);
+          }
+        }
+      }
+    }
+  }
+
+  .modalOpenCityPC {
+    & .MuiDialog-paper {
+      border-radius: tablet-vw(40);
+
+      .MuiDialogContent-root {
+        border-radius: tablet-vw(40);
+        width: tablet-vw(680);
+        height: tablet-vw(800);
+
+        .modalCityPC {
+          margin: tablet-vw(60) tablet-vw(140) tablet-vw(80) tablet-vw(140);
+
+          & .closeButton {
+            left: tablet-vw(-80);
+
+            & svg {
+              width: tablet-vw(60);
+              height: tablet-vw(60);
+              border-radius: tablet-vw(60);
+            }
+          }
+
+          & .loginIMG {
+            height: tablet-vw(200);
+            margin-bottom: tablet-vw(70);
+
+            &.loginIMG--long {
+              margin-bottom: tablet-vw(30);
+            }
+          }
+
+          & .loginHeader {
+            height: tablet-vw(60);
+            margin-bottom: tablet-vw(20);
+          }
+
+          & .loginCity {
+            width: tablet-vw(500);
+            margin-bottom: tablet-vw(70);
+            height: tablet-vw(60);
+
+            &.loginCity--long {
+              margin-bottom: tablet-vw(40);
+              height: tablet-vw(130);
+            }
+
+            & span {
+              line-height: tablet-vw(75);
+            }
+          }
+
+          & .buttons {
+            width: tablet-vw(400);
+            height: tablet-vw(80);
+            border-radius: tablet-vw(40);
+            margin-bottom: tablet-vw(20);
+          }
+
+          & .choose {
+            border: tablet-vw(3) solid rgba(0, 0, 0, 0.2);
+
+            & .MuiButton-endIcon {
+              margin-left: tablet-vw(10);
+
+              & .MuiSvgIcon-root {
+                width: tablet-vw(26);
+                height: tablet-vw(26);
+                font-size: tablet-vw(26);
+              }
+            }
+          }
+        }
+      }
+    }
+  }
+
+  #chooseCityModal {
+    & div.MuiPaper-root.MuiMenu-paper {
+      margin-top: tablet-vw(20);
+      border-radius: tablet-vw(20);
+      width: tablet-vw(400);
+      box-shadow: tablet-vw(10) tablet-vw(10) tablet-vw(30) tablet-vw(5) rgba(0, 0, 0, 0.2);
+
+      & ul {
+        & li {
+          height: tablet-vw(80);
         }
       }
     }

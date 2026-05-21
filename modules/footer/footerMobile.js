@@ -1,10 +1,18 @@
 import React, { useEffect, useState } from 'react';
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
+import useMediaQuery from '@mui/material/useMediaQuery';
+
 import {useCartStore, useHomeStore, useProfileStore} from '@/components/store.js';
 
 import { NewVKIcon, OdnIcon, TGIcon, RutubeIcon, ArrowUp, BasketFooterMobile } from '@/ui/Icons.js';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 import ModalOrderMobile from '@/modules/profile/zakazy/mobile/modalOrderMobile';
+
+/** px → vw по формуле планшета (2200), как tablet-vw в settings.scss */
+function tw(px) {
+  return `${(px / 2200) * 100}vw`;
+}
 
 import { reachGoal } from '@/utils/metrika';
 import { getLocalStorageItem, setLocalStorageItem } from '@/utils/browserStorage';
@@ -16,7 +24,18 @@ export default function FooterMobile({ cityName, active_page, links }) {
   
   const [itemsCount, itemsOffDops, dopListCart, checkPromo, allPrice] = useCartStore((state) => [state.itemsCount, state.itemsOffDops, state.dopListCart, state.checkPromo, state.allPrice]);
 
-  const [setMenuCatPosition, isOpenFilter, transition_menu_mobile] = useHomeStore(state => [state.setMenuCatPosition, state.isOpenFilter, state.transition_menu_mobile]);
+  const [setMenuCatPosition, isOpenFilter, transition_menu_mobile, badge_filter, tag_filter, text_filter] = useHomeStore(state => [
+    state.setMenuCatPosition,
+    state.isOpenFilter,
+    state.transition_menu_mobile,
+    state.badge_filter,
+    state.tag_filter,
+    state.text_filter,
+  ]);
+
+  const isTabletLayout = useMediaQuery(
+    `(min-width:${BREAKPOINTS.tabletMin}px) and (max-width:${BREAKPOINTS.tabletMax}px)`
+  );
   const [ saveUserActions ] = useProfileStore((state) => [state.saveUserActions]);
 
   const handlerArrow = () => {
@@ -66,22 +85,74 @@ export default function FooterMobile({ cityName, active_page, links }) {
     reachGoal('open_basket'); 
   }
 
+  const stickyBarStyle = isTabletLayout
+    ? {
+        bottom: cookie ? tw(60) : tw(814),
+        marginTop:
+          active_page === 'home' && isOpenFilter
+            ? transition_menu_mobile
+            : active_page === 'home'
+              ? tw(55)
+              : undefined,
+      }
+    : {
+        bottom: cookie ? '3.4188034188034vw' : '37.094017094017vw',
+        width: itemsCount && active_page === 'home' ? '64.529914529915vw' : '10.25641025641vw',
+        left: itemsCount && active_page === 'home' ? '32.051282051282vw' : '86.324786324786vw',
+        marginTop:
+          active_page === 'home' && isOpenFilter
+            ? transition_menu_mobile
+            : active_page === 'home'
+              ? '3.4188034188034vw'
+              : undefined,
+      };
+
+  const arrowMarginStyle = isTabletLayout
+    ? {
+        marginTop:
+          active_page === 'sitemap' ||
+          active_page === 'contacts' ||
+          (active_page === 'home' && (badge_filter || tag_filter || text_filter))
+            ? '-4.3321299638989vw'
+            : undefined,
+        transform: active_page === 'contacts' ? 'translate(0, -50%)' : undefined,
+      }
+    : {
+        marginTop:
+          active_page === 'sitemap' ||
+          active_page === 'document' ||
+          active_page === 'jobs' ||
+          active_page === 'contacts' ||
+          active_page === 'profile' ||
+          active_page === 'account' ||
+          active_page === 'address' ||
+          active_page === 'zakazy'
+            ? '-10.25641025641vw'
+            : undefined,
+      };
+
   return (
     <>
-      <div className='containerArrowBasket' 
-        style={{ bottom: cookie ? '3.4188034188034vw' : '37.094017094017vw', 
-                 width: itemsCount && active_page === 'home' ? '64.529914529915vw' : '10.25641025641vw', 
-                 left: itemsCount && active_page === 'home' ? '32.051282051282vw' : '86.324786324786vw', 
-                 marginTop: active_page === 'home' && isOpenFilter ? transition_menu_mobile : active_page === 'home' ? '3.4188034188034vw' : null
-                }}>
+      <div
+        className={`containerArrowBasket${isTabletLayout ? ' containerArrowBasket--tablet' : ''}`}
+        style={stickyBarStyle}
+      >
+        {!isTabletLayout ? (
+          <Link
+            onClick={openCart}
+            href={'/' + cityName + '/cart'}
+            className={itemsCount && active_page === 'home' ? 'BasketFooterMobile' : 'BasketFooterMobileHidden'}
+          >
+            <span><BasketFooterMobile /></span>
+            <span>{new Intl.NumberFormat('ru-RU').format(totalToShow)} ₽</span>
+          </Link>
+        ) : null}
 
-        <Link onClick={openCart} href={'/' + cityName + '/cart'} className={itemsCount && active_page === 'home' ? 'BasketFooterMobile' : 'BasketFooterMobileHidden'} >
-          <span><BasketFooterMobile /></span>
-          <span>{new Intl.NumberFormat('ru-RU').format(totalToShow)} ₽</span>
-        </Link>
-
-        <div className={showArrow && active_page !== 'cart' ? 'ArrowMobile' : 'ArrowHidden'} onClick={scrollUp} 
-          style={{marginTop: active_page === 'sitemap' || active_page === 'document' || active_page === 'jobs' || active_page === 'contacts' || active_page === 'profile' || active_page === 'account' || active_page === 'address' || active_page === 'zakazy' ? '-10.25641025641vw' : null}}>
+        <div
+          className={showArrow && active_page !== 'cart' ? 'ArrowMobile' : 'ArrowHidden'}
+          onClick={scrollUp}
+          style={arrowMarginStyle}
+        >
           <ArrowUp />
         </div>
 

@@ -313,6 +313,238 @@
   }
 }
 
+@include tablet-only {
+  .city_menu {
+    & .MuiMenu-paper {
+      border-radius: tablet-vw(20) !important;
+      margin-top: tablet-vw(20) !important;
+      width: tablet-vw(780) !important;
+
+      & ul > li {
+        height: tablet-vw(100);
+        @include font30_400();
+      }
+    }
+  }
+
+  /* Address suggestions list in portal (Autocomplete popper) */
+  .MuiAutocomplete-popper {
+    & .autocompletePC .MuiAutocomplete-option {
+      min-height: tablet-vw(100) !important;
+      height: auto !important;
+      padding: tablet-vw(18) tablet-vw(40) !important;
+      border-bottom: tablet-vw(2) solid rgba(0, 0, 0, 0.10);
+      align-items: flex-start !important;
+      justify-content: center !important;
+      white-space: normal;
+    }
+
+    & .autocompletePC .MuiAutocomplete-option span:nth-child(1) {
+      @include font30_400();
+      line-height: tablet-vw(40);
+      margin: 0;
+    }
+
+    & .autocompletePC .MuiAutocomplete-option span:nth-child(2) {
+      @include font22_400();
+      line-height: tablet-vw(26);
+      margin-top: tablet-vw(4);
+      color: rgba(0, 0, 0, 0.4) !important;
+    }
+  }
+
+  .modalAddrPC {
+    & .MuiDialog-paper {
+      border-radius: tablet-vw(40);
+      width: tablet-vw(1960);
+      max-width: none !important;
+    }
+
+    & .MuiFormControl-root {
+      & input,
+      .MuiSelect-select {
+        height: tablet-vw(40);
+        padding: tablet-vw(20) !important;
+        padding-top: 0 !important;
+        @include font30_400();
+      }
+
+      & .MuiInputBase-root::before {
+        border-width: tablet-vw(3);
+      }
+    }
+
+    & .container .closeButton {
+      left: -tablet-vw(80);
+
+      & svg {
+        width: tablet-vw(60);
+        height: tablet-vw(60);
+        border-radius: tablet-vw(60);
+      }
+    }
+
+    & .mainGrid {
+      & > .map {
+        border-top-left-radius: tablet-vw(40);
+        border-bottom-left-radius: tablet-vw(40);
+      }
+
+      & > .form {
+        & .nameAddr {
+          width: tablet-vw(680);
+          height: tablet-vw(120);
+          margin-top: tablet-vw(60);
+          margin-left: tablet-vw(170);
+
+          & .MuiInputBase-root > input {
+            height: tablet-vw(120);
+            padding: tablet-vw(20) !important;
+            padding-top: 0 !important;
+            @include font50_500();
+          }
+
+          & > span {
+            @include font50_500();
+          }
+
+          & svg {
+            width: tablet-vw(60);
+            height: tablet-vw(60);
+            margin-left: tablet-vw(30);
+          }
+        }
+
+        & .city {
+          margin-left: tablet-vw(150);
+          margin-top: tablet-vw(30);
+          width: tablet-vw(700);
+        }
+
+        & .street {
+          margin-left: tablet-vw(150);
+          margin-top: tablet-vw(60);
+          width: tablet-vw(700);
+
+          & .MuiAutocomplete-root .MuiAutocomplete-endAdornment {
+            top: tablet-vw(20);
+          }
+        }
+
+        & .street_dop_2 {
+          margin-left: tablet-vw(150);
+          margin-top: tablet-vw(60);
+          width: tablet-vw(700);
+
+          & > div {
+            width: tablet-vw(220) !important;
+
+            &:nth-child(1),
+            &:nth-child(2) {
+              margin-right: tablet-vw(20);
+            }
+          }
+        }
+
+        & .comment {
+          margin-left: tablet-vw(150);
+          margin-top: tablet-vw(60);
+          width: tablet-vw(700);
+        }
+
+        & .chooseMain {
+          margin-left: tablet-vw(150);
+          margin-top: tablet-vw(30);
+          padding-bottom: tablet-vw(30);
+          width: tablet-vw(700);
+          border-bottom: tablet-vw(3) solid rgba(0, 0, 0, 0.2);
+
+          & > label {
+            margin-right: tablet-vw(20);
+          }
+
+          & > div {
+            margin-left: tablet-vw(20);
+
+            & > span {
+              @include font30_400();
+              padding-right: tablet-vw(20);
+            }
+
+            & > div {
+              width: tablet-vw(80);
+              height: tablet-vw(80);
+              border-radius: tablet-vw(390);
+
+              & > svg {
+                width: tablet-vw(48);
+                height: tablet-vw(48);
+              }
+            }
+          }
+        }
+
+        & .btnSave {
+          margin-left: tablet-vw(150);
+          margin-top: tablet-vw(60);
+          margin-bottom: tablet-vw(60);
+
+          & > div {
+            width: tablet-vw(400);
+            height: tablet-vw(80);
+            border-radius: tablet-vw(40);
+
+            & > span {
+              @include font30_400();
+            }
+          }
+        }
+      }
+    }
+  }
+
+  .modalGetAddrPC {
+    & .MuiDialog-paper {
+      border-radius: tablet-vw(40);
+      width: tablet-vw(1960);
+      height: tablet-vw(1125);
+
+      & .MuiFormControl-root {
+        & input {
+          height: tablet-vw(40);
+          padding: tablet-vw(40) !important;
+          @include font40_400();
+        }
+
+        & .MuiInputBase-root::before {
+          border-width: tablet-vw(3);
+        }
+      }
+
+      & .container {
+        & .closeButton {
+          left: -tablet-vw(80);
+
+          & svg {
+            width: tablet-vw(60);
+            height: tablet-vw(60);
+            border-radius: tablet-vw(60);
+          }
+        }
+
+        & span {
+          @include font75_700();
+        }
+
+        & .street {
+          margin-top: tablet-vw(80);
+          width: tablet-vw(1200);
+        }
+      }
+    }
+  }
+}
+
 .modalGetAddrPC {
 
   & .MuiDialog-paper {

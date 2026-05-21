@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
 import {useHomeStore} from '@/components/store';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Link from 'next/link';
 import Typography from '@mui/material/Typography';
 
 import { NewVKIcon, OdnIcon, TGIcon, RutubeIcon, ArrowUp } from '@/ui/Icons.js';
 import { getLocalStorageItem, setLocalStorageItem } from '@/utils/browserStorage';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 export default React.memo(function FooterPC({ cityName, active_page, links }) {
 
@@ -13,6 +15,11 @@ export default React.memo(function FooterPC({ cityName, active_page, links }) {
   const [showArrow, setShowArrow] = useState(false);
 
   const [badge_filter, tag_filter, text_filter] = useHomeStore((state) => [state.badge_filter, state.tag_filter, state.text_filter]);
+  const isTabletFooter = useMediaQuery(
+    `(min-width:${BREAKPOINTS.tabletMin}px) and (max-width:${BREAKPOINTS.tabletMax}px)`
+  );
+
+  const tabletVw = (px) => `${(px / 2200) * 100}vw`;
 
   const handlerArrow = () => setShowArrow(window.scrollY > 50);
 
@@ -38,12 +45,23 @@ export default React.memo(function FooterPC({ cityName, active_page, links }) {
 
   const ext = (url) => url ? { href: url, target: '_blank', rel: 'noopener noreferrer' } : { href: '/#' };
 
+  const footerStyle = {
+    minHeight: isTabletFooter
+      ? cookie
+        ? tabletVw(794)
+        : tabletVw(992.8)
+      : cookie
+        ? '36.101083032491vw'
+        : '45.126353790614vw',
+    marginTop: active_page === 'contacts' ? null : isTabletFooter ? tabletVw(40) : '1.8050541516245vw',
+  };
+
   return (
     <>
       <div className={showArrow ? 'ArrowPC' : 'ArrowHidden'} onClick={scrollUp} style={{marginTop: active_page === 'sitemap' || active_page === 'contacts' || (active_page === 'home' && (badge_filter || tag_filter || text_filter)) ? '-4.3321299638989vw' : null, transform: active_page === 'contacts' ? 'translate(0, -50%)' : null}}>
         <ArrowUp />
       </div>
-      <footer className='footerPC' style={{ minHeight: cookie ? '36.101083032491vw' : '45.126353790614vw', marginTop: active_page === 'contacts' ? null : '1.8050541516245vw' }}>
+      <footer className={`footerPC ${active_page === 'contacts' ? 'footerPC--contacts' : ''}`} style={footerStyle}>
         <div className="ContainerPCFooter">
           <div className="column">
             <Typography component="span">Жако</Typography>

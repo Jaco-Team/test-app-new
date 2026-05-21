@@ -11,7 +11,7 @@ import BadgeItem from './badge';
 import CartCtaButton from '@/ui/CartCtaButton';
 import { reachGoalSplit } from '@/utils/metrika';
 
-export default memo(function CardItem({ item, count, index}) {
+export default memo(function CardItem({ item, count }) {
   const [getItem] = useHomeStore((state) => [state.getItem]);
   const [thisCity, thisCityRu] = useCitiesStore( state => [state.thisCity, state.thisCityRu]);
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
@@ -97,15 +97,17 @@ export default memo(function CardItem({ item, count, index}) {
     }catch(e) { console.log(e) }
   }
 
+  const hasDopSideOffset = parseInt(item.cat_id) !== 4;
+
   return (
     <motion.div
+      className="CardItemPCMotion"
       initial={{ opacity: 0, scale: 0.9 }}
       animate={{ opacity: 1, scale: 1 }}
       transition={{ duration: 0.9 }}
     >
       <Grid 
         className={'CardItemPC ' + (count > 0 ? 'active' : '')} 
-        style={{ marginRight: (index + 1) % 4 === 0 ? 0 : '1.4440433212996vw' }} 
         sx={{ display: { xs: 'none', sm: 'flex' } }} 
         id={item.link} 
         name={item.link}
@@ -187,7 +189,7 @@ export default memo(function CardItem({ item, count, index}) {
             {parseInt(item.cat_id) == 4 ? <span className="divider"/> : null}
 
             {parseInt(item.cat_id) == 5 || parseInt(item.cat_id) == 6 || parseInt(item.cat_id) == 7 || parseInt(item.cat_id) == 15 ? null : (
-              <span className="second_text"  style={{ marginRight: parseInt(item.cat_id) !== 4 ? '0.36101083032491vw' : null }}>
+              <span className={`second_text ${hasDopSideOffset ? 'withSideOffset' : ''}`}>
                 {parseInt(item.cat_id) == 14 ? item.size_pizza : item.count_part}{' '}
                 {parseInt(item.cat_id) == 14 ? 'см' : parseInt(item.cat_id) == 6 ? 'л' : 'шт.'}{' '}
               </span>
@@ -195,7 +197,7 @@ export default memo(function CardItem({ item, count, index}) {
 
             {parseInt(item.cat_id) == 5 || parseInt(item.cat_id) == 6 || parseInt(item.cat_id) == 7 || parseInt(item.cat_id) == 15 ? null : <span className="divider"/>}
 
-            <span className="third_text" style={{ marginLeft: parseInt(item.cat_id) !== 4 ? '0.36101083032491vw' : null }}>
+            <span className={`third_text ${hasDopSideOffset ? 'withSideOffset' : ''}`}>
               {new Intl.NumberFormat('ru-RU').format(item.weight)}{' '}
               {parseInt(item.id) == 17 || parseInt(item.id) == 237 ? 'шт.' : parseInt(item.cat_id) == 6 ? 'л' : 'г'}
             </span>

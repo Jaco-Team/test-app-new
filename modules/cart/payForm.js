@@ -1,6 +1,5 @@
-import { useCartStore, useHeaderStoreNew } from '@/components/store.js';
-
-import Script from 'next/script';
+import { useCartStore } from '@/components/store.js';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -9,16 +8,21 @@ import Backdrop from '@mui/material/Backdrop';
 
 import { IconClose } from '@/ui/Icons';
 import { roboto } from '@/ui/Font.js';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 export default function PayForm() {
-  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
-  const [openPayForm, setPayForm] = useCartStore((state) => [state.openPayForm, state.setPayForm]);
+  const isMobilePayForm = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
+  const [openPayForm, setPayForm, openConfirmForm] = useCartStore((state) => [state.openPayForm, state.setPayForm, state.openConfirmForm]);
+
+  if (!openPayForm || openConfirmForm) {
+    return null;
+  }
 
   return (
     <>
-      {matches ? (
+      {isMobilePayForm ? (
         <SwipeableDrawer
           anchor={'bottom'}
           open={openPayForm}

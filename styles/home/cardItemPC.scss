@@ -1,6 +1,12 @@
 @use "../settings" as *;
 
 .modalCardItemPC {
+  & .modalDialogContent {
+    padding: 0;
+    border-radius: 1.444045vw;
+    overflow: hidden;
+  }
+
   & .MuiDialog-paper {
     border-radius: $MyScale32;
     overflow: visible;
@@ -134,6 +140,10 @@
           padding: 1.444045vw 1.805055vw 1.444045vw 3.249096vw;
           height: 8.6642599277978vw;
 
+          &.setItemLast {
+            padding-bottom: 8vw;
+          }
+
           & .itemNumber {
             width: 2.1661vw;
             height: 1.0830324909747vw;
@@ -173,6 +183,15 @@
           display: flex;
           width: 100%;
           min-height: 10.8307vw;
+          margin-bottom: 0.72202vw;
+
+          &.valueItemLastShort {
+            margin-bottom: 8vw;
+          }
+
+          &.valueItemLastLong {
+            margin-bottom: 11.552346570397vw;
+          }
 
           & .itemNumber {
             width: 2.1661vw;
@@ -347,6 +366,14 @@
           display: flex;
           align-items: center;
           justify-content: flex-start;
+
+          &.dopSecondSet {
+            padding: 0 0.577vw;
+          }
+
+          &.dopSecondDefault {
+            padding: 0 1.444045vw 0 0;
+          }
         }
 
         & .third_text {
@@ -354,6 +381,14 @@
           display: flex;
           align-items: center;
           justify-content: flex-start;
+
+          &.dopThirdNoPad {
+            padding-left: 0;
+          }
+
+          &.dopThirdPad {
+            padding-left: 1.444045vw;
+          }
         }
       }
 
@@ -418,6 +453,7 @@
           border: $MyScale2 solid #cccccc;
         }
       }
+
       & > div {
         width: $MyScale394;
         border-radius: 1.62455vw;
@@ -469,6 +505,277 @@
 
 }
 
+@include tablet-only {
+  .modalCardItemPC {
+    & .modalDialogContent {
+      border-radius: tablet-vw(40);
+    }
+
+    & .MuiDialog-paper {
+      border-radius: tablet-vw(32);
+      width: tablet-vw(1960);
+      height: tablet-vw(1320);
+    }
+  }
+
+  .modalItemPC {
+    & .closeButton {
+      left: tablet-vw(-80);
+
+      & svg {
+        width: tablet-vw(60);
+        height: tablet-vw(60);
+        border-radius: tablet-vw(60);
+      }
+    }
+
+    & .ImgItem {
+      width: tablet-vw(1240);
+      height: tablet-vw(1240);
+      margin: tablet-vw(40);
+    }
+
+    & .FirstItem {
+      width: tablet-vw(1320);
+      height: tablet-vw(1320);
+
+      & .Table {
+        width: tablet-vw(1160);
+        height: tablet-vw(1240);
+        margin: tablet-vw(80);
+        border-top-left-radius: tablet-vw(40);
+        border-top-right-radius: tablet-vw(40);
+
+        & .Title {
+          margin-bottom: tablet-vw(20);
+          padding-top: tablet-vw(80);
+
+          .ValueTitle {
+            margin-top: tablet-vw(9);
+            margin-bottom: tablet-vw(20);
+          }
+
+          .ValueTitle h2 {
+            width: tablet-vw(670);
+          }
+
+          .ValueModeButtons {
+            gap: tablet-vw(16);
+          }
+
+          .ValueModeBtn {
+            padding: tablet-vw(15) tablet-vw(40);
+          }
+        }
+
+        & .List {
+          height: calc(100% - #{tablet-vw(40)});
+
+          & .SetItem {
+            padding: tablet-vw(40) tablet-vw(50) tablet-vw(40) tablet-vw(90);
+            height: tablet-vw(240);
+
+            &.setItemLast {
+              padding-bottom: tablet-vw(222);
+            }
+
+            & .itemNumber {
+              width: tablet-vw(60);
+              height: tablet-vw(30);
+              margin-right: tablet-vw(20);
+            }
+
+            & .itemImg {
+              width: tablet-vw(240);
+            }
+
+            & .itemDesc {
+              width: tablet-vw(600);
+              margin-left: tablet-vw(60);
+            }
+          }
+
+          & .ValueItem {
+            min-height: tablet-vw(300);
+            margin-bottom: tablet-vw(20);
+
+            &.valueItemLastShort {
+              margin-bottom: tablet-vw(222);
+            }
+
+            &.valueItemLastLong {
+              margin-bottom: tablet-vw(320);
+            }
+
+            & .itemNumber {
+              width: tablet-vw(60);
+              height: tablet-vw(30);
+              margin-right: tablet-vw(40);
+              margin-top: tablet-vw(40);
+              padding-left: tablet-vw(50);
+            }
+
+            & .itemValueColumn {
+              width: tablet-vw(894);
+              border-radius: tablet-vw(30);
+
+              & .itemValueRowMain {
+                & > div:first-child {
+                  width: tablet-vw(885);
+                  height: tablet-vw(74);
+                  padding-left: tablet-vw(30);
+                  padding-top: tablet-vw(35);
+                  padding-bottom: tablet-vw(38);
+                }
+
+                & > div:last-child {
+                  width: tablet-vw(234);
+
+                  & span {
+                    margin-bottom: tablet-vw(6);
+                  }
+                }
+              }
+
+              & .itemValueRow {
+                & > div:first-child {
+                  width: tablet-vw(504);
+                  min-height: tablet-vw(117);
+                  padding-left: tablet-vw(30);
+                  padding-top: tablet-vw(16);
+                  padding-bottom: tablet-vw(15);
+                  padding-right: tablet-vw(20);
+                }
+
+                & > div:last-child {
+                  width: tablet-vw(361);
+
+                  & div {
+                    width: tablet-vw(300);
+
+                    .dot {
+                      margin: 0 tablet-vw(15);
+                      margin-bottom: tablet-vw(6);
+                    }
+                  }
+                }
+              }
+            }
+          }
+
+          &::-webkit-scrollbar {
+            width: tablet-vw(40);
+          }
+
+          &::-webkit-scrollbar-thumb {
+            border-right: solid tablet-vw(30) #ffffff;
+          }
+
+          &::-webkit-scrollbar-track {
+            margin-bottom: tablet-vw(320);
+            border-right: solid tablet-vw(30) #ffffff;
+          }
+        }
+
+        & .ValueFootnote {
+          bottom: tablet-vw(40);
+          padding: 0 tablet-vw(40);
+        }
+      }
+    }
+
+    & .SecondItem {
+      width: tablet-vw(560);
+      margin: tablet-vw(200) tablet-vw(80) tablet-vw(200) 0;
+      height: tablet-vw(920);
+
+      & h1 {
+        margin-bottom: tablet-vw(20);
+      }
+
+      & .dop {
+        margin-bottom: tablet-vw(40);
+        height: tablet-vw(60);
+
+        & .dop_text {
+          width: tablet-vw(400);
+        }
+
+        & .dop_text .first_text {
+          padding-right: tablet-vw(40);
+        }
+
+        & .dop_text .second_text.dopSecondSet {
+          padding: 0 tablet-vw(16);
+        }
+
+        & .dop_text .second_text.dopSecondDefault {
+          padding: 0 tablet-vw(40) 0 0;
+        }
+
+        & .dop_text .third_text.dopThirdNoPad {
+          padding-left: 0;
+        }
+
+        & .dop_text .third_text.dopThirdPad {
+          padding-left: tablet-vw(40);
+        }
+
+        & .dop_icon {
+          width: tablet-vw(60);
+          height: tablet-vw(60);
+        }
+      }
+
+      & .desc {
+        margin-bottom: calc(#{tablet-vw(80)} + #{tablet-vw(40)});
+        padding-right: tablet-vw(30);
+
+        &::-webkit-scrollbar {
+          width: tablet-vw(40);
+        }
+
+        &::-webkit-scrollbar-thumb {
+          border-right: solid tablet-vw(30) #ffffff;
+        }
+
+        &::-webkit-scrollbar-track {
+          border-right: solid tablet-vw(30) #ffffff;
+        }
+      }
+
+      .containerBTN {
+        & > button {
+          width: tablet-vw(400);
+          border-radius: tablet-vw(45);
+          height: tablet-vw(80);
+          line-height: tablet-vw(90);
+        }
+
+        & > div {
+          width: tablet-vw(394);
+          border-radius: tablet-vw(45);
+          height: tablet-vw(74);
+
+          & > .minus {
+            margin-left: tablet-vw(8);
+            width: tablet-vw(60);
+            height: tablet-vw(60);
+            border-radius: tablet-vw(40);
+          }
+
+          & > .plus {
+            margin-right: tablet-vw(8);
+            width: tablet-vw(60);
+            height: tablet-vw(60);
+            border-radius: tablet-vw(40);
+          }
+        }
+      }
+    }
+  }
+}
+
 .ModalFontPC {
   & .ItemPizza {
     @include font21_400();
@@ -514,20 +821,34 @@
 
 .ContainerCardItemPC {
   width: 90.975vw !important;
-  //align-items: center;
   margin: 0 $MyScale125 !important;
-  // transition: all 0.5s ease-in-out;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: stretch;
+
+  &.ContainerCardItemPC--first {
+    margin-top: $MyScale32 !important;
+  }
+
+  &.ContainerCardItemPC--last {
+    margin-bottom: $MyScale60 !important;
+  }
+
+  > .CardItemPCMotion {
+    width: $MyScale600;
+    margin-right: $MyScale40;
+    flex: 0 0 auto;
+
+    &:nth-child(4n) {
+      margin-right: 0;
+    }
+  }
 
   .CardItemPC {
-    width: $MyScale600;
+    width: 100%;
     padding: 0 !important;
     height: $MyScale1016;
     margin-bottom: $MyScale32;
-    
-    @media (min-width: 801px) and (max-width: 1000px) {
-      width: calc($MyScale600 * 2);
-      height: calc($MyScale1016 * 2);
-    }
 
     & > div {
       background-color: #fff;
@@ -557,11 +878,6 @@
         align-items: center;
         text-align: center;
         padding: 0 $MyScale32;
-
-        @media (min-width: 801px) and (max-width: 1000px) {
-          height: calc($MyScale96 * 2);
-          padding: 0 $MyScale64;
-        }
       }
 
       & .dop_text {
@@ -570,11 +886,6 @@
         width: $MyScale300;
         display: flex;
         align-items: center;
-
-        @media (min-width: 801px) and (max-width: 1000px) {
-          height: calc($MyScale64 * 2);
-          width: calc($MyScale300 * 2);
-        }
 
         & .first_text {
           @include font22_400();
@@ -589,6 +900,10 @@
           align-items: center;
           justify-content: center;
           color: rgba(0, 0, 0, 0.4);
+
+          &.withSideOffset {
+            margin-right: $MyScale10;
+          }
         }
         & .third_text {
           @include font22_400();
@@ -596,17 +911,16 @@
           align-items: center;
           justify-content: center;
           color: rgba(0, 0, 0, 0.4);
+
+          &.withSideOffset {
+            margin-left: $MyScale10;
+          }
         }
 
         & .divider {
           height: $MyScale20;
           width: $MyScale1;
           background-color: rgba(0, 0, 0, 0.4);
-
-          @media (min-width: 801px) and (max-width: 1000px) {
-            height: calc($MyScale20 * 2);
-            width: calc($MyScale1 * 2);
-          }
         }
       }
 
@@ -621,12 +935,6 @@
         display: -webkit-box;
         -webkit-line-clamp: 3;
         -webkit-box-orient: vertical;
-
-        @media (min-width: 801px) and (max-width: 1000px) {
-          height: calc($MyScale64 * 3);
-          padding: 0 $MyScale64;
-          line-height: calc($MyScale33 * 2);
-        }
       }
 
       .containerBTN {
@@ -636,12 +944,6 @@
         margin-top: $MyScale32;
         width: $MyScale384;
         height: $MyScale96;
-
-        @media (min-width: 801px) and (max-width: 1000px) {
-          width: calc($MyScale384 * 2);
-          height: calc($MyScale96 * 2);
-          margin-top: calc($MyScale32 * 2);
-        }
 
         & > button {
           width: 100%;
@@ -657,10 +959,6 @@
           justify-content: center;
           white-space: nowrap;
 
-          @media (min-width: 801px) and (max-width: 1000px) {
-            border-radius: calc($MyScale48 * 2);
-          }
-
           &:hover{
             background-color: rgba(0, 0, 0, 0.07) !important;
           }
@@ -673,10 +971,6 @@
           justify-content: space-between;
           align-items: center;
           background-color: #ffff;
-
-          @media (min-width: 801px) and (max-width: 1000px) {
-            border-radius: calc($MyScale48 * 2);
-          }
 
           & > .minus {
             padding: 0;
@@ -691,13 +985,6 @@
             @include font44_400();
             width: $MyScale80;
             height: $MyScale80;
-
-            @media (min-width: 801px) and (max-width: 1000px) {
-              margin-left: calc($MyScale8 * 2);
-              border-radius: calc($MyScale40 * 2);
-              width: calc($MyScale80 * 2);
-              height: calc($MyScale80 * 2);
-            }
 
             &:hover{
               background-color: rgba(0, 0, 0, 0.07) !important;
@@ -718,13 +1005,6 @@
             height: $MyScale80;
             border-radius: $MyScale40;
 
-            @media (min-width: 801px) and (max-width: 1000px) {
-              margin-right: calc($MyScale8 * 2);
-              border-radius: calc($MyScale40 * 2);
-              width: calc($MyScale80 * 2);
-              height: calc($MyScale80 * 2);
-            }
-
             &:hover{
               background-color: rgba(0, 0, 0, 0.07) !important;
             }
@@ -734,6 +1014,258 @@
             align-items: center;
             justify-content: center;
             @include font44_400();
+          }
+        }
+      }
+    }
+  }
+}
+
+@include tablet-only {
+  // ПК-номиналы ×1.1 на планшете; три карточки в ряд (зазоры тоже +10%)
+  .ContainerCardItemPC {
+    width: calc(100% - #{tablet-home-side-total()}) !important;
+    margin: 0 tablet-home-side() !important;
+    box-sizing: border-box;
+    display: flex;
+    flex-wrap: wrap;
+    align-items: stretch;
+
+    &.ContainerCardItemPC--first {
+      margin-top: tablet-vw(35.2) !important;
+    }
+
+    &.ContainerCardItemPC--last {
+      margin-bottom: tablet-vw(66) !important;
+    }
+
+    > .CardItemPCMotion {
+      width: calc((100% - #{tablet-vw(88)}) / 3);
+      margin-right: tablet-vw(44);
+      flex: 0 0 auto;
+      display: flex;
+      justify-content: center;
+
+      // На ПК — 4 колонки и :nth-child(4n) обнуляет margin; на планшете 3 колонки — 4-я карточка не конец ряда, без этого «ломается» правый зазор
+      &:nth-child(4n) {
+        margin-right: tablet-vw(44);
+      }
+
+      &:nth-child(3n) {
+        margin-right: 0;
+      }
+    }
+
+    .CardItemPC {
+      width: tablet-vw(660);
+      max-width: 100%;
+      margin-left: auto;
+      margin-right: auto;
+      padding: 0 !important;
+      height: tablet-vw(1117.6);
+      margin-bottom: tablet-vw(35.2);
+      box-sizing: border-box;
+
+      & > div {
+        background-color: #fff;
+        border-radius: tablet-vw(35.2);
+        mix-blend-mode: multiply;
+        display: flex;
+        flex-direction: column;
+        width: 100%;
+        align-items: center;
+
+        & .imgItem {
+          position: relative;
+          width: 100%;
+
+          & img {
+            width: 100%;
+            height: auto;
+            position: initial;
+          }
+        }
+
+        & .CardNameItem {
+          height: tablet-vw(105.6);
+          display: flex;
+          justify-content: center;
+          align-items: center;
+          text-align: center;
+          padding: 0 tablet-vw(35.2);
+          font-size: tablet-font-vw(48.4) !important;
+          font-weight: 500 !important;
+          font-family: var(--inter-font) !important;
+        }
+
+        & .dop_text {
+          padding: 0;
+          height: tablet-vw(70.4);
+          width: tablet-vw(330);
+          display: flex;
+          align-items: center;
+
+          & .first_text {
+            font-size: tablet-font-vw(24.2) !important;
+            font-family: var(--inter-font) !important;
+            font-weight: 400 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(0, 0, 0, 0.4);
+          }
+
+          & .second_text {
+            font-size: tablet-font-vw(24.2) !important;
+            font-family: var(--inter-font) !important;
+            font-weight: 400 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(0, 0, 0, 0.4);
+
+            &.withSideOffset {
+              margin-right: tablet-vw(11);
+            }
+          }
+
+          & .third_text {
+            font-size: tablet-font-vw(24.2) !important;
+            font-family: var(--inter-font) !important;
+            font-weight: 400 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            color: rgba(0, 0, 0, 0.4);
+
+            &.withSideOffset {
+              margin-left: tablet-vw(11);
+            }
+          }
+
+          & .divider {
+            height: tablet-vw(22);
+            width: tablet-vw(1.1);
+            background-color: rgba(0, 0, 0, 0.4);
+          }
+        }
+
+        .desc_text {
+          padding: 0 tablet-vw(35.2);
+          height: tablet-vw(105.6);
+          color: rgba(0, 0, 0, 0.6) !important;
+          font-size: tablet-font-vw(28.6) !important;
+          font-weight: 400 !important;
+          font-family: var(--inter-font) !important;
+          text-align: center;
+          line-height: tablet-vw(36.3);
+          overflow: hidden;
+          display: -webkit-box;
+          -webkit-line-clamp: 3;
+          -webkit-box-orient: vertical;
+        }
+
+        .containerBTN {
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          margin-top: tablet-vw(35.2);
+          width: tablet-vw(422.4);
+          height: tablet-vw(105.6);
+
+          & > button {
+            width: 100%;
+            height: 100%;
+            border-radius: tablet-vw(52.8);
+            border: none;
+            background-color: rgba(0, 0, 0, 0.05);
+            color: rgba(0, 0, 0, 0.8) !important;
+            padding: 0;
+            font-size: tablet-font-vw(35.2) !important;
+            font-family: var(--inter-font) !important;
+            font-weight: 400 !important;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            white-space: nowrap;
+
+            &:hover {
+              background-color: rgba(0, 0, 0, 0.07) !important;
+            }
+          }
+
+          & .MuiButton-root {
+            font-size: tablet-font-vw(35.2) !important;
+            font-family: var(--inter-font) !important;
+            font-weight: 400 !important;
+            border-radius: tablet-vw(52.8) !important;
+            min-height: tablet-vw(105.6) !important;
+            max-height: tablet-vw(105.6) !important;
+            padding: 0 !important;
+            text-transform: none !important;
+            width: 100% !important;
+          }
+
+          & > div {
+            width: 100%;
+            height: 100%;
+            border-radius: tablet-vw(52.8);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            background-color: #ffff;
+
+            & > .minus {
+              padding: 0;
+              margin-left: tablet-vw(8.8);
+              display: flex;
+              justify-content: center;
+              align-items: center;
+              cursor: pointer;
+              border-radius: tablet-vw(44);
+              background-color: rgba(0, 0, 0, 0.05);
+              border: none;
+              font-size: tablet-font-vw(48.4) !important;
+              font-family: var(--inter-font) !important;
+              font-weight: 400 !important;
+              width: tablet-vw(88);
+              height: tablet-vw(88);
+
+              &:hover {
+                background-color: rgba(0, 0, 0, 0.07) !important;
+              }
+            }
+
+            & > .plus {
+              padding: 0;
+              margin-right: tablet-vw(8.8);
+              display: flex;
+              justify-content: center;
+              align-content: center;
+              align-items: center;
+              cursor: pointer;
+              background-color: rgba(0, 0, 0, 0.05);
+              border: none;
+              font-size: tablet-font-vw(66) !important;
+              font-family: var(--inter-font) !important;
+              font-weight: 300 !important;
+              width: tablet-vw(88);
+              height: tablet-vw(88);
+              border-radius: tablet-vw(44);
+
+              &:hover {
+                background-color: rgba(0, 0, 0, 0.07) !important;
+              }
+            }
+
+            & > span {
+              display: flex;
+              align-items: center;
+              justify-content: center;
+              font-size: tablet-font-vw(48.4) !important;
+              font-family: var(--inter-font) !important;
+              font-weight: 400 !important;
+            }
           }
         }
       }

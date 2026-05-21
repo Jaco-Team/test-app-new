@@ -12,16 +12,16 @@ import Filter from './filter/filter';
 
 import Meta from '@/components/meta.js';
 
-import { useHeaderStoreNew } from '@/components/store';
+import { useHomeMobileLayout } from '@/utils/useHomeMobileLayout';
 
 export default function HomePage({ page, city } ) {
 
-  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
+  const isHomeMobile = useHomeMobileLayout();
 
   return (
     <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
-      <div style={{ minHeight: matches ? '50vh' : '70vh' }}>
-        {matches ?
+      <div style={{ minHeight: isHomeMobile ? '50vh' : '70vh' }}>
+        {isHomeMobile ?
           <>
             <BannersMobile />
             <MenuCatMobile city={city}/>
@@ -34,7 +34,7 @@ export default function HomePage({ page, city } ) {
           </>
         }
 
-        { matches ?
+        { isHomeMobile ?
           <>
             <ModalItemMobile />
             <ModalCardItemMobile /> 

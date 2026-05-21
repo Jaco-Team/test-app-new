@@ -217,3 +217,200 @@
     }
   }
 }
+
+@include tablet-only {
+  .modalOrderPC {
+    & .container {
+      padding-left: tablet-vw(100);
+      padding-right: tablet-vw(100);
+
+      & .closeButton {
+        left: tablet-vw(-80);
+
+        & svg {
+          width: tablet-vw(60);
+          height: tablet-vw(60);
+          border-radius: tablet-vw(60);
+        }
+      }
+    }
+
+    & .MuiDialog-paper {
+      border-radius: tablet-vw(40);
+      width: tablet-vw(1000);
+    }
+
+    & .MuiDialogContent-root {
+      border-radius: tablet-vw(40) !important;
+    }
+
+    & .header_status {
+      height: tablet-vw(120);
+      margin-top: tablet-vw(80);
+
+      & > h1 {
+        @include font50_500();
+        line-height: tablet-vw(60);
+      }
+    }
+
+    & .header_status_icon {
+      margin-bottom: tablet-vw(60);
+      margin-top: tablet-vw(40);
+
+      & > div {
+        height: tablet-vw(100);
+        width: tablet-vw(100);
+
+        & > svg {
+          width: tablet-vw(66.6) !important;
+          height: tablet-vw(66.6) !important;
+        }
+      }
+
+      & > span {
+        width: tablet-vw(123);
+        margin-left: tablet-vw(5.17);
+        margin-right: tablet-vw(5.17);
+      }
+
+      & > span.MuiLinearProgress-root {
+        height: tablet-vw(6) !important;
+        border-radius: tablet-vw(6);
+        overflow: hidden;
+      }
+
+      & > span.MuiLinearProgress-root .MuiLinearProgress-bar {
+        border-radius: tablet-vw(6);
+      }
+    }
+
+    & .header_time {
+      min-height: tablet-vw(60);
+
+      & > span {
+        @include font40_400();
+        line-height: tablet-vw(48);
+      }
+    }
+
+    & .header_warning_time {
+      padding-bottom: tablet-vw(40);
+      & > span {
+        @include font30_400();
+        line-height: tablet-vw(40);
+      }
+    }
+
+    & .header_addr_table {
+      & span {
+        @include font40_500();
+        line-height: tablet-vw(48);
+      }
+
+      & svg:not(.long) {
+        width: tablet-vw(60) !important;
+        height: tablet-vw(60) !important;
+        margin-right: tablet-vw(11);
+      }
+
+      & svg.long {
+        width: tablet-vw(206.67) !important;
+        height: tablet-vw(20) !important;
+      }
+
+      & > div:first-child {
+        height: tablet-vw(120);
+        border-top: tablet-vw(4) solid rgba(0, 0, 0, 0.8);
+        border-bottom: tablet-vw(2) solid rgba(0, 0, 0, 0.2);
+
+        & > .order_num {
+          width: tablet-vw(180);
+          margin-right: tablet-vw(49);
+        }
+      }
+
+      & > div:last-child {
+        min-height: tablet-vw(120);
+        border-bottom: tablet-vw(4) solid rgba(0, 0, 0, 0.8);
+
+        & > svg {
+          margin-right: tablet-vw(40);
+        }
+
+        & > div {
+          & > div:not(.order_city) {
+            width: tablet-vw(60) !important;
+            height: tablet-vw(60) !important;
+            margin-right: tablet-vw(11);
+          }
+        }
+
+        & .order_city {
+          min-height: tablet-vw(100);
+          padding: tablet-vw(25) 0;
+          width: tablet-vw(640);
+        }
+      }
+    }
+
+    & .header_cart_table {
+      & > div {
+        min-height: tablet-vw(40);
+        border-bottom: tablet-vw(2) solid rgba(0, 0, 0, 0.2);
+      }
+
+      & > .table_header {
+        padding-top: tablet-vw(60);
+        padding-bottom: tablet-vw(23);
+
+        & > span:first-child {
+          @include font30_400();
+          line-height: tablet-vw(40);
+        }
+
+        & > span:last-child {
+          @include font40_500();
+          line-height: tablet-vw(48);
+        }
+      }
+
+      & > div:not(.table_header) {
+        padding-top: tablet-vw(30);
+        padding-bottom: tablet-vw(30);
+
+        & > div {
+          & span:first-child {
+            width: tablet-vw(80);
+          }
+        }
+
+        & > span {
+          width: tablet-vw(140);
+        }
+
+        & span {
+          @include font30_400();
+          line-height: tablet-vw(40);
+        }
+      }
+    }
+
+    & .header_btn {
+      margin-top: tablet-vw(80);
+      margin-bottom: tablet-vw(80);
+
+      & > div {
+        height: tablet-vw(80);
+        width: tablet-vw(400);
+        border-radius: tablet-vw(60);
+        border: tablet-vw(3) solid $colorMain;
+
+        & > span {
+          @include font30_400();
+          line-height: tablet-vw(40);
+        }
+      }
+    }
+  }
+}

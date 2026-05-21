@@ -19,8 +19,9 @@ const SmartCaptcha = dynamic(
   { ssr: false },
 );
 
-export default function LoginSMS() {
-  const [changeLogin, loginLogin, createProfile, matches, navigate, setTimer, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.changeLogin, state?.loginLogin, state?.createProfile, state?.matches, state?.navigate, state?.setTimer, state?.setActiveModalAlert]);
+export default function LoginSMS({ isMobileAuth = false }) {
+  const [changeLogin, loginLogin, createProfile, navigate, setTimer, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.changeLogin, state?.loginLogin, state?.createProfile, state?.navigate, state?.setTimer, state?.setActiveModalAlert]);
+  const matches = isMobileAuth;
 
   const [token, setToken] = useState('');
   const [captchaError, setCaptchaError] = useState('');
@@ -148,15 +149,17 @@ export default function LoginSMS() {
         }
       /> 
 
-      <div ref={captchaContainerRef} style={{ marginTop: 20 }}>
-        <SmartCaptcha 
-          sitekey="ysc1_1E96JpaPgfXfQRj6D9nNuEXcojKLSn528gKwiUyD1f8b2761" 
-          webview={isAppWebView}
-          onSuccess={handleCaptchaSuccess}
-          onNetworkError={handleCaptchaFailure}
-          onJavascriptError={handleCaptchaFailure}
-          onTokenExpired={() => setToken('')}
-        />
+      <div className="captchaWrapSMS">
+        <div className="captchaScaleSMS" ref={captchaContainerRef}>
+          <SmartCaptcha 
+            sitekey="ysc1_1E96JpaPgfXfQRj6D9nNuEXcojKLSn528gKwiUyD1f8b2761" 
+            webview={isAppWebView}
+            onSuccess={handleCaptchaSuccess}
+            onNetworkError={handleCaptchaFailure}
+            onJavascriptError={handleCaptchaFailure}
+            onTokenExpired={() => setToken('')}
+          />
+        </div>
       </div>
 
       {captchaError ? (

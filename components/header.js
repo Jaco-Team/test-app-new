@@ -36,6 +36,7 @@ import { useRouter } from 'next/router'
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
 import { setLocalStorageItem } from '@/utils/browserStorage';
+import { BREAKPOINTS, LEGACY_BREAKPOINTS } from '@/utils/breakpoints';
 
 export default React.memo(function header({ city, city_list, cats }) {
   const router = useRouter();
@@ -60,7 +61,8 @@ export default React.memo(function header({ city, city_list, cats }) {
   
 
 
-  const matchesDev = useMediaQuery('screen and (max-width: 800px)');
+  const matchesDev = useMediaQuery(`screen and (max-width: ${LEGACY_BREAKPOINTS.mobileMax}px)`);
+  const isHeaderMobile = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
 
   const [setMatches11, matches, checkToken, isShowLoad, setShowClosePoint, isAuth, saveYToken] = useHeaderStoreNew( state => [state?.setMatches11, state?.matches, state?.checkToken, state?.isShowLoad, state?.setShowClosePoint, state.isAuth, state.saveYToken] ); 
   const [getItemsCat, category] = useHomeStore( state => [state.getItemsCat, state.category]);
@@ -216,7 +218,7 @@ export default React.memo(function header({ city, city_list, cats }) {
         <CircularProgress color="inherit" />
       </Backdrop>
 
-      {matches ?
+      {isHeaderMobile ?
         <>
           <NavBarMobile city={city} cityRu={thisCityRU} />
           <ModalCityMobile />

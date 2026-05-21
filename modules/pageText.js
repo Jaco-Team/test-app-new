@@ -1,8 +1,10 @@
 import { useEffect, useRef } from 'react';
 import Meta from '@/components/meta.js';
 import Link from 'next/link';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { useHeaderStoreNew } from '@/components/store';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 import Grid from '@mui/material/Grid';
 import Typography from '@mui/material/Typography';
@@ -14,7 +16,11 @@ import { ArrowLeftMobile } from '@/ui/Icons.js';
 import { reachGoal } from '@/utils/metrika';
 
 export default function PageText({ page, classNamePC, classNameMobile, cityName }) {
-  const [matches, activePage] = useHeaderStoreNew((state) => [state.matches, state.activePage]);
+  const [activePage] = useHeaderStoreNew((state) => [state.activePage]);
+  const isMobilePageText = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
+  const isTabletPageText = useMediaQuery(
+    `screen and (min-width: ${BREAKPOINTS.tabletMin}px) and (max-width: ${BREAKPOINTS.tabletMax}px)`
+  );
 
   const wrapperRef = useRef(null);
 
@@ -53,9 +59,9 @@ export default function PageText({ page, classNamePC, classNameMobile, cityName 
 
   return (
     <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
-      <Grid container>
-        <Grid item className={matches ? classNameMobile ?? classNamePC : classNamePC} style={{ minHeight: activePage === 'jobs' ? '50vh' : null }}>
-          {!matches ? null : <Link href={'/' + cityName + '/document' } className='arrow'><ArrowLeftMobile /></Link>}
+      <Grid container className="pageTextPCWrap">
+        <Grid item className={isMobilePageText ? classNameMobile ?? classNamePC : classNamePC} style={{ minHeight: activePage === 'jobs' ? '50vh' : null }}>
+          {!isMobilePageText ? null : <Link href={'/' + cityName + '/document' } className='arrow'><ArrowLeftMobile /></Link>}
 
           <Grid item xs={12} style={{ paddingBottom: 15 }}>
             <Typography variant="h5" component="h1">
@@ -76,47 +82,74 @@ export default function PageText({ page, classNamePC, classNameMobile, cityName 
             <Grid item xs={12} style={{ paddingBottom: 15 }}>
               <a
                 className='download'
-                style={!matches ? {
-                  textTransform: 'lowercase',
-                  cursor: 'pointer',
-                  backgroundColor: '#dd1a32',
-                  borderRadius: '1.44404vw',
-                  width: '12.2166vw',
-                  height: '2.88809vw',
-                  padding: '0',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  marginLeft: '3.5vw',
-                  textDecoration: 'none',
-                  fontFamily: 'var(--inter-font)',
-                  
-                } : {
-                  textTransform: 'lowercase',
-                  borderRadius: '5.12821vw',
-                  width: '55.5556vw',
-                  height: '10.2564vw',
-                  marginTop: '8.54701vw',
-                  marginBottom: '29.0598vw',
-                  padding: '0',
-                  backgroundColor: '#dd1a32',
-                  display: 'flex',
-                  alignItems: 'center',
-                  justifyContent: 'center',
-                  textDecoration: 'none',
-                  fontFamily: 'var(--inter-font)',
-                  justifySelf: 'center'
-                }}
+                style={
+                  !isMobilePageText
+                    ? isTabletPageText
+                      ? {
+                          textTransform: 'lowercase',
+                          cursor: 'pointer',
+                          backgroundColor: '#dd1a32',
+                          borderRadius: '2.04545vw',
+                          width: '17.2969vw',
+                          height: '4.09091vw',
+                          padding: '0',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginLeft: '4.95455vw',
+                          textDecoration: 'none',
+                          fontFamily: 'var(--inter-font)',
+                        }
+                      : {
+                          textTransform: 'lowercase',
+                          cursor: 'pointer',
+                          backgroundColor: '#dd1a32',
+                          borderRadius: '1.44404vw',
+                          width: '12.2166vw',
+                          height: '2.88809vw',
+                          padding: '0',
+                          display: 'flex',
+                          alignItems: 'center',
+                          justifyContent: 'center',
+                          marginLeft: '3.5vw',
+                          textDecoration: 'none',
+                          fontFamily: 'var(--inter-font)',
+                        }
+                    : {
+                        textTransform: 'lowercase',
+                        borderRadius: '5.12821vw',
+                        width: '55.5556vw',
+                        height: '10.2564vw',
+                        marginTop: '8.54701vw',
+                        marginBottom: '29.0598vw',
+                        padding: '0',
+                        backgroundColor: '#dd1a32',
+                        display: 'flex',
+                        alignItems: 'center',
+                        justifyContent: 'center',
+                        textDecoration: 'none',
+                        fontFamily: 'var(--inter-font)',
+                        justifySelf: 'center',
+                      }
+                }
                 href="https://storage.yandexcloud.net/site-other-data/health_reminder_jaco.pdf?response-content-disposition=attachment%3B%20filename%3Dhealth_reminder_jaco.pdf"
               >
-                <span className='download_text' style={{color: '#fff', fontSize: '4.2735vw'}}>Скачать</span>
+                <span
+                  className='download_text'
+                  style={{
+                    color: '#fff',
+                    fontSize: isMobilePageText ? '4.2735vw' : isTabletPageText ? '2.04545vw' : '1.08303vw',
+                  }}
+                >
+                  Скачать
+                </span>
               </a>
             </Grid>
           }
 
         </Grid>
 
-        {!matches ? <DocsBreadcrumbs /> : null}
+        {!isMobilePageText ? <DocsBreadcrumbs /> : null}
       </Grid>
     </Meta>
   );

@@ -1,5 +1,9 @@
 @use "../settings" as *;
 
+#payment-form-confirm {
+  width: 100%;
+}
+
 .cartConfirmFormPC {
   .MuiDialog-paper {
     overflow: visible;
@@ -516,6 +520,220 @@
             0px $MyScale2 $MyScale4 (-$MyScale1) rgba(0, 0, 0, 0.2),
             0px $MyScale4 $MyScale5 0px rgba(0, 0, 0, 0.14),
             0px $MyScale1 $MyScale10 0px rgba(0, 0, 0, 0.12);
+        }
+      }
+    }
+  }
+}
+
+@include tablet-only {
+  .cartConfirmFormPC,
+  .cartConfirmFormPC_cash {
+    .MuiDialog-paper {
+      margin: tablet-vw(50) 0 !important;
+      border-radius: tablet-vw(40);
+
+      .MuiDialogContent-root {
+        border-radius: tablet-vw(40);
+        width: tablet-vw(1000);
+
+        .closeButton {
+          left: -tablet-vw(73);
+
+          & svg {
+            width: tablet-vw(60);
+            height: tablet-vw(60);
+            border-radius: tablet-vw(60);
+          }
+        }
+
+        .confirmHeader {
+          height: tablet-vw(120);
+          margin-top: tablet-vw(80);
+          margin-bottom: tablet-vw(10);
+
+          & svg {
+            left: tablet-vw(59);
+            width: tablet-vw(60);
+            height: tablet-vw(60);
+          }
+        }
+
+        .confirmText {
+          width: tablet-vw(840);
+          height: tablet-vw(60);
+          line-height: tablet-vw(34);
+          margin-bottom: tablet-vw(50);
+        }
+
+        .confirmAddr {
+          width: tablet-vw(840);
+          margin-bottom: tablet-vw(10);
+
+          & span {
+            line-height: tablet-vw(40);
+          }
+        }
+
+        .confirmTime {
+          height: tablet-vw(60);
+          line-height: tablet-vw(40);
+          margin-bottom: tablet-vw(10);
+        }
+
+        .confirmText_2 {
+          width: tablet-vw(560);
+          line-height: tablet-vw(24);
+          margin-bottom: tablet-vw(40);
+        }
+
+        .confirmMessage {
+          width: tablet-vw(840);
+          height: tablet-vw(160);
+          border-radius: tablet-vw(40);
+          margin-bottom: tablet-vw(60);
+
+          & svg {
+            margin-left: tablet-vw(59);
+            width: tablet-vw(99);
+            height: tablet-vw(90);
+          }
+
+          & span {
+            width: tablet-vw(635);
+            margin-left: tablet-vw(42);
+          }
+        }
+
+        .cofirmDivider {
+          width: tablet-vw(920);
+          height: tablet-vw(2);
+          margin-bottom: tablet-vw(40);
+        }
+
+        .cofirmTable {
+          width: tablet-vw(840);
+          row-gap: tablet-vw(20);
+          margin-bottom: tablet-vw(40);
+
+          & div {
+            min-height: tablet-vw(60);
+
+            & span:first-child {
+              width: tablet-vw(580);
+            }
+
+            & span:nth-child(2) {
+              min-width: tablet-vw(40);
+            }
+          }
+        }
+
+        .table {
+          margin-bottom: tablet-vw(20);
+        }
+
+        .confirmDelivery {
+          width: tablet-vw(840);
+          margin-bottom: tablet-vw(20);
+        }
+
+        .confirmTotal {
+          width: tablet-vw(840);
+        }
+
+        .confirmPromo {
+          width: tablet-vw(840);
+          height: tablet-vw(60);
+
+          & svg {
+            margin-right: tablet-vw(20);
+            width: tablet-vw(40);
+            height: tablet-vw(40);
+          }
+        }
+
+        .promo {
+          margin-top: tablet-vw(40);
+        }
+
+        .confirmBTN {
+          width: tablet-vw(560);
+          height: tablet-vw(80);
+          border-radius: tablet-vw(40);
+          margin-top: tablet-vw(60);
+          margin-bottom: tablet-vw(110);
+        }
+      }
+    }
+  }
+
+  .cartConfirmFormPC_cash {
+    .MuiDialog-paper {
+      .MuiDialogContent-root {
+        .confirmFooter {
+          padding: tablet-vw(40) 0;
+        }
+
+        .confirmHeader {
+          height: tablet-vw(80);
+          margin-top: tablet-vw(15);
+          margin-bottom: tablet-vw(5);
+        }
+
+        .confirmText {
+          height: tablet-vw(50);
+          margin-bottom: tablet-vw(20);
+        }
+
+        .confirmAddr {
+          margin-bottom: tablet-vw(5);
+        }
+
+        .confirmText_2 {
+          margin-bottom: tablet-vw(5);
+        }
+
+        .confirmMessage {
+          height: tablet-vw(145);
+          margin-bottom: tablet-vw(15);
+        }
+
+        .cofirmDivider {
+          margin-bottom: tablet-vw(20);
+        }
+
+        .cofirmTable {
+          & div {
+            min-height: tablet-vw(50);
+            justify-content: space-between;
+
+            & span:first-child {
+              width: tablet-vw(560);
+            }
+
+            & span:nth-child(2) {
+              min-width: tablet-vw(90);
+              text-align: right;
+            }
+          }
+        }
+
+        .table {
+          margin-bottom: tablet-vw(10);
+        }
+
+        .confirmDelivery {
+          margin-bottom: tablet-vw(5);
+        }
+
+        .promo {
+          margin-top: tablet-vw(5);
+        }
+
+        .confirmBTN {
+          margin-top: tablet-vw(10);
+          margin-bottom: tablet-vw(10);
         }
       }
     }
