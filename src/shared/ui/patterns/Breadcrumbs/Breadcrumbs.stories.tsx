@@ -1,7 +1,7 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Breadcrumbs } from './Breadcrumbs';
 const meta = {
-  title: 'UI/Patterns/Breadcrumbs',
+  title: 'UI/Паттерны/Хлебные крошки',
   component: Breadcrumbs,
   args: {
     items: [
@@ -13,8 +13,8 @@ const meta = {
 } satisfies Meta<typeof Breadcrumbs>;
 export default meta;
 type Story = StoryObj<typeof meta>;
-export const Default: Story = {};
-export const LongText: Story = {
+export const ПоУмолчанию: Story = {};
+export const ДлинныйТекст: Story = {
   args: {
     items: [
       { label: 'Главная', href: '/' },

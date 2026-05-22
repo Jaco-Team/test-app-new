@@ -1,49 +1,76 @@
 @use '../../foundation/formulas' as *;
 @use '../../foundation/tokens' as *;
+
 .ui-category-link {
   display: inline-flex;
   align-items: center;
   justify-content: center;
   gap: ui-fluid-compact(10);
-  min-height: ui-fluid-compact(64);
-  padding: 0 ui-fluid-compact(24);
-  border-radius: 999px;
+  min-width: ui-fluid-compact(210);
+  min-height: ui-fluid-compact(78);
+  padding: 0 ui-fluid-compact(30);
+  border: 0;
+  border-radius: ui-fluid-compact(16);
   color: $ui-text;
   text-decoration: none;
-  background: #fff;
-  border: 1px solid transparent;
+  background: rgba(0, 0, 0, 0.05);
   cursor: pointer;
-  @include ui-type(28, 30, 30, 400);
-  & svg {
-    width: ui-fluid-compact(20);
+  font-family: $ui-font-family;
+  font-size: ui-fluid-compact(26);
+  font-weight: 400;
+  line-height: 1;
+  letter-spacing: 0;
+  white-space: nowrap;
+
+  svg {
+    width: ui-fluid-compact(18);
     height: auto;
   }
+
   &--tone-bordered {
-    border-color: $ui-border;
+    background: rgba(0, 0, 0, 0.05);
   }
+
   &--tone-active {
-    background: $ui-brand;
-    color: #fff;
-    border-color: $ui-brand;
+    color: $ui-text;
+    background: rgba(0, 0, 0, 0.1);
   }
+
   &--tone-active svg path {
-    stroke: #fff;
+    stroke: currentColor;
     stroke-opacity: 1;
   }
+
   @include ui-regular {
     gap: ui-fluid-regular(10);
-    min-height: ui-fluid-regular(64);
-    padding: 0 ui-fluid-regular(24);
-    & svg {
-      width: ui-fluid-regular(20);
+    min-width: ui-fluid-regular(143);
+    min-height: ui-fluid-regular(57);
+    padding: 0 ui-fluid-regular(22);
+    border-radius: ui-fluid-regular(11);
+    font-size: ui-fluid-regular(22);
+
+    svg {
+      width: ui-fluid-regular(18);
     }
   }
+
   @include ui-expanded {
-    gap: ui-fluid-expanded(10);
-    min-height: ui-fluid-expanded(64);
-    padding: 0 ui-fluid-expanded(24);
-    & svg {
-      width: ui-fluid-expanded(20);
+    min-width: 0;
+    min-height: ui-fluid-expanded(28);
+    padding: 0;
+    border-radius: 0;
+    color: $ui-text;
+    background: transparent;
+    font-size: ui-fluid-expanded(20);
+    line-height: 1;
+
+    &--tone-bordered,
+    &--tone-active {
+      background: transparent;
+    }
+
+    svg {
+      width: ui-fluid-expanded(14);
     }
   }
 }

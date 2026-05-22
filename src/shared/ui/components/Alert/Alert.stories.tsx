@@ -3,7 +3,7 @@ import { Stack } from '../../primitives';
 import { Button } from '../Button/Button';
 import { Alert } from './Alert';
 const meta = {
-  title: 'UI/Components/Alert',
+  title: 'UI/Компоненты/Уведомление',
   component: Alert,
   args: { title: 'Готово', children: 'Сообщение сохранено.' },
   decorators: [
@@ -16,21 +16,21 @@ const meta = {
 } satisfies Meta<typeof Alert>;
 export default meta;
 type Story = StoryObj<typeof meta>;
-export const Default: Story = {};
-export const Success: Story = { args: { tone: 'success' } };
-export const Warning: Story = {
+export const ПоУмолчанию: Story = {};
+export const Успех: Story = { args: { tone: 'success' } };
+export const Предупреждение: Story = {
   args: { tone: 'warning', title: 'Проверьте данные' },
 };
-export const Error: Story = { args: { tone: 'error', title: 'Ошибка' } };
-export const Loading: Story = { args: { progress: 64, title: 'Загрузка' } };
-export const LongText: Story = {
+export const Ошибка: Story = { args: { tone: 'error', title: 'Ошибка' } };
+export const Загрузка: Story = { args: { progress: 64, title: 'Загрузка' } };
+export const ДлинныйТекст: Story = {
   args: {
     title: 'Очень длинный заголовок предупреждения',
     children:
       'Очень длинное сообщение для проверки переноса строк и поведения контейнера при разных ширинах.',
   },
 };
-export const States: Story = {
+export const Состояния: Story = {
   render: () => (
     <Stack>
       <Alert title="Инфо">Информационное сообщение.</Alert>

@@ -1,7 +1,8 @@
 import type { ReactNode } from 'react';
 import MuiModal from '@mui/material/Modal';
 import { cn } from '../../foundation/classNames';
-import { Button } from '../Button/Button';
+import { IconClose } from '../../icons';
+import { IconButton } from '../IconButton/IconButton';
 import './Modal.scss';
 
 export type ModalSize = 'sm' | 'md' | 'lg' | 'fullscreen';
@@ -35,7 +36,6 @@ export function Modal({
         role="dialog"
         aria-modal="true"
       >
-        {' '}
         <div className="ui-modal__header">
           {title ? (
             <h2 id="ui-modal-title" className="ui-modal__title">
@@ -44,9 +44,14 @@ export function Modal({
           ) : (
             <span />
           )}
-          <Button tone="neutral" size="sm" density="compact" onClick={onClose}>
-            {closeLabel}
-          </Button>
+          <IconButton
+            tone="neutral"
+            size="sm"
+            label={closeLabel}
+            onClick={onClose}
+          >
+            <IconClose />
+          </IconButton>
         </div>
         <div className="ui-modal__body">{children}</div>
       </div>

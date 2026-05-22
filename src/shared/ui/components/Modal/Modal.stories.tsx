@@ -5,13 +5,14 @@ import { Button } from '../Button/Button';
 import { Modal } from './Modal';
 
 const meta = {
-  title: 'UI/Components/Modal',
+  title: 'UI/Компоненты/Модальное окно',
   component: Modal,
   parameters: { layout: 'centered' },
 } satisfies Meta<typeof Modal>;
 export default meta;
 type Story = StoryObj<typeof meta>;
-export const Default: Story = {
+export const ПоУмолчанию: Story = {
+  args: { open: true, onClose: () => {}, children: null },
   render: () => {
     const [open, setOpen] = useState(true);
     return (
@@ -24,7 +25,8 @@ export const Default: Story = {
     );
   },
 };
-export const LongText: Story = {
+export const ДлинныйТекст: Story = {
+  args: { open: true, onClose: () => {}, children: null },
   render: () => {
     const [open, setOpen] = useState(true);
     return (
@@ -41,7 +43,8 @@ export const LongText: Story = {
     );
   },
 };
-export const Fullscreen: Story = {
+export const Полноэкранный: Story = {
+  args: { open: true, onClose: () => {}, children: null },
   render: () => {
     const [open, setOpen] = useState(true);
     return (

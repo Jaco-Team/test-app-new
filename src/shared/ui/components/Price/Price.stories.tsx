@@ -2,7 +2,7 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Price } from './Price';
 
 const meta = {
-  title: 'UI/Компоненты/Price',
+  title: 'UI/Компоненты/Цена',
   component: Price,
   parameters: { layout: 'centered' },
   args: { value: 520 },

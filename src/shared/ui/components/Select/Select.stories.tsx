@@ -5,7 +5,7 @@ const options = [
   { value: 'togliatti', label: 'Тольятти' },
 ];
 const meta = {
-  title: 'UI/Components/Select',
+  title: 'UI/Компоненты/Список',
   component: Select,
   parameters: { layout: 'centered' },
   args: { label: 'Город', placeholder: 'Выберите город', options },
@@ -19,12 +19,12 @@ const meta = {
 } satisfies Meta<typeof Select>;
 export default meta;
 type Story = StoryObj<typeof meta>;
-export const Default: Story = {};
-export const Compact: Story = { args: { density: 'compact' } };
-export const Regular: Story = { args: { density: 'regular' } };
-export const Expanded: Story = { args: { density: 'expanded' } };
-export const Disabled: Story = { args: { disabled: true } };
-export const LongText: Story = {
+export const ПоУмолчанию: Story = {};
+export const Компактный: Story = { args: { density: 'compact' } };
+export const Обычный: Story = { args: { density: 'regular' } };
+export const Крупный: Story = { args: { density: 'expanded' } };
+export const Недоступный: Story = { args: { disabled: true } };
+export const ДлинныйТекст: Story = {
   args: {
     label: 'Очень длинная подпись селекта',
     options: [

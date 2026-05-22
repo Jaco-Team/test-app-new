@@ -3,20 +3,20 @@ import { Inline } from '../../primitives';
 import { IconClose, BasketIconNew, BurgerIconPC } from '../../icons';
 import { IconButton } from './IconButton';
 const meta = {
-  title: 'UI/Components/IconButton',
+  title: 'UI/Компоненты/Иконка-кнопка',
   component: IconButton,
   parameters: { layout: 'centered' },
   args: { label: 'Закрыть', children: <IconClose /> },
 } satisfies Meta<typeof IconButton>;
 export default meta;
 type Story = StoryObj<typeof meta>;
-export const Default: Story = {};
-export const Compact: Story = { args: { size: 'sm' } };
-export const Regular: Story = { args: { size: 'md' } };
-export const Expanded: Story = { args: { size: 'lg' } };
-export const Active: Story = { args: { active: true } };
-export const Disabled: Story = { args: { disabled: true } };
-export const Variants: Story = {
+export const ПоУмолчанию: Story = {};
+export const Компактный: Story = { args: { size: 'sm' } };
+export const Обычный: Story = { args: { size: 'md' } };
+export const Крупный: Story = { args: { size: 'lg' } };
+export const Активная: Story = { args: { active: true } };
+export const Недоступный: Story = { args: { disabled: true } };
+export const Варианты: Story = {
   render: () => (
     <Inline>
       <IconButton label="Меню">
