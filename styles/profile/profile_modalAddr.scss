@@ -372,6 +372,11 @@
       & .MuiInputBase-root::before {
         border-width: tablet-vw(3);
       }
+
+      // Tablet: keep focused/active underline thickness proportional, not desktop-heavy
+      & .MuiInputBase-root::after {
+        border-bottom-width: tablet-vw(3) !important;
+      }
     }
 
     & .container .closeButton {
@@ -518,6 +523,11 @@
 
         & .MuiInputBase-root::before {
           border-width: tablet-vw(3);
+        }
+
+        // Tablet: focused underline thickness
+        & .MuiInputBase-root::after {
+          border-bottom-width: tablet-vw(3) !important;
         }
       }
 

@@ -8,9 +8,11 @@ import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Backdrop from '@mui/material/Backdrop';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { roboto } from '@/ui/Font.js';
 import { IconClose, PencilModalAddrIcon, HomeModalAddrIcon } from '@/ui/Icons.js';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 import MyTextInput from '@/ui/MyTextInput';
 import MyAutocomplete from '@/ui/MyAutocomplete';
 import MySelect from '@/ui/MySelect';
@@ -36,7 +38,8 @@ export default function ModalAddr(){
     useProfileStore( state => [ state.clearAddr, state.chooseAddrStreet, state.center_map, state.zones, state.isOpenModalAddr, state.closeModalAddr, state.allStreets, state.checkStreet, state.saveNewAddr, state.infoAboutAddr, state.cityList, state.updateStreetList, state.active_city, state.updateAddr, state.setClearAddr, state.openModalAddr, state.getAddrList, state.street_list, state.chooseStreet] );
 
   const [thisCityList] = useCitiesStore((state) => [state.thisCityList]);
-  const [ token, matches ] = useHeaderStoreNew( state => [ state?.token, state?.matches ] )
+  const [ token ] = useHeaderStoreNew( state => [ state?.token ] )
+  const isMobileAutocomplete = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
 
   // const [ street, setStreet ] = useState('');
   // const [ street_, setStreet_ ] = useState('');
@@ -222,7 +225,7 @@ export default function ModalAddr(){
                   val={!chooseAddrStreet?.street ? '' : chooseAddrStreet?.city_name_dop+( chooseAddrStreet?.city_name_dop?.length > 0 ? ', ' : '' )+chooseAddrStreet?.street+', '+chooseAddrStreet?.home} 
                   onChange={event => chooseStreet(event, pd)} 
                   func={event => debouncedSearch(event)}
-                  matches={matches}
+                  matches={isMobileAutocomplete}
                 />
               </div>
               <div className='street_dop_2'>

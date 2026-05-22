@@ -6,9 +6,11 @@ import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import Backdrop from '@mui/material/Backdrop';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import { roboto } from '@/ui/Font.js';
 import { IconClose } from '@/ui/Icons.js';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 import MyAutocomplete_test from '@/ui/MyAutocomplete_test';
 
@@ -26,7 +28,7 @@ const debounce = (func, delay) => {
 
 export default function GetAddress() {
 
-  const [matches] = useHeaderStoreNew((state) => [state?.matches]);
+  const isMobileAutocomplete = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
 
   const [openModalGetAddress, setActiveGetAddressModal, getAddrList, street_list, chooseStreet, choose_street] = useProfileStore(state => [state.openModalGetAddress, state.setActiveGetAddressModal, state.getAddrList, state.street_list, state.chooseStreet, state.choose_street]);
 
@@ -73,7 +75,7 @@ export default function GetAddress() {
             func={event => debouncedSearch(event)} 
             variant={'standard'} 
             setStreet={chooseStreet}
-            matches={matches}
+            matches={isMobileAutocomplete}
             value={choose_street}
           />
         </div>

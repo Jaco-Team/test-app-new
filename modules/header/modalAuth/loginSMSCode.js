@@ -13,7 +13,7 @@ import Timer from './timer';
 import { useMaskito } from '@maskito/react';
 import { maskitoWithPlaceholder } from '@maskito/kit';
 
-export default function LoginSMSCode() {
+export default function LoginSMSCode({ isMobileAuth = false }) {
   const options = { ...maskitoWithPlaceholder('••••'), mask: /^\d{0,4}$/ };
 
   const inputRefMobile = useMaskito({ options });
@@ -28,7 +28,6 @@ export default function LoginSMSCode() {
     loginLogin,
     preTypeLogin,
     code,
-    matches,
     timerPage,
     setTimer,
     typeAuth,
@@ -40,11 +39,11 @@ export default function LoginSMSCode() {
     state?.loginLogin,
     state?.preTypeLogin,
     state?.code,
-    state?.matches,
     state?.timerPage,
     state?.setTimer,
     state.typeAuth,
   ]);
+  const matches = isMobileAuth;
 
   const authMessageByType = {
     sms: 'Введите 4 цифры из смс',

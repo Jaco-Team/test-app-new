@@ -1933,9 +1933,14 @@ export const useCartStore = reuseHotStore(
               // }, 300 )
 
               const renderCheckout = (checkout) => {
-                const el = document.getElementById('payment-form');
+                const targetId = document.getElementById(
+                  'payment-form-confirm'
+                )
+                  ? 'payment-form-confirm'
+                  : 'payment-form';
+                const el = document.getElementById(targetId);
                 if (!el) return false;
-                checkout.render('payment-form');
+                checkout.render(targetId);
                 return true;
               };
 
