@@ -2,14 +2,13 @@ import React, { useState, useEffect } from 'react';
 import { useHomeStore } from '@/components/store.js';
 import Box from '@mui/material/Box';
 
-import {Filter} from '@/ui/Icons.js';
+import { Filter } from '@/ui/Icons.js';
 
 import useCheckCat from '../hooks';
 
 import { setLocalStorageItem } from '@/utils/browserStorage';
 
 export default function MenuCatMobile({ city }) {
-
   const [
     category,
     cat_position,
@@ -18,7 +17,7 @@ export default function MenuCatMobile({ city }) {
     resetFilter,
     tag_filter,
     text_filter,
-    badge_filter
+    badge_filter,
   ] = useHomeStore((state) => [
     state.category,
     state.cat_position,
@@ -27,14 +26,15 @@ export default function MenuCatMobile({ city }) {
     state.resetFilter,
     state.tag_filter,
     state.text_filter,
-    state.badge_filter
+    state.badge_filter,
   ]);
 
   const [catDopMenu, setCatDopMenu] = useState([]);
   const [pressedCatId, setPressedCatId] = useState(null);
   const [pressedSubId, setPressedSubId] = useState(null);
 
-  const isFilterSelected = badge_filter !== '' || tag_filter !== '' || text_filter !== '';
+  const isFilterSelected =
+    badge_filter !== '' || tag_filter !== '' || text_filter !== '';
   const isFilterIconActive = isOpenFilter || isFilterSelected;
 
   const activeID = useCheckCat(category);
@@ -47,7 +47,7 @@ export default function MenuCatMobile({ city }) {
     if (!activeIdNum && !activeParentIdNum) {
       const top =
         typeof window !== 'undefined'
-          ? (window.scrollY || document.documentElement.scrollTop || 0)
+          ? window.scrollY || document.documentElement.scrollTop || 0
           : 0;
 
       if (top <= 5) {
@@ -55,7 +55,7 @@ export default function MenuCatMobile({ city }) {
         setPressedSubId(null);
 
         const firstCatWithSubs = (category || []).find(
-          (item) => Array.isArray(item?.cats) && item.cats.length > 0,
+          (item) => Array.isArray(item?.cats) && item.cats.length > 0
         );
         setCatDopMenu(firstCatWithSubs?.cats || []);
       }
@@ -74,21 +74,23 @@ export default function MenuCatMobile({ city }) {
       setPressedSubId(null);
     }
   }, [activeIdNum, activeParentIdNum, category]);
-  
+
   useEffect(() => {
     if (!Number(activeID?.id) && !Number(activeID?.parent_id)) {
       return;
     }
 
-    if( parseInt(activeID.id) !== parseInt(activeID.parent_id) ){
-      let chooseItem = category.find( item => parseInt(item.id) == parseInt(activeID.parent_id) );
+    if (parseInt(activeID.id) !== parseInt(activeID.parent_id)) {
+      let chooseItem = category.find(
+        (item) => parseInt(item.id) == parseInt(activeID.parent_id)
+      );
 
-      if( chooseItem ){
+      if (chooseItem) {
         setCatDopMenu(chooseItem.cats);
-      }else{
+      } else {
         setCatDopMenu([]);
       }
-    }else{
+    } else {
       setCatDopMenu([]);
     }
   }, [activeID, category]);
@@ -99,14 +101,16 @@ export default function MenuCatMobile({ city }) {
     }
 
     const scrollContainer = document.querySelector('#menuCatDop');
-    const activeNode = document.querySelector('#linkDOP_' + resolvedActiveSubId);
+    const activeNode = document.querySelector(
+      '#linkDOP_' + resolvedActiveSubId
+    );
 
     if (scrollContainer && activeNode?.getBoundingClientRect) {
       const data = activeNode.getBoundingClientRect();
 
       scrollContainer.scroll({
         left: data['x'] + data['width'] - 150,
-        behavior: 'smooth'
+        behavior: 'smooth',
       });
     }
   }, [resolvedActiveSubId, catDopMenu.length]);
@@ -126,10 +130,14 @@ export default function MenuCatMobile({ city }) {
       menuCatDop.scrollLeft = 0;
     }
 
-    const selectedCat = category.find((cat) => parseInt(cat.id) == parseInt(id));
-    const selectedSubs = Array.isArray(selectedCat?.cats) ? selectedCat.cats : [];
+    const selectedCat = category.find(
+      (cat) => parseInt(cat.id) == parseInt(id)
+    );
+    const selectedSubs = Array.isArray(selectedCat?.cats)
+      ? selectedCat.cats
+      : [];
 
-    if(selectedSubs.length > 0) {
+    if (selectedSubs.length > 0) {
       setCatDopMenu(selectedSubs);
       setPressedSubId(Number(selectedSubs[0]?.id) || null);
     } else {
@@ -156,7 +164,6 @@ export default function MenuCatMobile({ city }) {
     if (selectedSub?.parent_id) {
       setPressedCatId(Number(selectedSub.parent_id) || null);
     }
-    
 
     if (scroll) {
       resetFilter();
@@ -173,7 +180,9 @@ export default function MenuCatMobile({ city }) {
       return;
     }
 
-    const header = document.querySelector('.headerMobile')?.getBoundingClientRect?.().height || 0;
+    const header =
+      document.querySelector('.headerMobile')?.getBoundingClientRect?.()
+        .height || 0;
     const menuElement = document.querySelector('.menuCatMobile');
     const menu = menuElement?.getBoundingClientRect?.().height || 0;
 
@@ -203,14 +212,25 @@ export default function MenuCatMobile({ city }) {
   };
 
   return (
-    <Box sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }} className="menuCatMobile"
-     style={{position: cat_position ? 'fixed' : 'sticky'}}
+    <Box
+      id="homeCatalogMenu"
+      sx={{ display: { xs: 'flex', md: 'flex', lg: 'none' } }}
+      className="menuCatMobile"
+      style={{ position: cat_position ? 'fixed' : 'sticky' }}
     >
-      <div className="menuCat" style={{ marginBottom: catDopMenu.length == 0 ? '1.7094017094017vw' : '2.5641025641026vw' }}>
+      <div
+        className="menuCat"
+        style={{
+          marginBottom:
+            catDopMenu.length == 0 ? '1.7094017094017vw' : '2.5641025641026vw',
+        }}
+      >
         {category.map((item, key) => (
           <div
             key={key}
-            className={resolvedActiveCatId === Number(item.id) ? 'Cat active' : 'Cat'}
+            className={
+              resolvedActiveCatId === Number(item.id) ? 'Cat active' : 'Cat'
+            }
             id={'link_' + item.id}
             onClick={() => chooseCat(item.id, 'scroll')}
           >
@@ -218,22 +238,37 @@ export default function MenuCatMobile({ city }) {
           </div>
         ))}
         <div
-          className={isFilterIconActive ? 'filterSVG activeFilter' : 'filterSVG'}
+          className={
+            isFilterIconActive ? 'filterSVG activeFilter' : 'filterSVG'
+          }
           onClick={() => setActiveFilter(!isOpenFilter)}
         >
           <Filter />
         </div>
       </div>
-      {catDopMenu.length == 0 ? false : (
+      {catDopMenu.length == 0 ? (
+        false
+      ) : (
         <div className="menuCatDopContainer">
-          <div className="menuCatDop" id="menuCatDop" >
+          <div className="menuCatDop" id="menuCatDop">
             {catDopMenu.map((cat, key, arr) => (
               <div
                 key={key}
-                className={resolvedActiveSubId === Number(cat.id) ? 'CatDop active' : 'CatDop'}
-                style={{minWidth: cat.name.length > 8 ? '27.350427350427vw' : '21.367521367521vw',
-                  marginLeft: key === 0 ? '3.4188034188vw' : '1.7094017094017vw',
-                  marginRight: cat === arr[arr.length - 1] ? '3.4188034188vw' : 0}}
+                className={
+                  resolvedActiveSubId === Number(cat.id)
+                    ? 'CatDop active'
+                    : 'CatDop'
+                }
+                style={{
+                  minWidth:
+                    cat.name.length > 8
+                      ? '27.350427350427vw'
+                      : '21.367521367521vw',
+                  marginLeft:
+                    key === 0 ? '3.4188034188vw' : '1.7094017094017vw',
+                  marginRight:
+                    cat === arr[arr.length - 1] ? '3.4188034188vw' : 0,
+                }}
                 id={'linkDOP_' + cat.id}
                 onClick={() => chooseDopCat(cat.id, 'scroll')}
               >
@@ -245,7 +280,6 @@ export default function MenuCatMobile({ city }) {
       )}
 
       {/* <div className="blockShadowMenuCatMobile" style={{ position: 'sticky', top: catDopMenu.length != 0 ? '43.735042735043vw' : '31.5786vw' }} />  */}
-      
     </Box>
   );
 }

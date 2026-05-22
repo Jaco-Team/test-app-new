@@ -26,17 +26,23 @@
 //   // Setting this option to true will print useful information to the console while you're setting up Sentry.
 //   debug: false,
 // });
-import * as Sentry from "@sentry/nextjs";
+import * as Sentry from '@sentry/nextjs';
 import {
   getClientNetworkContext,
   installGlobalSentryHandlers,
   isChunkLoadError,
-} from "./utils/clientMonitoring";
+  isIgnoredBrowserInternalError,
+  isIgnoredResourceLoadError,
+} from './utils/clientMonitoring';
 
-function getEnvNumber(name, fallback, { min = Number.NEGATIVE_INFINITY, max = Number.POSITIVE_INFINITY } = {}) {
+function getEnvNumber(
+  name,
+  fallback,
+  { min = Number.NEGATIVE_INFINITY, max = Number.POSITIVE_INFINITY } = {}
+) {
   const rawValue = process.env[name];
 
-  if (rawValue == null || rawValue === "") {
+  if (rawValue == null || rawValue === '') {
     return fallback;
   }
 
@@ -52,23 +58,24 @@ function getEnvNumber(name, fallback, { min = Number.NEGATIVE_INFINITY, max = Nu
 function getEnvBoolean(name, fallback) {
   const rawValue = process.env[name];
 
-  if (rawValue == null || rawValue === "") {
+  if (rawValue == null || rawValue === '') {
     return fallback;
   }
 
-  return ["1", "true", "yes", "on"].includes(String(rawValue).toLowerCase());
+  return ['1', 'true', 'yes', 'on'].includes(String(rawValue).toLowerCase());
 }
 
 const hasSentryDsn = Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN);
 const sentryEnabled =
   hasSentryDsn &&
-  getEnvBoolean("NEXT_PUBLIC_SENTRY_ENABLED", process.env.NODE_ENV !== "test");
+  getEnvBoolean('NEXT_PUBLIC_SENTRY_ENABLED', process.env.NODE_ENV !== 'test');
 const tracesSampleRate = 0.1;
 const profilesSampleRate = 0.1;
 const replaysSessionSampleRate = 0.1;
 const replaysOnErrorSampleRate = 0.1;
 const enableLogs = 0.1;
-const enableReplay = replaysSessionSampleRate > 0 || replaysOnErrorSampleRate > 0;
+const enableReplay =
+  replaysSessionSampleRate > 0 || replaysOnErrorSampleRate > 0;
 
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
@@ -77,7 +84,7 @@ Sentry.init({
   sampleRate: 0.1,
   tracesSampleRate,
   enableLogs,
-  debug: process.env.NODE_ENV === "development",
+  debug: process.env.NODE_ENV === 'development',
   attachStacktrace: true,
   maxBreadcrumbs: 200,
   maxValueLength: 1000,
@@ -85,8 +92,8 @@ Sentry.init({
   normalizeMaxBreadth: 1200,
   initialScope(scope) {
     scope.setTags({
-      app: "jacofood-web",
-      runtime: "browser",
+      app: 'jacofood-web',
+      runtime: 'browser',
     });
 
     return scope;
@@ -99,14 +106,11 @@ Sentry.init({
           maskAllText: false,
           blockAllMedia: false,
           mask: [
-            "[data-sentry-mask]",
-            ".sentry-mask",
+            '[data-sentry-mask]',
+            '.sentry-mask',
             "[data-sensitive='true']",
           ],
-          block: [
-            "[data-sentry-block]",
-            ".sentry-block",
-          ],
+          block: ['[data-sentry-block]', '.sentry-block'],
         }),
       ]
     : [],
@@ -116,18 +120,20 @@ Sentry.init({
   beforeSend(event, hint) {
     const network = getClientNetworkContext();
     const originalException = hint?.originalException;
-    const route = typeof window !== "undefined" ? window.location.pathname : "unknown";
-    const pageUrl = typeof window !== "undefined" ? window.location.href : null;
-    const documentVisibility = typeof document !== "undefined" ? document.visibilityState : "unknown";
+    const route =
+      typeof window !== 'undefined' ? window.location.pathname : 'unknown';
+    const pageUrl = typeof window !== 'undefined' ? window.location.href : null;
+    const documentVisibility =
+      typeof document !== 'undefined' ? document.visibilityState : 'unknown';
 
     event.tags = {
       ...event.tags,
       route,
-      online_status: network.online === false ? "offline" : "online",
-      save_data_mode: network.saveData ? "enabled" : "disabled",
+      online_status: network.online === false ? 'offline' : 'online',
+      save_data_mode: network.saveData ? 'enabled' : 'disabled',
     };
 
-    if (network.effectiveType && network.effectiveType !== "unknown") {
+    if (network.effectiveType && network.effectiveType !== 'unknown') {
       event.tags.connection_type = network.effectiveType;
     }
 
@@ -137,10 +143,11 @@ Sentry.init({
       page: {
         url: pageUrl,
         path: route,
-        referrer: typeof document !== "undefined" ? document.referrer || null : null,
+        referrer:
+          typeof document !== 'undefined' ? document.referrer || null : null,
         visibilityState: documentVisibility,
         viewport:
-          typeof window !== "undefined"
+          typeof window !== 'undefined'
             ? {
                 width: window.innerWidth,
                 height: window.innerHeight,
@@ -155,20 +162,47 @@ Sentry.init({
       documentVisibility,
     };
 
-    if (isChunkLoadError(originalException || event?.message || event?.exception?.values?.[0]?.value)) {
-      event.tags.kind = "chunk_load_error";
-      event.fingerprint = event.fingerprint || ["chunk-load-error", window.location.pathname];
-    }
-
-    const frames = event?.exception?.values?.flatMap((value) => value?.stacktrace?.frames || []) || [];
-
     if (
-      frames.some((frame) =>
-        typeof frame?.filename === "string" &&
-        /^(chrome|moz)-extension:\/\//.test(frame.filename),
+      isChunkLoadError(
+        originalException ||
+          event?.message ||
+          event?.exception?.values?.[0]?.value
       )
     ) {
-      event.tags.error_source = "browser_extension";
+      event.tags.kind = 'chunk_load_error';
+      event.fingerprint = event.fingerprint || [
+        'chunk-load-error',
+        window.location.pathname,
+      ];
+    }
+
+    if (isIgnoredResourceLoadError(event)) {
+      return null;
+    }
+
+    const exceptionMessage =
+      event?.exception?.values?.[0]?.value || event?.message || '';
+
+    if (
+      isIgnoredBrowserInternalError(originalException) ||
+      isIgnoredBrowserInternalError(exceptionMessage)
+    ) {
+      return null;
+    }
+
+    const frames =
+      event?.exception?.values?.flatMap(
+        (value) => value?.stacktrace?.frames || []
+      ) || [];
+
+    if (
+      frames.some(
+        (frame) =>
+          typeof frame?.filename === 'string' &&
+          /^(chrome|moz)-extension:\/\//.test(frame.filename)
+      )
+    ) {
+      event.tags.error_source = 'browser_extension';
     }
 
     return event;

@@ -1,30 +1,35 @@
 function getNavigatorConnection() {
-  if (typeof navigator === "undefined") {
+  if (typeof navigator === 'undefined') {
     return null;
   }
 
-  return navigator.connection || navigator.mozConnection || navigator.webkitConnection || null;
+  return (
+    navigator.connection ||
+    navigator.mozConnection ||
+    navigator.webkitConnection ||
+    null
+  );
 }
 
 function getErrorText(value) {
   if (!value) {
-    return "";
+    return '';
   }
 
-  if (typeof value === "string") {
+  if (typeof value === 'string') {
     return value;
   }
 
   if (value instanceof Error) {
-    return `${value.name || "Error"}: ${value.message || ""}`;
+    return `${value.name || 'Error'}: ${value.message || ''}`;
   }
 
-  if (typeof value === "object") {
-    if (typeof value.message === "string") {
+  if (typeof value === 'object') {
+    if (typeof value.message === 'string') {
       return value.message;
     }
 
-    if (typeof value.reason === "string") {
+    if (typeof value.reason === 'string') {
       return value.reason;
     }
   }
@@ -34,16 +39,16 @@ function getErrorText(value) {
 
 function normalizeResourceUrl(resourceUrl) {
   if (!resourceUrl) {
-    return "";
+    return '';
   }
 
   try {
     const normalized = new URL(resourceUrl, window.location.origin);
-    normalized.search = "";
-    normalized.hash = "";
+    normalized.search = '';
+    normalized.hash = '';
     return normalized.toString();
   } catch {
-    return String(resourceUrl).split("?")[0];
+    return String(resourceUrl).split('?')[0];
   }
 }
 
@@ -60,26 +65,34 @@ function getElementSelector(target) {
     return null;
   }
 
-  const tagName = typeof target.tagName === "string" ? target.tagName.toLowerCase() : "resource";
-  const idPart = target.id ? `#${target.id}` : "";
+  const tagName =
+    typeof target.tagName === 'string'
+      ? target.tagName.toLowerCase()
+      : 'resource';
+  const idPart = target.id ? `#${target.id}` : '';
   const classPart =
-    typeof target.className === "string" && target.className.trim()
-      ? `.${target.className.trim().split(/\s+/).slice(0, 3).join(".")}`
-      : "";
+    typeof target.className === 'string' && target.className.trim()
+      ? `.${target.className.trim().split(/\s+/).slice(0, 3).join('.')}`
+      : '';
 
   return truncateTelemetryValue(`${tagName}${idPart}${classPart}`, 240);
 }
 
-function getResourceDebugContext(target, rawResourceUrl, normalizedResourceUrl) {
-  const pageUrl = typeof window !== "undefined" ? window.location.href : "";
-  const pagePath = typeof window !== "undefined" ? window.location.pathname : "";
-  const pageHost = typeof window !== "undefined" ? window.location.host : "";
+function getResourceDebugContext(
+  target,
+  rawResourceUrl,
+  normalizedResourceUrl
+) {
+  const pageUrl = typeof window !== 'undefined' ? window.location.href : '';
+  const pagePath =
+    typeof window !== 'undefined' ? window.location.pathname : '';
+  const pageHost = typeof window !== 'undefined' ? window.location.host : '';
 
   let resourceHost = null;
   let resourcePath = null;
   let resourceProtocol = null;
   let resourceOrigin = null;
-  let resourceScope = "unknown";
+  let resourceScope = 'unknown';
 
   try {
     const parsed = new URL(normalizedResourceUrl, window.location.origin);
@@ -87,17 +100,24 @@ function getResourceDebugContext(target, rawResourceUrl, normalizedResourceUrl) 
     resourcePath = parsed.pathname || null;
     resourceProtocol = parsed.protocol || null;
     resourceOrigin = parsed.origin || null;
-    resourceScope = parsed.origin === window.location.origin ? "first_party" : "third_party";
+    resourceScope =
+      parsed.origin === window.location.origin ? 'first_party' : 'third_party';
   } catch {
-    resourceScope = "unknown";
+    resourceScope = 'unknown';
   }
 
   return {
     pageUrl: truncateTelemetryValue(pageUrl, 700),
     pagePath: truncateTelemetryValue(pagePath, 260),
     pageHost: truncateTelemetryValue(pageHost, 260),
-    documentReferrer: truncateTelemetryValue(typeof document !== "undefined" ? document.referrer : "", 700),
-    documentReadyState: truncateTelemetryValue(typeof document !== "undefined" ? document.readyState : "", 80),
+    documentReferrer: truncateTelemetryValue(
+      typeof document !== 'undefined' ? document.referrer : '',
+      700
+    ),
+    documentReadyState: truncateTelemetryValue(
+      typeof document !== 'undefined' ? document.readyState : '',
+      80
+    ),
     resourceUrl: truncateTelemetryValue(normalizedResourceUrl, 700),
     rawResourceUrl: truncateTelemetryValue(rawResourceUrl, 700),
     resourceHost: truncateTelemetryValue(resourceHost, 260),
@@ -113,18 +133,65 @@ function getResourceDebugContext(target, rawResourceUrl, normalizedResourceUrl) 
     elementReferrerPolicy: truncateTelemetryValue(target?.referrerPolicy, 120),
     elementIntegrity: truncateTelemetryValue(target?.integrity, 220),
     elementFetchPriority: truncateTelemetryValue(target?.fetchPriority, 120),
-    elementAsync: typeof target?.async === "boolean" ? target.async : null,
-    elementDefer: typeof target?.defer === "boolean" ? target.defer : null,
+    elementAsync: typeof target?.async === 'boolean' ? target.async : null,
+    elementDefer: typeof target?.defer === 'boolean' ? target.defer : null,
     elementNoncePresent: Boolean(target?.nonce),
   };
 }
 
 function shouldSkipResourceSentryByTag(tagName) {
-  return tagName === "img";
+  return tagName === 'img';
+}
+
+const IGNORED_RESOURCE_LOAD_HOSTS = new Set([
+  'telegram.org',
+  'mc.yandex.ru',
+  'abt.s3.yandex.net',
+]);
+
+const IGNORED_RESOURCE_LOAD_URL_MARKERS = [
+  'telegram.org/',
+  'mc.yandex.ru/',
+  'abt.s3.yandex.net/',
+];
+
+export function shouldSkipIgnoredResourceLoadSentry(
+  resourceHost,
+  normalizedResourceUrl
+) {
+  const host = String(resourceHost || '').toLowerCase();
+
+  if (IGNORED_RESOURCE_LOAD_HOSTS.has(host)) {
+    return true;
+  }
+
+  const url = String(normalizedResourceUrl || '').toLowerCase();
+
+  return IGNORED_RESOURCE_LOAD_URL_MARKERS.some((marker) =>
+    url.includes(marker)
+  );
+}
+
+export function isIgnoredResourceLoadError(event) {
+  if (event?.tags?.kind !== 'resource_load_error') {
+    return false;
+  }
+
+  const resourceHost = event?.tags?.resource_host;
+  const resourceUrl = event?.extra?.resourceUrl || event?.extra?.rawResourceUrl;
+
+  return shouldSkipIgnoredResourceLoadSentry(resourceHost, resourceUrl);
+}
+
+function shouldSkipResourceLoadSentry(resourceHost, normalizedResourceUrl) {
+  return shouldSkipIgnoredResourceLoadSentry(
+    resourceHost,
+    normalizedResourceUrl
+  );
 }
 
 function isInvalidResourceUrl(resourceUrl) {
-  const normalized = String(resourceUrl || "").toLowerCase();
+  const normalized = String(resourceUrl || '').toLowerCase();
 
   if (!normalized) {
     return true;
@@ -133,17 +200,17 @@ function isInvalidResourceUrl(resourceUrl) {
   return /\/(undefined|null)(?:_|\/|\.|$)/i.test(normalized);
 }
 
-export const INTERNET_ISSUE_EVENT_NAME = "jaco:internet-issue";
+export const INTERNET_ISSUE_EVENT_NAME = 'jaco:internet-issue';
 const INTERNET_ISSUE_DEDUP_WINDOW_MS = 15000;
 
 export function isCustomSentryMonitoringEnabled() {
   const rawValue = process.env.NEXT_PUBLIC_SENTRY_CUSTOM_MONITORING_ENABLED;
 
-  if (rawValue == null || rawValue === "") {
+  if (rawValue == null || rawValue === '') {
     return true;
   }
 
-  return ["1", "true", "yes", "on"].includes(String(rawValue).toLowerCase());
+  return ['1', 'true', 'yes', 'on'].includes(String(rawValue).toLowerCase());
 }
 
 function normalizeIssueValue(value) {
@@ -151,11 +218,11 @@ function normalizeIssueValue(value) {
     return null;
   }
 
-  if (typeof value === "number" || typeof value === "boolean") {
+  if (typeof value === 'number' || typeof value === 'boolean') {
     return value;
   }
 
-  if (typeof value === "string") {
+  if (typeof value === 'string') {
     return value.slice(0, 300);
   }
 
@@ -164,18 +231,18 @@ function normalizeIssueValue(value) {
 
 function getIssueSignature(payload) {
   return [
-    payload?.type || "unknown_type",
-    payload?.source || "unknown_source",
-    payload?.module || "",
-    payload?.status || "",
-    payload?.code || "",
-    payload?.resourceUrl || "",
-    payload?.tagName || "",
-  ].join("|");
+    payload?.type || 'unknown_type',
+    payload?.source || 'unknown_source',
+    payload?.module || '',
+    payload?.status || '',
+    payload?.code || '',
+    payload?.resourceUrl || '',
+    payload?.tagName || '',
+  ].join('|');
 }
 
 export function getClientNetworkContext() {
-  if (typeof window === "undefined" || typeof navigator === "undefined") {
+  if (typeof window === 'undefined' || typeof navigator === 'undefined') {
     return {};
   }
 
@@ -183,9 +250,10 @@ export function getClientNetworkContext() {
 
   return {
     online: navigator.onLine,
-    effectiveType: connection?.effectiveType || "unknown",
-    downlinkMbps: typeof connection?.downlink === "number" ? connection.downlink : null,
-    rttMs: typeof connection?.rtt === "number" ? connection.rtt : null,
+    effectiveType: connection?.effectiveType || 'unknown',
+    downlinkMbps:
+      typeof connection?.downlink === 'number' ? connection.downlink : null,
+    rttMs: typeof connection?.rtt === 'number' ? connection.rtt : null,
     saveData: Boolean(connection?.saveData),
   };
 }
@@ -195,23 +263,24 @@ export function emitInternetIssue(payload = {}) {
     return false;
   }
 
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return false;
   }
 
   try {
     const safePayload = {
-      type: normalizeIssueValue(payload.type) || "internet_issue",
-      source: normalizeIssueValue(payload.source) || "unknown",
+      type: normalizeIssueValue(payload.type) || 'internet_issue',
+      source: normalizeIssueValue(payload.source) || 'unknown',
       module: normalizeIssueValue(payload.module),
       requestType: normalizeIssueValue(payload.requestType),
       status: normalizeIssueValue(payload.status),
       code: normalizeIssueValue(payload.code),
       resourceUrl: normalizeIssueValue(payload.resourceUrl),
       tagName: normalizeIssueValue(payload.tagName),
-      retryable: typeof payload.retryable === "boolean" ? payload.retryable : null,
+      retryable:
+        typeof payload.retryable === 'boolean' ? payload.retryable : null,
       attempt: normalizeIssueValue(payload.attempt),
-      pageUrl: typeof window !== "undefined" ? window.location.href : null,
+      pageUrl: typeof window !== 'undefined' ? window.location.href : null,
       network: payload.network || getClientNetworkContext(),
       ts: Date.now(),
     };
@@ -231,7 +300,7 @@ export function emitInternetIssue(payload = {}) {
     window.dispatchEvent(
       new CustomEvent(INTERNET_ISSUE_EVENT_NAME, {
         detail: safePayload,
-      }),
+      })
     );
 
     return true;
@@ -244,17 +313,23 @@ export function isChunkLoadError(value) {
   const errorText = getErrorText(value).toLowerCase();
 
   return (
-    errorText.includes("chunkloaderror") ||
-    errorText.includes("loading chunk") ||
-    errorText.includes("failed to load chunk") ||
-    errorText.includes("failed to fetch dynamically imported module") ||
-    errorText.includes("importing a module script failed") ||
-    errorText.includes("/_next/static/")
+    errorText.includes('chunkloaderror') ||
+    errorText.includes('loading chunk') ||
+    errorText.includes('failed to load chunk') ||
+    errorText.includes('failed to fetch dynamically imported module') ||
+    errorText.includes('importing a module script failed') ||
+    errorText.includes('/_next/static/')
   );
 }
 
+export function isIgnoredBrowserInternalError(value) {
+  const errorText = getErrorText(value).toLowerCase();
+
+  return errorText.includes('remoteframeregistration.processchildframemessage');
+}
+
 export function maybeReloadAfterChunkError(context = {}) {
-  if (typeof window === "undefined" || typeof sessionStorage === "undefined") {
+  if (typeof window === 'undefined' || typeof sessionStorage === 'undefined') {
     return false;
   }
 
@@ -270,7 +345,7 @@ export function maybeReloadAfterChunkError(context = {}) {
       JSON.stringify({
         ts: Date.now(),
         ...context,
-      }),
+      })
     );
   } catch {
     // Ignore storage failures and still try to recover with reload.
@@ -285,7 +360,7 @@ export function installGlobalSentryHandlers(Sentry) {
     return;
   }
 
-  if (typeof window === "undefined") {
+  if (typeof window === 'undefined') {
     return;
   }
 
@@ -295,32 +370,32 @@ export function installGlobalSentryHandlers(Sentry) {
 
   window.__JACO_SENTRY_HANDLERS_INSTALLED = true;
 
-  window.addEventListener("offline", () => {
+  window.addEventListener('offline', () => {
     Sentry.addBreadcrumb({
-      category: "network",
-      message: "Browser went offline",
-      level: "warning",
+      category: 'network',
+      message: 'Browser went offline',
+      level: 'warning',
       data: getClientNetworkContext(),
     });
 
     emitInternetIssue({
-      type: "browser_offline",
-      source: "window_event",
+      type: 'browser_offline',
+      source: 'window_event',
       network: getClientNetworkContext(),
     });
   });
 
-  window.addEventListener("online", () => {
+  window.addEventListener('online', () => {
     Sentry.addBreadcrumb({
-      category: "network",
-      message: "Browser went online",
-      level: "info",
+      category: 'network',
+      message: 'Browser went online',
+      level: 'info',
       data: getClientNetworkContext(),
     });
   });
 
   window.addEventListener(
-    "error",
+    'error',
     (event) => {
       const target = event?.target;
 
@@ -331,10 +406,19 @@ export function installGlobalSentryHandlers(Sentry) {
           return;
         }
 
-        const tagName = String(target.tagName || "resource").toLowerCase();
-        const skipResourceSentry = shouldSkipResourceSentryByTag(tagName);
+        const tagName = String(target.tagName || 'resource').toLowerCase();
         const normalizedResourceUrl = normalizeResourceUrl(resourceUrl);
-        const resourceDebugContext = getResourceDebugContext(target, resourceUrl, normalizedResourceUrl);
+        const resourceDebugContext = getResourceDebugContext(
+          target,
+          resourceUrl,
+          normalizedResourceUrl
+        );
+        const skipResourceSentry =
+          shouldSkipResourceSentryByTag(tagName) ||
+          shouldSkipResourceLoadSentry(
+            resourceDebugContext.resourceHost,
+            normalizedResourceUrl
+          );
         const extra = {
           tagName,
           ...resourceDebugContext,
@@ -342,33 +426,35 @@ export function installGlobalSentryHandlers(Sentry) {
         };
         const sentryTags = {
           resource_tag: tagName,
-          resource_scope: resourceDebugContext.resourceScope || "unknown",
-          resource_host: resourceDebugContext.resourceHost || "unknown",
-          page_path: resourceDebugContext.pagePath || "unknown",
+          resource_scope: resourceDebugContext.resourceScope || 'unknown',
+          resource_host: resourceDebugContext.resourceHost || 'unknown',
+          page_path: resourceDebugContext.pagePath || 'unknown',
         };
 
-        if (normalizedResourceUrl.includes("/_next/static/")) {
-          const chunkError = new Error(`Failed to load Next.js asset: ${normalizedResourceUrl}`);
-          chunkError.name = "ChunkLoadError";
+        if (normalizedResourceUrl.includes('/_next/static/')) {
+          const chunkError = new Error(
+            `Failed to load Next.js asset: ${normalizedResourceUrl}`
+          );
+          chunkError.name = 'ChunkLoadError';
 
           Sentry.captureException(chunkError, {
             tags: {
-              kind: "chunk_load_error",
-              source: "resource_error",
+              kind: 'chunk_load_error',
+              source: 'resource_error',
               ...sentryTags,
             },
             extra,
-            fingerprint: ["chunk-load-error", normalizedResourceUrl],
+            fingerprint: ['chunk-load-error', normalizedResourceUrl],
           });
 
           maybeReloadAfterChunkError({
-            source: "resource_error",
+            source: 'resource_error',
             resourceUrl: normalizedResourceUrl,
           });
 
           emitInternetIssue({
-            type: "chunk_asset_failed",
-            source: "resource_error",
+            type: 'chunk_asset_failed',
+            source: 'resource_error',
             resourceUrl: normalizedResourceUrl,
             tagName,
             network: getClientNetworkContext(),
@@ -380,21 +466,25 @@ export function installGlobalSentryHandlers(Sentry) {
         if (isInvalidResourceUrl(normalizedResourceUrl)) {
           if (!skipResourceSentry) {
             Sentry.captureMessage(`Resource has invalid URL: ${tagName}`, {
-              level: "warning",
+              level: 'warning',
               tags: {
-                kind: "resource_invalid_url",
+                kind: 'resource_invalid_url',
                 ...sentryTags,
               },
               extra,
-              fingerprint: ["resource-invalid-url", tagName, normalizedResourceUrl],
+              fingerprint: [
+                'resource-invalid-url',
+                tagName,
+                normalizedResourceUrl,
+              ],
             });
           }
 
           emitInternetIssue({
-            type: "resource_invalid_url",
-            source: "resource_data_error",
-            module: "resource_loader",
-            code: "invalid_resource_url",
+            type: 'resource_invalid_url',
+            source: 'resource_data_error',
+            module: 'resource_loader',
+            code: 'invalid_resource_url',
             resourceUrl: normalizedResourceUrl,
             tagName,
             retryable: false,
@@ -406,19 +496,23 @@ export function installGlobalSentryHandlers(Sentry) {
 
         if (!skipResourceSentry) {
           Sentry.captureMessage(`Resource failed to load: ${tagName}`, {
-            level: "error",
+            level: 'error',
             tags: {
-              kind: "resource_load_error",
+              kind: 'resource_load_error',
               ...sentryTags,
             },
             extra,
-            fingerprint: ["resource-load-error", tagName, normalizedResourceUrl],
+            fingerprint: [
+              'resource-load-error',
+              tagName,
+              normalizedResourceUrl,
+            ],
           });
         }
 
         emitInternetIssue({
-          type: "resource_load_failed",
-          source: "resource_error",
+          type: 'resource_load_failed',
+          source: 'resource_error',
           resourceUrl: normalizedResourceUrl,
           tagName,
           network: getClientNetworkContext(),
@@ -429,46 +523,50 @@ export function installGlobalSentryHandlers(Sentry) {
 
       if (isChunkLoadError(event?.error || event?.message || event?.filename)) {
         emitInternetIssue({
-          type: "chunk_runtime_error",
-          source: "window_error",
+          type: 'chunk_runtime_error',
+          source: 'window_error',
           code: event?.message || null,
           resourceUrl: event?.filename || null,
           network: getClientNetworkContext(),
         });
 
         maybeReloadAfterChunkError({
-          source: "window_error",
+          source: 'window_error',
           filename: event?.filename || null,
         });
       }
     },
-    true,
+    true
   );
 
-  window.addEventListener("unhandledrejection", (event) => {
+  window.addEventListener('unhandledrejection', (event) => {
     if (!isChunkLoadError(event?.reason)) {
       return;
     }
 
     emitInternetIssue({
-      type: "chunk_unhandled_rejection",
-      source: "unhandledrejection",
+      type: 'chunk_unhandled_rejection',
+      source: 'unhandledrejection',
       code: getErrorText(event?.reason),
       network: getClientNetworkContext(),
     });
 
     maybeReloadAfterChunkError({
-      source: "unhandledrejection",
+      source: 'unhandledrejection',
     });
   });
 }
 
-export function waitForYMapsReady({ timeoutMs = 12000, pollIntervalMs = 250 } = {}) {
-  if (typeof window === "undefined") {
+export function waitForYMapsReady({
+  timeoutMs = 12000,
+  pollIntervalMs = 250,
+} = {}) {
+  if (typeof window === 'undefined') {
     return Promise.resolve(false);
   }
 
-  const hasReadyApi = () => Boolean(window.ymaps && typeof window.ymaps.ready === "function");
+  const hasReadyApi = () =>
+    Boolean(window.ymaps && typeof window.ymaps.ready === 'function');
 
   const waitForReadyCallback = () =>
     new Promise((resolve) => {

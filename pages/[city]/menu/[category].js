@@ -1,29 +1,70 @@
 import React, { useEffect } from 'react';
 
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 
-import Footer from '@/components/footer.js'
+import Footer from '@/components/footer.js';
 const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'));
 
-import { roboto } from '@/ui/Font.js'
+import { roboto } from '@/ui/Font.js';
 import { api } from '@/components/api.js';
 
-import { useHomeStore, useCitiesStore, useHeaderStoreNew, useCartStore } from '@/components/store.js';
+import {
+  useHomeStore,
+  useCitiesStore,
+  useHeaderStoreNew,
+  useCartStore,
+} from '@/components/store.js';
 
 const this_module = 'category';
 
-import { normalizeCity } from '@/utils/normalizeCity'
-import { getCookie } from '@/utils/getCookie'
+import { normalizeCity } from '@/utils/normalizeCity';
+import { getCookie } from '@/utils/getCookie';
 
 export default function Home(props) {
+  const {
+    city,
+    cats,
+    cities,
+    page,
+    all_items,
+    free_items,
+    need_dop,
+    category,
+    tags,
+    links,
+  } = props.data1;
 
-  const { city, cats, cities, page, all_items, free_items, need_dop, category, tags, links } = props.data1;
+  const [
+    setAllItems,
+    setFreeItems,
+    allItems,
+    changeAllItems,
+    setNeedDops,
+    getCartLocalStorage,
+  ] = useCartStore((state) => [
+    state.setAllItems,
+    state.setFreeItems,
+    state.allItems,
+    state.changeAllItems,
+    state.setNeedDops,
+    state.getCartLocalStorage,
+  ]);
 
-  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
+  const [getBanners, setAllTags, seedItemsCatFromPage, getItemsCat] =
+    useHomeStore((state) => [
+      state.getBanners,
+      state.setAllTags,
+      state.seedItemsCatFromPage,
+      state.getItemsCat,
+    ]);
 
-  const [ getBanners, setAllTags, seedItemsCatFromPage, getItemsCat ] = useHomeStore( state => [ state.getBanners, state.setAllTags, state.seedItemsCatFromPage, state.getItemsCat ]);
-
-  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
+  const [thisCity, setThisCity, setThisCityRu, setThisCityList] =
+    useCitiesStore((state) => [
+      state.thisCity,
+      state.setThisCity,
+      state.setThisCityRu,
+      state.setThisCityList,
+    ]);
   const [setActivePage] = useHeaderStoreNew((state) => [state.setActivePage]);
 
   useEffect(() => {
@@ -31,7 +72,9 @@ export default function Home(props) {
       return;
     }
 
-    const found = Array.isArray(cities) ? cities.find(item => item?.link == city) : null;
+    const found = Array.isArray(cities)
+      ? cities.find((item) => item?.link == city)
+      : null;
 
     setThisCity(city);
     setThisCityRu(found?.name ?? '');
@@ -43,17 +86,27 @@ export default function Home(props) {
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [allItems.length, all_items, changeAllItems, cities, city, setAllItems, setThisCity, setThisCityList, setThisCityRu, thisCity]);
+  }, [
+    allItems.length,
+    all_items,
+    changeAllItems,
+    cities,
+    city,
+    setAllItems,
+    setThisCity,
+    setThisCityList,
+    setThisCityRu,
+    thisCity,
+  ]);
 
   useEffect(() => {
-
-    setTimeout( () => {
+    setTimeout(() => {
       window.scrollTo(0, 0);
-    }, 100 )
+    }, 100);
 
     getBanners('home', city);
-    
-    if( allItems?.length == 0 ){
+
+    if (allItems?.length == 0) {
       setAllItems(all_items);
     }
 
@@ -68,8 +121,24 @@ export default function Home(props) {
     getCartLocalStorage();
 
     setActivePage('category');
-    
-  }, [allItems.length, all_items, cats, city, free_items, getBanners, getCartLocalStorage, getItemsCat, need_dop, seedItemsCatFromPage, setActivePage, setAllItems, setAllTags, setFreeItems, setNeedDops, tags]);
+  }, [
+    allItems.length,
+    all_items,
+    cats,
+    city,
+    free_items,
+    getBanners,
+    getCartLocalStorage,
+    getItemsCat,
+    need_dop,
+    seedItemsCatFromPage,
+    setActivePage,
+    setAllItems,
+    setAllTags,
+    setFreeItems,
+    setNeedDops,
+    tags,
+  ]);
 
   return (
     <div className={roboto.variable}>
@@ -77,13 +146,19 @@ export default function Home(props) {
 
       <Footer cityName={city} active_page={this_module} links={links} />
     </div>
-  )
+  );
 }
 
 export async function getServerSideProps({ req, res, query }) {
-  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=60');
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=60, stale-while-revalidate=60'
+  );
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
@@ -92,6 +167,7 @@ export async function getServerSideProps({ req, res, query }) {
   const city = cityFromPath || savedCity || 'togliatti';
 
   if (!cityFromPath) {
+    // console.log('!cityFromPath')
     return { redirect: { destination: `/${city}`, permanent: false } };
   }
 
@@ -104,12 +180,18 @@ export async function getServerSideProps({ req, res, query }) {
   });
 
   if (!data1 || data1?.page == null) {
+    // console.log('!data1 || data1?.page')
     return { redirect: { destination: `/${city}`, permanent: false } };
   }
 
   // если бэк говорит, что категории нет — уводим на главную города,
   // но НЕ для '' и не для 'menu'
-  if (parseInt(data1?.page?.category_id, 10) === 0 && category !== '' && category !== 'menu') {
+  if (
+    parseInt(data1?.page?.category_id, 10) === 0 &&
+    category !== '' &&
+    category !== 'menu' &&
+    category !== 'rolly'
+  ) {
     return { redirect: { destination: `/${city}`, permanent: false } };
   }
 

@@ -1,4 +1,4 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
 .filterPC {
   width: $MyScale2520;
@@ -9,10 +9,10 @@
   display: flex;
   padding: $MyScale40 0;
 
-  & .search_clear{
+  & .search_clear {
     display: flex;
     align-items: center;
-    
+
     & .tag {
       height: $MyScale70 !important;
       width: fit-content;
@@ -32,7 +32,7 @@
       & span {
         height: $MyScale40;
         @include font30_400();
-        color: #fff!important;
+        color: #fff !important;
 
         display: flex;
         justify-content: center;
@@ -79,7 +79,7 @@
           display: flex;
           justify-content: center;
           align-items: center;
-          &:hover{
+          &:hover {
             color: #dd1a32 !important;
           }
         }
@@ -104,16 +104,21 @@
         }
       }
 
+      & .tag_.active {
+        border-color: #dd1a32;
+        box-shadow: 0 0 0 $MyScale2 rgba(221, 26, 50, 0.35);
+      }
+
       & .tag.active {
         padding-right: 0;
         padding-left: $MyScale16;
         border: $MyScale3 solid #dd1a32;
-        
-        & span{
-          color: #dd1a32!important;
+
+        & span {
+          color: #dd1a32 !important;
         }
-        
-        & svg{
+
+        & svg {
           animation: ani 0.5s forwards;
           width: $MyScale50;
           height: $MyScale40;
@@ -125,14 +130,12 @@
           color: #dd1a32;
           stroke: #dd1a32;
 
-          & path{
+          & path {
             fill: #dd1a32;
             color: #dd1a32;
             stroke: #dd1a32;
           }
-
         }
-
       }
     }
 
@@ -324,7 +327,7 @@
   }
 }
 
-#modalFilterMobile{
+#modalFilterMobile {
   & .MuiDrawer-paper {
     //max-height: calc(100% - $MyScale200_mobile);
     //height: fit-content;
@@ -359,7 +362,8 @@
   //background-color: rgba(0, 0, 0, 0.05);
   //display: flex;
   //flex-direction: column;
-  padding: $MyScale60_mobile $MyScale10_mobile $MyScale60_mobile $MyScale60_mobile;
+  padding: $MyScale60_mobile $MyScale10_mobile $MyScale60_mobile
+    $MyScale60_mobile;
   opacity: 0;
   animation: ani 0.5s forwards;
   //margin: $MyScale20_mobile 0;
@@ -443,35 +447,34 @@
 
           & span {
             padding-right: 0;
-            padding-left: $MyScale30_mobile;;
+            padding-left: $MyScale30_mobile;
           }
-          & span{
-            color: #dd1a32!important;
+          & span {
+            color: #dd1a32 !important;
           }
-          & svg{
+          & svg {
             animation: ani 0.5s forwards;
             width: $MyScale70_mobile;
             height: $MyScale70_mobile;
             padding-left: $MyScale10_mobile;
             padding-right: $MyScale16_mobile;
-  
+
             fill: #dd1a32;
             color: #dd1a32;
             stroke: #dd1a32;
-            & path{
+            & path {
               fill: #dd1a32;
               color: #dd1a32;
               stroke: #dd1a32;
             }
           }
-
         }
       }
-      & .search_clear.tag{
+      & .search_clear.tag {
         background-color: rgb(221, 26, 50);
-        & span{
+        & span {
           color: #fff !important;
-          background-color: rgb(221, 26, 50)!important;
+          background-color: rgb(221, 26, 50) !important;
         }
       }
       & .tag_ {
@@ -493,8 +496,8 @@
 
         &.active {
           border: $MyScale3_mobile solid rgba(0, 0, 0, 0.4);
-          & span{
-            color: #dd1a32!important;
+          & span {
+            color: #dd1a32 !important;
           }
         }
       }

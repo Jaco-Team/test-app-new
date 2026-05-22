@@ -38,6 +38,33 @@ function captureMapStateIssue(message, extra = {}) {
   });
 }
 
+function getStreetMapCenterFromJson(json) {
+  const xy = json?.this_info?.xy;
+
+  if (Array.isArray(xy) && xy.length >= 2 && xy[0] != null && xy[1] != null) {
+    return [xy[0], xy[1]];
+  }
+
+  const cityCenter = json?.city_center;
+
+  if (
+    Array.isArray(cityCenter) &&
+    cityCenter.length >= 2 &&
+    cityCenter[0] != null &&
+    cityCenter[1] != null
+  ) {
+    return [cityCenter[0], cityCenter[1]];
+  }
+
+  const zoneCenter = json?.zones?.[0]?.xy_center_map;
+
+  if (zoneCenter?.latitude != null && zoneCenter?.longitude != null) {
+    return [zoneCenter.latitude, zoneCenter.longitude];
+  }
+
+  return null;
+}
+
 function loadScriptOnce(src) {
   if (typeof document === 'undefined') {
     return Promise.resolve(false);
@@ -1933,9 +1960,7 @@ export const useCartStore = reuseHotStore(
               // }, 300 )
 
               const renderCheckout = (checkout) => {
-                const targetId = document.getElementById(
-                  'payment-form-confirm'
-                )
+                const targetId = document.getElementById('payment-form-confirm')
                   ? 'payment-form-confirm'
                   : 'payment-form';
                 const el = document.getElementById(targetId);
@@ -4221,6 +4246,20 @@ export const useProfileStore = reuseHotStore(
           };
 
           let json = await api('profile', data);
+          const mapCenter = getStreetMapCenterFromJson(json);
+
+          if (!mapCenter) {
+            captureMapStateIssue(
+              'Street map response does not contain map center',
+              {
+                source: 'useProfileStore.getMapMobile',
+                city: city || get().city,
+                streetId: id,
+                hasThisInfoXy: Boolean(json?.this_info?.xy),
+                hasCityCenter: json?.city_center != null,
+              }
+            );
+          }
 
           set({
             allStreets: json?.streets,
@@ -4229,9 +4268,7 @@ export const useProfileStore = reuseHotStore(
             active_city: json?.city,
             chooseAddrStreet: json?.this_info ?? {},
             center_map: {
-              center: json?.this_info?.xy
-                ? [json?.this_info?.xy[0], json?.this_info?.xy[1]]
-                : [json?.city_center[0], json?.city_center[1]],
+              center: mapCenter,
               zoom: 11.5,
               controls: [],
             },
@@ -4463,6 +4500,21 @@ export const useProfileStore = reuseHotStore(
             json.this_info.street = street[1];
           }
 
+          const mapCenter = getStreetMapCenterFromJson(json);
+
+          if (!mapCenter) {
+            captureMapStateIssue(
+              'Street map response does not contain map center',
+              {
+                source: 'useProfileStore.openModalAddr',
+                city: city || get().city,
+                streetId: id,
+                hasThisInfoXy: Boolean(json?.this_info?.xy),
+                hasCityCenter: json?.city_center != null,
+              }
+            );
+          }
+
           set({
             // allStreets: [],
 
@@ -4473,9 +4525,7 @@ export const useProfileStore = reuseHotStore(
             active_city: json?.city,
             chooseAddrStreet: json?.this_info ?? {},
             center_map: {
-              center: json?.this_info
-                ? [json?.this_info?.xy[0], json?.this_info?.xy[1]]
-                : [json?.city_center[0], json?.city_center[1]],
+              center: mapCenter,
               zoom: 11.5,
               controls: [],
             },
@@ -4737,12 +4787,10 @@ export const useProfileStore = reuseHotStore(
               openModalAddress: false,
             });
 
-            useCartStore
-              .getState()
-              .getMySavedAddr(city_id, {
-                street: get().chooseAddrStreet.street,
-                home: get().chooseAddrStreet.home,
-              });
+            useCartStore.getState().getMySavedAddr(city_id, {
+              street: get().chooseAddrStreet.street,
+              home: get().chooseAddrStreet.home,
+            });
           } else {
             useHeaderStoreNew
               .getState()
@@ -4827,12 +4875,10 @@ export const useProfileStore = reuseHotStore(
               openModalAddress: false,
             });
 
-            useCartStore
-              .getState()
-              .getMySavedAddr(city_id, {
-                street: get().chooseAddrStreet.street,
-                home: get().chooseAddrStreet.home,
-              });
+            useCartStore.getState().getMySavedAddr(city_id, {
+              street: get().chooseAddrStreet.street,
+              home: get().chooseAddrStreet.home,
+            });
           } else {
             useHeaderStoreNew
               .getState()
@@ -5244,42 +5290,8 @@ export const useHomeStore = reuseHotStore(
       openItemCard: false,
       item_card: null,
 
-      // применить сохранённый фильтр к списку товаров на главной
-      applyCurrentFilters: () => {
-        const all_items = useCartStore.getState().allItems;
-        const { badge_filter, tag_filter, text_filter } = get();
-
-        if (!all_items?.length) return;
-
-        all_items.forEach((item) => {
-          const el = document.getElementById(item.link);
-          if (!el) return;
-
-          let visible = true;
-
-          if (badge_filter !== '') {
-            if (parseInt(badge_filter) === 2) {
-              visible = visible && parseInt(item.is_new) === 1;
-            }
-
-            if (parseInt(badge_filter) === 1) {
-              visible = visible && parseInt(item.is_hit) === 1;
-            }
-          }
-
-          if (tag_filter !== '') {
-            visible = visible && item.tags?.includes(Number(tag_filter));
-          }
-
-          if (text_filter !== '') {
-            visible =
-              visible &&
-              item.name?.toLowerCase().includes(text_filter.toLowerCase());
-          }
-
-          el.style.display = visible ? 'flex' : 'none';
-        });
-      },
+      // Состояние фильтра применяется при рендере каталога (cardItems.js).
+      applyCurrentFilters: () => {},
 
       // закрытие модалки товара в списке сетов
       closeItemModal: () => {
@@ -5298,15 +5310,6 @@ export const useHomeStore = reuseHotStore(
 
       // сброс фильтра на главной странице
       resetFilter: () => {
-        const all_items = useCartStore.getState().allItems;
-
-        if (all_items?.length) {
-          all_items.forEach((item) => {
-            const el = document.getElementById(item.link);
-            if (el) el.style.display = 'flex';
-          });
-        }
-
         set({
           badge_filter: '',
           tag_filter: '',
@@ -5333,37 +5336,19 @@ export const useHomeStore = reuseHotStore(
         let text_filter = event.target.value;
 
         if (text_filter) {
-          let all_items = useCartStore.getState().allItems;
-
-          let check = false;
-
-          all_items.map((item) => {
-            if (document.getElementById(item.link)) {
-              check = item.name
-                .toLowerCase()
-                .includes(text_filter.toLowerCase());
-
-              if (check) {
-                document.querySelector('#' + item.link).style.display = 'flex';
-              } else {
-                document.querySelector('#' + item.link).style.display = 'none';
-              }
-            }
-          });
-
           useProfileStore
             .getState()
             .saveUserActions('choose_tag_text', text_filter);
 
-          set({ text_filter });
+          set({ text_filter, badge_filter: '', tag_filter: '' });
+          get().scrollToTargetAdjusted();
         } else {
           get().resetFilter();
         }
       },
 
       // фильтр товаров по badges на главной странице
-      filterItemsBadge: (res) => {
-        let all_items = useCartStore.getState().allItems;
+      filterItemsBadge: (res, skipScroll = false) => {
         const badge_filter = get().badge_filter;
 
         set({ tag_filter: '', text_filter: '' });
@@ -5375,52 +5360,22 @@ export const useHomeStore = reuseHotStore(
             const cityId = useCitiesStore.getState().thisCity;
             reachGoal('choose_tag', { tag: 'Новинка' }, cityId);
             reachGoal('Тэг Новинка', { tag: 'Новинка' }, cityId);
-
-            all_items.map((item) => {
-              if (document.getElementById(item.link)) {
-                if (parseInt(item.is_new) === 1) {
-                  document.querySelector('#' + item.link).style.display =
-                    'flex';
-                } else {
-                  document.querySelector('#' + item.link).style.display =
-                    'none';
-                }
-              }
-            });
           }
 
-          if (parseInt(res) === 1) {
-            all_items.map((item) => {
-              if (document.getElementById(item.link)) {
-                if (parseInt(item.is_hit) === 1) {
-                  document.querySelector('#' + item.link).style.display =
-                    'flex';
-                } else {
-                  document.querySelector('#' + item.link).style.display =
-                    'none';
-                }
-              }
-            });
+          if (!skipScroll) {
+            get().scrollToTargetAdjusted();
           }
-
-          get().scrollToTargetAdjusted();
-
-          set({ badge_filter: res });
+          set({ badge_filter: res, tag_filter: '', text_filter: '' });
         } else {
           get().resetFilter();
         }
       },
 
       // фильтр товаров по тэгам на главной странице
-      filterItems: (res) => {
-        set({ badge_filter: '', text_filter: '' });
-
-        let all_items = useCartStore.getState().allItems;
+      filterItems: (res, skipScroll = false) => {
         let tag_filter = get().tag_filter;
 
         if (parseInt(res) !== parseInt(tag_filter)) {
-          let check = false;
-
           let all_tags = get().all_tags;
 
           let find_tag = all_tags?.find(
@@ -5436,30 +5391,13 @@ export const useHomeStore = reuseHotStore(
             .getState()
             .saveUserActions('choose_tag', find_tag?.name);
 
-          all_items.map((item) => {
-            //check = this_filter.some(r=> item.tags.includes(r)) -- или
-            //check = this_filter.every(r=> item.tags.includes(r)) -- и
-
-            if (document.getElementById(item.link)) {
-              check = item.tags.includes(res);
-
-              if (check) {
-                //arr.push(item)
-                document.querySelector('#' + item.link).style.display = 'flex';
-              } else {
-                document.querySelector('#' + item.link).style.display = 'none';
-              }
-            }
-          });
-
-          get().scrollToTargetAdjusted();
-
-          set({ tag_filter: res });
+          if (!skipScroll) {
+            get().scrollToTargetAdjusted();
+          }
+          set({ tag_filter: res, badge_filter: '', text_filter: '' });
         } else {
           get().resetFilter();
         }
-
-        //console.log(arr)
       },
 
       // скролл к списку товаров на главной при выборе тега или баджа в фильтре

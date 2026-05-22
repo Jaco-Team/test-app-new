@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import Script from 'next/script'
+import Script from 'next/script';
 
 import useMediaQuery from '@mui/material/useMediaQuery';
 
@@ -14,13 +14,16 @@ import BasketPC from '@/modules/header/basket/basketPC.js';
 import BasketModalPC from '@/modules/cart/basketModalPC.js';
 import ModalAddr from '@/modules/profile/profile/modalAddr.jsx';
 import ModalAlert from '@/modules/header/alert';
-import SelectAddress from '@/modules/header/selectAddress.js'
+import SelectAddress from '@/modules/header/selectAddress.js';
 
 import ModalActiveVK_pc from '@/modules/header/modalActiveVK/modalActiveVK_pc';
 import ModalActiveVK_mobile from '@/modules/header/modalActiveVK/modalActiveVK_mobile';
 
 import ModalPointClose_pc from '@/modules/header/modalPointClose/modalPointClose_pc';
 import ModalPointClose_mobile from '@/modules/header/modalPointClose/modalPointClose_mobile';
+
+import ModalSamaraEntranceWorks_pc from '@/modules/header/modalSamaraEntranceWorks/modalSamaraEntranceWorks_pc';
+import ModalSamaraEntranceWorks_mobile from '@/modules/header/modalSamaraEntranceWorks/modalSamaraEntranceWorks_mobile';
 
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -31,7 +34,7 @@ import { useCartStore, useHeaderStoreNew, useHomeStore } from './store.js';
 //import { getAnalytics } from "firebase/analytics";
 //import { getPerformance } from "firebase/performance";
 
-import { useRouter } from 'next/router'
+import { useRouter } from 'next/router';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
@@ -40,13 +43,13 @@ import { BREAKPOINTS, LEGACY_BREAKPOINTS } from '@/utils/breakpoints';
 
 export default React.memo(function header({ city, city_list, cats }) {
   const router = useRouter();
-  const search = typeof router.query?.type === 'string' ? router.query.type : '';
+  const search =
+    typeof router.query?.type === 'string' ? router.query.type : '';
 
   // console.log('search', search)
   // console.log('searchParams', searchParams)
-    
+
   // Initialize Firebase
-  
 
   const currentCity = Array.isArray(city_list)
     ? city_list.find((item) => item?.link == city)
@@ -58,20 +61,38 @@ export default React.memo(function header({ city, city_list, cats }) {
     return null;
   }
 
-  
+  const matchesDev = useMediaQuery(
+    `screen and (max-width: ${LEGACY_BREAKPOINTS.mobileMax}px)`
+  );
+  const isHeaderMobile = useMediaQuery(
+    `screen and (max-width: ${BREAKPOINTS.mobileMax}px)`
+  );
 
-
-  const matchesDev = useMediaQuery(`screen and (max-width: ${LEGACY_BREAKPOINTS.mobileMax}px)`);
-  const isHeaderMobile = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
-
-  const [setMatches11, matches, checkToken, isShowLoad, setShowClosePoint, isAuth, saveYToken] = useHeaderStoreNew( state => [state?.setMatches11, state?.matches, state?.checkToken, state?.isShowLoad, state?.setShowClosePoint, state.isAuth, state.saveYToken] ); 
-  const [getItemsCat, category] = useHomeStore( state => [state.getItemsCat, state.category]);
-  const [ setFreeDrive ] = useCartStore( state => [state.setFreeDrive]);
+  const [
+    setMatches11,
+    matches,
+    checkToken,
+    isShowLoad,
+    setShowClosePoint,
+    isAuth,
+    saveYToken,
+  ] = useHeaderStoreNew((state) => [
+    state?.setMatches11,
+    state?.matches,
+    state?.checkToken,
+    state?.isShowLoad,
+    state?.setShowClosePoint,
+    state.isAuth,
+    state.saveYToken,
+  ]);
+  const [getItemsCat, category] = useHomeStore((state) => [
+    state.getItemsCat,
+    state.category,
+  ]);
+  const [setFreeDrive] = useCartStore((state) => [state.setFreeDrive]);
 
   useEffect(() => {
-    
-
-    if( typeof window != 'undefined' ){
+    if (typeof window != 'undefined') {
       // const firebaseConfig = {
       //   apiKey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_FIREBASE,
       //   authDomain: "jacofoodsite.firebaseapp.com",
@@ -84,15 +105,17 @@ export default React.memo(function header({ city, city_list, cats }) {
       //const firebaseAPP = initializeApp(firebaseConfig);
       //const analytics = getAnalytics(firebaseAPP);
       //const perf = getPerformance(firebaseAPP);
-  
-      if (location.protocol !== 'https:' && location.hostname != 'localhost' ) {
-        location.replace(`https:${location.href.substring(location.protocol.length)}`);
+
+      if (location.protocol !== 'https:' && location.hostname != 'localhost') {
+        location.replace(
+          `https:${location.href.substring(location.protocol.length)}`
+        );
       }
-  
+
       // if( location.hostname == 'new.jacofood.ru' ){
       //   location.replace(`https://jacofood.ru${location.href.substring(location.origin.length)}`);
       // }
-  
+
       // if( location.hostname == 'www.jacofood.ru' ){
       //   location.replace(`https://jacofood.ru${location.href.substring(location.origin.length)}`);
       // }
@@ -102,26 +125,26 @@ export default React.memo(function header({ city, city_list, cats }) {
   }, []);
 
   useEffect(() => {
-    if( city && city.length > 0 ){
+    if (city && city.length > 0) {
       getItemsCat('home', city);
     }
   }, [city]);
 
   useEffect(() => {
-    if(matches !== matchesDev) {
-      if( setMatches11 ){
+    if (matches !== matchesDev) {
+      if (setMatches11) {
         setMatches11(matchesDev);
       }
     }
   }, [matchesDev, matches]);
 
   useEffect(() => {
-    if(isAuth == 'auth') {
-      try{
-        ym(47085879, 'getClientID', function(clientID) {
+    if (isAuth == 'auth') {
+      try {
+        ym(47085879, 'getClientID', function (clientID) {
           saveYToken(clientID);
-        })
-      }catch(e){}
+        });
+      } catch (e) {}
     }
   }, [isAuth]);
 
@@ -136,20 +159,25 @@ export default React.memo(function header({ city, city_list, cats }) {
       return;
     }
 
-    if( dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') >= dayjs( new Date("2025-11-08") ).locale('ru').format('YYYY-MM-DD') && dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2025-11-16") ).locale('ru').format('YYYY-MM-DD') ){
-        if( search == 'kuibisheva_close' ){
-          let state = { },
-            title = '',
-            url = window.location.pathname;
-    
-          window.history.pushState(state, title, url)
-    
-          setFreeDrive(1);
-          setLocalStorageItem('freeDrive', '1722474061');
-        }
-      }
+    if (
+      dayjs(new Date()).locale('ru').format('YYYY-MM-DD') >=
+        dayjs(new Date('2025-11-08')).locale('ru').format('YYYY-MM-DD') &&
+      dayjs(new Date()).locale('ru').format('YYYY-MM-DD') <=
+        dayjs(new Date('2025-11-16')).locale('ru').format('YYYY-MM-DD')
+    ) {
+      if (search == 'kuibisheva_close') {
+        let state = {},
+          title = '',
+          url = window.location.pathname;
 
-      /*if( dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') >= dayjs( new Date("2024-08-01") ).locale('ru').format('YYYY-MM-DD') && dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2024-08-04") ).locale('ru').format('YYYY-MM-DD') ){
+        window.history.pushState(state, title, url);
+
+        setFreeDrive(1);
+        setLocalStorageItem('freeDrive', '1722474061');
+      }
+    }
+
+    /*if( dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') >= dayjs( new Date("2024-08-01") ).locale('ru').format('YYYY-MM-DD') && dayjs( new Date() ).locale('ru').format('YYYY-MM-DD') <= dayjs( new Date("2024-08-04") ).locale('ru').format('YYYY-MM-DD') ){
         if( search == 'pobeda_close_1722474061' ){
           let state = { },
             title = '',
@@ -201,42 +229,49 @@ export default React.memo(function header({ city, city_list, cats }) {
         }
       }*/
 
-      
     //}
   }, [router.isReady, search]);
 
   return (
     <div className={roboto.variable} style={{ overflow: 'auto' }}>
-      <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" strategy="lazyOnload" />
-      <Script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js" strategy="lazyOnload" />
-      <Script src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-token-with-polyfills-latest.js" strategy="lazyOnload" />
-      
-      <Backdrop
-        sx={{ color: '#fff', zIndex: 5000 }}
-        open={isShowLoad}
-      >
+      <Script
+        src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js"
+        strategy="lazyOnload"
+      />
+      <Script
+        src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js"
+        strategy="lazyOnload"
+      />
+      <Script
+        src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-token-with-polyfills-latest.js"
+        strategy="lazyOnload"
+      />
+
+      <Backdrop sx={{ color: '#fff', zIndex: 5000 }} open={isShowLoad}>
         <CircularProgress color="inherit" />
       </Backdrop>
 
-      {isHeaderMobile ?
+      {isHeaderMobile ? (
         <>
           <NavBarMobile city={city} cityRu={thisCityRU} />
           <ModalCityMobile />
           <ModalActiveVK_mobile />
           <ModalPointClose_mobile />
+          <ModalSamaraEntranceWorks_mobile city={city} />
         </>
-        :
+      ) : (
         <>
-          <NavBarPC city={city} cityRu={thisCityRU} catList={cats}/>
+          <NavBarPC city={city} cityRu={thisCityRU} catList={cats} />
           <ModalCityPC />
           <BasketPC />
           <BasketModalPC />
           <ModalAddr />
           <ModalActiveVK_pc />
           <ModalPointClose_pc />
+          <ModalSamaraEntranceWorks_pc city={city} />
         </>
-      }
-      
+      )}
+
       <ModalAuth city={city} />
       <ModalAlert />
       <SelectAddress />

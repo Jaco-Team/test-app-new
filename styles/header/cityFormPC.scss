@@ -1,6 +1,6 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
-.modalVKPCMain{
+.modalVKPCMain {
   & .MuiDialog-paper {
     overflow: visible;
     margin: 0 !important;
@@ -62,8 +62,6 @@
           }
         }
 
-        
-
         & .buttons {
           padding: 0;
           width: $MyScale400;
@@ -75,10 +73,9 @@
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          
+
           @include font32_400();
-          color: #ffffff!important;
-          
+          color: #ffffff !important;
         }
       }
 
@@ -129,8 +126,6 @@
           }
         }
 
-        
-
         & .buttons {
           padding: 0;
           width: $MyScale400;
@@ -142,10 +137,9 @@
           align-items: center;
           justify-content: center;
           cursor: pointer;
-          
+
           @include font32_400();
-          color: #ffffff!important;
-          
+          color: #ffffff !important;
         }
       }
     }
@@ -255,7 +249,7 @@
           cursor: pointer;
           &:not(.choose) > span {
             @include font30_400();
-            color: #ffffff!important;
+            color: #ffffff !important;
             &:first-letter {
               text-transform: uppercase;
             }
@@ -439,13 +433,56 @@
       margin-top: tablet-vw(20);
       border-radius: tablet-vw(20);
       width: tablet-vw(400);
-      box-shadow: tablet-vw(10) tablet-vw(10) tablet-vw(30) tablet-vw(5) rgba(0, 0, 0, 0.2);
+      box-shadow: tablet-vw(10) tablet-vw(10) tablet-vw(30) tablet-vw(5)
+        rgba(0, 0, 0, 0.2);
 
       & ul {
         & li {
           height: tablet-vw(80);
         }
       }
+    }
+  }
+}
+
+.modalSamaraEntranceWorksPC {
+  & .MuiDialog-paper .MuiDialogContent-root {
+    min-height: auto;
+    background: #fff;
+  }
+
+  .modalSamaraEntranceWorks {
+    margin: $MyScale50 $MyScale50 $MyScale50 $MyScale50;
+
+    &__photo {
+      width: 100%;
+      margin-bottom: $MyScale24;
+      border-radius: $MyScale16;
+      overflow: hidden;
+      line-height: 0;
+      background: #f2f2f2;
+
+      & img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: cover;
+      }
+    }
+
+    &__text {
+      width: 100%;
+      text-align: center;
+    }
+
+    &__title {
+      @include font32_400();
+      font-weight: 600;
+      margin: 0 0 $MyScale20;
+    }
+
+    &__text span {
+      @include font32_400();
     }
   }
 }

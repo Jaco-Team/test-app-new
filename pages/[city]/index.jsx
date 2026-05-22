@@ -1,28 +1,80 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useRef } from 'react';
 
-import dynamic from 'next/dynamic'
+import { useRouter } from 'next/router';
+
+import dynamic from 'next/dynamic';
 
 const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'));
-import Footer from '@/components/footer.js'
+import Footer from '@/components/footer.js';
 
-import { roboto } from '@/ui/Font.js'
+import { roboto } from '@/ui/Font.js';
 import { api } from '@/components/api.js';
 
-import { useHomeStore, useCitiesStore, useHeaderStoreNew, useCartStore } from '@/components/store.js';
+import {
+  useHomeStore,
+  useCitiesStore,
+  useHeaderStoreNew,
+  useCartStore,
+} from '@/components/store.js';
 
 const this_module = 'home';
 
-import { normalizeCity } from '@/utils/normalizeCity'
-import { getCookie } from '@/utils/getCookie'
+import { normalizeCity } from '@/utils/normalizeCity';
+import { getCookie } from '@/utils/getCookie';
 
 export default function Home(props) {
+  const router = useRouter();
+  const hasNovinkiQuery =
+    router.isReady &&
+    Object.prototype.hasOwnProperty.call(router.query, 'novinki');
+  const openedWithNovinkiRef = useRef(false);
 
-  const { city, cats, cities, page, all_items, free_items, need_dop, tags, links } = props.data1;
+  if (hasNovinkiQuery) {
+    openedWithNovinkiRef.current = true;
+  }
 
-  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
+  const {
+    city,
+    cats,
+    cities,
+    page,
+    all_items,
+    free_items,
+    need_dop,
+    tags,
+    links,
+  } = props.data1;
 
-  const [ getBanners, setAllTags, seedItemsCatFromPage, getItemsCat ] = useHomeStore( state => [ state.getBanners, state.setAllTags, state.seedItemsCatFromPage, state.getItemsCat ]);
-  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
+  const [
+    setAllItems,
+    setFreeItems,
+    allItems,
+    changeAllItems,
+    setNeedDops,
+    getCartLocalStorage,
+  ] = useCartStore((state) => [
+    state.setAllItems,
+    state.setFreeItems,
+    state.allItems,
+    state.changeAllItems,
+    state.setNeedDops,
+    state.getCartLocalStorage,
+  ]);
+
+  const [getBanners, setAllTags, seedItemsCatFromPage, getItemsCat] =
+    useHomeStore((state) => [
+      state.getBanners,
+      state.setAllTags,
+      state.seedItemsCatFromPage,
+      state.getItemsCat,
+    ]);
+  const [thisCity, setThisCity, setThisCityRu, setThisCityList] =
+    useCitiesStore((state) => [
+      state.thisCity,
+      state.setThisCity,
+      state.setThisCityRu,
+      state.setThisCityList,
+    ]);
   const [setActivePage] = useHeaderStoreNew((state) => [state?.setActivePage]);
 
   useEffect(() => {
@@ -30,7 +82,9 @@ export default function Home(props) {
       return;
     }
 
-    const found = Array.isArray(cities) ? cities.find(item => item?.link == city) : null;
+    const found = Array.isArray(cities)
+      ? cities.find((item) => item?.link == city)
+      : null;
 
     setThisCity(city);
     setThisCityRu(found?.name ?? '');
@@ -42,18 +96,30 @@ export default function Home(props) {
     }, 300);
 
     return () => clearTimeout(timer);
-  }, [allItems.length, all_items, changeAllItems, cities, city, setAllItems, setThisCity, setThisCityList, setThisCityRu, thisCity]);
+  }, [
+    allItems.length,
+    all_items,
+    changeAllItems,
+    cities,
+    city,
+    setAllItems,
+    setThisCity,
+    setThisCityList,
+    setThisCityRu,
+    thisCity,
+  ]);
 
   useEffect(() => {
-
-    setTimeout( () => {
-      window.scrollTo(0, 0);
-    }, 100 )
+    if (!hasNovinkiQuery && !openedWithNovinkiRef.current) {
+      setTimeout(() => {
+        window.scrollTo(0, 0);
+      }, 100);
+    }
 
     getBanners(this_module, city);
 
-    if( allItems.length == 0 ){
-      setAllItems(all_items);      
+    if (allItems.length == 0) {
+      setAllItems(all_items);
     }
 
     seedItemsCatFromPage(cats, all_items, city);
@@ -67,22 +133,45 @@ export default function Home(props) {
     getCartLocalStorage();
 
     setActivePage('home');
-    
-  }, [allItems.length, all_items, cats, city, free_items, getBanners, getCartLocalStorage, getItemsCat, need_dop, seedItemsCatFromPage, setActivePage, setAllItems, setAllTags, setFreeItems, setNeedDops, tags]);
-  
+  }, [
+    allItems.length,
+    all_items,
+    cats,
+    city,
+    free_items,
+    getBanners,
+    getCartLocalStorage,
+    getItemsCat,
+    hasNovinkiQuery,
+    need_dop,
+    seedItemsCatFromPage,
+    setActivePage,
+    setAllItems,
+    setAllTags,
+    setFreeItems,
+    setNeedDops,
+    tags,
+  ]);
+
   return (
     <div className={roboto.variable}>
       <DynamicHomePage page={page} city={city} />
 
       <Footer cityName={city} active_page={this_module} links={links} />
     </div>
-  )
+  );
 }
 
 export async function getServerSideProps({ req, res, query }) {
-  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=60');
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=60, stale-while-revalidate=60'
+  );
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 

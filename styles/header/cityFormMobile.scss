@@ -1,4 +1,4 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
 #modalVKMobileMain {
   & .MuiDrawer-paper {
@@ -8,7 +8,8 @@
     overflow: hidden;
 
     .ContainerMain {
-      margin: $MyScale180_mobile $MyScale260_mobile $MyScale580 $MyScale260_mobile;
+      margin: $MyScale180_mobile $MyScale260_mobile $MyScale580
+        $MyScale260_mobile;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -33,7 +34,7 @@
         & span {
           @include font50_500();
         }
-        & a{
+        & a {
           @include font50_500();
           text-decoration: underline;
           color: rgb(82, 82, 82);
@@ -53,15 +54,15 @@
         justify-content: center;
         cursor: pointer;
         text-decoration: none;
-        
+
         @include font50_500();
         color: #ffffff !important;
-          
       }
     }
 
     .ContainerMain_1 {
-      margin: $MyScale180_mobile $MyScale130_mobile $MyScale580 $MyScale130_mobile;
+      margin: $MyScale180_mobile $MyScale130_mobile $MyScale580
+        $MyScale130_mobile;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -86,7 +87,7 @@
         & span {
           @include font50_500();
         }
-        & a{
+        & a {
           @include font50_500();
           text-decoration: underline;
           color: rgb(82, 82, 82);
@@ -106,10 +107,9 @@
         justify-content: center;
         cursor: pointer;
         text-decoration: none;
-        
+
         @include font50_500();
         color: #ffffff !important;
-          
       }
     }
   }
@@ -123,7 +123,8 @@
     overflow: hidden;
 
     .ContainerMain {
-      margin: $MyScale180_mobile $MyScale260_mobile $MyScale580 $MyScale260_mobile;
+      margin: $MyScale180_mobile $MyScale260_mobile $MyScale580
+        $MyScale260_mobile;
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -249,6 +250,90 @@
           }
         }
       }
+    }
+  }
+}
+
+#modalSamaraEntranceWorksMobile,
+.modalSamaraEntranceWorksMobile {
+  & .MuiDrawer-paper {
+    min-height: auto;
+    max-height: calc(100% - $MyScale120_mobile);
+    border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
+    overflow: hidden;
+    background: #fff;
+  }
+
+  .modalSamaraEntranceWorksSheet {
+    display: flex;
+    flex-direction: column;
+
+    &__header {
+      position: relative;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      flex-shrink: 0;
+      padding: $MyScale40_mobile $MyScale120_mobile $MyScale24_mobile;
+      min-height: $MyScale80_mobile;
+
+      & .Line {
+        height: $MyScale10_mobile;
+        width: $MyScale150_mobile;
+        background: rgba(0, 0, 0, 0.2);
+        border-radius: $MyScale5_mobile;
+      }
+
+      & .closeButton {
+        position: absolute;
+        top: $MyScale24_mobile;
+        right: $MyScale32_mobile;
+        padding: 0;
+
+        & svg {
+          width: $MyScale80_mobile;
+          height: $MyScale80_mobile;
+        }
+      }
+    }
+  }
+
+  .modalSamaraEntranceWorks {
+    margin: 0 $MyScale80_mobile;
+    padding-bottom: calc($MyScale80_mobile + env(safe-area-inset-bottom, 0px));
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+
+    &__photo {
+      width: 100%;
+      margin-bottom: $MyScale32_mobile;
+      border-radius: $MyScale16_mobile;
+      overflow: hidden;
+      line-height: 0;
+      background: #f2f2f2;
+
+      & img {
+        width: 100%;
+        height: auto;
+        display: block;
+        object-fit: cover;
+      }
+    }
+
+    &__text {
+      width: 100%;
+      text-align: center;
+    }
+
+    &__title {
+      @include font50_500();
+      font-weight: 600;
+      margin: 0 0 $MyScale30_mobile;
+    }
+
+    &__text span {
+      @include font50_500();
     }
   }
 }

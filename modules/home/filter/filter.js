@@ -1,13 +1,17 @@
 import { useState, useEffect } from 'react';
 
-import { useHomeStore, useHeaderStoreNew, useCartStore } from '@/components/store';
+import {
+  useHomeStore,
+  useHeaderStoreNew,
+  useCartStore,
+} from '@/components/store';
 import { useHomeMobileLayout } from '@/utils/useHomeMobileLayout';
 
 import { motion } from 'framer-motion';
 
 import {
   //Search,
-  Close
+  Close,
 } from '@/ui/Icons.js';
 //import MyTextInput from '@/ui/MyTextInput';
 //import InputAdornment from '@mui/material/InputAdornment';
@@ -53,7 +57,6 @@ export default function Filter() {
     text_filter,
     //filterText,
     badge_filter,
-    applyCurrentFilters,
   ] = useHomeStore((state) => [
     state.filterActive,
     state.resetFilter,
@@ -67,7 +70,6 @@ export default function Filter() {
     state.text_filter,
     //state.filterText,
     state.badge_filter,
-    state.applyCurrentFilters,
   ]);
 
   const [activePage] = useHeaderStoreNew((state) => [state?.activePage]);
@@ -79,7 +81,7 @@ export default function Filter() {
   const canShowFilter = activePage === 'home' || activePage === 'category';
 
   const resetTags = () => {
-    setTags(prev => prev.map(t => ({ ...t, active: false })));
+    setTags((prev) => prev.map((t) => ({ ...t, active: false })));
   };
 
   //утилита закрытия именно мобильной модалки фильтра
@@ -93,7 +95,7 @@ export default function Filter() {
     if (tag_filter) {
       resetTags();
     }
-   
+
     closeMobileFilter();
   };
 
@@ -115,10 +117,12 @@ export default function Filter() {
       return;
     }
 
-    setTags(prev => prev.map(t => ({
-      ...t,
-      active: Number(t.id) === Number(id) ? !t.active : false,
-    })));
+    setTags((prev) =>
+      prev.map((t) => ({
+        ...t,
+        active: Number(t.id) === Number(id) ? !t.active : false,
+      }))
+    );
 
     filterItems(Number(id));
 
@@ -154,20 +158,24 @@ export default function Filter() {
     }
 
     if (activePage !== 'category') {
-      setTags(all_tags.map(t => ({
-        ...t,
-        active: Number(t.id) === Number(tag_filter),
-      })));
+      setTags(
+        all_tags.map((t) => ({
+          ...t,
+          active: Number(t.id) === Number(tag_filter),
+        }))
+      );
 
       setBadgesAvailable(badges);
       return;
     }
 
     if (typeof window === 'undefined') {
-      setTags(all_tags.map(t => ({
-        ...t,
-        active: Number(t.id) === Number(tag_filter),
-      })));
+      setTags(
+        all_tags.map((t) => ({
+          ...t,
+          active: Number(t.id) === Number(tag_filter),
+        }))
+      );
       setBadgesAvailable(badges);
       return;
     }
@@ -209,7 +217,9 @@ export default function Filter() {
       setTags(filteredTags);
 
       // badges только доступные на category
-      const filteredBadges = badges.filter(b => availableBadges.has(String(b.id)));
+      const filteredBadges = badges.filter((b) =>
+        availableBadges.has(String(b.id))
+      );
       setBadgesAvailable(filteredBadges);
 
       return true;
@@ -227,10 +237,12 @@ export default function Filter() {
 
           // если так и не нашли карточки
           if (!done) {
-            setTags(all_tags.map(t => ({
-              ...t,
-              active: Number(t.id) === Number(tag_filter),
-            })));
+            setTags(
+              all_tags.map((t) => ({
+                ...t,
+                active: Number(t.id) === Number(tag_filter),
+              }))
+            );
             setBadgesAvailable(badges);
           }
         }
@@ -238,7 +250,14 @@ export default function Filter() {
 
       return () => clearInterval(timer);
     }
-  }, [all_tags, allItems, activePage, tag_filter, canShowFilter, setActiveFilter]);
+  }, [
+    all_tags,
+    allItems,
+    activePage,
+    tag_filter,
+    canShowFilter,
+    setActiveFilter,
+  ]);
 
   useEffect(() => {
     if (activePage !== 'home' && activePage != '') {
@@ -246,23 +265,8 @@ export default function Filter() {
     }
   }, [activePage, setActiveFilter]);
 
-  useEffect(() => {
-    if (!canShowFilter) return;
-    if (!allItems?.length) return;
-
-    const hasFilter =
-      badge_filter !== '' || tag_filter !== '' || text_filter !== '';
-
-    if (!hasFilter) return;
-
-    const timer = setTimeout(() => {
-      applyCurrentFilters();
-    }, 0);
-
-    return () => clearTimeout(timer);
-  }, [canShowFilter, activePage, allItems, badge_filter, tag_filter, text_filter, applyCurrentFilters]);
-
-  const showClear = badge_filter !== '' || text_filter !== '' || tag_filter !== '';
+  const showClear =
+    badge_filter !== '' || text_filter !== '' || tag_filter !== '';
 
   if (!canShowFilter) return null;
 
@@ -285,22 +289,37 @@ export default function Filter() {
           <div className="filterMobile">
             <div className="filterTag">
               <div className="tags">
-
                 {badgesAvailable?.map((badg, key) => (
-                  <div key={key} style={{ backgroundColor: badg.bg }} className={'tag_'} onClick={() => handleBadge(badg.id)}>
+                  <div
+                    key={key}
+                    style={{ backgroundColor: badg.bg }}
+                    className={
+                      parseInt(badge_filter, 10) === parseInt(badg.id, 10)
+                        ? 'tag_ active'
+                        : 'tag_'
+                    }
+                    onClick={() => handleBadge(badg.id)}
+                  >
                     <span>{badg.name}</span>
                   </div>
                 ))}
 
                 {tags?.map((tag, key) => (
-                  <div key={key} onClick={() => handleTag(tag.id)} className={tag?.active ? 'tag active' : 'tag'}>
+                  <div
+                    key={key}
+                    onClick={() => handleTag(tag.id)}
+                    className={tag?.active ? 'tag active' : 'tag'}
+                  >
                     <span>{tag.name}</span>
                     {tag?.active ? <Close /> : false}
                   </div>
                 ))}
 
                 {showClear && (
-                  <div onClick={() => handleTag(-1)} className={'search_clear tag'}>
+                  <div
+                    onClick={() => handleTag(-1)}
+                    className={'search_clear tag'}
+                  >
                     <span>Очистить</span>
                   </div>
                 )}
@@ -322,6 +341,7 @@ export default function Filter() {
         </SwipeableDrawer>
       ) : (
         <motion.div
+          id="homeCatalogMenu"
           initial={{ opacity: 0, scale: 0.9 }}
           animate={{ opacity: 1, scale: 1 }}
           transition={{ duration: 0.9 }}
@@ -329,22 +349,34 @@ export default function Filter() {
         >
           <div className="filterTag filterTag--full">
             <div className="filterTagItems">
-
               {badgesAvailable?.map((badg, key) => (
-                <div key={key} style={{ backgroundColor: badg.bg, color: '#fff' }} className={'tag_'} onClick={() => handleBadge(badg.id)}>
+                <div
+                  key={key}
+                  style={{ backgroundColor: badg.bg, color: '#fff' }}
+                  className={
+                    parseInt(badge_filter, 10) === parseInt(badg.id, 10)
+                      ? 'tag_ active'
+                      : 'tag_'
+                  }
+                  onClick={() => handleBadge(badg.id)}
+                >
                   <span style={{ color: '#fff' }}>{badg.name}</span>
                 </div>
               ))}
 
               {tags?.map((tag, key) => (
-                <div key={key} onClick={() => handleTag(tag.id)} className={tag?.active ? 'tag active' : 'tag'}>
+                <div
+                  key={key}
+                  onClick={() => handleTag(tag.id)}
+                  className={tag?.active ? 'tag active' : 'tag'}
+                >
                   <span>{tag.name}</span>
                   {tag?.active ? <Close /> : false}
                 </div>
               ))}
             </div>
 
-            <div className='search_clear'>
+            <div className="search_clear">
               {/* <MyTextInput
                 type="text"
                 value={text_filter}
@@ -362,7 +394,6 @@ export default function Filter() {
                   <span>Очистить</span>
                 </div>
               )}
-
             </div>
           </div>
         </motion.div>

@@ -1,4 +1,4 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
 // html:not([data-scroll='0']) .blockShadow {
 //   width: 100%;
@@ -42,42 +42,46 @@ html:not([data-scroll='0']) .headerNew::after {
   width: 100%;
 
   &::after {
-    content: "";
+    content: '';
     position: absolute;
-    left: 0; right: 0;
+    left: 0;
+    right: 0;
     top: 100%;
     height: 2.8880866425993vw;
-    background: linear-gradient(180deg, rgba(115,115,115,.1) 0%, rgba(83,92,84,0) 100%);
+    background: linear-gradient(
+      180deg,
+      rgba(115, 115, 115, 0.1) 0%,
+      rgba(83, 92, 84, 0) 100%
+    );
     mix-blend-mode: multiply;
     pointer-events: none;
     opacity: 0;
-    transition: opacity .2s ease;
+    transition: opacity 0.2s ease;
   }
 
-  & .profileHeaderPC{
-    width: $MyScale64!important;
-    height: $MyScale64!important;
+  & .profileHeaderPC {
+    width: $MyScale64 !important;
+    height: $MyScale64 !important;
     position: relative;
   }
-  & .accountLogin.accountMain{
-    width: $MyScale64!important;
-    height: $MyScale64!important;
+  & .accountLogin.accountMain {
+    width: $MyScale64 !important;
+    height: $MyScale64 !important;
     border-radius: $MyScale48;
     display: flex;
     align-items: center;
     justify-content: center;
-    & > span{
+    & > span {
       @include font25_400();
-      color: #fff!important;
+      color: #fff !important;
     }
-    & path{
+    & path {
       fill: #fff;
     }
-    
 
-    & .count_promo_order{
-      width: $MyScale15!important;
-      height: $MyScale15!important;
+    & .count_promo_order {
+      width: $MyScale15 !important;
+      height: $MyScale15 !important;
       border-radius: 100px;
       background-color: #dd1a32;
       position: absolute;
@@ -181,18 +185,19 @@ html:not([data-scroll='0']) .headerNew::after {
       }
     }
 
-    & .filterHeaderPC.active, .profileHeaderPC.active1,
+    & .filterHeaderPC.active,
+    .profileHeaderPC.active1,
     .burgerHeaderPC.active,
     .mapHeaderPC.active,
     .basketCat.min.active {
       background-color: rgba(0, 0, 0, 0.05);
-      outline: $MyScale16 solid rgba(0, 0, 0, 0.05) ;
+      outline: $MyScale16 solid rgba(0, 0, 0, 0.05);
       outline-offset: 0;
     }
 
-    & .profileHeaderPC.active{
+    & .profileHeaderPC.active {
       background-color: rgba(0, 0, 0, 0.05);
-      outline: $MyScale10 solid rgba(0, 0, 0, 0.05) ;
+      outline: $MyScale10 solid rgba(0, 0, 0, 0.05);
       outline-offset: 0;
 
       &:hover {
@@ -225,7 +230,16 @@ html:not([data-scroll='0']) .headerNew::after {
       }
     }
 
-    & .filterHeaderPC, .profileHeaderPC,
+    & .profileHeaderPC.profileHeaderPC--guest {
+      cursor: pointer;
+
+      & .profile_svg {
+        pointer-events: none;
+      }
+    }
+
+    & .filterHeaderPC,
+    .profileHeaderPC,
     .burgerHeaderPC,
     .mapHeaderPC {
       display: flex;
@@ -302,7 +316,7 @@ html:not([data-scroll='0']) .headerNew::after {
 
       & span {
         @include font25_400();
-        color: #ffffff!important;
+        color: #ffffff !important;
         text-align: center;
       }
 
@@ -484,8 +498,8 @@ html:not([data-scroll='0']) .headerNew::after {
       border: tablet-vw(2) solid rgba(0, 0, 0, 0.2);
     }
 
-
-    & .filterHeaderPC, .profileHeaderPC,
+    & .filterHeaderPC,
+    .profileHeaderPC,
     .burgerHeaderPC,
     .mapHeaderPC {
       display: flex;
@@ -793,7 +807,8 @@ html:not([data-scroll='0']) .headerNew::after {
     & div.MuiPaper-root.MuiMenu-paper {
       border-radius: tablet-vw(20);
       width: tablet-vw(400);
-      box-shadow: tablet-vw(10) tablet-vw(20) tablet-vw(30) tablet-vw(5) rgba(0, 0, 0, 0.2);
+      box-shadow: tablet-vw(10) tablet-vw(20) tablet-vw(30) tablet-vw(5)
+        rgba(0, 0, 0, 0.2);
       margin-top: tablet-vw(50);
 
       & ul {

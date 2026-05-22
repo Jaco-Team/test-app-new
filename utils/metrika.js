@@ -2,6 +2,10 @@ import { useCitiesStore } from '@/components/store.js';
 import { getLocalStorageItem, setLocalStorageItem } from './browserStorage';
 
 const MAIN_COUNTER_ID = 47085879;
+const VK_TMR_COUNTER_BY_CITY = {
+  samara: 3621394,
+  togliatti: 3637103,
+};
 const PURCHASE_STORAGE_PREFIX = 'ym_purchase_';
 const PURCHASE_PENDING_TTL_MS = 30 * 1000;
 const YM_READY_RETRY_DELAY_MS = 250;
@@ -65,7 +69,10 @@ function normalizeUrl(url) {
   if (typeof window === 'undefined') return String(url || '/');
 
   try {
-    return new URL(url || window.location.href, window.location.origin).toString();
+    return new URL(
+      url || window.location.href,
+      window.location.origin
+    ).toString();
   } catch {
     return window.location.href;
   }
@@ -120,8 +127,10 @@ function shouldSkipPurchase(orderId) {
 
 function getDataLayer() {
   if (typeof window === 'undefined') return null;
-  if (window.ymDataLayer && typeof window.ymDataLayer.push === 'function') return window.ymDataLayer;
-  if (window.dataLayer && typeof window.dataLayer.push === 'function') return window.dataLayer;
+  if (window.ymDataLayer && typeof window.ymDataLayer.push === 'function')
+    return window.ymDataLayer;
+  if (window.dataLayer && typeof window.dataLayer.push === 'function')
+    return window.dataLayer;
   return null;
 }
 
@@ -165,6 +174,33 @@ export function reachGoal(goal, params) {
   }
 }
 
+/** Цели пикселя VK / Top.Mail (_tmr) для Самары и Тольятти */
+export function vkTmrReachGoal(goal, options = {}) {
+  if (typeof window === 'undefined') return;
+
+  const city = options.city ?? useCitiesStore.getState().thisCity;
+  const counterId = VK_TMR_COUNTER_BY_CITY[String(city || '').toLowerCase()];
+
+  if (!counterId) return;
+
+  const payload = {
+    type: 'reachGoal',
+    id: counterId,
+    goal,
+  };
+
+  if (options.value != null && options.value !== '') {
+    payload.value = options.value;
+  }
+
+  if (isObj(options.params)) {
+    payload.params = options.params;
+  }
+
+  const tmr = window._tmr || (window._tmr = []);
+  tmr.push(payload);
+}
+
 function isObj(v) {
   return v !== null && typeof v === 'object' && !Array.isArray(v);
 }
@@ -177,8 +213,8 @@ export function reachGoalSplit(goal, paramsMain, paramsCity) {
   const safeCity = isObj(paramsCity) ? paramsCity : safeMain;
 
   try {
-    if(goal == 'add_to_cart'){
-      tgp('event','HbWMUPHc-UVXQB2SU');
+    if (goal == 'add_to_cart') {
+      tgp('event', 'HbWMUPHc-UVXQB2SU');
     }
 
     runWhenYmReady(() => {
@@ -252,7 +288,9 @@ export function buildPurchasePayload({ order, items, goalParams = {} }) {
 export function trackPurchase({ orderId, goalParams, ecommerceData }) {
   if (typeof window === 'undefined') return false;
 
-  const normalizedOrderId = normalizeId(orderId || ecommerceData?.purchase?.actionField?.id);
+  const normalizedOrderId = normalizeId(
+    orderId || ecommerceData?.purchase?.actionField?.id
+  );
   const normalizedRevenue = normalizeMoney(
     ecommerceData?.purchase?.actionField?.revenue ?? goalParams?.revenue
   );
@@ -260,16 +298,22 @@ export function trackPurchase({ orderId, goalParams, ecommerceData }) {
   const safeEcommerceData = isObj(ecommerceData) ? ecommerceData : null;
   const finalGoalParams = {
     ...safeGoalParams,
-    ...(normalizedOrderId ? { id: normalizedOrderId, order_id: normalizedOrderId } : {}),
+    ...(normalizedOrderId
+      ? { id: normalizedOrderId, order_id: normalizedOrderId }
+      : {}),
     revenue: normalizedRevenue,
   };
   const finalEcommerceData = safeEcommerceData
     ? {
         ...safeEcommerceData,
         purchase: {
-          ...(isObj(safeEcommerceData.purchase) ? safeEcommerceData.purchase : {}),
+          ...(isObj(safeEcommerceData.purchase)
+            ? safeEcommerceData.purchase
+            : {}),
           actionField: {
-            ...(isObj(safeEcommerceData?.purchase?.actionField) ? safeEcommerceData.purchase.actionField : {}),
+            ...(isObj(safeEcommerceData?.purchase?.actionField)
+              ? safeEcommerceData.purchase.actionField
+              : {}),
             ...(normalizedOrderId ? { id: normalizedOrderId } : {}),
             revenue: normalizedRevenue,
           },
@@ -296,12 +340,22 @@ export function trackPurchase({ orderId, goalParams, ecommerceData }) {
 
   try {
     runWhenYmReady(() => {
-      window.ym(MAIN_COUNTER_ID, 'reachGoal', 'purchase', finalGoalParams, finalize);
+      window.ym(
+        MAIN_COUNTER_ID,
+        'reachGoal',
+        'purchase',
+        finalGoalParams,
+        finalize
+      );
 
       const city = useCitiesStore.getState().thisCity;
       const cityCounterId = getCityCounterId(city);
       if (cityCounterId) {
         window.ym(cityCounterId, 'reachGoal', 'purchase', finalGoalParams);
+      }
+
+      if (String(city || '').toLowerCase() === 'togliatti') {
+        vkTmrReachGoal('zakaz_oplata', { city });
       }
     });
 
@@ -325,7 +379,8 @@ export function trackPurchase({ orderId, goalParams, ecommerceData }) {
 export function setUserIdAll(userId) {
   if (typeof window === 'undefined') return;
 
-  const uid = userId === null || userId === undefined ? '' : String(userId).trim();
+  const uid =
+    userId === null || userId === undefined ? '' : String(userId).trim();
   if (!uid) return;
 
   try {
