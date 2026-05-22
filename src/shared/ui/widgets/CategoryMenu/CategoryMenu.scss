@@ -1,0 +1,117 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+
+.ui-category-menu {
+  position: sticky;
+  top: ui-fluid-compact(148);
+  z-index: $ui-z-header - 1;
+  width: 100%;
+  min-width: 0;
+  height: ui-fluid-compact(230);
+  overflow: hidden;
+  background: #fff;
+  font-family: $ui-font-family;
+
+  &__row {
+    display: flex;
+    align-items: center;
+    gap: ui-fluid-compact(22);
+    min-width: 100%;
+    overflow-x: auto;
+    scrollbar-width: none;
+  }
+
+  &__row::-webkit-scrollbar {
+    display: none;
+  }
+
+  &__row--primary {
+    padding: ui-fluid-compact(38) ui-fluid-compact(30) 0;
+  }
+
+  &__row--secondary {
+    padding: ui-fluid-compact(23) ui-fluid-compact(30) 0;
+  }
+
+  &__item {
+    flex: 0 0 auto;
+    min-width: ui-fluid-compact(223);
+    height: ui-fluid-compact(75);
+    padding: 0 ui-fluid-compact(22);
+    border: 0;
+    border-radius: 999px;
+    background: rgba(0, 0, 0, 0.05);
+    color: $ui-text;
+    font-family: inherit;
+    font-size: ui-fluid-compact(34);
+    letter-spacing: 0;
+    cursor: pointer;
+  }
+
+  &__item--secondary {
+    min-width: ui-fluid-compact(187);
+  }
+
+  @include ui-regular {
+    top: ui-fluid-regular(114);
+    height: ui-fluid-regular(177);
+
+    &__row {
+      gap: ui-fluid-regular(23);
+    }
+
+    &__row--primary {
+      padding: ui-fluid-regular(28) ui-fluid-regular(23) 0;
+    }
+
+    &__row--secondary {
+      padding: ui-fluid-regular(20) ui-fluid-regular(23) 0;
+    }
+
+    &__item {
+      min-width: ui-fluid-regular(171);
+      height: ui-fluid-regular(57);
+      padding: 0 ui-fluid-regular(18);
+      font-size: ui-fluid-regular(24);
+    }
+
+    &__item--secondary {
+      min-width: ui-fluid-regular(143);
+    }
+  }
+
+  @include ui-expanded {
+    position: static;
+    height: auto;
+    overflow: visible;
+    background: transparent;
+
+    &__row {
+      justify-content: center;
+      gap: ui-fluid-expanded(12);
+      overflow: visible;
+    }
+
+    &__row--primary,
+    &__row--secondary {
+      padding: 0;
+    }
+
+    &__row--secondary {
+      margin-top: ui-fluid-expanded(10);
+    }
+
+    &__item {
+      min-width: 0;
+      height: ui-fluid-expanded(32);
+      padding: 0 ui-fluid-expanded(16);
+      background: transparent;
+      font-size: ui-fluid-expanded(18);
+    }
+
+    &__item--active,
+    &__item:hover {
+      background: rgba(0, 0, 0, 0.04);
+    }
+  }
+}

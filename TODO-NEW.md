@@ -416,6 +416,8 @@ Old Storybook work dies gradually after replacement coverage exists.
 
 ## Current Pass Outcome
 
+- Локальные fixtures заведены в src/shared/ui/fixtures: текстовые данные и локально сохранённые reference images для Storybook без зависимости от remote CDN/CORS.
+
 - Removed scaffold .gitkeep placeholders from src.
 - Renamed the new layer to ui-prefixed Sass/classes/aliases.
 - Kept formulas, but renamed them to ui-fluid-_ and ui-_ mixins.

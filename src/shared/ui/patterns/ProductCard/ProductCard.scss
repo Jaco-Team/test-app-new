@@ -103,6 +103,13 @@
     min-height: 0;
   }
 
+  &__action .ui-quantity-control button {
+    width: ui-fluid-compact(54);
+    height: ui-fluid-compact(54);
+    margin: 0 ui-fluid-compact(6);
+    font-size: ui-fluid-compact(36);
+  }
+
   &__action .ui-price {
     font-size: ui-fluid-compact(38);
   }
@@ -141,6 +148,12 @@
       width: ui-fluid-regular(234);
       height: ui-fluid-regular(63);
       margin-top: ui-fluid-regular(12);
+    }
+    &__action .ui-quantity-control button {
+      width: ui-fluid-regular(51);
+      height: ui-fluid-regular(51);
+      margin: 0 ui-fluid-regular(6);
+      font-size: ui-fluid-regular(40);
     }
     &__action .ui-price {
       font-size: ui-fluid-regular(25);
@@ -199,6 +212,12 @@
     &__action {
       width: 64%;
       margin-top: ui-fluid-expanded(16);
+    }
+    &__action .ui-quantity-control button {
+      width: ui-fluid-expanded(40);
+      height: ui-fluid-expanded(40);
+      margin: 0 ui-fluid-expanded(5);
+      font-size: ui-fluid-expanded(28);
     }
     &__action .ui-price {
       font-size: ui-fluid-expanded(16);

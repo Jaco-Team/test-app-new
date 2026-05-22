@@ -1,17 +1,10 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { useState } from 'react';
+import { productCardFixtures } from '../../fixtures/productFixtures';
 import { ProductCard } from './ProductCard';
 import './ProductCard.story.scss';
 
-const sample = {
-  title: 'Мадейра сет',
-  image: 'https://cdnimg.jacofood.ru/menu/product/madejra-set_732x732.jpg',
-  meta: ['4 ролла', '32 шт.', '1 115 г'],
-  description:
-    'Цезарь с курицей запечённый унаги, Коралл, Коралл запечённый унаги, Алоха',
-  price: 1349,
-  badges: [{ tone: 'new' as const, label: 'НОВИНКА' }],
-};
+const sample = productCardFixtures.madeiraSet;
 
 const meta = {
   title: 'UI/Паттерны/Карточка продукта',
