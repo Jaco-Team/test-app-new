@@ -2,67 +2,105 @@
 @use '../../foundation/tokens' as *;
 
 .ui-banner-slider {
+  position: relative;
   width: 100%;
   overflow: hidden;
   font-family: $ui-font-family;
 
-  &__track {
-    display: flex;
-    gap: 0;
-    overflow-x: auto;
-    scroll-snap-type: x mandatory;
+  &__viewport {
+    overflow: hidden;
     padding: ui-fluid-compact(148) ui-fluid-compact(30) ui-fluid-compact(10);
-    scrollbar-width: none;
   }
 
-  &__track::-webkit-scrollbar {
-    display: none;
+  &__track {
+    display: flex;
+    width: 100%;
+    transition: transform 320ms ease;
+    will-change: transform;
   }
 
   &__slide {
     flex: 0 0 100%;
-    scroll-snap-align: center;
+    width: 100%;
+    padding: 0;
+    border: 0;
     border-radius: 0;
     overflow: hidden;
     background: $ui-surface-muted;
+    cursor: pointer;
   }
 
+  &__slide picture,
   &__slide img {
     display: block;
     width: 100%;
+  }
+
+  &__slide img {
     height: auto;
     aspect-ratio: 2 / 1;
     object-fit: cover;
   }
 
+  &__dots {
+    position: absolute;
+    left: 50%;
+    bottom: ui-fluid-compact(25);
+    display: flex;
+    align-items: center;
+    gap: ui-fluid-compact(13);
+    transform: translateX(-50%);
+  }
+
+  &__dot {
+    width: ui-fluid-compact(18);
+    height: ui-fluid-compact(18);
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.25);
+    cursor: pointer;
+  }
+
+  &__dot--active {
+    background: $ui-brand;
+  }
+
   @include ui-regular {
-    &__track {
-      gap: 0;
+    &__viewport {
       padding: ui-fluid-regular(114) ui-fluid-regular(23) ui-fluid-regular(4);
     }
 
-    &__slide {
-      flex-basis: 100%;
-      border-radius: 0;
+    &__dots {
+      bottom: ui-fluid-regular(22);
+      gap: ui-fluid-regular(10);
+    }
+
+    &__dot {
+      width: ui-fluid-regular(14);
+      height: ui-fluid-regular(14);
     }
   }
 
   @include ui-expanded {
-    &__track {
-      gap: 0;
+    &__viewport {
+      max-width: ui-fluid-expanded(1260);
       padding: ui-fluid-expanded(64) 0 0;
-      overflow: visible;
-      scroll-snap-type: none;
-    }
-
-    &__slide {
-      flex: 1 1 0;
-      min-width: 0;
-      border-radius: 0;
+      margin: 0 auto;
     }
 
     &__slide img {
-      aspect-ratio: 1200 / 299;
+      aspect-ratio: 1092 / 299;
+    }
+
+    &__dots {
+      bottom: ui-fluid-expanded(16);
+      gap: ui-fluid-expanded(8);
+    }
+
+    &__dot {
+      width: ui-fluid-expanded(10);
+      height: ui-fluid-expanded(10);
     }
   }
 }

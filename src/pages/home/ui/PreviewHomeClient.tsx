@@ -1,19 +1,25 @@
 'use client';
 
 import type { HomePageViewModel } from '../model/types';
-import type { PreviewHomeStoreSyncProps } from '@src/features/header/ui/PreviewHomeStoreSync';
+import {
+  PreviewBootstrap,
+  type PreviewBootstrapProps,
+} from '@src/features/preview-bootstrap/PreviewBootstrap';
 import { HomePage } from './HomePage';
 
 export type PreviewHomeClientProps = {
   model: HomePageViewModel;
-  storeSeed: PreviewHomeStoreSyncProps;
+  storeSeed: PreviewBootstrapProps;
 };
 
 export function PreviewHomeClient({
   model,
   storeSeed,
 }: PreviewHomeClientProps) {
-  void storeSeed;
-
-  return <HomePage model={model} />;
+  return (
+    <>
+      <PreviewBootstrap {...storeSeed} />
+      <HomePage model={model} useConnectedHeader />
+    </>
+  );
 }

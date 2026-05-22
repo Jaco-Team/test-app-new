@@ -36,7 +36,7 @@
     grid-template-columns: repeat(4, minmax(0, 1fr));
     gap: calc(100 * calc(20 / 1385) * 1vw);
     max-width: calc(100 * calc(1260 / 1385) * 1vw);
-    margin: 0 auto;
+    margin: calc(100 * calc(18 / 1385) * 1vw) auto 0;
     width: 100%;
     padding: 0;
   }

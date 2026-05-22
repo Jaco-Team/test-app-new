@@ -22,6 +22,9 @@ export default async function PreviewCityPage({
         cats: data.cats,
         allItems: data.all_items,
         tags: data.tags,
+        links: data.links,
+        freeItems: data.free_items,
+        needDop: data.need_dop,
       }}
     />
   );

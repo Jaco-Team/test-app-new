@@ -1,4 +1,5 @@
 import { BannerSlider, CategoryMenu, Footer } from '@ui/widgets';
+import { HomeHeaderConnected } from '@src/features/header/ui/HomeHeaderConnected';
 import { HomeHeaderShell } from './HomeHeaderShell';
 import { TagFilter } from '@ui/patterns';
 import { ProductCard } from '@ui/patterns/ProductCard/ProductCard';
@@ -7,12 +8,24 @@ import './HomePage.scss';
 
 export type HomePageProps = {
   model: HomePageViewModel;
+  useConnectedHeader?: boolean;
 };
 
-export function HomePage({ model }: HomePageProps) {
+export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
   return (
     <div className="preview-home">
-      <HomeHeaderShell navItems={model.headerNav} cityLabel={model.cityLabel} />
+      {useConnectedHeader ? (
+        <HomeHeaderConnected
+          fallbackNav={model.headerNav}
+          fallbackCityLabel={model.cityLabel}
+          fallbackCitySlug={model.citySlug}
+        />
+      ) : (
+        <HomeHeaderShell
+          navItems={model.headerNav}
+          cityLabel={model.cityLabel}
+        />
+      )}
       <main className="preview-home__main">
         <BannerSlider slides={model.banners} />
 

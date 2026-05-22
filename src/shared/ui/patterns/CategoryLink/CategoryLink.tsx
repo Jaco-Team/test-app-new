@@ -1,5 +1,5 @@
 import type { AnchorHTMLAttributes, ReactNode } from 'react';
-import { ArrowDownHeaderPC } from '../../icons';
+import { ArrowDownHeader } from '../../icons';
 import { cn } from '../../foundation/classNames';
 import './CategoryLink.scss';
 export type CategoryLinkTone = 'plain' | 'bordered' | 'active';
@@ -20,7 +20,7 @@ export function CategoryLink({
   const content = (
     <>
       {children}
-      {withArrow ? <ArrowDownHeaderPC /> : null}
+      {withArrow ? <ArrowDownHeader /> : null}
     </>
   );
   if (as === 'button')

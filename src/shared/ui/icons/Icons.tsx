@@ -980,7 +980,7 @@ export function LocationIconMobile(props: SvgIconProps = {}) {
       height="100"
       fill="none"
       viewBox="0 0 100 100"
-      className="otherSVG"
+      {...props}
     >
       <g>
         <path
@@ -992,7 +992,7 @@ export function LocationIconMobile(props: SvgIconProps = {}) {
   );
 }
 
-export function ArrowDownHeaderPC(props: SvgIconProps = {}) {
+export function ArrowDownHeader(props: SvgIconProps = {}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

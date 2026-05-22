@@ -9,6 +9,8 @@ const previewModel = mapHomePageViewModel({
   cats: [],
   cities: [{ link: 'samara', name: 'Самара' }],
   all_items: [],
+  free_items: [],
+  need_dop: [],
   tags: [],
   links: { link_vk: 'https://vk.com', link_tg: 'https://t.me' },
   banners: [],

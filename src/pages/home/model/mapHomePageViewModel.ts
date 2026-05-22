@@ -12,8 +12,10 @@ import type {
   HomeFooterSocialLink,
   HomeTagFilterItem,
 } from './types';
+import { normalizeCategories } from '@src/entities/catalog';
+import { buildHeaderNavItems } from '@src/features/header/model/buildHeaderNav';
+import { previewCityPath } from '@src/shared/lib/previewPaths';
 import type { CategoryMenuItem } from '@ui/widgets/CategoryMenu/CategoryMenu';
-import type { HeaderNavItem } from '@ui/widgets/Header/Header';
 import type { BadgeTone } from '@ui/components';
 import type { ProductCardProps } from '@ui/patterns/ProductCard/ProductCard';
 
@@ -51,24 +53,6 @@ function resolveCityLabel(city: string, cities: unknown[]): string {
   ) as { name?: string } | undefined;
 
   return found?.name ?? city;
-}
-
-function mapHeaderNav(cats: unknown[]): HeaderNavItem[] {
-  const top = (cats as HomeCategorySource[]).slice(0, 4);
-  if (top.length === 0) {
-    return [
-      { label: 'Роллы', active: true },
-      { label: 'Пицца' },
-      { label: 'Блюда' },
-      { label: 'Акции' },
-    ];
-  }
-
-  return top.map((cat, index) => ({
-    label: String(cat.name ?? cat.link ?? 'Категория'),
-    href: cat.link ? `/${cat.link}` : undefined,
-    active: index === 0,
-  }));
 }
 
 function flattenCategoryItems(cats: unknown[]): CategoryMenuItem[] {
@@ -143,30 +127,35 @@ function mapBanners(banners: unknown[]): HomeBannerSlide[] {
 }
 
 function defaultFooterGroups(citySlug: string): HomeFooterLinkGroup[] {
-  const base = `/${citySlug}`;
   return [
     {
       title: 'Жако',
       items: [
-        { label: 'О компании', href: `${base}/about` },
-        { label: 'Реквизиты', href: `${base}/company-details` },
-        { label: 'Контакты', href: `${base}/contacts` },
+        { label: 'О компании', href: previewCityPath(citySlug, 'about') },
+        {
+          label: 'Реквизиты',
+          href: previewCityPath(citySlug, 'company-details'),
+        },
+        { label: 'Контакты', href: previewCityPath(citySlug, 'contacts') },
       ],
     },
     {
       title: 'Документы',
       items: [
-        { label: 'Публичная оферта', href: `${base}/publichnaya-oferta` },
+        {
+          label: 'Публичная оферта',
+          href: previewCityPath(citySlug, 'publichnaya-oferta'),
+        },
         {
           label: 'Политика конфиденциальности',
-          href: `${base}/politika-konfidencialnosti`,
+          href: previewCityPath(citySlug, 'politika-konfidencialnosti'),
         },
-        { label: 'Карта сайта', href: `${base}/sitemap` },
+        { label: 'Карта сайта', href: previewCityPath(citySlug, 'sitemap') },
       ],
     },
     {
       title: 'Работа в жако',
-      items: [{ label: 'Вакансии', href: `${base}/jobs` }],
+      items: [{ label: 'Вакансии', href: previewCityPath(citySlug, 'jobs') }],
     },
     {
       title: 'Франшиза',
@@ -256,6 +245,7 @@ export function mapHomePageViewModel(data: HomePageRawData): HomePageViewModel {
       : [productCardFixtures.madeiraSet];
 
   const cats = data.cats;
+  const normalizedCats = normalizeCategories(cats);
   const primary = flattenCategoryItems(cats);
   const secondarySource = (cats as HomeCategorySource[])[0]?.cats ?? [];
   const secondary =
@@ -270,7 +260,9 @@ export function mapHomePageViewModel(data: HomePageRawData): HomePageViewModel {
     citySlug: data.city,
     cityLabel: resolveCityLabel(data.city, data.cities),
     pageTitle: String((data.page as { title?: string })?.title ?? 'Жако'),
-    headerNav: mapHeaderNav(cats),
+    headerNav: buildHeaderNavItems(data.city, normalizedCats, {
+      activePage: 'home',
+    }),
     categoryPrimary: primary,
     categorySecondary: secondary,
     banners: mapBanners(data.banners),

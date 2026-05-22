@@ -1,6 +1,6 @@
 import { cookies } from 'next/headers';
 import { redirect, notFound } from 'next/navigation';
-import { api } from './previewApi';
+import { api } from '@src/shared/api';
 import { normalizeCity } from './normalizeCity';
 
 const HOME_MODULE = 'home';
@@ -11,6 +11,8 @@ export type HomePageRawData = {
   cats: unknown[];
   cities: unknown[];
   all_items: unknown[];
+  free_items: unknown[];
+  need_dop: unknown[];
   tags: unknown[];
   links: Record<string, unknown>;
   banners: unknown[];
@@ -72,6 +74,8 @@ export async function loadHomePageData(
     cats: Array.isArray(data1.cats) ? data1.cats : [],
     cities: Array.isArray(data1.cities) ? data1.cities : [],
     all_items: Array.isArray(data1.all_items) ? data1.all_items : [],
+    free_items: Array.isArray(data1.free_items) ? data1.free_items : [],
+    need_dop: Array.isArray(data1.need_dop) ? data1.need_dop : [],
     tags: Array.isArray(data1.tags) ? data1.tags : [],
     links: (footer?.page as Record<string, unknown>) ?? {},
     banners: bannerList,
