@@ -10,7 +10,7 @@ import {
   saveItemsCatCache,
 } from '@src/entities/catalog/lib/itemsCatCache';
 import { api } from '@src/shared/api';
-import { reusePreviewStore } from '@src/shared/store/hotStore';
+import { reuseAppStore } from '@src/shared/store/hotStore';
 import { getLocalStorageItem } from '@/utils/browserStorage';
 
 const BANNERS_CACHE_TTL_MS = 10000;
@@ -49,8 +49,8 @@ export type HomeState = {
   ) => Promise<{ category: CatalogCategory[]; items: unknown[] }>;
 };
 
-export const useHomeStore = reusePreviewStore(
-  'preview-home',
+export const useHomeStore = reuseAppStore(
+  'home',
   createWithEqualityFn<HomeState>(
     (set, get) => ({
       bannerList: [],

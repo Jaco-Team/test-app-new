@@ -1,13 +1,13 @@
 'use client';
 
 import type { ReactNode } from 'react';
-import { PreviewClientRuntime } from '@src/app/preview-runtime/PreviewClientRuntime';
+import { ClientRuntime } from '@src/app/runtime/ClientRuntime';
 import { DesignSystemProvider } from '@ui/foundation/DesignSystemProvider';
 
 export function AppProviders({ children }: { children: ReactNode }) {
   return (
     <DesignSystemProvider>
-      <PreviewClientRuntime>{children}</PreviewClientRuntime>
+      <ClientRuntime>{children}</ClientRuntime>
     </DesignSystemProvider>
   );
 }

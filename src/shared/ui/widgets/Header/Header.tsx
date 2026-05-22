@@ -47,6 +47,7 @@ export interface HeaderProps extends HTMLAttributes<HTMLElement> {
   onMenuClick?: () => void;
   onCityClick?: (event: MouseEvent<HTMLButtonElement>) => void;
   onCartClick?: () => void;
+  onProfileClick?: () => void;
   onNavItemClick?: (
     item: HeaderNavItem,
     event: MouseEvent<HTMLElement>
@@ -141,6 +142,7 @@ export function Header({
   onMenuClick,
   onCityClick,
   onCartClick,
+  onProfileClick,
   onNavItemClick,
   actions,
   className,
@@ -160,7 +162,7 @@ export function Header({
     : buildDefaultDrawerItems(logoHref, city, cityHref, cartBadge);
 
   return (
-    <header className={cn('ui-header', className)} {...props}>
+    <header id="headerNew" className={cn('ui-header', className)} {...props}>
       <div className="ui-header__bar">
         <a className="ui-header__logo" href={logoHref} aria-label="Жако">
           <img src={logoSrc} alt="Жако" />
@@ -247,6 +249,7 @@ export function Header({
           className="ui-header__icon ui-header__profile"
           type="button"
           aria-label="Профиль"
+          onClick={onProfileClick}
         >
           <ProfileIconNew aria-hidden="true" />
         </button>

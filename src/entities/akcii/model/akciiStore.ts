@@ -3,16 +3,15 @@
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { api } from '@src/shared/api';
-import { reusePreviewStore } from '@src/shared/store/hotStore';
+import { reuseAppStore } from '@src/shared/store/hotStore';
 
-/** Preview slice for promotions — expand when `/preview/[city]/akcii` ships. */
 export type AkciiState = {
   page: Record<string, unknown> | null;
   loadPage: (city: string) => Promise<Record<string, unknown> | null>;
 };
 
-export const useAkciiStore = reusePreviewStore(
-  'preview-akcii',
+export const useAkciiStore = reuseAppStore(
+  'akcii',
   createWithEqualityFn<AkciiState>(
     (set) => ({
       page: null,

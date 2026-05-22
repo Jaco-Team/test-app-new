@@ -11,7 +11,7 @@ import { useHomeStore } from '@src/entities/home';
 import { useProfileStore } from '@src/entities/profile';
 import { hitAll } from '@src/shared/lib/analytics/metrika';
 
-export type PreviewBootstrapProps = {
+export type StoreBootstrapProps = {
   city: string;
   cities: unknown[];
   cats: unknown[];
@@ -20,6 +20,8 @@ export type PreviewBootstrapProps = {
   links: Record<string, unknown>;
   freeItems?: unknown[];
   needDop?: unknown[];
+  activePage?: string;
+  page?: Record<string, unknown> | null;
 };
 
 function resolveCityLabel(city: string, cities: unknown[]): string {
@@ -29,10 +31,7 @@ function resolveCityLabel(city: string, cities: unknown[]): string {
   return found?.name ? String(found.name) : city;
 }
 
-/**
- * Client bootstrap for preview home — mirrors legacy `pages/[city]/index.jsx` effects.
- */
-export function PreviewBootstrap({
+export function StoreBootstrap({
   city,
   cities,
   cats,
@@ -41,13 +40,14 @@ export function PreviewBootstrap({
   links,
   freeItems = [],
   needDop = [],
-}: PreviewBootstrapProps) {
+  activePage = 'home',
+}: StoreBootstrapProps) {
   useEffect(() => {
     const label = resolveCityLabel(city, cities);
 
     useCityStore.getState().setCity(city, label, cities as CityRecord[]);
     useCatalogStore.getState().seedFromPage(cats, allItems, city, tags);
-    useHomeStore.getState().seedFromPage(cats, allItems, city);
+    useHomeStore.getState().seedFromPage(cats, allItems, city, tags);
     useHomeStore.getState().setAllTags(tags);
     useFooterStore.getState().setLinks(links, city);
 
@@ -60,7 +60,7 @@ export function PreviewBootstrap({
       useCartStore.getState().changeAllItems();
     }, 300);
 
-    useHeaderStore.getState().setActivePage('home');
+    useHeaderStore.getState().setActivePage(activePage);
 
     void (async () => {
       await useHeaderStore.getState().hydrateSession(city);
@@ -81,16 +81,18 @@ export function PreviewBootstrap({
       });
     }
 
-    const promoInterval = window.setInterval(() => {
-      const token = useHeaderStore.getState().token;
-      void useProfileStore.getState().getCountPromosOrders(city, token);
-    }, 30_000);
-
-    return () => {
-      window.clearTimeout(priceTimer);
-      window.clearInterval(promoInterval);
-    };
-  }, [allItems, cats, city, cities, freeItems, links, needDop, tags]);
+    return () => window.clearTimeout(priceTimer);
+  }, [
+    activePage,
+    allItems,
+    cats,
+    city,
+    cities,
+    freeItems,
+    links,
+    needDop,
+    tags,
+  ]);
 
   return null;
 }

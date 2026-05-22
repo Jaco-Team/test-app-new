@@ -1,6 +1,5 @@
 import type { CatalogCategory } from './types';
 
-/** Mirrors legacy `seedItemsCatFromPage` category normalization. */
 export function normalizeCategories(cats: unknown[]): CatalogCategory[] {
   const safeCats = Array.isArray(cats) ? cats : [];
 

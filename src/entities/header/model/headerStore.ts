@@ -6,7 +6,7 @@ import { createWithEqualityFn } from 'zustand/traditional';
 import { useProfileStore } from '@src/entities/profile/model/profileStore';
 import { api } from '@src/shared/api';
 import { syncSentryUser } from '@src/shared/lib/monitoring/sentryAccount';
-import { reusePreviewStore } from '@src/shared/store/hotStore';
+import { reuseAppStore } from '@src/shared/store/hotStore';
 import {
   getLocalStorageItem,
   setLocalStorageItem,
@@ -18,6 +18,7 @@ export type HeaderState = {
   openCityModalList: boolean;
   openAuthModal: boolean;
   openBasket: boolean;
+  targetBasket: HTMLElement | null;
   compactMenuOpen: boolean;
   matches: MediaQueryList | null;
   token: string;
@@ -36,8 +37,8 @@ export type HeaderState = {
   hydrateSession: (city: string) => Promise<void>;
 };
 
-export const useHeaderStore = reusePreviewStore(
-  'preview-header',
+export const useHeaderStore = reuseAppStore(
+  'header',
   createWithEqualityFn<HeaderState>(
     (set, get) => ({
       activePage: 'home',
@@ -55,11 +56,27 @@ export const useHeaderStore = reusePreviewStore(
       setActivePage: (page) => set({ activePage: page }),
       setActiveModalCity: (active) => set({ openCityModal: active }),
       setActiveModalCityList: (active) => set({ openCityModalList: active }),
-      setActiveModalAuth: (active) =>
-        set({
-          openAuthModal: active,
-        }),
-      setActiveBasket: (active) => set({ openBasket: active }),
+      setActiveModalAuth: (active) => {
+        set({ openAuthModal: active });
+        if (active) {
+          void import('@src/features/auth/model/authStore').then(
+            ({ useAuthStore }) => {
+              useAuthStore.getState().navigate('start');
+            }
+          );
+        }
+      },
+      setActiveBasket: (active) => {
+        if (!active) {
+          set({ openBasket: false });
+          return;
+        }
+        const anchorEl =
+          typeof document !== 'undefined'
+            ? document.getElementById('headerNew')
+            : null;
+        set({ openBasket: true, targetBasket: anchorEl });
+      },
       setCompactMenuOpen: (open) => set({ compactMenuOpen: open }),
       toggleCompactMenu: () =>
         set((state) => ({ compactMenuOpen: !state.compactMenuOpen })),
@@ -91,6 +108,11 @@ export const useHeaderStore = reusePreviewStore(
           }
 
           applyAuth(token, (json?.user as Record<string, unknown>) ?? {});
+          void import('@src/features/auth/model/authStore').then(
+            ({ useAuthStore }) => {
+              useAuthStore.setState({ token });
+            }
+          );
         };
 
         const stored = getLocalStorageItem('token');

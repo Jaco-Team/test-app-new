@@ -1,8 +1,5 @@
 import type { CatalogCategory } from '@src/entities/catalog';
-import {
-  previewCategoryHref,
-  previewCityPath,
-} from '@src/shared/lib/previewPaths';
+import { categoryHref, cityPath } from '@src/shared/lib/sitePaths';
 import type { HeaderNavItem } from '@ui/widgets/Header/Header';
 
 export type BuildHeaderNavOptions = {
@@ -29,7 +26,7 @@ export function buildHeaderNavItems(
       }
       children.push({
         label: childLabel,
-        href: previewCategoryHref(citySlug, String(child.link ?? '')),
+        href: categoryHref(citySlug, String(child.link ?? '')),
       });
     }
 
@@ -42,7 +39,7 @@ export function buildHeaderNavItems(
 
     return {
       label,
-      href: hasChildren ? undefined : previewCategoryHref(citySlug, link),
+      href: hasChildren ? undefined : categoryHref(citySlug, link),
       active: isActive,
       children: hasChildren ? children : undefined,
     };
@@ -52,14 +49,14 @@ export function buildHeaderNavItems(
     return [
       {
         label: 'Роллы',
-        href: previewCategoryHref(citySlug, 'rolly'),
+        href: categoryHref(citySlug, 'rolly'),
         active: true,
       },
-      { label: 'Пицца', href: previewCategoryHref(citySlug, 'pizza') },
-      { label: 'Блюда', href: previewCategoryHref(citySlug, 'bluda') },
+      { label: 'Пицца', href: categoryHref(citySlug, 'pizza') },
+      { label: 'Блюда', href: categoryHref(citySlug, 'bluda') },
       {
         label: 'Акции',
-        href: previewCityPath(citySlug, 'akcii'),
+        href: cityPath(citySlug, 'akcii'),
         active: activePage === 'akcii',
       },
     ];
@@ -69,7 +66,7 @@ export function buildHeaderNavItems(
     ...navFromCatalog,
     {
       label: 'Акции',
-      href: previewCityPath(citySlug, 'akcii'),
+      href: cityPath(citySlug, 'akcii'),
       active: activePage === 'akcii',
     },
   ];
@@ -87,27 +84,27 @@ export function buildHeaderDrawerLinks(
   cityLabel: string,
   activePage = 'home'
 ): HeaderDrawerLink[] {
-  const base = previewCityPath(citySlug);
+  const base = cityPath(citySlug);
 
   return [
     { label: 'Меню', href: base, active: activePage === 'home' },
     {
       label: 'Акции',
-      href: previewCityPath(citySlug, 'akcii'),
+      href: cityPath(citySlug, 'akcii'),
       active: activePage === 'akcii',
     },
     { label: cityLabel, button: true },
     {
       label: 'Адреса',
-      href: previewCityPath(citySlug, 'contacts'),
+      href: cityPath(citySlug, 'contacts'),
       active: activePage === 'contacts',
     },
     {
       label: 'Жако',
-      href: previewCityPath(citySlug, 'document'),
+      href: cityPath(citySlug, 'document'),
       active: activePage === 'document',
     },
     { label: 'Аккаунт', button: true },
-    { label: 'Корзина', href: previewCityPath(citySlug, 'cart') },
+    { label: 'Корзина', href: cityPath(citySlug, 'cart') },
   ];
 }

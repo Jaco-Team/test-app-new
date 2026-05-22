@@ -4,7 +4,7 @@ import { create } from 'zustand';
 import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { api } from '@src/shared/api';
-import { reusePreviewStore } from '@src/shared/store/hotStore';
+import { reuseAppStore } from '@src/shared/store/hotStore';
 
 const FOOTER_CACHE_TTL_MS = 30000;
 let footerInFlightPromise: Promise<Record<string, unknown>> | null = null;
@@ -18,8 +18,8 @@ export type FooterState = {
   getData: (module: string, city: string) => Promise<Record<string, unknown>>;
 };
 
-export const useFooterStore = reusePreviewStore(
-  'preview-footer',
+export const useFooterStore = reuseAppStore(
+  'footer',
   createWithEqualityFn<FooterState>(
     (set, get) => ({
       links: {},

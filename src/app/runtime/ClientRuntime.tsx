@@ -10,15 +10,11 @@ import {
   installGlobalSentryHandlers,
   isCustomSentryMonitoringEnabled,
 } from '@/utils/clientMonitoring';
-import { PreviewScripts } from './PreviewScripts';
+import { RuntimeScripts } from './RuntimeScripts';
 
-const LEGACY_HEADER_BREAKPOINT_PX = 800;
+const HEADER_DESKTOP_BREAKPOINT_PX = 800;
 
-export function PreviewClientRuntime({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export function ClientRuntime({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const previousUrlRef = useRef('');
   const setMatches = useHeaderStore((state) => state.setMatches);
@@ -37,7 +33,7 @@ export function PreviewClientRuntime({
     }
 
     const media = window.matchMedia(
-      `(min-width: ${LEGACY_HEADER_BREAKPOINT_PX}px)`
+      `(min-width: ${HEADER_DESKTOP_BREAKPOINT_PX}px)`
     );
     setMatches(media);
 
@@ -73,7 +69,7 @@ export function PreviewClientRuntime({
 
   return (
     <>
-      <PreviewScripts />
+      <RuntimeScripts />
       {children}
     </>
   );

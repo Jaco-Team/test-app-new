@@ -23,7 +23,8 @@ function TopMailRu({ id }: { id: string }) {
   );
 }
 
-export function PreviewScripts() {
+/** Script element `id`s match `pages/_app.js` (not related to `/preview` route mount). */
+export function RuntimeScripts() {
   const city = useCityStore((state) => state.slug);
   const cityCounterId =
     city === 'samara' ? 100325084 : city === 'togliatti' ? 100601350 : null;
@@ -31,7 +32,7 @@ export function PreviewScripts() {
   return (
     <>
       <Script
-        id="varioqub-preview"
+        id="varioqub"
         strategy="beforeInteractive"
         dangerouslySetInnerHTML={{
           __html: `
@@ -45,7 +46,7 @@ export function PreviewScripts() {
         }}
       />
 
-      <Script id="ym-init-preview" strategy="afterInteractive">
+      <Script id="ym-init" strategy="afterInteractive">
         {`
           (function(m,e,t,r,i,k,a){
             m[i]=m[i]||function(){(m[i].a=m[i].a||[]).push(arguments)};
@@ -77,7 +78,7 @@ export function PreviewScripts() {
         `}
       </Script>
 
-      <Script id="telegram-pixel-preview" strategy="afterInteractive">
+      <Script id="telegram-pixel" strategy="afterInteractive">
         {`
           (function(t,l,g,r,m){
             t[g] || (
@@ -97,7 +98,7 @@ export function PreviewScripts() {
       </Script>
 
       <Script
-        id="ymaps-preview"
+        id="ymaps"
         strategy="afterInteractive"
         src={`https://api-maps.yandex.ru/2.1/?apikey=${process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP}&lang=ru_RU`}
         onLoad={() => {

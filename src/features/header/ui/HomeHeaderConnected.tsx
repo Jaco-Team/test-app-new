@@ -12,7 +12,11 @@ import {
   trackCategoryClick,
   trackHeaderClick,
 } from '@src/shared/lib/analytics/metrika';
-import { previewCityBase, previewCityPath } from '@src/shared/lib/previewPaths';
+import {
+  APP_ROUTE_PREFIX,
+  cityBase,
+  cityPath,
+} from '@src/shared/lib/sitePaths';
 import { Header } from '@ui/widgets/Header/Header';
 import type { HeaderNavItem } from '@ui/widgets/Header/Header';
 import { formatCartLabel } from '../model/formatCartLabel';
@@ -33,6 +37,7 @@ export function HomeHeaderConnected({
   fallbackCitySlug,
 }: HomeHeaderConnectedProps) {
   const [cityAnchor, setCityAnchor] = useState<null | HTMLElement>(null);
+  const [compactMenuOpen, setCompactMenuOpen] = useState(false);
 
   const citySlug =
     useCityStore((state) => state.slug) || fallbackCitySlug || '';
@@ -41,18 +46,14 @@ export function HomeHeaderConnected({
   const cityList = useCityStore((state) => state.list);
   const categories = useHomeStore((state) => state.categories);
   const activePage = useHeaderStore((state) => state.activePage);
-  const compactMenuOpen = useHeaderStore((state) => state.compactMenuOpen);
-  const toggleCompactMenu = useHeaderStore((state) => state.toggleCompactMenu);
-  const setCompactMenuOpen = useHeaderStore(
-    (state) => state.setCompactMenuOpen
-  );
-  const setActiveModalCity = useHeaderStore(
-    (state) => state.setActiveModalCity
+  const setActiveBasket = useHeaderStore((state) => state.setActiveBasket);
+  const setActiveModalAuth = useHeaderStore(
+    (state) => state.setActiveModalAuth
   );
   const setActiveModalCityList = useHeaderStore(
     (state) => state.setActiveModalCityList
   );
-  const setActiveBasket = useHeaderStore((state) => state.setActiveBasket);
+  const isAuth = useHeaderStore((state) => state.isAuth);
 
   const itemsOffDops = useCartStore((state) => state.itemsOffDops);
   const dopListCart = useCartStore((state) => state.dopListCart);
@@ -79,7 +80,7 @@ export function HomeHeaderConnected({
     checkPromo,
     allPrice
   );
-  const logoHref = citySlug ? previewCityBase(citySlug) : '/preview';
+  const logoHref = citySlug ? cityBase(citySlug) : APP_ROUTE_PREFIX;
 
   return (
     <>
@@ -92,65 +93,55 @@ export function HomeHeaderConnected({
         logoSrc="/Jaco-Logo-120.png"
         logoHref={logoHref}
         compactMenuOpen={compactMenuOpen}
-        onMenuClick={toggleCompactMenu}
+        onMenuClick={() => setCompactMenuOpen((open) => !open)}
         onCityClick={(event) => {
           setCityAnchor(event.currentTarget);
           setActiveModalCityList(true);
         }}
         onCartClick={() => {
           setCompactMenuOpen(false);
-          setActiveBasket(true);
           reachGoal('open_basket', undefined, citySlug);
-          if (citySlug) {
-            window.location.href = previewCityPath(citySlug, 'cart');
-          }
+          setActiveBasket(true);
         }}
         onNavItemClick={(item) => {
           trackCategoryClick(item.label, citySlug);
+        }}
+        onProfileClick={() => {
+          if (isAuth === 'auth' && citySlug) {
+            window.location.href = cityPath(citySlug, 'profile');
+            return;
+          }
+          setActiveModalAuth(true);
         }}
       />
 
       <Menu
         anchorEl={cityAnchor}
         open={Boolean(cityAnchor)}
-        onClose={() => {
-          setCityAnchor(null);
-          setActiveModalCity(false);
-        }}
+        onClose={() => setCityAnchor(null)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
         transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       >
-        {cityList.length > 0 ? (
-          cityList.map((item) => {
-            const slug = String(item.link ?? '').trim();
-            const name = String(item.name ?? slug);
-            if (!slug) {
-              return null;
-            }
-            return (
-              <MenuItem
-                key={slug}
-                selected={slug === citySlug}
-                onClick={() => {
-                  setCityAnchor(null);
-                  trackHeaderClick(name, citySlug);
-                  window.location.href = previewCityBase(slug);
-                }}
-              >
-                {name}
-              </MenuItem>
-            );
-          })
-        ) : (
-          <MenuItem
-            onClick={() => {
-              setCityAnchor(null);
-              setActiveModalCity(true);
-            }}
-          >
-            {cityLabel}
-          </MenuItem>
-        )}
+        {cityList.map((item) => {
+          const slug = String(item.link ?? '').trim();
+          const name = String(item.name ?? slug);
+          if (!slug) {
+            return null;
+          }
+          return (
+            <MenuItem
+              key={slug}
+              selected={slug === citySlug}
+              onClick={() => {
+                setCityAnchor(null);
+                trackHeaderClick(name, citySlug);
+                window.location.href = cityBase(slug);
+              }}
+            >
+              {name}
+            </MenuItem>
+          );
+        })}
       </Menu>
     </>
   );

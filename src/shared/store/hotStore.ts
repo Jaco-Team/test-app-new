@@ -4,18 +4,18 @@ const hotStores =
   typeof globalThis !== 'undefined'
     ? ((
         globalThis as typeof globalThis & {
-          __JACO_PREVIEW_STORES__?: Record<string, unknown>;
+          __JACO_APP_STORES__?: Record<string, unknown>;
         }
-      ).__JACO_PREVIEW_STORES__ =
+      ).__JACO_APP_STORES__ =
         (
           globalThis as typeof globalThis & {
-            __JACO_PREVIEW_STORES__?: Record<string, unknown>;
+            __JACO_APP_STORES__?: Record<string, unknown>;
           }
-        ).__JACO_PREVIEW_STORES__ || {})
+        ).__JACO_APP_STORES__ || {})
     : null;
 
-/** Dev HMR-safe store registry (same contract as legacy `reuseHotStore`). */
-export function reusePreviewStore<T extends UseBoundStore<StoreApi<unknown>>>(
+/** Dev HMR-safe store registry. */
+export function reuseAppStore<T extends UseBoundStore<StoreApi<unknown>>>(
   key: string,
   store: T
 ): T {

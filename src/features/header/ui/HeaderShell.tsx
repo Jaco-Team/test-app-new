@@ -4,16 +4,14 @@ import { useState } from 'react';
 import Menu from '@mui/material/Menu';
 import MenuItem from '@mui/material/MenuItem';
 import { Header } from '@ui/widgets/Header/Header';
+import { cityBase } from '@src/shared/lib/sitePaths';
 
-export type PreviewHeaderShellProps = {
+export type HeaderShellProps = {
   citySlug: string;
   cityLabel: string;
 };
 
-export function PreviewHeaderShell({
-  citySlug,
-  cityLabel,
-}: PreviewHeaderShellProps) {
+export function HeaderShell({ citySlug, cityLabel }: HeaderShellProps) {
   const [compactMenuOpen, setCompactMenuOpen] = useState(false);
   const [cityAnchor, setCityAnchor] = useState<null | HTMLElement>(null);
 
@@ -23,7 +21,7 @@ export function PreviewHeaderShell({
         city={cityLabel}
         cartLabel="Корзина"
         logoSrc="/Jaco-Logo-120.png"
-        logoHref={`/preview/${citySlug}`}
+        logoHref={cityBase(citySlug)}
         compactMenuOpen={compactMenuOpen}
         onMenuClick={() => setCompactMenuOpen((value) => !value)}
         onCityClick={(event) => setCityAnchor(event.currentTarget)}

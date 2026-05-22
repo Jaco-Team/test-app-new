@@ -14,7 +14,7 @@ import type {
 } from './types';
 import { normalizeCategories } from '@src/entities/catalog';
 import { buildHeaderNavItems } from '@src/features/header/model/buildHeaderNav';
-import { previewCityPath } from '@src/shared/lib/previewPaths';
+import { cityPath } from '@src/shared/lib/sitePaths';
 import type { CategoryMenuItem } from '@ui/widgets/CategoryMenu/CategoryMenu';
 import type { BadgeTone } from '@ui/components';
 import type { ProductCardProps } from '@ui/patterns/ProductCard/ProductCard';
@@ -131,12 +131,12 @@ function defaultFooterGroups(citySlug: string): HomeFooterLinkGroup[] {
     {
       title: 'Жако',
       items: [
-        { label: 'О компании', href: previewCityPath(citySlug, 'about') },
+        { label: 'О компании', href: cityPath(citySlug, 'about') },
         {
           label: 'Реквизиты',
-          href: previewCityPath(citySlug, 'company-details'),
+          href: cityPath(citySlug, 'company-details'),
         },
-        { label: 'Контакты', href: previewCityPath(citySlug, 'contacts') },
+        { label: 'Контакты', href: cityPath(citySlug, 'contacts') },
       ],
     },
     {
@@ -144,18 +144,18 @@ function defaultFooterGroups(citySlug: string): HomeFooterLinkGroup[] {
       items: [
         {
           label: 'Публичная оферта',
-          href: previewCityPath(citySlug, 'publichnaya-oferta'),
+          href: cityPath(citySlug, 'publichnaya-oferta'),
         },
         {
           label: 'Политика конфиденциальности',
-          href: previewCityPath(citySlug, 'politika-konfidencialnosti'),
+          href: cityPath(citySlug, 'politika-konfidencialnosti'),
         },
-        { label: 'Карта сайта', href: previewCityPath(citySlug, 'sitemap') },
+        { label: 'Карта сайта', href: cityPath(citySlug, 'sitemap') },
       ],
     },
     {
       title: 'Работа в жако',
-      items: [{ label: 'Вакансии', href: previewCityPath(citySlug, 'jobs') }],
+      items: [{ label: 'Вакансии', href: cityPath(citySlug, 'jobs') }],
     },
     {
       title: 'Франшиза',

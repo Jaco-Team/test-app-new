@@ -3,7 +3,7 @@ import { mapHomePageViewModel } from '../model/mapHomePageViewModel';
 import { productCardFixtures } from '@ui/fixtures/productFixtures';
 import { HomePage } from './HomePage';
 
-const previewModel = mapHomePageViewModel({
+const storyModel = mapHomePageViewModel({
   city: 'samara',
   page: { title: 'Жако Самара' },
   cats: [],
@@ -22,7 +22,7 @@ const meta = {
   parameters: { layout: 'fullscreen' },
   args: {
     model: {
-      ...previewModel,
+      ...storyModel,
       products: [
         productCardFixtures.madeiraSet,
         productCardFixtures.madeiraSet,

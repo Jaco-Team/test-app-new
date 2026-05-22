@@ -1,6 +1,5 @@
 import { reachGoal } from './metrika';
 
-/** Port of `components/useYandexMetrika.jsx` for the preview commerce layer. */
 export function trackCommerceEvent(
   city: string,
   event: string,

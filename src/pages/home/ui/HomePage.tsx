@@ -13,7 +13,7 @@ export type HomePageProps = {
 
 export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
   return (
-    <div className="preview-home">
+    <div className="home-page">
       {useConnectedHeader ? (
         <HomeHeaderConnected
           fallbackNav={model.headerNav}
@@ -26,7 +26,7 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
           cityLabel={model.cityLabel}
         />
       )}
-      <main className="preview-home__main">
+      <main className="home-page__main">
         <BannerSlider slides={model.banners} />
 
         <CategoryMenu
@@ -36,7 +36,7 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
 
         <TagFilter items={model.tags} />
 
-        <section className="preview-home__grid" aria-label="Каталог">
+        <section className="home-page__grid" aria-label="Каталог">
           {model.products.map((product, index) => (
             <ProductCard
               key={`${product.title}-${product.price}-${index}`}

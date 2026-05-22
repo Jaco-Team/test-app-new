@@ -4,7 +4,7 @@ import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { api } from '@src/shared/api';
 import { syncSentryUser } from '@src/shared/lib/monitoring/sentryAccount';
-import { reusePreviewStore } from '@src/shared/store/hotStore';
+import { reuseAppStore } from '@src/shared/store/hotStore';
 
 export type ProfileUser = Record<string, unknown>;
 
@@ -16,8 +16,8 @@ export type ProfileState = {
   getCountPromosOrders: (city: string, userToken?: string) => Promise<void>;
 };
 
-export const useProfileStore = reusePreviewStore(
-  'preview-profile',
+export const useProfileStore = reuseAppStore(
+  'profile',
   createWithEqualityFn<ProfileState>(
     (set, get) => ({
       userInfo: {},
