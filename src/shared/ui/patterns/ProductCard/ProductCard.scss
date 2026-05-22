@@ -166,7 +166,7 @@
     gap: ui-fluid-expanded(12);
     width: 100%;
     min-height: 0;
-    padding: 0 0 ui-fluid-expanded(28);
+    padding: 0 0 ui-fluid-expanded(76);
     border-radius: ui-fluid-expanded(32);
     text-align: center;
     &--active {
@@ -190,7 +190,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      min-height: ui-fluid-expanded(96);
+      min-height: ui-fluid-expanded(48);
       font-size: ui-fluid-expanded(44);
       font-weight: 400;
       line-height: 1.1;
@@ -204,10 +204,7 @@
       line-height: 1.25;
     }
     &__description {
-      min-height: ui-fluid-expanded(96);
-      font-size: ui-fluid-expanded(26);
-      line-height: 1.16;
-      text-align: center;
+      display: none;
     }
     &__action {
       width: 64%;

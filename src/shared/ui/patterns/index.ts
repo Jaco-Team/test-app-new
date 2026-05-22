@@ -15,3 +15,5 @@ export type {
   ProductCardProps,
   ProductCardBadge,
 } from './ProductCard/ProductCard';
+export { TagFilter } from './TagFilter/TagFilter';
+export type { TagFilterProps, TagFilterItem } from './TagFilter/TagFilter';

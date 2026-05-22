@@ -7,6 +7,7 @@ const dirname = path.dirname(fileURLToPath(import.meta.url));
 const config = {
   stories: [
     '../src/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)',
+    '../src/pages/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)',
     '../src/stories/**/*.mdx',
     '../stories/{app,pages}/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)',
     '../stories/{widgets,features,entities}/**/ui/**/*.stories.@(js|jsx|mjs|ts|tsx|mdx)',

@@ -44,3 +44,18 @@ export const ПустаяКорзина: Story = {
   name: 'Пустая корзина',
   args: { cartLabel: 'Корзина' },
 };
+
+export const Compact: Story = {
+  name: 'Compact',
+  parameters: { viewport: { defaultViewport: 'mobileMin' } },
+};
+
+export const Regular: Story = {
+  name: 'Regular',
+  parameters: { viewport: { defaultViewport: 'tabletMin' } },
+};
+
+export const Expanded: Story = {
+  name: 'Expanded',
+  parameters: { viewport: { defaultViewport: 'desktopMin' } },
+};

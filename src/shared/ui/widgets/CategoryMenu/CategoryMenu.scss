@@ -81,37 +81,6 @@
   }
 
   @include ui-expanded {
-    position: static;
-    height: auto;
-    overflow: visible;
-    background: transparent;
-
-    &__row {
-      justify-content: center;
-      gap: ui-fluid-expanded(12);
-      overflow: visible;
-    }
-
-    &__row--primary,
-    &__row--secondary {
-      padding: 0;
-    }
-
-    &__row--secondary {
-      margin-top: ui-fluid-expanded(10);
-    }
-
-    &__item {
-      min-width: 0;
-      height: ui-fluid-expanded(32);
-      padding: 0 ui-fluid-expanded(16);
-      background: transparent;
-      font-size: ui-fluid-expanded(18);
-    }
-
-    &__item--active,
-    &__item:hover {
-      background: rgba(0, 0, 0, 0.04);
-    }
+    display: none;
   }
 }

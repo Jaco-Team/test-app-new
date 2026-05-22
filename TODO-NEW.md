@@ -409,6 +409,21 @@ Use real fixture contracts, not handcrafted story-only shapes.
 Create first page composition under `src/pages/` consuming the new DS.
 Storybook documents the page, but the page component remains app code.
 
+### Step 7b: New core shell (preview App Router)
+
+Status: first slice done.
+
+- Add `app/layout.tsx` with `DesignSystemProvider` and minimal `base.scss` (no legacy global SCSS). `app/` must sit beside root `pages/` (Next constraint).
+- Add `app/preview/[city]/page.tsx` — preview route at `/preview/samara`, legacy `/samara` untouched.
+- Reuse existing `api()` / city normalization from legacy `pages/[city]/index.jsx`.
+- Do **not** add `app/[city]/page.tsx` at production path until cutover (App Router overrides Pages Router).
+- Do **not** rename `pages/` to `pages_old`.
+
+Local URLs:
+
+- Legacy: `http://localhost:3000/samara`
+- Preview: `http://localhost:3000/preview/samara`
+
 ### Step 8: Legacy migration
 
 Legacy pages consume new DS incrementally.
@@ -426,13 +441,45 @@ Old Storybook work dies gradually after replacement coverage exists.
 - Added ProductCard as a composed pattern using those components.
 - Storybook build passes.
 
+### Step 5b: Header parity pass (preview + legacy backend)
+
+Status: in progress.
+
+Reference: https://jacofood.ru/samara and `modules/header/navBar/*`, `styles/header/*`.
+
+**Breakpoint rule:** header mobile/desktop switch follows legacy `matches` at **800px**, not DS 991px (category rail below header still uses 991).
+
+**Wire same backend as legacy** (no new APIs):
+
+- `useHeaderStoreNew` — `matches`, basket open, city modal, auth
+- `useCitiesStore` — city slug + RU label
+- `useCartStore` — cart total label, `setAllItems` from SSR seed
+- `useHomeStore` — `category`, `getItemsCat`, category filter / scroll
+
+**UX gaps to close:**
+
+| Area               | Legacy                                                  | New DS target                                |
+| ------------------ | ------------------------------------------------------- | -------------------------------------------- |
+| Mobile drawer      | MUI `SwipeableDrawer`, icons per row, real `Link` hrefs | `HeaderMobileDrawer` + legacy icons          |
+| Desktop categories | Dropdown `Menu` per top cat with subcats                | `HeaderCategoryNav` + MUI Menu               |
+| City               | Opens city modal                                        | `setActiveModalCityList(true)`               |
+| Cart               | Opens basket, formatted ₽ total                         | `setActiveBasket`, cart store pricing        |
+| Profile            | Auth modal / profile routes                             | `ProfileIconHeader*` behavior or equivalent  |
+| Typography         | `font32_400` cats, mobile drawer 34px                   | `ui-type()` with audited px from legacy SCSS |
+| Logo               | SVG + `/{city}` or scroll on home                       | `citySlug` prop                              |
+
+**Modals on preview:** mount legacy modal stack beside preview header (`ModalCity*`, `ModalAuth`, `Basket*`) until DS modals exist.
+
+**Verification:** side-by-side `/preview/samara` vs `/samara` at 320, 800, 991; then `npm run test:ui-visual`.
+
 ## Immediate Next Work
 
-1. Add visual regression runner for compact/regular/expanded states.
-2. Split the generated icon catalog into smaller domain icon modules before it becomes a bundle problem.
-3. Refine ProductCard against live/core references with screenshots at 320, 668, and 991 widths.
-4. Build Header/Footer in src/shared/ui/widgets using the new primitives.
-5. Create a first page composition under src/pages after widgets exist.
+1. Complete Step 5b (header store wiring + drawer/category UX + typography audit).
+2. Refine Footer/BannerSlider SCSS against https://jacofood.ru/samara at 320, 668, 991 px (use `npm run test:ui-visual:update` for baselines).
+3. Wire cart/auth modals and zustand adapters on preview home.
+4. Refine ProductCard grid density and filter block.
+5. Split the generated icon catalog into smaller domain icon modules before it becomes a bundle problem.
+6. Cut over `/[city]` when preview matches production.
 
 ## Hard Rules
 

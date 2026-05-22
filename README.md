@@ -1,93 +1,74 @@
 # test-app-new
 
-This is a [Next.js](https://nextjs.org/) project bootstrapped with [`create-next-app`](https://github.com/vercel/next.js/tree/canary/packages/create-next-app).
+Next.js app for [jacofood.ru](https://jacofood.ru) (legacy core) with a parallel FSD redesign under `src/`.
 
 ## Getting Started
 
-Base app:
-
 ```bash
 npm run dev
-```
-
-Storybook:
-
-```bash
 npm run storybook
+npm run test:ui-visual
 ```
 
 Default local URLs:
 
-- App: `http://localhost:3000`
-- Storybook: `http://localhost:6007`
+| Surface                         | URL                                    |
+| ------------------------------- | -------------------------------------- |
+| Legacy core (production routes) | `http://localhost:3000/samara`         |
+| New core preview                | `http://localhost:3000/preview/samara` |
+| Storybook (DS specs)            | `http://localhost:6007`                |
+
+## Architecture
+
+Two runtimes share one dev server:
+
+- **Legacy core** — `pages/`, `modules/`, `components/`, `styles/`. Unchanged routes (`/[city]`, cart, profile, etc.).
+- **New core** — `app/preview/[city]` (App Router) composes `src/pages` using the design system in `src/shared/ui`.
+
+```txt
+app/                # Next App Router (thin preview routes)
+src/
+  pages/            # FSD page compositions
+  widgets/          # page-level blocks (as needed)
+  features/         # user actions (later)
+  entities/         # domain types (later)
+  shared/ui/        # design system (source of truth)
+```
+
+Do **not** rename `pages/` to `pages_old` — Next.js only recognizes a directory named `pages/`.
+
+## Design System
+
+- Source of truth: `src/shared/ui/**` with colocated `*.stories.tsx`
+- Import alias: `@ui/*`
+- Provider: `DesignSystemProvider` from `@ui/foundation`
+- Breakpoints: compact `320–667`, regular `668–990`, expanded `991+`
+
+Storybook documents components; it is not the DS source. The old `stories/` tree remains on disk as reference only.
 
 ## Redesign Direction
 
-- First transfer current design and behavior into Storybook.
-- Keep the base app unchanged during the Storybook transfer stage.
-- Use FSD + TypeScript for new Storybook work.
-- Later, rebuild the base app from Storybook components.
-- Final stage: migrate backend behavior from the custom implementation to Laravel.
-
-## Storybook Breakpoints
-
-- Mobile: `320-667`
-- Tablet: `668-990`
-- Desktop: `991+`
-
-Tablet is a separate required design variant.
-Indexed FSD stories should expose `Mobile`, `Tablet`, and `Desktop` stories
-using the shared Storybook viewport helper.
-
-## Storybook Structure
-
-New Storybook work belongs in:
-
-- `stories/app`
-- `stories/pages`
-- `stories/widgets`
-- `stories/features`
-- `stories/entities`
-- `stories/shared`
-
-Do not add new work to `stories/legacy`. Migrate legacy stories into FSD layers
-and index only FSD story locations from `.storybook/main.mjs`; legacy and old
-top-level helper stories stay on disk as reference.
+1. Extend `src/shared/ui` until widgets match production (reference: https://jacofood.ru/samara).
+2. Compose pages in `src/pages` and validate on `/preview/[city]`.
+3. Cut over routes from legacy `pages/` when parity is verified.
+4. Later: Laravel backend migration.
 
 ## Development Notes
 
 - Keep changes scoped and simple.
 - Prefer existing project patterns before adding abstractions.
-- Update README or task docs when workflow or project direction changes.
-- For Storybook behavior changes, add or run relevant automatic Storybook checks when practical.
-- Use Chrome MCP against the already-running local Storybook when visual or interaction verification is needed.
-- TypeScript is configured with `tsconfig.json`; legacy JS remains allowed during migration.
+- TypeScript in `src/`; legacy JS remains allowed during migration.
+- Do not run format/lint/prettier/eslint unless explicitly requested.
 
-## Existing Docs
+## Docs
 
-- `AGENTS.md`: project instructions for Codex.
-- `stories/README_FSD.md`: FSD Storybook structure.
-- `STORYBOOK_REDESIGN_TODO.md`: staged redesign todo.
+| File                                                     | Purpose                       |
+| -------------------------------------------------------- | ----------------------------- |
+| [AGENTS.md](AGENTS.md)                                   | Codex / agent instructions    |
+| [TODO-NEW.md](TODO-NEW.md)                               | Active DS + new core plan     |
+| [STORYBOOK_REDESIGN_TODO.md](STORYBOOK_REDESIGN_TODO.md) | Archived Storybook-first plan |
+| [stories/README_FSD.md](stories/README_FSD.md)           | Archived `stories/` FSD notes |
 
-## Migration Status
+## Deploy
 
-The current Storybook migration is parallel to the app runtime. Legacy Storybook concepts are being moved into new FSD TypeScript paths under `stories/`, while `stories/legacy` stays available as reference until each slice is refactored and verified. New Header/Footer Storybook styles should use module-system Sass via `@use` and must not import legacy Sass with deprecated `@import`.
-
-## Storybook Static
-
-`storybook-static` is a generated static Storybook build. It can be used as a reference for previously built legacy stories, but source migration should happen from `stories/legacy` into typed FSD files under `stories/`.
-
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js/) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/deployment) for more details.
+Standard Next.js build: `npm run build` && `npm start`. Preview routes are for development until cutover.

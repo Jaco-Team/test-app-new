@@ -1,4 +1,4 @@
-import type { HTMLAttributes, ReactNode } from 'react';
+import type { HTMLAttributes, MouseEvent, ReactNode } from 'react';
 import {
   BasketIconNew,
   BurgerIconMobile,
@@ -17,10 +17,18 @@ export interface HeaderNavItem {
 export interface HeaderProps extends HTMLAttributes<HTMLElement> {
   navItems?: HeaderNavItem[];
   city?: string;
+  cityHref?: string;
   cartLabel?: string;
   logoSrc?: string;
+  logoHref?: string;
   compactMenuOpen?: boolean;
   onMenuClick?: () => void;
+  onCityClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+  onCartClick?: () => void;
+  onNavItemClick?: (
+    item: HeaderNavItem,
+    event: MouseEvent<HTMLElement>
+  ) => void;
   actions?: ReactNode;
 }
 
@@ -34,10 +42,15 @@ const defaultNavItems: HeaderNavItem[] = [
 export function Header({
   navItems = defaultNavItems,
   city = 'Самара',
+  cityHref,
   cartLabel = '2 818 ₽',
   logoSrc = '/Jaco-Logo-120.png',
+  logoHref = '/',
   compactMenuOpen = false,
   onMenuClick,
+  onCityClick,
+  onCartClick,
+  onNavItemClick,
   actions,
   className,
   ...props
@@ -55,7 +68,7 @@ export function Header({
   return (
     <header className={cn('ui-header', className)} {...props}>
       <div className="ui-header__bar">
-        <a className="ui-header__logo" href="#" aria-label="Жако">
+        <a className="ui-header__logo" href={logoHref} aria-label="Жако">
           <img src={logoSrc} alt="Жако" />
         </a>
 
@@ -71,6 +84,9 @@ export function Header({
                 )}
                 href={item.href as string | undefined}
                 type={item.href ? undefined : 'button'}
+                onClick={(event: MouseEvent<HTMLElement>) =>
+                  onNavItemClick?.(item, event)
+                }
               >
                 {item.label}
               </Tag>
@@ -80,7 +96,7 @@ export function Header({
 
         <div className="ui-header__spacer" />
 
-        <button className="ui-header__city" type="button">
+        <button className="ui-header__city" type="button" onClick={onCityClick}>
           <LocationHeaderIcon aria-hidden="true" />
           <span>{city}</span>
         </button>
@@ -102,10 +118,15 @@ export function Header({
           <ProfileIconNew aria-hidden="true" />
         </button>
 
-        <a className="ui-header__cart" href="#" aria-label="Корзина">
+        <button
+          className="ui-header__cart"
+          type="button"
+          aria-label="Корзина"
+          onClick={onCartClick}
+        >
           <BasketIconNew aria-hidden="true" />
           <span>{cartLabel}</span>
-        </a>
+        </button>
 
         {actions ? <div className="ui-header__actions">{actions}</div> : null}
       </div>

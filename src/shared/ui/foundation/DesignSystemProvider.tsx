@@ -1,5 +1,6 @@
+'use client';
+
 import type { ReactNode } from 'react';
-import CssBaseline from '@mui/material/CssBaseline';
 import { ThemeProvider } from '@mui/material/styles';
 import { uiTheme } from './theme';
 import './base.scss';
@@ -9,10 +10,5 @@ export type DesignSystemProviderProps = {
 };
 
 export function DesignSystemProvider({ children }: DesignSystemProviderProps) {
-  return (
-    <ThemeProvider theme={uiTheme}>
-      <CssBaseline />
-      {children}
-    </ThemeProvider>
-  );
+  return <ThemeProvider theme={uiTheme}>{children}</ThemeProvider>;
 }

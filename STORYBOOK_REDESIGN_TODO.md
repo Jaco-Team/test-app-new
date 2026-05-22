@@ -1,5 +1,9 @@
 # Storybook FSD TypeScript Migration Todo
 
+> **SUPERSEDED** — This plan is archived. Active work follows [TODO-NEW.md](TODO-NEW.md):
+> design system in `src/shared/ui`, new core at `/preview/[city]`, legacy `stories/` kept as reference only.
+> Do not add new DS components under `stories/`.
+
 ## Scope
 
 - The current product is a legacy JS/JSX Next.js app.
