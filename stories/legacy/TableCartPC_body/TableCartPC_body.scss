@@ -1,0 +1,6 @@
+@use '../global' as *;
+
+tbody {
+  display: flex;
+  flex-direction: column;
+}

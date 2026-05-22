@@ -1,0 +1,673 @@
+.ProductModal-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  right: 0;
+  bottom: 0;
+  background-color: rgba(0, 0, 0, 0.5);
+  z-index: 1000;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding: 20px;
+  animation: fadeIn 0.225s ease;
+
+  @media (max-width: 768px) {
+    align-items: flex-end;
+    justify-content: center;
+    padding: 0;
+  }
+}
+
+.ProductModal-close {
+  position: absolute;
+  top: 7%;
+  left: 2%;
+  transform: translateY(-50%);
+  width: 48px;
+  height: 48px;
+  background: transparent;
+  border: none;
+  cursor: pointer;
+  z-index: 1001;
+  padding: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transition: transform 0.2s;
+
+  &:hover {
+    transform: translateY(-50%) scale(1.05);
+  }
+
+  @media (max-width: 1200px) {
+    left: 20px;
+  }
+
+  @media (max-width: 768px) {
+    display: none;
+  }
+}
+
+.ProductModal {
+  background: #fff;
+  border-radius: 24px;
+  width: 90%;
+  max-width: 1300px;
+  max-height: 90vh;
+  overflow-y: auto;
+  position: relative;
+  animation: slideUp 0.225s ease;
+  display: flex;
+  flex-direction: column;
+
+  &:has(.ProductModal-nutrition-view) {
+    background: rgb(230, 230, 230);
+    .ProductModal-image {
+      background: rgb(230, 230, 230);
+    }
+    .ProductModal-image img {
+      display: none;
+    }
+  }
+
+  &:has(.ProductModal-rolls-view) {
+    background: rgb(230, 230, 230);
+    .ProductModal-image {
+      background: rgb(230, 230, 230);
+    }
+    .ProductModal-image img {
+      display: none;
+    }
+  }
+
+  @media (min-width: 960px) {
+    flex-direction: row;
+    max-height: 90vh;
+    height: 90vh;
+  }
+
+  @media (max-width: 768px) {
+    width: 100%;
+    height: 75vh;
+    max-height: 75vh;
+    border-radius: 40px 40px 0 0;
+    overflow-y: auto;
+  }
+
+  &-image {
+    position: relative;
+    width: 100%;
+    background: #f5f5f5;
+    flex-shrink: 0;
+
+    @media (min-width: 960px) {
+      width: 55%;
+    }
+
+    @media (max-width: 768px) {
+      height: 45vh;
+      max-height: 350px;
+    }
+
+    &-main {
+      width: 100%;
+      height: 100%;
+      object-fit: cover;
+      display: block;
+    }
+  }
+
+  &-content {
+    padding: 30px;
+    display: flex;
+    flex-direction: column;
+    flex: 1;
+    justify-content: space-between;
+
+    @media (min-width: 960px) {
+      width: 45%;
+      padding: 40px 50px;
+    }
+
+    @media (max-width: 768px) {
+      padding: 24px 20px 30px;
+    }
+  }
+
+  &-title {
+    font-size: 32px;
+    font-weight: 700;
+    color: #1a1a1a;
+    margin: 0 0 20px 0;
+    line-height: 1.2;
+
+    @media (max-width: 768px) {
+      font-size: 24px;
+      text-align: center;
+      margin: 20px 0 16px;
+    }
+  }
+
+  &-meta {
+    display: flex;
+    align-items: flex-start;
+    justify-content: space-between;
+    margin-bottom: 24px;
+    gap: 12px;
+
+    @media (max-width: 768px) {
+      margin-bottom: 20px;
+      justify-content: center;
+    }
+
+    &-text {
+      display: flex;
+      align-items: center;
+      flex-wrap: wrap;
+      gap: 10px;
+      font-size: 16px;
+      color: rgba(0, 0, 0, 0.5);
+
+      @media (max-width: 768px) {
+        font-size: 14px;
+        gap: 8px;
+      }
+    }
+
+    &-link {
+      color: #e31837;
+      cursor: pointer;
+      text-decoration: underline;
+      font-weight: 400;
+
+      &:hover {
+        color: #c41230;
+      }
+    }
+
+    &-divider {
+      color: rgba(0, 0, 0, 0.3);
+    }
+
+    &-item {
+      color: rgba(0, 0, 0, 0.5);
+    }
+  }
+
+  &-info-btn {
+    background: transparent;
+    border: none;
+    cursor: pointer;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    flex-shrink: 0;
+    transition: transform 0.2s;
+
+    &:hover {
+      transform: scale(1.1);
+    }
+
+    svg {
+      width: 24px;
+      height: 24px;
+
+      @media (max-width: 768px) {
+        width: 28px;
+        height: 28px;
+      }
+    }
+  }
+
+  &-description {
+    font-size: 16px;
+    color: rgba(0, 0, 0, 0.6);
+    line-height: 1.6;
+    margin: 0 0 32px 0;
+    flex: 1;
+
+    @media (max-width: 768px) {
+      font-size: 14px;
+      margin: 0 0 24px 0;
+      text-align: center;
+    }
+  }
+
+  &-price-btn {
+    width: 100%;
+    padding: 16px 32px;
+    background: transparent;
+    border: 1px solid #0003;
+    border-radius: 100px;
+    font-size: 16px;
+    font-weight: 400;
+    color: #0009;
+    cursor: pointer;
+    transition: all 0.2s;
+    text-align: center;
+
+    &:hover {
+      border-color: rgba(0, 0, 0, 0.2);
+      background: rgba(0, 0, 0, 0.02);
+    }
+
+    @media (max-width: 768px) {
+      padding: 18px 24px;
+      font-size: 24px;
+      background: #f0f0f0;
+      border: none;
+    }
+  }
+}
+
+.ProductModal-rolls-view,
+.ProductModal-nutrition-view {
+  padding: 40px 50px;
+  display: flex;
+  margin: 39px;
+  flex-direction: column;
+  border-radius: 20px 20px 0 0;
+  height: 100%;
+  max-height: 85vh;
+  overflow-y: hidden;
+  background: #fff;
+  position: absolute;
+  top: 0;
+  width: 55%;
+  z-index: 10;
+
+  @media (max-width: 960px) {
+    width: 100%;
+    margin: 0;
+  }
+}
+
+.ProductModal-rolls-header,
+.ProductModal-nutrition-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 32px;
+  position: relative;
+
+  @media (max-width: 960px) {
+    margin-bottom: 24px;
+  }
+}
+
+.ProductModal-rolls-title,
+.ProductModal-nutrition-title {
+  font-size: 32px;
+  font-weight: 400;
+  color: #1a1a1a;
+  margin: 0;
+  text-align: center;
+  flex: 1;
+
+  @media (max-width: 960px) {
+    font-size: 24px;
+  }
+}
+
+.ProductModal-back-btn {
+  display: none;
+}
+
+// Rolls List
+.ProductModal-rolls-list {
+  display: flex;
+  flex-direction: column;
+  gap: 32px;
+
+  @media (max-width: 960px) {
+    gap: 24px;
+    overflow-y: auto;
+  }
+}
+
+.ProductModal-roll-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 24px;
+
+  @media (max-width: 960px) {
+    gap: 16px;
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+.ProductModal-roll-number {
+  font-size: 18px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.3);
+  min-width: 40px;
+  text-align: right;
+
+  @media (max-width: 960px) {
+    font-size: 16px;
+    min-width: 30px;
+  }
+}
+
+.ProductModal-roll-image {
+  flex-shrink: 0;
+  border-radius: 16px;
+  overflow: hidden;
+  background: #f5f5f5;
+  width: 140px;
+  height: 140px;
+
+  @media (max-width: 960px) {
+    width: 100px;
+    height: 100px;
+    border-radius: 12px;
+  }
+
+  @media (max-width: 600px) {
+    width: 100%;
+    max-width: 200px;
+    height: 150px;
+    margin: 0 auto;
+  }
+
+  img {
+    display: block;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.ProductModal-roll-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.ProductModal-roll-name {
+  font-size: 22px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0 0 12px 0;
+  line-height: 1.3;
+
+  @media (max-width: 960px) {
+    font-size: 18px;
+    margin-bottom: 8px;
+  }
+}
+
+.ProductModal-roll-description {
+  font-size: 16px;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 1.5;
+  margin: 0;
+
+  @media (max-width: 960px) {
+    font-size: 14px;
+  }
+}
+
+// Nutrition View
+.ProductModal-nutrition-subtitle {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.5);
+  text-align: center;
+  margin: 0 0 24px 0;
+  line-height: 1.4;
+}
+
+.ProductModal-nutrition-link {
+  color: #e31837;
+  text-decoration: underline;
+  font-weight: 400;
+
+  &:hover {
+    color: #c41230;
+  }
+}
+
+.ProductModal-nutrition-toggle {
+  display: flex;
+  justify-content: center;
+  gap: 16px;
+  margin-bottom: 32px;
+}
+
+.ProductModal-nutrition-toggle-btn {
+  padding: 12px 28px;
+  border: 1px solid rgba(0, 0, 0, 0.2);
+  border-radius: 100px;
+  background: transparent;
+  font-size: 15px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.6);
+  cursor: pointer;
+  transition: all 0.2s;
+
+  &.active {
+    border-color: #e31837;
+    color: #e31837;
+  }
+
+  &:hover:not(.active) {
+    border-color: rgba(0, 0, 0, 0.4);
+    color: rgba(0, 0, 0, 0.8);
+  }
+}
+
+.ProductModal-nutrition-list {
+  display: flex;
+  flex-direction: column;
+  gap: 24px;
+  overflow-y: auto;
+  overflow-x: hidden;
+}
+
+.ProductModal-nutrition-item {
+  display: flex;
+  gap: 16px;
+  padding: 20px;
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: 20px;
+
+  @media (max-width: 960px) {
+    padding: 16px;
+    border-radius: 16px;
+    gap: 12px;
+  }
+
+  @media (max-width: 600px) {
+    flex-direction: column;
+  }
+}
+
+.ProductModal-nutrition-number {
+  font-size: 18px;
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.3);
+  min-width: 40px;
+  text-align: right;
+
+  @media (max-width: 960px) {
+    font-size: 16px;
+    min-width: 30px;
+  }
+}
+
+.ProductModal-nutrition-content {
+  flex: 1;
+  min-width: 0;
+}
+
+.ProductModal-nutrition-main {
+  display: flex;
+  align-items: flex-start;
+  justify-content: space-between;
+  margin-bottom: 16px;
+  gap: 12px;
+}
+
+.ProductModal-nutrition-roll-name {
+  font-size: 20px;
+  font-weight: 600;
+  color: #1a1a1a;
+  margin: 0;
+  line-height: 1.3;
+  flex: 1;
+
+  @media (max-width: 960px) {
+    font-size: 17px;
+  }
+}
+
+.ProductModal-nutrition-calories {
+  text-align: right;
+  flex-shrink: 0;
+}
+
+.ProductModal-nutrition-calories-value {
+  display: block;
+  font-size: 36px;
+  font-weight: 700;
+  color: #1a1a1a;
+  line-height: 1;
+
+  @media (max-width: 960px) {
+    font-size: 28px;
+  }
+}
+
+.ProductModal-nutrition-calories-unit {
+  display: block;
+  font-size: 13px;
+  color: rgba(0, 0, 0, 0.5);
+  margin-top: 6px;
+}
+
+.ProductModal-nutrition-details {
+  display: grid;
+  grid-template-columns: 1.2fr 1fr;
+  gap: 20px;
+
+  @media (max-width: 768px) {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+}
+
+.ProductModal-nutrition-ingredients {
+  font-size: 14px;
+  color: rgba(0, 0, 0, 0.6);
+  line-height: 1.4;
+}
+
+.ProductModal-nutrition-label {
+  font-weight: 500;
+  color: rgba(0, 0, 0, 0.8);
+}
+
+.ProductModal-nutrition-values {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+}
+
+.ProductModal-nutrition-value-row {
+  display: flex;
+  align-items: baseline;
+  gap: 8px;
+  font-size: 14px;
+}
+
+.ProductModal-nutrition-value-name {
+  color: rgba(0, 0, 0, 0.6);
+  white-space: nowrap;
+}
+
+.ProductModal-nutrition-value-dots {
+  flex: 1;
+  border-bottom: 1px dotted rgba(0, 0, 0, 0.2);
+  margin: 0 6px;
+  position: relative;
+  top: -4px;
+}
+
+.ProductModal-nutrition-value {
+  color: rgba(0, 0, 0, 0.8);
+  font-weight: 500;
+  white-space: nowrap;
+}
+
+// Animations
+@keyframes fadeIn {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes slideUp {
+  from {
+    transform: translateY(30px);
+    opacity: 0;
+  }
+  to {
+    transform: translateY(0);
+    opacity: 1;
+  }
+}
+
+// Scrollbar styling
+.ProductModal-rolls-view,
+.ProductModal-nutrition-view {
+  &::-webkit-scrollbar {
+    width: 6px;
+  }
+
+  &::-webkit-scrollbar-track {
+    background: rgba(0, 0, 0, 0.05);
+    border-radius: 3px;
+  }
+
+  &::-webkit-scrollbar-thumb {
+    background: rgba(0, 0, 0, 0.2);
+    border-radius: 3px;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.3);
+    }
+  }
+}
+
+// Very small screens
+@media (max-width: 480px) {
+  .ProductModal {
+    &-content {
+      padding: 20px 16px 24px;
+    }
+
+    &-title {
+      font-size: 20px;
+    }
+
+    &-meta-text {
+      font-size: 13px;
+    }
+
+    &-description {
+      font-size: 13px;
+    }
+
+    &-price-btn {
+      font-size: 20px;
+      padding: 16px 20px;
+    }
+  }
+}

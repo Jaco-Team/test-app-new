@@ -1,0 +1,46 @@
+import React from 'react';
+
+import { responsiveStoryGlobals } from '../../lib/storybook/responsive';
+import { MySwitch } from './MySwitch';
+
+export default {
+  title: 'Общие элементы / Switch',
+  component: MySwitch,
+  tags: ['autodocs'],
+  argTypes: {
+    type: {
+      type: 'string',
+      description: 'Тип свитча',
+    },
+  },
+};
+
+const Template = (args) => <MySwitch {...args} />;
+
+export const Auth = Template.bind({});
+export const Cart = Template.bind({});
+export const IOS = Template.bind({});
+
+Auth.args = {
+  type: 'auth',
+};
+
+Cart.args = {
+  type: 'cart',
+};
+
+IOS.args = {
+  type: 'ios',
+};
+
+export const Mobile = Template.bind({});
+Mobile.args = Auth.args;
+Mobile.globals = responsiveStoryGlobals.Mobile;
+
+export const Tablet = Template.bind({});
+Tablet.args = Auth.args;
+Tablet.globals = responsiveStoryGlobals.Tablet;
+
+export const Desktop = Template.bind({});
+Desktop.args = Auth.args;
+Desktop.globals = responsiveStoryGlobals.Desktop;

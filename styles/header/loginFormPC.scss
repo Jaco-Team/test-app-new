@@ -664,7 +664,7 @@
         }
 
         & .loginSubHeader2 {
-          height: $MyScale80;
+          min-height: $MyScale80;
           margin-bottom: $MyScale28;
           display: flex;
           align-items: center;

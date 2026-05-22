@@ -1,0 +1,299 @@
+@use '../../../../shared/global' as *;
+
+.ItemHomePc {
+  width: calcSize(600);
+  height: calcSize(984);
+  border-radius: calcSize(32);
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  mix-blend-mode: multiply;
+
+  &.active {
+    background-color: rgba($color: #000000, $alpha: 0.05);
+    height: calcSize(1016);
+  }
+
+  & .BlockIMG {
+    mix-blend-mode: multiply;
+    position: relative;
+
+    & > img {
+      width: calcSize(600);
+      height: calcSize(600);
+      cursor: pointer;
+    }
+
+    & > .badge {
+      position: absolute;
+      top: calcSize(20);
+      left: calcSize(20);
+    }
+  }
+
+  .content-wrapper {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  & .title {
+    @include MyFonts(44, 400);
+    text-align: center;
+    width: calcSize(536);
+    height: calcSize(96);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+  }
+
+  & .weight {
+    @include MyFonts(22, 400);
+    line-height: calcSize(64);
+    color: rgba($color: #000000, $alpha: 0.4);
+    text-align: center;
+    width: calcSize(536);
+    height: calcSize(64);
+  }
+
+  & .description {
+    @include MyFonts(26, 400);
+    line-height: calcSize(30);
+    color: rgba($color: #000000, $alpha: 0.6);
+    text-align: center;
+    width: calcSize(536);
+    height: calcSize(96);
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  & .btn_price {
+    width: calcSize(384);
+    height: calcSize(96);
+    border: 0px solid transparent;
+    border-radius: 100px;
+    background-color: rgba($color: #000000, $alpha: 0.05);
+    @include MyFonts(32, 400);
+    line-height: calcSize(40);
+    margin-top: calcSize(27);
+    cursor: pointer;
+  }
+
+  & .btn_count {
+    width: calcSize(384);
+    height: calcSize(96);
+    border: 0px solid transparent;
+    border-radius: 100px;
+    background-color: #fff;
+    margin-top: calcSize(27);
+    margin-bottom: calcSize(32);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+
+    & > span {
+      @include MyFonts(32, 400);
+      line-height: calcSize(40);
+    }
+
+    & button {
+      width: calcSize(80);
+      height: calcSize(80);
+      border-radius: 100px;
+      background-color: rgba($color: #000000, $alpha: 0.05);
+      border: 0px solid transparent;
+      line-height: calcSize(56);
+      cursor: pointer;
+
+      &.plus {
+        @include MyFonts(60, 400);
+        margin-right: calcSize(7);
+      }
+      &.minus {
+        @include MyFonts(44, 400);
+        margin-left: calcSize(7);
+      }
+    }
+  }
+
+  // Адаптив до 1000px (вертикальный layout)
+  @media (max-width: 1000px) {
+    width: calcSize_pad(450);
+    height: calcSize_pad(850);
+
+    &.active {
+      height: calcSize_pad(880);
+    }
+
+    & .BlockIMG {
+      & > img {
+        width: calcSize_pad(450);
+        height: calcSize_pad(450);
+      }
+    }
+
+    & .title {
+      @include MyFonts(36, 400);
+      width: calcSize_pad(400);
+      height: calcSize_pad(80);
+    }
+
+    & .weight {
+      @include MyFonts(20, 400);
+      width: calcSize_pad(400);
+      height: calcSize_pad(50);
+    }
+
+    & .description {
+      @include MyFonts(22, 400);
+      width: calcSize_pad(400);
+      height: calcSize_pad(80);
+    }
+
+    & .btn_price {
+      width: calcSize_pad(300);
+      height: calcSize_pad(80);
+      @include MyFonts(24, 400);
+    }
+
+    & .btn_count {
+      width: calcSize_pad(300);
+      height: calcSize_pad(80);
+      margin-bottom: calcSize_pad(20);
+
+      & > span {
+        @include MyFonts(28, 400);
+      }
+
+      & button {
+        width: calcSize_pad(65);
+        height: calcSize_pad(65);
+
+        &.plus {
+          @include MyFonts(50, 400);
+        }
+        &.minus {
+          @include MyFonts(36, 400);
+        }
+      }
+    }
+  }
+
+  // Адаптив до 800px (горизонтальный layout для планшетов)
+  @media (max-width: 800px) {
+    flex-direction: row;
+    width: calcSize_mobile(700);
+    height: calcSize_mobile(350);
+    padding: calcSize_mobile(20);
+    align-items: flex-start;
+
+    .content-wrapper {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    &.active {
+      height: calcSize_mobile(380);
+    }
+
+    & .BlockIMG {
+      flex-shrink: 0;
+      width: calcSize_mobile(220);
+      height: calcSize_mobile(220);
+
+      & > img {
+        width: 100%;
+        height: 100%;
+        object-fit: cover;
+        border-radius: calcSize_mobile(12);
+      }
+
+      & > .badge {
+        top: calcSize_mobile(8);
+        left: calcSize_mobile(8);
+      }
+    }
+
+    & .title {
+      font-size: calcSize_mobile(25) !important;
+      font-weight: 600;
+      width: calc(100% - #{calcSize_mobile(180)} - #{calcSize_mobile(20)});
+      height: auto;
+      text-align: left;
+      justify-content: flex-start;
+      margin-left: calcSize_mobile(20);
+      margin-top: 0;
+      line-height: calcSize_mobile(32);
+    }
+
+    & .weight {
+      font-size: calcSize_mobile(21) !important;
+      font-weight: 400;
+      width: calc(100% - #{calcSize_mobile(180)} - #{calcSize_mobile(20)});
+      height: auto;
+      line-height: calcSize_mobile(24);
+      text-align: left;
+      margin-left: calcSize_mobile(20);
+      margin-top: calcSize_mobile(4);
+      color: rgba($color: #000000, $alpha: 0.5);
+    }
+
+    & .description {
+      font-size: calcSize_mobile(21) !important;
+      font-weight: 400;
+      width: calc(100% - #{calcSize_mobile(180)} - #{calcSize_mobile(20)});
+      height: auto;
+      line-height: calcSize_mobile(20);
+      text-align: left;
+      margin-left: calcSize_mobile(20);
+      margin-top: calcSize_mobile(8);
+      color: rgba($color: #000000, $alpha: 0.7);
+      -webkit-line-clamp: 3;
+    }
+
+    & .btn_price {
+      width: 82%;
+      min-width: calcSize_mobile(140);
+      height: calcSize_mobile(48);
+      padding: 0 calcSize_mobile(20);
+      font-size: calcSize_mobile(25) !important;
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.6);
+      margin-top: calcSize_mobile(12);
+      margin-left: calcSize_mobile(20);
+      border-radius: calcSize_mobile(24);
+      align-self: flex-end;
+    }
+
+    & .btn_count {
+      width: auto;
+      min-width: calcSize_mobile(140);
+      height: calcSize_mobile(48);
+      padding: 0 calcSize_mobile(16);
+      margin-top: calcSize_mobile(12);
+      margin-left: calcSize_mobile(20);
+      margin-bottom: 0;
+      align-self: flex-end;
+
+      & > span {
+        @include MyFonts(20, 500);
+      }
+
+      & button {
+        width: calcSize_mobile(36);
+        height: calcSize_mobile(36);
+
+        &.plus {
+          @include MyFonts(32, 500);
+        }
+        &.minus {
+          @include MyFonts(24, 500);
+        }
+      }
+    }
+  }
+}

@@ -10,26 +10,58 @@ import Box from '@mui/material/Box';
 import AuthCode from 'react-auth-code-input';
 import Timer from './timer';
 
-import {useMaskito} from '@maskito/react';
-import {maskitoWithPlaceholder} from '@maskito/kit';
+import { useMaskito } from '@maskito/react';
+import { maskitoWithPlaceholder } from '@maskito/kit';
 
-export default function LoginSMSCode({ isMobileAuth = false }) {
-  const options = {...maskitoWithPlaceholder('••••'), mask: /^\d{0,4}$/};
-  
-  const inputRefMobile = useMaskito({options});
+export default function LoginSMSCode() {
+  const options = { ...maskitoWithPlaceholder('••••'), mask: /^\d{0,4}$/ };
+
+  const inputRefMobile = useMaskito({ options });
 
   const inputRef = useRef(null);
 
-  const [changeCode, createProfile, checkCode, navigate, loginLogin, preTypeLogin, code, timerPage, setTimer] = useHeaderStoreNew( state => [state?.changeCode, state?.createProfile, state?.checkCode, state?.navigate, state?.loginLogin, state?.preTypeLogin, state?.code, state?.timerPage, state?.setTimer]);
-  const matches = isMobileAuth;
+  const [
+    changeCode,
+    createProfile,
+    checkCode,
+    navigate,
+    loginLogin,
+    preTypeLogin,
+    code,
+    matches,
+    timerPage,
+    setTimer,
+    typeAuth,
+  ] = useHeaderStoreNew((state) => [
+    state?.changeCode,
+    state?.createProfile,
+    state?.checkCode,
+    state?.navigate,
+    state?.loginLogin,
+    state?.preTypeLogin,
+    state?.code,
+    state?.matches,
+    state?.timerPage,
+    state?.setTimer,
+    state.typeAuth,
+  ]);
+
+  const authMessageByType = {
+    sms: 'Введите 4 цифры из смс',
+    FLASHCALL:
+      'Введите последние 4 цифры номера, с которого поступит входящий звонок - отвечать не нужно',
+    TELEGRAM: 'Введите 4 цифры из Telegram',
+  };
+
+  const authMessage = authMessageByType[typeAuth] ?? authMessageByType.sms;
 
   useEffect(() => {
     if (timerPage) {
-      if(!matches) {
+      if (!matches) {
         inputRef.current?.clear?.();
       }
       changeCode('');
-    } 
+    }
   }, [changeCode, timerPage]);
 
   const reSendSMS = async () => {
@@ -40,7 +72,7 @@ export default function LoginSMSCode({ isMobileAuth = false }) {
     }
 
     setTimer(89);
-    if(!matches) {
+    if (!matches) {
       inputRef.current?.clear?.();
     }
     changeCode('');
@@ -50,7 +82,7 @@ export default function LoginSMSCode({ isMobileAuth = false }) {
     navigate(preTypeLogin);
     changeCode('');
   };
-  
+
   /*
     {timer === 0 && preTypeLogin === 'loginSMS' ? (
         <div className={matches ? 'loginSubHeader' : 'loginSubHeader2'} onClick={reSendSMS}>
@@ -78,29 +110,38 @@ export default function LoginSMSCode({ isMobileAuth = false }) {
   // </div>
 
   return (
-    <div className={matches ? 'modalLoginSMSCodeMobile' : 'modalLoginSMSCodePC'}>
-      
+    <div
+      className={matches ? 'modalLoginSMSCodeMobile' : 'modalLoginSMSCodePC'}
+    >
       <div className="loginSubHeader">
         <Typography component="span">{loginLogin}</Typography>
       </div>
 
       <Box className="loginLine">
         {timerPage ? (
-          <LinearProgress variant="determinate" style={{ background: '#DD1A32' }} value={100} />
-          ) : (
+          <LinearProgress
+            variant="determinate"
+            style={{ background: '#DD1A32' }}
+            value={100}
+          />
+        ) : (
           <LinearProgress />
         )}
       </Box>
 
-      <div className={matches ? 'loginSubHeader' : 'loginSubHeader2'}>
-        <Typography component="span">
-          Введите 4 цифры из смс
-        </Typography>
+      <div
+        className={matches ? 'loginSubHeader' : 'loginSubHeader2'}
+        style={
+          matches
+            ? { width: '80%', textAlign: 'center' }
+            : { textAlign: 'center' }
+        }
+      >
+        <Typography component="span">{authMessage}</Typography>
       </div>
 
       <div className="loginAutCode">
-
-        {matches ?
+        {matches ? (
           <input
             ref={inputRefMobile}
             onInput={(event) => changeCode(event.currentTarget.value)}
@@ -113,7 +154,7 @@ export default function LoginSMSCode({ isMobileAuth = false }) {
             // autoComplete="one-time-code"
             // maxLength={4}
           />
-          :
+        ) : (
           <AuthCode
             autoFocus={true}
             allowedCharacters="numeric"
@@ -122,31 +163,44 @@ export default function LoginSMSCode({ isMobileAuth = false }) {
             ref={inputRef}
             placeholder="•"
           />
-        }
+        )}
 
-        <div className="loginSvg" style={{ backgroundColor: code.length === 4 ? '#DD1A32' : '#fff' }}>
+        <div
+          className="loginSvg"
+          style={{ backgroundColor: code.length === 4 ? '#DD1A32' : '#fff' }}
+        >
           {code.length === 4 ? (
-            <VectorRightAuthMobile className="vectorSvg"
+            <VectorRightAuthMobile
+              className="vectorSvg"
               onClick={code.length === 4 ? checkCode : null}
             />
           ) : (
-            <ClearAuthMobile className="clearSvg" 
-            onClick={() => matches ? changeCode('') : inputRef.current?.clear()} 
-            
+            <ClearAuthMobile
+              className="clearSvg"
+              onClick={() =>
+                matches ? changeCode('') : inputRef.current?.clear()
+              }
             />
           )}
         </div>
       </div>
-     
-      {timerPage ?
-        <div className='loginSubHeader2' onClick={reSendSMS}>
-          <Typography component="span" style={{ textDecoration: 'underline', color: '#DD1A32', cursor: 'pointer' }}>
-            Отправить смс еще раз
+
+      {timerPage ? (
+        <div className="loginSubHeader2" onClick={reSendSMS}>
+          <Typography
+            component="span"
+            style={{
+              textDecoration: 'underline',
+              color: '#DD1A32',
+              cursor: 'pointer',
+            }}
+          >
+            Отправить код еще раз
           </Typography>
         </div>
-          :
+      ) : (
         <Timer />
-      }
+      )}
 
       <div className="loginPrev">
         <Typography component="span" onClick={changeNumber}>
@@ -155,4 +209,4 @@ export default function LoginSMSCode({ isMobileAuth = false }) {
       </div>
     </div>
   );
-};
+}
