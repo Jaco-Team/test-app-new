@@ -24,8 +24,8 @@ export const MapRender = ({
   useEffect(() => {
     if (ref.current && center_map?.center) {
       ref.current.setCenter([
-        zones[0].xy_center_map['latitude'],
-        zones[0].xy_center_map['longitude'],
+        zones?.[0]?.xy_center_map['latitude'] ?? center_map.center[0],
+        zones?.[0]?.xy_center_map['longitude'] ?? center_map.center[1],
       ]);
     }
   }, [zones]);

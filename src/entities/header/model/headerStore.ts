@@ -52,6 +52,7 @@ export const useHeaderStore = reuseAppStore(
       isAuth: 'none',
       userName: '',
       isShowLoad: false,
+      targetBasket: null,
 
       setActivePage: (page) => set({ activePage: page }),
       setActiveModalCity: (active) => set({ openCityModal: active }),

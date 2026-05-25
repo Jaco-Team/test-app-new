@@ -100,7 +100,7 @@ export const Footer: React.FC<FooterProps> = ({
                   )}
                   {links.link_ok && (
                     <Link
-                      href={links.link_vk}
+                      href={links.link_ok}
                       target="_blank"
                       style={{ marginRight: 0 }}
                     >

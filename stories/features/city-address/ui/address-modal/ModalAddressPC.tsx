@@ -1,30 +1,52 @@
-import { useState, useRef } from 'react';
+import React, { useState, useRef } from 'react';
 
 import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
 
 import MyTextInput from '@stories/shared/ui/text-input/MyTextInput';
 import { MyMenu } from '@stories/shared/MyMenu/MyMenu';
 import { MySwitch } from '@stories/shared/ui/switch/MySwitch';
-import { PencilModalAddrIcon, HomeModalAddrIcon } from '@stories/shared/Icons.js';
+import {
+  PencilModalAddrIcon,
+  HomeModalAddrIcon,
+} from '@stories/shared/Icons.js';
 import { MyButton } from '@stories/shared/ui/button/MyButton';
 
 import './ModalAddressPC.scss';
 
-const cityList = [{ title: 'Тольятти' }, { title: 'Самара' }, { title: 'Комсомольск-на-Амуре' }];
+const cityList = [
+  { title: 'Тольятти' },
+  { title: 'Самара' },
+  { title: 'Комсомольск-на-Амуре' },
+];
 
-export const ModalAddressPC = ({allStreets, chooseAddrStreet, center_map, zones, nameAddr, city, street, home, pd, et, kv, comment}: Record<string, any>) => {
+export const ModalAddressPC = ({
+  allStreets,
+  chooseAddrStreet,
+  center_map,
+  zones,
+  nameAddr,
+  city,
+  street,
+  home,
+  pd,
+  et,
+  kv,
+  comment,
+}: Record<string, any>) => {
   const ref = useRef<any>(null);
 
-  const [anchorElCity, setAnchorElCity] = useState(null);
-  const [anchorElStreet, setAnchorElStreet] = useState(null);
+  const [anchorElCity, setAnchorElCity] = useState<HTMLElement | null>(null);
+  const [anchorElStreet, setAnchorElStreet] = useState<HTMLElement | null>(
+    null
+  );
   const [isOpenCity, setIsOpenCity] = useState(false);
   const [isOpenStreet, setIsOpenStreet] = useState(false);
 
-  let new_zone = [];
+  let new_zone: any[] = [];
 
   zones.map((item) => new_zone.push(item.zone));
 
-  function openMenu(event, type) {
+  function openMenu(event: React.MouseEvent<HTMLElement>, type: string) {
     if (type === 'city') {
       setIsOpenCity(true);
       setAnchorElCity(event.currentTarget);
@@ -44,7 +66,12 @@ export const ModalAddressPC = ({allStreets, chooseAddrStreet, center_map, zones,
   return (
     <div className="modalAddressPC">
       <div className="map">
-        <YMaps query={{ lang: 'ru_RU', apikey: `${process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP}` }}>
+        <YMaps
+          query={{
+            lang: 'ru_RU',
+            apikey: `${process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP}`,
+          }}
+        >
           <Map
             defaultState={center_map}
             instanceRef={ref}
@@ -66,12 +93,14 @@ export const ModalAddressPC = ({allStreets, chooseAddrStreet, center_map, zones,
 
             <Polygon
               geometry={new_zone}
-              options={{
-                fillColor: 'rgba(53, 178, 80, 0.15)',
-                strokeColor: '#35B250',
-                strokeWidth: 5,
-                hideIconOnBalloonOpen: false,
-              } as any}
+              options={
+                {
+                  fillColor: 'rgba(53, 178, 80, 0.15)',
+                  strokeColor: '#35B250',
+                  strokeWidth: 5,
+                  hideIconOnBalloonOpen: false,
+                } as any
+              }
             />
           </Map>
         </YMaps>
@@ -84,12 +113,28 @@ export const ModalAddressPC = ({allStreets, chooseAddrStreet, center_map, zones,
           inputAdornment={<PencilModalAddrIcon />}
           className="nameAddr"
         />
-        <div className="city" style={{ borderColor: anchorElCity ? '#cc0033' : 'rgba(0, 0, 0, 0.2)' }} onClick={(e) => openMenu(e, 'city')}>
+        <div
+          className="city"
+          style={{
+            borderColor: anchorElCity ? '#cc0033' : 'rgba(0, 0, 0, 0.2)',
+          }}
+          onClick={(e) => openMenu(e, 'city')}
+        >
           <span>{city}</span>
         </div>
 
-        <div className="city street" style={{ borderColor: anchorElStreet ? '#cc0033' : 'rgba(0, 0, 0, 0.2)' }} onClick={(e) => openMenu(e, 'street')}>
-          {street ? <span>{street}</span> : <span style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Улица</span>}
+        <div
+          className="city street"
+          style={{
+            borderColor: anchorElStreet ? '#cc0033' : 'rgba(0, 0, 0, 0.2)',
+          }}
+          onClick={(e) => openMenu(e, 'street')}
+        >
+          {street ? (
+            <span>{street}</span>
+          ) : (
+            <span style={{ color: 'rgba(0, 0, 0, 0.4)' }}>Улица</span>
+          )}
         </div>
 
         <div className="street_dop">
@@ -126,7 +171,9 @@ export const ModalAddressPC = ({allStreets, chooseAddrStreet, center_map, zones,
 
         <div className="check">
           <span className="text">Сделать главным</span>
-          <div><HomeModalAddrIcon /></div>
+          <div>
+            <HomeModalAddrIcon />
+          </div>
           <MySwitch type="ios" />
         </div>
 

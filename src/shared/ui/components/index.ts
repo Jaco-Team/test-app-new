@@ -21,6 +21,8 @@ export { ScrollTopButton } from './ScrollTopButton/ScrollTopButton';
 export type { ScrollTopButtonProps } from './ScrollTopButton/ScrollTopButton';
 export { Modal } from './Modal/Modal';
 export type { ModalProps, ModalSize } from './Modal/Modal';
+export { ModalWrapper } from './ModalWrapper/ModalWrapper';
+export type { ModalWrapperProps } from './ModalWrapper/ModalWrapper';
 export { Alert } from './Alert/Alert';
 export type { AlertProps, AlertTone } from './Alert/Alert';
 export { Card } from './Card/Card';

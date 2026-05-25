@@ -10,7 +10,10 @@ export type TagFilterItem = {
   active?: boolean;
 };
 
-export interface TagFilterProps extends HTMLAttributes<HTMLDivElement> {
+export interface TagFilterProps extends Omit<
+  HTMLAttributes<HTMLDivElement>,
+  'onChange'
+> {
   items: TagFilterItem[];
   onChange?: (item: TagFilterItem, index: number) => void;
 }

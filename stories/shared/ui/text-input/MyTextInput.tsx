@@ -27,18 +27,21 @@ type MyTextInputState = {
   type: string;
 };
 
-export default class MyTextInput extends React.PureComponent<MyTextInputProps, MyTextInputState> {
+export default class MyTextInput extends React.PureComponent<
+  MyTextInputProps,
+  MyTextInputState
+> {
   constructor(props: MyTextInputProps) {
     super(props);
-        
+
     this.state = {
-      type: 'text'
+      type: 'text',
     };
   }
-  
-  render(){
+
+  render() {
     return (
-      <TextField 
+      <TextField
         autoFocus={this.props.autoFocus}
         InputProps={{
           readOnly: this.props.readOnly ? this.props.readOnly : false,
@@ -50,19 +53,19 @@ export default class MyTextInput extends React.PureComponent<MyTextInputProps, M
         placeholder={this.props.placeholder}
         value={this.props.value}
         onChange={this.props.func}
-        onBlur={this.props.onBlur ? this.props.onBlur : null}
-        onKeyDown={this.props.onKeyDown ? this.props.onKeyDown : null}
-        disabled={ this.props.disabled || this.props.disabled === true ? true : false }
-        variant={ this.props.variant ? this.props.variant : "outlined"  }
-        size={'small'} 
-        color='primary'
+        onBlur={this.props.onBlur}
+        onKeyDown={this.props.onKeyDown}
+        disabled={this.props.disabled ?? false}
+        variant={this.props.variant ? this.props.variant : 'outlined'}
+        size={'small'}
+        color="primary"
         multiline={this.props.multiline ? this.props.multiline : false}
         maxRows={this.props.maxRows ? this.props.maxRows : 1}
-        type={ this.props.type ? this.props.type : this.state.type }
-        style={{ width: '100%', zIndex: 3 }} 
-        className={ this.props.className ? this.props.className : '' }
+        type={this.props.type ? this.props.type : this.state.type}
+        style={{ width: '100%', zIndex: 3 }}
+        className={this.props.className ? this.props.className : ''}
         name={this.props.name}
       />
-    )
+    );
   }
 }

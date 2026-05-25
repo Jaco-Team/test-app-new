@@ -8,8 +8,8 @@ export const FooterArrowUp = ({ arrow, page }) => {
     <div
       className={arrow ? 'ArrowPC' : 'ArrowHidden'}
       style={{
-        marginTop: page === 'contacts' ? '-4.3321299638989vw' : null,
-        transform: page === 'contacts' ? 'translate(0, -50%)' : null,
+        marginTop: page === 'contacts' ? '-4.3321299638989vw' : undefined,
+        transform: page === 'contacts' ? 'translate(0, -50%)' : undefined,
       }}
     >
       <ArrowUp />

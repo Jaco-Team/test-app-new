@@ -232,18 +232,20 @@ export const useHomeStore = reuseAppStore(
               };
             }
 
+            const normalizedMainCat = normalizeCategories(json.main_cat);
+
             set({
               catalogItems: json.items,
-              categories: json.main_cat as CatalogCategory[],
+              categories: normalizedMainCat,
               itemsCatCity: city,
               itemsCatLoadedAt: Date.now(),
               itemsCatSource: 'api',
             });
 
-            saveItemsCatCache(city, json.main_cat, json.items);
+            saveItemsCatCache(city, normalizedMainCat, json.items);
 
             return {
-              category: json.main_cat as CatalogCategory[],
+              category: normalizedMainCat,
               items: json.items as unknown[],
             };
           })

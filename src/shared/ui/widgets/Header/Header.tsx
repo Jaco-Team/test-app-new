@@ -1,3 +1,7 @@
+import { useCallback, useRef } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import type { MotionProps } from 'framer-motion';
+import { useBodyScrollLock, useClickOutside } from '@/src/shared/lib/overlay';
 import type {
   ComponentType,
   HTMLAttributes,
@@ -8,22 +12,29 @@ import {
   AboutIconMobile,
   BasketIconMobile,
   ArrowDownHeader,
+  ArrowUpHeader,
   BasketIconNew,
   BurgerIconMobile,
-  BurgerIconPC,
+  JacoDocsIcon,
   LocationHeaderIcon,
   LocationIconMobile,
+  MapContactsMobile,
   MenuIconMobile,
   ProfileIconMobile,
   ProfileIconNew,
+  Sale,
 } from '../../icons';
 import { cn } from '../../foundation/classNames';
 import './Header.scss';
+import useGetPageScroll from '@/src/shared/lib/useGetPageScroll';
 
 export interface HeaderNavItem {
   label: string;
   href?: string;
+  id?: string | number;
+  link?: string;
   active?: boolean;
+  variant?: 'outlined';
   children?: HeaderNavItem[];
 }
 
@@ -44,10 +55,20 @@ export interface HeaderProps extends HTMLAttributes<HTMLElement> {
   logoSrc?: string;
   logoHref?: string;
   compactMenuOpen?: boolean;
+  desktopDocsOpen?: boolean;
+  desktopDocsActive?: boolean;
+  docsLinks?: HeaderNavItem[];
+  openNavLabel?: string;
   onMenuClick?: () => void;
   onCityClick?: (event: MouseEvent<HTMLButtonElement>) => void;
+  onContactsClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
   onCartClick?: () => void;
   onProfileClick?: () => void;
+  onDropdownClose?: () => void;
+  onDrawerItemClick?: (
+    item: HeaderDrawerLink,
+    event: MouseEvent<HTMLElement>
+  ) => void;
   onNavItemClick?: (
     item: HeaderNavItem,
     event: MouseEvent<HTMLElement>
@@ -61,12 +82,25 @@ type DrawerItem = HeaderNavItem & {
   button?: boolean;
 };
 
-const defaultNavItems: HeaderNavItem[] = [
-  { label: 'Роллы', active: true },
-  { label: 'Пицца' },
-  { label: 'Блюда' },
-  { label: 'Акции' },
-];
+const dropdownMotion: Pick<
+  MotionProps,
+  'initial' | 'animate' | 'exit' | 'transition'
+> = {
+  initial: { opacity: 0, scaleX: 0.75, scaleY: 0.56, x: '-50%' },
+  animate: { opacity: 1, scaleX: 1, scaleY: 1, x: '-50%' },
+  exit: { opacity: 0, scaleX: 0.75, scaleY: 0.56, x: '-50%' },
+  transition: { duration: 0.2, ease: [0.4, 0, 0.2, 1] },
+};
+
+const drawerMotion: Pick<
+  MotionProps,
+  'initial' | 'animate' | 'exit' | 'transition'
+> = {
+  initial: { opacity: 0, y: '-100%' },
+  animate: { opacity: 1, y: 0 },
+  exit: { opacity: 0, y: '-100%' },
+  transition: { duration: 0.22, ease: [0.4, 0, 0.2, 1] },
+};
 
 function hrefFromBase(base: string, path: string): string {
   return `${base.replace(/\/$/, '')}${path}`;
@@ -83,7 +117,9 @@ const drawerIconByLabel: Record<
   ComponentType<{ 'aria-hidden'?: 'true'; className?: string }>
 > = {
   Меню: MenuIconMobile,
-  Акции: AboutIconMobile,
+  Акции: Sale,
+  Тольятти: MapContactsMobile,
+  Самара: MapContactsMobile,
   Адреса: LocationIconMobile,
   Жако: AboutIconMobile,
   Аккаунт: ProfileIconMobile,
@@ -101,12 +137,12 @@ function buildDefaultDrawerItems(
     {
       label: 'Акции',
       href: hrefFromBase(logoHref, '/akcii'),
-      icon: AboutIconMobile,
+      icon: Sale,
     },
     {
       label: city,
       href: cityHref,
-      icon: LocationIconMobile,
+      icon: MapContactsMobile,
       button: !cityHref,
     },
     {
@@ -130,7 +166,7 @@ function buildDefaultDrawerItems(
 }
 
 export function Header({
-  navItems = defaultNavItems,
+  navItems = [],
   drawerLinks,
   city = 'Самара',
   cityHref,
@@ -139,16 +175,34 @@ export function Header({
   logoSrc = '/Jaco-Logo-120.png',
   logoHref = '/',
   compactMenuOpen = false,
+  desktopDocsOpen = false,
+  desktopDocsActive = false,
+  docsLinks = [],
+  openNavLabel,
   onMenuClick,
   onCityClick,
+  onContactsClick,
   onCartClick,
   onProfileClick,
+  onDropdownClose,
+  onDrawerItemClick,
   onNavItemClick,
   actions,
   className,
   ...props
 }: HeaderProps) {
+  const headerRef = useRef<HTMLElement | null>(null);
+  const overlayOpen =
+    compactMenuOpen || desktopDocsOpen || Boolean(openNavLabel);
+  const handleOutsideClick = useCallback(() => {
+    onDropdownClose?.();
+  }, [onDropdownClose]);
+
+  useClickOutside(headerRef, handleOutsideClick, overlayOpen);
+  useBodyScrollLock(overlayOpen);
+
   const cartBadge = extractCartCount(cartCount);
+  const hasCartItems = typeof cartCount === 'number' && cartCount > 0;
   const drawerItems: DrawerItem[] = drawerLinks?.length
     ? drawerLinks.map((item) => ({
         ...item,
@@ -161,8 +215,14 @@ export function Header({
       }))
     : buildDefaultDrawerItems(logoHref, city, cityHref, cartBadge);
 
+  const { isScrolled } = useGetPageScroll();
+
   return (
-    <header id="headerNew" className={cn('ui-header', className)} {...props}>
+    <header
+      id="headerNew"
+      className={cn('ui-header', className, isScrolled && 'ui-header_scrolled')}
+      {...props}
+    >
       <div className="ui-header__bar">
         <a className="ui-header__logo" href={logoHref} aria-label="Жако">
           <img src={logoSrc} alt="Жако" />
@@ -170,50 +230,93 @@ export function Header({
 
         <nav className="ui-header__nav" aria-label="Основное меню">
           {navItems.map((item) => {
-            const Tag = item.href ? 'a' : 'button';
+            const hasChildren = Boolean(item.children?.length);
+            const isOpen = openNavLabel === item.label;
             return (
-              <Tag
+              <div
                 key={item.label}
                 className={cn(
-                  'ui-header__nav-item',
-                  item.active && 'ui-header__nav-item--active'
+                  'ui-header__nav-node',
+                  isOpen && 'ui-header__nav-node--open'
                 )}
-                href={item.href as string | undefined}
-                type={item.href ? undefined : 'button'}
-                onClick={(event: MouseEvent<HTMLElement>) =>
-                  onNavItemClick?.(item, event)
-                }
               >
-                <span>{item.label}</span>
-                {item.children?.length ? (
-                  <ArrowDownHeader
-                    aria-hidden="true"
-                    className="ui-header__nav-arrow"
-                  />
-                ) : null}
-                {item.children?.length ? (
-                  <span className="ui-header__submenu">
-                    {item.children.slice(0, 12).map((child) =>
-                      child.href ? (
-                        <a
-                          key={child.label}
-                          className="ui-header__submenu-item"
-                          href={child.href}
-                        >
-                          {child.label}
-                        </a>
-                      ) : (
-                        <span
-                          key={child.label}
-                          className="ui-header__submenu-item"
-                        >
-                          {child.label}
-                        </span>
-                      )
+                {item.href && !hasChildren ? (
+                  <a
+                    className={cn(
+                      'ui-header__nav-item',
+                      item.variant === 'outlined' &&
+                        'ui-header__nav-item--outlined'
                     )}
-                  </span>
+                    href={item.href}
+                    onClick={(event) => onNavItemClick?.(item, event)}
+                  >
+                    <span>{item.label}</span>
+                  </a>
+                ) : (
+                  <button
+                    className={cn(
+                      'ui-header__nav-item',
+                      item.variant === 'outlined' &&
+                        'ui-header__nav-item--outlined'
+                    )}
+                    type="button"
+                    aria-expanded={hasChildren ? isOpen : undefined}
+                    onClick={(event) => onNavItemClick?.(item, event)}
+                  >
+                    <span>{item.label}</span>
+                    {hasChildren ? (
+                      isOpen ? (
+                        <ArrowUpHeader
+                          aria-hidden="true"
+                          className="ui-header__nav-arrow"
+                        />
+                      ) : (
+                        <ArrowDownHeader
+                          aria-hidden="true"
+                          className="ui-header__nav-arrow"
+                        />
+                      )
+                    ) : null}
+                  </button>
+                )}
+                {hasChildren ? (
+                  <AnimatePresence>
+                    {isOpen ? (
+                      <motion.div
+                        className="ui-header__submenu"
+                        key={item.label}
+                        {...dropdownMotion}
+                      >
+                        {item.children?.slice(0, 12).map((child) =>
+                          child.href ? (
+                            <a
+                              key={child.label}
+                              className="ui-header__submenu-item"
+                              href={child.href}
+                              onClick={(event) =>
+                                onNavItemClick?.(child, event)
+                              }
+                            >
+                              {child.label}
+                            </a>
+                          ) : (
+                            <button
+                              key={child.label}
+                              className="ui-header__submenu-item"
+                              type="button"
+                              onClick={(event) =>
+                                onNavItemClick?.(child, event)
+                              }
+                            >
+                              {child.label}
+                            </button>
+                          )
+                        )}
+                      </motion.div>
+                    ) : null}
+                  </AnimatePresence>
                 ) : null}
-              </Tag>
+              </div>
             );
           })}
         </nav>
@@ -221,29 +324,77 @@ export function Header({
         <div className="ui-header__spacer" />
 
         <button className="ui-header__city" type="button" onClick={onCityClick}>
-          <LocationHeaderIcon aria-hidden="true" />
           <span>{city}</span>
+          <LocationHeaderIcon />
         </button>
 
-        <button
-          className={cn(
-            'ui-header__icon',
-            compactMenuOpen && 'ui-header__icon--active'
-          )}
-          type="button"
-          aria-label={compactMenuOpen ? 'Закрыть меню' : 'Меню'}
-          aria-expanded={compactMenuOpen}
-          onClick={onMenuClick}
+        <a
+          className="ui-header__icon ui-header__contacts"
+          href={hrefFromBase(logoHref, '/contacts')}
+          aria-label="Контакты"
+          onClick={onContactsClick}
         >
-          <BurgerIconMobile
+          <LocationHeaderIcon
             aria-hidden="true"
-            className="ui-header__burger-compact"
+            className="ui-header__contacts-icon"
           />
-          <BurgerIconPC
-            aria-hidden="true"
-            className="ui-header__burger-expanded"
-          />
-        </button>
+        </a>
+
+        <div className="ui-header__docs-node">
+          <button
+            className={cn(
+              'ui-header__icon',
+              'ui-header__docs',
+              compactMenuOpen && 'ui-header__icon--active',
+              desktopDocsOpen && 'ui-header__icon--active',
+              desktopDocsActive && 'ui-header__icon--active'
+            )}
+            type="button"
+            aria-label={compactMenuOpen ? 'Закрыть меню' : 'Меню'}
+            aria-expanded={compactMenuOpen || desktopDocsOpen}
+            onClick={onMenuClick}
+          >
+            <BurgerIconMobile
+              aria-hidden="true"
+              className="ui-header__burger-compact"
+            />
+            <JacoDocsIcon
+              aria-hidden="true"
+              className="ui-header__burger-expanded"
+            />
+          </button>
+
+          {docsLinks.length > 0 ? (
+            <AnimatePresence>
+              {desktopDocsOpen ? (
+                <motion.div
+                  className="ui-header__docs-menu"
+                  key="docs-menu"
+                  {...dropdownMotion}
+                >
+                  {docsLinks.map((item) => (
+                    <a
+                      key={item.label}
+                      className="ui-header__docs-link"
+                      href={item.href ?? '#'}
+                      target={
+                        item.href?.startsWith('http') ? '_blank' : undefined
+                      }
+                      rel={
+                        item.href?.startsWith('http')
+                          ? 'noopener noreferrer'
+                          : undefined
+                      }
+                      onClick={(event) => onNavItemClick?.(item, event)}
+                    >
+                      {item.label}
+                    </a>
+                  ))}
+                </motion.div>
+              ) : null}
+            </AnimatePresence>
+          ) : null}
+        </div>
 
         <button
           className="ui-header__icon ui-header__profile"
@@ -255,64 +406,81 @@ export function Header({
         </button>
 
         <button
-          className="ui-header__cart"
+          className={cn(
+            'ui-header__cart',
+            hasCartItems && 'ui-header__cart--filled'
+          )}
           type="button"
           aria-label="Корзина"
           onClick={onCartClick}
         >
           <BasketIconNew aria-hidden="true" />
-          <span>{cartLabel}</span>
+          {hasCartItems ? <span>{cartLabel}</span> : null}
         </button>
 
         {actions ? <div className="ui-header__actions">{actions}</div> : null}
       </div>
 
-      <div
-        className={cn(
-          'ui-header__drawer',
-          compactMenuOpen && 'ui-header__drawer--open'
-        )}
-      >
-        <nav className="ui-header__drawer-nav" aria-label="Мобильное меню">
-          {drawerItems.map((item) => {
-            const Icon = item.icon;
-            const content = (
-              <>
-                <Icon aria-hidden="true" className="ui-header__drawer-icon" />
-                <span className="ui-header__drawer-text">{item.label}</span>
-                {item.badge ? (
-                  <span className="ui-header__drawer-badge">{item.badge}</span>
-                ) : null}
-              </>
-            );
+      <AnimatePresence>
+        {compactMenuOpen ? (
+          <motion.div
+            className="ui-header__drawer"
+            key="drawer"
+            {...drawerMotion}
+          >
+            <nav className="ui-header__drawer-nav" aria-label="Мобильное меню">
+              {drawerItems.map((item) => {
+                const Icon = item.icon;
+                const content = (
+                  <>
+                    <Icon
+                      aria-hidden="true"
+                      className="ui-header__drawer-icon"
+                    />
+                    <span className="ui-header__drawer-text">{item.label}</span>
+                    {item.badge ? (
+                      <span className="ui-header__drawer-badge">
+                        {item.badge}
+                      </span>
+                    ) : null}
+                  </>
+                );
 
-            return item.button ? (
-              <button
-                key={item.label}
-                className={cn(
-                  'ui-header__drawer-link',
-                  item.active && 'ui-header__drawer-link--active'
-                )}
-                type="button"
-                onClick={item.label === city ? onCityClick : undefined}
-              >
-                {content}
-              </button>
-            ) : (
-              <a
-                key={item.label}
-                className={cn(
-                  'ui-header__drawer-link',
-                  item.active && 'ui-header__drawer-link--active'
-                )}
-                href={item.href ?? '#'}
-              >
-                {content}
-              </a>
-            );
-          })}
-        </nav>
-      </div>
+                return item.button ? (
+                  <button
+                    key={item.label}
+                    className={cn(
+                      'ui-header__drawer-link',
+                      item.active && 'ui-header__drawer-link--active'
+                    )}
+                    type="button"
+                    onClick={(event) => {
+                      if (item.label === 'Аккаунт') {
+                        onProfileClick?.();
+                      }
+                      onDrawerItemClick?.(item, event);
+                    }}
+                  >
+                    {content}
+                  </button>
+                ) : (
+                  <a
+                    key={item.label}
+                    className={cn(
+                      'ui-header__drawer-link',
+                      item.active && 'ui-header__drawer-link--active'
+                    )}
+                    href={item.href ?? '#'}
+                    onClick={(event) => onDrawerItemClick?.(item, event)}
+                  >
+                    {content}
+                  </a>
+                );
+              })}
+            </nav>
+          </motion.div>
+        ) : null}
+      </AnimatePresence>
     </header>
   );
 }

@@ -5,7 +5,9 @@ import { useCityStore } from '@src/entities/city';
 
 function TopMailRu({ id }: { id: string }) {
   return (
-    <script
+    <Script
+      id={`top-mail-ru-${id}`}
+      strategy="afterInteractive"
       dangerouslySetInnerHTML={{
         __html: `
           var _tmr = window._tmr || (window._tmr = []);

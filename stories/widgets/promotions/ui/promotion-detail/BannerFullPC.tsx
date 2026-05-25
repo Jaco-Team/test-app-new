@@ -17,12 +17,13 @@ export const BannerFullPC = ({
 }) => {
   return (
     <Grid
+      component="section"
       container
       justifyContent="center"
       className="BannerFull"
       style={{
-        backgroundColor: type === 'banner' ? null : 'rgba(0, 0, 0, 0.03)',
-        borderRadius: type === 'banner' ? null : '1.1552346570397vw',
+        backgroundColor: type === 'banner' ? undefined : 'rgba(0, 0, 0, 0.03)',
+        borderRadius: type === 'banner' ? undefined : '1.1552346570397vw',
       }}
     >
       <Grid className="ImgItem">

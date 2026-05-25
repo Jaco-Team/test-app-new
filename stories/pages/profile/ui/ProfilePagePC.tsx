@@ -31,11 +31,11 @@ export const ProfilePagePC = ({
     { name: 'Декабря', id: 12 },
   ];
 
-  const arr_d = [];
+  const arr_d: Array<{ name: string; id: number }> = [];
 
   for (let i = 1; i <= 31; i++) {
     arr_d.push({
-      name: i,
+      name: String(i),
       id: i,
     });
   }

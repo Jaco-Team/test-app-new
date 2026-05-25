@@ -1,3 +1,4 @@
+import { useBodyScrollLock } from '@/src/shared/lib/overlay';
 import type { ReactNode } from 'react';
 import MuiModal from '@mui/material/Modal';
 import { cn } from '../../foundation/classNames';
@@ -25,6 +26,8 @@ export function Modal({
   closeLabel = 'Закрыть',
   className,
 }: ModalProps) {
+  useBodyScrollLock(open);
+
   return (
     <MuiModal
       open={open}

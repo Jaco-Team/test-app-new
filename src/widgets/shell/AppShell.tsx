@@ -6,6 +6,7 @@ import Script from 'next/script';
 import { useHeaderStore } from '@src/entities/header';
 import { AuthModal } from './AuthModal';
 import { BasketPanel } from './BasketPanel';
+import { CityModal } from './CityModal';
 import { MapLoader } from './MapLoader';
 
 export type AppShellProps = {
@@ -28,6 +29,7 @@ export function AppShell({ city, loadMap = false }: AppShellProps) {
       </Backdrop>
 
       <AuthModal city={city} />
+      <CityModal />
       <BasketPanel city={city} />
       {loadMap ? <MapLoader city={city} /> : null}
     </>

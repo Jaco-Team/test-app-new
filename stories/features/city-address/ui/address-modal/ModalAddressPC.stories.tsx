@@ -398,7 +398,7 @@ const json = {
   city: '1',
 };
 
-const Template = (args) => <ModalAddressPC {...args} />;
+const Template = (args: Record<string, any>) => <ModalAddressPC {...args} />;
 export const Default = Template.bind({});
 export const Active = Template.bind({});
 
@@ -406,8 +406,8 @@ Default.args = {
   allStreets: json.streets,
   chooseAddrStreet: json.this_info ?? {},
   center_map: {
-    center: json.this_info
-      ? [json?.this_info?.xy[0], json?.this_info?.xy[1]]
+    center: (json.this_info as any)
+      ? [(json?.this_info as any)?.xy[0], (json?.this_info as any)?.xy[1]]
       : [json.city_center[0], json.city_center[1]],
     zoom: 11.5,
     controls: [],

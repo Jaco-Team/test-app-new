@@ -1,5 +1,5 @@
 import type { CatalogCategory } from '@src/entities/catalog';
-import { categoryHref, cityPath } from '@src/shared/lib/sitePaths';
+import { cityPath } from '@src/shared/lib/sitePaths';
 import type { HeaderNavItem } from '@ui/widgets/Header/Header';
 
 export type BuildHeaderNavOptions = {
@@ -26,7 +26,8 @@ export function buildHeaderNavItems(
       }
       children.push({
         label: childLabel,
-        href: categoryHref(citySlug, String(child.link ?? '')),
+        id: child.id,
+        link: String(child.link ?? ''),
       });
     }
 
@@ -39,28 +40,12 @@ export function buildHeaderNavItems(
 
     return {
       label,
-      href: hasChildren ? undefined : categoryHref(citySlug, link),
+      id: cat.id,
+      link,
       active: isActive,
       children: hasChildren ? children : undefined,
     };
   });
-
-  if (navFromCatalog.length === 0) {
-    return [
-      {
-        label: 'Роллы',
-        href: categoryHref(citySlug, 'rolly'),
-        active: true,
-      },
-      { label: 'Пицца', href: categoryHref(citySlug, 'pizza') },
-      { label: 'Блюда', href: categoryHref(citySlug, 'bluda') },
-      {
-        label: 'Акции',
-        href: cityPath(citySlug, 'akcii'),
-        active: activePage === 'akcii',
-      },
-    ];
-  }
 
   return [
     ...navFromCatalog,
@@ -68,6 +53,7 @@ export function buildHeaderNavItems(
       label: 'Акции',
       href: cityPath(citySlug, 'akcii'),
       active: activePage === 'akcii',
+      variant: 'outlined',
     },
   ];
 }

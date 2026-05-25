@@ -1201,9 +1201,9 @@ const json = {
   ],
 };
 
-let points_zone_default = [];
-let points_zone_active = [];
-let points_zone_disable = [];
+let points_zone_default: any[] = [];
+let points_zone_active: any[] = [];
+let points_zone_disable: any[] = [];
 
 json?.zones.map((point) => {
   if (point['zone_origin'].length > 0) {

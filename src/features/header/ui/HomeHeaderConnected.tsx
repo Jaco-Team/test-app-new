@@ -1,8 +1,7 @@
 'use client';
 
-import { useMemo, useState } from 'react';
-import Menu from '@mui/material/Menu';
-import MenuItem from '@mui/material/MenuItem';
+import type { MouseEvent } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useCartStore } from '@src/entities/cart';
 import { useCityStore } from '@src/entities/city';
 import { useHeaderStore } from '@src/entities/header';
@@ -17,6 +16,7 @@ import {
   cityBase,
   cityPath,
 } from '@src/shared/lib/sitePaths';
+import { setLocalStorageItem } from '@/utils/browserStorage';
 import { Header } from '@ui/widgets/Header/Header';
 import type { HeaderNavItem } from '@ui/widgets/Header/Header';
 import { formatCartLabel } from '../model/formatCartLabel';
@@ -36,19 +36,23 @@ export function HomeHeaderConnected({
   fallbackCityLabel,
   fallbackCitySlug,
 }: HomeHeaderConnectedProps) {
-  const [cityAnchor, setCityAnchor] = useState<null | HTMLElement>(null);
   const [compactMenuOpen, setCompactMenuOpen] = useState(false);
+  const [openNavLabel, setOpenNavLabel] = useState<string | undefined>();
+  const [desktopDocsOpen, setDesktopDocsOpen] = useState(false);
 
   const citySlug =
     useCityStore((state) => state.slug) || fallbackCitySlug || '';
   const cityLabel =
     useCityStore((state) => state.labelRu) || fallbackCityLabel || citySlug;
-  const cityList = useCityStore((state) => state.list);
   const categories = useHomeStore((state) => state.categories);
+  const getItemsCat = useHomeStore((state) => state.getItemsCat);
   const activePage = useHeaderStore((state) => state.activePage);
   const setActiveBasket = useHeaderStore((state) => state.setActiveBasket);
   const setActiveModalAuth = useHeaderStore(
     (state) => state.setActiveModalAuth
+  );
+  const setActiveModalCity = useHeaderStore(
+    (state) => state.setActiveModalCity
   );
   const setActiveModalCityList = useHeaderStore(
     (state) => state.setActiveModalCityList
@@ -60,6 +64,14 @@ export function HomeHeaderConnected({
   const checkPromo = useCartStore((state) => state.checkPromo);
   const allPrice = useCartStore((state) => state.allPrice);
   const itemsCount = useCartStore((state) => state.itemsCount);
+
+  useEffect(() => {
+    if (!citySlug || categories.length > 0) {
+      return;
+    }
+
+    void getItemsCat('home', citySlug);
+  }, [categories.length, citySlug, getItemsCat]);
 
   const navItems = useMemo(() => {
     if (categories.length > 0 && citySlug) {
@@ -81,6 +93,80 @@ export function HomeHeaderConnected({
     allPrice
   );
   const logoHref = citySlug ? cityBase(citySlug) : APP_ROUTE_PREFIX;
+  const docsLinks = useMemo<HeaderNavItem[]>(
+    () =>
+      citySlug
+        ? [
+            { label: 'О компании', href: cityPath(citySlug, 'about') },
+            { label: 'Реквизиты', href: cityPath(citySlug, 'company-details') },
+            {
+              label: 'Публичная оферта',
+              href: cityPath(citySlug, 'publichnaya-oferta'),
+            },
+            {
+              label: 'Политика',
+              href: cityPath(citySlug, 'politika-konfidencialnosti'),
+            },
+            {
+              label: 'Правила оплаты',
+              href: cityPath(citySlug, 'instpayorders'),
+            },
+          ]
+        : [],
+    [citySlug]
+  );
+
+  const handleNavItemClick = (
+    item: HeaderNavItem,
+    event: MouseEvent<HTMLElement>
+  ) => {
+    if (item.children?.length) {
+      event.preventDefault();
+      setDesktopDocsOpen(false);
+      setOpenNavLabel((current) =>
+        current === item.label ? undefined : item.label
+      );
+      return;
+    }
+
+    if (item.href) {
+      setOpenNavLabel(undefined);
+      setDesktopDocsOpen(false);
+      trackHeaderClick(item.label, citySlug);
+      return;
+    }
+
+    event.preventDefault();
+
+    const safeLink = String(item.link ?? '').trim();
+    const safeId = Number(item.id);
+    if (safeLink.length > 0) {
+      setLocalStorageItem('goToCategoryLink', safeLink);
+      setLocalStorageItem('ignoreMenuCategoryOnce', '1');
+    } else if (safeId > 0) {
+      setLocalStorageItem('goTo', String(safeId));
+    }
+
+    setOpenNavLabel(undefined);
+    setDesktopDocsOpen(false);
+    trackCategoryClick(item.label, citySlug);
+
+    const targetId = safeId > 0 ? `cat${safeId}` : '';
+    const target = targetId ? document.getElementById(targetId) : null;
+    if (target) {
+      const headerOffset =
+        document.getElementById('headerNew')?.getBoundingClientRect().height ??
+        0;
+      const top =
+        target.getBoundingClientRect().top + window.scrollY - headerOffset;
+      window.scrollTo({ top, behavior: 'auto' });
+      return;
+    }
+
+    if (activePage !== 'home' && logoHref) {
+      window.location.href = logoHref;
+    }
+  };
 
   return (
     <>
@@ -93,20 +179,49 @@ export function HomeHeaderConnected({
         logoSrc="/Jaco-Logo-120.png"
         logoHref={logoHref}
         compactMenuOpen={compactMenuOpen}
-        onMenuClick={() => setCompactMenuOpen((open) => !open)}
-        onCityClick={(event) => {
-          setCityAnchor(event.currentTarget);
-          setActiveModalCityList(true);
+        desktopDocsOpen={desktopDocsOpen}
+        docsLinks={docsLinks}
+        openNavLabel={openNavLabel}
+        onMenuClick={() => {
+          setOpenNavLabel(undefined);
+          setCompactMenuOpen((open) => !open);
+          setDesktopDocsOpen((open) => !open);
+        }}
+        onCityClick={() => {
+          setCompactMenuOpen(false);
+          setDesktopDocsOpen(false);
+          setActiveModalCity(true);
+        }}
+        onContactsClick={() => {
+          setCompactMenuOpen(false);
+          setDesktopDocsOpen(false);
+          trackHeaderClick('Контакты', citySlug);
+        }}
+        onDropdownClose={() => {
+          setOpenNavLabel(undefined);
+          setCompactMenuOpen(false);
+          setDesktopDocsOpen(false);
         }}
         onCartClick={() => {
           setCompactMenuOpen(false);
+          setDesktopDocsOpen(false);
           reachGoal('open_basket', undefined, citySlug);
           setActiveBasket(true);
         }}
-        onNavItemClick={(item) => {
-          trackCategoryClick(item.label, citySlug);
+        onNavItemClick={handleNavItemClick}
+        onDrawerItemClick={(item) => {
+          setCompactMenuOpen(false);
+          if (item.label === cityLabel) {
+            setActiveModalCityList(true);
+            return;
+          }
+          if (item.label !== cityLabel) {
+            trackHeaderClick(item.label, citySlug);
+          }
         }}
         onProfileClick={() => {
+          setCompactMenuOpen(false);
+          setDesktopDocsOpen(false);
           if (isAuth === 'auth' && citySlug) {
             window.location.href = cityPath(citySlug, 'profile');
             return;
@@ -114,35 +229,6 @@ export function HomeHeaderConnected({
           setActiveModalAuth(true);
         }}
       />
-
-      <Menu
-        anchorEl={cityAnchor}
-        open={Boolean(cityAnchor)}
-        onClose={() => setCityAnchor(null)}
-        anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
-        transformOrigin={{ vertical: 'top', horizontal: 'center' }}
-      >
-        {cityList.map((item) => {
-          const slug = String(item.link ?? '').trim();
-          const name = String(item.name ?? slug);
-          if (!slug) {
-            return null;
-          }
-          return (
-            <MenuItem
-              key={slug}
-              selected={slug === citySlug}
-              onClick={() => {
-                setCityAnchor(null);
-                trackHeaderClick(name, citySlug);
-                window.location.href = cityBase(slug);
-              }}
-            >
-              {name}
-            </MenuItem>
-          );
-        })}
-      </Menu>
     </>
   );
 }
