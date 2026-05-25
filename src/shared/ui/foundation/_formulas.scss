@@ -50,3 +50,18 @@
     font-size: ui-fluid-expanded($expanded-size);
   }
 }
+
+@mixin ui-fluid($property, $expanded, $compact: null, $regular: null) {
+  $compact: if($compact == null, $expanded, $compact);
+  $regular: if($regular == null, $compact, $regular);
+
+  #{$property}: ui-fluid-expanded($expanded);
+
+  @include ui-compact {
+    #{$property}: ui-fluid-compact($compact);
+  }
+
+  @include ui-regular {
+    #{$property}: ui-fluid-regular($regular);
+  }
+}

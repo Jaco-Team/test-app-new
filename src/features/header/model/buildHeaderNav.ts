@@ -58,18 +58,18 @@ export function buildHeaderNavItems(
   ];
 }
 
-export type HeaderDrawerLink = {
+export type HeaderCompactMenuLink = {
   label: string;
   href?: string;
   active?: boolean;
   button?: boolean;
 };
 
-export function buildHeaderDrawerLinks(
+export function buildHeaderCompactMenuLinks(
   citySlug: string,
   cityLabel: string,
   activePage = 'home'
-): HeaderDrawerLink[] {
+): HeaderCompactMenuLink[] {
   const base = cityPath(citySlug);
 
   return [

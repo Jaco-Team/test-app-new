@@ -21,7 +21,7 @@ import { Header } from '@ui/widgets/Header/Header';
 import type { HeaderNavItem } from '@ui/widgets/Header/Header';
 import { formatCartLabel } from '../model/formatCartLabel';
 import {
-  buildHeaderDrawerLinks,
+  buildHeaderCompactMenuLinks,
   buildHeaderNavItems,
 } from '../model/buildHeaderNav';
 
@@ -80,9 +80,11 @@ export function HomeHeaderConnected({
     return fallbackNav ?? [];
   }, [activePage, categories, citySlug, fallbackNav]);
 
-  const drawerLinks = useMemo(
+  const compactMenuLinks = useMemo(
     () =>
-      citySlug ? buildHeaderDrawerLinks(citySlug, cityLabel, activePage) : [],
+      citySlug
+        ? buildHeaderCompactMenuLinks(citySlug, cityLabel, activePage)
+        : [],
     [activePage, cityLabel, citySlug]
   );
 
@@ -172,7 +174,7 @@ export function HomeHeaderConnected({
     <>
       <Header
         navItems={navItems}
-        drawerLinks={drawerLinks}
+        compactMenuLinks={compactMenuLinks}
         city={cityLabel}
         cartLabel={cartLabel}
         cartCount={itemsCount > 0 ? itemsCount : undefined}
@@ -182,9 +184,14 @@ export function HomeHeaderConnected({
         desktopDocsOpen={desktopDocsOpen}
         docsLinks={docsLinks}
         openNavLabel={openNavLabel}
-        onMenuClick={() => {
+        onCompactMenuClick={() => {
           setOpenNavLabel(undefined);
+          setDesktopDocsOpen(false);
           setCompactMenuOpen((open) => !open);
+        }}
+        onDesktopDocsClick={() => {
+          setOpenNavLabel(undefined);
+          setCompactMenuOpen(false);
           setDesktopDocsOpen((open) => !open);
         }}
         onCityClick={() => {
@@ -209,7 +216,7 @@ export function HomeHeaderConnected({
           setActiveBasket(true);
         }}
         onNavItemClick={handleNavItemClick}
-        onDrawerItemClick={(item) => {
+        onCompactMenuItemClick={(item) => {
           setCompactMenuOpen(false);
           if (item.label === cityLabel) {
             setActiveModalCityList(true);

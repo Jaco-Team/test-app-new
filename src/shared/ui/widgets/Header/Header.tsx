@@ -38,7 +38,7 @@ export interface HeaderNavItem {
   children?: HeaderNavItem[];
 }
 
-export type HeaderDrawerLink = {
+export type HeaderCompactMenuLink = {
   label: string;
   href?: string;
   active?: boolean;
@@ -47,7 +47,7 @@ export type HeaderDrawerLink = {
 
 export interface HeaderProps extends HTMLAttributes<HTMLElement> {
   navItems?: HeaderNavItem[];
-  drawerLinks?: HeaderDrawerLink[];
+  compactMenuLinks?: HeaderCompactMenuLink[];
   city?: string;
   cityHref?: string;
   cartLabel?: string;
@@ -59,14 +59,15 @@ export interface HeaderProps extends HTMLAttributes<HTMLElement> {
   desktopDocsActive?: boolean;
   docsLinks?: HeaderNavItem[];
   openNavLabel?: string;
-  onMenuClick?: () => void;
+  onCompactMenuClick?: () => void;
   onCityClick?: (event: MouseEvent<HTMLButtonElement>) => void;
   onContactsClick?: (event: MouseEvent<HTMLAnchorElement>) => void;
   onCartClick?: () => void;
   onProfileClick?: () => void;
+  onDesktopDocsClick?: () => void;
   onDropdownClose?: () => void;
-  onDrawerItemClick?: (
-    item: HeaderDrawerLink,
+  onCompactMenuItemClick?: (
+    item: HeaderCompactMenuLink,
     event: MouseEvent<HTMLElement>
   ) => void;
   onNavItemClick?: (
@@ -76,7 +77,7 @@ export interface HeaderProps extends HTMLAttributes<HTMLElement> {
   actions?: ReactNode;
 }
 
-type DrawerItem = HeaderNavItem & {
+type CompactMenuItem = HeaderNavItem & {
   icon: ComponentType<{ 'aria-hidden'?: 'true'; className?: string }>;
   badge?: string;
   button?: boolean;
@@ -92,7 +93,7 @@ const dropdownMotion: Pick<
   transition: { duration: 0.2, ease: [0.4, 0, 0.2, 1] },
 };
 
-const drawerMotion: Pick<
+const compactMenuMotion: Pick<
   MotionProps,
   'initial' | 'animate' | 'exit' | 'transition'
 > = {
@@ -112,7 +113,7 @@ function extractCartCount(cartCount?: number): string | undefined {
     : undefined;
 }
 
-const drawerIconByLabel: Record<
+const compactMenuIconByLabel: Record<
   string,
   ComponentType<{ 'aria-hidden'?: 'true'; className?: string }>
 > = {
@@ -126,12 +127,12 @@ const drawerIconByLabel: Record<
   Корзина: BasketIconMobile,
 };
 
-function buildDefaultDrawerItems(
+function buildDefaultCompactMenuItems(
   logoHref: string,
   city: string,
   cityHref: string | undefined,
   cartBadge: string | undefined
-): DrawerItem[] {
+): CompactMenuItem[] {
   return [
     { label: 'Меню', href: logoHref, active: true, icon: MenuIconMobile },
     {
@@ -167,7 +168,7 @@ function buildDefaultDrawerItems(
 
 export function Header({
   navItems = [],
-  drawerLinks,
+  compactMenuLinks,
   city = 'Самара',
   cityHref,
   cartLabel = '2 818 ₽',
@@ -179,13 +180,14 @@ export function Header({
   desktopDocsActive = false,
   docsLinks = [],
   openNavLabel,
-  onMenuClick,
+  onCompactMenuClick,
   onCityClick,
   onContactsClick,
   onCartClick,
   onProfileClick,
+  onDesktopDocsClick,
   onDropdownClose,
-  onDrawerItemClick,
+  onCompactMenuItemClick,
   onNavItemClick,
   actions,
   className,
@@ -203,23 +205,24 @@ export function Header({
 
   const cartBadge = extractCartCount(cartCount);
   const hasCartItems = typeof cartCount === 'number' && cartCount > 0;
-  const drawerItems: DrawerItem[] = drawerLinks?.length
-    ? drawerLinks.map((item) => ({
+  const compactMenuItems: CompactMenuItem[] = compactMenuLinks?.length
+    ? compactMenuLinks.map((item) => ({
         ...item,
         icon:
-          drawerIconByLabel[item.label] ??
+          compactMenuIconByLabel[item.label] ??
           (item.label === city ? LocationIconMobile : MenuIconMobile),
         badge: item.label === 'Корзина' ? cartBadge : undefined,
         button:
           item.button ?? (item.label === city || item.label === 'Аккаунт'),
       }))
-    : buildDefaultDrawerItems(logoHref, city, cityHref, cartBadge);
+    : buildDefaultCompactMenuItems(logoHref, city, cityHref, cartBadge);
 
   const { isScrolled } = useGetPageScroll();
 
   return (
     <header
       id="headerNew"
+      ref={headerRef}
       className={cn('ui-header', className, isScrolled && 'ui-header_scrolled')}
       {...props}
     >
@@ -329,7 +332,7 @@ export function Header({
         </button>
 
         <a
-          className="ui-header__icon ui-header__contacts"
+          className="ui-header__icon-button ui-header__contacts"
           href={hrefFromBase(logoHref, '/contacts')}
           aria-label="Контакты"
           onClick={onContactsClick}
@@ -340,28 +343,33 @@ export function Header({
           />
         </a>
 
-        <div className="ui-header__docs-node">
+        <button
+          className="ui-header__compact-menu-button"
+          type="button"
+          aria-label={compactMenuOpen ? 'Закрыть меню' : 'Открыть меню'}
+          aria-expanded={compactMenuOpen}
+          onClick={onCompactMenuClick}
+        >
+          <BurgerIconMobile
+            aria-hidden="true"
+            className="ui-header__compact-menu-button-icon"
+          />
+        </button>
+
+        <div className="ui-header__docs-menu-node">
           <button
             className={cn(
-              'ui-header__icon',
-              'ui-header__docs',
-              compactMenuOpen && 'ui-header__icon--active',
-              desktopDocsOpen && 'ui-header__icon--active',
-              desktopDocsActive && 'ui-header__icon--active'
+              'ui-header__icon-button',
+              'ui-header__docs-button',
+              desktopDocsOpen && 'ui-header__icon-button--active',
+              desktopDocsActive && 'ui-header__icon-button--active'
             )}
             type="button"
-            aria-label={compactMenuOpen ? 'Закрыть меню' : 'Меню'}
-            aria-expanded={compactMenuOpen || desktopDocsOpen}
-            onClick={onMenuClick}
+            aria-label={desktopDocsOpen ? 'Закрыть документы' : 'Документы'}
+            aria-expanded={desktopDocsOpen}
+            onClick={onDesktopDocsClick}
           >
-            <BurgerIconMobile
-              aria-hidden="true"
-              className="ui-header__burger-compact"
-            />
-            <JacoDocsIcon
-              aria-hidden="true"
-              className="ui-header__burger-expanded"
-            />
+            <JacoDocsIcon className="ui-header__docs-icon" />
           </button>
 
           {docsLinks.length > 0 ? (
@@ -397,7 +405,7 @@ export function Header({
         </div>
 
         <button
-          className="ui-header__icon ui-header__profile"
+          className="ui-header__icon-button ui-header__profile"
           type="button"
           aria-label="Профиль"
           onClick={onProfileClick}
@@ -424,22 +432,27 @@ export function Header({
       <AnimatePresence>
         {compactMenuOpen ? (
           <motion.div
-            className="ui-header__drawer"
-            key="drawer"
-            {...drawerMotion}
+            className="ui-header__compact-menu"
+            key="compact-menu"
+            {...compactMenuMotion}
           >
-            <nav className="ui-header__drawer-nav" aria-label="Мобильное меню">
-              {drawerItems.map((item) => {
+            <nav
+              className="ui-header__compact-menu-nav"
+              aria-label="Мобильное меню"
+            >
+              {compactMenuItems.map((item) => {
                 const Icon = item.icon;
                 const content = (
                   <>
                     <Icon
                       aria-hidden="true"
-                      className="ui-header__drawer-icon"
+                      className="ui-header__compact-menu-icon"
                     />
-                    <span className="ui-header__drawer-text">{item.label}</span>
+                    <span className="ui-header__compact-menu-text">
+                      {item.label}
+                    </span>
                     {item.badge ? (
-                      <span className="ui-header__drawer-badge">
+                      <span className="ui-header__compact-menu-badge">
                         {item.badge}
                       </span>
                     ) : null}
@@ -450,15 +463,15 @@ export function Header({
                   <button
                     key={item.label}
                     className={cn(
-                      'ui-header__drawer-link',
-                      item.active && 'ui-header__drawer-link--active'
+                      'ui-header__compact-menu-link',
+                      item.active && 'ui-header__compact-menu-link--active'
                     )}
                     type="button"
                     onClick={(event) => {
                       if (item.label === 'Аккаунт') {
                         onProfileClick?.();
                       }
-                      onDrawerItemClick?.(item, event);
+                      onCompactMenuItemClick?.(item, event);
                     }}
                   >
                     {content}
@@ -467,11 +480,11 @@ export function Header({
                   <a
                     key={item.label}
                     className={cn(
-                      'ui-header__drawer-link',
-                      item.active && 'ui-header__drawer-link--active'
+                      'ui-header__compact-menu-link',
+                      item.active && 'ui-header__compact-menu-link--active'
                     )}
                     href={item.href ?? '#'}
-                    onClick={(event) => onDrawerItemClick?.(item, event)}
+                    onClick={(event) => onCompactMenuItemClick?.(item, event)}
                   >
                     {content}
                   </a>

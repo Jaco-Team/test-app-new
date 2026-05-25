@@ -21,7 +21,7 @@
 
   &__slide {
     flex: 0 0 100%;
-    border-radius: ui-fluid-compact(12);
+    @include ui-fluid('border-radius', 12, 10, 20);
     width: 100%;
     padding: 0;
     border: 0;

@@ -29,7 +29,7 @@ export const ПоУмолчанию: Story = {
       <Header
         {...args}
         compactMenuOpen={open}
-        onMenuClick={() => setOpen((value) => !value)}
+        onCompactMenuClick={() => setOpen((value) => !value)}
       />
     );
   },

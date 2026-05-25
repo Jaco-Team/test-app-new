@@ -23,7 +23,7 @@ export function HeaderShell({ citySlug, cityLabel }: HeaderShellProps) {
         logoSrc="/Jaco-Logo-120.png"
         logoHref={cityBase(citySlug)}
         compactMenuOpen={compactMenuOpen}
-        onMenuClick={() => setCompactMenuOpen((value) => !value)}
+        onCompactMenuClick={() => setCompactMenuOpen((value) => !value)}
         onCityClick={(event) => setCityAnchor(event.currentTarget)}
       />
 
