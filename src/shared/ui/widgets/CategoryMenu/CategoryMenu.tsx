@@ -5,11 +5,14 @@ import './CategoryMenu.scss';
 export interface CategoryMenuItem {
   label: string;
   active?: boolean;
+  targetId?: string;
 }
 
 export interface CategoryMenuProps extends HTMLAttributes<HTMLElement> {
   primaryItems?: CategoryMenuItem[];
   secondaryItems?: CategoryMenuItem[];
+  activeTargetId?: string;
+  onItemSelect?: (item: CategoryMenuItem) => void;
 }
 
 const primaryDefault: CategoryMenuItem[] = [
@@ -30,6 +33,8 @@ export function CategoryMenu({
   primaryItems = primaryDefault,
   secondaryItems = secondaryDefault,
   className,
+  activeTargetId,
+  onItemSelect,
   ...props
 }: CategoryMenuProps) {
   return (
@@ -44,9 +49,12 @@ export function CategoryMenu({
             key={item.label}
             className={cn(
               'ui-category-menu__item',
-              item.active && 'ui-category-menu__item--active'
+              (activeTargetId
+                ? activeTargetId === item.targetId
+                : item.active) && 'ui-category-menu__item--active'
             )}
             type="button"
+            onClick={() => onItemSelect?.(item)}
           >
             {item.label}
           </button>
@@ -59,9 +67,12 @@ export function CategoryMenu({
             className={cn(
               'ui-category-menu__item',
               'ui-category-menu__item--secondary',
-              item.active && 'ui-category-menu__item--active'
+              (activeTargetId
+                ? activeTargetId === item.targetId
+                : item.active) && 'ui-category-menu__item--active'
             )}
             type="button"
+            onClick={() => onItemSelect?.(item)}
           >
             {item.label}
           </button>

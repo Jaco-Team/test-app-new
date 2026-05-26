@@ -35,6 +35,12 @@ export type HomeFooterSocialLink = {
   href: string;
 };
 
+export type HomeProductGroup = {
+  id: string;
+  label: string;
+  products: HomeProduct[];
+};
+
 export type HomeTagFilterItem = {
   label: string;
   active?: boolean;
@@ -50,6 +56,7 @@ export type HomePageViewModel = {
   banners: HomeBannerSlide[];
   tags: HomeTagFilterItem[];
   products: HomeProduct[];
+  productGroups: HomeProductGroup[];
   footerLinks: HomeFooterLinkGroup[];
   footerSocialLinks: HomeFooterSocialLink[];
 };

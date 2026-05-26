@@ -91,10 +91,6 @@
   }
 
   @include ui-regular {
-    &__paper.ui-modal-wrapper__paper {
-      width: min(86vw, ui-fluid-regular(620));
-    }
-
     &__layout {
       grid-template-columns: minmax(260px, 42%) minmax(0, 1fr);
       align-items: center;
@@ -127,10 +123,6 @@
   }
 
   @include ui-expanded {
-    &__paper.ui-modal-wrapper__paper {
-      width: min(70vw, ui-fluid-expanded(720));
-    }
-
     &__layout {
       grid-template-columns: minmax(260px, 42%) minmax(0, 1fr);
       gap: ui-fluid-expanded(40);

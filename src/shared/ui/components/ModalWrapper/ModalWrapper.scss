@@ -24,14 +24,14 @@
   }
 
   & .MuiDialog-paper.ui-modal-wrapper__paper {
-    width: min(calc(100vw - 32px), 560px);
+    width: min(80vw, calc(100vw - 32px));
     max-width: none;
     max-height: calc(100dvh - 48px);
     border-radius: 22px;
   }
 
   &--responsive .MuiDialog-paper.ui-modal-wrapper__paper {
-    width: min(calc(100vw - 40px), 620px);
+    width: min(80vw, calc(100vw - 40px));
   }
 
   &__title.MuiDialogTitle-root {
@@ -70,7 +70,12 @@
     height: 100%;
   }
 
-  &--sheet .MuiDrawer-paper.ui-modal-wrapper__paper {
+  &--sheet.MuiDrawer-root .MuiDrawer-paper.ui-modal-wrapper__paper {
+    position: fixed;
+    top: auto;
+    right: 0;
+    bottom: 0;
+    left: 0;
     width: 100%;
     max-height: calc(100dvh - 54px);
     border-radius: ui-fluid-compact(58) ui-fluid-compact(58) 0 0;
@@ -94,6 +99,7 @@
   &--sheet &__content.MuiDialogContent-root {
     max-height: calc(100dvh - 54px);
     overflow-y: auto;
+    overscroll-behavior: contain;
   }
 
   &--sheet &__close {
@@ -105,13 +111,13 @@
 
   @include ui-regular {
     & .MuiDialog-paper.ui-modal-wrapper__paper {
-      width: min(calc(100vw - 48px), ui-fluid-regular(560));
+      width: min(80vw, calc(100vw - 48px));
       max-height: calc(100dvh - 56px);
       border-radius: ui-fluid-regular(22);
     }
 
     &--responsive .MuiDialog-paper.ui-modal-wrapper__paper {
-      width: min(calc(100vw - 56px), ui-fluid-regular(620));
+      width: min(80vw, calc(100vw - 56px));
     }
 
     &__close {
@@ -120,17 +126,22 @@
       width: ui-fluid-regular(38);
       height: ui-fluid-regular(38);
     }
+
+    &__close--outside {
+      left: calc(-1 * ui-fluid-regular(52));
+      right: auto;
+    }
   }
 
   @include ui-expanded {
     & .MuiDialog-paper.ui-modal-wrapper__paper {
-      width: min(calc(100vw - 72px), ui-fluid-expanded(520));
+      width: min(80vw, calc(100vw - 72px));
       max-height: calc(100dvh - 72px);
       border-radius: ui-fluid-expanded(22);
     }
 
     &--responsive .MuiDialog-paper.ui-modal-wrapper__paper {
-      width: min(calc(100vw - 72px), ui-fluid-expanded(640));
+      width: min(80vw, calc(100vw - 72px));
     }
 
     &__close {

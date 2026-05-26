@@ -2,6 +2,7 @@ import type { ReactNode } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import Fade from '@mui/material/Fade';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import type { DialogProps } from '@mui/material/Dialog';
@@ -52,7 +53,7 @@ export function ModalWrapper({
   );
   const sheet = variant !== 'dialog' && compact;
 
-  useBodyScrollLock(open && !sheet);
+  useBodyScrollLock(open);
 
   const titleId = labelledBy ?? (title ? 'ui-modal-wrapper-title' : undefined);
 
@@ -110,9 +111,14 @@ export function ModalWrapper({
         className={rootClassName}
         aria-labelledby={titleId}
         disableSwipeToOpen
+        disableDiscovery
+        allowSwipeInChildren
+        hysteresis={0.15}
+        minFlingVelocity={250}
+        disableBackdropTransition={false}
+        transitionDuration={{ enter: 260, exit: 200 }}
         ModalProps={{
           keepMounted: false,
-          disableScrollLock: true,
         }}
         slotProps={{
           backdrop: {
@@ -124,7 +130,6 @@ export function ModalWrapper({
         }}
       >
         <div className="ui-modal-wrapper__sheet-grip" aria-hidden="true" />
-        {closeNode}
         {titleNode}
         {contentNode}
       </SwipeableDrawer>
@@ -140,6 +145,8 @@ export function ModalWrapper({
       fullWidth={variant !== 'dialog'}
       aria-labelledby={titleId}
       disableScrollLock
+      TransitionComponent={Fade}
+      transitionDuration={{ enter: 180, exit: 150 }}
       slotProps={{
         container: {
           className: 'ui-modal-wrapper__container',

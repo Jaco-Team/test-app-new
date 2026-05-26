@@ -12,6 +12,7 @@ import type {
   HomeFooterSocialLink,
   HomeProduct,
   HomeTagFilterItem,
+  HomeProductGroup,
 } from './types';
 import { normalizeCategories } from '@src/entities/catalog';
 import { buildHeaderNavItems } from '@src/features/header/model/buildHeaderNav';
@@ -38,6 +39,9 @@ type HomeProductSource = {
   cat_name?: string;
   cat_id?: number | string;
   weight?: number | string;
+  count_part?: number | string;
+  count_part_new?: number | string;
+  size_pizza?: number | string;
   marc_desc?: string;
   tmp_desc?: string;
   sostav?: string;
@@ -66,14 +70,124 @@ function resolveCityLabel(city: string, cities: unknown[]): string {
   return found?.name ?? city;
 }
 
-function flattenCategoryItems(cats: unknown[]): CategoryMenuItem[] {
-  const first = (cats as HomeCategorySource[])[0];
-  const subs = first?.cats ?? (cats as HomeCategorySource[]).slice(0, 6);
+function categoryDomId(cat: HomeCategorySource): string | undefined {
+  const id = (cat as { id?: number | string }).id;
+  if (id === undefined || id === null || String(id).length === 0) {
+    return undefined;
+  }
 
-  return subs.slice(0, 8).map((cat, index) => ({
+  return 'cat' + String(id);
+}
+
+function firstCategoryTarget(cat: HomeCategorySource): string | undefined {
+  return cat.cats?.map(firstCategoryTarget).find(Boolean) ?? categoryDomId(cat);
+}
+
+function categoryMenuItem(
+  cat: HomeCategorySource,
+  index: number
+): CategoryMenuItem {
+  return {
     label: String(cat.name ?? cat.link ?? 'Категория'),
     active: index === 0,
-  }));
+    targetId: firstCategoryTarget(cat),
+  };
+}
+
+function flattenCategoryItems(cats: unknown[]): CategoryMenuItem[] {
+  return (cats as HomeCategorySource[])
+    .slice(0, 8)
+    .map((cat, index) => categoryMenuItem(cat, index));
+}
+
+function flattenLeafCategories(
+  cats: HomeCategorySource[]
+): HomeCategorySource[] {
+  return cats.flatMap((cat) => {
+    if (cat.cats?.length) {
+      return flattenLeafCategories(cat.cats);
+    }
+
+    return [cat];
+  });
+}
+
+function mapProductGroups(
+  cats: unknown[],
+  products: HomeProduct[]
+): { id: string; label: string; products: HomeProduct[] }[] {
+  const groups: { id: string; label: string; products: HomeProduct[] }[] = [];
+  const used = new Set<string>();
+  const leaves = flattenLeafCategories(cats as HomeCategorySource[]);
+
+  leaves.forEach((cat) => {
+    const id = (cat as { id?: number | string }).id;
+    const catId = id === undefined || id === null ? '' : String(id);
+    const groupProducts = products.filter((product) => product.catId === catId);
+    if (!groupProducts.length) {
+      return;
+    }
+
+    groupProducts.forEach((product) => used.add(product.id));
+    groups.push({
+      id: categoryDomId(cat) ?? 'cat-' + groups.length,
+      label: String(cat.name ?? cat.link ?? 'Категория'),
+      products: groupProducts,
+    });
+  });
+
+  products.forEach((product) => {
+    if (!product.catId || used.has(product.id)) {
+      return;
+    }
+
+    const existing = groups.find((group) => group.id === 'cat' + product.catId);
+    if (existing) {
+      existing.products.push(product);
+      used.add(product.id);
+      return;
+    }
+
+    groups.push({
+      id: 'cat' + product.catId,
+      label: String(product.raw?.cat_name ?? 'Каталог'),
+      products: [product],
+    });
+    used.add(product.id);
+  });
+
+  const leftovers = products.filter((product) => !used.has(product.id));
+  if (leftovers.length) {
+    groups.push({ id: 'cat-all', label: 'Каталог', products: leftovers });
+  }
+
+  return groups;
+}
+
+function flattenRawProducts(items: unknown[]): unknown[] {
+  return items.flatMap((row) => {
+    const item = row as {
+      id?: number | string;
+      name?: string;
+      items?: unknown[];
+    };
+    if (Array.isArray(item.items)) {
+      return item.items.map((child) => ({
+        ...(child as Record<string, unknown>),
+        cat_id: (child as { cat_id?: unknown }).cat_id ?? item.id,
+        cat_name: (child as { cat_name?: unknown }).cat_name ?? item.name,
+      }));
+    }
+
+    return [row];
+  });
+}
+
+function firstNonEmptyText(...values: unknown[]): unknown {
+  return values.find(
+    (value) =>
+      value !== undefined && value !== null && String(value).trim().length > 0
+  );
 }
 
 function mapProduct(item: HomeProductSource): HomeProduct | null {
@@ -109,16 +223,32 @@ function mapProduct(item: HomeProductSource): HomeProduct | null {
     )
     .map(([label, value]) => ({ label, value: String(value) }));
 
+  const description = htmlToPlainText(
+    firstNonEmptyText(item.marc_desc, item.tmp_desc, item.text)
+  );
+
   return {
     id: String(item.id ?? title),
     catId: item.cat_id === undefined ? undefined : String(item.cat_id),
     title,
     image,
-    description: htmlToPlainText(item.text),
-    detailText: htmlToPlainText(item.marc_desc ?? item.tmp_desc ?? item.text),
+    description,
+    detailText: description,
     composition: htmlToPlainText(item.sostav ?? item.composition),
     weight: item.weight === undefined ? undefined : String(item.weight),
     nutrition: nutrition.length ? nutrition : undefined,
+    info: {
+      catId: item.cat_id === undefined ? undefined : String(item.cat_id),
+      countPart:
+        item.count_part === undefined ? undefined : String(item.count_part),
+      countPartNew:
+        item.count_part_new === undefined
+          ? undefined
+          : String(item.count_part_new),
+      sizePizza:
+        item.size_pizza === undefined ? undefined : String(item.size_pizza),
+      weight: item.weight === undefined ? undefined : String(item.weight),
+    },
     meta: item.cat_name ? [String(item.cat_name)] : undefined,
     price,
     oldPrice: item.old_price ? Number(item.old_price) : undefined,
@@ -163,8 +293,14 @@ function mapBanners(
       text?: string;
       description?: string;
       button_name?: string;
+      item?: unknown[];
       items?: unknown[];
       products?: unknown[];
+      info?: {
+        promo_action?: number | string;
+        items_add?: unknown[];
+        items_on_price?: unknown[];
+      };
     };
     const mediaKey = String(item.img ?? '').trim();
     if (!isValidMediaKey(mediaKey)) {
@@ -186,7 +322,14 @@ function mapBanners(
           : undefined,
       text: htmlToPlainText(item.text ?? item.description),
       buttonLabel: item.button_name ? String(item.button_name) : undefined,
-      products: bannerProducts(item.items ?? item.products, allProducts),
+      products: bannerProducts(
+        item.info?.items_add ??
+          item.info?.items_on_price ??
+          item.item ??
+          item.items ??
+          item.products,
+        allProducts
+      ),
     });
   });
 
@@ -300,28 +443,37 @@ function mapTags(tags: unknown[]): HomeTagFilterItem[] {
     .slice(0, 24);
 }
 
-export function mapHomePageViewModel(data: HomePageRawData): HomePageViewModel {
-  const productsFromApi = data.all_items
+export function mapHomeCatalogView(cats: unknown[], allItems: unknown[]) {
+  const productsFromApi = flattenRawProducts(allItems)
     .map((item) => mapProduct(item as HomeProductSource))
-    .filter((item): item is HomeProduct => Boolean(item))
-    .slice(0, 24);
+    .filter((item): item is HomeProduct => Boolean(item));
 
   const products =
     productsFromApi.length > 0
       ? productsFromApi
       : [{ ...productCardFixtures.madeiraSet, id: 'fixture-madeira-set' }];
-
-  const cats = data.cats;
-  const normalizedCats = normalizeCategories(cats);
   const primary = flattenCategoryItems(cats);
   const secondarySource = (cats as HomeCategorySource[])[0]?.cats ?? [];
   const secondary =
     secondarySource.length > 0
-      ? secondarySource.slice(0, 8).map((cat, index) => ({
-          label: String(cat.name ?? cat.link ?? 'Категория'),
-          active: index === 0,
-        }))
+      ? secondarySource
+          .slice(0, 8)
+          .map((cat, index) => categoryMenuItem(cat, index))
       : primary;
+  const productGroups: HomeProductGroup[] = mapProductGroups(cats, products);
+
+  return {
+    categoryPrimary: primary,
+    categorySecondary: secondary,
+    products,
+    productGroups,
+  };
+}
+
+export function mapHomePageViewModel(data: HomePageRawData): HomePageViewModel {
+  const cats = data.cats;
+  const normalizedCats = normalizeCategories(cats);
+  const catalog = mapHomeCatalogView(cats, data.all_items);
 
   return {
     citySlug: data.city,
@@ -330,11 +482,12 @@ export function mapHomePageViewModel(data: HomePageRawData): HomePageViewModel {
     headerNav: buildHeaderNavItems(data.city, normalizedCats, {
       activePage: 'home',
     }),
-    categoryPrimary: primary,
-    categorySecondary: secondary,
-    banners: mapBanners(data.banners, products),
+    categoryPrimary: catalog.categoryPrimary,
+    categorySecondary: catalog.categorySecondary,
+    banners: mapBanners(data.banners, catalog.products),
     tags: mapTags(data.tags),
-    products,
+    products: catalog.products,
+    productGroups: catalog.productGroups,
     footerLinks: mapFooterLinks(data.city, data.links),
     footerSocialLinks: mapFooterSocialLinks(data.links),
   };

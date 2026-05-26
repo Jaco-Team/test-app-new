@@ -48,6 +48,11 @@
     cursor: pointer;
   }
 
+  &__item--active {
+    background: #111;
+    color: #fff;
+  }
+
   &__item--secondary {
     min-width: ui-fluid-compact(187);
   }
