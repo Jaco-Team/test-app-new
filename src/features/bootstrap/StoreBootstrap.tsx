@@ -10,6 +10,7 @@ import { useHeaderStore } from '@src/entities/header';
 import { useHomeStore } from '@src/entities/home';
 import { useProfileStore } from '@src/entities/profile';
 import { hitAll } from '@src/shared/lib/analytics/metrika';
+import { setLocalStorageItem } from '@/utils/browserStorage';
 
 export type StoreBootstrapProps = {
   city: string;
@@ -46,6 +47,7 @@ export function StoreBootstrap({
     const label = resolveCityLabel(city, cities);
 
     useCityStore.getState().setCity(city, label, cities as CityRecord[]);
+    setLocalStorageItem('setCity', JSON.stringify({ link: city, name: label }));
     useCatalogStore.getState().seedFromPage(cats, allItems, city, tags);
     useHomeStore.getState().seedFromPage(cats, allItems, city, tags);
     useHomeStore.getState().setAllTags(tags);

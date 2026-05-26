@@ -2,6 +2,16 @@ import type { CategoryMenuItem } from '@ui/widgets/CategoryMenu/CategoryMenu';
 import type { HeaderNavItem } from '@ui/widgets/Header/Header';
 import type { ProductCardProps } from '@ui/patterns/ProductCard/ProductCard';
 
+export type HomeProduct = ProductCardProps & {
+  id: string;
+  catId?: string;
+  weight?: string;
+  detailText?: string;
+  composition?: string;
+  nutrition?: { label: string; value: string }[];
+  raw?: Record<string, unknown>;
+};
+
 export type HomeBannerSlide = {
   id: string;
   /** Compact / tablet banner (1000x500). */
@@ -9,6 +19,10 @@ export type HomeBannerSlide = {
   /** Desktop banner (3700x1000). */
   imageWide: string;
   alt?: string;
+  title?: string;
+  text?: string;
+  buttonLabel?: string;
+  products?: HomeProduct[];
 };
 
 export type HomeFooterLinkGroup = {
@@ -35,7 +49,7 @@ export type HomePageViewModel = {
   categorySecondary: CategoryMenuItem[];
   banners: HomeBannerSlide[];
   tags: HomeTagFilterItem[];
-  products: ProductCardProps[];
+  products: HomeProduct[];
   footerLinks: HomeFooterLinkGroup[];
   footerSocialLinks: HomeFooterSocialLink[];
 };

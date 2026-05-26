@@ -10,14 +10,15 @@ import type {
   HomeBannerSlide,
   HomeFooterLinkGroup,
   HomeFooterSocialLink,
+  HomeProduct,
   HomeTagFilterItem,
 } from './types';
 import { normalizeCategories } from '@src/entities/catalog';
 import { buildHeaderNavItems } from '@src/features/header/model/buildHeaderNav';
 import { cityPath } from '@src/shared/lib/sitePaths';
+import { htmlToPlainText } from '@src/shared/lib/text/htmlToPlainText';
 import type { CategoryMenuItem } from '@ui/widgets/CategoryMenu/CategoryMenu';
 import type { BadgeTone } from '@ui/components';
-import type { ProductCardProps } from '@ui/patterns/ProductCard/ProductCard';
 
 type HomeCategorySource = {
   name?: string;
@@ -35,6 +36,16 @@ type HomeProductSource = {
   img?: string;
   img_app?: string;
   cat_name?: string;
+  cat_id?: number | string;
+  weight?: number | string;
+  marc_desc?: string;
+  tmp_desc?: string;
+  sostav?: string;
+  composition?: string;
+  proteins?: number | string;
+  fats?: number | string;
+  carbohydrates?: number | string;
+  calories?: number | string;
   badges?: { name?: string; type?: string }[];
 };
 
@@ -65,7 +76,7 @@ function flattenCategoryItems(cats: unknown[]): CategoryMenuItem[] {
   }));
 }
 
-function mapProduct(item: HomeProductSource): ProductCardProps | null {
+function mapProduct(item: HomeProductSource): HomeProduct | null {
   const title = String(item.name ?? '').trim();
   const price = Number(item.price);
   if (!title || !Number.isFinite(price)) {
@@ -86,18 +97,61 @@ function mapProduct(item: HomeProductSource): ProductCardProps | null {
         }))
     : undefined;
 
+  const nutrition = [
+    ['Белки', item.proteins],
+    ['Жиры', item.fats],
+    ['Углеводы', item.carbohydrates],
+    ['Ккал', item.calories],
+  ]
+    .filter(
+      (row): row is [string, number | string] =>
+        row[1] !== undefined && row[1] !== null && String(row[1]).length > 0
+    )
+    .map(([label, value]) => ({ label, value: String(value) }));
+
   return {
+    id: String(item.id ?? title),
+    catId: item.cat_id === undefined ? undefined : String(item.cat_id),
     title,
     image,
-    description: item.text ? String(item.text) : undefined,
+    description: htmlToPlainText(item.text),
+    detailText: htmlToPlainText(item.marc_desc ?? item.tmp_desc ?? item.text),
+    composition: htmlToPlainText(item.sostav ?? item.composition),
+    weight: item.weight === undefined ? undefined : String(item.weight),
+    nutrition: nutrition.length ? nutrition : undefined,
     meta: item.cat_name ? [String(item.cat_name)] : undefined,
     price,
     oldPrice: item.old_price ? Number(item.old_price) : undefined,
     badges,
+    raw: item as Record<string, unknown>,
   };
 }
 
-function mapBanners(banners: unknown[]): HomeBannerSlide[] {
+function bannerProducts(
+  rawProducts: unknown[] | undefined,
+  allProducts: HomeProduct[]
+): HomeProduct[] {
+  if (!Array.isArray(rawProducts)) {
+    return [];
+  }
+
+  return rawProducts
+    .map((row) => {
+      const item = row as { id?: number | string; item_id?: number | string };
+      const id = String(item.id ?? item.item_id ?? '');
+      return (
+        allProducts.find((product) => product.id === id) ??
+        mapProduct(row as HomeProductSource)
+      );
+    })
+    .filter((item): item is HomeProduct => Boolean(item))
+    .slice(0, 8);
+}
+
+function mapBanners(
+  banners: unknown[],
+  allProducts: HomeProduct[]
+): HomeBannerSlide[] {
   const slides: HomeBannerSlide[] = [];
 
   banners.forEach((raw, index) => {
@@ -106,6 +160,11 @@ function mapBanners(banners: unknown[]): HomeBannerSlide[] {
       img?: string;
       name?: string;
       title?: string;
+      text?: string;
+      description?: string;
+      button_name?: string;
+      items?: unknown[];
+      products?: unknown[];
     };
     const mediaKey = String(item.img ?? '').trim();
     if (!isValidMediaKey(mediaKey)) {
@@ -120,6 +179,14 @@ function mapBanners(banners: unknown[]): HomeBannerSlide[] {
         : item.title
           ? String(item.title)
           : undefined,
+      title: item.title
+        ? String(item.title)
+        : item.name
+          ? String(item.name)
+          : undefined,
+      text: htmlToPlainText(item.text ?? item.description),
+      buttonLabel: item.button_name ? String(item.button_name) : undefined,
+      products: bannerProducts(item.items ?? item.products, allProducts),
     });
   });
 
@@ -236,13 +303,13 @@ function mapTags(tags: unknown[]): HomeTagFilterItem[] {
 export function mapHomePageViewModel(data: HomePageRawData): HomePageViewModel {
   const productsFromApi = data.all_items
     .map((item) => mapProduct(item as HomeProductSource))
-    .filter((item): item is ProductCardProps => Boolean(item))
+    .filter((item): item is HomeProduct => Boolean(item))
     .slice(0, 24);
 
   const products =
     productsFromApi.length > 0
       ? productsFromApi
-      : [productCardFixtures.madeiraSet];
+      : [{ ...productCardFixtures.madeiraSet, id: 'fixture-madeira-set' }];
 
   const cats = data.cats;
   const normalizedCats = normalizeCategories(cats);
@@ -265,7 +332,7 @@ export function mapHomePageViewModel(data: HomePageRawData): HomePageViewModel {
     }),
     categoryPrimary: primary,
     categorySecondary: secondary,
-    banners: mapBanners(data.banners),
+    banners: mapBanners(data.banners, products),
     tags: mapTags(data.tags),
     products,
     footerLinks: mapFooterLinks(data.city, data.links),

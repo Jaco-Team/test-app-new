@@ -54,38 +54,31 @@ Path: `src/shared/ui/foundation/`
 
 Owns:
 
-- breakpoints
-- spacing
-- typography
-- color variables
-- shadows
-- z-index
-- transitions
-- CSS variables
-- MUI theme
+- semantic breakpoints: compact, regular, expanded
+- spacing, typography, color, shadow, radius, z-index, transition tokens
+- CSS variables and Sass helpers
+- MUI theme aligned to the same breakpoints
 - global reset/base styles
-- Sass mixins/functions only when still justified
 
 Migration rule:
 
 - audit first
 - delete dead styles
-- delete magic numbers
-- delete legacy mixins
-- delete duplicated utilities
-- migrate only real tokens, real mixins, reset/base styles, and formulas that prove useful
+- delete magic numbers that are not tied to a measured reference
+- keep legacy-derived formulas only where they are required for visual parity
+- prefer named component tokens/CSS variables for reusable dimensions
+- do not let fluid formulas become the default language for every control
 
 ## MUI Strategy
 
-Use MUI as infrastructure:
+Use MUI as behavior infrastructure, not as the public design system:
 
-- `ThemeProvider`
-- breakpoint engine
-- `sx` engine where useful
-- accessibility helpers
-- Modal/Portal/Popover/Menu infrastructure when it saves real work
+- `ThemeProvider` and breakpoint engine
+- `Dialog`, `Modal`, `Drawer`, `Popover`, `Menu`, `ClickAwayListener`, `Portal` where they remove custom behavior code
+- focus management, escape key handling, scroll lock, backdrop, portal layering, and positioning
+- `sx` only for local integration glue, not as the main styling language for branded DS surfaces
 
-Do not build the DS around MUI widgets:
+Do not export raw MUI widgets as the DS contract:
 
 - no exported DS `<MuiButton />`
 - no exported DS `<MuiCard />`
@@ -96,10 +89,10 @@ Export our own UI:
 - `<Button />`
 - `<Card />`
 - `<Input />`
-- `<Modal />`
+- `<ModalWrapper />`, `<PopoverMenu />` / future `<Dialog />`, `<BottomSheet />`
 - `<Tabs />`
 
-Implementation can use emotion/styled/scss modules, but public API stays ours.
+Implementation can use MUI internally. Public API, class names, adaptive variants, and visual skin stay ours.
 
 ## Breakpoint Strategy
 
@@ -132,7 +125,7 @@ Mapping:
 
 ## Responsive Rule
 
-Do not do this by default:
+Do not split render trees by viewport by default:
 
 ```tsx
 if (mobile) return <MobileCard />;
@@ -147,9 +140,15 @@ Prefer adaptive component APIs:
 />
 ```
 
-CSS owns layout.
-JS owns behavior.
-Separate render trees only when behavior genuinely differs.
+CSS owns layout. JS owns behavior. Separate render trees only when behavior genuinely differs.
+
+Mobile and tablet are not the same target:
+
+- compact: prioritize reach, bottom-sheet/modal ergonomics, dense controls where legacy requires it
+- regular: design deliberately for tablets and small horizontal screens; compact layout is allowed, but text and tap targets must stay accessible
+- expanded: desktop navigation and popover behavior
+
+Modals are allowed to change behavior by range: bottom sheet on compact, roomier sheet/dialog on regular, centered dialog/popover on expanded. Use MUI-backed DS wrappers for the mechanics and SCSS/classes for the branded shape.
 
 ## Layer Responsibilities
 
@@ -277,13 +276,13 @@ Each public component should eventually cover:
 
 ## Visual Testing
 
-Required before trusting visual parity:
+Required before trusting final visual parity:
 
 - Chromatic, or
 - Playwright screenshots, or
 - Loki
 
-No more manual-only “looks close”. Every responsive component needs screenshot states for compact, medium, and wide.
+Current workflow rule: do not run typecheck, lint, prettier, eslint, or visual tests by default. Run visual checks only when a change touches fragile measured layout, especially Header, or when explicitly requested.
 
 ## Migration Order
 
@@ -376,14 +375,16 @@ Use them in components instead of one-off layout CSS.
 
 ### Step 5: Navigation shell
 
-Build:
+Status: Header preview slice in progress; naming and burger/docs state separation cleaned up.
 
-- `Header`
+Build/refine:
+
+- `Header` split into readable sub-surfaces: desktop nav, docs menu, compact menu, actions
 - `Footer`
-- `Navigation`
-- `Sidebar` or menu pattern if needed
+- shared menu/popover primitives backed by MUI behavior
+- sidebar/menu pattern only if a real route needs it
 
-Focus on responsive behavior and sticky/collapsed states.
+Focus on readable ownership: Header visual SCSS can remain custom, but overlay mechanics should move toward MUI-backed DS wrappers instead of hand-rolled click/portal/focus code.
 
 ### Step 6: Product and commerce patterns
 
@@ -439,47 +440,50 @@ Old Storybook work dies gradually after replacement coverage exists.
 - Added @ui/\* path alias and removed the old UI alias from config.
 - Added commerce primitives/components: Card, Badge, Price, QuantityControl.
 - Added ProductCard as a composed pattern using those components.
-- Storybook build passes.
+- Added `PopoverMenu` as the first MUI-backed DS menu primitive: MUI owns menu behavior, project SCSS owns the visual skin.
+- Extended `ModalWrapper` with a `responsive` variant for future modal migrations: compact bottom sheet, regular/expanded centered container.
+- Started preview home parity work in new core: product detail modal, banner detail modal, cart item add/update actions, responsive basket panel, and regular-range city modal behavior moved onto DS wrappers.
+- Storybook build passes as of earlier pass; do not rerun checks by default under the current workflow.
 
 ### Step 5b: Header parity pass (preview + legacy backend)
 
-Status: in progress.
+Status: in progress. Burger compact menu and desktop docs menu are separate states. Header CSS naming now distinguishes compact menu, docs menu, and generic desktop icon buttons.
 
-Reference: https://jacofood.ru/samara and `modules/header/navBar/*`, `styles/header/*`.
+Reference: legacy `/samara`, `modules/header/navBar/*`, and production `https://jacofood.ru/samara`.
 
-**Breakpoint rule:** header mobile/desktop switch follows legacy `matches` at **800px**, not DS 991px (category rail below header still uses 991).
+**Breakpoint rule:** product DS ranges remain 320-667 compact, 668-990 regular, 991+ expanded. Header may keep legacy-specific visual thresholds only when measured parity requires it; document those exceptions locally in Header, not in global foundation.
 
-**Wire same backend as legacy** (no new APIs):
+**Backend/store rule:** preview may reuse existing app stores and legacy modal stack until DS wrappers replace them. Do not invent new APIs for parity work.
 
-- `useHeaderStoreNew` — `matches`, basket open, city modal, auth
-- `useCitiesStore` — city slug + RU label
-- `useCartStore` — cart total label, `setAllItems` from SSR seed
-- `useHomeStore` — `category`, `getItemsCat`, category filter / scroll
+**UX contract:**
 
-**UX gaps to close:**
+| Area               | Target                                                                  | Implementation direction                                                             |
+| ------------------ | ----------------------------------------------------------------------- | ------------------------------------------------------------------------------------ |
+| Compact menu       | Burger opens only compact menu; docs icon is not part of compact header | custom visual Header, later MUI `Drawer`/`SwipeableDrawer` wrapper if behavior grows |
+| Desktop docs       | Docs icon opens only docs dropdown and closes on second click           | MUI-backed popover/menu wrapper preferred for future cleanup                         |
+| Desktop categories | Opener toggles submenu closed on second click                           | current state model is acceptable; can migrate to shared `PopoverMenu`               |
+| City               | Opens city modal/list as legacy does                                    | keep store adapter in connected layer                                                |
+| Cart               | Opens basket with formatted ₽ total                                     | keep store adapter in connected layer                                                |
+| Profile            | Auth modal or profile route                                             | keep store adapter in connected layer                                                |
+| Typography/layout  | Match legacy where visible, but keep class names readable               | SCSS is allowed; avoid formula soup by introducing local component variables         |
 
-| Area               | Legacy                                                  | New DS target                                |
-| ------------------ | ------------------------------------------------------- | -------------------------------------------- |
-| Mobile drawer      | MUI `SwipeableDrawer`, icons per row, real `Link` hrefs | `HeaderMobileDrawer` + legacy icons          |
-| Desktop categories | Dropdown `Menu` per top cat with subcats                | `HeaderCategoryNav` + MUI Menu               |
-| City               | Opens city modal                                        | `setActiveModalCityList(true)`               |
-| Cart               | Opens basket, formatted ₽ total                         | `setActiveBasket`, cart store pricing        |
-| Profile            | Auth modal / profile routes                             | `ProfileIconHeader*` behavior or equivalent  |
-| Typography         | `font32_400` cats, mobile drawer 34px                   | `ui-type()` with audited px from legacy SCSS |
-| Logo               | SVG + `/{city}` or scroll on home                       | `citySlug` prop                              |
+**Modal direction:** mobile modals are custom product UX, not generic desktop dialogs. Build DS modal wrappers around MUI behavior with range variants: compact bottom sheet, regular accessible sheet/dialog, expanded dialog/popover.
 
-**Modals on preview:** mount legacy modal stack beside preview header (`ModalCity*`, `ModalAuth`, `Basket*`) until DS modals exist.
-
-**Verification:** side-by-side `/preview/samara` vs `/samara` at 320, 800, 991; then `npm run test:ui-visual`.
+**Verification rule:** do not run typecheck or visual tests by default. If Header layout is changed, verify manually or visually at 320, 668, 991 before calling it done.
 
 ## Immediate Next Work
 
-1. Complete Step 5b (header store wiring + drawer/category UX + typography audit).
-2. Refine Footer/BannerSlider SCSS against https://jacofood.ru/samara at 320, 668, 991 px (use `npm run test:ui-visual:update` for baselines).
-3. Wire cart/auth modals and zustand adapters on preview home.
-4. Refine ProductCard grid density and filter block.
-5. Split the generated icon catalog into smaller domain icon modules before it becomes a bundle problem.
-6. Cut over `/[city]` when preview matches production.
+Work in small steps and keep each step reviewable:
+
+1. Header cleanup follow-up: split `Header.tsx` into internal subcomponents only if the next change touches that area again; otherwise avoid disturbing the tuned layout.
+2. Use `PopoverMenu` for the next dropdown/menu migration when touching docs/category menus again; do not disturb tuned Header layout just to swap internals.
+3. Use `ModalWrapper` `responsive` for the next modal migration where compact sheet and regular/expanded dialog behavior match the UX. Add more variants only from real modal needs.
+4. Audit current DS modal usage and define compact/regular/expanded modal content rules before migrating more routes.
+5. Refine Footer/BannerSlider SCSS against legacy at 320, 668, 991 px without running visual tests unless layout changes are significant.
+6. Continue cart/auth/city modal parity: promo validation, full order slide modal, and missing legacy basket form details still need migration into new core.
+7. Refine ProductCard grid density and filter block, with regular range designed explicitly for tablets/small horizontal screens.
+8. Split the generated icon catalog into smaller domain icon modules before it becomes a bundle problem.
+9. Cut over `/[city]` only when preview matches production.
 
 ## Hard Rules
 
@@ -498,7 +502,9 @@ Do:
 - migrate gradually
 - keep component code as source of truth
 - colocate stories with components
-- use visual contracts
+- use visual contracts when layout is ready to lock
 - use layout primitives
 - expose responsive variants through adaptive props
 - keep tokens and breakpoints centralized
+- use MUI for hard overlay behavior and custom SCSS for branded visual parity
+- treat regular/tablet as a real design target, not stretched mobile

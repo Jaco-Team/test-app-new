@@ -62,12 +62,11 @@ Storybook documents components; it is not the DS source. The old `stories/` tree
 
 ## Docs
 
-| File                                                     | Purpose                       |
-| -------------------------------------------------------- | ----------------------------- |
-| [AGENTS.md](AGENTS.md)                                   | Codex / agent instructions    |
-| [TODO-NEW.md](TODO-NEW.md)                               | Active DS + new core plan     |
-| [STORYBOOK_REDESIGN_TODO.md](STORYBOOK_REDESIGN_TODO.md) | Archived Storybook-first plan |
-| [stories/README_FSD.md](stories/README_FSD.md)           | Archived `stories/` FSD notes |
+| File                                           | Purpose                       |
+| ---------------------------------------------- | ----------------------------- |
+| [AGENTS.md](AGENTS.md)                         | Codex / agent instructions    |
+| [TODO-NEW.md](TODO-NEW.md)                     | Active DS + new core plan     |
+| [stories/README_FSD.md](stories/README_FSD.md) | Archived `stories/` FSD notes |
 
 ## Deploy
 

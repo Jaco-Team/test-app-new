@@ -1,0 +1,85 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+
+.ui-popover-menu {
+  z-index: $ui-z-modal;
+
+  & .MuiPaper-root.ui-popover-menu__paper {
+    min-width: ui-fluid-compact(360);
+    padding: ui-fluid-compact(8);
+    overflow: visible;
+    border-radius: ui-fluid-compact(16);
+    background: #fff;
+    color: $ui-text;
+    box-shadow:
+      0 5px 5px -3px rgba(0, 0, 0, 0.2),
+      0 8px 10px 1px rgba(0, 0, 0, 0.14),
+      0 3px 14px 2px rgba(0, 0, 0, 0.12);
+  }
+
+  & .MuiList-root.ui-popover-menu__list {
+    display: grid;
+    gap: ui-fluid-compact(6);
+    padding: 0;
+  }
+
+  & .MuiMenuItem-root.ui-popover-menu__item {
+    min-height: ui-fluid-compact(72);
+    padding: ui-fluid-compact(12) ui-fluid-compact(20);
+    border-radius: ui-fluid-compact(10);
+    color: $ui-text;
+    font-family: $ui-font-family;
+    font-size: ui-fluid-compact(28);
+    line-height: 1.15;
+    letter-spacing: 0;
+    text-align: center;
+    white-space: nowrap;
+    justify-content: center;
+  }
+
+  & .MuiMenuItem-root.ui-popover-menu__item:hover,
+  & .MuiMenuItem-root.ui-popover-menu__item:focus-visible,
+  & .MuiMenuItem-root.ui-popover-menu__item--selected,
+  & .MuiMenuItem-root.ui-popover-menu__item.Mui-selected {
+    background: rgba(0, 0, 0, 0.03);
+    color: $ui-brand;
+  }
+
+  @include ui-regular {
+    & .MuiPaper-root.ui-popover-menu__paper {
+      min-width: ui-fluid-regular(300);
+      padding: ui-fluid-regular(8);
+      border-radius: ui-fluid-regular(12);
+    }
+
+    & .MuiList-root.ui-popover-menu__list {
+      gap: ui-fluid-regular(6);
+    }
+
+    & .MuiMenuItem-root.ui-popover-menu__item {
+      min-height: ui-fluid-regular(56);
+      padding: ui-fluid-regular(10) ui-fluid-regular(18);
+      border-radius: ui-fluid-regular(8);
+      font-size: ui-fluid-regular(20);
+    }
+  }
+
+  @include ui-expanded {
+    & .MuiPaper-root.ui-popover-menu__paper {
+      min-width: ui-fluid-expanded(214);
+      padding: ui-fluid-expanded(4);
+      border-radius: ui-fluid-expanded(8);
+    }
+
+    & .MuiList-root.ui-popover-menu__list {
+      gap: ui-fluid-expanded(8);
+    }
+
+    & .MuiMenuItem-root.ui-popover-menu__item {
+      min-height: auto;
+      padding: ui-fluid-expanded(10) ui-fluid-expanded(18);
+      border-radius: ui-fluid-expanded(8);
+      font-size: ui-fluid-expanded(15);
+    }
+  }
+}

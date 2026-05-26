@@ -37,5 +37,12 @@ export type CartState = {
   setNeedDops: (items: unknown[]) => void;
   changeAllItems: () => void;
   hydrateFromLocalStorage: () => void;
+  plus: (itemId: number | string | undefined, catId?: number | string) => void;
+  minus: (itemId: number | string | undefined) => void;
+  setCount: (
+    itemId: number | string | undefined,
+    count: number,
+    catId?: number | string
+  ) => void;
   recomputeTotals: () => void;
 };

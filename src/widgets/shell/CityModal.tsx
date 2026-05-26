@@ -110,11 +110,10 @@ export function CityModal() {
       closeOutside
       closeOnBackdrop
       labelledBy="city-modal-title"
-      variant="bottom-sheet"
+      variant="responsive"
     >
       {effectiveShowList ? (
         <>
-          <div className="city-modal__handle" />
           <div className="city-modal__list">
             {cityOptions.map((item) => {
               const slug = cityLink(item);

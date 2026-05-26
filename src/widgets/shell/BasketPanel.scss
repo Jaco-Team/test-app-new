@@ -1,0 +1,206 @@
+@use '../../shared/ui/foundation/formulas' as *;
+@use '../../shared/ui/foundation/tokens' as *;
+
+.basket-panel-popover.MuiPaper-root {
+  width: min(92vw, 390px);
+  border-radius: 8px;
+  box-shadow: 0 18px 54px rgba(0, 0, 0, 0.22);
+}
+
+.basket-panel-drawer {
+  position: fixed;
+  inset: 0;
+  z-index: 3900;
+  display: grid;
+  align-items: end;
+}
+
+.basket-panel-drawer__backdrop {
+  position: absolute;
+  inset: 0;
+  border: 0;
+  background: rgba(0, 0, 0, 0.38);
+}
+
+.basket-panel-drawer__sheet {
+  position: relative;
+  max-height: 86vh;
+  overflow: auto;
+  border-radius: ui-fluid-compact(34) ui-fluid-compact(34) 0 0;
+  background: #fff;
+}
+
+.basket-panel {
+  display: grid;
+  gap: ui-fluid-compact(18);
+  padding: ui-fluid-compact(28);
+  color: $ui-text;
+  font-family: $ui-font-family;
+}
+
+.basket-panel__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 16px;
+}
+
+.basket-panel__head h2 {
+  margin: 0;
+  font-size: ui-fluid-compact(32);
+  font-weight: 700;
+  letter-spacing: 0;
+}
+
+.basket-panel__head button {
+  border: 0;
+  background: transparent;
+  color: $ui-brand;
+  font: inherit;
+  font-size: ui-fluid-compact(22);
+  cursor: pointer;
+}
+
+.basket-panel__notice {
+  border-radius: 8px;
+  background: #f5f5f5;
+  padding: ui-fluid-compact(14) ui-fluid-compact(18);
+  color: $ui-text-muted;
+  font-size: ui-fluid-compact(19);
+  line-height: 1.3;
+}
+
+.basket-panel__notice summary {
+  color: $ui-text;
+  cursor: pointer;
+}
+
+.basket-panel__notice p {
+  margin: ui-fluid-compact(10) 0 0;
+}
+
+.basket-panel__list {
+  display: grid;
+  gap: ui-fluid-compact(14);
+}
+
+.basket-panel__item {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) ui-fluid-compact(190);
+  gap: ui-fluid-compact(16);
+  align-items: center;
+  padding-bottom: ui-fluid-compact(14);
+  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+}
+
+.basket-panel__item-copy {
+  min-width: 0;
+}
+
+.basket-panel__item h3 {
+  margin: 0 0 ui-fluid-compact(6);
+  overflow: hidden;
+  font-size: ui-fluid-compact(21);
+  font-weight: 500;
+  line-height: 1.2;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.basket-panel__item .ui-quantity-control {
+  width: 100%;
+  min-height: ui-fluid-compact(54);
+}
+
+.basket-panel__empty {
+  border-radius: 8px;
+  background: #f7f7f7;
+  padding: ui-fluid-compact(28);
+  text-align: center;
+}
+
+.basket-panel__empty h3,
+.basket-panel__empty p {
+  margin: 0;
+}
+
+.basket-panel__empty p {
+  margin-top: ui-fluid-compact(8);
+  color: $ui-text-muted;
+  font-size: ui-fluid-compact(19);
+}
+
+.basket-panel__footer {
+  display: grid;
+  gap: ui-fluid-compact(14);
+}
+
+.basket-panel__total {
+  display: flex;
+  justify-content: space-between;
+  gap: 16px;
+  font-size: ui-fluid-compact(21);
+}
+
+.basket-panel__total strong {
+  color: $ui-brand;
+  font-weight: 700;
+}
+
+.basket-panel__footer .ui-button {
+  width: 100%;
+}
+
+@media (min-width: 668px) {
+  .basket-panel {
+    gap: ui-fluid-regular(14);
+    padding: ui-fluid-regular(22);
+  }
+
+  .basket-panel__head h2 {
+    font-size: ui-fluid-regular(25);
+  }
+
+  .basket-panel__head button,
+  .basket-panel__notice,
+  .basket-panel__empty p,
+  .basket-panel__total {
+    font-size: ui-fluid-regular(15);
+  }
+
+  .basket-panel__item {
+    grid-template-columns: minmax(0, 1fr) ui-fluid-regular(142);
+    gap: ui-fluid-regular(12);
+  }
+
+  .basket-panel__item h3 {
+    font-size: ui-fluid-regular(16);
+  }
+}
+
+@media (min-width: 991px) {
+  .basket-panel {
+    gap: ui-fluid-expanded(14);
+    padding: ui-fluid-expanded(20);
+  }
+
+  .basket-panel__head h2 {
+    font-size: ui-fluid-expanded(22);
+  }
+
+  .basket-panel__head button,
+  .basket-panel__notice,
+  .basket-panel__empty p,
+  .basket-panel__total {
+    font-size: ui-fluid-expanded(14);
+  }
+
+  .basket-panel__item {
+    grid-template-columns: minmax(0, 1fr) ui-fluid-expanded(128);
+    gap: ui-fluid-expanded(12);
+  }
+
+  .basket-panel__item h3 {
+    font-size: ui-fluid-expanded(15);
+  }
+}

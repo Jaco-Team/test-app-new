@@ -19,6 +19,7 @@ export interface ProductCardProps extends HTMLAttributes<HTMLElement> {
   badges?: ProductCardBadge[];
   onAdd?: () => void;
   onQuantityChange?: (value: number) => void;
+  onDetailsClick?: () => void;
 }
 
 const metaToItems = (meta?: string | string[]) =>
@@ -42,6 +43,7 @@ export function ProductCard({
   badges = [],
   onAdd,
   onQuantityChange,
+  onDetailsClick,
   className,
   ...props
 }: ProductCardProps) {
@@ -61,6 +63,7 @@ export function ProductCard({
         className="ui-product-card__media"
         type="button"
         aria-label={title}
+        onClick={onDetailsClick}
       >
         <img src={image} alt={title} loading="lazy" />
         {badges.length ? (

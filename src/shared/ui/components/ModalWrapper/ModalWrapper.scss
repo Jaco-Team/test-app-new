@@ -8,26 +8,30 @@
     background: rgba(0, 0, 0, 0.42);
   }
 
-  &--bottom-sheet .MuiDialog-container.ui-modal-wrapper__container {
-    align-items: flex-end;
-  }
-
-  &--dialog .MuiDialog-container.ui-modal-wrapper__container {
+  & .MuiDialog-container.ui-modal-wrapper__container {
     align-items: center;
   }
 
-  & .MuiDialog-paper.ui-modal-wrapper__paper {
+  & .MuiDialog-paper.ui-modal-wrapper__paper,
+  & .MuiDrawer-paper.ui-modal-wrapper__paper {
     position: relative;
-    width: 100%;
-    max-width: none;
-    max-height: none;
     margin: 0;
     overflow: visible;
-    border-radius: 0;
     background: #fff;
     color: $ui-text;
-    box-shadow: none;
+    box-shadow: 0 20px 56px rgba(0, 0, 0, 0.18);
     outline: 0;
+  }
+
+  & .MuiDialog-paper.ui-modal-wrapper__paper {
+    width: min(calc(100vw - 32px), 560px);
+    max-width: none;
+    max-height: calc(100dvh - 48px);
+    border-radius: 22px;
+  }
+
+  &--responsive .MuiDialog-paper.ui-modal-wrapper__paper {
+    width: min(calc(100vw - 40px), 620px);
   }
 
   &__title.MuiDialogTitle-root {
@@ -45,14 +49,14 @@
 
   &__close {
     position: absolute;
-    top: ui-fluid-compact(24);
-    right: ui-fluid-compact(24);
-    z-index: 1;
+    top: 14px;
+    right: 14px;
+    z-index: 3;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: ui-fluid-compact(60);
-    height: ui-fluid-compact(60);
+    width: 36px;
+    height: 36px;
     padding: 0;
     border: 0;
     border-radius: 50%;
@@ -66,27 +70,72 @@
     height: 100%;
   }
 
+  &--sheet .MuiDrawer-paper.ui-modal-wrapper__paper {
+    width: 100%;
+    max-height: calc(100dvh - 54px);
+    border-radius: ui-fluid-compact(58) ui-fluid-compact(58) 0 0;
+    overflow: hidden;
+    box-shadow: 0 -16px 48px rgba(0, 0, 0, 0.2);
+  }
+
+  &__sheet-grip {
+    position: absolute;
+    top: ui-fluid-compact(28);
+    left: 50%;
+    z-index: 4;
+    width: ui-fluid-compact(150);
+    height: ui-fluid-compact(10);
+    border-radius: ui-fluid-compact(10);
+    background: rgba(0, 0, 0, 0.22);
+    transform: translateX(-50%);
+    pointer-events: none;
+  }
+
+  &--sheet &__content.MuiDialogContent-root {
+    max-height: calc(100dvh - 54px);
+    overflow-y: auto;
+  }
+
+  &--sheet &__close {
+    top: ui-fluid-compact(26);
+    right: ui-fluid-compact(30);
+    width: ui-fluid-compact(54);
+    height: ui-fluid-compact(54);
+  }
+
   @include ui-regular {
+    & .MuiDialog-paper.ui-modal-wrapper__paper {
+      width: min(calc(100vw - 48px), ui-fluid-regular(560));
+      max-height: calc(100dvh - 56px);
+      border-radius: ui-fluid-regular(22);
+    }
+
+    &--responsive .MuiDialog-paper.ui-modal-wrapper__paper {
+      width: min(calc(100vw - 56px), ui-fluid-regular(620));
+    }
+
     &__close {
-      top: ui-fluid-regular(18);
-      right: ui-fluid-regular(18);
-      width: ui-fluid-regular(46);
-      height: ui-fluid-regular(46);
+      top: ui-fluid-regular(14);
+      right: ui-fluid-regular(14);
+      width: ui-fluid-regular(38);
+      height: ui-fluid-regular(38);
     }
   }
 
   @include ui-expanded {
-    &--bottom-sheet .MuiDialog-container.ui-modal-wrapper__container {
-      align-items: center;
+    & .MuiDialog-paper.ui-modal-wrapper__paper {
+      width: min(calc(100vw - 72px), ui-fluid-expanded(520));
+      max-height: calc(100dvh - 72px);
+      border-radius: ui-fluid-expanded(22);
     }
 
-    & .MuiDialog-paper.ui-modal-wrapper__paper {
-      width: auto;
+    &--responsive .MuiDialog-paper.ui-modal-wrapper__paper {
+      width: min(calc(100vw - 72px), ui-fluid-expanded(640));
     }
 
     &__close {
-      top: 0;
-      right: ui-fluid-expanded(16);
+      top: ui-fluid-expanded(14);
+      right: ui-fluid-expanded(14);
       width: ui-fluid-expanded(30);
       height: ui-fluid-expanded(30);
     }

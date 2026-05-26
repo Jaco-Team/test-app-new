@@ -22,7 +22,15 @@ export type { ScrollTopButtonProps } from './ScrollTopButton/ScrollTopButton';
 export { Modal } from './Modal/Modal';
 export type { ModalProps, ModalSize } from './Modal/Modal';
 export { ModalWrapper } from './ModalWrapper/ModalWrapper';
-export type { ModalWrapperProps } from './ModalWrapper/ModalWrapper';
+export type {
+  ModalWrapperProps,
+  ModalWrapperVariant,
+} from './ModalWrapper/ModalWrapper';
+export { PopoverMenu } from './PopoverMenu/PopoverMenu';
+export type {
+  PopoverMenuItem,
+  PopoverMenuProps,
+} from './PopoverMenu/PopoverMenu';
 export { Alert } from './Alert/Alert';
 export type { AlertProps, AlertTone } from './Alert/Alert';
 export { Card } from './Card/Card';
