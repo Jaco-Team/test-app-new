@@ -1,0 +1,34 @@
+@use '../settings' as *;
+
+.homeDeliveryTitle {
+  margin-top: $MyScale10;
+  margin-bottom: -$MyScale16;
+  text-align: center;
+  color: #666666;
+  line-height: 1;
+  font-style: normal;
+  font-weight: 400;
+  font-family: var(--inter-font);
+}
+
+@media (min-width: $bp-mobile-min) and (max-width: $bp-mobile-max) {
+  .homeDeliveryTitle {
+    font-size: $MyScale39_mobile;
+    margin-top: $MyScale8_mobile;
+    margin-bottom: 0;
+  }
+}
+
+@media (min-width: $bp-tablet-min) and (max-width: $bp-tablet-max) {
+  .homeDeliveryTitle {
+    font-size: tablet-vw(28.8543);
+    margin-top: tablet-vw(10);
+    margin-bottom: tablet-vw(-16);
+  }
+}
+
+@media (min-width: $bp-desktop-min) {
+  .homeDeliveryTitle {
+    font-size: 1.0416666667vw;
+  }
+}

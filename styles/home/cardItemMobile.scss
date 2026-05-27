@@ -1,4 +1,11 @@
-@use "../settings" as *;
+@use '../settings' as *;
+
+.HomeCategoryTitle--mobile {
+  width: 100%;
+  margin: $MyScale39_mobile 0;
+  font-weight: 600;
+  font-size: $MyScale49_mobile;
+}
 
 .ContainerCardItemMobile {
   width: $MyScale1090_mobile !important;
@@ -84,7 +91,7 @@
             align-items: center;
             white-space: nowrap;
             flex: 0 0 auto;
-            color: rgba(0, 0, 0, 0.60) !important;
+            color: rgba(0, 0, 0, 0.6) !important;
           }
 
           & .first_text {
@@ -131,7 +138,7 @@
             border: none;
             padding: 0;
             @include font44_400();
-            color: rgba(0, 0, 0, 0.60) !important;
+            color: rgba(0, 0, 0, 0.6) !important;
             display: flex;
             align-items: center;
             justify-content: center;
@@ -510,7 +517,7 @@
         mix-blend-mode: multiply;
         transition: all 0.1s ease 0s;
 
-        display: none!important;//тут
+        display: none !important; //тут
       }
 
       & .lineModalCardMobileSet {
@@ -798,8 +805,8 @@
       }
 
       & .ValueModeBtn.active {
-        border-color: #DD1A32;
-        color: #DD1A32;
+        border-color: #dd1a32;
+        color: #dd1a32;
       }
 
       & .lineModalCardMobileValue2 {
@@ -1102,7 +1109,7 @@
         text-align: center;
         margin-bottom: $MyScale60_mobile;
       }
-      
+
       & .ItemPizzaMobile {
         margin: 0;
         line-height: normal;

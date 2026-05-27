@@ -1084,6 +1084,7 @@ export const useCartStore = reuseHotStore(
       show_checkFreeDrive: false,
 
       openMailForm: false,
+      continueCheckoutAfterEmail: false,
 
       openDopsForm: false,
 
@@ -1132,6 +1133,11 @@ export const useCartStore = reuseHotStore(
       // открытие/закрытие формы указание эл почты клиента
       setMailForm: (active) => {
         set({ openMailForm: active });
+      },
+
+      // продолжить оформление после успешного сохранения email
+      setContinueCheckoutAfterEmail: (active) => {
+        set({ continueCheckoutAfterEmail: active });
       },
 
       // открытие/закрытие формы подтверждения заказа

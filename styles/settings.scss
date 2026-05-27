@@ -1,5 +1,5 @@
 @charset "utf-8";
-@use "sass:math";
+@use 'sass:math';
 
 $Roboto: var(--inter-font);
 $Ubuntu: 'Ubuntu';
@@ -211,6 +211,8 @@ $MyScale1960: 70.758122743vw;
 $MyScale2260: 81.58844765343vw;
 $MyScale2520: 90.974729241877vw;
 $MyScale2525: 91.15523465704vw;
+$MyScale2530: 91.3357400722vw;
+$MyScale2535: 91.5162454874vw;
 
 //$MyMaxWidth: 1170px;
 $MyMaxWidth: 800px;
@@ -298,12 +300,14 @@ $MyScale42_24_mobile: 3.6102564102564vw;
 $MyScale44_mobile: 3.7606837606838vw;
 $MyScale45_mobile: 3.8461538461538vw;
 $MyScale48_mobile: 4.1025641025641vw;
+$MyScale49_mobile: 4.1880341880342vw;
 $MyScale50_mobile: 4.2735042735043vw;
 $MyScale51_mobile: 4.3589743589744vw;
 $MyScale52_5_mobile: 4.4871794871795vw;
 $MyScale55_mobile: 4.7008547008547vw;
 $MyScale57_mobile: 4.8717948717949vw;
 $MyScale57_3_mobile: 4.8974358974359vw;
+$MyScale58_mobile: 4.9572649572649vw;
 $MyScale60_mobile: 5.1282051282051vw;
 $MyScale62_mobile: 5.2991452991453vw;
 $MyScale63_mobile: 5.3846153846154vw;
@@ -503,7 +507,7 @@ $FontMinMobile: 12px;
   }
 
   @media (min-width: $bp-desktop-min) {
-    @include fonsNew( 2.6vw, var(--inter-font));
+    @include fonsNew(2.6vw, var(--inter-font));
   }
 }
 
@@ -521,11 +525,16 @@ $FontMinMobile: 12px;
   }
 
   @media (min-width: $bp-desktop-min) {
-    @include fonsNew( 2vw, var(--inter-font));
+    @include fonsNew(2vw, var(--inter-font));
   }
 }
 
-@mixin font-three-mode($mobile-size, $tablet-px, $desktop-size, $family: var(--inter-font)) {
+@mixin font-three-mode(
+  $mobile-size,
+  $tablet-px,
+  $desktop-size,
+  $family: var(--inter-font)
+) {
   @media (max-width: $bp-mobile-max) {
     @include fonsNew($mobile-size, $family);
   }

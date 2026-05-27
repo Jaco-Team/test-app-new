@@ -1,4 +1,4 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
 .cartMailFormPC {
   .MuiDialog-paper {
@@ -127,6 +127,94 @@
       }
     }
   }
+
+  @include tablet-only {
+    .MuiDialog-paper {
+      margin: tablet-vw(50) 0 !important;
+      border-radius: tablet-vw(40);
+      height: tablet-vw(900);
+
+      .MuiDialogContent-root {
+        border-radius: tablet-vw(40);
+        width: tablet-vw(1000);
+
+        .closeButton {
+          left: calc(-1 * #{tablet-vw(90)});
+
+          & svg {
+            width: tablet-vw(60);
+            height: tablet-vw(60);
+            border-radius: tablet-vw(60);
+          }
+        }
+
+        .mailHeader {
+          height: tablet-vw(80);
+        }
+
+        .mailHeader_2 {
+          margin-top: tablet-vw(80);
+        }
+
+        .mailHeader_3 {
+          margin-bottom: tablet-vw(40);
+        }
+
+        .mailText {
+          width: tablet-vw(840);
+          height: tablet-vw(60);
+          line-height: tablet-vw(34);
+        }
+
+        .mailInput {
+          margin-top: tablet-vw(60);
+          margin-bottom: tablet-vw(60);
+
+          .mail {
+            width: tablet-vw(700) !important;
+            height: tablet-vw(80);
+
+            & .MuiOutlinedInput-notchedOutline {
+              border: tablet-vw(2) solid rgba(0, 0, 0, 0.2);
+            }
+
+            & .Mui-focused .MuiOutlinedInput-notchedOutline {
+              border: tablet-vw(2) solid $colorMain;
+            }
+
+            & .MuiInputBase-root.MuiOutlinedInput-root {
+              border-radius: tablet-vw(40);
+
+              & input {
+                padding: 0 tablet-vw(40);
+                line-height: tablet-vw(30);
+              }
+            }
+          }
+        }
+
+        .mailBTN {
+          width: tablet-vw(560);
+          height: tablet-vw(80);
+          border-radius: tablet-vw(40);
+          margin-top: tablet-vw(60);
+          box-shadow:
+            0px tablet-vw(3) tablet-vw(1) calc(-1 * #{tablet-vw(2)})
+              rgba(0, 0, 0, 0.2),
+            0px tablet-vw(2) tablet-vw(2) 0px rgba(0, 0, 0, 0.14),
+            0px tablet-vw(1) tablet-vw(5) 0px rgba(0, 0, 0, 0.12);
+
+          &:hover {
+            box-shadow:
+              0px tablet-vw(2) tablet-vw(4) calc(-1 * #{tablet-vw(1)})
+                rgba(0, 0, 0, 0.2),
+              0px tablet-vw(4) tablet-vw(5) 0px rgba(0, 0, 0, 0.14),
+              0px tablet-vw(1) tablet-vw(10) 0px rgba(0, 0, 0, 0.12);
+          }
+        }
+      }
+    }
+  }
 }
 
 .cartMailFormMobile {
@@ -230,7 +318,6 @@
           text-transform: capitalize;
         }
       }
-
     }
   }
 }

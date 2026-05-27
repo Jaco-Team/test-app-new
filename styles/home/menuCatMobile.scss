@@ -1,4 +1,4 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
 .menuCatMobile {
   flex-direction: column;
@@ -8,7 +8,7 @@
   top: $MyScale200_mobile;
   background-color: #fff;
   display: flex;
-  overflow: visible; 
+  overflow: visible;
   position: sticky;
 
   .menuCat {
@@ -139,20 +139,31 @@
           align-items: center;
           text-align: center;
           @include font44_500();
-          color: #fff!important;
+          color: #fff !important;
         }
       }
     }
   }
 }
 
+.homeDeliveryTitle + .menuCatMobile {
+  .menuCat {
+    margin-top: $MyScale20_mobile;
+  }
+}
+
 .menuCatMobile::after {
-  content: "";
+  content: '';
   position: absolute;
-  left: 0; right: 0;
+  left: 0;
+  right: 0;
   top: 100%;
   height: $MyScale80_mobile;
-  background: linear-gradient(180deg, rgba(115,115,115,.1) 0%, rgba(83,92,84,0) 100%);
+  background: linear-gradient(
+    180deg,
+    rgba(115, 115, 115, 0.1) 0%,
+    rgba(83, 92, 84, 0) 100%
+  );
   mix-blend-mode: multiply;
   pointer-events: none;
 }

@@ -184,7 +184,7 @@ const normalizeCategoryLink = (value) => {
   }
 };
 
-export default React.memo(function CatItems() {
+export default React.memo(function CatItems({ showCategoryHeadings = false }) {
   const novinkiScrollStopRef = useRef(null);
   const router = useRouter();
   const isRouterReady = router.isReady;
@@ -285,6 +285,21 @@ export default React.memo(function CatItems() {
       }))
       .filter((cat) => cat.items.length > 0);
   }, [cats, catygory, catalogFilter]);
+
+  const mainCategoryTitleById = useMemo(() => {
+    const result = new Map();
+
+    (category || []).forEach((mainCat) => {
+      const mainId = String(mainCat?.id ?? '').trim();
+      const mainName = String(mainCat?.name ?? '').trim();
+
+      if (mainId && mainName) {
+        result.set(mainId, mainName);
+      }
+    });
+
+    return result;
+  }, [category]);
 
   useEffect(() => {
     if (!isRouterReady) {
@@ -522,35 +537,83 @@ export default React.memo(function CatItems() {
   }
 
   if (isHomeMobile) {
-    return visibleCats.map((cat, key) => (
+    const renderedMainCategoryIds = new Set();
+
+    return visibleCats.map((cat, key) => {
+      const mainCategoryId = String(cat?.main_id ?? cat?.id ?? '').trim();
+      const mainCategoryTitle =
+        mainCategoryTitleById.get(mainCategoryId) ||
+        String(cat?.main_name ?? '').trim();
+      const shouldShowMainTitle =
+        showCategoryHeadings &&
+        mainCategoryId.length > 0 &&
+        mainCategoryTitle.length > 0 &&
+        !renderedMainCategoryIds.has(mainCategoryId);
+
+      if (shouldShowMainTitle) {
+        renderedMainCategoryIds.add(mainCategoryId);
+      }
+
+      return (
+        <Grid
+          container
+          //spacing={2}
+          key={key}
+          name={'cat' + cat.main_id}
+          id={'cat' + cat.id}
+          className="ContainerCardItemMobile"
+          style={{ transform: `translateY(${transition_menu_mobile})` }}
+        >
+          {shouldShowMainTitle ? (
+            <h2 className="HomeCategoryTitle HomeCategoryTitle--mobile">
+              {mainCategoryTitle}
+            </h2>
+          ) : null}
+
+          {cat.items.map((it, k) => (
+            <CardItemMobile key={k} item={it} count={it.count} />
+          ))}
+        </Grid>
+      );
+    });
+  }
+
+  const renderedMainCategoryIds = new Set();
+
+  return visibleCats.map((cat, key) => {
+    const mainCategoryId = String(cat?.main_id ?? cat?.id ?? '').trim();
+    const mainCategoryTitle =
+      mainCategoryTitleById.get(mainCategoryId) ||
+      String(cat?.main_name ?? '').trim();
+    const shouldShowMainTitle =
+      showCategoryHeadings &&
+      mainCategoryId.length > 0 &&
+      mainCategoryTitle.length > 0 &&
+      !renderedMainCategoryIds.has(mainCategoryId);
+
+    if (shouldShowMainTitle) {
+      renderedMainCategoryIds.add(mainCategoryId);
+    }
+
+    return (
       <Grid
         container
         //spacing={2}
         key={key}
         name={'cat' + cat.main_id}
         id={'cat' + cat.id}
-        className="ContainerCardItemMobile"
-        style={{ transform: `translateY(${transition_menu_mobile})` }}
+        className={`ContainerCardItemPC ${key === 0 ? 'ContainerCardItemPC--first' : ''} ${key === (visibleCats?.length ?? 0) - 1 ? 'ContainerCardItemPC--last' : ''}`}
       >
+        {shouldShowMainTitle ? (
+          <h2 className="HomeCategoryTitle HomeCategoryTitle--desktop">
+            {mainCategoryTitle}
+          </h2>
+        ) : null}
+
         {cat.items.map((it, k) => (
-          <CardItemMobile key={k} item={it} count={it.count} />
+          <CardItemPc key={k} item={it} count={it.count} />
         ))}
       </Grid>
-    ));
-  }
-
-  return visibleCats.map((cat, key) => (
-    <Grid
-      container
-      //spacing={2}
-      key={key}
-      name={'cat' + cat.main_id}
-      id={'cat' + cat.id}
-      className={`ContainerCardItemPC ${key === 0 ? 'ContainerCardItemPC--first' : ''} ${key === (visibleCats?.length ?? 0) - 1 ? 'ContainerCardItemPC--last' : ''}`}
-    >
-      {cat.items.map((it, k) => (
-        <CardItemPc key={k} item={it} count={it.count} />
-      ))}
-    </Grid>
-  ));
+    );
+  });
 });

@@ -1,4 +1,5 @@
 import { useHeaderStoreNew, useProfileStore } from '@/components/store.js';
+import useMediaQuery from '@mui/material/useMediaQuery';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import IconButton from '@mui/material/IconButton';
@@ -11,10 +12,21 @@ import Typography from '@mui/material/Typography';
 
 import { IconClose } from '@/ui/Icons';
 import { roboto } from '@/ui/Font.js';
+import { BREAKPOINTS } from '@/utils/breakpoints';
 
 export default function SelectAddress() {
-  const [matches, openModalSelectAddress, setActiveModalSelectAddress, chooseAddrStreet] = useHeaderStoreNew((state) => [state?.matches,
-    state?.openModalSelectAddress, state?.setActiveModalSelectAddress, state?.chooseAddrStreet]);
+  const isMobileSelectAddress = useMediaQuery(
+    `screen and (max-width: ${BREAKPOINTS.mobileMax}px)`
+  );
+  const [
+    openModalSelectAddress,
+    setActiveModalSelectAddress,
+    chooseAddrStreet,
+  ] = useHeaderStoreNew((state) => [
+    state?.openModalSelectAddress,
+    state?.setActiveModalSelectAddress,
+    state?.chooseAddrStreet,
+  ]);
   const [setAddress] = useProfileStore((state) => [state.setAddress]);
 
   const handleAddress = (addr) => {
@@ -24,7 +36,7 @@ export default function SelectAddress() {
 
   return (
     <>
-      {matches ? (
+      {isMobileSelectAddress ? (
         <SwipeableDrawer
           anchor={'bottom'}
           open={openModalSelectAddress}
@@ -58,7 +70,10 @@ export default function SelectAddress() {
           fullWidth
         >
           <DialogContent>
-            <IconButton className="iconBTN" onClick={() => setActiveModalSelectAddress(false)}>
+            <IconButton
+              className="iconBTN"
+              onClick={() => setActiveModalSelectAddress(false)}
+            >
               <IconClose />
             </IconButton>
             <div className="container">

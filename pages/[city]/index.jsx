@@ -44,6 +44,9 @@ export default function Home(props) {
     tags,
     links,
   } = props.data1;
+  const cityNameRu = Array.isArray(cities)
+    ? (cities.find((item) => item?.link == city)?.name ?? '')
+    : '';
 
   const [
     setAllItems,
@@ -155,7 +158,13 @@ export default function Home(props) {
 
   return (
     <div className={roboto.variable}>
-      <DynamicHomePage page={page} city={city} />
+      <DynamicHomePage
+        page={page}
+        city={city}
+        cityNameRu={cityNameRu}
+        showDeliveryH1={true}
+        showCategoryH2={true}
+      />
 
       <Footer cityName={city} active_page={this_module} links={links} />
     </div>

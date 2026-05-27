@@ -1,4 +1,4 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
 .modalCardItemPC {
   & .modalDialogContent {
@@ -19,7 +19,6 @@
 }
 
 .modalItemPC {
-
   & .closeButton {
     position: absolute;
     top: 0;
@@ -41,7 +40,7 @@
     width: 44.7655vw;
     height: 44.7655vw;
     margin: 1.444045vw;
-    
+
     & img {
       object-fit: contain;
       image-rendering: auto;
@@ -66,12 +65,12 @@
       border-top-right-radius: 1.444045vw;
 
       & .Title {
-      display: flex;
-      align-items: center;
-      flex-direction: column;
-      height: auto;
-      margin-bottom: 0.72202vw;
-      padding-top: $MyScale80;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        height: auto;
+        margin-bottom: 0.72202vw;
+        padding-top: $MyScale80;
 
         > h2 {
           margin: 0;
@@ -92,10 +91,10 @@
 
         .ValueTitle h2 {
           margin: 0;
-          display: block;        
-          width: 24.188vw;      
+          display: block;
+          width: 24.188vw;
           text-align: center;
-          height: auto;          
+          height: auto;
           line-height: 1.2;
         }
 
@@ -121,10 +120,9 @@
         }
 
         .ValueModeBtn.active {
-          border-color: #DD1A32;
-          color: #DD1A32;
+          border-color: #dd1a32;
+          color: #dd1a32;
         }
-
       }
 
       & .List {
@@ -317,7 +315,6 @@
         box-sizing: border-box;
         text-align: center;
       }
-      
     }
   }
 
@@ -396,7 +393,6 @@
         width: $MyScale60;
         height: $MyScale60;
       }
-
     }
 
     & .desc {
@@ -409,7 +405,9 @@
       box-sizing: border-box;
       padding-right: 1.0830324909747vw;
 
-      &::-webkit-scrollbar { width: 1.4440433212996vw; }
+      &::-webkit-scrollbar {
+        width: 1.4440433212996vw;
+      }
       &::-webkit-scrollbar-thumb {
         background: rgba(0, 0, 0, 0.3);
         border-right: solid 1.0830324909747vw #ffffff;
@@ -418,7 +416,6 @@
         background: rgba(0, 0, 0, 0.2);
         border-right: solid 1.0830324909747vw #ffffff;
       }
-    
     }
 
     .containerBTN {
@@ -501,8 +498,6 @@
       }
     }
   }
-  
-
 }
 
 @include tablet-only {
@@ -819,6 +814,21 @@
   }
 }
 
+.HomeCategoryTitle {
+  margin: 0;
+  color: #000;
+  line-height: 1;
+  font-style: normal;
+  font-family: var(--inter-font);
+  width: 100%;
+}
+
+.HomeCategoryTitle--desktop {
+  font-weight: 700;
+  font-size: 1.8229166667vw;
+  margin: 2.0833333333vw 0;
+}
+
 .ContainerCardItemPC {
   width: 90.975vw !important;
   margin: 0 $MyScale125 !important;
@@ -839,7 +849,7 @@
     margin-right: $MyScale40;
     flex: 0 0 auto;
 
-    &:nth-child(4n) {
+    &:nth-of-type(4n) {
       margin-right: 0;
     }
   }
@@ -959,7 +969,7 @@
           justify-content: center;
           white-space: nowrap;
 
-          &:hover{
+          &:hover {
             background-color: rgba(0, 0, 0, 0.07) !important;
           }
         }
@@ -980,13 +990,13 @@
             align-items: center;
             cursor: pointer;
             border-radius: $MyScale40;
-            background-color:rgba(0, 0, 0, 0.05);
+            background-color: rgba(0, 0, 0, 0.05);
             border: none;
             @include font44_400();
             width: $MyScale80;
             height: $MyScale80;
 
-            &:hover{
+            &:hover {
               background-color: rgba(0, 0, 0, 0.07) !important;
             }
           }
@@ -998,14 +1008,14 @@
             align-content: center;
             align-items: center;
             cursor: pointer;
-            background-color:rgba(0, 0, 0, 0.05);
+            background-color: rgba(0, 0, 0, 0.05);
             border: none;
             @include font60_300();
             width: $MyScale80;
             height: $MyScale80;
             border-radius: $MyScale40;
 
-            &:hover{
+            &:hover {
               background-color: rgba(0, 0, 0, 0.07) !important;
             }
           }
@@ -1022,6 +1032,11 @@
 }
 
 @include tablet-only {
+  .HomeCategoryTitle--desktop {
+    font-size: tablet-vw(40.1042);
+    margin: tablet-vw(45.8333) 0;
+  }
+
   // ПК-номиналы ×1.1 на планшете; три карточки в ряд (зазоры тоже +10%)
   .ContainerCardItemPC {
     width: calc(100% - #{tablet-home-side-total()}) !important;
@@ -1047,11 +1062,11 @@
       justify-content: center;
 
       // На ПК — 4 колонки и :nth-child(4n) обнуляет margin; на планшете 3 колонки — 4-я карточка не конец ряда, без этого «ломается» правый зазор
-      &:nth-child(4n) {
+      &:nth-of-type(4n) {
         margin-right: tablet-vw(44);
       }
 
-      &:nth-child(3n) {
+      &:nth-of-type(3n) {
         margin-right: 0;
       }
     }
