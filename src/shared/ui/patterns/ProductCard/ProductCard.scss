@@ -14,6 +14,7 @@
   color: $ui-text;
   background: $ui-transparent;
   transition: background-color 180ms ease;
+  @include ui-reveal();
 
   &--active {
     background: $ui-selection-bg;
@@ -48,6 +49,7 @@
 
   &__body {
     display: grid;
+    height: 100%;
     min-width: 0;
     justify-items: start;
     gap: ui-fluid-compact(10);
@@ -93,7 +95,8 @@
 
   &__action {
     width: ui-fluid-compact(320);
-    margin-top: ui-fluid-compact(14);
+    // margin-top: ui-fluid-compact(14);
+    margin-top: auto;
   }
 
   &__action {
@@ -175,7 +178,7 @@
     gap: ui-fluid-expanded(12);
     width: 100%;
     min-height: 0;
-    padding: 0 0 ui-fluid-expanded(76);
+    padding: 0 0 ui-fluid-expanded(18);
     border-radius: ui-fluid-expanded(32);
     text-align: center;
     &--active {
@@ -193,7 +196,8 @@
       justify-items: center;
       gap: ui-fluid-expanded(10);
       width: 100%;
-      padding-top: 0;
+      box-sizing: border-box;
+      // padding: 0 ui-fluid-expanded(32);
     }
     &__title {
       display: flex;
@@ -216,8 +220,9 @@
       margin-right: ui-fluid-expanded(10);
     }
     &__description {
+      padding-inline: ui-fluid-expanded(18);
       min-height: ui-fluid-expanded(54);
-      font-size: ui-fluid-expanded(14);
+      font-size: ui-fluid-expanded(12);
       line-height: 1.3;
       line-clamp: 3;
     }

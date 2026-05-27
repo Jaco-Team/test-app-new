@@ -65,30 +65,27 @@
     color: $ui-text-inv;
   }
   &--tone-primary:hover,
-  &--tone-cart:hover {
-    background: $ui-brand-hover;
-  }
+  &--tone-primary:focus-visible,
   &--tone-primary:active,
-  &--tone-cart:active,
   &--tone-primary.ui-button--active,
+  &--tone-cart:hover,
+  &--tone-cart:focus-visible,
+  &--tone-cart:active,
   &--tone-cart.ui-button--active {
-    background: $ui-brand-active;
+    background: $ui-brand-hover;
   }
   &--tone-secondary {
     background: $ui-surface;
     border-color: $ui-brand;
     color: $ui-brand;
   }
-  &--tone-secondary:hover {
+  &--tone-secondary:hover,
+  &--tone-secondary:focus-visible,
+  &--tone-secondary:active,
+  &--tone-secondary.ui-button--active {
     background: $ui-control-bg;
     border-color: $ui-brand-hover;
     color: $ui-brand-hover;
-  }
-  &--tone-secondary:active,
-  &--tone-secondary.ui-button--active {
-    background: $ui-brand-active;
-    border-color: $ui-brand-active;
-    color: $ui-text-inv;
   }
   &--tone-neutral {
     background: $ui-surface;
@@ -96,6 +93,8 @@
     color: $ui-text;
   }
   &--tone-neutral:hover,
+  &--tone-neutral:focus-visible,
+  &--tone-neutral:active,
   &--tone-neutral.ui-button--active {
     background: $ui-control-bg;
   }
@@ -103,14 +102,16 @@
     background: $ui-control-bg;
     color: $ui-text;
   }
-  &--tone-muted:hover {
-    background: $ui-control-hover;
-  }
+  &--tone-muted:hover,
+  &--tone-muted:focus-visible,
   &--tone-muted:active,
   &--tone-muted.ui-button--active {
-    background: $ui-control-active;
-    color: $ui-text-inv;
+    background: $ui-control-hover;
   }
+  &:focus-visible {
+    outline: none;
+  }
+
   &:disabled,
   &[aria-disabled='true'] {
     cursor: default;

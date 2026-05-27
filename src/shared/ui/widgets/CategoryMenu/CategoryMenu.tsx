@@ -27,20 +27,6 @@ export interface CategoryMenuProps extends HTMLAttributes<HTMLElement> {
   onActiveTargetChange?: (targetId: string | undefined) => void;
 }
 
-const primaryDefault: CategoryMenuItem[] = [
-  { label: 'Роллы', active: true },
-  { label: 'Пицца' },
-  { label: 'Блюда' },
-];
-
-const secondaryDefault: CategoryMenuItem[] = [
-  { label: 'Сеты', active: true },
-  { label: 'Фирменные' },
-  { label: 'Жареные' },
-  { label: 'Запеченные' },
-  { label: 'Классика' },
-];
-
 function visibleSecondaryItems(
   primaryItems: CategoryMenuItem[],
   secondaryItems: CategoryMenuItem[],
@@ -84,8 +70,8 @@ function scrollActiveCategoryButton(row: HTMLDivElement | null) {
 }
 
 export function CategoryMenu({
-  primaryItems = primaryDefault,
-  secondaryItems = secondaryDefault,
+  primaryItems = [],
+  secondaryItems = [],
   className,
   activeTargetId,
   tags = [],
@@ -101,6 +87,8 @@ export function CategoryMenu({
     secondaryItems,
     activeTargetId
   );
+  const hasContent =
+    primaryItems.length > 0 || secondaryItems.length > 0 || tags.length > 0;
 
   useEffect(() => {
     scrollActiveCategoryButton(primaryRowRef.current);
@@ -167,6 +155,10 @@ export function CategoryMenu({
       window.removeEventListener('resize', updateActive);
     };
   }, [onActiveTargetChange, primaryItems]);
+
+  if (!hasContent) {
+    return null;
+  }
 
   return (
     <>

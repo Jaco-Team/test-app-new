@@ -4,6 +4,7 @@
 .ui-tag-filter {
   width: 100%;
   font-family: $ui-font-family;
+  @include ui-reveal();
 
   @include ui-expanded {
     max-width: ui-fluid-expanded(1260);

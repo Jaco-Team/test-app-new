@@ -26,8 +26,14 @@
       opacity 180ms ease;
   }
 
-  button:hover {
+  button:hover,
+  button:focus-visible,
+  button:active {
     background: $ui-control-hover;
+  }
+
+  button:focus-visible {
+    outline: none;
   }
   button:disabled {
     cursor: default;

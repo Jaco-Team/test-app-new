@@ -1,4 +1,3 @@
-import { productCardFixtures } from '@ui/fixtures/productFixtures';
 import type { HomePageRawData } from '@src/shared/lib/loadHomePageData';
 import {
   isValidMediaKey,
@@ -58,6 +57,9 @@ type HomeProductSource = {
   fat?: number | string;
   kkal?: number | string;
 };
+
+const transparentProductImage =
+  'data:image/gif;base64,R0lGODlhAQABAAAAACwAAAAAAQABAAA=';
 
 type HomeTagSource = {
   name?: string;
@@ -221,7 +223,7 @@ export function mapProduct(item: HomeProductSource): HomeProduct | null {
   const imgKey = String(item.img_app ?? item.img ?? '').trim();
   const image = isValidMediaKey(imgKey)
     ? resolveProductImageUrl(imgKey)
-    : productCardFixtures.madeiraSet.image;
+    : transparentProductImage;
 
   const badges = Array.isArray(item.badges)
     ? item.badges
@@ -482,10 +484,7 @@ export function mapHomeCatalogView(cats: unknown[], allItems: unknown[]) {
     .map((item) => mapProduct(item as HomeProductSource))
     .filter((item): item is HomeProduct => Boolean(item));
 
-  const products =
-    productsFromApi.length > 0
-      ? productsFromApi
-      : [{ ...productCardFixtures.madeiraSet, id: 'fixture-madeira-set' }];
+  const products = productsFromApi;
   const primary = flattenCategoryItems(cats);
   const secondary = primary[0]?.children?.length
     ? primary[0].children

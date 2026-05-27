@@ -6,6 +6,7 @@
   width: 100%;
   overflow: hidden;
   font-family: $ui-font-family;
+  @include ui-reveal();
 
   &__viewport {
     overflow: hidden;
