@@ -12,11 +12,11 @@
   padding: 0;
   border-radius: 8px;
   color: $ui-text;
-  background: transparent;
+  background: $ui-transparent;
   transition: background-color 180ms ease;
 
   &--active {
-    background: rgba(0, 0, 0, 0.05);
+    background: $ui-selection-bg;
   }
 
   &__media {
@@ -26,7 +26,7 @@
     aspect-ratio: 1;
     padding: 0;
     border: 0;
-    background: transparent;
+    background: $ui-transparent;
     cursor: pointer;
     mix-blend-mode: multiply;
   }
@@ -82,9 +82,7 @@
   }
 
   &__description {
-    display: -webkit-box;
-    -webkit-line-clamp: 4;
-    -webkit-box-orient: vertical;
+    line-clamp: 4;
     margin: ui-fluid-compact(2) 0 0;
     overflow: hidden;
     color: $ui-text-muted;
@@ -153,7 +151,7 @@
     &__description {
       font-size: ui-fluid-regular(21);
       line-height: 1.22;
-      -webkit-line-clamp: 4;
+      line-clamp: 4;
     }
     &__action {
       width: ui-fluid-regular(234);
@@ -208,11 +206,11 @@
     }
     &__info {
       display: flex;
+      align-items: flex-end;
       justify-content: center;
       gap: ui-fluid-expanded(10);
-      min-height: ui-fluid-expanded(42);
-      font-size: ui-fluid-expanded(22);
-      line-height: 1.25;
+      min-height: ui-fluid-expanded(20);
+      font-size: ui-fluid-expanded(12);
     }
     &__info span + span::before {
       margin-right: ui-fluid-expanded(10);
@@ -221,7 +219,7 @@
       min-height: ui-fluid-expanded(54);
       font-size: ui-fluid-expanded(14);
       line-height: 1.3;
-      -webkit-line-clamp: 3;
+      line-clamp: 3;
     }
     &__action {
       width: 64%;

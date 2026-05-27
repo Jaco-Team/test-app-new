@@ -20,8 +20,7 @@
     max-height: calc(100dvh - 54px);
     overflow-y: auto;
     overscroll-behavior: contain;
-    background: #fff;
-    -webkit-overflow-scrolling: touch;
+    background: $ui-surface;
   }
 
   &__media {
@@ -53,8 +52,8 @@
     max-width: calc(100% - #{ui-fluid-compact(160)});
     padding: 0;
     border: 0;
-    background: transparent;
-    color: #fff;
+    background: $ui-transparent;
+    color: $ui-text-inv;
     font-family: $ui-font-family;
     font-size: ui-fluid-compact(30);
     line-height: 1;
@@ -136,7 +135,7 @@
   &__product-title {
     padding: 0;
     border: 0;
-    background: transparent;
+    background: $ui-transparent;
     color: inherit;
     text-align: left;
     cursor: pointer;
@@ -166,15 +165,13 @@
   }
 
   &__product-text {
-    display: -webkit-box;
     min-height: ui-fluid-compact(120);
     margin: 0;
     overflow: hidden;
     color: $ui-text-muted;
     font-size: ui-fluid-compact(35);
     line-height: 1.2;
-    -webkit-line-clamp: 3;
-    -webkit-box-orient: vertical;
+    line-clamp: 3;
   }
 
   &__product-action {
@@ -258,7 +255,7 @@
     &__product-text {
       min-height: ui-fluid-regular(54);
       font-size: ui-fluid-regular(14);
-      -webkit-line-clamp: 2;
+      line-clamp: 2;
     }
 
     &__product-action {
@@ -325,9 +322,9 @@
     }
 
     &__product {
-      grid-template-columns: ui-fluid-expanded(32) ui-fluid-expanded(
-          112
-        ) minmax(0, 1fr);
+      grid-template-columns:
+        ui-fluid-expanded(32) ui-fluid-expanded(112)
+        minmax(0, 1fr);
       gap: ui-fluid-expanded(14);
     }
 
@@ -344,7 +341,7 @@
     &__product-text {
       min-height: ui-fluid-expanded(52);
       font-size: ui-fluid-expanded(13);
-      -webkit-line-clamp: 2;
+      line-clamp: 2;
     }
 
     &__product-action {

@@ -2,43 +2,149 @@
 @use '../../foundation/tokens' as *;
 
 .ui-tag-filter {
-  display: none;
   width: 100%;
   font-family: $ui-font-family;
 
   @include ui-expanded {
-    display: block;
     max-width: ui-fluid-expanded(1260);
     min-height: ui-fluid-expanded(117);
     margin: ui-fluid-expanded(46) auto 0;
+    border-radius: ui-fluid-expanded(20);
+    background: $ui-control-bg;
   }
 
   &__list {
     display: flex;
     flex-wrap: wrap;
-    gap: ui-fluid-expanded(10) ui-fluid-expanded(10);
-    padding: ui-fluid-expanded(30) ui-fluid-expanded(30) 0;
+    gap: ui-fluid-compact(24) ui-fluid-compact(18);
+    padding: ui-fluid-compact(28) ui-fluid-compact(30);
   }
 
   &__item {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    min-height: ui-fluid-expanded(32);
-    padding: 0 ui-fluid-expanded(20);
-    border: 0;
+    min-height: ui-fluid-compact(58);
+    padding: 0 ui-fluid-compact(30);
+    border: 1px solid $ui-transparent;
     border-radius: 999px;
-    background: rgba(0, 0, 0, 0.05);
+    background: $ui-surface;
     color: $ui-text;
     font-family: inherit;
-    font-size: ui-fluid-expanded(16);
+    font-size: ui-fluid-compact(28);
+    font-weight: 400;
     line-height: 1;
     letter-spacing: 0;
     cursor: pointer;
+    transition:
+      border-color 180ms ease,
+      color 180ms ease,
+      background-color 180ms ease;
   }
 
-  &__item--active,
   &__item:hover {
-    background: rgba(0, 0, 0, 0.09);
+    color: $ui-brand;
+  }
+
+  &__item--active {
+    padding-right: ui-fluid-compact(14);
+    padding-left: ui-fluid-compact(24);
+    border-color: $ui-brand;
+    color: $ui-brand;
+  }
+
+  &__item--new {
+    background: $ui-badge-new;
+    color: $ui-text-inv;
+    text-transform: uppercase;
+  }
+
+  &__item--new:hover {
+    color: $ui-text-inv;
+  }
+
+  &__item--clear {
+    margin-top: ui-fluid-compact(18);
+    background: $ui-brand;
+    color: $ui-text-inv;
+  }
+
+  &__item--clear:hover {
+    color: $ui-text-inv;
+    background: $ui-brand-hover;
+  }
+
+  &__label,
+  &__close {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+  }
+
+  &__close {
+    width: ui-fluid-compact(42);
+    height: ui-fluid-compact(42);
+    margin-left: ui-fluid-compact(8);
+    color: $ui-brand;
+    font-size: ui-fluid-compact(34);
+    line-height: 1;
+  }
+
+  @include ui-regular {
+    &__list {
+      gap: ui-fluid-regular(18) ui-fluid-regular(14);
+      padding: ui-fluid-regular(24) ui-fluid-regular(26);
+    }
+
+    &__item {
+      min-height: ui-fluid-regular(48);
+      padding: 0 ui-fluid-regular(24);
+      font-size: ui-fluid-regular(22);
+    }
+
+    &__item--active {
+      padding-right: ui-fluid-regular(12);
+      padding-left: ui-fluid-regular(20);
+    }
+
+    &__close {
+      width: ui-fluid-regular(34);
+      height: ui-fluid-regular(34);
+      margin-left: ui-fluid-regular(7);
+      font-size: ui-fluid-regular(28);
+    }
+
+    &__item--clear {
+      margin-top: ui-fluid-regular(14);
+    }
+  }
+
+  @include ui-expanded {
+    &__list {
+      gap: ui-fluid-expanded(10) ui-fluid-expanded(10);
+      padding: ui-fluid-expanded(28) ui-fluid-expanded(30) ui-fluid-expanded(30);
+    }
+
+    &__item {
+      min-height: ui-fluid-expanded(32);
+      padding: 0 ui-fluid-expanded(20);
+      font-size: ui-fluid-expanded(16);
+    }
+
+    &__item--active {
+      padding-right: ui-fluid-expanded(10);
+      padding-left: ui-fluid-expanded(14);
+    }
+
+    &__close {
+      width: ui-fluid-expanded(22);
+      height: ui-fluid-expanded(22);
+      margin-left: ui-fluid-expanded(6);
+      font-size: ui-fluid-expanded(22);
+    }
+
+    &__item--clear {
+      margin-top: ui-fluid-expanded(10);
+    }
   }
 }

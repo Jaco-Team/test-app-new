@@ -10,7 +10,7 @@
     background-color 180ms ease,
     opacity 180ms ease;
   color: $ui-text;
-  background: #fff;
+  background: $ui-surface;
   & svg {
     width: 55%;
     height: 55%;
@@ -21,19 +21,19 @@
   }
   &--tone-neutral:hover,
   &--tone-neutral.ui-icon-button--active {
-    background: rgba(0, 0, 0, 0.05);
+    background: $ui-neutral-soft;
   }
   &--tone-brand {
     background: $ui-brand;
-    color: #fff;
+    color: $ui-text-inv;
   }
   &--tone-brand:hover,
   &--tone-brand.ui-icon-button--active {
     background: $ui-brand-hover;
   }
   &--tone-inverse {
-    background: rgba(0, 0, 0, 0.45);
-    color: #fff;
+    background: $ui-neutral-overlay-strong;
+    color: $ui-text-inv;
   }
   &--size-sm {
     width: ui-fluid-compact(56);

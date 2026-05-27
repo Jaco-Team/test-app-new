@@ -16,6 +16,10 @@
   padding-bottom: 2rem;
 }
 
+.home-page__tags {
+  display: none;
+}
+
 .home-page__catalog {
   display: flex;
   flex-direction: column;
@@ -63,6 +67,10 @@
 }
 
 @media (min-width: 991px) {
+  .home-page__tags {
+    display: block;
+  }
+
   .home-page__catalog {
     gap: calc(100 * calc(34 / 1385) * 1vw);
     max-width: calc(100 * calc(1260 / 1385) * 1vw);

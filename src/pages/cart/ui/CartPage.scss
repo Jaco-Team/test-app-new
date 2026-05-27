@@ -1,3 +1,5 @@
+@use '../../../shared/ui/foundation/tokens' as *;
+
 .cart-page {
   padding: 24px 16px 48px;
 }
@@ -8,7 +10,7 @@
 }
 
 .cart-page__back {
-  color: #dd1a32;
+  color: $ui-brand;
   text-decoration: none;
 }
 
@@ -36,9 +38,9 @@
   gap: 12px;
   padding: 12px 16px;
   border-radius: 12px;
-  background: #f5f5f5;
+  background: $ui-surface-soft;
 }
 
 .cart-page__empty {
-  color: rgba(0, 0, 0, 0.55);
+  color: $ui-surface-grey;
 }

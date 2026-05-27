@@ -1,5 +1,5 @@
 export const colorTokens = {
-  brand: '#da1a32',
+  brand: '#dd1a32',
   brandHover: '#c7172d',
   brandActive: '#b11528',
   text: 'rgba(0, 0, 0, 0.8)',

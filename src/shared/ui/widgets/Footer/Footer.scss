@@ -5,8 +5,8 @@
   margin-top: auto;
   width: 100%;
   padding: ui-fluid-compact(48) ui-fluid-compact(30) ui-fluid-compact(40);
-  background: rgba(0, 0, 0, 0.07);
-  color: rgba(82, 82, 82, 1);
+  background: $ui-neutral-muted;
+  color: $ui-text-footer;
   font-family: $ui-font-family;
 
   &__inner {
@@ -28,7 +28,7 @@
     font-weight: 700;
     line-height: 1.2;
     text-transform: uppercase;
-    color: rgba(82, 82, 82, 1);
+    color: $ui-text-footer;
   }
 
   &__links {
@@ -68,7 +68,7 @@
     max-width: ui-fluid-expanded(1200);
     margin: ui-fluid-compact(28) auto 0;
     padding-top: ui-fluid-compact(20);
-    border-top: 1px solid rgba(0, 0, 0, 0.08);
+    border-top: 1px solid $ui-neutral-subtle;
     display: flex;
     flex-wrap: wrap;
     gap: ui-fluid-compact(12);

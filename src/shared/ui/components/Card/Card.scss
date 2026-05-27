@@ -18,16 +18,16 @@
     background: $ui-surface-muted;
   }
   &--tone-outlined {
-    border: 1px solid rgba(0, 0, 0, 0.12);
+    border: 1px solid $ui-neutral-active;
   }
   &--tone-elevated {
-    box-shadow: 0 12px 36px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 12px 36px $ui-neutral-subtle;
   }
   &--interactive {
     cursor: pointer;
   }
   &--interactive:hover {
-    background: rgba(0, 0, 0, 0.035);
+    background: $ui-neutral-weaker;
   }
   &--padding-none {
     padding: 0;

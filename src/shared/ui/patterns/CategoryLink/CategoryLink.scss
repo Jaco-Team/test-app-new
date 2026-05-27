@@ -13,7 +13,7 @@
   border-radius: ui-fluid-compact(16);
   color: $ui-text;
   text-decoration: none;
-  background: rgba(0, 0, 0, 0.05);
+  background: $ui-neutral-soft;
   cursor: pointer;
   font-family: $ui-font-family;
   font-size: ui-fluid-compact(26);
@@ -28,12 +28,12 @@
   }
 
   &--tone-bordered {
-    background: rgba(0, 0, 0, 0.05);
+    background: $ui-neutral-soft;
   }
 
   &--tone-active {
     color: $ui-text;
-    background: rgba(0, 0, 0, 0.1);
+    background: $ui-disabled;
   }
 
   &--tone-active svg path {
@@ -60,13 +60,13 @@
     padding: 0;
     border-radius: 0;
     color: $ui-text;
-    background: transparent;
+    background: $ui-transparent;
     font-size: ui-fluid-expanded(20);
     line-height: 1;
 
     &--tone-bordered,
     &--tone-active {
-      background: transparent;
+      background: $ui-transparent;
     }
 
     svg {

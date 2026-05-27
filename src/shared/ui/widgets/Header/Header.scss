@@ -9,14 +9,14 @@
   box-sizing: border-box;
   width: 100%;
   padding-right: var(--ui-scrollbar-compensation, 0px);
-  background: #fff;
+  background: $ui-surface;
   color: $ui-text;
   font-family: $ui-font-family;
   transition: box-shadow 0.3s;
-  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  // box-shadow: 0 2px 4px $ui-neutral-subtle;
 
   &_scrolled {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 4px $ui-neutral-subtle;
   }
 
   &__bar {
@@ -66,7 +66,7 @@
   &__docs-link,
   &__compact-menu-link {
     border: 0;
-    background: transparent;
+    background: $ui-transparent;
     color: inherit;
     font-family: inherit;
     letter-spacing: 0;
@@ -140,8 +140,8 @@
     inset: ui-fluid-compact(148) 0 auto 0;
     height: ui-fluid-compact(1058);
     transform: translateY(calc(-100% - ui-fluid-compact(148)));
-    background: #fff;
-    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.12);
+    background: $ui-surface;
+    box-shadow: 0 18px 34px $ui-neutral-active;
     opacity: 0;
     pointer-events: none;
     transition:
@@ -179,7 +179,7 @@
   }
 
   &__compact-menu-link--active {
-    background: rgba(0, 0, 0, 0.04);
+    background: $ui-neutral-weak;
   }
 
   &__compact-menu-icon {
@@ -202,7 +202,7 @@
     height: ui-fluid-compact(60);
     border-radius: 50%;
     background: $ui-brand;
-    color: #fff;
+    color: $ui-text-inv;
     font-size: ui-fluid-compact(30);
     font-weight: 700;
     line-height: 1;
@@ -233,7 +233,7 @@
       gap: ui-fluid-regular(23);
       border-radius: ui-fluid-regular(31);
       bottom: ui-fluid-regular(22);
-      box-shadow: 0 ui-fluid-regular(6) ui-fluid-regular(17) rgba(0, 0, 0, 0.18);
+      box-shadow: 0 ui-fluid-regular(6) ui-fluid-regular(17) $ui-neutral-strong;
     }
 
     &__cart svg {
@@ -295,8 +295,8 @@
       height: ui-fluid-expanded(28);
       background: linear-gradient(
         180deg,
-        rgba(115, 115, 115, 0.1) 0%,
-        rgba(83, 92, 84, 0) 100%
+        $ui-gradient-shadow 0%,
+        $ui-gradient-clear 100%
       );
       mix-blend-mode: multiply;
       pointer-events: none;
@@ -354,13 +354,13 @@
     &__nav-item--outlined:focus-visible {
       border-color: $ui-brand;
       color: $ui-brand;
-      background: transparent;
+      background: $ui-transparent;
     }
 
     &__nav-item:hover,
     &__nav-item:focus-visible {
       color: $ui-brand;
-      background: transparent;
+      background: $ui-transparent;
     }
 
     &__nav-arrow {
@@ -378,14 +378,14 @@
       min-width: ui-fluid-expanded(210);
       padding: ui-fluid-expanded(8);
       border-radius: ui-fluid-expanded(8);
-      background: #fff;
+      background: $ui-surface;
       box-shadow:
         0 ui-fluid-expanded(5) ui-fluid-expanded(5) ui-fluid-expanded(-3)
-          rgba(0, 0, 0, 0.2),
+          $ui-border,
         0 ui-fluid-expanded(8) ui-fluid-expanded(10) ui-fluid-expanded(1)
-          rgba(0, 0, 0, 0.14),
+          $ui-shadow-popover-2,
         0 ui-fluid-expanded(3) ui-fluid-expanded(14) ui-fluid-expanded(2)
-          rgba(0, 0, 0, 0.12);
+          $ui-neutral-active;
       transform-origin: top center;
     }
 
@@ -400,7 +400,7 @@
       text-decoration: none;
       border: 0;
       border-radius: ui-fluid-expanded(5);
-      background: transparent;
+      background: $ui-transparent;
       font-family: inherit;
       cursor: pointer;
     }
@@ -408,7 +408,7 @@
     &__submenu-item:hover,
     &__submenu-item:focus-visible {
       color: $ui-brand;
-      background: rgba(0, 0, 0, 0.03);
+      background: $ui-neutral-weakest;
     }
 
     &__spacer {
@@ -447,8 +447,8 @@
     &__icon-button:hover,
     &__icon-button:focus-visible,
     &__icon-button--active {
-      background-color: rgba(0, 0, 0, 0.05);
-      // outline: ui-fluid-expanded(16) solid rgba(0, 0, 0, 0.05);
+      background-color: $ui-neutral-soft;
+      // outline: ui-fluid-expanded(16) solid $ui-neutral-soft;
       outline-offset: 0;
     }
 
@@ -495,14 +495,14 @@
       min-width: ui-fluid-expanded(214);
       padding: ui-fluid-expanded(4);
       border-radius: ui-fluid-expanded(8);
-      background: #fff;
+      background: $ui-surface;
       box-shadow:
         0 ui-fluid-expanded(5) ui-fluid-expanded(5) ui-fluid-expanded(-3)
-          rgba(0, 0, 0, 0.2),
+          $ui-border,
         0 ui-fluid-expanded(8) ui-fluid-expanded(10) ui-fluid-expanded(1)
-          rgba(0, 0, 0, 0.14),
+          $ui-shadow-popover-2,
         0 ui-fluid-expanded(3) ui-fluid-expanded(14) ui-fluid-expanded(2)
-          rgba(0, 0, 0, 0.12);
+          $ui-neutral-active;
       transform-origin: top center;
     }
 
@@ -519,7 +519,7 @@
     &__docs-link:hover,
     &__docs-link:focus-visible {
       color: $ui-brand;
-      background: rgba(0, 0, 0, 0.03);
+      background: $ui-neutral-weakest;
     }
 
     &__profile {
@@ -571,14 +571,14 @@
 
     &__cart--filled svg,
     &__cart--filled svg path {
-      fill: #fff !important;
-      stroke: #fff;
+      fill: $ui-text-inv !important;
+      stroke: $ui-text-inv;
     }
 
     &__cart span {
       display: inline-flex;
       align-items: center;
-      color: #fff;
+      color: $ui-text-inv;
       font-size: ui-fluid-expanded(12);
       font-weight: 500;
       line-height: 1;
@@ -591,13 +591,13 @@
 }
 
 .ui-header__cart:not(.ui-header__cart--filled) svg path {
-  fill: #dd1a32 !important;
-  stroke: #dd1a32;
+  fill: $ui-brand !important;
+  stroke: $ui-brand;
   stroke-opacity: 0.1;
 }
 
 .ui-header__cart.ui-header__cart--filled svg path {
-  fill: #fff !important;
-  stroke: #fff;
+  fill: $ui-text-inv !important;
+  stroke: $ui-text-inv;
   stroke-opacity: 0.1;
 }

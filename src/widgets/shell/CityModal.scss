@@ -10,7 +10,12 @@
     padding: ui-fluid-compact(54) ui-fluid-compact(34) ui-fluid-compact(44);
     overflow-y: auto;
     border-radius: ui-fluid-compact(34) ui-fluid-compact(34) 0 0;
-    background: linear-gradient(#ededed 0%, #ededed 28%, #fff 28%, #fff 100%);
+    background: linear-gradient(
+      $ui-surface-raised 0%,
+      $ui-surface-raised 28%,
+      $ui-surface 28%,
+      $ui-surface 100%
+    );
     color: $ui-text;
     text-align: center;
     outline: 0;
@@ -60,7 +65,7 @@
     border: 0;
     border-radius: ui-fluid-compact(46);
     background: $ui-brand;
-    color: #fff;
+    color: $ui-text-inv;
     font-size: ui-fluid-compact(34);
     font-weight: 500;
     line-height: 1.1;
@@ -68,9 +73,9 @@
   }
 
   &__action--secondary {
-    border: 1px solid rgba(0, 0, 0, 0.2);
-    background: #fff;
-    color: rgba(0, 0, 0, 0.8);
+    border: 1px solid $ui-border;
+    background: $ui-surface;
+    color: $ui-text;
   }
 
   &__list {
@@ -86,8 +91,8 @@
     padding: 0 ui-fluid-compact(28);
     border: 0;
     border-radius: 0;
-    border-bottom: 1px solid rgba(0, 0, 0, 0.2);
-    background: #fff;
+    border-bottom: 1px solid $ui-border;
+    background: $ui-surface;
     color: $ui-text;
     font-family: inherit;
     font-size: ui-fluid-compact(34);
@@ -96,7 +101,7 @@
   }
 
   &__city-option[aria-current='true'] {
-    background: rgba(0, 0, 0, 0.05);
+    background: $ui-neutral-soft;
     color: $ui-brand;
   }
 
@@ -106,9 +111,14 @@
       max-width: calc(100vw - 48px);
       padding: ui-fluid-regular(42) ui-fluid-regular(40) ui-fluid-regular(38);
       border-radius: ui-fluid-regular(24);
-      background: linear-gradient(#ededed 0%, #ededed 27%, #fff 27%, #fff 100%);
+      background: linear-gradient(
+        $ui-surface-raised 0%,
+        $ui-surface-raised 27%,
+        $ui-surface 27%,
+        $ui-surface 100%
+      );
       box-shadow: 0 ui-fluid-regular(18) ui-fluid-regular(48)
-        rgba(0, 0, 0, 0.22);
+        $ui-neutral-control;
     }
 
     &__image {
@@ -152,9 +162,13 @@
       min-height: ui-fluid-expanded(400);
       padding: ui-fluid-expanded(30) ui-fluid-expanded(70) ui-fluid-expanded(40);
       border-radius: ui-fluid-expanded(20);
-      background: linear-gradient(#ededed 0%, #ededed 25%, #fff 25%, #fff 100%);
-      box-shadow: 0 ui-fluid-expanded(18) ui-fluid-expanded(54)
-        rgba(0, 0, 0, 0.24);
+      background: linear-gradient(
+        $ui-surface-raised 0%,
+        $ui-surface-raised 25%,
+        $ui-surface 25%,
+        $ui-surface 100%
+      );
+      box-shadow: 0 ui-fluid-expanded(18) ui-fluid-expanded(54) $ui-shadow-modal;
     }
 
     &__image {

@@ -105,6 +105,7 @@ export function BannerDetailsModal({
                           {count > 0 ? (
                             <QuantityControl
                               value={count}
+                              size="md"
                               onChange={(value) =>
                                 onQuantityChange(product, value)
                               }

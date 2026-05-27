@@ -7,30 +7,30 @@
   justify-content: center;
   width: fit-content;
   border-radius: 999px;
-  color: #fff;
+  color: $ui-text-inv;
   font-family: $ui-font-family;
   font-weight: 400;
   letter-spacing: 0;
   line-height: 1;
   white-space: nowrap;
   box-shadow:
-    0 0 0 1px rgba(255, 255, 255, 0.65),
-    0 8px 18px rgba(0, 0, 0, 0.12);
+    0 0 0 1px $ui-white-border,
+    0 8px 18px $ui-neutral-active;
 
   &--tone-new {
-    background: #ee7900;
+    background: $ui-badge-new;
   }
   &--tone-hit {
-    background: #af00db;
+    background: $ui-badge-hit;
   }
   &--tone-sale {
-    background: #db0021;
+    background: $ui-badge-sale;
   }
   &--tone-neutral {
-    background: rgba(0, 0, 0, 0.55);
+    background: $ui-surface-grey;
   }
   &--tone-success {
-    background: #2e7d32;
+    background: $ui-success;
   }
   &--size-sm {
     min-height: ui-fluid-compact(34);

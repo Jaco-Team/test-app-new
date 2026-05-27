@@ -8,6 +8,7 @@ import './TagFilter.scss';
 export type TagFilterItem = {
   label: string;
   active?: boolean;
+  tone?: 'default' | 'new';
 };
 
 export interface TagFilterProps extends Omit<
@@ -16,27 +17,21 @@ export interface TagFilterProps extends Omit<
 > {
   items: TagFilterItem[];
   onChange?: (item: TagFilterItem, index: number) => void;
+  onClear?: () => void;
 }
 
 export function TagFilter({
   items,
   onChange,
+  onClear,
   className,
   ...props
 }: TagFilterProps) {
-  const initialIndex = Math.max(
-    0,
-    items.findIndex((item) => item.active)
-  );
+  const initialIndex = items.findIndex((item) => item.active);
   const [activeIndex, setActiveIndex] = useState(initialIndex);
 
   useEffect(() => {
-    setActiveIndex(
-      Math.max(
-        0,
-        items.findIndex((item) => item.active)
-      )
-    );
+    setActiveIndex(items.findIndex((item) => item.active));
   }, [items]);
 
   if (items.length === 0) {
@@ -51,25 +46,44 @@ export function TagFilter({
     >
       <div className="ui-tag-filter__list">
         {items.map((item, index) => {
-          const active = index === activeIndex;
+          const active = activeIndex === index;
           return (
             <button
               key={item.label}
               className={cn(
                 'ui-tag-filter__item',
-                active && 'ui-tag-filter__item--active'
+                active && 'ui-tag-filter__item--active',
+                item.tone === 'new' && 'ui-tag-filter__item--new'
               )}
               type="button"
               aria-pressed={active}
               onClick={() => {
-                setActiveIndex(index);
-                onChange?.(item, index);
+                const nextIndex = active ? -1 : index;
+                setActiveIndex(nextIndex);
+                onChange?.(item, nextIndex);
               }}
             >
-              {item.label}
+              <span className="ui-tag-filter__label">{item.label}</span>
+              {active && item.tone !== 'new' ? (
+                <span className="ui-tag-filter__close" aria-hidden="true">
+                  ×
+                </span>
+              ) : null}
             </button>
           );
         })}
+        {activeIndex >= 0 ? (
+          <button
+            className="ui-tag-filter__item ui-tag-filter__item--clear"
+            type="button"
+            onClick={() => {
+              setActiveIndex(-1);
+              onClear?.();
+            }}
+          >
+            <span className="ui-tag-filter__label">Очистить</span>
+          </button>
+        ) : null}
       </div>
     </section>
   );

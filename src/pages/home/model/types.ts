@@ -5,6 +5,8 @@ import type { ProductCardProps } from '@ui/patterns/ProductCard/ProductCard';
 export type HomeProduct = ProductCardProps & {
   id: string;
   catId?: string;
+  link?: string;
+  imageKey?: string;
   weight?: string;
   detailText?: string;
   composition?: string;
@@ -44,6 +46,7 @@ export type HomeProductGroup = {
 export type HomeTagFilterItem = {
   label: string;
   active?: boolean;
+  tone?: 'default' | 'new';
 };
 
 export type HomePageViewModel = {

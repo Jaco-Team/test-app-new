@@ -51,6 +51,12 @@ type HomeProductSource = {
   carbohydrates?: number | string;
   calories?: number | string;
   badges?: { name?: string; type?: string }[];
+  link?: string;
+  marc_desc_full?: string;
+  items?: unknown[];
+  protein?: number | string;
+  fat?: number | string;
+  kkal?: number | string;
 };
 
 type HomeTagSource = {
@@ -87,16 +93,31 @@ function categoryMenuItem(
   cat: HomeCategorySource,
   index: number
 ): CategoryMenuItem {
+  const id = (cat as { id?: number | string }).id;
+  const parentId = (cat as { parent_id?: number | string }).parent_id;
+  const children = Array.isArray(cat.cats)
+    ? cat.cats
+        .slice(0, 12)
+        .map((child, childIndex) => categoryMenuItem(child, childIndex))
+    : [];
+
   return {
+    id: id === undefined || id === null ? undefined : String(id),
+    parentId:
+      parentId === undefined || parentId === null
+        ? undefined
+        : String(parentId),
     label: String(cat.name ?? cat.link ?? 'Категория'),
+    shortLabel: String(cat.short_name ?? cat.name ?? cat.link ?? 'Категория'),
     active: index === 0,
     targetId: firstCategoryTarget(cat),
+    children,
   };
 }
 
 function flattenCategoryItems(cats: unknown[]): CategoryMenuItem[] {
   return (cats as HomeCategorySource[])
-    .slice(0, 8)
+    .slice(0, 12)
     .map((cat, index) => categoryMenuItem(cat, index));
 }
 
@@ -190,7 +211,7 @@ function firstNonEmptyText(...values: unknown[]): unknown {
   );
 }
 
-function mapProduct(item: HomeProductSource): HomeProduct | null {
+export function mapProduct(item: HomeProductSource): HomeProduct | null {
   const title = String(item.name ?? '').trim();
   const price = Number(item.price);
   if (!title || !Number.isFinite(price)) {
@@ -232,8 +253,17 @@ function mapProduct(item: HomeProductSource): HomeProduct | null {
     catId: item.cat_id === undefined ? undefined : String(item.cat_id),
     title,
     image,
+    imageKey: isValidMediaKey(imgKey) ? imgKey : undefined,
     description,
-    detailText: description,
+    link: item.link ? String(item.link) : undefined,
+    detailText: htmlToPlainText(
+      firstNonEmptyText(
+        item.marc_desc_full,
+        item.marc_desc,
+        item.tmp_desc,
+        item.text
+      )
+    ),
     composition: htmlToPlainText(item.sostav ?? item.composition),
     weight: item.weight === undefined ? undefined : String(item.weight),
     nutrition: nutrition.length ? nutrition : undefined,
@@ -426,7 +456,7 @@ function mapFooterLinks(
   return mapped.length > 0 ? mapped : defaultFooterGroups(citySlug);
 }
 
-function mapTags(tags: unknown[]): HomeTagFilterItem[] {
+export function mapTags(tags: unknown[]): HomeTagFilterItem[] {
   return (tags as HomeTagSource[])
     .map((tag, index): HomeTagFilterItem | null => {
       const label = String(tag.name ?? tag.title ?? tag.tag ?? '').trim();
@@ -434,9 +464,13 @@ function mapTags(tags: unknown[]): HomeTagFilterItem[] {
         return null;
       }
 
+      const normalized = label.toLowerCase();
+
       return {
         label,
-        active: index === 0,
+        active: false,
+        tone:
+          normalized === 'новинка' || normalized === 'new' ? 'new' : 'default',
       };
     })
     .filter((tag): tag is HomeTagFilterItem => Boolean(tag))
@@ -453,13 +487,9 @@ export function mapHomeCatalogView(cats: unknown[], allItems: unknown[]) {
       ? productsFromApi
       : [{ ...productCardFixtures.madeiraSet, id: 'fixture-madeira-set' }];
   const primary = flattenCategoryItems(cats);
-  const secondarySource = (cats as HomeCategorySource[])[0]?.cats ?? [];
-  const secondary =
-    secondarySource.length > 0
-      ? secondarySource
-          .slice(0, 8)
-          .map((cat, index) => categoryMenuItem(cat, index))
-      : primary;
+  const secondary = primary[0]?.children?.length
+    ? primary[0].children
+    : primary;
   const productGroups: HomeProductGroup[] = mapProductGroups(cats, products);
 
   return {

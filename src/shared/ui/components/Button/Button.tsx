@@ -3,7 +3,7 @@ import { cn } from '../../foundation/classNames';
 import './Button.scss';
 
 export type ButtonTone = 'primary' | 'secondary' | 'neutral' | 'muted' | 'cart';
-export type ButtonSize = 'sm' | 'md' | 'lg' | 'xl';
+export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
 export type ButtonDensity = 'compact' | 'regular' | 'expanded';
 
 export type ButtonProps = {

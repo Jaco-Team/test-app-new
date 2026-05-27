@@ -4,7 +4,7 @@
   display: inline-flex;
   align-items: center;
   gap: ui-fluid-compact(14);
-  background: transparent;
+  background: $ui-transparent;
   cursor: pointer;
   color: $ui-text;
   &__track {
@@ -13,7 +13,7 @@
     width: ui-fluid-compact(82);
     height: ui-fluid-compact(44);
     border-radius: 999px;
-    background: rgba(0, 0, 0, 0.18);
+    background: $ui-neutral-strong;
     transition: background-color 180ms ease;
   }
   &__thumb {
@@ -23,8 +23,8 @@
     width: ui-fluid-compact(36);
     height: ui-fluid-compact(36);
     border-radius: 50%;
-    background: #fff;
-    box-shadow: 0 2px 8px rgba(0, 0, 0, 0.2);
+    background: $ui-surface;
+    box-shadow: 0 2px 8px $ui-border;
     transition: transform 180ms ease;
   }
   &__label {

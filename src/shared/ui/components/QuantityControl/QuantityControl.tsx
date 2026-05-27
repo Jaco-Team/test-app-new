@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes } from 'react';
 import { cn } from '../../foundation/classNames';
 import './QuantityControl.scss';
 
-export type QuantityControlSize = 'sm' | 'md' | 'lg';
+export type QuantityControlSize = 'xs' | 'sm' | 'md' | 'lg';
 export interface QuantityControlProps extends Omit<
   ButtonHTMLAttributes<HTMLDivElement>,
   'onChange'
@@ -19,7 +19,7 @@ export function QuantityControl({
   value,
   min = 0,
   max = 99,
-  size = 'md',
+  size = 'sm',
   disabled = false,
   onChange,
   className,

@@ -9,10 +9,10 @@
   flex-direction: column;
   max-height: calc(100vh - 32px);
   overflow: hidden;
-  background: #fff;
+  background: $ui-surface;
   border-radius: 16px;
   outline: 0;
-  box-shadow: 0 24px 80px rgba(0, 0, 0, 0.24);
+  box-shadow: 0 24px 80px $ui-shadow-modal;
   width: calc(100vw - 32px);
   &--size-sm {
     max-width: 420px;
@@ -36,7 +36,7 @@
     justify-content: space-between;
     gap: ui-fluid-compact(20);
     padding: ui-fluid-compact(24);
-    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+    border-bottom: 1px solid $ui-neutral-subtle;
   }
   &__title {
     margin: 0;

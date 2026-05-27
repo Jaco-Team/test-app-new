@@ -60,6 +60,7 @@ export function ProductCard({
     nutrition,
     raw,
     weight,
+    imageKey,
     ...articleProps
   } = props as typeof props & Record<string, unknown>;
 
@@ -101,7 +102,11 @@ export function ProductCard({
         ) : null}
         <div className="ui-product-card__action">
           {hasCount ? (
-            <QuantityControl value={count} onChange={onQuantityChange} />
+            <QuantityControl
+              value={count}
+              size="md"
+              onChange={onQuantityChange}
+            />
           ) : (
             <Button tone="muted" size="md" density="regular" onClick={onAdd}>
               <Price value={price} oldValue={oldPrice} size="md" />

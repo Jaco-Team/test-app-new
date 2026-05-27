@@ -2,6 +2,7 @@
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useCartStore } from '@src/entities/cart';
+import { api } from '@src/shared/api';
 import { useHomeStore } from '@src/entities/home';
 import { BannerSlider, CategoryMenu, Footer } from '@ui/widgets';
 import { HomeHeaderConnected } from '@src/features/header/ui/HomeHeaderConnected';
@@ -12,11 +13,53 @@ import type {
   HomeBannerSlide,
   HomePageViewModel,
   HomeProduct,
+  HomeTagFilterItem,
 } from '../model/types';
 import { BannerDetailsModal } from './modals/BannerDetailsModal';
 import { ProductDetailsModal } from './modals/ProductDetailsModal';
-import { mapHomeCatalogView } from '../model/mapHomePageViewModel';
+import {
+  mapHomeCatalogView,
+  mapProduct,
+  mapTags,
+} from '../model/mapHomePageViewModel';
 import './HomePage.scss';
+
+function getProductLink(product: HomeProduct): string {
+  return String(product.link ?? product.raw?.link ?? '').trim();
+}
+
+function writeProductQuery(product: HomeProduct): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const link = getProductLink(product);
+  if (!link) {
+    return;
+  }
+
+  const url = new URL(window.location.href);
+  url.searchParams.set('item', link);
+  window.history.pushState(
+    { item_id: product.id, item_name: product.title },
+    product.title,
+    url
+  );
+}
+
+function clearProductQuery(): void {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const url = new URL(window.location.href);
+  if (!url.searchParams.has('item')) {
+    return;
+  }
+
+  url.searchParams.delete('item');
+  window.history.pushState({}, '', url);
+}
 
 export type HomePageProps = {
   model: HomePageViewModel;
@@ -36,6 +79,7 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
   const setCount = useCartStore((state) => state.setCount);
   const storeCategories = useHomeStore((state) => state.categories);
   const storeCatalogItems = useHomeStore((state) => state.catalogItems);
+  const storeTags = useHomeStore((state) => state.allTags);
   const getItemsCat = useHomeStore((state) => state.getItemsCat);
 
   const countByProductId = useMemo(() => {
@@ -64,14 +108,84 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
   const categoryPrimary = liveCatalog?.categoryPrimary ?? model.categoryPrimary;
   const categorySecondary =
     liveCatalog?.categorySecondary ?? model.categorySecondary;
+  const tags = storeTags.length ? mapTags(storeTags) : model.tags;
   const products = liveCatalog?.products ?? model.products;
+  const tagItems = useMemo<HomeTagFilterItem[]>(() => {
+    const hasNewTag = tags.some(
+      (tag) => tag.tone === 'new' || tag.label.toLowerCase() === 'новинка'
+    );
+    const hasNewBadge = products.some((product) =>
+      product.badges?.some((badge) => badge.tone === 'new')
+    );
+
+    if (!hasNewBadge || hasNewTag) {
+      return tags;
+    }
+
+    return [{ label: 'НОВИНКА', tone: 'new' }, ...tags];
+  }, [products, tags]);
   const productGroupsSource = liveCatalog?.productGroups ?? model.productGroups;
+
+  const openProduct = useCallback(
+    async (product: HomeProduct, options?: { writeQuery?: boolean }) => {
+      setActiveProduct(product);
+      if (options?.writeQuery !== false) {
+        writeProductQuery(product);
+      }
+
+      const response = await api('home', {
+        type: 'get_item',
+        city_id: model.citySlug,
+        item_id: product.id,
+      });
+      const detailedProduct = mapProduct(response);
+      if (
+        detailedProduct &&
+        String(detailedProduct.id) === String(product.id)
+      ) {
+        setActiveProduct((current) =>
+          current && String(current.id) === String(product.id)
+            ? { ...product, ...detailedProduct }
+            : current
+        );
+      }
+    },
+    [model.citySlug]
+  );
+
+  useEffect(() => {
+    if (typeof window === 'undefined' || activeProduct || !products.length) {
+      return;
+    }
+
+    const itemLink = new URLSearchParams(window.location.search).get('item');
+    if (!itemLink) {
+      return;
+    }
+
+    const foundProduct = products.find(
+      (product) => getProductLink(product) === itemLink
+    );
+    if (foundProduct) {
+      void openProduct(foundProduct, { writeQuery: false });
+    }
+  }, [activeProduct, openProduct, products]);
+
+  const pingHomeCatalog = useCallback(() => {
+    if (model.citySlug) {
+      void getItemsCat('home', model.citySlug, { force: true });
+    }
+  }, [getItemsCat, model.citySlug]);
 
   const getCount = (product: HomeProduct) =>
     countByProductId.get(product.id) ?? 0;
-  const addProduct = (product: HomeProduct) => plus(product.id, product.catId);
+  const addProduct = (product: HomeProduct) => {
+    plus(product.id, product.catId);
+    pingHomeCatalog();
+  };
   const changeProductCount = (product: HomeProduct, value: number) => {
     setCount(product.id, value, product.catId);
+    pingHomeCatalog();
   };
   const productGroups = productGroupsSource.length
     ? productGroupsSource
@@ -129,10 +243,12 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
             categorySecondary[0]?.targetId ??
             categoryPrimary[0]?.targetId
           }
+          tags={tagItems}
+          onActiveTargetChange={setActiveCategoryTarget}
           onItemSelect={(item) => scrollToCategory(item.targetId)}
         />
 
-        <TagFilter items={model.tags} />
+        <TagFilter items={tagItems} className="home-page__tags" />
 
         <section className="home-page__catalog" aria-label="Каталог">
           {productGroups.map((group) => (
@@ -153,7 +269,7 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
                     onQuantityChange={(value) =>
                       changeProductCount(product, value)
                     }
-                    onDetailsClick={() => setActiveProduct(product)}
+                    onDetailsClick={() => void openProduct(product)}
                   />
                 ))}
               </div>
@@ -165,7 +281,10 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
       <ProductDetailsModal
         product={activeProduct}
         count={activeProduct ? getCount(activeProduct) : 0}
-        onClose={() => setActiveProduct(null)}
+        onClose={() => {
+          setActiveProduct(null);
+          clearProductQuery();
+        }}
         onAdd={() => activeProduct && addProduct(activeProduct)}
         onQuantityChange={(value) =>
           activeProduct && changeProductCount(activeProduct, value)
@@ -178,7 +297,7 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
         onClose={() => setActiveBanner(null)}
         onAdd={addProduct}
         onQuantityChange={changeProductCount}
-        onProductOpen={(product) => setActiveProduct(product)}
+        onProductOpen={(product) => void openProduct(product)}
       />
 
       <Footer
