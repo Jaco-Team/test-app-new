@@ -74,19 +74,6 @@
   &--tone-cart.ui-button--active {
     background: $ui-brand-hover;
   }
-  &--tone-secondary {
-    background: $ui-surface;
-    border-color: $ui-brand;
-    color: $ui-brand;
-  }
-  &--tone-secondary:hover,
-  &--tone-secondary:focus-visible,
-  &--tone-secondary:active,
-  &--tone-secondary.ui-button--active {
-    background: $ui-control-bg;
-    border-color: $ui-brand-hover;
-    color: $ui-brand-hover;
-  }
   &--tone-neutral {
     background: $ui-surface;
     border-color: $ui-border;

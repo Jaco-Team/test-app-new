@@ -25,6 +25,8 @@ export interface CategoryMenuProps extends HTMLAttributes<HTMLElement> {
   tags?: TagFilterItem[];
   onItemSelect?: (item: CategoryMenuItem) => void;
   onActiveTargetChange?: (targetId: string | undefined) => void;
+  onTagChange?: (item: TagFilterItem, index: number) => void;
+  onTagClear?: () => void;
 }
 
 function visibleSecondaryItems(
@@ -77,6 +79,8 @@ export function CategoryMenu({
   tags = [],
   onItemSelect,
   onActiveTargetChange,
+  onTagChange,
+  onTagClear,
   ...props
 }: CategoryMenuProps) {
   const [filterOpen, setFilterOpen] = useState(false);
@@ -232,7 +236,12 @@ export function CategoryMenu({
         className="ui-category-menu__filter-modal"
         closeOutside
       >
-        <TagFilter items={tags} className="ui-category-menu__filter-tags" />
+        <TagFilter
+          items={tags}
+          className="ui-category-menu__filter-tags"
+          onChange={onTagChange}
+          onClear={onTagClear}
+        />
       </ModalWrapper>
     </>
   );

@@ -227,12 +227,23 @@
     }
 
     &__cart {
+      min-width: ui-fluid-regular(51);
+      width: ui-fluid-regular(51);
+      height: ui-fluid-regular(51);
+      padding: 0;
+      gap: 0;
+      border-radius: ui-fluid-regular(31);
+      bottom: ui-fluid-regular(22);
+      box-shadow: none;
+    }
+
+    &__cart--filled {
       min-width: ui-fluid-regular(242);
+      width: auto;
       height: ui-fluid-regular(69);
       padding: 0 ui-fluid-regular(26);
       gap: ui-fluid-regular(23);
-      border-radius: ui-fluid-regular(31);
-      bottom: ui-fluid-regular(22);
+      background-color: $ui-brand;
       box-shadow: 0 ui-fluid-regular(6) ui-fluid-regular(17) $ui-neutral-strong;
     }
 

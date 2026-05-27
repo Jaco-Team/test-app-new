@@ -20,7 +20,7 @@ export type StoreBootstrapProps = {
   tags: unknown[];
   links: Record<string, unknown>;
   freeItems?: unknown[];
-  needDop?: unknown[];
+  needDop?: unknown;
   activePage?: string;
   page?: Record<string, unknown> | null;
 };
@@ -40,7 +40,7 @@ export function StoreBootstrap({
   tags,
   links,
   freeItems = [],
-  needDop = [],
+  needDop = {},
   activePage = 'home',
 }: StoreBootstrapProps) {
   useEffect(() => {

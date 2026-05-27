@@ -61,6 +61,7 @@ export function ProductCard({
     raw,
     weight,
     imageKey,
+    tagIds,
     ...articleProps
   } = props as typeof props & Record<string, unknown>;
 
@@ -86,7 +87,7 @@ export function ProductCard({
               <Badge
                 key={badge.tone + (badge.label ?? '')}
                 tone={badge.tone}
-                size="lg"
+                size="sm"
               >
                 {badge.label}
               </Badge>

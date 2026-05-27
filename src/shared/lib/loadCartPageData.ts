@@ -49,7 +49,7 @@ export async function loadCartPageData(
     cities: Array.isArray(data1.cities) ? data1.cities : [],
     all_items: Array.isArray(data1.all_items) ? data1.all_items : [],
     free_items: Array.isArray(data1.free_items) ? data1.free_items : [],
-    need_dop: Array.isArray(data1.need_dop) ? data1.need_dop : [],
+    need_dop: data1.need_dop ?? {},
     tags: Array.isArray(data1.tags) ? data1.tags : [],
     links: (footer?.page as Record<string, unknown>) ?? {},
     banners: [],

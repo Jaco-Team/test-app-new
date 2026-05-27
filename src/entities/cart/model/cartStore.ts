@@ -77,7 +77,7 @@ function persistCart(items: CartLineItem[]): void {
 export const useCartStore = create<CartState>((set, get) => ({
   allItems: [],
   freeItems: [],
-  needDops: [],
+  needDops: {},
   items: [],
   itemsOffDops: [],
   dopListCart: [],
@@ -97,7 +97,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   },
 
   setNeedDops: (items) => {
-    set({ needDops: Array.isArray(items) ? items : [] });
+    set({ needDops: items ?? {} });
   },
 
   changeAllItems: () => {

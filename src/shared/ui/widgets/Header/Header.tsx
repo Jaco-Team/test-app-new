@@ -204,7 +204,7 @@ export function Header({
   useBodyScrollLock(overlayOpen);
 
   const cartBadge = extractCartCount(cartCount);
-  const hasCartItems = typeof cartCount === 'number' && cartCount > 0;
+  const hasCartItems = Number(cartCount) > 0;
   const compactMenuItems: CompactMenuItem[] = compactMenuLinks?.length
     ? compactMenuLinks.map((item) => ({
         ...item,

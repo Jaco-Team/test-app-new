@@ -52,8 +52,16 @@
 }
 
 @mixin ui-fluid($property, $expanded, $compact: null, $regular: null) {
-  $compact: if($compact == null, $expanded, $compact);
-  $regular: if($regular == null, $compact, $regular);
+  @if ($compact == null) {
+    $compact: $expanded;
+  } @else {
+    $expanded: $compact;
+  }
+  @if ($regular == null) {
+    $regular: $compact;
+  } @else {
+    $compact: $regular;
+  }
 
   #{$property}: ui-fluid-expanded($expanded);
 

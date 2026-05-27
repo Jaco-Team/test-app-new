@@ -4,7 +4,7 @@
 .ui-category-menu {
   position: sticky;
   top: ui-fluid-compact(148);
-  z-index: $ui-z-header - 1;
+  z-index: $ui-z-header;
   width: 100%;
   min-width: 0;
   overflow: hidden;

@@ -2,10 +2,17 @@
 
 import { useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import { Button, ModalWrapper, Price, QuantityControl } from '@src/shared/ui';
+import {
+  Badge,
+  Button,
+  ModalWrapper,
+  Price,
+  QuantityControl,
+} from '@src/shared/ui';
 import {
   PRODUCT_MODAL_IMAGE_SIZES,
   resolveProductImageSrcSet,
+  resolveProductImageUrl,
 } from '@src/shared/lib/mediaUrls';
 import type { HomeProduct } from '../../model/types';
 import { cn } from '@src/shared/ui/foundation/classNames';
@@ -82,6 +89,86 @@ function scaledValue(
       ? (numericValue * numericWeight) / 100
       : NaN;
   return kind === 'kcal' ? formatKcal(scaled) : formatMacro(scaled);
+}
+
+function ProductSetList({
+  items,
+  className,
+}: {
+  items: Record<string, unknown>[];
+  className?: string;
+}) {
+  return (
+    <section
+      className={cn('home-product-modal__set-list', className)}
+      aria-label={`Сет состоит из ${items.length} роллов`}
+      onClick={(event) => event.stopPropagation()}
+    >
+      <div className="home-product-modal__set-head">
+        <h3>Сет состоит из {items.length} роллов:</h3>
+      </div>
+      <div className="home-product-modal__set-scroll">
+        {items.map((item, index) => {
+          const imageKey = firstText(item.img_app, item.img);
+          const description = firstText(
+            item.marc_desc,
+            item.tmp_desc,
+            item.text
+          );
+          return (
+            <article
+              className="home-product-modal__set-item"
+              key={String(item.id ?? item.name ?? index)}
+            >
+              <span className="home-product-modal__set-index">
+                {index + 1}.
+              </span>
+              <picture className="home-product-modal__set-picture">
+                {imageKey ? (
+                  <source
+                    type="image/webp"
+                    srcSet={resolveProductImageSrcSet(imageKey, 'webp')}
+                    sizes="96px"
+                  />
+                ) : null}
+                {imageKey ? (
+                  <source
+                    type="image/jpeg"
+                    srcSet={resolveProductImageSrcSet(imageKey, 'jpg')}
+                    sizes="96px"
+                  />
+                ) : null}
+                {imageKey ? (
+                  <img
+                    src={resolveProductImageUrl(imageKey)}
+                    alt={firstText(item.name) || 'Ролл'}
+                    loading="lazy"
+                  />
+                ) : null}
+              </picture>
+              <div className="home-product-modal__set-text">
+                <strong>{firstText(item.name) || 'Ролл'}</strong>
+                {description ? <span>{description}</span> : null}
+                {firstText(item.count_part, item.weight) ? (
+                  <small>
+                    {firstText(item.count_part)
+                      ? `${firstText(item.count_part)} шт.`
+                      : ''}
+                    {firstText(item.count_part) && firstText(item.weight)
+                      ? ' | '
+                      : ''}
+                    {firstText(item.weight)
+                      ? `${firstText(item.weight)} г`
+                      : ''}
+                  </small>
+                ) : null}
+              </div>
+            </article>
+          );
+        })}
+      </div>
+    </section>
+  );
 }
 
 function ProductValueTable({
@@ -214,7 +301,9 @@ export function ProductDetailsModal({
   onAdd,
   onQuantityChange,
 }: ProductDetailsModalProps) {
-  const [infoOpen, setInfoOpen] = useState(false);
+  const [mediaMode, setMediaMode] = useState<'image' | 'value' | 'set'>(
+    'image'
+  );
   const isCompact = useMediaQuery('(max-width: 667px)');
 
   if (!product) {
@@ -231,19 +320,41 @@ export function ProductDetailsModal({
     (item) =>
       productKcal(item) || firstText(item.tmp_desc, item.marc_desc, item.text)
   );
+  const hasSetItems = rawItems.length > 1;
   const productImageKey = product.imageKey;
+  const catId = Number(product.raw?.cat_id ?? product.info?.catId);
+  const countPart = firstText(product.raw?.count_part, product.info?.countPart);
+  const countPartNew = firstText(
+    product.raw?.count_part_new,
+    product.info?.countPartNew
+  );
+  const sizePizza = firstText(product.raw?.size_pizza, product.info?.sizePizza);
+  const weight = firstText(product.raw?.weight, product.weight);
+  const showPieces = ![5, 6, 7, 15].includes(catId);
+  const piecesLabel = catId === 14 ? sizePizza : countPart;
+  const piecesUnit = catId === 14 ? 'см*' : catId === 6 ? 'л' : 'шт.';
+  const weightUnit = ['17', '237'].includes(product.id)
+    ? 'шт.'
+    : catId === 6
+      ? 'л'
+      : 'г';
+  const weightNumber = numberValue(weight);
+  const weightLabel = Number.isFinite(weightNumber)
+    ? new Intl.NumberFormat('ru-RU').format(weightNumber)
+    : weight;
+  const compactReplacementOpen = isCompact && mediaMode !== 'image';
 
   return (
     <>
       <ModalWrapper
         open={Boolean(product)}
         onClose={() => {
-          setInfoOpen(false);
+          setMediaMode('image');
           onClose();
         }}
         className={cn(
           'home-product-modal',
-          infoOpen && !isCompact && 'home-product-modal--info-open'
+          mediaMode !== 'image' && !isCompact && 'home-product-modal--info-open'
         )}
         paperClassName="home-product-modal__paper"
         contentClassName="home-product-modal__content"
@@ -255,19 +366,26 @@ export function ProductDetailsModal({
         <div
           className={cn(
             'home-product-modal__layout',
-            infoOpen && !isCompact && 'home-product-modal__layout--info'
+            mediaMode !== 'image' &&
+              !isCompact &&
+              'home-product-modal__layout--info'
           )}
           onClick={() => {
-            if (infoOpen && !isCompact) {
-              setInfoOpen(false);
+            if (mediaMode !== 'image' && !isCompact) {
+              setMediaMode('image');
             }
           }}
         >
           <div className="home-product-modal__media">
-            {infoOpen && !isCompact ? (
+            {mediaMode === 'value' && !isCompact ? (
               <ProductValueTable
                 items={valueItems}
                 className="home-product-modal__value--inline"
+              />
+            ) : mediaMode === 'set' && !isCompact ? (
+              <ProductSetList
+                items={rawItems}
+                className="home-product-modal__set-list--inline"
               />
             ) : (
               <picture>
@@ -286,6 +404,19 @@ export function ProductDetailsModal({
                   />
                 ) : null}
                 <img src={product.image} alt={product.title} loading="lazy" />
+                {product.badges?.length ? (
+                  <span className="home-product-modal__badges">
+                    {product.badges.map((badge) => (
+                      <Badge
+                        key={badge.tone + (badge.label ?? '')}
+                        tone={badge.tone}
+                        size="sm"
+                      >
+                        {badge.label}
+                      </Badge>
+                    ))}
+                  </span>
+                ) : null}
               </picture>
             )}
           </div>
@@ -293,12 +424,49 @@ export function ProductDetailsModal({
           <div className="home-product-modal__body">
             <div className="home-product-modal__heading">
               <h2 id="home-product-modal-title">{product.title}</h2>
-              {product.meta ? (
-                <p>
-                  {Array.isArray(product.meta)
-                    ? product.meta.join(' · ')
-                    : product.meta}
-                </p>
+            </div>
+            <div className="home-product-modal__info">
+              <div className="home-product-modal__facts">
+                {hasSetItems && countPartNew ? (
+                  <button
+                    type="button"
+                    className="home-product-modal__fact-link"
+                    onClick={(event) => {
+                      event.stopPropagation();
+                      setMediaMode((value) =>
+                        value === 'set' ? 'image' : 'set'
+                      );
+                    }}
+                  >
+                    {countPartNew}
+                  </button>
+                ) : null}
+                {showPieces && piecesLabel ? (
+                  <span>
+                    {piecesLabel} {piecesUnit}
+                  </span>
+                ) : null}
+                {weight ? (
+                  <span>
+                    {weightLabel} {weightUnit}
+                  </span>
+                ) : null}
+              </div>
+
+              {hasInfo ? (
+                <button
+                  className="home-product-modal__info-button"
+                  type="button"
+                  aria-expanded={mediaMode === 'value'}
+                  onClick={(event) => {
+                    event.stopPropagation();
+                    setMediaMode((value) =>
+                      value === 'value' ? 'image' : 'value'
+                    );
+                  }}
+                >
+                  i
+                </button>
               ) : null}
             </div>
 
@@ -307,31 +475,6 @@ export function ProductDetailsModal({
                 {product.detailText}
               </p>
             ) : null}
-
-            <div className="home-product-modal__tools">
-              {hasInfo ? (
-                <button
-                  className="home-product-modal__info-button"
-                  type="button"
-                  aria-expanded={infoOpen}
-                  onClick={(event) => {
-                    event.stopPropagation();
-                    setInfoOpen((value) => !value);
-                  }}
-                >
-                  i
-                </button>
-              ) : null}
-            </div>
-
-            <div className="home-product-modal__facts">
-              {product.weight ? <span>{product.weight} г</span> : null}
-              {product.nutrition?.map((item) => (
-                <span key={item.label}>
-                  {item.label}: {item.value}
-                </span>
-              ))}
-            </div>
 
             <div className="home-product-modal__action">
               {count > 0 ? (
@@ -361,8 +504,8 @@ export function ProductDetailsModal({
 
       {isCompact ? (
         <ModalWrapper
-          open={infoOpen}
-          onClose={() => setInfoOpen(false)}
+          open={compactReplacementOpen}
+          onClose={() => setMediaMode('image')}
           className="home-product-info-modal"
           paperClassName="home-product-info-modal__paper"
           contentClassName="home-product-info-modal__content"
@@ -371,10 +514,17 @@ export function ProductDetailsModal({
           variant="responsive"
           labelledBy="home-product-info-modal-title"
         >
-          <ProductValueTable
-            items={valueItems}
-            className="home-product-modal__value--standalone"
-          />
+          {mediaMode === 'set' ? (
+            <ProductSetList
+              items={rawItems}
+              className="home-product-modal__set-list--standalone"
+            />
+          ) : (
+            <ProductValueTable
+              items={valueItems}
+              className="home-product-modal__value--standalone"
+            />
+          )}
         </ModalWrapper>
       ) : null}
     </>

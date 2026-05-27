@@ -11,6 +11,7 @@ export type HomeProduct = ProductCardProps & {
   detailText?: string;
   composition?: string;
   nutrition?: { label: string; value: string }[];
+  tagIds?: string[];
   raw?: Record<string, unknown>;
 };
 
@@ -47,6 +48,7 @@ export type HomeTagFilterItem = {
   label: string;
   active?: boolean;
   tone?: 'default' | 'new';
+  id?: string;
 };
 
 export type HomePageViewModel = {

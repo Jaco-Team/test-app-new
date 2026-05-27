@@ -65,7 +65,10 @@
   }
 
   &__item--clear {
+    flex-basis: auto;
+    width: fit-content;
     margin-top: ui-fluid-compact(18);
+    margin-right: 100%;
     background: $ui-brand;
     color: $ui-text-inv;
   }

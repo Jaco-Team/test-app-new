@@ -74,6 +74,7 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
   const [activeCategoryTarget, setActiveCategoryTarget] = useState<
     string | undefined
   >();
+  const [activeTag, setActiveTag] = useState<HomeTagFilterItem | null>(null);
   const items = useCartStore((state) => state.items);
   const plus = useCartStore((state) => state.plus);
   const setCount = useCartStore((state) => state.setCount);
@@ -117,14 +118,54 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
     const hasNewBadge = products.some((product) =>
       product.badges?.some((badge) => badge.tone === 'new')
     );
+    const baseTags =
+      hasNewBadge && !hasNewTag
+        ? [{ label: 'НОВИНКА', tone: 'new' as const, id: 'new' }, ...tags]
+        : tags;
 
-    if (!hasNewBadge || hasNewTag) {
-      return tags;
-    }
-
-    return [{ label: 'НОВИНКА', tone: 'new' }, ...tags];
-  }, [products, tags]);
+    return baseTags.map((tag) => ({
+      ...tag,
+      active: activeTag
+        ? (activeTag.tone === 'new' && tag.tone === 'new') ||
+          (activeTag.id !== undefined && tag.id === activeTag.id) ||
+          activeTag.label === tag.label
+        : false,
+    }));
+  }, [activeTag, products, tags]);
   const productGroupsSource = liveCatalog?.productGroups ?? model.productGroups;
+
+  const productMatchesActiveTag = useCallback(
+    (product: HomeProduct) => {
+      if (!activeTag) {
+        return true;
+      }
+
+      if (activeTag.tone === 'new') {
+        return (
+          product.badges?.some((badge) => badge.tone === 'new') ||
+          Number(product.raw?.is_new) === 1
+        );
+      }
+
+      if (activeTag.id !== undefined) {
+        return product.tagIds?.includes(String(activeTag.id)) ?? false;
+      }
+
+      return product.tagIds?.includes(activeTag.label) ?? false;
+    },
+    [activeTag]
+  );
+
+  const handleTagChange = useCallback(
+    (tag: HomeTagFilterItem, index: number) => {
+      setActiveTag(index < 0 ? null : tag);
+    },
+    []
+  );
+
+  const clearTagFilter = useCallback(() => {
+    setActiveTag(null);
+  }, []);
 
   const openProduct = useCallback(
     async (product: HomeProduct, options?: { writeQuery?: boolean }) => {
@@ -187,9 +228,15 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
     setCount(product.id, value, product.catId);
     pingHomeCatalog();
   };
-  const productGroups = productGroupsSource.length
+  const productGroupsBase = productGroupsSource.length
     ? productGroupsSource
     : [{ id: 'cat-all', label: 'Каталог', products }];
+  const productGroups = productGroupsBase
+    .map((group) => ({
+      ...group,
+      products: group.products.filter(productMatchesActiveTag),
+    }))
+    .filter((group) => group.products.length > 0);
   const scrollToCategory = useCallback((targetId?: string) => {
     setActiveCategoryTarget(targetId);
     if (!targetId) {
@@ -246,9 +293,16 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
           tags={tagItems}
           onActiveTargetChange={setActiveCategoryTarget}
           onItemSelect={(item) => scrollToCategory(item.targetId)}
+          onTagChange={handleTagChange}
+          onTagClear={clearTagFilter}
         />
 
-        <TagFilter items={tagItems} className="home-page__tags" />
+        <TagFilter
+          items={tagItems}
+          className="home-page__tags"
+          onChange={handleTagChange}
+          onClear={clearTagFilter}
+        />
 
         <section className="home-page__catalog" aria-label="Каталог">
           {productGroups.map((group) => (

@@ -94,6 +94,7 @@ export function HomeHeaderConnected({
     checkPromo,
     allPrice
   );
+  const hasPayableCart = cartLabel !== 'Корзина';
   const logoHref = citySlug ? cityBase(citySlug) : APP_ROUTE_PREFIX;
   const docsLinks = useMemo<HeaderNavItem[]>(
     () =>
@@ -177,7 +178,7 @@ export function HomeHeaderConnected({
         compactMenuLinks={compactMenuLinks}
         city={cityLabel}
         cartLabel={cartLabel}
-        cartCount={itemsCount > 0 ? itemsCount : undefined}
+        cartCount={hasPayableCart && itemsCount > 0 ? itemsCount : undefined}
         logoSrc="/Jaco-Logo-120.png"
         logoHref={logoHref}
         compactMenuOpen={compactMenuOpen}

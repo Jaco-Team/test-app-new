@@ -28,9 +28,19 @@
   }
 
   &__media picture {
+    position: relative;
     display: grid;
     place-items: center;
     width: 100%;
+  }
+
+  &__badges {
+    position: absolute;
+    top: ui-fluid-compact(12);
+    left: ui-fluid-compact(12);
+    display: grid;
+    gap: ui-fluid-compact(8);
+    justify-items: start;
   }
 
   &__media img {
@@ -45,8 +55,90 @@
     padding: ui-fluid-compact(54) ui-fluid-compact(28) ui-fluid-compact(32);
   }
 
-  &__value--inline {
+  &__value--inline,
+  &__set-list--inline {
     display: none;
+  }
+
+  &__set-list {
+    display: grid;
+    grid-template-rows: auto minmax(0, 1fr);
+    width: 100%;
+    height: min(100dvh, ui-fluid-compact(760));
+    min-height: 0;
+    overflow: hidden;
+    background: $ui-surface;
+  }
+
+  &__set-head {
+    padding: ui-fluid-compact(30) ui-fluid-compact(24) ui-fluid-compact(18);
+    border-bottom: 1px solid $ui-border;
+  }
+
+  &__set-head h3 {
+    margin: 0;
+    color: $ui-text;
+    font-family: $ui-font-family;
+    font-size: max(24px, ui-fluid-compact(24));
+    font-weight: 400;
+    line-height: 1.15;
+  }
+
+  &__set-scroll {
+    display: grid;
+    align-content: start;
+    gap: ui-fluid-compact(18);
+    min-height: 0;
+    overflow: auto;
+    padding: ui-fluid-compact(20) ui-fluid-compact(24) ui-fluid-compact(34);
+  }
+
+  &__set-item {
+    display: grid;
+    grid-template-columns: ui-fluid-compact(28) ui-fluid-compact(96) minmax(
+        0,
+        1fr
+      );
+    gap: ui-fluid-compact(12);
+    align-items: center;
+    color: $ui-text;
+    font-family: $ui-font-family;
+  }
+
+  &__set-index {
+    color: $ui-text-muted;
+    font-size: max(15px, ui-fluid-compact(15));
+  }
+
+  &__set-picture,
+  &__set-picture img {
+    display: block;
+    width: ui-fluid-compact(96);
+    height: ui-fluid-compact(96);
+  }
+
+  &__set-picture img {
+    object-fit: contain;
+    mix-blend-mode: multiply;
+  }
+
+  &__set-text {
+    display: grid;
+    gap: ui-fluid-compact(5);
+    min-width: 0;
+  }
+
+  &__set-text strong {
+    font-size: max(17px, ui-fluid-compact(17));
+    font-weight: 400;
+    line-height: 1.15;
+  }
+
+  &__set-text span,
+  &__set-text small {
+    color: $ui-text-muted;
+    font-size: max(13px, ui-fluid-compact(13));
+    line-height: 1.2;
   }
 
   &__layout--info &__description {
@@ -74,7 +166,7 @@
     margin: 0;
     color: $ui-text;
     font-family: $ui-font-family;
-    font-size: ui-fluid-compact(32);
+    font-size: max(32px, ui-fluid-compact(32));
     font-weight: 400;
     line-height: 1.15;
   }
@@ -83,7 +175,7 @@
     margin: 0;
     color: $ui-text-muted;
     font-family: $ui-font-family;
-    font-size: ui-fluid-compact(16);
+    font-size: max(16px, ui-fluid-compact(16));
     line-height: 1.2;
   }
 
@@ -105,7 +197,7 @@
     padding: ui-fluid-compact(8) ui-fluid-compact(16);
     color: $ui-text-muted;
     font-family: $ui-font-family;
-    font-size: ui-fluid-compact(17);
+    font-size: max(17px, ui-fluid-compact(17));
     line-height: 1;
   }
 
@@ -137,7 +229,7 @@
     padding-top: ui-fluid-compact(22);
     color: $ui-text-muted;
     font-family: $ui-font-family;
-    font-size: ui-fluid-compact(17);
+    font-size: max(17px, ui-fluid-compact(17));
   }
 
   &__value-card {
@@ -151,7 +243,7 @@
 
   &__value-title {
     display: grid;
-    grid-template-columns: minmax(0, 1fr) ui-fluid-compact(74);
+    grid-template-columns: minmax(0, 1fr) max(74px, ui-fluid-compact(74));
     min-height: ui-fluid-compact(52);
     border-bottom: 1px solid $ui-border-table;
   }
@@ -161,7 +253,7 @@
     align-items: center;
     padding: ui-fluid-compact(12);
     border-right: 1px solid $ui-border-table;
-    font-size: ui-fluid-compact(18);
+    font-size: max(18px, ui-fluid-compact(18));
     font-weight: 400;
     line-height: 1.15;
   }
@@ -170,13 +262,13 @@
     display: grid;
     place-items: center;
     gap: ui-fluid-compact(2);
-    font-size: ui-fluid-compact(14);
+    font-size: max(14px, ui-fluid-compact(14));
     line-height: 1;
   }
 
   &__value-title b {
     display: block;
-    font-size: ui-fluid-compact(30);
+    font-size: max(30px, ui-fluid-compact(30));
     font-weight: 400;
     line-height: 1;
   }
@@ -190,7 +282,7 @@
     margin: 0;
     padding: ui-fluid-compact(10);
     border-right: 1px solid $ui-border-table;
-    font-size: ui-fluid-compact(13);
+    font-size: max(13px, ui-fluid-compact(13));
     line-height: 1.08;
   }
 
@@ -220,13 +312,16 @@
   &__value-details dt,
   &__value-details dd {
     margin: 0;
-    font-size: ui-fluid-compact(12);
+    font-size: max(12px, ui-fluid-compact(12));
     line-height: 1.05;
   }
 
   &__body {
-    display: grid;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-start;
     gap: ui-fluid-compact(18);
+    margin-block: ui-fluid-compact(32);
   }
 
   &__heading h2 {
@@ -255,30 +350,37 @@
     font-weight: 600;
   }
 
-  &__tools {
+  &__info {
     display: flex;
-    justify-content: flex-start;
+    align-items: center;
+    gap: ui-fluid-compact(14);
   }
 
   &__info-button {
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    width: ui-fluid-compact(48);
-    height: ui-fluid-compact(48);
-    border: 0;
+    flex: 0 0 auto;
+    width: ui-fluid-compact(36);
+    height: ui-fluid-compact(36);
+    border: 1px solid $ui-border;
     border-radius: 999px;
-    background: $ui-brand-tint;
-    color: $ui-text;
+    background: transparent;
+    color: $ui-text-muted;
     font-family: $ui-font-family;
-    font-size: ui-fluid-compact(25);
-    font-weight: 600;
+    font-size: ui-fluid-compact(18);
+    font-weight: 400;
+    line-height: 1;
     cursor: pointer;
   }
 
+  &__info-button:hover,
+  &__info-button:focus-visible,
   &__info-button[aria-expanded='true'] {
-    background: $ui-brand;
-    color: $ui-text-inv;
+    border-color: $ui-brand;
+    background: transparent;
+    color: $ui-brand;
+    outline: none;
   }
 
   &__info-panel {
@@ -323,16 +425,38 @@
     display: flex;
     align-items: center;
     flex-wrap: wrap;
-    gap: ui-fluid-compact(8);
+    gap: ui-fluid-compact(10);
+    color: $ui-text-muted;
+    font-family: $ui-font-family;
+    font-size: ui-fluid-compact(18);
+    line-height: 1.15;
   }
 
-  &__facts span {
-    border-radius: 999px;
-    background: $ui-surface-wash;
-    padding: ui-fluid-compact(8) ui-fluid-compact(14);
+  &__facts span,
+  &__fact-link {
+    position: relative;
+    display: inline-flex;
+    align-items: center;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    color: inherit;
+    font: inherit;
+  }
+
+  &__fact-link {
+    color: $ui-brand;
+    cursor: pointer;
+    text-decoration: underline;
+    text-underline-offset: ui-fluid-compact(3);
+  }
+
+  &__facts span:not(:first-child)::before,
+  &__fact-link:not(:first-child)::before {
+    content: '|';
+    margin-right: ui-fluid-compact(10);
     color: $ui-text-muted;
-    font-size: ui-fluid-compact(18);
-    line-height: 1;
+    text-decoration: none;
   }
 
   &__action {
@@ -346,17 +470,54 @@
   }
 
   @include ui-regular {
+    &__set-head {
+      padding: ui-fluid-regular(32) ui-fluid-regular(28) ui-fluid-regular(16);
+    }
+
+    &__set-head h3 {
+      font-size: max(20px, ui-fluid-regular(20));
+    }
+
+    &__set-scroll {
+      gap: ui-fluid-regular(16);
+      padding: ui-fluid-regular(18) ui-fluid-regular(28) ui-fluid-regular(28);
+    }
+
+    &__set-item {
+      grid-template-columns: ui-fluid-regular(24) ui-fluid-regular(82) minmax(
+          0,
+          1fr
+        );
+      gap: ui-fluid-regular(12);
+    }
+
+    &__set-picture,
+    &__set-picture img {
+      width: ui-fluid-regular(82);
+      height: ui-fluid-regular(82);
+    }
+
+    &__set-text strong {
+      font-size: max(15px, ui-fluid-regular(15));
+    }
+
+    &__set-text span,
+    &__set-text small,
+    &__set-index {
+      font-size: max(12px, ui-fluid-regular(12));
+    }
+
     &__value-head {
       padding: ui-fluid-regular(42) ui-fluid-regular(34) ui-fluid-regular(18);
       gap: ui-fluid-regular(8);
     }
 
     &__value-head h3 {
-      font-size: ui-fluid-regular(28);
+      font-size: max(28px, ui-fluid-regular(28));
     }
 
     &__value-head p {
-      font-size: ui-fluid-regular(14);
+      font-size: max(14px, ui-fluid-regular(14));
     }
 
     &__value-tabs {
@@ -367,7 +528,7 @@
     &__value-tabs button {
       min-width: ui-fluid-regular(108);
       padding: ui-fluid-regular(7) ui-fluid-regular(16);
-      font-size: ui-fluid-regular(14);
+      font-size: max(14px, ui-fluid-regular(14));
     }
 
     &__value-list {
@@ -382,7 +543,7 @@
 
     &__value-index {
       padding-top: ui-fluid-regular(24);
-      font-size: ui-fluid-regular(13);
+      font-size: max(13px, ui-fluid-regular(13));
     }
 
     &__value-title {
@@ -392,25 +553,25 @@
 
     &__value-title strong {
       padding: ui-fluid-regular(12);
-      font-size: ui-fluid-regular(18);
+      font-size: max(18px, ui-fluid-regular(18));
     }
 
     &__value-title span {
-      font-size: ui-fluid-regular(11);
+      font-size: max(11px, ui-fluid-regular(11));
     }
 
     &__value-title b {
-      font-size: ui-fluid-regular(26);
+      font-size: max(26px, ui-fluid-regular(26));
     }
 
     &__value-details p {
       padding: ui-fluid-regular(10);
-      font-size: ui-fluid-regular(11);
+      font-size: max(11px, ui-fluid-regular(11));
     }
 
     &__value-details dl {
       gap: ui-fluid-regular(3);
-      padding: ui-fluid-regular(9);
+      padding: max(9px, ui-fluid-regular(9));
     }
 
     &__value-details div {
@@ -424,7 +585,7 @@
 
     &__value-details dt,
     &__value-details dd {
-      font-size: ui-fluid-regular(11);
+      font-size: max(11px, ui-fluid-regular(11));
     }
 
     &__layout {
@@ -436,6 +597,12 @@
 
     &__media {
       min-height: ui-fluid-regular(320);
+    }
+
+    &__badges {
+      top: ui-fluid-regular(14);
+      left: ui-fluid-regular(14);
+      gap: ui-fluid-regular(8);
     }
 
     &__heading h2 {
@@ -452,10 +619,14 @@
       font-size: ui-fluid-regular(21);
     }
 
+    &__info {
+      gap: ui-fluid-regular(12);
+    }
+
     &__info-button {
-      width: ui-fluid-regular(40);
-      height: ui-fluid-regular(40);
-      font-size: ui-fluid-regular(20);
+      width: ui-fluid-regular(30);
+      height: ui-fluid-regular(30);
+      font-size: ui-fluid-regular(15);
     }
 
     &__info-panel {
@@ -484,9 +655,14 @@
       font-size: ui-fluid-regular(15);
     }
 
-    &__facts span {
-      padding: ui-fluid-regular(8) ui-fluid-regular(12);
-      font-size: ui-fluid-regular(16);
+    &__facts {
+      gap: ui-fluid-regular(10);
+      font-size: ui-fluid-regular(15);
+    }
+
+    &__facts span:not(:first-child)::before,
+    &__fact-link:not(:first-child)::before {
+      margin-right: ui-fluid-regular(10);
     }
 
     &__action .ui-button,
@@ -499,17 +675,54 @@
     &__content.MuiDialogContent-root {
       border-radius: ui-fluid-expanded(32);
     }
+    &__set-head {
+      padding: ui-fluid-expanded(32) ui-fluid-expanded(28) ui-fluid-expanded(16);
+    }
+
+    &__set-head h3 {
+      font-size: max(20px, ui-fluid-expanded(20));
+    }
+
+    &__set-scroll {
+      gap: ui-fluid-expanded(16);
+      padding: ui-fluid-expanded(18) ui-fluid-expanded(28) ui-fluid-expanded(28);
+    }
+
+    &__set-item {
+      grid-template-columns: ui-fluid-expanded(24) ui-fluid-expanded(82) minmax(
+          0,
+          1fr
+        );
+      gap: ui-fluid-expanded(12);
+    }
+
+    &__set-picture,
+    &__set-picture img {
+      width: ui-fluid-expanded(82);
+      height: ui-fluid-expanded(82);
+    }
+
+    &__set-text strong {
+      font-size: max(15px, ui-fluid-expanded(15));
+    }
+
+    &__set-text span,
+    &__set-text small,
+    &__set-index {
+      font-size: max(12px, ui-fluid-expanded(12));
+    }
+
     &__value-head {
       padding: ui-fluid-expanded(42) ui-fluid-expanded(34) ui-fluid-expanded(18);
       gap: ui-fluid-expanded(8);
     }
 
     &__value-head h3 {
-      font-size: ui-fluid-expanded(24);
+      font-size: max(24px, ui-fluid-expanded(24));
     }
 
     &__value-head p {
-      font-size: ui-fluid-expanded(12);
+      font-size: max(12px, ui-fluid-expanded(12));
     }
 
     &__value-tabs {
@@ -520,7 +733,7 @@
     &__value-tabs button {
       min-width: ui-fluid-expanded(96);
       padding: ui-fluid-expanded(6) ui-fluid-expanded(14);
-      font-size: ui-fluid-expanded(12);
+      font-size: max(12px, ui-fluid-expanded(12));
     }
 
     &__value-list {
@@ -535,7 +748,7 @@
 
     &__value-index {
       padding-top: ui-fluid-expanded(24);
-      font-size: ui-fluid-expanded(12);
+      font-size: max(12px, ui-fluid-expanded(12));
     }
 
     &__value-title {
@@ -545,20 +758,20 @@
 
     &__value-title strong {
       padding: ui-fluid-expanded(12);
-      font-size: ui-fluid-expanded(18);
+      font-size: max(18px, ui-fluid-expanded(18));
     }
 
     &__value-title span {
-      font-size: ui-fluid-expanded(11);
+      font-size: max(11px, ui-fluid-expanded(11));
     }
 
     &__value-title b {
-      font-size: ui-fluid-expanded(25);
+      font-size: max(25px, ui-fluid-expanded(25));
     }
 
     &__value-details p {
       padding: ui-fluid-expanded(10);
-      font-size: ui-fluid-expanded(11);
+      font-size: max(11px, ui-fluid-expanded(11));
     }
 
     &__value-details dl {
@@ -577,7 +790,7 @@
 
     &__value-details dt,
     &__value-details dd {
-      font-size: ui-fluid-expanded(11);
+      font-size: max(11px, ui-fluid-expanded(11));
     }
 
     &__layout {
@@ -589,6 +802,12 @@
 
     &__media {
       min-height: ui-fluid-expanded(540);
+    }
+
+    &__badges {
+      top: ui-fluid-expanded(20);
+      left: ui-fluid-expanded(20);
+      gap: ui-fluid-expanded(8);
     }
 
     &__media img {
@@ -609,10 +828,14 @@
       font-size: ui-fluid-expanded(18);
     }
 
+    &__info {
+      gap: ui-fluid-expanded(12);
+    }
+
     &__info-button {
-      width: ui-fluid-expanded(34);
-      height: ui-fluid-expanded(34);
-      font-size: ui-fluid-expanded(16);
+      width: ui-fluid-expanded(24);
+      height: ui-fluid-expanded(24);
+      font-size: ui-fluid-expanded(13);
     }
 
     &__info-panel {
@@ -641,13 +864,19 @@
       font-size: ui-fluid-expanded(13);
     }
 
-    &__facts span {
-      padding: ui-fluid-expanded(7) ui-fluid-expanded(12);
+    &__facts {
+      gap: ui-fluid-expanded(10);
       font-size: ui-fluid-expanded(14);
+    }
+
+    &__facts span:not(:first-child)::before,
+    &__fact-link:not(:first-child)::before {
+      margin-right: ui-fluid-expanded(10);
     }
 
     &__action {
       width: ui-fluid-expanded(260);
+      margin-top: auto;
     }
 
     &__action .ui-button,
@@ -672,7 +901,8 @@
   }
 }
 
-.home-product-info-modal .home-product-modal__value--standalone {
+.home-product-info-modal .home-product-modal__value--standalone,
+.home-product-info-modal .home-product-modal__set-list--standalone {
   height: min(100dvh, 760px);
 }
 
@@ -747,7 +977,9 @@
   }
 
   .home-product-modal__layout--info
-    .home-product-modal__value.home-product-modal__value--inline {
+    .home-product-modal__value.home-product-modal__value--inline,
+  .home-product-modal__layout--info
+    .home-product-modal__set-list.home-product-modal__set-list--inline {
     height: min(78vh, 760px);
   }
 

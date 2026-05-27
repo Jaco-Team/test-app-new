@@ -35,7 +35,7 @@ export function Button({
       type={type}
       className={cn(
         'ui-button',
-        'ui-button--tone-' + tone,
+        'ui-button--tone-' + (tone === 'secondary' ? 'primary' : tone),
         'ui-button--size-' + size,
         'ui-button--density-' + density,
         active && 'ui-button--active',

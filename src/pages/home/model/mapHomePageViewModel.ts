@@ -50,6 +50,10 @@ type HomeProductSource = {
   carbohydrates?: number | string;
   calories?: number | string;
   badges?: { name?: string; type?: string }[];
+  tags?: Array<number | string>;
+  is_new?: number | string;
+  is_hit?: number | string;
+  is_updated?: number | string;
   link?: string;
   marc_desc_full?: string;
   items?: unknown[];
@@ -225,14 +229,45 @@ export function mapProduct(item: HomeProductSource): HomeProduct | null {
     ? resolveProductImageUrl(imgKey)
     : transparentProductImage;
 
-  const badges = Array.isArray(item.badges)
+  const badgeList = Array.isArray(item.badges)
     ? item.badges
         .filter((badge) => badge?.name)
         .map((badge) => ({
           label: String(badge.name),
           tone: (badge.type === 'hit' ? 'hit' : 'new') as BadgeTone,
         }))
-    : undefined;
+    : [];
+
+  if (
+    Number(item.is_new) === 1 &&
+    !badgeList.some((badge) => badge.tone === 'new')
+  ) {
+    badgeList.push({ label: 'НОВИНКА', tone: 'new' as BadgeTone });
+  }
+
+  if (
+    Number(item.is_hit) === 1 &&
+    !badgeList.some((badge) => badge.tone === 'hit')
+  ) {
+    badgeList.push({ label: 'ХИТ', tone: 'hit' as BadgeTone });
+  }
+
+  if (
+    Number(item.is_updated) === 1 &&
+    !badgeList.some((badge) => badge.tone === 'updated')
+  ) {
+    badgeList.push({ label: 'ОБНОВЛЕНО', tone: 'updated' as BadgeTone });
+  }
+
+  if (
+    Array.isArray(item.tags) &&
+    item.tags.map((tag) => Number(tag)).includes(14) &&
+    !badgeList.some((badge) => badge.tone === 'hot')
+  ) {
+    badgeList.push({ label: 'ОСТРО', tone: 'hot' as BadgeTone });
+  }
+
+  const badges = badgeList.length ? badgeList : undefined;
 
   const nutrition = [
     ['Белки', item.proteins],
@@ -285,6 +320,9 @@ export function mapProduct(item: HomeProductSource): HomeProduct | null {
     price,
     oldPrice: item.old_price ? Number(item.old_price) : undefined,
     badges,
+    tagIds: Array.isArray(item.tags)
+      ? item.tags.map((tag) => String(tag))
+      : undefined,
     raw: item as Record<string, unknown>,
   };
 }
@@ -470,6 +508,10 @@ export function mapTags(tags: unknown[]): HomeTagFilterItem[] {
 
       return {
         label,
+        id:
+          (tag as { id?: number | string }).id === undefined
+            ? String(index)
+            : String((tag as { id?: number | string }).id),
         active: false,
         tone:
           normalized === 'новинка' || normalized === 'new' ? 'new' : 'default',

@@ -26,6 +26,12 @@
   &--tone-sale {
     background: $ui-badge-sale;
   }
+  &--tone-updated {
+    background: $ui-badge-updated;
+  }
+  &--tone-hot {
+    background: $ui-badge-hot;
+  }
   &--tone-neutral {
     background: $ui-surface-grey;
   }
@@ -33,9 +39,9 @@
     background: $ui-success;
   }
   &--size-sm {
-    min-height: ui-fluid-compact(34);
-    padding: 0 ui-fluid-compact(14);
-    font-size: ui-fluid-compact(18);
+    min-height: ui-fluid-compact(26);
+    padding: 0 ui-fluid-compact(11);
+    font-size: ui-fluid-compact(14);
   }
   &--size-md {
     min-height: ui-fluid-compact(42);
@@ -50,9 +56,9 @@
 
   @include ui-regular {
     &--size-sm {
-      min-height: ui-fluid-regular(34);
-      padding: 0 ui-fluid-regular(14);
-      font-size: ui-fluid-regular(18);
+      min-height: ui-fluid-regular(26);
+      padding: 0 ui-fluid-regular(11);
+      font-size: ui-fluid-regular(14);
     }
     &--size-md {
       min-height: ui-fluid-regular(42);
@@ -68,9 +74,9 @@
 
   @include ui-expanded {
     &--size-sm {
-      min-height: ui-fluid-expanded(34);
-      padding: 0 ui-fluid-expanded(14);
-      font-size: ui-fluid-expanded(18);
+      min-height: ui-fluid-expanded(26);
+      padding: 0 ui-fluid-expanded(11);
+      font-size: ui-fluid-expanded(14);
     }
     &--size-md {
       min-height: ui-fluid-expanded(42);

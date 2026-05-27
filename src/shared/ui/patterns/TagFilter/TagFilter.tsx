@@ -9,6 +9,7 @@ export type TagFilterItem = {
   label: string;
   active?: boolean;
   tone?: 'default' | 'new';
+  id?: string;
 };
 
 export interface TagFilterProps extends Omit<
@@ -81,7 +82,7 @@ export function TagFilter({
               onClear?.();
             }}
           >
-            <span className="ui-tag-filter__label">Очистить</span>
+            <div className="ui-tag-filter__label">Очистить</div>
           </button>
         ) : null}
       </div>
