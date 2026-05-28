@@ -12,6 +12,7 @@ export interface QuantityControlProps extends Omit<
   max?: number;
   size?: QuantityControlSize;
   disabled?: boolean;
+  valueLabel?: string;
   onChange?: (value: number) => void;
 }
 
@@ -21,6 +22,7 @@ export function QuantityControl({
   max = 99,
   size = 'sm',
   disabled = false,
+  valueLabel,
   onChange,
   className,
   ...props
@@ -47,7 +49,7 @@ export function QuantityControl({
       >
         –
       </button>
-      <span>{value}</span>
+      <span>{valueLabel ?? value}</span>
       <button
         type="button"
         aria-label="Увеличить"

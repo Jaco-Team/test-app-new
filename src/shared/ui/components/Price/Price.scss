@@ -63,13 +63,13 @@
   @include ui-expanded {
     gap: ui-fluid-expanded(12);
     &--size-sm {
-      font-size: ui-fluid-expanded(24);
+      font-size: ui-fluid-expanded(20);
     }
     &--size-md {
-      font-size: ui-fluid-expanded(32);
+      font-size: ui-fluid-expanded(24);
     }
     &--size-lg {
-      font-size: ui-fluid-expanded(40);
+      font-size: ui-fluid-expanded(28);
     }
     &--size-sm .ui-price__old {
       font-size: ui-fluid-expanded(20);

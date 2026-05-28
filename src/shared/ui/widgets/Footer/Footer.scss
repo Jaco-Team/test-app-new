@@ -6,7 +6,7 @@
   width: 100%;
   padding: ui-fluid-compact(48) ui-fluid-compact(30) ui-fluid-compact(40);
   background: $ui-neutral-muted;
-  color: $ui-text-footer;
+  color: $ui-text-secondary;
   font-family: $ui-font-family;
 
   &__inner {
@@ -28,7 +28,7 @@
     font-weight: 700;
     line-height: 1.2;
     text-transform: uppercase;
-    color: $ui-text-footer;
+    color: $ui-text-secondary;
   }
 
   &__links {
