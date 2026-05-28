@@ -1053,7 +1053,25 @@ export function ArrowUpHeader(props: SvgIconProps = {}) {
   );
 }
 
-export function BurgerIconPC(props: SvgIconProps = {}) {
+export function ArrowUpIcon(props: SvgIconProps = {}) {
+  return (
+    <svg
+      xmlns="http://www.w3.org/2000/svg"
+      fill="none"
+      width="60"
+      height="60"
+      viewBox="0 0 60 60"
+      {...props}
+    >
+      <path
+        fill="#fff"
+        d="M25.773 60V16.168l-19.84 19.84L0 30 30 0l30 30-5.933 6.007-19.84-19.839V60h-8.454z"
+      ></path>
+    </svg>
+  );
+}
+
+export function BurgerIcon(props: SvgIconProps = {}) {
   return (
     <svg
       xmlns="http://www.w3.org/2000/svg"

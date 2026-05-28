@@ -124,7 +124,7 @@ export function CategoryMenu({
       const headerHeight =
         document.getElementById('headerNew')?.getBoundingClientRect().height ??
         0;
-      const marker = headerHeight + menuHeight + 8;
+      const marker = headerHeight + menuHeight + 12;
 
       candidates.forEach((item) => {
         if (!item.targetId) {

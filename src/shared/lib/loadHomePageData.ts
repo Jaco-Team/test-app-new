@@ -37,13 +37,13 @@ export async function loadHomePageData(
     redirect(cityBase(city));
   }
 
-  const data1 = await api(HOME_MODULE, {
+  const data = await api(HOME_MODULE, {
     type: 'get_page_info',
     city_id: city,
     page: '',
   });
 
-  if (!data1 || data1?.page == null) {
+  if (!data || data?.page == null) {
     if (city !== 'togliatti') {
       redirect(cityBase('togliatti'));
     }
@@ -71,13 +71,13 @@ export async function loadHomePageData(
 
   return {
     city,
-    page: data1.page ?? null,
-    cats: Array.isArray(data1.cats) ? data1.cats : [],
-    cities: Array.isArray(data1.cities) ? data1.cities : [],
-    all_items: Array.isArray(data1.all_items) ? data1.all_items : [],
-    free_items: Array.isArray(data1.free_items) ? data1.free_items : [],
-    need_dop: data1.need_dop ?? {},
-    tags: Array.isArray(data1.tags) ? data1.tags : [],
+    page: data.page ?? null,
+    cats: Array.isArray(data.cats) ? data.cats : [],
+    cities: Array.isArray(data.cities) ? data.cities : [],
+    all_items: Array.isArray(data.all_items) ? data.all_items : [],
+    free_items: Array.isArray(data.free_items) ? data.free_items : [],
+    need_dop: data.need_dop ?? {},
+    tags: Array.isArray(data.tags) ? data.tags : [],
     links: (footer?.page as Record<string, unknown>) ?? {},
     banners: bannerList,
   };

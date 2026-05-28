@@ -247,26 +247,25 @@ export function BasketPanel({ city }: { city: string }) {
             })}
           </section>
         ) : null}
-      </div>
-
-      <div className="basket-panel__footer">
-        <div className="basket-panel__total">
-          <span>{`Итого: ${itemsCount} ${positionWord(itemsCount)}`}</span>
-          <strong>{label}</strong>
+        <div className="basket-panel__footer">
+          <div className="basket-panel__total">
+            <span>{`Итого: ${itemsCount} ${positionWord(itemsCount)}`}</span>
+            <strong>{label}</strong>
+          </div>
+          <input
+            className="basket-panel__promo"
+            type="text"
+            placeholder="Есть промокод"
+            aria-label="Промокод"
+          />
+          <Link
+            className="ui-button ui-button--tone-primary ui-button--size-lg ui-button--density-regular basket-panel__order"
+            href={cartHref}
+            onClick={() => setActiveBasket(false)}
+          >
+            <span className="ui-button__label">Оформить заказ</span>
+          </Link>
         </div>
-        <input
-          className="basket-panel__promo"
-          type="text"
-          placeholder="Есть промокод"
-          aria-label="Промокод"
-        />
-        <Link
-          className="ui-button ui-button--tone-primary ui-button--size-lg ui-button--density-regular basket-panel__order"
-          href={cartHref}
-          onClick={() => setActiveBasket(false)}
-        >
-          <span className="ui-button__label">Сделать заказ</span>
-        </Link>
       </div>
     </div>
   );

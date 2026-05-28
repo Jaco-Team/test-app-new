@@ -8,24 +8,25 @@
   font-family: $ui-font-family;
   letter-spacing: 0;
   white-space: nowrap;
+  font-weight: 400;
 
   &__current {
     color: $ui-text;
-    font-weight: 500;
+    // font-weight: 500;
   }
   &__old {
     color: $ui-text-subtle;
     text-decoration: line-through;
-    font-weight: 400;
+    // font-weight: 400;
   }
   &--size-sm {
     font-size: ui-fluid-compact(24);
   }
   &--size-md {
-    font-size: ui-fluid-compact(32);
+    font-size: ui-fluid-compact(28);
   }
   &--size-lg {
-    font-size: ui-fluid-compact(40);
+    font-size: ui-fluid-compact(36);
   }
   &--size-sm .ui-price__old {
     font-size: ui-fluid-compact(20);

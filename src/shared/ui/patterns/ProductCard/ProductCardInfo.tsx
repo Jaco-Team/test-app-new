@@ -14,8 +14,9 @@ export type ProductCardInfoProps = {
   className?: string;
 };
 
-const ROLL_CATEGORY_IDS = new Set(['4', '9', '10', '12', '13']);
-const PIZZA_CATEGORY_ID = '14';
+const SET_CATEGORY_IDS = new Set(['4']);
+const ROLL_CATEGORY_IDS = new Set(['9', '10', '12', '13']);
+const PIZZA_CATEGORY_IDS = new Set('14');
 
 function cleanValue(value: unknown): string | undefined {
   const text = String(value ?? '').trim();
@@ -38,18 +39,19 @@ export function ProductCardInfo({
 }: ProductCardInfoProps) {
   const catId = cleanValue(info?.catId);
   const weight = withUnit(info?.weight, 'г');
+  const countRolls = withUnit(info?.countPart, 'шт');
   const countPart = withUnit(info?.countPart, 'шт');
   const pizzaSize = withUnit(info?.sizePizza, 'см');
   const countPartNew = cleanValue(info?.countPartNew);
   const items =
-    catId === PIZZA_CATEGORY_ID
+    catId && PIZZA_CATEGORY_IDS.has(catId)
       ? [pizzaSize, weight]
       : catId && ROLL_CATEGORY_IDS.has(catId)
         ? [countPart, weight]
         : [pizzaSize, countPart, weight, countPartNew];
   const visibleItems = items.filter((item): item is string => Boolean(item));
   const fallbackItems = fallback.filter(Boolean);
-  const displayItems = visibleItems.length ? visibleItems : fallbackItems;
+  const displayItems = visibleItems || fallbackItems;
 
   if (!displayItems.length) {
     return null;

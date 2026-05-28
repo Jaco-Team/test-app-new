@@ -3,13 +3,14 @@
 
 .ui-category-menu {
   position: sticky;
-  top: ui-fluid-compact(148);
-  z-index: $ui-z-header;
+  top: ui-fluid-compact(140);
+  z-index: $ui-z-header - 1;
   width: 100%;
   min-width: 0;
   overflow: hidden;
   background: $ui-surface;
   font-family: $ui-font-family;
+  padding-bottom: ui-fluid-compact(14);
   @include ui-reveal(500ms);
 
   &__row {
@@ -29,10 +30,11 @@
   &__row--secondary {
     gap: ui-fluid-compact(14);
     min-height: ui-fluid-compact(110);
-    padding: ui-fluid-compact(18) ui-fluid-compact(30) ui-fluid-compact(17);
+    padding: ui-fluid-compact(18) ui-fluid-compact(30) 0;
   }
 
   &__row--empty {
+    display: none;
     pointer-events: none;
   }
 
@@ -88,7 +90,7 @@
 
 @include ui-regular {
   .ui-category-menu {
-    top: ui-fluid-regular(114);
+    top: ui-fluid-regular(110);
 
     &__row--primary {
       gap: ui-fluid-regular(18);
