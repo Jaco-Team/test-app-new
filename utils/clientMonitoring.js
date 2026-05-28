@@ -143,32 +143,44 @@ function shouldSkipResourceSentryByTag(tagName) {
   return tagName === 'img';
 }
 
-const IGNORED_RESOURCE_LOAD_HOSTS = new Set([
+const IGNORED_RESOURCE_LOAD_HOST_SUFFIXES = [
   'telegram.org',
   'mc.yandex.ru',
   'abt.s3.yandex.net',
-]);
-
-const IGNORED_RESOURCE_LOAD_URL_MARKERS = [
-  'telegram.org/',
-  'mc.yandex.ru/',
-  'abt.s3.yandex.net/',
 ];
+
+const IGNORED_RESOURCE_LOAD_URL_PATTERNS = [
+  /^https?:\/\/(?:[^/]+\.)?telegram\.org\/js\/pixel\.js(?:[?#]|$)/i,
+  /^https?:\/\/mc\.yandex\.ru\//i,
+  /^https?:\/\/abt\.s3\.yandex\.net\//i,
+];
+
+function matchesIgnoredResourceHost(resourceHost) {
+  const host = String(resourceHost || '')
+    .trim()
+    .toLowerCase();
+
+  if (!host) {
+    return false;
+  }
+
+  return IGNORED_RESOURCE_LOAD_HOST_SUFFIXES.some(
+    (suffix) => host === suffix || host.endsWith(`.${suffix}`)
+  );
+}
 
 export function shouldSkipIgnoredResourceLoadSentry(
   resourceHost,
   normalizedResourceUrl
 ) {
-  const host = String(resourceHost || '').toLowerCase();
-
-  if (IGNORED_RESOURCE_LOAD_HOSTS.has(host)) {
+  if (matchesIgnoredResourceHost(resourceHost)) {
     return true;
   }
 
-  const url = String(normalizedResourceUrl || '').toLowerCase();
+  const url = String(normalizedResourceUrl || '').trim();
 
-  return IGNORED_RESOURCE_LOAD_URL_MARKERS.some((marker) =>
-    url.includes(marker)
+  return IGNORED_RESOURCE_LOAD_URL_PATTERNS.some((pattern) =>
+    pattern.test(url)
   );
 }
 

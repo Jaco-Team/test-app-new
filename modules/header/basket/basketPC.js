@@ -1,6 +1,11 @@
 import React, { useState, useEffect } from 'react';
 
-import { useHeaderStoreNew, useCartStore, useCitiesStore, useProfileStore } from '@/components/store.js';
+import {
+  useHeaderStoreNew,
+  useCartStore,
+  useCitiesStore,
+  useProfileStore,
+} from '@/components/store.js';
 
 import TablePC from './tablePC';
 
@@ -19,19 +24,43 @@ import Typography from '@mui/material/Typography';
 
 import { reachGoal } from '@/utils/metrika';
 
-import Cookies from 'js-cookie'
+import Cookies from 'js-cookie';
 
-const dopText = 'Блюда могут содержать ингредиенты, обладающие аллергенными свойствами. Если у вам есть аллергия на какой-либо продукт, пожалуйста, уточняйте состав в меню или на кассе. Обратите внимание, что мы не можем исключить или заменить ингредиенты, но с удовольствием поможем выбрать блюдо с подходящим составом.';
+const dopText =
+  'Блюда могут содержать ингредиенты, обладающие аллергенными свойствами. Если у вам есть аллергия на какой-либо продукт, пожалуйста, уточняйте состав в меню или на кассе. Обратите внимание, что мы не можем исключить или заменить ингредиенты, но с удовольствием поможем выбрать блюдо с подходящим составом.';
 
 export default function BasketPC() {
   const [promo, setPromo] = useState('');
   //const [scrollBasket, setScrollBasket] = useState(0);
+  const anchorEl =
+    typeof document !== 'undefined'
+      ? document.getElementById('headerNew')
+      : null;
 
   const [thisCity] = useCitiesStore((state) => [state.thisCity]);
-  const [getInfoPromo, checkPromo, allPrice, promoInfo, itemsCount, setActiveModalBasket, itemsOffDops] = useCartStore((state) => [state.getInfoPromo, state.checkPromo, state.allPrice, state.promoInfo, state.itemsCount, state.setActiveModalBasket, state.itemsOffDops]);
-  const [openBasket, setActiveBasket, targetBasket] = useHeaderStoreNew((state) => [state?.openBasket, state?.setActiveBasket, state?.targetBasket]);
-  
-  const [ saveUserActions ] = useProfileStore((state) => [state.saveUserActions]);
+  const [
+    getInfoPromo,
+    checkPromo,
+    allPrice,
+    promoInfo,
+    itemsCount,
+    setActiveModalBasket,
+    itemsOffDops,
+  ] = useCartStore((state) => [
+    state.getInfoPromo,
+    state.checkPromo,
+    state.allPrice,
+    state.promoInfo,
+    state.itemsCount,
+    state.setActiveModalBasket,
+    state.itemsOffDops,
+  ]);
+  const [openBasket, setActiveBasket] = useHeaderStoreNew((state) => [
+    state?.openBasket,
+    state?.setActiveBasket,
+  ]);
+
+  const [saveUserActions] = useProfileStore((state) => [state.saveUserActions]);
 
   useEffect(() => {
     if (Cookies.get('promo_name') && Cookies.get('promo_name').length > 0) {
@@ -41,36 +70,35 @@ export default function BasketPC() {
 
   //const listenScrollEvent = (event) => setScrollBasket(event.target.scrollTop);
 
-  function openBasketModal(){
-    setActiveModalBasket(true); 
-    setActiveBasket(false); 
+  function openBasketModal() {
+    setActiveModalBasket(true);
+    setActiveBasket(false);
 
     // if( isAuth == 'auth' ){
-    //   setActiveModalBasket(true); 
-    //   setActiveBasket(false); 
+    //   setActiveModalBasket(true);
+    //   setActiveBasket(false);
     //   //setScrollBasket(0);
     // }else{
-    //   setActiveBasket(false); 
+    //   setActiveBasket(false);
     //   //setScrollBasket(0);
     //   setActiveModalAuth(true);
     // }
 
     //saveUserActions('open_card', '', allPrice);
-    reachGoal('open_basket'); 
+    reachGoal('open_basket');
 
     if (Cookies.get('promo_name') && Cookies.get('promo_name').length > 0) {
-      getInfoPromo(Cookies.get('promo_name'), thisCity)
+      getInfoPromo(Cookies.get('promo_name'), thisCity);
     }
   }
 
-  function setPromoText(event){
-
+  function setPromoText(event) {
     if (event.keyCode === 13) {
       getInfoPromo(promo, thisCity);
 
-      setTimeout( () => {
-        getInfoPromo(promo, thisCity)
-      }, 300 )
+      setTimeout(() => {
+        getInfoPromo(promo, thisCity);
+      }, 300);
     }
   }
 
@@ -79,24 +107,24 @@ export default function BasketPC() {
       <Popover
         id="simple-popover"
         open={openBasket}
-        anchorEl={targetBasket}
-        onClose={() => setActiveBasket(false) }
+        anchorEl={anchorEl}
+        onClose={() => setActiveBasket(false)}
         anchorOrigin={{ vertical: 'bottom', horizontal: 'right' }}
         transformOrigin={{ vertical: 'top', horizontal: 'right' }}
         marginThreshold={0}
         className={roboto.variable}
+        disableAutoFocus
+        disableEnforceFocus
+        disableRestoreFocus
       >
         <div>
-
           {/* <span className='dopText'>{dopText}</span> */}
 
-          <Accordion className='dopText_accordion'>
+          <Accordion className="dopText_accordion">
             <AccordionSummary expandIcon={<ExpandMoreIcon />}>
               <Typography>Об аллергенах</Typography>
             </AccordionSummary>
-            <AccordionDetails>
-              {dopText}
-            </AccordionDetails>
+            <AccordionDetails>{dopText}</AccordionDetails>
           </Accordion>
 
           <TablePC />
@@ -121,17 +149,37 @@ export default function BasketPC() {
               suppressAutofill={true}
               inputAdornment={
                 <InputAdornment position="end">
-                  {checkPromo ? checkPromo.st ? <div className="circleInput"></div> : <div className="circleInput" style={{ background: '#DD1A32' }}></div> : null}
+                  {checkPromo ? (
+                    checkPromo.st ? (
+                      <div className="circleInput"></div>
+                    ) : (
+                      <div
+                        className="circleInput"
+                        style={{ background: '#DD1A32' }}
+                      ></div>
+                    )
+                  ) : null}
                 </InputAdornment>
               }
             />
-            {checkPromo ? checkPromo.st && itemsOffDops.length ? <div>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</div> : null : null}
+            {checkPromo ? (
+              checkPromo.st && itemsOffDops.length ? (
+                <div>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</div>
+              ) : null
+            ) : null}
             {/* {promoInfo?.items_on_price?.length ? promoItemsFind ? <div>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</div> : null 
               : promoInfo?.status_promo && itemsCount ? <div>{new Intl.NumberFormat('ru-RU').format(allPrice)} ₽</div> : null} */}
           </div>
 
           <div className="DescPromo">
-            <span style={{ color: checkPromo?.st === false ? '#DD1A32' : 'rgba(0, 0, 0, 0.80)' }}>{checkPromo?.text}</span>
+            <span
+              style={{
+                color:
+                  checkPromo?.st === false ? '#DD1A32' : 'rgba(0, 0, 0, 0.80)',
+              }}
+            >
+              {checkPromo?.text}
+            </span>
           </div>
 
           <div className="InCart">
@@ -143,10 +191,9 @@ export default function BasketPC() {
               <span>Оформить заказ</span>
             </Button>
           </div>
-
         </div>
       </Popover>
-      { openBasket ? <div className="blockShadowBasket" /> : false }
+      {openBasket ? <div className="blockShadowBasket" /> : false}
     </>
   );
 }

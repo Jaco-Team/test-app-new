@@ -284,7 +284,6 @@ export const useHeaderStoreNew = reuseHotStore(
       openCityModal: false,
       openAuthModal: false,
       openBasket: false,
-      targetBasket: null,
 
       errTextAuth: '',
       token: '',
@@ -933,10 +932,9 @@ export const useHeaderStoreNew = reuseHotStore(
       // открытие/закрытие корзины на главное странице
       setActiveBasket: (active) => {
         if (!active) {
-          set({ targetBasket: null, openBasket: active });
+          set({ openBasket: active });
         } else {
-          const anchorEl = document.getElementById('headerNew');
-          set({ targetBasket: anchorEl, openBasket: active });
+          set({ openBasket: active });
         }
       },
 

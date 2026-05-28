@@ -76,6 +76,14 @@ const replaysOnErrorSampleRate = 0.1;
 const enableLogs = 0.1;
 const enableReplay =
   replaysSessionSampleRate > 0 || replaysOnErrorSampleRate > 0;
+const ignoredClientSpans = [
+  {
+    op: 'http.client',
+    attributes: {
+      'server.address': 'mc.yandex.ru',
+    },
+  },
+];
 
 Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
@@ -90,6 +98,7 @@ Sentry.init({
   maxValueLength: 1000,
   normalizeDepth: 6,
   normalizeMaxBreadth: 1200,
+  ignoreSpans: ignoredClientSpans,
   initialScope(scope) {
     scope.setTags({
       app: 'jacofood-web',
