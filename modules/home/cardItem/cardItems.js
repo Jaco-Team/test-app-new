@@ -256,6 +256,37 @@ export default React.memo(function CatItems({ showCategoryHeadings = false }) {
     [badge_filter, tag_filter, text_filter]
   );
 
+  const leafCategoryOrderById = useMemo(() => {
+    const result = new Map();
+    let order = 0;
+
+    (category || []).forEach((mainCat) => {
+      const nestedCats = Array.isArray(mainCat?.cats) ? mainCat.cats : [];
+
+      if (nestedCats.length > 0) {
+        nestedCats.forEach((nested) => {
+          const nestedId = String(nested?.id ?? '').trim();
+
+          if (nestedId.length > 0 && !result.has(nestedId)) {
+            result.set(nestedId, order);
+            order += 1;
+          }
+        });
+
+        return;
+      }
+
+      const mainId = String(mainCat?.id ?? '').trim();
+
+      if (mainId.length > 0 && !result.has(mainId)) {
+        result.set(mainId, order);
+        order += 1;
+      }
+    });
+
+    return result;
+  }, [category]);
+
   const cats = useMemo(
     () =>
       (CatsItems || []).map((cat) => ({
@@ -276,7 +307,7 @@ export default React.memo(function CatItems({ showCategoryHeadings = false }) {
           )
         : cats;
 
-    return sourceCats
+    const filteredCats = sourceCats
       .map((cat) => ({
         ...cat,
         items: (cat.items || []).filter((item) =>
@@ -284,22 +315,20 @@ export default React.memo(function CatItems({ showCategoryHeadings = false }) {
         ),
       }))
       .filter((cat) => cat.items.length > 0);
-  }, [cats, catygory, catalogFilter]);
 
-  const mainCategoryTitleById = useMemo(() => {
-    const result = new Map();
+    return filteredCats.slice().sort((a, b) => {
+      const aId = String(a?.id ?? '').trim();
+      const bId = String(b?.id ?? '').trim();
+      const aOrder = leafCategoryOrderById.get(aId);
+      const bOrder = leafCategoryOrderById.get(bId);
 
-    (category || []).forEach((mainCat) => {
-      const mainId = String(mainCat?.id ?? '').trim();
-      const mainName = String(mainCat?.name ?? '').trim();
+      if (aOrder == null && bOrder == null) return 0;
+      if (aOrder == null) return 1;
+      if (bOrder == null) return -1;
 
-      if (mainId && mainName) {
-        result.set(mainId, mainName);
-      }
+      return aOrder - bOrder;
     });
-
-    return result;
-  }, [category]);
+  }, [cats, catygory, catalogFilter, leafCategoryOrderById]);
 
   useEffect(() => {
     if (!isRouterReady) {
@@ -537,22 +566,10 @@ export default React.memo(function CatItems({ showCategoryHeadings = false }) {
   }
 
   if (isHomeMobile) {
-    const renderedMainCategoryIds = new Set();
-
     return visibleCats.map((cat, key) => {
-      const mainCategoryId = String(cat?.main_id ?? cat?.id ?? '').trim();
-      const mainCategoryTitle =
-        mainCategoryTitleById.get(mainCategoryId) ||
-        String(cat?.main_name ?? '').trim();
-      const shouldShowMainTitle =
-        showCategoryHeadings &&
-        mainCategoryId.length > 0 &&
-        mainCategoryTitle.length > 0 &&
-        !renderedMainCategoryIds.has(mainCategoryId);
-
-      if (shouldShowMainTitle) {
-        renderedMainCategoryIds.add(mainCategoryId);
-      }
+      const categoryTitle = String(cat?.name ?? cat?.main_name ?? '').trim();
+      const shouldShowCategoryTitle =
+        showCategoryHeadings && categoryTitle.length > 0;
 
       return (
         <Grid
@@ -564,9 +581,9 @@ export default React.memo(function CatItems({ showCategoryHeadings = false }) {
           className="ContainerCardItemMobile"
           style={{ transform: `translateY(${transition_menu_mobile})` }}
         >
-          {shouldShowMainTitle ? (
+          {shouldShowCategoryTitle ? (
             <h2 className="HomeCategoryTitle HomeCategoryTitle--mobile">
-              {mainCategoryTitle}
+              {categoryTitle}
             </h2>
           ) : null}
 
@@ -578,22 +595,10 @@ export default React.memo(function CatItems({ showCategoryHeadings = false }) {
     });
   }
 
-  const renderedMainCategoryIds = new Set();
-
   return visibleCats.map((cat, key) => {
-    const mainCategoryId = String(cat?.main_id ?? cat?.id ?? '').trim();
-    const mainCategoryTitle =
-      mainCategoryTitleById.get(mainCategoryId) ||
-      String(cat?.main_name ?? '').trim();
-    const shouldShowMainTitle =
-      showCategoryHeadings &&
-      mainCategoryId.length > 0 &&
-      mainCategoryTitle.length > 0 &&
-      !renderedMainCategoryIds.has(mainCategoryId);
-
-    if (shouldShowMainTitle) {
-      renderedMainCategoryIds.add(mainCategoryId);
-    }
+    const categoryTitle = String(cat?.name ?? cat?.main_name ?? '').trim();
+    const shouldShowCategoryTitle =
+      showCategoryHeadings && categoryTitle.length > 0;
 
     return (
       <Grid
@@ -604,9 +609,9 @@ export default React.memo(function CatItems({ showCategoryHeadings = false }) {
         id={'cat' + cat.id}
         className={`ContainerCardItemPC ${key === 0 ? 'ContainerCardItemPC--first' : ''} ${key === (visibleCats?.length ?? 0) - 1 ? 'ContainerCardItemPC--last' : ''}`}
       >
-        {shouldShowMainTitle ? (
+        {shouldShowCategoryTitle ? (
           <h2 className="HomeCategoryTitle HomeCategoryTitle--desktop">
-            {mainCategoryTitle}
+            {categoryTitle}
           </h2>
         ) : null}
 
