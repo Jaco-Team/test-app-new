@@ -410,7 +410,6 @@ export function ProductDetailsModal({
                       <Badge
                         key={badge.tone + (badge.label ?? '')}
                         tone={badge.tone}
-                        size="sm"
                       >
                         {badge.label}
                       </Badge>

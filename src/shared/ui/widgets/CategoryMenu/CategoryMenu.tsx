@@ -98,6 +98,22 @@ export function CategoryMenu({
     [onItemSelect]
   );
 
+  const hasActiveFilter = tags.some((tag) => tag.active);
+  const isFilterActive = filterOpen || hasActiveFilter;
+
+  const handleTagChange = useCallback(
+    (item: TagFilterItem, index: number) => {
+      onTagChange?.(item, index);
+      setFilterOpen(false);
+    },
+    [onTagChange]
+  );
+
+  const handleTagClear = useCallback(() => {
+    onTagClear?.();
+    setFilterOpen(false);
+  }, [onTagClear]);
+
   useEffect(() => {
     scrollRowToActiveButton(primaryRowRef.current, 'edge');
   }, [displayTargetId, primaryItems]);
@@ -149,9 +165,10 @@ export function CategoryMenu({
           {tags.length > 0 ? (
             <CategoryButton
               iconOnly
-              active={filterOpen}
+              active={isFilterActive}
               aria-label="Фильтры"
-              onClick={() => setFilterOpen(true)}
+              aria-pressed={isFilterActive}
+              onClick={() => setFilterOpen((open) => !open)}
             >
               <TuneRoundedIcon aria-hidden="true" />
             </CategoryButton>
@@ -186,7 +203,6 @@ export function CategoryMenu({
       <ModalWrapper
         open={filterOpen}
         onClose={() => setFilterOpen(false)}
-        title="Фильтры"
         variant="responsive"
         className="ui-category-menu__filter-modal"
         closeOutside
@@ -194,8 +210,8 @@ export function CategoryMenu({
         <TagFilter
           items={tags}
           className="ui-category-menu__filter-tags"
-          onChange={onTagChange}
-          onClear={onTagClear}
+          onChange={handleTagChange}
+          onClear={handleTagClear}
         />
       </ModalWrapper>
     </>

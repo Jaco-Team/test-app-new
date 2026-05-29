@@ -38,8 +38,47 @@
     pointer-events: none;
   }
 
-  &__filter-modal .ui-modal-wrapper__content {
-    padding-top: ui-fluid-compact(24);
+  &__filter-modal.ui-modal-wrapper--sheet .ui-modal-wrapper__content {
+    padding: 0;
+  }
+
+  &__filter-modal {
+    .ui-tag-filter__list {
+      gap: ui-fluid-compact(30) ui-fluid-compact(22);
+      padding: ui-fluid-compact(45) ui-fluid-compact(8) ui-fluid-compact(543)
+        ui-fluid-compact(45);
+    }
+
+    .ui-tag-filter__item {
+      min-height: ui-fluid-compact(77);
+      padding: 0 ui-fluid-compact(49);
+      border: 1px solid rgba(0, 0, 0, 0.125);
+      border-radius: ui-fluid-compact(36);
+      font-size: ui-fluid-compact(33);
+    }
+
+    .ui-tag-filter__item--new {
+      border-color: $ui-transparent;
+    }
+
+    .ui-tag-filter__item--active {
+      padding-right: 0;
+      padding-left: ui-fluid-compact(26);
+      border-color: $ui-brand;
+    }
+
+    .ui-tag-filter__close {
+      width: ui-fluid-compact(52);
+      height: ui-fluid-compact(52);
+      margin-left: ui-fluid-compact(8);
+      font-size: ui-fluid-compact(52);
+    }
+
+    .ui-tag-filter__item--clear {
+      margin-top: 0;
+      margin-right: 0;
+      border-color: $ui-transparent;
+    }
   }
 
   &__filter-tags {

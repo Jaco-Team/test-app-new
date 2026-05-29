@@ -129,9 +129,13 @@ export function ModalWrapper({
           },
         }}
       >
-        <div className="ui-modal-wrapper__sheet-grip" aria-hidden="true" />
-        {titleNode}
-        {contentNode}
+        <div className="ui-modal-wrapper__sheet">
+          <div className="ui-modal-wrapper__sheet-header">
+            <div className="ui-modal-wrapper__sheet-grip" aria-hidden="true" />
+            {titleNode}
+          </div>
+          {contentNode}
+        </div>
       </SwipeableDrawer>
     );
   }

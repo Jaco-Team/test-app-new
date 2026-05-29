@@ -77,30 +77,66 @@
     right: 0;
     bottom: 0;
     left: 0;
+    display: flex;
+    flex-direction: column;
     width: 100%;
-    max-height: calc(100dvh - 54px);
+    min-height: 50dvh;
+    max-height: calc(100dvh - #{ui-fluid-compact(54)});
     border-radius: ui-fluid-compact(58) ui-fluid-compact(58) 0 0;
     overflow: hidden;
     box-shadow: 0 -16px 48px $ui-border;
   }
 
+  &__sheet {
+    display: flex;
+    flex: 1 1 auto;
+    flex-direction: column;
+    min-height: 0;
+    max-height: inherit;
+    overflow: hidden;
+  }
+
+  &__sheet-header {
+    position: sticky;
+    top: 0;
+    z-index: 2;
+    flex: 0 0 auto;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    min-height: ui-fluid-compact(125);
+    padding: ui-fluid-compact(28) ui-fluid-compact(30) ui-fluid-compact(18);
+    background: inherit;
+    border-radius: ui-fluid-compact(58) ui-fluid-compact(58) 0 0;
+  }
+
   &__sheet-grip {
-    position: absolute;
-    top: ui-fluid-compact(28);
-    left: 50%;
-    z-index: 4;
+    flex: 0 0 auto;
     width: ui-fluid-compact(150);
     height: ui-fluid-compact(10);
     border-radius: ui-fluid-compact(10);
     background: $ui-neutral-control;
-    transform: translateX(-50%);
     pointer-events: none;
   }
 
+  &--sheet &__title.MuiDialogTitle-root {
+    flex: 0 0 auto;
+    width: 100%;
+    margin: 0;
+    padding: ui-fluid-compact(18) 0 0;
+    text-align: center;
+  }
+
   &--sheet &__content.MuiDialogContent-root {
-    max-height: calc(100dvh - 54px);
+    flex: 1 1 auto;
+    min-height: 0;
+    max-height: none;
+    overflow-x: hidden;
     overflow-y: auto;
     overscroll-behavior: contain;
+    padding: 0 ui-fluid-compact(8) ui-fluid-compact(45) ui-fluid-compact(45);
+    -webkit-overflow-scrolling: touch;
   }
 
   &--sheet &__close {

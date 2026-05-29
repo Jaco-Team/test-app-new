@@ -38,55 +38,57 @@
   &--tone-success {
     background: $ui-success;
   }
+
+  // Card overlay: mobile-small on compact, pc-big on tablet/desktop.
   &--size-sm {
-    min-height: ui-fluid-compact(26);
-    padding: 0 ui-fluid-compact(11);
-    font-size: ui-fluid-compact(14);
+    min-height: max(19px, ui-fluid-compact(51));
+    padding: 0 max(6px, ui-fluid-compact(17));
+    font-size: max(10px, ui-fluid-compact(28));
   }
   &--size-md {
-    min-height: ui-fluid-compact(42);
-    padding: 0 ui-fluid-compact(18);
-    font-size: ui-fluid-compact(22);
+    min-height: max(25px, ui-fluid-compact(68));
+    padding: 0 max(9px, ui-fluid-compact(26));
+    font-size: max(10px, ui-fluid-compact(28));
   }
   &--size-lg {
-    min-height: ui-fluid-compact(52);
-    padding: 0 ui-fluid-compact(22);
-    font-size: ui-fluid-compact(26);
+    min-height: max(30px, ui-fluid-compact(81));
+    padding: 0 max(11px, ui-fluid-compact(31));
+    font-size: max(11px, ui-fluid-compact(33));
   }
 
   @include ui-regular {
     &--size-sm {
+      min-height: ui-fluid-regular(25);
+      padding: 0 ui-fluid-regular(9);
+      font-size: ui-fluid-regular(10);
+    }
+    &--size-md {
       min-height: ui-fluid-regular(26);
       padding: 0 ui-fluid-regular(11);
       font-size: ui-fluid-regular(14);
     }
-    &--size-md {
-      min-height: ui-fluid-regular(42);
-      padding: 0 ui-fluid-regular(18);
-      font-size: ui-fluid-regular(22);
-    }
     &--size-lg {
-      min-height: ui-fluid-regular(52);
-      padding: 0 ui-fluid-regular(22);
-      font-size: ui-fluid-regular(26);
+      min-height: ui-fluid-regular(33);
+      padding: 0 ui-fluid-regular(14);
+      font-size: ui-fluid-regular(16);
     }
   }
 
   @include ui-expanded {
     &--size-sm {
+      min-height: max(25px, ui-fluid-expanded(35));
+      padding: 0 max(9px, ui-fluid-expanded(13));
+      font-size: max(10px, ui-fluid-expanded(14));
+    }
+    &--size-md {
       min-height: ui-fluid-expanded(26);
       padding: 0 ui-fluid-expanded(11);
       font-size: ui-fluid-expanded(14);
     }
-    &--size-md {
-      min-height: ui-fluid-expanded(42);
-      padding: 0 ui-fluid-expanded(18);
-      font-size: ui-fluid-expanded(22);
-    }
     &--size-lg {
-      min-height: ui-fluid-expanded(52);
-      padding: 0 ui-fluid-expanded(22);
-      font-size: ui-fluid-expanded(26);
+      min-height: ui-fluid-expanded(33);
+      padding: 0 ui-fluid-expanded(14);
+      font-size: ui-fluid-expanded(16);
     }
   }
 }

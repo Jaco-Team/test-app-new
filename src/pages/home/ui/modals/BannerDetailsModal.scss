@@ -10,16 +10,10 @@
     padding: 0;
   }
 
-  &.ui-modal-wrapper--sheet &__content.MuiDialogContent-root {
-    overflow: hidden;
-  }
-
   &__shell {
     display: flex;
     flex-direction: column;
-    max-height: calc(100dvh - 54px);
-    overflow-y: auto;
-    overscroll-behavior: contain;
+    overflow: visible;
     background: $ui-surface;
   }
 
@@ -39,6 +33,10 @@
     border-radius: ui-fluid-compact(58) ui-fluid-compact(58) 0 0;
     object-fit: contain;
     image-rendering: auto;
+  }
+
+  &.ui-modal-wrapper--sheet &__media img {
+    border-radius: 0;
   }
 
   &__conditions {
