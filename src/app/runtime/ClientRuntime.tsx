@@ -11,6 +11,7 @@ import {
   isCustomSentryMonitoringEnabled,
 } from '@/utils/clientMonitoring';
 import { breakpointValues } from '@src/shared/ui/foundation/breakpoints';
+import { ProfileOrdersPoller } from '@src/features/telemetry';
 import { RuntimeScripts } from './RuntimeScripts';
 
 const HEADER_DESKTOP_BREAKPOINT_PX = breakpointValues.md;
@@ -71,6 +72,7 @@ export function ClientRuntime({ children }: { children: React.ReactNode }) {
   return (
     <>
       <RuntimeScripts />
+      <ProfileOrdersPoller />
       {children}
     </>
   );

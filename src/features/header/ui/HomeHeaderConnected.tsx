@@ -11,6 +11,7 @@ import {
   trackCategoryClick,
   trackHeaderClick,
 } from '@src/shared/lib/analytics/metrika';
+import { saveUserAction } from '@src/features/telemetry';
 import {
   APP_ROUTE_PREFIX,
   cityBase,
@@ -218,6 +219,7 @@ export function HomeHeaderConnected({
           setCompactMenuOpen(false);
           setDesktopDocsOpen(false);
           reachGoal('open_basket', undefined, citySlug);
+          void saveUserAction({ event: 'open_card', price: 0 });
           setActiveBasket(true);
         }}
         onNavItemClick={handleNavItemClick}

@@ -1,3 +1,4 @@
+import { resolveCartDisplayTotal } from './cartTotals';
 import type { CartLineItem } from './types';
 
 export function formatCartLabel(
@@ -7,20 +8,13 @@ export function formatCartLabel(
   allPrice: number | string | null | undefined,
   allPriceWithoutPromo?: number | string | null
 ): string {
-  const price1 = itemsOffDops.reduce(
-    (sum, item) => sum + Number(item.count ?? 0) * Number(item.one_price ?? 0),
-    0
+  const totalToShow = resolveCartDisplayTotal(
+    itemsOffDops,
+    dopListCart,
+    checkPromo,
+    allPrice,
+    allPriceWithoutPromo
   );
-  const price2 = dopListCart.reduce(
-    (sum, item) => sum + Number(item.count ?? 0) * Number(item.one_price ?? 0),
-    0
-  );
-  const baseTotal = price1 + price2;
-  const storedBase = Number(allPriceWithoutPromo);
-  const resolvedBase =
-    Number.isFinite(storedBase) && storedBase > 0 ? storedBase : baseTotal;
-  const totalToShow =
-    checkPromo?.st && itemsOffDops.length ? Number(allPrice) : resolvedBase;
 
   if (!Number.isFinite(totalToShow) || totalToShow <= 0) {
     return 'Корзина';

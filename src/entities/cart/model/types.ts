@@ -21,7 +21,9 @@ export type CatalogProduct = {
   [key: string]: unknown;
 };
 
-export type CartKind = 'rolls' | 'pizza' | 'all';
+import type { CartIntroKind } from './cartExtras';
+
+export type { CartIntroKind };
 
 export type CartState = {
   allItems: CatalogProduct[];
@@ -30,7 +32,7 @@ export type CartState = {
   items: CartLineItem[];
   itemsOffDops: CartLineItem[];
   dopListCart: CartLineItem[];
-  cartKind: CartKind;
+  cartIntroKind: CartIntroKind;
   itemsCount: number;
   allPrice: number;
   allPriceWithoutPromo: number | null;

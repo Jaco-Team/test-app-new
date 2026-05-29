@@ -19,6 +19,10 @@
     box-shadow: 0 2px 4px $ui-neutral-subtle;
   }
 
+  &--compact-menu-open {
+    padding-right: 0;
+  }
+
   &__bar {
     display: flex;
     align-items: center;
@@ -101,6 +105,7 @@
 
   &__compact-menu-button {
     display: inline-flex;
+    flex: 0 0 auto;
     align-items: center;
     justify-content: center;
     width: ui-fluid-compact(60);
@@ -112,6 +117,10 @@
     display: block;
     width: 100%;
     height: 100%;
+  }
+
+  &__compact-menu-button-icon--active path {
+    stroke: $ui-brand;
   }
 
   &__docs-menu-node {
@@ -137,11 +146,21 @@
 
   &__compact-menu {
     position: fixed;
-    inset: ui-fluid-compact(148) 0 auto 0;
-    height: ui-fluid-compact(1058);
-    transform: translateY(calc(-100% - ui-fluid-compact(148)));
+    top: ui-fluid-compact(148);
+    right: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    max-height: calc(100dvh - ui-fluid-compact(148));
+    overflow: hidden;
+    border-top: ui-fluid-compact(2) solid $ui-neutral-muted;
+    border-radius: 0 0 ui-fluid-compact(58) ui-fluid-compact(58);
     background: $ui-surface;
-    box-shadow: 0 18px 34px $ui-neutral-active;
+    box-shadow: 0 ui-fluid-compact(18) ui-fluid-compact(34) $ui-neutral-active;
+    transform: translateY(calc(-100% - ui-fluid-compact(148)));
     opacity: 0;
     pointer-events: none;
     transition:
@@ -159,8 +178,20 @@
     display: grid;
     gap: 0;
     width: ui-fluid-compact(685);
-    padding: ui-fluid-compact(62) 0 0;
+    padding: ui-fluid-compact(62) 0 ui-fluid-compact(40);
     margin: 0 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  &__compact-menu-grip {
+    flex: 0 0 auto;
+    width: ui-fluid-compact(150);
+    height: ui-fluid-compact(10);
+    margin: 0 auto ui-fluid-compact(28);
+    border-radius: ui-fluid-compact(10);
+    background: $ui-neutral-control;
+    pointer-events: none;
   }
 
   &__compact-menu-link {
@@ -257,9 +288,17 @@
     }
 
     &__compact-menu {
-      inset: ui-fluid-regular(114) 0 auto 0;
-      height: ui-fluid-regular(812);
+      top: ui-fluid-regular(114);
+      max-height: calc(100dvh - ui-fluid-regular(114));
+      border-radius: 0 0 ui-fluid-regular(40) ui-fluid-regular(40);
       transform: translateY(calc(-100% - ui-fluid-regular(114)));
+    }
+
+    &__compact-menu-grip {
+      width: ui-fluid-regular(104);
+      height: ui-fluid-regular(7);
+      margin-bottom: ui-fluid-regular(20);
+      border-radius: ui-fluid-regular(7);
     }
 
     &__compact-menu--open {

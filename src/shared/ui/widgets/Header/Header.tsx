@@ -223,7 +223,12 @@ export function Header({
     <header
       id="headerNew"
       ref={headerRef}
-      className={cn('ui-header', className, isScrolled && 'ui-header_scrolled')}
+      className={cn(
+        'ui-header',
+        className,
+        isScrolled && 'ui-header_scrolled',
+        compactMenuOpen && 'ui-header--compact-menu-open'
+      )}
       {...props}
     >
       <div className="ui-header__bar">
@@ -344,7 +349,10 @@ export function Header({
         </a>
 
         <button
-          className="ui-header__compact-menu-button"
+          className={cn(
+            'ui-header__compact-menu-button',
+            compactMenuOpen && 'ui-header__compact-menu-button--active'
+          )}
           type="button"
           aria-label={compactMenuOpen ? 'Закрыть меню' : 'Открыть меню'}
           aria-expanded={compactMenuOpen}
@@ -352,7 +360,10 @@ export function Header({
         >
           <BurgerIconMobile
             aria-hidden="true"
-            className="ui-header__compact-menu-button-icon"
+            className={cn(
+              'ui-header__compact-menu-button-icon',
+              compactMenuOpen && 'ui-header__compact-menu-button-icon--active'
+            )}
           />
         </button>
 
@@ -491,6 +502,7 @@ export function Header({
                 );
               })}
             </nav>
+            <div className="ui-header__compact-menu-grip" aria-hidden="true" />
           </motion.div>
         ) : null}
       </AnimatePresence>

@@ -7,7 +7,12 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { useCompactLayout } from '@src/shared/lib/viewport';
 import Link from 'next/link';
 import { Price, QuantityControl } from '@src/shared/ui';
-import { formatCartLabel, useCartStore } from '@src/entities/cart';
+import {
+  formatCartLabel,
+  formatCartTotalLine,
+  getCartExtrasIntroText,
+  useCartStore,
+} from '@src/entities/cart';
 import { useHeaderStore } from '@src/entities/header';
 import {
   resolveProductImageUrl,
@@ -44,25 +49,6 @@ function lineImage(line: Record<string, unknown>): string | undefined {
     : resolveProductImageUrl(src, '_138x138.jpg');
 }
 
-function positionWord(count: number): string {
-  const mod10 = count % 10;
-  const mod100 = count % 100;
-
-  if (mod10 === 1 && mod100 !== 11) {
-    return 'позиция';
-  }
-  if (mod10 >= 2 && mod10 <= 4 && (mod100 < 12 || mod100 > 14)) {
-    return 'позиции';
-  }
-  return 'позиций';
-}
-
-const dopText = {
-  rolls: 'Не забудьте про соусы, приправы и приборы',
-  pizza: 'Попробуйте необычное сочетание пиццы и соуса',
-  all: 'Не забудьте про соусы, приправы и приборы',
-};
-
 export function BasketPanel({ city }: { city: string }) {
   const compact = useCompactLayout();
   const open = useHeaderStore((state) => state.openBasket);
@@ -70,12 +56,13 @@ export function BasketPanel({ city }: { city: string }) {
 
   const items = useCartStore((state) => state.itemsOffDops);
   const dopListCart = useCartStore((state) => state.dopListCart);
-  const cartKind = useCartStore((state) => state.cartKind);
+  const cartIntroKind = useCartStore((state) => state.cartIntroKind);
   const checkPromo = useCartStore((state) => state.checkPromo);
   const allPrice = useCartStore((state) => state.allPrice);
   const allPriceWithoutPromo = useCartStore(
     (state) => state.allPriceWithoutPromo
   );
+  const itemsCount = useCartStore((state) => state.itemsCount);
   const setCount = useCartStore((state) => state.setCount);
   const allItems = useCartStore((state) => state.allItems);
 
@@ -85,10 +72,6 @@ export function BasketPanel({ city }: { city: string }) {
     checkPromo,
     allPrice,
     allPriceWithoutPromo
-  );
-  const itemsCount = items.reduce(
-    (sum, line) => sum + Number(line.count ?? 0),
-    0
   );
   const cartHref = cityPath(city, 'cart');
   useBodyScrollLock(open);
@@ -137,7 +120,7 @@ export function BasketPanel({ city }: { city: string }) {
 
         {dopListCart.length ? (
           <section className="basket-panel__extras" aria-label="Дополнительно">
-            <h3>{dopText[cartKind]}</h3>
+            <h3>{getCartExtrasIntroText(cartIntroKind)}</h3>
             {dopListCart.map((line, index) => {
               const id = lineId(line);
               const count = Number(line.count ?? 0);
@@ -165,7 +148,7 @@ export function BasketPanel({ city }: { city: string }) {
         ) : null}
         <div className="basket-panel__footer">
           <div className="basket-panel__total">
-            <span>{`Итого: ${itemsCount} ${positionWord(itemsCount)}`}</span>
+            <span>{formatCartTotalLine(itemsCount)}</span>
             <strong>{label}</strong>
           </div>
           <input

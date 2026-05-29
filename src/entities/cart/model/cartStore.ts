@@ -6,7 +6,9 @@ import {
   getLocalStorageJson,
   setLocalStorageItem,
 } from '@/utils/browserStorage';
-import { getCartKind, recomputeDopListCart } from './cartExtras';
+import { getCartIntroKind, recomputeDopListCart } from './cartExtras';
+import { countCartLines, sumCartSubtotal } from './cartTotals';
+import { saveUserAction } from '@src/features/telemetry';
 import type {
   CartLineItem,
   CartPersistedPayload,
@@ -27,17 +29,6 @@ function recomputeOffDops(items: CartLineItem[]): CartLineItem[] {
       (toNumber(item.cat_id) !== 7 || Boolean(item.disabled)) &&
       item.cat_id !== undefined
   );
-}
-
-function sumCartLines(lines: CartLineItem[]): number {
-  return lines.reduce(
-    (sum, item) => sum + toNumber(item.count) * toNumber(item.one_price),
-    0
-  );
-}
-
-function countCartLines(lines: CartLineItem[]): number {
-  return lines.reduce((sum, item) => sum + toNumber(item.count), 0);
 }
 
 function catalogLine(
@@ -82,7 +73,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   items: [],
   itemsOffDops: [],
   dopListCart: [],
-  cartKind: 'all',
+  cartIntroKind: 'all',
   itemsCount: 0,
   allPrice: 0,
   allPriceWithoutPromo: null,
@@ -128,8 +119,8 @@ export const useCartStore = create<CartState>((set, get) => ({
     const { items, allItems, needDops, checkPromo } = get();
     const itemsOffDops = recomputeOffDops(items);
     const dopListCart = recomputeDopListCart(items, allItems, needDops);
-    const cartKind = getCartKind(items, allItems);
-    const baseTotal = sumCartLines(itemsOffDops) + sumCartLines(dopListCart);
+    const cartIntroKind = getCartIntroKind(items, allItems);
+    const baseTotal = sumCartSubtotal(itemsOffDops, dopListCart);
     const promoTotal =
       checkPromo?.st && itemsOffDops.length > 0
         ? toNumber(get().allPrice)
@@ -138,7 +129,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     set({
       itemsOffDops,
       dopListCart,
-      cartKind,
+      cartIntroKind,
       itemsCount: countCartLines(items),
       allPriceWithoutPromo: baseTotal,
       allPrice: promoTotal > 0 ? promoTotal : baseTotal,
@@ -160,6 +151,8 @@ export const useCartStore = create<CartState>((set, get) => ({
     const items = get().items.slice();
     const index = items.findIndex((item) => String(item.item_id) === itemKey);
 
+    let telemetryLine: CartLineItem | undefined;
+
     if (index >= 0) {
       const nextCount = toNumber(items[index].count) + 1;
       items[index] = catalogLine(
@@ -168,13 +161,25 @@ export const useCartStore = create<CartState>((set, get) => ({
         nextCount,
         items[index].cat_id ?? catId
       );
+      telemetryLine = items[index];
     } else {
-      items.push(catalogLine(catalogItem, itemId, 1, catId));
+      const line = catalogLine(catalogItem, itemId, 1, catId);
+      items.push(line);
+      telemetryLine = line;
     }
 
     set({ items });
     get().recomputeTotals();
     persistCart(get().items);
+
+    if (telemetryLine) {
+      void saveUserAction({
+        event: 'plus_item',
+        data: telemetryLine.name ?? '',
+        price: toNumber(telemetryLine.one_price),
+        itemId,
+      });
+    }
   },
 
   minus: (itemId) => {
@@ -188,12 +193,15 @@ export const useCartStore = create<CartState>((set, get) => ({
 
     const itemKey = String(itemId);
     const allItems = get().allItems;
+    let telemetryLine: CartLineItem | undefined;
+
     const items = get().items.reduce<CartLineItem[]>((acc, item) => {
       if (String(item.item_id) !== itemKey) {
         acc.push(item);
         return acc;
       }
 
+      telemetryLine = item;
       const nextCount = toNumber(item.count) - 1;
       if (nextCount > 0) {
         const catalogItem = allItems.find((row) => String(row.id) === itemKey);
@@ -212,6 +220,15 @@ export const useCartStore = create<CartState>((set, get) => ({
     set({ items });
     get().recomputeTotals();
     persistCart(get().items);
+
+    if (telemetryLine) {
+      void saveUserAction({
+        event: 'minus_item',
+        data: telemetryLine.name ?? '',
+        price: toNumber(telemetryLine.one_price),
+        itemId,
+      });
+    }
   },
 
   setCount: (itemId, count, catId) => {
@@ -227,17 +244,39 @@ export const useCartStore = create<CartState>((set, get) => ({
     const nextCount = Math.max(0, Math.floor(toNumber(count)));
     const allItems = get().allItems;
     const catalogItem = allItems.find((item) => String(item.id) === itemKey);
+    const previousLine = get().items.find(
+      (item) => String(item.item_id) === itemKey
+    );
+    const previousCount = previousLine ? toNumber(previousLine.count) : 0;
     const withoutItem = get().items.filter(
       (item) => String(item.item_id) !== itemKey
     );
-    const items =
+    const nextLine =
       nextCount > 0
-        ? [...withoutItem, catalogLine(catalogItem, itemId, nextCount, catId)]
-        : withoutItem;
+        ? catalogLine(catalogItem, itemId, nextCount, catId)
+        : undefined;
+    const items = nextLine ? [...withoutItem, nextLine] : withoutItem;
 
     set({ items });
     get().recomputeTotals();
     persistCart(get().items);
+
+    if (nextCount === previousCount) {
+      return;
+    }
+
+    const actionLine =
+      nextLine ??
+      previousLine ??
+      catalogLine(catalogItem, itemId, nextCount, catId);
+    const event = nextCount > previousCount ? 'plus_item' : 'minus_item';
+
+    void saveUserAction({
+      event,
+      data: actionLine.name ?? '',
+      price: toNumber(actionLine.one_price),
+      itemId,
+    });
   },
 
   hydrateFromLocalStorage: () => {

@@ -3,7 +3,7 @@
 
 .ui-category-menu {
   position: sticky;
-  top: ui-fluid-compact(140);
+  top: ui-fluid-compact(148);
   z-index: $ui-z-header - 1;
   width: 100%;
   min-width: 0;
@@ -99,7 +99,7 @@
 
 @include ui-regular {
   .ui-category-menu {
-    top: ui-fluid-regular(110);
+    top: ui-fluid-regular(114);
 
     &__row--primary {
       gap: ui-fluid-regular(18);

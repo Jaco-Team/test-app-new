@@ -9,44 +9,23 @@ function catalogCatId(item: CatalogProduct | undefined): number {
   return toNumber((item as { cat_id?: unknown } | undefined)?.cat_id);
 }
 
-export type CartKind = 'rolls' | 'pizza' | 'all';
+/** Legacy `getItems` → `cart_is` (только эти категории = «роллы» для текста). */
+const ROLLY_INTRO_CAT_IDS = new Set([4, 9, 10, 12, 13]);
+const PIZZA_CAT_ID = 14;
 
-/** Синхронно с legacy `check_need_dops` / `cart_is` в `components/store.js`. */
-export function getCartKind(
-  items: CartLineItem[],
-  allItems: CatalogProduct[]
-): CartKind {
-  let rolls = 0;
-  let pizza = 0;
+/** Legacy `check_need_dops` — не считаем доп. категории и пиццу в «rolls». */
+const DOP_ROLL_EXCLUDED_CAT_IDS = new Set([5, 6, 7, PIZZA_CAT_ID]);
 
-  for (const line of items) {
-    const catalogItem = allItems.find(
-      (item) => toNumber(item.id) === toNumber(line.item_id)
-    );
-    if (!catalogItem) {
-      continue;
-    }
+export type CartIntroKind = 'rolly' | 'pizza' | 'all';
 
-    const catId = catalogCatId(catalogItem);
-    const count = toNumber(line.count);
+export const CART_EXTRAS_INTRO: Record<CartIntroKind, string> = {
+  rolly: 'Не забудьте про соусы, приправы и приборы',
+  pizza: 'Попробуйте необычное сочетание пиццы и соуса',
+  all: 'Не забудьте про соусы, приправы и приборы',
+};
 
-    if (catId === 14) {
-      pizza += count;
-      continue;
-    }
-
-    if (![5, 6, 7, 14].includes(catId)) {
-      rolls += count;
-    }
-  }
-
-  if (rolls > 0 && pizza === 0) {
-    return 'rolls';
-  }
-  if (rolls === 0 && pizza > 0) {
-    return 'pizza';
-  }
-  return 'all';
+export function getCartExtrasIntroText(kind: CartIntroKind): string {
+  return CART_EXTRAS_INTRO[kind];
 }
 
 type NeedDopsPayload = {
@@ -54,9 +33,105 @@ type NeedDopsPayload = {
   pizza?: CatalogProduct[];
 };
 
+function resolveCatalogLine(
+  line: CartLineItem,
+  allItems: CatalogProduct[]
+): CatalogProduct | undefined {
+  return allItems.find((item) => toNumber(item.id) === toNumber(line.item_id));
+}
+
 /**
- * Строит `dopListCart` из needDops + позиций cat_id=7 в корзине.
- * Порт legacy `check_need_dops`.
+ * Подпись блока допов — legacy `getItems` / `cart_is` (по наличию категорий, не по qty).
+ */
+export function getCartIntroKind(
+  items: CartLineItem[],
+  allItems: CatalogProduct[]
+): CartIntroKind {
+  let hasRolly = false;
+  let hasPizza = false;
+
+  for (const line of items) {
+    const catalogItem = resolveCatalogLine(line, allItems);
+    if (!catalogItem) {
+      continue;
+    }
+
+    const catId = catalogCatId(catalogItem);
+    if (catId === PIZZA_CAT_ID) {
+      hasPizza = true;
+    }
+    if (ROLLY_INTRO_CAT_IDS.has(catId)) {
+      hasRolly = true;
+    }
+  }
+
+  if (hasRolly && !hasPizza) {
+    return 'rolly';
+  }
+  if (!hasRolly && hasPizza) {
+    return 'pizza';
+  }
+  return 'all';
+}
+
+function countDopPizza(
+  items: CartLineItem[],
+  allItems: CatalogProduct[]
+): number {
+  let total = 0;
+
+  for (const line of items) {
+    const catalogItem = resolveCatalogLine(line, allItems);
+    if (!catalogItem || catalogCatId(catalogItem) !== PIZZA_CAT_ID) {
+      continue;
+    }
+    total += toNumber(line.count);
+  }
+
+  return total;
+}
+
+function countDopRolls(
+  items: CartLineItem[],
+  allItems: CatalogProduct[]
+): number {
+  let total = 0;
+
+  for (const line of items) {
+    const catalogItem = resolveCatalogLine(line, allItems);
+    if (!catalogItem) {
+      continue;
+    }
+
+    const catId = catalogCatId(catalogItem);
+    if (catId === PIZZA_CAT_ID || DOP_ROLL_EXCLUDED_CAT_IDS.has(catId)) {
+      continue;
+    }
+    total += toNumber(line.count);
+  }
+
+  return total;
+}
+
+function selectNeedDopsCatalog(
+  need: NeedDopsPayload,
+  countRolls: number,
+  countPizza: number
+): CatalogProduct[] {
+  const rollsList = need.rolls ?? [];
+  const pizzaList = need.pizza ?? [];
+
+  if (countRolls > 0 && countPizza === 0) {
+    return rollsList.slice();
+  }
+  if (countRolls === 0 && countPizza > 0) {
+    return pizzaList.slice();
+  }
+  return [...rollsList, ...pizzaList];
+}
+
+/**
+ * Список допов в корзине — legacy `check_need_dops`.
  */
 export function recomputeDopListCart(
   items: CartLineItem[],
@@ -68,45 +143,13 @@ export function recomputeDopListCart(
   }
 
   const need = (needDops ?? {}) as NeedDopsPayload;
-  const rollsList = need.rolls ?? [];
-  const pizzaList = need.pizza ?? [];
-
-  let countPizza = 0;
-  let countRolls = 0;
-
-  for (const line of items) {
-    const catalogItem = allItems.find(
-      (item) => toNumber(item.id) === toNumber(line.item_id)
-    );
-    if (!catalogItem) {
-      continue;
-    }
-
-    const catId = catalogCatId(catalogItem);
-    const count = toNumber(line.count);
-
-    if (catId === 14) {
-      countPizza += count;
-    } else if (![5, 6, 7, 14].includes(catId)) {
-      countRolls += count;
-    }
-  }
-
-  let allNeedDops: CatalogProduct[] = [];
-
-  if (countRolls > 0 && countPizza === 0) {
-    allNeedDops = rollsList.slice();
-  } else if (countRolls === 0 && countPizza > 0) {
-    allNeedDops = pizzaList.slice();
-  } else {
-    allNeedDops = [...rollsList, ...pizzaList];
-  }
+  const countPizza = countDopPizza(items, allItems);
+  const countRolls = countDopRolls(items, allItems);
+  let allNeedDops = selectNeedDopsCatalog(need, countRolls, countPizza);
 
   const dopsInCart: CatalogProduct[] = [];
   for (const line of items) {
-    const catalogItem = allItems.find(
-      (item) => toNumber(item.id) === toNumber(line.item_id)
-    );
+    const catalogItem = resolveCatalogLine(line, allItems);
     if (catalogItem && catalogCatId(catalogItem) === 7) {
       dopsInCart.push(catalogItem);
     }
