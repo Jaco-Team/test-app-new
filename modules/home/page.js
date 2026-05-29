@@ -16,13 +16,7 @@ import Meta from '@/components/meta.js';
 
 import { useHomeMobileLayout } from '@/utils/useHomeMobileLayout';
 
-export default function HomePage({
-  page,
-  city,
-  cityNameRu = '',
-  showDeliveryH1 = false,
-  showCategoryH2 = false,
-}) {
+export default function HomePage({ page, city, showCategoryH2 = false }) {
   const isHomeMobile = useHomeMobileLayout();
 
   return (
@@ -31,14 +25,14 @@ export default function HomePage({
         {isHomeMobile ? (
           <>
             <BannersMobile />
-            <DeliveryTitle cityNameRu={cityNameRu} show={showDeliveryH1} />
+            <DeliveryTitle text={page?.page_h} />
             <MenuCatMobile city={city} />
             <ModalBannerMobile />
           </>
         ) : (
           <>
             <BannersPC />
-            <DeliveryTitle cityNameRu={cityNameRu} show={showDeliveryH1} />
+            <DeliveryTitle text={page?.page_h} />
             <ModalBannerPC />
           </>
         )}

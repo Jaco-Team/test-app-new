@@ -15,9 +15,16 @@ import { ArrowLeftMobile } from '@/ui/Icons.js';
 
 import { reachGoal } from '@/utils/metrika';
 
-export default function PageText({ page, classNamePC, classNameMobile, cityName }) {
+export default function PageText({
+  page,
+  classNamePC,
+  classNameMobile,
+  cityName,
+}) {
   const [activePage] = useHeaderStoreNew((state) => [state.activePage]);
-  const isMobilePageText = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
+  const isMobilePageText = useMediaQuery(
+    `screen and (max-width: ${BREAKPOINTS.mobileMax}px)`
+  );
   const isTabletPageText = useMediaQuery(
     `screen and (min-width: ${BREAKPOINTS.tabletMin}px) and (max-width: ${BREAKPOINTS.tabletMax}px)`
   );
@@ -37,7 +44,10 @@ export default function PageText({ page, classNamePC, classNameMobile, cityName 
 
       //console.log( link.href, link )
 
-      if (cityName === 'samara' && link.href === 'https://b24-7m199r.bitrix24site.ru/crm_form_1trxt/') {
+      if (
+        cityName === 'samara' &&
+        link.href === 'https://b24-7m199r.bitrix24site.ru/crm_form_1trxt/'
+      ) {
         reachGoal('go_to_job', {}, cityName);
       }
 
@@ -60,10 +70,19 @@ export default function PageText({ page, classNamePC, classNameMobile, cityName 
   return (
     <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
       <Grid container className="pageTextPCWrap">
-        <Grid item className={isMobilePageText ? classNameMobile ?? classNamePC : classNamePC} style={{ minHeight: activePage === 'jobs' ? '50vh' : null }}>
-          {!isMobilePageText ? null : <Link href={'/' + cityName + '/document' } className='arrow'><ArrowLeftMobile /></Link>}
+        <Grid
+          className={
+            isMobilePageText ? (classNameMobile ?? classNamePC) : classNamePC
+          }
+          style={{ minHeight: activePage === 'jobs' ? '50vh' : null }}
+        >
+          {!isMobilePageText ? null : (
+            <Link href={'/' + cityName + '/document'} className="arrow">
+              <ArrowLeftMobile />
+            </Link>
+          )}
 
-          <Grid item xs={12} style={{ paddingBottom: 15 }}>
+          <Grid size={12} style={{ paddingBottom: 15 }}>
             <Typography variant="h5" component="h1">
               {page ? page.page_h : ''}
             </Typography>
@@ -71,17 +90,16 @@ export default function PageText({ page, classNamePC, classNameMobile, cityName 
 
           {page && page?.content ? (
             <Grid
-              item
-              xs={12}
+              size={12}
               ref={wrapperRef}
               dangerouslySetInnerHTML={{ __html: page?.content }}
             />
           ) : null}
 
-          { activePage == 'pamiatka_po_sohraneniiu_zdorovia' &&
-            <Grid item xs={12} style={{ paddingBottom: 15 }}>
+          {activePage == 'pamiatka_po_sohraneniiu_zdorovia' && (
+            <Grid size={12} style={{ paddingBottom: 15 }}>
               <a
-                className='download'
+                className="download"
                 style={
                   !isMobilePageText
                     ? isTabletPageText
@@ -135,18 +153,21 @@ export default function PageText({ page, classNamePC, classNameMobile, cityName 
                 href="https://storage.yandexcloud.net/site-other-data/health_reminder_jaco.pdf?response-content-disposition=attachment%3B%20filename%3Dhealth_reminder_jaco.pdf"
               >
                 <span
-                  className='download_text'
+                  className="download_text"
                   style={{
                     color: '#fff',
-                    fontSize: isMobilePageText ? '4.2735vw' : isTabletPageText ? '2.04545vw' : '1.08303vw',
+                    fontSize: isMobilePageText
+                      ? '4.2735vw'
+                      : isTabletPageText
+                        ? '2.04545vw'
+                        : '1.08303vw',
                   }}
                 >
                   Скачать
                 </span>
               </a>
             </Grid>
-          }
-
+          )}
         </Grid>
 
         {!isMobilePageText ? <DocsBreadcrumbs /> : null}

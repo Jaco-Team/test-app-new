@@ -24,76 +24,96 @@ const ans = [
 ];
 
 export default function ModalOrderDelete() {
-  const [openModalDelete, closeModalDel, orderDel] = useProfileStore( state => [ state.openModalDelete, state.closeModalDel, state.orderDel ])
+  const [openModalDelete, closeModalDel, orderDel] = useProfileStore(
+    (state) => [state.openModalDelete, state.closeModalDel, state.orderDel]
+  );
 
-  const [ chooseType, setChooseType ] = useState(0);
-  const [ textDel, setTextDel ] = useState('');
+  const [chooseType, setChooseType] = useState(0);
+  const [textDel, setTextDel] = useState('');
 
-  const [ token ] = useHeaderStoreNew( state => [ state.token ] )
+  const [token] = useHeaderStoreNew((state) => [state.token]);
 
-  useEffect( () => {
+  useEffect(() => {
     setTextDel('');
     setChooseType(0);
-  }, [openModalDelete] )
+  }, [openModalDelete]);
 
   const changeComment = (event) => {
-
-    if(event === '') {
+    if (event === '') {
       setTextDel(event);
     } else {
       const comment = event?.target?.value ?? event;
 
-      const len = comment.split(/\r?\n|\r|\n/g)
+      const len = comment.split(/\r?\n|\r|\n/g);
 
-      if(len?.length > 2) {
-        return ;
+      if (len?.length > 2) {
+        return;
       }
 
       if (comment?.length > 50) {
-        return ;
+        return;
       }
 
       setTextDel(comment);
     }
+  };
 
-  }
-
-  const reason = chooseType === 0 ? '' : chooseType === 6 ? textDel : (ans.find(a => a.id === chooseType)?.ans || '');
+  const reason =
+    chooseType === 0
+      ? ''
+      : chooseType === 6
+        ? textDel
+        : ans.find((a) => a.id === chooseType)?.ans || '';
 
   return (
     <Dialog
-      onClose={ closeModalDel }
+      onClose={closeModalDel}
       className={'modalOrderDelPC ' + roboto.variable}
       open={openModalDelete}
       slots={Backdrop}
       slotProps={{ timeout: 500 }}
       scroll="body"
     >
-      <DialogContent style={{ padding: 0, borderRadius: '1.444045vw', overflow: 'hidden'}}>
+      <DialogContent
+        style={{ padding: 0, borderRadius: '1.444045vw', overflow: 'hidden' }}
+      >
         <div className="container">
-
           <IconButton className="closeButton" onClick={closeModalDel}>
             <IconClose />
           </IconButton>
 
           <Box>
-            <Grid item xs={12} className='header_status'>
-              <Typography variant="h5" component="h1">Отменить заказ?</Typography>
+            <Grid size={12} className="header_status">
+              <Typography variant="h5" component="h1">
+                Отменить заказ?
+              </Typography>
             </Grid>
-            <Grid item xs={12} className='header_text'>
-              <Typography variant="h5" component="span">Вы можете отменить в любой момент.</Typography>
-              <Typography variant="h5" component="span">Почему решили отменить сейчас?</Typography>
+            <Grid size={12} className="header_text">
+              <Typography variant="h5" component="span">
+                Вы можете отменить в любой момент.
+              </Typography>
+              <Typography variant="h5" component="span">
+                Почему решили отменить сейчас?
+              </Typography>
             </Grid>
 
-            <Grid item xs={12} className='header_table'>
-              { ans.map( (item, key) =>
-                <div onClick={() => setChooseType(item.id)} className={chooseType == item.id ? 'active' : ''} key={key}>
+            <Grid size={12} className="header_table">
+              {ans.map((item, key) => (
+                <div
+                  onClick={() => setChooseType(item.id)}
+                  className={chooseType == item.id ? 'active' : ''}
+                  key={key}
+                >
                   <span>{item.ans}</span>
                 </div>
-              ) }
+              ))}
             </Grid>
 
-            <Grid item xs={12} className='header_custom_text' style={{ visibility: chooseType == 6 ? 'visible' : 'hidden' }}>
+            <Grid
+              size={12}
+              className="header_custom_text"
+              style={{ visibility: chooseType == 6 ? 'visible' : 'hidden' }}
+            >
               <MyTextInput
                 autoFocus
                 type="text"
@@ -107,11 +127,12 @@ export default function ModalOrderDelete() {
               />
             </Grid>
 
-            <Grid item xs={12} className='header_btn'>
-              <button onClick={ () => orderDel('zakazy', token, reason) }>Отменить</button>
+            <Grid size={12} className="header_btn">
+              <button onClick={() => orderDel('zakazy', token, reason)}>
+                Отменить
+              </button>
               <button onClick={closeModalDel}>Вернуться</button>
             </Grid>
-
           </Box>
         </div>
       </DialogContent>

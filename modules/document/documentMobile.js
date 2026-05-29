@@ -6,7 +6,6 @@ import { useFooterStore } from '@/components/store.js';
 import { reachGoal } from '@/utils/metrika';
 
 export default function DocumentPageMobile({ cityName }) {
-
   const [links] = useFooterStore((state) => [state.links]);
 
   const goToPage = (page) => {
@@ -18,35 +17,52 @@ export default function DocumentPageMobile({ cityName }) {
   };
 
   return (
-    <Grid item className="pageDocumentMobile" sx={{ display: { xs: 'flex', md: 'flex', sm: 'none' } }}>
+    <Grid
+      className="pageDocumentMobile"
+      sx={{ display: { xs: 'flex', md: 'flex', sm: 'none' } }}
+    >
       <div className="containerDocumentMobile">
         <div className="listDocumentMobile">
-          
-          <Link href={'/' + cityName + '/about'} onClick={ () => goToPage('О компании') }>
+          <Link
+            href={'/' + cityName + '/about'}
+            onClick={() => goToPage('О компании')}
+          >
             <div className="linkDocumentMobile">
               <span>О компании</span>
               <ArrowRightMobile />
             </div>
           </Link>
-          <Link href={'/' + cityName + '/jobs'} onClick={ () => goToPage('Вакансии') }>
+          <Link
+            href={'/' + cityName + '/jobs'}
+            onClick={() => goToPage('Вакансии')}
+          >
             <div className="linkDocumentMobile">
               <span>Вакансии</span>
               <ArrowRightMobile />
             </div>
           </Link>
-          <Link href={'/' + cityName + '/publichnaya-oferta'} onClick={ () => goToPage('Публичная оферта') }>
+          <Link
+            href={'/' + cityName + '/publichnaya-oferta'}
+            onClick={() => goToPage('Публичная оферта')}
+          >
             <div className="linkDocumentMobile">
               <span>Публичная оферта</span>
               <ArrowRightMobile />
             </div>
           </Link>
-          <Link href={'/' + cityName + '/politika-konfidencialnosti'} onClick={ () => goToPage('Политика') }>
+          <Link
+            href={'/' + cityName + '/politika-konfidencialnosti'}
+            onClick={() => goToPage('Политика')}
+          >
             <div className="linkDocumentMobile">
               <span>Политика конфиденциальности</span>
               <ArrowRightMobile />
             </div>
           </Link>
-          <Link href={'/' + cityName + '/instpayorders'} onClick={ () => goToPage('Правила оплаты') }>
+          <Link
+            href={'/' + cityName + '/instpayorders'}
+            onClick={() => goToPage('Правила оплаты')}
+          >
             <div className="linkDocumentMobile">
               <span>Правила оплаты</span>
               <ArrowRightMobile />
@@ -65,20 +81,26 @@ export default function DocumentPageMobile({ cityName }) {
             </div>
           </Link>
 
-          <Link href={links?.link_allergens ?? links} target="_blank" onClick={ () => goToPage('Пищевая ценность') }>
+          <Link
+            href={links?.link_allergens ?? links}
+            target="_blank"
+            onClick={() => goToPage('Пищевая ценность')}
+          >
             <div className="linkDocumentMobile">
               <span>Калорийность, состав, БЖУ</span>
               <ArrowRightMobile />
             </div>
           </Link>
 
-          <Link href={'/' + cityName + '/pamiatka_po_sohraneniiu_zdorovia'} onClick={handleClick}>
+          <Link
+            href={'/' + cityName + '/pamiatka_po_sohraneniiu_zdorovia'}
+            onClick={handleClick}
+          >
             <div className="linkDocumentMobile">
               <span>Памятка по сохранению здоровья</span>
               <ArrowRightMobile />
             </div>
           </Link>
-          
         </div>
       </div>
     </Grid>

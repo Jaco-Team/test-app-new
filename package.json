@@ -53,10 +53,10 @@
     "@next/third-parties": "16.2.6",
     "@pbe/react-yandex-maps": "npm:@limpopo113/react-yandex-maps@1.2.5",
     "@react-spring/web": "^10.1.0",
-    "@sentry/browser": "^10.54.0",
+    "@sentry/browser": "^10.55.0",
     "@sentry/cli": "^3.4.3",
-    "@sentry/nextjs": "^10.54.0",
-    "@sentry/react": "^10.54.0",
+    "@sentry/nextjs": "^10.55.0",
+    "@sentry/react": "^10.55.0",
     "@yandex/smart-captcha": "2.9.1",
     "axios": "^1.16.1",
     "crypto-js": "^4.2.0",
@@ -95,7 +95,7 @@
     "use-long-press": "^3.3.0",
     "use-sync-external-store": "^1.6.0",
     "yandex-metrica-ab-react": "^1.7.0",
-    "zustand": "^5.0.13"
+    "zustand": "^5.0.14"
   },
   "overrides": {
     "@pbe/react-yandex-maps": "npm:@limpopo113/react-yandex-maps@1.2.5"

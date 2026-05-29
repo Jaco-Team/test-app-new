@@ -193,8 +193,17 @@ export default React.memo(function CatItems({ showCategoryHeadings = false }) {
     typeof router.asPath === 'string' ? router.asPath.split('?')[0] : '';
   const search =
     typeof router.query?.item === 'string' ? router.query.item : '';
+  // На динамическом маршруте /[city]/menu/[category] сегмент категории попадает
+  // в router.query.category. Это НЕ scroll-сигнал (он задуман для ?category= на
+  // главной/меню): сама категория уже учитывается через переменную catygory из
+  // пути. Иначе cleanupCategoryState зациклит router.replace на тот же URL.
+  const isCategoryRoute =
+    typeof router.pathname === 'string' &&
+    router.pathname.includes('[category]');
   const search_category =
-    typeof router.query?.category === 'string' ? router.query.category : '';
+    !isCategoryRoute && typeof router.query?.category === 'string'
+      ? router.query.category
+      : '';
   const hasNovinkiQuery =
     isRouterReady &&
     Object.prototype.hasOwnProperty.call(router.query, 'novinki');

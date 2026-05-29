@@ -271,14 +271,14 @@ export default function ProfilePC({ page, this_module, city }) {
       className="profilePagePCWrap"
       style={{ margin: 0, width: '100%' }}
     >
-      <Grid item className="Profile mainContainer">
-        <Grid item xs={12}>
+      <Grid className="Profile mainContainer">
+        <Grid size={12}>
           <Typography variant="h5" component="h1">
             Личные данные
           </Typography>
         </Grid>
 
-        <Grid item xs={12} className="main_data">
+        <Grid size={12} className="main_data">
           <div>
             <span>{shortName ? shortName : <ProfileIconNew />}</span>
           </div>
@@ -343,7 +343,7 @@ export default function ProfilePC({ page, this_module, city }) {
           </div>
         </Grid>
 
-        <Grid item xs={12} className="check_data">
+        <Grid size={12} className="check_data">
           <div>
             <div>
               <span>Хочу получать рассылки с акциями и скидками</span>
@@ -361,7 +361,7 @@ export default function ProfilePC({ page, this_module, city }) {
           </div>
         </Grid>
 
-        <Grid item xs={12} className="date_data">
+        <Grid size={12} className="date_data">
           <div>
             <div>
               <span>Подарим промокод на бесплатный ролл ко дню рождения.</span>
@@ -458,7 +458,7 @@ export default function ProfilePC({ page, this_module, city }) {
           </div>
         </Grid>
 
-        <Grid item xs={12} className="addr_table">
+        <Grid size={12} className="addr_table">
           <Table>
             <TableHead>
               <TableRow>
@@ -501,7 +501,7 @@ export default function ProfilePC({ page, this_module, city }) {
           </Table>
         </Grid>
 
-        <Grid item xs={12} className="log_out">
+        <Grid size={12} className="log_out">
           <span style={{ visibility: 'hidden' }}>Удалить аккаунт</span>
           <Link href={'/' + city} onClick={() => signOut(city)}>
             Выйти

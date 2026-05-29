@@ -5,14 +5,15 @@ import { ArrowRightMobile } from '@/ui/Icons.js';
 import { useFooterStore } from '@/components/store.js';
 
 export default function AboutPageMobile({ cityName }) {
-
   const [links] = useFooterStore((state) => [state.links]);
 
   return (
-    <Grid item className="pageAboutMobile" sx={{ display: { xs: 'flex', md: 'flex', sm: 'none' } }}>
+    <Grid
+      className="pageAboutMobile"
+      sx={{ display: { xs: 'flex', md: 'flex', sm: 'none' } }}
+    >
       <div className="containerAboutMobile">
         <div className="listAboutMobile">
-          
           <Link href={'/' + cityName + '/about'}>
             <div className="linkAboutMobile">
               <span>О компании</span>
@@ -56,7 +57,6 @@ export default function AboutPageMobile({ cityName }) {
               <ArrowRightMobile />
             </div>
           </Link>
-          
         </div>
       </div>
     </Grid>

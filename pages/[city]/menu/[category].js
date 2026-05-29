@@ -19,6 +19,7 @@ const this_module = 'category';
 
 import { normalizeCity } from '@/utils/normalizeCity';
 import { getCookie } from '@/utils/getCookie';
+import { shouldShowCategoryHeadings } from '@/utils/seoHeadings';
 
 export default function Home(props) {
   const {
@@ -33,10 +34,7 @@ export default function Home(props) {
     tags,
     links,
   } = props.data1;
-  const cityNameRu = Array.isArray(cities)
-    ? (cities.find((item) => item?.link == city)?.name ?? '')
-    : '';
-  const showDeliveryH1 = category === 'rolly';
+  const showCategoryH2 = shouldShowCategoryHeadings(category);
 
   const [
     setAllItems,
@@ -149,9 +147,7 @@ export default function Home(props) {
       <DynamicHomePage
         page={page}
         city={city}
-        cityNameRu={cityNameRu}
-        showDeliveryH1={showDeliveryH1}
-        showCategoryH2={showDeliveryH1}
+        showCategoryH2={showCategoryH2}
       />
 
       <Footer cityName={city} active_page={this_module} links={links} />

@@ -22,7 +22,8 @@ const arrayImage = [
   },
   {
     img: '/about/slide5.jpg',
-    comment: 'Касса и кухня кафе на Ленинградской 47 (Тольятти), за кассой — Анастасия',
+    comment:
+      'Касса и кухня кафе на Ленинградской 47 (Тольятти), за кассой — Анастасия',
   },
   {
     img: '/about/slide4.png',
@@ -32,22 +33,21 @@ const arrayImage = [
 
 export default function CafeLooks() {
   return (
-    <Grid item xs={12} id={'tag3'}>
+    <Grid size={12} id={'tag3'}>
       <Typography variant="h2">Как выглядит кафе</Typography>
       <p>
-        У нас можно отдохнуть с друзьями или семьёй, провести деловую
-        встречу или собеседование. Особенностью наших кафе является
-        большая открытая кухня: вы можете наблюдать, в каких условиях
-        готовятся блюда. На наших кухнях всегда чисто, и мы честно
-        проходим все проверки Роспотребнадзора.
+        У нас можно отдохнуть с друзьями или семьёй, провести деловую встречу
+        или собеседование. Особенностью наших кафе является большая открытая
+        кухня: вы можете наблюдать, в каких условиях готовятся блюда. На наших
+        кухнях всегда чисто, и мы честно проходим все проверки Роспотребнадзора.
       </p>
-      
+
       <Swiper
         modules={[Autoplay, Scrollbar]}
         spaceBetween={50}
         slidesPerView={1}
         loop={true}
-        autoplay={{delay: 4000, disableOnInteraction: false}}
+        autoplay={{ delay: 4000, disableOnInteraction: false }}
         scrollbar={{ draggable: true }}
         style={{ width: '100%', height: 'auto' }}
       >
@@ -61,11 +61,18 @@ export default function CafeLooks() {
               priority={true}
               style={{ width: '100%', height: 'auto' }}
             />
-            <p style={{ whiteSpace: 'normal', textAlign: 'center', fontWeight: 300 }}>{item.comment}</p>
+            <p
+              style={{
+                whiteSpace: 'normal',
+                textAlign: 'center',
+                fontWeight: 300,
+              }}
+            >
+              {item.comment}
+            </p>
           </SwiperSlide>
         ))}
       </Swiper>
-        
     </Grid>
   );
 }
