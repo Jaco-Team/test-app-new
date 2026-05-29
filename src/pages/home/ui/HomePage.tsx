@@ -22,6 +22,7 @@ import {
   mapProduct,
   mapTags,
 } from '../model/mapHomePageViewModel';
+import { scrollToCategorySection } from '@src/shared/lib/scroll/scrollToCategorySection';
 import './HomePage.scss';
 
 function getProductLink(product: HomeProduct): string {
@@ -243,23 +244,7 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
       return;
     }
 
-    const target = document.getElementById(targetId);
-    if (!target) {
-      return;
-    }
-
-    const headerOffset =
-      document.getElementById('headerNew')?.getBoundingClientRect().height ?? 0;
-    const categoryOffset =
-      document.querySelector('.ui-category-menu')?.getBoundingClientRect()
-        .height ?? 0;
-    const top =
-      target.getBoundingClientRect().top +
-      window.scrollY -
-      headerOffset -
-      categoryOffset -
-      8;
-    window.scrollTo({ top, behavior: 'smooth' });
+    scrollToCategorySection(targetId);
   }, []);
 
   return (

@@ -1,11 +1,13 @@
 import TuneRoundedIcon from '@mui/icons-material/TuneRounded';
 import type { HTMLAttributes } from 'react';
-import { useEffect, useRef, useState } from 'react';
+import { useCallback, useEffect, useRef, useState } from 'react';
 import { ModalWrapper } from '../../components/ModalWrapper/ModalWrapper';
 import { cn } from '../../foundation/classNames';
 import { TagFilter } from '../../patterns/TagFilter/TagFilter';
 import type { TagFilterItem } from '../../patterns/TagFilter/TagFilter';
 import { CategoryButton } from '../Header/CategoryButton';
+import { scrollRowToActiveButton } from './categoryMenuScroll';
+import { useCategoryScrollSpy } from './useCategoryScrollSpy';
 import './CategoryMenu.scss';
 
 export interface CategoryMenuItem {
@@ -53,24 +55,6 @@ function resolvePrimaryTarget(item: CategoryMenuItem): CategoryMenuItem {
   return item.children?.[0] ?? item;
 }
 
-function scrollActiveCategoryButton(row: HTMLDivElement | null) {
-  const activeNode = row?.querySelector<HTMLButtonElement>(
-    '.ui-category-button--active'
-  );
-
-  if (!row || !activeNode) {
-    return;
-  }
-
-  const maxScroll = row.scrollWidth - row.clientWidth;
-  if (maxScroll <= 0) {
-    return;
-  }
-
-  const nextLeft = Math.min(activeNode.offsetLeft, maxScroll);
-  row.scrollTo({ left: nextLeft, behavior: 'smooth' });
-}
-
 export function CategoryMenu({
   primaryItems = [],
   secondaryItems = [],
@@ -84,81 +68,50 @@ export function CategoryMenu({
   ...props
 }: CategoryMenuProps) {
   const [filterOpen, setFilterOpen] = useState(false);
+  const [pinnedTargetId, setPinnedTargetId] = useState<string | undefined>();
+  const pinnedTargetIdRef = useRef<string | undefined>();
   const primaryRowRef = useRef<HTMLDivElement>(null);
   const secondaryRowRef = useRef<HTMLDivElement>(null);
+  const displayTargetId = pinnedTargetId ?? activeTargetId;
+
+  pinnedTargetIdRef.current = pinnedTargetId;
+
   const resolvedSecondaryItems = visibleSecondaryItems(
     primaryItems,
     secondaryItems,
-    activeTargetId
+    displayTargetId
   );
   const hasContent =
     primaryItems.length > 0 || secondaryItems.length > 0 || tags.length > 0;
 
-  useEffect(() => {
-    scrollActiveCategoryButton(primaryRowRef.current);
-  }, [activeTargetId, primaryItems]);
+  const releasePinnedTarget = useCallback(() => {
+    setPinnedTargetId(undefined);
+  }, []);
 
-  useEffect(() => {
-    scrollActiveCategoryButton(secondaryRowRef.current);
-  }, [activeTargetId, resolvedSecondaryItems]);
-
-  useEffect(() => {
-    if (typeof window === 'undefined' || typeof document === 'undefined') {
-      return;
-    }
-
-    const candidates = primaryItems.flatMap((item) => {
-      if (item.children?.length) {
-        return item.children;
+  const handleItemSelect = useCallback(
+    (item: CategoryMenuItem) => {
+      if (item.targetId) {
+        setPinnedTargetId(item.targetId);
       }
+      onItemSelect?.(item);
+    },
+    [onItemSelect]
+  );
 
-      return [item];
-    });
+  useEffect(() => {
+    scrollRowToActiveButton(primaryRowRef.current, 'edge');
+  }, [displayTargetId, primaryItems]);
 
-    const updateActive = () => {
-      let nextTargetId: string | undefined;
-      let bestTop = Number.NEGATIVE_INFINITY;
-      const menuHeight =
-        document.querySelector('.ui-category-menu')?.getBoundingClientRect()
-          .height ?? 0;
-      const headerHeight =
-        document.getElementById('headerNew')?.getBoundingClientRect().height ??
-        0;
-      const marker = headerHeight + menuHeight + 12;
+  useEffect(() => {
+    scrollRowToActiveButton(secondaryRowRef.current, 'padding');
+  }, [displayTargetId, resolvedSecondaryItems]);
 
-      candidates.forEach((item) => {
-        if (!item.targetId) {
-          return;
-        }
-
-        const node = document.getElementById(item.targetId);
-        if (!node) {
-          return;
-        }
-
-        const top = node.getBoundingClientRect().top - marker;
-        if (top <= 1 && top > bestTop) {
-          bestTop = top;
-          nextTargetId = item.targetId;
-        }
-      });
-
-      if (!nextTargetId && window.scrollY <= 5) {
-        nextTargetId = candidates[0]?.targetId;
-      }
-
-      onActiveTargetChange?.(nextTargetId);
-    };
-
-    window.addEventListener('scroll', updateActive, { passive: true });
-    window.addEventListener('resize', updateActive);
-    updateActive();
-
-    return () => {
-      window.removeEventListener('scroll', updateActive);
-      window.removeEventListener('resize', updateActive);
-    };
-  }, [onActiveTargetChange, primaryItems]);
+  useCategoryScrollSpy(
+    primaryItems,
+    onActiveTargetChange,
+    pinnedTargetIdRef,
+    releasePinnedTarget
+  );
 
   if (!hasContent) {
     return null;
@@ -176,10 +129,10 @@ export function CategoryMenu({
           ref={primaryRowRef}
         >
           {primaryItems.map((item) => {
-            const active = activeTargetId
-              ? activeTargetId === item.targetId ||
+            const active = displayTargetId
+              ? displayTargetId === item.targetId ||
                 item.children?.some(
-                  (child) => child.targetId === activeTargetId
+                  (child) => child.targetId === displayTargetId
                 )
               : item.active;
 
@@ -187,7 +140,7 @@ export function CategoryMenu({
               <CategoryButton
                 key={item.id ?? item.label}
                 active={Boolean(active)}
-                onClick={() => onItemSelect?.(resolvePrimaryTarget(item))}
+                onClick={() => handleItemSelect(resolvePrimaryTarget(item))}
               >
                 {item.shortLabel ?? item.label}
               </CategoryButton>
@@ -218,9 +171,11 @@ export function CategoryMenu({
               key={item.id ?? item.label}
               secondary
               active={
-                activeTargetId ? activeTargetId === item.targetId : item.active
+                displayTargetId
+                  ? displayTargetId === item.targetId
+                  : item.active
               }
-              onClick={() => onItemSelect?.(item)}
+              onClick={() => handleItemSelect(item)}
             >
               {item.shortLabel ?? item.label}
             </CategoryButton>

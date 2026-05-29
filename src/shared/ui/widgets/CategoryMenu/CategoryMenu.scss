@@ -62,15 +62,24 @@
   letter-spacing: 0;
   line-height: 1;
   cursor: pointer;
-  transition:
-    background-color 180ms ease,
-    color 180ms ease,
-    font-weight 180ms ease;
+  -webkit-tap-highlight-color: transparent;
+  transition: background-color 180ms ease;
+
+  &:hover {
+    background: $ui-control-hover;
+  }
 
   &--active {
     background: $ui-brand;
     color: $ui-text-inv;
     font-weight: 500;
+  }
+
+  &--active:hover,
+  &--active:active,
+  &--active:focus-visible {
+    background: $ui-brand;
+    color: $ui-text-inv;
   }
 
   &--icon {
