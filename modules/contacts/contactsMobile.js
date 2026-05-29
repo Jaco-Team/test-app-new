@@ -1,62 +1,123 @@
 import { useRef, useEffect, memo } from 'react';
 import { YMaps, Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
-import { useContactStore, useCitiesStore, useHeaderStoreNew } from '@/components/store.js';
+import {
+  useContactStore,
+  useCitiesStore,
+  useHeaderStoreNew,
+} from '@/components/store.js';
 
 import Box from '@mui/material/Box';
 import Typography from '@mui/material/Typography';
-import { MapContactsMobile, LocationIconMobile, VectorRightMobile, LocationMapMobile } from '@/ui/Icons.js';
+import {
+  MapContactsMobile,
+  LocationIconMobile,
+  VectorRightMobile,
+  LocationMapMobile,
+} from '@/ui/Icons.js';
 import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 
-const ContactsPageMobilePointMap = memo(function ContactsPageMobilePointMap({ point, changePointClick, image }) {
+const ContactsPageMobilePointMap = memo(function ContactsPageMobilePointMap({
+  point,
+  changePointClick,
+  image,
+}) {
   return (
     <Placemark
       geometry={[point.xy_point.latitude, point.xy_point.longitude]}
-      options={{ 
-        iconLayout: image, 
-        iconImageHref: '/Favikon.png', 
-        iconImageSize: [65, 65], 
-        iconImageOffset: [-12, -20], 
-      }} 
+      options={{
+        iconLayout: image,
+        iconImageHref: '/Favikon.png',
+        iconImageSize: [65, 65],
+        iconImageOffset: [-12, -20],
+      }}
       onClick={() => changePointClick(point.addr)}
     />
-  )
-})
+  );
+});
 
-export default function ContactsPageMobile() {
+export default function ContactsPageMobile({ heading = '' }) {
   const ref = useRef();
 
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
 
-  const [setActiveModalCityList] = useHeaderStoreNew((state) => [state?.setActiveModalCityList]);
+  const [setActiveModalCityList] = useHeaderStoreNew((state) => [
+    state?.setActiveModalCityList,
+  ]);
 
-  const [point, phone, disablePointsZone, disable, setActiveModalChoose, getUserPosition, center_map, zones, points_zone, changePointClick, location_user, clickPhoneMobile] = useContactStore((state) => [state.point, state.phone, state.disablePointsZone, state.disable, state.setActiveModalChoose, state.getUserPosition, state.center_map, state.zones, state.points_zone, state.changePointClick, state.location_user, state.clickPhoneMobile]);
+  const [
+    point,
+    phone,
+    disablePointsZone,
+    disable,
+    setActiveModalChoose,
+    getUserPosition,
+    center_map,
+    zones,
+    points_zone,
+    changePointClick,
+    location_user,
+    clickPhoneMobile,
+  ] = useContactStore((state) => [
+    state.point,
+    state.phone,
+    state.disablePointsZone,
+    state.disable,
+    state.setActiveModalChoose,
+    state.getUserPosition,
+    state.center_map,
+    state.zones,
+    state.points_zone,
+    state.changePointClick,
+    state.location_user,
+    state.clickPhoneMobile,
+  ]);
+  const pageHeading = String(heading ?? '').trim();
 
   useEffect(() => {
-    if(ref.current && center_map?.center){
-      ref.current.setCenter(center_map?.center, center_map?.zoom, { duration: center_map?.duration} );
+    if (ref.current && center_map?.center) {
+      ref.current.setCenter(center_map?.center, center_map?.zoom, {
+        duration: center_map?.duration,
+      });
     }
-  }, [center_map])
+  }, [center_map]);
 
   return (
-    <Box sx={{ display: { xs: 'block', md: 'block', lg: 'none' } }} className="ContactsMobile" >
-
-      {!center_map ? null :
-        <div style={{ minHeight: '100vw', width: '100%', marginBottom: '10.25641025641vw' }} >
-          <YMaps query={{ lang: 'ru_RU', apikey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP }}>
-            <Map 
-              defaultState={center_map} 
-              instanceRef={ref} 
-              width="100%" 
-              height="100%" 
+    <Box
+      sx={{ display: { xs: 'block', md: 'block', lg: 'none' } }}
+      className="ContactsMobile"
+    >
+      {!center_map ? null : (
+        <div
+          style={{
+            minHeight: '100vw',
+            width: '100%',
+            marginBottom: '10.25641025641vw',
+          }}
+        >
+          <YMaps
+            query={{
+              lang: 'ru_RU',
+              apikey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP,
+            }}
+          >
+            <Map
+              defaultState={center_map}
+              instanceRef={ref}
+              width="100%"
+              height="100%"
               style={{ minHeight: '100vw' }}
             >
-
-              {zones?.map((point, key) => 
-                <ContactsPageMobilePointMap key={point.test} point={point} changePointClick={changePointClick} image={point.image} />
-              )}
+              {zones?.map((point, key) => (
+                <ContactsPageMobilePointMap
+                  key={point.test}
+                  point={point}
+                  changePointClick={changePointClick}
+                  image={point.image}
+                />
+              ))}
 
               {points_zone?.map((point, key) => (
-                <Polygon 
+                <Polygon
                   key={key}
                   geometry={[point.zone]}
                   options={point.options}
@@ -64,29 +125,35 @@ export default function ContactsPageMobile() {
                 />
               ))}
 
-              {!location_user ? null :
+              {!location_user ? null : (
                 <Placemark
                   geometry={location_user}
-                  options={{ 
+                  options={{
                     preset: 'islands#redStretchyIcon',
-                  }} 
+                  }}
                   properties={{
-                    iconContent: 'Вы находитесь здесь'
+                    iconContent: 'Вы находитесь здесь',
                   }}
                 />
-              }
-
+              )}
             </Map>
           </YMaps>
         </div>
-      }
-      
+      )}
+
       <div className="ContactsLocation">
         <LocationMapMobile onClick={getUserPosition} />
       </div>
 
       <div className="ContactsMobileContainer">
-        <div className="ContactPoint" onClick={() => setActiveModalCityList(true)}>
+        {pageHeading ? (
+          <h1 className="contactsPageTitle">{pageHeading}</h1>
+        ) : null}
+
+        <div
+          className="ContactPoint"
+          onClick={() => setActiveModalCityList(true)}
+        >
           <div className="spanContainer">
             <Typography component="span">
               <MapContactsMobile />
@@ -99,7 +166,11 @@ export default function ContactsPageMobile() {
           </div>
         </div>
 
-        <div className="ContactPoint" style={{ marginBottom: '5.982905982906vw' }} onClick={() => setActiveModalChoose(true)}>
+        <div
+          className="ContactPoint"
+          style={{ marginBottom: '5.982905982906vw' }}
+          onClick={() => setActiveModalChoose(true)}
+        >
           <div className="spanContainer">
             <Typography component="span">
               <LocationIconMobile />
@@ -112,14 +183,22 @@ export default function ContactsPageMobile() {
         </div>
 
         <div className="ContactsInfo">
-          <Typography component="span">Работаем ежедневно с 10:00 до 21:30</Typography>
+          <Typography component="span">
+            Работаем ежедневно с 10:00 до 21:30
+          </Typography>
         </div>
 
-        <div className="ContactsInfo" style={{ marginBottom: '2.5641025641026vw' }}>
+        <div
+          className="ContactsInfo"
+          style={{ marginBottom: '2.5641025641026vw' }}
+        >
           <Typography component="span">Позвонить и заказать:</Typography>
         </div>
 
-        <div className="ContactsPhone" onClick={() => clickPhoneMobile(thisCityRu)}>
+        <div
+          className="ContactsPhone"
+          onClick={() => clickPhoneMobile(thisCityRu)}
+        >
           <span>{phone}</span>
         </div>
 

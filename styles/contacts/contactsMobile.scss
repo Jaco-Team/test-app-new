@@ -1,4 +1,4 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
 .ContactsMobile {
   margin-top: $MyScale200_mobile;
@@ -26,6 +26,20 @@
     display: flex;
     flex-direction: column;
     align-items: center;
+
+    & .contactsPageTitle {
+      width: $MyScale1010_mobile;
+      margin-top: $MyScale8_mobile;
+      margin-bottom: $MyScale40_mobile;
+      text-align: center;
+      color: #666666;
+      line-height: 1;
+      font-style: normal;
+      font-weight: 400;
+      font-family: var(--inter-font);
+      font-size: $MyScale39_mobile;
+      word-break: break-word;
+    }
 
     & .ContactPoint {
       width: $MyScale1010_mobile;

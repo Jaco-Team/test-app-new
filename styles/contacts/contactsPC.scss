@@ -1,8 +1,8 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
-.Contact_{
+.Contact_ {
   position: relative;
-  margin-top: $MyScale128!important;
+  margin-top: $MyScale128 !important;
   min-height: $MyScale900;
   height: 85%;
   z-index: 3;
@@ -16,7 +16,7 @@
     position: absolute;
     top: $MyScale60;
     right: $MyScale125;
-    width: calc($MyScale800 - $MyScale100*2 );
+    width: calc($MyScale800 - $MyScale100 * 2);
     display: flex;
     flex-direction: column !important;
     align-items: center;
@@ -24,7 +24,20 @@
     padding-left: $MyScale100;
     padding-right: $MyScale100;
     padding-bottom: $MyScale72;
-  
+
+    & .contactsPageTitle {
+      width: 100%;
+      text-align: center;
+      color: #666666;
+      line-height: 1;
+      font-style: normal;
+      font-weight: 400;
+      font-family: var(--inter-font);
+      font-size: 1.0416666667vw;
+      margin-bottom: $MyScale36;
+      word-break: break-word;
+    }
+
     & button.chooseCity {
       width: 100%;
       height: $MyScale90;
@@ -34,7 +47,7 @@
       border: $MyScale2 solid rgba(0, 0, 0, 0.25);
       text-transform: lowercase;
       color: $colorText !important;
-      
+
       display: flex;
       align-items: center;
       justify-content: space-between;
@@ -48,9 +61,9 @@
           text-transform: uppercase;
         }
       }
-      & span:last-child{
+      & span:last-child {
         padding-right: $MyScale44;
-        & svg{
+        & svg {
           @include font50_500();
           color: $colorText !important;
         }
@@ -59,31 +72,30 @@
         background-color: rgba(0, 0, 0, 0.05);
       }
     }
-  
+
     & .listAddrPoint {
       width: 100%;
       margin-top: $MyScale60;
-  
+
       & h2 {
         @include font30_400();
         height: $MyScale50;
         line-height: $MyScale50;
       }
-  
+
       & svg.MapPointIcon path:first-child {
         fill: $colorMain;
         fill-opacity: 1;
       }
-  
+
       & ul {
-        
         & > div {
           margin-top: $MyScale40;
           padding: 0;
-          & svg{
+          & svg {
             width: $MyScale50;
             height: $MyScale66;
-            & > g > path:first-child{
+            & > g > path:first-child {
               fill-opacity: 1;
               fill: rgba(221, 30, 51, 1);
             }
@@ -91,7 +103,7 @@
           & > div {
             margin-left: $MyScale40;
             height: $MyScale60;
-            
+
             & p {
               @include font40_400();
               &:hover {
@@ -103,16 +115,15 @@
             background-color: #ffffff;
           }
         }
-        
       }
-      & hr{
+      & hr {
         height: $MyScale2;
         width: 100%;
         background-color: #e5e5e5;
         margin-top: $MyScale80;
       }
     }
-  
+
     & .listInfo {
       width: 100%;
       align-items: flex-start;
@@ -138,7 +149,7 @@
         background-color: #e5e5e5;
       }
     }
-  
+
     & .switch {
       width: 100%;
       height: $MyScale100;
@@ -147,8 +158,8 @@
       justify-content: space-between;
       align-items: center;
       padding: 0;
-  
-      & > span{
+
+      & > span {
         @include font30_400();
       }
     }
@@ -165,7 +176,7 @@
 //   background: #ffffff;
 //   box-shadow: $MyScale5 $MyScale10 $MyScale30 rgba(0, 0, 0, 0.25);
 //   border-radius: $MyScale30;
-  
+
 //   display: flex;
 //   align-items: center;
 //   justify-content: center;
@@ -220,14 +231,14 @@
 
 #chooseCityContact {
   & div.MuiPaper-root.MuiMenu-paper {
-    border-radius: $MyScale20!important;
-    margin-top: $MyScale20!important;
+    border-radius: $MyScale20 !important;
+    margin-top: $MyScale20 !important;
     width: $MyScale680;
     right: $MyScale190;
-    left: auto!important;
+    left: auto !important;
     background: #ececec;
     box-shadow: $MyScale10 $MyScale10 $MyScale30 $MyScale5 rgba(0, 0, 0, 0.2);
-    
+
     & ul {
       padding: 0;
 
@@ -244,7 +255,7 @@
           height: 100%;
           text-decoration: none;
           color: $colorText !important;
-          
+
           display: flex;
           align-items: center;
           justify-content: center;
@@ -257,7 +268,6 @@
           &:focus {
             color: $colorText !important;
           }
-          
         }
       }
     }
@@ -266,12 +276,12 @@
 
 #chooseCityContact_ {
   & div.MuiPaper-root.MuiMenu-paper {
-    border-radius: $MyScale20!important;
-    margin-top: $MyScale20!important;
-    width: $MyScale680!important;
+    border-radius: $MyScale20 !important;
+    margin-top: $MyScale20 !important;
+    width: $MyScale680 !important;
     box-shadow: $MyScale10 $MyScale10 $MyScale30 $MyScale5 rgba(0, 0, 0, 0.2);
     right: $MyScale190;
-    left: auto!important;
+    left: auto !important;
     & ul {
       //width: 100%;
       padding: 0;
@@ -292,7 +302,7 @@
           min-width: max-content;
           text-decoration: none;
           color: $colorText !important;
-          
+
           width: 100%;
           display: block;
           text-align: center;
@@ -316,13 +326,14 @@
 }
 
 @include tablet-only {
-  .Contact_{
-    margin-top: tablet-vw(128)!important;
+  .Contact_ {
+    margin-top: tablet-vw(128) !important;
     min-height: tablet-vw(900);
     height: 85%;
 
     & .Contact {
-      box-shadow: tablet-vw(10) tablet-vw(20) tablet-vw(40) tablet-vw(15) rgba(0, 0, 0, 0.15);
+      box-shadow: tablet-vw(10) tablet-vw(20) tablet-vw(40) tablet-vw(15)
+        rgba(0, 0, 0, 0.15);
       border-radius: tablet-vw(80);
       top: tablet-vw(60);
       right: tablet-vw(125);
@@ -331,7 +342,13 @@
       padding-left: tablet-vw(100);
       padding-right: tablet-vw(100);
       padding-bottom: tablet-vw(72);
-    
+
+      & .contactsPageTitle {
+        line-height: 1;
+        font-size: tablet-vw(28.8543);
+        margin-bottom: tablet-vw(36);
+      }
+
       & button.chooseCity {
         height: tablet-vw(90);
         border-radius: tablet-vw(45);
@@ -342,27 +359,27 @@
           padding-left: tablet-vw(50);
           color: $colorText !important;
         }
-        & span:last-child{
+        & span:last-child {
           padding-right: tablet-vw(44);
           & svg {
             color: $colorText !important;
           }
         }
       }
-    
+
       & .listAddrPoint {
         margin-top: tablet-vw(60);
-    
+
         & h2 {
           height: tablet-vw(50);
           line-height: tablet-vw(50);
         }
-    
+
         & ul {
           & > div {
             margin-top: tablet-vw(40);
 
-            & svg{
+            & svg {
               width: tablet-vw(50);
               height: tablet-vw(66);
             }
@@ -374,12 +391,12 @@
           }
         }
 
-        & hr{
+        & hr {
           height: tablet-vw(2);
           margin-top: tablet-vw(80);
         }
       }
-    
+
       & .listInfo {
         margin-top: tablet-vw(50);
 
@@ -403,7 +420,7 @@
           height: tablet-vw(2);
         }
       }
-    
+
       & .switch {
         height: tablet-vw(100);
       }
@@ -412,12 +429,13 @@
 
   #chooseCityContact {
     & div.MuiPaper-root.MuiMenu-paper {
-      border-radius: tablet-vw(20)!important;
-      margin-top: tablet-vw(20)!important;
+      border-radius: tablet-vw(20) !important;
+      margin-top: tablet-vw(20) !important;
       width: tablet-vw(680);
       right: tablet-vw(190);
-      box-shadow: tablet-vw(10) tablet-vw(10) tablet-vw(30) tablet-vw(5) rgba(0, 0, 0, 0.2);
-      
+      box-shadow: tablet-vw(10) tablet-vw(10) tablet-vw(30) tablet-vw(5)
+        rgba(0, 0, 0, 0.2);
+
       & ul {
         & li {
           height: tablet-vw(80);
@@ -428,10 +446,11 @@
 
   #chooseCityContact_ {
     & div.MuiPaper-root.MuiMenu-paper {
-      border-radius: tablet-vw(20)!important;
-      margin-top: tablet-vw(20)!important;
-      width: tablet-vw(680)!important;
-      box-shadow: tablet-vw(10) tablet-vw(10) tablet-vw(30) tablet-vw(5) rgba(0, 0, 0, 0.2);
+      border-radius: tablet-vw(20) !important;
+      margin-top: tablet-vw(20) !important;
+      width: tablet-vw(680) !important;
+      box-shadow: tablet-vw(10) tablet-vw(10) tablet-vw(30) tablet-vw(5)
+        rgba(0, 0, 0, 0.2);
       right: tablet-vw(190);
 
       & ul {
