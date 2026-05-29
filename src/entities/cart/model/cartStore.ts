@@ -6,6 +6,7 @@ import {
   getLocalStorageJson,
   setLocalStorageItem,
 } from '@/utils/browserStorage';
+import { getCartKind, recomputeDopListCart } from './cartExtras';
 import type {
   CartLineItem,
   CartPersistedPayload,
@@ -81,6 +82,7 @@ export const useCartStore = create<CartState>((set, get) => ({
   items: [],
   itemsOffDops: [],
   dopListCart: [],
+  cartKind: 'all',
   itemsCount: 0,
   allPrice: 0,
   allPriceWithoutPromo: null,
@@ -98,6 +100,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 
   setNeedDops: (items) => {
     set({ needDops: items ?? {} });
+    get().recomputeTotals();
   },
 
   changeAllItems: () => {
@@ -122,8 +125,10 @@ export const useCartStore = create<CartState>((set, get) => ({
   },
 
   recomputeTotals: () => {
-    const { items, dopListCart, checkPromo } = get();
+    const { items, allItems, needDops, checkPromo } = get();
     const itemsOffDops = recomputeOffDops(items);
+    const dopListCart = recomputeDopListCart(items, allItems, needDops);
+    const cartKind = getCartKind(items, allItems);
     const baseTotal = sumCartLines(itemsOffDops) + sumCartLines(dopListCart);
     const promoTotal =
       checkPromo?.st && itemsOffDops.length > 0
@@ -132,6 +137,8 @@ export const useCartStore = create<CartState>((set, get) => ({
 
     set({
       itemsOffDops,
+      dopListCart,
+      cartKind,
       itemsCount: countCartLines(items),
       allPriceWithoutPromo: baseTotal,
       allPrice: promoTotal > 0 ? promoTotal : baseTotal,

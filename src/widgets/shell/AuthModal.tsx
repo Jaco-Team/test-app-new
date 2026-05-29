@@ -6,13 +6,13 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import IconButton from '@mui/material/IconButton';
 import Button from '@mui/material/Button';
 import TextField from '@mui/material/TextField';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useCompactLayout } from '@src/shared/lib/viewport';
 import { useAuthStore } from '@src/features/auth/model/authStore';
 import { useHeaderStore } from '@src/entities/header';
 import { cityPath } from '@src/shared/lib/sitePaths';
 
 export function AuthModal({ city }: { city: string }) {
-  const compact = useMediaQuery('(max-width: 800px)');
+  const compact = useCompactLayout();
   const open = useHeaderStore((state) => state.openAuthModal);
   const isAuth = useHeaderStore((state) => state.isAuth);
   const closeModalAuth = useAuthStore((state) => state.closeModalAuth);

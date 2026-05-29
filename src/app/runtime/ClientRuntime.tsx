@@ -10,9 +10,10 @@ import {
   installGlobalSentryHandlers,
   isCustomSentryMonitoringEnabled,
 } from '@/utils/clientMonitoring';
+import { breakpointValues } from '@src/shared/ui/foundation/breakpoints';
 import { RuntimeScripts } from './RuntimeScripts';
 
-const HEADER_DESKTOP_BREAKPOINT_PX = 800;
+const HEADER_DESKTOP_BREAKPOINT_PX = breakpointValues.md;
 
 export function ClientRuntime({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();

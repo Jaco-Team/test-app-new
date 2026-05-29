@@ -87,10 +87,9 @@
   &__description {
     display: -webkit-box;
     -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
     line-clamp: 3;
     overflow: hidden;
-
-    // block-overflow: ellipsis;
 
     margin: ui-fluid-compact(2) 0 ui-fluid-compact(8);
     color: $ui-text-muted;
@@ -129,53 +128,84 @@
   }
 
   @include ui-regular {
-    grid-template-columns: ui-fluid-regular(285) minmax(0, 1fr);
-    gap: ui-fluid-regular(23);
-    min-height: ui-fluid-regular(285);
+    grid-template-columns: 1fr;
+    justify-items: center;
+    gap: ui-fluid-regular(12);
+    width: 100%;
+    min-height: ui-fluid-regular(420);
+    padding: 0 0 ui-fluid-regular(18);
+    border-radius: ui-fluid-regular(24);
+    text-align: center;
+
+    &--active {
+      min-height: ui-fluid-regular(420);
+    }
+
     &__media {
-      width: ui-fluid-regular(285);
+      width: 100%;
     }
+
     &__badges {
-      top: ui-fluid-regular(10);
-      left: ui-fluid-regular(10);
+      top: ui-fluid-regular(14);
+      left: ui-fluid-regular(14);
       gap: ui-fluid-regular(8);
     }
+
     &__body {
-      gap: ui-fluid-regular(8);
-      padding-top: ui-fluid-regular(0);
+      justify-items: center;
+      gap: ui-fluid-regular(10);
+      width: 100%;
+      box-sizing: border-box;
+      padding-top: 0;
+      margin-block: 0;
     }
+
     &__title {
-      font-size: ui-fluid-regular(31);
-      font-weight: 500;
-      line-height: 1.12;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: ui-fluid-regular(48);
       margin-top: 0;
+      font-size: ui-fluid-regular(22);
+      font-weight: 500;
+      line-height: 1.2;
     }
+
     &__info {
+      display: flex;
+      align-items: flex-end;
+      justify-content: center;
       gap: ui-fluid-regular(8);
-      font-size: ui-fluid-regular(18);
-      line-height: 1.16;
+      min-height: ui-fluid-regular(20);
+      font-size: ui-fluid-regular(14);
     }
+
     &__info span + span::before {
       margin-right: ui-fluid-regular(8);
     }
+
     &__description {
-      font-size: max(12, ui-fluid-regular(21));
-      line-height: 1.22;
-      line-clamp: 4;
+      padding-inline: ui-fluid-regular(16);
+      min-height: ui-fluid-regular(48);
+      font-size: max(12px, ui-fluid-regular(16));
+      line-clamp: 3;
     }
+
     &__action {
-      width: ui-fluid-regular(234);
-      height: ui-fluid-regular(63);
+      width: 68%;
+      min-height: ui-fluid-regular(56);
       margin-top: ui-fluid-regular(12);
     }
+
     &__action .ui-quantity-control button {
-      width: ui-fluid-regular(51);
-      height: ui-fluid-regular(51);
-      margin: 0 ui-fluid-regular(6);
-      font-size: ui-fluid-regular(40);
+      width: ui-fluid-regular(40);
+      height: ui-fluid-regular(40);
+      margin: 0 ui-fluid-regular(5);
+      font-size: ui-fluid-regular(28);
     }
+
     &__action .ui-price {
-      font-size: ui-fluid-regular(25);
+      font-size: ui-fluid-regular(20);
     }
   }
 

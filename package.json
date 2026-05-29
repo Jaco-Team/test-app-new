@@ -12,6 +12,8 @@
     "test:storybook": "vitest --project storybook",
     "test:ui-visual": "playwright test -c playwright.ui.config.ts",
     "test:ui-visual:update": "playwright test -c playwright.ui.config.ts --update-snapshots",
+    "test:preview-parity": "playwright test -c playwright.preview.config.ts",
+    "test:preview-parity:update": "playwright test -c playwright.preview.config.ts --update-snapshots",
     "prepare": "husky",
     "oxc": "npx oxlint@latest",
     "win": "next dev -p 3008",

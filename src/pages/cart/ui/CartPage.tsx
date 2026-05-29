@@ -1,9 +1,8 @@
 'use client';
 
-import { useCartStore } from '@src/entities/cart';
+import { formatCartLabel, useCartStore } from '@src/entities/cart';
 import { useCityStore } from '@src/entities/city';
 import { cityBase } from '@src/shared/lib/sitePaths';
-import { formatCartLabel } from '@src/features/header/model/formatCartLabel';
 import './CartPage.scss';
 
 export function CartPage() {
@@ -13,8 +12,17 @@ export function CartPage() {
   const dopListCart = useCartStore((state) => state.dopListCart);
   const checkPromo = useCartStore((state) => state.checkPromo);
   const allPrice = useCartStore((state) => state.allPrice);
+  const allPriceWithoutPromo = useCartStore(
+    (state) => state.allPriceWithoutPromo
+  );
 
-  const totalLabel = formatCartLabel(items, dopListCart, checkPromo, allPrice);
+  const totalLabel = formatCartLabel(
+    items,
+    dopListCart,
+    checkPromo,
+    allPrice,
+    allPriceWithoutPromo
+  );
 
   return (
     <div className="cart-page">

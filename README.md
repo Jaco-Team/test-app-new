@@ -43,8 +43,9 @@ Do **not** rename `pages/` to `pages_old` — Next.js only recognizes a director
 - Import alias: `@ui/*`
 - Provider: `DesignSystemProvider` from `@ui/foundation`
 - Breakpoints: compact `320–667`, regular `668–990`, expanded `991+`
+- Adaptivity: fluid vw formulas — measure in **px** at fixed viewports first; see [docs/tablet-adaptation-guide.md](docs/tablet-adaptation-guide.md)
 
-Storybook documents components; it is not the DS source. The old `stories/` tree remains on disk as reference only.
+Storybook documents components; it is not the DS source. The old `stories/` tree is a **failed Storybook-first attempt** — frozen reference only, do not extend.
 
 ## Redesign Direction
 
@@ -60,13 +61,22 @@ Storybook documents components; it is not the DS source. The old `stories/` tree
 - TypeScript in `src/`; legacy JS remains allowed during migration.
 - Do not run format/lint/prettier/eslint unless explicitly requested.
 
+## Agent tooling (Cursor)
+
+- Rule: `.cursor/rules/preview-ds.mdc` — preview DS context (always on)
+- Skills: `.cursor/skills/markup-parity`, `.cursor/skills/visual-capture`
+- Browser MCP: `cursor-ide-browser` (IDE) for localhost screenshots at pixel viewports
+- Codex agents (local): `.codex/agents/markup_corrector.toml`, `pw_screenshoter.toml`
+
 ## Docs
 
-| File                                           | Purpose                       |
-| ---------------------------------------------- | ----------------------------- |
-| [AGENTS.md](AGENTS.md)                         | Codex / agent instructions    |
-| [TODO-NEW.md](TODO-NEW.md)                     | Active DS + new core plan     |
-| [stories/README_FSD.md](stories/README_FSD.md) | Archived `stories/` FSD notes |
+| File                                                               | Purpose                           |
+| ------------------------------------------------------------------ | --------------------------------- |
+| [AGENTS.md](AGENTS.md)                                             | Codex / agent instructions        |
+| [TODO-NEW.md](TODO-NEW.md)                                         | Active DS + new core plan         |
+| [docs/tablet-adaptation-guide.md](docs/tablet-adaptation-guide.md) | px → vw formulas, parity workflow |
+| [src/CORE.md](src/CORE.md)                                         | New core layers and routes        |
+| [stories/README_FSD.md](stories/README_FSD.md)                     | Archived `stories/` FSD notes     |
 
 ## Deploy
 

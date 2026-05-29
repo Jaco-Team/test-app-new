@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useCompactLayout } from '@src/shared/lib/viewport';
 import {
   Badge,
   Button,
@@ -304,7 +304,7 @@ export function ProductDetailsModal({
   const [mediaMode, setMediaMode] = useState<'image' | 'value' | 'set'>(
     'image'
   );
-  const isCompact = useMediaQuery('(max-width: 667px)');
+  const isCompact = useCompactLayout();
 
   if (!product) {
     return null;

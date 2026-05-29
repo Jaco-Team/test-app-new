@@ -63,6 +63,9 @@ export function HomeHeaderConnected({
   const dopListCart = useCartStore((state) => state.dopListCart);
   const checkPromo = useCartStore((state) => state.checkPromo);
   const allPrice = useCartStore((state) => state.allPrice);
+  const allPriceWithoutPromo = useCartStore(
+    (state) => state.allPriceWithoutPromo
+  );
   const itemsCount = useCartStore((state) => state.itemsCount);
 
   useEffect(() => {
@@ -92,7 +95,8 @@ export function HomeHeaderConnected({
     itemsOffDops,
     dopListCart,
     checkPromo,
-    allPrice
+    allPrice,
+    allPriceWithoutPromo
   );
   const hasPayableCart = cartLabel !== 'Корзина';
   const logoHref = citySlug ? cityBase(citySlug) : APP_ROUTE_PREFIX;

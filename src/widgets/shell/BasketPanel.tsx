@@ -4,17 +4,16 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import useMediaQuery from '@mui/material/useMediaQuery';
+import { useCompactLayout } from '@src/shared/lib/viewport';
 import Link from 'next/link';
 import { Price, QuantityControl } from '@src/shared/ui';
-import { useCartStore } from '@src/entities/cart';
+import { formatCartLabel, useCartStore } from '@src/entities/cart';
 import { useHeaderStore } from '@src/entities/header';
 import {
   resolveProductImageUrl,
   isValidMediaKey,
 } from '@src/shared/lib/mediaUrls';
 import { cityPath } from '@src/shared/lib/sitePaths';
-import { formatCartLabel } from '@src/features/header/model/formatCartLabel';
 import { useBodyScrollLock } from '@src/shared/lib/overlay/useBodyScrollLock';
 import './BasketPanel.scss';
 
@@ -45,87 +44,6 @@ function lineImage(line: Record<string, unknown>): string | undefined {
     : resolveProductImageUrl(src, '_138x138.jpg');
 }
 
-function normalizeDop(
-  line: Record<string, unknown>,
-  count = 0
-): Record<string, unknown> {
-  return {
-    ...line,
-    item_id: line.item_id ?? line.id,
-    one_price: line.one_price ?? line.price,
-    cat_id: line.cat_id ?? 7,
-    count,
-  };
-}
-
-function cartKind(
-  items: Record<string, unknown>[],
-  allItems: Record<string, unknown>[]
-): 'rolls' | 'pizza' | 'all' {
-  let rolls = 0;
-  let pizza = 0;
-
-  items.forEach((line) => {
-    const id = lineId(line);
-    const catalogItem = allItems.find((item) => String(item.id) === id);
-    const catId = Number(catalogItem?.cat_id ?? line.cat_id ?? 0);
-    const count = Number(line.count ?? 0);
-
-    if (catId === 14) {
-      pizza += count;
-      return;
-    }
-
-    if (![5, 6, 7, 14].includes(catId)) {
-      rolls += count;
-    }
-  });
-
-  if (rolls > 0 && pizza === 0) {
-    return 'rolls';
-  }
-  if (rolls === 0 && pizza > 0) {
-    return 'pizza';
-  }
-  return 'all';
-}
-
-function buildDefaultExtras(
-  needDops: unknown,
-  items: Record<string, unknown>[],
-  allItems: Record<string, unknown>[]
-): Record<string, unknown>[] {
-  const source = needDops as { rolls?: unknown[]; pizza?: unknown[] };
-  const kind = cartKind(items, allItems);
-  const base =
-    kind === 'rolls'
-      ? (source.rolls ?? [])
-      : kind === 'pizza'
-        ? (source.pizza ?? [])
-        : [...(source.rolls ?? []), ...(source.pizza ?? [])];
-  const dopsInCart = items
-    .map((line) => allItems.find((item) => String(item.id) === lineId(line)))
-    .filter(
-      (item): item is Record<string, unknown> => Number(item?.cat_id ?? 0) === 7
-    );
-  const merged = [
-    ...base,
-    ...dopsInCart.filter(
-      (dop) =>
-        !base.some(
-          (item) =>
-            String((item as Record<string, unknown>).id) === String(dop.id)
-        )
-    ),
-  ];
-
-  return merged.map((item) => {
-    const row = item as Record<string, unknown>;
-    const cartLine = items.find((line) => lineId(line) === String(row.id));
-    return normalizeDop(row, Number(cartLine?.count ?? 0));
-  });
-}
-
 function positionWord(count: number): string {
   const mod10 = count % 10;
   const mod100 = count % 100;
@@ -146,30 +64,28 @@ const dopText = {
 };
 
 export function BasketPanel({ city }: { city: string }) {
-  const compact = useMediaQuery('(max-width: 667px)');
+  const compact = useCompactLayout();
   const open = useHeaderStore((state) => state.openBasket);
   const setActiveBasket = useHeaderStore((state) => state.setActiveBasket);
 
-  const cartItems = useCartStore((state) => state.items);
   const items = useCartStore((state) => state.itemsOffDops);
   const dopListCart = useCartStore((state) => state.dopListCart);
-  const needDops = useCartStore((state) => state.needDops);
+  const cartKind = useCartStore((state) => state.cartKind);
   const checkPromo = useCartStore((state) => state.checkPromo);
   const allPrice = useCartStore((state) => state.allPrice);
+  const allPriceWithoutPromo = useCartStore(
+    (state) => state.allPriceWithoutPromo
+  );
   const setCount = useCartStore((state) => state.setCount);
   const allItems = useCartStore((state) => state.allItems);
 
-  const defaultExtras = buildDefaultExtras(
-    needDops,
-    cartItems as Record<string, unknown>[],
-    allItems as Record<string, unknown>[]
+  const label = formatCartLabel(
+    items,
+    dopListCart,
+    checkPromo,
+    allPrice,
+    allPriceWithoutPromo
   );
-  const extraItems = defaultExtras.length ? defaultExtras : dopListCart;
-  const extraKind = cartKind(
-    cartItems as Record<string, unknown>[],
-    allItems as Record<string, unknown>[]
-  );
-  const label = formatCartLabel(items, extraItems, checkPromo, allPrice);
   const itemsCount = items.reduce(
     (sum, line) => sum + Number(line.count ?? 0),
     0
@@ -219,10 +135,10 @@ export function BasketPanel({ city }: { city: string }) {
           );
         })}
 
-        {extraItems.length ? (
+        {dopListCart.length ? (
           <section className="basket-panel__extras" aria-label="Дополнительно">
-            <h3>{dopText[extraKind]}</h3>
-            {extraItems.map((line, index) => {
+            <h3>{dopText[cartKind]}</h3>
+            {dopListCart.map((line, index) => {
               const id = lineId(line);
               const count = Number(line.count ?? 0);
               const price = Number(line.one_price ?? line.price ?? 0);
