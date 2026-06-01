@@ -1,0 +1,54 @@
+@use '../../../shared/ui/foundation/formulas' as *;
+@use '../../../shared/ui/foundation/tokens' as *;
+
+.home-catalog-skeleton {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: ui-fluid-compact(18);
+  padding: ui-fluid-compact(20) ui-fluid-compact(30) 0;
+
+  &__card {
+    min-height: ui-fluid-compact(420);
+    border-radius: ui-fluid-compact(20);
+    background: linear-gradient(
+      90deg,
+      $ui-control-bg 0%,
+      rgba(0, 0, 0, 0.04) 50%,
+      $ui-control-bg 100%
+    );
+    background-size: 200% 100%;
+    animation: home-catalog-skeleton-shimmer 1.2s ease-in-out infinite;
+  }
+
+  @include ui-regular {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: ui-fluid-regular(24);
+    padding: ui-fluid-regular(16) ui-fluid-regular(46) 0;
+
+    &__card {
+      min-height: ui-fluid-regular(320);
+    }
+  }
+
+  @include ui-expanded {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: ui-fluid-expanded(20);
+    max-width: ui-fluid-expanded(1260);
+    margin: 0 auto;
+    padding: ui-fluid-expanded(12) 0 0;
+
+    &__card {
+      min-height: ui-fluid-expanded(280);
+    }
+  }
+}
+
+@keyframes home-catalog-skeleton-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}

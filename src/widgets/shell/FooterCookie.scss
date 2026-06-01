@@ -1,0 +1,52 @@
+@use '../../shared/ui/foundation/formulas' as *;
+@use '../../shared/ui/foundation/tokens' as *;
+
+.ui-footer-cookie {
+  position: fixed;
+  right: 0;
+  bottom: 0;
+  left: 0;
+  z-index: 1200;
+  background: $ui-surface;
+  border-radius: ui-fluid-compact(34) ui-fluid-compact(34) 0 0;
+  box-shadow: 0 ui-fluid-compact(-6) ui-fluid-compact(20) rgba(0, 0, 0, 0.08);
+
+  &__inner {
+    display: flex;
+    flex-direction: column;
+    gap: ui-fluid-compact(20);
+    padding: ui-fluid-compact(34) ui-fluid-compact(58) ui-fluid-compact(30);
+  }
+
+  &__text {
+    margin: 0;
+    color: $ui-text-secondary;
+    font-family: $ui-font-family;
+    font-size: ui-fluid-compact(28);
+    line-height: 1.35;
+  }
+
+  &__link {
+    color: $ui-brand;
+    text-decoration: underline;
+  }
+
+  &__accept {
+    align-self: center;
+    min-width: ui-fluid-compact(280);
+    min-height: ui-fluid-compact(88);
+    padding: 0 ui-fluid-compact(40);
+    border: 0;
+    border-radius: ui-fluid-compact(44);
+    background: $ui-brand;
+    color: $ui-text-inv;
+    font-family: $ui-font-family;
+    font-size: ui-fluid-compact(32);
+    font-weight: 500;
+    cursor: pointer;
+  }
+
+  @include ui-expanded {
+    display: none;
+  }
+}

@@ -4,25 +4,19 @@ import { useCallback, useEffect, useMemo, useState } from 'react';
 import { useCartStore } from '@src/entities/cart';
 import { api } from '@src/shared/api';
 import { useHomeStore } from '@src/entities/home';
-import { BannerSlider, CategoryMenu, Footer } from '@ui/widgets';
-import { HomeHeaderConnected } from '@src/features/header/ui/HomeHeaderConnected';
-import { HomeHeaderShell } from './HomeHeaderShell';
+import { BannerSlider, CategoryMenu } from '@ui/widgets';
 import { TagFilter } from '@ui/patterns';
 import { ProductCard } from '@ui/patterns/ProductCard/ProductCard';
+import { HomeCatalogSkeleton } from './HomeCatalogSkeleton';
 import type {
   HomeBannerSlide,
   HomePageViewModel,
   HomeProduct,
-  HomeTagFilterItem,
 } from '../model/types';
+import { mapProduct } from '../model/mapHomePageViewModel';
+import { useHomeCatalog } from '../hooks/useHomeCatalog';
 import { BannerDetailsModal } from './modals/BannerDetailsModal';
 import { ProductDetailsModal } from './modals/ProductDetailsModal';
-import {
-  mapHomeCatalogView,
-  mapProduct,
-  mapTags,
-} from '../model/mapHomePageViewModel';
-import { scrollToCategorySection } from '@src/shared/lib/scroll/scrollToCategorySection';
 import './HomePage.scss';
 
 function getProductLink(product: HomeProduct): string {
@@ -64,25 +58,20 @@ function clearProductQuery(): void {
 
 export type HomePageProps = {
   model: HomePageViewModel;
-  useConnectedHeader?: boolean;
 };
 
-export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
+export function HomePage({ model }: HomePageProps) {
   const [activeProduct, setActiveProduct] = useState<HomeProduct | null>(null);
   const [activeBanner, setActiveBanner] = useState<HomeBannerSlide | null>(
     null
   );
-  const [activeCategoryTarget, setActiveCategoryTarget] = useState<
-    string | undefined
-  >();
-  const [activeTag, setActiveTag] = useState<HomeTagFilterItem | null>(null);
+
   const items = useCartStore((state) => state.items);
   const plus = useCartStore((state) => state.plus);
   const setCount = useCartStore((state) => state.setCount);
-  const storeCategories = useHomeStore((state) => state.categories);
-  const storeCatalogItems = useHomeStore((state) => state.catalogItems);
-  const storeTags = useHomeStore((state) => state.allTags);
   const getItemsCat = useHomeStore((state) => state.getItemsCat);
+
+  const catalog = useHomeCatalog(model);
 
   const countByProductId = useMemo(() => {
     const map = new Map<string, number>();
@@ -94,79 +83,22 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
     return map;
   }, [items]);
 
+  const getCount = (product: HomeProduct) =>
+    countByProductId.get(product.id) ?? 0;
+
   useEffect(() => {
     if (model.citySlug) {
       void getItemsCat('home', model.citySlug);
     }
   }, [getItemsCat, model.citySlug]);
 
-  const liveCatalog = useMemo(() => {
-    if (!storeCatalogItems.length) {
-      return null;
-    }
+  const addProduct = (product: HomeProduct) => {
+    plus(product.id, product.catId);
+  };
 
-    return mapHomeCatalogView(storeCategories, storeCatalogItems);
-  }, [storeCatalogItems, storeCategories]);
-  const categoryPrimary = liveCatalog?.categoryPrimary ?? model.categoryPrimary;
-  const categorySecondary =
-    liveCatalog?.categorySecondary ?? model.categorySecondary;
-  const tags = storeTags.length ? mapTags(storeTags) : model.tags;
-  const products = liveCatalog?.products ?? model.products;
-  const tagItems = useMemo<HomeTagFilterItem[]>(() => {
-    const hasNewTag = tags.some(
-      (tag) => tag.tone === 'new' || tag.label.toLowerCase() === 'новинка'
-    );
-    const hasNewBadge = products.some((product) =>
-      product.badges?.some((badge) => badge.tone === 'new')
-    );
-    const baseTags =
-      hasNewBadge && !hasNewTag
-        ? [{ label: 'НОВИНКА', tone: 'new' as const, id: 'new' }, ...tags]
-        : tags;
-
-    return baseTags.map((tag) => ({
-      ...tag,
-      active: activeTag
-        ? (activeTag.tone === 'new' && tag.tone === 'new') ||
-          (activeTag.id !== undefined && tag.id === activeTag.id) ||
-          activeTag.label === tag.label
-        : false,
-    }));
-  }, [activeTag, products, tags]);
-  const productGroupsSource = liveCatalog?.productGroups ?? model.productGroups;
-
-  const productMatchesActiveTag = useCallback(
-    (product: HomeProduct) => {
-      if (!activeTag) {
-        return true;
-      }
-
-      if (activeTag.tone === 'new') {
-        return (
-          product.badges?.some((badge) => badge.tone === 'new') ||
-          Number(product.raw?.is_new) === 1
-        );
-      }
-
-      if (activeTag.id !== undefined) {
-        return product.tagIds?.includes(String(activeTag.id)) ?? false;
-      }
-
-      return product.tagIds?.includes(activeTag.label) ?? false;
-    },
-    [activeTag]
-  );
-
-  const handleTagChange = useCallback(
-    (tag: HomeTagFilterItem, index: number) => {
-      setActiveTag(index < 0 ? null : tag);
-    },
-    []
-  );
-
-  const clearTagFilter = useCallback(() => {
-    setActiveTag(null);
-  }, []);
+  const changeProductCount = (product: HomeProduct, value: number) => {
+    setCount(product.id, value, product.catId);
+  };
 
   const openProduct = useCallback(
     async (product: HomeProduct, options?: { writeQuery?: boolean }) => {
@@ -196,7 +128,11 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
   );
 
   useEffect(() => {
-    if (typeof window === 'undefined' || activeProduct || !products.length) {
+    if (
+      typeof window === 'undefined' ||
+      activeProduct ||
+      !catalog.products.length
+    ) {
       return;
     }
 
@@ -205,62 +141,16 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
       return;
     }
 
-    const foundProduct = products.find(
+    const foundProduct = catalog.products.find(
       (product) => getProductLink(product) === itemLink
     );
     if (foundProduct) {
       void openProduct(foundProduct, { writeQuery: false });
     }
-  }, [activeProduct, openProduct, products]);
-
-  const pingHomeCatalog = useCallback(() => {
-    if (model.citySlug) {
-      void getItemsCat('home', model.citySlug, { force: true });
-    }
-  }, [getItemsCat, model.citySlug]);
-
-  const getCount = (product: HomeProduct) =>
-    countByProductId.get(product.id) ?? 0;
-  const addProduct = (product: HomeProduct) => {
-    plus(product.id, product.catId);
-    pingHomeCatalog();
-  };
-  const changeProductCount = (product: HomeProduct, value: number) => {
-    setCount(product.id, value, product.catId);
-    pingHomeCatalog();
-  };
-  const productGroupsBase = productGroupsSource.length
-    ? productGroupsSource
-    : [{ id: 'cat-all', label: 'Каталог', products }];
-  const productGroups = productGroupsBase
-    .map((group) => ({
-      ...group,
-      products: group.products.filter(productMatchesActiveTag),
-    }))
-    .filter((group) => group.products.length > 0);
-  const scrollToCategory = useCallback((targetId?: string) => {
-    setActiveCategoryTarget(targetId);
-    if (!targetId) {
-      return;
-    }
-
-    scrollToCategorySection(targetId);
-  }, []);
+  }, [activeProduct, catalog.products, openProduct]);
 
   return (
     <div className="home-page">
-      {useConnectedHeader ? (
-        <HomeHeaderConnected
-          fallbackNav={model.headerNav}
-          fallbackCityLabel={model.cityLabel}
-          fallbackCitySlug={model.citySlug}
-        />
-      ) : (
-        <HomeHeaderShell
-          navItems={model.headerNav}
-          cityLabel={model.cityLabel}
-        />
-      )}
       <main className="home-page__main">
         <BannerSlider
           slides={model.banners}
@@ -268,52 +158,55 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
         />
 
         <CategoryMenu
-          primaryItems={categoryPrimary}
-          secondaryItems={categorySecondary}
+          primaryItems={catalog.categoryPrimary}
+          secondaryItems={catalog.categorySecondary}
           activeTargetId={
-            activeCategoryTarget ??
-            categorySecondary[0]?.targetId ??
-            categoryPrimary[0]?.targetId
+            catalog.activeCategoryTarget ??
+            catalog.categorySecondary[0]?.targetId ??
+            catalog.categoryPrimary[0]?.targetId
           }
-          tags={tagItems}
-          onActiveTargetChange={setActiveCategoryTarget}
-          onItemSelect={(item) => scrollToCategory(item.targetId)}
-          onTagChange={handleTagChange}
-          onTagClear={clearTagFilter}
+          tags={catalog.tagItems}
+          onActiveTargetChange={catalog.setActiveCategoryTarget}
+          onItemSelect={(item) => catalog.scrollToCategory(item.targetId)}
+          onTagChange={catalog.handleTagChange}
+          onTagClear={catalog.clearTagFilter}
         />
 
         <TagFilter
-          items={tagItems}
+          items={catalog.tagItems}
           className="home-page__tags"
-          onChange={handleTagChange}
-          onClear={clearTagFilter}
+          onChange={catalog.handleTagChange}
+          onClear={catalog.clearTagFilter}
         />
 
         <section className="home-page__catalog" aria-label="Каталог">
-          {productGroups.map((group) => (
-            <section
-              key={group.id}
-              id={group.id}
-              className="home-page__category-section"
-              aria-label={group.label}
-            >
-              {/* <h2 className="home-page__category-title">{group.label}</h2> */}
-              <div className="home-page__grid">
-                {group.products.map((product, index) => (
-                  <ProductCard
-                    key={`${product.id}-${index}`}
-                    {...product}
-                    count={getCount(product)}
-                    onAdd={() => addProduct(product)}
-                    onQuantityChange={(value) =>
-                      changeProductCount(product, value)
-                    }
-                    onDetailsClick={() => void openProduct(product)}
-                  />
-                ))}
-              </div>
-            </section>
-          ))}
+          {!catalog.catalogLoaded ? (
+            <HomeCatalogSkeleton />
+          ) : (
+            catalog.productGroups.map((group) => (
+              <section
+                key={group.id}
+                id={group.id}
+                className="home-page__category-section"
+                aria-label={group.label}
+              >
+                <div className="home-page__grid">
+                  {group.products.map((product, index) => (
+                    <ProductCard
+                      key={`${product.id}-${index}`}
+                      {...product}
+                      count={getCount(product)}
+                      onAdd={() => addProduct(product)}
+                      onQuantityChange={(value) =>
+                        changeProductCount(product, value)
+                      }
+                      onDetailsClick={() => void openProduct(product)}
+                    />
+                  ))}
+                </div>
+              </section>
+            ))
+          )}
         </section>
       </main>
 
@@ -332,18 +225,12 @@ export function HomePage({ model, useConnectedHeader = false }: HomePageProps) {
 
       <BannerDetailsModal
         banner={activeBanner}
+        citySlug={model.citySlug}
         getCount={getCount}
         onClose={() => setActiveBanner(null)}
         onAdd={addProduct}
         onQuantityChange={changeProductCount}
         onProductOpen={(product) => void openProduct(product)}
-      />
-
-      <Footer
-        citySlug={model.citySlug}
-        cityLabel={model.cityLabel}
-        linkGroups={model.footerLinks}
-        socialLinks={model.footerSocialLinks}
       />
     </div>
   );

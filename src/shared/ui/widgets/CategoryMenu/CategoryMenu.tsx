@@ -69,7 +69,7 @@ export function CategoryMenu({
 }: CategoryMenuProps) {
   const [filterOpen, setFilterOpen] = useState(false);
   const [pinnedTargetId, setPinnedTargetId] = useState<string | undefined>();
-  const pinnedTargetIdRef = useRef<string | undefined>();
+  const pinnedTargetIdRef = useRef<string | undefined>(undefined);
   const primaryRowRef = useRef<HTMLDivElement>(null);
   const secondaryRowRef = useRef<HTMLDivElement>(null);
   const displayTargetId = pinnedTargetId ?? activeTargetId;

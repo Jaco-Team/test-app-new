@@ -6,7 +6,9 @@ TypeScript + FSD under `src/`, mounted at `/preview/{city}` via `app/preview/` u
 
 - `entities/` — domain stores (city, catalog, cart, header, home, footer, profile, contact, akcii)
 - `features/` — auth, header nav, bootstrap seeding
-- `widgets/shell/` — global chrome (auth modal, basket panel, map loader)
+- `widgets/layout/` — `PreviewPageLayout` (bootstrap + shell + header + footer slot)
+- `widgets/header/` — `ConnectedHeader` (store-wired DS header for all preview routes)
+- `widgets/shell/` — global modals (`AuthModal`, `CityModal`, `BasketPanel`, `MapLoader`)
 - `pages/` — page compositions and view models
 - `shared/` — API client, paths, analytics, maps helpers
 - `app/runtime/` — client providers (Metrika, Sentry, ymaps scripts)

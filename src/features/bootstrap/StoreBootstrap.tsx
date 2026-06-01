@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect } from 'react';
+import { useEffect, useLayoutEffect } from 'react';
 import { useCatalogStore } from '@src/entities/catalog';
 import { useCartStore } from '@src/entities/cart';
 import { useCityStore } from '@src/entities/city';
@@ -32,37 +32,47 @@ function resolveCityLabel(city: string, cities: unknown[]): string {
   return found?.name ? String(found.name) : city;
 }
 
-export function StoreBootstrap({
-  city,
-  cities,
-  cats,
-  allItems,
-  tags,
-  links,
-  freeItems = [],
-  needDop = {},
-  activePage = 'home',
-}: StoreBootstrapProps) {
+function seedStoresFromPage(props: StoreBootstrapProps): void {
+  const {
+    city,
+    cities,
+    cats,
+    allItems,
+    tags,
+    links,
+    freeItems = [],
+    needDop = {},
+    activePage = 'home',
+  } = props;
+
+  const label = resolveCityLabel(city, cities);
+
+  useCityStore.getState().setCity(city, label, cities as CityRecord[]);
+  setLocalStorageItem('setCity', JSON.stringify({ link: city, name: label }));
+  useCatalogStore.getState().seedFromPage(cats, allItems, city, tags);
+  useHomeStore.getState().seedFromPage(cats, allItems, city, tags);
+  useHomeStore.getState().setAllTags(tags);
+  useFooterStore.getState().setLinks(links, city);
+
+  useCartStore.getState().setAllItems(allItems);
+  useCartStore.getState().setFreeItems(freeItems);
+  useCartStore.getState().setNeedDops(needDop);
+  useCartStore.getState().hydrateFromLocalStorage();
+
+  useHeaderStore.getState().setActivePage(activePage);
+}
+
+export function StoreBootstrap(props: StoreBootstrapProps) {
+  const { city, freeItems = [], needDop = {}, activePage = 'home' } = props;
+
+  useLayoutEffect(() => {
+    seedStoresFromPage(props);
+  }, [props]);
+
   useEffect(() => {
-    const label = resolveCityLabel(city, cities);
-
-    useCityStore.getState().setCity(city, label, cities as CityRecord[]);
-    setLocalStorageItem('setCity', JSON.stringify({ link: city, name: label }));
-    useCatalogStore.getState().seedFromPage(cats, allItems, city, tags);
-    useHomeStore.getState().seedFromPage(cats, allItems, city, tags);
-    useHomeStore.getState().setAllTags(tags);
-    useFooterStore.getState().setLinks(links, city);
-
-    useCartStore.getState().setAllItems(allItems);
-    useCartStore.getState().setFreeItems(freeItems);
-    useCartStore.getState().setNeedDops(needDop);
-    useCartStore.getState().hydrateFromLocalStorage();
-
     const priceTimer = window.setTimeout(() => {
       useCartStore.getState().changeAllItems();
     }, 300);
-
-    useHeaderStore.getState().setActivePage(activePage);
 
     void (async () => {
       await useHeaderStore.getState().hydrateSession(city);
@@ -86,14 +96,14 @@ export function StoreBootstrap({
     return () => window.clearTimeout(priceTimer);
   }, [
     activePage,
-    allItems,
-    cats,
     city,
-    cities,
     freeItems,
-    links,
     needDop,
-    tags,
+    props.allItems,
+    props.cats,
+    props.cities,
+    props.links,
+    props.tags,
   ]);
 
   return null;

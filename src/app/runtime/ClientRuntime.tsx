@@ -18,6 +18,9 @@ const HEADER_DESKTOP_BREAKPOINT_PX = breakpointValues.md;
 
 export function ClientRuntime({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const loadYmaps =
+    Boolean(pathname?.includes('/cart')) ||
+    Boolean(pathname?.includes('/contacts'));
   const previousUrlRef = useRef('');
   const setMatches = useHeaderStore((state) => state.setMatches);
 
@@ -71,7 +74,7 @@ export function ClientRuntime({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <RuntimeScripts />
+      <RuntimeScripts loadYmaps={loadYmaps} />
       <ProfileOrdersPoller />
       {children}
     </>

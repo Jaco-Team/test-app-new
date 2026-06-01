@@ -22,6 +22,7 @@ import type { BadgeTone } from '@ui/components';
 
 type HomeCategorySource = {
   name?: string;
+  short_name?: string;
   link?: string;
   main_link?: string;
   cats?: HomeCategorySource[];
@@ -306,6 +307,7 @@ export function mapProduct(item: HomeProductSource): HomeProduct | null {
     nutrition: nutrition.length ? nutrition : undefined,
     info: {
       catId: item.cat_id === undefined ? undefined : String(item.cat_id),
+      productId: item.id === undefined ? undefined : String(item.id),
       countPart:
         item.count_part === undefined ? undefined : String(item.count_part),
       countPartNew:
@@ -337,12 +339,25 @@ function bannerProducts(
 
   return rawProducts
     .map((row) => {
-      const item = row as { id?: number | string; item_id?: number | string };
+      const item = row as {
+        id?: number | string;
+        item_id?: number | string;
+        price?: number | string;
+      };
       const id = String(item.id ?? item.item_id ?? '');
-      return (
+      const base =
         allProducts.find((product) => product.id === id) ??
-        mapProduct(row as HomeProductSource)
-      );
+        mapProduct(row as HomeProductSource);
+      if (!base) {
+        return null;
+      }
+
+      const promoPrice = Number(item.price);
+      if (Number.isFinite(promoPrice) && promoPrice > 0) {
+        return { ...base, price: promoPrice };
+      }
+
+      return base;
     })
     .filter((item): item is HomeProduct => Boolean(item))
     .slice(0, 8);
@@ -366,16 +381,33 @@ function mapBanners(
       item?: unknown[];
       items?: unknown[];
       products?: unknown[];
-      info?: {
-        promo_action?: number | string;
-        items_add?: unknown[];
-        items_on_price?: unknown[];
-      };
+      info?:
+        | {
+            name?: string;
+            city_id?: number | string;
+            promo_action?: number | string;
+            items_add?: unknown[];
+            items_on_price?: unknown[];
+          }
+        | unknown[];
     };
     const mediaKey = String(item.img ?? '').trim();
     if (!isValidMediaKey(mediaKey)) {
       return;
     }
+
+    const info =
+      item.info && typeof item.info === 'object' && !Array.isArray(item.info)
+        ? item.info
+        : undefined;
+    const promoAction = Number(info?.promo_action ?? 0);
+    const promoName = info?.name ? String(info.name).trim() : '';
+    const promoText = item.text ?? item.description;
+    const promoTextValue =
+      promoText === undefined || promoText === null
+        ? undefined
+        : String(promoText);
+
     slides.push({
       id: String(item.id ?? index),
       image: resolveBannerImageUrl(mediaKey, 'compact'),
@@ -390,11 +422,19 @@ function mapBanners(
         : item.name
           ? String(item.name)
           : undefined,
-      text: htmlToPlainText(item.text ?? item.description),
+      text: promoTextValue,
       buttonLabel: item.button_name ? String(item.button_name) : undefined,
+      promoAction: Number.isFinite(promoAction) ? promoAction : 0,
+      promoInfo:
+        promoName.length > 0
+          ? {
+              name: promoName,
+              cityId: String(info?.city_id ?? ''),
+            }
+          : undefined,
       products: bannerProducts(
-        item.info?.items_add ??
-          item.info?.items_on_price ??
+        info?.items_add ??
+          info?.items_on_price ??
           item.item ??
           item.items ??
           item.products,
@@ -429,6 +469,18 @@ function defaultFooterGroups(citySlug: string): HomeFooterLinkGroup[] {
         {
           label: 'Политика конфиденциальности',
           href: cityPath(citySlug, 'politika-konfidencialnosti'),
+        },
+        {
+          label: 'Согласие на обработку персональных данных',
+          href: cityPath(citySlug, 'legal'),
+        },
+        {
+          label: 'Политика в отношении обработки метрических данных',
+          href: cityPath(citySlug, 'politika-legal'),
+        },
+        {
+          label: 'Правила оплаты',
+          href: cityPath(citySlug, 'instpayorders'),
         },
         { label: 'Карта сайта', href: cityPath(citySlug, 'sitemap') },
       ],
@@ -472,28 +524,32 @@ function mapFooterLinks(
   citySlug: string,
   links: Record<string, unknown>
 ): HomeFooterLinkGroup[] {
-  const entries = Object.entries(links).filter(
-    ([key]) => !key.startsWith('link_')
-  );
+  const groups = defaultFooterGroups(citySlug);
+  const allergenHref = links?.link_allergens;
 
-  if (entries.length === 0) {
-    return defaultFooterGroups(citySlug);
+  if (typeof allergenHref !== 'string' || !allergenHref.trim()) {
+    return groups;
   }
 
-  const mapped = entries.slice(0, 4).map(([title, value]) => ({
-    title,
-    items: Array.isArray(value)
-      ? value.slice(0, 8).map((item) => {
-          const row = item as { name?: string; link?: string };
-          return {
-            label: String(row.name ?? 'Ссылка'),
-            href: row.link ? String(row.link) : '#',
-          };
-        })
-      : [{ label: String(value), href: '#' }],
-  }));
+  const docsGroup = groups.find((group) => group.title === 'Документы');
+  if (!docsGroup) {
+    return groups;
+  }
 
-  return mapped.length > 0 ? mapped : defaultFooterGroups(citySlug);
+  return groups.map((group) =>
+    group.title === 'Документы'
+      ? {
+          ...group,
+          items: [
+            {
+              label: 'Калорийность, состав, БЖУ',
+              href: allergenHref,
+            },
+            ...group.items,
+          ],
+        }
+      : group
+  );
 }
 
 export function mapTags(tags: unknown[]): HomeTagFilterItem[] {
@@ -544,7 +600,8 @@ export function mapHomeCatalogView(cats: unknown[], allItems: unknown[]) {
 export function mapHomePageViewModel(data: HomePageRawData): HomePageViewModel {
   const cats = data.cats;
   const normalizedCats = normalizeCategories(cats);
-  const catalog = mapHomeCatalogView(cats, data.all_items);
+  // Catalog cards are filled client-side via `get_items_cat` (SSR `all_items` is shallow).
+  const catalog = mapHomeCatalogView(cats, []);
 
   return {
     citySlug: data.city,

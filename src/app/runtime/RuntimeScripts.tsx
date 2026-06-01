@@ -25,11 +25,18 @@ function TopMailRu({ id }: { id: string }) {
   );
 }
 
+export type RuntimeScriptsProps = {
+  /** Load Yandex Maps JS (cart / contacts). Home catalog does not need it. */
+  loadYmaps?: boolean;
+};
+
 /** Script element `id`s match `pages/_app.js` (not related to `/preview` route mount). */
-export function RuntimeScripts() {
+export function RuntimeScripts({ loadYmaps = false }: RuntimeScriptsProps) {
   const city = useCityStore((state) => state.slug);
   const cityCounterId =
     city === 'samara' ? 100325084 : city === 'togliatti' ? 100601350 : null;
+  const ymapsApiKey = process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP?.trim() ?? '';
+  const shouldLoadYmaps = loadYmaps && ymapsApiKey.length > 0;
 
   return (
     <>
@@ -99,25 +106,27 @@ export function RuntimeScripts() {
         `}
       </Script>
 
-      <Script
-        id="ymaps"
-        strategy="afterInteractive"
-        src={`https://api-maps.yandex.ru/2.1/?apikey=${process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP}&lang=ru_RU`}
-        onLoad={() => {
-          if (typeof window !== 'undefined') {
-            (
-              window as typeof window & { __JACO_YMAPS_FAILED?: boolean }
-            ).__JACO_YMAPS_FAILED = false;
-          }
-        }}
-        onError={() => {
-          if (typeof window !== 'undefined') {
-            (
-              window as typeof window & { __JACO_YMAPS_FAILED?: boolean }
-            ).__JACO_YMAPS_FAILED = true;
-          }
-        }}
-      />
+      {shouldLoadYmaps ? (
+        <Script
+          id="ymaps"
+          strategy="afterInteractive"
+          src={`https://api-maps.yandex.ru/2.1/?apikey=${ymapsApiKey}&lang=ru_RU`}
+          onLoad={() => {
+            if (typeof window !== 'undefined') {
+              (
+                window as typeof window & { __JACO_YMAPS_FAILED?: boolean }
+              ).__JACO_YMAPS_FAILED = false;
+            }
+          }}
+          onError={() => {
+            if (typeof window !== 'undefined') {
+              (
+                window as typeof window & { __JACO_YMAPS_FAILED?: boolean }
+              ).__JACO_YMAPS_FAILED = true;
+            }
+          }}
+        />
+      ) : null}
 
       {city === 'togliatti' ? (
         <>

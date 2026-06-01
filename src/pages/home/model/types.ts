@@ -15,6 +15,11 @@ export type HomeProduct = ProductCardProps & {
   raw?: Record<string, unknown>;
 };
 
+export type HomeBannerPromoInfo = {
+  name: string;
+  cityId: string;
+};
+
 export type HomeBannerSlide = {
   id: string;
   /** Compact / tablet banner (1000x500). */
@@ -23,8 +28,12 @@ export type HomeBannerSlide = {
   imageWide: string;
   alt?: string;
   title?: string;
+  /** Manager-authored HTML (emojis, simple markup). */
   text?: string;
   buttonLabel?: string;
+  /** Legacy `info.promo_action`: 0 = none, 2 = price-only rows, other = promo CTA. */
+  promoAction?: number;
+  promoInfo?: HomeBannerPromoInfo;
   products?: HomeProduct[];
 };
 

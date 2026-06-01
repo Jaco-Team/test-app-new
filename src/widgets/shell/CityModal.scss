@@ -313,6 +313,8 @@
 }
 
 .city-modal__menu {
+  z-index: 4300 !important;
+
   & .MuiPaper-root.MuiMenu-paper {
     margin-top: ui-fluid-expanded(10);
     border-radius: ui-fluid-expanded(10);

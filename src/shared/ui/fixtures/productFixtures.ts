@@ -7,6 +7,12 @@ export const productCardFixtures = {
   madeiraSet: {
     title: 'Мадейра сет',
     image: productImages.madeiraSet,
+    info: {
+      catId: '4',
+      countPartNew: '4 ролла',
+      countPart: '32',
+      weight: '1115',
+    },
     meta: ['4 ролла', '32 шт.', '1 115 г'],
     description:
       'Цезарь с курицей запечённый унаги, Коралл, Коралл запечённый унаги, Алоха',

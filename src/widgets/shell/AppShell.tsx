@@ -11,6 +11,7 @@ import { MapLoader } from './MapLoader';
 
 export type AppShellProps = {
   city: string;
+  /** Yandex Maps bootstrap — only cart/checkout needs this */
   loadMap?: boolean;
 };
 

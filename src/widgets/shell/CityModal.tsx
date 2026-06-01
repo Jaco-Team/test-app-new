@@ -162,6 +162,7 @@ export function CityModal() {
           open={menuOpen}
           onClose={() => setMenuAnchor(null)}
           disableScrollLock
+          sx={{ zIndex: 4300 }}
         >
           {cityOptions.map((item) => {
             const slug = cityLink(item);

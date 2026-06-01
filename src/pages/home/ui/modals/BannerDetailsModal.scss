@@ -10,6 +10,13 @@
     padding: 0;
   }
 
+  &:not(.ui-modal-wrapper--sheet) &__content.MuiDialogContent-root {
+    max-height: calc(100dvh - 48px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
   &__shell {
     display: flex;
     flex-direction: column;
@@ -39,6 +46,10 @@
     border-radius: 0;
   }
 
+  &.ui-modal-wrapper--sheet &__promo {
+    scroll-margin-top: ui-fluid-compact(140);
+  }
+
   &__conditions {
     position: absolute;
     left: ui-fluid-compact(80);
@@ -53,14 +64,21 @@
     background: $ui-transparent;
     color: $ui-text-inv;
     font-family: $ui-font-family;
-    font-size: ui-fluid-compact(30);
+    font-size: ui-fluid-compact(22);
+    font-weight: 400;
     line-height: 1;
     white-space: nowrap;
     cursor: pointer;
   }
 
   &__conditions span {
-    font-size: ui-fluid-compact(26);
+    display: inline-flex;
+    flex-shrink: 0;
+    align-items: center;
+    justify-content: center;
+    width: ui-fluid-compact(24);
+    height: ui-fluid-compact(24);
+    font-size: ui-fluid-compact(24);
     line-height: 1;
   }
 
@@ -77,6 +95,7 @@
     flex-direction: column;
     gap: ui-fluid-compact(12);
     order: 1;
+    scroll-margin-top: ui-fluid-compact(24);
   }
 
   &__promo h2,
@@ -89,12 +108,28 @@
     letter-spacing: 0;
   }
 
-  &__promo p {
-    margin: 0;
+  &__promo-html {
     color: $ui-text;
     font-size: ui-fluid-compact(34);
     line-height: 1.28;
-    white-space: pre-line;
+
+    p,
+    li,
+    a,
+    span {
+      margin: 0 0 ui-fluid-compact(10);
+      font-size: inherit;
+      line-height: inherit;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+    }
   }
 
   &__composition {
@@ -183,6 +218,46 @@
     min-height: ui-fluid-compact(70);
   }
 
+  &__product-price {
+    display: inline-flex;
+    align-items: center;
+    min-height: ui-fluid-compact(70);
+    color: $ui-text;
+    font-size: ui-fluid-compact(40);
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  &__cta {
+    width: 100%;
+    margin-top: ui-fluid-compact(30);
+    margin-bottom: ui-fluid-compact(20);
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: ui-fluid-compact(110);
+      padding: 0 ui-fluid-compact(24);
+      border: ui-fluid-compact(3) solid $ui-border;
+      border-radius: ui-fluid-compact(55);
+      background: $ui-surface;
+      color: $ui-text-muted;
+      font-family: $ui-font-family;
+      font-size: ui-fluid-compact(40);
+      font-weight: 400;
+      line-height: 1;
+      white-space: nowrap;
+      cursor: pointer;
+
+      &:hover {
+        background: $ui-surface-muted;
+        border-color: $ui-border;
+      }
+    }
+  }
+
   @include ui-regular {
     &__media img {
       aspect-ratio: 1092 / 299;
@@ -194,7 +269,13 @@
       left: ui-fluid-regular(54);
       bottom: ui-fluid-regular(12);
       gap: ui-fluid-regular(6);
-      font-size: ui-fluid-regular(18);
+      font-size: ui-fluid-regular(16);
+    }
+
+    &__conditions span {
+      width: ui-fluid-regular(18);
+      height: ui-fluid-regular(18);
+      font-size: ui-fluid-regular(16);
     }
 
     &__details {
@@ -221,11 +302,18 @@
       font-size: ui-fluid-regular(24);
     }
 
-    &__promo p {
+    &__promo-html {
       max-height: none;
       overflow: visible;
       font-size: ui-fluid-regular(17);
       line-height: 1.34;
+
+      p,
+      li,
+      a,
+      span {
+        margin-bottom: ui-fluid-regular(8);
+      }
     }
 
     &__products {
@@ -265,6 +353,26 @@
     &__product-action .ui-quantity-control {
       min-height: ui-fluid-regular(38);
     }
+
+    &__product-price {
+      min-height: ui-fluid-regular(38);
+      font-size: ui-fluid-regular(17);
+    }
+
+    &__cta {
+      margin-top: ui-fluid-regular(18);
+      margin-bottom: ui-fluid-regular(12);
+
+      button {
+        width: auto;
+        min-width: fit-content;
+        margin-left: ui-fluid-regular(30);
+        min-height: ui-fluid-regular(48);
+        border-width: ui-fluid-regular(2);
+        border-radius: ui-fluid-regular(28);
+        font-size: ui-fluid-regular(17);
+      }
+    }
   }
 
   @include ui-expanded {
@@ -281,6 +389,12 @@
       left: ui-fluid-expanded(48);
       bottom: ui-fluid-expanded(12);
       gap: ui-fluid-expanded(6);
+      font-size: ui-fluid-expanded(16);
+    }
+
+    &__conditions span {
+      width: ui-fluid-expanded(16);
+      height: ui-fluid-expanded(16);
       font-size: ui-fluid-expanded(16);
     }
 
@@ -308,11 +422,18 @@
       font-size: ui-fluid-expanded(22);
     }
 
-    &__promo p {
+    &__promo-html {
       max-height: none;
       overflow: visible;
       font-size: ui-fluid-expanded(15);
       line-height: 1.35;
+
+      p,
+      li,
+      a,
+      span {
+        margin-bottom: ui-fluid-expanded(8);
+      }
     }
 
     &__products {
@@ -350,6 +471,26 @@
     &__product-action .ui-button,
     &__product-action .ui-quantity-control {
       min-height: ui-fluid-expanded(36);
+    }
+
+    &__product-price {
+      min-height: ui-fluid-expanded(36);
+      font-size: ui-fluid-expanded(16);
+    }
+
+    &__cta {
+      margin-top: ui-fluid-expanded(16);
+      margin-bottom: ui-fluid-expanded(10);
+
+      button {
+        width: auto;
+        min-width: fit-content;
+        margin-left: ui-fluid-expanded(24);
+        min-height: ui-fluid-expanded(44);
+        border-width: ui-fluid-expanded(2);
+        border-radius: ui-fluid-expanded(26);
+        font-size: ui-fluid-expanded(16);
+      }
     }
   }
 }
