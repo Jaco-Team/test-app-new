@@ -1,32 +1,32 @@
 'use client';
 
 import { useEffect } from 'react';
-import { useCityStore } from '@src/entities/city';
 import { useHeaderStore } from '@src/entities/header';
-import { useProfileStore } from '@src/entities/profile';
+import {
+  startZakazyCountPolling,
+  stopZakazyCountPolling,
+} from '../model/zakazyCountPolling';
 
-const POLL_INTERVAL_MS = 30_000;
-
+/**
+ * Global `zakazy` count polling (legacy: navBarPC / navBarMobile, 30s interval).
+ */
 export function ProfileOrdersPoller() {
-  const city = useCityStore((state) => state.slug);
   const isAuth = useHeaderStore((state) => state.isAuth);
-  const token = useHeaderStore((state) => state.token);
 
   useEffect(() => {
-    if (typeof window === 'undefined' || isAuth !== 'auth' || !city || !token) {
+    if (typeof window === 'undefined') {
       return undefined;
     }
 
-    const refreshCounts = () => {
-      void useProfileStore.getState().getCountPromosOrders(city, token);
-    };
+    if (isAuth !== 'auth') {
+      stopZakazyCountPolling();
+      return undefined;
+    }
 
-    refreshCounts();
+    startZakazyCountPolling();
 
-    const intervalId = window.setInterval(refreshCounts, POLL_INTERVAL_MS);
-
-    return () => window.clearInterval(intervalId);
-  }, [city, isAuth, token]);
+    return () => stopZakazyCountPolling();
+  }, [isAuth]);
 
   return null;
 }
