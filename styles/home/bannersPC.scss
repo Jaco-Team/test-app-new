@@ -1,4 +1,4 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
 .eridBannerPC {
   position: absolute;
@@ -64,7 +64,6 @@
     width: $MyScale2520;
 
     .BannerPC {
-
       & .iconBTN {
         position: absolute;
         top: 0;
@@ -181,12 +180,23 @@
                   display: flex;
                   align-items: center;
                 }
+
+                & .ItemDesk {
+                  height: $MyScale120;
+                  line-height: $MyScale40;
+                  display: -webkit-box;
+                  -webkit-line-clamp: 3;
+                  -webkit-box-orient: vertical;
+                  overflow: hidden;
+                  white-space: normal;
+                }
               }
             }
           }
 
           .containerBTNitem {
             width: 100%;
+            margin-top: $MyScale10;
 
             & > button {
               margin-left: $MyScale30;
@@ -622,9 +632,11 @@
 
           & .ItemName {
             margin-bottom: tablet-vw(8);
-            white-space: nowrap;
-            overflow: hidden;
-            text-overflow: ellipsis;
+            white-space: normal;
+            overflow-wrap: anywhere;
+            word-break: break-word;
+            height: auto;
+            line-height: 1.2;
           }
 
           & .ItemDesk {

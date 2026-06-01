@@ -47,6 +47,61 @@
       width: 100%;
       height: auto;
     }
+
+    & .badgecontainer {
+      top: calc(54px - 1.444045vw);
+      left: calc(54px - 1.444045vw);
+    }
+
+    & .badge.container.pc > .shadow.big {
+      border-radius: 7px;
+      top: 2px;
+      left: 2px;
+    }
+
+    & .badge.container.pc > .box.big {
+      width: fit-content;
+      min-height: 39px;
+      border-radius: 7px;
+      padding: 7px 10px;
+    }
+
+    & .badge.container.pc > .box.big > .MuiTypography-root {
+      width: fit-content;
+      min-height: 25px;
+      font-size: 21px !important;
+      font-weight: 500;
+      line-height: 1 !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 !important;
+    }
+
+    & .badge.container.pc > .shadow.bigshort {
+      border-radius: 7px;
+      top: 2px;
+      left: 2px;
+    }
+
+    & .badge.container.pc > .box.bigshort {
+      width: fit-content;
+      min-height: 39px;
+      border-radius: 7px;
+      padding: 7px 10px;
+    }
+
+    & .badge.container.pc > .box.bigshort > .MuiTypography-root {
+      width: fit-content;
+      min-height: 25px;
+      font-size: 21px !important;
+      font-weight: 500;
+      line-height: 1 !important;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 !important;
+    }
   }
 
   & .FirstItem {
@@ -528,6 +583,39 @@
       width: tablet-vw(1240);
       height: tablet-vw(1240);
       margin: tablet-vw(40);
+
+      & .badgecontainer {
+        top: tablet-vw(14);
+        left: tablet-vw(14);
+      }
+
+      & .badge.container.pc > .shadow.big,
+      & .badge.container.pc > .shadow.bigshort {
+        border-radius: tablet-vw(7);
+        top: tablet-vw(2);
+        left: tablet-vw(2);
+      }
+
+      & .badge.container.pc > .box.big,
+      & .badge.container.pc > .box.bigshort {
+        width: fit-content;
+        min-height: tablet-vw(39);
+        border-radius: tablet-vw(7);
+        padding: tablet-vw(7) tablet-vw(10);
+      }
+
+      & .badge.container.pc > .box.big > .MuiTypography-root,
+      & .badge.container.pc > .box.bigshort > .MuiTypography-root {
+        width: fit-content;
+        min-height: tablet-vw(25);
+        font-size: tablet-font-vw(21) !important;
+        font-weight: 500;
+        line-height: 1 !important;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        margin: 0 !important;
+      }
     }
 
     & .FirstItem {
@@ -1037,7 +1125,6 @@
     margin: tablet-vw(45.8333) 0;
   }
 
-  // ПК-номиналы ×1.1 на планшете; три карточки в ряд (зазоры тоже +10%)
   .ContainerCardItemPC {
     width: calc(100% - #{tablet-home-side-total()}) !important;
     margin: 0 tablet-home-side() !important;
@@ -1061,7 +1148,6 @@
       display: flex;
       justify-content: center;
 
-      // На ПК — 4 колонки и :nth-child(4n) обнуляет margin; на планшете 3 колонки — 4-я карточка не конец ряда, без этого «ломается» правый зазор
       &:nth-of-type(4n) {
         margin-right: tablet-vw(44);
       }

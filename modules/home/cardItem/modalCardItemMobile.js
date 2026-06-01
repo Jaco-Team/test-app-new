@@ -3,7 +3,12 @@ import React, { useState, useEffect } from 'react';
 //import Image from 'next/image';
 import Link from 'next/link';
 
-import { useHomeStore, useCartStore, useFooterStore, useCitiesStore } from '@/components/store';
+import {
+  useHomeStore,
+  useCartStore,
+  useFooterStore,
+  useCitiesStore,
+} from '@/components/store';
 
 import Typography from '@mui/material/Typography';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
@@ -19,12 +24,21 @@ import { reachGoalSplit } from '@/utils/metrika';
 import { getItemImageUrl, hasItemImage } from '@/utils/itemImage';
 
 export default function ModalCardItemMobile() {
-  const [isOpenModal, openItem, setActiveModalCardItemMobile, getItem] = useHomeStore((state) => {
-    return [state.isOpenModal, state.openItem, state.setActiveModalCardItemMobile, state.getItem];
-  });
+  const [isOpenModal, openItem, setActiveModalCardItemMobile, getItem] =
+    useHomeStore((state) => {
+      return [
+        state.isOpenModal,
+        state.openItem,
+        state.setActiveModalCardItemMobile,
+        state.getItem,
+      ];
+    });
   const [links] = useFooterStore((state) => [state.links]);
   const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
-  const [thisCity, thisCityRu] = useCitiesStore((state) => [ state.thisCity, state.thisCityRu ]);
+  const [thisCity, thisCityRu] = useCitiesStore((state) => [
+    state.thisCity,
+    state.thisCityRu,
+  ]);
 
   const [count, setCount] = useState(0);
   const [shadowSet, setShadowSet] = useState(0);
@@ -34,16 +48,16 @@ export default function ModalCardItemMobile() {
   const [valueMode, setValueMode] = useState('per100');
 
   const metrica_param = {
-    city: thisCityRu, 
-    tovar: openItem?.name, 
+    city: thisCityRu,
+    tovar: openItem?.name,
     category: openItem?.cat_name,
     platform: 'mobile',
-    view: 'Модалка товара'
+    view: 'Модалка товара',
   };
 
   const metrica_param_min = {
-    city: thisCityRu, 
-    tovar: openItem?.name, 
+    city: thisCityRu,
+    tovar: openItem?.name,
     category: openItem?.cat_name,
   };
 
@@ -77,7 +91,8 @@ export default function ModalCardItemMobile() {
     setCount(findItems ? findItems.count : 0);
   };
 
-  const desc = openItem?.marc_desc?.length > 0 ? openItem?.marc_desc : openItem?.tmp_desc;
+  const desc =
+    openItem?.marc_desc?.length > 0 ? openItem?.marc_desc : openItem?.tmp_desc;
 
   const listenScrollSet = (event) => setShadowSet(event.target.scrollTop);
   const listenScrollValue = (event) => setShadowValue(event.target.scrollTop);
@@ -110,26 +125,26 @@ export default function ModalCardItemMobile() {
     reachGoalSplit('add_to_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
-      "ecommerce": {
-        "currencyCode": "RUB",    
-        "add": {
-          "products": [
+      ecommerce: {
+        currencyCode: 'RUB',
+        add: {
+          products: [
             {
-              "id": openItem?.id,
-              "name": openItem?.name,
-              "price": openItem?.price,
+              id: openItem?.id,
+              name: openItem?.name,
+              price: openItem?.price,
               //"brand": "Яндекс / Яndex",
-              "category": openItem?.cat_name,
-              "quantity": 1,
+              category: openItem?.cat_name,
+              quantity: 1,
               //"list": "Выдача категории",
-              "position": 1
-            }
-          ]
-        }
-      }
+              position: 1,
+            },
+          ],
+        },
+      },
     });
 
-    try{
+    try {
       // roistat.event.send('add_to_cart', {
       //   id: openItem?.id,
       //   name: openItem?.name,
@@ -139,45 +154,51 @@ export default function ModalCardItemMobile() {
       //     "level1": openItem?.cat_name,
       //   },
       // });
-    } catch(e){ console.log(e) }
-  }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const remove_from_cart = () => {
     changeCountMinus(openItem?.id);
     reachGoalSplit('remove_from_cart', metrica_param, metrica_param_min);
 
     ymDataLayer.push({
-      "ecommerce": {
-        "currencyCode": "RUB",
-        "remove": {
-          "products": [
+      ecommerce: {
+        currencyCode: 'RUB',
+        remove: {
+          products: [
             {
-              "id": openItem?.id,
-              "name": openItem?.name,
-              "category": openItem?.cat_name,
-              "quantity": 1,
+              id: openItem?.id,
+              name: openItem?.name,
+              category: openItem?.cat_name,
+              quantity: 1,
               //"list": "Аксессуары",
-              "position": 1
-            }
-          ]
-        }
-      }
+              position: 1,
+            },
+          ],
+        },
+      },
     });
 
-    try{
+    try {
       // roistat.event.send('remove_from_cart');
-    } catch(e){ console.log(e) }
-  }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   const sostav_seta = () => {
-    setActiveSet(true)
+    setActiveSet(true);
 
     reachGoalSplit('sostav_seta', metrica_param, metrica_param_min);
 
-    try{
+    try {
       // roistat.event.send('sostav_seta');
-    } catch(e){ console.log(e) }
-  }
+    } catch (e) {
+      console.log(e);
+    }
+  };
 
   useEffect(() => {
     if (isOpenModal) setValueMode('per100');
@@ -196,7 +217,10 @@ export default function ModalCardItemMobile() {
 
   const fmtMacro = (n) => {
     if (!Number.isFinite(n)) return '';
-    return new Intl.NumberFormat('ru-RU', { minimumFractionDigits: 1, maximumFractionDigits: 1 }).format(n);
+    return new Intl.NumberFormat('ru-RU', {
+      minimumFractionDigits: 1,
+      maximumFractionDigits: 1,
+    }).format(n);
   };
 
   // пересчёт "на всё блюдо" из значения "на 100 г"
@@ -208,7 +232,12 @@ export default function ModalCardItemMobile() {
     return kind === 'kcal' ? fmtKcal(res) : fmtMacro(res);
   };
 
-  const valueItems = (openItem?.items?.length ?? 0) > 0 ? openItem.items : (openItem ? [openItem] : []);
+  const valueItems =
+    (openItem?.items?.length ?? 0) > 0
+      ? openItem.items
+      : openItem
+        ? [openItem]
+        : [];
   const getWeight = (item) => item?.weight ?? openItem?.weight;
 
   const itemsLen = valueItems.length;
@@ -236,9 +265,11 @@ export default function ModalCardItemMobile() {
             <div className="ItemContainer">
               <div className="ImgModalCardMobile">
                 <picture>
-                  <source 
-                    type="image/webp" 
-                    srcSet={hasMainImage ? `
+                  <source
+                    type="image/webp"
+                    srcSet={
+                      hasMainImage
+                        ? `
 
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_292x292.webp 138w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_366x366.webp 146w,
@@ -248,11 +279,16 @@ export default function ModalCardItemMobile() {
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_1168x1168.webp 366w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_1420x1420.webp 584w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.webp 760w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.webp 1875w` : undefined} 
-                    sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
-                  <source 
-                    type="image/jpeg" 
-                    srcSet={hasMainImage ? `
+                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.webp 1875w`
+                        : undefined
+                    }
+                    sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px"
+                  />
+                  <source
+                    type="image/jpeg"
+                    srcSet={
+                      hasMainImage
+                        ? `
 
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_292x292.jpg 138w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_366x366.jpg 146w,
@@ -262,83 +298,148 @@ export default function ModalCardItemMobile() {
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_1168x1168.jpg 366w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_1420x1420.jpg 584w,
                       ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.jpg 760w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.jpg 1875w` : undefined} 
+                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.jpg 1875w`
+                        : undefined
+                    }
+                    sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px"
+                  />
 
-                    sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px" />
-
-                  <img 
-                    alt={openItem?.name || 'Изображение блюда'} 
-                    src={mainImageSrc} 
-
-                    //src={`https://cdnimg.jacofood.ru/${img_name}_292x292.jpg`} 
+                  <img
+                    alt={openItem?.name || 'Изображение блюда'}
+                    src={mainImageSrc}
+                    //src={`https://cdnimg.jacofood.ru/${img_name}_292x292.jpg`}
 
                     //style={{ minHeight: GRID * 1.125, minWidth: GRID * 1.125 }}
                     loading="lazy"
                   />
                 </picture>
 
-                <div className='badgecontainer'>
-                  {parseInt(openItem?.is_hit) == 1 ? 
-                    <BadgeItem size={'big'} type={'hit'} view={'pc'} />
-                      :
+                <div className="badgecontainer">
+                  {parseInt(openItem?.is_hit) == 1 ? (
+                    <BadgeItem size={'small'} type={'hit'} view={'mobile'} />
+                  ) : (
                     false
-                  }
+                  )}
 
-                  {parseInt(openItem?.is_new) == 1 ? 
-                    <BadgeItem size={'big'} type={'new'} view={'pc'} />
-                      :
+                  {parseInt(openItem?.is_new) == 1 ? (
+                    <BadgeItem size={'small'} type={'new'} view={'mobile'} />
+                  ) : (
                     false
-                  }
+                  )}
 
-                  {parseInt(openItem?.is_updated) == 1 ? 
-                    <BadgeItem size={'big'} type={'updated'} view={'pc'} />
-                      :
+                  {parseInt(openItem?.is_updated) == 1 ? (
+                    <BadgeItem
+                      size={'small'}
+                      type={'updated'}
+                      view={'mobile'}
+                    />
+                  ) : (
                     false
-                  }
+                  )}
 
-                  { openItem?.tags?.includes(14) === true ?
-                    <BadgeItem size={'bigshort'} type={'hot'} view={'pc'} />
-                      :
+                  {openItem?.tags?.includes(14) === true ? (
+                    <BadgeItem
+                      size={'smallshort'}
+                      type={'hot'}
+                      view={'mobile'}
+                    />
+                  ) : (
                     false
-                  }
+                  )}
                 </div>
               </div>
 
-              <div className="TitleModalCardMobile" style={{ height: (openItem?.name?.length || 0) > 26 ? '13.675213675214vw' : '6.8376068376068vw' }}>
+              <div
+                className="TitleModalCardMobile"
+                style={{
+                  height:
+                    (openItem?.name?.length || 0) > 26
+                      ? '13.675213675214vw'
+                      : '6.8376068376068vw',
+                }}
+              >
                 <span>{openItem?.name}</span>
               </div>
 
               <div className="DopModalCardMobile">
                 <div className="dop_text">
                   {parseInt(openItem?.cat_id) != 4 ? null : (
-                    <span className="first_text" 
-                      style={{ width: parseInt(openItem.count_part_new) > 4 && parseInt(openItem.count_part_new) < 9 ? '15.384615384615vw' : parseInt(openItem.count_part_new) > 9 ? '17.094017094017vw' : '13.675213675214vw' }}
+                    <span
+                      className="first_text"
+                      style={{
+                        width:
+                          parseInt(openItem.count_part_new) > 4 &&
+                          parseInt(openItem.count_part_new) < 9
+                            ? '15.384615384615vw'
+                            : parseInt(openItem.count_part_new) > 9
+                              ? '17.094017094017vw'
+                              : '13.675213675214vw',
+                      }}
                       onClick={sostav_seta}
                     >
                       {openItem?.count_part_new}
                     </span>
                   )}
 
-                  {parseInt(openItem?.cat_id) == 5 || parseInt(openItem?.cat_id) == 6 || parseInt(openItem?.cat_id) == 7 || parseInt(openItem?.cat_id) == 15 ? null : (
+                  {parseInt(openItem?.cat_id) == 5 ||
+                  parseInt(openItem?.cat_id) == 6 ||
+                  parseInt(openItem?.cat_id) == 7 ||
+                  parseInt(openItem?.cat_id) == 15 ? null : (
                     <span className="second_text">
-                      {parseInt(openItem?.cat_id) == 14 ? openItem?.size_pizza : openItem?.count_part}
-                      {parseInt(openItem?.cat_id) == 14 ? ' см*' : parseInt(openItem?.cat_id) == 6 ? ' л' : ' шт.'}
+                      {parseInt(openItem?.cat_id) == 14
+                        ? openItem?.size_pizza
+                        : openItem?.count_part}
+                      {parseInt(openItem?.cat_id) == 14
+                        ? ' см*'
+                        : parseInt(openItem?.cat_id) == 6
+                          ? ' л'
+                          : ' шт.'}
                     </span>
                   )}
 
-                  <span className="third_text" style={{ justifyContent: parseInt(openItem?.cat_id) == 4 ? 'flex-end' : 'center' }}>
+                  <span
+                    className="third_text"
+                    style={{
+                      justifyContent:
+                        parseInt(openItem?.cat_id) == 4 ? 'flex-end' : 'center',
+                    }}
+                  >
                     {new Intl.NumberFormat('ru-RU').format(openItem?.weight)}
-                    {parseInt(openItem?.id) == 17 || parseInt(openItem?.id) == 237 ? ' шт.' : parseInt(openItem?.cat_id) == 6 ? ' л' : ' г'}
+                    {parseInt(openItem?.id) == 17 ||
+                    parseInt(openItem?.id) == 237
+                      ? ' шт.'
+                      : parseInt(openItem?.cat_id) == 6
+                        ? ' л'
+                        : ' г'}
                   </span>
                 </div>
 
-                <div className="dop_icon" onClick={() => setActiveValue(true)} style={{ visibility: openItem?.id === '17' || openItem?.id === '237' || openItem?.id === '351' ? 'hidden' : 'visible'}}>
+                <div
+                  className="dop_icon"
+                  onClick={() => setActiveValue(true)}
+                  style={{
+                    visibility:
+                      openItem?.id === '17' ||
+                      openItem?.id === '237' ||
+                      openItem?.id === '351'
+                        ? 'hidden'
+                        : 'visible',
+                  }}
+                >
                   <IconInfoWhiteMobile />
                 </div>
               </div>
 
-              <div className="DescModalCardMobile" 
-                style={{ minHeight: desc?.length > 89 ? desc?.length > 131 ? '23.931623931624vw' : '15.384615384615vw' : '10.25641025641vw' }}
+              <div
+                className="DescModalCardMobile"
+                style={{
+                  minHeight:
+                    desc?.length > 89
+                      ? desc?.length > 131
+                        ? '23.931623931624vw'
+                        : '15.384615384615vw'
+                      : '10.25641025641vw',
+                }}
               >
                 <span>{desc}</span>
               </div>
@@ -354,9 +455,16 @@ export default function ModalCardItemMobile() {
           ) : (
             <div className="containerBTN_ModalMObile">
               <div>
-                <button className="minus" onClick={remove_from_cart}>–</button>
-                <span>{count + ' ' + 'за' + ' ' + count * parseInt(openItem?.price)}{' '}₽</span>
-                <button className="plus" onClick={add_to_cart}>+</button>
+                <button className="minus" onClick={remove_from_cart}>
+                  –
+                </button>
+                <span>
+                  {count + ' ' + 'за' + ' ' + count * parseInt(openItem?.price)}{' '}
+                  ₽
+                </span>
+                <button className="plus" onClick={add_to_cart}>
+                  +
+                </button>
               </div>
             </div>
           )}
@@ -384,24 +492,52 @@ export default function ModalCardItemMobile() {
 
           <div className="dop_text">
             {parseInt(openItem?.cat_id) != 4 ? null : (
-              <span className="first_text" 
-                style={{ width: parseInt(openItem.count_part_new) > 4 && parseInt(openItem.count_part_new) < 9 ? '15.384615384615vw' : parseInt(openItem.count_part_new) > 9 ? '17.094017094017vw' : '13.675213675214vw' }}
+              <span
+                className="first_text"
+                style={{
+                  width:
+                    parseInt(openItem.count_part_new) > 4 &&
+                    parseInt(openItem.count_part_new) < 9
+                      ? '15.384615384615vw'
+                      : parseInt(openItem.count_part_new) > 9
+                        ? '17.094017094017vw'
+                        : '13.675213675214vw',
+                }}
                 onClick={() => setActiveSet(true)}
               >
                 {openItem?.count_part_new}
               </span>
             )}
 
-            {parseInt(openItem?.cat_id) == 5 || parseInt(openItem?.cat_id) == 6 || parseInt(openItem?.cat_id) == 7 || parseInt(openItem?.cat_id) == 15 ? null : (
+            {parseInt(openItem?.cat_id) == 5 ||
+            parseInt(openItem?.cat_id) == 6 ||
+            parseInt(openItem?.cat_id) == 7 ||
+            parseInt(openItem?.cat_id) == 15 ? null : (
               <span className="second_text">
-                {parseInt(openItem?.cat_id) == 14 ? openItem?.size_pizza : openItem?.count_part}
-                {parseInt(openItem?.cat_id) == 14 ? ' см' : parseInt(openItem?.cat_id) == 6 ? ' л' : ' шт.'}
+                {parseInt(openItem?.cat_id) == 14
+                  ? openItem?.size_pizza
+                  : openItem?.count_part}
+                {parseInt(openItem?.cat_id) == 14
+                  ? ' см'
+                  : parseInt(openItem?.cat_id) == 6
+                    ? ' л'
+                    : ' шт.'}
               </span>
             )}
 
-            <span className="third_text" style={{ justifyContent: parseInt(openItem?.cat_id) == 4 ? 'flex-end' : 'center' }}>
+            <span
+              className="third_text"
+              style={{
+                justifyContent:
+                  parseInt(openItem?.cat_id) == 4 ? 'flex-end' : 'center',
+              }}
+            >
               {new Intl.NumberFormat('ru-RU').format(openItem?.weight)}
-              {parseInt(openItem?.id) == 17 || parseInt(openItem?.id) == 237 ? ' шт.' : parseInt(openItem?.cat_id) == 6 ? ' л' : ' г'}
+              {parseInt(openItem?.id) == 17 || parseInt(openItem?.id) == 237
+                ? ' шт.'
+                : parseInt(openItem?.cat_id) == 6
+                  ? ' л'
+                  : ' г'}
             </span>
           </div>
 
@@ -415,12 +551,17 @@ export default function ModalCardItemMobile() {
                     <div
                       className="SetItem"
                       style={{
-                        marginTop: idx === 0 ? '1.7094017094017vw' : '0.85470085470085vw'
+                        marginTop:
+                          idx === 0
+                            ? '1.7094017094017vw'
+                            : '0.85470085470085vw',
                       }}
                     >
                       <div
                         className="itemIndex"
-                        onClick={() => getItem('home', thisCity, item.id, 'set')}
+                        onClick={() =>
+                          getItem('home', thisCity, item.id, 'set')
+                        }
                       >
                         <span>{idx + 1}.</span>
                       </div>
@@ -429,7 +570,9 @@ export default function ModalCardItemMobile() {
                         <picture>
                           <source
                             type="image/webp"
-                            srcSet={hasItemImage(item?.img_app) ? `
+                            srcSet={
+                              hasItemImage(item?.img_app)
+                                ? `
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.webp 138w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_366x366.webp 146w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_466x466.webp 183w,
@@ -439,12 +582,16 @@ export default function ModalCardItemMobile() {
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1420x1420.webp 584w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.webp 760w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.webp 1875w
-                            ` : undefined}
+                            `
+                                : undefined
+                            }
                             sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px"
                           />
                           <source
                             type="image/jpeg"
-                            srcSet={hasItemImage(item?.img_app) ? `
+                            srcSet={
+                              hasItemImage(item?.img_app)
+                                ? `
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.jpg 138w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_366x366.jpg 146w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_466x466.jpg 183w,
@@ -454,36 +601,54 @@ export default function ModalCardItemMobile() {
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1420x1420.jpg 584w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.jpg 760w,
                               ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_2000x2000.jpg 1875w
-                            ` : undefined}
+                            `
+                                : undefined
+                            }
                             sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px"
                           />
                           <img
                             alt={item?.name || 'Изображение блюда'}
-                            src={getItemImageUrl(item?.img_app, '292x292', 'jpg')}
+                            src={getItemImageUrl(
+                              item?.img_app,
+                              '292x292',
+                              'jpg'
+                            )}
                             loading="lazy"
-                            onClick={() => getItem('home', thisCity, item.id, 'set')}
+                            onClick={() =>
+                              getItem('home', thisCity, item.id, 'set')
+                            }
                           />
                         </picture>
                       </div>
 
                       <div
                         className="itemDesc"
-                        onClick={() => getItem('home', thisCity, item.id, 'set')}
+                        onClick={() =>
+                          getItem('home', thisCity, item.id, 'set')
+                        }
                       >
                         <Typography component="span">{item.name}</Typography>
 
                         <div className="dop_text_set">
                           <span>{item.count_part + ' шт.'}</span>
-                          <span>{new Intl.NumberFormat('ru-RU').format(item?.weight) + ' г'}</span>
+                          <span>
+                            {new Intl.NumberFormat('ru-RU').format(
+                              item?.weight
+                            ) + ' г'}
+                          </span>
                         </div>
 
                         <Typography component="span">
-                          {item.marc_desc?.length > 0 ? item.marc_desc : item.tmp_desc}
+                          {item.marc_desc?.length > 0
+                            ? item.marc_desc
+                            : item.tmp_desc}
                         </Typography>
                       </div>
                     </div>
 
-                    {idx === arr.length - 1 ? null : <div className="SetDivider"></div>}
+                    {idx === arr.length - 1 ? null : (
+                      <div className="SetDivider"></div>
+                    )}
                   </React.Fragment>
                 ))}
               </div>
@@ -503,7 +668,9 @@ export default function ModalCardItemMobile() {
         disableSwipeToOpen
       >
         <div className="ContainerModalCardMobileValue">
-          {shadowValue ? <div className="blockShadowModalCardItemValue" /> : null}
+          {shadowValue ? (
+            <div className="blockShadowModalCardItemValue" />
+          ) : null}
 
           <div className="lineModalCardMobileValue"></div>
 
@@ -513,9 +680,11 @@ export default function ModalCardItemMobile() {
 
           <div className="dop_text_value">
             <span>
-              Полное описание состава всех блюд, калорийности
-              и возможных аллергенов можно{' '}
-              <Link href={links?.link_allergens ?? links} target="_blank"
+              Полное описание состава всех блюд, калорийности и возможных
+              аллергенов можно{' '}
+              <Link
+                href={links?.link_allergens ?? links}
+                target="_blank"
                 ref={(node) => {
                   if (node) {
                     node.style.setProperty('color', '#DD1A32', 'important');
@@ -530,7 +699,9 @@ export default function ModalCardItemMobile() {
           <div className="ValueModeButtons">
             <button
               type="button"
-              className={'ValueModeBtn ' + (valueMode === 'per100' ? 'active' : '')}
+              className={
+                'ValueModeBtn ' + (valueMode === 'per100' ? 'active' : '')
+              }
               onClick={() => setValueMode('per100')}
             >
               на 100 г
@@ -538,7 +709,9 @@ export default function ModalCardItemMobile() {
 
             <button
               type="button"
-              className={'ValueModeBtn ' + (valueMode === 'perDish' ? 'active' : '')}
+              className={
+                'ValueModeBtn ' + (valueMode === 'perDish' ? 'active' : '')
+              }
               onClick={() => setValueMode('perDish')}
             >
               на всё блюдо
@@ -547,20 +720,33 @@ export default function ModalCardItemMobile() {
 
           {isMany ? <div className="lineModalCardMobileValue2"></div> : null}
 
-          <div 
+          <div
             className="ContainerValue"
             style={{
               marginRight: isOne ? '6.8376068376068vw' : 0,
               marginBottom: isOne
-                ? (parseInt(openItem?.cat_id) === 14 ? '6.8376068376068vw' : '17.094017094017vw')
-                : 0
+                ? parseInt(openItem?.cat_id) === 14
+                  ? '6.8376068376068vw'
+                  : '17.094017094017vw'
+                : 0,
             }}
           >
-            <div className="ItemModalCardMobileValue" style={{ overflowY: isOne ? 'hidden' : 'auto' }} onScroll={listenScrollValue}>
+            <div
+              className="ItemModalCardMobileValue"
+              style={{ overflowY: isOne ? 'hidden' : 'auto' }}
+              onScroll={listenScrollValue}
+            >
               {isMany ? (
                 <div className="ListValue">
                   {valueItems.map((item, key) => (
-                    <div key={key} className="ValueItem" style={{ marginTop: key === 0 ? '5.1282051282051vw' : '3.4188034188034vw' }}>
+                    <div
+                      key={key}
+                      className="ValueItem"
+                      style={{
+                        marginTop:
+                          key === 0 ? '5.1282051282051vw' : '3.4188034188034vw',
+                      }}
+                    >
                       <div className="itemIndex">
                         <span>{key + 1}.</span>
                       </div>
@@ -593,7 +779,11 @@ export default function ModalCardItemMobile() {
                               <span>
                                 {valueMode === 'per100'
                                   ? fmtMacro(toNum(item?.protein))
-                                  : byWeight(item?.protein, getWeight(item))} г
+                                  : byWeight(
+                                      item?.protein,
+                                      getWeight(item)
+                                    )}{' '}
+                                г
                               </span>
                             </div>
 
@@ -603,7 +793,8 @@ export default function ModalCardItemMobile() {
                               <span>
                                 {valueMode === 'per100'
                                   ? fmtMacro(toNum(item?.fat))
-                                  : byWeight(item?.fat, getWeight(item))} г
+                                  : byWeight(item?.fat, getWeight(item))}{' '}
+                                г
                               </span>
                             </div>
 
@@ -613,7 +804,11 @@ export default function ModalCardItemMobile() {
                               <span>
                                 {valueMode === 'per100'
                                   ? fmtMacro(toNum(item?.carbohydrates))
-                                  : byWeight(item?.carbohydrates, getWeight(item))} г
+                                  : byWeight(
+                                      item?.carbohydrates,
+                                      getWeight(item)
+                                    )}{' '}
+                                г
                               </span>
                             </div>
                           </div>
@@ -654,7 +849,11 @@ export default function ModalCardItemMobile() {
                               <span>
                                 {valueMode === 'per100'
                                   ? fmtMacro(toNum(item?.protein))
-                                  : byWeight(item?.protein, getWeight(item))} г
+                                  : byWeight(
+                                      item?.protein,
+                                      getWeight(item)
+                                    )}{' '}
+                                г
                               </span>
                             </div>
 
@@ -664,7 +863,8 @@ export default function ModalCardItemMobile() {
                               <span>
                                 {valueMode === 'per100'
                                   ? fmtMacro(toNum(item?.fat))
-                                  : byWeight(item?.fat, getWeight(item))} г
+                                  : byWeight(item?.fat, getWeight(item))}{' '}
+                                г
                               </span>
                             </div>
 
@@ -674,7 +874,11 @@ export default function ModalCardItemMobile() {
                               <span>
                                 {valueMode === 'per100'
                                   ? fmtMacro(toNum(item?.carbohydrates))
-                                  : byWeight(item?.carbohydrates, getWeight(item))} г
+                                  : byWeight(
+                                      item?.carbohydrates,
+                                      getWeight(item)
+                                    )}{' '}
+                                г
                               </span>
                             </div>
                           </div>
@@ -690,11 +894,11 @@ export default function ModalCardItemMobile() {
           {parseInt(openItem?.cat_id) === 14 && (
             <div className="ValueFootnoteMobile">
               <Typography component="p" className="ItemPizzaMobile">
-                * Размер заготовки. После&nbsp;выпекания возможно изменение размера на&nbsp;1–2&nbsp;см.
+                * Размер заготовки. После&nbsp;выпекания возможно изменение
+                размера на&nbsp;1–2&nbsp;см.
               </Typography>
             </div>
           )}
-
         </div>
       </SwipeableDrawer>
     </>

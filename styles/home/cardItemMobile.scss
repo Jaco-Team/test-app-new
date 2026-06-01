@@ -871,7 +871,7 @@
                 & .itemValueRowMain {
                   width: 100%;
                   display: flex;
-                  align-items: center;
+                  align-items: stretch;
                   border-bottom: $MyScale3_mobile solid #b2b2b2;
 
                   & > div:first-child {
@@ -881,14 +881,17 @@
                     padding-bottom: $MyScale36_mobile;
                     padding-right: $MyScale37_mobile;
                     & span {
-                      display: flex;
-                      justify-content: flex-start;
+                      display: -webkit-box;
                       text-align: left;
-                      align-items: center;
+                      -webkit-box-orient: vertical;
+                      -webkit-line-clamp: 2;
+                      overflow: hidden;
+                      white-space: normal;
                       width: $MyScale650_mobile;
-                      height: $MyScale80_mobile;
+                      height: auto;
+                      min-height: $MyScale80_mobile;
                       @include font40_400();
-                      line-height: normal;
+                      line-height: 1.15;
                     }
                   }
 
@@ -896,6 +899,7 @@
                     width: $MyScale214_mobile;
                     display: flex;
                     flex-direction: column;
+                    justify-content: center;
 
                     & span:first-child {
                       width: 100%;
@@ -994,7 +998,7 @@
                 & .itemValueRowMain {
                   width: 100%;
                   display: flex;
-                  align-items: center;
+                  align-items: stretch;
                   border-bottom: $MyScale3_mobile solid #b2b2b2;
 
                   & > div:first-child {
@@ -1004,14 +1008,17 @@
                     padding-bottom: $MyScale36_mobile;
                     padding-right: $MyScale37_mobile;
                     & span {
-                      display: flex;
-                      justify-content: flex-start;
+                      display: -webkit-box;
                       text-align: left;
-                      align-items: center;
+                      -webkit-box-orient: vertical;
+                      -webkit-line-clamp: 2;
+                      overflow: hidden;
+                      white-space: normal;
                       width: $MyScale650_mobile;
-                      height: $MyScale80_mobile;
+                      height: auto;
+                      min-height: $MyScale80_mobile;
                       @include font40_400();
-                      line-height: normal;
+                      line-height: 1.15;
                     }
                   }
 
@@ -1019,6 +1026,7 @@
                     width: $MyScale282_mobile;
                     display: flex;
                     flex-direction: column;
+                    justify-content: center;
 
                     & span:first-child {
                       width: 100%;
