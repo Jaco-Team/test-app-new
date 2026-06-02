@@ -484,7 +484,7 @@ export function ProductDetailsModal({
                 />
               ) : (
                 <Button
-                  tone="muted"
+                  tone="neutral"
                   size="md"
                   density="regular"
                   onClick={onAdd}

@@ -7,11 +7,7 @@
   @include ui-reveal();
 
   @include ui-expanded {
-    max-width: ui-fluid-expanded(1260);
-    min-height: ui-fluid-expanded(117);
-    margin: ui-fluid-expanded(46) auto 0;
-    border-radius: ui-fluid-expanded(20);
-    background: $ui-control-bg;
+    @include ui-tag-bar-shell();
   }
 
   &__list {

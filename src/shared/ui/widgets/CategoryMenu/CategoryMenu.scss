@@ -138,36 +138,36 @@
 
 @include ui-regular {
   .ui-category-menu {
-    top: ui-fluid-regular(114);
+    top: ui-fluid-regular(148);
 
     &__row--primary {
       gap: ui-fluid-regular(18);
-      padding: ui-fluid-regular(22) ui-fluid-regular(23) 0;
+      padding: ui-fluid-regular(26) ui-fluid-regular(30) 0;
     }
 
     &__row--secondary {
       gap: ui-fluid-regular(14);
-      min-height: ui-fluid-regular(88);
-      padding: ui-fluid-regular(16) ui-fluid-regular(23) ui-fluid-regular(15);
+      min-height: ui-fluid-regular(110);
+      padding: ui-fluid-regular(18) ui-fluid-regular(30) 0;
     }
   }
 
   .ui-category-button {
-    min-width: ui-fluid-regular(171);
-    height: ui-fluid-regular(57);
-    padding: 0 ui-fluid-regular(18);
-    border-radius: ui-fluid-regular(12);
-    font-size: ui-fluid-regular(24);
+    min-width: ui-fluid-regular(223);
+    height: ui-fluid-regular(75);
+    padding: 0 ui-fluid-regular(22);
+    border-radius: ui-fluid-regular(16);
+    font-size: ui-fluid-regular(34);
 
     &--icon {
-      width: ui-fluid-regular(57);
+      width: ui-fluid-regular(75);
       min-width: 0;
       padding: 0;
     }
 
     &--icon svg {
-      width: ui-fluid-regular(28);
-      height: ui-fluid-regular(28);
+      width: ui-fluid-regular(38);
+      height: ui-fluid-regular(38);
     }
   }
 }

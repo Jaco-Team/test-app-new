@@ -44,54 +44,6 @@ function orderLinkGroups(groups: FooterLinkGroup[]): FooterLinkGroup[] {
   );
 }
 
-function FooterColumn({ group }: { group: FooterLinkGroup }) {
-  return (
-    <div className="ui-footer__column">
-      <span className="ui-footer__column-title">{group.title}</span>
-      {group.items.map((item) => (
-        <a
-          key={item.label}
-          className="ui-footer__link"
-          href={item.href}
-          {...(item.href.startsWith('http')
-            ? { target: '_blank', rel: 'noopener noreferrer' }
-            : {})}
-        >
-          {item.label}
-        </a>
-      ))}
-    </div>
-  );
-}
-
-function FooterSocial({ links }: { links: FooterSocialLink[] }) {
-  if (links.length === 0) {
-    return null;
-  }
-
-  return (
-    <div className="ui-footer__social-wrap">
-      <nav className="ui-footer__social" aria-label="Мы в социальных сетях">
-        {links.map((item) => {
-          const Icon = SOCIAL_ICONS[item.label] ?? NewVKIcon;
-          return (
-            <a
-              key={item.label}
-              className="ui-footer__social-link"
-              href={item.href}
-              target="_blank"
-              rel="noopener noreferrer"
-              aria-label={item.label}
-            >
-              <Icon aria-hidden="true" />
-            </a>
-          );
-        })}
-      </nav>
-    </div>
-  );
-}
-
 export function Footer({
   linkGroups = [],
   socialLinks = [],
@@ -110,17 +62,48 @@ export function Footer({
       <ArrowUp />
       <footer className={cn('ui-footer', className)} {...props}>
         <div className="ui-footer__inner">
-          <div className="ui-footer__main">
-            <div className="ui-footer__columns">
-              {columns.map((group) => (
-                <FooterColumn key={group.title} group={group} />
-              ))}
-            </div>
-            <FooterSocial links={socialLinks} />
+          <div className="ui-footer__grid">
+            {columns.map((group) => (
+              <section key={group.title} className="ui-footer__column">
+                <span className="ui-footer__column-title">{group.title}</span>
+                {group.items.map((item) => (
+                  <a
+                    key={item.label}
+                    className="ui-footer__link"
+                    href={item.href}
+                    {...(item.href.startsWith('http')
+                      ? { target: '_blank', rel: 'noopener noreferrer' }
+                      : {})}
+                  >
+                    {item.label}
+                  </a>
+                ))}
+              </section>
+            ))}
+            {socialLinks.length > 0 ? (
+              <nav
+                className="ui-footer__social"
+                aria-label="Мы в социальных сетях"
+              >
+                {socialLinks.map((item) => {
+                  const Icon = SOCIAL_ICONS[item.label] ?? NewVKIcon;
+                  return (
+                    <a
+                      key={item.label}
+                      className="ui-footer__social-link"
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={item.label}
+                    >
+                      <Icon aria-hidden="true" />
+                    </a>
+                  );
+                })}
+              </nav>
+            ) : null}
           </div>
-          <div className="ui-footer__copy-bar">
-            <p className="ui-footer__copy">{copyText}</p>
-          </div>
+          <p className="ui-footer__copy">{copyText}</p>
         </div>
       </footer>
     </>

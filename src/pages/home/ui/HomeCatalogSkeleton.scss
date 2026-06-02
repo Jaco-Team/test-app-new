@@ -2,9 +2,7 @@
 @use '../../../shared/ui/foundation/tokens' as *;
 
 .home-catalog-skeleton {
-  display: grid;
-  grid-template-columns: minmax(0, 1fr);
-  gap: ui-fluid-compact(18);
+  @include ui-product-grid();
   padding: ui-fluid-compact(20) ui-fluid-compact(30) 0;
 
   &__card {
@@ -21,9 +19,8 @@
   }
 
   @include ui-regular {
-    grid-template-columns: repeat(3, minmax(0, 1fr));
-    gap: ui-fluid-regular(24);
-    padding: ui-fluid-regular(16) ui-fluid-regular(46) 0;
+    padding: ui-fluid-regular(16) 0 0;
+    @include ui-page-inset();
 
     &__card {
       min-height: ui-fluid-regular(320);
@@ -31,11 +28,8 @@
   }
 
   @include ui-expanded {
-    grid-template-columns: repeat(4, minmax(0, 1fr));
-    gap: ui-fluid-expanded(20);
-    max-width: ui-fluid-expanded(1260);
-    margin: 0 auto;
     padding: ui-fluid-expanded(12) 0 0;
+    @include ui-page-inset();
 
     &__card {
       min-height: ui-fluid-expanded(280);

@@ -10,6 +10,14 @@
 
   &__swiper {
     width: 100%;
+
+    @include ui-compact {
+      padding: ui-fluid-compact(200) ui-fluid-compact(40) 0;
+    }
+
+    @include ui-regular {
+      padding: ui-fluid-regular(200) ui-fluid-regular(40) 0;
+    }
   }
 
   &__slide {
@@ -36,36 +44,7 @@
   }
 
   &__nav {
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    width: ui-fluid-compact(43) !important;
-    height: 100% !important;
-    top: 0 !important;
-    bottom: 0 !important;
-    margin-top: 0 !important;
-    transform: none;
-    z-index: 2 !important;
-
-    &::after {
-      content: none !important;
-    }
-
-    svg {
-      width: ui-fluid-compact(37);
-      height: ui-fluid-compact(37);
-      border-radius: 50%;
-    }
-  }
-
-  &__nav--prev {
-    left: 0 !important;
-    padding-left: ui-fluid-compact(30);
-  }
-
-  &__nav--next {
-    right: 0 !important;
-    padding-right: ui-fluid-compact(30);
+    display: none;
   }
 
   &__pagination {
@@ -89,23 +68,6 @@
   }
 
   @include ui-regular {
-    &__slide img {
-      aspect-ratio: 2 / 1;
-    }
-
-    &__nav svg {
-      width: ui-fluid-regular(29);
-      height: ui-fluid-regular(29);
-    }
-
-    &__nav--prev {
-      padding-left: ui-fluid-regular(23);
-    }
-
-    &__nav--next {
-      padding-right: ui-fluid-regular(23);
-    }
-
     &__pagination {
       bottom: ui-fluid-regular(22) !important;
       gap: ui-fluid-regular(10);
@@ -128,16 +90,36 @@
       aspect-ratio: 1092 / 299;
     }
 
-    &__nav svg {
-      width: ui-fluid-expanded(26);
-      height: ui-fluid-expanded(26);
+    &__nav {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: ui-fluid-compact(43) !important;
+      height: 100% !important;
+      top: 0 !important;
+      bottom: 0 !important;
+      margin-top: 0 !important;
+      transform: none;
+      z-index: 2 !important;
+
+      &::after {
+        content: none !important;
+      }
+
+      svg {
+        width: ui-fluid-expanded(26);
+        height: ui-fluid-expanded(26);
+        border-radius: 50%;
+      }
     }
 
     &__nav--prev {
+      left: 0 !important;
       padding-left: ui-fluid-expanded(16);
     }
 
     &__nav--next {
+      right: 0 !important;
       padding-right: ui-fluid-expanded(16);
     }
 

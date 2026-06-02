@@ -5,11 +5,11 @@ import useMediaQuery from '@mui/material/useMediaQuery';
 import { BREAKPOINTS } from '@src/shared/ui/foundation/breakpoints';
 
 /**
- * Компактная раскладка (мобильные карточки, drawer-модалки, burger-header): только ≤667px.
- * Планшет (668–990) использует PC-разметку с `ui-fluid-regular`.
+ * Компактная раскладка (burger-header, sheet-модалки, drawer-корзина): ≤990px.
+ * Только сетка каталога на regular использует `ui-product-grid`; остальной UI — как на mobile.
  */
 export function useCompactLayout() {
-  return useMediaQuery(`(max-width: ${BREAKPOINTS.compactMax}px)`, {
+  return useMediaQuery(`(max-width: ${BREAKPOINTS.regularMax}px)`, {
     noSsr: true,
   });
 }

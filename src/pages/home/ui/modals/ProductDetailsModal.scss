@@ -466,10 +466,22 @@
   }
 
   &__action {
-    width: min(100%, ui-fluid-compact(360));
+    width: 100%;
+    max-width: 100%;
+    align-self: stretch;
   }
 
-  &__action .ui-button,
+  // Legacy CartCtaButton: filled sheet CTA (compact/regular), outlined in desktop modal.
+  &__action .ui-button.ui-button {
+    width: 100%;
+    min-width: 0;
+    border-radius: ui-fluid-compact(60);
+    background: $ui-control-bg;
+    border-color: transparent;
+    color: rgba(0, 0, 0, 0.6);
+    min-height: ui-fluid-compact(118);
+  }
+
   &__action .ui-quantity-control {
     width: 100%;
     min-height: ui-fluid-compact(48);
@@ -594,29 +606,6 @@
       font-size: max(11px, ui-fluid-regular(11));
     }
 
-    &__layout {
-      grid-template-columns: minmax(260px, 42%) minmax(0, 1fr);
-      align-items: center;
-      gap: ui-fluid-regular(30);
-      padding: ui-fluid-regular(42);
-    }
-
-    &__media {
-      min-height: ui-fluid-regular(320);
-    }
-
-    &__badges {
-      top: ui-fluid-regular(14);
-      left: ui-fluid-regular(14);
-      gap: ui-fluid-regular(8);
-
-      .ui-badge {
-        min-height: ui-fluid-regular(25);
-        padding: 0 ui-fluid-regular(9);
-        font-size: ui-fluid-regular(10);
-      }
-    }
-
     &__heading h2 {
       font-size: ui-fluid-regular(34);
     }
@@ -677,7 +666,11 @@
       margin-right: ui-fluid-regular(10);
     }
 
-    &__action .ui-button,
+    &__action .ui-button.ui-button {
+      border-radius: ui-fluid-regular(46);
+      min-height: ui-fluid-regular(91);
+    }
+
     &__action .ui-quantity-control {
       min-height: ui-fluid-regular(63);
     }
@@ -833,13 +826,16 @@
     }
 
     &__heading h2 {
-      font-size: ui-fluid-expanded(32);
+      font-size: ui-fluid-expanded(25);
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.8);
     }
 
     &__heading p,
     &__description,
     &__section p {
-      font-size: ui-fluid-expanded(17);
+      font-size: ui-fluid-expanded(15);
+      color: rgba(0, 0, 0, 0.6);
     }
 
     &__section h3 {
@@ -884,20 +880,49 @@
 
     &__facts {
       gap: ui-fluid-expanded(10);
-      font-size: ui-fluid-expanded(14);
+      font-size: ui-fluid-expanded(13);
+      color: rgba(0, 0, 0, 0.8);
+    }
+
+    &__facts span {
+      color: rgba(0, 0, 0, 0.8);
+    }
+
+    &__fact-link {
+      color: $ui-brand;
     }
 
     &__facts span:not(:first-child)::before,
     &__fact-link:not(:first-child)::before {
       margin-right: ui-fluid-expanded(10);
+      color: rgba(0, 0, 0, 0.6);
     }
 
     &__action {
-      width: ui-fluid-expanded(260);
+      width: ui-fluid-expanded(200);
       margin-top: auto;
     }
 
-    &__action .ui-button,
+    &__action .ui-button.ui-button {
+      border-radius: ui-fluid-expanded(23);
+      min-height: ui-fluid-expanded(40);
+      background: transparent;
+      border-color: $ui-border;
+      color: rgba(0, 0, 0, 0.6);
+
+      &:hover,
+      &:focus-visible,
+      &:active {
+        background: $ui-control-bg;
+        border-color: #cccccc;
+      }
+    }
+
+    &__action .ui-button.ui-button .ui-price--size-sm .ui-price__current {
+      font-size: ui-fluid-expanded(15);
+      color: rgba(0, 0, 0, 0.6);
+    }
+
     &__action .ui-quantity-control {
       min-height: ui-fluid-expanded(48);
     }

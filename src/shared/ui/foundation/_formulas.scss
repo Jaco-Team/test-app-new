@@ -94,3 +94,49 @@
     animation: none;
   }
 }
+
+// --- Shared page layout (tablet + desktop) ---
+
+@mixin ui-page-inset {
+  @include ui-regular {
+    max-width: calc(100% - #{ui-fluid-regular(92)});
+    margin-inline: ui-fluid-regular(46);
+  }
+
+  @include ui-expanded {
+    max-width: ui-fluid-expanded(1260);
+    margin-inline: auto;
+    width: 100%;
+  }
+}
+
+@mixin ui-product-grid {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  gap: 0.75rem;
+
+  @include ui-regular {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: ui-fluid-regular(28);
+
+    @media (min-width: 820px) {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+      gap: ui-fluid-regular(36);
+    }
+  }
+
+  @include ui-expanded {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    gap: ui-fluid-expanded(20);
+  }
+}
+
+@mixin ui-tag-bar-shell {
+  @include ui-expanded {
+    max-width: ui-fluid-expanded(1260);
+    min-height: ui-fluid-expanded(117);
+    margin: ui-fluid-expanded(46) auto 0;
+    border-radius: ui-fluid-expanded(20);
+    background: $ui-control-bg;
+  }
+}
