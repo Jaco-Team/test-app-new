@@ -440,6 +440,8 @@
     &__product-action .ui-button,
     &__product-action .ui-quantity-control {
       min-height: ui-fluid-expanded(36);
+      width: auto;
+      min-width: ui-fluid-expanded(140);
     }
 
     &__product-price {

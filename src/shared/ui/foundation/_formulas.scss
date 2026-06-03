@@ -51,15 +51,11 @@
   }
 }
 
-@mixin ui-fluid($property, $expanded, $compact: null, $regular: null) {
-  @if ($compact == null) {
-    $compact: $expanded;
-  } @else {
-    $expanded: $compact;
-  }
+@mixin ui-fluid($property, $expanded, $regular: null, $compact: null) {
   @if ($regular == null) {
-    $regular: $compact;
-  } @else {
+    $regular: $expanded;
+  }
+  @if ($compact == null) {
     $compact: $regular;
   }
 

@@ -1,16 +1,16 @@
-import { memo, useEffect } from 'react';
+import { memo } from 'react';
 import { ArrowUpIcon } from '../../icons';
 import './ArrowUp.scss';
-import useGetPageScroll from '@/src/shared/lib/useGetPageScroll';
+import useIsScrolled from '@/src/shared/lib/scroll/useIsScrolled';
 import { cn } from '../../foundation/classNames';
 
 function ArrowUp() {
-  const { scrollY } = useGetPageScroll();
+  const isVisible = useIsScrolled(150);
   const scrollToTop = () => window?.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
     <div
-      className={cn('ui-arrow-up', scrollY < 150 && 'ui-arrow-up--hidden')}
+      className={cn('ui-arrow-up', !isVisible && 'ui-arrow-up--hidden')}
       onClick={scrollToTop}
     >
       <ArrowUpIcon fill="#fff" />

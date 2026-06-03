@@ -3,6 +3,7 @@
 
 .ui-banner-slider {
   position: relative;
+  // padding-top: ui-fluid-compact(20);
   width: 100%;
   overflow: hidden;
   font-family: $ui-font-family;
@@ -12,11 +13,11 @@
     width: 100%;
 
     @include ui-compact {
-      padding: ui-fluid-compact(200) ui-fluid-compact(40) 0;
+      padding-top: ui-fluid-compact(148);
     }
 
     @include ui-regular {
-      padding: ui-fluid-regular(200) ui-fluid-regular(40) 0;
+      padding-top: ui-fluid-regular(200);
     }
   }
 
@@ -80,9 +81,9 @@
   }
 
   @include ui-expanded {
+    padding: ui-fluid-expanded(64) 0 0;
     &__swiper {
       max-width: ui-fluid-expanded(1260);
-      padding: ui-fluid-expanded(64) 0 0;
       margin: 0 auto;
     }
 
@@ -94,7 +95,7 @@
       display: flex;
       align-items: center;
       justify-content: center;
-      width: ui-fluid-compact(43) !important;
+      width: ui-fluid-expanded(43) !important;
       height: 100% !important;
       top: 0 !important;
       bottom: 0 !important;

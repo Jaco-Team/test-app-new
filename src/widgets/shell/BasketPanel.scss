@@ -50,7 +50,7 @@
 
 .basket-panel {
   display: grid;
-  grid-template-rows: auto minmax(0, 1fr) minmax(ui-fluid-compact(200));
+  grid-template-rows: auto minmax(0, 1fr) minmax(ui-fluid-compact(200), auto);
   gap: ui-fluid-compact(18);
   height: calc(100% - ui-fluid-compact(148));
   min-height: 0;
@@ -390,11 +390,11 @@
     padding: ui-fluid-expanded(12) 0 0 ui-fluid-expanded(12);
   }
 
-  .ui-price--size-sm .ui-price__current {
-    font-size: ui-fluid-expanded(12);
-    font-weight: 400;
-    color: $ui-border-table;
-  }
+  // .ui-price--size-sm .ui-price__current {
+  //   // font-size: ui-fluid-expanded(12);
+  //   font-weight: 400;
+  //   color: $ui-border-table;
+  // }
 
   .basket-panel__extra {
     grid-template-columns:

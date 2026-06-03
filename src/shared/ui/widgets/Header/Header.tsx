@@ -28,7 +28,7 @@ import { cn } from '../../foundation/classNames';
 import { CompactMenu } from './CompactMenu';
 import type { CompactMenuItem } from './CompactMenu';
 import './Header.scss';
-import useGetPageScroll from '@/src/shared/lib/useGetPageScroll';
+import useIsScrolled from '@/src/shared/lib/scroll/useIsScrolled';
 
 export interface HeaderNavItem {
   label: string;
@@ -202,7 +202,7 @@ export function Header({
       }))
     : buildDefaultCompactMenuItems(logoHref, city, cityHref, cartBadge);
 
-  const { isScrolled } = useGetPageScroll();
+  const isScrolled = useIsScrolled();
 
   return (
     <header

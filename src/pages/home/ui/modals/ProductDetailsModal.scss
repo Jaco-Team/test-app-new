@@ -461,7 +461,9 @@
     padding: 0;
     color: inherit;
     font: inherit;
-    font-size: max(12px, ui-fluid-compact(12));
+    @include ui-compact {
+      font-size: max(12px, ui-fluid-compact(12));
+    }
   }
 
   &__fact-link {
@@ -999,8 +1001,7 @@
       }
     }
 
-    &__action .ui-button.ui-button .ui-price--size-sm .ui-price__current {
-      font-size: ui-fluid-expanded(15);
+    &__action .ui-button .ui-price__current {
       color: rgba(0, 0, 0, 0.6);
     }
 
