@@ -363,7 +363,7 @@ function bannerProducts(
     .slice(0, 8);
 }
 
-function mapBanners(
+export function mapBanners(
   banners: unknown[],
   allProducts: HomeProduct[]
 ): HomeBannerSlide[] {

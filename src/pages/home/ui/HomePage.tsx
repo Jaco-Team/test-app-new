@@ -13,7 +13,7 @@ import type {
   HomePageViewModel,
   HomeProduct,
 } from '../model/types';
-import { mapProduct } from '../model/mapHomePageViewModel';
+import { mapBanners, mapProduct } from '../model/mapHomePageViewModel';
 import { useHomeCatalog } from '../hooks/useHomeCatalog';
 import { BannerDetailsModal } from './modals/BannerDetailsModal';
 import { ProductDetailsModal } from './modals/ProductDetailsModal';
@@ -62,16 +62,33 @@ export type HomePageProps = {
 
 export function HomePage({ model }: HomePageProps) {
   const [activeProduct, setActiveProduct] = useState<HomeProduct | null>(null);
-  const [activeBanner, setActiveBanner] = useState<HomeBannerSlide | null>(
-    null
-  );
+  const [activeBannerId, setActiveBannerId] = useState<string | null>(null);
 
   const items = useCartStore((state) => state.items);
   const plus = useCartStore((state) => state.plus);
   const setCount = useCartStore((state) => state.setCount);
+  const bannerList = useHomeStore((state) => state.bannerList);
   const getItemsCat = useHomeStore((state) => state.getItemsCat);
 
   const catalog = useHomeCatalog(model);
+  const liveBanners = useMemo(() => {
+    if (!bannerList.length) {
+      return model.banners;
+    }
+
+    return mapBanners(bannerList, catalog.products);
+  }, [bannerList, catalog.products, model.banners]);
+  const activeBanner = useMemo<HomeBannerSlide | null>(() => {
+    if (!activeBannerId) {
+      return null;
+    }
+
+    return (
+      liveBanners.find((banner) => banner.id === activeBannerId) ??
+      model.banners.find((banner) => banner.id === activeBannerId) ??
+      null
+    );
+  }, [activeBannerId, liveBanners, model.banners]);
 
   const countByProductId = useMemo(() => {
     const map = new Map<string, number>();
@@ -153,8 +170,10 @@ export function HomePage({ model }: HomePageProps) {
     <div className="home-page">
       <main className="home-page__main">
         <BannerSlider
-          slides={model.banners}
-          onSlideClick={(slide) => setActiveBanner(slide as HomeBannerSlide)}
+          slides={liveBanners}
+          onSlideClick={(slide) =>
+            setActiveBannerId((slide as HomeBannerSlide).id)
+          }
         />
 
         <CategoryMenu
@@ -227,7 +246,7 @@ export function HomePage({ model }: HomePageProps) {
         banner={activeBanner}
         citySlug={model.citySlug}
         getCount={getCount}
-        onClose={() => setActiveBanner(null)}
+        onClose={() => setActiveBannerId(null)}
         onAdd={addProduct}
         onQuantityChange={changeProductCount}
         onProductOpen={(product) => void openProduct(product)}

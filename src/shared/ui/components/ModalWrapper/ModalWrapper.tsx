@@ -14,6 +14,7 @@ import { IconClose } from '../../icons';
 import './ModalWrapper.scss';
 
 export type ModalWrapperVariant = 'dialog' | 'bottom-sheet' | 'responsive';
+export type ModalWrapperSheetHeader = 'default' | 'hidden';
 
 export type ModalWrapperProps = {
   open: boolean;
@@ -29,6 +30,7 @@ export type ModalWrapperProps = {
   closeOnBackdrop?: boolean;
   labelledBy?: string;
   variant?: ModalWrapperVariant;
+  sheetHeader?: ModalWrapperSheetHeader;
 };
 
 export function ModalWrapper({
@@ -45,6 +47,7 @@ export function ModalWrapper({
   closeOnBackdrop = true,
   labelledBy,
   variant = 'dialog',
+  sheetHeader = 'default',
 }: ModalWrapperProps) {
   const compact = useMediaQuery(
     (theme: Theme) => theme.breakpoints.down('sm'),
@@ -64,6 +67,7 @@ export function ModalWrapper({
   );
   const responsive = variant === 'responsive';
   const sheet = responsive && compact;
+  const hideSheetHeader = sheetHeader === 'hidden';
   const dialogMode = regular ? 'regular-dialog' : 'expanded-dialog';
 
   useBodyScrollLock(open);
@@ -82,6 +86,7 @@ export function ModalWrapper({
     'ui-modal-wrapper',
     'ui-modal-wrapper--' + variant,
     sheet && 'ui-modal-wrapper--sheet',
+    sheet && hideSheetHeader && 'ui-modal-wrapper--sheet-header-hidden',
     !sheet && responsive && 'ui-modal-wrapper--responsive-dialog',
     !sheet && responsive && 'ui-modal-wrapper--' + dialogMode,
     className
@@ -146,10 +151,16 @@ export function ModalWrapper({
         }}
       >
         <div className="ui-modal-wrapper__sheet">
-          <div className="ui-modal-wrapper__sheet-header">
-            <div className="ui-modal-wrapper__sheet-grip" aria-hidden="true" />
-            {titleNode}
-          </div>
+          {hideSheetHeader ? null : (
+            <div className="ui-modal-wrapper__sheet-header">
+              <div
+                className="ui-modal-wrapper__sheet-grip"
+                aria-hidden="true"
+              />
+              {titleNode}
+            </div>
+          )}
+          {hideSheetHeader ? titleNode : null}
           {contentNode}
         </div>
       </SwipeableDrawer>
@@ -165,8 +176,10 @@ export function ModalWrapper({
       fullWidth={responsive}
       aria-labelledby={titleId}
       disableScrollLock
-      TransitionComponent={Fade}
       transitionDuration={{ enter: 180, exit: 150 }}
+      slots={{
+        transition: Fade,
+      }}
       slotProps={{
         container: {
           className: 'ui-modal-wrapper__container',

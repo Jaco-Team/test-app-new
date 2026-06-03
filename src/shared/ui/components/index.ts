@@ -3,6 +3,7 @@ export type {
   ButtonProps,
   ButtonTone,
   ButtonSize,
+  ButtonRange,
   ButtonDensity,
 } from './Button/Button';
 export { Input } from './Input/Input';
@@ -17,8 +18,6 @@ export type {
   IconButtonTone,
   IconButtonSize,
 } from './IconButton/IconButton';
-export { ScrollTopButton } from './ScrollTopButton/ScrollTopButton';
-export type { ScrollTopButtonProps } from './ScrollTopButton/ScrollTopButton';
 export { Modal } from './Modal/Modal';
 export type { ModalProps, ModalSize } from './Modal/Modal';
 export { ModalWrapper } from './ModalWrapper/ModalWrapper';

@@ -486,12 +486,7 @@ export function ProductDetailsModal({
                   onChange={onQuantityChange}
                 />
               ) : (
-                <Button
-                  tone="neutral"
-                  size="md"
-                  density="regular"
-                  onClick={onAdd}
-                >
+                <Button tone="neutral" size="md" onClick={onAdd}>
                   <Price
                     value={product.price}
                     oldValue={product.oldPrice}

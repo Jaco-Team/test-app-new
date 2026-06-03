@@ -4,12 +4,14 @@ import './Button.scss';
 
 export type ButtonTone = 'primary' | 'secondary' | 'neutral' | 'muted' | 'cart';
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-export type ButtonDensity = 'compact' | 'regular' | 'expanded';
+export type ButtonRange = 'compact' | 'regular' | 'expanded';
+export type ButtonDensity = ButtonRange;
 
 export type ButtonProps = {
   children: ReactNode;
   tone?: ButtonTone;
   size?: ButtonSize;
+  range?: ButtonRange;
   density?: ButtonDensity;
   active?: boolean;
   fullWidth?: boolean;
@@ -21,7 +23,8 @@ export function Button({
   children,
   tone = 'primary',
   size = 'md',
-  density = 'regular',
+  range,
+  density,
   active = false,
   fullWidth = false,
   leadingIcon,
@@ -30,6 +33,8 @@ export function Button({
   type = 'button',
   ...props
 }: ButtonProps) {
+  const resolvedRange = range ?? density ?? 'regular';
+
   return (
     <button
       type={type}
@@ -37,7 +42,7 @@ export function Button({
         'ui-button',
         'ui-button--tone-' + (tone === 'secondary' ? 'primary' : tone),
         'ui-button--size-' + size,
-        'ui-button--density-' + density,
+        'ui-button--range-' + resolvedRange,
         active && 'ui-button--active',
         fullWidth && 'ui-button--full',
         className

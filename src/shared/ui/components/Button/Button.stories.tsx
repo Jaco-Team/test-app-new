@@ -13,15 +13,15 @@ type Story = StoryObj<typeof meta>;
 export const ПоУмолчанию: Story = { name: 'По умолчанию' };
 export const Компактная: Story = {
   name: 'Компактная',
-  args: { density: 'compact', size: 'sm', children: 'Добавить' },
+  args: { range: 'compact', size: 'sm', children: 'Добавить' },
 };
 export const Обычная: Story = {
   name: 'Обычная',
-  args: { density: 'regular', size: 'md', children: '349 ₽' },
+  args: { size: 'md', children: '349 ₽' },
 };
 export const Расширенная: Story = {
   name: 'Расширенная',
-  args: { density: 'expanded', size: 'xl', children: 'В корзину за 1 349 ₽' },
+  args: { range: 'expanded', size: 'xl', children: 'В корзину за 1 349 ₽' },
 };
 export const Активная: Story = {
   name: 'Активная',
@@ -50,9 +50,9 @@ export const Варианты: Story = {
         <Button tone="cart">Корзина</Button>
       </Inline>
       <Inline wrap>
-        <Button density="compact">Компактная</Button>
-        <Button density="regular">Обычная</Button>
-        <Button density="expanded">Крупная</Button>
+        <Button range="compact">Компактная</Button>
+        <Button>Обычная</Button>
+        <Button range="expanded">Крупная</Button>
       </Inline>
     </Stack>
   ),

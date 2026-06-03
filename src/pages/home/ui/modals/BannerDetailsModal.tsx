@@ -1,6 +1,5 @@
 'use client';
 
-import { useCallback, useRef } from 'react';
 import { api } from '@src/shared/api';
 import { Button, ModalWrapper, Price, QuantityControl } from '@src/shared/ui';
 import type { HomeBannerSlide, HomeProduct } from '../../model/types';
@@ -25,29 +24,7 @@ export function BannerDetailsModal({
   onQuantityChange,
   onProductOpen,
 }: BannerDetailsModalProps) {
-  const promoRef = useRef<HTMLElement>(null);
-
-  const scrollToPromo = useCallback(() => {
-    const promo = promoRef.current;
-    if (!promo) {
-      return;
-    }
-
-    const scrollParent = promo.closest('.MuiDialogContent-root');
-    if (scrollParent instanceof HTMLElement) {
-      const offset =
-        promo.getBoundingClientRect().top -
-        scrollParent.getBoundingClientRect().top +
-        scrollParent.scrollTop;
-
-      scrollParent.scrollTo({ top: offset, behavior: 'smooth' });
-      return;
-    }
-
-    promo.scrollIntoView({ behavior: 'smooth', block: 'start' });
-  }, []);
-
-  const activatePromo = useCallback(async () => {
+  const activatePromo = async () => {
     if (!banner?.promoInfo?.name) {
       return;
     }
@@ -61,7 +38,7 @@ export function BannerDetailsModal({
     if (response?.st !== false) {
       onClose();
     }
-  }, [banner, citySlug, onClose]);
+  };
 
   if (!banner) {
     return null;
@@ -83,6 +60,7 @@ export function BannerDetailsModal({
       closeOutside
       closeOnBackdrop
       variant="responsive"
+      sheetHeader="hidden"
       labelledBy="home-banner-modal-title"
     >
       <div className="home-banner-modal__shell">
@@ -93,19 +71,11 @@ export function BannerDetailsModal({
             ) : null}
             <img src={banner.image} alt={banner.alt ?? title} />
           </picture>
-          <button
-            className="home-banner-modal__conditions"
-            type="button"
-            onClick={scrollToPromo}
-          >
-            Условия акции
-            <span aria-hidden="true">⌃</span>
-          </button>
+          <span className="home-banner-modal__conditions">Условия акции</span>
         </div>
 
         <div className="home-banner-modal__details">
           <section
-            ref={promoRef}
             className="home-banner-modal__promo"
             aria-labelledby="home-banner-modal-title"
           >
@@ -171,7 +141,6 @@ export function BannerDetailsModal({
                             <Button
                               tone="muted"
                               size="md"
-                              density="regular"
                               onClick={() => onAdd(product)}
                             >
                               <Price

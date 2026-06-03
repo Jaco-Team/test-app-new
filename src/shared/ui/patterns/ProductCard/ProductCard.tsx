@@ -109,7 +109,7 @@ export function ProductCard({
               onChange={onQuantityChange}
             />
           ) : (
-            <Button tone="muted" size="md" density="regular" onClick={onAdd}>
+            <Button tone="muted" size="md" onClick={onAdd}>
               <Price value={price} oldValue={oldPrice} size="md" />
             </Button>
           )}

@@ -341,8 +341,10 @@
     font-size: ui-fluid-compact(38);
     font-weight: 600;
     line-height: 1.12;
-    text-align: center;
     letter-spacing: 0;
+    @include ui-compact {
+      text-align: center;
+    }
   }
 
   &__heading p,
@@ -353,7 +355,9 @@
     font-family: $ui-font-family;
     font-size: max(12px, ui-fluid-compact(22));
     line-height: 1.35;
-    text-align: center;
+    @include ui-compact {
+      text-align: center;
+    }
   }
 
   &__section h3 {
@@ -365,8 +369,10 @@
 
   &__info {
     display: flex;
-    align-items: center;
-    justify-content: center;
+    @include ui-compact {
+      align-items: center;
+      justify-content: center;
+    }
     gap: ui-fluid-compact(14);
   }
 
@@ -442,7 +448,6 @@
     gap: ui-fluid-compact(10);
     color: $ui-text-muted;
     font-family: $ui-font-family;
-    font-size: ui-fluid-compact(18);
     line-height: 1.15;
   }
 
@@ -456,6 +461,7 @@
     padding: 0;
     color: inherit;
     font: inherit;
+    font-size: max(12px, ui-fluid-compact(12));
   }
 
   &__fact-link {
@@ -476,9 +482,9 @@
   &__action {
     width: 100%;
     max-width: 100%;
-    padding: ui-fluid-compact(24);
     align-self: stretch;
     @include ui-compact {
+      padding: ui-fluid-compact(24);
       align-self: center;
       display: flex;
       justify-content: center;
@@ -492,12 +498,21 @@
 
   // Legacy CartCtaButton: filled sheet CTA (compact/regular), outlined in desktop modal.
   &__action .ui-button {
-    // width: 100%;
-    min-width: ui-fluid-compact(300);
+    width: 100%;
+    @include ui-compact {
+      width: auto;
+      min-width: ui-fluid-compact(420);
+    }
     border-radius: ui-fluid-compact(60);
     background: $ui-control-bg;
     border-color: transparent;
     color: rgba(0, 0, 0, 0.6);
+    .ui-price__current {
+      @include ui-compact {
+        line-height: 1;
+        font-size: 20px;
+      }
+    }
   }
 
   &__action .ui-quantity-control {

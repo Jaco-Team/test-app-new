@@ -158,7 +158,7 @@ export function BasketPanel({ city }: { city: string }) {
             aria-label="Промокод"
           />
           <Link
-            className="ui-button ui-button--tone-primary ui-button--size-lg ui-button--density-regular basket-panel__order"
+            className="ui-button ui-button--tone-primary ui-button--size-lg ui-button--range-regular basket-panel__order"
             href={cartHref}
             onClick={() => setActiveBasket(false)}
           >

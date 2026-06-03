@@ -30,17 +30,16 @@
   &--full {
     width: 100%;
   }
-  &--density-compact {
+  &--range-compact {
     min-height: ui-fluid-compact($ui-button-compact);
     padding: 0 ui-fluid-compact(28);
     font-size: ui-fluid-compact(38);
   }
-  &--density-regular {
+  &--range-regular {
     min-height: ui-fluid-compact($ui-button-regular);
     padding: 0 ui-fluid-compact(36);
-    font-size: ui-fluid-compact(42);
   }
-  &--density-expanded {
+  &--range-expanded {
     min-height: ui-fluid-compact($ui-button-expanded);
     padding: 0 ui-fluid-compact(44);
     font-size: ui-fluid-compact(46);
@@ -53,6 +52,7 @@
   }
   &--size-md {
     min-width: ui-fluid-compact(420);
+    width: ui-fluid-compact(420);
   }
   &--size-lg {
     min-width: ui-fluid-compact(520);
@@ -108,17 +108,17 @@
   }
   @include ui-regular {
     gap: ui-fluid-regular(12);
-    &--density-compact {
+    &--range-compact {
       min-height: ui-fluid-regular(52);
       padding: 0 ui-fluid-regular(22);
       font-size: ui-fluid-regular(22);
     }
-    &--density-regular {
+    &--range-regular {
       min-height: ui-fluid-regular(63);
       padding: 0 ui-fluid-regular(30);
       font-size: ui-fluid-regular(25);
     }
-    &--density-expanded {
+    &--range-expanded {
       min-height: ui-fluid-regular(78);
       padding: 0 ui-fluid-regular(38);
       font-size: ui-fluid-regular(28);
@@ -141,17 +141,17 @@
   }
   @include ui-expanded {
     gap: ui-fluid-expanded(12);
-    &--density-compact {
+    &--range-compact {
       min-height: ui-fluid-expanded(40);
       padding: 0 ui-fluid-expanded(20);
       font-size: ui-fluid-expanded(13);
     }
-    &--density-regular {
+    &--range-regular {
       min-height: ui-fluid-expanded(48);
       padding: 0 ui-fluid-expanded(26);
       font-size: ui-fluid-expanded(16);
     }
-    &--density-expanded {
+    &--range-expanded {
       min-height: ui-fluid-expanded(62);
       padding: 0 ui-fluid-expanded(34);
       font-size: ui-fluid-expanded(20);
