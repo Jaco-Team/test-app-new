@@ -4,12 +4,12 @@ import { useEffect, useLayoutEffect } from 'react';
 import { useCatalogStore } from '@src/entities/catalog';
 import { useCartStore } from '@src/entities/cart';
 import { useCityStore } from '@src/entities/city';
-import type { CityRecord } from '@src/entities/city';
 import { useFooterStore } from '@src/entities/footer';
 import { useHeaderStore } from '@src/entities/header';
 import { useHomeStore } from '@src/entities/home';
 import { useProfileStore } from '@src/entities/profile';
 import { hitAll } from '@src/shared/lib/analytics/metrika';
+import { resolveCityLabel } from '@src/shared/lib/resolveCityLabel';
 import { setLocalStorageItem } from '@/utils/browserStorage';
 
 export type StoreBootstrapProps = {
@@ -24,13 +24,6 @@ export type StoreBootstrapProps = {
   activePage?: string;
   page?: Record<string, unknown> | null;
 };
-
-function resolveCityLabel(city: string, cities: unknown[]): string {
-  const found = (cities as CityRecord[]).find(
-    (item) => String(item?.link ?? '') === city
-  );
-  return found?.name ? String(found.name) : city;
-}
 
 function seedStoresFromPage(props: StoreBootstrapProps): void {
   const {

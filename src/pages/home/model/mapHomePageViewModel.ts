@@ -7,16 +7,14 @@ import {
 import type {
   HomePageViewModel,
   HomeBannerSlide,
-  HomeFooterLinkGroup,
-  HomeFooterSocialLink,
   HomeProduct,
   HomeTagFilterItem,
   HomeProductGroup,
 } from './types';
 import { normalizeCategories } from '@src/entities/catalog';
 import { buildHeaderNavItems } from '@src/features/header/model/buildHeaderNav';
-import { cityPath } from '@src/shared/lib/sitePaths';
 import { htmlToPlainText } from '@src/shared/lib/text/htmlToPlainText';
+import { resolveCityLabel } from '@src/shared/lib/resolveCityLabel';
 import type { CategoryMenuItem } from '@ui/widgets/CategoryMenu/CategoryMenu';
 import type { BadgeTone } from '@ui/components';
 
@@ -71,17 +69,6 @@ type HomeTagSource = {
   title?: string;
   tag?: string;
 };
-
-function resolveCityLabel(city: string, cities: unknown[]): string {
-  const found = cities.find(
-    (item) =>
-      item &&
-      typeof item === 'object' &&
-      String((item as { link?: string }).link) === city
-  ) as { name?: string } | undefined;
-
-  return found?.name ?? city;
-}
 
 function categoryDomId(cat: HomeCategorySource): string | undefined {
   const id = (cat as { id?: number | string }).id;
@@ -446,112 +433,6 @@ export function mapBanners(
   return slides;
 }
 
-function defaultFooterGroups(citySlug: string): HomeFooterLinkGroup[] {
-  return [
-    {
-      title: 'Жако',
-      items: [
-        { label: 'О компании', href: cityPath(citySlug, 'about') },
-        {
-          label: 'Реквизиты',
-          href: cityPath(citySlug, 'company-details'),
-        },
-        { label: 'Контакты', href: cityPath(citySlug, 'contacts') },
-      ],
-    },
-    {
-      title: 'Документы',
-      items: [
-        {
-          label: 'Публичная оферта',
-          href: cityPath(citySlug, 'publichnaya-oferta'),
-        },
-        {
-          label: 'Политика конфиденциальности',
-          href: cityPath(citySlug, 'politika-konfidencialnosti'),
-        },
-        {
-          label: 'Согласие на обработку персональных данных',
-          href: cityPath(citySlug, 'legal'),
-        },
-        {
-          label: 'Политика в отношении обработки метрических данных',
-          href: cityPath(citySlug, 'politika-legal'),
-        },
-        {
-          label: 'Правила оплаты',
-          href: cityPath(citySlug, 'instpayorders'),
-        },
-        { label: 'Карта сайта', href: cityPath(citySlug, 'sitemap') },
-      ],
-    },
-    {
-      title: 'Работа в жако',
-      items: [{ label: 'Вакансии', href: cityPath(citySlug, 'jobs') }],
-    },
-    {
-      title: 'Франшиза',
-      items: [
-        { label: 'Сайт франшизы', href: 'https://franchise.jacofood.ru' },
-        { label: 'Сайт для инвестиций', href: 'https://invest.jacofood.ru' },
-      ],
-    },
-  ];
-}
-
-function mapFooterSocialLinks(
-  links: Record<string, unknown>
-): HomeFooterSocialLink[] {
-  const defs: { key: string; label: string }[] = [
-    { key: 'link_vk', label: 'VK' },
-    { key: 'link_tg', label: 'Telegram' },
-    { key: 'link_ok', label: 'OK' },
-    { key: 'link_rt', label: 'RuTube' },
-  ];
-
-  return defs
-    .map(({ key, label }) => {
-      const href = links?.[key];
-      if (typeof href !== 'string' || !href.trim()) {
-        return null;
-      }
-      return { label, href };
-    })
-    .filter((item): item is HomeFooterSocialLink => Boolean(item));
-}
-
-function mapFooterLinks(
-  citySlug: string,
-  links: Record<string, unknown>
-): HomeFooterLinkGroup[] {
-  const groups = defaultFooterGroups(citySlug);
-  const allergenHref = links?.link_allergens;
-
-  if (typeof allergenHref !== 'string' || !allergenHref.trim()) {
-    return groups;
-  }
-
-  const docsGroup = groups.find((group) => group.title === 'Документы');
-  if (!docsGroup) {
-    return groups;
-  }
-
-  return groups.map((group) =>
-    group.title === 'Документы'
-      ? {
-          ...group,
-          items: [
-            {
-              label: 'Калорийность, состав, БЖУ',
-              href: allergenHref,
-            },
-            ...group.items,
-          ],
-        }
-      : group
-  );
-}
-
 export function mapTags(tags: unknown[]): HomeTagFilterItem[] {
   return (tags as HomeTagSource[])
     .map((tag, index): HomeTagFilterItem | null => {
@@ -616,7 +497,5 @@ export function mapHomePageViewModel(data: HomePageRawData): HomePageViewModel {
     tags: mapTags(data.tags),
     products: catalog.products,
     productGroups: catalog.productGroups,
-    footerLinks: mapFooterLinks(data.city, data.links),
-    footerSocialLinks: mapFooterSocialLinks(data.links),
   };
 }

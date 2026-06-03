@@ -9,7 +9,7 @@ function getIsScrolled(threshold: number) {
 }
 
 export default function useIsScrolled(threshold = 0) {
-  const [isScrolled, setIsScrolled] = useState(() => getIsScrolled(threshold));
+  const [isScrolled, setIsScrolled] = useState(false);
 
   useEffect(() => {
     let frameId = 0;

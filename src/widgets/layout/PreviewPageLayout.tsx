@@ -8,6 +8,8 @@ import {
 import type { HeaderNavItem } from '@ui/widgets/Header/Header';
 import { ConnectedHeader } from '@src/widgets/header/ConnectedHeader';
 import { AppShell } from '@src/widgets/shell/AppShell';
+import { PreviewPageFooter } from './PreviewPageFooter';
+import './PreviewPageLayout.scss';
 
 export type PreviewPageLayoutProps = {
   storeSeed: StoreBootstrapProps;
@@ -18,23 +20,21 @@ export type PreviewPageLayoutProps = {
     fallbackCityLabel?: string;
     fallbackCitySlug?: string;
   };
-  footer?: ReactNode;
   children: ReactNode;
 };
 
 /**
- * Shared preview shell: store bootstrap, global modals (auth, city, basket),
- * connected header, page body, optional footer.
+ * Shared preview shell: store bootstrap, global modals, connected header,
+ * page body, and standard preview footer.
  */
 export function PreviewPageLayout({
   storeSeed,
   loadMap = false,
   header,
-  footer,
   children,
 }: PreviewPageLayoutProps) {
   return (
-    <>
+    <div className="preview-page-layout">
       <StoreBootstrap {...storeSeed} />
       <AppShell city={storeSeed.city} loadMap={loadMap} />
       <ConnectedHeader
@@ -43,7 +43,10 @@ export function PreviewPageLayout({
         fallbackCitySlug={header?.fallbackCitySlug ?? storeSeed.city}
       />
       {children}
-      {footer}
-    </>
+      <PreviewPageFooter
+        storeSeed={storeSeed}
+        cityLabel={header?.fallbackCityLabel}
+      />
+    </div>
   );
 }

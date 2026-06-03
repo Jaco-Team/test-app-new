@@ -1,12 +1,8 @@
 'use client';
 
 import { create } from 'zustand';
-import type { CityRecord, CityState } from './types';
-
-function resolveCityLabel(slug: string, list: CityRecord[]): string {
-  const found = list.find((item) => String(item?.link ?? '') === slug);
-  return found?.name ? String(found.name) : slug;
-}
+import type { CityState } from './types';
+import { resolveCityLabel } from '@src/shared/lib/resolveCityLabel';
 
 export const useCityStore = create<CityState>((set) => ({
   slug: '',

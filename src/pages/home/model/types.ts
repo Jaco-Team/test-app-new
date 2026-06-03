@@ -37,16 +37,6 @@ export type HomeBannerSlide = {
   products?: HomeProduct[];
 };
 
-export type HomeFooterLinkGroup = {
-  title: string;
-  items: { label: string; href: string }[];
-};
-
-export type HomeFooterSocialLink = {
-  label: string;
-  href: string;
-};
-
 export type HomeProductGroup = {
   id: string;
   label: string;
@@ -71,6 +61,4 @@ export type HomePageViewModel = {
   tags: HomeTagFilterItem[];
   products: HomeProduct[];
   productGroups: HomeProductGroup[];
-  footerLinks: HomeFooterLinkGroup[];
-  footerSocialLinks: HomeFooterSocialLink[];
 };

@@ -1,0 +1,31 @@
+@use '../../shared/ui/foundation/formulas' as *;
+@use '../../shared/ui/foundation/tokens' as *;
+
+.preview-page-frame {
+  min-height: 100dvh;
+  background: $ui-surface-muted;
+}
+
+.preview-page-frame__inner {
+  @include ui-page-inset;
+
+  display: grid;
+  align-content: start;
+  gap: ui-fluid-compact(18);
+  padding: var(--preview-page-frame-top-space, #{ui-fluid-compact(148)})
+    var(--preview-page-frame-inline-space, #{ui-fluid-compact(20)})
+    var(--preview-page-frame-bottom-space, #{ui-fluid-compact(48)});
+
+  @include ui-regular {
+    gap: ui-fluid-regular(20);
+  }
+
+  @include ui-expanded {
+    gap: ui-fluid-expanded(24);
+  }
+}
+
+.preview-page-frame__intro,
+.preview-page-frame__content {
+  min-width: 0;
+}
