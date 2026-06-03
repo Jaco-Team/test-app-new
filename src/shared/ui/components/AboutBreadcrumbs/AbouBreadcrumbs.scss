@@ -1,0 +1,106 @@
+@use '../../../../shared/ui/foundation/tokens' as *;
+@use '../../../../shared/ui/foundation/fonts' as *;
+
+.DocsBreadcrumbs {
+  margin-top: $MyScale120 !important;
+  margin-left: $MyScale160 !important;
+  width: $MyScale840;
+
+  &:not(.profile) {
+    @media (max-width: 960px) {
+      display: none;
+    }
+  }
+
+  & > div {
+    width: 100%;
+    background-color: rgba(0, 0, 0, 0.07);
+    border-radius: $MyScale80 !important;
+    display: grid;
+    position: sticky;
+    top: $MyScale300 !important;
+
+    & > span {
+      margin-top: $MyScale80;
+      margin-left: $MyScale80;
+      margin-right: $MyScale80;
+      height: $MyScale40;
+      line-height: $MyScale40;
+      @include font30_700();
+      text-transform: uppercase;
+
+      @media (max-width: 800px) {
+        @include font35_700();
+      }
+    }
+    & > div {
+      margin-top: $MyScale80;
+      margin-left: $MyScale80;
+      margin-right: $MyScale80;
+      height: $MyScale40;
+      & > span {
+        @include font30_700();
+        text-transform: uppercase;
+
+        @media (max-width: 800px) {
+          @include font35_700();
+        }
+      }
+    }
+
+    & > ul {
+      margin-left: $MyScale60;
+      margin-right: $MyScale80;
+      margin-top: $MyScale20;
+      margin-bottom: $MyScale70;
+      min-height: $MyScale300;
+      padding-left: $MyScale45;
+
+      & > li.activeMarker {
+        color: $colorMain;
+      }
+
+      & > li {
+        min-height: $MyScale60;
+        line-height: $MyScale60;
+        @include font30_400();
+
+        & .count_promo_order {
+          width: $MyScale15 !important;
+          height: $MyScale15 !important;
+          border-radius: 100px;
+          background-color: #dd1a32;
+          //position: absolute;
+          //top: $MyScale2;
+          //right: $MyScale1;
+          margin-left: $MyScale15;
+          //border: $MyScale5 solid white;
+          //box-shadow: 0 0 10px rgba(0, 0, 0, 0.5); /* тень для точки */
+        }
+
+        @media (max-width: 800px) {
+          @include font35_400();
+        }
+        & > a {
+          @include font30_400();
+          text-decoration: none;
+          cursor: pointer;
+
+          display: flex;
+          flex-direction: row;
+          align-items: baseline;
+
+          @media (max-width: 800px) {
+            @include font35_400();
+          }
+        }
+        & > a.active {
+          color: $colorMain;
+        }
+        & > a:not(.active) {
+          color: $colorText;
+        }
+      }
+    }
+  }
+}

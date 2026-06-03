@@ -1,0 +1,1175 @@
+@charset "utf-8";
+
+$Roboto: var(--inter-font);
+$Ubuntu: 'Ubuntu';
+$colorMain: #cc0033;
+$colorText: rgba(0, 0, 0, 0.8);
+
+$MyScale1: 0.036101083032491vw;
+$MyScale2: 0.072202166064982vw;
+$MyScale3: 0.10830324909747vw;
+$MyScale4: 0.14440433212996vw;
+$MyScale5: 0.18050541516245vw;
+$MyScale5_17: 0.18663vw;
+$MyScale6: 0.21660649819495vw;
+$MyScale7: 0.25270758122744vw;
+$MyScale8: 0.28880866425993vw;
+$MyScale9: 0.32490974729242vw;
+$MyScale10: 0.36101083032491vw;
+$MyScale11: 0.3971119133574vw;
+$MyScale12: 0.43321299638989vw;
+$MyScale13: 0.46931407942238vw;
+$MyScale14: 0.5054vw;
+$MyScale15: 0.54151624548736vw;
+$MyScale16: 0.57761732851986vw;
+$MyScale17: 0.61371841155235vw;
+$MyScale18: 0.64981949458484vw;
+$MyScale20: 0.72202166064982vw;
+$MyScale21: 0.7581vw;
+$MyScale22: 0.7942238267148vw;
+$MyScale22_7: 0.81949458483755vw;
+$MyScale23: 0.83032490974729vw;
+$MyScale24: 0.86642599277978vw;
+$MyScale25: 0.90252707581227vw;
+$MyScale26: 0.93862815884477vw;
+$MyScale27: 0.97472924187726vw;
+$MyScale28: 1.0108303249097vw;
+$MyScale28_53: 1.029963898917vw;
+$MyScale29: 1.0469314079422vw;
+$MyScale30: 1.0830324909747vw;
+$MyScale30_19: 1.0898916967509vw;
+$MyScale32: 1.1552346570397vw;
+$MyScale33: 1.1913357400722vw;
+$MyScale34: 1.2274368231047vw;
+$MyScale34_49: 1.2451263537906vw;
+$MyScale34_88: 1.2592057761733vw;
+$MyScale35: 1.2635379061372vw;
+$MyScale36: 1.2996389891697vw;
+$MyScale37: 1.3357400722022vw;
+$MyScale38: 1.3718411552347vw;
+$MyScale38_02: 1.3725631768953vw;
+$MyScale38_49: 1.3895306859206vw;
+$MyScale39: 1.4079422382671vw;
+$MyScale40: 1.4440433212996vw;
+$MyScale40_8: 1.472924vw;
+$MyScale41: 1.4801444043321vw;
+$MyScale41_8: 1.5090252707581vw;
+$MyScale42: 1.5162454873646vw;
+$MyScale43: 1.5523465703971vw;
+$MyScale44: 1.5884476534296vw;
+$MyScale45: 1.6245487364621vw;
+$MyScale46: 1.6606498194946vw;
+$MyScale47: 1.6967509025271vw;
+$MyScale48: 1.7328519855596vw;
+$MyScale49: 1.76894vw;
+$MyScale50: 1.8050541516245vw;
+$MyScale50_67: 1.8292418772563vw;
+$MyScale51: 1.841155234657vw;
+$MyScale52: 1.8772563176895vw;
+$MyScale53: 1.913357400722vw;
+$MyScale54: 1.9494584837545vw;
+$MyScale55: 1.985559566787vw;
+$MyScale58: 2.0938628158845vw;
+$MyScale59: 2.129963898917vw;
+$MyScale60: 2.1660649819495vw;
+$MyScale63: 2.2743682310469vw;
+$MyScale64: 2.3104693140794vw;
+$MyScale66: 2.3826714801444vw;
+$MyScale67: 2.4187725631769vw;
+$MyScale68: 2.4548736462094vw;
+$MyScale66_6: 2.407vw;
+$MyScale70: 2.5270758122744vw;
+$MyScale72: 2.5992779783394vw;
+$MyScale74: 2.6714801444043vw;
+$MyScale75: 2.7075812274368vw;
+$MyScale76: 2.7436823104693vw;
+$MyScale77: 2.7797833935018vw;
+$MyScale78: 2.8158844765343vw;
+$MyScale79: 2.8519855595668vw;
+$MyScale80: 2.8880866425993vw;
+$MyScale81: 2.9241877256318vw;
+$MyScale82: 2.9602888086643vw;
+$MyScale83: 2.9963898916968vw;
+$MyScale84: 3.0324909747292vw;
+$MyScale88: 3.1768953068592vw;
+$MyScale90: 3.2490974729242vw;
+$MyScale91: 3.2851985559567vw;
+$MyScale95: 3.4296028880866vw;
+$MyScale96: 3.4657039711191vw;
+$MyScale99: 3.5740072202166vw;
+$MyScale100: 3.6101083032491vw;
+$MyScale105: 3.7906137184116vw;
+$MyScale108: 3.898916967509vw;
+$MyScale110: 3.971119133574vw;
+$MyScale112: 4.043321299639vw;
+$MyScale114: 4.115523465704vw;
+$MyScale118: 4.2599277978339vw;
+$MyScale120: 4.3321299638989vw;
+$MyScale123: 4.4405vw;
+$MyScale125: 4.5126353790614vw;
+$MyScale128: 4.6209386281588vw;
+$MyScale130: 4.693140794vw;
+$MyScale137: 4.945848375vw;
+$MyScale140: 5.05415vw;
+$MyScale144: 5.1985559566vw;
+$MyScale145: 5.2346570397112vw;
+$MyScale150: 5.4151624548736vw;
+$MyScale160: 5.7761732851986vw;
+$MyScale163: 5.884476vw;
+$MyScale164: 5.9205776173285vw;
+$MyScale170: 6.137184115vw;
+$MyScale176: 6.3537906137184vw;
+$MyScale180: 6.4982vw;
+$MyScale188: 6.7870036101083vw;
+$MyScale190: 6.8592057761733vw;
+$MyScale192: 6.9314079422383vw;
+$MyScale200: 7.2202166064982vw;
+$MyScale206_67: 7.4610108vw;
+$MyScale208: 7.5090252707581vw;
+$MyScale210: 7.5812274368231vw;
+$MyScale217: 7.8339350180505vw;
+$MyScale220: 7.942238267vw;
+$MyScale224: 8.086642599278vw;
+$MyScale240: 8.6642599277978vw;
+$MyScale256: 9.2418772563177vw;
+$MyScale260: 9.3862815884477vw;
+$MyScale270: 9.7472924187726vw;
+$MyScale280: 10.10830324vw;
+$MyScale290: 10.469314079422vw;
+$MyScale300: 10.830324909747vw;
+$MyScale310: 11.191335740072vw;
+$MyScale320: 11.552346570397vw;
+$MyScale324: 11.696750902527vw;
+$MyScale330: 11.913357vw;
+$MyScale340: 12.27436823vw;
+$MyScale360: 12.996389891697vw;
+$MyScale373_55: 13.485559566787vw;
+$MyScale380: 13.718411552347vw;
+$MyScale384: 13.862815884477vw;
+$MyScale390: 14.07942238vw;
+$MyScale394: 14.223826714801vw;
+$MyScale395: 14.259927797834vw;
+$MyScale398: 14.368231046931vw;
+$MyScale400: 14.440433212996vw;
+$MyScale420: 15.162454873646vw;
+$MyScale425: 15.342960288809vw;
+$MyScale440: 15.884476534vw;
+$MyScale455: 16.425992779783vw;
+$MyScale470: 16.967509025271vw;
+$MyScale475: 17.14801444vw;
+$MyScale480: 17.328519855596vw;
+$MyScale500: 18.050541516245vw;
+$MyScale505: 18.231046931408vw;
+$MyScale510: 18.4115523vw;
+$MyScale536: 19.350180505415vw;
+$MyScale540: 19.494584837545vw;
+$MyScale560: 20.216606498195vw;
+$MyScale580: 20.938628158845vw;
+$MyScale600: 21.660649819495vw;
+$MyScale620: 22.382671480144vw;
+$MyScale635: 22.924187725632vw;
+$MyScale640: 23.104693140794vw;
+$MyScale676: 24.404332129964vw;
+$MyScale680: 24.548736462094vw;
+$MyScale700: 25.270758122744vw;
+$MyScale720: 25.99277978vw;
+$MyScale760: 27.436823104vw;
+$MyScale780: 28.158844765vw;
+$MyScale800: 28.880866425993vw;
+$MyScale805: 29.061371841155vw;
+$MyScale834: 30.108303249097vw;
+$MyScale835: 30.14440433213vw;
+$MyScale840: 30.324909747292vw;
+$MyScale860: 31.046931407942vw;
+$MyScale895: 32.310469314079vw;
+$MyScale900: 32.490974729242vw;
+$MyScale920: 33.212996389892vw;
+$MyScale925: 33.393501805054vw;
+$MyScale960: 34.65703971vw;
+$MyScale980: 35.379061371841vw;
+$MyScale995: 35.920577617329vw;
+$MyScale1000: 36.101083032491vw;
+$MyScale1016: 36.678700361011vw;
+$MyScale1080: 38.98916967509vw;
+$MyScale1125: 40.613718411552vw;
+$MyScale1200: 43.321299638989vw;
+$MyScale1206: 43.537906137184vw;
+$MyScale1235: 44.584837545126vw;
+$MyScale1237: 44.657039711191vw;
+$MyScale1240: 44.765342960289vw;
+$MyScale1320: 47.653429602888vw;
+$MyScale1480: 53.429602888087vw;
+$MyScale1500: 54.151624548736vw;
+$MyScale1542: 55.667870036vw;
+$MyScale1560: 56.31768953vw;
+$MyScale1650: 59.56678700361vw;
+$MyScale1662: 60vw;
+$MyScale1684: 60.794223826715vw;
+$MyScale1890: 68.231046931408vw;
+$MyScale1960: 70.758122743vw;
+$MyScale2260: 81.58844765343vw;
+$MyScale2520: 90.974729241877vw;
+$MyScale2525: 91.15523465704vw;
+
+//$MyMaxWidth: 1170px;
+$MyMaxWidth: 800px;
+
+$MyScale1_mobile: 0.085470085470085vw;
+$MyScale2_mobile: 0.17094017094017vw;
+$MyScale3_mobile: 0.25641025641026vw;
+$MyScale4_mobile: 0.34188034188034vw;
+$MyScale5_mobile: 0.42735042735043vw;
+$MyScale6_mobile: 0.51282051282051vw;
+$MyScale8_mobile: 0.68376068376068vw;
+$MyScale10_mobile: 0.85470085470085vw;
+$MyScale12_mobile: 1.025641025641vw;
+$MyScale13_mobile: 1.1111111111111vw;
+$MyScale14_mobile: 1.1966vw;
+$MyScale15_mobile: 1.2820512820513vw;
+$MyScale16_mobile: 1.3675213675214vw;
+$MyScale17_mobile: 1.4529914529915vw;
+$MyScale18_mobile: 1.5384615384615vw;
+$MyScale20_mobile: 1.7094017094017vw;
+$MyScale21_mobile: 1.7948717948718vw;
+$MyScale22_mobile: 1.8803418803419vw;
+$MyScale23_mobile: 1.965811965812vw;
+$MyScale24_mobile: 2.0512820512821vw;
+$MyScale25_mobile: 2.1367521367521vw;
+$MyScale26_mobile: 2.2222222222222vw;
+$MyScale27_mobile: 2.3076923076923vw;
+$MyScale30_mobile: 2.5641025641026vw;
+$MyScale31_35_mobile: 2.6794871794872vw;
+$MyScale32_mobile: 2.7350427350427vw;
+$MyScale33_5_mobile: 2.8632478632479vw;
+$MyScale34_mobile: 2.9059829059829vw;
+$MyScale35_mobile: 2.991452991453vw;
+$MyScale36_mobile: 3.0769230769231vw;
+$MyScale37_mobile: 3.1623931623932vw;
+$MyScale38_mobile: 3.2478632478632vw;
+$MyScale39_mobile: 3.3333333333333vw;
+$MyScale40_mobile: 3.4188034188034vw;
+$MyScale42_24_mobile: 3.6102564102564vw;
+$MyScale44_mobile: 3.7606837606838vw;
+$MyScale45_mobile: 3.8461538461538vw;
+$MyScale48_mobile: 4.1025641025641vw;
+$MyScale50_mobile: 4.2735042735043vw;
+$MyScale51_mobile: 4.3589743589744vw;
+$MyScale52_5_mobile: 4.4871794871795vw;
+$MyScale55_mobile: 4.7008547008547vw;
+$MyScale57_mobile: 4.8717948717949vw;
+$MyScale57_3_mobile: 4.8974358974359vw;
+$MyScale60_mobile: 5.1282051282051vw;
+$MyScale62_mobile: 5.2991452991453vw;
+$MyScale63_mobile: 5.3846153846154vw;
+$MyScale65_mobile: 5.5555555555556vw;
+$MyScale70_mobile: 5.982905982906vw;
+$MyScale71_5_mobile: 6.1111111111111vw;
+$MyScale75_mobile: 6.4102564102564vw;
+$MyScale77_mobile: 6.5811965811966vw;
+$MyScale80_mobile: 6.8376068376068vw;
+$MyScale83_mobile: 7.0940170940171vw;
+$MyScale85_mobile: 7.2649572649573vw;
+$MyScale86_mobile: 7.3504273504274vw;
+$MyScale90_mobile: 7.6923076923077vw;
+$MyScale94_mobile: 8.034188034188vw;
+$MyScale95_mobile: 8.1196581196581vw;
+$MyScale96_mobile: 8.2051282051282vw;
+$MyScale98_mobile: 8.3760683760684vw;
+$MyScale100_mobile: 8.5470085470085vw;
+$MyScale103_mobile: 8.8034188034188vw;
+$MyScale105_mobile: 8.974358974359vw;
+$MyScale106_mobile: 9.0598290598291vw;
+$MyScale107_mobile: 9.1452991452991vw;
+$MyScale110_mobile: 9.4017094017094vw;
+$MyScale112_mobile: 9.5726495726496vw;
+$MyScale117_mobile: 10vw;
+$MyScale120_mobile: 10.25641025641vw;
+$MyScale122_mobile: 10.42735042735vw;
+$MyScale125_mobile: 10.683760683761vw;
+$MyScale126_mobile: 10.769230769231vw;
+$MyScale130_mobile: 11.111111111111vw;
+$MyScale132_mobile: 11.282051282051vw;
+$MyScale133_mobile: 11.367521367521vw;
+$MyScale140_mobile: 11.965811965812vw;
+$MyScale150_mobile: 12.820512820513vw;
+$MyScale154_mobile: 13.162393162393vw;
+$MyScale158_mobile: 13.504273504274vw;
+$MyScale160_mobile: 13.675213675214vw;
+$MyScale163_mobile: 13.931623931624vw;
+$MyScale164_4_mobile: 14.051282051282vw;
+$MyScale170_mobile: 14.529914529915vw;
+$MyScale172_mobile: 14.700854700855vw;
+$MyScale178_mobile: 15.213675213675vw;
+$MyScale180_mobile: 15.384615384615vw;
+$MyScale190_mobile: 16.2393162393vw;
+$MyScale191_mobile: 16.324786324786vw;
+$MyScale200_mobile: 17.094017094017vw;
+$MyScale204_4_mobile: 17.470085470085vw;
+$MyScale205_mobile: 17.521367521368vw;
+$MyScale206_mobile: 17.606837606838vw;
+$MyScale207_mobile: 17.692307692308vw;
+$MyScale208_mobile: 17.777777777778vw;
+$MyScale210_mobile: 17.948717948718vw;
+$MyScale212_mobile: 18.119658119658vw;
+$MyScale213_mobile: 18.205128205128vw;
+$MyScale214_mobile: 18.290598290598vw;
+$MyScale215_mobile: 18.376068376068vw;
+$MyScale216_mobile: 18.461538461538vw;
+$MyScale218_mobile: 18.632478632479vw;
+$MyScale220_mobile: 18.803418803419vw;
+$MyScale224_mobile: 19.145299145299vw;
+$MyScale225_mobile: 19.230769230769vw;
+$MyScale230_mobile: 19.65811965812vw;
+$MyScale232_mobile: 19.82905982906vw;
+$MyScale240_mobile: 20.512820512821vw;
+$MyScale244_mobile: 20.854700854701vw;
+$MyScale250_mobile: 21.367521367521vw;
+$MyScale260_mobile: 22.222222222222vw;
+$MyScale262_mobile: 22.393162393162vw;
+$MyScale264_mobile: 22.564102564103vw;
+$MyScale270_mobile: 23.076923076923vw;
+$MyScale272_mobile: 23.247863247863vw;
+$MyScale280_mobile: 23.931623931624vw;
+$MyScale282_mobile: 24.102564102564vw;
+$MyScale284_mobile: 24.273504273504vw;
+$MyScale290_mobile: 24.786324786325vw;
+$MyScale300_mobile: 25.641025641026vw;
+$MyScale320_mobile: 27.350427350427vw;
+$MyScale329_mobile: 28.119658119658vw;
+$MyScale334_mobile: 28.547008547009vw;
+$MyScale340_mobile: 29.059829059829vw;
+$MyScale346_mobile: 29.57264957265vw;
+$MyScale350_mobile: 29.91452991453vw;
+$MyScale360_mobile: 30.769230769231vw;
+$MyScale364_mobile: 31.111111111111vw;
+$MyScale370_mobile: 31.623931623932vw;
+$MyScale375_mobile: 32.051282051282vw;
+$MyScale380_mobile: 32.478632478632vw;
+$MyScale390_mobile: 33.333333333333vw;
+$MyScale394_mobile: 33.675213675214vw;
+$MyScale400_mobile: 34.188034188034vw;
+$MyScale410_mobile: 35.042735042735vw;
+$MyScale414_mobile: 35.384615384615vw;
+$MyScale420_mobile: 35.897435897436vw;
+$MyScale434_mobile: 37.094017094017vw;
+$MyScale440_mobile: 37.606837606838vw;
+$MyScale450_mobile: 38.461538461538vw;
+$MyScale455_mobile: 38.888888888889vw;
+$MyScale460_mobile: 39.316239316239vw;
+$MyScale470_mobile: 40.17094017094vw;
+$MyScale480_mobile: 41.025641025641vw;
+$MyScale490_mobile: 41.880341880342vw;
+$MyScale494_mobile: 42.222222222222vw;
+$MyScale496_mobile: 42.393162393162vw;
+$MyScale499_mobile: 42.649572649573vw;
+$MyScale500_mobile: 42.735042735043vw;
+$MyScale505_mobile: 43.162393162393vw;
+$MyScale506_mobile: 43.247863247863vw;
+$MyScale520_mobile: 44.444444444444vw;
+$MyScale525_mobile: 44.871794871795vw;
+$MyScale530_mobile: 45.299145299145vw;
+$MyScale532_mobile: 45.470085470085vw;
+$MyScale540_mobile: 46.153846153846vw;
+$MyScale550_mobile: 47.008547008547vw;
+$MyScale551_mobile: 47.094017094017vw;
+$MyScale556_mobile: 47.521367521368vw;
+$MyScale560_mobile: 47.863247863248vw;
+$MyScale594_mobile: 50.769230769231vw;
+$MyScale595_mobile: 50.854700854701vw;
+$MyScale600_mobile: 51.282051282051vw;
+$MyScale620_mobile: 52.991452991453vw;
+$MyScale629_mobile: 53.760683760684vw;
+$MyScale640_mobile: 54.700854700855vw;
+$MyScale645_mobile: 55.128205128205vw;
+$MyScale655_mobile: 54.700854700855vw;
+$MyScale650_mobile: 55.555555555556vw;
+$MyScale665_mobile: 56.837606837607vw;
+$MyScale668_mobile: 57.094017094017vw;
+$MyScale670_mobile: 57.264957264957vw;
+$MyScale675_mobile: 57.692307692308vw;
+$MyScale680_mobile: 58.119658119658vw;
+$MyScale690_mobile: 58.974358974359vw;
+$MyScale700_mobile: 59.82905982906vw;
+$MyScale740_mobile: 63.247863247863vw;
+$MyScale760_mobile: 64.957264957265vw;
+$MyScale770_mobile: 65.811965811966vw;
+$MyScale780_mobile: 66.666666666667vw;
+$MyScale792_mobile: 67.692307692308vw;
+$MyScale794_mobile: 67.863247863248vw;
+$MyScale800_mobile: 68.376068376068vw;
+$MyScale820_mobile: 70.08547008547vw;
+$MyScale825_mobile: 70.512820512821vw;
+$MyScale830_mobile: 70.940170940171vw;
+$MyScale840_mobile: 71.794871794872vw;
+$MyScale850_mobile: 72.649572649573vw;
+$MyScale860_mobile: 73.504273504274vw;
+$MyScale890_mobile: 76.068376068376vw;
+$MyScale910_mobile: 77.777777777778vw;
+$MyScale918_mobile: 78.461538461538vw;
+$MyScale919_6_mobile: 78.598290598291vw;
+$MyScale920_mobile: 78.632478632479vw;
+$MyScale934_mobile: 79.82905982906vw;
+$MyScale940_mobile: 80.34188034188vw;
+$MyScale960_mobile: 82.051282051282vw;
+$MyScale970_mobile: 82.905982905983vw;
+$MyScale990_mobile: 84.615384615385vw;
+$MyScale1000_mobile: 85.470085470085vw;
+$MyScale1004_mobile: 85.811965811966vw;
+$MyScale1010_mobile: 86.324786324786vw;
+$MyScale1016_mobile: 86.837606837607vw;
+$MyScale1020_mobile: 87.179487179487vw;
+$MyScale1030_mobile: 88.034188034188vw;
+$MyScale1065_mobile: 91.025641025641vw;
+$MyScale1070_mobile: 91.45299145299vw;
+$MyScale1080_mobile: 92.307692307692vw;
+$MyScale1090_mobile: 93.162393162393vw;
+$MyScale1120_mobile: 95.726495726496vw;
+$MyScale1170_mobile: 100vw;
+$MyScale1180_mobile: 100.8547008547vw;
+$MyScale1260_mobile: 107.69230769231vw;
+$MyScale1300_mobile: 111.11111111111vw;
+$MyScale1320_mobile: 112.82051282051vw;
+$MyScale1871_mobile: 159.91452991453vw;
+
+$FontMinMobile: 12px;
+
+@mixin fonsNew($size: 1rem, $family: $Roboto) {
+  font-size: $size !important;
+  font-family: $family !important;
+  color: $colorText;
+
+  @media (max-width: $MyMaxWidth) {
+    font-size: clamp($FontMinMobile, $size, 9999px) !important;
+  }
+}
+
+@mixin fontH1() {
+  font-style: normal;
+  font-weight: 700;
+
+  @media (max-width: 800px) {
+    @include fonsNew(1.7rem, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 1000px) {
+    @include fonsNew(5.2vw, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew(2.6vw, var(--inter-font));
+  }
+}
+
+@mixin fontH2_custom() {
+  font-style: normal;
+  font-weight: 700;
+
+  @media (max-width: 800px) {
+    @include fonsNew(1.2rem, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 1000px) {
+    @include fonsNew(2.8vw, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew(2vw, var(--inter-font));
+  }
+}
+
+@mixin font15_300() {
+  font-style: normal;
+  font-weight: 300;
+
+  // @include fonsNew(0.64981949458484vw, var(--inter-font));
+
+  @media (max-width: $MyMaxWidth) {
+    @include fonsNew($MyScale15_mobile, var(--inter-font));
+  }
+}
+
+@mixin font21_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale21_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale29, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale25, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale21, var(--inter-font));
+  }
+}
+
+@mixin font18_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale18_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale26, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale22, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale18, var(--inter-font));
+  }
+}
+
+@mixin font20_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale20_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale28, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale24, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale20, var(--inter-font));
+  }
+}
+
+@mixin font22_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale22_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale30, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale26, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale22, var(--inter-font));
+  }
+}
+
+@mixin font22_400_() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale22_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale30, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale26, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale22, var(--inter-font));
+  }
+}
+
+@mixin font25_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale25_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale33, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale29, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale25, var(--inter-font));
+  }
+}
+
+@mixin font26_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale26_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale34, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale30, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale26, var(--inter-font));
+  }
+}
+
+@mixin font30_700() {
+  font-style: normal;
+  font-weight: 700;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale30_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale38, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale34, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale30, var(--inter-font));
+  }
+}
+
+@mixin font30_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale30_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale38, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale34, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale30, var(--inter-font));
+  }
+}
+
+@mixin font32_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale32_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale40, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale36, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale32, var(--inter-font));
+  }
+}
+
+@mixin font35_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale35_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale43, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale39, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale35, var(--inter-font));
+  }
+}
+
+@mixin font35_700() {
+  font-style: normal;
+  font-weight: 700;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale35_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale43, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale39, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale35, var(--inter-font));
+  }
+}
+
+@mixin font44_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale44_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale52, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale48, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale44, var(--inter-font));
+  }
+}
+
+@mixin font30_500() {
+  font-style: normal;
+  font-weight: 500;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale30_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale38, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale34, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale30, var(--inter-font));
+  }
+}
+
+@mixin font44_500() {
+  font-style: normal;
+  font-weight: 500;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale44_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale52, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale48, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale44, var(--inter-font));
+  }
+}
+
+@mixin font50_500() {
+  font-style: normal;
+  font-weight: 500;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale50_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale58, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale54, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale50, var(--inter-font));
+  }
+}
+
+@mixin font50_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale50_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale58, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale54, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale50, var(--inter-font));
+  }
+}
+
+@mixin font50_300() {
+  font-style: normal;
+  font-weight: 300;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale50_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale58, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale54, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale50, var(--inter-font));
+  }
+}
+
+@mixin font40_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale40_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale48, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale44, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale40, var(--inter-font));
+  }
+}
+
+@mixin font40_500() {
+  font-style: normal;
+  font-weight: 500;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale40_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale48, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale44, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale40, var(--inter-font));
+  }
+}
+
+@mixin font55_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale55_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale63, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale59, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale55, var(--inter-font));
+  }
+}
+
+@mixin font60_300() {
+  font-style: normal;
+  font-weight: 300;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale60_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale68, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale64, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale60, var(--inter-font));
+  }
+}
+
+@mixin font60_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale60_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale68, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale64, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale60, var(--inter-font));
+  }
+}
+
+@mixin font60_500() {
+  font-style: normal;
+  font-weight: 500;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale60_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale68, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale64, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale60, var(--inter-font));
+  }
+}
+
+@mixin font60_600() {
+  font-style: normal;
+  font-weight: 600;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale60_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale68, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale64, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale60, var(--inter-font));
+  }
+}
+
+@mixin font70_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale70_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale78, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale74, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale70, var(--inter-font));
+  }
+}
+
+@mixin font70_500() {
+  font-style: normal;
+  font-weight: 500;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale70_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 900px) {
+    @include fonsNew($MyScale78, var(--inter-font));
+  }
+
+  @media (min-width: 901px) and (max-width: 1000px) {
+    @include fonsNew($MyScale74, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale70, var(--inter-font));
+  }
+}
+
+@mixin font75_300() {
+  font-style: normal;
+  font-weight: 300;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale75_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 1000px) {
+    @include fonsNew($MyScale83, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale75, var(--inter-font));
+  }
+}
+
+@mixin font75_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale75_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 1000px) {
+    @include fonsNew($MyScale83, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale75, var(--inter-font));
+  }
+}
+
+@mixin font75_700() {
+  font-style: normal;
+  font-weight: 700;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale75_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 1000px) {
+    @include fonsNew($MyScale83, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale75, var(--inter-font));
+  }
+}
+
+@mixin font100_300() {
+  font-style: normal;
+  font-weight: 300;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale100_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 1000px) {
+    @include fonsNew($MyScale108, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale100, var(--inter-font));
+  }
+}
+
+@mixin font110_400() {
+  font-style: normal;
+  font-weight: 400;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale110_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 1000px) {
+    @include fonsNew($MyScale118, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale110, var(--inter-font));
+  }
+}
+
+@mixin font120_700() {
+  font-style: normal;
+  font-weight: 700;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale120_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 1000px) {
+    @include fonsNew($MyScale128, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale120, var(--inter-font));
+  }
+}
+
+@mixin font120_500() {
+  font-style: normal;
+  font-weight: 500;
+
+  @media (max-width: 800px) {
+    @include fonsNew($MyScale120_mobile, var(--inter-font));
+  }
+
+  @media (min-width: 801px) and (max-width: 1000px) {
+    @include fonsNew($MyScale128, var(--inter-font));
+  }
+
+  @media (min-width: 1001px) {
+    @include fonsNew($MyScale120, var(--inter-font));
+  }
+}
