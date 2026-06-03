@@ -2,14 +2,14 @@
 @use '../../foundation/tokens' as *;
 .ui-scroll-top {
   position: fixed;
-  right: ui-fluid-compact(24);
+  left: 80dvw;
   bottom: ui-fluid-compact(24);
   z-index: 1200;
   display: inline-flex;
   align-items: center;
   justify-content: center;
-  width: ui-fluid-compact(84);
-  height: ui-fluid-compact(84);
+  width: ui-fluid-compact(75);
+  height: ui-fluid-compact(75);
   border-radius: 50%;
   background: $ui-brand;
   opacity: 0;
@@ -28,13 +28,15 @@
     transform: translateY(0);
   }
   @include ui-regular {
-    right: ui-fluid-regular(32);
+    // right: ui-fluid-regular(32);
+    left: 90dvw;
     bottom: ui-fluid-regular(32);
     width: ui-fluid-regular(84);
     height: ui-fluid-regular(84);
   }
   @include ui-expanded {
-    right: ui-fluid-expanded(48);
+    // right: ui-fluid-expanded(48);
+    left: 90dvw;
     bottom: ui-fluid-expanded(48);
     width: ui-fluid-expanded(84);
     height: ui-fluid-expanded(84);

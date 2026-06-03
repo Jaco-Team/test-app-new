@@ -1,7 +1,7 @@
 'use client';
 
 import { useState } from 'react';
-import { useCompactLayout } from '@src/shared/lib/viewport';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   Badge,
   Button,
@@ -14,6 +14,7 @@ import {
   resolveProductImageSrcSet,
   resolveProductImageUrl,
 } from '@src/shared/lib/mediaUrls';
+import { BREAKPOINTS } from '@src/shared/ui/foundation/breakpoints';
 import type { HomeProduct } from '../../model/types';
 import { cn } from '@src/shared/ui/foundation/classNames';
 import './ProductDetailsModal.scss';
@@ -304,7 +305,9 @@ export function ProductDetailsModal({
   const [mediaMode, setMediaMode] = useState<'image' | 'value' | 'set'>(
     'image'
   );
-  const isCompact = useCompactLayout();
+  const isCompact = useMediaQuery(`(max-width: ${BREAKPOINTS.compactMax}px)`, {
+    noSsr: true,
+  });
 
   if (!product) {
     return null;

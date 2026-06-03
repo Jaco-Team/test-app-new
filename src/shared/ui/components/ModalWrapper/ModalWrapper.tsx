@@ -7,6 +7,7 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import type { DialogProps } from '@mui/material/Dialog';
 import type { Theme } from '@mui/material/styles';
+import { BREAKPOINTS } from '../../foundation/breakpoints';
 import { useBodyScrollLock } from '@/src/shared/lib/overlay';
 import { cn } from '../../foundation/classNames';
 import { IconClose } from '../../icons';
@@ -51,7 +52,19 @@ export function ModalWrapper({
       noSsr: true,
     }
   );
-  const sheet = variant !== 'dialog' && compact;
+  const regular = useMediaQuery(
+    '(min-width: ' +
+      BREAKPOINTS.regularMin +
+      'px) and (max-width: ' +
+      BREAKPOINTS.regularMax +
+      'px)',
+    {
+      noSsr: true,
+    }
+  );
+  const responsive = variant === 'responsive';
+  const sheet = responsive && compact;
+  const dialogMode = regular ? 'regular-dialog' : 'expanded-dialog';
 
   useBodyScrollLock(open);
 
@@ -69,6 +82,8 @@ export function ModalWrapper({
     'ui-modal-wrapper',
     'ui-modal-wrapper--' + variant,
     sheet && 'ui-modal-wrapper--sheet',
+    !sheet && responsive && 'ui-modal-wrapper--responsive-dialog',
+    !sheet && responsive && 'ui-modal-wrapper--' + dialogMode,
     className
   );
   const paperClass = cn('ui-modal-wrapper__paper', paperClassName);
@@ -118,6 +133,7 @@ export function ModalWrapper({
         disableBackdropTransition={false}
         transitionDuration={{ enter: 260, exit: 200 }}
         ModalProps={{
+          disableScrollLock: true,
           keepMounted: false,
         }}
         slotProps={{
@@ -146,7 +162,7 @@ export function ModalWrapper({
       onClose={handleDialogClose}
       className={rootClassName}
       maxWidth="sm"
-      fullWidth={variant !== 'dialog'}
+      fullWidth={responsive}
       aria-labelledby={titleId}
       disableScrollLock
       TransitionComponent={Fade}

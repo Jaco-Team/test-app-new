@@ -35,6 +35,11 @@
     width: min(80vw, calc(100vw - 40px));
   }
 
+  &--regular-dialog .MuiDialog-paper.ui-modal-wrapper__paper {
+    width: min(94vw, calc(100vw - 32px));
+    max-height: calc(100dvh - 32px);
+  }
+
   &__title.MuiDialogTitle-root {
     margin: 0;
     padding: 0;
@@ -154,19 +159,40 @@
     }
 
     &--responsive .MuiDialog-paper.ui-modal-wrapper__paper {
-      width: min(80vw, calc(100vw - 56px));
+      width: min(94vw, calc(100vw - 32px));
+    }
+
+    &--regular-dialog .MuiDialog-paper.ui-modal-wrapper__paper {
+      width: min(94vw, calc(100vw - 32px));
+      max-height: calc(100dvh - 32px);
     }
 
     &__close {
       top: ui-fluid-regular(14);
       right: ui-fluid-regular(14);
-      width: ui-fluid-regular(38);
-      height: ui-fluid-regular(38);
+      width: ui-fluid-regular(24);
+      height: ui-fluid-regular(24);
+    }
+
+    &--regular-dialog &__close {
+      position: absolute;
+      top: ui-fluid-regular(16);
+      right: ui-fluid-regular(16);
+      width: max(44px, ui-fluid-regular(44));
+      height: max(44px, ui-fluid-regular(44));
+      background: $ui-surface-grey;
+      box-shadow: 0 ui-fluid-regular(4) ui-fluid-regular(12) $ui-neutral-active;
     }
 
     &__close--outside {
       left: calc(-1 * ui-fluid-regular(52));
       right: auto;
+    }
+
+    &--regular-dialog &__close--outside {
+      left: auto;
+      right: ui-fluid-regular(18);
+      top: ui-fluid-regular(16);
     }
   }
 

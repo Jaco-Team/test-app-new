@@ -144,7 +144,16 @@
     white-space: nowrap;
   }
 
-  &__compact-menu {
+  &__compact-drawer {
+    z-index: $ui-z-header;
+  }
+
+  &__compact-drawer-backdrop.MuiBackdrop-root {
+    background: linear-gradient(transparent 30%, rgba(0, 0, 0, 0.5) 70%);
+    mix-blend-mode: multiply;
+  }
+
+  &__compact-menu.MuiDrawer-paper {
     position: fixed;
     top: ui-fluid-compact(148);
     right: 0;
@@ -159,19 +168,7 @@
     border-top: ui-fluid-compact(2) solid $ui-neutral-muted;
     border-radius: 0 0 ui-fluid-compact(58) ui-fluid-compact(58);
     background: $ui-surface;
-    box-shadow: 0 ui-fluid-compact(18) ui-fluid-compact(34) $ui-neutral-active;
-    transform: translateY(calc(-100% - ui-fluid-compact(148)));
-    opacity: 0;
-    pointer-events: none;
-    transition:
-      transform 180ms ease,
-      opacity 180ms ease;
-  }
-
-  &__compact-menu--open {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
+    box-shadow: none;
   }
 
   &__compact-menu-nav {
@@ -241,14 +238,14 @@
 
   @include ui-regular {
     &__bar {
-      height: ui-fluid-regular(148);
-      padding: 0 ui-fluid-regular(60);
+      height: ui-fluid-regular(80);
+      padding: 0 ui-fluid-regular(20);
       gap: ui-fluid-regular(18);
     }
 
     &__logo {
-      width: ui-fluid-regular(372);
-      height: ui-fluid-regular(90);
+      width: ui-fluid-regular(200);
+      // height: ui-fluid-regular(90);
     }
 
     &__icon-button,
@@ -257,11 +254,10 @@
       height: ui-fluid-regular(60);
     }
 
-    &__compact-menu {
+    &__compact-menu.MuiDrawer-paper {
       top: ui-fluid-regular(148);
       max-height: calc(100dvh - ui-fluid-regular(148));
       border-radius: 0 0 ui-fluid-regular(58) ui-fluid-regular(58);
-      transform: translateY(calc(-100% - ui-fluid-regular(148)));
     }
 
     &__compact-menu-grip {
@@ -269,10 +265,6 @@
       height: ui-fluid-regular(10);
       margin-bottom: ui-fluid-regular(28);
       border-radius: ui-fluid-regular(10);
-    }
-
-    &__compact-menu--open {
-      transform: translateY(0);
     }
 
     &__compact-menu-nav {

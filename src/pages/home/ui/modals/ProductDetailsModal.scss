@@ -8,14 +8,19 @@
   }
 
   &__content.MuiDialogContent-root {
+    max-height: inherit;
     padding: 0;
     border-radius: ui-fluid-compact(24);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+    -webkit-overflow-scrolling: touch;
   }
 
   &__layout {
     display: grid;
     gap: ui-fluid-compact(24);
-    padding: ui-fluid-compact(54) ui-fluid-compact(28) ui-fluid-compact(32);
+    padding: ui-fluid-compact(12) ui-fluid-compact(28) ui-fluid-compact(32);
   }
 
   &__media {
@@ -333,9 +338,10 @@
   &__heading h2 {
     margin: 0;
     font-family: $ui-font-family;
-    font-size: ui-fluid-compact(34);
+    font-size: ui-fluid-compact(38);
     font-weight: 600;
     line-height: 1.12;
+    text-align: center;
     letter-spacing: 0;
   }
 
@@ -345,8 +351,9 @@
     margin: ui-fluid-compact(8) 0 0;
     color: $ui-text-muted;
     font-family: $ui-font-family;
-    font-size: ui-fluid-compact(22);
+    font-size: max(12px, ui-fluid-compact(22));
     line-height: 1.35;
+    text-align: center;
   }
 
   &__section h3 {
@@ -359,6 +366,7 @@
   &__info {
     display: flex;
     align-items: center;
+    justify-content: center;
     gap: ui-fluid-compact(14);
   }
 
@@ -468,26 +476,79 @@
   &__action {
     width: 100%;
     max-width: 100%;
+    padding: ui-fluid-compact(24);
     align-self: stretch;
+    @include ui-compact {
+      align-self: center;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      position: sticky;
+      background-color: $ui-surface;
+      box-shadow: 0 20px ui-fluid-compact(32) $ui-surface;
+      bottom: 0;
+    }
   }
 
   // Legacy CartCtaButton: filled sheet CTA (compact/regular), outlined in desktop modal.
-  &__action .ui-button.ui-button {
-    width: 100%;
-    min-width: 0;
+  &__action .ui-button {
+    // width: 100%;
+    min-width: ui-fluid-compact(300);
     border-radius: ui-fluid-compact(60);
     background: $ui-control-bg;
     border-color: transparent;
     color: rgba(0, 0, 0, 0.6);
-    min-height: ui-fluid-compact(118);
   }
 
   &__action .ui-quantity-control {
-    width: 100%;
+    position: sticky;
+    bottom: 0;
     min-height: ui-fluid-compact(48);
+    border-color: $ui-border-table;
   }
 
   @include ui-regular {
+    &__paper.ui-modal-wrapper__paper {
+      width: min(94vw, calc(100vw - 32px));
+      max-height: calc(100dvh - 32px);
+    }
+
+    &__content.MuiDialogContent-root {
+      display: flex;
+      max-height: inherit;
+      border-radius: ui-fluid-regular(28);
+      overflow-x: hidden;
+      overflow-y: auto;
+    }
+
+    &__layout {
+      flex: 1 1 auto;
+      grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
+      align-items: stretch;
+      gap: ui-fluid-regular(28);
+      min-height: 0;
+      height: min(ui-fluid-regular(640), calc(100dvh - 32px));
+      padding: ui-fluid-regular(42) ui-fluid-regular(38);
+    }
+
+    &__media {
+      min-height: 0;
+      height: 100%;
+    }
+
+    &__media img {
+      width: min(100%, ui-fluid-regular(560));
+    }
+
+    &__body {
+      align-self: stretch;
+      min-height: 0;
+      min-width: 0;
+      gap: ui-fluid-regular(20);
+      margin-block: 0;
+      overflow-y: auto;
+    }
+
     &__set-head {
       padding: ui-fluid-regular(32) ui-fluid-regular(28) ui-fluid-regular(16);
     }
@@ -607,13 +668,17 @@
     }
 
     &__heading h2 {
-      font-size: ui-fluid-regular(34);
+      font-size: max(30px, ui-fluid-regular(34));
+      font-weight: 400;
+      color: rgba(0, 0, 0, 0.8);
     }
 
     &__heading p,
     &__description,
     &__section p {
-      font-size: ui-fluid-regular(20);
+      font-size: max(18px, ui-fluid-regular(22));
+      line-height: 1.35;
+      color: rgba(0, 0, 0, 0.6);
     }
 
     &__section h3 {
@@ -625,9 +690,9 @@
     }
 
     &__info-button {
-      width: ui-fluid-regular(30);
-      height: ui-fluid-regular(30);
-      font-size: ui-fluid-regular(15);
+      width: max(36px, ui-fluid-regular(38));
+      height: max(36px, ui-fluid-regular(38));
+      font-size: max(17px, ui-fluid-regular(18));
     }
 
     &__info-panel {
@@ -658,7 +723,8 @@
 
     &__facts {
       gap: ui-fluid-regular(10);
-      font-size: ui-fluid-regular(15);
+      font-size: max(16px, ui-fluid-regular(18));
+      color: rgba(0, 0, 0, 0.8);
     }
 
     &__facts span:not(:first-child)::before,
@@ -668,7 +734,7 @@
 
     &__action .ui-button.ui-button {
       border-radius: ui-fluid-regular(46);
-      min-height: ui-fluid-regular(91);
+      min-height: max(72px, ui-fluid-regular(86));
     }
 
     &__action .ui-quantity-control {
@@ -959,25 +1025,31 @@
 
 @include ui-regular {
   .home-product-modal__layout--info {
-    grid-template-columns: minmax(300px, 58%) minmax(0, 1fr);
+    grid-template-columns: minmax(0, 1fr) minmax(0, 1fr);
     align-items: stretch;
     gap: ui-fluid-regular(28);
+    min-height: 0;
+    height: min(ui-fluid-regular(640), calc(100dvh - 32px));
     padding: ui-fluid-regular(34);
   }
 
   .home-product-modal__layout--info .home-product-modal__media {
     display: grid;
     align-self: stretch;
-    min-height: min(78vh, 680px);
+    min-height: 0;
+    height: 100%;
     overflow: hidden;
     background: $ui-surface;
   }
 
   .home-product-modal__layout--info
-    .home-product-modal__value.home-product-modal__value--inline {
+    .home-product-modal__value.home-product-modal__value--inline,
+  .home-product-modal__layout--info
+    .home-product-modal__set-list.home-product-modal__set-list--inline {
     display: grid;
     width: 100%;
-    height: min(78vh, 680px);
+    height: 100%;
+    max-height: 100%;
     min-height: 0;
     border-radius: 8px;
   }
@@ -995,7 +1067,9 @@
 
   .home-product-modal__layout--info .home-product-modal__body {
     align-self: stretch;
-    align-content: center;
+    justify-content: flex-start;
+    min-height: 0;
+    overflow-y: auto;
     padding: ui-fluid-regular(8) 0;
   }
 

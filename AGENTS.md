@@ -42,6 +42,8 @@
 
 ## Local Development
 
+- When the user refers to localhost or a localhost URL, check whether the existing server/browser session is already live with browser tooling before running npm run dev or asking to start a dev server.
+
 - `npm run dev` — legacy + preview cores on port 3000.
 - Legacy home: `http://localhost:3000/samara`
 - New core preview: `http://localhost:3000/preview/samara`
