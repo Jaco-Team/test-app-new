@@ -1,10 +1,11 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useEffect, useMemo, type ReactNode } from 'react';
 import { format } from 'date-fns';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
+import NoSsr from '@mui/material/NoSsr';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
@@ -69,6 +70,19 @@ function lineImage(line: Record<string, unknown>): string | undefined {
   return src.startsWith('http')
     ? src
     : resolveProductImageUrl(src, '_138x138.jpg');
+}
+
+function clientOnlyControl(
+  node: ReactNode,
+  placeholderClassName = 'cart-page__control-placeholder'
+) {
+  return (
+    <NoSsr
+      fallback={<span className={placeholderClassName} aria-hidden="true" />}
+    >
+      {node}
+    </NoSsr>
+  );
 }
 
 export function CartPage() {
@@ -237,57 +251,59 @@ export function CartPage() {
                     <span className="cart-page__field-icon">
                       <PlaceOutlinedIcon />
                     </span>
-                    <MuiAutocompleteField
-                      id="cart-delivery-address"
-                      name="deliveryAddress"
-                      className="cart-page__autocomplete"
-                      textFieldClassName="cart-page__control-field"
-                      range={fieldRange}
-                      freeSolo
-                      value={null}
-                      inputValue={checkout.addressQuery}
-                      onInputChange={(_, value, reason) => {
-                        if (reason === 'input' || reason === 'clear') {
-                          checkout.changeAddressQuery(value);
-                        }
-                      }}
-                      onChange={(_, value) => {
-                        if (typeof value === 'string') {
-                          checkout.selectAddress(value);
-                          return;
-                        }
+                    {clientOnlyControl(
+                      <MuiAutocompleteField
+                        id="cart-delivery-address"
+                        name="deliveryAddress"
+                        className="cart-page__autocomplete"
+                        textFieldClassName="cart-page__control-field"
+                        range={fieldRange}
+                        freeSolo
+                        value={null}
+                        inputValue={checkout.addressQuery}
+                        onInputChange={(_, value, reason) => {
+                          if (reason === 'input' || reason === 'clear') {
+                            checkout.changeAddressQuery(value);
+                          }
+                        }}
+                        onChange={(_, value) => {
+                          if (typeof value === 'string') {
+                            checkout.selectAddress(value);
+                            return;
+                          }
 
-                        if (value) {
-                          checkout.selectAddress(value.value);
+                          if (value) {
+                            checkout.selectAddress(value.value);
+                          }
+                        }}
+                        options={checkout.addressSuggestions}
+                        getOptionLabel={(option) =>
+                          typeof option === 'string' ? option : option.value
                         }
-                      }}
-                      options={checkout.addressSuggestions}
-                      getOptionLabel={(option) =>
-                        typeof option === 'string' ? option : option.value
-                      }
-                      isOptionEqualToValue={(option, value) =>
-                        option.value === value.value
-                      }
-                      filterOptions={(options) => options}
-                      loading={checkout.addressLoading}
-                      placeholder="Улица, дом, подъезд"
-                      noOptionsText={
-                        checkout.addressQuery.trim().length < 3
-                          ? 'Начните вводить адрес'
-                          : 'Совпадений не найдено'
-                      }
-                      loadingText="Ищем адрес..."
-                      renderOption={(props, option) => (
-                        <li {...props} key={option.value}>
-                          <div className="cart-page__autocomplete-option">
-                            <span>{option.value}</span>
-                            {option.subtitle ? (
-                              <small>{option.subtitle}</small>
-                            ) : null}
-                          </div>
-                        </li>
-                      )}
-                    />
+                        isOptionEqualToValue={(option, value) =>
+                          option.value === value.value
+                        }
+                        filterOptions={(options) => options}
+                        loading={checkout.addressLoading}
+                        placeholder="Улица, дом, подъезд"
+                        noOptionsText={
+                          checkout.addressQuery.trim().length < 3
+                            ? 'Начните вводить адрес'
+                            : 'Совпадений не найдено'
+                        }
+                        loadingText="Ищем адрес..."
+                        renderOption={(props, option) => (
+                          <li {...props} key={option.value}>
+                            <div className="cart-page__autocomplete-option">
+                              <span>{option.value}</span>
+                              {option.subtitle ? (
+                                <small>{option.subtitle}</small>
+                              ) : null}
+                            </div>
+                          </li>
+                        )}
+                      />
+                    )}
                   </span>
                   {checkout.addressLoading ? (
                     <span className="cart-page__field-note">Ищем адрес...</span>
@@ -300,17 +316,19 @@ export function CartPage() {
                     <span className="cart-page__field-icon">
                       <StorefrontOutlinedIcon />
                     </span>
-                    <MuiSelectField
-                      id="cart-pickup-point"
-                      name="pickupPoint"
-                      className="cart-page__control-field"
-                      range={fieldRange}
-                      value={checkout.pickupPointId}
-                      options={pickupPointOptions}
-                      onChange={(event) =>
-                        checkout.setPickupPointId(event.target.value)
-                      }
-                    />
+                    {clientOnlyControl(
+                      <MuiSelectField
+                        id="cart-pickup-point"
+                        name="pickupPoint"
+                        className="cart-page__control-field"
+                        range={fieldRange}
+                        value={checkout.pickupPointId}
+                        options={pickupPointOptions}
+                        onChange={(event) =>
+                          checkout.setPickupPointId(event.target.value)
+                        }
+                      />
+                    )}
                   </span>
                 </label>
               )}
@@ -332,58 +350,65 @@ export function CartPage() {
                       <span className="cart-page__field-icon">
                         <ScheduleRoundedIcon />
                       </span>
-                      <MuiSelectField
-                        id="cart-schedule-mode"
-                        name="scheduleMode"
-                        className="cart-page__control-field"
-                        range={fieldRange}
-                        value={checkout.scheduleMode}
-                        options={scheduleModeOptions}
-                        onChange={(event) =>
-                          checkout.setScheduleMode(
-                            event.target.value === 'planned'
-                              ? 'planned'
-                              : 'asap'
-                          )
-                        }
-                      />
+                      {clientOnlyControl(
+                        <MuiSelectField
+                          id="cart-schedule-mode"
+                          name="scheduleMode"
+                          className="cart-page__control-field"
+                          range={fieldRange}
+                          value={checkout.scheduleMode}
+                          options={scheduleModeOptions}
+                          onChange={(event) =>
+                            checkout.setScheduleMode(
+                              event.target.value === 'planned'
+                                ? 'planned'
+                                : 'asap'
+                            )
+                          }
+                        />
+                      )}
                     </span>
                     {checkout.scheduleMode === 'planned' ? (
                       <div className="cart-page__time-grid">
-                        <MuiDatePickerField
-                          className="cart-page__control-field"
-                          range={fieldRange}
-                          value={checkout.selectedScheduleDate}
-                          onChange={(value) =>
-                            checkout.setScheduleDateValue(value)
-                          }
-                          disabled={
-                            !checkout.dateOptions.length || checkout.timeLoading
-                          }
-                          shouldDisableDate={(value) => {
-                            const key = format(value, 'yyyy-MM-dd');
-                            return !allowedScheduleDates.has(key);
-                          }}
-                          format="dd.MM.yyyy"
-                          slotProps={{
-                            textField: {
-                              id: 'cart-schedule-date',
-                              name: 'scheduleDate',
-                            },
-                          }}
-                        />
-                        <MuiSelectField
-                          id="cart-schedule-time"
-                          name="scheduleTime"
-                          className="cart-page__control-field"
-                          range={fieldRange}
-                          value={checkout.scheduleTimeId}
-                          options={timeOptions}
-                          onChange={(event) =>
-                            checkout.setScheduleTimeId(event.target.value)
-                          }
-                          disabled={!checkout.timeOptions.length}
-                        />
+                        {clientOnlyControl(
+                          <MuiDatePickerField
+                            className="cart-page__control-field"
+                            range={fieldRange}
+                            value={checkout.selectedScheduleDate}
+                            onChange={(value) =>
+                              checkout.setScheduleDateValue(value)
+                            }
+                            disabled={
+                              !checkout.dateOptions.length ||
+                              checkout.timeLoading
+                            }
+                            shouldDisableDate={(value) => {
+                              const key = format(value, 'yyyy-MM-dd');
+                              return !allowedScheduleDates.has(key);
+                            }}
+                            format="dd.MM.yyyy"
+                            slotProps={{
+                              textField: {
+                                id: 'cart-schedule-date',
+                                name: 'scheduleDate',
+                              },
+                            }}
+                          />
+                        )}
+                        {clientOnlyControl(
+                          <MuiSelectField
+                            id="cart-schedule-time"
+                            name="scheduleTime"
+                            className="cart-page__control-field"
+                            range={fieldRange}
+                            value={checkout.scheduleTimeId}
+                            options={timeOptions}
+                            onChange={(event) =>
+                              checkout.setScheduleTimeId(event.target.value)
+                            }
+                            disabled={!checkout.timeOptions.length}
+                          />
+                        )}
                       </div>
                     ) : null}
                     {!checkout.pickupPointId ? (
@@ -401,17 +426,19 @@ export function CartPage() {
                   <span className="cart-page__field-icon">
                     <CreditCardOutlinedIcon />
                   </span>
-                  <MuiSelectField
-                    id="cart-payment"
-                    name="paymentMethod"
-                    className="cart-page__control-field"
-                    range={fieldRange}
-                    value={checkout.paymentId}
-                    options={paymentOptions}
-                    onChange={(event) =>
-                      checkout.setPaymentId(event.target.value)
-                    }
-                  />
+                  {clientOnlyControl(
+                    <MuiSelectField
+                      id="cart-payment"
+                      name="paymentMethod"
+                      className="cart-page__control-field"
+                      range={fieldRange}
+                      value={checkout.paymentId}
+                      options={paymentOptions}
+                      onChange={(event) =>
+                        checkout.setPaymentId(event.target.value)
+                      }
+                    />
+                  )}
                 </span>
               </label>
 
@@ -429,23 +456,26 @@ export function CartPage() {
                       <ApartmentRoundedIcon />
                     )}
                   </span>
-                  <MuiTextField
-                    id="cart-comment"
-                    name="comment"
-                    className="cart-page__control-field cart-page__control-field--textarea"
-                    range={fieldRange}
-                    value={checkout.comment}
-                    onChange={(event) =>
-                      checkout.setComment(event.target.value)
-                    }
-                    multiline
-                    minRows={3}
-                    placeholder={
-                      checkout.orderType === 'delivery'
-                        ? 'Код домофона, этаж, ориентир'
-                        : 'Комментарий для кухни или кассы'
-                    }
-                  />
+                  {clientOnlyControl(
+                    <MuiTextField
+                      id="cart-comment"
+                      name="comment"
+                      className="cart-page__control-field cart-page__control-field--textarea"
+                      range={fieldRange}
+                      value={checkout.comment}
+                      onChange={(event) =>
+                        checkout.setComment(event.target.value)
+                      }
+                      multiline
+                      minRows={3}
+                      placeholder={
+                        checkout.orderType === 'delivery'
+                          ? 'Код домофона, этаж, ориентир'
+                          : 'Комментарий для кухни или кассы'
+                      }
+                    />,
+                    'cart-page__control-placeholder cart-page__control-placeholder--textarea'
+                  )}
                 </span>
               </label>
             </div>
@@ -573,17 +603,20 @@ export function CartPage() {
             <label className="cart-page__promo">
               <span className="cart-page__promo-label">Промокод</span>
               <div className="cart-page__promo-row">
-                <MuiTextField
-                  id="cart-promo-code"
-                  name="promoCode"
-                  className="cart-page__promo-input"
-                  range={fieldRange}
-                  placeholder="Есть промокод"
-                  value={checkout.promoCode}
-                  onChange={(event) =>
-                    checkout.setPromoCode(event.target.value)
-                  }
-                />
+                {clientOnlyControl(
+                  <MuiTextField
+                    id="cart-promo-code"
+                    name="promoCode"
+                    className="cart-page__promo-input"
+                    range={fieldRange}
+                    placeholder="Есть промокод"
+                    value={checkout.promoCode}
+                    onChange={(event) =>
+                      checkout.setPromoCode(event.target.value)
+                    }
+                  />,
+                  'cart-page__control-placeholder cart-page__control-placeholder--promo'
+                )}
                 <Button
                   className="cart-page__promo-button"
                   tone="neutral"
