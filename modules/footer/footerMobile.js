@@ -171,6 +171,7 @@ export default function FooterMobile({ cityName, active_page, links }) {
           active_page === 'profile' ||
           active_page === 'account' ||
           active_page === 'address' ||
+          active_page === 'dostavka' ||
           active_page === 'zakazy'
             ? '-10.25641025641vw'
             : undefined,
