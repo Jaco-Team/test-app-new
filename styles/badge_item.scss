@@ -107,6 +107,34 @@
   padding: 0 !important;
 }
 
+@include mobile-only {
+  .badgecontainer {
+    top: 10px;
+    left: 10px;
+
+    & > .badge:not(:first-child) {
+      margin-top: 10px;
+    }
+  }
+
+  .badge {
+    &.container {
+      &.mobile {
+        left: 0;
+      }
+    }
+
+    & > .box {
+      &.small,
+      &.smallshort {
+        min-height: 23px;
+        border-radius: 4px;
+        padding: 4px 6px;
+      }
+    }
+  }
+}
+
 @include tablet-only {
   .badgecontainer {
     top: tablet-vw(20);
