@@ -1,0 +1,48 @@
+@use '../../../shared/ui/foundation/formulas' as *;
+@use '../../../shared/ui/foundation/tokens' as *;
+
+.home-catalog-skeleton {
+  @include ui-product-grid();
+  padding: ui-fluid-compact(20) ui-fluid-compact(30) 0;
+
+  &__card {
+    min-height: ui-fluid-compact(420);
+    border-radius: ui-fluid-compact(20);
+    background: linear-gradient(
+      90deg,
+      $ui-control-bg 0%,
+      rgba(0, 0, 0, 0.04) 50%,
+      $ui-control-bg 100%
+    );
+    background-size: 200% 100%;
+    animation: home-catalog-skeleton-shimmer 1.2s ease-in-out infinite;
+  }
+
+  @include ui-regular {
+    padding: ui-fluid-regular(16) 0 0;
+    @include ui-page-inset();
+
+    &__card {
+      min-height: ui-fluid-regular(320);
+    }
+  }
+
+  @include ui-expanded {
+    padding: ui-fluid-expanded(12) 0 0;
+    @include ui-page-inset();
+
+    &__card {
+      min-height: ui-fluid-expanded(280);
+    }
+  }
+}
+
+@keyframes home-catalog-skeleton-shimmer {
+  0% {
+    background-position: 100% 0;
+  }
+
+  100% {
+    background-position: -100% 0;
+  }
+}

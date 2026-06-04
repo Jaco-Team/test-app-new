@@ -2,13 +2,22 @@ import type { HTMLAttributes, ReactNode } from 'react';
 import { cn } from '../../foundation/classNames';
 import './Badge.scss';
 
-export type BadgeTone = 'new' | 'hit' | 'sale' | 'neutral' | 'success';
+export type BadgeTone =
+  | 'new'
+  | 'hit'
+  | 'sale'
+  | 'updated'
+  | 'hot'
+  | 'neutral'
+  | 'success';
 export type BadgeSize = 'sm' | 'md' | 'lg';
 
 const labels: Record<BadgeTone, string> = {
   new: 'новинка',
   hit: 'хит',
   sale: 'скидка',
+  updated: 'обновлено',
+  hot: 'остро',
   neutral: 'метка',
   success: 'готово',
 };

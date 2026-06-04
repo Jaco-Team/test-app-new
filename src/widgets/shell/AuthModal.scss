@@ -1,0 +1,71 @@
+@use '../../shared/ui/foundation/formulas' as *;
+@use '../../shared/ui/foundation/tokens' as *;
+
+.auth-modal {
+  &.ui-modal-wrapper--sheet .ui-modal-wrapper__content {
+    padding: 0;
+  }
+
+  &__body {
+    padding: ui-fluid-compact(32) ui-fluid-compact(28) ui-fluid-compact(40);
+    font-family: $ui-font-family;
+  }
+
+  &__title {
+    margin: 0 0 ui-fluid-compact(24);
+    font-size: ui-fluid-compact(40);
+    font-weight: 500;
+    line-height: 1.15;
+    text-align: center;
+  }
+
+  &__field {
+    margin-bottom: ui-fluid-compact(8);
+  }
+
+  &__submit {
+    margin-top: ui-fluid-compact(20) !important;
+    min-height: ui-fluid-compact(88) !important;
+    border-radius: ui-fluid-compact(44) !important;
+    background-color: $ui-brand !important;
+    font-size: ui-fluid-compact(32) !important;
+    text-transform: none !important;
+  }
+
+  &__link {
+    margin-top: ui-fluid-compact(12) !important;
+    color: $ui-text !important;
+    font-size: ui-fluid-compact(28) !important;
+    text-transform: none !important;
+  }
+
+  &__error {
+    margin: ui-fluid-compact(16) 0 0;
+    color: $ui-brand;
+    font-size: ui-fluid-compact(28);
+    line-height: 1.3;
+    text-align: center;
+  }
+
+  @include ui-regular {
+    &__body {
+      padding: ui-fluid-regular(32) ui-fluid-regular(40);
+      min-width: ui-fluid-regular(360);
+    }
+
+    &__title {
+      font-size: ui-fluid-regular(28);
+    }
+  }
+
+  @include ui-expanded {
+    &__body {
+      padding: ui-fluid-expanded(32) ui-fluid-expanded(40);
+      min-width: ui-fluid-expanded(360);
+    }
+
+    &__title {
+      font-size: ui-fluid-expanded(24);
+    }
+  }
+}

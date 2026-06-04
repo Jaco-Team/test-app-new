@@ -1,5 +1,7 @@
 import type { HTMLAttributes } from 'react';
 import { cn } from '../../foundation/classNames';
+import { NewVKIcon, OdnIcon, RutubeIcon, TGIcon } from '../../icons/Icons';
+import ArrowUp from '../../components/ArrowUp/ArrowUp';
 import './Footer.scss';
 
 export interface FooterLinkGroup {
@@ -20,53 +22,90 @@ export interface FooterProps extends HTMLAttributes<HTMLElement> {
   copyright?: string;
 }
 
+const FOOTER_GROUP_ORDER = [
+  'Жако',
+  'Документы',
+  'Работа в жако',
+  'Франшиза',
+] as const;
+
+const SOCIAL_ICONS: Record<string, typeof NewVKIcon> = {
+  VK: NewVKIcon,
+  Telegram: TGIcon,
+  OK: OdnIcon,
+  RuTube: RutubeIcon,
+};
+
+function orderLinkGroups(groups: FooterLinkGroup[]): FooterLinkGroup[] {
+  const byTitle = new Map(groups.map((group) => [group.title, group]));
+
+  return FOOTER_GROUP_ORDER.map((title) => byTitle.get(title)).filter(
+    (group): group is FooterLinkGroup => Boolean(group)
+  );
+}
+
 export function Footer({
-  citySlug = 'samara',
-  cityLabel = 'Самара',
   linkGroups = [],
   socialLinks = [],
-  copyright = '© Жако',
+  copyright,
+  citySlug: _citySlug,
+  cityLabel: _cityLabel,
   className,
   ...props
 }: FooterProps) {
+  const year = new Date().getFullYear();
+  const copyText = copyright ?? `${year} © Жако`;
+  const columns = orderLinkGroups(linkGroups);
+
   return (
-    <footer className={cn('ui-footer', className)} {...props}>
-      <div className="ui-footer__inner">
-        <div className="ui-footer__groups">
-          {linkGroups.map((group) => (
-            <div key={group.title} className="ui-footer__group">
-              <h3 className="ui-footer__group-title">{group.title}</h3>
-              <ul className="ui-footer__links">
+    <>
+      <ArrowUp />
+      <footer className={cn('ui-footer', className)} {...props}>
+        <div className="ui-footer__inner">
+          <div className="ui-footer__grid">
+            {columns.map((group) => (
+              <section key={group.title} className="ui-footer__column">
+                <span className="ui-footer__column-title">{group.title}</span>
                 {group.items.map((item) => (
-                  <li key={`${group.title}-${item.label}`}>
-                    <a href={item.href}>{item.label}</a>
-                  </li>
+                  <a
+                    key={item.label}
+                    className="ui-footer__link"
+                    href={item.href}
+                    {...(item.href.startsWith('http')
+                      ? { target: '_blank', rel: 'noopener noreferrer' }
+                      : {})}
+                  >
+                    {item.label}
+                  </a>
                 ))}
-              </ul>
-            </div>
-          ))}
-        </div>
-
-        {socialLinks.length > 0 ? (
-          <nav className="ui-footer__social" aria-label="Социальные сети">
-            {socialLinks.map((item) => (
-              <a
-                key={item.label}
-                href={item.href}
-                target="_blank"
-                rel="noopener noreferrer"
-              >
-                {item.label}
-              </a>
+              </section>
             ))}
-          </nav>
-        ) : null}
-      </div>
-
-      <div className="ui-footer__bottom">
-        <span className="ui-footer__city">{cityLabel}</span>
-        <span className="ui-footer__copy">{copyright}</span>
-      </div>
-    </footer>
+            {socialLinks.length > 0 ? (
+              <nav
+                className="ui-footer__social"
+                aria-label="Мы в социальных сетях"
+              >
+                {socialLinks.map((item) => {
+                  const Icon = SOCIAL_ICONS[item.label] ?? NewVKIcon;
+                  return (
+                    <a
+                      key={item.label}
+                      className="ui-footer__social-link"
+                      href={item.href}
+                      target="_blank"
+                      rel="noopener noreferrer"
+                      aria-label={item.label}
+                    >
+                      <Icon aria-hidden="true" />
+                    </a>
+                  );
+                })}
+              </nav>
+            ) : null}
+          </div>
+          <p className="ui-footer__copy">{copyText}</p>
+        </div>
+      </footer>
+    </>
   );
 }

@@ -2,11 +2,12 @@
 @use '../../foundation/tokens' as *;
 
 .ui-quantity-control {
-  display: inline-flex;
+  display: flex;
   align-items: center;
   justify-content: space-between;
+  border: 1px solid $ui-selection-bg;
   border-radius: 999px;
-  background: #fff;
+  background: $ui-surface;
   color: $ui-text;
   font-family: $ui-font-family;
 
@@ -16,7 +17,7 @@
     justify-content: center;
     border: 0;
     border-radius: 999px;
-    background: rgba(0, 0, 0, 0.05);
+    background: $ui-button-bg;
     color: inherit;
     cursor: pointer;
     line-height: 1;
@@ -25,8 +26,14 @@
       opacity 180ms ease;
   }
 
-  button:hover {
-    background: rgba(0, 0, 0, 0.09);
+  button:hover,
+  button:focus-visible,
+  button:active {
+    background: $ui-control-hover;
+  }
+
+  button:focus-visible {
+    outline: none;
   }
   button:disabled {
     cursor: default;
@@ -40,20 +47,31 @@
   &--disabled {
     opacity: 0.55;
   }
-  &--size-sm {
+  &--size-xs {
     width: ui-fluid-compact(260);
-    height: ui-fluid-compact(68);
+    height: ui-fluid-compact($ui-button-compact);
+    font-size: ui-fluid-compact(24);
+  }
+  &--size-sm {
+    width: ui-fluid-compact(320);
+    height: ui-fluid-compact($ui-button-compact);
     font-size: ui-fluid-compact(28);
   }
   &--size-md {
-    width: ui-fluid-compact(320);
-    height: ui-fluid-compact(80);
-    font-size: ui-fluid-compact(32);
+    width: ui-fluid-compact(420);
+    height: ui-fluid-compact($ui-button-regular);
+    font-size: ui-fluid-compact(36);
   }
   &--size-lg {
     width: ui-fluid-compact(384);
     height: ui-fluid-compact(96);
-    font-size: ui-fluid-compact(36);
+    font-size: ui-fluid-compact(40);
+  }
+  &--size-xs button {
+    width: ui-fluid-compact(48);
+    height: ui-fluid-compact(48);
+    font-size: ui-fluid-compact(32);
+    margin: 0 ui-fluid-compact(6);
   }
   &--size-sm button {
     width: ui-fluid-compact(54);
@@ -64,7 +82,7 @@
   &--size-md button {
     width: ui-fluid-compact(64);
     height: ui-fluid-compact(64);
-    font-size: ui-fluid-compact(44);
+    font-size: ui-fluid-compact(28);
     margin: 0 ui-fluid-compact(8);
   }
   &--size-lg button {
@@ -75,9 +93,14 @@
   }
 
   @include ui-regular {
+    &--size-xs {
+      width: ui-fluid-regular(144);
+      height: ui-fluid-regular(52);
+      font-size: ui-fluid-regular(19);
+    }
     &--size-sm {
-      width: ui-fluid-regular(190);
-      height: ui-fluid-regular(51);
+      width: ui-fluid-regular(178);
+      height: ui-fluid-regular(52);
       font-size: ui-fluid-regular(24);
     }
     &--size-md {
@@ -89,6 +112,12 @@
       width: ui-fluid-regular(275);
       height: ui-fluid-regular(69);
       font-size: ui-fluid-regular(32);
+    }
+    &--size-xs button {
+      width: ui-fluid-regular(36);
+      height: ui-fluid-regular(36);
+      font-size: ui-fluid-regular(24);
+      margin: 0 ui-fluid-regular(5);
     }
     &--size-sm button {
       width: ui-fluid-regular(42);
@@ -111,37 +140,48 @@
   }
 
   @include ui-expanded {
+    &--size-xs {
+      width: ui-fluid-expanded(118);
+      height: ui-fluid-expanded(40);
+      font-size: ui-fluid-expanded(16);
+    }
     &--size-sm {
-      width: ui-fluid-expanded(300);
-      height: ui-fluid-expanded(76);
-      font-size: ui-fluid-expanded(28);
+      width: ui-fluid-expanded(140);
+      height: ui-fluid-expanded(40);
+      font-size: ui-fluid-expanded(22);
     }
     &--size-md {
-      width: ui-fluid-expanded(384);
-      height: ui-fluid-expanded(96);
-      font-size: ui-fluid-expanded(32);
+      width: ui-fluid-expanded(192);
+      height: ui-fluid-expanded(48);
+      font-size: ui-fluid-expanded(24);
     }
     &--size-lg {
       width: ui-fluid-expanded(420);
       height: ui-fluid-expanded(104);
       font-size: ui-fluid-expanded(36);
     }
+    &--size-xs button {
+      width: ui-fluid-expanded(34);
+      height: ui-fluid-expanded(34);
+      font-size: ui-fluid-expanded(18);
+      margin: 0 ui-fluid-expanded(5);
+    }
     &--size-sm button {
-      width: ui-fluid-expanded(64);
-      height: ui-fluid-expanded(64);
-      font-size: ui-fluid-expanded(40);
-      margin: 0 ui-fluid-expanded(7);
+      width: ui-fluid-expanded(34);
+      height: ui-fluid-expanded(34);
+      font-size: ui-fluid-expanded(18);
+      margin: 0 ui-fluid-expanded(5);
     }
     &--size-md button {
-      width: ui-fluid-expanded(80);
-      height: ui-fluid-expanded(80);
-      font-size: ui-fluid-expanded(54);
-      margin: 0 ui-fluid-expanded(8);
+      width: ui-fluid-expanded(38);
+      height: ui-fluid-expanded(38);
+      font-size: ui-fluid-expanded(22);
+      margin: 0 ui-fluid-expanded(5);
     }
     &--size-lg button {
       width: ui-fluid-expanded(88);
       height: ui-fluid-expanded(88);
-      font-size: ui-fluid-expanded(58);
+      font-size: ui-fluid-expanded(28);
       margin: 0 ui-fluid-expanded(8);
     }
   }

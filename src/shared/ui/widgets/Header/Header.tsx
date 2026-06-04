@@ -25,8 +25,10 @@ import {
   Sale,
 } from '../../icons';
 import { cn } from '../../foundation/classNames';
+import { CompactMenu } from './CompactMenu';
+import type { CompactMenuItem } from './CompactMenu';
 import './Header.scss';
-import useGetPageScroll from '@/src/shared/lib/useGetPageScroll';
+import useIsScrolled from '@/src/shared/lib/scroll/useIsScrolled';
 
 export interface HeaderNavItem {
   label: string;
@@ -77,12 +79,6 @@ export interface HeaderProps extends HTMLAttributes<HTMLElement> {
   actions?: ReactNode;
 }
 
-type CompactMenuItem = HeaderNavItem & {
-  icon: ComponentType<{ 'aria-hidden'?: 'true'; className?: string }>;
-  badge?: string;
-  button?: boolean;
-};
-
 const dropdownMotion: Pick<
   MotionProps,
   'initial' | 'animate' | 'exit' | 'transition'
@@ -91,16 +87,6 @@ const dropdownMotion: Pick<
   animate: { opacity: 1, scaleX: 1, scaleY: 1, x: '-50%' },
   exit: { opacity: 0, scaleX: 0.75, scaleY: 0.56, x: '-50%' },
   transition: { duration: 0.2, ease: [0.4, 0, 0.2, 1] },
-};
-
-const compactMenuMotion: Pick<
-  MotionProps,
-  'initial' | 'animate' | 'exit' | 'transition'
-> = {
-  initial: { opacity: 0, y: '-100%' },
-  animate: { opacity: 1, y: 0 },
-  exit: { opacity: 0, y: '-100%' },
-  transition: { duration: 0.22, ease: [0.4, 0, 0.2, 1] },
 };
 
 function hrefFromBase(base: string, path: string): string {
@@ -194,8 +180,7 @@ export function Header({
   ...props
 }: HeaderProps) {
   const headerRef = useRef<HTMLElement | null>(null);
-  const overlayOpen =
-    compactMenuOpen || desktopDocsOpen || Boolean(openNavLabel);
+  const overlayOpen = desktopDocsOpen || Boolean(openNavLabel);
   const handleOutsideClick = useCallback(() => {
     onDropdownClose?.();
   }, [onDropdownClose]);
@@ -204,7 +189,7 @@ export function Header({
   useBodyScrollLock(overlayOpen);
 
   const cartBadge = extractCartCount(cartCount);
-  const hasCartItems = typeof cartCount === 'number' && cartCount > 0;
+  const hasCartItems = Number(cartCount) > 0;
   const compactMenuItems: CompactMenuItem[] = compactMenuLinks?.length
     ? compactMenuLinks.map((item) => ({
         ...item,
@@ -217,13 +202,18 @@ export function Header({
       }))
     : buildDefaultCompactMenuItems(logoHref, city, cityHref, cartBadge);
 
-  const { isScrolled } = useGetPageScroll();
+  const isScrolled = useIsScrolled();
 
   return (
     <header
       id="headerNew"
       ref={headerRef}
-      className={cn('ui-header', className, isScrolled && 'ui-header_scrolled')}
+      className={cn(
+        'ui-header',
+        className,
+        isScrolled && 'ui-header_scrolled',
+        compactMenuOpen && 'ui-header--compact-menu-open'
+      )}
       {...props}
     >
       <div className="ui-header__bar">
@@ -344,7 +334,10 @@ export function Header({
         </a>
 
         <button
-          className="ui-header__compact-menu-button"
+          className={cn(
+            'ui-header__compact-menu-button',
+            compactMenuOpen && 'ui-header__compact-menu-button--active'
+          )}
           type="button"
           aria-label={compactMenuOpen ? 'Закрыть меню' : 'Открыть меню'}
           aria-expanded={compactMenuOpen}
@@ -352,7 +345,10 @@ export function Header({
         >
           <BurgerIconMobile
             aria-hidden="true"
-            className="ui-header__compact-menu-button-icon"
+            className={cn(
+              'ui-header__compact-menu-button-icon',
+              compactMenuOpen && 'ui-header__compact-menu-button-icon--active'
+            )}
           />
         </button>
 
@@ -429,71 +425,14 @@ export function Header({
         {actions ? <div className="ui-header__actions">{actions}</div> : null}
       </div>
 
-      <AnimatePresence>
-        {compactMenuOpen ? (
-          <motion.div
-            className="ui-header__compact-menu"
-            key="compact-menu"
-            {...compactMenuMotion}
-          >
-            <nav
-              className="ui-header__compact-menu-nav"
-              aria-label="Мобильное меню"
-            >
-              {compactMenuItems.map((item) => {
-                const Icon = item.icon;
-                const content = (
-                  <>
-                    <Icon
-                      aria-hidden="true"
-                      className="ui-header__compact-menu-icon"
-                    />
-                    <span className="ui-header__compact-menu-text">
-                      {item.label}
-                    </span>
-                    {item.badge ? (
-                      <span className="ui-header__compact-menu-badge">
-                        {item.badge}
-                      </span>
-                    ) : null}
-                  </>
-                );
-
-                return item.button ? (
-                  <button
-                    key={item.label}
-                    className={cn(
-                      'ui-header__compact-menu-link',
-                      item.active && 'ui-header__compact-menu-link--active'
-                    )}
-                    type="button"
-                    onClick={(event) => {
-                      if (item.label === 'Аккаунт') {
-                        onProfileClick?.();
-                      }
-                      onCompactMenuItemClick?.(item, event);
-                    }}
-                  >
-                    {content}
-                  </button>
-                ) : (
-                  <a
-                    key={item.label}
-                    className={cn(
-                      'ui-header__compact-menu-link',
-                      item.active && 'ui-header__compact-menu-link--active'
-                    )}
-                    href={item.href ?? '#'}
-                    onClick={(event) => onCompactMenuItemClick?.(item, event)}
-                  >
-                    {content}
-                  </a>
-                );
-              })}
-            </nav>
-          </motion.div>
-        ) : null}
-      </AnimatePresence>
+      <CompactMenu
+        open={compactMenuOpen}
+        items={compactMenuItems}
+        onClose={onDropdownClose}
+        onToggle={onCompactMenuClick}
+        onProfileClick={onProfileClick}
+        onItemClick={onCompactMenuItemClick}
+      />
     </header>
   );
 }

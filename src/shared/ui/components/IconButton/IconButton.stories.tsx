@@ -1,6 +1,6 @@
 import type { Meta, StoryObj } from '@storybook/react';
 import { Inline } from '../../primitives';
-import { IconClose, BasketIconNew, BurgerIconPC } from '../../icons';
+import { IconClose, BasketIconNew, BurgerIcon } from '../../icons';
 import { IconButton } from './IconButton';
 const meta = {
   title: 'UI/Компоненты/Иконка-кнопка',
@@ -20,7 +20,7 @@ export const Варианты: Story = {
   render: () => (
     <Inline>
       <IconButton label="Меню">
-        <BurgerIconPC />
+        <BurgerIcon />
       </IconButton>
       <IconButton label="Корзина" tone="brand">
         <BasketIconNew />

@@ -1,18 +1,95 @@
 $ui-font-family: var(--inter-font, Roboto, Arial, sans-serif);
-$ui-text: rgba(0, 0, 0, 0.8);
-$ui-text-muted: rgba(0, 0, 0, 0.6);
-$ui-text-subtle: rgba(0, 0, 0, 0.45);
-$ui-brand: #da1a32;
+
+// Текст
+$ui-text: #000000cc;
+$ui-text-inv: #ffffff;
+$ui-text-inv-subtle: #f7f7f7;
+$ui-text-muted: #00000099;
+$ui-text-muted-strong: #0000008c;
+$ui-text-subtle: #00000073;
+$ui-text-secondary: #525252;
+$ui-ink: #111111;
+
+// Бренд
+$ui-brand: #dd1a32;
 $ui-brand-hover: #c7172d;
 $ui-brand-active: #b11528;
+$ui-brand-tint: #dd1a321f;
+$ui-brand-focus: #da1a321f;
+
+// Поверхности
 $ui-surface: #ffffff;
+$ui-surface-grey: #00000080;
 $ui-surface-muted: #f7f7f7;
-$ui-border: rgba(0, 0, 0, 0.2);
-$ui-disabled: rgba(0, 0, 0, 0.1);
-$ui-overlay: rgba(0, 0, 0, 0.42);
+$ui-surface-medium: #d7d7d7;
+$ui-surface-soft: #f5f5f5;
+$ui-surface-raised: #ededed;
+$ui-surface-wash: #f5f5f5;
+$ui-surface-info: #e6e6e6;
+$ui-selection-bg: #f2f2f280;
+$ui-transparent: transparent;
+
+// Границы и состояния
+$ui-border: #00000033;
+$ui-border-table: #bdbdbd;
+$ui-white-border: #ffffffa6;
+$ui-disabled: #0000001a;
+$ui-overlay: #0000006b;
+
+// Семантика
+$ui-danger: #c62828;
+$ui-success: #2e7d32;
+$ui-warning: #ed6c02;
+
+// Бейджи
+$ui-badge-new: #ee7900;
+$ui-badge-hit: #af00db;
+$ui-badge-sale: #db0021;
+$ui-badge-updated: #66bc46;
+$ui-badge-hot: #e30613;
+
+// Градиенты
+$ui-gradient-shadow: #7373731a;
+$ui-gradient-clear: #535c5400;
+
+// Нейтральная шкала
+$ui-neutral-weakest: #00000008;
+$ui-neutral-weaker: #00000009;
+$ui-neutral-weak: #0000000a;
+$ui-neutral-soft: #0000000d;
+$ui-neutral-muted: #00000012;
+$ui-neutral-subtle: #00000014;
+$ui-neutral-hover: #00000017;
+$ui-neutral-active: #0000001f;
+$ui-neutral-strong: #0000002e;
+$ui-neutral-control: #00000038;
+$ui-neutral-overlay-light: #00000040;
+$ui-neutral-overlay: #00000061;
+$ui-neutral-overlay-strong: #00000073;
+
+// Тени
+$ui-shadow-soft: #00000014;
+$ui-shadow-card: #0000001f;
+$ui-shadow-popover-1: #00000033;
+$ui-shadow-popover-2: #00000024;
+$ui-shadow-modal: #0000003d;
+
+// Слои
 $ui-z-header: 1100;
 $ui-z-modal: 1300;
 
+// Ширины кнопок
+$ui-button-compact: 80;
+$ui-button-regular: 94;
+$ui-button-expanded: 112;
+
+// Контролы
+$ui-control-bg: #0000000d;
+$ui-control-hover: #00000017;
+$ui-control-active: #dd1a32;
+$ui-button-bg: #0000000d;
+
+// Брейкпоинты
 $ui-compact-min: 320px;
 $ui-compact-max: 667px;
 $ui-regular-min: 668px;
@@ -20,3 +97,6 @@ $ui-regular-max: 990px;
 $ui-expanded-min: 991px;
 $ui-large-min: 1200px;
 $ui-xl-min: 1536px;
+
+// Переходы
+$ui-transition: 0.5s;

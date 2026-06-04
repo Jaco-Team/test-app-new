@@ -2,6 +2,8 @@ import type { HTMLAttributes } from 'react';
 import { Badge, Button, Price, QuantityControl } from '../../components';
 import type { BadgeTone } from '../../components';
 import { cn } from '../../foundation/classNames';
+import { ProductCardInfo } from './ProductCardInfo';
+import type { ProductCardInfoData } from './ProductCardInfo';
 import './ProductCard.scss';
 
 export interface ProductCardBadge {
@@ -13,6 +15,7 @@ export interface ProductCardProps extends HTMLAttributes<HTMLElement> {
   image: string;
   description?: string;
   meta?: string | string[];
+  info?: ProductCardInfoData;
   price: number;
   oldPrice?: number;
   count?: number;
@@ -37,6 +40,7 @@ export function ProductCard({
   image,
   description,
   meta,
+  info,
   price,
   oldPrice,
   count = 0,
@@ -49,6 +53,17 @@ export function ProductCard({
 }: ProductCardProps) {
   const hasCount = count > 0;
   const metaItems = metaToItems(meta);
+  const {
+    catId,
+    detailText,
+    composition,
+    nutrition,
+    raw,
+    weight,
+    imageKey,
+    tagIds,
+    ...articleProps
+  } = props as typeof props & Record<string, unknown>;
 
   return (
     <article
@@ -57,7 +72,7 @@ export function ProductCard({
         hasCount && 'ui-product-card--active',
         className
       )}
-      {...props}
+      {...articleProps}
     >
       <button
         className="ui-product-card__media"
@@ -72,7 +87,7 @@ export function ProductCard({
               <Badge
                 key={badge.tone + (badge.label ?? '')}
                 tone={badge.tone}
-                size="lg"
+                size="sm"
               >
                 {badge.label}
               </Badge>
@@ -82,21 +97,19 @@ export function ProductCard({
       </button>
       <div className="ui-product-card__body">
         <h3 className="ui-product-card__title">{title}</h3>
-        {metaItems.length ? (
-          <p className="ui-product-card__meta">
-            {metaItems.map((item) => (
-              <span key={item}>{item}</span>
-            ))}
-          </p>
-        ) : null}
+        <ProductCardInfo info={info} fallback={metaItems} />
         {description ? (
           <p className="ui-product-card__description">{description}</p>
         ) : null}
         <div className="ui-product-card__action">
           {hasCount ? (
-            <QuantityControl value={count} onChange={onQuantityChange} />
+            <QuantityControl
+              value={count}
+              size="md"
+              onChange={onQuantityChange}
+            />
           ) : (
-            <Button tone="muted" size="md" density="regular" onClick={onAdd}>
+            <Button tone="muted" size="md" onClick={onAdd}>
               <Price value={price} oldValue={oldPrice} size="md" />
             </Button>
           )}

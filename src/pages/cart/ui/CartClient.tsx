@@ -1,9 +1,8 @@
 'use client';
 
-import { StoreBootstrap } from '@src/features/bootstrap/StoreBootstrap';
+import { PreviewPageLayout } from '@src/widgets/layout';
 import type { StoreBootstrapProps } from '@src/features/bootstrap/StoreBootstrap';
-import { AppShell } from '@src/widgets/shell/AppShell';
-import { HomeHeaderConnected } from '@src/features/header/ui/HomeHeaderConnected';
+import { resolveCityLabel } from '@src/shared/lib/resolveCityLabel';
 import { CartPage } from './CartPage';
 
 export type CartClientProps = {
@@ -11,15 +10,18 @@ export type CartClientProps = {
 };
 
 export function CartClient({ storeSeed }: CartClientProps) {
+  const cityLabel = resolveCityLabel(storeSeed.city, storeSeed.cities);
+
   return (
-    <>
-      <StoreBootstrap {...storeSeed} activePage="cart" />
-      <AppShell city={storeSeed.city} loadMap />
-      <HomeHeaderConnected
-        fallbackCitySlug={storeSeed.city}
-        fallbackCityLabel={storeSeed.city}
-      />
+    <PreviewPageLayout
+      storeSeed={{ ...storeSeed, activePage: 'cart' }}
+      loadMap
+      header={{
+        fallbackCitySlug: storeSeed.city,
+        fallbackCityLabel: cityLabel,
+      }}
+    >
       <CartPage />
-    </>
+    </PreviewPageLayout>
   );
 }

@@ -18,7 +18,7 @@
     min-height: ui-fluid-compact(76);
     border: 1px solid $ui-border;
     border-radius: 8px;
-    background: #fff;
+    background: $ui-surface;
     padding: 0 ui-fluid-compact(22);
     transition:
       border-color 180ms ease,
@@ -29,7 +29,7 @@
     min-width: 0;
     border: 0;
     outline: 0;
-    background: transparent;
+    background: $ui-transparent;
     color: $ui-text;
     @include ui-type(28, 28, 28, 400);
   }
@@ -46,16 +46,16 @@
   }
   &:focus-within .ui-input__control {
     border-color: $ui-brand;
-    box-shadow: 0 0 0 2px rgba(218, 26, 50, 0.12);
+    box-shadow: 0 0 0 2px $ui-brand-focus;
   }
   &--tone-error .ui-input__control {
-    border-color: #c62828;
+    border-color: $ui-danger;
   }
   &--tone-error .ui-input__helper {
-    color: #c62828;
+    color: $ui-danger;
   }
   &--tone-success .ui-input__control {
-    border-color: #2e7d32;
+    border-color: $ui-success;
   }
   &--density-compact .ui-input__control {
     min-height: ui-fluid-compact(64);

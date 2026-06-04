@@ -44,3 +44,28 @@ export function isValidMediaKey(value: unknown): value is string {
   const normalized = raw.toLowerCase();
   return normalized !== 'undefined' && normalized !== 'null';
 }
+
+const PRODUCT_MODAL_IMAGE_CANDIDATES = [
+  ['292x292', 138],
+  ['366x366', 146],
+  ['466x466', 183],
+  ['585x585', 233],
+  ['732x732', 292],
+  ['1168x1168', 366],
+  ['1420x1420', 584],
+  ['2000x2000', 760],
+  ['2000x2000', 1875],
+] as const;
+
+export const PRODUCT_MODAL_IMAGE_SIZES =
+  '(max-width: 1439px) 233px, (max-width: 1279px) 218px, 292px';
+
+export function resolveProductImageSrcSet(
+  imgApp: string,
+  extension: 'jpg' | 'webp' = 'jpg'
+): string {
+  return PRODUCT_MODAL_IMAGE_CANDIDATES.map(
+    ([size, width]) =>
+      `${getYandexImgBase()}${imgApp}_${size}.${extension} ${width}w`
+  ).join(', ');
+}

@@ -1,0 +1,35 @@
+'use client';
+
+import type { StoreBootstrapProps } from '@src/features/bootstrap/StoreBootstrap';
+import {
+  mapFooterLinks,
+  mapFooterSocialLinks,
+} from '@src/shared/lib/footerLinks';
+import { resolveCityLabel } from '@src/shared/lib/resolveCityLabel';
+import { Footer } from '@ui/widgets';
+import { FooterCookie } from '@src/widgets/shell/FooterCookie';
+
+export type PreviewPageFooterProps = {
+  storeSeed: StoreBootstrapProps;
+  cityLabel?: string;
+};
+
+export function PreviewPageFooter({
+  storeSeed,
+  cityLabel,
+}: PreviewPageFooterProps) {
+  const resolvedCityLabel =
+    cityLabel ?? resolveCityLabel(storeSeed.city, storeSeed.cities);
+
+  return (
+    <>
+      <Footer
+        citySlug={storeSeed.city}
+        cityLabel={resolvedCityLabel}
+        linkGroups={mapFooterLinks(storeSeed.city, storeSeed.links)}
+        socialLinks={mapFooterSocialLinks(storeSeed.links)}
+      />
+      <FooterCookie citySlug={storeSeed.city} />
+    </>
+  );
+}

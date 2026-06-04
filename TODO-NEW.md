@@ -284,6 +284,8 @@ Required before trusting final visual parity:
 
 Current workflow rule: do not run typecheck, lint, prettier, eslint, or visual tests by default. Run visual checks only when a change touches fragile measured layout, especially Header, or when explicitly requested.
 
+Pixel-first adaptivity: measure at fixed viewports (320, 668, 991 px), then map to `ui-fluid-*` formulas — see [docs/tablet-adaptation-guide.md](docs/tablet-adaptation-guide.md).
+
 ## Migration Order
 
 ### Step 1: Parallel folders

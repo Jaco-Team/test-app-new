@@ -2,16 +2,19 @@ import type { ReactNode } from 'react';
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
 import DialogTitle from '@mui/material/DialogTitle';
+import Fade from '@mui/material/Fade';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import type { DialogProps } from '@mui/material/Dialog';
 import type { Theme } from '@mui/material/styles';
+import { BREAKPOINTS } from '../../foundation/breakpoints';
 import { useBodyScrollLock } from '@/src/shared/lib/overlay';
 import { cn } from '../../foundation/classNames';
 import { IconClose } from '../../icons';
 import './ModalWrapper.scss';
 
 export type ModalWrapperVariant = 'dialog' | 'bottom-sheet' | 'responsive';
+export type ModalWrapperSheetHeader = 'default' | 'hidden';
 
 export type ModalWrapperProps = {
   open: boolean;
@@ -27,6 +30,7 @@ export type ModalWrapperProps = {
   closeOnBackdrop?: boolean;
   labelledBy?: string;
   variant?: ModalWrapperVariant;
+  sheetHeader?: ModalWrapperSheetHeader;
 };
 
 export function ModalWrapper({
@@ -43,6 +47,7 @@ export function ModalWrapper({
   closeOnBackdrop = true,
   labelledBy,
   variant = 'dialog',
+  sheetHeader = 'default',
 }: ModalWrapperProps) {
   const compact = useMediaQuery(
     (theme: Theme) => theme.breakpoints.down('sm'),
@@ -50,9 +55,22 @@ export function ModalWrapper({
       noSsr: true,
     }
   );
-  const sheet = variant !== 'dialog' && compact;
+  const regular = useMediaQuery(
+    '(min-width: ' +
+      BREAKPOINTS.regularMin +
+      'px) and (max-width: ' +
+      BREAKPOINTS.regularMax +
+      'px)',
+    {
+      noSsr: true,
+    }
+  );
+  const responsive = variant === 'responsive';
+  const sheet = responsive && compact;
+  const hideSheetHeader = sheetHeader === 'hidden';
+  const dialogMode = regular ? 'regular-dialog' : 'expanded-dialog';
 
-  useBodyScrollLock(open && !sheet);
+  useBodyScrollLock(open);
 
   const titleId = labelledBy ?? (title ? 'ui-modal-wrapper-title' : undefined);
 
@@ -68,6 +86,9 @@ export function ModalWrapper({
     'ui-modal-wrapper',
     'ui-modal-wrapper--' + variant,
     sheet && 'ui-modal-wrapper--sheet',
+    sheet && hideSheetHeader && 'ui-modal-wrapper--sheet-header-hidden',
+    !sheet && responsive && 'ui-modal-wrapper--responsive-dialog',
+    !sheet && responsive && 'ui-modal-wrapper--' + dialogMode,
     className
   );
   const paperClass = cn('ui-modal-wrapper__paper', paperClassName);
@@ -110,9 +131,15 @@ export function ModalWrapper({
         className={rootClassName}
         aria-labelledby={titleId}
         disableSwipeToOpen
+        disableDiscovery
+        allowSwipeInChildren
+        hysteresis={0.15}
+        minFlingVelocity={250}
+        disableBackdropTransition={false}
+        transitionDuration={{ enter: 260, exit: 200 }}
         ModalProps={{
-          keepMounted: false,
           disableScrollLock: true,
+          keepMounted: false,
         }}
         slotProps={{
           backdrop: {
@@ -123,10 +150,19 @@ export function ModalWrapper({
           },
         }}
       >
-        <div className="ui-modal-wrapper__sheet-grip" aria-hidden="true" />
-        {closeNode}
-        {titleNode}
-        {contentNode}
+        <div className="ui-modal-wrapper__sheet">
+          {hideSheetHeader ? null : (
+            <div className="ui-modal-wrapper__sheet-header">
+              <div
+                className="ui-modal-wrapper__sheet-grip"
+                aria-hidden="true"
+              />
+              {titleNode}
+            </div>
+          )}
+          {hideSheetHeader ? titleNode : null}
+          {contentNode}
+        </div>
       </SwipeableDrawer>
     );
   }
@@ -137,9 +173,13 @@ export function ModalWrapper({
       onClose={handleDialogClose}
       className={rootClassName}
       maxWidth="sm"
-      fullWidth={variant !== 'dialog'}
+      fullWidth={responsive}
       aria-labelledby={titleId}
       disableScrollLock
+      transitionDuration={{ enter: 180, exit: 150 }}
+      slots={{
+        transition: Fade,
+      }}
       slotProps={{
         container: {
           className: 'ui-modal-wrapper__container',

@@ -21,20 +21,25 @@ export type CatalogProduct = {
   [key: string]: unknown;
 };
 
+import type { CartIntroKind } from './cartExtras';
+
+export type { CartIntroKind };
+
 export type CartState = {
   allItems: CatalogProduct[];
   freeItems: unknown[];
-  needDops: unknown[];
+  needDops: unknown;
   items: CartLineItem[];
   itemsOffDops: CartLineItem[];
   dopListCart: CartLineItem[];
+  cartIntroKind: CartIntroKind;
   itemsCount: number;
   allPrice: number;
   allPriceWithoutPromo: number | null;
   checkPromo: { st?: boolean } | null;
   setAllItems: (items: unknown[]) => void;
   setFreeItems: (items: unknown[]) => void;
-  setNeedDops: (items: unknown[]) => void;
+  setNeedDops: (items: unknown) => void;
   changeAllItems: () => void;
   hydrateFromLocalStorage: () => void;
   plus: (itemId: number | string | undefined, catId?: number | string) => void;

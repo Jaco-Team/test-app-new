@@ -23,6 +23,14 @@
 - Tablet is a required separate design variation, not a stretched mobile or desktop variant.
 - Prefer adaptive props and CSS over separate mobile/tablet/desktop components unless behavior genuinely differs.
 
+## Visual parity and adaptivity
+
+- Design/UX target: **100% match** with legacy (`/samara`) and https://jacofood.ru/samara; old code/styles are reference only.
+- Layout uses fluid SCSS (`ui-fluid-compact/regular/expanded` in `src/shared/ui/foundation/_formulas.scss`). Formula args are **not** literal px on screen.
+- **Pixel-first workflow:** capture and measure at fixed viewports (320, 668, 991 px) via Chrome/browser MCP or Playwright, then derive formula values and `ui-*` media wrappers. See [docs/tablet-adaptation-guide.md](docs/tablet-adaptation-guide.md).
+- Cursor: rule `.cursor/rules/preview-ds.mdc`; skills `.cursor/skills/markup-parity`, `.cursor/skills/visual-capture`.
+- Playwright: `npm run test:ui-visual` (Storybook); `npx playwright test -c playwright.preview.config.ts` (preview vs legacy, opt-in).
+
 ## Workflow
 
 1. Build and refine UI in `src/shared/ui` (stories colocated).
@@ -33,6 +41,8 @@
 6. Final stage: migrate backend from the custom implementation to Laravel.
 
 ## Local Development
+
+- When the user refers to localhost or a localhost URL, check whether the existing server/browser session is already live with browser tooling before running npm run dev or asking to start a dev server.
 
 - `npm run dev` — legacy + preview cores on port 3000.
 - Legacy home: `http://localhost:3000/samara`

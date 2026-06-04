@@ -5,11 +5,19 @@ import type { ProductCardProps } from '@ui/patterns/ProductCard/ProductCard';
 export type HomeProduct = ProductCardProps & {
   id: string;
   catId?: string;
+  link?: string;
+  imageKey?: string;
   weight?: string;
   detailText?: string;
   composition?: string;
   nutrition?: { label: string; value: string }[];
+  tagIds?: string[];
   raw?: Record<string, unknown>;
+};
+
+export type HomeBannerPromoInfo = {
+  name: string;
+  cityId: string;
 };
 
 export type HomeBannerSlide = {
@@ -20,24 +28,26 @@ export type HomeBannerSlide = {
   imageWide: string;
   alt?: string;
   title?: string;
+  /** Manager-authored HTML (emojis, simple markup). */
   text?: string;
   buttonLabel?: string;
+  /** Legacy `info.promo_action`: 0 = none, 2 = price-only rows, other = promo CTA. */
+  promoAction?: number;
+  promoInfo?: HomeBannerPromoInfo;
   products?: HomeProduct[];
 };
 
-export type HomeFooterLinkGroup = {
-  title: string;
-  items: { label: string; href: string }[];
-};
-
-export type HomeFooterSocialLink = {
+export type HomeProductGroup = {
+  id: string;
   label: string;
-  href: string;
+  products: HomeProduct[];
 };
 
 export type HomeTagFilterItem = {
   label: string;
   active?: boolean;
+  tone?: 'default' | 'new';
+  id?: string;
 };
 
 export type HomePageViewModel = {
@@ -50,6 +60,5 @@ export type HomePageViewModel = {
   banners: HomeBannerSlide[];
   tags: HomeTagFilterItem[];
   products: HomeProduct[];
-  footerLinks: HomeFooterLinkGroup[];
-  footerSocialLinks: HomeFooterSocialLink[];
+  productGroups: HomeProductGroup[];
 };

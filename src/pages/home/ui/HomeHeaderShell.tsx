@@ -17,7 +17,6 @@ export function HomeHeaderShell({ navItems, cityLabel }: HomeHeaderShellProps) {
       navItems={navItems}
       city={cityLabel}
       compactMenuOpen={compactMenuOpen}
-      cartCount={2}
       onCompactMenuClick={() => setCompactMenuOpen((open) => !open)}
     />
   );

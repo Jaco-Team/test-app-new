@@ -12,9 +12,6 @@
     list-style: none;
     white-space: nowrap;
     overflow: auto;
-    &::-webkit-scrollbar {
-      display: none;
-    }
   }
   &__item {
     display: flex;

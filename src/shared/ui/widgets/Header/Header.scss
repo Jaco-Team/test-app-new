@@ -9,14 +9,18 @@
   box-sizing: border-box;
   width: 100%;
   padding-right: var(--ui-scrollbar-compensation, 0px);
-  background: #fff;
+  background: $ui-surface;
   color: $ui-text;
   font-family: $ui-font-family;
   transition: box-shadow 0.3s;
-  // box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+  // box-shadow: 0 2px 4px $ui-neutral-subtle;
 
   &_scrolled {
-    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.08);
+    box-shadow: 0 2px 4px $ui-neutral-subtle;
+  }
+
+  &--compact-menu-open {
+    padding-right: 0;
   }
 
   &__bar {
@@ -66,7 +70,7 @@
   &__docs-link,
   &__compact-menu-link {
     border: 0;
-    background: transparent;
+    background: $ui-transparent;
     color: inherit;
     font-family: inherit;
     letter-spacing: 0;
@@ -101,6 +105,7 @@
 
   &__compact-menu-button {
     display: inline-flex;
+    flex: 0 0 auto;
     align-items: center;
     justify-content: center;
     width: ui-fluid-compact(60);
@@ -112,6 +117,10 @@
     display: block;
     width: 100%;
     height: 100%;
+  }
+
+  &__compact-menu-button-icon--active path {
+    stroke: $ui-brand;
   }
 
   &__docs-menu-node {
@@ -135,32 +144,51 @@
     white-space: nowrap;
   }
 
-  &__compact-menu {
-    position: fixed;
-    inset: ui-fluid-compact(148) 0 auto 0;
-    height: ui-fluid-compact(1058);
-    transform: translateY(calc(-100% - ui-fluid-compact(148)));
-    background: #fff;
-    box-shadow: 0 18px 34px rgba(0, 0, 0, 0.12);
-    opacity: 0;
-    pointer-events: none;
-    transition:
-      transform 180ms ease,
-      opacity 180ms ease;
+  &__compact-drawer {
+    z-index: $ui-z-header;
   }
 
-  &__compact-menu--open {
-    transform: translateY(0);
-    opacity: 1;
-    pointer-events: auto;
+  &__compact-drawer-backdrop.MuiBackdrop-root {
+    background: linear-gradient(transparent 30%, rgba(0, 0, 0, 0.5) 70%);
+    mix-blend-mode: multiply;
+  }
+
+  &__compact-menu.MuiDrawer-paper {
+    position: fixed;
+    top: ui-fluid-compact(148);
+    right: 0;
+    left: 0;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    height: auto;
+    max-height: calc(100dvh - ui-fluid-compact(148));
+    overflow: hidden;
+    border-top: ui-fluid-compact(2) solid $ui-neutral-muted;
+    border-radius: 0 0 ui-fluid-compact(58) ui-fluid-compact(58);
+    background: $ui-surface;
+    box-shadow: none;
   }
 
   &__compact-menu-nav {
     display: grid;
     gap: 0;
     width: ui-fluid-compact(685);
-    padding: ui-fluid-compact(62) 0 0;
+    padding: ui-fluid-compact(62) 0 ui-fluid-compact(40);
     margin: 0 auto;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  &__compact-menu-grip {
+    flex: 0 0 auto;
+    width: ui-fluid-compact(150);
+    height: ui-fluid-compact(10);
+    margin: 0 auto ui-fluid-compact(28);
+    border-radius: ui-fluid-compact(10);
+    background: $ui-neutral-control;
+    pointer-events: none;
   }
 
   &__compact-menu-link {
@@ -179,7 +207,7 @@
   }
 
   &__compact-menu-link--active {
-    background: rgba(0, 0, 0, 0.04);
+    background: $ui-neutral-weak;
   }
 
   &__compact-menu-icon {
@@ -202,7 +230,7 @@
     height: ui-fluid-compact(60);
     border-radius: 50%;
     background: $ui-brand;
-    color: #fff;
+    color: $ui-text-inv;
     font-size: ui-fluid-compact(30);
     font-weight: 700;
     line-height: 1;
@@ -210,78 +238,62 @@
 
   @include ui-regular {
     &__bar {
-      height: ui-fluid-regular(114);
-      padding: 0 ui-fluid-regular(46);
+      height: ui-fluid-regular(80);
+      padding: 0 ui-fluid-regular(20);
       gap: ui-fluid-regular(18);
     }
 
     &__logo {
-      width: ui-fluid-regular(285);
-      height: ui-fluid-regular(68);
+      width: ui-fluid-regular(200);
+      // height: ui-fluid-regular(90);
     }
 
     &__icon-button,
     &__compact-menu-button {
-      width: ui-fluid-regular(51);
-      height: ui-fluid-regular(51);
+      width: ui-fluid-regular(60);
+      height: ui-fluid-regular(60);
     }
 
-    &__cart {
-      min-width: ui-fluid-regular(242);
-      height: ui-fluid-regular(69);
-      padding: 0 ui-fluid-regular(26);
-      gap: ui-fluid-regular(23);
-      border-radius: ui-fluid-regular(31);
-      bottom: ui-fluid-regular(22);
-      box-shadow: 0 ui-fluid-regular(6) ui-fluid-regular(17) rgba(0, 0, 0, 0.18);
+    &__compact-menu.MuiDrawer-paper {
+      top: ui-fluid-regular(148);
+      max-height: calc(100dvh - ui-fluid-regular(148));
+      border-radius: 0 0 ui-fluid-regular(58) ui-fluid-regular(58);
     }
 
-    &__cart svg {
-      width: ui-fluid-regular(35);
-      height: ui-fluid-regular(26);
-    }
-
-    &__cart span {
-      font-size: ui-fluid-regular(32);
-    }
-
-    &__compact-menu {
-      inset: ui-fluid-regular(114) 0 auto 0;
-      height: ui-fluid-regular(812);
-      transform: translateY(calc(-100% - ui-fluid-regular(114)));
-    }
-
-    &__compact-menu--open {
-      transform: translateY(0);
+    &__compact-menu-grip {
+      width: ui-fluid-regular(150);
+      height: ui-fluid-regular(10);
+      margin-bottom: ui-fluid-regular(28);
+      border-radius: ui-fluid-regular(10);
     }
 
     &__compact-menu-nav {
-      width: ui-fluid-regular(526);
-      padding-top: ui-fluid-regular(48);
+      width: ui-fluid-regular(685);
+      padding: ui-fluid-regular(62) 0 ui-fluid-regular(40);
     }
 
     &__compact-menu-link {
       grid-template-columns:
-        ui-fluid-regular(92) minmax(0, 1fr)
-        ui-fluid-regular(46);
-      min-height: ui-fluid-regular(93);
-      padding: 0 ui-fluid-regular(23);
-      border-radius: ui-fluid-regular(15);
+        ui-fluid-regular(120) minmax(0, 1fr)
+        ui-fluid-regular(60);
+      min-height: ui-fluid-regular(122);
+      padding: 0 ui-fluid-regular(30);
+      border-radius: ui-fluid-regular(20);
     }
 
     &__compact-menu-icon {
-      width: ui-fluid-regular(57);
-      height: ui-fluid-regular(57);
+      width: ui-fluid-regular(74);
+      height: ui-fluid-regular(74);
     }
 
     &__compact-menu-text {
-      font-size: ui-fluid-regular(26);
+      font-size: ui-fluid-regular(34);
     }
 
     &__compact-menu-badge {
-      width: ui-fluid-regular(46);
-      height: ui-fluid-regular(46);
-      font-size: ui-fluid-regular(23);
+      width: ui-fluid-regular(60);
+      height: ui-fluid-regular(60);
+      font-size: ui-fluid-regular(30);
     }
   }
 
@@ -295,8 +307,8 @@
       height: ui-fluid-expanded(28);
       background: linear-gradient(
         180deg,
-        rgba(115, 115, 115, 0.1) 0%,
-        rgba(83, 92, 84, 0) 100%
+        $ui-gradient-shadow 0%,
+        $ui-gradient-clear 100%
       );
       mix-blend-mode: multiply;
       pointer-events: none;
@@ -354,13 +366,13 @@
     &__nav-item--outlined:focus-visible {
       border-color: $ui-brand;
       color: $ui-brand;
-      background: transparent;
+      background: $ui-transparent;
     }
 
     &__nav-item:hover,
     &__nav-item:focus-visible {
       color: $ui-brand;
-      background: transparent;
+      background: $ui-transparent;
     }
 
     &__nav-arrow {
@@ -378,14 +390,14 @@
       min-width: ui-fluid-expanded(210);
       padding: ui-fluid-expanded(8);
       border-radius: ui-fluid-expanded(8);
-      background: #fff;
+      background: $ui-surface;
       box-shadow:
         0 ui-fluid-expanded(5) ui-fluid-expanded(5) ui-fluid-expanded(-3)
-          rgba(0, 0, 0, 0.2),
+          $ui-border,
         0 ui-fluid-expanded(8) ui-fluid-expanded(10) ui-fluid-expanded(1)
-          rgba(0, 0, 0, 0.14),
+          $ui-shadow-popover-2,
         0 ui-fluid-expanded(3) ui-fluid-expanded(14) ui-fluid-expanded(2)
-          rgba(0, 0, 0, 0.12);
+          $ui-neutral-active;
       transform-origin: top center;
     }
 
@@ -400,7 +412,7 @@
       text-decoration: none;
       border: 0;
       border-radius: ui-fluid-expanded(5);
-      background: transparent;
+      background: $ui-transparent;
       font-family: inherit;
       cursor: pointer;
     }
@@ -408,7 +420,7 @@
     &__submenu-item:hover,
     &__submenu-item:focus-visible {
       color: $ui-brand;
-      background: rgba(0, 0, 0, 0.03);
+      background: $ui-neutral-weakest;
     }
 
     &__spacer {
@@ -447,8 +459,8 @@
     &__icon-button:hover,
     &__icon-button:focus-visible,
     &__icon-button--active {
-      background-color: rgba(0, 0, 0, 0.05);
-      // outline: ui-fluid-expanded(16) solid rgba(0, 0, 0, 0.05);
+      background-color: $ui-neutral-soft;
+      // outline: ui-fluid-expanded(16) solid $ui-neutral-soft;
       outline-offset: 0;
     }
 
@@ -495,14 +507,14 @@
       min-width: ui-fluid-expanded(214);
       padding: ui-fluid-expanded(4);
       border-radius: ui-fluid-expanded(8);
-      background: #fff;
+      background: $ui-surface;
       box-shadow:
         0 ui-fluid-expanded(5) ui-fluid-expanded(5) ui-fluid-expanded(-3)
-          rgba(0, 0, 0, 0.2),
+          $ui-border,
         0 ui-fluid-expanded(8) ui-fluid-expanded(10) ui-fluid-expanded(1)
-          rgba(0, 0, 0, 0.14),
+          $ui-shadow-popover-2,
         0 ui-fluid-expanded(3) ui-fluid-expanded(14) ui-fluid-expanded(2)
-          rgba(0, 0, 0, 0.12);
+          $ui-neutral-active;
       transform-origin: top center;
     }
 
@@ -519,7 +531,7 @@
     &__docs-link:hover,
     &__docs-link:focus-visible {
       color: $ui-brand;
-      background: rgba(0, 0, 0, 0.03);
+      background: $ui-neutral-weakest;
     }
 
     &__profile {
@@ -571,14 +583,14 @@
 
     &__cart--filled svg,
     &__cart--filled svg path {
-      fill: #fff !important;
-      stroke: #fff;
+      fill: $ui-text-inv !important;
+      stroke: $ui-text-inv;
     }
 
     &__cart span {
       display: inline-flex;
       align-items: center;
-      color: #fff;
+      color: $ui-text-inv;
       font-size: ui-fluid-expanded(12);
       font-weight: 500;
       line-height: 1;
@@ -591,13 +603,13 @@
 }
 
 .ui-header__cart:not(.ui-header__cart--filled) svg path {
-  fill: #dd1a32 !important;
-  stroke: #dd1a32;
+  fill: $ui-brand !important;
+  stroke: $ui-brand;
   stroke-opacity: 0.1;
 }
 
 .ui-header__cart.ui-header__cart--filled svg path {
-  fill: #fff !important;
-  stroke: #fff;
+  fill: $ui-text-inv !important;
+  stroke: $ui-text-inv;
   stroke-opacity: 0.1;
 }

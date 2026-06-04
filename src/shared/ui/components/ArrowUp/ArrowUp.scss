@@ -1,0 +1,55 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+
+.ui-arrow-up {
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  position: sticky;
+  bottom: ui-fluid-compact(24);
+  left: 85dvw;
+  background-color: $ui-surface-medium;
+  box-shadow: 0 0 10px $ui-border;
+  border-radius: 50%;
+  width: max(44px, ui-fluid-compact(75));
+  height: max(44px, ui-fluid-compact(75));
+  cursor: pointer;
+  transition: all $ui-transition;
+
+  &:hover {
+    background-color: $ui-border-table;
+  }
+
+  svg {
+    width: max(24px, ui-fluid-compact(60));
+    height: max(24px, ui-fluid-compact(60));
+  }
+
+  &--hidden {
+    display: none;
+  }
+
+  @include ui-regular {
+    bottom: ui-fluid-regular(32);
+    width: ui-fluid-regular(28);
+    height: ui-fluid-regular(28);
+
+    svg {
+      width: ui-fluid-regular(19);
+      height: ui-fluid-regular(19);
+    }
+  }
+
+  @include ui-expanded {
+    left: 92dvw;
+    bottom: ui-fluid-expanded(60);
+    width: ui-fluid-expanded(35);
+    height: ui-fluid-expanded(35);
+    box-shadow: 0 ui-fluid-expanded(4) ui-fluid-expanded(12) rgba(0, 0, 0, 0.15);
+
+    svg {
+      width: ui-fluid-expanded(23);
+      height: ui-fluid-expanded(23);
+    }
+  }
+}

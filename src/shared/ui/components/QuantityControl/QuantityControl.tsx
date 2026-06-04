@@ -2,7 +2,7 @@ import type { ButtonHTMLAttributes } from 'react';
 import { cn } from '../../foundation/classNames';
 import './QuantityControl.scss';
 
-export type QuantityControlSize = 'sm' | 'md' | 'lg';
+export type QuantityControlSize = 'xs' | 'sm' | 'md' | 'lg';
 export interface QuantityControlProps extends Omit<
   ButtonHTMLAttributes<HTMLDivElement>,
   'onChange'
@@ -12,6 +12,7 @@ export interface QuantityControlProps extends Omit<
   max?: number;
   size?: QuantityControlSize;
   disabled?: boolean;
+  valueLabel?: string;
   onChange?: (value: number) => void;
 }
 
@@ -19,8 +20,9 @@ export function QuantityControl({
   value,
   min = 0,
   max = 99,
-  size = 'md',
+  size = 'sm',
   disabled = false,
+  valueLabel,
   onChange,
   className,
   ...props
@@ -47,7 +49,7 @@ export function QuantityControl({
       >
         –
       </button>
-      <span>{value}</span>
+      <span>{valueLabel ?? value}</span>
       <button
         type="button"
         aria-label="Увеличить"

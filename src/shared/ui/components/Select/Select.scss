@@ -14,7 +14,7 @@
     min-height: ui-fluid-compact(76);
     border: 1px solid $ui-border;
     border-radius: 8px;
-    background: #fff;
+    background: $ui-surface;
     color: $ui-text;
     padding: 0 ui-fluid-compact(22);
     outline: 0;
@@ -22,7 +22,7 @@
   }
   &__control:focus {
     border-color: $ui-brand;
-    box-shadow: 0 0 0 2px rgba(218, 26, 50, 0.12);
+    box-shadow: 0 0 0 2px $ui-brand-focus;
   }
   &__helper {
     @include ui-type(22, 22, 22, 400);

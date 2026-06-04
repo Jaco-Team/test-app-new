@@ -3,7 +3,6 @@
 
 .home-banner-modal {
   &__paper.ui-modal-wrapper__paper {
-    width: 100%;
     overflow: hidden;
   }
 
@@ -11,187 +10,458 @@
     padding: 0;
   }
 
-  &__hero picture,
-  &__hero img {
+  &:not(.ui-modal-wrapper--sheet) &__content.MuiDialogContent-root {
+    max-height: calc(100dvh - 48px);
+    overflow-x: hidden;
+    overflow-y: auto;
+    overscroll-behavior: contain;
+  }
+
+  &__shell {
+    display: flex;
+    flex-direction: column;
+    overflow: visible;
+    background: $ui-surface;
+  }
+
+  &__media {
+    position: relative;
+    width: 100%;
+  }
+
+  &__media picture,
+  &__media img {
     display: block;
     width: 100%;
   }
 
-  &__hero img {
+  &__media img {
     aspect-ratio: 2 / 1;
+    border-radius: ui-fluid-compact(58) ui-fluid-compact(58) 0 0;
     object-fit: cover;
+    image-rendering: auto;
   }
 
-  &__body {
-    display: grid;
-    gap: ui-fluid-compact(22);
-    padding: ui-fluid-compact(24) ui-fluid-compact(28) ui-fluid-compact(32);
+  &.ui-modal-wrapper--sheet &__media img {
+    border-radius: 0;
   }
 
-  &__copy h2 {
+  &__conditions {
+    position: absolute;
+    left: ui-fluid-compact(34);
+    bottom: ui-fluid-compact(18);
+    z-index: 2;
+    display: inline-block;
+    max-width: calc(100% - #{ui-fluid-compact(68)});
+    color: $ui-text-inv;
+    font-family: $ui-font-family;
+    font-size: ui-fluid-compact(16);
+    font-weight: 400;
+    line-height: 1.1;
+    white-space: nowrap;
+  }
+
+  &__details {
+    display: flex;
+    flex-direction: column;
+    gap: ui-fluid-compact(38);
+    width: calc(100% - #{ui-fluid-compact(100)});
+    margin: ui-fluid-compact(40) auto ui-fluid-compact(60);
+  }
+
+  &__promo {
+    display: flex;
+    flex-direction: column;
+    gap: ui-fluid-compact(12);
+    order: 1;
+    scroll-margin-top: ui-fluid-compact(24);
+  }
+
+  &__promo h2,
+  &__composition h3 {
     margin: 0;
     font-family: $ui-font-family;
-    font-size: ui-fluid-compact(32);
-    font-weight: 600;
-    line-height: 1.12;
+    font-size: ui-fluid-compact(40);
+    font-weight: 500;
+    line-height: 1.15;
     letter-spacing: 0;
   }
 
-  &__copy p {
-    margin: ui-fluid-compact(10) 0 0;
-    color: $ui-text-muted;
-    font-size: ui-fluid-compact(21);
-    line-height: 1.35;
+  &__promo-html {
+    color: $ui-text;
+    font-size: ui-fluid-compact(34);
+    line-height: 1.28;
+
+    p,
+    li,
+    a,
+    span {
+      margin: 0 0 ui-fluid-compact(10);
+      font-size: inherit;
+      line-height: inherit;
+    }
+
+    p:last-child {
+      margin-bottom: 0;
+    }
+
+    a {
+      color: inherit;
+      text-decoration: underline;
+    }
+  }
+
+  &__composition {
+    display: flex;
+    flex-direction: column;
+    gap: ui-fluid-compact(30);
+    order: 2;
   }
 
   &__products {
-    display: grid;
-    gap: ui-fluid-compact(16);
+    display: flex;
+    flex-direction: column;
+    gap: ui-fluid-compact(20);
   }
 
   &__product {
     display: grid;
-    grid-template-columns: ui-fluid-compact(138) minmax(0, 1fr);
-    gap: ui-fluid-compact(16);
-    align-items: center;
+    grid-template-columns: ui-fluid-compact(20) ui-fluid-compact(280) minmax(
+        0,
+        1fr
+      );
+    gap: ui-fluid-compact(20);
+    align-items: start;
+  }
+
+  &__product-number {
+    display: flex;
+    justify-content: flex-end;
+    margin-top: ui-fluid-compact(30);
+    color: $ui-text-muted;
+    font-size: ui-fluid-compact(32);
+    line-height: 1;
   }
 
   &__product-media,
-  &__product-body > button {
+  &__product-title {
     padding: 0;
     border: 0;
-    background: transparent;
+    background: $ui-transparent;
     color: inherit;
     text-align: left;
     cursor: pointer;
   }
 
-  &__product-media {
-    aspect-ratio: 1;
-    border-radius: 8px;
-    background: #f5f5f5;
-    overflow: hidden;
-  }
-
   &__product-media img {
     display: block;
     width: 100%;
-    height: 100%;
+    height: auto;
     object-fit: contain;
+    image-rendering: auto;
     mix-blend-mode: multiply;
   }
 
   &__product-body {
-    display: grid;
+    display: flex;
+    flex-direction: column;
     gap: ui-fluid-compact(8);
+    min-width: 0;
   }
 
-  &__product-body > button {
+  &__product-title {
+    min-height: ui-fluid-compact(80);
     font-family: $ui-font-family;
-    font-size: ui-fluid-compact(22);
-    font-weight: 600;
+    font-size: ui-fluid-compact(40);
+    font-weight: 400;
     line-height: 1.16;
   }
 
-  &__product-body p {
-    display: -webkit-box;
-    -webkit-line-clamp: 2;
-    -webkit-box-orient: vertical;
+  &__product-text {
+    min-height: ui-fluid-compact(120);
     margin: 0;
     overflow: hidden;
     color: $ui-text-muted;
-    font-size: ui-fluid-compact(18);
-    line-height: 1.25;
+    font-size: max(12, ui-fluid-compact(28));
+    line-height: 1.2;
+    line-clamp: 3;
   }
 
   &__product-action {
-    width: min(100%, ui-fluid-compact(250));
+    width: ui-fluid-compact(240);
+    margin-top: ui-fluid-compact(16);
   }
 
   &__product-action .ui-button,
   &__product-action .ui-quantity-control {
     width: 100%;
+    min-width: ui-fluid-compact(320);
+    min-height: ui-fluid-compact(70);
+  }
+
+  &__product-price {
+    display: inline-flex;
+    align-items: center;
+    min-height: ui-fluid-compact(70);
+    color: $ui-text;
+    font-size: ui-fluid-compact(28);
+    font-weight: 400;
+    line-height: 1;
+  }
+
+  &__cta {
+    width: 100%;
+    margin-top: ui-fluid-compact(30);
+    margin-bottom: ui-fluid-compact(20);
+
+    button {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      min-height: ui-fluid-compact(110);
+      padding: 0 ui-fluid-compact(24);
+      border: ui-fluid-compact(3) solid $ui-border;
+      border-radius: ui-fluid-compact(55);
+      background: $ui-surface;
+      color: $ui-text-muted;
+      font-family: $ui-font-family;
+      font-size: ui-fluid-compact(40);
+      font-weight: 400;
+      line-height: 1;
+      white-space: nowrap;
+      cursor: pointer;
+
+      &:hover {
+        background: $ui-surface-muted;
+        border-color: $ui-border;
+      }
+    }
   }
 
   @include ui-regular {
-    &__paper.ui-modal-wrapper__paper {
-      width: min(86vw, ui-fluid-regular(620));
+    &__media img {
+      aspect-ratio: 1092 / 299;
+      border-radius: ui-fluid-regular(22) ui-fluid-regular(22) 0 0;
+      object-fit: contain;
     }
 
-    &__hero img {
-      aspect-ratio: 2.4 / 1;
+    &__conditions {
+      left: ui-fluid-regular(26);
+      bottom: ui-fluid-regular(10);
+      max-width: calc(100% - #{ui-fluid-regular(52)});
+      font-size: ui-fluid-regular(15);
     }
 
-    &__body {
-      gap: ui-fluid-regular(24);
-      padding: ui-fluid-regular(28) ui-fluid-regular(34) ui-fluid-regular(34);
+    &__details {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: ui-fluid-regular(34);
+      width: calc(100% - #{ui-fluid-regular(80)});
+      margin: ui-fluid-regular(32) auto ui-fluid-regular(36);
+      overflow: visible;
     }
 
-    &__copy h2 {
-      font-size: ui-fluid-regular(32);
+    &__composition {
+      order: 1;
+      gap: ui-fluid-regular(22);
     }
 
-    &__copy p {
-      font-size: ui-fluid-regular(19);
-    }
-
-    &__products {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
-      gap: ui-fluid-regular(18);
-    }
-
-    &__product {
-      grid-template-columns: ui-fluid-regular(120) minmax(0, 1fr);
+    &__promo {
+      order: 2;
       gap: ui-fluid-regular(14);
     }
 
-    &__product-body > button {
-      font-size: ui-fluid-regular(18);
+    &__promo h2,
+    &__composition h3 {
+      font-size: ui-fluid-regular(24);
     }
 
-    &__product-body p {
-      font-size: ui-fluid-regular(15);
+    &__promo-html {
+      max-height: none;
+      overflow: visible;
+      font-size: ui-fluid-regular(17);
+      line-height: 1.34;
+
+      p,
+      li,
+      a,
+      span {
+        margin-bottom: ui-fluid-regular(8);
+      }
+    }
+
+    &__products {
+      gap: ui-fluid-regular(14);
+    }
+
+    &__product {
+      grid-template-columns: ui-fluid-regular(34) ui-fluid-regular(112) minmax(
+          0,
+          1fr
+        );
+      gap: ui-fluid-regular(14);
+    }
+
+    &__product-number {
+      margin-top: ui-fluid-regular(18);
+      font-size: ui-fluid-regular(17);
+    }
+
+    &__product-title {
+      min-height: ui-fluid-regular(44);
+      font-size: ui-fluid-regular(17);
+    }
+
+    &__product-text {
+      min-height: ui-fluid-regular(54);
+      font-size: ui-fluid-regular(14);
+      line-clamp: 2;
+    }
+
+    &__product-action {
+      width: ui-fluid-regular(130);
+      margin-top: ui-fluid-regular(10);
+    }
+
+    &__product-action .ui-button,
+    &__product-action .ui-quantity-control {
+      min-height: ui-fluid-regular(38);
+    }
+
+    &__product-price {
+      min-height: ui-fluid-regular(38);
+      font-size: ui-fluid-regular(17);
+    }
+
+    &__cta {
+      margin-top: ui-fluid-regular(18);
+      margin-bottom: ui-fluid-regular(12);
+
+      button {
+        width: auto;
+        min-width: fit-content;
+        margin-left: ui-fluid-regular(30);
+        min-height: ui-fluid-regular(48);
+        border-width: ui-fluid-regular(2);
+        border-radius: ui-fluid-regular(28);
+        font-size: ui-fluid-regular(17);
+      }
     }
   }
 
   @include ui-expanded {
-    &__paper.ui-modal-wrapper__paper {
-      width: min(70vw, ui-fluid-expanded(680));
+    &__shell {
+      @include ui-fluid('border-radius', 10);
     }
-
-    &__hero img {
+    &__media img {
       aspect-ratio: 1092 / 299;
+      @include ui-fluid('border-radius', 10);
+      object-fit: cover;
     }
 
-    &__body {
-      gap: ui-fluid-expanded(26);
-      padding: ui-fluid-expanded(30) ui-fluid-expanded(38) ui-fluid-expanded(38);
+    &__conditions {
+      left: ui-fluid-expanded(34);
+      bottom: ui-fluid-expanded(10);
+      max-width: calc(100% - #{ui-fluid-expanded(68)});
+      font-size: ui-fluid-expanded(14);
     }
 
-    &__copy h2 {
-      font-size: ui-fluid-expanded(30);
+    &__details {
+      display: grid;
+      grid-template-columns: minmax(0, 0.95fr) minmax(0, 1.05fr);
+      gap: ui-fluid-expanded(40);
+      width: calc(100% - #{ui-fluid-expanded(96)});
+      margin: ui-fluid-expanded(34) auto ui-fluid-expanded(40);
+      overflow: visible;
     }
 
-    &__copy p {
-      font-size: ui-fluid-expanded(16);
-    }
-
-    &__products {
-      grid-template-columns: repeat(2, minmax(0, 1fr));
+    &__composition {
+      order: 1;
       gap: ui-fluid-expanded(20);
     }
 
-    &__product {
-      grid-template-columns: ui-fluid-expanded(116) minmax(0, 1fr);
+    &__promo {
+      order: 2;
+      gap: ui-fluid-expanded(16);
+    }
+
+    &__promo h2,
+    &__composition h3 {
+      font-size: ui-fluid-expanded(22);
+    }
+
+    &__promo-html {
+      max-height: none;
+      overflow: visible;
+      font-size: ui-fluid-expanded(15);
+      line-height: 1.35;
+
+      p,
+      li,
+      a,
+      span {
+        margin-bottom: ui-fluid-expanded(8);
+      }
+    }
+
+    &__products {
       gap: ui-fluid-expanded(14);
     }
 
-    &__product-body > button {
-      font-size: ui-fluid-expanded(17);
+    &__product {
+      grid-template-columns:
+        ui-fluid-expanded(32) ui-fluid-expanded(112)
+        minmax(0, 1fr);
+      gap: ui-fluid-expanded(14);
     }
 
-    &__product-body p {
-      font-size: ui-fluid-expanded(14);
+    &__product-number {
+      margin-top: ui-fluid-expanded(18);
+      font-size: ui-fluid-expanded(16);
+    }
+
+    &__product-title {
+      min-height: ui-fluid-expanded(42);
+      font-size: ui-fluid-expanded(16);
+    }
+
+    &__product-text {
+      min-height: ui-fluid-expanded(52);
+      font-size: ui-fluid-expanded(13);
+      line-clamp: 2;
+    }
+
+    &__product-action {
+      width: ui-fluid-expanded(128);
+      margin-top: ui-fluid-expanded(10);
+    }
+
+    &__product-action .ui-button,
+    &__product-action .ui-quantity-control {
+      min-height: ui-fluid-expanded(36);
+      width: auto;
+      min-width: ui-fluid-expanded(140);
+    }
+
+    &__product-price {
+      min-height: ui-fluid-expanded(36);
+      font-size: ui-fluid-expanded(16);
+    }
+
+    &__cta {
+      margin-top: ui-fluid-expanded(16);
+      margin-bottom: ui-fluid-expanded(10);
+
+      button {
+        width: auto;
+        min-width: fit-content;
+        margin-left: ui-fluid-expanded(24);
+        min-height: ui-fluid-expanded(44);
+        border-width: ui-fluid-expanded(2);
+        border-radius: ui-fluid-expanded(26);
+        font-size: ui-fluid-expanded(16);
+      }
     }
   }
 }

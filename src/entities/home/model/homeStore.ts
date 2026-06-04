@@ -45,7 +45,8 @@ export type HomeState = {
   getBanners: (module: string, city: string) => Promise<unknown[]>;
   getItemsCat: (
     module: string,
-    city: string
+    city: string,
+    options?: { force?: boolean }
   ) => Promise<{ category: CatalogCategory[]; items: unknown[] }>;
 };
 
@@ -149,7 +150,7 @@ export const useHomeStore = reuseAppStore(
         return bannersInFlightPromise;
       },
 
-      getItemsCat: async (thisModule, city) => {
+      getItemsCat: async (thisModule, city, options) => {
         if (!city) {
           return { category: get().categories, items: get().catalogItems };
         }
@@ -183,6 +184,7 @@ export const useHomeStore = reuseAppStore(
         } = get();
 
         if (
+          !options?.force &&
           itemsCatSource === 'api' &&
           itemsCatCity === city &&
           Array.isArray(catalogItems) &&
@@ -192,7 +194,11 @@ export const useHomeStore = reuseAppStore(
           return { category: categories, items: catalogItems };
         }
 
-        if (itemsCatInFlightPromise && itemsCatInFlightKey === requestKey) {
+        if (
+          !options?.force &&
+          itemsCatInFlightPromise &&
+          itemsCatInFlightKey === requestKey
+        ) {
           return itemsCatInFlightPromise;
         }
 

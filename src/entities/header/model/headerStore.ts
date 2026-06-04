@@ -6,6 +6,7 @@ import { createWithEqualityFn } from 'zustand/traditional';
 import { useProfileStore } from '@src/entities/profile/model/profileStore';
 import { api } from '@src/shared/api';
 import { syncSentryUser } from '@src/shared/lib/monitoring/sentryAccount';
+import { ensureSessionToken } from '@src/features/telemetry';
 import { reuseAppStore } from '@src/shared/store/hotStore';
 import {
   getLocalStorageItem,
@@ -88,6 +89,8 @@ export const useHeaderStore = reuseAppStore(
         if (typeof window === 'undefined') {
           return;
         }
+
+        ensureSessionToken();
 
         const applyAuth = (token: string, user: Record<string, unknown>) => {
           useProfileStore.getState().setUser(user, city);

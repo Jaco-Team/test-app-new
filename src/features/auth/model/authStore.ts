@@ -5,6 +5,7 @@ import { shallow } from 'zustand/shallow';
 import { createWithEqualityFn } from 'zustand/traditional';
 import { useProfileStore } from '@src/entities/profile';
 import { useHeaderStore } from '@src/entities/header';
+import { saveUserAction } from '@src/features/telemetry';
 import { api } from '@src/shared/api';
 import { syncSentryUser } from '@src/shared/lib/monitoring/sentryAccount';
 import { reuseAppStore } from '@src/shared/store/hotStore';
@@ -141,6 +142,7 @@ export const useAuthStore = reuseAppStore(
         });
         setLocalStorageItem('token', token);
         Cookies.set('token', token, { expires: 60 });
+        void saveUserAction({ event: 'user_log_in' });
       },
 
       checkCode: async () => {
@@ -175,6 +177,7 @@ export const useAuthStore = reuseAppStore(
         });
         setLocalStorageItem('token', token);
         Cookies.set('token', token, { expires: 60 });
+        void saveUserAction({ event: 'user_log_in' });
       },
 
       createProfile: async (token) => {
@@ -234,6 +237,7 @@ export const useAuthStore = reuseAppStore(
       },
 
       signOut: (city) => {
+        void saveUserAction({ event: 'user_log_out' });
         syncSentryUser(null, city);
         removeLocalStorageItem('token');
         Cookies.remove('token');
@@ -275,6 +279,7 @@ export const useAuthStore = reuseAppStore(
           setLocalStorageItem('token', token);
           Cookies.set('token', token, { expires: 60 });
           get().closeModalAuth();
+          void saveUserAction({ event: 'user_log_in' });
         }
       },
     }),

@@ -3,9 +3,14 @@
 import Cookies from 'js-cookie';
 import { useMemo, useState } from 'react';
 import { usePathname, useRouter, useSearchParams } from 'next/navigation';
+import KeyboardArrowDownIcon from '@mui/icons-material/KeyboardArrowDown';
+import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
+import Menu from '@mui/material/Menu';
+import MenuItem from '@mui/material/MenuItem';
 import { useCityStore } from '@src/entities/city';
 import type { CityRecord } from '@src/entities/city';
 import { useHeaderStore } from '@src/entities/header';
+import { useCompactLayout } from '@src/shared/lib/viewport';
 import { ModalWrapper } from '@src/shared/ui';
 import { setLocalStorageItem } from '@/utils/browserStorage';
 import './CityModal.scss';
@@ -29,7 +34,8 @@ export function CityModal() {
   const router = useRouter();
   const pathname = usePathname() || '/preview/togliatti';
   const searchParams = useSearchParams();
-  const [showList, setShowList] = useState(false);
+  const compact = useCompactLayout();
+  const [menuAnchor, setMenuAnchor] = useState<HTMLElement | null>(null);
 
   const citySlug = useCityStore((state) => state.slug);
   const cityLabel = useCityStore((state) => state.labelRu);
@@ -44,16 +50,26 @@ export function CityModal() {
     (state) => state.setActiveModalCityList
   );
 
-  const visible = openCityModal || openCityModalList;
   const cityOptions = useMemo(
     () => cityList.filter((item) => cityLink(item).length > 0),
     [cityList]
   );
-  const effectiveShowList = showList || openCityModalList;
+  const menuOpen = Boolean(menuAnchor);
+  const openConfirm = openCityModal;
+  const openList = compact && openCityModalList;
 
-  const close = () => {
-    setShowList(false);
+  const closeAll = () => {
+    setMenuAnchor(null);
     setActiveModalCity(false);
+    setActiveModalCityList(false);
+  };
+
+  const closeConfirm = () => {
+    setMenuAnchor(null);
+    setActiveModalCity(false);
+  };
+
+  const closeList = () => {
     setActiveModalCityList(false);
   };
 
@@ -69,7 +85,7 @@ export function CityModal() {
         sameSite: 'Lax',
       });
     }
-    close();
+    closeAll();
   };
 
   const chooseCity = (nextCity: CityRecord) => {
@@ -86,7 +102,7 @@ export function CityModal() {
       sameSite: 'Lax',
     });
     setCity(nextSlug, nextName, cityList);
-    close();
+    closeAll();
 
     const query = searchParams?.toString();
     const nextPath = replaceCityInPath(pathname, nextSlug);
@@ -94,26 +110,109 @@ export function CityModal() {
     router.refresh();
   };
 
-  if (!visible) {
-    return null;
-  }
+  const openCityPickerMobile = () => {
+    setActiveModalCity(false);
+    setActiveModalCityList(true);
+  };
+
+  const confirmBody = (
+    <>
+      <div className="city-modal__image">
+        <img src="/Favicon_city.png" alt="" />
+      </div>
+      <div className="city-modal__subtitle">Вы в городе</div>
+      <div className="city-modal__city">{cityLabel}</div>
+      <button
+        className="city-modal__action"
+        type="button"
+        onClick={confirmCity}
+      >
+        Да, верно
+      </button>
+      <button
+        className={
+          'city-modal__action city-modal__action--secondary' +
+          (menuOpen ? ' city-modal__action--secondary-open' : '')
+        }
+        type="button"
+        aria-expanded={compact ? undefined : menuOpen}
+        aria-haspopup={compact ? undefined : 'listbox'}
+        onClick={(event) => {
+          if (compact) {
+            openCityPickerMobile();
+            return;
+          }
+          setMenuAnchor(event.currentTarget);
+        }}
+      >
+        <span>Нет, выберу город</span>
+        {!compact ? (
+          menuOpen ? (
+            <KeyboardArrowUpIcon className="city-modal__action-icon" />
+          ) : (
+            <KeyboardArrowDownIcon className="city-modal__action-icon" />
+          )
+        ) : null}
+      </button>
+      {!compact ? (
+        <Menu
+          id="city-modal-menu"
+          className="city-modal__menu"
+          anchorEl={menuAnchor}
+          open={menuOpen}
+          onClose={() => setMenuAnchor(null)}
+          disableScrollLock
+          sx={{ zIndex: 4300 }}
+        >
+          {cityOptions.map((item) => {
+            const slug = cityLink(item);
+            const name = cityName(item);
+            return (
+              <MenuItem
+                key={slug}
+                className="city-modal__menu-item"
+                onClick={() => chooseCity(item)}
+              >
+                {name}
+              </MenuItem>
+            );
+          })}
+        </Menu>
+      ) : null}
+    </>
+  );
 
   return (
-    <ModalWrapper
-      open={visible}
-      onClose={close}
-      className="city-modal"
-      paperClassName="city-modal__paper"
-      title={effectiveShowList ? 'Выберите город' : 'Вы в городе'}
-      titleClassName="city-modal__title"
-      contentClassName="city-modal__content"
-      closeOutside
-      closeOnBackdrop
-      labelledBy="city-modal-title"
-      variant="responsive"
-    >
-      {effectiveShowList ? (
-        <>
+    <>
+      {openConfirm ? (
+        <ModalWrapper
+          open={openConfirm}
+          onClose={closeConfirm}
+          className="city-modal"
+          paperClassName="city-modal__paper"
+          contentClassName="city-modal__content"
+          closeOutside={!compact}
+          closeOnBackdrop
+          labelledBy="city-modal-title"
+          variant="responsive"
+        >
+          {confirmBody}
+        </ModalWrapper>
+      ) : null}
+
+      {openList ? (
+        <ModalWrapper
+          open={openList}
+          onClose={closeList}
+          className="city-modal city-modal--list"
+          paperClassName="city-modal__paper"
+          title="Выберите город"
+          titleClassName="city-modal__title"
+          contentClassName="city-modal__content"
+          closeOnBackdrop
+          labelledBy="city-modal-list-title"
+          variant="responsive"
+        >
           <div className="city-modal__list">
             {cityOptions.map((item) => {
               const slug = cityLink(item);
@@ -131,29 +230,8 @@ export function CityModal() {
               );
             })}
           </div>
-        </>
-      ) : (
-        <>
-          <div className="city-modal__image">
-            <img src="/Favicon_city.png" alt="" />
-          </div>
-          <div className="city-modal__city">{cityLabel}</div>
-          <button
-            className="city-modal__action"
-            type="button"
-            onClick={confirmCity}
-          >
-            Да, верно
-          </button>
-          <button
-            className="city-modal__action city-modal__action--secondary"
-            type="button"
-            onClick={() => setShowList(true)}
-          >
-            Нет, выберу город
-          </button>
-        </>
-      )}
-    </ModalWrapper>
+        </ModalWrapper>
+      ) : null}
+    </>
   );
 }

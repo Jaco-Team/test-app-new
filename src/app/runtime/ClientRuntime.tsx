@@ -10,12 +10,17 @@ import {
   installGlobalSentryHandlers,
   isCustomSentryMonitoringEnabled,
 } from '@/utils/clientMonitoring';
+import { breakpointValues } from '@src/shared/ui/foundation/breakpoints';
+import { ProfileOrdersPoller } from '@src/features/telemetry';
 import { RuntimeScripts } from './RuntimeScripts';
 
-const HEADER_DESKTOP_BREAKPOINT_PX = 800;
+const HEADER_DESKTOP_BREAKPOINT_PX = breakpointValues.md;
 
 export function ClientRuntime({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
+  const loadYmaps =
+    Boolean(pathname?.includes('/cart')) ||
+    Boolean(pathname?.includes('/contacts'));
   const previousUrlRef = useRef('');
   const setMatches = useHeaderStore((state) => state.setMatches);
 
@@ -69,7 +74,8 @@ export function ClientRuntime({ children }: { children: React.ReactNode }) {
 
   return (
     <>
-      <RuntimeScripts />
+      <RuntimeScripts loadYmaps={loadYmaps} />
+      <ProfileOrdersPoller />
       {children}
     </>
   );

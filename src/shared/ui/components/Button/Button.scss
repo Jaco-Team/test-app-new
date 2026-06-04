@@ -5,12 +5,13 @@
   align-items: center;
   justify-content: center;
   gap: ui-fluid-compact(12);
-  border: 1px solid transparent;
+  border: 1px solid $ui-transparent;
   border-radius: 999px;
   cursor: pointer;
   font-family: $ui-font-family;
   letter-spacing: 0;
   white-space: nowrap;
+  text-decoration: none;
   transition:
     background-color 180ms ease,
     border-color 180ms ease,
@@ -29,26 +30,29 @@
   &--full {
     width: 100%;
   }
-  &--density-compact {
-    min-height: ui-fluid-compact(80);
+  &--range-compact {
+    min-height: ui-fluid-compact($ui-button-compact);
     padding: 0 ui-fluid-compact(28);
     font-size: ui-fluid-compact(38);
   }
-  &--density-regular {
-    min-height: ui-fluid-compact(94);
+  &--range-regular {
+    min-height: ui-fluid-compact($ui-button-regular);
     padding: 0 ui-fluid-compact(36);
-    font-size: ui-fluid-compact(42);
   }
-  &--density-expanded {
-    min-height: ui-fluid-compact(112);
+  &--range-expanded {
+    min-height: ui-fluid-compact($ui-button-expanded);
     padding: 0 ui-fluid-compact(44);
     font-size: ui-fluid-compact(46);
+  }
+  &--size-xs {
+    min-width: ui-fluid-compact(260);
   }
   &--size-sm {
     min-width: ui-fluid-compact(320);
   }
   &--size-md {
     min-width: ui-fluid-compact(420);
+    width: ui-fluid-compact(420);
   }
   &--size-lg {
     min-width: ui-fluid-compact(520);
@@ -59,54 +63,43 @@
   &--tone-primary,
   &--tone-cart {
     background: $ui-brand;
-    color: #fff;
+    color: $ui-text-inv;
   }
   &--tone-primary:hover,
-  &--tone-cart:hover {
+  &--tone-primary:focus-visible,
+  &--tone-primary:active,
+  &--tone-primary.ui-button--active,
+  &--tone-cart:hover,
+  &--tone-cart:focus-visible,
+  &--tone-cart:active,
+  &--tone-cart.ui-button--active {
     background: $ui-brand-hover;
   }
-  &--tone-primary:active,
-  &--tone-cart:active,
-  &--tone-primary.ui-button--active,
-  &--tone-cart.ui-button--active {
-    background: $ui-brand-active;
-  }
-  &--tone-secondary {
-    background: #fff;
-    border-color: $ui-brand;
-    color: $ui-brand;
-  }
-  &--tone-secondary:hover {
-    background: rgba(0, 0, 0, 0.05);
-    border-color: $ui-brand-hover;
-    color: $ui-brand-hover;
-  }
-  &--tone-secondary:active,
-  &--tone-secondary.ui-button--active {
-    background: $ui-brand-active;
-    border-color: $ui-brand-active;
-    color: #fff;
-  }
   &--tone-neutral {
-    background: #fff;
+    background: $ui-transparent;
     border-color: $ui-border;
     color: $ui-text;
   }
   &--tone-neutral:hover,
+  &--tone-neutral:focus-visible,
+  &--tone-neutral:active,
   &--tone-neutral.ui-button--active {
-    background: rgba(0, 0, 0, 0.05);
+    background: $ui-control-bg;
   }
   &--tone-muted {
-    background: rgba(0, 0, 0, 0.05);
+    background: $ui-control-bg;
     color: $ui-text;
   }
-  &--tone-muted:hover {
-    background: rgba(0, 0, 0, 0.09);
-  }
+  &--tone-muted:hover,
+  &--tone-muted:focus-visible,
   &--tone-muted:active,
   &--tone-muted.ui-button--active {
-    background: rgba(0, 0, 0, 0.12);
+    background: $ui-control-hover;
   }
+  &:focus-visible {
+    outline: none;
+  }
+
   &:disabled,
   &[aria-disabled='true'] {
     cursor: default;
@@ -115,20 +108,23 @@
   }
   @include ui-regular {
     gap: ui-fluid-regular(12);
-    &--density-compact {
+    &--range-compact {
       min-height: ui-fluid-regular(52);
       padding: 0 ui-fluid-regular(22);
       font-size: ui-fluid-regular(22);
     }
-    &--density-regular {
+    &--range-regular {
       min-height: ui-fluid-regular(63);
       padding: 0 ui-fluid-regular(30);
       font-size: ui-fluid-regular(25);
     }
-    &--density-expanded {
+    &--range-expanded {
       min-height: ui-fluid-regular(78);
       padding: 0 ui-fluid-regular(38);
       font-size: ui-fluid-regular(28);
+    }
+    &--size-xs {
+      min-width: ui-fluid-regular(144);
     }
     &--size-sm {
       min-width: ui-fluid-regular(178);
@@ -145,20 +141,23 @@
   }
   @include ui-expanded {
     gap: ui-fluid-expanded(12);
-    &--density-compact {
+    &--range-compact {
       min-height: ui-fluid-expanded(40);
       padding: 0 ui-fluid-expanded(20);
       font-size: ui-fluid-expanded(13);
     }
-    &--density-regular {
+    &--range-regular {
       min-height: ui-fluid-expanded(48);
       padding: 0 ui-fluid-expanded(26);
       font-size: ui-fluid-expanded(16);
     }
-    &--density-expanded {
+    &--range-expanded {
       min-height: ui-fluid-expanded(62);
       padding: 0 ui-fluid-expanded(34);
       font-size: ui-fluid-expanded(20);
+    }
+    &--size-xs {
+      min-width: ui-fluid-expanded(118);
     }
     &--size-sm {
       min-width: ui-fluid-expanded(140);

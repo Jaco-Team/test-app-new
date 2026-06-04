@@ -7,7 +7,7 @@
   padding: ui-fluid-compact(24);
   border-radius: 12px;
   background: $ui-surface-muted;
-  border: 1px solid transparent;
+  border: 1px solid $ui-transparent;
   overflow: hidden;
   color: $ui-text;
   &__title {
@@ -28,7 +28,7 @@
     right: 0;
     bottom: 0;
     height: 3px;
-    background: rgba(0, 0, 0, 0.08);
+    background: $ui-neutral-subtle;
   }
   &__progress span {
     display: block;
@@ -36,19 +36,19 @@
     background: currentColor;
   }
   &--tone-info {
-    border-color: rgba(0, 0, 0, 0.12);
+    border-color: $ui-neutral-active;
   }
   &--tone-success {
-    border-color: #2e7d32;
-    color: #2e7d32;
+    border-color: $ui-success;
+    color: $ui-success;
   }
   &--tone-warning {
-    border-color: #ed6c02;
-    color: #ed6c02;
+    border-color: $ui-warning;
+    color: $ui-warning;
   }
   &--tone-error {
-    border-color: #c62828;
-    color: #c62828;
+    border-color: $ui-danger;
+    color: $ui-danger;
   }
   @include ui-regular {
     gap: ui-fluid-regular(12);

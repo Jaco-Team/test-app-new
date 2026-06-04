@@ -31,6 +31,23 @@ export function trackCommerceEvent(
     case 'open_basket':
       reachGoal('open_basket', undefined, city);
       break;
+    case 'add_item':
+      pushTopMailRu(city, {
+        type: 'reachGoal',
+        id: 3621394,
+        value: params?.price ?? 0,
+        goal: 'korzina',
+        params: { product_id: params.item_id },
+      });
+      break;
+    case 'true_pay_online_order':
+      pushTopMailRu(city, {
+        type: 'reachGoal',
+        id: 3621394,
+        value: params?.price ?? 0,
+        goal: 'zakaz_oplata',
+      });
+      break;
     default:
       break;
   }
