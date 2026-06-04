@@ -208,6 +208,67 @@
     &__action .ui-price {
       font-size: ui-fluid-regular(20);
     }
+
+    @media (min-width: 820px) {
+      gap: ui-fluid-regular(8);
+      min-height: ui-fluid-regular(320);
+      padding-bottom: ui-fluid-regular(12);
+
+      &--active {
+        min-height: ui-fluid-regular(320);
+      }
+
+      &__badges {
+        top: ui-fluid-regular(10);
+        left: ui-fluid-regular(10);
+        gap: ui-fluid-regular(6);
+      }
+
+      &__body {
+        gap: ui-fluid-regular(7);
+      }
+
+      &__title {
+        min-height: ui-fluid-regular(32);
+        font-size: ui-fluid-regular(14);
+        line-height: 1.15;
+      }
+
+      &__info {
+        gap: ui-fluid-regular(5);
+        min-height: ui-fluid-regular(14);
+        font-size: ui-fluid-regular(9);
+      }
+
+      &__info span + span::before {
+        margin-right: ui-fluid-regular(5);
+      }
+
+      &__description {
+        padding-inline: ui-fluid-regular(10);
+        min-height: ui-fluid-regular(34);
+        margin: 0;
+        font-size: max(11px, ui-fluid-regular(11));
+        line-height: 1.24;
+      }
+
+      &__action {
+        width: 74%;
+        min-height: ui-fluid-regular(42);
+        margin-top: ui-fluid-regular(8);
+      }
+
+      &__action .ui-quantity-control button {
+        width: ui-fluid-regular(30);
+        height: ui-fluid-regular(30);
+        margin: 0 ui-fluid-regular(3);
+        font-size: ui-fluid-regular(18);
+      }
+
+      &__action .ui-price {
+        font-size: ui-fluid-regular(13);
+      }
+    }
   }
 
   @include ui-expanded {

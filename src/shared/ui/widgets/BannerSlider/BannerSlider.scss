@@ -3,7 +3,6 @@
 
 .ui-banner-slider {
   position: relative;
-  // padding-top: ui-fluid-compact(20);
   width: 100%;
   overflow: hidden;
   font-family: $ui-font-family;
@@ -11,13 +10,13 @@
 
   &__swiper {
     width: 100%;
-
+    padding-inline: ui-fluid-compact(30);
     @include ui-compact {
       padding-top: ui-fluid-compact(148);
     }
 
     @include ui-regular {
-      padding-top: ui-fluid-regular(200);
+      padding-top: ui-fluid-regular(85);
     }
   }
 
@@ -69,6 +68,10 @@
   }
 
   @include ui-regular {
+    &__swiper {
+      padding-inline: ui-fluid-regular(20);
+    }
+
     &__pagination {
       bottom: ui-fluid-regular(22) !important;
       gap: ui-fluid-regular(10);
@@ -84,6 +87,7 @@
     padding: ui-fluid-expanded(64) 0 0;
     &__swiper {
       max-width: ui-fluid-expanded(1260);
+      padding-inline: 0;
       margin: 0 auto;
     }
 

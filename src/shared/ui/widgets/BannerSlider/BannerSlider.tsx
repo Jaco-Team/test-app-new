@@ -51,6 +51,15 @@ export function BannerSlider({
         className="ui-banner-slider__swiper"
         modules={[Autoplay, Navigation, Pagination, A11y, EffectCreative]}
         slidesPerView={1}
+        spaceBetween={12}
+        breakpoints={{
+          668: {
+            spaceBetween: 12,
+          },
+          991: {
+            spaceBetween: 0,
+          },
+        }}
         loop={hasMultipleSlides}
         grabCursor={hasMultipleSlides}
         speed={2500}

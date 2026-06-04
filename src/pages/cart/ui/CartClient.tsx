@@ -1,6 +1,6 @@
 'use client';
 
-import { PageLayout } from '@src/widgets/layout';
+import { PageFrame, PageLayout } from '@src/widgets/layout';
 import type { StoreBootstrapProps } from '@src/features/bootstrap/StoreBootstrap';
 import { resolveCityLabel } from '@src/shared/lib/resolveCityLabel';
 import { CartPage, CartPageIntro } from './CartPage';
@@ -21,8 +21,9 @@ export function CartClient({ storeSeed }: CartClientProps) {
         fallbackCityLabel: cityLabel,
       }}
     >
-      <CartPageIntro />
-      <CartPage />
+      <PageFrame intro={<CartPageIntro />}>
+        <CartPage />
+      </PageFrame>
     </PageLayout>
   );
 }
