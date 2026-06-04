@@ -5,11 +5,13 @@ import {
   DatePicker,
   type DatePickerProps,
 } from '@mui/x-date-pickers/DatePicker';
+import type { TextFieldProps } from '@mui/material/TextField';
 import {
   createMuiControlSx,
-  createStartAdornment,
   getMuiControlClassName,
+  mergeTextFieldSlotProps,
   type MuiControlRange,
+  type MuiControlSurface,
 } from '../internal/muiControl/shared';
 
 export type MuiDatePickerFieldProps<TDate extends Date = Date> = Omit<
@@ -17,24 +19,21 @@ export type MuiDatePickerFieldProps<TDate extends Date = Date> = Omit<
   'slots'
 > & {
   range?: MuiControlRange;
+  surface?: MuiControlSurface;
   className?: string;
   startAdornment?: ReactNode;
 };
 
 export function MuiDatePickerField<TDate extends Date = Date>({
   range = 'regular',
+  surface = 'plain',
   className,
   startAdornment,
   slotProps,
   ...props
 }: MuiDatePickerFieldProps<TDate>) {
-  const textFieldSlotProps = slotProps?.textField as
-    | Record<string, unknown>
-    | undefined;
-  const inputProps = (textFieldSlotProps?.InputProps ?? {}) as Record<
-    string,
-    unknown
-  >;
+  const textFieldSlotProps = (slotProps?.textField ?? {}) as TextFieldProps;
+  const textFieldSlotPropsNested = textFieldSlotProps.slotProps ?? {};
 
   return (
     <DatePicker
@@ -44,16 +43,14 @@ export function MuiDatePickerField<TDate extends Date = Date>({
           ...slotProps,
           textField: {
             ...textFieldSlotProps,
-            className: getMuiControlClassName(range, className),
+            className: getMuiControlClassName(range, className, { surface }),
             fullWidth: true,
             variant: 'outlined',
-            sx: createMuiControlSx(false),
-            InputProps: {
-              ...inputProps,
-              startAdornment:
-                inputProps.startAdornment ??
-                createStartAdornment(startAdornment),
-            },
+            sx: createMuiControlSx(),
+            slotProps: mergeTextFieldSlotProps(
+              textFieldSlotPropsNested,
+              startAdornment
+            ),
           },
           desktopPaper: {
             ...slotProps?.desktopPaper,

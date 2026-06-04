@@ -76,6 +76,9 @@ export interface HeaderProps extends HTMLAttributes<HTMLElement> {
     item: HeaderNavItem,
     event: MouseEvent<HTMLElement>
   ) => void;
+  profileAuthenticated?: boolean;
+  profileLabel?: string;
+  profileShortName?: string;
   actions?: ReactNode;
 }
 
@@ -175,6 +178,9 @@ export function Header({
   onDropdownClose,
   onCompactMenuItemClick,
   onNavItemClick,
+  profileAuthenticated = false,
+  profileLabel = 'Аккаунт',
+  profileShortName = '',
   actions,
   className,
   ...props
@@ -190,13 +196,29 @@ export function Header({
 
   const cartBadge = extractCartCount(cartCount);
   const hasCartItems = Number(cartCount) > 0;
+  const profileAvatarText = profileShortName.trim().slice(0, 2);
+  const CompactProfileAvatar: ComponentType<{
+    'aria-hidden'?: 'true';
+    className?: string;
+  }> = ({ className }) => (
+    <span className={cn('ui-header__compact-menu-avatar', className)}>
+      {profileAvatarText || 'Ж'}
+    </span>
+  );
   const compactMenuItems: CompactMenuItem[] = compactMenuLinks?.length
     ? compactMenuLinks.map((item) => ({
         ...item,
+        label:
+          item.label === 'Аккаунт' && profileAuthenticated
+            ? profileLabel
+            : item.label,
         icon:
-          compactMenuIconByLabel[item.label] ??
-          (item.label === city ? LocationIconMobile : MenuIconMobile),
+          item.label === 'Аккаунт' && profileAuthenticated
+            ? CompactProfileAvatar
+            : (compactMenuIconByLabel[item.label] ??
+              (item.label === city ? LocationIconMobile : MenuIconMobile)),
         badge: item.label === 'Корзина' ? cartBadge : undefined,
+        profile: item.label === 'Аккаунт',
         button:
           item.button ?? (item.label === city || item.label === 'Аккаунт'),
       }))
@@ -406,7 +428,13 @@ export function Header({
           aria-label="Профиль"
           onClick={onProfileClick}
         >
-          <ProfileIconNew aria-hidden="true" />
+          {profileAuthenticated && profileAvatarText ? (
+            <span className="ui-header__profile-avatar" aria-hidden="true">
+              {profileAvatarText}
+            </span>
+          ) : (
+            <ProfileIconNew aria-hidden="true" />
+          )}
         </button>
 
         <button

@@ -2,33 +2,39 @@
 
 import { createElement, type ReactNode } from 'react';
 import InputAdornment from '@mui/material/InputAdornment';
+import type { TextFieldProps } from '@mui/material/TextField';
 import type { SxProps, Theme } from '@mui/material/styles';
 import { cn } from '../../../foundation/classNames';
 import './styles.scss';
 
 export type MuiControlRange = 'compact' | 'regular' | 'expanded';
+export type MuiControlSurface = 'plain' | 'outlined';
+
+type MuiControlClassOptions = {
+  multiline?: boolean;
+  surface?: MuiControlSurface;
+};
 
 export function getMuiControlClassName(
   range: MuiControlRange,
   className?: string,
-  multiline = false
+  options: MuiControlClassOptions = {}
 ) {
+  const { multiline = false, surface = 'outlined' } = options;
+
   return cn(
     'ui-mui-field',
     'ui-mui-field--range-' + range,
+    'ui-mui-field--surface-' + surface,
     multiline && 'ui-mui-field--multiline',
     className
   );
 }
 
-export function createMuiControlSx(multiline = false): SxProps<Theme> {
+/** Hide MUI notch only — padding/borders live in SCSS so page styles are not clobbered. */
+export function createMuiControlSx(): SxProps<Theme> {
   return {
     width: '100%',
-    '& .MuiOutlinedInput-root': {
-      padding: 0,
-      alignItems: multiline ? 'flex-start' : 'center',
-      backgroundColor: 'transparent',
-    },
     '& .MuiOutlinedInput-notchedOutline': {
       border: 0,
     },
@@ -38,12 +44,6 @@ export function createMuiControlSx(multiline = false): SxProps<Theme> {
     '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
       border: 0,
     },
-    '& .MuiInputBase-input': {
-      padding: 0,
-    },
-    '& .MuiInputBase-inputMultiline': {
-      padding: 0,
-    },
   };
 }
 
@@ -52,5 +52,30 @@ export function createStartAdornment(content?: ReactNode) {
     return undefined;
   }
 
-  return createElement(InputAdornment, { position: 'start' }, content);
+  return createElement(
+    InputAdornment,
+    { position: 'start', className: 'ui-mui-field__start-adornment' },
+    content
+  );
+}
+
+export function mergeTextFieldSlotProps(
+  slotProps: TextFieldProps['slotProps'] | undefined,
+  startAdornment?: ReactNode
+): TextFieldProps['slotProps'] {
+  const inputSlot =
+    slotProps?.input && typeof slotProps.input === 'object'
+      ? slotProps.input
+      : {};
+
+  return {
+    ...slotProps,
+    input: {
+      ...inputSlot,
+      startAdornment:
+        ('startAdornment' in inputSlot
+          ? inputSlot.startAdornment
+          : undefined) ?? createStartAdornment(startAdornment),
+    },
+  };
 }

@@ -66,6 +66,14 @@ function persistCart(items: CartLineItem[]): void {
   );
 }
 
+function resetHydratedCart(
+  get: () => CartState,
+  set: (partial: Partial<CartState>) => void
+) {
+  set({ items: [] });
+  get().recomputeTotals();
+}
+
 export const useCartStore = create<CartState>((set, get) => ({
   allItems: [],
   freeItems: [],
@@ -287,7 +295,7 @@ export const useCartStore = create<CartState>((set, get) => ({
 
     const raw = getLocalStorageItem('setCart');
     if (!raw) {
-      get().recomputeTotals();
+      resetHydratedCart(get, set);
       return;
     }
 
@@ -295,14 +303,14 @@ export const useCartStore = create<CartState>((set, get) => ({
     try {
       cart = JSON.parse(raw) as CartPersistedPayload;
     } catch {
-      get().recomputeTotals();
+      resetHydratedCart(get, set);
       return;
     }
 
     const updatedAt = toNumber(cart?.updatedAt);
     const expired = !updatedAt || Date.now() - updatedAt > CART_TTL_MS;
     if (expired) {
-      get().recomputeTotals();
+      resetHydratedCart(get, set);
       return;
     }
 
@@ -311,7 +319,7 @@ export const useCartStore = create<CartState>((set, get) => ({
     } | null;
 
     if (!savedCity?.link || savedCity.link !== cart?.city?.link) {
-      get().recomputeTotals();
+      resetHydratedCart(get, set);
       return;
     }
 

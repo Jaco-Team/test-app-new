@@ -1,10 +1,9 @@
 'use client';
 
-import Button from '@mui/material/Button';
-import TextField from '@mui/material/TextField';
 import { useAuthStore } from '@src/features/auth/model/authStore';
 import { useHeaderStore } from '@src/entities/header';
-import { cityPath } from '@src/shared/lib/sitePaths';
+import { cityPath, legacyCityPath } from '@src/shared/lib/sitePaths';
+import { Button, CheckAuthMobile, MuiTextField } from '@src/shared/ui';
 import './AuthModal.scss';
 
 export type AuthModalBodyProps = {
@@ -27,7 +26,15 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
   const createProfile = useAuthStore((state) => state.createProfile);
   const sendsmsNewLogin = useAuthStore((state) => state.sendsmsNewLogin);
 
-  const title = typeLogin === 'loginSMSCode' ? 'Проверочный код' : 'Мой Жако';
+  const titleMap = {
+    start: 'Мой Жако',
+    create: 'Регистрация',
+    loginSMS: 'Вход по СМС',
+    loginSMSCode: 'Проверочный код',
+    resetPWD: 'Восстановление входа',
+    finish: 'Все получилось',
+  } as const;
+  const title = titleMap[typeLogin] ?? 'Мой Жако';
 
   return (
     <div className="auth-modal__body">
@@ -35,39 +42,44 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
         {title}
       </h2>
 
+      {(typeLogin === 'start' || typeLogin === 'create') && <AuthModalToggle />}
+
       {typeLogin === 'start' ? (
         <>
-          <TextField
-            fullWidth
+          <MuiTextField
             label="Телефон"
             value={loginLogin}
             onChange={changeLogin}
-            margin="normal"
             className="auth-modal__field"
+            range="compact"
+            placeholder="8 (000) 000-00-00"
           />
-          <TextField
-            fullWidth
+          <MuiTextField
             label="Пароль"
             type="password"
             value={pwdLogin}
             onChange={setPwdLogin}
-            margin="normal"
             className="auth-modal__field"
+            range="compact"
+            placeholder="Введите пароль"
           />
           <Button
             fullWidth
-            variant="contained"
             disabled={loading}
             className="auth-modal__submit"
             onClick={() => void logIn()}
+            size="lg"
+            range="compact"
           >
             Войти
           </Button>
           <Button
             fullWidth
-            variant="text"
+            tone="muted"
             className="auth-modal__link"
             onClick={() => navigate('loginSMS')}
+            size="sm"
+            range="compact"
           >
             Вход по СМС
           </Button>
@@ -76,28 +88,29 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
 
       {typeLogin === 'loginSMS' ? (
         <>
-          <TextField
-            fullWidth
+          <MuiTextField
             label="Телефон"
             value={loginLogin}
             onChange={changeLogin}
-            margin="normal"
             className="auth-modal__field"
+            range="compact"
+            placeholder="8 (000) 000-00-00"
           />
-          <TextField
-            fullWidth
+          <MuiTextField
             label="Пароль"
             type="password"
             value={pwdLogin}
             onChange={setPwdLogin}
-            margin="normal"
             className="auth-modal__field"
+            range="compact"
+            placeholder="Пароль не обязателен"
           />
           <Button
             fullWidth
-            variant="contained"
             className="auth-modal__submit"
             onClick={() => void sendsmsNewLogin()}
+            size="lg"
+            range="compact"
           >
             Получить код
           </Button>
@@ -105,30 +118,34 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
       ) : null}
 
       {typeLogin === 'loginSMSCode' ? (
-        <TextField
-          fullWidth
-          label="Код из СМС"
-          value={code}
-          onChange={(event) => changeCode(event.target.value)}
-          margin="normal"
-          className="auth-modal__field"
-          inputProps={{ maxLength: 4 }}
-        />
+        <>
+          <p className="auth-modal__note">
+            Отправили код на номер {loginLogin || 'ваш телефон'}
+          </p>
+          <MuiTextField
+            label="Код из СМС"
+            value={code}
+            onChange={(event) => changeCode(event.target.value)}
+            className="auth-modal__field auth-modal__field--code"
+            inputProps={{ maxLength: 4, inputMode: 'numeric' }}
+            range="compact"
+            placeholder="0000"
+          />
+        </>
       ) : null}
 
       {typeLogin === 'create' ? (
         <>
-          <TextField
-            fullWidth
+          <MuiTextField
             label="Телефон"
             value={loginLogin}
             onChange={changeLogin}
-            margin="normal"
             className="auth-modal__field"
+            range="compact"
+            placeholder="8 (000) 000-00-00"
           />
           <Button
             fullWidth
-            variant="contained"
             className="auth-modal__submit"
             onClick={async () => {
               const ok = await createProfile();
@@ -136,10 +153,55 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
                 navigate('loginSMSCode');
               }
             }}
+            size="lg"
+            range="compact"
           >
             Зарегистрироваться
           </Button>
         </>
+      ) : null}
+
+      {typeLogin === 'resetPWD' ? (
+        <>
+          <p className="auth-modal__note">
+            Для быстрого входа используйте СМС-код на привязанный номер.
+          </p>
+          <Button
+            fullWidth
+            className="auth-modal__submit"
+            size="lg"
+            range="compact"
+            onClick={() => navigate('loginSMS')}
+          >
+            Войти по СМС
+          </Button>
+        </>
+      ) : null}
+
+      {typeLogin === 'finish' ? (
+        <div className="auth-modal__finish">
+          <span className="auth-modal__finish-icon" aria-hidden="true">
+            <CheckAuthMobile />
+          </span>
+          <p className="auth-modal__finish-title">
+            Ваш аккаунт зарегистрирован.
+          </p>
+          <p className="auth-modal__finish-text">
+            Теперь можно сохранять адреса, привязывать карту и быстро повторять
+            прежние заказы.
+          </p>
+          <Button
+            fullWidth
+            className="auth-modal__submit"
+            size="lg"
+            range="compact"
+            onClick={() => {
+              window.location.href = cityPath(city, '');
+            }}
+          >
+            Открыть меню
+          </Button>
+        </div>
       ) : null}
 
       {errTextAuth ? (
@@ -148,13 +210,16 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
         </p>
       ) : null}
 
-      <AuthModalToggle />
-
       {isAuth === 'auth' ? (
         <Button
           fullWidth
-          href={cityPath(city, 'profile')}
           className="auth-modal__link"
+          tone="muted"
+          size="sm"
+          range="compact"
+          onClick={() => {
+            window.location.href = legacyCityPath(city, 'profile');
+          }}
         >
           Профиль
         </Button>
@@ -172,8 +237,10 @@ function AuthModalToggle() {
   return (
     <Button
       fullWidth
-      variant="text"
       className="auth-modal__link"
+      tone="muted"
+      size="sm"
+      range="compact"
       onClick={() => navigate(registerMode ? 'start' : 'create')}
     >
       {registerMode ? 'Уже есть аккаунт' : 'Создать аккаунт'}

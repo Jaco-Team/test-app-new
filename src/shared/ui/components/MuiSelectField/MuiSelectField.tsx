@@ -3,11 +3,13 @@
 import type { ReactNode } from 'react';
 import MenuItem from '@mui/material/MenuItem';
 import TextField, { type TextFieldProps } from '@mui/material/TextField';
+import { cn } from '../../foundation/classNames';
 import {
   createMuiControlSx,
-  createStartAdornment,
   getMuiControlClassName,
+  mergeTextFieldSlotProps,
   type MuiControlRange,
+  type MuiControlSurface,
 } from '../internal/muiControl/shared';
 
 export type MuiSelectOption = {
@@ -22,53 +24,65 @@ export type MuiSelectFieldProps = Omit<
 > & {
   options: MuiSelectOption[];
   range?: MuiControlRange;
+  surface?: MuiControlSurface;
   startAdornment?: ReactNode;
 };
 
 export function MuiSelectField({
   options,
   range = 'regular',
+  surface = 'plain',
   startAdornment,
   className,
-  InputProps,
-  SelectProps,
   slotProps,
   sx,
   ...props
 }: MuiSelectFieldProps) {
+  const selectSlot = (slotProps?.select ?? {}) as {
+    MenuProps?: {
+      slotProps?: {
+        paper?: { className?: string };
+        list?: { className?: string };
+      };
+    };
+  };
+  const menuProps = selectSlot.MenuProps ?? {};
+  const menuSlotProps = menuProps.slotProps ?? {};
+
   return (
     <TextField
       {...props}
-      className={getMuiControlClassName(range, className)}
+      className={getMuiControlClassName(range, className, { surface })}
       variant="outlined"
       fullWidth
       select
-      InputProps={{
-        ...InputProps,
-        startAdornment:
-          InputProps?.startAdornment ?? createStartAdornment(startAdornment),
-      }}
-      SelectProps={{
-        ...SelectProps,
-        MenuProps: {
-          ...SelectProps?.MenuProps,
-          slotProps: {
-            ...SelectProps?.MenuProps?.slotProps,
-            paper: {
-              ...SelectProps?.MenuProps?.slotProps?.paper,
-              className: 'ui-mui-field__paper',
-            },
-            list: {
-              ...SelectProps?.MenuProps?.slotProps?.list,
-              className: 'ui-mui-field__listbox',
+      slotProps={{
+        ...mergeTextFieldSlotProps(slotProps, startAdornment),
+        select: {
+          ...selectSlot,
+          MenuProps: {
+            ...menuProps,
+            slotProps: {
+              ...menuSlotProps,
+              paper: {
+                ...menuSlotProps.paper,
+                className: cn(
+                  'ui-mui-field__paper',
+                  menuSlotProps.paper?.className
+                ),
+              },
+              list: {
+                ...menuSlotProps.list,
+                className: cn(
+                  'ui-mui-field__listbox',
+                  menuSlotProps.list?.className
+                ),
+              },
             },
           },
         },
       }}
-      slotProps={{
-        ...slotProps,
-      }}
-      sx={[createMuiControlSx(false), ...(Array.isArray(sx) ? sx : [sx])]}
+      sx={[createMuiControlSx(), ...(Array.isArray(sx) ? sx : [sx])]}
     >
       {options.map((option) => (
         <MenuItem

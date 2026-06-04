@@ -1,7 +1,7 @@
 'use client';
 
 import type { MouseEvent } from 'react';
-import { useMemo, useState } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { useCartStore } from '@src/entities/cart';
 import { useCityStore } from '@src/entities/city';
 import { useHeaderStore } from '@src/entities/header';
@@ -16,6 +16,7 @@ import {
   APP_ROUTE_PREFIX,
   cityBase,
   cityPath,
+  legacyCityPath,
 } from '@src/shared/lib/sitePaths';
 import { setLocalStorageItem } from '@/utils/browserStorage';
 import { Header } from '@ui/widgets/Header/Header';
@@ -44,6 +45,11 @@ export function ConnectedHeader({
 }: ConnectedHeaderProps) {
   const [openNavLabel, setOpenNavLabel] = useState<string | undefined>();
   const [desktopDocsOpen, setDesktopDocsOpen] = useState(false);
+  const [clientReady, setClientReady] = useState(false);
+
+  useEffect(() => {
+    setClientReady(true);
+  }, []);
 
   const compactMenuOpen = useHeaderStore((state) => state.compactMenuOpen);
   const setCompactMenuOpen = useHeaderStore(
@@ -66,6 +72,7 @@ export function ConnectedHeader({
     (state) => state.setActiveModalCityList
   );
   const isAuth = useHeaderStore((state) => state.isAuth);
+  const userName = useHeaderStore((state) => state.userName);
 
   const itemsOffDops = useCartStore((state) => state.itemsOffDops);
   const dopListCart = useCartStore((state) => state.dopListCart);
@@ -123,6 +130,22 @@ export function ConnectedHeader({
         : [],
     [citySlug]
   );
+  const profileShortName = useMemo(() => {
+    const parts = userName
+      .split(/\s+/)
+      .map((part) => part.trim())
+      .filter(Boolean);
+
+    if (parts.length === 0) {
+      return '';
+    }
+
+    if (parts.length === 1) {
+      return parts[0].slice(0, 2).toUpperCase();
+    }
+
+    return (parts[0][0] + parts[1][0]).toUpperCase();
+  }, [userName]);
 
   const closeMenus = () => {
     setOpenNavLabel(undefined);
@@ -185,8 +208,10 @@ export function ConnectedHeader({
       navItems={navItems}
       compactMenuLinks={compactMenuLinks}
       city={cityLabel}
-      cartLabel={cartLabel}
-      cartCount={hasPayableCart && itemsCount > 0 ? itemsCount : undefined}
+      cartLabel={clientReady ? cartLabel : 'Корзина'}
+      cartCount={
+        clientReady && hasPayableCart && itemsCount > 0 ? itemsCount : undefined
+      }
       logoSrc="/Jaco-Logo-120.png"
       logoHref={logoHref}
       compactMenuOpen={compactMenuOpen}
@@ -232,11 +257,14 @@ export function ConnectedHeader({
       onProfileClick={() => {
         closeMenus();
         if (isAuth === 'auth' && citySlug) {
-          window.location.href = cityPath(citySlug, 'profile');
+          window.location.href = legacyCityPath(citySlug, 'profile');
           return;
         }
         setActiveModalAuth(true);
       }}
+      profileAuthenticated={clientReady && isAuth === 'auth'}
+      profileLabel={clientReady ? userName || 'Профиль' : 'Профиль'}
+      profileShortName={clientReady ? profileShortName : ''}
     />
   );
 }

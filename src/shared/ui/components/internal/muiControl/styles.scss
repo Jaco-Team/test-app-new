@@ -7,10 +7,8 @@
   & .MuiInputBase-root,
   & .MuiAutocomplete-inputRoot {
     min-height: 0;
-    padding: 0;
+    box-sizing: border-box;
     align-items: center;
-    border-radius: 0;
-    background: transparent;
     color: $ui-text;
     font-family: $ui-font-family;
   }
@@ -41,13 +39,54 @@
     opacity: 1;
   }
 
-  & .MuiInputAdornment-root {
-    margin-right: 0;
-    color: $ui-text-muted;
+  & .MuiInputLabel-root {
+    color: rgba(0, 0, 0, 0.48);
+    opacity: 1;
+  }
+
+  & .MuiInputLabel-root.Mui-focused,
+  & .MuiInputLabel-root.MuiFormLabel-filled {
+    color: rgba(0, 0, 0, 0.48);
+  }
+
+  & .MuiInputAdornment-root.ui-mui-field__start-adornment {
+    margin-right: ui-fluid-compact(10);
+    color: $ui-brand;
+
+    @include ui-regular {
+      margin-right: ui-fluid-regular(8);
+    }
+
+    @include ui-expanded {
+      margin-right: ui-fluid-expanded(8);
+    }
+  }
+
+  & .MuiInputAdornment-root.ui-mui-field__start-adornment svg {
+    width: ui-fluid-compact(30);
+    height: ui-fluid-compact(30);
+
+    @include ui-regular {
+      width: ui-fluid-regular(26);
+      height: ui-fluid-regular(26);
+    }
+
+    @include ui-expanded {
+      width: ui-fluid-expanded(18);
+      height: ui-fluid-expanded(18);
+    }
   }
 
   & .MuiAutocomplete-endAdornment {
-    right: 0;
+    right: ui-fluid-compact(8);
+
+    @include ui-regular {
+      right: ui-fluid-regular(6);
+    }
+
+    @include ui-expanded {
+      right: ui-fluid-expanded(4);
+    }
   }
 
   & .MuiAutocomplete-popupIndicator,
@@ -59,6 +98,12 @@
   & .MuiAutocomplete-clearIndicator svg,
   & .MuiSelect-icon {
     color: $ui-text-muted;
+  }
+
+  & .MuiSelect-select {
+    display: flex;
+    align-items: center;
+    padding-right: 2em !important;
   }
 
   & .MuiFormHelperText-root {
@@ -73,6 +118,56 @@
 
   &--multiline .MuiInputBase-inputMultiline {
     resize: vertical;
+  }
+
+  &--surface-plain {
+    & .MuiInputBase-root,
+    & .MuiAutocomplete-inputRoot {
+      padding: 0;
+      border: 0;
+      border-radius: 0;
+      background: transparent;
+      box-shadow: none;
+    }
+  }
+
+  &--surface-outlined {
+    & .MuiInputBase-root,
+    & .MuiAutocomplete-inputRoot {
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: 999px;
+      background: #ffffff;
+      box-shadow: none;
+    }
+
+    & .MuiInputBase-root.Mui-focused,
+    & .MuiAutocomplete-inputRoot.Mui-focused {
+      border-color: rgba(0, 0, 0, 0.24);
+    }
+  }
+
+  &--surface-outlined.ui-mui-field--range-compact {
+    & .MuiInputBase-root,
+    & .MuiAutocomplete-inputRoot {
+      min-height: ui-fluid-compact(66);
+      padding-inline: ui-fluid-compact(20);
+    }
+  }
+
+  &--surface-outlined.ui-mui-field--range-regular {
+    & .MuiInputBase-root,
+    & .MuiAutocomplete-inputRoot {
+      min-height: ui-fluid-regular(58);
+      padding-inline: ui-fluid-regular(18);
+    }
+  }
+
+  &--surface-outlined.ui-mui-field--range-expanded {
+    & .MuiInputBase-root,
+    & .MuiAutocomplete-inputRoot {
+      min-height: ui-fluid-expanded(46);
+      padding-inline: ui-fluid-expanded(16);
+    }
   }
 
   &--range-compact {

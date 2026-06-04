@@ -9,10 +9,12 @@
   &__body {
     padding: ui-fluid-compact(32) ui-fluid-compact(28) ui-fluid-compact(40);
     font-family: $ui-font-family;
+    display: grid;
+    gap: ui-fluid-compact(12);
   }
 
   &__title {
-    margin: 0 0 ui-fluid-compact(24);
+    margin: 0 0 ui-fluid-compact(8);
     font-size: ui-fluid-compact(40);
     font-weight: 500;
     line-height: 1.15;
@@ -20,11 +22,24 @@
   }
 
   &__field {
-    margin-bottom: ui-fluid-compact(8);
+    margin: 0;
+  }
+
+  &__field .MuiInputBase-root {
+    min-height: ui-fluid-compact(88);
+    padding: 0 ui-fluid-compact(28);
+    border: 1px solid rgba(0, 0, 0, 0.12);
+    border-radius: ui-fluid-compact(44);
+    background: $ui-surface;
+  }
+
+  &__field--code .MuiInputBase-input {
+    text-align: center;
+    letter-spacing: 0.22em;
   }
 
   &__submit {
-    margin-top: ui-fluid-compact(20) !important;
+    margin-top: ui-fluid-compact(8) !important;
     min-height: ui-fluid-compact(88) !important;
     border-radius: ui-fluid-compact(44) !important;
     background-color: $ui-brand !important;
@@ -33,28 +48,106 @@
   }
 
   &__link {
-    margin-top: ui-fluid-compact(12) !important;
+    margin-top: 0 !important;
     color: $ui-text !important;
     font-size: ui-fluid-compact(28) !important;
     text-transform: none !important;
   }
 
+  &__note {
+    margin: 0;
+    color: $ui-text-muted;
+    font-size: ui-fluid-compact(24);
+    line-height: 1.35;
+    text-align: center;
+  }
+
   &__error {
-    margin: ui-fluid-compact(16) 0 0;
+    margin: ui-fluid-compact(4) 0 0;
     color: $ui-brand;
     font-size: ui-fluid-compact(28);
     line-height: 1.3;
     text-align: center;
   }
 
+  &__finish {
+    display: grid;
+    justify-items: center;
+    gap: ui-fluid-compact(12);
+  }
+
+  &__finish-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: ui-fluid-compact(116);
+    height: ui-fluid-compact(116);
+    border-radius: 50%;
+    background: rgba(221, 26, 50, 0.08);
+    color: $ui-brand;
+  }
+
+  &__finish-icon svg {
+    width: ui-fluid-compact(58);
+    height: ui-fluid-compact(58);
+  }
+
+  &__finish-title,
+  &__finish-text {
+    margin: 0;
+    text-align: center;
+  }
+
+  &__finish-title {
+    font-size: ui-fluid-compact(30);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
+  &__finish-text {
+    color: $ui-text-muted;
+    font-size: ui-fluid-compact(24);
+    line-height: 1.4;
+  }
+
   @include ui-regular {
     &__body {
       padding: ui-fluid-regular(32) ui-fluid-regular(40);
       min-width: ui-fluid-regular(360);
+      gap: ui-fluid-regular(10);
     }
 
     &__title {
       font-size: ui-fluid-regular(28);
+    }
+
+    &__field .MuiInputBase-root {
+      min-height: ui-fluid-regular(56);
+      padding: 0 ui-fluid-regular(18);
+      border-radius: ui-fluid-regular(28);
+    }
+
+    &__note,
+    &__finish-text {
+      font-size: ui-fluid-regular(14);
+    }
+
+    &__finish {
+      gap: ui-fluid-regular(10);
+    }
+
+    &__finish-icon {
+      width: ui-fluid-regular(74);
+      height: ui-fluid-regular(74);
+    }
+
+    &__finish-icon svg {
+      width: ui-fluid-regular(34);
+      height: ui-fluid-regular(34);
+    }
+
+    &__finish-title {
+      font-size: ui-fluid-regular(20);
     }
   }
 
@@ -62,10 +155,40 @@
     &__body {
       padding: ui-fluid-expanded(32) ui-fluid-expanded(40);
       min-width: ui-fluid-expanded(360);
+      gap: ui-fluid-expanded(10);
     }
 
     &__title {
       font-size: ui-fluid-expanded(24);
+    }
+
+    &__field .MuiInputBase-root {
+      min-height: ui-fluid-expanded(46);
+      padding: 0 ui-fluid-expanded(16);
+      border-radius: ui-fluid-expanded(23);
+    }
+
+    &__note,
+    &__finish-text {
+      font-size: ui-fluid-expanded(13);
+    }
+
+    &__finish {
+      gap: ui-fluid-expanded(10);
+    }
+
+    &__finish-icon {
+      width: ui-fluid-expanded(64);
+      height: ui-fluid-expanded(64);
+    }
+
+    &__finish-icon svg {
+      width: ui-fluid-expanded(30);
+      height: ui-fluid-expanded(30);
+    }
+
+    &__finish-title {
+      font-size: ui-fluid-expanded(18);
     }
   }
 }

@@ -2,8 +2,9 @@
 
 import { useEffect, useMemo, useState } from 'react';
 import { format } from 'date-fns';
-import { api, apiAddress } from '@src/shared/api';
+import { api } from '@src/shared/api';
 import { useCartStore } from '@src/entities/cart';
+import { useHeaderStore } from '@src/entities/header';
 
 export type CartOrderType = 'delivery' | 'pickup';
 export type CartScheduleMode = 'asap' | 'planned';
@@ -19,9 +20,15 @@ export type PickupPoint = {
   label: string;
 };
 
-export type AddressSuggestion = {
-  value: string;
-  subtitle?: string;
+export type SavedAddress = {
+  id: string;
+  title: string;
+  name: string;
+  label: string;
+  note: string;
+  isMain: boolean;
+  pointId: string;
+  deliveryFee: number;
 };
 
 export type DateOption = {
@@ -47,6 +54,19 @@ type PickupPointResponse = {
   name_ru?: string;
 };
 
+type SavedAddressResponse = {
+  id?: number | string;
+  addr_name?: string;
+  name?: string;
+  street?: string;
+  home?: string;
+  kv?: string;
+  is_main?: string | number;
+  comment?: string;
+  sum_div?: number | string;
+  point_id?: number | string;
+};
+
 type DateResponse = {
   id?: number | string;
   text?: string;
@@ -60,15 +80,9 @@ type TimeResponse = {
   text?: string;
 };
 
-type SuggestionResponse = {
-  title?: { text?: string };
-  subtitle?: { text?: string };
-};
-
 type DraftState = {
   orderType: CartOrderType;
-  addressQuery: string;
-  selectedAddress: string;
+  selectedAddressId: string;
   pickupPointId: string;
   paymentId: string;
   comment: string;
@@ -154,6 +168,38 @@ function mapPoint(point: PickupPointResponse): PickupPoint | null {
   };
 }
 
+function mapSavedAddress(item: SavedAddressResponse): SavedAddress | null {
+  const id = item.id;
+  if (id === undefined || id === null) {
+    return null;
+  }
+
+  const title = String(item.addr_name ?? '').trim();
+  const name = String(item.name ?? '').trim();
+  const street = String(item.street ?? '').trim();
+  const home = String(item.home ?? '').trim();
+  const kv = String(item.kv ?? '').trim();
+  const composed = [street, home, kv.length ? 'кв ' + kv : '']
+    .filter(Boolean)
+    .join(', ');
+  const label = name.length ? name : composed.length ? composed : title;
+
+  if (!label.length) {
+    return null;
+  }
+
+  return {
+    id: String(id),
+    title,
+    name,
+    label,
+    note: String(item.comment ?? '').trim(),
+    isMain: String(item.is_main ?? '') === '1',
+    pointId: String(item.point_id ?? ''),
+    deliveryFee: Number(item.sum_div ?? 0) || 0,
+  };
+}
+
 function mapDateOption(item: DateResponse): DateOption | null {
   const rawDate = String(item.date ?? '').trim();
   const labelBase = String(item.text ?? '').trim();
@@ -193,19 +239,28 @@ function mapTimeOption(item: TimeResponse): TimeOption | null {
   };
 }
 
+function resolveInitialAddressId(draft: Partial<DraftState> | null): string {
+  if (draft?.selectedAddressId) {
+    return String(draft.selectedAddressId);
+  }
+
+  const legacyDraft = draft as { selectedAddress?: string } | null;
+  return String(legacyDraft?.selectedAddress ?? '');
+}
+
 export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
   const cartItems = useCartStore((state) => state.items);
+  const token = useHeaderStore((state) => state.token);
+  const isAuth = useHeaderStore((state) => state.isAuth);
+  const isAddressAuthRequired = isAuth !== 'auth';
 
   const initialDraft = useMemo(() => readDraft(citySlug), [citySlug]);
 
   const [orderType, setOrderType] = useState<CartOrderType>(
     initialDraft?.orderType === 'pickup' ? 'pickup' : 'delivery'
   );
-  const [addressQuery, setAddressQuery] = useState(
-    String(initialDraft?.addressQuery ?? '')
-  );
-  const [selectedAddress, setSelectedAddress] = useState(
-    String(initialDraft?.selectedAddress ?? '')
+  const [selectedAddressId, setSelectedAddressId] = useState(
+    resolveInitialAddressId(initialDraft)
   );
   const [pickupPointId, setPickupPointId] = useState(
     String(initialDraft?.pickupPointId ?? '')
@@ -228,10 +283,8 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
   );
   const [pickupPoints, setPickupPoints] = useState<PickupPoint[]>([]);
   const [pickupLoading, setPickupLoading] = useState(false);
-  const [addressSuggestions, setAddressSuggestions] = useState<
-    AddressSuggestion[]
-  >([]);
-  const [addressLoading, setAddressLoading] = useState(false);
+  const [savedAddresses, setSavedAddresses] = useState<SavedAddress[]>([]);
+  const [savedAddressesLoading, setSavedAddressesLoading] = useState(false);
   const [dateOptions, setDateOptions] = useState<DateOption[]>([]);
   const [timeOptions, setTimeOptions] = useState<TimeOption[]>([]);
   const [timeLoading, setTimeLoading] = useState(false);
@@ -253,6 +306,12 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
     () =>
       dateOptions.find((option) => option.id === scheduleDateId)?.value ?? null,
     [dateOptions, scheduleDateId]
+  );
+  const selectedDeliveryAddress = useMemo(
+    () =>
+      savedAddresses.find((address) => address.id === selectedAddressId) ??
+      null,
+    [savedAddresses, selectedAddressId]
   );
 
   const timeLabel = useMemo(() => {
@@ -282,8 +341,7 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
   useEffect(() => {
     writeDraft(citySlug, {
       orderType,
-      addressQuery,
-      selectedAddress,
+      selectedAddressId,
       pickupPointId,
       paymentId,
       comment,
@@ -293,7 +351,6 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
       scheduleTimeId,
     });
   }, [
-    addressQuery,
     citySlug,
     comment,
     orderType,
@@ -303,7 +360,7 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
     scheduleDateId,
     scheduleMode,
     scheduleTimeId,
-    selectedAddress,
+    selectedAddressId,
   ]);
 
   useEffect(() => {
@@ -317,6 +374,62 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
       return options[0]?.id ?? 'cash';
     });
   }, [orderType]);
+
+  useEffect(() => {
+    if (orderType !== 'delivery') {
+      setSavedAddresses([]);
+      setSavedAddressesLoading(false);
+      return;
+    }
+
+    if (isAddressAuthRequired || !token.trim().length) {
+      setSavedAddresses([]);
+      setSavedAddressesLoading(false);
+      setSelectedAddressId('');
+      return;
+    }
+
+    let active = true;
+
+    void (async () => {
+      setSavedAddressesLoading(true);
+      const response = await api('cart', {
+        type: 'get_my_saved_addr',
+        city_id: citySlug,
+        token,
+      });
+
+      if (!active) {
+        return;
+      }
+
+      const rawAddresses = Array.isArray(response)
+        ? (response as SavedAddressResponse[])
+        : [];
+      const nextAddresses = rawAddresses
+        .map(mapSavedAddress)
+        .filter((address): address is SavedAddress => address !== null);
+
+      setSavedAddresses(nextAddresses);
+      setSelectedAddressId((current) => {
+        if (
+          current &&
+          nextAddresses.some((address) => address.id === current)
+        ) {
+          return current;
+        }
+
+        const mainAddress =
+          nextAddresses.find((address) => address.isMain) ?? nextAddresses[0];
+        return mainAddress?.id ?? '';
+      });
+      setSavedAddressesLoading(false);
+    })();
+
+    return () => {
+      active = false;
+    };
+  }, [citySlug, isAddressAuthRequired, orderType, token]);
 
   useEffect(() => {
     let active = true;
@@ -350,59 +463,6 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
       active = false;
     };
   }, [cityLabel]);
-
-  useEffect(() => {
-    if (orderType !== 'delivery') {
-      setAddressSuggestions([]);
-      setAddressLoading(false);
-      return;
-    }
-
-    const query = addressQuery.trim();
-    if (query.length < 3) {
-      setAddressSuggestions([]);
-      setAddressLoading(false);
-      return;
-    }
-
-    let active = true;
-    setAddressLoading(true);
-    const timer = window.setTimeout(() => {
-      void (async () => {
-        const response = await apiAddress(cityLabel, query);
-        if (!active) {
-          return;
-        }
-
-        const results = Array.isArray(response?.results)
-          ? (response.results as SuggestionResponse[])
-          : [];
-
-        const nextSuggestions = results
-          .map((item): AddressSuggestion | null => {
-            const value = String(item.title?.text ?? '').trim();
-            const subtitle = String(item.subtitle?.text ?? '').trim();
-            if (!value.length) {
-              return null;
-            }
-
-            return {
-              value: subtitle.length ? value + ', ' + subtitle : value,
-              subtitle,
-            };
-          })
-          .filter((item): item is NonNullable<typeof item> => item !== null);
-
-        setAddressSuggestions(nextSuggestions);
-        setAddressLoading(false);
-      })();
-    }, 260);
-
-    return () => {
-      active = false;
-      window.clearTimeout(timer);
-    };
-  }, [addressQuery, cityLabel, orderType]);
 
   useEffect(() => {
     if (
@@ -524,15 +584,11 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
   ]);
 
   function selectAddress(value: string) {
-    setAddressQuery(value);
-    setSelectedAddress(value);
-    setAddressSuggestions([]);
-  }
+    setSelectedAddressId(value);
 
-  function changeAddressQuery(value: string) {
-    setAddressQuery(value);
-    if (value.trim() !== selectedAddress.trim()) {
-      setSelectedAddress('');
+    const address = savedAddresses.find((item) => item.id === value);
+    if (address?.note.length && !comment.trim().length) {
+      setComment(address.note);
     }
   }
 
@@ -582,10 +638,18 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
   }
 
   function reviewOrder() {
+    if (isAddressAuthRequired) {
+      setSubmitStatus({
+        tone: 'error',
+        text: 'Войдите, чтобы оформить заказ.',
+      });
+      return;
+    }
+
     const hasLocation =
       orderType === 'pickup'
         ? Boolean(pickupPointId)
-        : Boolean(selectedAddress || addressQuery.trim());
+        : Boolean(selectedAddressId);
 
     if (!hasLocation) {
       setSubmitStatus({
@@ -593,7 +657,7 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
         text:
           orderType === 'pickup'
             ? 'Выберите кафе для самовывоза.'
-            : 'Укажите адрес доставки.',
+            : 'Выберите адрес доставки.',
       });
       return;
     }
@@ -627,12 +691,12 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
   return {
     orderType,
     setOrderType,
-    addressQuery,
-    changeAddressQuery,
-    selectedAddress,
+    isAddressAuthRequired,
+    savedAddresses,
+    savedAddressesLoading,
+    selectedAddressId,
+    selectedDeliveryAddress,
     selectAddress,
-    addressSuggestions,
-    addressLoading,
     pickupPoints,
     pickupLoading,
     pickupPointId,

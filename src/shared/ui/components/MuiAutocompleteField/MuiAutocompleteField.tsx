@@ -11,6 +11,7 @@ import {
   createStartAdornment,
   getMuiControlClassName,
   type MuiControlRange,
+  type MuiControlSurface,
 } from '../internal/muiControl/shared';
 
 export type MuiAutocompleteFieldProps<
@@ -25,6 +26,7 @@ export type MuiAutocompleteFieldProps<
   id?: string;
   name?: string;
   range?: MuiControlRange;
+  surface?: MuiControlSurface;
   textFieldClassName?: string;
   placeholder?: string;
   helperText?: ReactNode;
@@ -40,6 +42,7 @@ export function MuiAutocompleteField<
   id,
   name,
   range = 'regular',
+  surface = 'outlined',
   textFieldClassName,
   placeholder,
   helperText,
@@ -71,14 +74,18 @@ export function MuiAutocompleteField<
       sx={sx}
       renderInput={(params: AutocompleteRenderInputParams) => (
         <TextField
-          {...params}
-          id={id}
-          className={getMuiControlClassName(range, textFieldClassName)}
+          id={id ?? params.id}
+          disabled={params.disabled}
+          fullWidth={params.fullWidth}
+          size={params.size}
+          className={getMuiControlClassName(range, textFieldClassName, {
+            surface,
+          })}
           placeholder={placeholder}
           helperText={helperText}
           variant="outlined"
-          fullWidth
           slotProps={{
+            inputLabel: params.InputLabelProps,
             input: {
               ...params.InputProps,
               startAdornment: (
@@ -90,11 +97,11 @@ export function MuiAutocompleteField<
             },
             htmlInput: {
               ...params.inputProps,
-              id,
+              id: id ?? params.id,
               name,
             },
           }}
-          sx={createMuiControlSx(false)}
+          sx={createMuiControlSx()}
         />
       )}
     />

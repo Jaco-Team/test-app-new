@@ -7,6 +7,7 @@ import type { HeaderCompactMenuLink } from './Header';
 export type CompactMenuItem = HeaderCompactMenuLink & {
   icon: ComponentType<{ 'aria-hidden'?: 'true'; className?: string }>;
   badge?: string;
+  profile?: boolean;
 };
 
 export type CompactMenuProps = {
@@ -81,7 +82,7 @@ export function CompactMenu({
               )}
               type="button"
               onClick={(event) => {
-                if (item.label === 'Аккаунт') {
+                if (item.profile) {
                   onProfileClick?.();
                 }
                 onItemClick?.(item, event);

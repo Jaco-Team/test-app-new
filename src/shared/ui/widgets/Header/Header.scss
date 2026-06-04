@@ -216,6 +216,22 @@
     justify-self: center;
   }
 
+  &__compact-menu-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: ui-fluid-compact(74);
+    height: ui-fluid-compact(74);
+    border-radius: 50%;
+    background: rgba(221, 26, 50, 0.08);
+    color: $ui-brand;
+    font-size: ui-fluid-compact(26);
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
+    justify-self: center;
+  }
+
   &__compact-menu-text {
     @include ui-type(34, 28, 18, 400);
     line-height: 1;
@@ -234,6 +250,21 @@
     font-size: ui-fluid-compact(30);
     font-weight: 700;
     line-height: 1;
+  }
+
+  &__profile-avatar {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    background: rgba(221, 26, 50, 0.08);
+    color: $ui-brand;
+    font-size: ui-fluid-compact(24);
+    font-weight: 700;
+    line-height: 1;
+    text-transform: uppercase;
   }
 
   @include ui-regular {
@@ -289,6 +320,12 @@
     &__compact-menu-icon {
       width: ui-fluid-regular(74);
       height: ui-fluid-regular(74);
+    }
+
+    &__compact-menu-avatar {
+      width: ui-fluid-regular(74);
+      height: ui-fluid-regular(74);
+      font-size: ui-fluid-regular(26);
     }
 
     &__compact-menu-text {
@@ -548,6 +585,10 @@
     &__profile svg {
       width: ui-fluid-expanded(15);
       height: ui-fluid-expanded(15);
+    }
+
+    &__profile-avatar {
+      font-size: ui-fluid-expanded(12);
     }
 
     &__cart {

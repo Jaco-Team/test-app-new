@@ -42,7 +42,7 @@ export function RuntimeScripts({ loadYmaps = false }: RuntimeScriptsProps) {
     <>
       <Script
         id="varioqub"
-        strategy="beforeInteractive"
+        strategy="afterInteractive"
         dangerouslySetInnerHTML={{
           __html: `
             (function(v,a,r,i,o,q,u,b){

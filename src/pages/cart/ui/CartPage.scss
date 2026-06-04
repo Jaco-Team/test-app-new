@@ -251,6 +251,46 @@
 
 .cart-page__field--readonly {
   align-content: center;
+  cursor: pointer;
+}
+
+.cart-page__field--action {
+  width: 100%;
+  cursor: pointer;
+  text-decoration: none;
+  color: inherit;
+  font: inherit;
+
+  &:hover {
+    .cart-page__field-value,
+    .cart-page__field-note {
+      color: $ui-text;
+    }
+  }
+}
+
+.cart-page__field-main--action {
+  width: 100%;
+  align-items: center;
+}
+
+.cart-page__field-copy {
+  display: grid;
+  gap: ui-fluid-compact(4);
+  flex: 1 1 auto;
+  min-width: 0;
+
+  @include ui-regular {
+    gap: ui-fluid-regular(4);
+  }
+
+  @include ui-expanded {
+    gap: ui-fluid-expanded(4);
+  }
+}
+
+.cart-page__field-value--placeholder {
+  color: $ui-text-muted;
 }
 
 .cart-page__field--textarea {
@@ -369,6 +409,21 @@
   min-width: 0;
 }
 
+.cart-page__field--stacked .cart-page__control-field {
+  flex: 1 1 auto;
+}
+
+// Controls inside bordered field cards: no inner pill/outline/grey fill.
+.cart-page__field .ui-mui-field .MuiInputBase-root,
+.cart-page__field .ui-mui-field .MuiAutocomplete-inputRoot {
+  min-height: 0 !important;
+  padding: 0 !important;
+  border: 0 !important;
+  border-radius: 0 !important;
+  background: transparent !important;
+  box-shadow: none !important;
+}
+
 .cart-page__control-placeholder {
   display: block;
   flex: 1 1 auto;
@@ -400,18 +455,6 @@
 .cart-page__control-field .MuiInputBase-root,
 .cart-page__autocomplete .MuiInputBase-root {
   width: 100%;
-}
-
-.cart-page__control-field--textarea .MuiInputBase-root {
-  min-height: ui-fluid-compact(88);
-
-  @include ui-regular {
-    min-height: ui-fluid-regular(82);
-  }
-
-  @include ui-expanded {
-    min-height: ui-fluid-expanded(78);
-  }
 }
 
 .cart-page__autocomplete-option {
@@ -723,29 +766,6 @@
   min-width: 0;
 }
 
-.cart-page__promo-input .MuiInputBase-root {
-  height: ui-fluid-compact(66);
-  padding: 0 ui-fluid-compact(20);
-  border: 1px solid rgba(0, 0, 0, 0.12);
-  border-radius: 999px;
-
-  @include ui-regular {
-    height: ui-fluid-regular(58);
-    padding: 0 ui-fluid-regular(18);
-    font-size: max(12px, ui-fluid-regular(17));
-  }
-
-  @include ui-expanded {
-    height: ui-fluid-expanded(46);
-    padding: 0 ui-fluid-expanded(16);
-    font-size: ui-fluid-expanded(14);
-  }
-}
-
-.cart-page__promo-input .MuiOutlinedInput-notchedOutline {
-  display: none;
-}
-
 .cart-page__promo-button.ui-button {
   min-width: auto;
 }
@@ -808,5 +828,189 @@
 
   @include ui-expanded {
     gap: ui-fluid-expanded(14);
+  }
+}
+
+.cart-page__selector-modal {
+  width: min(100%, ui-fluid-compact(640));
+  border-radius: ui-fluid-compact(28) ui-fluid-compact(28) 0 0;
+
+  @include ui-regular {
+    width: min(100%, ui-fluid-regular(560));
+    border-radius: ui-fluid-regular(24);
+  }
+
+  @include ui-expanded {
+    width: min(100%, ui-fluid-expanded(480));
+    border-radius: ui-fluid-expanded(20);
+  }
+}
+
+.cart-page__selector-modal-title {
+  margin: 0;
+  font-size: max(12px, ui-fluid-compact(28));
+  font-weight: 700;
+  line-height: 1.15;
+
+  @include ui-regular {
+    font-size: max(12px, ui-fluid-regular(22));
+  }
+
+  @include ui-expanded {
+    font-size: ui-fluid-expanded(18);
+  }
+}
+
+.cart-page__selector-modal-content {
+  padding-top: 0;
+}
+
+.cart-page__address-modal,
+.cart-page__comment-modal {
+  display: grid;
+  gap: ui-fluid-compact(16);
+
+  @include ui-regular {
+    gap: ui-fluid-regular(14);
+  }
+
+  @include ui-expanded {
+    gap: ui-fluid-expanded(12);
+  }
+}
+
+.cart-page__address-list {
+  display: grid;
+  gap: ui-fluid-compact(10);
+  max-height: ui-fluid-compact(420);
+  overflow: auto;
+
+  @include ui-regular {
+    gap: ui-fluid-regular(10);
+    max-height: ui-fluid-regular(360);
+  }
+
+  @include ui-expanded {
+    gap: ui-fluid-expanded(8);
+    max-height: ui-fluid-expanded(320);
+  }
+}
+
+.cart-page__address-item {
+  display: grid;
+  gap: ui-fluid-compact(6);
+  width: 100%;
+  padding: ui-fluid-compact(16);
+  border: 1px solid rgba(0, 0, 0, 0.1);
+  border-radius: ui-fluid-compact(18);
+  background: $ui-surface;
+  color: $ui-text;
+  text-align: left;
+  cursor: pointer;
+
+  @include ui-regular {
+    gap: ui-fluid-regular(6);
+    padding: ui-fluid-regular(14);
+    border-radius: ui-fluid-regular(16);
+  }
+
+  @include ui-expanded {
+    gap: ui-fluid-expanded(4);
+    padding: ui-fluid-expanded(12);
+    border-radius: ui-fluid-expanded(14);
+  }
+}
+
+.cart-page__address-item--active {
+  border-color: rgba(221, 26, 50, 0.34);
+  box-shadow: 0 0 0 1px rgba(221, 26, 50, 0.08);
+}
+
+.cart-page__address-item-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: ui-fluid-compact(10);
+}
+
+.cart-page__address-item-title {
+  font-size: max(12px, ui-fluid-compact(22));
+  font-weight: 600;
+  line-height: 1.2;
+
+  @include ui-regular {
+    font-size: max(12px, ui-fluid-regular(18));
+  }
+
+  @include ui-expanded {
+    font-size: ui-fluid-expanded(15);
+  }
+}
+
+.cart-page__address-item-badge {
+  padding: ui-fluid-compact(4) ui-fluid-compact(10);
+  border-radius: 999px;
+  background: rgba(221, 26, 50, 0.08);
+  color: $ui-brand;
+  font-size: max(12px, ui-fluid-compact(14));
+  line-height: 1.2;
+  white-space: nowrap;
+
+  @include ui-regular {
+    padding: ui-fluid-regular(4) ui-fluid-regular(8);
+    font-size: max(12px, ui-fluid-regular(12));
+  }
+
+  @include ui-expanded {
+    padding: ui-fluid-expanded(3) ui-fluid-expanded(8);
+    font-size: ui-fluid-expanded(11);
+  }
+}
+
+.cart-page__address-item-subtitle,
+.cart-page__address-item-note,
+.cart-page__address-empty {
+  color: $ui-text-muted;
+  font-size: max(12px, ui-fluid-compact(16));
+  line-height: 1.35;
+
+  @include ui-regular {
+    font-size: max(12px, ui-fluid-regular(14));
+  }
+
+  @include ui-expanded {
+    font-size: ui-fluid-expanded(12);
+  }
+}
+
+.cart-page__address-empty {
+  margin: 0;
+}
+
+.cart-page__comment-textarea {
+  width: 100%;
+  min-height: ui-fluid-compact(120);
+  padding: ui-fluid-compact(16);
+  border: 1px solid rgba(0, 0, 0, 0.12);
+  border-radius: ui-fluid-compact(18);
+  background: $ui-surface;
+  color: $ui-text;
+  font-family: $ui-font-family;
+  font-size: max(12px, ui-fluid-compact(18));
+  line-height: 1.35;
+  resize: vertical;
+
+  @include ui-regular {
+    min-height: ui-fluid-regular(110);
+    padding: ui-fluid-regular(14);
+    border-radius: ui-fluid-regular(16);
+    font-size: max(12px, ui-fluid-regular(15));
+  }
+
+  @include ui-expanded {
+    min-height: ui-fluid-expanded(100);
+    padding: ui-fluid-expanded(12);
+    border-radius: ui-fluid-expanded(14);
+    font-size: ui-fluid-expanded(14);
   }
 }
