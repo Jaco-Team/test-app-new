@@ -34,8 +34,8 @@ export type ConnectedHeaderProps = {
 };
 
 /**
- * App header wired to preview stores (city, catalog, cart, auth, basket).
- * Use inside {@link PreviewPageLayout} on all preview routes.
+ * App header wired to app stores (city, catalog, cart, auth, basket).
+ * Use inside {@link PageLayout} on app routes.
  */
 export function ConnectedHeader({
   fallbackNav,

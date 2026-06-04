@@ -1,6 +1,6 @@
 'use client';
 
-import { PreviewPageLayout } from '@src/widgets/layout';
+import { PageLayout } from '@src/widgets/layout';
 import type { StoreBootstrapProps } from '@src/features/bootstrap/StoreBootstrap';
 import type { HomePageViewModel } from '../model/types';
 import { HomePage } from './HomePage';
@@ -12,7 +12,7 @@ export type HomeClientProps = {
 
 export function HomeClient({ model, storeSeed }: HomeClientProps) {
   return (
-    <PreviewPageLayout
+    <PageLayout
       storeSeed={storeSeed}
       header={{
         fallbackNav: model.headerNav,
@@ -21,6 +21,6 @@ export function HomeClient({ model, storeSeed }: HomeClientProps) {
       }}
     >
       <HomePage model={model} />
-    </PreviewPageLayout>
+    </PageLayout>
   );
 }

@@ -1,17 +1,18 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import type { HTMLAttributes, ReactNode } from 'react';
 import {
   StoreBootstrap,
   type StoreBootstrapProps,
 } from '@src/features/bootstrap/StoreBootstrap';
 import type { HeaderNavItem } from '@ui/widgets/Header/Header';
+import { cn } from '@ui/foundation/classNames';
 import { ConnectedHeader } from '@src/widgets/header/ConnectedHeader';
 import { AppShell } from '@src/widgets/shell/AppShell';
-import { PreviewPageFooter } from './PreviewPageFooter';
-import './PreviewPageLayout.scss';
+import { PageFooter } from './PageFooter';
+import './PageLayout.scss';
 
-export type PreviewPageLayoutProps = {
+export type PageLayoutProps = HTMLAttributes<HTMLDivElement> & {
   storeSeed: StoreBootstrapProps;
   /** Yandex map script + MapLoader (cart checkout) */
   loadMap?: boolean;
@@ -24,17 +25,19 @@ export type PreviewPageLayoutProps = {
 };
 
 /**
- * Shared preview shell: store bootstrap, global modals, connected header,
- * page body, and standard preview footer.
+ * Shared app shell: store bootstrap, global modals, connected header,
+ * page body scaffold, and standard footer.
  */
-export function PreviewPageLayout({
+export function PageLayout({
   storeSeed,
   loadMap = false,
   header,
   children,
-}: PreviewPageLayoutProps) {
+  className,
+  ...props
+}: PageLayoutProps) {
   return (
-    <div className="preview-page-layout">
+    <div className="page-layout">
       <StoreBootstrap {...storeSeed} />
       <AppShell city={storeSeed.city} loadMap={loadMap} />
       <ConnectedHeader
@@ -42,11 +45,10 @@ export function PreviewPageLayout({
         fallbackCityLabel={header?.fallbackCityLabel}
         fallbackCitySlug={header?.fallbackCitySlug ?? storeSeed.city}
       />
-      {children}
-      <PreviewPageFooter
-        storeSeed={storeSeed}
-        cityLabel={header?.fallbackCityLabel}
-      />
+      <div className={cn('page-layout__body', className)} {...props}>
+        <div className="page-layout__inner">{children}</div>
+      </div>
+      <PageFooter storeSeed={storeSeed} cityLabel={header?.fallbackCityLabel} />
     </div>
   );
 }

@@ -31,7 +31,6 @@ import {
 } from '@src/shared/lib/mediaUrls';
 import { cityBase } from '@src/shared/lib/sitePaths';
 import { BREAKPOINTS } from '@src/shared/ui/foundation/breakpoints';
-import { PreviewPageFrame } from '@src/widgets/layout';
 import {
   Button,
   MuiAutocompleteField,
@@ -82,6 +81,32 @@ function clientOnlyControl(
     >
       {node}
     </NoSsr>
+  );
+}
+
+export function CartPageIntro() {
+  const citySlug = useCityStore((state) => state.slug);
+
+  return (
+    <div className="cart-page__hero">
+      <Link className="cart-page__back-link" href={cityBase(citySlug)}>
+        <Button
+          className="cart-page__back"
+          tone="muted"
+          size="sm"
+          range="expanded"
+          leadingIcon={<ArrowBackRoundedIcon />}
+        >
+          Назад
+        </Button>
+      </Link>
+      <div className="cart-page__hero-copy">
+        <h1 className="cart-page__title">Оформить заказ</h1>
+        <p className="cart-page__subtitle">
+          Корзина, условия заказа и итог на одной странице.
+        </p>
+      </div>
+    </div>
   );
 }
 
@@ -175,30 +200,7 @@ export function CartPage() {
   );
 
   return (
-    <PreviewPageFrame
-      className="cart-page"
-      intro={
-        <div className="cart-page__hero">
-          <Link className="cart-page__back-link" href={cityBase(citySlug)}>
-            <Button
-              className="cart-page__back"
-              tone="muted"
-              size="sm"
-              range="expanded"
-              leadingIcon={<ArrowBackRoundedIcon />}
-            >
-              Назад
-            </Button>
-          </Link>
-          <div className="cart-page__hero-copy">
-            <h1 className="cart-page__title">Оформить заказ</h1>
-            <p className="cart-page__subtitle">
-              Корзина, условия заказа и итог на одной странице.
-            </p>
-          </div>
-        </div>
-      }
-    >
+    <div className="cart-page">
       <div className="cart-page__layout">
         <section className="cart-page__main">
           <section className="cart-page__section cart-page__section--controls">
@@ -666,6 +668,6 @@ export function CartPage() {
           </div>
         </aside>
       </div>
-    </PreviewPageFrame>
+    </div>
   );
 }

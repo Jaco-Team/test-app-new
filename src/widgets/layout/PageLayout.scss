@@ -1,0 +1,45 @@
+@use '../../shared/ui/foundation/formulas' as *;
+@use '../../shared/ui/foundation/tokens' as *;
+
+.page-layout {
+  --page-layout-top-space: #{ui-fluid-compact(148)};
+  --page-layout-bottom-space: #{ui-fluid-compact(48)};
+  --page-layout-inline-space: #{ui-fluid-compact(20)};
+  min-height: 100dvh;
+
+  @include ui-regular {
+    --page-layout-top-space: #{ui-fluid-regular(124)};
+    --page-layout-bottom-space: #{ui-fluid-regular(56)};
+    --page-layout-inline-space: 0px;
+  }
+
+  @include ui-expanded {
+    --page-layout-top-space: #{ui-fluid-expanded(102)};
+    --page-layout-bottom-space: #{ui-fluid-expanded(72)};
+    --page-layout-inline-space: 0px;
+  }
+}
+
+.page-layout__body {
+  min-height: 100dvh;
+  background: $ui-surface-muted;
+}
+
+.page-layout__inner {
+  @include ui-page-inset;
+
+  display: grid;
+  align-content: start;
+  gap: ui-fluid-compact(18);
+  padding: var(--page-layout-top-space, #{ui-fluid-compact(148)})
+    var(--page-layout-inline-space, #{ui-fluid-compact(20)})
+    var(--page-layout-bottom-space, #{ui-fluid-compact(48)});
+
+  @include ui-regular {
+    gap: ui-fluid-regular(20);
+  }
+
+  @include ui-expanded {
+    gap: ui-fluid-expanded(24);
+  }
+}
