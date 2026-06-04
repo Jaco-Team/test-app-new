@@ -499,29 +499,47 @@
   }
 
   // Legacy CartCtaButton: filled sheet CTA (compact/regular), outlined in desktop modal.
-  &__action .ui-button {
+  &__action .ui-purchase-control {
     width: 100%;
+    --ui-purchase-control-color: rgba(0, 0, 0, 0.6);
+    --ui-purchase-control-button-bg: #{$ui-control-bg};
+    --ui-purchase-control-button-border: transparent;
+    --ui-purchase-control-button-hover-bg: #{$ui-control-hover};
+    --ui-purchase-control-quantity-border: #{$ui-border-table};
+    --ui-purchase-control-quantity-bg: #{$ui-surface};
+
     @include ui-compact {
       width: auto;
       min-width: ui-fluid-compact(420);
     }
+  }
+
+  &__action .ui-purchase-control .ui-button {
     border-radius: ui-fluid-compact(60);
-    background: $ui-control-bg;
-    border-color: transparent;
-    color: rgba(0, 0, 0, 0.6);
-    .ui-price__current {
-      @include ui-compact {
-        line-height: 1;
-        font-size: 20px;
-      }
+  }
+
+  &__action .ui-purchase-control .ui-button .ui-price__current {
+    @include ui-compact {
+      line-height: 1;
+      font-size: 20px;
     }
   }
 
-  &__action .ui-quantity-control {
-    position: sticky;
-    bottom: 0;
+  &__action .ui-purchase-control .ui-quantity-control {
+    position: static;
+    bottom: auto;
     min-height: ui-fluid-compact(48);
-    border-color: $ui-border-table;
+  }
+
+  &__action .ui-purchase-control .ui-quantity-control button {
+    flex: 0 0 auto;
+  }
+
+  @include ui-compact {
+    &__action .ui-purchase-control .ui-quantity-control {
+      position: sticky;
+      bottom: 0;
+    }
   }
 
   @include ui-regular {
@@ -749,13 +767,14 @@
       margin-right: ui-fluid-regular(10);
     }
 
-    &__action .ui-button.ui-button {
+    &__action .ui-purchase-control .ui-button.ui-button {
       border-radius: ui-fluid-regular(46);
       min-height: max(72px, ui-fluid-regular(86));
     }
 
-    &__action .ui-quantity-control {
+    &__action .ui-purchase-control .ui-quantity-control {
       min-height: ui-fluid-regular(63);
+      overflow: hidden;
     }
   }
 
@@ -986,27 +1005,43 @@
       margin-top: auto;
     }
 
-    &__action .ui-button.ui-button {
+    &__action .ui-purchase-control {
+      --ui-purchase-control-color: rgba(0, 0, 0, 0.6);
+      --ui-purchase-control-button-bg: transparent;
+      --ui-purchase-control-button-border: #{$ui-border};
+      --ui-purchase-control-button-hover-bg: #{$ui-control-bg};
+      --ui-purchase-control-quantity-bg: transparent;
+      --ui-purchase-control-quantity-border: #{$ui-border};
+      --ui-purchase-control-quantity-button-bg: #{$ui-control-bg};
+      --ui-purchase-control-quantity-button-hover-bg: #{$ui-control-hover};
+    }
+
+    &__action .ui-purchase-control .ui-button.ui-button {
       border-radius: ui-fluid-expanded(23);
       min-height: ui-fluid-expanded(40);
-      background: transparent;
-      border-color: $ui-border;
-      color: rgba(0, 0, 0, 0.6);
-
-      &:hover,
-      &:focus-visible,
-      &:active {
-        background: $ui-control-bg;
-        border-color: #cccccc;
-      }
     }
 
-    &__action .ui-button .ui-price__current {
+    &__action .ui-purchase-control .ui-button.ui-button:hover,
+    &__action .ui-purchase-control .ui-button.ui-button:focus-visible,
+    &__action .ui-purchase-control .ui-button.ui-button:active {
+      border-color: #cccccc;
+    }
+
+    &__action .ui-purchase-control .ui-button .ui-price__current {
       color: rgba(0, 0, 0, 0.6);
     }
 
-    &__action .ui-quantity-control {
-      min-height: ui-fluid-expanded(48);
+    &__action .ui-purchase-control .ui-quantity-control {
+      height: ui-fluid-expanded(40);
+      min-height: ui-fluid-expanded(40);
+      overflow: hidden;
+    }
+
+    &__action .ui-purchase-control .ui-quantity-control button {
+      width: ui-fluid-expanded(30);
+      height: ui-fluid-expanded(30);
+      margin: 0 ui-fluid-expanded(4);
+      font-size: ui-fluid-expanded(18);
     }
   }
 }

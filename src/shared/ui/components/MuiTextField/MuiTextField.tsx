@@ -19,6 +19,7 @@ export function MuiTextField({
   startAdornment,
   className,
   multiline = false,
+  InputProps,
   slotProps,
   sx,
   ...props
@@ -30,15 +31,12 @@ export function MuiTextField({
       multiline={multiline}
       variant="outlined"
       fullWidth
-      slotProps={{
-        ...slotProps,
-        input: {
-          ...slotProps?.input,
-          startAdornment:
-            slotProps?.input?.startAdornment ??
-            createStartAdornment(startAdornment),
-        },
+      InputProps={{
+        ...InputProps,
+        startAdornment:
+          InputProps?.startAdornment ?? createStartAdornment(startAdornment),
       }}
+      slotProps={slotProps}
       sx={[createMuiControlSx(multiline), ...(Array.isArray(sx) ? sx : [sx])]}
     />
   );

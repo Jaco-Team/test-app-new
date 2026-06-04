@@ -24,8 +24,8 @@ const meta = {
     model: {
       ...storyModel,
       products: [
-        productCardFixtures.madeiraSet,
-        productCardFixtures.madeiraSet,
+        { ...productCardFixtures.madeiraSet, id: 'story-madeira-1' },
+        { ...productCardFixtures.madeiraSet, id: 'story-madeira-2' },
       ],
     },
   },

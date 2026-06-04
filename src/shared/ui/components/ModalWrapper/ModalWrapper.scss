@@ -17,7 +17,6 @@
   & .MuiDrawer-paper.ui-modal-wrapper__paper {
     position: relative;
     margin: 0;
-    overflow: visible;
     background: $ui-surface;
     color: $ui-text;
     box-shadow: 0 20px 56px $ui-neutral-strong;
@@ -28,7 +27,12 @@
     width: min(80vw, calc(100vw - 32px));
     max-width: none;
     max-height: calc(100dvh - 48px);
+    overflow: hidden;
     border-radius: 22px;
+  }
+
+  & .MuiDrawer-paper.ui-modal-wrapper__paper {
+    overflow: visible;
   }
 
   &--responsive .MuiDialog-paper.ui-modal-wrapper__paper {

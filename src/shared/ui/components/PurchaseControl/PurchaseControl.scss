@@ -1,0 +1,68 @@
+@use '../../foundation/tokens' as *;
+
+.ui-purchase-control {
+  --ui-purchase-control-color: #{$ui-text};
+  --ui-purchase-control-button-bg: #{$ui-control-bg};
+  --ui-purchase-control-button-border: transparent;
+  --ui-purchase-control-button-hover-bg: #{$ui-control-hover};
+  --ui-purchase-control-quantity-bg: #{$ui-surface};
+  --ui-purchase-control-quantity-border: #{$ui-selection-bg};
+  --ui-purchase-control-quantity-button-bg: #{$ui-button-bg};
+  --ui-purchase-control-quantity-button-hover-bg: #{$ui-control-hover};
+
+  display: block;
+  width: 100%;
+
+  .ui-button,
+  .ui-quantity-control {
+    width: 100%;
+    min-width: 0;
+    box-sizing: border-box;
+  }
+
+  .ui-button {
+    color: var(--ui-purchase-control-color);
+    background: var(--ui-purchase-control-button-bg);
+    border-color: var(--ui-purchase-control-button-border);
+  }
+
+  .ui-button:hover,
+  .ui-button:focus-visible,
+  .ui-button:active,
+  .ui-button.ui-button--active {
+    background: var(--ui-purchase-control-button-hover-bg);
+    border-color: var(--ui-purchase-control-button-border);
+  }
+
+  .ui-quantity-control {
+    color: var(--ui-purchase-control-color);
+    background: var(--ui-purchase-control-quantity-bg);
+    border-color: var(--ui-purchase-control-quantity-border);
+  }
+
+  .ui-quantity-control button {
+    background: var(--ui-purchase-control-quantity-button-bg);
+  }
+
+  .ui-quantity-control button:hover,
+  .ui-quantity-control button:focus-visible,
+  .ui-quantity-control button:active {
+    background: var(--ui-purchase-control-quantity-button-hover-bg);
+  }
+
+  &--tone-neutral {
+    --ui-purchase-control-button-bg: #{$ui-transparent};
+    --ui-purchase-control-button-border: #{$ui-border};
+    --ui-purchase-control-quantity-border: #{$ui-border};
+  }
+
+  &--tone-muted {
+    --ui-purchase-control-button-bg: #{$ui-control-bg};
+    --ui-purchase-control-button-border: transparent;
+    --ui-purchase-control-quantity-border: #{$ui-border-table};
+  }
+
+  &--disabled {
+    opacity: 0.55;
+  }
+}

@@ -1,5 +1,5 @@
 import type { HTMLAttributes } from 'react';
-import { Badge, Button, Price, QuantityControl } from '../../components';
+import { Badge, PurchaseControl } from '../../components';
 import type { BadgeTone } from '../../components';
 import { cn } from '../../foundation/classNames';
 import { ProductCardInfo } from './ProductCardInfo';
@@ -102,17 +102,16 @@ export function ProductCard({
           <p className="ui-product-card__description">{description}</p>
         ) : null}
         <div className="ui-product-card__action">
-          {hasCount ? (
-            <QuantityControl
-              value={count}
-              size="md"
-              onChange={onQuantityChange}
-            />
-          ) : (
-            <Button tone="muted" size="md" onClick={onAdd}>
-              <Price value={price} oldValue={oldPrice} size="md" />
-            </Button>
-          )}
+          <PurchaseControl
+            count={count}
+            price={price}
+            oldPrice={oldPrice}
+            tone="muted"
+            size="md"
+            priceSize="md"
+            onAdd={onAdd}
+            onQuantityChange={onQuantityChange}
+          />
         </div>
       </div>
     </article>

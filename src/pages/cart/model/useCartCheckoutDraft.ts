@@ -379,7 +379,7 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
           : [];
 
         const nextSuggestions = results
-          .map((item) => {
+          .map((item): AddressSuggestion | null => {
             const value = String(item.title?.text ?? '').trim();
             const subtitle = String(item.subtitle?.text ?? '').trim();
             if (!value.length) {
@@ -391,7 +391,7 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
               subtitle,
             };
           })
-          .filter((item): item is AddressSuggestion => item !== null);
+          .filter((item): item is NonNullable<typeof item> => item !== null);
 
         setAddressSuggestions(nextSuggestions);
         setAddressLoading(false);

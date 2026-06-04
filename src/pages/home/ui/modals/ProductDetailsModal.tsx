@@ -2,13 +2,7 @@
 
 import { useState } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
-import {
-  Badge,
-  Button,
-  ModalWrapper,
-  Price,
-  QuantityControl,
-} from '@src/shared/ui';
+import { Badge, ModalWrapper, PurchaseControl } from '@src/shared/ui';
 import {
   PRODUCT_MODAL_IMAGE_SIZES,
   resolveProductImageSrcSet,
@@ -479,21 +473,16 @@ export function ProductDetailsModal({
             ) : null}
 
             <div className="home-product-modal__action">
-              {count > 0 ? (
-                <QuantityControl
-                  value={count}
-                  size="md"
-                  onChange={onQuantityChange}
-                />
-              ) : (
-                <Button tone="neutral" size="md" onClick={onAdd}>
-                  <Price
-                    value={product.price}
-                    oldValue={product.oldPrice}
-                    size="sm"
-                  />
-                </Button>
-              )}
+              <PurchaseControl
+                count={count}
+                price={product.price}
+                oldPrice={product.oldPrice}
+                tone="neutral"
+                size="md"
+                priceSize="sm"
+                onAdd={onAdd}
+                onQuantityChange={onQuantityChange}
+              />
             </div>
           </div>
         </div>

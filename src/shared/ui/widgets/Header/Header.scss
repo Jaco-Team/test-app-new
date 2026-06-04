@@ -248,6 +248,11 @@
       // height: ui-fluid-regular(90);
     }
 
+    &__compact-menu.MuiDrawer-paper {
+      top: ui-fluid-regular(80);
+      max-height: calc(100dvh - ui-fluid-regular(80));
+    }
+
     &__icon-button,
     &__compact-menu-button {
       width: ui-fluid-regular(30);
@@ -255,8 +260,8 @@
     }
 
     &__compact-menu.MuiDrawer-paper {
-      top: ui-fluid-regular(148);
-      max-height: calc(100dvh - ui-fluid-regular(148));
+      top: ui-fluid-regular(80);
+      max-height: calc(100dvh - ui-fluid-regular(80));
       border-radius: 0 0 ui-fluid-regular(58) ui-fluid-regular(58);
     }
 

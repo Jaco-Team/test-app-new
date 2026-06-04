@@ -3,6 +3,7 @@
 import { useEffect, useLayoutEffect } from 'react';
 import { useCatalogStore } from '@src/entities/catalog';
 import { useCartStore } from '@src/entities/cart';
+import type { CityRecord } from '@src/entities/city';
 import { useCityStore } from '@src/entities/city';
 import { useFooterStore } from '@src/entities/footer';
 import { useHeaderStore } from '@src/entities/header';

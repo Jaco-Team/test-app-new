@@ -28,40 +28,47 @@ export function MuiDatePickerField<TDate extends Date = Date>({
   slotProps,
   ...props
 }: MuiDatePickerFieldProps<TDate>) {
+  const textFieldSlotProps = slotProps?.textField as
+    | Record<string, unknown>
+    | undefined;
+  const inputProps = (textFieldSlotProps?.InputProps ?? {}) as Record<
+    string,
+    unknown
+  >;
+
   return (
     <DatePicker
       {...props}
-      slotProps={{
-        ...slotProps,
-        textField: {
-          ...slotProps?.textField,
-          className: getMuiControlClassName(range, className),
-          fullWidth: true,
-          variant: 'outlined',
-          sx: createMuiControlSx(false),
-          slotProps: {
-            ...slotProps?.textField?.slotProps,
-            input: {
-              ...slotProps?.textField?.slotProps?.input,
+      slotProps={
+        {
+          ...slotProps,
+          textField: {
+            ...textFieldSlotProps,
+            className: getMuiControlClassName(range, className),
+            fullWidth: true,
+            variant: 'outlined',
+            sx: createMuiControlSx(false),
+            InputProps: {
+              ...inputProps,
               startAdornment:
-                slotProps?.textField?.slotProps?.input?.startAdornment ??
+                inputProps.startAdornment ??
                 createStartAdornment(startAdornment),
             },
           },
-        },
-        desktopPaper: {
-          ...slotProps?.desktopPaper,
-          className: 'ui-mui-field__paper',
-        },
-        mobilePaper: {
-          ...slotProps?.mobilePaper,
-          className: 'ui-mui-field__paper',
-        },
-        popper: {
-          ...slotProps?.popper,
-          className: 'ui-mui-field__popper',
-        },
-      }}
+          desktopPaper: {
+            ...slotProps?.desktopPaper,
+            className: 'ui-mui-field__paper',
+          },
+          mobilePaper: {
+            ...slotProps?.mobilePaper,
+            className: 'ui-mui-field__paper',
+          },
+          popper: {
+            ...slotProps?.popper,
+            className: 'ui-mui-field__popper',
+          },
+        } as NonNullable<DatePickerProps<TDate>['slotProps']>
+      }
     />
   );
 }

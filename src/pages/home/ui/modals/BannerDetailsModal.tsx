@@ -1,7 +1,7 @@
 'use client';
 
 import { api } from '@src/shared/api';
-import { Button, ModalWrapper, Price, QuantityControl } from '@src/shared/ui';
+import { ModalWrapper, Price, PurchaseControl } from '@src/shared/ui';
 import type { HomeBannerSlide, HomeProduct } from '../../model/types';
 import './BannerDetailsModal.scss';
 
@@ -67,7 +67,7 @@ export function BannerDetailsModal({
         <div className="home-banner-modal__media">
           <picture>
             {banner.imageWide ? (
-              <source media="(min-width: 991px)" srcSet={banner.imageWide} />
+              <source media="(min-width: 668px)" srcSet={banner.imageWide} />
             ) : null}
             <img src={banner.image} alt={banner.alt ?? title} />
           </picture>
@@ -129,26 +129,19 @@ export function BannerDetailsModal({
                                 <Price value={product.price} size="sm" />
                               </span>
                             ) : null
-                          ) : count > 0 ? (
-                            <QuantityControl
-                              value={count}
+                          ) : count > 0 || product.price > 0 ? (
+                            <PurchaseControl
+                              count={count}
+                              price={product.price}
+                              oldPrice={product.oldPrice}
+                              tone="muted"
                               size="md"
-                              onChange={(value) =>
+                              priceSize="sm"
+                              onAdd={() => onAdd(product)}
+                              onQuantityChange={(value) =>
                                 onQuantityChange(product, value)
                               }
                             />
-                          ) : product.price > 0 ? (
-                            <Button
-                              tone="muted"
-                              size="md"
-                              onClick={() => onAdd(product)}
-                            >
-                              <Price
-                                value={product.price}
-                                oldValue={product.oldPrice}
-                                size="sm"
-                              />
-                            </Button>
                           ) : null}
                         </div>
                       </div>

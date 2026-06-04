@@ -7,6 +7,12 @@ const meta = {
   title: 'UI/Компоненты/PopoverMenu',
   component: PopoverMenu,
   parameters: { layout: 'centered' },
+  args: {
+    anchorEl: null,
+    open: false,
+    onClose: () => {},
+    items: [],
+  },
 } satisfies Meta<typeof PopoverMenu>;
 
 export default meta;

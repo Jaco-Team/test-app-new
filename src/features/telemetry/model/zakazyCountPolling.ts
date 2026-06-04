@@ -5,7 +5,7 @@ import { useProfileStore } from '@src/entities/profile';
 /** Legacy nav bars poll `zakazy` / `get_my_count_orders_promos` every 30s. */
 export const ZAKAZY_COUNT_POLL_INTERVAL_MS = 30_000;
 
-let intervalId: ReturnType<typeof setInterval> | null = null;
+let intervalId: number | null = null;
 
 export function refreshZakazyCounts(): void {
   const city = useCityStore.getState().slug;

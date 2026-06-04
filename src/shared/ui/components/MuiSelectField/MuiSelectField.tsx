@@ -30,6 +30,8 @@ export function MuiSelectField({
   range = 'regular',
   startAdornment,
   className,
+  InputProps,
+  SelectProps,
   slotProps,
   sx,
   ...props
@@ -41,31 +43,30 @@ export function MuiSelectField({
       variant="outlined"
       fullWidth
       select
-      slotProps={{
-        ...slotProps,
-        input: {
-          ...slotProps?.input,
-          startAdornment:
-            slotProps?.input?.startAdornment ??
-            createStartAdornment(startAdornment),
-        },
-        select: {
-          ...slotProps?.select,
-          MenuProps: {
-            ...slotProps?.select?.MenuProps,
-            slotProps: {
-              ...slotProps?.select?.MenuProps?.slotProps,
-              paper: {
-                ...slotProps?.select?.MenuProps?.slotProps?.paper,
-                className: 'ui-mui-field__paper',
-              },
-              list: {
-                ...slotProps?.select?.MenuProps?.slotProps?.list,
-                className: 'ui-mui-field__listbox',
-              },
+      InputProps={{
+        ...InputProps,
+        startAdornment:
+          InputProps?.startAdornment ?? createStartAdornment(startAdornment),
+      }}
+      SelectProps={{
+        ...SelectProps,
+        MenuProps: {
+          ...SelectProps?.MenuProps,
+          slotProps: {
+            ...SelectProps?.MenuProps?.slotProps,
+            paper: {
+              ...SelectProps?.MenuProps?.slotProps?.paper,
+              className: 'ui-mui-field__paper',
+            },
+            list: {
+              ...SelectProps?.MenuProps?.slotProps?.list,
+              className: 'ui-mui-field__listbox',
             },
           },
         },
+      }}
+      slotProps={{
+        ...slotProps,
       }}
       sx={[createMuiControlSx(false), ...(Array.isArray(sx) ? sx : [sx])]}
     >

@@ -54,3 +54,5 @@ export type {
   QuantityControlProps,
   QuantityControlSize,
 } from './QuantityControl/QuantityControl';
+export { PurchaseControl } from './PurchaseControl/PurchaseControl';
+export type { PurchaseControlProps } from './PurchaseControl/PurchaseControl';
