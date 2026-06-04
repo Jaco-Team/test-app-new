@@ -237,24 +237,25 @@
   .badge.container.pc > .box.bigshort {
     width: fit-content;
     height: auto;
-    min-height: tablet-vw(29);
-    border-radius: tablet-vw(7);
-    padding: tablet-vw(5) tablet-vw(8);
+    min-height: 23px;
+    border-radius: 5px;
+    padding: 3px 6px;
     white-space: nowrap;
   }
 
   .badge.container.pc > .box.big > .MuiTypography-root,
   .badge.container.pc > .box.bigshort > .MuiTypography-root {
     margin: 0 !important;
-    font-size: tablet-font-vw(16) !important;
+    font-size: 12px !important;
     font-weight: 500;
     line-height: 1 !important;
-    height: 100%;
+    min-height: 15px;
     display: flex;
     align-items: center;
     justify-content: center;
     text-align: center;
+    white-space: nowrap;
     padding: 0 !important;
-    transform: none !important;
+    transform: translateY(0.5px) !important;
   }
 }
