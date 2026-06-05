@@ -8,6 +8,7 @@ import Autocomplete, {
 import TextField from '@mui/material/TextField';
 import {
   createMuiControlSx,
+  createEndAdornment,
   createStartAdornment,
   getMuiControlClassName,
   type MuiControlRange,
@@ -31,6 +32,7 @@ export type MuiAutocompleteFieldProps<
   placeholder?: string;
   helperText?: ReactNode;
   startAdornment?: ReactNode;
+  endAdornment?: ReactNode;
 };
 
 export function MuiAutocompleteField<
@@ -47,6 +49,7 @@ export function MuiAutocompleteField<
   placeholder,
   helperText,
   startAdornment,
+  endAdornment,
   className,
   slotProps,
   sx,
@@ -92,6 +95,12 @@ export function MuiAutocompleteField<
                 <>
                   {createStartAdornment(startAdornment)}
                   {params.InputProps.startAdornment}
+                </>
+              ),
+              endAdornment: (
+                <>
+                  {params.InputProps.endAdornment}
+                  {createEndAdornment(endAdornment)}
                 </>
               ),
             },

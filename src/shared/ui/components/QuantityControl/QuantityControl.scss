@@ -50,7 +50,7 @@
   &--size-xs {
     width: ui-fluid-compact(260);
     height: ui-fluid-compact($ui-button-compact);
-    font-size: ui-fluid-compact(24);
+    font-size: max(18px, ui-fluid-compact(36));
   }
   &--size-sm {
     width: ui-fluid-compact(320);
@@ -68,9 +68,9 @@
     font-size: ui-fluid-compact(40);
   }
   &--size-xs button {
-    width: ui-fluid-compact(48);
-    height: ui-fluid-compact(48);
-    font-size: ui-fluid-compact(32);
+    width: ui-fluid-compact(56);
+    height: ui-fluid-compact(56);
+    font-size: ui-fluid-compact(40);
     margin: 0 ui-fluid-compact(6);
   }
   &--size-sm button {

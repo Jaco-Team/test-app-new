@@ -252,18 +252,28 @@ export const useCartStore = create<CartState>((set, get) => ({
     const nextCount = Math.max(0, Math.floor(toNumber(count)));
     const allItems = get().allItems;
     const catalogItem = allItems.find((item) => String(item.id) === itemKey);
-    const previousLine = get().items.find(
+    const currentItems = get().items;
+    const previousIndex = currentItems.findIndex(
       (item) => String(item.item_id) === itemKey
     );
+    const previousLine =
+      previousIndex >= 0 ? currentItems[previousIndex] : undefined;
     const previousCount = previousLine ? toNumber(previousLine.count) : 0;
-    const withoutItem = get().items.filter(
-      (item) => String(item.item_id) !== itemKey
-    );
     const nextLine =
       nextCount > 0
         ? catalogLine(catalogItem, itemId, nextCount, catId)
         : undefined;
-    const items = nextLine ? [...withoutItem, nextLine] : withoutItem;
+    const items = currentItems.slice();
+
+    if (previousIndex >= 0) {
+      if (nextLine) {
+        items[previousIndex] = nextLine;
+      } else {
+        items.splice(previousIndex, 1);
+      }
+    } else if (nextLine) {
+      items.push(nextLine);
+    }
 
     set({ items });
     get().recomputeTotals();

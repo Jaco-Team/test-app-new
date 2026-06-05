@@ -26,6 +26,7 @@ export type MuiSelectFieldProps = Omit<
   range?: MuiControlRange;
   surface?: MuiControlSurface;
   startAdornment?: ReactNode;
+  endAdornment?: ReactNode;
 };
 
 export function MuiSelectField({
@@ -33,6 +34,7 @@ export function MuiSelectField({
   range = 'regular',
   surface = 'plain',
   startAdornment,
+  endAdornment,
   className,
   slotProps,
   sx,
@@ -57,7 +59,7 @@ export function MuiSelectField({
       fullWidth
       select
       slotProps={{
-        ...mergeTextFieldSlotProps(slotProps, startAdornment),
+        ...mergeTextFieldSlotProps(slotProps, startAdornment, endAdornment),
         select: {
           ...selectSlot,
           MenuProps: {
@@ -68,6 +70,7 @@ export function MuiSelectField({
                 ...menuSlotProps.paper,
                 className: cn(
                   'ui-mui-field__paper',
+                  'ui-mui-field__paper--range-' + range,
                   menuSlotProps.paper?.className
                 ),
               },
@@ -75,6 +78,7 @@ export function MuiSelectField({
                 ...menuSlotProps.list,
                 className: cn(
                   'ui-mui-field__listbox',
+                  'ui-mui-field__listbox--range-' + range,
                   menuSlotProps.list?.className
                 ),
               },
@@ -89,7 +93,10 @@ export function MuiSelectField({
           key={option.value}
           value={option.value}
           disabled={option.disabled}
-          className="ui-mui-field__option"
+          className={cn(
+            'ui-mui-field__option',
+            'ui-mui-field__option--range-' + range
+          )}
         >
           {option.label}
         </MenuItem>

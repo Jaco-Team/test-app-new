@@ -34,6 +34,7 @@ export function CartCommentModal({
         <MuiTextField
           id="cart-comment-modal"
           name="commentModal"
+          className="cart-page__comment-input"
           range="compact"
           surface="outlined"
           placeholder={placeholder}

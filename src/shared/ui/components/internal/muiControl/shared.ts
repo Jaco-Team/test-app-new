@@ -7,7 +7,7 @@ import type { SxProps, Theme } from '@mui/material/styles';
 import { cn } from '../../../foundation/classNames';
 import './styles.scss';
 
-export type MuiControlRange = 'compact' | 'regular' | 'expanded';
+export type MuiControlRange = 'compact' | 'regular' | 'expanded' | 'responsive';
 export type MuiControlSurface = 'plain' | 'outlined';
 
 type MuiControlClassOptions = {
@@ -31,19 +31,10 @@ export function getMuiControlClassName(
   );
 }
 
-/** Hide MUI notch only — padding/borders live in SCSS so page styles are not clobbered. */
+/** Wrapper instances still set width directly; generic chrome lives in the theme. */
 export function createMuiControlSx(): SxProps<Theme> {
   return {
     width: '100%',
-    '& .MuiOutlinedInput-notchedOutline': {
-      border: 0,
-    },
-    '& .MuiOutlinedInput-root:hover .MuiOutlinedInput-notchedOutline': {
-      border: 0,
-    },
-    '& .MuiOutlinedInput-root.Mui-focused .MuiOutlinedInput-notchedOutline': {
-      border: 0,
-    },
   };
 }
 
@@ -59,9 +50,22 @@ export function createStartAdornment(content?: ReactNode) {
   );
 }
 
+export function createEndAdornment(content?: ReactNode) {
+  if (!content) {
+    return undefined;
+  }
+
+  return createElement(
+    InputAdornment,
+    { position: 'end', className: 'ui-mui-field__end-adornment' },
+    content
+  );
+}
+
 export function mergeTextFieldSlotProps(
   slotProps: TextFieldProps['slotProps'] | undefined,
-  startAdornment?: ReactNode
+  startAdornment?: ReactNode,
+  endAdornment?: ReactNode
 ): TextFieldProps['slotProps'] {
   const inputSlot =
     slotProps?.input && typeof slotProps.input === 'object'
@@ -76,6 +80,9 @@ export function mergeTextFieldSlotProps(
         ('startAdornment' in inputSlot
           ? inputSlot.startAdornment
           : undefined) ?? createStartAdornment(startAdornment),
+      endAdornment:
+        ('endAdornment' in inputSlot ? inputSlot.endAdornment : undefined) ??
+        createEndAdornment(endAdornment),
     },
   };
 }

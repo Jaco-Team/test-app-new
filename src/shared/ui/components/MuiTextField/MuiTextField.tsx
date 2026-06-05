@@ -14,12 +14,14 @@ export type MuiTextFieldProps = Omit<TextFieldProps, 'variant'> & {
   range?: MuiControlRange;
   surface?: MuiControlSurface;
   startAdornment?: ReactNode;
+  endAdornment?: ReactNode;
 };
 
 export function MuiTextField({
   range = 'regular',
   surface = 'plain',
   startAdornment,
+  endAdornment,
   className,
   multiline = false,
   slotProps,
@@ -36,7 +38,11 @@ export function MuiTextField({
       multiline={multiline}
       variant="outlined"
       fullWidth
-      slotProps={mergeTextFieldSlotProps(slotProps, startAdornment)}
+      slotProps={mergeTextFieldSlotProps(
+        slotProps,
+        startAdornment,
+        endAdornment
+      )}
       sx={[createMuiControlSx(), ...(Array.isArray(sx) ? sx : [sx])]}
     />
   );

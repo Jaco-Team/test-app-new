@@ -9,6 +9,7 @@ import NoSsr from '@mui/material/NoSsr';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import PlaceOutlinedIcon from '@mui/icons-material/PlaceOutlined';
+import HomeOutlinedIcon from '@mui/icons-material/HomeOutlined';
 import StorefrontOutlinedIcon from '@mui/icons-material/StorefrontOutlined';
 import AccessTimeOutlinedIcon from '@mui/icons-material/AccessTimeOutlined';
 import CreditCardOutlinedIcon from '@mui/icons-material/CreditCardOutlined';
@@ -30,7 +31,7 @@ import {
   isValidMediaKey,
   resolveProductImageUrl,
 } from '@src/shared/lib/mediaUrls';
-import { cityBase, legacyCityPath } from '@src/shared/lib/sitePaths';
+import { cityBase } from '@src/shared/lib/sitePaths';
 import { BREAKPOINTS } from '@src/shared/ui/foundation/breakpoints';
 import {
   Button,
@@ -46,6 +47,8 @@ import {
 } from '../model/useCartCheckoutDraft';
 import { CartAddressModal } from './CartAddressModal';
 import { CartCommentModal } from './CartCommentModal';
+import { CartSelectorModal } from './CartSelectorModal';
+import { CartFieldTrigger } from './cartFieldControls';
 import './CartPage.scss';
 
 const allergyText =
@@ -124,13 +127,14 @@ export function CartPageIntro() {
 }
 
 export function CartPage() {
-  const compact = useMediaQuery(`(max-width: ${BREAKPOINTS.compactMax}px)`, {
-    noSsr: true,
-  });
-  const regular = useMediaQuery(
-    `(min-width: ${BREAKPOINTS.regularMin}px) and (max-width: ${BREAKPOINTS.regularMax}px)`,
-    { noSsr: true }
+  const compactMedia = useMediaQuery(
+    `(max-width: ${BREAKPOINTS.compactMax}px)`,
+    {
+      noSsr: true,
+    }
   );
+  const [hydrated, setHydrated] = useState(false);
+  const compact = hydrated ? compactMedia : false;
   const citySlug = useCityStore((state) => state.slug);
   const cityLabel = useCityStore((state) => state.labelRu);
   const closeBasket = useHeaderStore((state) => state.setActiveBasket);
@@ -150,6 +154,13 @@ export function CartPage() {
   const checkout = useCartCheckoutDraft(citySlug, cityLabel);
   const [addressModalOpen, setAddressModalOpen] = useState(false);
   const [commentModalOpen, setCommentModalOpen] = useState(false);
+  const [selectorModal, setSelectorModal] = useState<
+    null | 'payment' | 'pickupPoint' | 'deliveryTime'
+  >(null);
+
+  useEffect(() => {
+    setHydrated(true);
+  }, []);
 
   useEffect(() => {
     closeBasket(false);
@@ -167,7 +178,6 @@ export function CartPage() {
     () => formatCartTotalLine(itemsCount),
     [itemsCount]
   );
-  const fieldRange = compact ? 'compact' : regular ? 'regular' : 'expanded';
   const pickupPointOptions = useMemo(
     () => [
       {
@@ -223,6 +233,21 @@ export function CartPage() {
       })),
     [checkout.savedAddresses]
   );
+  const selectedPaymentLabel =
+    paymentOptions.find((option) => option.value === checkout.paymentId)
+      ?.label ?? 'Способ оплаты';
+  const pickupPointModalOptions = useMemo(
+    () =>
+      checkout.pickupPoints.map((point) => ({
+        value: point.id,
+        label: point.label,
+      })),
+    [checkout.pickupPoints]
+  );
+  const deliveryTimeModalOptions = useMemo(
+    () => [{ value: 'asap', label: 'В ближайшее время' }],
+    []
+  );
   const commentFieldLabel =
     checkout.orderType === 'delivery'
       ? 'Сообщение курьеру'
@@ -239,6 +264,10 @@ export function CartPage() {
     }
 
     setAddressModalOpen(true);
+  }
+
+  function closeSelectorModal() {
+    setSelectorModal(null);
   }
 
   return (
@@ -283,16 +312,22 @@ export function CartPage() {
                 type="button"
                 onClick={() => openCityModal(true)}
               >
-                <span className="cart-page__field-label">Город</span>
+                {compact ? null : (
+                  <span className="cart-page__field-label">Город</span>
+                )}
                 <span className="cart-page__field-main">
                   <span className="cart-page__field-icon">
                     <PlaceOutlinedIcon />
                   </span>
                   <span className="cart-page__field-copy">
-                    <span className="cart-page__field-value">{cityLabel}</span>
-                    <span className="cart-page__field-note">
-                      Выбрать другой город
+                    <span className="cart-page__field-value cart-page__field-value--strong">
+                      {cityLabel}
                     </span>
+                    {compact ? null : (
+                      <span className="cart-page__field-note">
+                        Выбрать другой город
+                      </span>
+                    )}
                   </span>
                   <span className="cart-page__field-chevron" aria-hidden="true">
                     <KeyboardArrowDownRoundedIcon />
@@ -302,74 +337,24 @@ export function CartPage() {
 
               {checkout.orderType === 'delivery' ? (
                 checkout.isAddressAuthRequired ? (
-                  <button
-                    className="cart-page__field cart-page__field--action cart-page__field--stacked"
-                    type="button"
+                  <CartFieldTrigger
+                    label={compact ? undefined : 'Адрес доставки'}
+                    icon={<HomeOutlinedIcon />}
+                    value="Выберите адрес"
+                    placeholder
                     onClick={() => openAuthModal(true)}
-                  >
-                    <span className="cart-page__field-label">
-                      Адрес доставки
-                    </span>
-                    <span className="cart-page__field-main cart-page__field-main--action">
-                      <span className="cart-page__field-icon">
-                        <PlaceOutlinedIcon />
-                      </span>
-                      <span className="cart-page__field-copy">
-                        <span className="cart-page__field-value cart-page__field-value--placeholder">
-                          Войдите, чтобы выбрать адрес
-                        </span>
-                        <span className="cart-page__field-note">
-                          Адреса подтягиваются из профиля
-                        </span>
-                      </span>
-                      <span
-                        className="cart-page__field-chevron"
-                        aria-hidden="true"
-                      >
-                        <KeyboardArrowDownRoundedIcon />
-                      </span>
-                    </span>
-                  </button>
+                  />
                 ) : checkout.savedAddresses.length > 0 ? (
                   compact ? (
-                    <button
-                      className="cart-page__field cart-page__field--action cart-page__field--stacked"
-                      type="button"
+                    <CartFieldTrigger
+                      label={undefined}
+                      icon={<HomeOutlinedIcon />}
+                      value={addressFieldValue(
+                        checkout.selectedDeliveryAddress
+                      )}
+                      placeholder={!checkout.selectedDeliveryAddress}
                       onClick={openAddressSelector}
-                    >
-                      <span className="cart-page__field-label">
-                        Адрес доставки
-                      </span>
-                      <span className="cart-page__field-main cart-page__field-main--action">
-                        <span className="cart-page__field-icon">
-                          <PlaceOutlinedIcon />
-                        </span>
-                        <span className="cart-page__field-copy">
-                          <span
-                            className={
-                              'cart-page__field-value' +
-                              (checkout.selectedDeliveryAddress
-                                ? ''
-                                : ' cart-page__field-value--placeholder')
-                            }
-                          >
-                            {addressFieldValue(
-                              checkout.selectedDeliveryAddress
-                            )}
-                          </span>
-                          <span className="cart-page__field-note">
-                            {checkout.selectedDeliveryAddress?.note ||
-                              'Адреса доставки из профиля'}
-                          </span>
-                        </span>
-                        <span
-                          className="cart-page__field-chevron"
-                          aria-hidden="true"
-                        >
-                          <KeyboardArrowDownRoundedIcon />
-                        </span>
-                      </span>
-                    </button>
+                    />
                   ) : (
                     <label className="cart-page__field cart-page__field--stacked">
                       <span className="cart-page__field-label">
@@ -380,9 +365,9 @@ export function CartPage() {
                           id="cart-delivery-address"
                           name="deliveryAddress"
                           className="cart-page__control-field"
-                          range={fieldRange}
+                          range="responsive"
                           surface="plain"
-                          startAdornment={<PlaceOutlinedIcon />}
+                          startAdornment={<HomeOutlinedIcon />}
                           value={checkout.selectedAddressId}
                           options={[
                             {
@@ -406,34 +391,22 @@ export function CartPage() {
                     </label>
                   )
                 ) : (
-                  <Link
-                    className="cart-page__field cart-page__field--action cart-page__field--stacked"
-                    href={legacyCityPath(citySlug, 'address')}
-                  >
-                    <span className="cart-page__field-label">
-                      Адрес доставки
-                    </span>
-                    <span className="cart-page__field-main cart-page__field-main--action">
-                      <span className="cart-page__field-icon">
-                        <PlaceOutlinedIcon />
-                      </span>
-                      <span className="cart-page__field-copy">
-                        <span className="cart-page__field-value cart-page__field-value--placeholder">
-                          Добавьте адрес в профиле
-                        </span>
-                        <span className="cart-page__field-note">
-                          После сохранения он появится здесь
-                        </span>
-                      </span>
-                      <span
-                        className="cart-page__field-chevron"
-                        aria-hidden="true"
-                      >
-                        <KeyboardArrowDownRoundedIcon />
-                      </span>
-                    </span>
-                  </Link>
+                  <CartFieldTrigger
+                    label={compact ? undefined : 'Адрес доставки'}
+                    icon={<HomeOutlinedIcon />}
+                    value="Выберите адрес"
+                    placeholder
+                    onClick={openAddressSelector}
+                  />
                 )
+              ) : compact ? (
+                <CartFieldTrigger
+                  icon={<StorefrontOutlinedIcon />}
+                  value={checkout.selectedPickupPoint?.label || 'Выберите кафе'}
+                  valueClassName="cart-page__field-value--semibold"
+                  placeholder={!checkout.selectedPickupPoint}
+                  onClick={() => setSelectorModal('pickupPoint')}
+                />
               ) : (
                 <label className="cart-page__field cart-page__field--stacked">
                   <span className="cart-page__field-label">Кафе</span>
@@ -442,7 +415,7 @@ export function CartPage() {
                       id="cart-pickup-point"
                       name="pickupPoint"
                       className="cart-page__control-field"
-                      range={fieldRange}
+                      range="responsive"
                       surface="plain"
                       startAdornment={<StorefrontOutlinedIcon />}
                       value={checkout.pickupPointId}
@@ -456,16 +429,41 @@ export function CartPage() {
               )}
 
               <div className="cart-page__field cart-page__field--stacked">
-                <span className="cart-page__field-label">Время</span>
+                {compact ? null : (
+                  <span className="cart-page__field-label">Время</span>
+                )}
                 {checkout.orderType === 'delivery' ? (
-                  <span className="cart-page__field-main">
-                    <span className="cart-page__field-icon">
-                      <AccessTimeOutlinedIcon />
+                  compact ? (
+                    <button
+                      className="cart-page__field-main cart-page__field-main--action"
+                      type="button"
+                      onClick={() => setSelectorModal('deliveryTime')}
+                    >
+                      <span className="cart-page__field-icon">
+                        <AccessTimeOutlinedIcon />
+                      </span>
+                      <span className="cart-page__field-copy">
+                        <span className="cart-page__field-value cart-page__field-value--strong">
+                          В ближайшее время
+                        </span>
+                      </span>
+                      <span
+                        className="cart-page__field-chevron"
+                        aria-hidden="true"
+                      >
+                        <KeyboardArrowDownRoundedIcon />
+                      </span>
+                    </button>
+                  ) : (
+                    <span className="cart-page__field-main">
+                      <span className="cart-page__field-icon">
+                        <AccessTimeOutlinedIcon />
+                      </span>
+                      <span className="cart-page__field-value cart-page__field-value--strong">
+                        В ближайшее время
+                      </span>
                     </span>
-                    <span className="cart-page__field-value">
-                      В ближайшее время
-                    </span>
-                  </span>
+                  )
                 ) : (
                   <div className="cart-page__field-stack">
                     {clientOnlyControl(
@@ -473,7 +471,7 @@ export function CartPage() {
                         id="cart-schedule-mode"
                         name="scheduleMode"
                         className="cart-page__control-field"
-                        range={fieldRange}
+                        range="responsive"
                         surface="plain"
                         startAdornment={<ScheduleRoundedIcon />}
                         value={checkout.scheduleMode}
@@ -492,7 +490,7 @@ export function CartPage() {
                         {clientOnlyControl(
                           <MuiDatePickerField
                             className="cart-page__control-field"
-                            range={fieldRange}
+                            range="responsive"
                             surface="plain"
                             startAdornment={<AccessTimeOutlinedIcon />}
                             value={checkout.selectedScheduleDate}
@@ -521,7 +519,7 @@ export function CartPage() {
                             id="cart-schedule-time"
                             name="scheduleTime"
                             className="cart-page__control-field"
-                            range={fieldRange}
+                            range="responsive"
                             surface="plain"
                             startAdornment={<ScheduleRoundedIcon />}
                             value={checkout.scheduleTimeId}
@@ -543,30 +541,57 @@ export function CartPage() {
                 )}
               </div>
 
-              <label className="cart-page__field cart-page__field--stacked">
-                <span className="cart-page__field-label">Оплата</span>
-                {clientOnlyControl(
-                  <MuiSelectField
-                    id="cart-payment"
-                    name="paymentMethod"
-                    className="cart-page__control-field"
-                    range={fieldRange}
-                    surface="plain"
-                    startAdornment={<CreditCardOutlinedIcon />}
-                    value={checkout.paymentId}
-                    options={paymentOptions}
-                    onChange={(event) =>
-                      checkout.setPaymentId(event.target.value)
-                    }
-                  />
-                )}
-              </label>
+              {compact ? (
+                <div className="cart-page__field cart-page__field--stacked">
+                  <button
+                    className="cart-page__field-main cart-page__field-main--action"
+                    type="button"
+                    onClick={() => setSelectorModal('payment')}
+                  >
+                    <span className="cart-page__field-icon">
+                      <CreditCardOutlinedIcon />
+                    </span>
+                    <span className="cart-page__field-copy">
+                      <span className="cart-page__field-value cart-page__field-value--semibold">
+                        {selectedPaymentLabel}
+                      </span>
+                    </span>
+                    <span
+                      className="cart-page__field-chevron"
+                      aria-hidden="true"
+                    >
+                      <KeyboardArrowDownRoundedIcon />
+                    </span>
+                  </button>
+                </div>
+              ) : (
+                <label className="cart-page__field cart-page__field--stacked">
+                  <span className="cart-page__field-label">Оплата</span>
+                  {clientOnlyControl(
+                    <MuiSelectField
+                      id="cart-payment"
+                      name="paymentMethod"
+                      className="cart-page__control-field"
+                      range="responsive"
+                      surface="plain"
+                      startAdornment={<CreditCardOutlinedIcon />}
+                      value={checkout.paymentId}
+                      options={paymentOptions}
+                      onChange={(event) =>
+                        checkout.setPaymentId(event.target.value)
+                      }
+                    />
+                  )}
+                </label>
+              )}
 
               {checkout.orderType === 'delivery' || !compact ? (
                 <div className="cart-page__field cart-page__field--stacked">
-                  <span className="cart-page__field-label">
-                    {commentFieldLabel}
-                  </span>
+                  {compact ? null : (
+                    <span className="cart-page__field-label">
+                      {commentFieldLabel}
+                    </span>
+                  )}
                   {compact ? (
                     <button
                       className="cart-page__field-main cart-page__field-main--action"
@@ -591,6 +616,7 @@ export function CartPage() {
                         <span
                           className={
                             'cart-page__field-value' +
+                            ' cart-page__field-value--semibold' +
                             (checkout.comment.trim().length
                               ? ''
                               : ' cart-page__field-value--placeholder')
@@ -614,7 +640,7 @@ export function CartPage() {
                         id="cart-comment"
                         name="comment"
                         className="cart-page__control-field"
-                        range={fieldRange}
+                        range="responsive"
                         surface="plain"
                         startAdornment={
                           checkout.orderType === 'delivery' ? (
@@ -763,7 +789,7 @@ export function CartPage() {
                     id="cart-promo-code"
                     name="promoCode"
                     className="cart-page__promo-input"
-                    range={fieldRange}
+                    range="responsive"
                     surface="outlined"
                     placeholder="Есть промокод"
                     value={checkout.promoCode}
@@ -839,6 +865,30 @@ export function CartPage() {
         placeholder={commentPlaceholder}
         value={checkout.comment}
         onChange={checkout.setComment}
+      />
+      <CartSelectorModal
+        open={selectorModal === 'payment'}
+        onClose={closeSelectorModal}
+        title="Способ оплаты"
+        options={paymentOptions}
+        selectedValue={checkout.paymentId}
+        onSelect={checkout.setPaymentId}
+      />
+      <CartSelectorModal
+        open={selectorModal === 'pickupPoint'}
+        onClose={closeSelectorModal}
+        title="Выберите кафе"
+        options={pickupPointModalOptions}
+        selectedValue={checkout.pickupPointId}
+        onSelect={checkout.setPickupPointId}
+      />
+      <CartSelectorModal
+        open={selectorModal === 'deliveryTime'}
+        onClose={closeSelectorModal}
+        title="Дата и время"
+        options={deliveryTimeModalOptions}
+        selectedValue="asap"
+        onSelect={() => undefined}
       />
     </div>
   );

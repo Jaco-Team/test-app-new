@@ -22,6 +22,7 @@ export type MuiDatePickerFieldProps<TDate extends Date = Date> = Omit<
   surface?: MuiControlSurface;
   className?: string;
   startAdornment?: ReactNode;
+  endAdornment?: ReactNode;
 };
 
 export function MuiDatePickerField<TDate extends Date = Date>({
@@ -29,6 +30,7 @@ export function MuiDatePickerField<TDate extends Date = Date>({
   surface = 'plain',
   className,
   startAdornment,
+  endAdornment,
   slotProps,
   ...props
 }: MuiDatePickerFieldProps<TDate>) {
@@ -49,7 +51,8 @@ export function MuiDatePickerField<TDate extends Date = Date>({
             sx: createMuiControlSx(),
             slotProps: mergeTextFieldSlotProps(
               textFieldSlotPropsNested,
-              startAdornment
+              startAdornment,
+              endAdornment
             ),
           },
           desktopPaper: {
