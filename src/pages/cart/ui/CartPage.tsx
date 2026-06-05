@@ -270,6 +270,7 @@ export function CartPage() {
       ? 'Код домофона, этаж, ориентир'
       : 'Комментарий для кухни или кассы';
   const commentTriggerValue = checkout.comment.trim() || commentFieldLabel;
+  const showEmptyState = items.length === 0 && dopListCart.length === 0;
   const compactAddressValue = compactAddressFieldValue(
     checkout.selectedDeliveryAddress
   );
@@ -720,7 +721,7 @@ export function CartPage() {
           </Accordion>
 
           <section className="cart-page__section cart-page__section--items">
-            {items.length === 0 ? (
+            {showEmptyState ? (
               <div className="cart-page__empty">
                 <h2>Корзина пуста</h2>
                 <p>Добавьте блюда из меню, и здесь появится состав заказа.</p>
@@ -774,9 +775,15 @@ export function CartPage() {
 
           {dopListCart.length ? (
             <section className="cart-page__section cart-page__section--extras">
-              <header className="cart-page__section-header">
-                <h2>{getCartExtrasIntroText(cartIntroKind)}</h2>
-              </header>
+              {compact ? (
+                <div className="cart-page__extra-intro">
+                  <span>{getCartExtrasIntroText(cartIntroKind)}</span>
+                </div>
+              ) : (
+                <header className="cart-page__section-header">
+                  <h2>{getCartExtrasIntroText(cartIntroKind)}</h2>
+                </header>
+              )}
               <div className="cart-page__extra-list">
                 {dopListCart.map((line, index) => {
                   const id = lineId(line);
