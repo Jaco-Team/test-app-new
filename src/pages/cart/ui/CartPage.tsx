@@ -87,6 +87,16 @@ function addressFieldValue(address: SavedAddress | null | undefined): string {
   return address.title || address.name || address.label;
 }
 
+function compactAddressFieldValue(
+  address: SavedAddress | null | undefined
+): string {
+  if (!address) {
+    return 'Выберите адрес';
+  }
+
+  return address.title || address.name || address.label;
+}
+
 function clientOnlyControl(
   node: ReactNode,
   placeholderClassName = 'cart-page__control-placeholder'
@@ -200,11 +210,13 @@ export function CartPage() {
     []
   );
   const paymentOptions = useMemo(
-    () =>
-      checkout.paymentOptions.map((option) => ({
+    () => [
+      { value: '', label: 'Способ оплаты' },
+      ...checkout.paymentOptions.map((option) => ({
         value: option.id,
         label: option.label,
       })),
+    ],
     [checkout.paymentOptions]
   );
   const timeOptions = useMemo(
@@ -256,6 +268,13 @@ export function CartPage() {
     checkout.orderType === 'delivery'
       ? 'Код домофона, этаж, ориентир'
       : 'Комментарий для кухни или кассы';
+  const commentTriggerValue = checkout.comment.trim() || commentFieldLabel;
+  const compactAddressValue = compactAddressFieldValue(
+    checkout.selectedDeliveryAddress
+  );
+  const compactAddressUsesTitle = Boolean(
+    checkout.selectedDeliveryAddress?.title?.trim().length
+  );
 
   function openAddressSelector() {
     if (checkout.isAddressAuthRequired) {
@@ -349,9 +368,12 @@ export function CartPage() {
                     <CartFieldTrigger
                       label={undefined}
                       icon={<HomeOutlinedIcon />}
-                      value={addressFieldValue(
-                        checkout.selectedDeliveryAddress
-                      )}
+                      value={compactAddressValue}
+                      valueClassName={
+                        compactAddressUsesTitle
+                          ? 'cart-page__field-value--address-title'
+                          : undefined
+                      }
                       placeholder={!checkout.selectedDeliveryAddress}
                       onClick={openAddressSelector}
                     />
@@ -552,7 +574,14 @@ export function CartPage() {
                       <CreditCardOutlinedIcon />
                     </span>
                     <span className="cart-page__field-copy">
-                      <span className="cart-page__field-value cart-page__field-value--semibold">
+                      <span
+                        className={
+                          'cart-page__field-value cart-page__field-value--semibold' +
+                          (!checkout.paymentId.length
+                            ? ' cart-page__field-value--placeholder'
+                            : '')
+                        }
+                      >
                         {selectedPaymentLabel}
                       </span>
                     </span>
@@ -622,9 +651,7 @@ export function CartPage() {
                               : ' cart-page__field-value--placeholder')
                           }
                         >
-                          {checkout.comment.trim().length
-                            ? checkout.comment
-                            : commentPlaceholder}
+                          {commentTriggerValue}
                         </span>
                       </span>
                       <span

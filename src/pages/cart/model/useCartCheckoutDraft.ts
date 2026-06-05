@@ -266,7 +266,7 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
     String(initialDraft?.pickupPointId ?? '')
   );
   const [paymentId, setPaymentId] = useState(
-    String(initialDraft?.paymentId ?? 'cash')
+    String(initialDraft?.paymentId ?? '')
   );
   const [comment, setComment] = useState(String(initialDraft?.comment ?? ''));
   const [promoCode, setPromoCode] = useState(
@@ -367,11 +367,15 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
     setPaymentId((current) => {
       const options =
         orderType === 'pickup' ? PICKUP_PAYMENTS : DELIVERY_PAYMENTS;
+      if (!current.length) {
+        return '';
+      }
+
       if (options.some((option) => option.id === current)) {
         return current;
       }
 
-      return options[0]?.id ?? 'cash';
+      return '';
     });
   }, [orderType]);
 

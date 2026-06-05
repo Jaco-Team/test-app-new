@@ -161,6 +161,14 @@
   border-radius: 999px;
   background: $ui-surface-soft;
 
+  @include ui-compact {
+    gap: 0;
+    padding: 0;
+    border-radius: 25.6411px;
+    background: #f2f2f2;
+    overflow: hidden;
+  }
+
   @include ui-regular {
     gap: ui-fluid-regular(8);
     padding: ui-fluid-regular(9);
@@ -182,6 +190,13 @@
   font-family: $ui-font-family;
   font-size: max(12px, ui-fluid-compact(24));
   font-weight: 500;
+
+  @include ui-compact {
+    min-height: 51.28125px;
+    font-size: clamp(16px, 4.28vw, 21.3675px);
+    font-weight: 500;
+    color: rgba(0, 0, 0, 0.8);
+  }
 
   @include ui-regular {
     min-height: ui-fluid-regular(60);
@@ -228,6 +243,10 @@
   display: grid;
   gap: ui-fluid-compact(12);
 
+  @include ui-compact {
+    gap: 9px;
+  }
+
   @include ui-regular {
     grid-template-columns: minmax(0, 1fr);
     gap: ui-fluid-regular(12);
@@ -250,6 +269,15 @@
   color: $ui-text;
   text-align: left;
   appearance: none;
+
+  @include ui-compact {
+    gap: 0;
+    min-height: 51.28125px;
+    padding: 0 14px 0 16px;
+    border: 1px solid rgba(0, 0, 0, 0.2);
+    border-radius: 25.6411px;
+    align-items: center;
+  }
 
   @include ui-regular {
     min-height: ui-fluid-regular(88);
@@ -301,6 +329,10 @@
   flex: 1 1 auto;
   min-width: 0;
 
+  @include ui-compact {
+    gap: 0;
+  }
+
   @include ui-regular {
     gap: ui-fluid-regular(4);
   }
@@ -325,6 +357,10 @@
   align-items: center;
   gap: ui-fluid-compact(14);
   min-width: 0;
+
+  @include ui-compact {
+    gap: 10px;
+  }
 
   @include ui-regular {
     gap: ui-fluid-regular(12);
@@ -364,10 +400,22 @@
   color: $ui-text;
 }
 
+.cart-page__field-chevron svg {
+  @include ui-compact {
+    width: 14px;
+    height: 8px;
+  }
+}
+
 .cart-page__field-icon svg,
 .cart-page__field-chevron svg {
   width: ui-fluid-compact(30);
   height: ui-fluid-compact(30);
+
+  @include ui-compact {
+    width: 20px;
+    height: 20px;
+  }
 
   @include ui-regular {
     width: ui-fluid-regular(26);
@@ -385,6 +433,15 @@
   font-weight: 600;
   line-height: 1.2;
 
+  @include ui-compact {
+    overflow: hidden;
+    font-size: clamp(16px, 4.28vw, 21.3675px);
+    font-weight: 500;
+    line-height: 1.1;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
   @include ui-regular {
     font-size: max(12px, ui-fluid-regular(20));
     font-weight: 600;
@@ -398,7 +455,7 @@
 
 .cart-page__field-value--semibold {
   @include ui-compact {
-    font-weight: 600;
+    font-weight: 500;
   }
 
   @include ui-regular {
@@ -408,11 +465,17 @@
 
 .cart-page__field-value--strong {
   @include ui-compact {
-    font-weight: 700;
+    font-weight: 500;
   }
 
   @include ui-regular {
     font-weight: 700;
+  }
+}
+
+.cart-page__field-value--address-title {
+  @include ui-compact {
+    text-transform: uppercase;
   }
 }
 
@@ -655,6 +718,11 @@
   border-radius: ui-fluid-compact(24);
   background: $ui-surface-soft;
 
+  @include ui-compact {
+    border-radius: 17px;
+    background: #f2f2f2;
+  }
+
   @include ui-regular {
     border-radius: ui-fluid-regular(22);
     background: $ui-surface;
@@ -674,6 +742,10 @@
   min-height: 0;
   padding: 0 ui-fluid-compact(24);
 
+  @include ui-compact {
+    padding: 0 18px;
+  }
+
   @include ui-regular {
     padding: 0 ui-fluid-regular(22);
   }
@@ -687,6 +759,12 @@
   margin: ui-fluid-compact(20) 0;
   font-size: max(12px, ui-fluid-compact(24));
   font-weight: 500;
+
+  @include ui-compact {
+    margin: 17px 0;
+    font-size: clamp(16px, 4vw, 18px);
+    font-weight: 400;
+  }
 
   @include ui-regular {
     margin: ui-fluid-regular(19) 0;
@@ -986,6 +1064,11 @@
   width: min(100%, ui-fluid-compact(640));
   border-radius: ui-fluid-compact(28) ui-fluid-compact(28) 0 0;
 
+  @include ui-compact {
+    width: 100%;
+    border-radius: 29px 29px 0 0;
+  }
+
   @include ui-regular {
     width: min(100%, ui-fluid-regular(560));
     border-radius: ui-fluid-regular(24);
@@ -1003,6 +1086,12 @@
   font-weight: 700;
   line-height: 1.15;
 
+  @include ui-compact {
+    font-size: clamp(15px, 4vw, 17px);
+    font-weight: 500;
+    line-height: 1.2;
+  }
+
   @include ui-regular {
     font-size: max(12px, ui-fluid-regular(22));
   }
@@ -1015,6 +1104,10 @@
 .cart-page__selector-modal-content {
   padding-top: 0;
   padding-bottom: ui-fluid-compact(20);
+
+  @include ui-compact {
+    padding-bottom: 16px;
+  }
 
   @include ui-regular {
     padding-bottom: ui-fluid-regular(20);
@@ -1031,6 +1124,11 @@
   display: grid;
   gap: ui-fluid-compact(16);
   padding-inline: ui-fluid-compact(28);
+
+  @include ui-compact {
+    gap: 12px;
+    padding-inline: 16px;
+  }
 
   @include ui-regular {
     gap: ui-fluid-regular(14);
@@ -1057,6 +1155,10 @@
   max-height: ui-fluid-compact(420);
   overflow: auto;
 
+  @include ui-compact {
+    max-height: 50dvh;
+  }
+
   @include ui-regular {
     gap: ui-fluid-regular(10);
     max-height: ui-fluid-regular(360);
@@ -1080,6 +1182,12 @@
   color: $ui-text;
   text-align: left;
   cursor: pointer;
+
+  @include ui-compact {
+    gap: 4px;
+    padding: 14px 12px;
+    border-bottom: 1px solid rgba(0, 0, 0, 0.08);
+  }
 
   @include ui-regular {
     gap: ui-fluid-regular(6);
@@ -1107,6 +1215,11 @@
   font-size: max(18px, ui-fluid-compact(34));
   font-weight: 600;
   line-height: 1.2;
+
+  @include ui-compact {
+    font-size: clamp(16px, 4.28vw, 21.3675px);
+    font-weight: 500;
+  }
 
   @include ui-regular {
     font-size: max(16px, ui-fluid-regular(20));
@@ -1151,6 +1264,10 @@
   font-size: max(14px, ui-fluid-compact(24));
   line-height: 1.35;
 
+  @include ui-compact {
+    font-size: clamp(13px, 3.6vw, 16px);
+  }
+
   @include ui-regular {
     font-size: max(14px, ui-fluid-regular(16));
   }
@@ -1173,6 +1290,10 @@
   color: $ui-text;
   text-align: left;
   cursor: pointer;
+
+  @include ui-compact {
+    padding: 14px 12px;
+  }
 
   @include ui-regular {
     padding: ui-fluid-regular(18) 0;
@@ -1210,6 +1331,11 @@
   font-weight: 600;
   line-height: 1.2;
 
+  @include ui-compact {
+    font-size: clamp(16px, 4.28vw, 21.3675px);
+    font-weight: 500;
+  }
+
   @include ui-regular {
     font-size: max(16px, ui-fluid-regular(20));
   }
@@ -1225,12 +1351,47 @@
   font-size: max(14px, ui-fluid-compact(24));
   line-height: 1.35;
 
+  @include ui-compact {
+    font-size: clamp(13px, 3.6vw, 16px);
+  }
+
   @include ui-regular {
     font-size: max(14px, ui-fluid-regular(16));
   }
 
   @include ui-expanded {
     font-size: ui-fluid-expanded(12);
+  }
+}
+
+.cart-page__address-add.ui-button,
+.cart-page__comment-done.ui-button {
+  @include ui-compact {
+    min-height: 45px;
+    border-radius: 22.5px;
+    font-size: clamp(16px, 4vw, 18px);
+  }
+}
+
+.cart-page__address-add.ui-button {
+  @include ui-compact {
+    margin-top: 2px;
+  }
+}
+
+.cart-page__comment-input.ui-mui-field--surface-outlined .MuiInputBase-root {
+  @include ui-compact {
+    border-radius: 17px;
+    padding: 14px 16px;
+  }
+}
+
+.cart-page__comment-input.ui-mui-field .MuiInputBase-input,
+.cart-page__comment-input.ui-mui-field .MuiInputBase-inputMultiline {
+  @include ui-compact {
+    font-size: clamp(16px, 4vw, 18px);
+    font-weight: 400 !important;
+    line-height: 1.35;
   }
 }
 
