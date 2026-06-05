@@ -12,6 +12,7 @@ TypeScript + FSD под `src/`, смонтированное на `/preview/{cit
 - рендерить новый UI на DS поверх этого состояния.
 
 Legacy `/samara` остается production-эталоном. `src/` — это миграционный слой для поэтапной замены маршрутов.
+Поведенческий source of truth до cutover — текущий pages-router runtime (`pages/`, `components/`, `modules/`, `styles/`): если в `src/` поведение спорное, алгоритм нужно сверять именно там и воспроизводить в preview.
 
 ## Слои
 

@@ -3,6 +3,10 @@
 
 .cart-page {
   color: $ui-text;
+
+  @include ui-compact {
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
 }
 
 .cart-page__hero {
@@ -128,21 +132,25 @@
 .cart-page__section,
 .cart-page__notice,
 .cart-page__summary-card {
-  border: 1px solid rgba(0, 0, 0, 0.08);
-  border-radius: ui-fluid-compact(32);
-  background: $ui-surface;
+  border: 0;
+  border-radius: 0;
+  background: transparent;
 
   @include ui-regular {
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: ui-fluid-regular(26);
+    background: $ui-surface;
   }
 
   @include ui-expanded {
+    border: 1px solid rgba(0, 0, 0, 0.08);
     border-radius: ui-fluid-expanded(20);
+    background: $ui-surface;
   }
 }
 
 .cart-page__section {
-  padding: ui-fluid-compact(24);
+  padding: 0;
 
   @include ui-regular {
     padding: ui-fluid-regular(22);
@@ -164,7 +172,7 @@
   @include ui-compact {
     gap: 0;
     padding: 0;
-    border-radius: 25.6411px;
+    border-radius: ui-fluid-compact(45);
     background: #f2f2f2;
     overflow: hidden;
   }
@@ -192,8 +200,8 @@
   font-weight: 500;
 
   @include ui-compact {
-    min-height: 51.28125px;
-    font-size: clamp(16px, 4.28vw, 21.3675px);
+    min-height: ui-fluid-compact(89);
+    font-size: ui-fluid-compact(37.2);
     font-weight: 500;
     color: rgba(0, 0, 0, 0.8);
   }
@@ -244,7 +252,7 @@
   gap: ui-fluid-compact(12);
 
   @include ui-compact {
-    gap: 9px;
+    gap: ui-fluid-compact(16);
   }
 
   @include ui-regular {
@@ -272,11 +280,12 @@
 
   @include ui-compact {
     gap: 0;
-    min-height: 51.28125px;
-    padding: 0 14px 0 16px;
+    min-height: ui-fluid-compact(89);
+    padding: 0 ui-fluid-compact(24) 0 ui-fluid-compact(28);
     border: 1px solid rgba(0, 0, 0, 0.2);
-    border-radius: 25.6411px;
+    border-radius: ui-fluid-compact(45);
     align-items: center;
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 
   @include ui-regular {
@@ -359,7 +368,7 @@
   min-width: 0;
 
   @include ui-compact {
-    gap: 10px;
+    gap: ui-fluid-compact(17);
   }
 
   @include ui-regular {
@@ -402,8 +411,8 @@
 
 .cart-page__field-chevron svg {
   @include ui-compact {
-    width: 14px;
-    height: 8px;
+    width: ui-fluid-compact(24);
+    height: ui-fluid-compact(14);
   }
 }
 
@@ -413,8 +422,8 @@
   height: ui-fluid-compact(30);
 
   @include ui-compact {
-    width: 20px;
-    height: 20px;
+    width: ui-fluid-compact(35);
+    height: ui-fluid-compact(35);
   }
 
   @include ui-regular {
@@ -435,9 +444,9 @@
 
   @include ui-compact {
     overflow: hidden;
-    font-size: clamp(16px, 4.28vw, 21.3675px);
+    font-size: ui-fluid-compact(37.2);
     font-weight: 500;
-    line-height: 1.1;
+    line-height: ui-fluid-compact(42.63);
     text-overflow: ellipsis;
     white-space: nowrap;
   }
@@ -716,11 +725,11 @@
   color: $ui-text;
   box-shadow: none;
   border-radius: ui-fluid-compact(24);
-  background: $ui-surface-soft;
+  background: rgba(0, 0, 0, 0.05);
 
   @include ui-compact {
-    border-radius: 17px;
-    background: #f2f2f2;
+    border-radius: ui-fluid-compact(30);
+    background: rgba(0, 0, 0, 0.05);
   }
 
   @include ui-regular {
@@ -743,7 +752,7 @@
   padding: 0 ui-fluid-compact(24);
 
   @include ui-compact {
-    padding: 0 18px;
+    padding: 0 ui-fluid-compact(37);
   }
 
   @include ui-regular {
@@ -761,9 +770,10 @@
   font-weight: 500;
 
   @include ui-compact {
-    margin: 17px 0;
-    font-size: clamp(16px, 4vw, 18px);
+    margin: ui-fluid-compact(33) 0;
+    font-size: ui-fluid-compact(31);
     font-weight: 400;
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
   }
 
   @include ui-regular {
@@ -782,6 +792,10 @@
   color: $ui-text-muted;
   font-size: max(12px, ui-fluid-compact(19));
   line-height: 1.35;
+
+  @include ui-compact {
+    padding: 0 ui-fluid-compact(37) ui-fluid-compact(37);
+  }
 
   @include ui-regular {
     padding: 0 ui-fluid-regular(22) ui-fluid-regular(19);
@@ -865,6 +879,13 @@
   font-weight: 500;
   line-height: 1.18;
 
+  @include ui-compact {
+    margin-bottom: ui-fluid-compact(7);
+    font-size: ui-fluid-compact(29.75);
+    font-weight: 400;
+    line-height: 1.2;
+  }
+
   @include ui-regular {
     margin-bottom: ui-fluid-regular(6);
     font-size: max(12px, ui-fluid-regular(18));
@@ -912,7 +933,11 @@
 .cart-page__summary-card {
   display: grid;
   gap: ui-fluid-compact(18);
-  padding: ui-fluid-compact(24);
+  padding: 0;
+
+  @include ui-compact {
+    gap: ui-fluid-compact(24);
+  }
 
   @include ui-regular {
     gap: ui-fluid-regular(17);
@@ -931,6 +956,13 @@
   gap: ui-fluid-compact(14);
   font-size: max(12px, ui-fluid-compact(24));
   line-height: 1.25;
+
+  @include ui-compact {
+    color: rgb(0, 0, 0);
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: ui-fluid-compact(28);
+    line-height: normal;
+  }
 
   @include ui-regular {
     gap: ui-fluid-regular(14);
@@ -973,6 +1005,16 @@
   }
 }
 
+.cart-page__promo-input.ui-mui-field .MuiInputBase-input {
+  @include ui-compact {
+    font-size: ui-fluid-compact(29.75);
+    font-weight: 500 !important;
+    line-height: ui-fluid-compact(80.16);
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    color: rgba(0, 0, 0, 0.8);
+  }
+}
+
 .cart-page__promo-row {
   display: grid;
   gap: ui-fluid-compact(10);
@@ -995,16 +1037,19 @@
   min-width: 0;
 }
 
-.cart-page__promo-button.ui-button {
-  min-width: auto;
-}
-
 .cart-page__summary-note,
 .cart-page__empty p {
   margin: 0;
   color: $ui-text-muted;
   font-size: max(12px, ui-fluid-compact(18));
   line-height: 1.35;
+
+  @include ui-compact {
+    color: rgb(0, 0, 0);
+    font-size: ui-fluid-compact(29.58);
+    line-height: 1.3;
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
 
   @include ui-regular {
     font-size: max(12px, ui-fluid-regular(15));
@@ -1018,6 +1063,17 @@
 .cart-page__submit.ui-button,
 .cart-page__empty-action.ui-button {
   width: 100%;
+
+  @include ui-compact {
+    width: ui-fluid-compact(484);
+    min-width: 0;
+    min-height: ui-fluid-compact(89);
+    justify-self: center;
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-size: ui-fluid-compact(29.75);
+    font-weight: 500;
+    line-height: 1.2;
+  }
 }
 
 .cart-page__status {
@@ -1066,7 +1122,7 @@
 
   @include ui-compact {
     width: 100%;
-    border-radius: 29px 29px 0 0;
+    border-radius: ui-fluid-compact(50) ui-fluid-compact(50) 0 0;
   }
 
   @include ui-regular {

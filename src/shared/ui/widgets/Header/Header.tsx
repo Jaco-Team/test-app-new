@@ -196,7 +196,7 @@ export function Header({
 
   const cartBadge = extractCartCount(cartCount);
   const hasCartItems = Number(cartCount) > 0;
-  const profileAvatarText = profileShortName.trim().slice(0, 2);
+  const profileAvatarText = profileShortName.trim().slice(0, 1);
   const CompactProfileAvatar: ComponentType<{
     'aria-hidden'?: 'true';
     className?: string;
@@ -423,7 +423,12 @@ export function Header({
         </div>
 
         <button
-          className="ui-header__icon-button ui-header__profile"
+          className={cn(
+            'ui-header__icon-button ui-header__profile',
+            profileAuthenticated &&
+              profileAvatarText &&
+              'ui-header__profile--authenticated'
+          )}
           type="button"
           aria-label="Профиль"
           onClick={onProfileClick}

@@ -1,9 +1,18 @@
 'use client';
 
 import { useCallback, useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useCartStore } from '@src/entities/cart';
 import { api } from '@src/shared/api';
 import { useHomeStore } from '@src/entities/home';
+import {
+  findCategoryTargetIdByLink,
+  findHeaderCategoryTargetIdByLink,
+} from '@src/shared/lib/categoryLink';
+import {
+  getLocalStorageItem,
+  removeLocalStorageItem,
+} from '@/utils/browserStorage';
 import { BannerSlider, CategoryMenu } from '@ui/widgets';
 import { TagFilter } from '@ui/patterns';
 import { ProductCard } from '@ui/patterns/ProductCard/ProductCard';
@@ -63,21 +72,37 @@ export type HomePageProps = {
 export function HomePage({ model }: HomePageProps) {
   const [activeProduct, setActiveProduct] = useState<HomeProduct | null>(null);
   const [activeBannerId, setActiveBannerId] = useState<string | null>(null);
+  const searchParams = useSearchParams();
+  const categoryQuery = searchParams?.get('category') ?? '';
 
   const items = useCartStore((state) => state.items);
   const plus = useCartStore((state) => state.plus);
   const setCount = useCartStore((state) => state.setCount);
   const bannerList = useHomeStore((state) => state.bannerList);
+  const categories = useHomeStore((state) => state.categories);
   const getItemsCat = useHomeStore((state) => state.getItemsCat);
 
   const catalog = useHomeCatalog(model);
+  const {
+    catalogLoaded,
+    productGroups,
+    categoryPrimary,
+    categorySecondary,
+    tagItems,
+    activeCategoryTarget,
+    setActiveCategoryTarget,
+    scrollToCategory,
+    handleTagChange,
+    clearTagFilter,
+    products: catalogProducts,
+  } = catalog;
   const liveBanners = useMemo(() => {
     if (!bannerList.length) {
       return model.banners;
     }
 
-    return mapBanners(bannerList, catalog.products);
-  }, [bannerList, catalog.products, model.banners]);
+    return mapBanners(bannerList, catalogProducts);
+  }, [bannerList, catalogProducts, model.banners]);
   const activeBanner = useMemo<HomeBannerSlide | null>(() => {
     if (!activeBannerId) {
       return null;
@@ -148,7 +173,7 @@ export function HomePage({ model }: HomePageProps) {
     if (
       typeof window === 'undefined' ||
       activeProduct ||
-      !catalog.products.length
+      !catalogProducts.length
     ) {
       return;
     }
@@ -158,13 +183,85 @@ export function HomePage({ model }: HomePageProps) {
       return;
     }
 
-    const foundProduct = catalog.products.find(
+    const foundProduct = catalogProducts.find(
       (product) => getProductLink(product) === itemLink
     );
     if (foundProduct) {
       void openProduct(foundProduct, { writeQuery: false });
     }
-  }, [activeProduct, catalog.products, openProduct]);
+  }, [activeProduct, catalogProducts, openProduct]);
+
+  useEffect(() => {
+    if (
+      typeof window === 'undefined' ||
+      !catalogLoaded ||
+      productGroups.length === 0
+    ) {
+      return;
+    }
+
+    const queryCategoryLink = categoryQuery;
+    const pendingCategoryLink = getLocalStorageItem('goToCategoryLink');
+    const effectiveCategoryLink =
+      queryCategoryLink.length > 0 ? queryCategoryLink : pendingCategoryLink;
+
+    if (!effectiveCategoryLink) {
+      return;
+    }
+
+    const targetId =
+      findCategoryTargetIdByLink(categories, effectiveCategoryLink) ??
+      findHeaderCategoryTargetIdByLink(model.headerNav, effectiveCategoryLink);
+
+    const cleanupCategoryState = () => {
+      if (queryCategoryLink.length > 0) {
+        const url = new URL(window.location.href);
+        url.searchParams.delete('category');
+        window.history.replaceState(window.history.state, '', url);
+      }
+
+      removeLocalStorageItem('goToCategoryLink');
+      removeLocalStorageItem('ignoreMenuCategoryOnce');
+    };
+
+    if (!targetId) {
+      cleanupCategoryState();
+      return;
+    }
+
+    let attemptsLeft = 12;
+
+    const tryScrollToCategory = () => {
+      const targetNode = document.getElementById(targetId);
+
+      if (!targetNode && attemptsLeft > 0) {
+        attemptsLeft -= 1;
+        window.setTimeout(tryScrollToCategory, 120);
+        return;
+      }
+
+      if (!targetNode) {
+        cleanupCategoryState();
+        return;
+      }
+
+      setActiveCategoryTarget(targetId);
+      window.setTimeout(() => {
+        scrollToCategory(targetId);
+        cleanupCategoryState();
+      }, 150);
+    };
+
+    tryScrollToCategory();
+  }, [
+    categories,
+    catalogLoaded,
+    model.headerNav,
+    productGroups.length,
+    categoryQuery,
+    scrollToCategory,
+    setActiveCategoryTarget,
+  ]);
 
   return (
     <div className="home-page">
@@ -177,32 +274,32 @@ export function HomePage({ model }: HomePageProps) {
         />
 
         <CategoryMenu
-          primaryItems={catalog.categoryPrimary}
-          secondaryItems={catalog.categorySecondary}
+          primaryItems={categoryPrimary}
+          secondaryItems={categorySecondary}
           activeTargetId={
-            catalog.activeCategoryTarget ??
-            catalog.categorySecondary[0]?.targetId ??
-            catalog.categoryPrimary[0]?.targetId
+            activeCategoryTarget ??
+            categorySecondary[0]?.targetId ??
+            categoryPrimary[0]?.targetId
           }
-          tags={catalog.tagItems}
-          onActiveTargetChange={catalog.setActiveCategoryTarget}
-          onItemSelect={(item) => catalog.scrollToCategory(item.targetId)}
-          onTagChange={catalog.handleTagChange}
-          onTagClear={catalog.clearTagFilter}
+          tags={tagItems}
+          onActiveTargetChange={setActiveCategoryTarget}
+          onItemSelect={(item) => scrollToCategory(item.targetId)}
+          onTagChange={handleTagChange}
+          onTagClear={clearTagFilter}
         />
 
         <TagFilter
-          items={catalog.tagItems}
+          items={tagItems}
           className="home-page__tags"
-          onChange={catalog.handleTagChange}
-          onClear={catalog.clearTagFilter}
+          onChange={handleTagChange}
+          onClear={clearTagFilter}
         />
 
         <section className="home-page__catalog" aria-label="Каталог">
-          {!catalog.catalogLoaded ? (
+          {!catalogLoaded ? (
             <HomeCatalogSkeleton />
           ) : (
-            catalog.productGroups.map((group) => (
+            productGroups.map((group) => (
               <section
                 key={group.id}
                 id={group.id}

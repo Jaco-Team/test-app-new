@@ -2,6 +2,7 @@
 
 import { useEffect, useMemo, useState, type ReactNode } from 'react';
 import { format } from 'date-fns';
+import type { KeyboardEvent } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
@@ -287,6 +288,23 @@ export function CartPage() {
 
   function closeSelectorModal() {
     setSelectorModal(null);
+  }
+
+  function handlePromoSubmit() {
+    if (!checkout.promoCode.trim().length) {
+      return;
+    }
+
+    void checkout.applyPromo();
+  }
+
+  function handlePromoKeyDown(event: KeyboardEvent<HTMLInputElement>) {
+    if (event.key !== 'Enter') {
+      return;
+    }
+
+    event.preventDefault();
+    handlePromoSubmit();
   }
 
   return (
@@ -809,33 +827,26 @@ export function CartPage() {
               <strong>{items.length > 0 ? totalLabel : '0 ₽'}</strong>
             </div>
             <label className="cart-page__promo">
-              <span className="cart-page__promo-label">Промокод</span>
-              <div className="cart-page__promo-row">
-                {clientOnlyControl(
-                  <MuiTextField
-                    id="cart-promo-code"
-                    name="promoCode"
-                    className="cart-page__promo-input"
-                    range="responsive"
-                    surface="outlined"
-                    placeholder="Есть промокод"
-                    value={checkout.promoCode}
-                    onChange={(event) =>
-                      checkout.setPromoCode(event.target.value)
-                    }
-                  />,
-                  'cart-page__control-placeholder cart-page__control-placeholder--promo'
-                )}
-                <Button
-                  className="cart-page__promo-button"
-                  tone="neutral"
-                  size="xs"
-                  range="regular"
-                  onClick={checkout.applyPromo}
-                >
-                  Применить
-                </Button>
-              </div>
+              {compact ? null : (
+                <span className="cart-page__promo-label">Промокод</span>
+              )}
+              {clientOnlyControl(
+                <MuiTextField
+                  id="cart-promo-code"
+                  name="promoCode"
+                  className="cart-page__promo-input"
+                  range="responsive"
+                  surface="outlined"
+                  placeholder="Есть промокод"
+                  value={checkout.promoCode}
+                  onChange={(event) =>
+                    checkout.setPromoCode(event.target.value)
+                  }
+                  onBlur={handlePromoSubmit}
+                  onKeyDown={handlePromoKeyDown}
+                />,
+                'cart-page__control-placeholder cart-page__control-placeholder--promo'
+              )}
             </label>
             {checkout.promoStatus ? (
               <p
@@ -848,8 +859,9 @@ export function CartPage() {
               </p>
             ) : null}
             <p className="cart-page__summary-note">
-              Указано ориентировочное время приготовления и доставки. При
-              высокой нагрузке время может увеличиться.
+              Уважаемые клиенты, на сайте указано приблизительное время
+              готовности заказа и доставки. В зависимости от ситуации на дорогах
+              время доставки может быть увеличено. Благодарим за понимание!
             </p>
             {checkout.submitStatus ? (
               <p
@@ -866,11 +878,11 @@ export function CartPage() {
               tone="primary"
               size="lg"
               range="regular"
-              fullWidth
+              fullWidth={!compact}
               onClick={checkout.reviewOrder}
               disabled={items.length === 0}
             >
-              Проверить заказ
+              Проверить Заказ
             </Button>
           </div>
         </aside>

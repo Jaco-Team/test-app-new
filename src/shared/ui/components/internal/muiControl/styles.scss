@@ -247,6 +247,22 @@
     font-weight: 500 !important;
   }
 
+  &--range-responsive {
+    @include ui-regular {
+      min-height: ui-fluid-regular(48) !important;
+      padding: ui-fluid-regular(14) ui-fluid-regular(16) !important;
+      font-size: max(15px, ui-fluid-regular(18)) !important;
+      font-weight: 500 !important;
+    }
+
+    @include ui-expanded {
+      min-height: ui-fluid-expanded(34) !important;
+      padding: ui-fluid-expanded(9) ui-fluid-expanded(12) !important;
+      font-size: ui-fluid-expanded(11) !important;
+      font-weight: 400 !important;
+    }
+  }
+
   &--range-regular {
     min-height: ui-fluid-regular(48) !important;
     padding: ui-fluid-regular(14) ui-fluid-regular(16) !important;
@@ -255,9 +271,9 @@
   }
 
   &--range-expanded {
-    min-height: ui-fluid-expanded(42) !important;
-    padding: ui-fluid-expanded(12) ui-fluid-expanded(14) !important;
-    font-size: ui-fluid-expanded(15) !important;
+    min-height: ui-fluid-expanded(34) !important;
+    padding: ui-fluid-expanded(9) ui-fluid-expanded(12) !important;
+    font-size: ui-fluid-expanded(11) !important;
     font-weight: 400 !important;
   }
 }

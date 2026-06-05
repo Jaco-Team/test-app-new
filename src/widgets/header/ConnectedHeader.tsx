@@ -2,6 +2,7 @@
 
 import type { MouseEvent } from 'react';
 import { useEffect, useMemo, useState } from 'react';
+import { useSearchParams } from 'next/navigation';
 import { useCartStore } from '@src/entities/cart';
 import { useCityStore } from '@src/entities/city';
 import { useHeaderStore } from '@src/entities/header';
@@ -18,7 +19,6 @@ import {
   cityPath,
   legacyCityPath,
 } from '@src/shared/lib/sitePaths';
-import { setLocalStorageItem } from '@/utils/browserStorage';
 import { Header } from '@ui/widgets/Header/Header';
 import type { HeaderNavItem } from '@ui/widgets/Header/Header';
 import { formatCartLabel } from '@src/features/header/model/formatCartLabel';
@@ -46,6 +46,8 @@ export function ConnectedHeader({
   const [openNavLabel, setOpenNavLabel] = useState<string | undefined>();
   const [desktopDocsOpen, setDesktopDocsOpen] = useState(false);
   const [clientReady, setClientReady] = useState(false);
+  const searchParams = useSearchParams();
+  const activeCategoryQuery = searchParams?.get('category') ?? '';
 
   useEffect(() => {
     setClientReady(true);
@@ -85,10 +87,13 @@ export function ConnectedHeader({
 
   const navItems = useMemo(() => {
     if (categories.length > 0 && citySlug) {
-      return buildHeaderNavItems(citySlug, categories, { activePage });
+      return buildHeaderNavItems(citySlug, categories, {
+        activePage,
+        activeCategoryLink: activeCategoryQuery,
+      });
     }
     return fallbackNav ?? [];
-  }, [activePage, categories, citySlug, fallbackNav]);
+  }, [activeCategoryQuery, activePage, categories, citySlug, fallbackNav]);
 
   const compactMenuLinks = useMemo(
     () =>
@@ -131,20 +136,12 @@ export function ConnectedHeader({
     [citySlug]
   );
   const profileShortName = useMemo(() => {
-    const parts = userName
+    const firstPart = userName
       .split(/\s+/)
       .map((part) => part.trim())
-      .filter(Boolean);
+      .find(Boolean);
 
-    if (parts.length === 0) {
-      return '';
-    }
-
-    if (parts.length === 1) {
-      return parts[0].slice(0, 2).toUpperCase();
-    }
-
-    return (parts[0][0] + parts[1][0]).toUpperCase();
+    return firstPart ? firstPart.slice(0, 1).toUpperCase() : '';
   }, [userName]);
 
   const closeMenus = () => {
@@ -168,39 +165,17 @@ export function ConnectedHeader({
 
     if (item.href) {
       closeMenus();
-      trackHeaderClick(item.label, citySlug);
+      if (String(item.link ?? '').trim().length > 0) {
+        trackCategoryClick(item.label, citySlug);
+      } else {
+        trackHeaderClick(item.label, citySlug);
+      }
       return;
-    }
-
-    event.preventDefault();
-
-    const safeLink = String(item.link ?? '').trim();
-    const safeId = Number(item.id);
-    if (safeLink.length > 0) {
-      setLocalStorageItem('goToCategoryLink', safeLink);
-      setLocalStorageItem('ignoreMenuCategoryOnce', '1');
-    } else if (safeId > 0) {
-      setLocalStorageItem('goTo', String(safeId));
     }
 
     closeMenus();
+    event.preventDefault();
     trackCategoryClick(item.label, citySlug);
-
-    const targetId = safeId > 0 ? `cat${safeId}` : '';
-    const target = targetId ? document.getElementById(targetId) : null;
-    if (target) {
-      const headerOffset =
-        document.getElementById('headerNew')?.getBoundingClientRect().height ??
-        0;
-      const top =
-        target.getBoundingClientRect().top + window.scrollY - headerOffset;
-      window.scrollTo({ top, behavior: 'auto' });
-      return;
-    }
-
-    if (activePage !== 'home' && logoHref) {
-      window.location.href = logoHref;
-    }
   };
 
   return (

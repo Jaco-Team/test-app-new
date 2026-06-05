@@ -6,7 +6,7 @@
   --page-frame-bottom-space: #{ui-fluid-compact(48)};
   --page-frame-inline-space: #{ui-fluid-compact(20)};
   min-height: 100dvh;
-  background: $ui-surface-muted;
+  background: $ui-surface;
 
   @include ui-regular {
     --page-frame-top-space: #{ui-fluid-regular(124)};
