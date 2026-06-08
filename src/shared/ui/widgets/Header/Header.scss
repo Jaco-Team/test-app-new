@@ -283,61 +283,60 @@
 
     &__compact-menu.MuiDrawer-paper {
       top: ui-fluid-regular(80);
+      right: ui-fluid-regular(20);
+      left: auto;
+      width: min(ui-fluid-regular(356), calc(100vw - ui-fluid-regular(40)));
+      border: ui-fluid-regular(1) solid $ui-border;
+      border-top-color: $ui-surface;
+      border-radius: 0 0 ui-fluid-regular(28) ui-fluid-regular(28);
+      box-shadow: 0 ui-fluid-regular(18) ui-fluid-regular(18)
+        ui-fluid-regular(-6) $ui-shadow-popover-2;
       max-height: calc(100dvh - ui-fluid-regular(80));
+    }
+
+    &__compact-menu-grip {
+      display: none;
+    }
+
+    &__compact-menu-nav {
+      width: 100%;
+      padding: ui-fluid-regular(16);
+    }
+
+    &__compact-menu-link {
+      grid-template-columns:
+        ui-fluid-regular(52) minmax(0, 1fr)
+        ui-fluid-regular(36);
+      min-height: ui-fluid-regular(60);
+      padding: 0 ui-fluid-regular(12);
+      border-radius: ui-fluid-regular(14);
+    }
+
+    &__compact-menu-icon {
+      width: ui-fluid-regular(28);
+      height: ui-fluid-regular(28);
+    }
+
+    &__compact-menu-avatar {
+      width: ui-fluid-regular(28);
+      height: ui-fluid-regular(28);
+      font-size: ui-fluid-regular(16);
+    }
+
+    &__compact-menu-text {
+      font-size: ui-fluid-regular(18);
+    }
+
+    &__compact-menu-badge {
+      width: ui-fluid-regular(24);
+      height: ui-fluid-regular(24);
+      font-size: ui-fluid-regular(12);
     }
 
     &__icon-button,
     &__compact-menu-button {
       width: ui-fluid-regular(30);
       height: ui-fluid-regular(30);
-    }
-
-    &__compact-menu.MuiDrawer-paper {
-      top: ui-fluid-regular(80);
-      max-height: calc(100dvh - ui-fluid-regular(80));
-      border-radius: 0 0 ui-fluid-regular(58) ui-fluid-regular(58);
-    }
-
-    &__compact-menu-grip {
-      width: ui-fluid-regular(150);
-      height: ui-fluid-regular(10);
-      margin-bottom: ui-fluid-regular(28);
-      border-radius: ui-fluid-regular(10);
-    }
-
-    &__compact-menu-nav {
-      width: ui-fluid-regular(685);
-      padding: ui-fluid-regular(62) 0 ui-fluid-regular(40);
-    }
-
-    &__compact-menu-link {
-      grid-template-columns:
-        ui-fluid-regular(120) minmax(0, 1fr)
-        ui-fluid-regular(60);
-      min-height: ui-fluid-regular(122);
-      padding: 0 ui-fluid-regular(30);
-      border-radius: ui-fluid-regular(20);
-    }
-
-    &__compact-menu-icon {
-      width: ui-fluid-regular(74);
-      height: ui-fluid-regular(74);
-    }
-
-    &__compact-menu-avatar {
-      width: ui-fluid-regular(74);
-      height: ui-fluid-regular(74);
-      font-size: ui-fluid-regular(26);
-    }
-
-    &__compact-menu-text {
-      font-size: ui-fluid-regular(34);
-    }
-
-    &__compact-menu-badge {
-      width: ui-fluid-regular(60);
-      height: ui-fluid-regular(60);
-      font-size: ui-fluid-regular(30);
     }
   }
 
