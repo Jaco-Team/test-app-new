@@ -403,8 +403,10 @@
   }
 
   .basket-panel__order.ui-button {
-    width: 100%;
+    width: auto;
+    min-width: ui-fluid-regular(220);
     min-height: ui-fluid-regular(42);
+    font-size: ui-fluid-regular(20);
   }
 }
 
