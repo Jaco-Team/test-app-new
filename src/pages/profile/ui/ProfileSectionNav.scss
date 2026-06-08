@@ -1,0 +1,46 @@
+.profile-section-nav {
+  display: grid;
+  gap: 12px;
+  margin-top: 20px;
+}
+
+.profile-section-nav__label {
+  color: rgba(20, 20, 20, 0.48);
+  font-size: 13px;
+  font-weight: 600;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.profile-section-nav__items {
+  display: flex;
+  flex-wrap: wrap;
+  gap: 10px;
+}
+
+.profile-section-nav__item {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  min-height: 42px;
+  padding: 0 16px;
+  border-radius: 999px;
+  background: rgba(20, 20, 20, 0.05);
+  color: #141414;
+  text-decoration: none;
+  font-size: 14px;
+  font-weight: 600;
+}
+
+.profile-section-nav__item--active {
+  background: #cc0033;
+  color: #fff;
+}
+
+.profile-section-nav__marker {
+  width: 8px;
+  height: 8px;
+  border-radius: 50%;
+  background: currentColor;
+}

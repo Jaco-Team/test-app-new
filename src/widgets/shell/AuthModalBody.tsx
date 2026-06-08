@@ -2,7 +2,7 @@
 
 import { useAuthStore } from '@src/features/auth/model/authStore';
 import { useHeaderStore } from '@src/entities/header';
-import { cityPath, legacyCityPath } from '@src/shared/lib/sitePaths';
+import { cityPath } from '@src/shared/lib/sitePaths';
 import { Button, CheckAuthMobile, MuiTextField } from '@src/shared/ui';
 import './AuthModal.scss';
 
@@ -218,7 +218,7 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
           size="sm"
           range="compact"
           onClick={() => {
-            window.location.href = legacyCityPath(city, 'profile');
+            window.location.href = cityPath(city, 'profile');
           }}
         >
           Профиль

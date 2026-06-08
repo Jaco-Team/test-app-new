@@ -1,0 +1,126 @@
+.orders-page {
+  width: 100%;
+}
+
+.orders-page__empty {
+  border: 1px solid rgba(20, 20, 20, 0.08);
+  border-radius: 32px;
+  background: #fff;
+  color: rgba(20, 20, 20, 0.68);
+  padding: 32px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.orders-page__stack {
+  display: grid;
+  gap: 16px;
+}
+
+.orders-page__card {
+  border-radius: 28px;
+  background: #fff;
+  padding: 20px;
+  border: 1px solid rgba(20, 20, 20, 0.08);
+}
+
+.orders-page__card-head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 12px;
+  margin-bottom: 16px;
+}
+
+.orders-page__number {
+  font-size: 16px;
+  font-weight: 600;
+  color: #141414;
+}
+
+.orders-page__status {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 30px;
+  padding: 0 12px;
+  border-radius: 999px;
+  font-size: 13px;
+  font-weight: 600;
+  white-space: nowrap;
+}
+
+.orders-page__status--default {
+  background: rgba(20, 20, 20, 0.06);
+  color: #141414;
+}
+
+.orders-page__status--success {
+  background: rgba(43, 120, 67, 0.12);
+  color: #2b7843;
+}
+
+.orders-page__status--danger {
+  background: rgba(204, 0, 51, 0.1);
+  color: #cc0033;
+}
+
+.orders-page__meta {
+  display: grid;
+  gap: 14px;
+  margin: 0;
+}
+
+.orders-page__meta div {
+  display: grid;
+  gap: 4px;
+}
+
+.orders-page__meta dt {
+  color: rgba(20, 20, 20, 0.48);
+  font-size: 13px;
+  line-height: 1.2;
+}
+
+.orders-page__meta dd {
+  margin: 0;
+  color: #141414;
+  font-size: 15px;
+  line-height: 1.4;
+}
+
+.orders-page__table-wrap {
+  overflow-x: auto;
+  border-radius: 32px;
+  border: 1px solid rgba(20, 20, 20, 0.08);
+  background: #fff;
+}
+
+.orders-page__table {
+  width: 100%;
+  border-collapse: collapse;
+  min-width: 720px;
+}
+
+.orders-page__table th,
+.orders-page__table td {
+  text-align: left;
+  padding: 20px 24px;
+}
+
+.orders-page__table thead th {
+  color: rgba(20, 20, 20, 0.48);
+  font-size: 13px;
+  font-weight: 500;
+  border-bottom: 1px solid rgba(20, 20, 20, 0.08);
+}
+
+.orders-page__table tbody tr + tr td {
+  border-top: 1px solid rgba(20, 20, 20, 0.06);
+}
+
+.orders-page__table tbody td {
+  color: #141414;
+  font-size: 15px;
+  line-height: 1.4;
+}

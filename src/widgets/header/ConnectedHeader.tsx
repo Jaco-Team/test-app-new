@@ -232,7 +232,7 @@ export function ConnectedHeader({
       onProfileClick={() => {
         closeMenus();
         if (isAuth === 'auth' && citySlug) {
-          window.location.href = legacyCityPath(citySlug, 'profile');
+          window.location.href = cityPath(citySlug, 'profile');
           return;
         }
         setActiveModalAuth(true);

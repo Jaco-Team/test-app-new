@@ -1,0 +1,28 @@
+.cabinet-page-intro {
+  display: grid;
+  gap: 12px;
+}
+
+.cabinet-page-intro__title {
+  margin: 0;
+  color: #141414;
+  font-size: 40px;
+  font-weight: 700;
+  line-height: 1.05;
+}
+
+.cabinet-page-intro__text {
+  color: rgba(20, 20, 20, 0.68);
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+@media (max-width: 667px) {
+  .cabinet-page-intro__title {
+    font-size: 28px;
+  }
+
+  .cabinet-page-intro__text {
+    font-size: 15px;
+  }
+}

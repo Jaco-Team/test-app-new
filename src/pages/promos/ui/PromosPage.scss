@@ -1,0 +1,75 @@
+.promos-page {
+  width: 100%;
+}
+
+.promos-page__empty {
+  border: 1px solid rgba(20, 20, 20, 0.08);
+  border-radius: 32px;
+  background: #fff;
+  color: rgba(20, 20, 20, 0.68);
+  padding: 32px;
+  font-size: 16px;
+  line-height: 1.5;
+}
+
+.promos-page__grid {
+  display: grid;
+  gap: 16px;
+  grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
+}
+
+.promos-page__card {
+  display: grid;
+  gap: 20px;
+  align-content: space-between;
+  min-height: 236px;
+  padding: 24px;
+  border-radius: 32px;
+  border: 1px solid rgba(20, 20, 20, 0.08);
+  background:
+    linear-gradient(180deg, rgba(255, 245, 238, 0.96), rgba(255, 255, 255, 1)),
+    #fff;
+}
+
+.promos-page__body {
+  display: grid;
+  gap: 12px;
+}
+
+.promos-page__card-title {
+  margin: 0;
+  color: #141414;
+  font-size: 24px;
+  line-height: 1.1;
+}
+
+.promos-page__card-text {
+  margin: 0;
+  color: rgba(20, 20, 20, 0.72);
+  font-size: 15px;
+  line-height: 1.5;
+}
+
+.promos-page__foot {
+  display: grid;
+  gap: 12px;
+}
+
+.promos-page__expiry {
+  color: rgba(20, 20, 20, 0.52);
+  font-size: 13px;
+  line-height: 1.4;
+}
+
+.promos-page__code {
+  min-height: 48px;
+  border: 0;
+  border-radius: 999px;
+  background: #cc0033;
+  color: #fff;
+  font-size: 15px;
+  font-weight: 700;
+  padding: 0 18px;
+  justify-self: start;
+  cursor: pointer;
+}
