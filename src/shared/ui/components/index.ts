@@ -15,6 +15,11 @@ export type {
   MuiSelectFieldProps,
   MuiSelectOption,
 } from './MuiSelectField/MuiSelectField';
+export { MuiSelectWithButton } from './MuiSelectWithButton/MuiSelectWithButton';
+export type {
+  MuiSelectWithButtonProps,
+  MuiSelectWithButtonOption,
+} from './MuiSelectWithButton/MuiSelectWithButton';
 export { MuiAutocompleteField } from './MuiAutocompleteField/MuiAutocompleteField';
 export type { MuiAutocompleteFieldProps } from './MuiAutocompleteField/MuiAutocompleteField';
 export { MuiDatePickerField } from './MuiDatePickerField/MuiDatePickerField';

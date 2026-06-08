@@ -1,7 +1,8 @@
 'use client';
 
-import type { ReactNode } from 'react';
+import { forwardRef, type ElementType, type ReactNode } from 'react';
 import MenuItem from '@mui/material/MenuItem';
+import Paper, { type PaperProps } from '@mui/material/Paper';
 import TextField, { type TextFieldProps } from '@mui/material/TextField';
 import { cn } from '../../foundation/classNames';
 import {
@@ -11,27 +12,29 @@ import {
   type MuiControlRange,
   type MuiControlSurface,
 } from '../internal/muiControl/shared';
+import './MuiSelectWithButton.scss';
 
-export type MuiSelectOption = {
+export type MuiSelectWithButtonOption = {
   value: string;
   label: string;
   disabled?: boolean;
 };
 
-export type MuiSelectFieldProps = Omit<
+export type MuiSelectWithButtonProps = Omit<
   TextFieldProps,
   'variant' | 'select' | 'children'
 > & {
-  options: MuiSelectOption[];
+  options: MuiSelectWithButtonOption[];
   range?: MuiControlRange;
   surface?: MuiControlSurface;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
   placeholder?: ReactNode;
   placeholderClassName?: string;
+  menuFooter?: ReactNode;
 };
 
-export function MuiSelectField({
+export function MuiSelectWithButton({
   options,
   range = 'regular',
   surface = 'plain',
@@ -39,16 +42,17 @@ export function MuiSelectField({
   endAdornment,
   placeholder,
   placeholderClassName,
+  menuFooter,
   className,
   slotProps,
   sx,
   ...props
-}: MuiSelectFieldProps) {
+}: MuiSelectWithButtonProps) {
   const selectSlot = (slotProps?.select ?? {}) as {
     displayEmpty?: boolean;
     MenuProps?: {
       slotProps?: {
-        paper?: { className?: string };
+        paper?: { className?: string; component?: ElementType };
         list?: { className?: string };
       };
     };
@@ -57,6 +61,24 @@ export function MuiSelectField({
   const menuProps = selectSlot.MenuProps ?? {};
   const menuSlotProps = menuProps.slotProps ?? {};
   const hasPlaceholder = placeholder !== undefined;
+
+  const SelectMenuPaper = forwardRef<HTMLDivElement, PaperProps>(
+    function SelectMenuPaper(
+      { children, className: paperClassName, ...paperProps },
+      ref
+    ) {
+      return (
+        <Paper ref={ref} {...paperProps} className={paperClassName}>
+          {children}
+          {menuFooter ? (
+            <div className="ui-mui-select-with-button__footer">
+              {menuFooter}
+            </div>
+          ) : null}
+        </Paper>
+      );
+    }
+  );
 
   function renderSelectedValue(value: unknown) {
     if (typeof selectSlot.renderValue === 'function') {
@@ -84,7 +106,10 @@ export function MuiSelectField({
   return (
     <TextField
       {...props}
-      className={getMuiControlClassName(range, className, { surface })}
+      className={cn(
+        'ui-mui-select-with-button',
+        getMuiControlClassName(range, className, { surface })
+      )}
       variant="outlined"
       fullWidth
       select
@@ -100,6 +125,9 @@ export function MuiSelectField({
               ...menuSlotProps,
               paper: {
                 ...menuSlotProps.paper,
+                component: menuFooter
+                  ? SelectMenuPaper
+                  : menuSlotProps.paper?.component,
                 className: cn(
                   'ui-mui-field__paper',
                   'ui-mui-field__paper--range-' + range,

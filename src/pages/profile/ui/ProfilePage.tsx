@@ -1,6 +1,8 @@
 'use client';
 
+import { useEffect, useRef } from 'react';
 import Link from 'next/link';
+import { useRouter, useSearchParams } from 'next/navigation';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
@@ -77,6 +79,9 @@ function DatePickerActionBar({
 }
 
 export function ProfilePage() {
+  const router = useRouter();
+  const searchParams = useSearchParams();
+  const addressModalWasRequested = useRef(false);
   const { citySlug, compact, ready } = useCabinetAccess();
   const {
     streets,
@@ -110,6 +115,24 @@ export function ProfilePage() {
     now.getMonth(),
     now.getDate()
   );
+
+  useEffect(() => {
+    if (!ready || compact || !token.length) {
+      return;
+    }
+
+    if (searchParams?.get('openAddressModal') !== '1') {
+      return;
+    }
+
+    if (addressModalWasRequested.current) {
+      return;
+    }
+
+    addressModalWasRequested.current = true;
+    void openModalAddr(0, citySlug);
+    router.replace(cityPath(citySlug, 'profile'));
+  }, [citySlug, compact, openModalAddr, ready, router, searchParams, token]);
 
   if (!ready) {
     return null;

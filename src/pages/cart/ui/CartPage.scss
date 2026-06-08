@@ -600,6 +600,32 @@
   color: $ui-text;
 }
 
+.cart-page__control-field.ui-mui-field .ui-mui-field__placeholder {
+  color: $ui-text-muted;
+}
+
+.cart-page__select-menu-action {
+  width: 100%;
+  border: 0;
+  padding: ui-fluid-compact(16) ui-fluid-compact(28);
+  background: transparent;
+  color: $ui-brand;
+  cursor: pointer;
+  font: inherit;
+  line-height: 1.2;
+  text-align: left;
+
+  @include ui-regular {
+    padding: ui-fluid-regular(16) ui-fluid-regular(18);
+  }
+
+  @include ui-expanded {
+    padding: ui-fluid-expanded(14) ui-fluid-expanded(20);
+    font-size: ui-fluid-expanded(12);
+    font-weight: 500;
+  }
+}
+
 .cart-page__promo-input.ui-mui-field--surface-outlined .MuiInputBase-root,
 .cart-page__comment-input.ui-mui-field--surface-outlined .MuiInputBase-root {
   border-color: rgba(0, 0, 0, 0.2);

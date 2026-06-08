@@ -26,8 +26,13 @@ import {
   getCartExtrasIntroText,
   useCartStore,
 } from '@src/entities/cart';
+import {
+  buildProfileAddressPickerHref,
+  saveAddressPickerIntent,
+} from '@src/features/address-picker/model/addressPickerFlow';
 import { useCityStore } from '@src/entities/city';
 import { useHeaderStore } from '@src/entities/header';
+import { useRouter } from 'next/navigation';
 import {
   isValidMediaKey,
   resolveProductImageUrl,
@@ -39,6 +44,7 @@ import {
   ModalWrapper,
   MuiDatePickerField,
   MuiSelectField,
+  MuiSelectWithButton,
   MuiTextField,
   Price,
   QuantityControl,
@@ -139,14 +145,22 @@ export function CartPageIntro() {
 }
 
 export function CartPage() {
+  const router = useRouter();
   const compactMedia = useMediaQuery(
     `(max-width: ${BREAKPOINTS.compactMax}px)`,
     {
       noSsr: true,
     }
   );
+  const expandedMedia = useMediaQuery(
+    `(min-width: ${BREAKPOINTS.expandedMin}px)`,
+    {
+      noSsr: true,
+    }
+  );
   const [hydrated, setHydrated] = useState(false);
   const compact = hydrated ? compactMedia : false;
+  const expanded = hydrated ? expandedMedia : false;
   const citySlug = useCityStore((state) => state.slug);
   const cityLabel = useCityStore((state) => state.labelRu);
   const closeBasket = useHeaderStore((state) => state.setActiveBasket);
@@ -191,18 +205,12 @@ export function CartPage() {
     [itemsCount]
   );
   const pickupPointOptions = useMemo(
-    () => [
-      {
-        value: '',
-        label: checkout.pickupLoading ? 'Загружаем кафе...' : 'Выберите кафе',
-        disabled: checkout.pickupLoading,
-      },
-      ...checkout.pickupPoints.map((point) => ({
+    () =>
+      checkout.pickupPoints.map((point) => ({
         value: point.id,
         label: point.label,
       })),
-    ],
-    [checkout.pickupLoading, checkout.pickupPoints]
+    [checkout.pickupPoints]
   );
   const scheduleModeOptions = useMemo(
     () => [
@@ -212,28 +220,20 @@ export function CartPage() {
     []
   );
   const paymentOptions = useMemo(
-    () => [
-      { value: '', label: 'Способ оплаты' },
-      ...checkout.paymentOptions.map((option) => ({
+    () =>
+      checkout.paymentOptions.map((option) => ({
         value: option.id,
         label: option.label,
       })),
-    ],
     [checkout.paymentOptions]
   );
   const timeOptions = useMemo(
-    () => [
-      {
-        value: '',
-        label: checkout.timeLoading ? 'Загружаем время...' : 'Выберите время',
-        disabled: checkout.timeLoading,
-      },
-      ...checkout.timeOptions.map((option) => ({
+    () =>
+      checkout.timeOptions.map((option) => ({
         value: option.id,
         label: option.label,
       })),
-    ],
-    [checkout.timeLoading, checkout.timeOptions]
+    [checkout.timeOptions]
   );
   const allowedScheduleDates = useMemo(
     () => new Set(checkout.dateOptions.map((option) => option.id)),
@@ -286,6 +286,21 @@ export function CartPage() {
     }
 
     setAddressModalOpen(true);
+  }
+
+  function handleAddAddress() {
+    if (checkout.isAddressAuthRequired) {
+      openAuthModal(true);
+      return;
+    }
+
+    saveAddressPickerIntent({
+      source: 'cart',
+      citySlug,
+      returnTo: window.location.pathname + window.location.search,
+      createdAt: new Date().toISOString(),
+    });
+    router.push(buildProfileAddressPickerHref(citySlug));
   }
 
   function closeSelectorModal() {
@@ -399,24 +414,46 @@ export function CartPage() {
                         Адрес доставки
                       </span>
                       {clientOnlyControl(
-                        <MuiSelectField
-                          id="cart-delivery-address"
-                          name="deliveryAddress"
+                        <MuiSelectWithButton
+                          id={
+                            expanded
+                              ? 'cart-delivery-address-expanded'
+                              : 'cart-delivery-address'
+                          }
+                          name={
+                            expanded
+                              ? 'deliveryAddressExpanded'
+                              : 'deliveryAddress'
+                          }
                           className="cart-page__control-field"
                           range="responsive"
                           surface="plain"
                           startAdornment={<HomeOutlinedIcon />}
                           value={checkout.selectedAddressId}
-                          options={[
-                            {
-                              value: '',
-                              label: checkout.savedAddressesLoading
-                                ? 'Загружаем адреса...'
-                                : 'Выберите адрес',
-                              disabled: checkout.savedAddressesLoading,
-                            },
-                            ...savedAddressOptions,
-                          ]}
+                          options={savedAddressOptions}
+                          placeholder={
+                            checkout.savedAddressesLoading
+                              ? 'Загружаем адреса...'
+                              : 'Выберите адрес'
+                          }
+                          menuFooter={
+                            <button
+                              className="cart-page__select-menu-action"
+                              type="button"
+                              onMouseDown={(event) => {
+                                event.preventDefault();
+                                event.stopPropagation();
+                              }}
+                              onClick={(event) => {
+                                event.preventDefault();
+                                event.stopPropagation();
+                                handleAddAddress();
+                              }}
+                            >
+                              Добавить адрес
+                            </button>
+                          }
+                          disabled={checkout.savedAddressesLoading}
                           onChange={(event) =>
                             checkout.selectAddress(event.target.value)
                           }
@@ -458,6 +495,12 @@ export function CartPage() {
                       startAdornment={<StorefrontOutlinedIcon />}
                       value={checkout.pickupPointId}
                       options={pickupPointOptions}
+                      placeholder={
+                        checkout.pickupLoading
+                          ? 'Загружаем кафе...'
+                          : 'Выберите кафе'
+                      }
+                      disabled={checkout.pickupLoading}
                       onChange={(event) =>
                         checkout.setPickupPointId(event.target.value)
                       }
@@ -562,6 +605,11 @@ export function CartPage() {
                             startAdornment={<ScheduleRoundedIcon />}
                             value={checkout.scheduleTimeId}
                             options={timeOptions}
+                            placeholder={
+                              checkout.timeLoading
+                                ? 'Загружаем время...'
+                                : 'Выберите время'
+                            }
                             onChange={(event) =>
                               checkout.setScheduleTimeId(event.target.value)
                             }
@@ -622,6 +670,7 @@ export function CartPage() {
                       startAdornment={<CreditCardOutlinedIcon />}
                       value={checkout.paymentId}
                       options={paymentOptions}
+                      placeholder="Способ оплаты"
                       onChange={(event) =>
                         checkout.setPaymentId(event.target.value)
                       }

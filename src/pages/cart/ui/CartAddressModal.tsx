@@ -2,7 +2,10 @@
 
 import { useRouter } from 'next/navigation';
 import { type SavedAddress } from '../model/useCartCheckoutDraft';
-import { legacyCityPath } from '@src/shared/lib/sitePaths';
+import {
+  buildProfileAddressPickerHref,
+  saveAddressPickerIntent,
+} from '@src/features/address-picker/model/addressPickerFlow';
 import { Button, ModalWrapper } from '@src/shared/ui';
 
 type CartAddressModalProps = {
@@ -37,7 +40,13 @@ export function CartAddressModal({
 
   function handleAddAddress() {
     onClose();
-    router.push(legacyCityPath(citySlug, 'address'));
+    saveAddressPickerIntent({
+      source: 'cart',
+      citySlug,
+      returnTo: window.location.pathname + window.location.search,
+      createdAt: new Date().toISOString(),
+    });
+    router.push(buildProfileAddressPickerHref(citySlug));
   }
 
   return (
@@ -102,7 +111,7 @@ export function CartAddressModal({
           fullWidth
           onClick={handleAddAddress}
         >
-          Добавить новый
+          Добавить адрес
         </Button>
       </div>
     </ModalWrapper>
