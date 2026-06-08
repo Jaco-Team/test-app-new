@@ -4,7 +4,7 @@ import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
-import { useCompactLayout } from '@src/shared/lib/viewport';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import Link from 'next/link';
 import { Price, QuantityControl } from '@src/shared/ui';
 import {
@@ -20,6 +20,7 @@ import {
 } from '@src/shared/lib/mediaUrls';
 import { cityPath } from '@src/shared/lib/sitePaths';
 import { useBodyScrollLock } from '@src/shared/lib/overlay/useBodyScrollLock';
+import { BREAKPOINTS } from '@src/shared/ui/foundation/breakpoints';
 import './BasketPanel.scss';
 
 const allergyText =
@@ -50,7 +51,9 @@ function lineImage(line: Record<string, unknown>): string | undefined {
 }
 
 export function BasketPanel({ city }: { city: string }) {
-  const compact = useCompactLayout();
+  const compact = useMediaQuery(`(max-width: ${BREAKPOINTS.compactMax}px)`, {
+    noSsr: true,
+  });
   const open = useHeaderStore((state) => state.openBasket);
   const setActiveBasket = useHeaderStore((state) => state.setActiveBasket);
 
@@ -87,7 +90,6 @@ export function BasketPanel({ city }: { city: string }) {
           <AccordionSummary
             className="basket-panel__notice-summary"
             expandIcon={<ExpandMoreIcon />}
-            sx={{ fontSize: '1.2dvw' }}
           >
             Об аллергенах
           </AccordionSummary>

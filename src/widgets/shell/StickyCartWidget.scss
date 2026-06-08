@@ -1,0 +1,76 @@
+@use '../../shared/ui/foundation/formulas' as *;
+@use '../../shared/ui/foundation/tokens' as *;
+
+.sticky-cart-widget {
+  position: fixed;
+  right: auto;
+  bottom: ui-fluid-compact(20);
+  left: ui-fluid-compact(40);
+  z-index: 3200;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  width: min(60vw, ui-fluid-compact(420));
+  min-height: ui-fluid-compact(120);
+  padding: 0 ui-fluid-compact(52) 0 ui-fluid-compact(44);
+  border: 0;
+  border-radius: ui-fluid-compact(60);
+  background: $ui-brand;
+  box-shadow: 0 ui-fluid-compact(8) ui-fluid-compact(30) rgba(0, 0, 0, 0.18);
+  color: $ui-text-inv;
+  text-decoration: none;
+}
+
+.sticky-cart-widget__icon {
+  display: flex;
+  flex: 0 0 auto;
+  align-items: center;
+  width: ui-fluid-compact(60);
+  height: ui-fluid-compact(46);
+}
+
+.sticky-cart-widget__icon svg {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
+.sticky-cart-widget__label {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-width: ui-fluid-compact(220);
+  color: inherit;
+  @include ui-type(42, 32, 22, 500);
+  line-height: 1;
+  white-space: nowrap;
+}
+
+.sticky-cart-widget--button {
+  cursor: pointer;
+  font-family: inherit;
+}
+
+@include ui-regular {
+  .sticky-cart-widget {
+    right: auto;
+    bottom: ui-fluid-regular(18);
+    left: ui-fluid-regular(20);
+    width: min(60vw, ui-fluid-regular(242));
+    min-height: ui-fluid-regular(58);
+    padding: 0 ui-fluid-regular(21) 0 ui-fluid-regular(18);
+    border-radius: ui-fluid-regular(29);
+    box-shadow: 0 ui-fluid-regular(5) ui-fluid-regular(17) rgba(0, 0, 0, 0.18);
+  }
+
+  .sticky-cart-widget__icon {
+    width: ui-fluid-regular(29);
+    height: ui-fluid-regular(22);
+  }
+
+  .sticky-cart-widget__label {
+    min-width: ui-fluid-regular(116);
+    margin-left: ui-fluid-regular(14);
+    @include ui-type(18, 15, 12, 500);
+  }
+}
