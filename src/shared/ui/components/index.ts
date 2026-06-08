@@ -19,6 +19,12 @@ export { MuiAutocompleteField } from './MuiAutocompleteField/MuiAutocompleteFiel
 export type { MuiAutocompleteFieldProps } from './MuiAutocompleteField/MuiAutocompleteField';
 export { MuiDatePickerField } from './MuiDatePickerField/MuiDatePickerField';
 export type { MuiDatePickerFieldProps } from './MuiDatePickerField/MuiDatePickerField';
+export { MuiSwitch } from './MuiSwitch/MuiSwitch';
+export type {
+  MuiSwitchProps,
+  MuiSwitchSize,
+  MuiSwitchTone,
+} from './MuiSwitch/MuiSwitch';
 export { Select } from './Select/Select';
 export type { SelectProps, SelectOption, SelectDensity } from './Select/Select';
 export { Switch } from './Switch/Switch';

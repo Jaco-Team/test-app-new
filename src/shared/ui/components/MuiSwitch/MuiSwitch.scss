@@ -1,0 +1,135 @@
+@use '../../foundation/formulas' as *;
+
+.ui-mui-switch {
+  --ui-switch-width: #{ui-fluid-compact(82)};
+  --ui-switch-height: #{ui-fluid-compact(44)};
+  --ui-switch-margin: #{ui-fluid-compact(4)};
+  --ui-switch-thumb-size: #{ui-fluid-compact(36)};
+  --ui-switch-translate: #{ui-fluid-compact(38)};
+  --ui-switch-track-off: rgba(0, 0, 0, 0.12);
+  --ui-switch-track-on: #57dc35;
+
+  width: var(--ui-switch-width);
+  height: var(--ui-switch-height);
+  padding: 0;
+  overflow: visible;
+
+  .MuiSwitch-switchBase {
+    padding: 0;
+    margin: var(--ui-switch-margin);
+    transition-duration: 300ms;
+    color: #fff;
+
+    &.Mui-checked {
+      transform: translateX(var(--ui-switch-translate));
+      color: #fff;
+
+      & + .MuiSwitch-track {
+        background-color: var(--ui-switch-track-on);
+        opacity: 1;
+        border-color: transparent;
+      }
+    }
+  }
+
+  .MuiSwitch-thumb {
+    box-sizing: border-box;
+    width: var(--ui-switch-thumb-size);
+    height: var(--ui-switch-thumb-size);
+    box-shadow: none;
+  }
+
+  .MuiSwitch-track {
+    border-radius: 999px;
+    background-color: var(--ui-switch-track-off);
+    opacity: 1;
+  }
+}
+
+.ui-mui-switch--tone-neutral {
+  --ui-switch-track-on: rgba(0, 0, 0, 0.7);
+}
+
+.ui-mui-switch--size-profile {
+  --ui-switch-width: #{ui-fluid-compact(150)};
+  --ui-switch-height: #{ui-fluid-compact(67)};
+  --ui-switch-margin: #{ui-fluid-compact(5)};
+  --ui-switch-thumb-size: #{ui-fluid-compact(57)};
+  --ui-switch-translate: #{ui-fluid-compact(78)};
+}
+
+.ui-mui-switch--size-default.ui-mui-switch--range-compact {
+  --ui-switch-width: #{ui-fluid-compact(82)};
+  --ui-switch-height: #{ui-fluid-compact(44)};
+  --ui-switch-margin: #{ui-fluid-compact(4)};
+  --ui-switch-thumb-size: #{ui-fluid-compact(36)};
+  --ui-switch-translate: #{ui-fluid-compact(38)};
+}
+
+.ui-mui-switch--size-default.ui-mui-switch--range-regular {
+  --ui-switch-width: #{ui-fluid-regular(82)};
+  --ui-switch-height: #{ui-fluid-regular(44)};
+  --ui-switch-margin: #{ui-fluid-regular(4)};
+  --ui-switch-thumb-size: #{ui-fluid-regular(36)};
+  --ui-switch-translate: #{ui-fluid-regular(38)};
+}
+
+.ui-mui-switch--size-default.ui-mui-switch--range-expanded {
+  --ui-switch-width: #{ui-fluid-expanded(82)};
+  --ui-switch-height: #{ui-fluid-expanded(44)};
+  --ui-switch-margin: #{ui-fluid-expanded(4)};
+  --ui-switch-thumb-size: #{ui-fluid-expanded(36)};
+  --ui-switch-translate: #{ui-fluid-expanded(38)};
+}
+
+.ui-mui-switch--size-profile.ui-mui-switch--range-regular {
+  --ui-switch-width: #{ui-fluid-regular(82)};
+  --ui-switch-height: #{ui-fluid-regular(44)};
+  --ui-switch-margin: #{ui-fluid-regular(4)};
+  --ui-switch-thumb-size: #{ui-fluid-regular(36)};
+  --ui-switch-translate: #{ui-fluid-regular(38)};
+}
+
+.ui-mui-switch--size-profile.ui-mui-switch--range-expanded {
+  --ui-switch-width: #{ui-fluid-expanded(82)};
+  --ui-switch-height: #{ui-fluid-expanded(44)};
+  --ui-switch-margin: #{ui-fluid-expanded(4)};
+  --ui-switch-thumb-size: #{ui-fluid-expanded(36)};
+  --ui-switch-translate: #{ui-fluid-expanded(38)};
+}
+
+.ui-mui-switch--range-responsive.ui-mui-switch--size-default {
+  @include ui-regular {
+    --ui-switch-width: #{ui-fluid-regular(82)};
+    --ui-switch-height: #{ui-fluid-regular(44)};
+    --ui-switch-margin: #{ui-fluid-regular(4)};
+    --ui-switch-thumb-size: #{ui-fluid-regular(36)};
+    --ui-switch-translate: #{ui-fluid-regular(38)};
+  }
+
+  @include ui-expanded {
+    --ui-switch-width: #{ui-fluid-expanded(82)};
+    --ui-switch-height: #{ui-fluid-expanded(44)};
+    --ui-switch-margin: #{ui-fluid-expanded(4)};
+    --ui-switch-thumb-size: #{ui-fluid-expanded(36)};
+    --ui-switch-translate: #{ui-fluid-expanded(38)};
+  }
+}
+
+.ui-mui-switch--range-responsive.ui-mui-switch--size-profile {
+  @include ui-regular {
+    --ui-switch-width: #{ui-fluid-regular(82)};
+    --ui-switch-height: #{ui-fluid-regular(44)};
+    --ui-switch-margin: #{ui-fluid-regular(4)};
+    --ui-switch-thumb-size: #{ui-fluid-regular(36)};
+    --ui-switch-translate: #{ui-fluid-regular(38)};
+  }
+
+  @include ui-expanded {
+    --ui-switch-width: #{ui-fluid-expanded(82)};
+    --ui-switch-height: #{ui-fluid-expanded(44)};
+    --ui-switch-margin: #{ui-fluid-expanded(4)};
+    --ui-switch-thumb-size: #{ui-fluid-expanded(36)};
+    --ui-switch-translate: #{ui-fluid-expanded(38)};
+  }
+}

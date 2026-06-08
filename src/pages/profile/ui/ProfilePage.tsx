@@ -1,7 +1,6 @@
 'use client';
 
 import Link from 'next/link';
-import Switch from '@mui/material/Switch';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
@@ -17,7 +16,7 @@ import {
 } from '@src/shared/ui/icons/Icons';
 import { useAuthStore } from '@src/features/auth/model/authStore';
 import { cityBase, cityPath } from '@src/shared/lib/sitePaths';
-import { MuiTextField } from '@src/shared/ui';
+import { MuiSwitch, MuiTextField } from '@src/shared/ui';
 import { useCabinetAccess } from '../model/useCabinetAccess';
 import { useProfilePage } from '../model/useProfilePage';
 import './ProfilePage.scss';
@@ -252,8 +251,9 @@ export function ProfilePage() {
             >
               Хочу получать СМС с акциями, скидками и подарками
             </span>
-            <Switch
+            <MuiSwitch
               className="profile-page__sms-switch"
+              size="profile"
               checked={isSpam === 1}
               onChange={(event) => changeSpam(event.target.checked)}
             />
@@ -300,8 +300,9 @@ export function ProfilePage() {
 
       <section className="profile-page__checks">
         <span>Хочу получать СМС с акциями и скидками</span>
-        <Switch
+        <MuiSwitch
           className="profile-page__sms-switch profile-page__sms-switch--desktop"
+          size="profile"
           checked={isSpam === 1}
           onChange={(event) => changeSpam(event.target.checked)}
         />
