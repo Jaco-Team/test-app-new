@@ -1234,7 +1234,8 @@
 
 .cart-page__selector-list,
 .cart-page__address-modal,
-.cart-page__comment-modal {
+.cart-page__comment-modal,
+.cart-page__review-modal {
   display: grid;
   gap: ui-fluid-compact(16);
   padding-inline: ui-fluid-compact(28);
@@ -1261,6 +1262,45 @@
 
 .cart-page__comment-input {
   width: 100%;
+}
+
+.cart-page__review-grid {
+  display: grid;
+  gap: ui-fluid-compact(12);
+
+  @include ui-regular {
+    gap: ui-fluid-regular(10);
+  }
+
+  @include ui-expanded {
+    gap: ui-fluid-expanded(10);
+  }
+}
+
+.cart-page__review-row {
+  display: grid;
+  gap: ui-fluid-compact(4);
+
+  span {
+    color: $ui-text-muted;
+  }
+
+  strong {
+    font-weight: 500;
+  }
+
+  @include ui-regular {
+    gap: ui-fluid-regular(4);
+  }
+
+  @include ui-expanded {
+    gap: ui-fluid-expanded(4);
+  }
+}
+
+.cart-page__review-note {
+  margin: 0;
+  color: $ui-text-muted;
 }
 
 .cart-page__address-list {

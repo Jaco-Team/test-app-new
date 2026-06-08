@@ -36,6 +36,7 @@ import { cityBase } from '@src/shared/lib/sitePaths';
 import { BREAKPOINTS } from '@src/shared/ui/foundation/breakpoints';
 import {
   Button,
+  ModalWrapper,
   MuiDatePickerField,
   MuiSelectField,
   MuiTextField,
@@ -292,10 +293,6 @@ export function CartPage() {
   }
 
   function handlePromoSubmit() {
-    if (!checkout.promoCode.trim().length) {
-      return;
-    }
-
     void checkout.applyPromo();
   }
 
@@ -887,9 +884,9 @@ export function CartPage() {
               range="regular"
               fullWidth={!compact}
               onClick={checkout.reviewOrder}
-              disabled={items.length === 0}
+              disabled={items.length === 0 || checkout.submitting}
             >
-              Проверить Заказ
+              {checkout.submitting ? 'Проверяем...' : 'Проверить Заказ'}
             </Button>
           </div>
         </aside>
@@ -936,6 +933,64 @@ export function CartPage() {
         selectedValue="asap"
         onSelect={() => undefined}
       />
+      <ModalWrapper
+        open={Boolean(checkout.orderPreview)}
+        onClose={checkout.closeOrderPreview}
+        title="Заказ проверен"
+        variant="responsive"
+        className="cart-page__sheet-modal"
+        paperClassName="cart-page__selector-modal"
+        titleClassName="cart-page__selector-modal-title"
+        contentClassName="cart-page__selector-modal-content"
+      >
+        {checkout.orderPreview ? (
+          <div className="cart-page__review-modal">
+            <div className="cart-page__review-grid">
+              <div className="cart-page__review-row">
+                <span>Тип заказа</span>
+                <strong>{checkout.orderPreview.typeLabel}</strong>
+              </div>
+              <div className="cart-page__review-row">
+                <span>Оплата</span>
+                <strong>{checkout.orderPreview.paymentLabel}</strong>
+              </div>
+              <div className="cart-page__review-row">
+                <span>Адрес / кафе</span>
+                <strong>{checkout.orderPreview.locationLabel}</strong>
+              </div>
+              <div className="cart-page__review-row">
+                <span>Время</span>
+                <strong>{checkout.orderPreview.timeLabel}</strong>
+              </div>
+              {checkout.orderPreview.comment ? (
+                <div className="cart-page__review-row">
+                  <span>Комментарий</span>
+                  <strong>{checkout.orderPreview.comment}</strong>
+                </div>
+              ) : null}
+              {checkout.orderPreview.promoCode ? (
+                <div className="cart-page__review-row">
+                  <span>Промокод</span>
+                  <strong>{checkout.orderPreview.promoCode}</strong>
+                </div>
+              ) : null}
+            </div>
+            <p className="cart-page__review-note">
+              Финальную отправку заказа здесь не выполняем.
+            </p>
+            <Button
+              className="cart-page__comment-done"
+              tone="primary"
+              size="lg"
+              range="compact"
+              fullWidth
+              onClick={checkout.closeOrderPreview}
+            >
+              Закрыть
+            </Button>
+          </div>
+        ) : null}
+      </ModalWrapper>
     </div>
   );
 }

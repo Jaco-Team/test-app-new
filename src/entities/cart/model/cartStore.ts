@@ -1,6 +1,8 @@
 'use client';
 
 import { create } from 'zustand';
+import Cookies from 'js-cookie';
+import { api } from '@src/shared/api';
 import {
   getLocalStorageItem,
   getLocalStorageJson,
@@ -29,6 +31,22 @@ function recomputeOffDops(items: CartLineItem[]): CartLineItem[] {
       (toNumber(item.cat_id) !== 7 || Boolean(item.disabled)) &&
       item.cat_id !== undefined
   );
+}
+
+function isPromoAccepted(response: Record<string, unknown> | null): boolean {
+  if (!response) {
+    return false;
+  }
+
+  if (response.status_promo === false) {
+    return false;
+  }
+
+  if (response.st === false && typeof response.text === 'string') {
+    return false;
+  }
+
+  return true;
 }
 
 function catalogLine(
@@ -85,6 +103,8 @@ export const useCartStore = create<CartState>((set, get) => ({
   itemsCount: 0,
   allPrice: 0,
   allPriceWithoutPromo: null,
+  promoCode: '',
+  promoStatus: null,
   checkPromo: null,
 
   setAllItems: (items) => {
@@ -100,6 +120,13 @@ export const useCartStore = create<CartState>((set, get) => ({
   setNeedDops: (items) => {
     set({ needDops: items ?? {} });
     get().recomputeTotals();
+  },
+
+  setPromoCode: (value) => {
+    set({
+      promoCode: String(value ?? ''),
+      promoStatus: null,
+    });
   },
 
   changeAllItems: () => {
@@ -142,6 +169,70 @@ export const useCartStore = create<CartState>((set, get) => ({
       allPriceWithoutPromo: baseTotal,
       allPrice: promoTotal > 0 ? promoTotal : baseTotal,
     });
+  },
+
+  applyPromo: async (city) => {
+    const code = String(get().promoCode ?? '').trim();
+
+    if (!code.length) {
+      Cookies.remove('promo_name');
+      set({
+        promoCode: '',
+        promoStatus: null,
+        checkPromo: null,
+      });
+      get().recomputeTotals();
+
+      void saveUserAction({ event: 'remove_promo' });
+
+      return { st: false, text: '' };
+    }
+
+    set({
+      promoCode: code,
+      promoStatus: {
+        tone: 'default',
+        text: 'Проверяем промокод...',
+      },
+    });
+
+    const response = (await api('cart', {
+      type: 'get_promo',
+      city_id: city,
+      promo_name: code,
+    })) as Record<string, unknown> | null;
+
+    void saveUserAction({ event: 'check_promo', data: code });
+
+    const accepted = isPromoAccepted(response);
+    const text = String(
+      response?.text ??
+        (accepted ? 'Промокод принят.' : 'Промокод не применился.')
+    );
+
+    if (accepted) {
+      Cookies.set('promo_name', code, { expires: 1 });
+    } else {
+      Cookies.remove('promo_name');
+    }
+
+    set({
+      promoStatus: {
+        tone: accepted ? 'success' : 'error',
+        text,
+      },
+      checkPromo: {
+        st: accepted,
+        text,
+      },
+    });
+
+    get().recomputeTotals();
+
+    return {
+      st: accepted,
+      text,
+    };
   },
 
   plus: (itemId, catId) => {

@@ -73,12 +73,16 @@ export function BasketPanel({ city }: { city: string }) {
   const dopListCart = useCartStore((state) => state.dopListCart);
   const cartIntroKind = useCartStore((state) => state.cartIntroKind);
   const checkPromo = useCartStore((state) => state.checkPromo);
+  const promoCode = useCartStore((state) => state.promoCode);
+  const promoStatus = useCartStore((state) => state.promoStatus);
   const allPrice = useCartStore((state) => state.allPrice);
   const allPriceWithoutPromo = useCartStore(
     (state) => state.allPriceWithoutPromo
   );
   const itemsCount = useCartStore((state) => state.itemsCount);
   const setCount = useCartStore((state) => state.setCount);
+  const setPromoCode = useCartStore((state) => state.setPromoCode);
+  const applyPromo = useCartStore((state) => state.applyPromo);
   const allItems = useCartStore((state) => state.allItems);
 
   const label = formatCartLabel(
@@ -190,7 +194,30 @@ export function BasketPanel({ city }: { city: string }) {
             type="text"
             placeholder="Есть промокод"
             aria-label="Промокод"
+            value={promoCode}
+            onChange={(event) => setPromoCode(event.target.value)}
+            onBlur={() => {
+              void applyPromo(city);
+            }}
+            onKeyDown={(event) => {
+              if (event.key !== 'Enter') {
+                return;
+              }
+
+              event.preventDefault();
+              void applyPromo(city);
+            }}
           />
+          {promoStatus?.text ? (
+            <p
+              className={
+                'basket-panel__status basket-panel__status--' +
+                (promoStatus.tone ?? 'default')
+              }
+            >
+              {promoStatus.text}
+            </p>
+          ) : null}
           <Link
             className="ui-button ui-button--tone-primary ui-button--size-lg ui-button--range-regular basket-panel__order"
             href={cartHref}

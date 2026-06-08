@@ -258,7 +258,7 @@
     @include ui-expanded {
       min-height: ui-fluid-expanded(34) !important;
       padding: ui-fluid-expanded(9) ui-fluid-expanded(12) !important;
-      font-size: ui-fluid-expanded(11) !important;
+      font-size: ui-fluid-expanded(16.5) !important;
       font-weight: 400 !important;
     }
   }
@@ -273,7 +273,7 @@
   &--range-expanded {
     min-height: ui-fluid-expanded(34) !important;
     padding: ui-fluid-expanded(9) ui-fluid-expanded(12) !important;
-    font-size: ui-fluid-expanded(11) !important;
+    font-size: ui-fluid-expanded(16.5) !important;
     font-weight: 400 !important;
   }
 }

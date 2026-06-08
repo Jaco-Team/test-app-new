@@ -279,6 +279,24 @@
   color: $ui-text-subtle;
 }
 
+.basket-panel__status {
+  margin: 0;
+  font-size: ui-fluid-compact(17);
+  line-height: 1.35;
+}
+
+.basket-panel__status--default {
+  color: $ui-text-muted;
+}
+
+.basket-panel__status--success {
+  color: #1f7a35;
+}
+
+.basket-panel__status--error {
+  color: $ui-danger;
+}
+
 .basket-panel__order.ui-button {
   justify-self: center;
   width: ui-fluid-compact(520);
@@ -436,6 +454,10 @@
     font-size: ui-fluid-regular(14);
   }
 
+  .basket-panel__status {
+    font-size: ui-fluid-regular(13);
+  }
+
   .basket-panel__order.ui-button {
     width: auto;
     min-width: ui-fluid-regular(220);
@@ -542,6 +564,10 @@
     height: ui-fluid-expanded(50);
     padding: 0 ui-fluid-expanded(24);
     font-size: ui-fluid-expanded(17);
+  }
+
+  .basket-panel__status {
+    font-size: ui-fluid-expanded(13);
   }
 
   .basket-panel__order.ui-button {

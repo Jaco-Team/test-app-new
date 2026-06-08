@@ -15,6 +15,15 @@ export type CartStatusMessage = {
   text: string;
 };
 
+export type CartOrderPreview = {
+  typeLabel: string;
+  paymentLabel: string;
+  locationLabel: string;
+  timeLabel: string;
+  comment: string;
+  promoCode: string;
+};
+
 export type PickupPoint = {
   id: string;
   label: string;
@@ -86,7 +95,6 @@ type DraftState = {
   pickupPointId: string;
   paymentId: string;
   comment: string;
-  promoCode: string;
   scheduleMode: CartScheduleMode;
   scheduleDateId: string;
   scheduleTimeId: string;
@@ -136,22 +144,6 @@ function writeDraft(citySlug: string, draft: DraftState): void {
   }
 
   window.localStorage.setItem(storageKey(citySlug), JSON.stringify(draft));
-}
-
-function isPromoAccepted(response: Record<string, unknown> | null): boolean {
-  if (!response) {
-    return false;
-  }
-
-  if (response.status_promo === false) {
-    return false;
-  }
-
-  if (response.st === false && typeof response.text === 'string') {
-    return false;
-  }
-
-  return true;
 }
 
 function mapPoint(point: PickupPointResponse): PickupPoint | null {
@@ -249,7 +241,6 @@ function resolveInitialAddressId(draft: Partial<DraftState> | null): string {
 }
 
 export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
-  const cartItems = useCartStore((state) => state.items);
   const token = useHeaderStore((state) => state.token);
   const isAuth = useHeaderStore((state) => state.isAuth);
   const isAddressAuthRequired = isAuth !== 'auth';
@@ -269,9 +260,6 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
     String(initialDraft?.paymentId ?? '')
   );
   const [comment, setComment] = useState(String(initialDraft?.comment ?? ''));
-  const [promoCode, setPromoCode] = useState(
-    String(initialDraft?.promoCode ?? '')
-  );
   const [scheduleMode, setScheduleMode] = useState<CartScheduleMode>(
     initialDraft?.scheduleMode === 'planned' ? 'planned' : 'asap'
   );
@@ -288,12 +276,20 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
   const [dateOptions, setDateOptions] = useState<DateOption[]>([]);
   const [timeOptions, setTimeOptions] = useState<TimeOption[]>([]);
   const [timeLoading, setTimeLoading] = useState(false);
-  const [promoStatus, setPromoStatus] = useState<CartStatusMessage | null>(
-    null
-  );
   const [submitStatus, setSubmitStatus] = useState<CartStatusMessage | null>(
     null
   );
+  const [submitting, setSubmitting] = useState(false);
+  const [orderPreview, setOrderPreview] = useState<CartOrderPreview | null>(
+    null
+  );
+
+  const cartItems = useCartStore((state) => state.items);
+  const promoCode = useCartStore((state) => state.promoCode);
+  const promoStatus = useCartStore((state) => state.promoStatus);
+  const checkPromo = useCartStore((state) => state.checkPromo);
+  const setPromoCode = useCartStore((state) => state.setPromoCode);
+  const applyPromo = useCartStore((state) => state.applyPromo);
 
   const paymentOptions =
     orderType === 'pickup' ? PICKUP_PAYMENTS : DELIVERY_PAYMENTS;
@@ -345,7 +341,6 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
       pickupPointId,
       paymentId,
       comment,
-      promoCode,
       scheduleMode,
       scheduleDateId,
       scheduleTimeId,
@@ -356,7 +351,6 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
     orderType,
     paymentId,
     pickupPointId,
-    promoCode,
     scheduleDateId,
     scheduleMode,
     scheduleTimeId,
@@ -610,38 +604,62 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
     setScheduleDateId(nextId);
   }
 
-  async function applyPromo() {
+  async function submitPromo() {
     const code = promoCode.trim();
+
     if (!code.length) {
-      setPromoStatus({
-        tone: 'error',
-        text: 'Введите промокод.',
-      });
+      setSubmitStatus(null);
+      await applyPromo(citySlug);
       return;
     }
 
-    setPromoStatus({
-      tone: 'default',
-      text: 'Проверяем промокод...',
-    });
+    setSubmitStatus(null);
+    await applyPromo(citySlug);
+  }
 
-    const response = (await api('cart', {
-      type: 'get_promo',
-      city_id: citySlug,
-      promo_name: code,
-    })) as Record<string, unknown> | null;
+  function buildDateTimeOrder() {
+    if (orderType === 'delivery' || scheduleMode === 'asap') {
+      return {
+        date: '',
+        name: 'В ближайшее время',
+        id: -1,
+      };
+    }
 
-    const accepted = isPromoAccepted(response);
-    setPromoStatus({
-      tone: accepted ? 'success' : 'error',
-      text: String(
-        response?.text ??
-          (accepted ? 'Промокод принят.' : 'Промокод не применился.')
-      ),
-    });
+    const selectedTime =
+      timeOptions.find((option) => option.id === scheduleTimeId)?.label ??
+      scheduleTimeId;
+
+    return {
+      date: scheduleDateId,
+      name: selectedTime || 'Запланировать',
+      id: scheduleTimeId || -1,
+    };
+  }
+
+  function buildPreview(paymentLabel: string): CartOrderPreview {
+    const typeLabel = orderType === 'pickup' ? 'Самовывоз' : 'Доставка';
+    const locationLabel =
+      orderType === 'pickup'
+        ? selectedPickupPoint?.label || 'Кафе не выбрано'
+        : selectedDeliveryAddress?.title ||
+          selectedDeliveryAddress?.name ||
+          selectedDeliveryAddress?.label ||
+          'Адрес не выбран';
+
+    return {
+      typeLabel,
+      paymentLabel,
+      locationLabel,
+      timeLabel: timeLabel || 'В ближайшее время',
+      comment: comment.trim(),
+      promoCode: checkPromo?.st ? promoCode.trim() : '',
+    };
   }
 
   function reviewOrder() {
+    setOrderPreview(null);
+
     if (isAddressAuthRequired) {
       setSubmitStatus({
         tone: 'error',
@@ -666,6 +684,14 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
       return;
     }
 
+    if (!cartItems.length) {
+      setSubmitStatus({
+        tone: 'error',
+        text: 'Необходимо добавить товар в корзину.',
+      });
+      return;
+    }
+
     if (!paymentId.length) {
       setSubmitStatus({
         tone: 'error',
@@ -686,10 +712,78 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
       return;
     }
 
+    const paymentLabel =
+      paymentOptions.find((option) => option.id === paymentId)?.label ??
+      paymentId;
+
+    const payload =
+      orderType === 'pickup'
+        ? {
+            type: 'create_order_pre',
+            token,
+            city_id: citySlug,
+            promoName: checkPromo?.st ? promoCode.trim() : '',
+            sdacha: 0,
+            comment: '',
+            typePay: paymentId,
+            typeOrder: 1,
+            point_id: pickupPointId,
+            dateTimeOrder: JSON.stringify(buildDateTimeOrder()),
+            cart: JSON.stringify(cartItems),
+            free_drive: 0,
+            rtoken: 0,
+          }
+        : {
+            type: 'create_order_pre',
+            token,
+            city_id: citySlug,
+            promoName: checkPromo?.st ? promoCode.trim() : '',
+            sdacha: 0,
+            addr: JSON.stringify(selectedDeliveryAddress ?? {}),
+            point_id: selectedDeliveryAddress?.pointId ?? '',
+            comment: comment.trim(),
+            typePay: paymentId,
+            typeOrder: 0,
+            dateTimeOrder: JSON.stringify(buildDateTimeOrder()),
+            cart: JSON.stringify(cartItems),
+            free_drive: 0,
+            rtoken: 0,
+          };
+
+    setSubmitting(true);
     setSubmitStatus({
-      tone: 'success',
-      text: 'Форма заполнена. Отправку заказа подключим следующим этапом.',
+      tone: 'default',
+      text: 'Проверяем заказ...',
     });
+
+    void api('cart', payload)
+      .then((response) => {
+        if (response?.st !== true) {
+          setSubmitStatus({
+            tone: 'error',
+            text: String(
+              response?.text ??
+                'Не удалось проверить заказ. Попробуйте ещё раз.'
+            ),
+          });
+          return;
+        }
+
+        setOrderPreview(buildPreview(paymentLabel));
+        setSubmitStatus({
+          tone: 'success',
+          text: 'Заказ проверен. Финальную отправку не выполняем.',
+        });
+      })
+      .catch(() => {
+        setSubmitStatus({
+          tone: 'error',
+          text: 'Не удалось проверить заказ. Попробуйте ещё раз.',
+        });
+      })
+      .finally(() => {
+        setSubmitting(false);
+      });
   }
 
   return {
@@ -714,7 +808,7 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
     promoCode,
     setPromoCode,
     promoStatus,
-    applyPromo,
+    applyPromo: submitPromo,
     scheduleMode,
     setScheduleMode,
     dateOptions,
@@ -727,6 +821,9 @@ export function useCartCheckoutDraft(citySlug: string, cityLabel: string) {
     setScheduleTimeId,
     timeLoading,
     timeLabel,
+    submitting,
+    orderPreview,
+    closeOrderPreview: () => setOrderPreview(null),
     submitStatus,
     reviewOrder,
   };

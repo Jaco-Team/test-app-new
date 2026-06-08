@@ -36,12 +36,19 @@ export type CartState = {
   itemsCount: number;
   allPrice: number;
   allPriceWithoutPromo: number | null;
-  checkPromo: { st?: boolean } | null;
+  promoCode: string;
+  promoStatus: {
+    tone?: 'default' | 'success' | 'error';
+    text?: string;
+  } | null;
+  checkPromo: { st?: boolean; text?: string } | null;
   setAllItems: (items: unknown[]) => void;
   setFreeItems: (items: unknown[]) => void;
   setNeedDops: (items: unknown) => void;
   changeAllItems: () => void;
   hydrateFromLocalStorage: () => void;
+  setPromoCode: (value: string) => void;
+  applyPromo: (city: string) => Promise<{ st: boolean; text: string }>;
   plus: (itemId: number | string | undefined, catId?: number | string) => void;
   minus: (itemId: number | string | undefined) => void;
   setCount: (
