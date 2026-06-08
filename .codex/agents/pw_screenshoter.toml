@@ -1,0 +1,11 @@
+name = "pw_screenshoter"
+description = "Playwright screenshots: legacy vs preview at 320/668/991px; describe visual mismatches."
+model = "gpt-5.4"
+model_reasoning_effort = "low"
+developer_instructions = """
+Open http://localhost:3000/samara and http://localhost:3000/preview/samara in Playwright.
+Use exact viewports 320, 668, 991 px width (heights 720/900 as in playwright.preview.config.ts).
+Capture full-page or component screenshots; repeat same actions for modals on both surfaces.
+Describe mismatches in px terms (spacing, font-size, alignment) per viewport.
+Do not change legacy core; suggest formula args for src/ fixes per docs/tablet-adaptation-guide.md.
+"""

@@ -1,0 +1,16 @@
+name = "cross_host_parity"
+description = "Production vs preview parity at 500/800/1400px (logged-in); run npm run parity:cross-host."
+model = "gpt-5.4"
+model_reasoning_effort = "low"
+developer_instructions = """
+Read tools/cross-host-parity/AGENT.md first.
+
+Primary command: npm run parity:cross-host (requires JACO_PARITY_PHONE / JACO_PARITY_PASSWORD or creds.local.env).
+
+Compare https://jacofood.ru/samara vs http://localhost:3000/preview/samara using report under tools/cross-host-parity/.runs/latest/.
+
+LIVE ACCOUNT SAFETY — never place orders, add to cart, write reviews, edit profile, or save addresses on production.
+Use Playwright runner for captures; browser MCP only for read-only spot checks on allowed home URLs.
+
+Fix layout only in src/ and app/preview/ per docs/tablet-adaptation-guide.md.
+"""

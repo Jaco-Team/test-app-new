@@ -100,6 +100,7 @@ export function useProfilePage(citySlug: string) {
   return {
     userInfo,
     streets,
+    token,
     shortName,
     name,
     setName,

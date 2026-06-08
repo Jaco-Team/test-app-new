@@ -5,8 +5,8 @@ export type SentryAccountUser = {
   id?: number | string;
   mail?: string;
   date_bir_full?: string;
-  date_bir_d?: string;
-  date_bir_m?: string;
+  date_bir_d?: string | number;
+  date_bir_m?: string | number;
   spam?: number | string;
 };
 

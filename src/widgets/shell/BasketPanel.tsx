@@ -1,9 +1,11 @@
 'use client';
 
+import { useEffect } from 'react';
 import Accordion from '@mui/material/Accordion';
 import AccordionDetails from '@mui/material/AccordionDetails';
 import AccordionSummary from '@mui/material/AccordionSummary';
 import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
+import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import Link from 'next/link';
 import { Price, QuantityControl } from '@src/shared/ui';
@@ -54,6 +56,16 @@ export function BasketPanel({ city }: { city: string }) {
   const compact = useMediaQuery(`(max-width: ${BREAKPOINTS.compactMax}px)`, {
     noSsr: true,
   });
+  const regular = useMediaQuery(
+    '(min-width: ' +
+      BREAKPOINTS.regularMin +
+      'px) and (max-width: ' +
+      BREAKPOINTS.regularMax +
+      'px)',
+    {
+      noSsr: true,
+    }
+  );
   const open = useHeaderStore((state) => state.openBasket);
   const setActiveBasket = useHeaderStore((state) => state.setActiveBasket);
 
@@ -79,8 +91,28 @@ export function BasketPanel({ city }: { city: string }) {
   const cartHref = cityPath(city, 'cart');
   useBodyScrollLock(open);
 
+  useEffect(() => {
+    if (!open) {
+      return;
+    }
+
+    const handleKeyDown = (event: KeyboardEvent) => {
+      if (event.key === 'Escape') {
+        setActiveBasket(false);
+      }
+    };
+
+    window.addEventListener('keydown', handleKeyDown);
+    return () => window.removeEventListener('keydown', handleKeyDown);
+  }, [open, setActiveBasket]);
+
   const content = (
     <div className="basket-panel">
+      {regular ? (
+        <div className="basket-panel__drag-handle" aria-hidden="true">
+          <span className="basket-panel__drag-handle-bar" />
+        </div>
+      ) : null}
       <div className="basket-panel__list">
         <Accordion
           className="basket-panel__notice"
@@ -187,6 +219,38 @@ export function BasketPanel({ city }: { city: string }) {
         />
         <div className="basket-panel-drawer__sheet">{content}</div>
       </div>
+    );
+  }
+
+  if (regular && open) {
+    return (
+      <SwipeableDrawer
+        anchor="right"
+        open={open}
+        onOpen={() => {}}
+        onClose={() => setActiveBasket(false)}
+        className="basket-panel-regular-drawer"
+        disableSwipeToOpen
+        disableDiscovery
+        allowSwipeInChildren
+        hysteresis={0.15}
+        minFlingVelocity={250}
+        transitionDuration={{ enter: 220, exit: 180 }}
+        ModalProps={{
+          disableScrollLock: true,
+          keepMounted: false,
+        }}
+        slotProps={{
+          backdrop: {
+            className: 'basket-panel-regular-drawer__backdrop',
+          },
+          paper: {
+            className: 'basket-panel-regular-drawer__sheet',
+          },
+        }}
+      >
+        {content}
+      </SwipeableDrawer>
     );
   }
 

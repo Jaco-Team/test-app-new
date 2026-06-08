@@ -4,6 +4,10 @@ import Link from 'next/link';
 import { LocalizationProvider } from '@mui/x-date-pickers/LocalizationProvider';
 import { MobileDatePicker } from '@mui/x-date-pickers/MobileDatePicker';
 import { AdapterDateFns } from '@mui/x-date-pickers/AdapterDateFnsV3';
+import type {
+  PickersActionBarAction,
+  PickersActionBarProps,
+} from '@mui/x-date-pickers/PickersActionBar';
 import { ru } from 'date-fns/locale';
 import DialogActions from '@mui/material/DialogActions';
 import Button from '@mui/material/Button';
@@ -26,12 +30,7 @@ function DatePickerActionBar({
   onCancel,
   actions,
   className,
-}: {
-  onAccept: () => void;
-  onCancel: () => void;
-  actions?: ('cancel' | 'accept')[];
-  className?: string;
-}) {
+}: PickersActionBarProps) {
   return (
     <DialogActions
       className={className}
@@ -81,6 +80,7 @@ export function ProfilePage() {
   const { citySlug, compact, ready } = useCabinetAccess();
   const {
     streets,
+    token,
     shortName,
     name,
     setName,
@@ -174,48 +174,51 @@ export function ProfilePage() {
                 }}
                 slots={{ actionBar: DatePickerActionBar }}
                 views={['year', 'month', 'day']}
-                slotProps={{
-                  actionBar: { actions: ['cancel', 'accept'] },
-                  toolbar: {
-                    toolbarFormat: 'd MMMM yyyy',
-                    sx: {
-                      '& span, & h4': {
-                        textAlign: 'center',
-                        width: '100%',
+                slotProps={
+                  {
+                    actionBar: { actions: ['cancel', 'accept'] },
+                    toolbar: {
+                      toolbarFormat: 'd MMMM yyyy',
+                      sx: {
+                        '& span, & h4': {
+                          textAlign: 'center',
+                          width: '100%',
+                        },
                       },
                     },
-                  },
-                  mobilePaper: {
-                    sx: { borderRadius: '5vw' },
-                  },
-                  textField: {
-                    placeholder: 'День рождения',
-                    className: 'profile-page__birthday-input',
-                    sx: {
-                      '& .MuiOutlinedInput-root fieldset': {
-                        borderWidth: 0,
-                      },
-                      '& .MuiOutlinedInput-root.Mui-focused fieldset': {
-                        borderColor: 'transparent',
-                      },
-                      '& .MuiOutlinedInput-input': {
-                        fontWeight: 500,
-                        userSelect: 'none',
+                    mobilePaper: {
+                      sx: { borderRadius: '5vw' },
+                    },
+                    textField: {
+                      className: 'profile-page__birthday-input',
+                      sx: {
+                        '& .MuiOutlinedInput-root fieldset': {
+                          borderWidth: 0,
+                        },
+                        '& .MuiOutlinedInput-root.Mui-focused fieldset': {
+                          borderColor: 'transparent',
+                        },
+                        '& .MuiOutlinedInput-input': {
+                          fontWeight: 500,
+                          userSelect: 'none',
+                        },
                       },
                     },
-                  },
-                  day: {
-                    sx: {
-                      '&.Mui-selected': {
-                        backgroundColor: '#cc0033',
-                        color: '#fff',
-                      },
-                      '&.Mui-selected:hover': {
-                        backgroundColor: '#cc0033',
+                    day: {
+                      sx: {
+                        '&.Mui-selected': {
+                          backgroundColor: '#cc0033',
+                          color: '#fff',
+                        },
+                        '&.Mui-selected:hover': {
+                          backgroundColor: '#cc0033',
+                        },
                       },
                     },
-                  },
-                }}
+                  } as {
+                    actionBar?: { actions?: PickersActionBarAction[] };
+                  }
+                }
               />
             </LocalizationProvider>
             {!birthDateLocked ? (
@@ -336,37 +339,40 @@ export function ProfilePage() {
               onAccept={(value) => saveBirthDate(value)}
               slots={{ actionBar: DatePickerActionBar }}
               views={['year', 'month', 'day']}
-              slotProps={{
-                actionBar: { actions: ['cancel', 'accept'] },
-                toolbar: {
-                  toolbarFormat: 'd MMMM yyyy',
-                  sx: {
-                    '& span, & h4': {
-                      textAlign: 'center',
-                      width: '100%',
+              slotProps={
+                {
+                  actionBar: { actions: ['cancel', 'accept'] },
+                  toolbar: {
+                    toolbarFormat: 'd MMMM yyyy',
+                    sx: {
+                      '& span, & h4': {
+                        textAlign: 'center',
+                        width: '100%',
+                      },
                     },
                   },
-                },
-                mobilePaper: {
-                  sx: { borderRadius: '1.488vw' },
-                },
-                textField: {
-                  placeholder: 'Выберите дату',
-                  className:
-                    'profile-page__birthday-input profile-page__birthday-input--desktop',
-                },
-                day: {
-                  sx: {
-                    '&.Mui-selected': {
-                      backgroundColor: '#cc0033',
-                      color: '#fff',
-                    },
-                    '&.Mui-selected:hover': {
-                      backgroundColor: '#cc0033',
+                  mobilePaper: {
+                    sx: { borderRadius: '1.488vw' },
+                  },
+                  textField: {
+                    className:
+                      'profile-page__birthday-input profile-page__birthday-input--desktop',
+                  },
+                  day: {
+                    sx: {
+                      '&.Mui-selected': {
+                        backgroundColor: '#cc0033',
+                        color: '#fff',
+                      },
+                      '&.Mui-selected:hover': {
+                        backgroundColor: '#cc0033',
+                      },
                     },
                   },
-                },
-              }}
+                } as {
+                  actionBar?: { actions?: PickersActionBarAction[] };
+                }
+              }
             />
           </LocalizationProvider>
           <p className="profile-page__birthday-note">

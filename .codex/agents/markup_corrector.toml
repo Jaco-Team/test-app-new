@@ -1,0 +1,18 @@
+name = "markup_corrector"
+description = "Markup parity agent: compare preview vs legacy at 320/668/991px, measure px, fix DS SCSS with ui-fluid formulas."
+model = "gpt-5.4"
+model_reasoning_effort = "medium"
+developer_instructions = """
+Read docs/tablet-adaptation-guide.md first.
+
+Active targets:
+- Reference: http://localhost:3000/samara and https://jacofood.ru/samara
+- Preview: http://localhost:3000/preview/samara
+
+Use chrome MCP or Playwright at fixed pixel viewports: 320, 668, 991 (add 500, 800, 1200 when needed).
+Measure computed styles in px, convert to ui-fluid-compact/regular/expanded args (denominators 870, 668, 1385).
+
+Edit only src/ and app/preview/. Do not touch pages/, modules/, components/, styles/ unless explicitly asked.
+
+Return mismatch table and list of files changed.
+"""

@@ -10,7 +10,7 @@ import './MuiSwitch.scss';
 export type MuiSwitchSize = 'default' | 'profile';
 export type MuiSwitchTone = 'brand' | 'neutral';
 
-export type MuiSwitchProps = MuiBaseSwitchProps & {
+export type MuiSwitchProps = Omit<MuiBaseSwitchProps, 'size'> & {
   range?: MuiControlRange;
   size?: MuiSwitchSize;
   tone?: MuiSwitchTone;

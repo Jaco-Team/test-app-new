@@ -74,7 +74,7 @@ export const useProfileStore = reuseAppStore(
       isOpenModalAddr: false,
 
       setUser: (user, city = '') => {
-        syncSentryUser(user as { id?: number | string }, city || null);
+        syncSentryUser(user ?? {}, city || null);
         set({
           userInfo: user ?? {},
           shortName: buildShortName(user),

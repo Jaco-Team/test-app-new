@@ -1,0 +1,4 @@
+interface:
+  display_name: "Typecheck Fix"
+  short_description: "Run npm run typecheck and fix TypeScript errors iteratively."
+  default_prompt: "Use this skill when the user wants to run the project typecheck and fix TypeScript errors until it passes or a real blocker remains."

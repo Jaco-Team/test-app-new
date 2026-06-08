@@ -52,7 +52,11 @@ next-env.d.ts
 public/cron/
 
 # Codex local config
-.codex/
+.codex/*
+!.codex/skills/
+!.codex/skills/**
+!.codex/agents/
+!.codex/agents/**
 .tmp/
 .playwright-mcp/
 .agents
