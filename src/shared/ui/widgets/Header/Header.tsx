@@ -1,32 +1,25 @@
-import { useCallback, useRef } from 'react';
+import { useCallback, useMemo, useRef } from 'react';
 import { AnimatePresence, motion } from 'framer-motion';
 import type { MotionProps } from 'framer-motion';
 import { useBodyScrollLock, useClickOutside } from '@/src/shared/lib/overlay';
-import type {
-  ComponentType,
-  HTMLAttributes,
-  MouseEvent,
-  ReactNode,
-} from 'react';
+import type { HTMLAttributes, MouseEvent, ReactNode } from 'react';
 import {
-  AboutIconMobile,
-  BasketIconMobile,
   ArrowDownHeader,
   ArrowUpHeader,
   BasketIconNew,
   BurgerIconMobile,
   JacoDocsIcon,
   LocationHeaderIcon,
-  LocationIconMobile,
-  MapContactsMobile,
-  MenuIconMobile,
-  ProfileIconMobile,
   ProfileIconNew,
-  Sale,
 } from '../../icons';
 import { cn } from '../../foundation/classNames';
+import {
+  buildDefaultCompactMenuLinks,
+  enrichCompactMenuLinks,
+  type CompactMenuIcon,
+  type HeaderCompactMenuLink,
+} from './compactMenu';
 import { CompactMenu } from './CompactMenu';
-import type { CompactMenuItem } from './CompactMenu';
 import './Header.scss';
 import useIsScrolled from '@/src/shared/lib/scroll/useIsScrolled';
 
@@ -40,12 +33,7 @@ export interface HeaderNavItem {
   children?: HeaderNavItem[];
 }
 
-export type HeaderCompactMenuLink = {
-  label: string;
-  href?: string;
-  active?: boolean;
-  button?: boolean;
-};
+export type { HeaderCompactMenuLink } from './compactMenu';
 
 export interface HeaderProps extends HTMLAttributes<HTMLElement> {
   navItems?: HeaderNavItem[];
@@ -102,59 +90,6 @@ function extractCartCount(cartCount?: number): string | undefined {
     : undefined;
 }
 
-const compactMenuIconByLabel: Record<
-  string,
-  ComponentType<{ 'aria-hidden'?: 'true'; className?: string }>
-> = {
-  Меню: MenuIconMobile,
-  Акции: Sale,
-  Тольятти: MapContactsMobile,
-  Самара: MapContactsMobile,
-  Адреса: LocationIconMobile,
-  Жако: AboutIconMobile,
-  Аккаунт: ProfileIconMobile,
-  Корзина: BasketIconMobile,
-};
-
-function buildDefaultCompactMenuItems(
-  logoHref: string,
-  city: string,
-  cityHref: string | undefined,
-  cartBadge: string | undefined
-): CompactMenuItem[] {
-  return [
-    { label: 'Меню', href: logoHref, active: true, icon: MenuIconMobile },
-    {
-      label: 'Акции',
-      href: hrefFromBase(logoHref, '/akcii'),
-      icon: Sale,
-    },
-    {
-      label: city,
-      href: cityHref,
-      icon: MapContactsMobile,
-      button: !cityHref,
-    },
-    {
-      label: 'Адреса',
-      href: hrefFromBase(logoHref, '/contacts'),
-      icon: LocationIconMobile,
-    },
-    {
-      label: 'Жако',
-      href: hrefFromBase(logoHref, '/document'),
-      icon: AboutIconMobile,
-    },
-    { label: 'Аккаунт', icon: ProfileIconMobile, button: true },
-    {
-      label: 'Корзина',
-      href: hrefFromBase(logoHref, '/cart'),
-      icon: BasketIconMobile,
-      badge: cartBadge,
-    },
-  ];
-}
-
 export function Header({
   navItems = [],
   compactMenuLinks,
@@ -197,32 +132,43 @@ export function Header({
   const cartBadge = extractCartCount(cartCount);
   const hasCartItems = Number(cartCount) > 0;
   const profileAvatarText = profileShortName.trim().slice(0, 1);
-  const CompactProfileAvatar: ComponentType<{
-    'aria-hidden'?: 'true';
-    className?: string;
-  }> = ({ className }) => (
-    <span className={cn('ui-header__compact-menu-avatar', className)}>
-      {profileAvatarText || 'Ж'}
-    </span>
+
+  const profileAvatarIcon = useMemo<CompactMenuIcon>(() => {
+    const letter = profileAvatarText || 'Ж';
+
+    return function ProfileAvatarIcon({ className }) {
+      return (
+        <span className={cn('ui-header__compact-menu-avatar', className)}>
+          {letter}
+        </span>
+      );
+    };
+  }, [profileAvatarText]);
+
+  const compactMenuItems = useMemo(
+    () =>
+      enrichCompactMenuLinks(
+        compactMenuLinks?.length
+          ? compactMenuLinks
+          : buildDefaultCompactMenuLinks(logoHref, city, cityHref),
+        {
+          profileAuthenticated,
+          profileLabel,
+          profileAvatar: profileAvatarIcon,
+          cartBadge,
+        }
+      ),
+    [
+      cartBadge,
+      city,
+      cityHref,
+      compactMenuLinks,
+      logoHref,
+      profileAuthenticated,
+      profileAvatarIcon,
+      profileLabel,
+    ]
   );
-  const compactMenuItems: CompactMenuItem[] = compactMenuLinks?.length
-    ? compactMenuLinks.map((item) => ({
-        ...item,
-        label:
-          item.label === 'Аккаунт' && profileAuthenticated
-            ? profileLabel
-            : item.label,
-        icon:
-          item.label === 'Аккаунт' && profileAuthenticated
-            ? CompactProfileAvatar
-            : (compactMenuIconByLabel[item.label] ??
-              (item.label === city ? LocationIconMobile : MenuIconMobile)),
-        badge: item.label === 'Корзина' ? cartBadge : undefined,
-        profile: item.label === 'Аккаунт',
-        button:
-          item.button ?? (item.label === city || item.label === 'Аккаунт'),
-      }))
-    : buildDefaultCompactMenuItems(logoHref, city, cityHref, cartBadge);
 
   const isScrolled = useIsScrolled();
 

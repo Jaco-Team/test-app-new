@@ -1,6 +1,10 @@
 import type { CatalogCategory } from '@src/entities/catalog';
 import { normalizeCategoryLink } from '@src/shared/lib/categoryLink';
 import { categoryHref, cityPath } from '@src/shared/lib/sitePaths';
+import {
+  HEADER_COMPACT_MENU_ITEM,
+  type HeaderCompactMenuLink,
+} from '@ui/widgets/Header/compactMenu';
 import type { HeaderNavItem } from '@ui/widgets/Header/Header';
 
 export type BuildHeaderNavOptions = {
@@ -65,39 +69,69 @@ export function buildHeaderNavItems(
   ];
 }
 
-export type HeaderCompactMenuLink = {
-  label: string;
-  href?: string;
-  active?: boolean;
-  button?: boolean;
+export type BuildHeaderCompactMenuOptions = {
+  accountHref?: string;
 };
+
+const CABINET_ACTIVE_PAGES = new Set([
+  'account',
+  'profile',
+  'address',
+  'promokody',
+  'zakazy',
+]);
 
 export function buildHeaderCompactMenuLinks(
   citySlug: string,
   cityLabel: string,
-  activePage = 'home'
+  activePage = 'home',
+  options: BuildHeaderCompactMenuOptions = {}
 ): HeaderCompactMenuLink[] {
   const base = cityPath(citySlug);
+  const { accountHref } = options;
+  const accountActive = CABINET_ACTIVE_PAGES.has(activePage);
 
   return [
-    { label: 'Меню', href: base, active: activePage === 'home' },
     {
+      id: HEADER_COMPACT_MENU_ITEM.menu,
+      label: 'Меню',
+      href: base,
+      active: activePage === 'home',
+    },
+    {
+      id: HEADER_COMPACT_MENU_ITEM.promotions,
       label: 'Акции',
       href: cityPath(citySlug, 'akcii'),
       active: activePage === 'akcii',
     },
-    { label: cityLabel, button: true },
     {
+      id: HEADER_COMPACT_MENU_ITEM.city,
+      label: cityLabel,
+      button: true,
+    },
+    {
+      id: HEADER_COMPACT_MENU_ITEM.contacts,
       label: 'Адреса',
       href: cityPath(citySlug, 'contacts'),
       active: activePage === 'contacts',
     },
     {
+      id: HEADER_COMPACT_MENU_ITEM.about,
       label: 'Жако',
       href: cityPath(citySlug, 'document'),
       active: activePage === 'document',
     },
-    { label: 'Аккаунт', button: true },
-    { label: 'Корзина', href: cityPath(citySlug, 'cart') },
+    {
+      id: HEADER_COMPACT_MENU_ITEM.account,
+      label: 'Аккаунт',
+      href: accountHref,
+      button: !accountHref,
+      active: accountActive,
+    },
+    {
+      id: HEADER_COMPACT_MENU_ITEM.cart,
+      label: 'Корзина',
+      href: cityPath(citySlug, 'cart'),
+    },
   ];
 }

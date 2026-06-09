@@ -17,8 +17,8 @@ import {
   APP_ROUTE_PREFIX,
   cityBase,
   cityPath,
-  legacyCityPath,
 } from '@src/shared/lib/sitePaths';
+import { HEADER_COMPACT_MENU_ITEM } from '@ui/widgets/Header/compactMenu';
 import { Header } from '@ui/widgets/Header/Header';
 import type { HeaderNavItem } from '@ui/widgets/Header/Header';
 import { formatCartLabel } from '@src/features/header/model/formatCartLabel';
@@ -26,6 +26,8 @@ import {
   buildHeaderCompactMenuLinks,
   buildHeaderNavItems,
 } from '@src/features/header/model/buildHeaderNav';
+import { headerAuthHref } from '@src/features/header/model/headerAuthRoutes';
+import { useViewportMode } from '@src/shared/lib/viewport';
 
 export type ConnectedHeaderProps = {
   /** SSR nav until catalog is hydrated in the store */
@@ -46,6 +48,7 @@ export function ConnectedHeader({
   const [openNavLabel, setOpenNavLabel] = useState<string | undefined>();
   const [desktopDocsOpen, setDesktopDocsOpen] = useState(false);
   const [clientReady, setClientReady] = useState(false);
+  const viewportMode = useViewportMode();
   const searchParams = useSearchParams();
   const activeCategoryQuery = searchParams?.get('category') ?? '';
 
@@ -95,13 +98,20 @@ export function ConnectedHeader({
     return fallbackNav ?? [];
   }, [activeCategoryQuery, activePage, categories, citySlug, fallbackNav]);
 
-  const compactMenuLinks = useMemo(
-    () =>
-      citySlug
-        ? buildHeaderCompactMenuLinks(citySlug, cityLabel, activePage)
-        : [],
-    [activePage, cityLabel, citySlug]
-  );
+  const compactMenuLinks = useMemo(() => {
+    if (!citySlug) {
+      return [];
+    }
+
+    const accountHref =
+      clientReady && isAuth === 'auth' && viewportMode !== 'expanded'
+        ? headerAuthHref(citySlug, viewportMode)
+        : undefined;
+
+    return buildHeaderCompactMenuLinks(citySlug, cityLabel, activePage, {
+      accountHref,
+    });
+  }, [activePage, cityLabel, citySlug, clientReady, isAuth, viewportMode]);
 
   const cartLabel = formatCartLabel(
     itemsOffDops,
@@ -221,18 +231,20 @@ export function ConnectedHeader({
       onNavItemClick={handleNavItemClick}
       onCompactMenuItemClick={(item) => {
         setCompactMenuOpen(false);
-        if (item.label === cityLabel) {
+
+        if (item.id === HEADER_COMPACT_MENU_ITEM.city) {
           setActiveModalCityList(true);
           return;
         }
-        if (item.label !== cityLabel) {
+
+        if (item.id !== HEADER_COMPACT_MENU_ITEM.account) {
           trackHeaderClick(item.label, citySlug);
         }
       }}
       onProfileClick={() => {
         closeMenus();
         if (isAuth === 'auth' && citySlug) {
-          window.location.href = cityPath(citySlug, 'profile');
+          window.location.href = headerAuthHref(citySlug, viewportMode);
           return;
         }
         setActiveModalAuth(true);

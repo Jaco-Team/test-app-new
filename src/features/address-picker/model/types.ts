@@ -24,6 +24,10 @@ export type AddressPickerSuggestion = {
   };
 };
 
+export type AddressPickerSuggestionOption = AddressPickerSuggestion & {
+  key: string;
+};
+
 export type AddressPickerResolvedAddress = {
   id: string;
   street: string;

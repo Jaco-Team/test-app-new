@@ -1,7 +1,8 @@
 'use client';
 
-import { useEffect, useMemo } from 'react';
+import { useCallback, useEffect, useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import { useShallow } from 'zustand/react/shallow';
 import {
   Button,
   ModalWrapper,
@@ -9,16 +10,19 @@ import {
   MuiSelectField,
   MuiSwitch,
   MuiTextField,
-  HomeModalAddrIcon,
-  PencilModalAddrIcon,
 } from '@src/shared/ui';
+import { HomeModalAddrIcon, PencilModalAddrIcon } from '@src/shared/ui/icons';
 import { useHeaderStore } from '@src/entities/header';
 import {
   clearAddressPickerIntent,
   readAddressPickerIntent,
 } from '../model/addressPickerFlow';
 import { useAddressPickerStore } from '../model/addressPickerStore';
-import type { AddressPickerSuggestion } from '../model/types';
+import {
+  formatAddressPickerSuggestion,
+  toAddressPickerSuggestionOptions,
+} from '../model/suggestionOptions';
+import type { AddressPickerSuggestionOption } from '../model/types';
 import { AddressPickerMap } from './AddressPickerMap';
 import './AddressPickerModal.scss';
 
@@ -54,7 +58,38 @@ export function AddressPickerModal() {
     changeCity,
     submit,
     clearFeedback,
-  } = useAddressPickerStore();
+  } = useAddressPickerStore(
+    useShallow((state) => ({
+      open: state.open,
+      loading: state.loading,
+      submitting: state.submitting,
+      errorText: state.errorText,
+      source: state.source,
+      mode: state.mode,
+      cityOptions: state.cityOptions,
+      activeCityId: state.activeCityId,
+      zones: state.zones,
+      mapCenter: state.mapCenter,
+      mapPoint: state.mapPoint,
+      mapZoom: state.mapZoom,
+      mapResolving: state.mapResolving,
+      query: state.query,
+      suggestions: state.suggestions,
+      selectedAddress: state.selectedAddress,
+      resolvedCandidates: state.resolvedCandidates,
+      draft: state.draft,
+      closeAddressPicker: state.closeAddressPicker,
+      setDraftField: state.setDraftField,
+      setQuery: state.setQuery,
+      fetchSuggestions: state.fetchSuggestions,
+      selectSuggestion: state.selectSuggestion,
+      selectResolvedAddress: state.selectResolvedAddress,
+      pickAddressFromMap: state.pickAddressFromMap,
+      changeCity: state.changeCity,
+      submit: state.submit,
+      clearFeedback: state.clearFeedback,
+    }))
+  );
 
   useEffect(() => {
     if (!open) {
@@ -74,15 +109,11 @@ export function AddressPickerModal() {
   }, [fetchSuggestions, open, query]);
 
   const suggestionOptions = useMemo(
-    () =>
-      suggestions.map((item, index) => ({
-        ...item,
-        key: item.name + item.title + index,
-      })),
+    () => toAddressPickerSuggestionOptions(suggestions),
     [suggestions]
   );
 
-  async function handleSubmit() {
+  const handleSubmit = useCallback(async () => {
     const success = await submit(token);
     if (!success) {
       return;
@@ -96,15 +127,12 @@ export function AddressPickerModal() {
     }
 
     clearAddressPickerIntent();
-  }
+  }, [router, source, submit, token]);
 
-  function formatSuggestion(
-    option: AddressPickerSuggestion & { key?: string }
-  ) {
-    return option.title.length
-      ? `${option.name}, ${option.title}`
-      : option.name;
-  }
+  const handleCancel = useCallback(() => {
+    clearFeedback();
+    closeAddressPicker();
+  }, [clearFeedback, closeAddressPicker]);
 
   return (
     <ModalWrapper
@@ -175,7 +203,6 @@ export function AddressPickerModal() {
                 <PencilModalAddrIcon />
               </div>
               <MuiTextField
-                label=""
                 hiddenLabel
                 placeholder="Название адреса"
                 value={draft.name}
@@ -193,7 +220,6 @@ export function AddressPickerModal() {
             <div className="address-picker-modal__field-group">
               <p className="address-picker-modal__field-caption">Город</p>
               <MuiSelectField
-                label=""
                 hiddenLabel
                 aria-label="Город"
                 value={activeCityId}
@@ -207,7 +233,7 @@ export function AddressPickerModal() {
             </div>
 
             <MuiAutocompleteField<
-              AddressPickerSuggestion & { key?: string },
+              AddressPickerSuggestionOption,
               false,
               false,
               false
@@ -225,11 +251,12 @@ export function AddressPickerModal() {
                   void selectSuggestion(value);
                 }
               }}
-              getOptionLabel={formatSuggestion}
-              isOptionEqualToValue={(option, value) => option.key === value.key}
+              getOptionKey={(option) => option.key}
+              getOptionLabel={formatAddressPickerSuggestion}
               loading={loading}
               filterOptions={(options) => options}
               range="responsive"
+              surface="outlined"
               placeholder="Улица и номер дома"
             />
 
@@ -241,7 +268,7 @@ export function AddressPickerModal() {
                 <div className="address-picker-modal__resolved-list">
                   {resolvedCandidates.map((item) => (
                     <button
-                      key={item.id + item.addressLine}
+                      key={`${item.id}:${item.addressLine}`}
                       type="button"
                       className="address-picker-modal__resolved-item"
                       onClick={() => selectResolvedAddress(item)}
@@ -262,7 +289,6 @@ export function AddressPickerModal() {
 
             <div className="address-picker-modal__row address-picker-modal__row--triple">
               <MuiTextField
-                label=""
                 hiddenLabel
                 placeholder="Подъезд"
                 value={draft.pd}
@@ -276,7 +302,6 @@ export function AddressPickerModal() {
                 }}
               />
               <MuiTextField
-                label=""
                 hiddenLabel
                 placeholder="Этаж"
                 value={draft.et}
@@ -290,7 +315,6 @@ export function AddressPickerModal() {
                 }}
               />
               <MuiTextField
-                label=""
                 hiddenLabel
                 placeholder="Квартира"
                 value={draft.kv}
@@ -306,7 +330,6 @@ export function AddressPickerModal() {
             </div>
 
             <MuiTextField
-              label=""
               hiddenLabel
               placeholder="Комментарий курьеру"
               value={draft.comment}
@@ -366,10 +389,7 @@ export function AddressPickerModal() {
                 tone="neutral"
                 size="lg"
                 range="regular"
-                onClick={() => {
-                  clearFeedback();
-                  closeAddressPicker();
-                }}
+                onClick={handleCancel}
               >
                 Отмена
               </Button>

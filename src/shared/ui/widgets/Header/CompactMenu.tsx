@@ -1,14 +1,14 @@
-import type { ComponentType, MouseEvent } from 'react';
+import type { MouseEvent } from 'react';
 import { motion } from 'framer-motion';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { cn } from '../../foundation/classNames';
-import type { HeaderCompactMenuLink } from './Header';
+import {
+  isCompactMenuAuthItem,
+  type CompactMenuItem,
+  type HeaderCompactMenuLink,
+} from './compactMenu';
 
-export type CompactMenuItem = HeaderCompactMenuLink & {
-  icon: ComponentType<{ 'aria-hidden'?: 'true'; className?: string }>;
-  badge?: string;
-  profile?: boolean;
-};
+export type { CompactMenuItem, HeaderCompactMenuLink } from './compactMenu';
 
 export type CompactMenuProps = {
   open: boolean;
@@ -75,14 +75,14 @@ export function CompactMenu({
 
           return item.button ? (
             <button
-              key={item.label}
+              key={item.id}
               className={cn(
                 'ui-header__compact-menu-link',
                 item.active && 'ui-header__compact-menu-link--active'
               )}
               type="button"
               onClick={(event) => {
-                if (item.profile) {
+                if (isCompactMenuAuthItem(item)) {
                   onProfileClick?.();
                 }
                 onItemClick?.(item, event);
@@ -92,7 +92,7 @@ export function CompactMenu({
             </button>
           ) : (
             <a
-              key={item.label}
+              key={item.id}
               className={cn(
                 'ui-header__compact-menu-link',
                 item.active && 'ui-header__compact-menu-link--active'
