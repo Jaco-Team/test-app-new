@@ -1,3 +1,10 @@
+#TODO:
+
+1. fix ModalWrapper, make it just a portal with close/drag handles, esc/swipe close, fix all usages. all paddings etc are on users
+2. ymaps autocomplete on address dont work, check old site and make it work. Clicking map dont set a point, use maic and hooks
+3. address modal looks odd, fix the markup to exactly look like old
+4. MuiSwotch styles are broken, make it a proper look like old site does
+
 # Новое ядро (`src/`)
 
 TypeScript + FSD под `src/`, смонтированное на `/preview/{city}` через `app/preview/` до финального переключения маршрутов.

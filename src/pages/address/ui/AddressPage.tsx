@@ -1,5 +1,6 @@
 'use client';
 
+import { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { Button } from '@src/shared/ui';
@@ -45,10 +46,11 @@ export function AddressPage() {
   const { citySlug, compact, ready, token } = useCabinetAccess();
   const { streets, openModalAddr, delAddr } = useAddressPage(citySlug, token);
 
-  if (ready && !compact) {
-    router.replace(cityPath(citySlug, 'profile'));
-    return null;
-  }
+  useEffect(() => {
+    if (ready && !compact) {
+      router.replace(cityPath(citySlug, 'profile'));
+    }
+  }, [citySlug, compact, ready, router]);
 
   if (!ready || !compact) {
     return null;

@@ -690,7 +690,8 @@ export const useAddressPickerStore = reuseAppStore(
             mapCenter: resolved.mapCenter,
             mapPoint: resolved.mapPoint,
           });
-        } catch {
+        } catch (e) {
+          console.log('errrrrror picking address', e);
           set({
             loading: false,
             mapResolving: false,

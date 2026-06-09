@@ -148,9 +148,9 @@ export function AddressPickerModal() {
       <div className="address-picker-modal__body">
         <div className="address-picker-modal__grid">
           <section className="address-picker-modal__map-panel">
-            <div className="address-picker-modal__map-head">
+            {/*<div className="address-picker-modal__map-head">
               <div>
-                <p className="address-picker-modal__eyebrow">Точка доставки</p>
+                 <p className="address-picker-modal__eyebrow">Точка доставки</p> 
                 <h3 className="address-picker-modal__section-title">
                   Выберите дом на карте
                 </h3>
@@ -158,7 +158,7 @@ export function AddressPickerModal() {
               <p className="address-picker-modal__map-hint">
                 Нажмите на карту или выберите адрес строкой поиска.
               </p>
-            </div>
+            </div>*/}
 
             <AddressPickerMap
               open={open}
@@ -170,7 +170,7 @@ export function AddressPickerModal() {
               onPick={pickAddressFromMap}
             />
 
-            {selectedAddress ? (
+            {/* {selectedAddress ? (
               <div className="address-picker-modal__selected">
                 <span className="address-picker-modal__selected-label">
                   Выбранный адрес
@@ -191,7 +191,7 @@ export function AddressPickerModal() {
                   Укажите дом через поиск или кликните по карте.
                 </span>
               </div>
-            )}
+            )} */}
           </section>
 
           <div className="address-picker-modal__form">
