@@ -130,7 +130,7 @@ export function ProfilePage() {
     }
 
     addressModalWasRequested.current = true;
-    void openModalAddr(0, citySlug);
+    void openModalAddr(0, 'cart');
     router.replace(cityPath(citySlug, 'profile'));
   }, [citySlug, compact, openModalAddr, ready, router, searchParams, token]);
 
@@ -411,7 +411,7 @@ export function ProfilePage() {
           <button
             className="profile-page__addresses-add"
             type="button"
-            onClick={() => void openModalAddr(0, citySlug)}
+            onClick={() => void openModalAddr(0)}
           >
             Добавить
           </button>
@@ -436,12 +436,7 @@ export function ProfilePage() {
                     <button
                       className="profile-page__addresses-edit"
                       type="button"
-                      onClick={() =>
-                        void openModalAddr(
-                          item.id,
-                          String(item.city ?? citySlug)
-                        )
-                      }
+                      onClick={() => void openModalAddr(item.id)}
                     >
                       Изменить
                     </button>

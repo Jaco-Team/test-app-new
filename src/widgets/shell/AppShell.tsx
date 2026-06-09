@@ -4,6 +4,7 @@ import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
 import Script from 'next/script';
 import { useHeaderStore } from '@src/entities/header';
+import { AddressPickerModal } from '@src/features/address-picker';
 import { AuthModal } from './AuthModal';
 import { BasketPanel } from './BasketPanel';
 import { CityModal } from './CityModal';
@@ -32,6 +33,7 @@ export function AppShell({ city, loadMap = false }: AppShellProps) {
 
       <AuthModal city={city} />
       <CityModal />
+      <AddressPickerModal />
       <BasketPanel city={city} />
       <StickyCartWidget />
       {loadMap ? <MapLoader city={city} /> : null}

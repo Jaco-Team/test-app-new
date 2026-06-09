@@ -4,6 +4,7 @@ import { useEffect, useState } from 'react';
 import { format, parseISO } from 'date-fns';
 import dayjs from 'dayjs';
 import { useProfileStore, type ProfileUser } from '@src/entities/profile';
+import { useAddressPickerStore } from '@src/features/address-picker';
 import { useHeaderStore } from '@src/entities/header';
 
 const PROFILE_MODULE = 'profile';
@@ -17,7 +18,9 @@ export function useProfilePage(citySlug: string) {
   const updateUser = useProfileStore((state) => state.updateUser);
   const setUser = useProfileStore((state) => state.setUser);
   const delAddr = useProfileStore((state) => state.delAddr);
-  const openModalAddr = useProfileStore((state) => state.openModalAddr);
+  const openAddressPicker = useAddressPickerStore(
+    (state) => state.openAddressPicker
+  );
 
   const [name, setName] = useState('');
   const [mail, setMail] = useState('');
@@ -96,6 +99,17 @@ export function useProfilePage(citySlug: string) {
   const birthDateLabel = birthDate
     ? format(birthDate, 'd MMMM yyyy')
     : 'День рождения';
+
+  async function openModalAddr(
+    id: number | string,
+    source: 'profile' | 'cart' = 'profile'
+  ) {
+    await openAddressPicker({
+      citySlug,
+      addressId: id,
+      source,
+    });
+  }
 
   return {
     userInfo,

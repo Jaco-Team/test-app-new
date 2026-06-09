@@ -20,7 +20,9 @@ export function ClientRuntime({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const loadYmaps =
     Boolean(pathname?.includes('/cart')) ||
-    Boolean(pathname?.includes('/contacts'));
+    Boolean(pathname?.includes('/contacts')) ||
+    Boolean(pathname?.includes('/profile')) ||
+    Boolean(pathname?.includes('/address'));
   const previousUrlRef = useRef('');
   const setMatches = useHeaderStore((state) => state.setMatches);
 

@@ -8,13 +8,22 @@
 - A reusable address-picker intent service is in place:
   - stores source + return path in `sessionStorage`
   - opens profile with `?openAddressModal=1`
+- Preview-native address picker foundation is now in `src/features/address-picker/**`:
+  - global modal host in app shell
+  - typed modal store
+  - create/edit modal shell
+  - Yandex suggest-backed street search
+  - resolved-address selection
+  - save/update requests through preview code
+- Profile and compact `/address` now open the preview-native address picker instead of the legacy modal bridge.
 
 ## Next implementation stage
 
-1. Finish the address picker as a preview-native feature instead of relying on the legacy profile modal.
-2. Move the saved-address create/edit modal contract into `src/features/address-picker/**`.
-3. On successful save, consume the stored intent and route back to `returnTo`.
-4. Refresh checkout addresses after return and auto-select the newly created address.
+1. Replace the placeholder right-side desktop map panel with real Yandex map rendering.
+2. Port delivery polygons and zone-state behavior from legacy store logic.
+3. Sync map click / pin / search result / selected address into one draft source of truth.
+4. On successful cart-issued save, return to `returnTo`, refresh checkout addresses, and auto-select the new address.
+5. Add compact-specific address editor/search layout parity with legacy drawer flow.
 
 ## YM maps scope
 
@@ -32,6 +41,7 @@ Use legacy behavior as the source reference, not the implementation:
 - `src/features/address-picker/model`
   - intent service
   - address draft state
+  - suggest + resolve state
   - polygon coverage check API
 - `src/features/address-picker/ui`
   - address form modal

@@ -5,7 +5,12 @@ import { normalizeCity } from './normalizeCity';
 import { cityPath } from './sitePaths';
 import type { HomePageRawData } from './loadHomePageData';
 
-export type CabinetRouteModule = 'account' | 'profile' | 'zakazy' | 'promokody';
+export type CabinetRouteModule =
+  | 'account'
+  | 'profile'
+  | 'address'
+  | 'zakazy'
+  | 'promokody';
 
 const CABINET_PAGE_CONFIG: Record<
   CabinetRouteModule,
@@ -13,6 +18,7 @@ const CABINET_PAGE_CONFIG: Record<
 > = {
   account: { apiModule: 'profile', page: 'profile' },
   profile: { apiModule: 'profile', page: 'profile' },
+  address: { apiModule: 'profile', page: 'profile' },
   zakazy: { apiModule: 'zakazy', page: 'zakazy' },
   promokody: { apiModule: 'promokody', page: 'promokody' },
 };

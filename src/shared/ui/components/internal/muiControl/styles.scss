@@ -1,7 +1,12 @@
 @use '../../../foundation/formulas' as *;
+@use '../../../foundation/tokens' as *;
 
 .ui-mui-field {
   width: 100%;
+
+  &__placeholder {
+    color: $ui-text-muted;
+  }
 
   & .MuiInputAdornment-root.ui-mui-field__start-adornment,
   & .MuiInputAdornment-root.ui-mui-field__end-adornment {

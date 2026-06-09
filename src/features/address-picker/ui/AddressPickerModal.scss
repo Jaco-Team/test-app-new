@@ -1,0 +1,401 @@
+@use '@src/shared/ui/foundation/formulas' as *;
+
+.address-picker-modal {
+  &__paper {
+    width: min(100%, calc(100vw - 24px));
+
+    @include ui-regular {
+      width: min(100%, calc(100vw - 40px));
+    }
+
+    @include ui-expanded {
+      width: min(100%, ui-fluid-expanded(1200));
+      max-width: none;
+    }
+  }
+
+  &__title.MuiDialogTitle-root {
+    padding: 22px 20px 14px;
+    font-size: 24px;
+    font-weight: 700;
+    line-height: 1.08;
+    text-align: center;
+  }
+
+  &__content.MuiDialogContent-root {
+    padding: 0 20px 20px !important;
+  }
+
+  &__body {
+    display: grid;
+    gap: 20px;
+  }
+
+  &__grid {
+    display: grid;
+    gap: 20px;
+    min-width: 0;
+  }
+
+  &__map-panel,
+  &__form {
+    display: grid;
+    gap: 16px;
+    min-width: 0;
+  }
+
+  &__form .ui-mui-field--range-responsive .MuiOutlinedInput-root,
+  &__form .ui-mui-field--range-responsive .MuiAutocomplete-inputRoot {
+    min-height: 64px;
+    padding-inline: 20px;
+  }
+
+  &__form .ui-mui-field--range-responsive .MuiInputBase-input,
+  &__form .ui-mui-field--range-responsive .MuiSelect-select,
+  &__form .ui-mui-field--range-responsive .MuiAutocomplete-input {
+    font-size: 17px;
+    line-height: 1.24;
+  }
+
+  &__form .ui-mui-field--range-responsive .MuiInputBase-input::placeholder,
+  &__form .ui-mui-field--range-responsive .MuiAutocomplete-input::placeholder {
+    color: rgba(0, 0, 0, 0.42);
+    opacity: 1;
+  }
+
+  &__map-panel {
+    align-content: start;
+  }
+
+  &__map-head {
+    display: grid;
+    gap: 8px;
+  }
+
+  &__eyebrow {
+    margin: 0;
+    font-size: 11px;
+    font-weight: 700;
+    line-height: 1.2;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: rgba(0, 0, 0, 0.42);
+  }
+
+  &__section-title {
+    margin: 0;
+    font-size: 22px;
+    font-weight: 700;
+    line-height: 1.06;
+    color: #161616;
+  }
+
+  &__map-hint {
+    margin: 0;
+    max-width: 34ch;
+    font-size: 14px;
+    line-height: 1.45;
+    color: rgba(0, 0, 0, 0.58);
+  }
+
+  &__map-shell {
+    position: relative;
+    overflow: hidden;
+    min-height: 248px;
+    border-radius: 24px;
+    background: #f2eee8;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  }
+
+  &__map-canvas {
+    min-height: inherit;
+  }
+
+  &__selected,
+  &__resolved,
+  &__switches {
+    border-radius: 22px;
+    background: #faf8f4;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+  }
+
+  &__selected,
+  &__resolved {
+    padding: 16px 18px;
+  }
+
+  &__selected-label,
+  &__resolved-title {
+    display: block;
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: rgba(0, 0, 0, 0.66);
+  }
+
+  &__selected-value,
+  &__resolved-name {
+    font-size: 15px;
+    font-weight: 500;
+    line-height: 1.4;
+    color: #161616;
+  }
+
+  &__selected--muted .address-picker-modal__selected-value {
+    color: rgba(0, 0, 0, 0.56);
+    font-weight: 400;
+  }
+
+  &__resolved-list {
+    display: grid;
+    gap: 10px;
+  }
+
+  &__resolved-item {
+    display: grid;
+    gap: 4px;
+    width: 100%;
+    padding: 12px 14px;
+    border: 0;
+    border-radius: 16px;
+    background: #fff;
+    box-shadow: inset 0 0 0 1px rgba(0, 0, 0, 0.06);
+    text-align: left;
+    cursor: pointer;
+  }
+
+  &__resolved-meta,
+  &__status {
+    font-size: 13px;
+    line-height: 1.45;
+    color: rgba(0, 0, 0, 0.58);
+  }
+
+  &__field-group {
+    min-width: 0;
+  }
+
+  &__field-caption {
+    margin: 0 0 8px;
+    font-size: 13px;
+    font-weight: 600;
+    line-height: 1.3;
+    color: rgba(0, 0, 0, 0.66);
+  }
+
+  &__field-group--name {
+    display: grid;
+    grid-template-columns: auto minmax(0, 1fr);
+    align-items: center;
+    column-gap: 12px;
+  }
+
+  &__leading-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 44px;
+    height: 44px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.06);
+    color: #161616;
+  }
+
+  &__leading-icon svg {
+    width: 26px;
+    height: 26px;
+  }
+
+  &__row {
+    display: grid;
+    gap: 12px;
+  }
+
+  &__row--triple {
+    grid-template-columns: 1fr;
+  }
+
+  &__switches {
+    overflow: hidden;
+  }
+
+  &__switch-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 14px;
+    min-width: 0;
+    padding: 16px 18px;
+    color: #161616;
+  }
+
+  &__switch-row + &__switch-row {
+    border-top: 1px solid rgba(0, 0, 0, 0.06);
+  }
+
+  &__switch-copy {
+    display: inline-flex;
+    align-items: center;
+    gap: 12px;
+    min-width: 0;
+    font-size: 15px;
+    line-height: 1.35;
+  }
+
+  &__switch-icon {
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    width: 34px;
+    height: 34px;
+    flex: 0 0 auto;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.06);
+  }
+
+  &__switch-icon svg {
+    width: 20px;
+    height: 20px;
+  }
+
+  &__error {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #cc0033;
+  }
+
+  &__actions {
+    display: flex;
+    flex-direction: column-reverse;
+    gap: 10px;
+    padding-top: 4px;
+  }
+
+  @media (max-width: 667px) {
+    &__field-group--name {
+      grid-template-columns: 1fr;
+    }
+
+    &__leading-icon {
+      display: none;
+    }
+  }
+
+  @include ui-regular {
+    &__title.MuiDialogTitle-root {
+      padding: 26px 28px 18px;
+      font-size: 28px;
+      text-align: left;
+    }
+
+    &__content.MuiDialogContent-root {
+      padding: 0 28px 28px !important;
+    }
+
+    &__body,
+    &__grid {
+      gap: 24px;
+    }
+
+    &__form {
+      gap: 14px;
+    }
+
+    &__form .ui-mui-field--range-responsive .MuiOutlinedInput-root,
+    &__form .ui-mui-field--range-responsive .MuiAutocomplete-inputRoot {
+      min-height: 56px;
+      padding-inline: 18px;
+    }
+
+    &__form .ui-mui-field--range-responsive .MuiInputBase-input,
+    &__form .ui-mui-field--range-responsive .MuiSelect-select,
+    &__form .ui-mui-field--range-responsive .MuiAutocomplete-input {
+      font-size: 16px;
+    }
+
+    &__map-shell {
+      min-height: 312px;
+      border-radius: 26px;
+    }
+
+    &__row--triple {
+      grid-template-columns: repeat(3, minmax(0, 1fr));
+    }
+
+    &__actions {
+      flex-direction: row;
+      justify-content: flex-end;
+      gap: 12px;
+      padding-top: 8px;
+    }
+  }
+
+  @include ui-expanded {
+    &__title.MuiDialogTitle-root {
+      padding: 34px 40px 22px;
+      font-size: 36px;
+      text-align: left;
+    }
+
+    &__content.MuiDialogContent-root {
+      padding: 0 40px 40px !important;
+    }
+
+    &__body {
+      gap: 28px;
+    }
+
+    &__grid {
+      grid-template-columns: minmax(0, 1fr) minmax(0, ui-fluid-expanded(484));
+      align-items: start;
+      gap: 28px;
+    }
+
+    &__map-panel,
+    &__form {
+      gap: 18px;
+    }
+
+    &__form .ui-mui-field--range-responsive .MuiOutlinedInput-root,
+    &__form .ui-mui-field--range-responsive .MuiAutocomplete-inputRoot {
+      min-height: 48px;
+      padding-inline: 16px;
+    }
+
+    &__form .ui-mui-field--range-responsive .MuiInputBase-input,
+    &__form .ui-mui-field--range-responsive .MuiSelect-select,
+    &__form .ui-mui-field--range-responsive .MuiAutocomplete-input {
+      font-size: 15px;
+    }
+
+    &__section-title {
+      font-size: 28px;
+    }
+
+    &__map-hint {
+      font-size: 15px;
+    }
+
+    &__map-shell {
+      min-height: 520px;
+      border-radius: 30px;
+    }
+
+    &__selected,
+    &__resolved {
+      padding: 18px 20px;
+    }
+
+    &__actions {
+      flex-direction: row;
+      justify-content: flex-start;
+      padding-top: 12px;
+    }
+
+    &__actions > * {
+      min-width: 188px;
+    }
+  }
+}

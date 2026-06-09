@@ -44,6 +44,12 @@ export function AccountPage() {
 
       <div className="account-page__links">
         <Link
+          href={cityPath(citySlug, 'address')}
+          className="account-page__link"
+        >
+          <span>Адреса доставки</span>
+        </Link>
+        <Link
           href={cityPath(citySlug, 'profile')}
           className="account-page__link"
         >
