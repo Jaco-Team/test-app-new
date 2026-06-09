@@ -266,6 +266,13 @@
     color: #cc0033;
   }
 
+  &__warning {
+    margin: 0;
+    font-size: 14px;
+    line-height: 1.4;
+    color: #9a6700;
+  }
+
   &__actions {
     display: flex;
     flex-direction: column-reverse;

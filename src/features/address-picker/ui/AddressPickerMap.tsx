@@ -1,6 +1,6 @@
 'use client';
 
-import { useEffect, useRef } from 'react';
+import { useEffect, useMemo, useState } from 'react';
 import { Map, Placemark, Polygon, YMaps } from '@pbe/react-yandex-maps';
 import type { AddressPickerZone } from '../model/types';
 
@@ -12,6 +12,21 @@ type AddressPickerMapProps = {
   zones: AddressPickerZone[];
   disabled?: boolean;
   onPick: (coords: [number, number]) => Promise<void> | void;
+};
+
+type YMapInstance = {
+  setCenter?: (
+    coords: [number, number],
+    zoom?: number,
+    options?: Record<string, unknown>
+  ) => void;
+  container?: {
+    fitToViewport?: () => void;
+  };
+  events?: {
+    add?: (name: string, handler: (event: unknown) => void) => void;
+    remove?: (name: string, handler: (event: unknown) => void) => void;
+  };
 };
 
 const MAP_POINT_OPTIONS = {
@@ -37,47 +52,38 @@ export function AddressPickerMap({
   disabled = false,
   onPick,
 }: AddressPickerMapProps) {
-  const mapRef = useRef<{
-    setCenter?: (
-      coords: [number, number],
-      zoom?: number,
-      options?: Record<string, unknown>
-    ) => void;
-    container?: {
-      fitToViewport?: () => void;
-    };
-    events?: {
-      add?: (name: string, handler: (event: unknown) => void) => void;
-      remove?: (name: string, handler: (event: unknown) => void) => void;
-    };
-  } | null>(null);
+  const [mapInstance, setMapInstance] = useState<YMapInstance | null>(null);
+
+  const zoneGeometry = useMemo(
+    () => zones.map((zone) => zone.zone).filter((zone) => zone.length > 0),
+    [zones]
+  );
 
   useEffect(() => {
-    if (!open || !mapRef.current?.container?.fitToViewport) {
+    if (!open || !mapInstance?.container?.fitToViewport) {
       return;
     }
 
     const timer = window.setTimeout(() => {
-      mapRef.current?.container?.fitToViewport?.();
+      mapInstance.container?.fitToViewport?.();
     }, 60);
 
     return () => window.clearTimeout(timer);
-  }, [open]);
+  }, [mapInstance, open]);
 
   useEffect(() => {
-    if (!center || !mapRef.current?.setCenter) {
+    if (!center || !mapInstance?.setCenter) {
       return;
     }
 
-    mapRef.current.setCenter(center, zoom, {
+    mapInstance.setCenter(center, zoom, {
       duration: 180,
       checkZoomRange: true,
     });
-  }, [center, zoom]);
+  }, [center, mapInstance, zoom]);
 
   useEffect(() => {
-    const map = mapRef.current;
-    if (!map?.events?.add || !map.events.remove || disabled) {
+    if (!mapInstance?.events?.add || !mapInstance.events.remove || disabled) {
       return;
     }
 
@@ -95,12 +101,12 @@ export function AddressPickerMap({
       void onPick([Number(coords[0]), Number(coords[1])]);
     };
 
-    map.events.add('click', handleClick);
+    mapInstance.events.add('click', handleClick);
 
     return () => {
-      map.events?.remove?.('click', handleClick);
+      mapInstance.events?.remove?.('click', handleClick);
     };
-  }, [disabled, onPick]);
+  }, [disabled, mapInstance, onPick]);
 
   return (
     <div className="address-picker-modal__map-shell">
@@ -117,19 +123,15 @@ export function AddressPickerMap({
             controls: [],
           }}
           instanceRef={(value) => {
-            mapRef.current = value ?? null;
+            setMapInstance((value as YMapInstance | null) ?? null);
           }}
           width="100%"
           height="100%"
           className="address-picker-modal__map-canvas"
         >
-          {zones.map((zone, index) => (
-            <Polygon
-              key={String(index)}
-              geometry={[zone.zone]}
-              options={MAP_POLYGON_OPTIONS}
-            />
-          ))}
+          {zoneGeometry.length > 0 ? (
+            <Polygon geometry={zoneGeometry} options={MAP_POLYGON_OPTIONS} />
+          ) : null}
 
           {point ? (
             <Placemark geometry={point} options={MAP_POINT_OPTIONS} />

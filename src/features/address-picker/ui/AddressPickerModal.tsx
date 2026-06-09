@@ -34,6 +34,7 @@ export function AddressPickerModal() {
     loading,
     submitting,
     errorText,
+    warningText,
     source,
     mode,
     cityOptions,
@@ -64,6 +65,7 @@ export function AddressPickerModal() {
       loading: state.loading,
       submitting: state.submitting,
       errorText: state.errorText,
+      warningText: state.warningText,
       source: state.source,
       mode: state.mode,
       cityOptions: state.cityOptions,
@@ -377,6 +379,11 @@ export function AddressPickerModal() {
             {errorText.length ? (
               <p className="address-picker-modal__error" role="alert">
                 {errorText}
+              </p>
+            ) : null}
+            {warningText.length ? (
+              <p className="address-picker-modal__warning" role="status">
+                {warningText}
               </p>
             ) : null}
             {mapResolving ? (
