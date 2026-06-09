@@ -34,7 +34,6 @@ export function AddressPickerModal() {
     loading,
     submitting,
     errorText,
-    warningText,
     source,
     mode,
     cityOptions,
@@ -65,7 +64,6 @@ export function AddressPickerModal() {
       loading: state.loading,
       submitting: state.submitting,
       errorText: state.errorText,
-      warningText: state.warningText,
       source: state.source,
       mode: state.mode,
       cityOptions: state.cityOptions,
@@ -220,7 +218,7 @@ export function AddressPickerModal() {
             </div>
 
             <div className="address-picker-modal__field-group">
-              <p className="address-picker-modal__field-caption">Город</p>
+              {/* <p className="address-picker-modal__field-caption">Город</p> */}
               <MuiSelectField
                 hiddenLabel
                 aria-label="Город"
@@ -293,6 +291,7 @@ export function AddressPickerModal() {
               <MuiTextField
                 hiddenLabel
                 placeholder="Подъезд"
+                type="number"
                 value={draft.pd}
                 onChange={(event) => setDraftField('pd', event.target.value)}
                 range="responsive"
@@ -300,12 +299,14 @@ export function AddressPickerModal() {
                 slotProps={{
                   htmlInput: {
                     'aria-label': 'Подъезд',
+                    inputMode: 'numeric',
                   },
                 }}
               />
               <MuiTextField
                 hiddenLabel
                 placeholder="Этаж"
+                type="number"
                 value={draft.et}
                 onChange={(event) => setDraftField('et', event.target.value)}
                 range="responsive"
@@ -313,12 +314,14 @@ export function AddressPickerModal() {
                 slotProps={{
                   htmlInput: {
                     'aria-label': 'Этаж',
+                    inputMode: 'numeric',
                   },
                 }}
               />
               <MuiTextField
                 hiddenLabel
                 placeholder="Квартира"
+                type="number"
                 value={draft.kv}
                 onChange={(event) => setDraftField('kv', event.target.value)}
                 range="responsive"
@@ -326,6 +329,7 @@ export function AddressPickerModal() {
                 slotProps={{
                   htmlInput: {
                     'aria-label': 'Квартира',
+                    inputMode: 'numeric',
                   },
                 }}
               />
@@ -379,11 +383,6 @@ export function AddressPickerModal() {
             {errorText.length ? (
               <p className="address-picker-modal__error" role="alert">
                 {errorText}
-              </p>
-            ) : null}
-            {warningText.length ? (
-              <p className="address-picker-modal__warning" role="status">
-                {warningText}
               </p>
             ) : null}
             {mapResolving ? (

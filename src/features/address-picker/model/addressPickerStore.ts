@@ -29,7 +29,6 @@ type AddressPickerState = {
   submitting: boolean;
   mapResolving: boolean;
   errorText: string;
-  warningText: string;
   successText: string;
   source: AddressPickerSource;
   mode: AddressPickerMode;
@@ -58,7 +57,6 @@ type AddressPickerState = {
   selectSuggestion: (item: AddressPickerSuggestion) => Promise<void>;
   selectResolvedAddress: (item: AddressPickerResolvedAddress) => void;
   pickAddressFromMap: (coords: [number, number]) => Promise<void>;
-  revalidateSelectedAddress: () => Promise<void>;
   changeCity: (cityId: string) => Promise<void>;
   submit: (token: string) => Promise<boolean>;
   clearFeedback: () => void;
@@ -71,34 +69,6 @@ type AddressModalResponse = {
   city_center?: [number, number];
   zones?: Array<Record<string, unknown>>;
 };
-
-let pdRevalidateTimer: ReturnType<typeof setTimeout> | null = null;
-
-function schedulePdRevalidate(run: () => Promise<void>) {
-  if (pdRevalidateTimer) {
-    clearTimeout(pdRevalidateTimer);
-  }
-
-  pdRevalidateTimer = setTimeout(() => {
-    pdRevalidateTimer = null;
-    void run();
-  }, 350);
-}
-
-function buildPdWarning(
-  pd: string,
-  selectedAddress: AddressPickerResolvedAddress | null
-): string {
-  if (!pd.length || !selectedAddress?.addressLine.length) {
-    return '';
-  }
-
-  if (selectedAddress.addressLine.toLowerCase().includes('подъезд')) {
-    return '';
-  }
-
-  return 'Адрес найден, но мы не смогли найти подъезд';
-}
 
 function normalizeCityOptions(
   items: Array<Record<string, unknown>> | undefined
@@ -351,7 +321,6 @@ function parseSuggestionParts(item: AddressPickerSuggestion): {
 
 async function resolveStreetSelection(params: {
   activeCityId: string;
-  pd: string;
   street: string;
   home: string;
   district: string;
@@ -361,7 +330,7 @@ async function resolveStreetSelection(params: {
     type: 'check_street',
     city_id: params.activeCityId,
     street: [params.district, params.street].filter(Boolean).join(' '),
-    pd: params.pd,
+    pd: '',
     home: params.home,
   })) as { addrs?: unknown };
 
@@ -391,7 +360,6 @@ async function resolveStreetSelection(params: {
       resolvedCandidates.length === 0
         ? 'Адрес не найден. Уточните улицу и номер дома.'
         : '',
-    warningText: buildPdWarning(params.pd, selectedAddress),
   };
 }
 
@@ -404,7 +372,6 @@ export const useAddressPickerStore = reuseAppStore(
       submitting: false,
       mapResolving: false,
       errorText: '',
-      warningText: '',
       successText: '',
       source: 'profile',
       mode: 'create',
@@ -437,7 +404,6 @@ export const useAddressPickerStore = reuseAppStore(
           open: true,
           loading: true,
           errorText: '',
-          warningText: '',
           successText: '',
           source,
           mode: nextAddressId === '0' ? 'create' : 'edit',
@@ -488,19 +454,7 @@ export const useAddressPickerStore = reuseAppStore(
             ...state.draft,
             [field]: value,
           },
-          warningText: field === 'pd' ? '' : state.warningText,
         }));
-
-        if (field !== 'pd') {
-          return;
-        }
-
-        const selectedAddress = get().selectedAddress;
-        if (!selectedAddress?.street.length || !selectedAddress.home.length) {
-          return;
-        }
-
-        schedulePdRevalidate(() => get().revalidateSelectedAddress());
       },
 
       setQuery: (value) => {
@@ -574,7 +528,6 @@ export const useAddressPickerStore = reuseAppStore(
 
         const resolved = await resolveStreetSelection({
           activeCityId: get().activeCityId,
-          pd: get().draft.pd,
           street: parts.street,
           home: parts.home,
           district: parts.district,
@@ -585,7 +538,6 @@ export const useAddressPickerStore = reuseAppStore(
           resolvedCandidates: resolved.resolvedCandidates,
           selectedAddress: resolved.selectedAddress,
           errorText: resolved.errorText,
-          warningText: resolved.warningText,
           query: resolved.query,
           mapCenter: resolved.mapCenter,
           mapPoint: resolved.mapPoint,
@@ -599,44 +551,9 @@ export const useAddressPickerStore = reuseAppStore(
           resolvedCandidates: [],
           query: buildAddressSummary(item),
           errorText: '',
-          warningText: buildPdWarning(get().draft.pd, item),
           mapCenter: item.xy,
           mapPoint: item.xy,
           mapZoom: resolveAddressPickerMapZoom(),
-        });
-      },
-
-      revalidateSelectedAddress: async () => {
-        const selectedAddress = get().selectedAddress;
-        if (!selectedAddress?.street.length || !selectedAddress.home.length) {
-          return;
-        }
-
-        set({
-          loading: true,
-          errorText: '',
-          warningText: '',
-        });
-
-        const resolved = await resolveStreetSelection({
-          activeCityId: get().activeCityId,
-          pd: get().draft.pd,
-          street: selectedAddress.street,
-          home: selectedAddress.home,
-          district: selectedAddress.district,
-          mapPoint: get().mapPoint,
-        });
-
-        set({
-          loading: false,
-          resolvedCandidates: resolved.resolvedCandidates,
-          selectedAddress: resolved.selectedAddress,
-          errorText: resolved.errorText,
-          warningText: resolved.warningText,
-          query: resolved.query,
-          mapCenter: resolved.mapCenter,
-          mapPoint: resolved.mapPoint,
-          mapZoom: resolved.mapZoom,
         });
       },
 
@@ -676,7 +593,6 @@ export const useAddressPickerStore = reuseAppStore(
 
           const resolved = await resolveStreetSelection({
             activeCityId: get().activeCityId,
-            pd: get().draft.pd,
             street: parts.street,
             home: parts.home,
             district: parts.district,
@@ -689,7 +605,6 @@ export const useAddressPickerStore = reuseAppStore(
             resolvedCandidates: resolved.resolvedCandidates,
             selectedAddress: resolved.selectedAddress,
             errorText: resolved.errorText,
-            warningText: resolved.warningText,
             query: resolved.query,
             mapCenter: resolved.mapCenter,
             mapPoint: resolved.mapPoint,
@@ -829,7 +744,6 @@ export const useAddressPickerStore = reuseAppStore(
       clearFeedback: () => {
         set({
           errorText: '',
-          warningText: '',
           successText: '',
         });
       },
