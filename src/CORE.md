@@ -28,7 +28,7 @@ Legacy `/samara` остается production-эталоном. `src/` — это
 - `features/` — пользовательские сценарии и stateful-хелперы (`auth`, логика header, bootstrap-гидрация, telemetry).
 - `widgets/layout/` — общий каркас страницы: `PageLayout`, `PageFrame`, `PageFooter`.
 - `widgets/header/` — `ConnectedHeader`, адаптер между store приложения и DS-header.
-- `widgets/shell/` — глобальный chrome и оверлеи (`AuthModal`, `CityModal`, `BasketPanel`, `MapLoader`, loader backdrop).
+- `widgets/shell/` — глобальный chrome и оверлеи (`AuthModal`, `CityModal`, `BasketPanel`, loader backdrop).
 - `pages/` — UI страниц, view model и page-level hooks.
 - `shared/` — API-клиент, route helpers, analytics, scroll/maps/text helpers, shared UI.
 
@@ -44,10 +44,11 @@ Legacy `/samara` остается production-эталоном. `src/` — это
 
 ## Структура маршрутов
 
-| Путь                   | Loader             | Client entry | Основной UI |
-| ---------------------- | ------------------ | ------------ | ----------- |
-| `/preview/[city]`      | `loadHomePageData` | `HomeClient` | `HomePage`  |
-| `/preview/[city]/cart` | `loadCartPageData` | `CartClient` | `CartPage`  |
+| Путь                       | Loader                 | Client entry     | Основной UI    |
+| -------------------------- | ---------------------- | ---------------- | -------------- |
+| `/preview/[city]`          | `loadHomePageData`     | `HomeClient`     | `HomePage`     |
+| `/preview/[city]/cart`     | `loadCartPageData`     | `CartClient`     | `CartPage`     |
+| `/preview/[city]/contacts` | `loadContactsPageData` | `ContactsClient` | `ContactsPage` |
 
 URL helpers: `src/shared/lib/sitePaths.ts` (`cityBase`, `cityPath`, `categoryHref`).
 

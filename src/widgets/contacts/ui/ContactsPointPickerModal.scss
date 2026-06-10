@@ -1,0 +1,58 @@
+@use '../../../shared/ui/foundation/formulas' as *;
+@use '../../../shared/ui/foundation/tokens' as *;
+
+.contacts-point-picker {
+  list-style: none;
+  margin: 0;
+  padding: 0;
+  display: flex;
+  flex-direction: column;
+  gap: ui-fluid-compact(8);
+
+  @include ui-regular {
+    gap: ui-fluid-regular(8);
+  }
+
+  &__item {
+    width: 100%;
+    border: 0;
+    border-radius: ui-fluid-compact(16);
+    background: transparent;
+    text-align: left;
+    padding: ui-fluid-compact(20) ui-fluid-compact(24);
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    gap: ui-fluid-compact(6);
+
+    @include ui-regular {
+      border-radius: ui-fluid-regular(12);
+      padding: ui-fluid-regular(14) ui-fluid-regular(18);
+      gap: ui-fluid-regular(4);
+    }
+
+    &--active,
+    &:hover {
+      background: $ui-control-bg;
+    }
+  }
+
+  &__addr {
+    font-size: ui-fluid-compact(30);
+    font-weight: 500;
+    color: $ui-text;
+
+    @include ui-regular {
+      font-size: ui-fluid-regular(18);
+    }
+  }
+
+  &__district {
+    font-size: ui-fluid-compact(24);
+    color: $ui-text-muted;
+
+    @include ui-regular {
+      font-size: ui-fluid-regular(14);
+    }
+  }
+}

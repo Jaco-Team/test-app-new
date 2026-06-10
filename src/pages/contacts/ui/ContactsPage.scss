@@ -1,0 +1,450 @@
+@use '../../../shared/ui/foundation/formulas' as *;
+@use '../../../shared/ui/foundation/tokens' as *;
+
+// Contacts map is full-bleed under the fixed header — no PageFrame inset.
+.contacts-page-frame {
+  @include ui-expanded {
+    --page-frame-top-space: 0px;
+    --page-frame-bottom-space: 0px;
+    --page-frame-inline-space: 0px;
+  }
+
+  .page-frame__inner {
+    @include ui-expanded {
+      max-width: none;
+      width: 100%;
+      margin-inline: 0;
+      padding-inline: 0;
+    }
+  }
+}
+
+.contacts-page {
+  width: 100%;
+
+  &__body {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+  }
+
+  &__map-area {
+    position: relative;
+    width: 100%;
+  }
+
+  &__panel-desktop,
+  &__panel-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+  }
+
+  &__panel-desktop {
+    display: none;
+
+    @include ui-expanded {
+      display: flex;
+    }
+  }
+
+  &__panel-mobile {
+    @include ui-expanded {
+      display: none;
+    }
+  }
+
+  &__locate {
+    position: absolute;
+    z-index: 2;
+    display: inline-flex;
+
+    @include ui-expanded {
+      display: none;
+    }
+    align-items: center;
+    justify-content: center;
+    border: 0;
+    border-radius: 50%;
+    background: #fff;
+    cursor: pointer;
+    box-shadow: 0 ui-fluid-compact(4) ui-fluid-compact(16) rgba(0, 0, 0, 0.12);
+
+    width: ui-fluid-compact(120);
+    height: ui-fluid-compact(120);
+    right: ui-fluid-compact(75);
+    bottom: ui-fluid-compact(40);
+
+    @include ui-regular {
+      width: ui-fluid-regular(72);
+      height: ui-fluid-regular(72);
+      right: ui-fluid-regular(40);
+      bottom: ui-fluid-regular(28);
+    }
+
+    svg {
+      width: ui-fluid-compact(80);
+      height: ui-fluid-compact(80);
+
+      @include ui-regular {
+        width: ui-fluid-regular(48);
+        height: ui-fluid-regular(48);
+      }
+    }
+  }
+
+  &__panel {
+    display: flex;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
+    max-width: ui-fluid-compact(1010);
+    margin: 0 auto;
+    padding: 0 ui-fluid-compact(35) ui-fluid-compact(170);
+
+    @include ui-regular {
+      max-width: ui-fluid-regular(620);
+      padding: ui-fluid-regular(24) ui-fluid-regular(28) ui-fluid-regular(96);
+    }
+
+    @include ui-expanded {
+      position: absolute;
+      top: ui-fluid-expanded(30);
+      right: ui-fluid-expanded(63);
+      // Legacy `.Contact` uses $MyScale800 — room for phone on one line.
+      width: ui-fluid-expanded(400);
+      max-width: none;
+      margin: 0;
+      padding: ui-fluid-expanded(46) ui-fluid-expanded(50) ui-fluid-expanded(36);
+      border-radius: ui-fluid-expanded(40);
+      background: #fff;
+      box-shadow: ui-fluid-expanded(5) ui-fluid-expanded(10)
+        ui-fluid-expanded(20) ui-fluid-expanded(8) rgba(0, 0, 0, 0.15);
+      z-index: 3;
+      align-items: center;
+    }
+  }
+
+  &__city-select {
+    width: 100%;
+  }
+
+  &__section-title {
+    margin: 0;
+    width: 100%;
+    font-weight: 400;
+    line-height: 1.2;
+
+    @include ui-expanded {
+      font-size: ui-fluid-expanded(15);
+      line-height: ui-fluid-expanded(25);
+    }
+  }
+
+  &__addresses {
+    width: 100%;
+
+    @include ui-expanded {
+      margin-top: ui-fluid-expanded(30);
+    }
+  }
+
+  &__address-list {
+    list-style: none;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    flex-direction: column;
+
+    @include ui-expanded {
+      margin-top: ui-fluid-expanded(20);
+      gap: ui-fluid-expanded(20);
+      padding-bottom: ui-fluid-expanded(40);
+      border-bottom: 1px solid #e5e5e5;
+    }
+  }
+
+  &__address-item {
+    display: flex;
+    align-items: flex-start;
+    width: 100%;
+    border: 0;
+    background: transparent;
+    padding: 0;
+    text-align: left;
+    cursor: pointer;
+
+    @include ui-expanded {
+      gap: ui-fluid-expanded(20);
+    }
+
+    svg {
+      height: auto;
+      flex: 0 0 auto;
+
+      @include ui-expanded {
+        width: ui-fluid-expanded(25);
+      }
+    }
+  }
+
+  &__address-item[data-active] {
+    .contacts-page__address-text {
+      color: $ui-brand;
+    }
+  }
+
+  &__address-text {
+    line-height: 1.25;
+    color: $ui-text;
+
+    @include ui-expanded {
+      font-size: ui-fluid-expanded(20);
+      line-height: ui-fluid-expanded(30);
+    }
+
+    &:hover {
+      color: $ui-brand;
+    }
+  }
+
+  &__info {
+    width: 100%;
+
+    &--desktop {
+      display: flex;
+      flex-direction: column;
+      align-items: flex-start;
+
+      @include ui-expanded {
+        margin-top: ui-fluid-expanded(25);
+        gap: 0;
+        padding-top: 0;
+        border-top: 0;
+      }
+    }
+  }
+
+  &__info-label {
+    color: $ui-text-muted;
+
+    @include ui-expanded {
+      font-size: ui-fluid-expanded(15);
+      line-height: ui-fluid-expanded(25);
+    }
+
+    &:nth-of-type(3) {
+      @include ui-expanded {
+        margin-top: ui-fluid-expanded(10);
+      }
+    }
+  }
+
+  &__info-value {
+    font-weight: 500;
+    line-height: 1.2;
+
+    @include ui-expanded {
+      font-size: ui-fluid-expanded(30);
+      line-height: ui-fluid-expanded(50);
+      margin-bottom: 0;
+      white-space: nowrap;
+    }
+  }
+
+  &__row {
+    display: flex;
+    align-items: center;
+    width: 100%;
+    min-height: ui-fluid-compact(120);
+    margin-bottom: ui-fluid-compact(40);
+    padding: 0 ui-fluid-compact(45);
+    border: ui-fluid-compact(3) solid rgba(0, 0, 0, 0.2);
+    border-radius: ui-fluid-compact(60);
+    background: #fff;
+    cursor: pointer;
+    text-align: left;
+
+    @include ui-regular {
+      min-height: ui-fluid-regular(72);
+      margin-bottom: ui-fluid-regular(24);
+      padding: 0 ui-fluid-regular(28);
+      border-width: ui-fluid-regular(2);
+      border-radius: ui-fluid-regular(36);
+    }
+
+    &--point {
+      margin-bottom: ui-fluid-compact(60);
+
+      @include ui-regular {
+        margin-bottom: ui-fluid-regular(36);
+      }
+    }
+  }
+
+  &__row-leading {
+    display: inline-flex;
+    width: ui-fluid-compact(80);
+    height: ui-fluid-compact(80);
+    margin-right: ui-fluid-compact(25);
+    flex: 0 0 auto;
+
+    @include ui-regular {
+      width: ui-fluid-regular(48);
+      height: ui-fluid-regular(48);
+      margin-right: ui-fluid-regular(16);
+    }
+
+    svg {
+      width: 100%;
+      height: 100%;
+    }
+  }
+
+  &__row-label {
+    flex: 1 1 auto;
+    min-width: 0;
+    font-size: ui-fluid-compact(50);
+    font-weight: 500;
+    line-height: 1.2;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+
+    @include ui-regular {
+      font-size: ui-fluid-regular(28);
+    }
+  }
+
+  &__row-trailing {
+    display: inline-flex;
+    width: ui-fluid-compact(21);
+    margin-left: ui-fluid-compact(20);
+    flex: 0 0 auto;
+
+    @include ui-regular {
+      width: ui-fluid-regular(14);
+      margin-left: ui-fluid-regular(12);
+    }
+
+    svg {
+      width: 100%;
+      height: auto;
+    }
+  }
+
+  &__info-line {
+    margin: 0 0 ui-fluid-compact(20);
+    font-size: ui-fluid-compact(40);
+    line-height: 1.2;
+    text-align: center;
+    width: 100%;
+
+    @include ui-regular {
+      margin-bottom: ui-fluid-regular(12);
+      font-size: ui-fluid-regular(24);
+    }
+  }
+
+  &__phone-btn {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    width: 100%;
+    max-width: ui-fluid-compact(650);
+    min-height: ui-fluid-compact(120);
+    margin: 0 auto ui-fluid-compact(80);
+    border: ui-fluid-compact(3) solid rgba(0, 0, 0, 0.2);
+    border-radius: ui-fluid-compact(70);
+    background: #fff;
+    font-size: ui-fluid-compact(50);
+    font-weight: 500;
+    cursor: pointer;
+
+    @include ui-regular {
+      max-width: ui-fluid-regular(420);
+      min-height: ui-fluid-regular(72);
+      margin-bottom: ui-fluid-regular(48);
+      border-width: ui-fluid-regular(2);
+      border-radius: ui-fluid-regular(40);
+      font-size: ui-fluid-regular(28);
+    }
+  }
+
+  &__switch {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    min-height: ui-fluid-compact(100);
+    margin-top: ui-fluid-compact(40);
+    padding-top: ui-fluid-compact(40);
+    border-top: ui-fluid-compact(3) solid rgba(0, 0, 0, 0.2);
+
+    @include ui-regular {
+      min-height: ui-fluid-regular(64);
+      margin-top: ui-fluid-regular(24);
+      padding-top: ui-fluid-regular(24);
+      border-top-width: ui-fluid-regular(2);
+    }
+
+    @include ui-expanded {
+      margin-top: ui-fluid-expanded(14);
+      padding-top: 0;
+      border-top: 0;
+      min-height: ui-fluid-expanded(25);
+    }
+
+    > span {
+      font-size: ui-fluid-compact(40);
+      line-height: 1.2;
+
+      @include ui-regular {
+        font-size: ui-fluid-regular(24);
+      }
+
+      @include ui-expanded {
+        font-size: ui-fluid-expanded(15);
+      }
+    }
+  }
+
+  @include ui-expanded {
+    margin-top: ui-fluid-expanded(64);
+    mix-blend-mode: multiply;
+
+    &__body {
+      min-height: ui-fluid-expanded(450);
+      margin-top: 0;
+    }
+
+    &__map-area {
+      min-height: ui-fluid-expanded(945);
+    }
+  }
+}
+
+// Injected by Yandex Maps layout for the active cafe marker.
+.my-img {
+  position: absolute;
+  left: -12px;
+  top: -20px;
+  width: 65px;
+  height: 65px;
+  border-radius: 50%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: #da1a32;
+  outline: #da1a32 7px solid;
+  outline-offset: 0;
+  transition-duration: 1s;
+
+  img {
+    width: 100%;
+    height: 100%;
+    transition-duration: 1s;
+  }
+}

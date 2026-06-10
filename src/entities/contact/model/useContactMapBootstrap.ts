@@ -2,13 +2,25 @@
 
 import { useEffect, useRef } from 'react';
 import * as Sentry from '@sentry/nextjs';
-import { useContactStore } from '@src/entities/contact';
-import {
-  getClientNetworkContext,
-  waitForYMapsReady,
-} from '@/utils/clientMonitoring';
+import { getClientNetworkContext } from '@/utils/clientMonitoring';
+import { waitForYMapsReady } from '@src/shared/lib/maps';
+import { useContactStore } from './contactStore';
 
-export function MapLoader({ city }: { city: string }) {
+export type UseContactMapBootstrapOptions = {
+  city: string;
+  module?: string;
+  enabled?: boolean;
+};
+
+/**
+ * Waits for the global Yandex Maps script and loads contact zone data into
+ * `useContactStore` once per mount. Used by contacts page and cart checkout map.
+ */
+export function useContactMapBootstrap({
+  city,
+  module = 'contacts',
+  enabled = true,
+}: UseContactMapBootstrapOptions): void {
   const getMap = useContactStore((state) => state.getMap);
   const requestedRef = useRef(false);
 
@@ -16,7 +28,7 @@ export function MapLoader({ city }: { city: string }) {
     let cancelled = false;
     requestedRef.current = false;
 
-    if (!city) {
+    if (!enabled || !city) {
       return undefined;
     }
 
@@ -29,9 +41,13 @@ export function MapLoader({ city }: { city: string }) {
       if (!ready) {
         Sentry.captureMessage('Yandex Maps API did not become ready', {
           level: 'error',
-          tags: { kind: 'ymaps_bootstrap_timeout', source: 'MapLoader' },
+          tags: {
+            kind: 'ymaps_bootstrap_timeout',
+            source: 'useContactMapBootstrap',
+          },
           extra: {
             city,
+            module,
             pageUrl:
               typeof window !== 'undefined' ? window.location.href : null,
             ...getClientNetworkContext(),
@@ -42,7 +58,7 @@ export function MapLoader({ city }: { city: string }) {
 
       if (!requestedRef.current) {
         requestedRef.current = true;
-        await getMap('contacts', city);
+        await getMap(module, city);
       }
     };
 
@@ -51,7 +67,5 @@ export function MapLoader({ city }: { city: string }) {
     return () => {
       cancelled = true;
     };
-  }, [city, getMap]);
-
-  return null;
+  }, [city, enabled, getMap, module]);
 }

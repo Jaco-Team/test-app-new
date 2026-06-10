@@ -13,8 +13,6 @@ import './PageLayout.scss';
 
 export type PageLayoutProps = {
   storeSeed: StoreBootstrapProps;
-  /** Yandex map script + MapLoader (cart checkout) */
-  loadMap?: boolean;
   header?: {
     fallbackNav?: HeaderNavItem[];
     fallbackCityLabel?: string;
@@ -27,16 +25,11 @@ export type PageLayoutProps = {
  * Shared app shell: store bootstrap, global modals, connected header,
  * page body scaffold, and standard footer.
  */
-export function PageLayout({
-  storeSeed,
-  loadMap = false,
-  header,
-  children,
-}: PageLayoutProps) {
+export function PageLayout({ storeSeed, header, children }: PageLayoutProps) {
   return (
     <div className="page-layout">
       <StoreBootstrap {...storeSeed} />
-      <AppShell city={storeSeed.city} loadMap={loadMap} />
+      <AppShell city={storeSeed.city} />
       <ConnectedHeader
         fallbackNav={header?.fallbackNav}
         fallbackCityLabel={header?.fallbackCityLabel}

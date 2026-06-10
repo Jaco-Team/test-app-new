@@ -8,16 +8,13 @@ import { AddressPickerModal } from '@src/features/address-picker';
 import { AuthModal } from './AuthModal';
 import { BasketPanel } from './BasketPanel';
 import { CityModal } from './CityModal';
-import { MapLoader } from './MapLoader';
 import { StickyCartWidget } from './StickyCartWidget';
 
 export type AppShellProps = {
   city: string;
-  /** Yandex Maps bootstrap — only cart/checkout needs this */
-  loadMap?: boolean;
 };
 
-export function AppShell({ city, loadMap = false }: AppShellProps) {
+export function AppShell({ city }: AppShellProps) {
   const isShowLoad = useHeaderStore((state) => state.isShowLoad);
 
   return (
@@ -36,7 +33,6 @@ export function AppShell({ city, loadMap = false }: AppShellProps) {
       <AddressPickerModal />
       <BasketPanel city={city} />
       <StickyCartWidget />
-      {loadMap ? <MapLoader city={city} /> : null}
     </>
   );
 }

@@ -12,6 +12,7 @@ import {
 } from '@/utils/clientMonitoring';
 import { breakpointValues } from '@src/shared/ui/foundation/breakpoints';
 import { ProfileOrdersPoller } from '@src/features/telemetry';
+import { YMapsProvider } from '@src/shared/lib/maps';
 import { RuntimeScripts } from './RuntimeScripts';
 
 const HEADER_DESKTOP_BREAKPOINT_PX = breakpointValues.md;
@@ -19,6 +20,7 @@ const HEADER_DESKTOP_BREAKPOINT_PX = breakpointValues.md;
 export function ClientRuntime({ children }: { children: React.ReactNode }) {
   const pathname = usePathname();
   const loadYmaps =
+    Boolean(pathname?.includes('/preview')) ||
     Boolean(pathname?.includes('/cart')) ||
     Boolean(pathname?.includes('/contacts')) ||
     Boolean(pathname?.includes('/profile')) ||
@@ -77,8 +79,10 @@ export function ClientRuntime({ children }: { children: React.ReactNode }) {
   return (
     <>
       <RuntimeScripts loadYmaps={loadYmaps} />
-      <ProfileOrdersPoller />
-      {children}
+      <YMapsProvider enabled={loadYmaps}>
+        <ProfileOrdersPoller />
+        {children}
+      </YMapsProvider>
     </>
   );
 }

@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useMemo, useState } from 'react';
-import { Map, Placemark, Polygon, YMaps } from '@pbe/react-yandex-maps';
+import { Map, Placemark, Polygon } from '@pbe/react-yandex-maps';
 import type { AddressPickerZone } from '../model/types';
 
 type AddressPickerMapProps = {
@@ -110,34 +110,27 @@ export function AddressPickerMap({
 
   return (
     <div className="address-picker-modal__map-shell">
-      <YMaps
-        query={{
-          lang: 'ru_RU',
-          apikey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP,
+      <Map
+        defaultState={{
+          center: center ?? [53.1959, 50.1008],
+          zoom,
+          controls: [],
         }}
+        instanceRef={(value) => {
+          setMapInstance((value as YMapInstance | null) ?? null);
+        }}
+        width="100%"
+        height="100%"
+        className="address-picker-modal__map-canvas"
       >
-        <Map
-          defaultState={{
-            center: center ?? [53.1959, 50.1008],
-            zoom,
-            controls: [],
-          }}
-          instanceRef={(value) => {
-            setMapInstance((value as YMapInstance | null) ?? null);
-          }}
-          width="100%"
-          height="100%"
-          className="address-picker-modal__map-canvas"
-        >
-          {zoneGeometry.length > 0 ? (
-            <Polygon geometry={zoneGeometry} options={MAP_POLYGON_OPTIONS} />
-          ) : null}
+        {zoneGeometry.length > 0 ? (
+          <Polygon geometry={zoneGeometry} options={MAP_POLYGON_OPTIONS} />
+        ) : null}
 
-          {point ? (
-            <Placemark geometry={point} options={MAP_POINT_OPTIONS} />
-          ) : null}
-        </Map>
-      </YMaps>
+        {point ? (
+          <Placemark geometry={point} options={MAP_POINT_OPTIONS} />
+        ) : null}
+      </Map>
     </div>
   );
 }

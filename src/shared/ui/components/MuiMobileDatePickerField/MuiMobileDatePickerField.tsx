@@ -28,6 +28,7 @@ export type MuiMobileDatePickerFieldProps<TDate extends Date = Date> = Omit<
   className?: string;
   /** Input placeholder before a date is chosen. */
   placeholder?: string;
+  slots?: MobileDatePickerProps<TDate>['slots'];
   slotProps?: MobileDatePickerProps<TDate>['slotProps'];
 };
 
