@@ -15,7 +15,16 @@ export type DesignSystemProviderProps = {
 export function DesignSystemProvider({ children }: DesignSystemProviderProps) {
   return (
     <ThemeProvider theme={uiTheme}>
-      <LocalizationProvider dateAdapter={AdapterDateFns} adapterLocale={ru}>
+      <LocalizationProvider
+        dateAdapter={AdapterDateFns}
+        adapterLocale={ru}
+        localeText={{
+          cancelButtonLabel: 'Отмена',
+          okButtonLabel: 'Выбрать',
+          todayButtonLabel: 'Сегодня',
+          datePickerToolbarTitle: 'Выбрать дату',
+        }}
+      >
         {children}
       </LocalizationProvider>
     </ThemeProvider>

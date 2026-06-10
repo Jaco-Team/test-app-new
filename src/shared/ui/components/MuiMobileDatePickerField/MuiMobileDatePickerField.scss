@@ -1,0 +1,87 @@
+@use '../../foundation/formulas' as *;
+@use '../../foundation/tokens' as *;
+
+.ui-mui-mobile-date-picker__actions {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: ui-fluid-compact(12);
+  padding: ui-fluid-compact(24) ui-fluid-compact(28) ui-fluid-compact(28);
+
+  @include ui-regular {
+    gap: ui-fluid-regular(10);
+    padding: ui-fluid-regular(20) ui-fluid-regular(24) ui-fluid-regular(24);
+  }
+
+  @include ui-expanded {
+    flex-direction: row;
+    align-items: stretch;
+    justify-content: space-between;
+    gap: ui-fluid-expanded(10);
+    padding: ui-fluid-expanded(12) ui-fluid-expanded(16) ui-fluid-expanded(16);
+  }
+
+  & > .ui-button.ui-mui-mobile-date-picker__action-btn {
+    box-sizing: border-box;
+    width: auto;
+    min-width: ui-fluid-compact(360);
+    max-width: ui-fluid-compact(640);
+    min-height: ui-fluid-compact(80);
+    padding: 0 ui-fluid-compact(36);
+    font-size: ui-fluid-compact(30);
+
+    .ui-button__label {
+      overflow: visible;
+      text-overflow: unset;
+    }
+
+    @include ui-regular {
+      min-width: ui-fluid-regular(280);
+      max-width: ui-fluid-regular(420);
+      min-height: ui-fluid-regular(52);
+      padding: 0 ui-fluid-regular(30);
+      font-size: ui-fluid-regular(22);
+    }
+
+    @include ui-expanded {
+      flex: 1 1 0;
+      min-width: 0;
+      max-width: none;
+      min-height: ui-fluid-expanded(39);
+      padding: 0 ui-fluid-expanded(12);
+      font-size: ui-fluid-expanded(14);
+    }
+  }
+}
+
+.ui-mui-mobile-date-picker-field {
+  & .MuiPickersDay-root.Mui-selected {
+    background-color: $ui-brand-tint;
+    color: $ui-brand;
+
+    &:hover,
+    &:focus {
+      background-color: $ui-brand-tint;
+      color: $ui-brand;
+    }
+  }
+
+  & .MuiDialog-paper {
+    border-radius: ui-fluid-compact(24);
+
+    @include ui-regular {
+      border-radius: ui-fluid-regular(24);
+    }
+
+    @include ui-expanded {
+      border-radius: ui-fluid-expanded(24);
+    }
+  }
+
+  & .MuiPickersToolbar-root {
+    & .MuiTypography-root {
+      text-align: center;
+      width: 100%;
+    }
+  }
+}

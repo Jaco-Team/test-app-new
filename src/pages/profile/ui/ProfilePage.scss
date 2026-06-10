@@ -177,13 +177,13 @@
   width: ui-fluid-compact(297);
   height: ui-fluid-compact(89);
   padding-left: ui-fluid-compact(74);
-  padding-right: ui-fluid-compact(104);
+  padding-right: ui-fluid-compact(24);
   background: rgba(87, 220, 53, 0.15);
   clip-path: polygon(11.7% 0%, 100% 0%, 100% 100%, 11.7% 100%, 0% 50%);
   font-size: ui-fluid-compact(22);
   font-weight: 400;
   line-height: 1.25;
-  text-align: center;
+  text-align: left;
 }
 
 .profile-page__switch-label {
@@ -294,14 +294,14 @@
 .profile-page__checks {
   display: flex;
   align-items: center;
-  justify-content: space-between;
+  justify-content: flex-start;
   gap: ui-fluid-regular(16);
-  min-height: ui-fluid-regular(54);
+  // min-height: ui-fluid-regular(54);
   font-size: max(12px, ui-fluid-regular(16));
 
   @include ui-expanded {
-    max-width: ui-fluid-expanded(720);
-    margin-left: ui-fluid-expanded(360);
+    // max-width: ui-fluid-expanded(720);
+    margin-left: ui-fluid-expanded(12);
     min-height: ui-fluid-expanded(46);
     font-size: ui-fluid-expanded(15);
   }
@@ -314,9 +314,9 @@
 .profile-page__birthday-block {
   display: grid;
   gap: ui-fluid-regular(16);
+  grid-template-columns: ui-fluid-expanded(390) minmax(0, 1fr);
 
   @include ui-expanded {
-    grid-template-columns: ui-fluid-expanded(390) minmax(0, 1fr);
     gap: ui-fluid-expanded(24);
     align-items: start;
   }
@@ -327,6 +327,7 @@
   display: flex;
   align-items: center;
   justify-content: center;
+  align-self: center;
   min-height: ui-fluid-regular(140);
   padding: ui-fluid-regular(12) ui-fluid-regular(18);
   background: rgba(87, 220, 53, 0.3);
@@ -339,7 +340,7 @@
     content: '';
     position: absolute;
     top: 50%;
-    left: calc(100% - ui-fluid-regular(1));
+    left: calc(100% - ui-fluid-regular(1) + 1px);
     transform: translateY(-50%);
     border: ui-fluid-regular(18) solid transparent;
     border-left-color: rgba(87, 220, 53, 0.3);
@@ -352,7 +353,7 @@
     font-size: ui-fluid-expanded(15);
 
     &::after {
-      left: calc(100% - ui-fluid-expanded(1));
+      left: calc(100% - ui-fluid-expanded(1) + 1px);
       top: 50%;
       transform: translateY(-50%);
       border: ui-fluid-expanded(20) solid transparent;
@@ -364,15 +365,16 @@
 .profile-page__birthday-form {
   display: grid;
   gap: ui-fluid-regular(12);
+  grid-template-rows: repeat(3, 1fr);
+  align-items: center;
 
   @include ui-expanded {
-    gap: ui-fluid-expanded(14);
+    gap: ui-fluid-expanded(12);
   }
 }
 
 .profile-page__birthday-caption {
   font-size: max(12px, ui-fluid-regular(16));
-
   @include ui-expanded {
     font-size: ui-fluid-expanded(15);
   }

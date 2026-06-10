@@ -24,6 +24,8 @@ export { MuiAutocompleteField } from './MuiAutocompleteField/MuiAutocompleteFiel
 export type { MuiAutocompleteFieldProps } from './MuiAutocompleteField/MuiAutocompleteField';
 export { MuiDatePickerField } from './MuiDatePickerField/MuiDatePickerField';
 export type { MuiDatePickerFieldProps } from './MuiDatePickerField/MuiDatePickerField';
+export { MuiMobileDatePickerField } from './MuiMobileDatePickerField/MuiMobileDatePickerField';
+export type { MuiMobileDatePickerFieldProps } from './MuiMobileDatePickerField/MuiMobileDatePickerField';
 export { MuiSwitch } from './MuiSwitch/MuiSwitch';
 export type {
   MuiSwitchProps,
