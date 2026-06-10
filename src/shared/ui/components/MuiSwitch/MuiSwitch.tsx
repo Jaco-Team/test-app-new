@@ -10,7 +10,7 @@ import './MuiSwitch.scss';
 export type MuiSwitchSize = 'default' | 'profile';
 export type MuiSwitchTone = 'brand' | 'neutral';
 
-export type MuiSwitchProps = Omit<MuiBaseSwitchProps, 'size'> & {
+export type MuiSwitchProps = Omit<MuiBaseSwitchProps, 'size' | 'color'> & {
   range?: MuiControlRange;
   size?: MuiSwitchSize;
   tone?: MuiSwitchTone;
@@ -27,12 +27,13 @@ export function MuiSwitch({
   return (
     <MuiBaseSwitch
       {...props}
+      color="default"
       disableRipple={disableRipple}
       className={cn(
         'ui-mui-switch',
         'ui-mui-switch--range-' + range,
-        'ui-mui-switch--size-' + size,
-        'ui-mui-switch--tone-' + tone,
+        size !== 'default' && 'ui-mui-switch--size-' + size,
+        tone !== 'brand' && 'ui-mui-switch--tone-' + tone,
         className
       )}
     />

@@ -1,6 +1,11 @@
 import { createTheme } from '@mui/material/styles';
 import { breakpointValues } from './breakpoints';
-import { colorTokens, radiusTokens, zIndexTokens } from './tokens';
+import {
+  colorTokens,
+  radiusTokens,
+  switchTokens,
+  zIndexTokens,
+} from './tokens';
 
 export const uiTheme = createTheme({
   breakpoints: {
@@ -347,6 +352,51 @@ export const uiTheme = createTheme({
           '&.ui-mui-field__popper': {
             zIndex: zIndexTokens.modal,
           },
+        },
+      },
+    },
+    MuiSwitch: {
+      defaultProps: {
+        disableRipple: true,
+      },
+      styleOverrides: {
+        root: {
+          padding: 0,
+          overflow: 'visible',
+          flexShrink: 0,
+          '&.MuiSwitch-sizeMedium, &.MuiSwitch-sizeSmall': {
+            width: 'auto',
+            height: 'auto',
+          },
+        },
+        switchBase: {
+          padding: 0,
+          color: switchTokens.thumb,
+          transitionDuration: `${switchTokens.transitionMs}ms`,
+          '&.Mui-checked': {
+            color: switchTokens.thumb,
+            '& + .MuiSwitch-track': {
+              backgroundColor: switchTokens.trackOn,
+              opacity: 1,
+              border: 0,
+            },
+            '&.Mui-disabled + .MuiSwitch-track': {
+              opacity: switchTokens.disabledOpacity,
+            },
+          },
+          '&.Mui-disabled + .MuiSwitch-track': {
+            opacity: 0.7,
+          },
+        },
+        thumb: {
+          boxSizing: 'border-box',
+          backgroundColor: switchTokens.thumb,
+          boxShadow: 'none',
+        },
+        track: {
+          backgroundColor: switchTokens.trackOff,
+          opacity: 1,
+          transition: `background-color ${switchTokens.transitionMs}ms ease`,
         },
       },
     },

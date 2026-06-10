@@ -1,29 +1,118 @@
-.ui-mui-switch {
-  --ui-switch-track-off: rgba(0, 0, 0, 0.12);
-  --ui-switch-track-on: #57dc35;
+@use '../../foundation/formulas' as *;
+
+$ui-switch-track-off: #e9e9ea;
+$ui-switch-track-off-address: rgba(221, 26, 50, 0.3);
+$ui-switch-track-on: #57dc35;
+$ui-switch-track-on-neutral: rgba(0, 0, 0, 0.7);
+
+// SwitchContactsMobile — legacy `ui/MySwitch.js` (profile/address mobile).
+@mixin ui-mui-switch-contacts-metrics(
+  $width,
+  $height,
+  $thumb,
+  $margin,
+  $track-off: $ui-switch-track-off,
+  $track-on: $ui-switch-track-on
+) {
+  width: $width !important;
+  height: $height !important;
 
   .MuiSwitch-switchBase {
-    transition-duration: 300ms;
-    color: #fff;
+    margin: $margin;
 
     &.Mui-checked {
-      color: #fff;
+      transform: translateX(calc($width - $thumb - ($margin * 2)));
 
       & + .MuiSwitch-track {
-        background-color: var(--ui-switch-track-on);
-        opacity: 1;
-        border-color: transparent;
+        background-color: $track-on;
       }
     }
   }
 
+  .MuiSwitch-thumb {
+    width: $thumb;
+    height: $thumb;
+  }
+
   .MuiSwitch-track {
-    border-radius: 999px;
-    background-color: var(--ui-switch-track-off);
-    opacity: 1;
+    border-radius: calc($height / 2);
+    background-color: $track-off;
+  }
+}
+
+// IOSSwitch — legacy `ui/MySwitch.js` SwitchIOS (profile desktop).
+@mixin ui-mui-switch-ios-metrics(
+  $width,
+  $height,
+  $thumb,
+  $margin,
+  $track-off: $ui-switch-track-off,
+  $track-on: $ui-switch-track-on
+) {
+  @include ui-mui-switch-contacts-metrics(
+    $width,
+    $height,
+    $thumb,
+    $margin,
+    $track-off,
+    $track-on
+  );
+}
+
+// Switch.js — legacy `ui/Switch.js` (address modal desktop).
+@mixin ui-mui-switch-address-pc-metrics($width, $height, $thumb, $margin) {
+  @include ui-mui-switch-contacts-metrics(
+    $width,
+    $height,
+    $thumb,
+    $margin,
+    $ui-switch-track-off-address,
+    $ui-switch-track-on
+  );
+}
+
+.ui-mui-switch {
+  @include ui-compact {
+    @include ui-mui-switch-contacts-metrics(
+      ui-fluid-compact(112),
+      ui-fluid-compact(67),
+      ui-fluid-compact(60),
+      ui-fluid-compact(3.7)
+    );
+  }
+
+  @include ui-regular {
+    @include ui-mui-switch-contacts-metrics(
+      ui-fluid-regular(86),
+      ui-fluid-regular(51),
+      ui-fluid-regular(46),
+      ui-fluid-regular(2.9)
+    );
+  }
+
+  @include ui-expanded {
+    @include ui-mui-switch-address-pc-metrics(
+      ui-fluid-expanded(60),
+      ui-fluid-expanded(30),
+      ui-fluid-expanded(25),
+      ui-fluid-expanded(1.4)
+    );
+  }
+}
+
+.ui-mui-switch--size-profile {
+  @include ui-expanded {
+    @include ui-mui-switch-ios-metrics(
+      ui-fluid-expanded(58),
+      ui-fluid-expanded(29),
+      ui-fluid-expanded(26),
+      ui-fluid-expanded(1.4)
+    );
   }
 }
 
 .ui-mui-switch--tone-neutral {
-  --ui-switch-track-on: rgba(0, 0, 0, 0.7);
+  .MuiSwitch-switchBase.Mui-checked + .MuiSwitch-track {
+    background-color: $ui-switch-track-on-neutral;
+  }
 }

@@ -32,3 +32,14 @@ export const transitionTokens = {
   base: '180ms ease',
   slow: '260ms ease',
 } as const;
+
+/** Legacy JACO switch palette (`ui/MySwitch.js`, `ui/Switch.js`). */
+export const switchTokens = {
+  trackOff: '#e9e9ea',
+  trackOffAddress: 'rgba(221, 26, 50, 0.3)',
+  trackOn: '#57dc35',
+  trackOnNeutral: 'rgba(0, 0, 0, 0.7)',
+  thumb: '#ffffff',
+  disabledOpacity: 0.5,
+  transitionMs: 300,
+} as const;
