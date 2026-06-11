@@ -38,6 +38,13 @@ function captureMapStateIssue(message, extra = {}) {
   });
 }
 
+function showCheckoutApiError(response, fallbackText) {
+  const text =
+    response?.st === false && response?.text ? response.text : fallbackText;
+
+  useHeaderStoreNew.getState().setActiveModalAlert(true, text, false);
+}
+
 function getStreetMapCenterFromJson(json) {
   const xy = json?.this_info?.xy;
 
@@ -1630,13 +1637,24 @@ export const useCartStore = reuseHotStore(
 
         let json = await api('cart', data);
 
-        json = json?.map((date) => {
+        if (!Array.isArray(json)) {
+          showCheckoutApiError(
+            json,
+            'Не удалось загрузить даты заказа. Проверьте интернет и попробуйте еще раз.'
+          );
+          set({ datePreOrder: [] });
+          return;
+        }
+
+        json = json.map((date) => {
           if (date.text !== 'Сегодня' && date.text !== 'Завтра') {
-            date.text = dayjs(date.text)
-              .locale('ru')
-              .format('DD MMM')
-              .replace('.', '');
-            return date;
+            return {
+              ...date,
+              text: dayjs(date.text)
+                .locale('ru')
+                .format('DD MMM')
+                .replace('.', ''),
+            };
           }
           return date;
         });
@@ -1671,15 +1689,23 @@ export const useCartStore = reuseHotStore(
         let json = await api('cart', data);
 
         if (json?.st === false) {
-          useHeaderStoreNew
-            .getState()
-            .setActiveModalAlert(true, json?.text, false);
+          showCheckoutApiError(json, 'Не удалось загрузить время заказа.');
+          set({ timePreOrder: [] });
           return;
         }
 
-        json = json?.filter((time) => time.name !== 'В ближайшее время');
+        if (!Array.isArray(json)) {
+          showCheckoutApiError(
+            json,
+            'Не удалось загрузить время заказа. Проверьте интернет и попробуйте еще раз.'
+          );
+          set({ timePreOrder: [] });
+          return;
+        }
 
-        if (setDate === today && !json?.length) {
+        json = json.filter((time) => time.name !== 'В ближайшее время');
+
+        if (setDate === today && json.length === 0) {
           let tomorrow = new Date();
           tomorrow.setDate(tomorrow.getDate() + 1);
           tomorrow = dayjs(tomorrow).format('YYYY-MM-DD');
@@ -1693,10 +1719,34 @@ export const useCartStore = reuseHotStore(
           };
 
           let json = await api('cart', data);
-          json = json?.filter((time) => time.name !== 'В ближайшее время');
+
+          if (json?.st === false) {
+            showCheckoutApiError(json, 'Не удалось загрузить время заказа.');
+            set({
+              timePreOrder: [],
+              point_id: point_id ?? get().point_id,
+            });
+            return;
+          }
+
+          if (!Array.isArray(json)) {
+            showCheckoutApiError(
+              json,
+              'Не удалось загрузить время заказа. Проверьте интернет и попробуйте еще раз.'
+            );
+            set({
+              timePreOrder: [],
+              point_id: point_id ?? get().point_id,
+            });
+            return;
+          }
+
+          json = json.filter((time) => time.name !== 'В ближайшее время');
 
           let datePreOrder = get().datePreOrder;
-          datePreOrder = datePreOrder?.filter((day) => day.text !== 'Сегодня');
+          datePreOrder = Array.isArray(datePreOrder)
+            ? datePreOrder.filter((day) => day.text !== 'Сегодня')
+            : [];
 
           set({
             timePreOrder: json,

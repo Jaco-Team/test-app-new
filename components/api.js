@@ -25,12 +25,9 @@ const NON_IDEMPOTENT_TYPES = new Set([
   'sendsmsrp',
   'site_login',
   'trueordercash',
-  'order_true'
+  'order_true',
 ]);
-const SAFE_MUTATION_RETRY_TYPES = new Set([
-  'site_login',
-  'checkauthyandex',
-]);
+const SAFE_MUTATION_RETRY_TYPES = new Set(['site_login', 'checkauthyandex']);
 
 function normalizeBoundedInt(value, min, max, fallback) {
   const num = Number(value);
@@ -48,14 +45,18 @@ function getApiTimeoutMs(module = '', data = {}) {
     data?.__timeoutMs,
     MIN_API_TIMEOUT_MS,
     MAX_API_TIMEOUT_MS,
-    NaN,
+    NaN
   );
 
   if (Number.isFinite(requestOverrideTimeout)) {
     return requestOverrideTimeout;
   }
 
-  if (String(module || '').trim().toLowerCase() === 'auth') {
+  if (
+    String(module || '')
+      .trim()
+      .toLowerCase() === 'auth'
+  ) {
     return AUTH_API_TIMEOUT_MS;
   }
 
@@ -67,7 +68,10 @@ function getRetryAttempts(data = {}) {
 }
 
 function getRequestType(data = {}) {
-  return String(data?.type || '').trim().toLowerCase().replace(/[\s-]+/g, '');
+  return String(data?.type || '')
+    .trim()
+    .toLowerCase()
+    .replace(/[\s-]+/g, '');
 }
 
 function isMutationRequest(data = {}) {
@@ -85,7 +89,9 @@ function isMutationRequest(data = {}) {
     return false;
   }
 
-  return /^(create_|save_|update_|delete_|remove_|add_|send|set)/.test(requestType);
+  return /^(create_|save_|update_|delete_|remove_|add_|send|set)/.test(
+    requestType
+  );
 }
 
 function shouldRetryRequest(data = {}) {
@@ -108,7 +114,7 @@ function shouldRetryRequest(data = {}) {
 
 function stripInternalRequestKeys(data = {}) {
   return Object.fromEntries(
-    Object.entries(data || {}).filter(([key]) => !String(key).startsWith('__')),
+    Object.entries(data || {}).filter(([key]) => !String(key).startsWith('__'))
   );
 }
 
@@ -140,6 +146,10 @@ function shouldReportInternetIssue(error, data = {}) {
   }
 
   return isRetryableApiError(error);
+}
+
+function shouldCaptureApiError(data = {}) {
+  return getRequestType(data) !== 'save_user_actions';
 }
 
 function sleep(ms) {
@@ -214,7 +224,9 @@ async function postWithRetry({ module, body, data }) {
 
   for (let attempt = 1; attempt <= attemptsCount; attempt += 1) {
     try {
-      const response = await axios.post(requestUrl, body, { timeout: requestTimeout });
+      const response = await axios.post(requestUrl, body, {
+        timeout: requestTimeout,
+      });
 
       if (attempt > 1) {
         Sentry.addBreadcrumb({
@@ -257,7 +269,7 @@ async function postWithRetry({ module, body, data }) {
   throw lastError || new Error('API request failed without error details');
 }
 
-export function api(module = '', data = {}){
+export function api(module = '', data = {}) {
   const now = Math.floor(Date.now() / 1000);
   const requestConfig = data && typeof data === 'object' ? data : {};
   const safeData = stripInternalRequestKeys(requestConfig);
@@ -265,8 +277,9 @@ export function api(module = '', data = {}){
   const payload = { ...safeData, ts: now };
   const bodyStr = qs.stringify(payload);
 
-  const sig = CryptoJS.HmacSHA256(now + bodyStr, 'jaco—food')
-                      .toString(CryptoJS.enc.Hex);
+  const sig = CryptoJS.HmacSHA256(now + bodyStr, 'jaco—food').toString(
+    CryptoJS.enc.Hex
+  );
 
   const body = qs.stringify({ ...payload, sig });
 
@@ -275,7 +288,7 @@ export function api(module = '', data = {}){
       if (typeof response.data == 'string') {
         return {
           st: false,
-          text: response.data
+          text: response.data,
         };
       }
 
@@ -284,25 +297,32 @@ export function api(module = '', data = {}){
     .catch((error) => {
       console.error(error);
 
-      const lastUrl = error?.jacoAttemptMeta?.requestUrl || `${DEFAULT_API_BASE_URL}${module}`;
+      const lastUrl =
+        error?.jacoAttemptMeta?.requestUrl ||
+        `${DEFAULT_API_BASE_URL}${module}`;
       const responseStatus = error?.response?.status ?? null;
       const errorCode = String(error?.code || '').toUpperCase() || null;
       const isRetryable = isRetryableApiError(error);
 
-      captureApiError({
-        module,
-        requestUrl: lastUrl,
-        requestMeta: {
-          ...getSafeRequestMeta(safeData),
-          canRetry: shouldRetryRequest(requestConfig),
-          timeoutMs: getApiTimeoutMs(module, requestConfig),
-          isRetryable,
-        },
-        error,
-        source: 'api',
-      });
+      if (shouldCaptureApiError(safeData)) {
+        captureApiError({
+          module,
+          requestUrl: lastUrl,
+          requestMeta: {
+            ...getSafeRequestMeta(safeData),
+            canRetry: shouldRetryRequest(requestConfig),
+            timeoutMs: getApiTimeoutMs(module, requestConfig),
+            isRetryable,
+          },
+          error,
+          source: 'api',
+        });
+      }
 
-      if (isCustomSentryMonitoringEnabled() && shouldReportInternetIssue(error, safeData)) {
+      if (
+        isCustomSentryMonitoringEnabled() &&
+        shouldReportInternetIssue(error, safeData)
+      ) {
         emitInternetIssue({
           type: 'api_request_failed',
           source: 'api',
@@ -324,24 +344,23 @@ export function api(module = '', data = {}){
     });
 }
 
-export async function apiAddress(city, value){
-  if( city.length > 0 && value.length > 0 ){
-
+export async function apiAddress(city, value) {
+  if (city.length > 0 && value.length > 0) {
     const urlApi = `https://suggest-maps.yandex.ru/v1/suggest?text=${city},${value}&types=geo,locality,province,area,district,street,house&print_address=1&results=7&apikey=${process.env.NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST}`;
 
-    return axios.post(urlApi, undefined, { timeout: getApiTimeoutMs() })
-      .then( (response) => {
-        
-        if( typeof response.data == 'string' ){
+    return axios
+      .post(urlApi, undefined, { timeout: getApiTimeoutMs() })
+      .then((response) => {
+        if (typeof response.data == 'string') {
           return {
             st: false,
-            text: response.data
+            text: response.data,
           };
         }
 
         return response.data;
       })
-      .catch( (error) => {
+      .catch((error) => {
         console.error(error);
 
         captureApiError({

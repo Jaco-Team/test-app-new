@@ -340,6 +340,62 @@ export function isIgnoredBrowserInternalError(value) {
   return errorText.includes('remoteframeregistration.processchildframemessage');
 }
 
+const IGNORED_INJECTED_SCRIPT_FRAME_PATTERNS = [
+  /app:\/\/\/src\/mediafilter\.generic-wrapper(?:\.min)?\.js/i,
+  /app:\/\/\/static\/sync-loader\.js/i,
+  /app:\/\/\/src\/setup\.js/i,
+];
+
+const IGNORED_INJECTED_SCRIPT_ERROR_PATTERNS = [
+  /failed to execute 'postmessage' on 'window': htmliframeelement object could not be cloned/i,
+  /htmliframeelement object could not be cloned/i,
+];
+
+function getSentryExceptionFrames(event) {
+  return (
+    event?.exception?.values?.flatMap((value) => [
+      ...(value?.stacktrace?.frames || []),
+      ...(value?.raw_stacktrace?.frames || []),
+    ]) || []
+  );
+}
+
+function getSentryExceptionText(event) {
+  const exceptionValues = event?.exception?.values || [];
+
+  return [
+    event?.message,
+    ...exceptionValues.flatMap((value) => [value?.type, value?.value]),
+  ]
+    .filter(Boolean)
+    .map(String)
+    .join('\n');
+}
+
+export function isIgnoredInjectedScriptError(event, originalException) {
+  const frames = getSentryExceptionFrames(event);
+  const frameText = frames
+    .flatMap((frame) => [frame?.filename, frame?.abs_path, frame?.module])
+    .filter(Boolean)
+    .map(String)
+    .join('\n');
+  const errorText = [
+    getErrorText(originalException),
+    getSentryExceptionText(event),
+  ]
+    .filter(Boolean)
+    .join('\n')
+    .toLowerCase();
+  const hasInjectedFrame = IGNORED_INJECTED_SCRIPT_FRAME_PATTERNS.some(
+    (pattern) => pattern.test(frameText)
+  );
+  const hasInjectedError = IGNORED_INJECTED_SCRIPT_ERROR_PATTERNS.some(
+    (pattern) => pattern.test(errorText)
+  );
+
+  return hasInjectedFrame && hasInjectedError;
+}
+
 export function maybeReloadAfterChunkError(context = {}) {
   if (typeof window === 'undefined' || typeof sessionStorage === 'undefined') {
     return false;

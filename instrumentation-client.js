@@ -32,6 +32,7 @@ import {
   installGlobalSentryHandlers,
   isChunkLoadError,
   isIgnoredBrowserInternalError,
+  isIgnoredInjectedScriptError,
   isIgnoredResourceLoadError,
 } from './utils/clientMonitoring';
 
@@ -196,6 +197,10 @@ Sentry.init({
       isIgnoredBrowserInternalError(originalException) ||
       isIgnoredBrowserInternalError(exceptionMessage)
     ) {
+      return null;
+    }
+
+    if (isIgnoredInjectedScriptError(event, originalException)) {
       return null;
     }
 
