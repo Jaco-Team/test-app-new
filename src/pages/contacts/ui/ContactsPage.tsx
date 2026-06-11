@@ -2,6 +2,9 @@
 
 import { useMemo } from 'react';
 import { useRouter } from 'next/navigation';
+import List from '@mui/material/List';
+import ListItemButton from '@mui/material/ListItemButton';
+import ListItemText from '@mui/material/ListItemText';
 import Cookies from 'js-cookie';
 import { useCityStore, type CityRecord } from '@src/entities/city';
 import { useContactStore } from '@src/entities/contact';
@@ -120,28 +123,29 @@ export function ContactsPage() {
 
             <div className="contacts-page__addresses">
               <h2 className="contacts-page__section-title">Адреса кафе:</h2>
-              <ul className="contacts-page__address-list">
+              <List className="contacts-page__address-list" disablePadding>
                 {myAddr.map((item) => (
-                  <li key={item.addr}>
-                    <button
-                      type="button"
-                      className="contacts-page__address-item"
-                      data-active={
-                        item.addr === point || Boolean(item.color) || undefined
+                  <ListItemButton
+                    key={item.addr}
+                    className="contacts-page__address-item"
+                    disableRipple
+                    selected={item.addr === point || Boolean(item.color)}
+                    onClick={() => changePointClick(item.addr)}
+                  >
+                    <MapPointIcon />
+                    <ListItemText
+                      primary={
+                        <span
+                          className="contacts-page__address-text"
+                          style={item.color ? { color: item.color } : undefined}
+                        >
+                          {item.addr}
+                        </span>
                       }
-                      onClick={() => changePointClick(item.addr)}
-                    >
-                      <MapPointIcon />
-                      <span
-                        className="contacts-page__address-text"
-                        style={item.color ? { color: item.color } : undefined}
-                      >
-                        {item.addr}
-                      </span>
-                    </button>
-                  </li>
+                    />
+                  </ListItemButton>
                 ))}
-              </ul>
+              </List>
             </div>
 
             <div className="contacts-page__info contacts-page__info--desktop">
@@ -159,9 +163,11 @@ export function ContactsPage() {
           </div>
 
           <div className="contacts-page__panel-mobile">
+            <h1 className="contacts-page__mini-title">Контакты</h1>
             <button
               type="button"
               className="contacts-page__row"
+              aria-label="Выбрать город"
               onClick={() => setActiveModalCityList(true)}
             >
               <span className="contacts-page__row-leading">
@@ -176,6 +182,7 @@ export function ContactsPage() {
             <button
               type="button"
               className="contacts-page__row contacts-page__row--point"
+              aria-label={point ? `Адрес: ${point}` : 'Выберите адрес'}
               onClick={() => setActiveModalChoose(true)}
             >
               <span className="contacts-page__row-leading">

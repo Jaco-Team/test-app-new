@@ -3,13 +3,33 @@
 
 // Contacts map is full-bleed under the fixed header — no PageFrame inset.
 .contacts-page-frame {
+  @include ui-compact {
+    --page-frame-inline-space: 0px;
+    --page-frame-bottom-space: 0px;
+  }
+
+  @include ui-regular {
+    --page-frame-inline-space: 0px;
+    --page-frame-bottom-space: 0px;
+  }
+
   @include ui-expanded {
-    --page-frame-top-space: 0px;
+    --page-frame-top-space: #{ui-fluid-expanded(64)};
     --page-frame-bottom-space: 0px;
     --page-frame-inline-space: 0px;
   }
 
   .page-frame__inner {
+    @include ui-compact {
+      gap: 0;
+      padding-inline: 0;
+    }
+
+    @include ui-regular {
+      gap: 0;
+      padding-inline: 0;
+    }
+
     @include ui-expanded {
       max-width: none;
       width: 100%;
@@ -22,6 +42,10 @@
 .contacts-page {
   width: 100%;
 
+  @include ui-compact {
+    font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+  }
+
   &__body {
     position: relative;
     display: flex;
@@ -32,18 +56,21 @@
   &__map-area {
     position: relative;
     width: 100%;
-  }
 
-  &__panel-desktop,
-  &__panel-mobile {
-    display: flex;
-    flex-direction: column;
-    align-items: stretch;
-    width: 100%;
+    @include ui-compact {
+      margin-bottom: ui-fluid-compact(30);
+    }
+
+    @include ui-regular {
+      margin-bottom: ui-fluid-regular(24);
+    }
   }
 
   &__panel-desktop {
     display: none;
+    flex-direction: column;
+    align-items: stretch;
+    width: 100%;
 
     @include ui-expanded {
       display: flex;
@@ -51,8 +78,40 @@
   }
 
   &__panel-mobile {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+
     @include ui-expanded {
       display: none;
+    }
+  }
+
+  &__mini-title {
+    display: none;
+    margin: 0;
+    width: 100%;
+    font-weight: 500;
+    line-height: 1.1;
+    text-align: center;
+    color: $ui-text;
+
+    @include ui-compact {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin-block: ui-fluid-compact(30) ui-fluid-compact(20);
+      font-size: max(12px, ui-fluid-compact(32));
+    }
+
+    @include ui-regular {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: ui-fluid-regular(72);
+      margin-bottom: ui-fluid-regular(36);
+      font-size: max(12px, ui-fluid-regular(50));
     }
   }
 
@@ -152,15 +211,13 @@
   }
 
   &__address-list {
-    list-style: none;
-    margin: 0;
-    padding: 0;
-    display: flex;
-    flex-direction: column;
+    width: 100%;
 
     @include ui-expanded {
-      margin-top: ui-fluid-expanded(20);
+      display: flex;
+      flex-direction: column;
       gap: ui-fluid-expanded(20);
+      margin-top: ui-fluid-expanded(20);
       padding-bottom: ui-fluid-expanded(40);
       border-bottom: 1px solid #e5e5e5;
     }
@@ -170,11 +227,8 @@
     display: flex;
     align-items: flex-start;
     width: 100%;
-    border: 0;
-    background: transparent;
     padding: 0;
     text-align: left;
-    cursor: pointer;
 
     @include ui-expanded {
       gap: ui-fluid-expanded(20);
@@ -188,10 +242,13 @@
         width: ui-fluid-expanded(25);
       }
     }
-  }
 
-  &__address-item[data-active] {
-    .contacts-page__address-text {
+    &.Mui-selected,
+    &.Mui-selected:hover {
+      background: transparent;
+    }
+
+    &.Mui-selected .contacts-page__address-text {
       color: $ui-brand;
     }
   }
@@ -412,39 +469,13 @@
   }
 
   @include ui-expanded {
-    margin-top: ui-fluid-expanded(64);
-    mix-blend-mode: multiply;
-
     &__body {
       min-height: ui-fluid-expanded(450);
-      margin-top: 0;
     }
 
     &__map-area {
       min-height: ui-fluid-expanded(945);
+      mix-blend-mode: multiply;
     }
-  }
-}
-
-// Injected by Yandex Maps layout for the active cafe marker.
-.my-img {
-  position: absolute;
-  left: -12px;
-  top: -20px;
-  width: 65px;
-  height: 65px;
-  border-radius: 50%;
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  background-color: #da1a32;
-  outline: #da1a32 7px solid;
-  outline-offset: 0;
-  transition-duration: 1s;
-
-  img {
-    width: 100%;
-    height: 100%;
-    transition-duration: 1s;
   }
 }

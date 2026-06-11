@@ -1,6 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
+import useMediaQuery from '@mui/material/useMediaQuery';
 import {
   Map,
   Placemark,
@@ -10,6 +11,7 @@ import {
 } from '@pbe/react-yandex-maps';
 import type { ContactZone } from '@src/entities/contact';
 import { useContactStore } from '@src/entities/contact';
+import { BREAKPOINTS } from '@ui/foundation/breakpoints';
 import type { IPlacemarkOptions } from 'yandex-maps';
 import './ContactsMap.scss';
 
@@ -46,6 +48,9 @@ type YMapInstance = {
 };
 
 export function ContactsMap() {
+  const expanded = useMediaQuery(`(min-width: ${BREAKPOINTS.expandedMin}px)`, {
+    noSsr: true,
+  });
   const mapRef = useRef<YMapInstance | null>(null);
   const centerMap = useContactStore((state) => state.centerMap);
   const zones = useContactStore((state) => state.zones);
@@ -84,14 +89,18 @@ export function ContactsMap() {
         className="contacts-map__canvas"
         onClick={(event) => changePointNotHover(event)}
       >
-        <SearchControl
-          options={{ position: MAP_CONTROL_POSITION }}
-          key="contacts-search"
-        />
-        <ZoomControl
-          options={{ position: { left: 10, top: 60 } }}
-          key="contacts-zoom"
-        />
+        {expanded ? (
+          <>
+            <SearchControl
+              options={{ position: MAP_CONTROL_POSITION }}
+              key="contacts-search"
+            />
+            <ZoomControl
+              options={{ position: { left: 10, top: 60 } }}
+              key="contacts-zoom"
+            />
+          </>
+        ) : null}
 
         {zones?.map((zonePoint, index) => (
           <Placemark

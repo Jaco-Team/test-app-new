@@ -40,12 +40,19 @@ export function CompactMenu({
       disableSwipeToOpen
       disableDiscovery
       transitionDuration={{ enter: 180, exit: 150 }}
+      ModalProps={{
+        keepMounted: false,
+        disableScrollLock: true,
+      }}
       slotProps={{
         backdrop: {
           className: 'ui-header__compact-drawer-backdrop',
         },
         paper: {
           className: 'ui-header__compact-menu',
+        },
+        root: {
+          sx: { zIndex: 1200 },
         },
       }}
     >

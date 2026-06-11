@@ -6,6 +6,7 @@
   top: 0;
   left: 0;
   z-index: $ui-z-header;
+  isolation: isolate;
   box-sizing: border-box;
   width: 100%;
   padding-right: var(--ui-scrollbar-compensation, 0px);

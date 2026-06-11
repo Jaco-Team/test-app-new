@@ -1,58 +1,120 @@
 @use '../../../shared/ui/foundation/formulas' as *;
 @use '../../../shared/ui/foundation/tokens' as *;
 
-.contacts-point-picker {
-  list-style: none;
-  margin: 0;
-  padding: 0;
-  display: flex;
-  flex-direction: column;
-  gap: ui-fluid-compact(8);
+.contacts-point-picker-modal__paper {
+  width: 100%;
+  max-width: none;
+  border-radius: ui-fluid-compact(80) ui-fluid-compact(80) 0 0;
 
   @include ui-regular {
-    gap: ui-fluid-regular(8);
+    width: min(100%, ui-fluid-regular(560));
+    border-radius: ui-fluid-regular(24);
   }
 
-  &__item {
-    width: 100%;
-    border: 0;
-    border-radius: ui-fluid-compact(16);
-    background: transparent;
-    text-align: left;
-    padding: ui-fluid-compact(20) ui-fluid-compact(24);
-    cursor: pointer;
-    display: flex;
-    flex-direction: column;
-    gap: ui-fluid-compact(6);
+  @include ui-expanded {
+    width: min(100%, ui-fluid-expanded(480));
+    border-radius: ui-fluid-expanded(20);
+  }
+}
 
-    @include ui-regular {
-      border-radius: ui-fluid-regular(12);
-      padding: ui-fluid-regular(14) ui-fluid-regular(18);
-      gap: ui-fluid-regular(4);
-    }
+.contacts-point-picker-modal__content {
+  padding: 0;
 
-    &--active,
-    &:hover {
-      background: $ui-control-bg;
-    }
+  @include ui-compact {
+    padding-bottom: ui-fluid-compact(329);
   }
 
-  &__addr {
-    font-size: ui-fluid-compact(30);
-    font-weight: 500;
-    color: $ui-text;
-
-    @include ui-regular {
-      font-size: ui-fluid-regular(18);
-    }
+  @include ui-regular {
+    padding: ui-fluid-regular(20);
   }
 
-  &__district {
-    font-size: ui-fluid-compact(24);
-    color: $ui-text-muted;
+  @include ui-expanded {
+    padding: ui-fluid-expanded(20);
+  }
+}
 
-    @include ui-regular {
-      font-size: ui-fluid-regular(14);
-    }
+.contacts-point-picker-modal__grip {
+  align-self: center;
+  width: ui-fluid-compact(150);
+  height: ui-fluid-compact(10);
+  margin: ui-fluid-compact(40) auto ui-fluid-compact(60);
+  border-radius: ui-fluid-compact(5);
+  background: rgba(0, 0, 0, 0.2);
+
+  @include ui-regular {
+    display: none;
+  }
+}
+
+.contacts-point-picker {
+  width: 100%;
+
+  @include ui-compact {
+    padding-inline: ui-fluid-compact(125);
+  }
+}
+
+.contacts-point-picker__item {
+  display: flex;
+  align-items: center;
+  width: 100%;
+  min-height: ui-fluid-compact(163);
+  padding: 0 ui-fluid-compact(40);
+  border: 0;
+  border-bottom: ui-fluid-compact(3) solid rgba(0, 0, 0, 0.2);
+  background: transparent;
+  text-align: left;
+  cursor: pointer;
+
+  @include ui-regular {
+    min-height: ui-fluid-regular(72);
+    padding: ui-fluid-regular(14) ui-fluid-regular(18);
+    border-bottom-width: 1px;
+    border-radius: ui-fluid-regular(12);
+  }
+
+  @include ui-expanded {
+    min-height: ui-fluid-expanded(56);
+    padding: ui-fluid-expanded(14) ui-fluid-expanded(18);
+    border-bottom-width: 1px;
+    border-radius: ui-fluid-expanded(12);
+  }
+
+  &--active,
+  &:hover {
+    background: $ui-control-bg;
+  }
+}
+
+.contacts-point-picker__addr {
+  margin-right: ui-fluid-compact(40);
+  font-size: ui-fluid-compact(50);
+  font-weight: 500;
+  line-height: 1.2;
+  color: $ui-text;
+
+  @include ui-regular {
+    margin-right: ui-fluid-regular(16);
+    font-size: ui-fluid-regular(20);
+  }
+
+  @include ui-expanded {
+    margin-right: ui-fluid-expanded(12);
+    font-size: ui-fluid-expanded(15);
+    font-weight: 400;
+  }
+}
+
+.contacts-point-picker__district {
+  font-size: ui-fluid-compact(30);
+  line-height: 1.2;
+  color: rgba(0, 0, 0, 0.4);
+
+  @include ui-regular {
+    font-size: ui-fluid-regular(14);
+  }
+
+  @include ui-expanded {
+    font-size: ui-fluid-expanded(12);
   }
 }
