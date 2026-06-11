@@ -13,6 +13,9 @@
   background: $ui-surface;
   color: $ui-text;
   font-family: $ui-font-family;
+  transform: translate3d(0, 0, 0);
+  backface-visibility: hidden;
+  box-shadow: 0 2px 4px transparent;
   transition: box-shadow 0.3s;
   // box-shadow: 0 2px 4px $ui-neutral-subtle;
 

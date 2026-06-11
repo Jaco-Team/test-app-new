@@ -1,46 +1,53 @@
 @use '../../../shared/ui/foundation/formulas' as *;
 @use '../../../shared/ui/foundation/tokens' as *;
 
-// Contacts map is full-bleed under the fixed header — no PageFrame inset.
-.contacts-page-frame {
+.page-frame.contacts-page-frame {
+  overflow-x: clip;
+  --page-frame-top-space: 0px;
+  --page-frame-bottom-space: 0px;
+
   @include ui-compact {
     --page-frame-inline-space: 0px;
-    --page-frame-bottom-space: 0px;
+
+    .page-frame__inner {
+      gap: 0;
+      padding-inline: 0;
+      overflow-x: clip;
+    }
   }
 
   @include ui-regular {
     --page-frame-inline-space: 0px;
-    --page-frame-bottom-space: 0px;
-  }
 
-  @include ui-expanded {
-    --page-frame-top-space: #{ui-fluid-expanded(64)};
-    --page-frame-bottom-space: 0px;
-    --page-frame-inline-space: 0px;
-  }
-
-  .page-frame__inner {
-    @include ui-compact {
+    .page-frame__inner {
       gap: 0;
-      padding-inline: 0;
-    }
-
-    @include ui-regular {
-      gap: 0;
-      padding-inline: 0;
-    }
-
-    @include ui-expanded {
       max-width: none;
       width: 100%;
       margin-inline: 0;
       padding-inline: 0;
+      overflow-x: clip;
     }
+  }
+
+  @include ui-expanded {
+    .page-frame__inner {
+      gap: 0;
+      max-width: none;
+      width: 100%;
+      margin-inline: 0;
+      padding-inline: 0;
+      overflow-x: clip;
+    }
+  }
+
+  .page-frame__content {
+    overflow-x: clip;
   }
 }
 
 .contacts-page {
   width: 100%;
+  overflow-x: clip;
 
   @include ui-compact {
     font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
@@ -51,18 +58,48 @@
     display: flex;
     flex-direction: column;
     width: 100%;
+    overflow-x: clip;
+
+    @include ui-regular {
+      display: grid;
+      grid-template-columns: 60fr 40fr;
+      align-items: stretch;
+      min-height: ui-fluid-regular(520);
+      gap: ui-fluid-regular(6);
+      width: 100%;
+      min-width: 0;
+      box-sizing: border-box;
+    }
+
+    @include ui-expanded {
+      min-height: ui-fluid-expanded(450);
+    }
   }
 
   &__map-area {
     position: relative;
+    z-index: 0;
+    isolation: isolate;
     width: 100%;
+    overflow: clip;
 
     @include ui-compact {
       margin-bottom: ui-fluid-compact(30);
     }
 
     @include ui-regular {
-      margin-bottom: ui-fluid-regular(24);
+      width: auto;
+      min-width: 0;
+      max-width: 100%;
+      margin-bottom: 0;
+      min-height: 100%;
+      border-radius: 0 ui-fluid-regular(32) ui-fluid-regular(32) 0;
+      overflow: hidden;
+    }
+
+    @include ui-expanded {
+      min-height: ui-fluid-expanded(945);
+      mix-blend-mode: multiply;
     }
   }
 
@@ -71,6 +108,12 @@
     flex-direction: column;
     align-items: stretch;
     width: 100%;
+
+    @include ui-regular {
+      display: flex;
+      flex: 1 1 auto;
+      min-height: 0;
+    }
 
     @include ui-expanded {
       display: flex;
@@ -83,35 +126,12 @@
     align-items: center;
     width: 100%;
 
-    @include ui-expanded {
+    @include ui-regular {
       display: none;
     }
-  }
 
-  &__mini-title {
-    display: none;
-    margin: 0;
-    width: 100%;
-    font-weight: 500;
-    line-height: 1.1;
-    text-align: center;
-    color: $ui-text;
-
-    @include ui-compact {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin-block: ui-fluid-compact(30) ui-fluid-compact(20);
-      font-size: max(12px, ui-fluid-compact(32));
-    }
-
-    @include ui-regular {
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      min-height: ui-fluid-regular(72);
-      margin-bottom: ui-fluid-regular(36);
-      font-size: max(12px, ui-fluid-regular(50));
+    @include ui-expanded {
+      display: none;
     }
   }
 
@@ -119,10 +139,6 @@
     position: absolute;
     z-index: 2;
     display: inline-flex;
-
-    @include ui-expanded {
-      display: none;
-    }
     align-items: center;
     justify-content: center;
     border: 0;
@@ -130,27 +146,22 @@
     background: #fff;
     cursor: pointer;
     box-shadow: 0 ui-fluid-compact(4) ui-fluid-compact(16) rgba(0, 0, 0, 0.12);
-
     width: ui-fluid-compact(120);
     height: ui-fluid-compact(120);
     right: ui-fluid-compact(75);
     bottom: ui-fluid-compact(40);
 
     @include ui-regular {
-      width: ui-fluid-regular(72);
-      height: ui-fluid-regular(72);
-      right: ui-fluid-regular(40);
-      bottom: ui-fluid-regular(28);
+      display: none;
+    }
+
+    @include ui-expanded {
+      display: none;
     }
 
     svg {
       width: ui-fluid-compact(80);
       height: ui-fluid-compact(80);
-
-      @include ui-regular {
-        width: ui-fluid-regular(48);
-        height: ui-fluid-regular(48);
-      }
     }
   }
 
@@ -164,15 +175,24 @@
     padding: 0 ui-fluid-compact(35) ui-fluid-compact(170);
 
     @include ui-regular {
-      max-width: ui-fluid-regular(620);
-      padding: ui-fluid-regular(24) ui-fluid-regular(28) ui-fluid-regular(96);
+      box-sizing: border-box;
+      width: auto;
+      min-width: 0;
+      max-width: 100%;
+      justify-content: flex-start;
+      min-height: 100%;
+      margin: 0;
+      padding-block: ui-fluid-regular(22) ui-fluid-regular(20);
+      padding-inline: ui-fluid-regular(18);
+      border-radius: ui-fluid-regular(32) 0 0 ui-fluid-regular(32);
+      background: $ui-surface;
+      box-shadow: none;
     }
 
     @include ui-expanded {
       position: absolute;
       top: ui-fluid-expanded(30);
       right: ui-fluid-expanded(63);
-      // Legacy `.Contact` uses $MyScale800 — room for phone on one line.
       width: ui-fluid-expanded(400);
       max-width: none;
       margin: 0;
@@ -196,6 +216,11 @@
     font-weight: 400;
     line-height: 1.2;
 
+    @include ui-regular {
+      font-size: max(12px, ui-fluid-regular(15));
+      line-height: ui-fluid-regular(25);
+    }
+
     @include ui-expanded {
       font-size: ui-fluid-expanded(15);
       line-height: ui-fluid-expanded(25);
@@ -205,6 +230,10 @@
   &__addresses {
     width: 100%;
 
+    @include ui-regular {
+      margin-top: ui-fluid-regular(18);
+    }
+
     @include ui-expanded {
       margin-top: ui-fluid-expanded(30);
     }
@@ -212,6 +241,15 @@
 
   &__address-list {
     width: 100%;
+
+    @include ui-regular {
+      display: flex;
+      flex-direction: column;
+      gap: ui-fluid-regular(14);
+      margin-top: ui-fluid-regular(12);
+      padding-bottom: ui-fluid-regular(20);
+      border-bottom: 1px solid #e5e5e5;
+    }
 
     @include ui-expanded {
       display: flex;
@@ -227,8 +265,24 @@
     display: flex;
     align-items: flex-start;
     width: 100%;
+    min-height: 0;
     padding: 0;
     text-align: left;
+    background: transparent;
+
+    &:hover {
+      background: transparent;
+    }
+
+    .MuiListItemText-root {
+      margin: 0;
+      min-width: 0;
+    }
+
+    @include ui-regular {
+      gap: ui-fluid-regular(12);
+      padding-block: ui-fluid-regular(2);
+    }
 
     @include ui-expanded {
       gap: ui-fluid-expanded(20);
@@ -238,32 +292,40 @@
       height: auto;
       flex: 0 0 auto;
 
+      @include ui-regular {
+        width: ui-fluid-regular(20);
+      }
+
       @include ui-expanded {
         width: ui-fluid-expanded(25);
       }
     }
 
-    &.Mui-selected,
-    &.Mui-selected:hover {
-      background: transparent;
+    &--selected {
+      .contacts-page__address-text {
+        color: $ui-brand;
+      }
     }
 
-    &.Mui-selected .contacts-page__address-text {
+    &:hover .contacts-page__address-text {
       color: $ui-brand;
     }
   }
 
   &__address-text {
+    display: block;
+    font-weight: 400;
     line-height: 1.25;
     color: $ui-text;
+
+    @include ui-regular {
+      font-size: max(12px, ui-fluid-regular(17));
+      line-height: ui-fluid-regular(24);
+    }
 
     @include ui-expanded {
       font-size: ui-fluid-expanded(20);
       line-height: ui-fluid-expanded(30);
-    }
-
-    &:hover {
-      color: $ui-brand;
     }
   }
 
@@ -274,6 +336,10 @@
       display: flex;
       flex-direction: column;
       align-items: flex-start;
+
+      @include ui-regular {
+        margin-top: ui-fluid-regular(18);
+      }
 
       @include ui-expanded {
         margin-top: ui-fluid-expanded(25);
@@ -287,12 +353,21 @@
   &__info-label {
     color: $ui-text-muted;
 
+    @include ui-regular {
+      font-size: max(12px, ui-fluid-regular(15));
+      line-height: ui-fluid-regular(22);
+    }
+
     @include ui-expanded {
       font-size: ui-fluid-expanded(15);
       line-height: ui-fluid-expanded(25);
     }
 
     &:nth-of-type(3) {
+      @include ui-regular {
+        margin-top: ui-fluid-regular(8);
+      }
+
       @include ui-expanded {
         margin-top: ui-fluid-expanded(10);
       }
@@ -302,6 +377,12 @@
   &__info-value {
     font-weight: 500;
     line-height: 1.2;
+
+    @include ui-regular {
+      font-size: max(12px, ui-fluid-regular(22));
+      line-height: ui-fluid-regular(34);
+      white-space: nowrap;
+    }
 
     @include ui-expanded {
       font-size: ui-fluid-expanded(30);
@@ -324,20 +405,8 @@
     cursor: pointer;
     text-align: left;
 
-    @include ui-regular {
-      min-height: ui-fluid-regular(72);
-      margin-bottom: ui-fluid-regular(24);
-      padding: 0 ui-fluid-regular(28);
-      border-width: ui-fluid-regular(2);
-      border-radius: ui-fluid-regular(36);
-    }
-
     &--point {
       margin-bottom: ui-fluid-compact(60);
-
-      @include ui-regular {
-        margin-bottom: ui-fluid-regular(36);
-      }
     }
   }
 
@@ -347,12 +416,6 @@
     height: ui-fluid-compact(80);
     margin-right: ui-fluid-compact(25);
     flex: 0 0 auto;
-
-    @include ui-regular {
-      width: ui-fluid-regular(48);
-      height: ui-fluid-regular(48);
-      margin-right: ui-fluid-regular(16);
-    }
 
     svg {
       width: 100%;
@@ -369,10 +432,6 @@
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
-
-    @include ui-regular {
-      font-size: ui-fluid-regular(28);
-    }
   }
 
   &__row-trailing {
@@ -380,11 +439,6 @@
     width: ui-fluid-compact(21);
     margin-left: ui-fluid-compact(20);
     flex: 0 0 auto;
-
-    @include ui-regular {
-      width: ui-fluid-regular(14);
-      margin-left: ui-fluid-regular(12);
-    }
 
     svg {
       width: 100%;
@@ -398,11 +452,6 @@
     line-height: 1.2;
     text-align: center;
     width: 100%;
-
-    @include ui-regular {
-      margin-bottom: ui-fluid-regular(12);
-      font-size: ui-fluid-regular(24);
-    }
   }
 
   &__phone-btn {
@@ -419,15 +468,6 @@
     font-size: ui-fluid-compact(50);
     font-weight: 500;
     cursor: pointer;
-
-    @include ui-regular {
-      max-width: ui-fluid-regular(420);
-      min-height: ui-fluid-regular(72);
-      margin-bottom: ui-fluid-regular(48);
-      border-width: ui-fluid-regular(2);
-      border-radius: ui-fluid-regular(40);
-      font-size: ui-fluid-regular(28);
-    }
   }
 
   &__switch {
@@ -441,10 +481,11 @@
     border-top: ui-fluid-compact(3) solid rgba(0, 0, 0, 0.2);
 
     @include ui-regular {
-      min-height: ui-fluid-regular(64);
-      margin-top: ui-fluid-regular(24);
-      padding-top: ui-fluid-regular(24);
-      border-top-width: ui-fluid-regular(2);
+      flex: 0 0 auto;
+      min-height: ui-fluid-regular(44);
+      margin-top: auto;
+      padding-top: ui-fluid-regular(14);
+      border-top: 0;
     }
 
     @include ui-expanded {
@@ -459,23 +500,12 @@
       line-height: 1.2;
 
       @include ui-regular {
-        font-size: ui-fluid-regular(24);
+        font-size: max(12px, ui-fluid-regular(15));
       }
 
       @include ui-expanded {
         font-size: ui-fluid-expanded(15);
       }
-    }
-  }
-
-  @include ui-expanded {
-    &__body {
-      min-height: ui-fluid-expanded(450);
-    }
-
-    &__map-area {
-      min-height: ui-fluid-expanded(945);
-      mix-blend-mode: multiply;
     }
   }
 }

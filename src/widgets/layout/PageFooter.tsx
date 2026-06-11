@@ -12,15 +12,21 @@ import { FooterCookie } from '@src/widgets/shell/FooterCookie';
 export type PageFooterProps = {
   storeSeed: StoreBootstrapProps;
   cityLabel?: string;
+  className?: string;
 };
 
-export function PageFooter({ storeSeed, cityLabel }: PageFooterProps) {
+export function PageFooter({
+  storeSeed,
+  cityLabel,
+  className,
+}: PageFooterProps) {
   const resolvedCityLabel =
     cityLabel ?? resolveCityLabel(storeSeed.city, storeSeed.cities);
 
   return (
     <>
       <Footer
+        className={className}
         citySlug={storeSeed.city}
         cityLabel={resolvedCityLabel}
         linkGroups={mapFooterLinks(storeSeed.city, storeSeed.links)}

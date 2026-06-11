@@ -1,5 +1,21 @@
 @use '../../shared/ui/foundation/formulas' as *;
+@use '../../shared/ui/foundation/tokens' as *;
 
 .page-layout {
+  display: flex;
+  flex-direction: column;
   min-height: 100dvh;
+  background: $ui-surface;
+  overflow-x: clip;
+}
+
+.page-layout__content {
+  display: flex;
+  flex: 1 0 auto;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.page-layout__content > .page-frame {
+  flex: 1 0 auto;
 }

@@ -5,9 +5,9 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: sticky;
+  position: fixed;
   bottom: ui-fluid-compact(24);
-  left: 85dvw;
+  right: ui-fluid-compact(24);
   background-color: $ui-surface-medium;
   box-shadow: 0 0 10px $ui-border;
   border-radius: 50%;
@@ -15,6 +15,7 @@
   height: max(44px, ui-fluid-compact(75));
   cursor: pointer;
   transition: all $ui-transition;
+  z-index: $ui-z-header;
 
   &:hover {
     background-color: $ui-border-table;
@@ -31,6 +32,7 @@
 
   @include ui-regular {
     bottom: ui-fluid-regular(32);
+    right: ui-fluid-regular(32);
     width: ui-fluid-regular(28);
     height: ui-fluid-regular(28);
 
@@ -41,7 +43,7 @@
   }
 
   @include ui-expanded {
-    left: 92dvw;
+    right: ui-fluid-expanded(60);
     bottom: ui-fluid-expanded(60);
     width: ui-fluid-expanded(35);
     height: ui-fluid-expanded(35);

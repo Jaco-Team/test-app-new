@@ -20,6 +20,7 @@ export function ContactsClient({ storeSeed }: ContactsClientProps) {
         fallbackCitySlug: storeSeed.city,
         fallbackCityLabel: cityLabel,
       }}
+      footerClassName="ui-footer--contacts-flush"
     >
       <ContactMapBootstrap city={storeSeed.city} />
       <PageFrame className="contacts-page-frame">

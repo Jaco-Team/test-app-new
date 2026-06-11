@@ -51,9 +51,6 @@ export function CompactMenu({
         paper: {
           className: 'ui-header__compact-menu',
         },
-        root: {
-          sx: { zIndex: 1200 },
-        },
       }}
     >
       <motion.nav

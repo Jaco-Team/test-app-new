@@ -100,7 +100,17 @@ $ui-switch-track-on-neutral: rgba(0, 0, 0, 0.7);
   }
 }
 
+// Desktop/tablet panel switch (legacy IOSSwitch). Compact keeps default mobile metrics.
 .ui-mui-switch--size-profile {
+  @include ui-regular {
+    @include ui-mui-switch-ios-metrics(
+      ui-fluid-regular(29),
+      ui-fluid-regular(15),
+      ui-fluid-regular(13),
+      ui-fluid-regular(1.1)
+    );
+  }
+
   @include ui-expanded {
     @include ui-mui-switch-ios-metrics(
       ui-fluid-expanded(58),

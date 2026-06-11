@@ -18,6 +18,7 @@ export type PageLayoutProps = {
     fallbackCityLabel?: string;
     fallbackCitySlug?: string;
   };
+  footerClassName?: string;
   children: ReactNode;
 };
 
@@ -25,7 +26,12 @@ export type PageLayoutProps = {
  * Shared app shell: store bootstrap, global modals, connected header,
  * page body scaffold, and standard footer.
  */
-export function PageLayout({ storeSeed, header, children }: PageLayoutProps) {
+export function PageLayout({
+  storeSeed,
+  header,
+  footerClassName,
+  children,
+}: PageLayoutProps) {
   return (
     <div className="page-layout">
       <StoreBootstrap {...storeSeed} />
@@ -35,8 +41,12 @@ export function PageLayout({ storeSeed, header, children }: PageLayoutProps) {
         fallbackCityLabel={header?.fallbackCityLabel}
         fallbackCitySlug={header?.fallbackCitySlug ?? storeSeed.city}
       />
-      {children}
-      <PageFooter storeSeed={storeSeed} cityLabel={header?.fallbackCityLabel} />
+      <div className="page-layout__content">{children}</div>
+      <PageFooter
+        storeSeed={storeSeed}
+        cityLabel={header?.fallbackCityLabel}
+        className={footerClassName}
+      />
     </div>
   );
 }

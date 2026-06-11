@@ -5,8 +5,8 @@
   --page-frame-top-space: #{ui-fluid-compact(148)};
   --page-frame-bottom-space: #{ui-fluid-compact(48)};
   --page-frame-inline-space: #{ui-fluid-compact(20)};
-  min-height: 100dvh;
   background: $ui-surface;
+  min-width: 0;
 
   @include ui-regular {
     --page-frame-top-space: #{ui-fluid-regular(124)};
@@ -26,6 +26,7 @@
 
   display: grid;
   align-content: start;
+  min-width: 0;
   gap: ui-fluid-compact(18);
   padding: var(--page-frame-top-space, #{ui-fluid-compact(148)})
     var(--page-frame-inline-space, #{ui-fluid-compact(20)})

@@ -32,7 +32,6 @@ function cityName(city: CityRecord): string {
 
 export function ContactsPage() {
   const router = useRouter();
-
   const citySlug = useCityStore((state) => state.slug);
   const cityLabel = useCityStore((state) => state.labelRu);
   const cityList = useCityStore((state) => state.list);
@@ -94,7 +93,7 @@ export function ContactsPage() {
   };
 
   return (
-    <section className="contacts-page">
+    <section className="contacts-page" aria-label="Контакты">
       <div className="contacts-page__body">
         <div className="contacts-page__map-area">
           <ContactsMap />
@@ -116,7 +115,7 @@ export function ContactsPage() {
               className="contacts-page__city-select"
               value={citySlug}
               options={cityOptions}
-              range="expanded"
+              range="responsive"
               surface="outlined"
               onChange={(event) => chooseCity(String(event.target.value))}
             />
@@ -127,18 +126,21 @@ export function ContactsPage() {
                 {myAddr.map((item) => (
                   <ListItemButton
                     key={item.addr}
-                    className="contacts-page__address-item"
+                    className={
+                      'contacts-page__address-item' +
+                      (item.color
+                        ? ' contacts-page__address-item--selected'
+                        : '')
+                    }
+                    disableGutters
                     disableRipple
-                    selected={item.addr === point || Boolean(item.color)}
                     onClick={() => changePointClick(item.addr)}
                   >
-                    <MapPointIcon />
+                    <MapPointIcon aria-hidden />
                     <ListItemText
+                      disableTypography
                       primary={
-                        <span
-                          className="contacts-page__address-text"
-                          style={item.color ? { color: item.color } : undefined}
-                        >
+                        <span className="contacts-page__address-text">
                           {item.addr}
                         </span>
                       }
@@ -163,7 +165,6 @@ export function ContactsPage() {
           </div>
 
           <div className="contacts-page__panel-mobile">
-            <h1 className="contacts-page__mini-title">Контакты</h1>
             <button
               type="button"
               className="contacts-page__row"

@@ -218,3 +218,15 @@
     }
   }
 }
+
+.ui-footer.ui-footer--contacts-flush {
+  margin-top: 0;
+
+  @include ui-regular {
+    margin-top: 0;
+  }
+
+  @include ui-expanded {
+    margin-top: 0;
+  }
+}
