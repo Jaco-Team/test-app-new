@@ -1,7 +1,7 @@
 'use client';
 
 import { ContactMapBootstrap } from '@src/entities/contact';
-import type { StoreBootstrapProps } from '@src/features/bootstrap/StoreBootstrap';
+import type { StoreBootstrapProps } from '@src/features/bootstrap';
 import { resolveCityLabel } from '@src/shared/lib/resolveCityLabel';
 import { PageFrame, PageLayout } from '@src/widgets/layout';
 import { CartPage, CartPageIntro } from './CartPage';
@@ -15,7 +15,7 @@ export function CartClient({ storeSeed }: CartClientProps) {
 
   return (
     <PageLayout
-      storeSeed={{ ...storeSeed, activePage: 'cart' }}
+      storeSeed={storeSeed}
       header={{
         fallbackCitySlug: storeSeed.city,
         fallbackCityLabel: cityLabel,

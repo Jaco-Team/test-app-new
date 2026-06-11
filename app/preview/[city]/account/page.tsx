@@ -1,3 +1,4 @@
+import { mapRouteDataToStoreSeed } from '@src/features/bootstrap';
 import { loadCabinetPageData } from '@src/shared/lib/loadCabinetPageData';
 import { AccountClient } from '@src/pages/account/ui/AccountClient';
 
@@ -13,18 +14,7 @@ export default async function CityAccountPage({
 
   return (
     <AccountClient
-      storeSeed={{
-        city: data.city,
-        cities: data.cities,
-        cats: data.cats,
-        allItems: data.all_items,
-        tags: data.tags,
-        links: data.links,
-        freeItems: data.free_items,
-        needDop: data.need_dop,
-        activePage: 'account',
-        page: data.page,
-      }}
+      storeSeed={mapRouteDataToStoreSeed(data, { activePage: 'account' })}
     />
   );
 }

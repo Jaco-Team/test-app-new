@@ -1,3 +1,4 @@
+import { mapRouteDataToStoreSeed } from '@src/features/bootstrap';
 import { ContactsClient, loadContactsPageData } from '@src/pages/contacts';
 
 type PreviewContactsPageProps = {
@@ -12,18 +13,7 @@ export default async function PreviewContactsPage({
 
   return (
     <ContactsClient
-      storeSeed={{
-        city: data.city,
-        cities: data.cities,
-        cats: data.cats,
-        allItems: data.all_items,
-        freeItems: data.free_items,
-        needDop: data.need_dop,
-        tags: data.tags,
-        links: data.links,
-        activePage: 'contacts',
-        page: data.page,
-      }}
+      storeSeed={mapRouteDataToStoreSeed(data, { activePage: 'contacts' })}
     />
   );
 }

@@ -100,7 +100,7 @@ type DraftState = {
   scheduleTimeId: string;
 };
 
-const DRAFT_STORAGE_PREFIX = 'preview-cart-checkout:';
+const DRAFT_STORAGE_PREFIX = 'cart-checkout:';
 
 const DELIVERY_PAYMENTS: PaymentOption[] = [
   { id: 'cash', label: 'Наличными курьеру' },

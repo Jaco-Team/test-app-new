@@ -45,3 +45,48 @@
 .page-frame__content {
   min-width: 0;
 }
+
+.page-frame--flush {
+  overflow-x: clip;
+  --page-frame-top-space: 0px;
+  --page-frame-bottom-space: 0px;
+  --page-frame-inline-space: 0px;
+
+  .page-frame__inner {
+    gap: 0;
+    width: 100%;
+    max-width: none;
+    margin-inline: 0;
+    padding-inline: 0;
+    overflow-x: clip;
+  }
+
+  .page-frame__content {
+    overflow-x: clip;
+  }
+}
+
+.page-frame--cabinet {
+  @include ui-compact {
+    .page-frame__inner {
+      gap: 0;
+      padding-top: ui-fluid-compact(20);
+    }
+
+    .page-frame__intro {
+      display: none;
+    }
+  }
+}
+
+.page-frame--hero {
+  --page-frame-top-space: #{ui-fluid-compact(132)};
+
+  @include ui-regular {
+    --page-frame-top-space: #{ui-fluid-regular(112)};
+  }
+
+  @include ui-expanded {
+    --page-frame-top-space: #{ui-fluid-expanded(96)};
+  }
+}

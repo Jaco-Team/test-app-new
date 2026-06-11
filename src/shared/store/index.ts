@@ -1,9 +1,0 @@
-export { useCityStore } from '@src/entities/city';
-export { useCatalogStore } from '@src/entities/catalog';
-export { useCartStore } from '@src/entities/cart';
-export { useHeaderStore } from '@src/entities/header';
-export { useHomeStore } from '@src/entities/home';
-export { useFooterStore } from '@src/entities/footer';
-export { useProfileStore } from '@src/entities/profile';
-export { useContactStore } from '@src/entities/contact';
-export { useAkciiStore } from '@src/entities/akcii';

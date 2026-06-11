@@ -1,3 +1,4 @@
+import { mapRouteDataToStoreSeed } from '@src/features/bootstrap';
 import { loadCabinetPageData } from '@src/shared/lib/loadCabinetPageData';
 import { AddressClient } from '@src/pages/address/ui/AddressClient';
 
@@ -15,17 +16,7 @@ export default async function PreviewAddressPage({
 
   return (
     <AddressClient
-      storeSeed={{
-        city: data.city,
-        cities: data.cities,
-        links: data.links,
-        cats: data.cats,
-        allItems: data.all_items,
-        freeItems: data.free_items,
-        needDop: data.need_dop,
-        tags: data.tags,
-        activePage: 'address',
-      }}
+      storeSeed={mapRouteDataToStoreSeed(data, { activePage: 'address' })}
     />
   );
 }

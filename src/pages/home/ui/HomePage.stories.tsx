@@ -21,13 +21,7 @@ const meta = {
   component: HomePage,
   parameters: { layout: 'fullscreen' },
   args: {
-    model: {
-      ...storyModel,
-      products: [
-        { ...productCardFixtures.madeiraSet, id: 'story-madeira-1' },
-        { ...productCardFixtures.madeiraSet, id: 'story-madeira-2' },
-      ],
-    },
+    model: storyModel,
   },
 } satisfies Meta<typeof HomePage>;
 

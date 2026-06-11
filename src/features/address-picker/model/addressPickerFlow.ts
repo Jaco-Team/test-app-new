@@ -2,7 +2,7 @@
 
 import { cityPath } from '@src/shared/lib/sitePaths';
 
-const ADDRESS_PICKER_INTENT_KEY = 'preview-address-picker:intent';
+const ADDRESS_PICKER_INTENT_KEY = 'address-picker:intent';
 
 export type AddressPickerSource = 'cart' | 'profile' | 'address';
 

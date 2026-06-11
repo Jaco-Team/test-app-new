@@ -1,8 +1,7 @@
 'use client';
 
-import { PageFrame, PageLayout } from '@src/widgets/layout';
-import type { StoreBootstrapProps } from '@src/features/bootstrap/StoreBootstrap';
-import { resolveCityLabel } from '@src/shared/lib/resolveCityLabel';
+import type { StoreBootstrapProps } from '@src/features/bootstrap';
+import { AppPageShell } from '@src/widgets/layout';
 import { AddressPage } from './AddressPage';
 
 export type AddressClientProps = {
@@ -10,19 +9,9 @@ export type AddressClientProps = {
 };
 
 export function AddressClient({ storeSeed }: AddressClientProps) {
-  const cityLabel = resolveCityLabel(storeSeed.city, storeSeed.cities);
-
   return (
-    <PageLayout
-      storeSeed={{ ...storeSeed, activePage: 'address' }}
-      header={{
-        fallbackCitySlug: storeSeed.city,
-        fallbackCityLabel: cityLabel,
-      }}
-    >
-      <PageFrame className="address-page-frame">
-        <AddressPage />
-      </PageFrame>
-    </PageLayout>
+    <AppPageShell storeSeed={storeSeed}>
+      <AddressPage />
+    </AppPageShell>
   );
 }

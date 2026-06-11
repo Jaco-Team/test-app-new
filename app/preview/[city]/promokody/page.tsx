@@ -1,3 +1,4 @@
+import { mapRouteDataToStoreSeed } from '@src/features/bootstrap';
 import { loadCabinetPageData } from '@src/shared/lib/loadCabinetPageData';
 import { PromosClient } from '@src/pages/promos/ui/PromosClient';
 
@@ -11,18 +12,7 @@ export default async function CityPromosPage({ params }: CityPromosPageProps) {
 
   return (
     <PromosClient
-      storeSeed={{
-        city: data.city,
-        cities: data.cities,
-        cats: data.cats,
-        allItems: data.all_items,
-        tags: data.tags,
-        links: data.links,
-        freeItems: data.free_items,
-        needDop: data.need_dop,
-        activePage: 'promokody',
-        page: data.page,
-      }}
+      storeSeed={mapRouteDataToStoreSeed(data, { activePage: 'promokody' })}
     />
   );
 }

@@ -17,7 +17,7 @@ import {
   MuiSwitch,
   MuiTextField,
 } from '@src/shared/ui';
-import { useCabinetAccess } from '../model/useCabinetAccess';
+import { useCabinetAccess } from '@src/features/cabinet-access';
 import { useProfilePage } from '../model/useProfilePage';
 import './ProfilePage.scss';
 

@@ -1,3 +1,5 @@
+@use '@src/shared/ui/foundation/formulas' as *;
+
 .cabinet-page-intro {
   display: grid;
   gap: 12px;
@@ -17,7 +19,7 @@
   line-height: 1.5;
 }
 
-@media (max-width: 667px) {
+@include ui-compact {
   .cabinet-page-intro__title {
     font-size: 28px;
   }

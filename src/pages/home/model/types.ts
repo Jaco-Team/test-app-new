@@ -59,6 +59,4 @@ export type HomePageViewModel = {
   categorySecondary: CategoryMenuItem[];
   banners: HomeBannerSlide[];
   tags: HomeTagFilterItem[];
-  products: HomeProduct[];
-  productGroups: HomeProductGroup[];
 };

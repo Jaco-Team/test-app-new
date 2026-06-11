@@ -4,8 +4,8 @@ import { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
 import { useAuthStore } from '@src/features/auth/model/authStore';
+import { useCabinetAccess } from '@src/features/cabinet-access';
 import { cityBase, cityPath } from '@src/shared/lib/sitePaths';
-import { useCabinetAccess } from '@src/pages/profile/model/useCabinetAccess';
 import { useAccountPage } from '../model/useAccountPage';
 import './AccountPage.scss';
 

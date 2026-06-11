@@ -62,6 +62,7 @@ export function useHomeCatalog(model: HomePageViewModel): UseHomeCatalogResult {
       return null;
     }
 
+    // Home store is the canonical catalog source after hydration.
     return mapHomeCatalogView(storeCategories, storeCatalogItems);
   }, [catalogLoaded, storeCatalogItems, storeCategories]);
 

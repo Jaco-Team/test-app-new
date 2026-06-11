@@ -1,24 +1,11 @@
 @use '../../../shared/ui/foundation/formulas' as *;
 @use '../../../shared/ui/foundation/tokens' as *;
 
-.page-frame.profile-page-frame {
-  @include ui-compact {
-    .page-frame__inner {
-      gap: 0;
-      padding-top: ui-fluid-compact(20);
-    }
-
-    .page-frame__intro {
-      display: none;
-    }
-  }
-}
-
 .profile-page {
   color: $ui-text;
 
   @include ui-compact {
-    font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: $ui-font-family;
   }
 }
 
@@ -134,7 +121,7 @@
 
 .profile-page__input.ui-mui-field {
   flex: 1 1 auto;
-  width: auto !important;
+  width: auto;
   min-width: 0;
   margin-left: ui-fluid-compact(30);
 

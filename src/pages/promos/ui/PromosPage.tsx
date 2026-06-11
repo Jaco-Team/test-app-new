@@ -1,6 +1,6 @@
 'use client';
 
-import { useCabinetAccess } from '@src/pages/profile/model/useCabinetAccess';
+import { useCabinetAccess } from '@src/features/cabinet-access';
 import { usePromosPage } from '../model/usePromosPage';
 import './PromosPage.scss';
 

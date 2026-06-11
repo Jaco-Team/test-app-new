@@ -1,6 +1,6 @@
 'use client';
 
-import type { StoreBootstrapProps } from '@src/features/bootstrap/StoreBootstrap';
+import type { StoreBootstrapProps } from '@src/features/bootstrap';
 import {
   mapFooterLinks,
   mapFooterSocialLinks,

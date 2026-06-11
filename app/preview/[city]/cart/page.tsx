@@ -1,3 +1,4 @@
+import { mapRouteDataToStoreSeed } from '@src/features/bootstrap';
 import { loadCartPageData } from '@src/shared/lib/loadCartPageData';
 import { CartClient } from '@src/pages/cart/ui/CartClient';
 
@@ -11,18 +12,7 @@ export default async function CityCartPage({ params }: CityCartPageProps) {
 
   return (
     <CartClient
-      storeSeed={{
-        city: data.city,
-        cities: data.cities,
-        cats: data.cats,
-        allItems: data.all_items,
-        tags: data.tags,
-        links: data.links,
-        freeItems: data.free_items,
-        needDop: data.need_dop,
-        activePage: 'cart',
-        page: data.page,
-      }}
+      storeSeed={mapRouteDataToStoreSeed(data, { activePage: 'cart' })}
     />
   );
 }

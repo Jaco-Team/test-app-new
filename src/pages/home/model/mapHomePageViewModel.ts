@@ -481,7 +481,8 @@ export function mapHomeCatalogView(cats: unknown[], allItems: unknown[]) {
 export function mapHomePageViewModel(data: HomePageRawData): HomePageViewModel {
   const cats = data.cats;
   const normalizedCats = normalizeCategories(cats);
-  // Catalog cards are filled client-side via `get_items_cat` (SSR `all_items` is shallow).
+  // Home catalog cards are owned by useHomeStore.
+  // SSR only seeds menu/category shape; detailed cards arrive client-side via get_items_cat.
   const catalog = mapHomeCatalogView(cats, []);
 
   return {
@@ -495,7 +496,5 @@ export function mapHomePageViewModel(data: HomePageRawData): HomePageViewModel {
     categorySecondary: catalog.categorySecondary,
     banners: mapBanners(data.banners, catalog.products),
     tags: mapTags(data.tags),
-    products: catalog.products,
-    productGroups: catalog.productGroups,
   };
 }

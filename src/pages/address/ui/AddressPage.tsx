@@ -3,9 +3,9 @@
 import { useEffect } from 'react';
 import Link from 'next/link';
 import { useRouter } from 'next/navigation';
+import { useCabinetAccess } from '@src/features/cabinet-access';
 import { Button } from '@src/shared/ui';
 import { cityPath } from '@src/shared/lib/sitePaths';
-import { useCabinetAccess } from '@src/pages/profile/model/useCabinetAccess';
 import { useAddressPage } from '../model/useAddressPage';
 import './AddressPage.scss';
 

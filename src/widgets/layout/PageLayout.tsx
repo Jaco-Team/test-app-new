@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import {
   StoreBootstrap,
   type StoreBootstrapProps,
-} from '@src/features/bootstrap/StoreBootstrap';
+} from '@src/features/bootstrap';
 import type { HeaderNavItem } from '@ui/widgets/Header/Header';
 import { ConnectedHeader } from '@src/widgets/header/ConnectedHeader';
 import { AppShell } from '@src/widgets/shell/AppShell';

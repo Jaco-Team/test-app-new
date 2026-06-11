@@ -1,47 +1,15 @@
 @use '../../../shared/ui/foundation/formulas' as *;
 @use '../../../shared/ui/foundation/tokens' as *;
 
-.page-frame.contacts-page-frame {
-  overflow-x: clip;
-  --page-frame-top-space: 0px;
-  --page-frame-bottom-space: 0px;
-
-  @include ui-compact {
-    --page-frame-inline-space: 0px;
-
-    .page-frame__inner {
-      gap: 0;
-      padding-inline: 0;
-      overflow-x: clip;
-    }
-  }
+.page-frame.page-frame--flush.contacts-page-frame {
+  --page-frame-top-space: #{ui-fluid-compact(148)};
 
   @include ui-regular {
-    --page-frame-inline-space: 0px;
-
-    .page-frame__inner {
-      gap: 0;
-      max-width: none;
-      width: 100%;
-      margin-inline: 0;
-      padding-inline: 0;
-      overflow-x: clip;
-    }
+    --page-frame-top-space: #{ui-fluid-regular(80)};
   }
 
   @include ui-expanded {
-    .page-frame__inner {
-      gap: 0;
-      max-width: none;
-      width: 100%;
-      margin-inline: 0;
-      padding-inline: 0;
-      overflow-x: clip;
-    }
-  }
-
-  .page-frame__content {
-    overflow-x: clip;
+    --page-frame-top-space: #{ui-fluid-expanded(64)};
   }
 }
 
@@ -50,7 +18,7 @@
   overflow-x: clip;
 
   @include ui-compact {
-    font-family: Roboto, 'Helvetica Neue', Helvetica, Arial, sans-serif;
+    font-family: $ui-font-family;
   }
 
   &__body {

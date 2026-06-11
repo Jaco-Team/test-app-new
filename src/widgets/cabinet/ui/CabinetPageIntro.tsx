@@ -6,7 +6,7 @@ import type { ProfileSectionKey } from './ProfileSectionNav';
 import { ProfileSectionNav } from './ProfileSectionNav';
 import './CabinetPageIntro.scss';
 
-type CabinetPageIntroProps = {
+export type CabinetPageIntroProps = {
   title: string;
   activePage: ProfileSectionKey;
   description?: ReactNode;

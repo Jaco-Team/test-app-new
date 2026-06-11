@@ -2,7 +2,7 @@
 
 import { format } from 'date-fns';
 import { ru } from 'date-fns/locale';
-import { useCabinetAccess } from '@src/pages/profile/model/useCabinetAccess';
+import { useCabinetAccess } from '@src/features/cabinet-access';
 import { useOrdersPage } from '../model/useOrdersPage';
 import './OrdersPage.scss';
 

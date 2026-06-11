@@ -38,20 +38,20 @@
     letter-spacing: 0.22em;
   }
 
-  &__submit {
-    margin-top: ui-fluid-compact(8) !important;
-    min-height: ui-fluid-compact(88) !important;
-    border-radius: ui-fluid-compact(44) !important;
-    background-color: $ui-brand !important;
-    font-size: ui-fluid-compact(32) !important;
-    text-transform: none !important;
+  &__submit.ui-button {
+    margin-top: ui-fluid-compact(8);
+    min-height: ui-fluid-compact(88);
+    border-radius: ui-fluid-compact(44);
+    background-color: $ui-brand;
+    font-size: ui-fluid-compact(32);
+    text-transform: none;
   }
 
-  &__link {
-    margin-top: 0 !important;
-    color: $ui-text !important;
-    font-size: ui-fluid-compact(28) !important;
-    text-transform: none !important;
+  &__link.ui-button {
+    margin-top: 0;
+    color: $ui-text;
+    font-size: ui-fluid-compact(28);
+    text-transform: none;
   }
 
   &__note {

@@ -1,7 +1,7 @@
 'use client';
 
 import { PageLayout } from '@src/widgets/layout';
-import type { StoreBootstrapProps } from '@src/features/bootstrap/StoreBootstrap';
+import type { StoreBootstrapProps } from '@src/features/bootstrap';
 import type { HomePageViewModel } from '../model/types';
 import { HomePage } from './HomePage';
 

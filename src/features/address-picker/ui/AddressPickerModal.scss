@@ -23,7 +23,7 @@
   }
 
   &__content.MuiDialogContent-root {
-    padding: 0 20px 20px !important;
+    padding: 0 20px 20px;
   }
 
   &__body {
@@ -317,7 +317,7 @@
     padding-top: 4px;
   }
 
-  @media (max-width: 667px) {
+  @include ui-compact {
     &__field-group--name {
       grid-template-columns: 1fr;
     }
@@ -335,7 +335,7 @@
     }
 
     &__content.MuiDialogContent-root {
-      padding: 0 28px 28px !important;
+      padding: 0 28px 28px;
     }
 
     &__body,
@@ -388,7 +388,7 @@
     }
 
     &__content.MuiDialogContent-root {
-      padding: 0 40px 40px !important;
+      padding: 0 40px 40px;
     }
 
     &__body {
