@@ -296,6 +296,7 @@
 2. [x] Убрать page-level `!important`.
 3. [ ] Перенести MUI overrides в shared component layer.
    - [x] Перевести `BannerDetailsModal` и `ProductDetailsModal` с `MuiDialogContent-root` на shared `ui-modal-wrapper__content`.
+   - [x] Перевести локальные field hooks в `ProfilePage` и `AuthModal` с raw `.MuiInputBase-*`/legacy `InputProps`/`inputProps` на local slot classes и `slotProps`, без переноса page-specific visual styling в shared props.
          Прогресс: `AddressPickerModal` больше не хранит общий responsive sizing/padding для `MuiTextField`/`MuiSelectField`/`MuiAutocompleteField`; этот contract теперь живет в `src/shared/ui/components/internal/muiControl/*`. Title/content styling для `ModalWrapper` и `AddressPickerModal` тоже опирается на shared wrapper classes, а не на `MuiDialog*` root selectors. `BannerDetailsModal` и `ProductDetailsModal` больше не завязаны на `MuiDialogContent-root`, используют только shared `ui-modal-wrapper__content` contract.
 4. [x] Сократить nested overrides на `.page-frame__*`.
 
@@ -469,6 +470,13 @@
 - `slots`/`slotProps` используются правильно;
 - theme overrides централизованы;
 - raw MUI не размазан по новым shared controls.
+- shared controls должны быть responsive-by-default: обычное app-использование без `range` обязано адаптироваться под compact/regular/expanded;
+- ручной `range` оставляем как pin для Storybook/spec states и для измеренных исключений, где конкретный layout намеренно фиксирует размер.
+
+Сделано:
+
+- `Button`, `PurchaseControl` и основные MUI field wrappers переведены на `responsive` как default range;
+- из app-кода убраны явные `range="responsive"`, где они только дублировали новый default.
 
 ### 3. Но в app code еще остаются legacy-style MUI props
 

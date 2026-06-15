@@ -2,6 +2,10 @@
 @use '../../shared/ui/foundation/tokens' as *;
 
 .auth-modal {
+  & .MuiDialog-paper.auth-modal__paper {
+    width: min(100vw - 32px, 520px);
+  }
+
   &.ui-modal-wrapper--sheet .ui-modal-wrapper__content {
     padding: 0;
   }
@@ -25,7 +29,33 @@
     margin: 0;
   }
 
-  &__field--code .MuiInputBase-input {
+  &__toggle {
+    display: grid;
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+    gap: ui-fluid-compact(8);
+    margin-bottom: ui-fluid-compact(8);
+    padding: ui-fluid-compact(8);
+    border-radius: ui-fluid-compact(44);
+    background: $ui-control-bg;
+  }
+
+  &__toggle-button.ui-button {
+    min-width: 0;
+    border: 0;
+    background: transparent;
+    color: $ui-text;
+    box-shadow: none;
+  }
+
+  &__toggle-button.ui-button .ui-button__label {
+    overflow: visible;
+  }
+
+  &__toggle-button--active.ui-button {
+    background: $ui-surface;
+  }
+
+  &__code-input {
     text-align: center;
     letter-spacing: 0.22em;
   }
@@ -103,15 +133,47 @@
   }
 
   @include ui-regular {
+    & .MuiDialog-paper.auth-modal__paper {
+      width: min(100vw - 32px, 460px);
+    }
+
     &__body {
       padding: ui-fluid-regular(32) ui-fluid-regular(40);
-      min-width: ui-fluid-regular(360);
+      min-width: 0;
       gap: ui-fluid-regular(10);
     }
 
     &__title {
+      margin-bottom: ui-fluid-regular(6);
       font-size: ui-fluid-regular(28);
     }
+
+    &__toggle {
+      gap: ui-fluid-regular(6);
+      margin-bottom: ui-fluid-regular(6);
+      padding: ui-fluid-regular(4);
+      border-radius: ui-fluid-regular(24);
+    }
+
+    &__toggle-button.ui-button {
+      min-height: ui-fluid-regular(44);
+      padding-inline: ui-fluid-regular(12);
+      font-size: ui-fluid-regular(16);
+      border-radius: ui-fluid-regular(20);
+    }
+
+    &__submit.ui-button {
+      margin-top: ui-fluid-regular(6);
+      min-height: ui-fluid-regular(56);
+      border-radius: ui-fluid-regular(28);
+      font-size: ui-fluid-regular(22);
+    }
+
+    &__link.ui-button {
+      min-height: ui-fluid-regular(44);
+      font-size: ui-fluid-regular(16);
+    }
+
     &__note,
     &__finish-text {
       font-size: ui-fluid-regular(14);
@@ -137,15 +199,47 @@
   }
 
   @include ui-expanded {
+    & .MuiDialog-paper.auth-modal__paper {
+      width: min(100vw - 72px, 460px);
+    }
+
     &__body {
-      padding: ui-fluid-expanded(32) ui-fluid-expanded(40);
-      min-width: ui-fluid-expanded(360);
+      padding: ui-fluid-expanded(28) ui-fluid-expanded(32) ui-fluid-expanded(32);
+      min-width: 0;
       gap: ui-fluid-expanded(10);
     }
 
     &__title {
-      font-size: ui-fluid-expanded(24);
+      margin-bottom: ui-fluid-expanded(4);
+      font-size: ui-fluid-expanded(19);
     }
+
+    &__toggle {
+      gap: ui-fluid-expanded(6);
+      margin-bottom: ui-fluid-expanded(4);
+      padding: ui-fluid-expanded(4);
+      border-radius: ui-fluid-expanded(24);
+    }
+
+    &__toggle-button.ui-button {
+      min-height: ui-fluid-expanded(40);
+      padding-inline: ui-fluid-expanded(12);
+      font-size: ui-fluid-expanded(15);
+      border-radius: ui-fluid-expanded(20);
+    }
+
+    &__submit.ui-button {
+      margin-top: ui-fluid-expanded(6);
+      min-height: ui-fluid-expanded(48);
+      border-radius: ui-fluid-expanded(24);
+      font-size: ui-fluid-expanded(16);
+    }
+
+    &__link.ui-button {
+      min-height: ui-fluid-expanded(40);
+      font-size: ui-fluid-expanded(15);
+    }
+
     &__note,
     &__finish-text {
       font-size: ui-fluid-expanded(13);

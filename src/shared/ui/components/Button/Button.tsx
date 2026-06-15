@@ -4,7 +4,7 @@ import './Button.scss';
 
 export type ButtonTone = 'primary' | 'secondary' | 'neutral' | 'muted' | 'cart';
 export type ButtonSize = 'xs' | 'sm' | 'md' | 'lg' | 'xl';
-export type ButtonRange = 'compact' | 'regular' | 'expanded';
+export type ButtonRange = 'compact' | 'regular' | 'expanded' | 'responsive';
 export type ButtonDensity = ButtonRange;
 
 export type ButtonProps = {
@@ -33,7 +33,7 @@ export function Button({
   type = 'button',
   ...props
 }: ButtonProps) {
-  const resolvedRange = range ?? density ?? 'regular';
+  const resolvedRange = range ?? density ?? 'responsive';
 
   return (
     <button

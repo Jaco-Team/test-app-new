@@ -85,6 +85,7 @@ export function ModalWrapper({
   const rootClassName = cn(
     'ui-modal-wrapper',
     'ui-modal-wrapper--' + variant,
+    closeOutside && 'ui-modal-wrapper--close-outside',
     sheet && 'ui-modal-wrapper--sheet',
     sheet && hideSheetHeader && 'ui-modal-wrapper--sheet-header-hidden',
     !sheet && responsive && 'ui-modal-wrapper--responsive-dialog',

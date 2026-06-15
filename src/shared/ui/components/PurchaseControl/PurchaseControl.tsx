@@ -40,7 +40,7 @@ export function PurchaseControl({
   onQuantityChange,
   tone = 'muted',
   size = 'md',
-  range = 'regular',
+  range = 'responsive',
   priceSize = 'md',
   disabled = false,
   className,

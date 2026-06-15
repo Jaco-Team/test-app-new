@@ -36,7 +36,7 @@ export type MuiSelectWithButtonProps = Omit<
 
 export function MuiSelectWithButton({
   options,
-  range = 'regular',
+  range = 'responsive',
   surface = 'plain',
   startAdornment,
   endAdornment,

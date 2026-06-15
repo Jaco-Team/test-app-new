@@ -285,6 +285,11 @@
       background: $ui-surface;
     }
 
+    & .MuiInputLabel-root:not(.MuiInputLabel-shrink) {
+      top: 50%;
+      transform: translate(14px, -50%) scale(1);
+    }
+
     @include ui-regular {
       & .MuiInputBase-root {
         min-height: ui-fluid-regular(56);

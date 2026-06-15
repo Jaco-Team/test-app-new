@@ -38,6 +38,7 @@ export function AuthModal({ city }: AuthModalProps) {
       onClose={closeModalAuth}
       variant="responsive"
       className="auth-modal"
+      paperClassName="auth-modal__paper"
       contentClassName="auth-modal__content"
       closeOutside
       closeOnBackdrop

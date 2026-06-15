@@ -20,7 +20,7 @@ export type MuiTextFieldProps = Omit<TextFieldProps, 'variant'> & {
 };
 
 export function MuiTextField({
-  range = 'regular',
+  range = 'responsive',
   surface = 'plain',
   layout = 'default',
   startAdornment,

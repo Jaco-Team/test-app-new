@@ -45,7 +45,7 @@ export function MuiAutocompleteField<
 >({
   id,
   name,
-  range = 'regular',
+  range = 'responsive',
   surface = 'outlined',
   layout = 'default',
   textFieldClassName,

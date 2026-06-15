@@ -115,7 +115,6 @@ export function ContactsPage() {
               className="contacts-page__city-select"
               value={citySlug}
               options={cityOptions}
-              range="responsive"
               surface="outlined"
               onChange={(event) => chooseCity(String(event.target.value))}
             />

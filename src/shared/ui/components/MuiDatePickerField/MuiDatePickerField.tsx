@@ -26,7 +26,7 @@ export type MuiDatePickerFieldProps<TDate extends Date = Date> = Omit<
 };
 
 export function MuiDatePickerField<TDate extends Date = Date>({
-  range = 'regular',
+  range = 'responsive',
   surface = 'plain',
   className,
   startAdornment,

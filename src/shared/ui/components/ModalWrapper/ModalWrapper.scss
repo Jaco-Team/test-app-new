@@ -39,6 +39,10 @@
     width: min(80vw, calc(100vw - 40px));
   }
 
+  &--close-outside .MuiDialog-paper.ui-modal-wrapper__paper {
+    overflow: visible;
+  }
+
   &--regular-dialog .MuiDialog-paper.ui-modal-wrapper__paper {
     width: min(94vw, calc(100vw - 32px));
     max-height: calc(100dvh - 32px);
@@ -194,14 +198,15 @@
     }
 
     &__close--outside {
+      top: 0;
       left: calc(-1 * ui-fluid-regular(52));
       right: auto;
     }
 
     &--regular-dialog &__close--outside {
-      left: auto;
-      right: ui-fluid-regular(18);
-      top: ui-fluid-regular(16);
+      top: 0;
+      left: calc(-1 * ui-fluid-regular(52));
+      right: auto;
     }
   }
 

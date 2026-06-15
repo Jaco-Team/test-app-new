@@ -98,15 +98,16 @@
     min-width: 0;
   }
 
-  .MuiFormControl-root {
+  .ui-mui-mobile-date-picker-field,
+  .profile-page__birthday-input {
     width: 100%;
   }
 
-  .MuiOutlinedInput-root fieldset {
+  .profile-page__birthday-control fieldset {
     border: 0;
   }
 
-  .MuiOutlinedInput-input {
+  .profile-page__birthday-element {
     padding: 0;
     margin-left: ui-fluid-compact(30);
     font-size: ui-fluid-compact(37);
@@ -124,29 +125,29 @@
   width: auto;
   min-width: 0;
   margin-left: ui-fluid-compact(30);
+}
 
-  .MuiInputBase-root {
-    height: ui-fluid-compact(74);
-    padding: 0;
-  }
+.profile-page__input-control {
+  height: ui-fluid-compact(74);
+  padding: 0;
+}
 
-  .MuiInputBase-input {
-    height: ui-fluid-compact(74);
-    padding: 0;
-    font-size: ui-fluid-compact(37);
-    font-weight: 500;
-    line-height: 1.2;
-  }
+.profile-page__input-element {
+  height: ui-fluid-compact(74);
+  padding: 0;
+  font-size: ui-fluid-compact(37);
+  font-weight: 500;
+  line-height: 1.2;
+}
 
-  .MuiInputBase-input::placeholder {
-    font-size: ui-fluid-compact(30);
-    font-weight: 400;
-    color: rgba(0, 0, 0, 0.4);
-  }
+.profile-page__input-element::placeholder {
+  font-size: ui-fluid-compact(30);
+  font-weight: 400;
+  color: rgba(0, 0, 0, 0.4);
+}
 
-  fieldset {
-    border: 0;
-  }
+.profile-page__input-control fieldset {
+  border: 0;
 }
 
 .profile-page__readonly-value {
@@ -269,7 +270,7 @@
   }
 }
 
-.profile-page__desktop-input.ui-mui-field .MuiInputBase-root {
+.profile-page__desktop-input-control {
   min-height: ui-fluid-regular(54);
 
   @include ui-expanded {
@@ -378,7 +379,7 @@
   }
 }
 
-.profile-page__birthday-input--desktop .MuiOutlinedInput-root {
+.profile-page__birthday-desktop-control {
   max-width: ui-fluid-expanded(420);
 }
 

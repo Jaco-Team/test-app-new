@@ -27,6 +27,37 @@ function blurActiveElement() {
   }
 }
 
+const profileCompactInputSlotProps = {
+  input: {
+    className: 'profile-page__input-control',
+  },
+  htmlInput: {
+    className: 'profile-page__input-element',
+  },
+} as const;
+
+const profileDesktopInputSlotProps = {
+  input: {
+    className: 'profile-page__desktop-input-control',
+  },
+} as const;
+
+const profileCompactBirthdayTextFieldSlotProps = {
+  input: {
+    className: 'profile-page__birthday-control',
+  },
+  htmlInput: {
+    className: 'profile-page__birthday-element',
+    style: { fontWeight: 500, userSelect: 'none' },
+  },
+} as const;
+
+const profileDesktopBirthdayTextFieldSlotProps = {
+  input: {
+    className: 'profile-page__birthday-desktop-control',
+  },
+} as const;
+
 export function ProfilePage() {
   const router = useRouter();
   const searchParams = useSearchParams();
@@ -108,6 +139,7 @@ export function ProfilePage() {
               range="compact"
               surface="plain"
               placeholder="Имя"
+              slotProps={profileCompactInputSlotProps}
               value={name}
               onChange={(event) => setName(event.target.value)}
               onBlur={saveMainData}
@@ -136,11 +168,7 @@ export function ProfilePage() {
               onClose={blurActiveElement}
               slotProps={{
                 textField: {
-                  slotProps: {
-                    htmlInput: {
-                      style: { fontWeight: 500, userSelect: 'none' },
-                    },
-                  },
+                  slotProps: profileCompactBirthdayTextFieldSlotProps,
                 },
               }}
             />
@@ -161,6 +189,7 @@ export function ProfilePage() {
               placeholder="Электронная @ почта"
               type="email"
               autoComplete="off"
+              slotProps={profileCompactInputSlotProps}
               value={mail}
               onChange={(event) => setMail(event.target.value)}
               onBlur={saveMainData}
@@ -198,25 +227,29 @@ export function ProfilePage() {
         <div className="profile-page__hero-fields">
           <MuiTextField
             className="profile-page__desktop-input"
-            range="responsive"
             surface="outlined"
             placeholder="Имя"
+            slotProps={profileDesktopInputSlotProps}
             value={name}
             onChange={(event) => setName(event.target.value)}
             onBlur={saveMainData}
           />
           <MuiTextField
             className="profile-page__desktop-input"
-            range="responsive"
             surface="outlined"
             value={login}
-            InputProps={{ readOnly: true }}
+            slotProps={{
+              ...profileDesktopInputSlotProps,
+              htmlInput: {
+                readOnly: true,
+              },
+            }}
           />
           <MuiTextField
             className="profile-page__desktop-input"
-            range="responsive"
             surface="outlined"
             placeholder="name@mail.ru"
+            slotProps={profileDesktopInputSlotProps}
             value={mail}
             onChange={(event) => setMail(event.target.value)}
             onBlur={saveMainData}
@@ -246,7 +279,6 @@ export function ProfilePage() {
           </div>
           <MuiMobileDatePickerField
             className="profile-page__birthday-input profile-page__birthday-input--desktop"
-            range="responsive"
             surface="outlined"
             value={birthDate}
             onChange={(value) => setBirthDate(value)}
@@ -255,6 +287,11 @@ export function ProfilePage() {
             maxDate={maxDate}
             disabled={birthDateLocked}
             onAccept={(value) => saveBirthDate(value)}
+            slotProps={{
+              textField: {
+                slotProps: profileDesktopBirthdayTextFieldSlotProps,
+              },
+            }}
           />
           <p className="profile-page__birthday-note">
             Дату рождения можно выбрать только один раз. Будьте внимательны, так

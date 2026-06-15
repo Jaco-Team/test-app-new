@@ -426,7 +426,6 @@ export function CartPage() {
                               : 'deliveryAddress'
                           }
                           className="cart-page__control-field"
-                          range="responsive"
                           surface="plain"
                           startAdornment={<HomeOutlinedIcon />}
                           value={checkout.selectedAddressId}
@@ -490,7 +489,6 @@ export function CartPage() {
                       id="cart-pickup-point"
                       name="pickupPoint"
                       className="cart-page__control-field"
-                      range="responsive"
                       surface="plain"
                       startAdornment={<StorefrontOutlinedIcon />}
                       value={checkout.pickupPointId}
@@ -552,7 +550,6 @@ export function CartPage() {
                         id="cart-schedule-mode"
                         name="scheduleMode"
                         className="cart-page__control-field"
-                        range="responsive"
                         surface="plain"
                         startAdornment={<ScheduleRoundedIcon />}
                         value={checkout.scheduleMode}
@@ -571,7 +568,6 @@ export function CartPage() {
                         {clientOnlyControl(
                           <MuiDatePickerField
                             className="cart-page__control-field"
-                            range="responsive"
                             surface="plain"
                             startAdornment={<AccessTimeOutlinedIcon />}
                             value={checkout.selectedScheduleDate}
@@ -600,7 +596,6 @@ export function CartPage() {
                             id="cart-schedule-time"
                             name="scheduleTime"
                             className="cart-page__control-field"
-                            range="responsive"
                             surface="plain"
                             startAdornment={<ScheduleRoundedIcon />}
                             value={checkout.scheduleTimeId}
@@ -665,7 +660,6 @@ export function CartPage() {
                       id="cart-payment"
                       name="paymentMethod"
                       className="cart-page__control-field"
-                      range="responsive"
                       surface="plain"
                       startAdornment={<CreditCardOutlinedIcon />}
                       value={checkout.paymentId}
@@ -732,7 +726,6 @@ export function CartPage() {
                         id="cart-comment"
                         name="comment"
                         className="cart-page__control-field"
-                        range="responsive"
                         surface="plain"
                         startAdornment={
                           checkout.orderType === 'delivery' ? (
@@ -888,7 +881,6 @@ export function CartPage() {
                   id="cart-promo-code"
                   name="promoCode"
                   className="cart-page__promo-input"
-                  range="responsive"
                   surface="outlined"
                   placeholder="Есть промокод"
                   value={checkout.promoCode}

@@ -35,6 +35,11 @@
     padding: 0 ui-fluid-compact(28);
     font-size: ui-fluid-compact(38);
   }
+  &--range-responsive {
+    min-height: ui-fluid-compact($ui-button-compact);
+    padding: 0 ui-fluid-compact(28);
+    font-size: ui-fluid-compact(38);
+  }
   &--range-regular {
     min-height: ui-fluid-compact($ui-button-regular);
     padding: 0 ui-fluid-compact(36);
@@ -113,6 +118,11 @@
       padding: 0 ui-fluid-regular(22);
       font-size: ui-fluid-regular(22);
     }
+    &--range-responsive {
+      min-height: ui-fluid-regular(63);
+      padding: 0 ui-fluid-regular(30);
+      font-size: ui-fluid-regular(25);
+    }
     &--range-regular {
       min-height: ui-fluid-regular(63);
       padding: 0 ui-fluid-regular(30);
@@ -145,6 +155,11 @@
       min-height: ui-fluid-expanded(40);
       padding: 0 ui-fluid-expanded(20);
       font-size: ui-fluid-expanded(13);
+    }
+    &--range-responsive {
+      min-height: ui-fluid-expanded(48);
+      padding: 0 ui-fluid-expanded(26);
+      font-size: ui-fluid-expanded(16);
     }
     &--range-regular {
       min-height: ui-fluid-expanded(48);

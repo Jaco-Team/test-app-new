@@ -28,7 +28,7 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
 
   const titleMap = {
     start: 'Мой Жако',
-    create: 'Регистрация',
+    create: 'Мой Жако',
     loginSMS: 'Вход по СМС',
     loginSMSCode: 'Проверочный код',
     resetPWD: 'Восстановление входа',
@@ -52,7 +52,6 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             onChange={changeLogin}
             className="auth-modal__field"
             layout="auth-modal"
-            range="compact"
             placeholder="8 (000) 000-00-00"
           />
           <MuiTextField
@@ -62,7 +61,6 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             onChange={setPwdLogin}
             className="auth-modal__field"
             layout="auth-modal"
-            range="compact"
             placeholder="Введите пароль"
           />
           <Button
@@ -71,7 +69,6 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             className="auth-modal__submit"
             onClick={() => void logIn()}
             size="lg"
-            range="compact"
           >
             Войти
           </Button>
@@ -81,7 +78,6 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             className="auth-modal__link"
             onClick={() => navigate('loginSMS')}
             size="sm"
-            range="compact"
           >
             Вход по СМС
           </Button>
@@ -96,7 +92,6 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             onChange={changeLogin}
             className="auth-modal__field"
             layout="auth-modal"
-            range="compact"
             placeholder="8 (000) 000-00-00"
           />
           <MuiTextField
@@ -106,7 +101,6 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             onChange={setPwdLogin}
             className="auth-modal__field"
             layout="auth-modal"
-            range="compact"
             placeholder="Пароль не обязателен"
           />
           <Button
@@ -114,7 +108,6 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             className="auth-modal__submit"
             onClick={() => void sendsmsNewLogin()}
             size="lg"
-            range="compact"
           >
             Получить код
           </Button>
@@ -132,8 +125,13 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             onChange={(event) => changeCode(event.target.value)}
             className="auth-modal__field auth-modal__field--code"
             layout="auth-modal"
-            inputProps={{ maxLength: 4, inputMode: 'numeric' }}
-            range="compact"
+            slotProps={{
+              htmlInput: {
+                className: 'auth-modal__code-input',
+                maxLength: 4,
+                inputMode: 'numeric',
+              },
+            }}
             placeholder="0000"
           />
         </>
@@ -147,7 +145,6 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             onChange={changeLogin}
             className="auth-modal__field"
             layout="auth-modal"
-            range="compact"
             placeholder="8 (000) 000-00-00"
           />
           <Button
@@ -160,7 +157,6 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
               }
             }}
             size="lg"
-            range="compact"
           >
             Зарегистрироваться
           </Button>
@@ -176,7 +172,6 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             fullWidth
             className="auth-modal__submit"
             size="lg"
-            range="compact"
             onClick={() => navigate('loginSMS')}
           >
             Войти по СМС
@@ -200,7 +195,6 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             fullWidth
             className="auth-modal__submit"
             size="lg"
-            range="compact"
             onClick={() => {
               window.location.href = cityPath(city, '');
             }}
@@ -222,7 +216,6 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
           className="auth-modal__link"
           tone="muted"
           size="sm"
-          range="compact"
           onClick={() => {
             window.location.href = cityPath(city, 'profile');
           }}
@@ -241,15 +234,31 @@ function AuthModalToggle() {
   const registerMode = typeLogin === 'create';
 
   return (
-    <Button
-      fullWidth
-      className="auth-modal__link"
-      tone="muted"
-      size="sm"
-      range="compact"
-      onClick={() => navigate(registerMode ? 'start' : 'create')}
-    >
-      {registerMode ? 'Уже есть аккаунт' : 'Создать аккаунт'}
-    </Button>
+    <div className="auth-modal__toggle" role="tablist" aria-label="Режим входа">
+      <Button
+        className={
+          'auth-modal__toggle-button' +
+          (!registerMode ? ' auth-modal__toggle-button--active' : '')
+        }
+        tone="muted"
+        size="sm"
+        aria-pressed={!registerMode}
+        onClick={() => navigate('start')}
+      >
+        Вход
+      </Button>
+      <Button
+        className={
+          'auth-modal__toggle-button' +
+          (registerMode ? ' auth-modal__toggle-button--active' : '')
+        }
+        tone="muted"
+        size="sm"
+        aria-pressed={registerMode}
+        onClick={() => navigate('create')}
+      >
+        Регистрация
+      </Button>
+    </div>
   );
 }

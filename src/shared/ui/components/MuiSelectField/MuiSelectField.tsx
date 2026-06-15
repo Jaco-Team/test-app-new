@@ -35,7 +35,7 @@ export type MuiSelectFieldProps = Omit<
 
 export function MuiSelectField({
   options,
-  range = 'regular',
+  range = 'responsive',
   surface = 'plain',
   layout = 'default',
   startAdornment,
