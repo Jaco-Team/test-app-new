@@ -72,6 +72,10 @@ function getStreetMapCenterFromJson(json) {
   return null;
 }
 
+function shouldReportMissingStreetMapCenter(streetId) {
+  return Number(streetId) > 0;
+}
+
 function loadScriptOnce(src) {
   if (typeof document === 'undefined') {
     return Promise.resolve(false);
@@ -4302,7 +4306,7 @@ export const useProfileStore = reuseHotStore(
           let json = await api('profile', data);
           const mapCenter = getStreetMapCenterFromJson(json);
 
-          if (!mapCenter) {
+          if (!mapCenter && shouldReportMissingStreetMapCenter(id)) {
             captureMapStateIssue(
               'Street map response does not contain map center',
               {
@@ -4556,7 +4560,7 @@ export const useProfileStore = reuseHotStore(
 
           const mapCenter = getStreetMapCenterFromJson(json);
 
-          if (!mapCenter) {
+          if (!mapCenter && shouldReportMissingStreetMapCenter(id)) {
             captureMapStateIssue(
               'Street map response does not contain map center',
               {
