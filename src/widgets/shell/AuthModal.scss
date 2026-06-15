@@ -25,14 +25,6 @@
     margin: 0;
   }
 
-  &__field .MuiInputBase-root {
-    min-height: ui-fluid-compact(88);
-    padding: 0 ui-fluid-compact(28);
-    border: 1px solid rgba(0, 0, 0, 0.12);
-    border-radius: ui-fluid-compact(44);
-    background: $ui-surface;
-  }
-
   &__field--code .MuiInputBase-input {
     text-align: center;
     letter-spacing: 0.22em;
@@ -120,13 +112,6 @@
     &__title {
       font-size: ui-fluid-regular(28);
     }
-
-    &__field .MuiInputBase-root {
-      min-height: ui-fluid-regular(56);
-      padding: 0 ui-fluid-regular(18);
-      border-radius: ui-fluid-regular(28);
-    }
-
     &__note,
     &__finish-text {
       font-size: ui-fluid-regular(14);
@@ -161,13 +146,6 @@
     &__title {
       font-size: ui-fluid-expanded(24);
     }
-
-    &__field .MuiInputBase-root {
-      min-height: ui-fluid-expanded(46);
-      padding: 0 ui-fluid-expanded(16);
-      border-radius: ui-fluid-expanded(23);
-    }
-
     &__note,
     &__finish-text {
       font-size: ui-fluid-expanded(13);

@@ -207,6 +207,7 @@ export function AddressPickerModal() {
                 placeholder="Название адреса"
                 value={draft.name}
                 onChange={(event) => setDraftField('name', event.target.value)}
+                layout="address-picker"
                 range="responsive"
                 surface="outlined"
                 slotProps={{
@@ -224,6 +225,7 @@ export function AddressPickerModal() {
                 aria-label="Город"
                 value={activeCityId}
                 options={cityOptions}
+                layout="address-picker"
                 range="responsive"
                 surface="outlined"
                 onChange={(event) =>
@@ -255,6 +257,7 @@ export function AddressPickerModal() {
               getOptionLabel={formatAddressPickerSuggestion}
               loading={loading}
               filterOptions={(options) => options}
+              layout="address-picker"
               range="responsive"
               surface="outlined"
               placeholder="Улица и номер дома"
@@ -294,6 +297,7 @@ export function AddressPickerModal() {
                 type="number"
                 value={draft.pd}
                 onChange={(event) => setDraftField('pd', event.target.value)}
+                layout="address-picker"
                 range="responsive"
                 surface="outlined"
                 slotProps={{
@@ -309,6 +313,7 @@ export function AddressPickerModal() {
                 type="number"
                 value={draft.et}
                 onChange={(event) => setDraftField('et', event.target.value)}
+                layout="address-picker"
                 range="responsive"
                 surface="outlined"
                 slotProps={{

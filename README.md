@@ -59,6 +59,7 @@ Storybook documents components; it is not the DS source. The old `stories/` tree
 - Keep changes scoped and simple.
 - Prefer existing project patterns before adding abstractions.
 - TypeScript in `src/`; legacy JS remains allowed during migration.
+- Agent/chat responses are report-only by default: do not paste diffs, patch output, file bodies, or large code snippets into chat unless explicitly requested.
 - Do not run format/lint/prettier/eslint unless explicitly requested.
 
 ## Agent tooling (Cursor)

@@ -1,14 +1,11 @@
 'use client';
 
-import { useEffect } from 'react';
 import { useProfileStore } from '@src/entities/profile';
 import { useAddressPickerStore } from '@src/features/address-picker';
-
-const PROFILE_MODULE = 'profile';
+import { useCabinetProfileData } from '@src/features/cabinet-access';
 
 export function useAddressPage(citySlug: string, token: string) {
-  const streets = useProfileStore((state) => state.streets);
-  const getUserInfo = useProfileStore((state) => state.getUserInfo);
+  const { streets } = useCabinetProfileData(citySlug, token);
   const openAddressPicker = useAddressPickerStore(
     (state) => state.openAddressPicker
   );
@@ -21,14 +18,6 @@ export function useAddressPage(citySlug: string, token: string) {
       source: 'address',
     });
   }
-
-  useEffect(() => {
-    if (!token.length) {
-      return;
-    }
-
-    void getUserInfo(PROFILE_MODULE, citySlug, token);
-  }, [citySlug, getUserInfo, token]);
 
   return {
     streets,

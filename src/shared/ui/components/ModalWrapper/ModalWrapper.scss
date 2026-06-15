@@ -44,7 +44,7 @@
     max-height: calc(100dvh - 32px);
   }
 
-  &__title.MuiDialogTitle-root {
+  &__title {
     margin: 0;
     padding: 0;
     font: inherit;
@@ -52,7 +52,7 @@
     text-align: inherit;
   }
 
-  &__content.MuiDialogContent-root {
+  &__content {
     padding: 0;
     overflow: visible;
   }
@@ -129,7 +129,7 @@
     pointer-events: none;
   }
 
-  &--sheet &__title.MuiDialogTitle-root {
+  &--sheet &__title {
     flex: 0 0 auto;
     width: 100%;
     margin: 0;
@@ -137,11 +137,11 @@
     text-align: center;
   }
 
-  &--sheet-header-hidden &__title.MuiDialogTitle-root {
+  &--sheet-header-hidden &__title {
     padding: ui-fluid-compact(28) ui-fluid-compact(30) 0;
   }
 
-  &--sheet &__content.MuiDialogContent-root {
+  &--sheet &__content {
     flex: 1 1 auto;
     min-height: 0;
     max-height: none;
@@ -225,7 +225,8 @@
     }
 
     &__close--outside {
-      left: calc(-1 * ui-fluid-expanded(40));
+      top: 0;
+      left: calc(-1 * ui-fluid-expanded(60));
       right: auto;
     }
   }

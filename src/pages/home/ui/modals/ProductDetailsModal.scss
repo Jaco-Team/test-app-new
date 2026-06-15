@@ -7,7 +7,7 @@
     overflow: hidden;
   }
 
-  &__content.MuiDialogContent-root {
+  &__content {
     max-height: inherit;
     padding: 0;
     border-radius: ui-fluid-compact(24);
@@ -548,7 +548,7 @@
       max-height: calc(100dvh - 32px);
     }
 
-    &__content.MuiDialogContent-root {
+    &__content {
       display: flex;
       max-height: inherit;
       border-radius: ui-fluid-regular(28);
@@ -779,7 +779,7 @@
   }
 
   @include ui-expanded {
-    &__content.MuiDialogContent-root {
+    &__content {
       border-radius: ui-fluid-expanded(32);
     }
     &__set-head {
@@ -1052,7 +1052,7 @@
     overflow: hidden;
   }
 
-  &__content.MuiDialogContent-root {
+  &__content {
     padding: 0;
   }
 
@@ -1068,7 +1068,7 @@
 
 .home-product-modal--info-open {
   .home-product-modal__paper.ui-modal-wrapper__paper,
-  .home-product-modal__content.MuiDialogContent-root,
+  .home-product-modal__content,
   .home-product-modal__layout--info {
     background: $ui-surface-info;
   }

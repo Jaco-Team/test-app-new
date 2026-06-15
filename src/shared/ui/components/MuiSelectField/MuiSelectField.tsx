@@ -8,6 +8,7 @@ import {
   createMuiControlSx,
   getMuiControlClassName,
   mergeTextFieldSlotProps,
+  type MuiControlLayout,
   type MuiControlRange,
   type MuiControlSurface,
 } from '../internal/muiControl/shared';
@@ -25,6 +26,7 @@ export type MuiSelectFieldProps = Omit<
   options: MuiSelectOption[];
   range?: MuiControlRange;
   surface?: MuiControlSurface;
+  layout?: MuiControlLayout;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
   placeholder?: ReactNode;
@@ -35,6 +37,7 @@ export function MuiSelectField({
   options,
   range = 'regular',
   surface = 'plain',
+  layout = 'default',
   startAdornment,
   endAdornment,
   placeholder,
@@ -84,7 +87,10 @@ export function MuiSelectField({
   return (
     <TextField
       {...props}
-      className={getMuiControlClassName(range, className, { surface })}
+      className={getMuiControlClassName(range, className, {
+        layout,
+        surface,
+      })}
       variant="outlined"
       fullWidth
       select

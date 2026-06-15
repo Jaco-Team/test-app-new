@@ -9,12 +9,14 @@ function ArrowUp() {
   const scrollToTop = () => window?.scrollTo({ top: 0, behavior: 'smooth' });
 
   return (
-    <div
+    <button
+      type="button"
+      aria-label="Наверх"
       className={cn('ui-arrow-up', !isVisible && 'ui-arrow-up--hidden')}
       onClick={scrollToTop}
     >
       <ArrowUpIcon fill="#fff" />
-    </div>
+    </button>
   );
 }
 export default memo(ArrowUp);

@@ -226,6 +226,81 @@
       font-size: ui-fluid-expanded(16);
     }
   }
+
+  &--layout-address-picker.ui-mui-field--range-responsive {
+    & .MuiInputBase-root,
+    & .MuiAutocomplete-inputRoot {
+      min-height: 64px;
+      padding-inline: 20px;
+    }
+
+    & .MuiInputBase-input,
+    & .MuiSelect-select,
+    & .MuiAutocomplete-input {
+      font-size: 17px;
+      line-height: 1.24;
+    }
+
+    & .MuiInputBase-input::placeholder,
+    & .MuiAutocomplete-input::placeholder {
+      color: rgba(0, 0, 0, 0.42);
+      opacity: 1;
+    }
+
+    @include ui-regular {
+      & .MuiInputBase-root,
+      & .MuiAutocomplete-inputRoot {
+        min-height: 56px;
+        padding-inline: 18px;
+      }
+
+      & .MuiInputBase-input,
+      & .MuiSelect-select,
+      & .MuiAutocomplete-input {
+        font-size: 16px;
+      }
+    }
+
+    @include ui-expanded {
+      & .MuiInputBase-root,
+      & .MuiAutocomplete-inputRoot {
+        min-height: 48px;
+        padding-inline: 16px;
+      }
+
+      & .MuiInputBase-input,
+      & .MuiSelect-select,
+      & .MuiAutocomplete-input {
+        font-size: 15px;
+      }
+    }
+  }
+
+  &--surface-plain.ui-mui-field--layout-auth-modal {
+    & .MuiInputBase-root {
+      min-height: ui-fluid-compact(88);
+      padding: 0 ui-fluid-compact(28);
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      border-radius: ui-fluid-compact(44);
+      background: $ui-surface;
+    }
+
+    @include ui-regular {
+      & .MuiInputBase-root {
+        min-height: ui-fluid-regular(56);
+        padding: 0 ui-fluid-regular(18);
+        border-radius: ui-fluid-regular(28);
+      }
+    }
+
+    @include ui-expanded {
+      & .MuiInputBase-root {
+        min-height: ui-fluid-expanded(46);
+        padding: 0 ui-fluid-expanded(16);
+        border-radius: ui-fluid-expanded(23);
+      }
+    }
+  }
 }
 
 .ui-mui-field__listbox {

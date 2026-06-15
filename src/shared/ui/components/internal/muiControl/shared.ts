@@ -9,10 +9,12 @@ import './styles.scss';
 
 export type MuiControlRange = 'compact' | 'regular' | 'expanded' | 'responsive';
 export type MuiControlSurface = 'plain' | 'outlined';
+export type MuiControlLayout = 'default' | 'address-picker' | 'auth-modal';
 
 type MuiControlClassOptions = {
   multiline?: boolean;
   surface?: MuiControlSurface;
+  layout?: MuiControlLayout;
 };
 
 export function getMuiControlClassName(
@@ -20,12 +22,17 @@ export function getMuiControlClassName(
   className?: string,
   options: MuiControlClassOptions = {}
 ) {
-  const { multiline = false, surface = 'outlined' } = options;
+  const {
+    multiline = false,
+    surface = 'outlined',
+    layout = 'default',
+  } = options;
 
   return cn(
     'ui-mui-field',
     'ui-mui-field--range-' + range,
     'ui-mui-field--surface-' + surface,
+    layout !== 'default' && 'ui-mui-field--layout-' + layout,
     multiline && 'ui-mui-field--multiline',
     className
   );

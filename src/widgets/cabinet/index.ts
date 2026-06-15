@@ -10,3 +10,7 @@ export {
   ProfileSectionNav,
   type ProfileSectionKey,
 } from './ui/ProfileSectionNav';
+export {
+  CompactCabinetGate,
+  type CompactCabinetGateProps,
+} from './ui/CompactCabinetGate';

@@ -6,11 +6,11 @@
     overflow: hidden;
   }
 
-  &__content.MuiDialogContent-root {
+  &__content {
     padding: 0;
   }
 
-  &:not(.ui-modal-wrapper--sheet) &__content.MuiDialogContent-root {
+  &:not(.ui-modal-wrapper--sheet) &__content {
     max-height: calc(100dvh - 48px);
     overflow-x: hidden;
     overflow-y: auto;

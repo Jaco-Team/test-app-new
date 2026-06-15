@@ -5,17 +5,17 @@
   display: flex;
   justify-content: center;
   align-items: center;
-  position: fixed;
-  bottom: ui-fluid-compact(24);
-  right: ui-fluid-compact(24);
+  position: absolute;
   background-color: $ui-surface-medium;
   box-shadow: 0 0 10px $ui-border;
+  border: 0;
   border-radius: 50%;
   width: max(44px, ui-fluid-compact(75));
   height: max(44px, ui-fluid-compact(75));
   cursor: pointer;
   transition: all $ui-transition;
-  z-index: $ui-z-header;
+  padding: 0;
+  z-index: calc($ui-z-header - 1);
 
   &:hover {
     background-color: $ui-border-table;
@@ -27,31 +27,29 @@
   }
 
   &--hidden {
-    display: none;
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
   }
 
   @include ui-regular {
-    bottom: ui-fluid-regular(32);
-    right: ui-fluid-regular(32);
-    width: ui-fluid-regular(28);
-    height: ui-fluid-regular(28);
+    width: ui-fluid-regular(31);
+    height: ui-fluid-regular(31);
 
     svg {
-      width: ui-fluid-regular(19);
-      height: ui-fluid-regular(19);
+      width: ui-fluid-regular(21);
+      height: ui-fluid-regular(21);
     }
   }
 
   @include ui-expanded {
-    right: ui-fluid-expanded(60);
-    bottom: ui-fluid-expanded(60);
-    width: ui-fluid-expanded(35);
-    height: ui-fluid-expanded(35);
+    width: ui-fluid-expanded(49);
+    height: ui-fluid-expanded(49);
     box-shadow: 0 ui-fluid-expanded(4) ui-fluid-expanded(12) rgba(0, 0, 0, 0.15);
 
     svg {
-      width: ui-fluid-expanded(23);
-      height: ui-fluid-expanded(23);
+      width: ui-fluid-expanded(32);
+      height: ui-fluid-expanded(32);
     }
   }
 }

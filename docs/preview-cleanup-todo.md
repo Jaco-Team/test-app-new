@@ -1,5 +1,11 @@
 # TODO: cleanup preview core
 
+## Pinned rules
+
+- Каждый шаг должен оставлять код читаемым на senior-уровне, но без лишней хитрости: решение должно быть понятно обычному разработчику без расшифровки скрытых контрактов.
+- После каждого прикладного шага запускать `npm run typecheck` и фиксировать результат, помечать пункт как выполненный, не удалять.
+- Не вставлять в чат diff'ы, patch output, тела измененных файлов, before/after snippets и длинные кодовые блоки: в ответе только короткий статус, результат typecheck и риски/следующие шаги, если пользователь явно не попросил показать код.
+
 ## Цель
 
 Привести preview-код под `app/preview/**` + `src/**` к одной предсказуемой схеме:
@@ -12,6 +18,8 @@
 ## Критичные архитектурные проблемы
 
 ### 1. У preview-страниц нет одного reuse layout contract
+
+Статус: выполнено для типовых preview-страниц через `AppPageShell` и `CabinetPageShell`; route/client glue уже сведены к `storeSeed` + page-specific props.
 
 Сейчас почти каждая client page собирает одинаковый каркас вручную:
 
@@ -82,6 +90,8 @@
 
 ### 4. Есть прямые cross-page зависимости внутри слоя `pages`
 
+Статус: выполнено; общие cabinet pieces вынесены из `pages/profile/**` в `src/widgets/cabinet/**`, а `useCabinetAccess` живет в `src/features/cabinet-access/**`.
+
 Файлы:
 
 - `src/pages/promos/ui/PromosClient.tsx`
@@ -105,6 +115,8 @@
 
 ### 5. `shared/store/index.ts` нарушает слой `shared`
 
+Статус: выполнено; `shared/store/index.ts` удален, остался только shared infra вроде `hotStore`.
+
 Файл:
 
 - `src/shared/store/index.ts`
@@ -123,6 +135,8 @@
 ## Проблемы layout/composition
 
 ### 1. `PageFrame` используется как базовый layout, но страницы его ломают локальными override
+
+Статус: выполнено; layout contract живет в `PageFrame` modifiers, `contacts` больше не переопределяет frame spacing через page-level `.page-frame` selector.
 
 Файлы:
 
@@ -192,6 +206,8 @@
 
 ### 2. Много `!important` и deep overrides MUI internals
 
+Статус: частично выполнено; responsive field chrome для `AddressPickerModal` вынесен в shared `ui-mui-field` layout modifier, а `ModalWrapper`/`AddressPickerModal` title-content slots уже не завязаны на `MuiDialogTitle-root` / `MuiDialogContent-root`, но dialog/picker-specific MUI internals еще не дочищены.
+
 Файлы:
 
 - `src/features/address-picker/ui/AddressPickerModal.scss`
@@ -236,13 +252,13 @@
 
 Нужен минимальный contract:
 
-1. `PreviewPageShell`
+1. `AppPageShell`
 2. `CabinetPageShell`
 3. `PageFrame` c variant props, без page-level nested overrides
 
 Пример обязанностей:
 
-- `PreviewPageShell`
+- `AppPageShell`
   - принимает `storeSeed`, `activePage`, `header`, `footerMode`
   - монтирует `PageLayout`
 - `CabinetPageShell`
@@ -263,7 +279,7 @@
 
 ### Этап 2. Layout contract
 
-1. [x] Спроектировать `PreviewPageShell`.
+1. [x] Спроектировать `AppPageShell`.
 2. [x] Спроектировать `CabinetPageShell`.
 3. [x] Добавить `PageFrame` variants вместо SCSS overrides.
 4. [x] Перевести `contacts`, `profile`, `orders`, `promos`, `account`, `address` на новый shell.
@@ -279,7 +295,9 @@
 1. [x] Убрать raw `@media` и raw font stacks из preview/page SCSS.
 2. [x] Убрать page-level `!important`.
 3. [ ] Перенести MUI overrides в shared component layer.
-4. [ ] Сократить nested overrides на `.page-frame__*`.
+   - [x] Перевести `BannerDetailsModal` и `ProductDetailsModal` с `MuiDialogContent-root` на shared `ui-modal-wrapper__content`.
+         Прогресс: `AddressPickerModal` больше не хранит общий responsive sizing/padding для `MuiTextField`/`MuiSelectField`/`MuiAutocompleteField`; этот contract теперь живет в `src/shared/ui/components/internal/muiControl/*`. Title/content styling для `ModalWrapper` и `AddressPickerModal` тоже опирается на shared wrapper classes, а не на `MuiDialog*` root selectors. `BannerDetailsModal` и `ProductDetailsModal` больше не завязаны на `MuiDialogContent-root`, используют только shared `ui-modal-wrapper__content` contract.
+4. [x] Сократить nested overrides на `.page-frame__*`.
 
 ## Файлы первого приоритета
 

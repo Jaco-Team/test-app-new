@@ -90,3 +90,15 @@
     --page-frame-top-space: #{ui-fluid-expanded(96)};
   }
 }
+
+.page-frame--spacing-tight-top {
+  --page-frame-top-space: #{ui-fluid-compact(148)};
+
+  @include ui-regular {
+    --page-frame-top-space: #{ui-fluid-regular(80)};
+  }
+
+  @include ui-expanded {
+    --page-frame-top-space: #{ui-fluid-expanded(64)};
+  }
+}

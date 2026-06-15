@@ -19,3 +19,34 @@
 .page-layout__content > .page-frame {
   flex: 1 0 auto;
 }
+
+.page-layout__arrow-anchor {
+  position: sticky;
+  bottom: ui-fluid-compact(24);
+  z-index: $ui-z-header;
+  height: 0;
+  pointer-events: none;
+
+  @include ui-regular {
+    bottom: ui-fluid-regular(32);
+  }
+
+  @include ui-expanded {
+    bottom: ui-fluid-expanded(60);
+  }
+}
+
+.page-layout__arrow-anchor .ui-arrow-up {
+  pointer-events: auto;
+  position: absolute;
+  right: ui-fluid-compact(24);
+  bottom: ui-fluid-compact(12);
+
+  @include ui-regular {
+    right: ui-fluid-regular(32);
+  }
+
+  @include ui-expanded {
+    right: ui-fluid-expanded(60);
+  }
+}

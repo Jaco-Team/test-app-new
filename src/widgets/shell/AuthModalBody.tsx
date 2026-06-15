@@ -51,6 +51,7 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             value={loginLogin}
             onChange={changeLogin}
             className="auth-modal__field"
+            layout="auth-modal"
             range="compact"
             placeholder="8 (000) 000-00-00"
           />
@@ -60,6 +61,7 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             value={pwdLogin}
             onChange={setPwdLogin}
             className="auth-modal__field"
+            layout="auth-modal"
             range="compact"
             placeholder="Введите пароль"
           />
@@ -93,6 +95,7 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             value={loginLogin}
             onChange={changeLogin}
             className="auth-modal__field"
+            layout="auth-modal"
             range="compact"
             placeholder="8 (000) 000-00-00"
           />
@@ -102,6 +105,7 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             value={pwdLogin}
             onChange={setPwdLogin}
             className="auth-modal__field"
+            layout="auth-modal"
             range="compact"
             placeholder="Пароль не обязателен"
           />
@@ -127,6 +131,7 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             value={code}
             onChange={(event) => changeCode(event.target.value)}
             className="auth-modal__field auth-modal__field--code"
+            layout="auth-modal"
             inputProps={{ maxLength: 4, inputMode: 'numeric' }}
             range="compact"
             placeholder="0000"
@@ -141,6 +146,7 @@ export function AuthModalBody({ city }: AuthModalBodyProps) {
             value={loginLogin}
             onChange={changeLogin}
             className="auth-modal__field"
+            layout="auth-modal"
             range="compact"
             placeholder="8 (000) 000-00-00"
           />

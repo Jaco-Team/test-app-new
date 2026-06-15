@@ -4,7 +4,7 @@ import type { ReactNode } from 'react';
 import type { StoreBootstrapProps } from '@src/features/bootstrap';
 import { resolveCityLabel } from '@src/shared/lib/resolveCityLabel';
 import type { HeaderNavItem } from '@ui/widgets/Header/Header';
-import type { PageFrameVariant } from './PageFrame';
+import type { PageFrameSpacing, PageFrameVariant } from './PageFrame';
 import { PageFrame } from './PageFrame';
 import { PageLayout } from './PageLayout';
 
@@ -14,6 +14,7 @@ export type AppPageShellProps = {
   intro?: ReactNode;
   frameClassName?: string;
   frameVariant?: PageFrameVariant;
+  frameSpacing?: PageFrameSpacing;
   footerClassName?: string;
   fallbackNav?: HeaderNavItem[];
   beforeFrame?: ReactNode;
@@ -25,6 +26,7 @@ export function AppPageShell({
   intro,
   frameClassName,
   frameVariant,
+  frameSpacing,
   footerClassName,
   fallbackNav,
   beforeFrame,
@@ -46,6 +48,7 @@ export function AppPageShell({
         className={frameClassName}
         intro={intro}
         variant={frameVariant}
+        spacing={frameSpacing}
       >
         {children}
       </PageFrame>

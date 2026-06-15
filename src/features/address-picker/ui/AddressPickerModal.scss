@@ -14,7 +14,7 @@
     }
   }
 
-  &__title.MuiDialogTitle-root {
+  &__title {
     padding: 22px 20px 14px;
     font-size: 24px;
     font-weight: 700;
@@ -22,7 +22,7 @@
     text-align: center;
   }
 
-  &__content.MuiDialogContent-root {
+  &__content {
     padding: 0 20px 20px;
   }
 
@@ -42,25 +42,6 @@
     display: grid;
     gap: 16px;
     min-width: 0;
-  }
-
-  &__form .ui-mui-field--range-responsive .MuiOutlinedInput-root,
-  &__form .ui-mui-field--range-responsive .MuiAutocomplete-inputRoot {
-    min-height: 64px;
-    padding-inline: 20px;
-  }
-
-  &__form .ui-mui-field--range-responsive .MuiInputBase-input,
-  &__form .ui-mui-field--range-responsive .MuiSelect-select,
-  &__form .ui-mui-field--range-responsive .MuiAutocomplete-input {
-    font-size: 17px;
-    line-height: 1.24;
-  }
-
-  &__form .ui-mui-field--range-responsive .MuiInputBase-input::placeholder,
-  &__form .ui-mui-field--range-responsive .MuiAutocomplete-input::placeholder {
-    color: rgba(0, 0, 0, 0.42);
-    opacity: 1;
   }
 
   &__map-panel {
@@ -328,13 +309,13 @@
   }
 
   @include ui-regular {
-    &__title.MuiDialogTitle-root {
+    &__title {
       padding: 26px 28px 18px;
       font-size: 28px;
       text-align: left;
     }
 
-    &__content.MuiDialogContent-root {
+    &__content {
       padding: 0 28px 28px;
     }
 
@@ -345,18 +326,6 @@
 
     &__form {
       gap: 14px;
-    }
-
-    &__form .ui-mui-field--range-responsive .MuiOutlinedInput-root,
-    &__form .ui-mui-field--range-responsive .MuiAutocomplete-inputRoot {
-      min-height: 56px;
-      padding-inline: 18px;
-    }
-
-    &__form .ui-mui-field--range-responsive .MuiInputBase-input,
-    &__form .ui-mui-field--range-responsive .MuiSelect-select,
-    &__form .ui-mui-field--range-responsive .MuiAutocomplete-input {
-      font-size: 16px;
     }
 
     &__map-shell {
@@ -381,13 +350,13 @@
   }
 
   @include ui-expanded {
-    &__title.MuiDialogTitle-root {
+    &__title {
       padding: 34px 40px 22px;
       font-size: 36px;
       text-align: left;
     }
 
-    &__content.MuiDialogContent-root {
+    &__content {
       padding: 0 40px 40px;
     }
 
@@ -404,18 +373,6 @@
     &__map-panel,
     &__form {
       gap: 18px;
-    }
-
-    &__form .ui-mui-field--range-responsive .MuiOutlinedInput-root,
-    &__form .ui-mui-field--range-responsive .MuiAutocomplete-inputRoot {
-      min-height: 48px;
-      padding-inline: 16px;
-    }
-
-    &__form .ui-mui-field--range-responsive .MuiInputBase-input,
-    &__form .ui-mui-field--range-responsive .MuiSelect-select,
-    &__form .ui-mui-field--range-responsive .MuiAutocomplete-input {
-      font-size: 15px;
     }
 
     &__section-title {

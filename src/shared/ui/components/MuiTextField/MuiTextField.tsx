@@ -6,6 +6,7 @@ import {
   createMuiControlSx,
   getMuiControlClassName,
   mergeTextFieldSlotProps,
+  type MuiControlLayout,
   type MuiControlRange,
   type MuiControlSurface,
 } from '../internal/muiControl/shared';
@@ -13,6 +14,7 @@ import {
 export type MuiTextFieldProps = Omit<TextFieldProps, 'variant'> & {
   range?: MuiControlRange;
   surface?: MuiControlSurface;
+  layout?: MuiControlLayout;
   startAdornment?: ReactNode;
   endAdornment?: ReactNode;
 };
@@ -20,6 +22,7 @@ export type MuiTextFieldProps = Omit<TextFieldProps, 'variant'> & {
 export function MuiTextField({
   range = 'regular',
   surface = 'plain',
+  layout = 'default',
   startAdornment,
   endAdornment,
   className,
@@ -33,6 +36,7 @@ export function MuiTextField({
       {...props}
       className={getMuiControlClassName(range, className, {
         multiline,
+        layout,
         surface,
       })}
       multiline={multiline}

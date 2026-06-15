@@ -8,6 +8,7 @@ import {
 import type { HeaderNavItem } from '@ui/widgets/Header/Header';
 import { ConnectedHeader } from '@src/widgets/header/ConnectedHeader';
 import { AppShell } from '@src/widgets/shell/AppShell';
+import ArrowUp from '@ui/components/ArrowUp/ArrowUp';
 import { PageFooter } from './PageFooter';
 import './PageLayout.scss';
 
@@ -42,6 +43,9 @@ export function PageLayout({
         fallbackCitySlug={header?.fallbackCitySlug ?? storeSeed.city}
       />
       <div className="page-layout__content">{children}</div>
+      <div className="page-layout__arrow-anchor">
+        <ArrowUp />
+      </div>
       <PageFooter
         storeSeed={storeSeed}
         cityLabel={header?.fallbackCityLabel}

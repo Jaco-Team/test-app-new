@@ -5,11 +5,13 @@ import { cn } from '@ui/foundation/classNames';
 import './PageFrame.scss';
 
 export type PageFrameVariant = 'default' | 'flush' | 'cabinet' | 'hero';
+export type PageFrameSpacing = 'default' | 'tight-top';
 
 export type PageFrameProps = HTMLAttributes<HTMLElement> & {
   intro?: ReactNode;
   children: ReactNode;
   variant?: PageFrameVariant;
+  spacing?: PageFrameSpacing;
 };
 
 export function PageFrame({
@@ -17,6 +19,7 @@ export function PageFrame({
   intro,
   children,
   variant = 'default',
+  spacing = 'default',
   ...props
 }: PageFrameProps) {
   return (
@@ -24,6 +27,7 @@ export function PageFrame({
       className={cn(
         'page-frame',
         variant !== 'default' && `page-frame--${variant}`,
+        spacing !== 'default' && `page-frame--spacing-${spacing}`,
         className
       )}
       {...props}

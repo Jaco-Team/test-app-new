@@ -56,6 +56,8 @@
 
 ## Local Notes
 
+- Chat output is report-only by default: never paste diffs, patch output, file bodies, before/after snippets, or copied code into chat unless the user explicitly asks to see code.
+- Prefer short status reports that name outcome, verification, risks, and next steps; the user reviews concrete edits in VS Code.
 - Do not run format, lint, prettier, or eslint commands unless explicitly requested.
 - Keep generated local Codex files under `.codex/`; this directory is ignored by git.
 - Master plan: `TODO-NEW.md`.

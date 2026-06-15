@@ -13,9 +13,9 @@ export function ContactsClient({ storeSeed }: ContactsClientProps) {
   return (
     <AppPageShell
       storeSeed={storeSeed}
-      frameClassName="contacts-page-frame"
       footerClassName="ui-footer--contacts-flush"
       frameVariant="flush"
+      frameSpacing="tight-top"
       beforeFrame={<ContactMapBootstrap city={storeSeed.city} />}
     >
       <ContactsPage />

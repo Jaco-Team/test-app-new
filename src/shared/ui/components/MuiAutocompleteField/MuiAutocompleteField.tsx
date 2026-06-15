@@ -11,6 +11,7 @@ import {
   createEndAdornment,
   createStartAdornment,
   getMuiControlClassName,
+  type MuiControlLayout,
   type MuiControlRange,
   type MuiControlSurface,
 } from '../internal/muiControl/shared';
@@ -28,6 +29,7 @@ export type MuiAutocompleteFieldProps<
   name?: string;
   range?: MuiControlRange;
   surface?: MuiControlSurface;
+  layout?: MuiControlLayout;
   textFieldClassName?: string;
   placeholder?: string;
   helperText?: ReactNode;
@@ -45,6 +47,7 @@ export function MuiAutocompleteField<
   name,
   range = 'regular',
   surface = 'outlined',
+  layout = 'default',
   textFieldClassName,
   placeholder,
   helperText,
@@ -82,6 +85,7 @@ export function MuiAutocompleteField<
           fullWidth={params.fullWidth}
           size={params.size}
           className={getMuiControlClassName(range, textFieldClassName, {
+            layout,
             surface,
           })}
           placeholder={placeholder}

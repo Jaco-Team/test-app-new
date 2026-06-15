@@ -1,5 +1,7 @@
 # Cart Address Flow Plan
 
+Коммуникационное правило для исполнения этого плана: в чат отправляются только короткие отчеты по изменениям и проверкам. Не вставлять diff'ы, patch output, тела файлов и длинные кодовые блоки, если пользователь явно не попросил показать код.
+
 ## Done now
 
 - Desktop cart selects no longer use fake placeholder options.

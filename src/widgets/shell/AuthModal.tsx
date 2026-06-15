@@ -39,6 +39,7 @@ export function AuthModal({ city }: AuthModalProps) {
       variant="responsive"
       className="auth-modal"
       contentClassName="auth-modal__content"
+      closeOutside
       closeOnBackdrop
       labelledBy="auth-modal-title"
     >
