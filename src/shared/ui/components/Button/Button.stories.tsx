@@ -2,6 +2,24 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Stack, Inline } from '../../primitives';
 import { Button } from './Button';
 
+const compactViewport = {
+  viewport: {
+    defaultViewport: 'mobileMin',
+  },
+} as const;
+
+const regularViewport = {
+  viewport: {
+    defaultViewport: 'tabletMin',
+  },
+} as const;
+
+const expandedViewport = {
+  viewport: {
+    defaultViewport: 'desktopMin',
+  },
+} as const;
+
 const meta = {
   title: 'UI/Компоненты/Кнопка',
   component: Button,
@@ -13,15 +31,18 @@ type Story = StoryObj<typeof meta>;
 export const ПоУмолчанию: Story = { name: 'По умолчанию' };
 export const Компактная: Story = {
   name: 'Компактная',
-  args: { range: 'compact', size: 'sm', children: 'Добавить' },
+  args: { size: 'sm', children: 'Добавить' },
+  parameters: compactViewport,
 };
 export const Обычная: Story = {
   name: 'Обычная',
   args: { size: 'md', children: '349 ₽' },
+  parameters: regularViewport,
 };
 export const Расширенная: Story = {
   name: 'Расширенная',
-  args: { range: 'expanded', size: 'xl', children: 'В корзину за 1 349 ₽' },
+  args: { size: 'xl', children: 'В корзину за 1 349 ₽' },
+  parameters: expandedViewport,
 };
 export const Активная: Story = {
   name: 'Активная',
@@ -50,9 +71,9 @@ export const Варианты: Story = {
         <Button tone="cart">Корзина</Button>
       </Inline>
       <Inline wrap>
-        <Button range="compact">Компактная</Button>
-        <Button>Обычная</Button>
-        <Button range="expanded">Крупная</Button>
+        <Button size="sm">Меньше</Button>
+        <Button>База</Button>
+        <Button size="xl">Больше</Button>
       </Inline>
     </Stack>
   ),

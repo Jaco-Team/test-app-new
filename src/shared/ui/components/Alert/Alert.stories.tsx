@@ -44,7 +44,7 @@ export const Состояния: Story = {
         tone="error"
         title="Ошибка"
         action={
-          <Button tone="secondary" range="compact">
+          <Button tone="secondary" size="sm">
             Повторить
           </Button>
         }

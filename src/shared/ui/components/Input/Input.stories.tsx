@@ -2,6 +2,24 @@ import type { Meta, StoryObj } from '@storybook/react';
 import { Stack } from '../../primitives';
 import { Input } from './Input';
 
+const compactViewport = {
+  viewport: {
+    defaultViewport: 'mobileMin',
+  },
+} as const;
+
+const regularViewport = {
+  viewport: {
+    defaultViewport: 'tabletMin',
+  },
+} as const;
+
+const expandedViewport = {
+  viewport: {
+    defaultViewport: 'desktopMin',
+  },
+} as const;
+
 const meta = {
   title: 'UI/Компоненты/Поле ввода',
   component: Input,
@@ -22,9 +40,15 @@ const meta = {
 export default meta;
 type Story = StoryObj<typeof meta>;
 export const ПоУмолчанию: Story = {};
-export const Компактный: Story = { args: { density: 'compact' } };
-export const Обычный: Story = { args: { density: 'regular' } };
-export const Крупный: Story = { args: { density: 'expanded' } };
+export const Компактный: Story = {
+  parameters: compactViewport,
+};
+export const Обычный: Story = {
+  parameters: regularViewport,
+};
+export const Крупный: Story = {
+  parameters: expandedViewport,
+};
 export const Недоступный: Story = { args: { disabled: true } };
 export const Ошибка: Story = {
   args: { tone: 'error', helperText: 'Проверьте значение' },

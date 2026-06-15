@@ -7,8 +7,6 @@ import { useCityStore } from '@src/entities/city';
 import { useFooterStore } from '@src/entities/footer';
 import { useHeaderStore } from '@src/entities/header';
 import { useHomeStore } from '@src/entities/home';
-import { useProfileStore } from '@src/entities/profile';
-import { hitAll } from '@src/shared/lib/analytics/metrika';
 import { resolveCityLabel } from '@src/shared/lib/resolveCityLabel';
 import { setLocalStorageItem } from '@/utils/browserStorage';
 import type { StoreBootstrapProps } from './model/types';
@@ -54,23 +52,8 @@ export function StoreBootstrap(props: StoreBootstrapProps) {
       useCartStore.getState().changeAllItems();
     }, 300);
 
-    void (async () => {
-      await useHeaderStore.getState().hydrateSession(city);
-      const token = useHeaderStore.getState().token;
-
-      await Promise.all([
-        useHomeStore.getState().getBanners('home', city),
-        useProfileStore.getState().getCountPromosOrders(city, token),
-      ]);
-    })();
-
-    if (typeof window !== 'undefined') {
-      hitAll(window.location.href, {
-        title: document.title,
-        referer: document.referrer || undefined,
-        city,
-      });
-    }
+    void useHeaderStore.getState().hydrateSession(city);
+    void useHomeStore.getState().getBanners('home', city);
 
     return () => window.clearTimeout(priceTimer);
   }, [

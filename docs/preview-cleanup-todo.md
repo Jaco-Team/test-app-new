@@ -13,7 +13,8 @@
 - FSD без cross-page зависимостей;
 - один владелец bootstrap/hydration;
 - один reusable page layout contract для типовых страниц;
-- SCSS без точечных переопределений каркаса и без массового обхода foundation.
+- SCSS без точечных переопределений каркаса и без массового обхода foundation;
+- Storybook как spec surface для shared UI, где responsive-поведение проверяется через viewport/container context, а не через viewport props в обычном app usage.
 
 ## Критичные архитектурные проблемы
 
@@ -65,6 +66,8 @@
 - page-specific refresh вынести в page/model hooks;
 - profile counters вынести в отдельный cabinet bootstrap/poller;
 - home refresh оставить только у home page.
+
+Статус: частично выполнено; `getCountPromosOrders(...)` убран из `StoreBootstrap`, owner counters теперь `ProfileOrdersPoller` / telemetry layer.
 
 ### 3. Home все еще имеет двойной source of truth
 
@@ -300,6 +303,16 @@
          Прогресс: `AddressPickerModal` больше не хранит общий responsive sizing/padding для `MuiTextField`/`MuiSelectField`/`MuiAutocompleteField`; этот contract теперь живет в `src/shared/ui/components/internal/muiControl/*`. Title/content styling для `ModalWrapper` и `AddressPickerModal` тоже опирается на shared wrapper classes, а не на `MuiDialog*` root selectors. `BannerDetailsModal` и `ProductDetailsModal` больше не завязаны на `MuiDialogContent-root`, используют только shared `ui-modal-wrapper__content` contract.
 4. [x] Сократить nested overrides на `.page-frame__*`.
 
+### Этап 5. Storybook responsive contract
+
+1. [x] Зафиксировать правило: Storybook проверяет compact/regular/expanded через viewport presets и container width, а не через публичный viewport prop в обычном usage.
+2. [ ] Убрать из stories нормализацию `range` / `density` как основного consumer contract для shared controls.
+   - [x] Перевести `Button.stories.tsx` на viewport-driven `Compact` / `Regular` / `Expanded` вместо `range` в основных responsive stories.
+   - [x] Убрать из `Alert.stories.tsx` пример, который показывал `range` как обычный app-facing contract для action button.
+   - [x] Перевести `Input.stories.tsx` на те же viewport presets вместо `density` в responsive stories.
+   - [x] Перевести `Select.stories.tsx` на те же viewport presets вместо `density` в responsive stories.
+3. [ ] После очистки stories сузить публичный responsive API shared controls: viewport semantics не должны быть рекомендуемым app-facing contract.
+
 ## Файлы первого приоритета
 
 - `src/features/bootstrap/StoreBootstrap.tsx`
@@ -403,6 +416,8 @@
 - выбрать одного владельца pageview tracking;
 - bootstrap не должен дублировать route-level navigation analytics.
 
+Статус: выполнено для pageview tracking; `hitAll(...)` убран из `StoreBootstrap`, owner page hit теперь `ClientRuntime`.
+
 ### 5. `AppProviders` полностью client-side, а runtime слишком высоко в дереве
 
 Файлы:
@@ -471,7 +486,9 @@
 - theme overrides централизованы;
 - raw MUI не размазан по новым shared controls.
 - shared controls должны быть responsive-by-default: обычное app-использование без `range` обязано адаптироваться под compact/regular/expanded;
-- ручной `range` оставляем как pin для Storybook/spec states и для измеренных исключений, где конкретный layout намеренно фиксирует размер.
+- Storybook по умолчанию должен форсировать responsive state через viewport (`320 / 668 / 991`) и/или story wrapper width, а не через публичный viewport prop компонента;
+- ручной `range` оставляем только как transitional pin для измеренных исключений и внутренних spec/debug сценариев, пока публичный DS contract не очищен от viewport semantics;
+- если story хочется назвать `Compact` / `Regular` / `Expanded`, это должен быть прежде всего viewport preset, а не нормализация `range` как обычного consumer API.
 
 Сделано:
 
