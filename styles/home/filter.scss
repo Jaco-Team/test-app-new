@@ -64,7 +64,7 @@
       gap: $MyScale20;
 
       & .tag {
-        border-radius: $MyScale32;
+        border-radius: $MyScale13;
         background-color: #fff;
         padding: $MyScale10 $MyScale38;
         cursor: pointer;
@@ -86,7 +86,7 @@
       }
 
       & .tag_ {
-        border-radius: $MyScale32;
+        border-radius: $MyScale13;
         background-color: #fff;
         padding: $MyScale10 $MyScale38;
         cursor: pointer;
@@ -246,7 +246,7 @@
         gap: tablet-vw(20);
 
         & .tag {
-          border-radius: tablet-vw(32);
+          border-radius: tablet-vw(9);
           padding: tablet-vw(10) tablet-vw(38);
           border: tablet-vw(3) solid transparent;
 
@@ -256,7 +256,7 @@
         }
 
         & .tag_ {
-          border-radius: tablet-vw(32);
+          border-radius: tablet-vw(9);
           padding: tablet-vw(10) tablet-vw(38);
           border: tablet-vw(3) solid transparent;
 

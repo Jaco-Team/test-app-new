@@ -1,47 +1,110 @@
 import React, { useEffect } from 'react';
 
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 
-import Footer from '@/components/footer.js'
+import Footer from '@/components/footer.js';
 const DynamicHomePage = dynamic(() => import('@/modules/akcii/page.js'));
 
-import { roboto } from '@/ui/Font.js'
+import { roboto } from '@/ui/Font.js';
 import { api } from '@/components/api.js';
 
-import { useHomeStore, useCitiesStore, useHeaderStoreNew, useCartStore } from '@/components/store.js';
+import {
+  useHomeStore,
+  useCitiesStore,
+  useHeaderStoreNew,
+  useCartStore,
+} from '@/components/store.js';
 
 const this_module = 'akcii';
 
-import { normalizeCity } from '@/utils/normalizeCity'
-import { getCookie } from '@/utils/getCookie'
+const NOINDEX_PROMOTION_CITIES = new Set(['samara', 'togliatti']);
+const NOINDEX_PROMOTION_SLUGS = new Set([
+  'novinkileto26',
+  'pizzileto26',
+  'okinavaleto2026',
+  'salatroll2026',
+]);
+
+const shouldNoindexPromotion = (city, name) =>
+  NOINDEX_PROMOTION_CITIES.has(
+    String(city || '')
+      .trim()
+      .toLowerCase()
+  ) &&
+  NOINDEX_PROMOTION_SLUGS.has(
+    String(name || '')
+      .trim()
+      .toLowerCase()
+  );
+
+import { normalizeCity } from '@/utils/normalizeCity';
+import { getCookie } from '@/utils/getCookie';
 
 export default function Home(props) {
+  const {
+    city,
+    cats,
+    cities,
+    page,
+    all_items,
+    free_items,
+    need_dop,
+    act_name,
+    tags,
+    links,
+  } = props.data1;
 
-  const { city, cats, cities, page, all_items, free_items, need_dop, act_name, tags, links } = props.data1;
+  const [
+    setAllItems,
+    setFreeItems,
+    allItems,
+    changeAllItems,
+    setNeedDops,
+    getCartLocalStorage,
+  ] = useCartStore((state) => [
+    state.setAllItems,
+    state.setFreeItems,
+    state.allItems,
+    state.changeAllItems,
+    state.setNeedDops,
+    state.getCartLocalStorage,
+  ]);
 
-  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
+  const [getBanners, setAllTags, getOneBanner, getItemsCat] = useHomeStore(
+    (state) => [
+      state.getBanners,
+      state.setAllTags,
+      state.getOneBanner,
+      state.getItemsCat,
+    ]
+  );
 
-  const [ getBanners, setAllTags, getOneBanner, getItemsCat ] = useHomeStore( state => [ state.getBanners, state.setAllTags, state.getOneBanner, state.getItemsCat ]);
-
-  const [ thisCity, setThisCity, setThisCityRu, setThisCityList ] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
+  const [thisCity, setThisCity, setThisCityRu, setThisCityList] =
+    useCitiesStore((state) => [
+      state.thisCity,
+      state.setThisCity,
+      state.setThisCityRu,
+      state.setThisCityList,
+    ]);
   const [setActivePage] = useHeaderStoreNew((state) => [state.setActivePage]);
 
   useEffect(() => {
-
-    setTimeout( () => {
+    setTimeout(() => {
       window.scrollTo(0, 0);
-    }, 100 )
+    }, 100);
 
-    if( thisCity != city ){
+    if (thisCity != city) {
       setThisCity(city);
       //setThisCityRu( cities.find( item => item.link == city )['name'] );
 
-      const found = Array.isArray(cities) ? cities.find(item => item?.link == city) : null;
-      setThisCityRu( found?.name ?? '' );
-      
-      setThisCityList(cities)
+      const found = Array.isArray(cities)
+        ? cities.find((item) => item?.link == city)
+        : null;
+      setThisCityRu(found?.name ?? '');
+
+      setThisCityList(cities);
       setAllItems(all_items);
-      
+
       setTimeout(() => {
         changeAllItems();
       }, 300);
@@ -49,7 +112,7 @@ export default function Home(props) {
 
     getOneBanner('home', city, act_name);
 
-    if( allItems.length == 0 ){
+    if (allItems.length == 0) {
       setAllItems(all_items);
     }
 
@@ -62,7 +125,6 @@ export default function Home(props) {
     getCartLocalStorage();
 
     setActivePage('akcii');
-    
   }, [city]);
 
   page.is_one_actia = true;
@@ -73,13 +135,19 @@ export default function Home(props) {
 
       <Footer cityName={city} active_page={this_module} links={links} />
     </div>
-  )
+  );
 }
 
 export async function getServerSideProps({ req, res, query }) {
-  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=60');
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=60, stale-while-revalidate=60'
+  );
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
@@ -131,6 +199,13 @@ export async function getServerSideProps({ req, res, query }) {
   data1.links = footer?.page || {};
   data1.city = city;
   data1.act_name = actName;
+
+  if (shouldNoindexPromotion(city, actName)) {
+    data1.page = {
+      ...data1.page,
+      robots: 'noindex, nofollow',
+    };
+  }
 
   return { props: { data1, json } };
 }

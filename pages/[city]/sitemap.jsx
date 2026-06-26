@@ -3,7 +3,11 @@ import dynamic from 'next/dynamic';
 
 import { roboto } from '@/ui/Font.js';
 import { api } from '@/components/api.js';
-import { useCitiesStore, useHeaderStoreNew, useCartStore } from '@/components/store.js';
+import {
+  useCitiesStore,
+  useHeaderStoreNew,
+  useCartStore,
+} from '@/components/store.js';
 
 import Footer from '@/components/footer.js';
 
@@ -22,7 +26,8 @@ export default React.memo(function SiteMap(props) {
     links = {},
     sitemap_pages = [],
     sitemap_category = [],
-    page
+    sitemap_promotions = [],
+    page,
   } = props.data1 || {};
 
   const [
@@ -41,16 +46,22 @@ export default React.memo(function SiteMap(props) {
     state.getCartLocalStorage,
   ]);
 
-  const [thisCity, setThisCity, setThisCityRu, setThisCityList] = useCitiesStore(
-    (state) => [state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList]
-  );
+  const [thisCity, setThisCity, setThisCityRu, setThisCityList] =
+    useCitiesStore((state) => [
+      state.thisCity,
+      state.setThisCity,
+      state.setThisCityRu,
+      state.setThisCityList,
+    ]);
 
   const [setActivePage] = useHeaderStoreNew((state) => [state.setActivePage]);
 
   useEffect(() => {
     if (thisCity != city) {
       setThisCity(city);
-      const found = Array.isArray(cities) ? cities.find((item) => item?.link == city) : null;
+      const found = Array.isArray(cities)
+        ? cities.find((item) => item?.link == city)
+        : null;
       setThisCityRu(found?.name ?? '');
       setThisCityList(cities);
 
@@ -74,6 +85,7 @@ export default React.memo(function SiteMap(props) {
         city={city}
         sitemap_pages={sitemap_pages}
         sitemap_category={sitemap_category}
+        sitemap_promotions={sitemap_promotions}
       />
 
       <Footer cityName={city} links={links} active_page={'sitemap'} />
@@ -82,7 +94,10 @@ export default React.memo(function SiteMap(props) {
 });
 
 export async function getServerSideProps({ req, res, query }) {
-  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=60');
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=60, stale-while-revalidate=60'
+  );
 
   const cityFromPath = normalizeCity(query?.city);
   const savedCity = normalizeCity(getCookie(req, 'city'));
@@ -108,7 +123,19 @@ export async function getServerSideProps({ req, res, query }) {
   });
 
   data1.sitemap_pages = Array.isArray(sitemap?.pages) ? sitemap.pages : [];
-  data1.sitemap_category = Array.isArray(sitemap?.category) ? sitemap.category : [];
+  data1.sitemap_category = Array.isArray(sitemap?.category)
+    ? sitemap.category
+    : [];
+
+  const promotions = await api('home', {
+    type: 'get_banners',
+    city_id: city,
+    token: null,
+  });
+
+  data1.sitemap_promotions = Array.isArray(promotions?.banners)
+    ? promotions.banners
+    : [];
 
   const footer = await api('contacts', {
     type: 'get_page_info',

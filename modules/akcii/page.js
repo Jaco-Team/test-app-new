@@ -16,102 +16,119 @@ import Meta from '@/components/meta.js';
 import useMediaQuery from '@mui/material/useMediaQuery';
 import { BREAKPOINTS } from '@/utils/breakpoints';
 
-import { useSearchParams } from 'next/navigation'
+import { useSearchParams } from 'next/navigation';
 //import { set } from 'lodash';
 
 let click = false;
 
 export default memo(function AkciiPage({ page, banner }) {
-  const isMobileAkciiLayout = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
+  const isMobileAkciiLayout = useMediaQuery(
+    `screen and (max-width: ${BREAKPOINTS.mobileMax}px)`
+  );
 
-  const [ pageBanner, bannerList ] = useHomeStore((state) => [state.pageBanner, state.bannerList]);
+  const [pageBanner, bannerList] = useHomeStore((state) => [
+    state.pageBanner,
+    state.bannerList,
+  ]);
 
   const searchParams = useSearchParams();
-  
-  const search = searchParams.get('akcia')
+
+  const search = searchParams.get('akcia');
 
   useEffect(() => {
-    if( bannerList.length > 0 && search?.length > 0 ) {
+    if (bannerList.length > 0 && search?.length > 0) {
       const targetEl = document.getElementById(`${search}`);
       if (!targetEl) return;
-    
+
       const observer = new ResizeObserver(() => {
         targetEl.scrollIntoView({ behavior: 'smooth', offset: 100 });
       });
       observer.observe(targetEl);
-    
-      let state = { },
+
+      let state = {},
         title = '',
         url = window.location.pathname;
 
-      window.history.pushState(state, title, url)
+      window.history.pushState(state, title, url);
 
       return () => observer.disconnect();
     }
   }, [search, bannerList]);
 
   useEffect(() => {
-    if( page?.is_one_actia == true && pageBanner && click == false ){
+    if (page?.is_one_actia == true && pageBanner && click == false) {
       ymDataLayer.push({
-        "ecommerce": {
-          "promoClick": {
-            "promotions": [
+        ecommerce: {
+          promoClick: {
+            promotions: [
               {
-                "id": pageBanner?.id,          
-                "name": pageBanner?.title,
-                "creative": pageBanner?.name,
-                "position": 1
-              }
-            ]
-          }
-        }
+                id: pageBanner?.id,
+                name: pageBanner?.title,
+                creative: pageBanner?.name,
+                position: 1,
+              },
+            ],
+          },
+        },
       });
 
       click = true;
 
       setTimeout(() => {
         click = false;
-      }, 3000)
+      }, 3000);
     }
-  }, [pageBanner])
+  }, [pageBanner]);
 
   //console.log('page', page)
   //console.log('pageBanner', pageBanner, banner)
 
-  if( page?.is_one_actia == true ){
+  if (page?.is_one_actia == true) {
     return (
-      <Meta 
-        title={banner && banner?.seo_title?.length > 0 ? banner?.seo_title : page?.title} 
-        description={banner && banner?.seo_desc?.length > 0 ? banner?.seo_desc : page?.description}
+      <Meta
+        title={
+          banner && banner?.seo_title?.length > 0
+            ? banner?.seo_title
+            : page?.title
+        }
+        description={
+          banner && banner?.seo_desc?.length > 0
+            ? banner?.seo_desc
+            : page?.description
+        }
+        robots={page?.robots}
       >
-        {isMobileAkciiLayout ? 
+        {isMobileAkciiLayout ? (
           <div className="akciiMobile onePage" style={{ marginTop: 100 }}>
-            <AkciiItemMobile actia={pageBanner} is_one_actia={page?.is_one_actia} /> 
+            <AkciiItemMobile
+              actia={pageBanner}
+              is_one_actia={page?.is_one_actia}
+            />
           </div>
-            : 
+        ) : (
           <div className="akciiPC onePage">
             <AkciiItemPC actia={pageBanner} is_one_actia={page?.is_one_actia} />
           </div>
-        }
+        )}
       </Meta>
     );
   }
 
   return (
     <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
-      {isMobileAkciiLayout ?
+      {isMobileAkciiLayout ? (
         <>
-          <AkciiMobile /> 
+          <AkciiMobile />
           <ModalItemMobile />
-          <ModalCardItemMobile /> 
+          <ModalCardItemMobile />
         </>
-        : 
+      ) : (
         <>
           <AkciiPC />
           <ModalCardItemPC />
           <ModalItemPC />
         </>
-      }
+      )}
     </Meta>
   );
-})
+});

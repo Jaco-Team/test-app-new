@@ -1,12 +1,13 @@
 import React from 'react';
 
-import Head from 'next/head'
+import Head from 'next/head';
 
-export default function Meta({ title, description, children }) {
-  const safeTitle = title ?? 'Жако роллы и пицца'
-  const safeDesc = description ?? ''
+export default function Meta({ title, description, robots, children }) {
+  const safeTitle = title ?? 'Жако роллы и пицца';
+  const safeDesc = description ?? '';
+  const safeRobots = typeof robots === 'string' ? robots.trim() : '';
 
-  const hasDesc = typeof safeDesc === 'string' && safeDesc.length > 0
+  const hasDesc = typeof safeDesc === 'string' && safeDesc.length > 0;
 
   return (
     <>
@@ -21,7 +22,7 @@ export default function Meta({ title, description, children }) {
         <meta name="yandex-verification" content="7e7652cb40b75404" />
         <meta name="yandex-verification" content="d4f3544393d9106d" />
 
-        { hasDesc ?
+        {hasDesc ? (
           <>
             <meta name="description" content={safeDesc} />
             <meta name="og:title" content={safeTitle} />
@@ -29,12 +30,16 @@ export default function Meta({ title, description, children }) {
             <meta name="og:site_name" content="Жако роллы и пицца" />
             <meta name="og:type" content="website" />
           </>
-            :
+        ) : null}
+
+        {safeRobots ? (
+          <meta name="robots" content={safeRobots} />
+        ) : !hasDesc ? (
           <meta name="robots" content="noindex, nofollow" />
-        }
+        ) : null}
       </Head>
 
       {children}
     </>
-  )
+  );
 }
