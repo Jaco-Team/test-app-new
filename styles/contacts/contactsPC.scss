@@ -166,6 +166,160 @@
   }
 }
 
+.contactsMapWrap {
+  position: relative;
+}
+
+.contactsMapSearch {
+  position: absolute;
+  top: $MyScale30;
+  left: $MyScale30;
+  width: $MyScale760;
+  max-width: calc(100% - $MyScale60);
+  z-index: 2;
+  font-family: var(--inter-font);
+}
+
+.contactsMapSearchRow {
+  display: flex;
+  align-items: stretch;
+  height: $MyScale72;
+  overflow: hidden;
+  background: #ffffff;
+  border: $MyScale2 solid rgba(0, 0, 0, 0.08);
+  border-radius: $MyScale4;
+  box-shadow: $MyScale3 $MyScale6 $MyScale18 rgba(0, 0, 0, 0.2);
+
+  & input {
+    flex: 1 1 auto;
+    min-width: 0;
+    border: 0;
+    outline: 0;
+    padding: 0 $MyScale24;
+    color: #222222;
+    font-size: $MyScale26;
+    font-weight: 600;
+    font-family: inherit;
+
+    &::placeholder {
+      color: #777777;
+      font-weight: 500;
+    }
+
+    &:focus {
+      box-shadow: inset 0 0 0 $MyScale2 #ffd335;
+    }
+  }
+}
+
+.contactsMapSearchClear,
+.contactsMapSearchSubmit {
+  border: 0;
+  font-family: inherit;
+  cursor: pointer;
+}
+
+.contactsMapSearchClear {
+  flex: 0 0 $MyScale50;
+  background: #ffffff;
+  border-left: $MyScale2 solid #eeeeee !important;
+  color: #9b9b9b;
+  font-size: $MyScale40;
+  line-height: 1;
+
+  &:hover {
+    color: #333333;
+    background: #f7f7f7;
+  }
+}
+
+.contactsMapSearchSubmit {
+  flex: 0 0 $MyScale140;
+  background: #ffd335;
+  color: #111111;
+  font-size: $MyScale28;
+  font-weight: 700;
+
+  &:hover {
+    background: #ffca1f;
+  }
+
+  &:disabled {
+    cursor: default;
+    color: rgba(0, 0, 0, 0.55);
+    background: #f0d777;
+  }
+}
+
+.contactsMapSearchSuggest,
+.contactsMapSearchMessage {
+  width: calc(100% - $MyScale140);
+  margin-top: $MyScale4;
+  background: #ffffff;
+  border: $MyScale2 solid rgba(0, 0, 0, 0.08);
+  box-shadow: $MyScale3 $MyScale8 $MyScale18 rgba(0, 0, 0, 0.2);
+}
+
+.contactsMapSearchSuggest {
+  max-height: $MyScale360;
+  overflow-y: auto;
+  border-radius: 0 0 $MyScale4 $MyScale4;
+
+  & button {
+    width: 100%;
+    min-height: $MyScale64;
+    border: 0;
+    border-bottom: $MyScale1 solid #eeeeee;
+    background: #ffffff;
+    color: #222222;
+    cursor: pointer;
+    display: block;
+    padding: $MyScale14 $MyScale22;
+    text-align: left;
+    font-family: inherit;
+    font-size: $MyScale24;
+    line-height: 1.25;
+
+    &:hover,
+    &:focus {
+      outline: 0;
+      background: #fff6cf;
+    }
+
+    &:last-child {
+      border-bottom: 0;
+    }
+  }
+
+  & strong,
+  & span {
+    display: block;
+    overflow: hidden;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+  }
+
+  & strong {
+    font-weight: 700;
+  }
+
+  & span {
+    margin-top: $MyScale4;
+    color: #555555;
+    font-size: $MyScale20;
+    font-weight: 500;
+  }
+}
+
+.contactsMapSearchMessage {
+  border-radius: $MyScale4;
+  color: #222222;
+  font-size: $MyScale24;
+  font-weight: 600;
+  line-height: 1.3;
+  padding: $MyScale18 $MyScale22;
+}
+
 // для фото при выборе точки на карте, на случай если эти фото добавят
 // .my-hint {
 //   position: absolute;
@@ -326,6 +480,71 @@
 }
 
 @include tablet-only {
+  .contactsMapSearch {
+    top: tablet-vw(30);
+    left: tablet-vw(30);
+    width: tablet-vw(760);
+    max-width: calc(100% - tablet-vw(60));
+  }
+
+  .contactsMapSearchRow {
+    height: tablet-vw(72);
+    border: tablet-vw(2) solid rgba(0, 0, 0, 0.08);
+    border-radius: tablet-vw(4);
+    box-shadow: tablet-vw(3) tablet-vw(6) tablet-vw(18) rgba(0, 0, 0, 0.25);
+
+    & input {
+      padding: 0 tablet-vw(24);
+      font-size: tablet-vw(26);
+
+      &:focus {
+        box-shadow: inset 0 0 0 tablet-vw(2) #ffd335;
+      }
+    }
+  }
+
+  .contactsMapSearchClear {
+    flex-basis: tablet-vw(50);
+    border-left: tablet-vw(2) solid #eeeeee !important;
+    font-size: tablet-vw(40);
+  }
+
+  .contactsMapSearchSubmit {
+    flex-basis: tablet-vw(140);
+    font-size: tablet-vw(28);
+  }
+
+  .contactsMapSearchSuggest,
+  .contactsMapSearchMessage {
+    width: calc(100% - tablet-vw(140));
+    margin-top: tablet-vw(4);
+    border: tablet-vw(2) solid rgba(0, 0, 0, 0.08);
+    box-shadow: tablet-vw(3) tablet-vw(8) tablet-vw(18) rgba(0, 0, 0, 0.25);
+  }
+
+  .contactsMapSearchSuggest {
+    max-height: tablet-vw(360);
+    border-radius: 0 0 tablet-vw(4) tablet-vw(4);
+
+    & button {
+      min-height: tablet-vw(64);
+      border-bottom: tablet-vw(1) solid #eeeeee;
+      padding: tablet-vw(14) tablet-vw(22);
+      font-size: tablet-vw(24);
+    }
+
+    & span {
+      margin-top: tablet-vw(4);
+      font-size: tablet-vw(20);
+    }
+  }
+
+  .contactsMapSearchMessage {
+    border-radius: tablet-vw(4);
+    font-size: tablet-vw(24);
+    padding: tablet-vw(18) tablet-vw(22);
+  }
+
   .Contact_ {
     margin-top: tablet-vw(128) !important;
     min-height: tablet-vw(900);

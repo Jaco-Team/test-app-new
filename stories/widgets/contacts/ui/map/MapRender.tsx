@@ -36,6 +36,11 @@ export const MapRender = ({
         query={{
           lang: 'ru_RU',
           apikey: `${process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP}`,
+          ...(process.env.NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST
+            ? {
+                suggest_apikey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST,
+              }
+            : {}),
         }}
       >
         <Map

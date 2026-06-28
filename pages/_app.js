@@ -1,5 +1,3 @@
- 
-
 import '@fontsource/roboto/100.css';
 import '@fontsource/roboto/300.css';
 import '@fontsource/roboto/400.css';
@@ -414,6 +412,14 @@ export default function MyApp({ Component, pageProps }) {
   const cityCounterId =
     city === 'samara' ? 100325084 : city === 'togliatti' ? 100601350 : null;
   const isOnlyPayPage = city === 'only-pay-page';
+  const yandexMapsSuggestKey = process.env.NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST;
+  const yandexMapsScriptSrc = `https://api-maps.yandex.ru/2.1/?apikey=${encodeURIComponent(
+    process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP || ''
+  )}&lang=ru_RU${
+    yandexMapsSuggestKey
+      ? `&suggest_apikey=${encodeURIComponent(yandexMapsSuggestKey)}`
+      : ''
+  }`;
 
   useEffect(() => {
     const handleRouteChangeError = (error, url) => {
@@ -605,7 +611,7 @@ export default function MyApp({ Component, pageProps }) {
       <Script
         id="ymaps"
         strategy="afterInteractive"
-        src={`https://api-maps.yandex.ru/2.1/?apikey=${process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP}&lang=ru_RU`}
+        src={yandexMapsScriptSrc}
         onLoad={() => {
           if (typeof window !== 'undefined') {
             window.__JACO_YMAPS_FAILED = false;
