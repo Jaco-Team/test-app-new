@@ -235,7 +235,7 @@
         & .ValueItem {
           display: flex;
           width: 100%;
-          min-height: 10.8307vw;
+          min-height: 14.4405vw;
           margin-bottom: 0.72202vw;
 
           &.valueItemLastShort {
@@ -261,13 +261,14 @@
             display: flex;
             flex-direction: column;
             width: 32.2745vw;
+            min-height: 14.2238vw;
             border: $MyScale3 solid #b2b2b2;
             border-radius: 1.083032vw;
 
             & .itemValueRowMain {
               width: 100%;
               display: flex;
-              align-items: center;
+              align-items: stretch;
               border-bottom: $MyScale3 solid #b2b2b2;
 
               & > div:first-child {
@@ -299,7 +300,8 @@
             & .itemValueRow {
               width: 100%;
               display: flex;
-              align-items: center;
+              align-items: stretch;
+              min-height: 8.6643vw;
 
               & > div:first-child {
                 display: flex;
@@ -308,11 +310,14 @@
                 align-items: center;
                 border-right: $MyScale3 solid #b2b2b2;
                 width: 18.206vw;
-                min-height: 4.2245vw;
+                min-height: 7.5091vw;
                 padding-left: 1.083034vw;
                 padding-top: 0.577616vw;
                 padding-bottom: $MyScale15;
                 padding-right: 0.72202vw;
+                line-height: normal;
+                overflow-wrap: break-word;
+                white-space: normal;
               }
 
               & > div:last-child {
@@ -679,7 +684,7 @@
           }
 
           & .ValueItem {
-            min-height: tablet-vw(300);
+            min-height: tablet-vw(400);
             margin-bottom: tablet-vw(20);
 
             &.valueItemLastShort {
@@ -700,9 +705,12 @@
 
             & .itemValueColumn {
               width: tablet-vw(894);
+              min-height: tablet-vw(394);
               border-radius: tablet-vw(30);
 
               & .itemValueRowMain {
+                align-items: stretch;
+
                 & > div:first-child {
                   width: tablet-vw(885);
                   height: tablet-vw(74);
@@ -721,13 +729,20 @@
               }
 
               & .itemValueRow {
+                align-items: stretch;
+                min-height: tablet-vw(240);
+
                 & > div:first-child {
                   width: tablet-vw(504);
-                  min-height: tablet-vw(117);
+                  align-items: center;
+                  min-height: tablet-vw(208);
                   padding-left: tablet-vw(30);
                   padding-top: tablet-vw(16);
                   padding-bottom: tablet-vw(15);
                   padding-right: tablet-vw(20);
+                  line-height: normal;
+                  overflow-wrap: break-word;
+                  white-space: normal;
                 }
 
                 & > div:last-child {
