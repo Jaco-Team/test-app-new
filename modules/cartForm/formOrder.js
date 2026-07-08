@@ -1,9 +1,10 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useMemo } from 'react';
 
 import {
   useCartStore,
   useCitiesStore,
   useHeaderStoreNew,
+  useHomeStore,
   useProfileStore,
 } from '@/components/store.js';
 import { useRouter } from 'next/router';
@@ -19,6 +20,7 @@ import MoneyIcon from '@mui/icons-material/Money';
 
 import MyTextInput from '@/ui/MyTextInput';
 import CartItemMobile from '@/modules/cart/cartItemsMobile';
+import RecommendationMobileList from '@/modules/recommendations/recommendationMobileList';
 import { SwitchBasketPC as MySwitchPC } from '@/ui/MySwitch.js';
 import { SwitchBasketMobile as MySwitchMobile } from '@/ui/MySwitch.js';
 import {
@@ -175,6 +177,12 @@ export default function FormOrder({ cityName }) {
     checkNewOrder,
     setDopsForm,
     openMailForm,
+    getCartRecommendations,
+    cartUpdatedAt,
+    cartRecommendations,
+    cartRecommendationsRecUuid,
+    addRecommendationToCart,
+    trackRecommendationAction,
   ] = useCartStore((state) => [
     state.setFreeDrive,
     state.setPayForm,
@@ -221,6 +229,12 @@ export default function FormOrder({ cityName }) {
     state.checkNewOrder,
     state.setDopsForm,
     state.openMailForm,
+    state.getCartRecommendations,
+    state.cartUpdatedAt,
+    state.cartRecommendations,
+    state.cartRecommendationsRecUuid,
+    state.addRecommendationToCart,
+    state.trackRecommendationAction,
   ]);
   const [continueCheckoutAfterEmail, setContinueCheckoutAfterEmail] =
     useCartStore((state) => [
@@ -229,12 +243,82 @@ export default function FormOrder({ cityName }) {
     ]);
 
   const [saveUserActions] = useProfileStore((state) => [state.saveUserActions]);
+  const [getItem] = useHomeStore((state) => [state.getItem]);
+
+  const cartRecommendationKey = useMemo(
+    () =>
+      (items || [])
+        .filter((item) => Number(item?.count ?? 0) > 0)
+        .map((item) => `${item?.item_id ?? item?.id}:${item?.count ?? 0}`)
+        .sort()
+        .join(','),
+    [items, itemsCount, cartUpdatedAt]
+  );
+  const cartRecommendationIds = useMemo(
+    () =>
+      new Set(
+        (items || [])
+          .filter((item) => Number(item?.count ?? 0) > 0)
+          .map((item) => String(item?.item_id ?? item?.id))
+      ),
+    [items, itemsCount, cartUpdatedAt]
+  );
+  const visibleCartRecommendations = useMemo(
+    () =>
+      (Array.isArray(cartRecommendations) ? cartRecommendations : []).filter(
+        (recommendation) => {
+          const recommendationId =
+            recommendation?.item_id ?? recommendation?.id;
+
+          return !cartRecommendationIds.has(String(recommendationId));
+        }
+      ),
+    [cartRecommendations, cartRecommendationIds]
+  );
 
   useEffect(() => {
     if (isMobileOrder) {
       setMessage(comment);
     }
   }, [isMobileOrder, comment]);
+
+  useEffect(() => {
+    if (!thisCity || typeof getCartRecommendations !== 'function') {
+      return;
+    }
+
+    getCartRecommendations(thisCity);
+  }, [thisCity, cartRecommendationKey, getCartRecommendations]);
+
+  const addCartRecommendation = (recommendation, event, position) => {
+    addRecommendationToCart?.(recommendation, {
+      city: thisCity,
+      recUuid: cartRecommendationsRecUuid,
+      surface: 'cart_upsell',
+      position,
+    });
+  };
+
+  const openCartRecommendation = (recommendation, event, position) => {
+    const recommendationId = recommendation?.item_id ?? recommendation?.id;
+
+    if (!recommendationId) {
+      return;
+    }
+
+    trackRecommendationAction?.({
+      city: thisCity,
+      itemId: recommendationId,
+      recUuid: cartRecommendationsRecUuid,
+      action: 'opened',
+      surface: 'cart_upsell',
+      position,
+    });
+
+    getItem?.('home', thisCity, recommendationId, null, {
+      forgetCurrentItem: true,
+    });
+  };
 
   useEffect(() => {
     if (thisCity !== cityName) {
@@ -1010,6 +1094,13 @@ export default function FormOrder({ cityName }) {
               last={idx === arr.length - 1 ? 'last' : ''}
             />
           ))}
+
+          <RecommendationMobileList
+            recommendations={visibleCartRecommendations}
+            limit={5}
+            onOpen={openCartRecommendation}
+            onAdd={addCartRecommendation}
+          />
 
           {dopListCart.length ? (
             <>

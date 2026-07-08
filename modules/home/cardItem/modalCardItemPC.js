@@ -1,4 +1,4 @@
-import { useState, useEffect } from 'react';
+import { useState, useEffect, useRef } from 'react';
 
 //import Image from 'next/image';
 import Link from 'next/link';
@@ -25,12 +25,14 @@ import { IconClose, IconInfo } from '@/ui/Icons';
 
 import { roboto } from '@/ui/Font';
 import CartCtaButton from '@/ui/CartCtaButton';
+import RecommendationMobileList from '@/modules/recommendations/recommendationMobileList';
 
 import { reachGoalSplit } from '@/utils/metrika';
 
 import { getItemImageUrl, hasItemImage } from '@/utils/itemImage';
 
 export default function ModalCardItemPC() {
+  const dialogContentRef = useRef(null);
   const [
     isOpenModal,
     closeModal,
@@ -40,6 +42,7 @@ export default function ModalCardItemPC() {
     navigate,
     closeTypeModal,
     getItem,
+    openItemCard,
   ] = useHomeStore((state) => {
     return [
       state.isOpenModal,
@@ -50,6 +53,7 @@ export default function ModalCardItemPC() {
       state.navigate,
       state.closeTypeModal,
       state.getItem,
+      state.openItemCard,
     ];
   });
 
@@ -58,7 +62,19 @@ export default function ModalCardItemPC() {
     state.thisCity,
     state.thisCityRu,
   ]);
-  const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
+  const [
+    cartItems,
+    minus,
+    plus,
+    addRecommendationToCart,
+    trackRecommendationAction,
+  ] = useCartStore((state) => [
+    state.items,
+    state.minus,
+    state.plus,
+    state.addRecommendationToCart,
+    state.trackRecommendationAction,
+  ]);
   const [count, setCount] = useState(0);
   const [valueMode, setValueMode] = useState('per100');
 
@@ -77,16 +93,17 @@ export default function ModalCardItemPC() {
   };
 
   useEffect(() => {
-    const items = useCartStore.getState().items;
-
-    const findItems = items.find((it) => it.item_id === openItem?.id);
-
-    if (findItems) {
-      setCount(findItems.count);
-    } else {
+    if (!isOpenModal || !openItem?.id) {
       setCount(0);
+      return;
     }
-  }, [isOpenModal]);
+
+    const found = (cartItems || []).find(
+      (it) => parseInt(it?.item_id) === parseInt(openItem.id)
+    );
+
+    setCount(Number(found?.count ?? 0));
+  }, [isOpenModal, openItem?.id, cartItems]);
 
   const changeCountPlus = (id) => {
     plus(id, openItem?.cat_id);
@@ -227,14 +244,99 @@ export default function ModalCardItemPC() {
   const img_name = openItem?.img_app;
   const hasMainImage = hasItemImage(img_name);
   const mainImageSrc = getItemImageUrl(img_name, '292x292', 'jpg');
+  const recommendations = Array.isArray(openItem?.recommendations)
+    ? openItem.recommendations.slice(0, 3)
+    : [];
+  const recommendationRecUuid = openItem?.rec_uuid || '';
+
+  const scrollModalToTop = () => {
+    dialogContentRef.current?.scrollTo?.({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  const openRecommendationItem = async (recommendation, event, position) => {
+    const recommendationId = recommendation?.item_id ?? recommendation?.id;
+
+    if (!recommendationId) {
+      return;
+    }
+
+    scrollModalToTop();
+    trackRecommendationAction?.({
+      city: thisCity,
+      itemId: recommendationId,
+      recUuid: recommendationRecUuid,
+      action: 'opened',
+      surface: 'item_page',
+      position,
+    });
+
+    await getItem?.('home', thisCity, recommendationId, null, {
+      forgetCurrentItem: true,
+    });
+
+    if (typeof window !== 'undefined') {
+      window.requestAnimationFrame(scrollModalToTop);
+    }
+  };
+
+  const getRecommendationCount = (recommendation) => {
+    const recommendationId = recommendation?.item_id ?? recommendation?.id;
+    const found = (cartItems || []).find(
+      (item) => parseInt(item?.item_id) === parseInt(recommendationId)
+    );
+
+    return Number(found?.count ?? 0);
+  };
+
+  const addRecommendationItem = (recommendation, event, position) => {
+    addRecommendationToCart?.(recommendation, {
+      city: thisCity,
+      recUuid: recommendationRecUuid,
+      surface: 'item_page',
+      position,
+    });
+  };
+
+  const removeRecommendationItem = (recommendation) => {
+    const recommendationId = recommendation?.item_id ?? recommendation?.id;
+
+    if (!recommendationId) {
+      return;
+    }
+
+    minus(recommendationId);
+  };
+
+  const hasRecommendations =
+    typeModal === 'start' && recommendations.length > 0;
+
+  const handleCloseModal = (event, reason) => {
+    if (openItemCard) {
+      return;
+    }
+
+    if (reason === 'backdropClick' && typeModal === 'start') {
+      closeModal();
+    } else {
+      navigate('start');
+    }
+  };
+
+  const handleCloseButton = () => {
+    if (openItemCard) {
+      return;
+    }
+
+    closeModal();
+  };
 
   return (
     <Dialog
-      onClose={(event, reason) =>
-        reason === 'backdropClick' && typeModal === 'start'
-          ? closeModal()
-          : navigate('start')
-      }
+      onClose={handleCloseModal}
       className={'modalCardItemPC ' + roboto.variable}
       open={isOpenModal}
       slots={Backdrop}
@@ -242,11 +344,21 @@ export default function ModalCardItemPC() {
       scroll="body"
     >
       <DialogContent
-        className="modalDialogContent"
+        ref={dialogContentRef}
+        className={
+          'modalDialogContent ' +
+          (hasRecommendations ? 'modalDialogContent_hasRecommendations' : '')
+        }
         style={{ background: typeModal === 'start' ? '#FFFFFF' : '#E6E6E6' }}
       >
-        <Box component="div" className="modalItemPC ModalFontPC">
-          <IconButton className="closeButton" onClick={closeModal}>
+        <Box
+          component="div"
+          className={
+            'modalItemPC ModalFontPC ' +
+            (hasRecommendations ? 'modalItemPC_hasRecommendations' : '')
+          }
+        >
+          <IconButton className="closeButton" onClick={handleCloseButton}>
             <IconClose />
           </IconButton>
 
@@ -780,6 +892,17 @@ export default function ModalCardItemPC() {
               </Grid>
             </ClickAwayListener>
           </Grid>
+
+          {hasRecommendations ? (
+            <RecommendationMobileList
+              recommendations={recommendations}
+              limit={3}
+              onOpen={openRecommendationItem}
+              onAdd={addRecommendationItem}
+              onRemove={removeRecommendationItem}
+              getCount={getRecommendationCount}
+            />
+          ) : null}
         </Box>
       </DialogContent>
     </Dialog>

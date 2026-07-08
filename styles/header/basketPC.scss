@@ -1,4 +1,4 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
 #simple-popover {
   z-index: 1100;
@@ -25,6 +25,7 @@
     display: flex;
     flex-direction: column;
     overflow-y: auto;
+    overflow-x: hidden;
 
     &::-webkit-scrollbar {
       width: 1.0830324909747vw;
@@ -48,7 +49,7 @@
       @include font30_400();
       margin: $MyScale20 $MyScale35 0 $MyScale40;
       box-shadow: unset;
-      
+
       & .MuiButtonBase-root.MuiAccordionSummary-root {
         height: $MyScale120;
         padding-left: $MyScale80;
@@ -61,7 +62,6 @@
           width: $MyScale60;
           height: $MyScale60;
         }
-
       }
 
       & .MuiAccordionDetails-root {
@@ -124,7 +124,17 @@
           border-bottom: none;
         }
       }
+    }
 
+    & .TableMiniMain {
+      margin-bottom: 0;
+    }
+
+    & .TableMiniDops {
+      margin-top: 0;
+    }
+
+    & .TableMini {
       & .CellPic {
         height: 5.7761732851986vw;
         width: 5.7761732851986vw;
@@ -295,7 +305,7 @@
         & .MuiInputAdornment-root {
           width: $MyScale20;
           margin-right: $MyScale30;
-          
+
           & .circleInput {
             width: $MyScale20 !important;
             height: $MyScale20;
@@ -322,7 +332,7 @@
           -webkit-text-fill-color: rgba(0, 0, 0, 0.8);
           -webkit-box-shadow: 0 0 0px 40rem #ffff inset;
         }
-        
+
         & fieldset {
           border: $MyScale3 solid rgba(0, 0, 0, 0.2);
           border-radius: $MyScale40;
@@ -391,6 +401,260 @@
   transition: all 0.1s ease 0s;
 }
 
+#simple-popover .basketRecommendations {
+  display: block;
+  width: calc(100% - 2.7075812274368vw);
+  max-width: calc(100% - 2.7075812274368vw);
+  min-height: 18.194945848375vw;
+  box-sizing: border-box;
+  margin: 0.72202166064982vw 1.2635379061372vw 1.0830324909747vw
+    1.4440433212996vw;
+  padding: 0.72202166064982vw 0 1.0830324909747vw;
+  border-bottom: 0;
+  overflow-x: hidden;
+  overflow-y: hidden;
+}
+
+#simple-popover .basketRecommendations .RecommendationModalCardMobile {
+  display: block;
+  width: 100%;
+  min-height: 16.750902527076vw;
+  margin: 0;
+  overflow: hidden;
+}
+
+#simple-popover .basketRecommendations .RecommendationModalCardMobileTitle {
+  color: rgba(51, 51, 51, 1);
+  font-size: 1.0830324909747vw;
+  font-weight: 400;
+  line-height: 100%;
+  margin: 0 0 0.72202166064982vw 0.72202166064982vw;
+}
+
+#simple-popover .basketRecommendations .RecommendationModalCardMobileList {
+  display: flex;
+  align-items: stretch;
+  gap: 0.86642599277978vw;
+  width: 100%;
+  min-width: 0;
+  height: 15.667870036101vw;
+  max-height: 15.667870036101vw;
+  padding: 0;
+  overflow-x: auto;
+  overflow-y: hidden !important;
+  scroll-snap-type: x proximity;
+  scrollbar-width: none !important;
+  -ms-overflow-style: none;
+  overscroll-behavior-x: contain;
+  overscroll-behavior-y: none;
+  -webkit-overflow-scrolling: touch;
+  cursor: grab;
+  user-select: none;
+}
+
+#simple-popover
+  .basketRecommendations
+  .RecommendationModalCardMobileListDragging {
+  cursor: grabbing;
+  scroll-snap-type: none;
+}
+
+#simple-popover
+  .basketRecommendations
+  .RecommendationModalCardMobileListDragging
+  .RecommendationModalCardMobileItem {
+  cursor: grabbing;
+}
+
+#simple-popover
+  .basketRecommendations
+  .RecommendationModalCardMobileList::-webkit-scrollbar {
+  width: 0;
+  height: 0;
+  display: none;
+}
+
+#simple-popover .basketRecommendations .RecommendationModalCardMobileItem {
+  flex: 0 0 10.830324909747vw;
+  width: 10.830324909747vw;
+  min-width: 10.830324909747vw;
+  height: 15.667870036101vw;
+  box-sizing: border-box;
+  padding-bottom: 0.86642599277978vw;
+  border: $MyScale2 solid rgba(0, 0, 0, 0.05);
+  border-radius: 1.2996389891697vw;
+  background: #ffffff;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0;
+  scroll-snap-align: start;
+  cursor: pointer;
+  user-select: none;
+}
+
+#simple-popover .basketRecommendations .RecommendationModalCardMobileImage {
+  width: 8.6642599277978vw;
+  height: 8.6642599277978vw;
+  border-radius: 0.86642599277978vw;
+  overflow: hidden;
+}
+
+#simple-popover .basketRecommendations .RecommendationModalCardMobileImage img {
+  width: 100%;
+  height: 100%;
+  border-radius: 0.86642599277978vw;
+  object-fit: contain;
+  image-rendering: auto;
+  display: block;
+  pointer-events: none;
+  user-select: none;
+  -webkit-user-drag: none;
+}
+
+#simple-popover .basketRecommendations .RecommendationModalCardMobileInfo {
+  width: 8.6642599277978vw;
+  min-height: 3.4657039711191vw;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: flex-start;
+  gap: 0;
+}
+
+#simple-popover .basketRecommendations .RecommendationModalCardMobileName {
+  width: 8.6642599277978vw;
+  min-height: 1.5162454873646vw;
+  max-height: 2.5992779783394vw;
+  color: rgba(51, 51, 51, 1);
+  font-size: 0.93862815884477vw;
+  font-weight: 400;
+  line-height: 100%;
+  text-align: center;
+  margin: 0;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  overflow: hidden;
+}
+
+#simple-popover .basketRecommendations .RecommendationModalCardMobileName span {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+#simple-popover .basketRecommendations .RecommendationModalCardMobileMeta {
+  width: 8.6642599277978vw;
+  height: 0.86642599277978vw;
+  margin-top: 0.21660649819495vw;
+  color: rgba(102, 102, 102, 1);
+  font-size: 0.64981949458484vw;
+  font-weight: 400;
+  line-height: 0.86642599277978vw;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.28880866425993vw;
+  white-space: nowrap;
+  overflow: visible;
+}
+
+#simple-popover .basketRecommendations .RecommendationModalCardMobileDivider {
+  color: rgba(102, 102, 102, 1);
+}
+
+#simple-popover .basketRecommendations .RecommendationModalCardMobilePrice {
+  width: 8.6642599277978vw;
+  height: 2.5270758122744vw;
+  box-sizing: border-box;
+  padding: 0.64981949458484vw 0;
+  border: 0;
+  border-radius: 2.5270758122744vw;
+  appearance: none;
+  background: rgba(0, 0, 0, 0.05);
+  color: rgba(51, 51, 51, 1);
+  font-family: inherit;
+  font-size: 1.0830324909747vw;
+  font-weight: 400;
+  line-height: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  gap: 0.72202166064982vw;
+  white-space: nowrap;
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.07);
+  }
+}
+
+#simple-popover .basketRecommendations .RecommendationModalCardMobileCounter {
+  padding: 0 0.28880866425993vw;
+  border: $MyScale2 solid rgba(0, 0, 0, 0.12);
+  background: #ffffff;
+  position: relative;
+  display: flex;
+  justify-content: center;
+  gap: 0;
+}
+
+#simple-popover
+  .basketRecommendations
+  .RecommendationModalCardMobileCounterButton {
+  position: absolute;
+  top: 50%;
+  width: 1.8772563176895vw;
+  height: 1.8772563176895vw;
+  padding: 0;
+  border: 0;
+  border-radius: 50%;
+  appearance: none;
+  background: rgba(0, 0, 0, 0.07);
+  color: rgba(51, 51, 51, 1);
+  font-family: inherit;
+  font-size: 1.2996389891697vw;
+  font-weight: 400;
+  line-height: 1;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  transform: translateY(-50%);
+  cursor: pointer;
+  user-select: none;
+
+  &:hover {
+    background: rgba(0, 0, 0, 0.1);
+  }
+}
+
+#simple-popover
+  .basketRecommendations
+  .RecommendationModalCardMobileCounterButton:first-of-type {
+  left: 0.28880866425993vw;
+  padding-top: 0.072202166064982vw;
+}
+
+#simple-popover
+  .basketRecommendations
+  .RecommendationModalCardMobileCounterButton:last-of-type {
+  right: 0.28880866425993vw;
+}
+
+#simple-popover
+  .basketRecommendations
+  .RecommendationModalCardMobileCounterValue {
+  color: rgba(51, 51, 51, 1);
+  font-size: 1.0830324909747vw;
+  font-weight: 400;
+  line-height: 100%;
+  text-align: center;
+  min-width: 1.8772563176895vw;
+}
+
 @media (min-width: $bp-tablet-min) and (max-width: $bp-tablet-max) {
   #simple-popover {
     margin-top: tablet-vw(128);
@@ -447,6 +711,8 @@
 
       & .TableMini {
         margin: tablet-vw(20) tablet-vw(35) tablet-vw(30) tablet-vw(40);
+        width: calc(100% - #{tablet-vw(75)});
+        max-width: calc(100% - #{tablet-vw(75)});
 
         & tbody {
           & tr {

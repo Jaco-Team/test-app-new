@@ -5,13 +5,35 @@
     padding: 0;
     border-radius: 1.444045vw;
     overflow: hidden;
+    height: 100%;
+    box-sizing: border-box;
+  }
+
+  & .modalDialogContent_hasRecommendations {
+    overflow-x: hidden;
+    overflow-y: auto;
+
+    &::-webkit-scrollbar {
+      width: $MyScale20;
+    }
+
+    &::-webkit-scrollbar-thumb {
+      background: rgba(0, 0, 0, 0.25);
+      border-right: solid $MyScale14 #ffffff;
+    }
+
+    &::-webkit-scrollbar-track {
+      background: rgba(0, 0, 0, 0.08);
+      border-right: solid $MyScale14 #ffffff;
+      margin: $MyScale40 0;
+    }
   }
 
   & .MuiDialog-paper {
     border-radius: $MyScale32;
     overflow: visible;
     margin: 0;
-    width: 70.7585vw;
+    width: calc(70.7585vw + #{$MyScale20});
     max-width: none !important;
 
     height: 47.6535vw;
@@ -558,6 +580,227 @@
       }
     }
   }
+
+  &.modalItemPC_hasRecommendations > .MuiGrid-root {
+    flex-wrap: nowrap;
+  }
+
+  &.modalItemPC_hasRecommendations::after {
+    content: '';
+    position: sticky;
+    z-index: 5;
+    bottom: 0;
+    display: block;
+    width: 100%;
+    height: $MyScale90;
+    margin-top: -$MyScale90;
+    pointer-events: none;
+    background: linear-gradient(180deg, rgba(255, 255, 255, 0) 0%, #ffffff 86%);
+  }
+
+  & .RecommendationModalCardMobile {
+    width: calc(100% - #{$MyScale160});
+    margin: $MyScale40 $MyScale80 $MyScale120;
+  }
+
+  & .RecommendationModalCardMobileTitle {
+    color: rgba(51, 51, 51, 1);
+    font-size: $MyScale50;
+    font-weight: 400;
+    line-height: 100%;
+  }
+
+  & .RecommendationModalCardMobileList {
+    display: flex;
+    gap: $MyScale34;
+    width: 100%;
+    padding: $MyScale40 0;
+    overflow-x: auto;
+    overflow-y: hidden;
+    scroll-snap-type: x proximity;
+    scrollbar-width: none;
+
+    &::-webkit-scrollbar {
+      display: none;
+    }
+  }
+
+  & .RecommendationModalCardMobileItem {
+    flex: 0 0 15.667870036101vw;
+    width: 15.667870036101vw;
+    height: calc(#{$MyScale600} + #{$MyScale50});
+    box-sizing: border-box;
+    padding-bottom: $MyScale32;
+    border: $MyScale3 solid rgba(0, 0, 0, 0.05);
+    border-radius: $MyScale60;
+    background: #ffffff;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    gap: 0;
+    scroll-snap-align: start;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    touch-action: manipulation;
+  }
+
+  & .RecommendationModalCardMobileImage {
+    width: 13.357400722022vw;
+    height: 13.357400722022vw;
+    border-radius: $MyScale40;
+    overflow: hidden;
+
+    & img {
+      width: 100%;
+      height: 100%;
+      border-radius: $MyScale40;
+      object-fit: contain;
+      image-rendering: auto;
+      display: block;
+    }
+  }
+
+  & .RecommendationModalCardMobileInfo {
+    width: 13.357400722022vw;
+    min-height: $MyScale150;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: flex-start;
+    gap: 0;
+  }
+
+  & .RecommendationModalCardMobileName {
+    width: 13.357400722022vw;
+    min-height: $MyScale42;
+    max-height: $MyScale100;
+    color: rgba(51, 51, 51, 1);
+    font-size: $MyScale42;
+    font-weight: 400;
+    line-height: 100%;
+    text-align: center;
+    margin: 0;
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+  }
+
+  & .RecommendationModalCardMobileMeta {
+    width: 13.357400722022vw;
+    height: $MyScale32;
+    margin-top: $MyScale13;
+    color: rgba(102, 102, 102, 1);
+    font-size: $MyScale27;
+    font-weight: 400;
+    line-height: $MyScale32;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $MyScale13;
+    white-space: nowrap;
+    overflow: visible;
+  }
+
+  & .RecommendationModalCardMobileDivider {
+    color: rgba(102, 102, 102, 1);
+  }
+
+  & .RecommendationModalCardMobilePrice {
+    width: 13.357400722022vw;
+    height: $MyScale96;
+    box-sizing: border-box;
+    padding: $MyScale22 0;
+    border: 0;
+    border-radius: $MyScale110;
+    appearance: none;
+    background: rgba(0, 0, 0, 0.05);
+    color: rgba(51, 51, 51, 1);
+    font-family: inherit;
+    font-size: $MyScale40;
+    font-weight: 400;
+    line-height: 100%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: $MyScale34;
+    white-space: nowrap;
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    touch-action: manipulation;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.07);
+    }
+  }
+
+  & .RecommendationModalCardMobileCounter {
+    width: 13.357400722022vw;
+    height: $MyScale96;
+    box-sizing: border-box;
+    padding: 0 $MyScale13;
+    border: $MyScale2 solid rgba(0, 0, 0, 0.12);
+    border-radius: $MyScale110;
+    background: #ffffff;
+    position: relative;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 0;
+    cursor: default;
+    user-select: none;
+    touch-action: manipulation;
+  }
+
+  & .RecommendationModalCardMobileCounterButton {
+    position: absolute;
+    top: 50%;
+    width: $MyScale70;
+    height: $MyScale70;
+    padding: 0;
+    border: 0;
+    border-radius: 50%;
+    appearance: none;
+    background: rgba(0, 0, 0, 0.07);
+    color: rgba(51, 51, 51, 1);
+    font-family: inherit;
+    font-size: $MyScale55;
+    font-weight: 400;
+    line-height: 1;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transform: translateY(-50%);
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    user-select: none;
+    touch-action: manipulation;
+
+    &:hover {
+      background: rgba(0, 0, 0, 0.1);
+    }
+
+    &:first-of-type {
+      left: $MyScale13;
+      padding-top: $MyScale4;
+    }
+
+    &:last-of-type {
+      right: $MyScale13;
+      padding-top: $MyScale2;
+    }
+  }
+
+  & .RecommendationModalCardMobileCounterValue {
+    color: rgba(51, 51, 51, 1);
+    font-size: $MyScale48;
+    font-weight: 400;
+    line-height: 100%;
+    text-align: center;
+    min-width: $MyScale80;
+  }
 }
 
 @include tablet-only {
@@ -566,9 +809,24 @@
       border-radius: tablet-vw(40);
     }
 
+    & .modalDialogContent_hasRecommendations {
+      &::-webkit-scrollbar {
+        width: tablet-vw(20);
+      }
+
+      &::-webkit-scrollbar-thumb {
+        border-right: solid tablet-vw(14) #ffffff;
+      }
+
+      &::-webkit-scrollbar-track {
+        border-right: solid tablet-vw(14) #ffffff;
+        margin: tablet-vw(40) 0;
+      }
+    }
+
     & .MuiDialog-paper {
       border-radius: tablet-vw(32);
-      width: tablet-vw(1960);
+      width: calc(#{tablet-vw(1960)} + #{tablet-vw(20)});
       height: tablet-vw(1320);
     }
   }
@@ -870,6 +1128,105 @@
           }
         }
       }
+    }
+
+    &.modalItemPC_hasRecommendations::after {
+      height: tablet-vw(90);
+      margin-top: -#{tablet-vw(90)};
+    }
+
+    & .RecommendationModalCardMobile {
+      width: calc(100% - #{tablet-vw(160)});
+      margin: tablet-vw(40) tablet-vw(80) tablet-vw(120);
+    }
+
+    & .RecommendationModalCardMobileTitle {
+      font-size: tablet-vw(50);
+    }
+
+    & .RecommendationModalCardMobileList {
+      gap: tablet-vw(34);
+      padding: tablet-vw(40) 0;
+    }
+
+    & .RecommendationModalCardMobileItem {
+      flex-basis: tablet-vw(434);
+      width: tablet-vw(434);
+      height: tablet-vw(650);
+      padding-bottom: tablet-vw(32);
+      border-width: tablet-vw(3);
+      border-radius: tablet-vw(60);
+      gap: 0;
+    }
+
+    & .RecommendationModalCardMobileImage {
+      width: tablet-vw(370);
+      height: tablet-vw(370);
+      border-radius: tablet-vw(40);
+
+      & img {
+        border-radius: tablet-vw(40);
+      }
+    }
+
+    & .RecommendationModalCardMobileInfo {
+      width: tablet-vw(370);
+      min-height: tablet-vw(150);
+      gap: 0;
+    }
+
+    & .RecommendationModalCardMobileName {
+      width: tablet-vw(370);
+      min-height: tablet-vw(42);
+      max-height: tablet-vw(100);
+      font-size: tablet-vw(42);
+    }
+
+    & .RecommendationModalCardMobileMeta {
+      width: tablet-vw(370);
+      height: tablet-vw(32);
+      margin-top: tablet-vw(13);
+      font-size: tablet-vw(27);
+      line-height: tablet-vw(32);
+      gap: tablet-vw(13);
+    }
+
+    & .RecommendationModalCardMobilePrice {
+      width: tablet-vw(370);
+      height: tablet-vw(96);
+      padding: tablet-vw(22) 0;
+      border-radius: tablet-vw(110);
+      font-size: tablet-vw(40);
+      gap: tablet-vw(34);
+    }
+
+    & .RecommendationModalCardMobileCounter {
+      width: tablet-vw(370);
+      height: tablet-vw(96);
+      padding: 0 tablet-vw(13);
+      border-width: tablet-vw(2);
+      border-radius: tablet-vw(110);
+    }
+
+    & .RecommendationModalCardMobileCounterButton {
+      width: tablet-vw(70);
+      height: tablet-vw(70);
+      font-size: tablet-vw(55);
+
+      &:first-of-type {
+        left: tablet-vw(13);
+        padding-top: tablet-vw(4);
+      }
+
+      &:last-of-type {
+        right: tablet-vw(13);
+        padding-top: tablet-vw(2);
+      }
+    }
+
+    & .RecommendationModalCardMobileCounterValue {
+      font-size: tablet-vw(48);
+      min-width: tablet-vw(80);
     }
   }
 }

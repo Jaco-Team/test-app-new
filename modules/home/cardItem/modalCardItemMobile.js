@@ -1,4 +1,5 @@
-import React, { useState, useEffect } from 'react';
+import React, { useState, useEffect, useRef } from 'react';
+import { shallow } from 'zustand/shallow';
 
 //import Image from 'next/image';
 import Link from 'next/link';
@@ -19,26 +20,50 @@ import BadgeItem from './badge';
 
 import { roboto } from '@/ui/Font';
 import CartCtaButton from '@/ui/CartCtaButton';
+import RecommendationMobileList from '@/modules/recommendations/recommendationMobileList';
 
 import { reachGoalSplit } from '@/utils/metrika';
 import { getItemImageUrl, hasItemImage } from '@/utils/itemImage';
 
 export default function ModalCardItemMobile() {
-  const [isOpenModal, openItem, setActiveModalCardItemMobile, getItem] =
-    useHomeStore((state) => {
-      return [
-        state.isOpenModal,
-        state.openItem,
-        state.setActiveModalCardItemMobile,
-        state.getItem,
-      ];
-    });
-  const [links] = useFooterStore((state) => [state.links]);
-  const [minus, plus] = useCartStore((state) => [state.minus, state.plus]);
-  const [thisCity, thisCityRu] = useCitiesStore((state) => [
-    state.thisCity,
-    state.thisCityRu,
-  ]);
+  const mobileContentRef = useRef(null);
+  const [
+    isOpenModal,
+    openItem,
+    setActiveModalCardItemMobile,
+    getItem,
+    openItemCard,
+  ] = useHomeStore(
+    (state) => [
+      state.isOpenModal,
+      state.openItem,
+      state.setActiveModalCardItemMobile,
+      state.getItem,
+      state.openItemCard,
+    ],
+    shallow
+  );
+  const [links] = useFooterStore((state) => [state.links], shallow);
+  const [
+    cartItems,
+    minus,
+    plus,
+    addRecommendationToCart,
+    trackRecommendationAction,
+  ] = useCartStore(
+    (state) => [
+      state.items,
+      state.minus,
+      state.plus,
+      state.addRecommendationToCart,
+      state.trackRecommendationAction,
+    ],
+    shallow
+  );
+  const [thisCity, thisCityRu] = useCitiesStore(
+    (state) => [state.thisCity, state.thisCityRu],
+    shallow
+  );
 
   const [count, setCount] = useState(0);
   const [shadowSet, setShadowSet] = useState(0);
@@ -62,16 +87,17 @@ export default function ModalCardItemMobile() {
   };
 
   useEffect(() => {
-    const items = useCartStore.getState().items;
-
-    const findItems = items.find((it) => it.item_id === openItem?.id);
-
-    if (findItems) {
-      setCount(findItems.count);
-    } else {
+    if (!isOpenModal || !openItem?.id) {
       setCount(0);
+      return;
     }
-  }, [isOpenModal]);
+
+    const findItems = (cartItems || []).find(
+      (it) => parseInt(it?.item_id) === parseInt(openItem.id)
+    );
+
+    setCount(Number(findItems?.count ?? 0));
+  }, [isOpenModal, openItem?.id, cartItems]);
 
   const changeCountPlus = (id) => {
     plus(id, openItem?.cat_id);
@@ -239,10 +265,84 @@ export default function ModalCardItemMobile() {
         ? [openItem]
         : [];
   const getWeight = (item) => item?.weight ?? openItem?.weight;
+  const recommendations = Array.isArray(openItem?.recommendations)
+    ? openItem.recommendations.slice(0, 3)
+    : [];
+  const recommendationRecUuid = openItem?.rec_uuid || '';
+
+  const scrollModalToTop = () => {
+    mobileContentRef.current?.scrollTo?.({
+      top: 0,
+      left: 0,
+      behavior: 'smooth',
+    });
+  };
+
+  const openRecommendationItem = async (recommendation, event, position) => {
+    const recommendationId = recommendation?.item_id ?? recommendation?.id;
+
+    if (!recommendationId) {
+      return;
+    }
+
+    scrollModalToTop();
+    trackRecommendationAction?.({
+      city: thisCity,
+      itemId: recommendationId,
+      recUuid: recommendationRecUuid,
+      action: 'opened',
+      surface: 'item_page',
+      position,
+    });
+
+    await getItem('home', thisCity, recommendationId, null, {
+      forgetCurrentItem: true,
+    });
+
+    if (typeof window !== 'undefined') {
+      window.requestAnimationFrame(scrollModalToTop);
+    }
+  };
+
+  const getRecommendationCount = (recommendation) => {
+    const recommendationId = recommendation?.item_id ?? recommendation?.id;
+    const findItems = (cartItems || []).find(
+      (item) => parseInt(item?.item_id) === parseInt(recommendationId)
+    );
+
+    return Number(findItems?.count ?? 0);
+  };
+
+  const addRecommendationItem = (recommendation, event, position) => {
+    addRecommendationToCart?.(recommendation, {
+      city: thisCity,
+      recUuid: recommendationRecUuid,
+      surface: 'item_page',
+      position,
+    });
+  };
+
+  const removeRecommendationItem = (recommendation) => {
+    const recommendationId = recommendation?.item_id ?? recommendation?.id;
+
+    if (!recommendationId) {
+      return;
+    }
+
+    minus(recommendationId);
+  };
 
   const itemsLen = valueItems.length;
   const isMany = itemsLen > 1;
   const isOne = itemsLen < 2;
+
+  const closeMainModal = () => {
+    if (openItemCard) {
+      return;
+    }
+
+    setActiveModalCardItemMobile(false);
+  };
 
   return (
     <>
@@ -250,7 +350,7 @@ export default function ModalCardItemMobile() {
       <SwipeableDrawer
         anchor={'bottom'}
         open={isOpenModal}
-        onClose={() => setActiveModalCardItemMobile(false)}
+        onClose={closeMainModal}
         onOpen={() => setActiveModalCardItemMobile(true)}
         id="modalCardItemMobile"
         className={roboto.variable}
@@ -260,7 +360,7 @@ export default function ModalCardItemMobile() {
           <div className="lineModalCardMobile"></div>
         </div>
 
-        <div className="ContainerModalCardMobile">
+        <div className="ContainerModalCardMobile" ref={mobileContentRef}>
           <div className="ItemModalCardMobile">
             <div className="ItemContainer">
               <div className="ImgModalCardMobile">
@@ -443,6 +543,15 @@ export default function ModalCardItemMobile() {
               >
                 <span>{desc}</span>
               </div>
+
+              <RecommendationMobileList
+                recommendations={recommendations}
+                limit={3}
+                onOpen={openRecommendationItem}
+                onAdd={addRecommendationItem}
+                onRemove={removeRecommendationItem}
+                getCount={getRecommendationCount}
+              />
             </div>
           </div>
 

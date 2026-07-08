@@ -197,7 +197,6 @@ const ITEMS_CAT_LOCAL_CACHE_PREFIX = 'itemsCatCacheV2:';
 const ITEMS_CAT_LOCAL_CACHE_TTL_MS = 1000 * 60 * 60 * 12;
 let itemsCatInFlightPromise = null;
 let itemsCatInFlightKey = '';
-
 function getItemsCatCacheKey(city = '') {
   const safeCity = String(city ?? '')
     .trim()
@@ -251,6 +250,350 @@ function saveItemsCatCache(city = '', category = [], items = []) {
       items: safeItems,
     })
   );
+}
+
+function getCartItemIdsForRecommendations() {
+  const items = useCartStore.getState().items;
+  const cartItems = Array.isArray(items) ? items : [];
+
+  return [
+    ...new Set(
+      cartItems
+        .filter((item) => Number(item?.count ?? 0) > 0)
+        .map((item) => item?.item_id ?? item?.id)
+        .filter((id) => id !== undefined && id !== null && String(id) !== '')
+        .map((id) => String(id))
+    ),
+  ];
+}
+
+function getCartJsonForRecommendations() {
+  const items = useCartStore.getState().items;
+  const cartItems = Array.isArray(items) ? items : [];
+
+  return cartItems
+    .filter((item) => Number(item?.count ?? 0) > 0)
+    .map((item) => ({
+      item_id: Number(item?.item_id ?? item?.id),
+      count: Number(item?.count ?? 0),
+    }))
+    .filter((item) => Number.isFinite(item.item_id) && item.item_id > 0);
+}
+
+const CART_RECOMMENDATIONS_DEDUPE_MS = 3000;
+const cartRecommendationsDedupe =
+  typeof globalThis !== 'undefined'
+    ? (globalThis.__JACO_CART_RECOMMENDATIONS_DEDUPE__ =
+        globalThis.__JACO_CART_RECOMMENDATIONS_DEDUPE__ || {
+          inFlightKey: '',
+          inFlightPromise: null,
+          lastKey: '',
+          lastLoadedAt: 0,
+        })
+    : {
+        inFlightKey: '',
+        inFlightPromise: null,
+        lastKey: '',
+        lastLoadedAt: 0,
+      };
+
+function getCartRecommendationsRequestKey(city, cartItems = []) {
+  const normalizedCart = (Array.isArray(cartItems) ? cartItems : [])
+    .map((item) => ({
+      item_id: Number(item?.item_id),
+      count: Number(item?.count),
+    }))
+    .filter(
+      (item) =>
+        Number.isFinite(item.item_id) &&
+        item.item_id > 0 &&
+        Number.isFinite(item.count) &&
+        item.count > 0
+    )
+    .sort((a, b) => a.item_id - b.item_id);
+
+  return JSON.stringify({
+    city_id: getRecommendationCityId(city),
+    surface: 'cart_upsell',
+    item_id: 0,
+    limit: 5,
+    cart: normalizedCart,
+  });
+}
+
+function getRecommendationResponseUuid(response = {}) {
+  return String(response?.uuid || response?.rec_id || response?.rec_uuid || '');
+}
+
+function getRecommendationCityId(city) {
+  const cityNumber = Number(city);
+
+  if (Number.isFinite(cityNumber) && cityNumber > 0) {
+    return cityNumber;
+  }
+
+  const cityList = useCitiesStore.getState().thisCityList;
+  const currentCity = Array.isArray(cityList)
+    ? cityList.find(
+        (item) =>
+          String(item?.link) === String(city) ||
+          String(item?.id) === String(city) ||
+          String(item?.name) === String(city)
+      )
+    : null;
+  const currentCityId = Number(currentCity?.id);
+
+  return Number.isFinite(currentCityId) && currentCityId > 0
+    ? currentCityId
+    : 0;
+}
+
+function getRecommendationPointId() {
+  const cartState = useCartStore.getState();
+  const pointId = Number(
+    cartState?.orderPic?.id ||
+      cartState?.orderAddr?.point_id ||
+      cartState?.point_id
+  );
+
+  return Number.isFinite(pointId) && pointId > 0 ? pointId : 0;
+}
+
+function getFilledRecommendationValue(...values) {
+  return values.find(
+    (value) =>
+      value !== undefined && value !== null && String(value).trim().length > 0
+  );
+}
+
+function findCatalogItemForRecommendation(item = {}) {
+  const itemId = String(item?.item_id ?? item?.id ?? '');
+  const cartState = useCartStore.getState();
+  const homeState = useHomeStore.getState();
+  const allItems = cartState?.allItems;
+  const cartItems = cartState?.items;
+  const catsItems = homeState?.CatsItems;
+
+  if (!itemId) {
+    return null;
+  }
+
+  const findById = (items = []) =>
+    items.find(
+      (catalogItem) =>
+        String(catalogItem?.id ?? catalogItem?.item_id ?? '') === itemId
+    ) || null;
+
+  const catsMatches = Array.isArray(catsItems)
+    ? catsItems.reduce((matches, cat) => {
+        const foundItem = findById(Array.isArray(cat?.items) ? cat.items : []);
+
+        if (foundItem) {
+          matches.push({
+            ...foundItem,
+            cat_id: foundItem?.cat_id ?? cat?.id,
+            cat_name: foundItem?.cat_name ?? cat?.name,
+          });
+        }
+
+        return matches;
+      }, [])
+    : [];
+  const candidates = [
+    Array.isArray(allItems) ? findById(allItems) : null,
+    ...catsMatches,
+    Array.isArray(cartItems) ? findById(cartItems) : null,
+  ].filter(Boolean);
+
+  if (!candidates.length) {
+    return null;
+  }
+
+  return candidates.slice().sort((a, b) => {
+    const score = (catalogItem = {}) =>
+      [
+        catalogItem?.count_part_new,
+        catalogItem?.count_part,
+        catalogItem?.weight,
+        catalogItem?.size_pizza,
+        catalogItem?.cat_id,
+      ].filter(
+        (value) =>
+          value !== undefined &&
+          value !== null &&
+          String(value).trim().length > 0
+      ).length;
+
+    return score(b) - score(a);
+  })[0];
+}
+
+function normalizeRecommendationItem(item = {}) {
+  const catalogItem = findCatalogItemForRecommendation(item);
+  const itemId =
+    item?.item_id ?? item?.id ?? catalogItem?.id ?? catalogItem?.item_id;
+
+  return {
+    ...catalogItem,
+    ...item,
+    id: catalogItem?.id ?? item?.id ?? itemId,
+    item_id: itemId,
+    name: getFilledRecommendationValue(item?.name, catalogItem?.name),
+    img_app: getFilledRecommendationValue(item?.img_app, catalogItem?.img_app),
+    price: getFilledRecommendationValue(
+      item?.price,
+      item?.one_price,
+      catalogItem?.price,
+      catalogItem?.one_price
+    ),
+    one_price: getFilledRecommendationValue(
+      item?.one_price,
+      item?.price,
+      catalogItem?.one_price,
+      catalogItem?.price
+    ),
+    count: item?.count ?? 0,
+    cat_id: getFilledRecommendationValue(item?.cat_id, catalogItem?.cat_id),
+    cat_name: getFilledRecommendationValue(
+      item?.cat_name,
+      catalogItem?.cat_name
+    ),
+    count_part_new: getFilledRecommendationValue(
+      item?.count_part_new,
+      catalogItem?.count_part_new,
+      item?.count_part,
+      catalogItem?.count_part
+    ),
+    count_part: getFilledRecommendationValue(
+      item?.count_part,
+      catalogItem?.count_part
+    ),
+    weight: getFilledRecommendationValue(item?.weight, catalogItem?.weight),
+    size_pizza: getFilledRecommendationValue(
+      item?.size_pizza,
+      catalogItem?.size_pizza
+    ),
+    reason: item?.reason,
+    score: item?.score,
+    components: item?.components,
+  };
+}
+
+function normalizeProductRecommendations(product = {}, { city, itemId } = {}) {
+  if (!product || typeof product !== 'object') {
+    return product;
+  }
+
+  const normalizedProduct = product;
+  const hasRecommendations = Object.prototype.hasOwnProperty.call(
+    normalizedProduct,
+    'recommendations'
+  );
+  const apiRecommendations = Array.isArray(normalizedProduct?.recommendations)
+    ? normalizedProduct.recommendations
+    : [];
+  const recommendationsSource = hasRecommendations ? apiRecommendations : [];
+  const recommendations = recommendationsSource.map((recommendation) =>
+    normalizeRecommendationItem(recommendation)
+  );
+
+  return {
+    ...normalizedProduct,
+    recommendations,
+    rec_uuid: getRecommendationResponseUuid(normalizedProduct),
+  };
+}
+
+function normalizeCartRecommendationsResponse(response = {}) {
+  const hasRecommendations = Object.prototype.hasOwnProperty.call(
+    response || {},
+    'recommendations'
+  );
+  const hasItems = Object.prototype.hasOwnProperty.call(
+    response || {},
+    'items'
+  );
+  const apiRecommendations = Array.isArray(response?.recommendations)
+    ? response.recommendations
+    : [];
+  const apiItems = Array.isArray(response?.items) ? response.items : [];
+  const recommendationsSource = hasRecommendations
+    ? apiRecommendations
+    : hasItems
+      ? apiItems
+      : [];
+  const recommendations = recommendationsSource
+    .slice(0, 5)
+    .map((recommendation) => normalizeRecommendationItem(recommendation));
+  const recUuid = getRecommendationResponseUuid(response);
+
+  return {
+    recommendations,
+    rec_uuid: recUuid,
+  };
+}
+
+async function fetchRecommendations({ city, itemId = 0, surface, limit } = {}) {
+  const data = {
+    type: 'save_user_actions_rec',
+    user_id: useHeaderStoreNew.getState().token,
+    action: 'get',
+    surface,
+    platform: 'site',
+    point_id: getRecommendationPointId(),
+    city_id: getRecommendationCityId(city),
+    item_id: Number(itemId) || 0,
+    cart: JSON.stringify(getCartJsonForRecommendations()),
+    limit,
+    __disableRetry: true,
+    __timeoutMs: 3000,
+  };
+
+  try {
+    const response = await api('profile', data);
+
+    return response;
+  } catch (error) {
+    return {
+      recommendations: [],
+      rec_uuid: '',
+    };
+  }
+}
+
+function sendRecommendationAction({
+  city,
+  itemId,
+  recUuid,
+  action,
+  surface,
+  position = 0,
+} = {}) {
+  if (!itemId || !recUuid || !action || !surface) {
+    return Promise.resolve(null);
+  }
+
+  const data = {
+    type: 'save_user_actions_rec',
+    uuid: recUuid,
+    user_id: useHeaderStoreNew.getState().token,
+    action,
+    surface,
+    platform: 'site',
+    point_id: getRecommendationPointId(),
+    city_id: getRecommendationCityId(city),
+    item_id: itemId,
+    position: Number(position) || 0,
+    __disableRetry: true,
+  };
+
+  return api('profile', data)
+    .then((response) => {
+      return response;
+    })
+    .catch((error) => {
+      return null;
+    });
 }
 
 const hotStores =
@@ -990,6 +1333,8 @@ export const useCartStore = reuseHotStore(
       //itemsOnDops: [],
       itemsOffDops: [],
       itemsWithPromo: [],
+      cartRecommendations: [],
+      cartRecommendationsRecUuid: '',
 
       allItems: [],
       freeItems: [],
@@ -1147,6 +1492,75 @@ export const useCartStore = reuseHotStore(
       // продолжить оформление после успешного сохранения email
       setContinueCheckoutAfterEmail: (active) => {
         set({ continueCheckoutAfterEmail: active });
+      },
+
+      getCartRecommendations: async (city) => {
+        const cartItems = getCartJsonForRecommendations();
+
+        if (!cartItems.length) {
+          cartRecommendationsDedupe.inFlightKey = '';
+          cartRecommendationsDedupe.inFlightPromise = null;
+          cartRecommendationsDedupe.lastKey = '';
+          cartRecommendationsDedupe.lastLoadedAt = 0;
+          set({
+            cartRecommendations: [],
+            cartRecommendationsRecUuid: '',
+          });
+          return {
+            recommendations: [],
+            rec_uuid: '',
+          };
+        }
+
+        const requestKey = getCartRecommendationsRequestKey(city, cartItems);
+        const now = Date.now();
+
+        if (
+          cartRecommendationsDedupe.inFlightPromise &&
+          cartRecommendationsDedupe.inFlightKey === requestKey
+        ) {
+          return cartRecommendationsDedupe.inFlightPromise;
+        }
+
+        if (
+          cartRecommendationsDedupe.lastKey === requestKey &&
+          now - cartRecommendationsDedupe.lastLoadedAt <
+            CART_RECOMMENDATIONS_DEDUPE_MS
+        ) {
+          return {
+            recommendations: get().cartRecommendations,
+            rec_uuid: get().cartRecommendationsRecUuid,
+          };
+        }
+
+        cartRecommendationsDedupe.inFlightKey = requestKey;
+        cartRecommendationsDedupe.inFlightPromise = fetchRecommendations({
+          city,
+          itemId: 0,
+          surface: 'cart_upsell',
+          limit: 5,
+        })
+          .then((response) => {
+            const json = normalizeCartRecommendationsResponse(response);
+
+            set({
+              cartRecommendations: json.recommendations,
+              cartRecommendationsRecUuid: json.rec_uuid,
+            });
+
+            cartRecommendationsDedupe.lastKey = requestKey;
+            cartRecommendationsDedupe.lastLoadedAt = Date.now();
+
+            return json;
+          })
+          .finally(() => {
+            if (cartRecommendationsDedupe.inFlightKey === requestKey) {
+              cartRecommendationsDedupe.inFlightKey = '';
+              cartRecommendationsDedupe.inFlightPromise = null;
+            }
+          });
+
+        return cartRecommendationsDedupe.inFlightPromise;
       },
 
       // открытие/закрытие формы подтверждения заказа
@@ -2655,6 +3069,68 @@ export const useCartStore = reuseHotStore(
 
         get().check_need_dops();
         get().setCartLocalStorage();
+      },
+
+      addRecommendationToCart: (recommendation = {}, context = {}) => {
+        const itemId = recommendation?.item_id ?? recommendation?.id;
+
+        if (!itemId) {
+          return;
+        }
+
+        const allItems = Array.isArray(get().allItems) ? get().allItems : [];
+        const hasItemInCatalog = allItems.some(
+          (item) => parseInt(item?.id) === parseInt(itemId)
+        );
+
+        if (!hasItemInCatalog) {
+          set({
+            allItems: [
+              ...allItems,
+              {
+                ...recommendation,
+                id: recommendation?.id ?? itemId,
+                item_id: recommendation?.item_id ?? itemId,
+                price: recommendation?.price ?? recommendation?.one_price,
+                one_price: recommendation?.one_price ?? recommendation?.price,
+                count: 0,
+              },
+            ],
+          });
+        }
+
+        const countBefore = (get().items || []).reduce((count, item) => {
+          if (parseInt(item?.item_id) !== parseInt(itemId)) {
+            return count;
+          }
+
+          return count + Number(item?.count ?? 0);
+        }, 0);
+
+        get().plus(itemId);
+
+        const countAfter = (get().items || []).reduce((count, item) => {
+          if (parseInt(item?.item_id) !== parseInt(itemId)) {
+            return count;
+          }
+
+          return count + Number(item?.count ?? 0);
+        }, 0);
+
+        if (countAfter > countBefore) {
+          sendRecommendationAction({
+            city: context?.city,
+            itemId,
+            recUuid: context?.recUuid,
+            action: 'added',
+            surface: context?.surface || 'item_page',
+            position: context?.position,
+          });
+        }
+      },
+
+      trackRecommendationAction: (context = {}) => {
+        return sendRecommendationAction(context);
       },
 
       // вычитание товара из корзины
@@ -5315,6 +5791,7 @@ export const useHomeStore = reuseHotStore(
       CatsItems: [],
       category: [],
       openItem: null,
+      openItemStack: [],
       isOpenModal: false,
       typeModal: 'start',
       typeModal_dop: 'start',
@@ -5558,9 +6035,8 @@ export const useHomeStore = reuseHotStore(
           if (type && type === 'dop') {
             set({ item_card: null });
           } else {
-            set({
-              openItem: null,
-            });
+            get().closeModal();
+            return;
           }
         }
 
@@ -6017,22 +6493,69 @@ export const useHomeStore = reuseHotStore(
       },
 
       // получение данных выбранного товара
-      getItem: async (this_module, city, item_id, type) => {
-        let data = {
+      getItem: async (this_module, city, item_id, type, options = {}) => {
+        const cartItemIds = getCartItemIdsForRecommendations();
+        const data = {
           type: 'get_item',
           city_id: city,
           item_id: item_id,
+          cart: cartItemIds.join(','),
         };
 
-        const json = await api(this_module, data);
+        let json = normalizeProductRecommendations(
+          await api(this_module, data),
+          {
+            city,
+            itemId: item_id,
+          }
+        );
 
-        if (json?.link) {
+        if (options?.withoutRecommendations) {
+          json = {
+            ...json,
+            recommendations: [],
+            rec_uuid: '',
+          };
+        } else if (!type || type !== 'set') {
+          const recommendationsJson = normalizeCartRecommendationsResponse(
+            await fetchRecommendations({
+              city,
+              itemId: item_id,
+              surface: 'item_page',
+              limit: 3,
+            })
+          );
+
+          json = {
+            ...json,
+            recommendations: recommendationsJson.recommendations.slice(0, 3),
+            rec_uuid: recommendationsJson.rec_uuid,
+          };
+        }
+
+        const currentStack = options?.forgetCurrentItem
+          ? []
+          : get().openItemStack || [];
+        const currentOpenItem = get().openItem;
+        const nextStack =
+          options?.stackCurrentItem && currentOpenItem
+            ? [
+                ...currentStack,
+                {
+                  openItem: currentOpenItem,
+                  typeModal: get().typeModal,
+                  foodValue: get().foodValue,
+                },
+              ]
+            : currentStack;
+
+        if (json?.link && !options?.stackCurrentItem) {
           let state = { item_id: item_id, item_name: json?.name },
             title = json?.name,
             url = window.location.pathname + '?item=' + json?.link;
 
           window.history.pushState(state, title, url);
-        } else {
+        } else if (!options?.stackCurrentItem) {
           if (type && type === 'set') {
             get().closeItemModal();
           } else {
@@ -6075,6 +6598,8 @@ export const useHomeStore = reuseHotStore(
             isOpenModal: true,
             openItem: json,
             typeModal: 'start',
+            foodValue: false,
+            openItemStack: nextStack,
           });
         }
 
@@ -6087,6 +6612,31 @@ export const useHomeStore = reuseHotStore(
 
       // закрытие модального окна товара на главной странице
       closeModal: () => {
+        const stack = get().openItemStack || [];
+
+        if (stack.length > 0) {
+          const prevItemState = stack[stack.length - 1];
+          const prevItem = prevItemState?.openItem || null;
+
+          if (prevItem?.link) {
+            let state = { item_id: prevItem?.id, item_name: prevItem?.name },
+              title = prevItem?.name,
+              url = window.location.pathname + '?item=' + prevItem.link;
+
+            window.history.pushState(state, title, url);
+          }
+
+          set({
+            isOpenModal: true,
+            foodValue: prevItemState?.foodValue || false,
+            openItem: prevItem,
+            typeModal: prevItemState?.typeModal || 'start',
+            openItemStack: stack.slice(0, -1),
+          });
+
+          return;
+        }
+
         let state = {},
           title = '',
           url = window.location.pathname;
@@ -6097,6 +6647,7 @@ export const useHomeStore = reuseHotStore(
           isOpenModal: false,
           foodValue: false,
           openItem: null,
+          openItemStack: [],
         });
       },
 
@@ -6120,6 +6671,10 @@ export const useHomeStore = reuseHotStore(
 
       // закрытие БЖУ/Cета товара
       closeTypeModal: (event) => {
+        if ((get().openItemStack || []).length > 0) {
+          return;
+        }
+
         // target иногда может быть Text node
         const raw = event?.target;
         const target = raw?.nodeType === 3 ? raw.parentElement : raw;

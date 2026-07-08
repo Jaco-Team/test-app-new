@@ -10,11 +10,11 @@ import DataTimePicker from '@/modules/cartForm/dataTimePicker';
 import ConfirmForm from './confirmForm';
 import MailForm from './mailForm';
 import DopsForm from './dopsForm';
+import ModalCardItemMobile from '@/modules/home/cardItem/modalCardItemMobile';
 //import useYandexMetrika from '@/components/useYandexMetrika';
 // import { useCartStore } from '@/components/store';
 
 export default memo(function CartPage({ page, cityName }) {
-
   /*const [ check_need_dops, getItems ] = useCartStore( state => [ state.check_need_dops, state.getItems ] );
 
   useEffect( () => {
@@ -23,14 +23,13 @@ export default memo(function CartPage({ page, cityName }) {
   }, [] );*/
 
   // useEffect( () => {
-    //console.log( 'useYandexMetrika()' )
-    //useYandexMetrika(cityName, 'cart', 'cart');
+  //console.log( 'useYandexMetrika()' )
+  //useYandexMetrika(cityName, 'cart', 'cart');
   // }, [] );
 
   return (
     <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
-      
-      <CartMobile cityName={cityName} /> 
+      <CartMobile cityName={cityName} />
       <CartMenuMobile cityName={cityName} />
       <CartMapPoints />
       <DataTimePicker />
@@ -38,6 +37,7 @@ export default memo(function CartPage({ page, cityName }) {
       <MailForm cityName={cityName} />
       <DopsForm />
       <PayForm />
+      <ModalCardItemMobile />
     </Meta>
   );
-})
+});
