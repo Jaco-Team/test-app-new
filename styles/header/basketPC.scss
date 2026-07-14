@@ -500,6 +500,15 @@
   overflow: hidden;
 }
 
+#simple-popover
+  .basketRecommendations
+  .RecommendationModalCardMobileImage
+  picture {
+  display: block;
+  width: 100%;
+  height: 100%;
+}
+
 #simple-popover .basketRecommendations .RecommendationModalCardMobileImage img {
   width: 100%;
   height: 100%;

@@ -14,6 +14,7 @@ import { api, apiAddress } from './api.js';
 import useYandexMetrika from './useYandexMetrika';
 import { getClientNetworkContext } from '@/utils/clientMonitoring';
 import { reachGoal, setUserIdAll } from '@/utils/metrika';
+import { isRecommendationsEnabled } from '@/utils/recommendations';
 import {
   getLocalStorageItem,
   getLocalStorageJson,
@@ -297,6 +298,20 @@ const cartRecommendationsDedupe =
         lastLoadedAt: 0,
       };
 
+function getEmptyRecommendationsResponse() {
+  return {
+    recommendations: [],
+    rec_uuid: '',
+  };
+}
+
+function resetCartRecommendationsDedupe() {
+  cartRecommendationsDedupe.inFlightKey = '';
+  cartRecommendationsDedupe.inFlightPromise = null;
+  cartRecommendationsDedupe.lastKey = '';
+  cartRecommendationsDedupe.lastLoadedAt = 0;
+}
+
 function getCartRecommendationsRequestKey(city, cartItems = []) {
   const normalizedCart = (Array.isArray(cartItems) ? cartItems : [])
     .map((item) => ({
@@ -485,6 +500,15 @@ function normalizeProductRecommendations(product = {}, { city, itemId } = {}) {
   }
 
   const normalizedProduct = product;
+
+  if (!isRecommendationsEnabled()) {
+    return {
+      ...normalizedProduct,
+      recommendations: [],
+      rec_uuid: '',
+    };
+  }
+
   const hasRecommendations = Object.prototype.hasOwnProperty.call(
     normalizedProduct,
     'recommendations'
@@ -505,6 +529,10 @@ function normalizeProductRecommendations(product = {}, { city, itemId } = {}) {
 }
 
 function normalizeCartRecommendationsResponse(response = {}) {
+  if (!isRecommendationsEnabled()) {
+    return getEmptyRecommendationsResponse();
+  }
+
   const hasRecommendations = Object.prototype.hasOwnProperty.call(
     response || {},
     'recommendations'
@@ -534,6 +562,10 @@ function normalizeCartRecommendationsResponse(response = {}) {
 }
 
 async function fetchRecommendations({ city, itemId = 0, surface, limit } = {}) {
+  if (!isRecommendationsEnabled()) {
+    return getEmptyRecommendationsResponse();
+  }
+
   const data = {
     type: 'save_user_actions_rec',
     user_id: useHeaderStoreNew.getState().token,
@@ -554,10 +586,7 @@ async function fetchRecommendations({ city, itemId = 0, surface, limit } = {}) {
 
     return response;
   } catch (error) {
-    return {
-      recommendations: [],
-      rec_uuid: '',
-    };
+    return getEmptyRecommendationsResponse();
   }
 }
 
@@ -569,7 +598,13 @@ function sendRecommendationAction({
   surface,
   position = 0,
 } = {}) {
-  if (!itemId || !recUuid || !action || !surface) {
+  if (
+    !isRecommendationsEnabled() ||
+    !itemId ||
+    !recUuid ||
+    !action ||
+    !surface
+  ) {
     return Promise.resolve(null);
   }
 
@@ -1497,19 +1532,13 @@ export const useCartStore = reuseHotStore(
       getCartRecommendations: async (city) => {
         const cartItems = getCartJsonForRecommendations();
 
-        if (!cartItems.length) {
-          cartRecommendationsDedupe.inFlightKey = '';
-          cartRecommendationsDedupe.inFlightPromise = null;
-          cartRecommendationsDedupe.lastKey = '';
-          cartRecommendationsDedupe.lastLoadedAt = 0;
+        if (!isRecommendationsEnabled() || !cartItems.length) {
+          resetCartRecommendationsDedupe();
           set({
             cartRecommendations: [],
             cartRecommendationsRecUuid: '',
           });
-          return {
-            recommendations: [],
-            rec_uuid: '',
-          };
+          return getEmptyRecommendationsResponse();
         }
 
         const requestKey = getCartRecommendationsRequestKey(city, cartItems);
@@ -6494,7 +6523,10 @@ export const useHomeStore = reuseHotStore(
 
       // получение данных выбранного товара
       getItem: async (this_module, city, item_id, type, options = {}) => {
-        const cartItemIds = getCartItemIdsForRecommendations();
+        const recommendationsEnabled = isRecommendationsEnabled();
+        const cartItemIds = recommendationsEnabled
+          ? getCartItemIdsForRecommendations()
+          : [];
         const data = {
           type: 'get_item',
           city_id: city,
@@ -6510,7 +6542,7 @@ export const useHomeStore = reuseHotStore(
           }
         );
 
-        if (options?.withoutRecommendations) {
+        if (options?.withoutRecommendations || !recommendationsEnabled) {
           json = {
             ...json,
             recommendations: [],

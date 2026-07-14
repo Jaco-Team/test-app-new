@@ -500,6 +500,116 @@
       }
     }
 
+    &.SecondItem_hasRecommendations {
+      & .desc {
+        flex: 1 1 auto;
+        margin-bottom: $MyScale30;
+      }
+    }
+
+    & .RecommendationModalCardPCInline {
+      width: 100%;
+      flex: 0 0 auto;
+      margin: 0 0 calc(#{$MyScale80} + #{$MyScale28});
+
+      & .RecommendationModalCardMobile {
+        width: 100%;
+        margin: 0;
+      }
+
+      & .RecommendationModalCardMobileTitle {
+        font-size: $MyScale32;
+        line-height: 100%;
+      }
+
+      & .RecommendationModalCardMobileList {
+        gap: calc(#{$MyScale14} * 1.3);
+        padding: $MyScale20 0 0;
+        scroll-snap-type: none;
+        -webkit-overflow-scrolling: touch;
+      }
+
+      & .RecommendationModalCardMobileItem {
+        flex: 0 0 calc(15.667870036101vw * 0.55);
+        width: calc(15.667870036101vw * 0.55);
+        height: calc(#{$MyScale260} * 1.3);
+        padding-bottom: calc(#{$MyScale12} * 1.3);
+        border-width: $MyScale2;
+        border-radius: calc(#{$MyScale28} * 1.3);
+        scroll-snap-align: none;
+      }
+
+      & .RecommendationModalCardMobileImage {
+        width: calc(#{$MyScale145} * 1.25);
+        height: calc(#{$MyScale145} * 1.25);
+        border-radius: calc(#{$MyScale20} * 1.3);
+
+        & img {
+          border-radius: calc(#{$MyScale20} * 1.3);
+        }
+      }
+
+      & .RecommendationModalCardMobileInfo {
+        width: calc(#{$MyScale145} * 1.25);
+        min-height: calc(#{$MyScale52} * 1.3);
+      }
+
+      & .RecommendationModalCardMobileName {
+        width: calc(#{$MyScale145} * 1.25);
+        min-height: calc(#{$MyScale24} * 1.3);
+        max-height: calc(#{$MyScale50} * 1.3);
+        font-size: calc(#{$MyScale20} * 1.3);
+      }
+
+      & .RecommendationModalCardMobileMeta {
+        width: calc(#{$MyScale145} * 1.25);
+        height: calc(#{$MyScale18} * 1.3);
+        margin-top: calc(#{$MyScale6} * 1.3);
+        font-size: calc(#{$MyScale14} * 1.3);
+        line-height: calc(#{$MyScale18} * 1.3);
+        gap: calc(#{$MyScale5} * 1.3);
+      }
+
+      & .RecommendationModalCardMobilePrice,
+      & .RecommendationModalCardMobileCounter {
+        width: calc(#{$MyScale145} * 1.25);
+        height: calc(#{$MyScale38} * 1.3);
+        border-radius: calc(#{$MyScale40} * 1.3);
+        font-size: calc(#{$MyScale18} * 1.3);
+      }
+
+      & .RecommendationModalCardMobilePrice {
+        padding: 0;
+        gap: calc(#{$MyScale10} * 1.3);
+      }
+
+      & .RecommendationModalCardMobileCounter {
+        padding: 0 calc(#{$MyScale5} * 1.3);
+        border-width: $MyScale1;
+      }
+
+      & .RecommendationModalCardMobileCounterButton {
+        width: calc(#{$MyScale30} * 1.3);
+        height: calc(#{$MyScale30} * 1.3);
+        font-size: calc(#{$MyScale26} * 1.3);
+
+        &:first-of-type {
+          left: calc(#{$MyScale5} * 1.3);
+          padding-top: $MyScale1;
+        }
+
+        &:last-of-type {
+          right: calc(#{$MyScale5} * 1.3);
+          padding-top: 0;
+        }
+      }
+
+      & .RecommendationModalCardMobileCounterValue {
+        min-width: calc(#{$MyScale34} * 1.3);
+        font-size: calc(#{$MyScale22} * 1.3);
+      }
+    }
+
     .containerBTN {
       width: 100%;
       position: absolute;
@@ -650,6 +760,12 @@
     height: 13.357400722022vw;
     border-radius: $MyScale40;
     overflow: hidden;
+
+    & picture {
+      display: block;
+      width: 100%;
+      height: 100%;
+    }
 
     & img {
       width: 100%;
@@ -1097,6 +1213,112 @@
 
         &::-webkit-scrollbar-track {
           border-right: solid tablet-vw(30) #ffffff;
+        }
+      }
+
+      &.SecondItem_hasRecommendations {
+        & .desc {
+          margin-bottom: tablet-vw(30);
+        }
+      }
+
+      & .RecommendationModalCardPCInline {
+        margin: 0 0 calc(#{tablet-vw(80)} + #{tablet-vw(28)});
+
+        & .RecommendationModalCardMobile {
+          width: 100%;
+          margin: 0;
+        }
+
+        & .RecommendationModalCardMobileTitle {
+          font-size: tablet-vw(32);
+        }
+
+        & .RecommendationModalCardMobileList {
+          gap: tablet-vw(18);
+          padding: tablet-vw(20) 0 0;
+          scroll-snap-type: none;
+          -webkit-overflow-scrolling: touch;
+        }
+
+        & .RecommendationModalCardMobileItem {
+          flex: 0 0 tablet-vw(239);
+          width: tablet-vw(239);
+          height: tablet-vw(338);
+          padding-bottom: tablet-vw(16);
+          border-width: tablet-vw(2);
+          border-radius: tablet-vw(36);
+          scroll-snap-align: none;
+        }
+
+        & .RecommendationModalCardMobileImage {
+          width: tablet-vw(181);
+          height: tablet-vw(181);
+          border-radius: tablet-vw(26);
+
+          & img {
+            border-radius: tablet-vw(26);
+          }
+        }
+
+        & .RecommendationModalCardMobileInfo {
+          width: tablet-vw(181);
+          min-height: tablet-vw(68);
+        }
+
+        & .RecommendationModalCardMobileName {
+          width: tablet-vw(181);
+          min-height: tablet-vw(31);
+          max-height: tablet-vw(65);
+          font-size: tablet-vw(26);
+        }
+
+        & .RecommendationModalCardMobileMeta {
+          width: tablet-vw(181);
+          height: tablet-vw(23);
+          margin-top: tablet-vw(8);
+          font-size: tablet-vw(18);
+          line-height: tablet-vw(23);
+          gap: tablet-vw(7);
+        }
+
+        & .RecommendationModalCardMobilePrice,
+        & .RecommendationModalCardMobileCounter {
+          width: tablet-vw(181);
+          height: tablet-vw(49);
+          border-radius: tablet-vw(52);
+          font-size: tablet-vw(23);
+        }
+
+        & .RecommendationModalCardMobilePrice {
+          padding: 0;
+          gap: tablet-vw(13);
+        }
+
+        & .RecommendationModalCardMobileCounter {
+          padding: 0 tablet-vw(7);
+          border-width: tablet-vw(1);
+        }
+
+        & .RecommendationModalCardMobileCounterButton {
+          width: tablet-vw(39);
+          height: tablet-vw(39);
+          font-size: tablet-vw(34);
+
+          &:first-of-type {
+            left: tablet-vw(7);
+            padding-top: tablet-vw(1);
+          }
+
+          &:last-of-type {
+            right: tablet-vw(7);
+            padding-top: 0;
+          }
+        }
+
+        & .RecommendationModalCardMobileCounterValue {
+          min-width: tablet-vw(44);
+          font-size: tablet-vw(29);
         }
       }
 

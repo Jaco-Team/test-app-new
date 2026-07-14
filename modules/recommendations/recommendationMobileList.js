@@ -1,6 +1,32 @@
 import React, { useRef } from 'react';
 
-import { getItemImageUrl } from '@/utils/itemImage';
+import { getItemImageUrl, hasItemImage } from '@/utils/itemImage';
+import { isRecommendationsEnabled } from '@/utils/recommendations';
+
+const RECOMMENDATION_IMAGE_SIZES = [
+  ['292x292', 138],
+  ['366x366', 146],
+  ['466x466', 183],
+  ['585x585', 233],
+  ['732x732', 292],
+  ['1168x1168', 366],
+  ['1420x1420', 584],
+  ['2000x2000', 760],
+  ['2000x2000', 1875],
+];
+
+const RECOMMENDATION_IMAGE_SOURCE_SIZES =
+  '(max-width=1439px) 233px, (max-width=1279px) 218px, 292px';
+
+function getRecommendationImageSrcSet(imageName, format) {
+  if (!hasItemImage(imageName)) {
+    return undefined;
+  }
+
+  return RECOMMENDATION_IMAGE_SIZES.map(
+    ([size, width]) => `${getItemImageUrl(imageName, size, format)} ${width}w`
+  ).join(', ');
+}
 
 function getRecommendationMetaItems(item) {
   const catId = parseInt(item?.cat_id);
@@ -59,7 +85,7 @@ export default function RecommendationMobileList({
     ? recommendations.slice(0, limit)
     : [];
 
-  if (!list.length) {
+  if (!isRecommendationsEnabled() || !list.length) {
     return null;
   }
 
@@ -270,12 +296,30 @@ export default function RecommendationMobileList({
               onDragStart={preventNativeDrag}
             >
               <div className="RecommendationModalCardMobileImage">
-                <img
-                  alt={recommendationName || 'Рекомендованное блюдо'}
-                  src={getItemImageUrl(recommendationImage, '292x292', 'jpg')}
-                  loading="lazy"
-                  draggable={false}
-                />
+                <picture>
+                  <source
+                    type="image/webp"
+                    srcSet={getRecommendationImageSrcSet(
+                      recommendationImage,
+                      'webp'
+                    )}
+                    sizes={RECOMMENDATION_IMAGE_SOURCE_SIZES}
+                  />
+                  <source
+                    type="image/jpeg"
+                    srcSet={getRecommendationImageSrcSet(
+                      recommendationImage,
+                      'jpg'
+                    )}
+                    sizes={RECOMMENDATION_IMAGE_SOURCE_SIZES}
+                  />
+                  <img
+                    alt={recommendationName || 'Рекомендованное блюдо'}
+                    src={getItemImageUrl(recommendationImage, '292x292', 'jpg')}
+                    loading="lazy"
+                    draggable={false}
+                  />
+                </picture>
               </div>
 
               <div className="RecommendationModalCardMobileInfo">

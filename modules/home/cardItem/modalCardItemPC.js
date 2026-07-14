@@ -729,7 +729,12 @@ export default function ModalCardItemPC() {
               touchEvent="onTouchStart"
               onClickAway={(event) => closeTypeModal(event)}
             >
-              <Grid className="SecondItem">
+              <Grid
+                className={
+                  'SecondItem ' +
+                  (hasRecommendations ? 'SecondItem_hasRecommendations' : '')
+                }
+              >
                 <Typography
                   variant="h5"
                   component="h1"
@@ -833,6 +838,19 @@ export default function ModalCardItemPC() {
                     ? openItem?.marc_desc_full
                     : openItem?.tmp_desc}
                 </Typography>
+
+                {hasRecommendations ? (
+                  <div className="RecommendationModalCardPCInline">
+                    <RecommendationMobileList
+                      recommendations={recommendations}
+                      limit={3}
+                      onOpen={openRecommendationItem}
+                      onAdd={addRecommendationItem}
+                      onRemove={removeRecommendationItem}
+                      getCount={getRecommendationCount}
+                    />
+                  </div>
+                ) : null}
 
                 {count == 0 ? (
                   <div className="containerBTN">
