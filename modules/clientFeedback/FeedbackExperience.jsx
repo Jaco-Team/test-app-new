@@ -38,6 +38,65 @@ function checkboxOptions(element) {
     .filter((option) => option.param);
 }
 
+function conditionValues(data, key) {
+  return Array.isArray(data?.conditions?.[key]) ? data.conditions[key] : [];
+}
+
+function isElementVisible(element, target, rating) {
+  const data = element?.data || {};
+  const stars = conditionValues(data, 'stars').map(Number);
+  const products = conditionValues(data, 'products');
+  const categories = conditionValues(data, 'categories');
+
+  if (stars.length && (!rating || !stars.includes(Number(rating)))) {
+    return false;
+  }
+  if (products.length && !products.includes(target?.name)) return false;
+  if (categories.length && !categories.includes(target?.category_name)) {
+    return false;
+  }
+  if (data.showWhen === 'positive' && rating > 0 && rating < 4) return false;
+  if (data.showWhen === 'negative' && rating >= 4) return false;
+  if (
+    (element.type === 'tagCloud' || element.type === 'checkboxGroup') &&
+    !rating
+  ) {
+    return false;
+  }
+
+  return true;
+}
+
+function orderTypePresentation(target) {
+  const presentations = {
+    [-1]: {
+      cardTitle: 'Доставка',
+      dialogTitle: 'Оцените доставку',
+      image: '/feedback/delivery.png',
+      imageAlt: 'Курьер с заказом',
+    },
+    [-2]: {
+      cardTitle: 'Самовывоз',
+      dialogTitle: 'Оцените самовывоз',
+    },
+    [-3]: {
+      cardTitle: 'Обслуживание в зале',
+      dialogTitle: 'Оцените обслуживание в зале',
+    },
+    [-4]: {
+      cardTitle: 'Заказ с собой',
+      dialogTitle: 'Оцените заказ с собой',
+    },
+  };
+
+  return (
+    presentations[target?.target_id] || {
+      cardTitle: target?.name || 'Получение заказа',
+      dialogTitle: target?.name || 'Оцените получение заказа',
+    }
+  );
+}
+
 function StarRating({ value = 0, onChange, label }) {
   return (
     <fieldset className={styles.ratingFieldset}>
@@ -126,8 +185,10 @@ function PhotoField({ photos, onChange }) {
   );
 }
 
-function ElementField({ element, targetId, rating, value, onChange }) {
+function ElementField({ element, target, rating, value, onChange }) {
   const data = element?.data || {};
+
+  if (!isElementVisible(element, target, rating)) return null;
 
   if (element.type === 'rating') {
     return (
@@ -148,14 +209,6 @@ function ElementField({ element, targetId, rating, value, onChange }) {
   }
 
   if (element.type === 'discount') return null;
-
-  if (data.showWhen === 'positive' && rating > 0 && rating < 4) return null;
-  if (data.showWhen === 'negative' && rating >= 4) return null;
-  if (
-    (element.type === 'tagCloud' || element.type === 'checkboxGroup') &&
-    !rating
-  )
-    return null;
 
   if (element.type === 'tagCloud') {
     const selected = Array.isArray(value) ? value : [];
@@ -259,9 +312,10 @@ function ElementField({ element, targetId, rating, value, onChange }) {
 
 function TargetCards({ targets, currentTarget, onSelect }) {
   const products = targets.filter((target) => target.target_type === 'product');
-  const delivery = targets.find(
+  const orderType = targets.find(
     (target) => target.target_type === 'order_type'
   );
+  const orderTypeView = orderTypePresentation(orderType);
 
   if (currentTarget.target_type !== 'order') {
     return (
@@ -287,7 +341,7 @@ function TargetCards({ targets, currentTarget, onSelect }) {
     );
   }
 
-  if (!products.length && !delivery) return null;
+  if (!products.length && !orderType) return null;
 
   return (
     <section className={styles.separateTargets}>
@@ -310,21 +364,27 @@ function TargetCards({ targets, currentTarget, onSelect }) {
             />
           </button>
         ) : null}
-        {delivery ? (
+        {orderType ? (
           <button
             className={styles.targetCard}
-            onClick={() => onSelect(delivery.target_id)}
+            onClick={() => onSelect(orderType.target_id)}
             type="button"
           >
             <span className={styles.targetCardTitle}>
-              <span aria-hidden="true">✦</span> Доставка
+              <span aria-hidden="true">✦</span> {orderTypeView.cardTitle}
             </span>
-            <Image
-              alt="Курьер с заказом"
-              height={134}
-              src="/feedback/delivery.png"
-              width={145}
-            />
+            {orderTypeView.image ? (
+              <Image
+                alt={orderTypeView.imageAlt}
+                height={134}
+                src={orderTypeView.image}
+                width={145}
+              />
+            ) : (
+              <span aria-hidden="true" className={styles.targetCardIcon}>
+                ✦
+              </span>
+            )}
           </button>
         ) : null}
       </div>
@@ -352,11 +412,28 @@ function FeedbackDialog({ form, onClose, onSubmit, submitting }) {
     ? Number(answers[answerKey(currentTarget.target_id, currentRating.id)]) || 0
     : 0;
 
+  const overallTarget = form.targets.find(
+    (target) => target.target_type === 'order'
+  );
+  const overallRating = overallTarget?.elements.find(
+    (element) => element.type === 'rating'
+  );
+  const overallRatingValue = overallRating
+    ? Number(answers[answerKey(overallTarget.target_id, overallRating.id)]) || 0
+    : 0;
+
   const responses = useMemo(
     () =>
       form.targets.flatMap((target) =>
         target.elements.flatMap((element) => {
           if (!element.answerable) return [];
+          const targetRating = target.elements.find(
+            (candidate) => candidate.type === 'rating'
+          );
+          const targetRatingValue = targetRating
+            ? Number(answers[answerKey(target.target_id, targetRating.id)]) || 0
+            : 0;
+          if (!isElementVisible(element, target, targetRatingValue)) return [];
           const value = answers[answerKey(target.target_id, element.id)];
           if (typeof value === 'undefined' || value === null) return [];
           if (typeof value === 'string' && !value.trim()) return [];
@@ -427,7 +504,7 @@ function FeedbackDialog({ form, onClose, onSubmit, submitting }) {
     currentTarget.target_type === 'order'
       ? 'Ваша оценка'
       : currentTarget.target_type === 'order_type'
-        ? 'Ваша оценка доставки'
+        ? orderTypePresentation(currentTarget).dialogTitle
         : currentTarget.name;
 
   return (
@@ -483,7 +560,7 @@ function FeedbackDialog({ form, onClose, onSubmit, submitting }) {
               key={element.id}
               onChange={(value) => setElementValue(element.id, value)}
               rating={ratingValue}
-              targetId={currentTarget.target_id}
+              target={currentTarget}
               value={answers[answerKey(currentTarget.target_id, element.id)]}
             />
           ))}
@@ -510,7 +587,7 @@ function FeedbackDialog({ form, onClose, onSubmit, submitting }) {
         <footer className={styles.dialogFooter}>
           <button
             className={styles.submitButton}
-            disabled={!responses.length || submitting}
+            disabled={!overallRatingValue || !responses.length || submitting}
             onClick={() => onSubmit(responses)}
             type="button"
           >

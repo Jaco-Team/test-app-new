@@ -528,6 +528,17 @@ $line: #e6e6e6;
   max-width: 100%;
 }
 
+.targetCardIcon {
+  display: grid;
+  width: 100%;
+  height: 118px;
+  place-items: center;
+  color: $red;
+  font-size: 48px;
+  background: rgba($red, 0.05);
+  border-radius: 11px;
+}
+
 .targetPagination {
   display: flex;
   gap: 8px;
