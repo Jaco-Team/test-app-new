@@ -5,6 +5,10 @@
 - Current redesign work is Storybook-first.
 - Do not change the base Next.js application while transferring design and behavior into Storybook.
 - Treat Storybook components as the future source for the app rewrite.
+- User-approved exception: the production cafe feedback flow may change only
+  `pages/feedback/**`, `modules/cafeFeedback/**`, `public/cafe-feedback/**`,
+  its documentation, and its environment example. Do not change Storybook or
+  the existing `modules/clientFeedback` flow for this feature.
 
 ## Architecture Direction
 

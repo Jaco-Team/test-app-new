@@ -55,3 +55,15 @@ public/cron/
 
 # Codex local config
 .codex/
+
+# Local server security audit inputs and reports
+/scripts/server-audit/*.local.json
+/scripts/server-audit/reports/
+/scripts/server-audit/collected/
+/scripts/server-audit/collected-*/
+/scripts/server-audit/*.sa1
+/scripts/server-audit/*.sa1.sha256
+/scripts/server-audit/**/__pycache__/
+/scripts/server-audit/**/*.pyc
+.playwright-cli/
+scripts/

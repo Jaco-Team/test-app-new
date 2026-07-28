@@ -56,6 +56,10 @@ alwaysApply: true
 ## Жёсткие правила (для всех ролей)
 
 - Не менять базовое приложение (`pages`, `components`, `modules`, `utils`, `public`) на этапе Storybook.
+- Одобренное пользователем исключение для production-формы отзывов по ссылке кафе:
+  разрешены только `pages/feedback/**`, `modules/cafeFeedback/**`,
+  `public/cafe-feedback/**`, связанная документация и env-пример.
+  Для этого слайса Storybook и существующий `clientFeedback` не изменять.
 - Новый код — только в `stories/{app,pages,widgets,features,entities,shared}`; в `stories/legacy` ничего не добавляем.
 - Направление зависимостей FSD: `app -> pages -> widgets -> features -> entities -> shared`.
 - Брейкпоинты: Mobile `320-667`, Tablet `668-990` (отдельный вариант, не растянутый!), Desktop `991+`.

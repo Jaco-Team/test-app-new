@@ -24,6 +24,7 @@ import ModalPointClose_mobile from '@/modules/header/modalPointClose/modalPointC
 
 import ModalSamaraEntranceWorks_pc from '@/modules/header/modalSamaraEntranceWorks/modalSamaraEntranceWorks_pc';
 import ModalSamaraEntranceWorks_mobile from '@/modules/header/modalSamaraEntranceWorks/modalSamaraEntranceWorks_mobile';
+import SecurityIncidentNotice from '@/modules/profile/securityIncidentNotice/SecurityIncidentNotice';
 
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -275,6 +276,7 @@ export default React.memo(function header({ city, city_list, cats }) {
       <ModalAuth city={city} />
       <ModalAlert />
       <SelectAddress />
+      <SecurityIncidentNotice city={city} pathname={router.pathname} />
     </div>
   );
 });

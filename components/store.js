@@ -975,6 +975,7 @@ export const useHeaderStoreNew = reuseHotStore(
 
       signOut: (city) => {
         useProfileStore.getState().saveUserActions('user_log_out', '');
+        useProfileStore.getState().clearSecurityNotice();
         syncSentryUser(null, city);
 
         removeLocalStorageItem('token');
@@ -4673,6 +4674,8 @@ export const useProfileStore = reuseHotStore(
         street_id: 0,
 
         dataOrder: null,
+        securityNotice: null,
+        securityNoticeUserId: null,
 
         // получение адресов в модалке выбора адреса доставки
         getAddrList: async (value) => {
@@ -4849,6 +4852,33 @@ export const useProfileStore = reuseHotStore(
           set({ openModalAccount: active, modalName });
         },
 
+        clearSecurityNotice: () => {
+          set({
+            securityNotice: null,
+            securityNoticeUserId: null,
+          });
+        },
+
+        markSecurityNoticeRead: (noticeId, userId) => {
+          const currentNotice = get().securityNotice;
+          const currentNoticeId = String(currentNotice?.id || '');
+          const currentUserId = String(get().securityNoticeUserId || '');
+
+          if (
+            currentNoticeId !== String(noticeId || '') ||
+            currentUserId !== String(userId || '')
+          ) {
+            return;
+          }
+
+          set({
+            securityNotice: {
+              ...currentNotice,
+              pending: false,
+            },
+          });
+        },
+
         // изменение цвета в Аккаунте
         setAccountColor: (colorAccount) => {
           set({ colorAccount });
@@ -4919,6 +4949,8 @@ export const useProfileStore = reuseHotStore(
               userInfo: json?.user,
               streets: json?.streets,
               city: city,
+              securityNotice: json?.security_notice ?? null,
+              securityNoticeUserId: uid ?? null,
             });
           }
         },
@@ -4949,6 +4981,8 @@ export const useProfileStore = reuseHotStore(
             // shortName: user?.name?.substring(0, 1) + user?.fam?.substring(0, 1),
             shortName: user?.name?.substring(0, 1),
             userInfo: user,
+            securityNotice: null,
+            securityNoticeUserId: null,
           });
         },
 
