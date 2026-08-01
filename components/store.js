@@ -2780,7 +2780,10 @@ export const useCartStore = reuseHotStore(
 
         let my_cart = get().items;
         let my_cart_dop = get().itemsOffDops;
-        let my_cart_promo = get().itemsPromo;
+        let my_cart_promo = [
+          ...(get().itemsPromo || []),
+          ...(get().itemsWithPromo || []),
+        ];
         let free_items = get().freeItems;
         let all_items = get().allItems;
 
