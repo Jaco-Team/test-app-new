@@ -1,8 +1,11 @@
-const { defineConfig, devices } = require('@playwright/test');
+import { defineConfig, devices } from '@playwright/test';
 
 const isCI = Boolean(process.env.CI);
+const playwrightPort = process.env.PLAYWRIGHT_PORT || '3000';
+const baseURL =
+  process.env.PLAYWRIGHT_BASE_URL || `http://localhost:${playwrightPort}`;
 
-module.exports = defineConfig({
+export default defineConfig({
   testDir: './tests',
   timeout: 45_000,
   expect: {
@@ -12,12 +15,12 @@ module.exports = defineConfig({
   retries: isCI ? 1 : 0,
   reporter: [['list']],
   use: {
-    baseURL: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
+    baseURL,
     trace: 'on-first-retry',
   },
   webServer: {
-    command: 'npx next dev -H localhost -p 3000',
-    url: process.env.PLAYWRIGHT_BASE_URL || 'http://localhost:3000',
+    command: `npx next dev -H 127.0.0.1 -p ${playwrightPort}`,
+    url: baseURL,
     reuseExistingServer: true,
     timeout: 120_000,
   },

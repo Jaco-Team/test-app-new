@@ -1,13 +1,40 @@
 import React from 'react';
 
 import Head from 'next/head';
+import { useRouter } from 'next/router';
 
-export default function Meta({ title, description, robots, children }) {
+const SITE_ORIGIN = 'https://jacofood.ru';
+
+function normalizeCanonicalPath(value) {
+  const rawPath = String(value || '/')
+    .split(/[?#]/, 1)[0]
+    .trim();
+  const pathWithLeadingSlash = `/${rawPath}`.replace(/\/{2,}/g, '/');
+  const normalizedPath = pathWithLeadingSlash.toLowerCase();
+
+  return normalizedPath === '/'
+    ? normalizedPath
+    : normalizedPath.replace(/\/+$/, '');
+}
+
+export default function Meta({
+  title,
+  description,
+  robots,
+  canonicalPath,
+  children,
+}) {
+  const router = useRouter();
   const safeTitle = title ?? 'Жако роллы и пицца';
   const safeDesc = description ?? '';
   const safeRobots = typeof robots === 'string' ? robots.trim() : '';
 
   const hasDesc = typeof safeDesc === 'string' && safeDesc.length > 0;
+  const isNoindex = /(^|[\s,])noindex([\s,]|$)/i.test(safeRobots);
+  const resolvedCanonicalPath = normalizeCanonicalPath(
+    canonicalPath ?? router.asPath
+  );
+  const canonicalUrl = `${SITE_ORIGIN}${resolvedCanonicalPath}`;
 
   return (
     <>
@@ -21,6 +48,10 @@ export default function Meta({ title, description, robots, children }) {
         <meta name="yandex-verification" content="298ae72b445ff952" />
         <meta name="yandex-verification" content="7e7652cb40b75404" />
         <meta name="yandex-verification" content="d4f3544393d9106d" />
+
+        {hasDesc && !isNoindex ? (
+          <link rel="canonical" href={canonicalUrl} />
+        ) : null}
 
         {hasDesc ? (
           <>
