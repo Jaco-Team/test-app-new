@@ -1,0 +1,298 @@
+.page {
+  min-height: 100vh;
+  box-sizing: border-box;
+  display: grid;
+  place-items: center;
+  padding: 32px;
+  color: #1f2024;
+  background:
+    radial-gradient(circle at 12% 18%, rgba(204, 0, 51, 0.14), transparent 34%),
+    radial-gradient(
+      circle at 88% 82%,
+      rgba(255, 182, 36, 0.22),
+      transparent 36%
+    ),
+    #f8f5f1;
+}
+
+.pageWithCookieNotice {
+  padding-bottom: 190px;
+}
+
+.panel {
+  width: min(100%, 840px);
+  box-sizing: border-box;
+  padding: 56px;
+  border: 1px solid rgba(31, 32, 36, 0.08);
+  border-radius: 32px;
+  background: rgba(255, 255, 255, 0.94);
+  box-shadow: 0 24px 70px rgba(44, 33, 28, 0.12);
+}
+
+.logo {
+  display: block;
+  width: 250px;
+  height: auto;
+  margin: 0 auto 48px;
+}
+
+.intro {
+  max-width: 620px;
+  margin: 0 auto 36px;
+  text-align: center;
+}
+
+.eyebrow {
+  margin: 0 0 12px;
+  color: #cc0033;
+  font-size: 15px;
+  font-weight: 700;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.intro h1 {
+  margin: 0;
+  font-size: clamp(38px, 5vw, 58px);
+  line-height: 1.04;
+}
+
+.description {
+  margin: 20px auto 0;
+  color: #666067;
+  font-size: 19px;
+  line-height: 1.5;
+}
+
+.description > :first-child {
+  margin-top: 0;
+}
+
+.description > :last-child {
+  margin-bottom: 0;
+}
+
+.cityList {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: 18px;
+}
+
+.cityLink {
+  position: relative;
+  min-height: 112px;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  padding: 24px 58px 24px 26px;
+  border: 2px solid transparent;
+  border-radius: 20px;
+  color: #1f2024;
+  background: #f7f3ef;
+  text-decoration: none;
+  transition:
+    border-color 160ms ease,
+    background-color 160ms ease,
+    transform 160ms ease;
+}
+
+.cityLink:hover {
+  border-color: #cc0033;
+  background: #fff;
+  transform: translateY(-2px);
+}
+
+.cityLink:focus-visible {
+  outline: 3px solid #1f2024;
+  outline-offset: 4px;
+}
+
+.cityName {
+  font-size: 24px;
+  font-weight: 700;
+}
+
+.cityDescription {
+  margin-top: 8px;
+  color: #696269;
+  font-size: 14px;
+  line-height: 1.4;
+}
+
+.arrow {
+  position: absolute;
+  right: 26px;
+  top: 50%;
+  color: #cc0033;
+  font-size: 28px;
+  font-weight: 700;
+  transform: translateY(-50%);
+}
+
+.cookieNotice {
+  position: fixed;
+  z-index: 20;
+  right: 24px;
+  bottom: 24px;
+  left: 24px;
+  width: min(calc(100% - 48px), 920px);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin: 0 auto;
+  padding: 20px 22px;
+  border: 1px solid rgba(31, 32, 36, 0.12);
+  border-radius: 18px;
+  color: #1f2024;
+  background: #fff;
+  box-shadow: 0 18px 50px rgba(44, 33, 28, 0.2);
+}
+
+.cookieNotice p {
+  flex: 1;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cookieNotice a {
+  color: #1f2024;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cookieNotice button {
+  min-width: 130px;
+  min-height: 48px;
+  padding: 12px 22px;
+  border: 0;
+  border-radius: 12px;
+  color: #fff;
+  background: #cc0033;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cookieNotice button:hover {
+  background: #a9002a;
+}
+
+.cookieNotice button:focus-visible,
+.cookieNotice a:focus-visible {
+  outline: 3px solid #1f2024;
+  outline-offset: 3px;
+}
+
+@media (min-width: 668px) and (max-width: 990px) {
+  .page {
+    padding: 40px;
+  }
+
+  .panel {
+    padding: 48px 42px;
+    border-radius: 28px;
+  }
+
+  .logo {
+    width: 220px;
+    margin-bottom: 40px;
+  }
+
+  .intro h1 {
+    font-size: 48px;
+  }
+
+  .cityLink {
+    min-height: 124px;
+  }
+}
+
+@media (max-width: 667px) {
+  .page {
+    place-items: stretch;
+    min-height: 100svh;
+    padding: 20px 16px;
+  }
+
+  .pageWithCookieNotice {
+    padding-bottom: 20px;
+  }
+
+  .panel {
+    width: 100%;
+    padding: 34px 20px 24px;
+    border-radius: 24px;
+  }
+
+  .logo {
+    width: min(68vw, 220px);
+    margin-bottom: 38px;
+  }
+
+  .intro {
+    margin-bottom: 28px;
+  }
+
+  .eyebrow {
+    font-size: 12px;
+  }
+
+  .intro h1 {
+    font-size: 36px;
+  }
+
+  .description {
+    margin-top: 16px;
+    font-size: 16px;
+  }
+
+  .cityList {
+    grid-template-columns: 1fr;
+    gap: 12px;
+  }
+
+  .cityLink {
+    min-height: 96px;
+    padding: 20px 52px 20px 20px;
+  }
+
+  .cityName {
+    font-size: 22px;
+  }
+
+  .arrow {
+    right: 20px;
+  }
+
+  .cookieNotice {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    width: calc(100% - 32px);
+    display: block;
+    margin: 16px auto 20px;
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .cookieNotice p {
+    font-size: 13px;
+  }
+
+  .cookieNotice button {
+    width: 100%;
+    margin-top: 14px;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .cityLink {
+    transition: none;
+  }
+}
