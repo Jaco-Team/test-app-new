@@ -1,9 +1,16 @@
 import Image from 'next/image';
 import Link from 'next/link';
+import { useEffect, useState } from 'react';
+
+import Cookies from 'js-cookie';
 
 import { api } from '@/components/api';
 import Meta from '@/components/meta';
 import { roboto } from '@/ui/Font';
+import {
+  getLocalStorageItem,
+  setLocalStorageItem,
+} from '@/utils/browserStorage';
 
 import styles from './index.module.scss';
 
@@ -19,11 +26,13 @@ const FALLBACK_PAGE = {
 const cities = [
   {
     name: 'Тольятти',
+    link: 'togliatti',
     href: '/togliatti',
     description: 'Открыть меню и условия доставки в Тольятти',
   },
   {
     name: 'Самара',
+    link: 'samara',
     href: '/samara',
     description: 'Открыть меню и условия доставки в Самаре',
   },
@@ -36,16 +45,42 @@ const getPageField = (page, field) => {
 };
 
 export default function CitySelectionPage({ page }) {
+  const [showCookieNotice, setShowCookieNotice] = useState(false);
   const title = getPageField(page, 'title');
   const description = getPageField(page, 'description');
   const heading = getPageField(page, 'page_h');
   const content = getPageField(page, 'content');
 
+  useEffect(() => {
+    setShowCookieNotice(!getLocalStorageItem('setCookie'));
+  }, []);
+
+  const saveCity = (city) => {
+    setLocalStorageItem(
+      'setCity',
+      JSON.stringify({ name: city.name, link: city.link })
+    );
+    Cookies.set('city', city.link, {
+      expires: 365,
+      path: '/',
+      sameSite: 'Lax',
+    });
+  };
+
+  const acceptCookies = () => {
+    setLocalStorageItem('setCookie', true);
+    setShowCookieNotice(false);
+  };
+
   return (
     <>
       <Meta title={title} description={description} canonicalPath="/" />
 
-      <main className={`${styles.page} ${roboto.variable}`}>
+      <main
+        className={`${styles.page} ${
+          showCookieNotice ? styles.pageWithCookieNotice : ''
+        } ${roboto.variable}`}
+      >
         <section
           className={styles.panel}
           aria-labelledby="city-selection-title"
@@ -75,6 +110,7 @@ export default function CitySelectionPage({ page }) {
                 className={styles.cityLink}
                 href={city.href}
                 key={city.href}
+                onClick={() => saveCity(city)}
               >
                 <span className={styles.cityName}>{city.name}</span>
                 <span className={styles.cityDescription}>
@@ -88,6 +124,25 @@ export default function CitySelectionPage({ page }) {
           </nav>
         </section>
       </main>
+
+      {showCookieNotice ? (
+        <aside
+          className={`${styles.cookieNotice} ${roboto.variable}`}
+          aria-label="Информация об использовании cookie"
+          data-testid="cookie-notice"
+        >
+          <p>
+            Мы <Link href="/togliatti/politika-legal">используем</Link> файлы
+            «Cookie» и метрическую систему «Яндекс.Метрика» для сбора и анализа
+            информации о производительности и использовании сайта. Продолжая
+            пользоваться сайтом, вы соглашаетесь на размещение файлов «Cookie» и
+            обработку данных метрических систем.
+          </p>
+          <button type="button" onClick={acceptCookies}>
+            Согласен
+          </button>
+        </aside>
+      ) : null}
     </>
   );
 }

@@ -15,6 +15,10 @@
     #f8f5f1;
 }
 
+.pageWithCookieNotice {
+  padding-bottom: 190px;
+}
+
 .panel {
   width: min(100%, 840px);
   box-sizing: border-box;
@@ -126,6 +130,64 @@
   transform: translateY(-50%);
 }
 
+.cookieNotice {
+  position: fixed;
+  z-index: 20;
+  right: 24px;
+  bottom: 24px;
+  left: 24px;
+  width: min(calc(100% - 48px), 920px);
+  box-sizing: border-box;
+  display: flex;
+  align-items: center;
+  gap: 28px;
+  margin: 0 auto;
+  padding: 20px 22px;
+  border: 1px solid rgba(31, 32, 36, 0.12);
+  border-radius: 18px;
+  color: #1f2024;
+  background: #fff;
+  box-shadow: 0 18px 50px rgba(44, 33, 28, 0.2);
+}
+
+.cookieNotice p {
+  flex: 1;
+  margin: 0;
+  font-size: 14px;
+  line-height: 1.5;
+}
+
+.cookieNotice a {
+  color: #1f2024;
+  font-weight: 700;
+  text-decoration: underline;
+  text-underline-offset: 2px;
+}
+
+.cookieNotice button {
+  min-width: 130px;
+  min-height: 48px;
+  padding: 12px 22px;
+  border: 0;
+  border-radius: 12px;
+  color: #fff;
+  background: #cc0033;
+  font: inherit;
+  font-size: 15px;
+  font-weight: 700;
+  cursor: pointer;
+}
+
+.cookieNotice button:hover {
+  background: #a9002a;
+}
+
+.cookieNotice button:focus-visible,
+.cookieNotice a:focus-visible {
+  outline: 3px solid #1f2024;
+  outline-offset: 3px;
+}
+
 @media (min-width: 668px) and (max-width: 990px) {
   .page {
     padding: 40px;
@@ -155,6 +217,10 @@
     place-items: stretch;
     min-height: 100svh;
     padding: 20px 16px;
+  }
+
+  .pageWithCookieNotice {
+    padding-bottom: 20px;
   }
 
   .panel {
@@ -201,6 +267,27 @@
 
   .arrow {
     right: 20px;
+  }
+
+  .cookieNotice {
+    position: relative;
+    right: auto;
+    bottom: auto;
+    left: auto;
+    width: calc(100% - 32px);
+    display: block;
+    margin: 16px auto 20px;
+    padding: 18px;
+    border-radius: 16px;
+  }
+
+  .cookieNotice p {
+    font-size: 13px;
+  }
+
+  .cookieNotice button {
+    width: 100%;
+    margin-top: 14px;
   }
 }
 
