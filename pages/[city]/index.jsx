@@ -184,11 +184,18 @@ export async function getServerSideProps({ req, res, query }) {
     return { redirect: { destination: `/${city}`, permanent: false } }; // 307
   }
 
-  const data1 = await api(this_module, {
-    type: 'get_page_info',
-    city_id: city,
-    page: '',
-  });
+  const [data1, footer] = await Promise.all([
+    api(this_module, {
+      type: 'get_page_info',
+      city_id: city,
+      page: '',
+    }),
+    api('contacts', {
+      type: 'get_page_info',
+      city_id: city,
+      page: 'info',
+    }),
+  ]);
 
   // если бэк не отдал — фоллбек на дефолт, без лупа
   if (!data1 || data1?.page == null) {
@@ -197,12 +204,6 @@ export async function getServerSideProps({ req, res, query }) {
     }
     return { notFound: true };
   }
-
-  const footer = await api('contacts', {
-    type: 'get_page_info',
-    city_id: city,
-    page: 'info',
-  });
 
   data1.links = footer?.page || {};
   data1.city = city;

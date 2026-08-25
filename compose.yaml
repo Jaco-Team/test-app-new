@@ -1,0 +1,48 @@
+services:
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile
+      args:
+        NEXT_PUBLIC_SITE_API_BASE_URL: '${NEXT_PUBLIC_SITE_API_BASE_URL:-http://localhost:8080/}'
+        NEXT_PUBLIC_CAFE_REVIEW_API_URL: '${NEXT_PUBLIC_CAFE_REVIEW_API_URL:-http://localhost:8080/cafe_review}'
+        NEXT_PUBLIC_RECOMMENDATIONS_ENABLED: '${NEXT_PUBLIC_RECOMMENDATIONS_ENABLED:-false}'
+        NEXT_PUBLIC_SENTRY_CUSTOM_MONITORING_ENABLED: '${NEXT_PUBLIC_SENTRY_CUSTOM_MONITORING_ENABLED:-false}'
+        NEXT_PUBLIC_SENTRY_DSN: '${NEXT_PUBLIC_SENTRY_DSN:-}'
+        NEXT_PUBLIC_VK_IMG: '${NEXT_PUBLIC_VK_IMG:-https://mainimg.jacofood.ru/}'
+        NEXT_PUBLIC_YANDEX_IMG: '${NEXT_PUBLIC_YANDEX_IMG:-https://mainimg.jacofood.ru/}'
+        NEXT_PUBLIC_YANDEX_STORAGE: '${NEXT_PUBLIC_YANDEX_STORAGE:-https://topimg.jacofood.ru/}'
+        NEXT_PUBLIC_YANDEX_TOKEN_FIREBASE: '${NEXT_PUBLIC_YANDEX_TOKEN_FIREBASE:-}'
+        NEXT_PUBLIC_YANDEX_TOKEN_MAP: '${NEXT_PUBLIC_YANDEX_TOKEN_MAP:-}'
+        NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST: '${NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST:-}'
+    image: 'jaco-site-frontend:local'
+    init: true
+    ports:
+      - '${FRONTEND_PORT:-3001}:3000'
+    environment:
+      NODE_ENV: production
+      HOSTNAME: 0.0.0.0
+      PORT: 3000
+      SITE_API_INTERNAL_BASE_URL: '${SITE_API_INTERNAL_BASE_URL:-http://host.docker.internal:8080/}'
+      CAFE_FEEDBACK_PAGE_ENABLED: '${CAFE_FEEDBACK_PAGE_ENABLED:-false}'
+      CLIENT_FEEDBACK_EXPERIMENT_ENABLED: '${CLIENT_FEEDBACK_EXPERIMENT_ENABLED:-false}'
+      CLIENT_FEEDBACK_EXPERIMENT_USE_MOCKS: '${CLIENT_FEEDBACK_EXPERIMENT_USE_MOCKS:-true}'
+      SENTRY_DSN: '${SENTRY_DSN:-}'
+      TRACKING_API_ENDPOINT: '${TRACKING_API_ENDPOINT:-https://apichef.jacochef.ru/api/first-visit}'
+      TRACKING_API_TOKEN: '${TRACKING_API_TOKEN:-}'
+    extra_hosts:
+      - 'host.docker.internal:host-gateway'
+    healthcheck:
+      test:
+        - CMD
+        - node
+        - -e
+        - "fetch('http://127.0.0.1:3000/api/health').then((response) => { if (!response.ok) process.exit(1) }).catch(() => process.exit(1))"
+      interval: 15s
+      timeout: 5s
+      retries: 5
+      start_period: 20s
+    restart: unless-stopped
+    security_opt:
+      - no-new-privileges:true
+    stop_grace_period: 20s

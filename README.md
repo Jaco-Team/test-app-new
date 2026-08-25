@@ -21,6 +21,40 @@ Default local URLs:
 - App: `http://localhost:3000`
 - Storybook: `http://localhost:6007`
 
+## Docker
+
+Production-сборка использует Next.js standalone output и запускается без полного
+`node_modules` из исходного проекта.
+
+Для работы с локальным Laravel на `http://localhost:8080`:
+
+```env
+NEXT_PUBLIC_SITE_API_BASE_URL=http://localhost:8080/
+SITE_API_INTERNAL_BASE_URL=http://host.docker.internal:8080/
+FRONTEND_PORT=3001
+```
+
+```bash
+docker compose up --build -d
+docker compose ps
+curl http://localhost:3001/api/health
+```
+
+`NEXT_PUBLIC_SITE_API_BASE_URL` используется браузером и встраивается во frontend
+во время `docker compose build`. `SITE_API_INTERNAL_BASE_URL` используется только
+SSR-кодом внутри Node-контейнера. После смены публичного API образ нужно пересобрать.
+
+Для legacy оба адреса указываются на старый API:
+
+```env
+NEXT_PUBLIC_SITE_API_BASE_URL=https://api2.jacochef.ru/site/public/index.php/
+SITE_API_INTERNAL_BASE_URL=https://api2.jacochef.ru/site/public/index.php/
+```
+
+Если Laravel и frontend подключены к одной Docker network, внутренним адресом можно
+назначить имя backend-сервиса, например `http://laravel.test/`; браузеру это имя
+передавать нельзя.
+
 ## Redesign Direction
 
 - First transfer current design and behavior into Storybook.

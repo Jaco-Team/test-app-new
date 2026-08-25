@@ -211,6 +211,10 @@ export async function proxy(request) {
   //const response = NextResponse.next()
   const { nextUrl } = request;
 
+  if (nextUrl.pathname === '/api/health') {
+    return NextResponse.next();
+  }
+
   // флаг, что это именно загрузка страницы, а не иконка
   const isPageView = isPageViewRequest(request, nextUrl);
 
@@ -234,7 +238,14 @@ export async function proxy(request) {
   }
 
   const proto = request.headers.get('x-forwarded-proto');
-  const hostname = nextUrl.hostname;
+  const forwardedHost = request.headers.get('x-forwarded-host');
+  const requestHost = (forwardedHost || request.headers.get('host') || '')
+    .split(',')[0]
+    .trim()
+    .toLowerCase();
+  const hostname = requestHost.startsWith('[')
+    ? requestHost.slice(1, requestHost.indexOf(']'))
+    : requestHost.split(':')[0] || nextUrl.hostname;
   if (
     hostname !== 'localhost' &&
     hostname !== '127.0.0.1' &&

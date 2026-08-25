@@ -10,7 +10,20 @@ import {
   isCustomSentryMonitoringEnabled,
 } from '@/utils/clientMonitoring';
 
-const DEFAULT_API_BASE_URL = 'https://api2.jacochef.ru/site/public/index.php/';
+const LEGACY_API_BASE_URL = 'https://api2.jacochef.ru/site/public/index.php/';
+
+function normalizeApiBaseUrl(value) {
+  const baseUrl = String(value || '').trim();
+
+  return baseUrl ? `${baseUrl.replace(/\/+$/, '')}/` : LEGACY_API_BASE_URL;
+}
+
+const DEFAULT_API_BASE_URL = normalizeApiBaseUrl(
+  typeof window === 'undefined'
+    ? process.env.SITE_API_INTERNAL_BASE_URL ||
+        process.env.NEXT_PUBLIC_SITE_API_BASE_URL
+    : process.env.NEXT_PUBLIC_SITE_API_BASE_URL
+);
 const DEFAULT_API_TIMEOUT_MS = 12000;
 const AUTH_API_TIMEOUT_MS = 20000;
 const MIN_API_TIMEOUT_MS = 3000;

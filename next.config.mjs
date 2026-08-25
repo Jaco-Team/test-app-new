@@ -3,6 +3,7 @@
 import { withSentryConfig } from '@sentry/nextjs';
 
 const nextConfig = {
+  output: 'standalone',
   trailingSlash: false,
   reactStrictMode: true,
   devIndicators: false,
@@ -65,27 +66,37 @@ const nextConfig = {
         // Постоянный редирект (HTTP 301)
         permanent: true,
       },
-    ]
+    ];
   },
   async headers() {
     return [
       {
         // matching all API routes
-        source: "/:path*",
+        source: '/:path*',
         headers: [
-            { key: "Access-Control-Allow-Credentials", value: "true" },
-            { key: "Access-Control-Allow-Origin", value: "*" }, // replace this your actual origin
-            { key: "Access-Control-Allow-Methods", value: "GET,DELETE,PATCH,POST,PUT" },
-            { key: "Access-Control-Allow-Headers", value: "X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version" },
-            { key: "Cross-Origin-Opener-Policy", value: "same-origin-allow-popups" }
-        ]
-      }
-    ]
-}
-}
+          { key: 'Access-Control-Allow-Credentials', value: 'true' },
+          { key: 'Access-Control-Allow-Origin', value: '*' }, // replace this your actual origin
+          {
+            key: 'Access-Control-Allow-Methods',
+            value: 'GET,DELETE,PATCH,POST,PUT',
+          },
+          {
+            key: 'Access-Control-Allow-Headers',
+            value:
+              'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version',
+          },
+          {
+            key: 'Cross-Origin-Opener-Policy',
+            value: 'same-origin-allow-popups',
+          },
+        ],
+      },
+    ];
+  },
+};
 
 // Injected content via Sentry wizard below
-// правка 18.03.26 для glitchtip 
+// правка 18.03.26 для glitchtip
 // Старый вариант конфигурации Sentry оставлен как справка.
 // export default withSentryConfig(nextConfig, {
 //   silent: true,
@@ -141,10 +152,9 @@ const nextConfig = {
 //   }
 // );
 
-
 // Injected content via Sentry wizard below
-const sentryOrg = process.env.SENTRY_ORG || "mister-jaco-llc";
-const sentryProject = process.env.SENTRY_PROJECT || "jacofood";
+const sentryOrg = process.env.SENTRY_ORG || 'mister-jaco-llc';
+const sentryProject = process.env.SENTRY_PROJECT || 'jacofood';
 
 export default withSentryConfig(nextConfig, {
   // For all available options, see:

@@ -574,6 +574,7 @@
       & .RecommendationModalCardMobileCounter {
         width: calc(#{$MyScale145} * 1.25);
         height: calc(#{$MyScale38} * 1.3);
+        margin-top: auto;
         border-radius: calc(#{$MyScale40} * 1.3);
         font-size: calc(#{$MyScale18} * 1.3);
       }
@@ -1286,6 +1287,7 @@
         & .RecommendationModalCardMobileCounter {
           width: tablet-vw(181);
           height: tablet-vw(49);
+          margin-top: auto;
           border-radius: tablet-vw(52);
           font-size: tablet-vw(23);
         }
