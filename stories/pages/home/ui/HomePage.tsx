@@ -10,7 +10,7 @@ export const HomePage = ({
   container,
   footer,
 }: Record<string, any>) => {
-  console.log('JACO DEPLOY TEST: 2026-09-04 v1');
+  console.log('JACO DEPLOY TEST: 2026-09-04 v2');
   return (
     <div className="homePC">
       {header ? null : null}
