@@ -18,7 +18,7 @@ import { useHomeMobileLayout } from '@/utils/useHomeMobileLayout';
 
 export default function HomePage({ page, city, showCategoryH2 = false }) {
   const isHomeMobile = useHomeMobileLayout();
-  console.log('JACO DEPLOY TEST: 2026-09-04 v3');
+  console.log('JACO DEPLOY TEST: 2026-09-04 v4');
   return (
     <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
       <div style={{ minHeight: isHomeMobile ? '50vh' : '70vh' }}>

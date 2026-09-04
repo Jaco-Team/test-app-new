@@ -61,9 +61,9 @@ jobs:
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
 
           build-args: |
-            NEXT_PUBLIC_SITE_API_BASE_URL=https://api2.jacochef.ru/site/public/index.php/
+            NEXT_PUBLIC_SITE_API_BASE_URL=https://dev.jacofood.ru/backend/
 
-            NEXT_PUBLIC_CAFE_REVIEW_API_URL=https://api2.jacochef.ru/site/public/index.php/cafe_review
+            NEXT_PUBLIC_CAFE_REVIEW_API_URL=https://dev.jacofood.ru/backend/cafe_review
 
             NEXT_PUBLIC_RECOMMENDATIONS_ENABLED=false
 
