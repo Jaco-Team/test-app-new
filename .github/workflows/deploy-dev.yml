@@ -61,14 +61,15 @@ jobs:
             ${{ env.IMAGE_NAME }}:${{ github.sha }}
 
           build-args: |
-            NEXT_PUBLIC_SITE_API_BASE_URL=https://dev.jacofood.ru/backend/
+            NEXT_PUBLIC_SITE_API_BASE_URL=${{ vars.NEXT_PUBLIC_SITE_API_BASE_URL }}
 
-            NEXT_PUBLIC_CAFE_REVIEW_API_URL=https://dev.jacofood.ru/backend/cafe_review
+            NEXT_PUBLIC_CAFE_REVIEW_API_URL=${{ vars.NEXT_PUBLIC_CAFE_REVIEW_API_URL }}
 
             NEXT_PUBLIC_RECOMMENDATIONS_ENABLED=false
 
             NEXT_PUBLIC_SENTRY_CUSTOM_MONITORING_ENABLED=false
 
+            SENTRY_AUTH_TOKEN=${{ vars.SENTRY_AUTH_TOKEN }}
             NEXT_PUBLIC_SENTRY_DSN=${{ vars.NEXT_PUBLIC_SENTRY_DSN }}
 
             NEXT_PUBLIC_VK_IMG=https://mainimg.jacofood.ru/
@@ -82,6 +83,9 @@ jobs:
             NEXT_PUBLIC_YANDEX_TOKEN_MAP=${{ secrets.NEXT_PUBLIC_YANDEX_TOKEN_MAP }}
 
             NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST=${{ secrets.NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST }}
+
+            TRACKING_API_ENDPOINT=https://apichef.jacochef.ru/api/first-visit
+            TRACKING_API_TOKEN=${{ secrets.TRACKING_API_TOKEN }}
 
           cache-from: type=gha
 
