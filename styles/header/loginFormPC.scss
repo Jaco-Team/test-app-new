@@ -277,8 +277,9 @@
           margin-bottom: $MyScale10;
           display: flex;
           justify-content: center;
-          overflow: hidden;
-          height: $MyScale110;
+          overflow: visible;
+          height: auto;
+          flex-shrink: 0;
         }
 
         & .captchaScaleSMS {
@@ -1198,8 +1199,9 @@
             margin-bottom: tablet-vw(10);
             display: flex;
             justify-content: center;
-            overflow: hidden;
-            height: tablet-vw(170) !important;
+            overflow: visible;
+            height: auto;
+            flex-shrink: 0;
           }
 
           & .captchaScaleSMS {

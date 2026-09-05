@@ -1,6 +1,7 @@
 import Image from 'next/image';
 import Link from 'next/link';
-import { useEffect, useState } from 'react';
+import { useRouter } from 'next/router';
+import { useEffect, useRef, useState } from 'react';
 
 import Cookies from 'js-cookie';
 
@@ -9,6 +10,7 @@ import Meta from '@/components/meta';
 import { roboto } from '@/ui/Font';
 import {
   getLocalStorageItem,
+  getLocalStorageJson,
   setLocalStorageItem,
 } from '@/utils/browserStorage';
 
@@ -44,7 +46,38 @@ const getPageField = (page, field) => {
   return value || FALLBACK_PAGE[field];
 };
 
-export default function CitySelectionPage({ page }) {
+const saveCity = (city) => {
+  setLocalStorageItem(
+    'setCity',
+    JSON.stringify({ name: city.name, link: city.link })
+  );
+  try {
+    Cookies.set('city', city.link, {
+      expires: 365,
+      path: '/',
+      sameSite: 'Lax',
+    });
+  } catch {
+    // Запрет cookie не должен мешать переходу в меню.
+  }
+};
+
+const getSavedCity = () => {
+  const savedCity = getLocalStorageJson('setCity');
+  const localCity = cities.find((city) => city.link === savedCity?.link);
+  if (localCity) return localCity;
+
+  try {
+    return cities.find((city) => city.link === Cookies.get('city'));
+  } catch {
+    return undefined;
+  }
+};
+
+export default function CitySelectionPage({ page, initialSearch = '' }) {
+  const router = useRouter();
+  const redirectAttemptedRef = useRef(false);
+  const [urlSuffix, setUrlSuffix] = useState(initialSearch);
   const [showCookieNotice, setShowCookieNotice] = useState(false);
   const title = getPageField(page, 'title');
   const description = getPageField(page, 'description');
@@ -55,17 +88,28 @@ export default function CitySelectionPage({ page }) {
     setShowCookieNotice(!getLocalStorageItem('setCookie'));
   }, []);
 
-  const saveCity = (city) => {
-    setLocalStorageItem(
-      'setCity',
-      JSON.stringify({ name: city.name, link: city.link })
-    );
-    Cookies.set('city', city.link, {
-      expires: 365,
-      path: '/',
-      sameSite: 'Lax',
-    });
-  };
+  useEffect(() => {
+    if (!router.isReady) return;
+
+    // Не пересобираем query: сохраняем кодирование, регистр и повторения.
+    const suffix = window.location.search + window.location.hash;
+    setUrlSuffix(suffix);
+    if (redirectAttemptedRef.current) return;
+    redirectAttemptedRef.current = true;
+
+    const savedCity = getSavedCity();
+    if (!savedCity) return;
+
+    saveCity(savedCity);
+    const redirect = async () => {
+      try {
+        await router.replace(`${savedCity.href}${suffix}`);
+      } catch {
+        // При ошибке навигации остаются доступными ссылки выбора города.
+      }
+    };
+    void redirect();
+  }, [router.isReady, router.asPath, router.replace]);
 
   const acceptCookies = () => {
     setLocalStorageItem('setCookie', true);
@@ -108,7 +152,7 @@ export default function CitySelectionPage({ page }) {
             {cities.map((city) => (
               <Link
                 className={styles.cityLink}
-                href={city.href}
+                href={`${city.href}${urlSuffix}`}
                 key={city.href}
                 onClick={() => saveCity(city)}
               >
@@ -147,7 +191,9 @@ export default function CitySelectionPage({ page }) {
   );
 }
 
-export async function getServerSideProps({ res }) {
+export async function getServerSideProps({ res, resolvedUrl = '/' }) {
+  const queryStart = resolvedUrl.indexOf('?');
+  const initialSearch = queryStart === -1 ? '' : resolvedUrl.slice(queryStart);
   res.setHeader(
     'Cache-Control',
     'public, s-maxage=60, stale-while-revalidate=60'
@@ -163,6 +209,7 @@ export async function getServerSideProps({ res }) {
   return {
     props: {
       page,
+      initialSearch,
     },
   };
 }
