@@ -69,7 +69,6 @@ jobs:
 
             NEXT_PUBLIC_SENTRY_CUSTOM_MONITORING_ENABLED=false
 
-            SENTRY_AUTH_TOKEN=${{ vars.SENTRY_AUTH_TOKEN }}
             NEXT_PUBLIC_SENTRY_DSN=${{ vars.NEXT_PUBLIC_SENTRY_DSN }}
 
             NEXT_PUBLIC_VK_IMG=https://mainimg.jacofood.ru/
@@ -84,8 +83,8 @@ jobs:
 
             NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST=${{ secrets.NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST }}
 
-            TRACKING_API_ENDPOINT=https://apichef.jacochef.ru/api/first-visit
-            TRACKING_API_TOKEN=${{ secrets.TRACKING_API_TOKEN }}
+          secrets: |
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
 
           cache-from: type=gha
 
