@@ -1,140 +1,150 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
 .companyDetailsTabletPage {
-    @include tablet-only {
-        min-height: 100vh;
-        display: flex;
-        flex-direction: column;
-    }
+  @include tablet-only {
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+  }
 }
 
 .companyDetailsTabletPageContent {
-    @include tablet-only {
-        flex: 1 0 auto;
-    }
+  @include tablet-only {
+    flex: 1 0 auto;
+  }
 }
 
 .companyDetailsTabletPageFooter {
-    @include tablet-only {
-        margin-top: auto;
-    }
+  @include tablet-only {
+    margin-top: auto;
+  }
 }
 
 .pageTextPCWrap {
-    @include tablet-only {
-        flex-wrap: nowrap !important;
-        align-items: flex-start;
-        justify-content: flex-start;
-        column-gap: tablet-vw(90);
-        padding-right: tablet-vw(80);
-        box-sizing: border-box;
-    }
+  @include tablet-only {
+    flex-wrap: nowrap !important;
+    align-items: flex-start;
+    justify-content: flex-start;
+    column-gap: tablet-vw(90);
+    padding-right: tablet-vw(80);
+    box-sizing: border-box;
+  }
 
-    @media (min-width: 991px) and (max-width: 1100px) {
-        flex-wrap: nowrap !important;
-        align-items: flex-start;
-        justify-content: flex-start;
-        column-gap: tablet-vw(90);
-        padding-right: tablet-vw(80);
-        box-sizing: border-box;
-    }
+  @media (min-width: 991px) and (max-width: 1100px) {
+    flex-wrap: nowrap !important;
+    align-items: flex-start;
+    justify-content: flex-start;
+    column-gap: tablet-vw(90);
+    padding-right: tablet-vw(80);
+    box-sizing: border-box;
+  }
 }
 
 .PageTextPC {
-  margin-top: 64px!important;
-    z-index: 3;
-    mix-blend-mode: multiply;
+  margin-top: 64px !important;
+  z-index: 3;
+  mix-blend-mode: multiply;
 
-    & img{
-        border-radius: $MyScale20;
+  & img {
+    border-radius: $MyScale20;
+  }
+  & a {
+    text-decoration: none;
+    color: $colorMain;
+  }
+
+  & h2 {
+    padding-top: $MyScale10;
+  }
+
+  @include desktop-up {
+    margin-top: $MyScale380 !important;
+    margin-bottom: 140px !important;
+    padding-top: 0px !important;
+
+    margin-left: $MyScale125 !important;
+    width: $MyScale1560 !important;
+    padding-left: 0px !important;
+
+    & h1,
+    & h2 {
+      @include font75_700();
+      text-align: start;
+      width: 100%;
+      font-weight: 600;
     }
-    & a{
-        text-decoration: none;
-        color: $colorMain;
+    & p,
+    & li,
+    & span {
+      @include font30_400();
+      line-height: 1.5;
+    }
+    & strong {
+      @include font40_500();
+    }
+  }
+  @include tablet-only {
+    margin-top: tablet-vw(380) !important;
+    margin-bottom: tablet-vw(140) !important;
+    margin-left: tablet-vw(80) !important;
+    width: tablet-vw(1400) !important;
+    padding-top: 0 !important;
+    padding-left: 0 !important;
+
+    & h1,
+    & h2 {
+      @include font75_700();
+      text-align: start;
+      width: 100%;
+      font-weight: 600;
     }
 
-    & h2{
-        padding-top: $MyScale10;
+    & p,
+    & li,
+    & span {
+      @include font30_400();
+      line-height: 1.5;
+    }
+    & strong {
+      @include font40_500();
+    }
+  }
+  @include mobile-only {
+    margin-top: $MyScale100_mobile !important;
+    margin-bottom: 64px;
+    margin-left: $MyScale100_mobile;
+    width: $MyScale970_mobile;
+
+    & h1,
+    & h2 {
+      @include font75_700();
+      text-align: start;
+      width: 100%;
+      font-weight: 600;
     }
 
-    @include desktop-up {
-        margin-top: $MyScale380!important;
-        margin-bottom: 140px!important;
-        padding-top: 0px!important;
-
-        margin-left: $MyScale125!important;
-        width: $MyScale1560!important;
-        padding-left: 0px!important;
-
-        
-        & h1, & h2 {
-            @include font75_700();
-            text-align: start;
-            width: 100%;
-            font-weight: 600;
-        }
-        & p, & li, & span {
-            @include font30_400();
-            line-height: 1.5;
-        }
-        & strong {
-          @include font40_500();
-        }
+    & p,
+    & li,
+    & a {
+      @include font35_400();
     }
-    @include tablet-only {
-        margin-top: tablet-vw(380)!important;
-        margin-bottom: tablet-vw(140)!important;
-        margin-left: tablet-vw(80)!important;
-        width: tablet-vw(1400)!important;
-        padding-top: 0!important;
-        padding-left: 0!important;
-
-        & h1, & h2 {
-            @include font75_700();
-            text-align: start;
-            width: 100%;
-            font-weight: 600;
-        }
-
-        & p, & li, & span {
-            @include font30_400();
-            line-height: 1.5;
-        }
-        & strong {
-          @include font40_500();
-        }
+    & strong {
+      @include font40_500();
     }
-    @include mobile-only {
-        margin-top: $MyScale100_mobile!important;
-        margin-bottom: 64px; 
-        margin-left: $MyScale100_mobile;
-        width: $MyScale970_mobile;
-
-        & h1, & h2 {
-            @include font75_700();
-            text-align: start;
-            width: 100%;
-            font-weight: 600;
-        }
-
-        & p, & li, & a {
-            @include font35_400();
-        }
-        & strong {
-          @include font40_500();
-        }
-        & p, & li, & span {
-            line-height: 1.5;
-        }
-        & a{
-            color: $colorMain;
-            line-height: 2rem;
-            font-weight: bold;
-            cursor: pointer;
-            //display: table;
-            text-decoration: none;
-        }
+    & p,
+    & li,
+    & span {
+      line-height: 1.5;
     }
+    & a {
+      color: $colorMain;
+      line-height: 2rem;
+      font-weight: bold;
+      cursor: pointer;
+      //display: table;
+      text-decoration: none;
+    }
+  }
 
   /*width: $MyScale1560 !important;
   margin-top: $MyScale280 !important;
@@ -166,4 +176,15 @@
       @include font30_400();
     }
   }*/
+}
+
+.PageTextInfo {
+  min-width: 0;
+  overflow-wrap: anywhere;
+
+  & img {
+    display: block;
+    max-width: 100% !important;
+    height: auto !important;
+  }
 }

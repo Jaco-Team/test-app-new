@@ -67,8 +67,8 @@ export default React.memo(function BeskontaktnyyDostup({ data1 }) {
     <div className={roboto.variable}>
       <DynamicPage
         page={page}
-        classNamePC="PageTextPC"
-        classNameMobile="PageTextMobile"
+        classNamePC="PageTextPC PageTextInfo"
+        classNameMobile="PageTextMobile PageTextInfo"
         cityName={city}
       />
       <Footer cityName={city} links={links} />
