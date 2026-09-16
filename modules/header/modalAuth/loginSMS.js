@@ -5,7 +5,7 @@ import { useHeaderStoreNew } from '@/components/store';
 import { importWithRetry } from '@/utils/importWithRetry';
 
 import { FormattedInputs } from '@/ui/MyTextInput';
-import {Check} from '@/ui/Icons';
+import { Check } from '@/ui/Icons';
 
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
@@ -14,13 +14,27 @@ const SmartCaptcha = dynamic(
   () =>
     importWithRetry(
       () => import('@yandex/smart-captcha').then((mod) => mod.SmartCaptcha),
-      { retries: 1, delayMs: 600 },
+      { retries: 1, delayMs: 600 }
     ),
-  { ssr: false },
+  { ssr: false }
 );
 
 export default function LoginSMS({ isMobileAuth = false }) {
-  const [changeLogin, loginLogin, createProfile, navigate, setTimer, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.changeLogin, state?.loginLogin, state?.createProfile, state?.navigate, state?.setTimer, state?.setActiveModalAlert]);
+  const [
+    changeLogin,
+    loginLogin,
+    createProfile,
+    navigate,
+    setTimer,
+    setActiveModalAlert,
+  ] = useHeaderStoreNew((state) => [
+    state?.changeLogin,
+    state?.loginLogin,
+    state?.createProfile,
+    state?.navigate,
+    state?.setTimer,
+    state?.setActiveModalAlert,
+  ]);
   const matches = isMobileAuth;
 
   const [token, setToken] = useState('');
@@ -28,9 +42,18 @@ export default function LoginSMS({ isMobileAuth = false }) {
   const [isSubmitting, setIsSubmitting] = useState(false);
   const captchaContainerRef = useRef(null);
 
-  const canSubmit = useMemo(() => loginLogin.length === 17 && token.length > 0 && captchaError.length === 0 && !isSubmitting, [loginLogin.length, token, captchaError, isSubmitting]);
+  const canSubmit = useMemo(
+    () =>
+      loginLogin.length === 17 &&
+      token.length > 0 &&
+      captchaError.length === 0 &&
+      !isSubmitting,
+    [loginLogin.length, token, captchaError, isSubmitting]
+  );
 
-  const isAppWebView = typeof window !== 'undefined' && !/^https?:$/.test(window.location.protocol);
+  const isAppWebView =
+    typeof window !== 'undefined' &&
+    !/^https?:$/.test(window.location.protocol);
 
   useEffect(() => {
     if (typeof window === 'undefined') {
@@ -44,13 +67,18 @@ export default function LoginSMS({ isMobileAuth = false }) {
 
     const hasCaptchaWidget = () => {
       return Boolean(
-        root.querySelector('iframe, input[name=\"smart-token\"], [data-smart-captcha], .smart-captcha') ||
-        root.childElementCount > 0
+        root.querySelector(
+          'iframe, input[name=\"smart-token\"], [data-smart-captcha], .smart-captcha'
+        ) || root.childElementCount > 0
       );
     };
 
     const markWidgetReady = () => {
-      if (hasCaptchaWidget() && captchaError === 'Не удалось загрузить капчу. Проверьте интернет и попробуйте ещё раз.') {
+      if (
+        hasCaptchaWidget() &&
+        captchaError ===
+          'Не удалось загрузить капчу. Проверьте интернет и попробуйте ещё раз.'
+      ) {
         setCaptchaError('');
       }
     };
@@ -61,8 +89,14 @@ export default function LoginSMS({ isMobileAuth = false }) {
     observer.observe(root, { childList: true, subtree: true });
 
     const timeoutId = window.setTimeout(() => {
-      if (!hasCaptchaWidget() && token.length === 0 && captchaError.length === 0) {
-        setCaptchaError('Не удалось загрузить капчу. Проверьте интернет и попробуйте ещё раз.');
+      if (
+        !hasCaptchaWidget() &&
+        token.length === 0 &&
+        captchaError.length === 0
+      ) {
+        setCaptchaError(
+          'Не удалось загрузить капчу. Проверьте интернет и попробуйте ещё раз.'
+        );
       }
     }, 8000);
 
@@ -79,7 +113,9 @@ export default function LoginSMS({ isMobileAuth = false }) {
 
   const handleCaptchaFailure = () => {
     setToken('');
-    setCaptchaError('Капча временно недоступна. Проверьте интернет и попробуйте ещё раз.');
+    setCaptchaError(
+      'Капча временно недоступна. Проверьте интернет и попробуйте ещё раз.'
+    );
   };
 
   const handleNavigate = async () => {
@@ -115,7 +151,11 @@ export default function LoginSMS({ isMobileAuth = false }) {
       return;
     }
 
-    setActiveModalAlert(true, 'Укажите телефон и подтвердите что вы не робот', false);
+    setActiveModalAlert(
+      true,
+      'Укажите телефон и подтвердите что вы не робот',
+      false
+    );
   };
 
   // <div className="loginErr">
@@ -124,7 +164,6 @@ export default function LoginSMS({ isMobileAuth = false }) {
 
   return (
     <div className={matches ? 'modalLoginStartMobile' : 'modalLoginStartPC'}>
-
       <div className="resetText">
         Укажите свой номер телефона, мы отправим смс
       </div>
@@ -135,24 +174,22 @@ export default function LoginSMS({ isMobileAuth = false }) {
         value={loginLogin}
         func={(event) => changeLogin(event)}
         onKeyDown={handlePhoneEnter}
-        className={loginLogin.length > 0 ? "inputLogin" : "inputLogin lable_position"}
+        className={
+          loginLogin.length > 0 ? 'inputLogin' : 'inputLogin lable_position'
+        }
         mask={true}
         label="Телефон"
         inputAdornment={
           <InputAdornment position="end">
-            {loginLogin.length === 17 ? (
-              <Check className="check_icon"  />
-            ) : (
-              null
-            )}
+            {loginLogin.length === 17 ? <Check className="check_icon" /> : null}
           </InputAdornment>
         }
-      /> 
+      />
 
       <div className="captchaWrapSMS">
         <div className="captchaScaleSMS" ref={captchaContainerRef}>
-          <SmartCaptcha 
-            sitekey="ysc1_1E96JpaPgfXfQRj6D9nNuEXcojKLSn528gKwiUyD1f8b2761" 
+          <SmartCaptcha
+            sitekey={process.env.NEXT_PUBLIC_SMARTCAPTCHA_SITE_KEY || ''}
             webview={isAppWebView}
             onSuccess={handleCaptchaSuccess}
             onNetworkError={handleCaptchaFailure}
@@ -168,16 +205,28 @@ export default function LoginSMS({ isMobileAuth = false }) {
         </div>
       ) : null}
 
-      <div className="loginLogin"
-        onClick={ canSubmit ? handleNavigate : () => setActiveModalAlert(true, 'Укажите телефон и подтвердите что вы не робот', false) }
+      <div
+        className="loginLogin"
+        onClick={
+          canSubmit
+            ? handleNavigate
+            : () =>
+                setActiveModalAlert(
+                  true,
+                  'Укажите телефон и подтвердите что вы не робот',
+                  false
+                )
+        }
         style={{
           backgroundColor: canSubmit ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)',
-          marginTop: matches ? '10.25641025641vw' : 20, 
-          marginBottom: 20
-        }}>
-        <Typography component="span">{isSubmitting ? 'Отправляем...' : 'Получить СМС'}</Typography>
+          marginTop: matches ? '10.25641025641vw' : 20,
+          marginBottom: 20,
+        }}
+      >
+        <Typography component="span">
+          {isSubmitting ? 'Отправляем...' : 'Получить СМС'}
+        </Typography>
       </div>
-
     </div>
   );
 }

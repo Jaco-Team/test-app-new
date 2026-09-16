@@ -83,6 +83,8 @@ jobs:
 
             NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST=${{ secrets.NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST }}
 
+            NEXT_PUBLIC_SMARTCAPTCHA_SITE_KEY=${{ secrets.NEXT_PUBLIC_SMARTCAPTCHA_SITE_KEY }}
+
           secrets: |
             SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
 
