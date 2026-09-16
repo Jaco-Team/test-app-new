@@ -17,7 +17,7 @@
     "build-storybook": "storybook build",
     "deploy:local": "next build && pm2 startOrRestart ecosystem.config.js --env local",
     "deploy:dev": "next build && pm2 startOrRestart ecosystem.config.js --env development",
-    "deploy:prod": "npm update && next build && pm2 startOrRestart ecosystem.config.js --env production"
+    "deploy:prod": "HUSKY=0 npm ci --no-audit --no-fund && next build && pm2 startOrRestart ecosystem.config.js --env production"
   },
   "browserslist": {
     "production": [
