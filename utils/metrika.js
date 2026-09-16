@@ -2,6 +2,14 @@ import { useCitiesStore } from '@/components/store.js';
 import { getLocalStorageItem, setLocalStorageItem } from './browserStorage';
 
 const MAIN_COUNTER_ID = 47085879;
+const CITY_COUNTER_ID_BY_CITY = {
+  samara: 100325084,
+  togliatti: 100601350,
+};
+const ALL_COUNTER_IDS = [
+  MAIN_COUNTER_ID,
+  ...Object.values(CITY_COUNTER_ID_BY_CITY),
+];
 const VK_TMR_COUNTER_BY_CITY = {
   samara: 3621394,
   togliatti: 3637103,
@@ -16,10 +24,7 @@ function getCityCounterId(city) {
   if (!city) return null;
   const c = String(city).toLowerCase();
 
-  if (c === 'samara') return 100325084;
-  if (c === 'togliatti') return 100601350;
-
-  return null;
+  return CITY_COUNTER_ID_BY_CITY[c] || null;
 }
 
 function getActiveCounterIds(cityOverride) {
@@ -246,6 +251,21 @@ export function reachGoalMain(goal, params, cb) {
     });
   } catch (e) {
     console.warn('YM reachGoalMain error:', e);
+  }
+}
+
+/** Отправляет одну цель в основной счётчик и оба городских счётчика. */
+export function reachGoalAllCounters(goal, params) {
+  if (typeof window === 'undefined') return;
+
+  try {
+    runWhenYmReady(() => {
+      ALL_COUNTER_IDS.forEach((counterId) => {
+        window.ym(counterId, 'reachGoal', goal, params);
+      });
+    });
+  } catch (e) {
+    console.warn('YM reachGoalAllCounters error:', e);
   }
 }
 

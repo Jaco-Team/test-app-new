@@ -266,9 +266,10 @@ export async function proxy(request) {
   // 3.1) Если в пути есть город, которого нет в нашем списке — редиректим на сохранённый в куках или дефолтный
   const parts = target.pathname.split('/').filter(Boolean);
   const cityFromPath = normalizeCity(parts[0]);
+  const isCleaningRoute = parts[0] === 'cleaning';
   let redirectStatus = 308;
 
-  if (parts.length > 0 && !cityFromPath) {
+  if (parts.length > 0 && !cityFromPath && !isCleaningRoute) {
     const saved = normalizeCity(request.cookies.get('city')?.value);
     target.pathname = `/${saved || 'togliatti'}`;
     target.search = '';

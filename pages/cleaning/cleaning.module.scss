@@ -1,0 +1,187 @@
+.page {
+  min-height: 100vh;
+  min-height: 100dvh;
+  box-sizing: border-box;
+  display: flex;
+  flex-direction: column;
+  gap: 18px;
+  padding: 20px;
+  color: #292929;
+  background: #f5f5f5;
+  font-family: var(--inter-font), sans-serif;
+}
+
+.header {
+  width: min(100%, 980px);
+  box-sizing: border-box;
+  display: grid;
+  grid-template-columns: auto minmax(0, 1fr) auto;
+  align-items: center;
+  gap: 24px;
+  margin: 0 auto;
+  padding: 14px 18px;
+  border-radius: 18px;
+  background: #fff;
+  box-shadow: 0 8px 30px rgba(29, 29, 29, 0.08);
+}
+
+.logo {
+  display: block;
+  width: 150px;
+  height: auto;
+}
+
+.heading {
+  min-width: 0;
+}
+
+.heading h1,
+.cafe,
+.fallback,
+.loading {
+  margin: 0;
+}
+
+.heading h1 {
+  margin-top: 4px;
+  font-size: 22px;
+  line-height: 1.25;
+}
+
+.cafe {
+  color: #6d6d6d;
+  font-size: 15px;
+  line-height: 1.3;
+}
+
+.openLink {
+  min-height: 44px;
+  box-sizing: border-box;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 10px 18px;
+  border-radius: 12px;
+  color: #fff;
+  background: #cc0033;
+  font-size: 15px;
+  font-weight: 700;
+  text-decoration: none;
+}
+
+.openLink:hover {
+  background: #a9002a;
+}
+
+.openLink:focus-visible,
+.fallback a:focus-visible {
+  outline: 3px solid #1f2024;
+  outline-offset: 3px;
+}
+
+.viewer {
+  position: relative;
+  width: min(100%, 980px);
+  min-height: 620px;
+  margin: 0 auto;
+  overflow: hidden;
+  border-radius: 18px;
+  background: #e7e7e7;
+  box-shadow: 0 8px 30px rgba(29, 29, 29, 0.08);
+}
+
+.canvas {
+  width: 100%;
+  display: block;
+  height: auto;
+  background: #fff;
+}
+
+.loading {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+  color: #5d5d5d;
+  font-size: 16px;
+  text-align: center;
+}
+
+.fallback {
+  width: min(100%, 980px);
+  margin: -4px auto 0;
+  color: #666;
+  font-size: 14px;
+  line-height: 1.4;
+  text-align: center;
+}
+
+.fallback a {
+  color: #a9002a;
+  font-weight: 700;
+  text-underline-offset: 2px;
+}
+
+@media (min-width: 668px) and (max-width: 990px) {
+  .page {
+    padding: 18px;
+  }
+
+  .header,
+  .viewer,
+  .fallback {
+    width: min(100%, 820px);
+  }
+
+  .viewer {
+    min-height: 720px;
+  }
+}
+
+@media (max-width: 667px) {
+  .page {
+    gap: 12px;
+    padding: 10px;
+  }
+
+  .header {
+    grid-template-columns: minmax(0, 1fr) auto;
+    gap: 12px;
+    padding: 12px;
+    border-radius: 14px;
+  }
+
+  .logo {
+    width: 112px;
+  }
+
+  .heading {
+    grid-column: 1 / -1;
+    grid-row: 2;
+  }
+
+  .heading h1 {
+    font-size: 19px;
+  }
+
+  .cafe {
+    font-size: 14px;
+  }
+
+  .openLink {
+    min-height: 40px;
+    padding: 8px 13px;
+    font-size: 14px;
+  }
+
+  .viewer {
+    min-height: calc(100svh - 205px);
+    border-radius: 12px;
+  }
+
+  .fallback {
+    padding-bottom: 4px;
+    font-size: 13px;
+  }
+}

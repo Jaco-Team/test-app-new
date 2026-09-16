@@ -13,6 +13,7 @@ import {
   getLocalStorageJson,
   setLocalStorageItem,
 } from '@/utils/browserStorage';
+import { reachGoalMain } from '@/utils/metrika';
 
 import styles from './index.module.scss';
 
@@ -30,12 +31,14 @@ const cities = [
     name: 'Тольятти',
     link: 'togliatti',
     href: '/togliatti',
+    goal: 'click_mainpage_tlt',
     description: 'Открыть меню и условия доставки в Тольятти',
   },
   {
     name: 'Самара',
     link: 'samara',
     href: '/samara',
+    goal: 'click_mainpage_smr',
     description: 'Открыть меню и условия доставки в Самаре',
   },
 ];
@@ -116,6 +119,11 @@ export default function CitySelectionPage({ page, initialSearch = '' }) {
     setShowCookieNotice(false);
   };
 
+  const selectCity = (city) => {
+    reachGoalMain(city.goal);
+    saveCity(city);
+  };
+
   return (
     <>
       <Meta title={title} description={description} canonicalPath="/" />
@@ -154,7 +162,7 @@ export default function CitySelectionPage({ page, initialSearch = '' }) {
                 className={styles.cityLink}
                 href={`${city.href}${urlSuffix}`}
                 key={city.href}
-                onClick={() => saveCity(city)}
+                onClick={() => selectCity(city)}
               >
                 <span className={styles.cityName}>{city.name}</span>
                 <span className={styles.cityDescription}>
