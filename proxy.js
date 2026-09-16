@@ -5,7 +5,7 @@ import { normalizeCity } from '@/utils/normalizeCity';
 function isLowerCase(str) {
   return str === str.toLowerCase();
 }
-
+// test deploy
 function refDomain(ref) {
   try {
     return ref ? new URL(ref).hostname.replace(/^www\./, '') : '';
