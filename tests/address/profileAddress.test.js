@@ -18,6 +18,7 @@ vi.mock('zustand/middleware', async (importOriginal) => ({
 }));
 
 import { api } from '../../components/api.js';
+import { getAddressStreet, getAddressLabel } from '../../utils/streetAddress';
 import {
   useProfileStore,
   useHeaderStoreNew,
@@ -42,6 +43,7 @@ beforeEach(() => {
     is_fetch: false,
     street_id: 999,
     chooseAddrStreet: { id: 999 },
+    choose_street: '',
     cityList: [],
     active_city: 1,
   });
@@ -174,3 +176,126 @@ describe('проверка адреса в store', () => {
     }
   );
 });
+
+describe('повторная проверка подъезда после успешного поиска', () => {
+  it.each([375, 768, 1280])(
+    'сохраняет один квартал в подписи и запросе при ширине %s',
+    async (width) => {
+      window.innerWidth = width;
+      // Реальный формат type=1 из БД: район присутствует в обоих полях.
+      const address = {
+        id: 12,
+        city_name_dop: '2-й квартал',
+        street: '2-й квартал, бульвар Кулибина',
+        home: '12',
+        xy: [53.5, 49.2],
+        addressLine: '2-й квартал, бульвар Кулибина, 12, подъезд 1',
+      };
+      api.mockResolvedValue({ st: true, type: 1, count: 1, addrs: [address] });
+      await checkStreet('2-й квартал, бульвар Кулибина', '12', '', 1);
+      let selected = useProfileStore.getState().chooseAddrStreet;
+      expect(getAddressLabel(selected)).toBe(
+        '2-й квартал, бульвар Кулибина, 12'
+      );
+      // Те же аргументы, которые обе формы строят при смене подъезда.
+      await checkStreet(getAddressStreet(selected), selected.home, '1', 1);
+      expect(api).toHaveBeenLastCalledWith('profile', {
+        type: 'check_street',
+        city_id: 1,
+        street: '2-й квартал, бульвар Кулибина',
+        home: '12',
+        pd: '1',
+      });
+      selected = useProfileStore.getState().chooseAddrStreet;
+      expect(getAddressLabel(selected)).toBe(
+        '2-й квартал, бульвар Кулибина, 12'
+      );
+      expect(useProfileStore.getState().street_id).toBe(12);
+    }
+  );
+
+  it('добавляет район ровно один раз после ответа геокодера type=2', async () => {
+    const address = {
+      id: 12,
+      city_name_dop: '12-й квартал',
+      street: 'бульвар Гая',
+      home: '4',
+      xy: [53.5, 49.2],
+      addressLine: '12-й квартал, бульвар Гая, 4',
+    };
+    api.mockResolvedValue({ st: true, type: 2, count: 1, addrs: [address] });
+    await checkStreet('12-й квартал, бульвар Гая', '4', '', 1);
+    const selected = useProfileStore.getState().chooseAddrStreet;
+    expect(getAddressLabel(selected)).toBe('12-й квартал, бульвар Гая, 4');
+    await checkStreet(getAddressStreet(selected), selected.home, '1', 1);
+    expect(api).toHaveBeenLastCalledWith('profile', {
+      type: 'check_street',
+      city_id: 1,
+      street: '12-й квартал, бульвар Гая',
+      home: '4',
+      pd: '1',
+    });
+  });
+});
+
+it('сохраняет текст после отказа повторной проверки, но сбрасывает подтверждение адреса', async () => {
+  const address = {
+    id: 12,
+    city_name_dop: '12-й квартал',
+    street: '12-й квартал, бульвар Гая',
+    home: '4',
+    xy: [53.5, 49.2],
+    addressLine: '12-й квартал, бульвар Гая, 4',
+  };
+  api.mockResolvedValueOnce({ st: true, type: 1, count: 1, addrs: [address] });
+  await checkStreet('12-й квартал, бульвар Гая', '4', '', 1);
+  api.mockResolvedValueOnce({
+    st: false,
+    text: 'Геокодер временно недоступен',
+    count: 0,
+    addrs: [],
+  });
+  await checkStreet(getAddressStreet(address), address.home, '1', 1);
+  expect(useProfileStore.getState()).toMatchObject({
+    chooseAddrStreet: {},
+    street_id: 0,
+    choose_street: '12-й квартал, бульвар Гая, 4',
+  });
+  useProfileStore.getState().setClearAddr();
+  expect(useProfileStore.getState().choose_street).toBe('');
+});
+
+it.each(['openModalAddr', 'getMapMobile'])(
+  'сбрасывает черновик и сохраняет полное название при %s',
+  async (method) => {
+    useProfileStore.setState({ choose_street: 'Старый адрес, 1' });
+    const info = {
+      street_id: 5,
+      city_name_dop: 'Тимофеевка',
+      street: 'Тимофеевка, Северный район, улица Ленина',
+      home: '2',
+      xy: [53.5, 49.2],
+    };
+    api.mockResolvedValue({
+      this_info: info,
+      cities: [],
+      streets: [],
+      zones: [],
+      city: 1,
+    });
+    await useProfileStore.getState()[method](5, 'togliatti');
+    expect(useProfileStore.getState().choose_street).toBe('');
+    expect(getAddressLabel(useProfileStore.getState().chooseAddrStreet)).toBe(
+      'Тимофеевка, Северный район, улица Ленина, 2'
+    );
+  }
+);
+
+it.each(['clearAddr', 'setClearAddr'])(
+  '%s удаляет черновую подпись при смене адреса',
+  (method) => {
+    useProfileStore.setState({ choose_street: 'Старый адрес, 1' });
+    useProfileStore.getState()[method]();
+    expect(useProfileStore.getState().choose_street).toBe('');
+  }
+);

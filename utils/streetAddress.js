@@ -29,3 +29,37 @@ export function buildStreetAddress(components, cityName = '') {
 
   return { street: unique.join(', '), home: names('HOUSE')[0] ?? '' };
 }
+
+// В ответе из БД street уже включает район, у геокодера район приходит отдельно.
+export function getAddressStreet(address) {
+  const street =
+    typeof address?.street === 'string' ? address.street.trim() : '';
+  const district =
+    typeof address?.city_name_dop === 'string'
+      ? address.city_name_dop.trim()
+      : '';
+  if (!street || !district) return street;
+
+  const normalize = (value) =>
+    value
+      .replace(/[,\s]+/g, ' ')
+      .trim()
+      .toLocaleLowerCase('ru');
+  const normalizedStreet = normalize(street);
+  const normalizedDistrict = normalize(district);
+  if (
+    normalizedStreet === normalizedDistrict ||
+    normalizedStreet.startsWith(`${normalizedDistrict} `)
+  ) {
+    return street;
+  }
+  return `${district}, ${street}`;
+}
+
+export function getAddressLabel(address) {
+  const street = getAddressStreet(address);
+  if (!street) return '';
+  return [street, String(address?.home ?? '').trim()]
+    .filter(Boolean)
+    .join(', ');
+}

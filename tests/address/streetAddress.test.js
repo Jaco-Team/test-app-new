@@ -1,5 +1,9 @@
 import { describe, expect, it } from 'vitest';
-import { buildStreetAddress } from '../../utils/streetAddress';
+import {
+  buildStreetAddress,
+  getAddressStreet,
+  getAddressLabel,
+} from '../../utils/streetAddress';
 
 const part = (kind, name) => ({ kind: [kind], name });
 
@@ -86,5 +90,62 @@ describe('адрес подсказки Яндекса', () => {
 
   it('не падает без компонентов адреса', () => {
     expect(buildStreetAddress()).toEqual({ street: '', home: '' });
+  });
+});
+
+describe('адрес из ответа бэкенда', () => {
+  it.each([
+    [
+      '12-й квартал',
+      '12-й квартал, бульвар Гая',
+      '4',
+      '12-й квартал, бульвар Гая',
+    ],
+    [
+      '2-й квартал',
+      '2-й квартал, бульвар Кулибина',
+      '12',
+      '2-й квартал, бульвар Кулибина',
+    ],
+    ['12-й квартал', 'бульвар Гая', '4', '12-й квартал, бульвар Гая'],
+    ['2-й квартал', 'бульвар Кулибина', '12', '2-й квартал, бульвар Кулибина'],
+    ['', 'улица Льва Яшина', '10', 'улица Льва Яшина'],
+    [undefined, 'улица Льва Яшина', 10, 'улица Льва Яшина'],
+    [
+      '12-й квартал',
+      '12-Й КВАРТАЛ  бульвар Гая',
+      '4',
+      '12-Й КВАРТАЛ  бульвар Гая',
+    ],
+  ])('не дублирует уточнение %s в %s', (district, street, home, expected) => {
+    const address = { city_name_dop: district, street, home };
+    expect(getAddressStreet(address)).toBe(expected);
+    expect(getAddressLabel(address)).toBe(`${expected}, ${home}`);
+    expect(getAddressStreet({ ...address, street: expected })).toBe(expected);
+  });
+
+  it('не принимает часть слова за совпадающее уточнение', () => {
+    expect(
+      getAddressStreet({
+        city_name_dop: 'посёлок Мир',
+        street: 'посёлок Мирный, улица Ленина',
+      })
+    ).toBe('посёлок Мир, посёлок Мирный, улица Ленина');
+  });
+
+  it('сохраняет поселок и уточнение при отсутствии совпадения', () => {
+    expect(
+      getAddressLabel({
+        city_name_dop: 'Тимофеевка',
+        street: 'Северный район, улица Ленина',
+        home: '2',
+      })
+    ).toBe('Тимофеевка, Северный район, улица Ленина, 2');
+  });
+
+  it('не показывает район без улицы и не добавляет пустой дом', () => {
+    expect(getAddressLabel({ city_name_dop: '12-й квартал' })).toBe('');
+    expect(getAddressLabel({ street: 'бульвар Гая' })).toBe('бульвар Гая');
+    expect(getAddressLabel()).toBe('');
   });
 });

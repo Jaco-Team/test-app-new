@@ -10,7 +10,7 @@ dayjs.extend(isoWeek);
 dayjs.locale('ru');
 
 import { api, apiAddress } from './api.js';
-import { buildStreetAddress } from '@/utils/streetAddress';
+import { buildStreetAddress, getAddressLabel } from '@/utils/streetAddress';
 
 import useYandexMetrika from './useYandexMetrika';
 import { getClientNetworkContext } from '@/utils/clientMonitoring';
@@ -4828,6 +4828,7 @@ export const useProfileStore = reuseHotStore(
             cityList: json?.cities,
             active_city: json?.city,
             chooseAddrStreet: json?.this_info ?? {},
+            choose_street: '',
             center_map: {
               center: mapCenter,
               zoom: 11.5,
@@ -5085,13 +5086,6 @@ export const useProfileStore = reuseHotStore(
 
           let json = await api('profile', data);
 
-          // в этом методе openModalAddr с сервера в json.this_info приходит street: "19-й квартал, бульвар Татищева", а потом в методе checkStreet с сервера в json.addrs приходит street: "бульвар Татищева" - как пример, для этого изменения
-          const street = json?.this_info?.street.split(', ');
-
-          if (json?.this_info?.street && street.length && street.length > 1) {
-            json.this_info.street = street[1];
-          }
-
           const mapCenter = getStreetMapCenterFromJson(json);
 
           if (!mapCenter && shouldReportMissingStreetMapCenter(id)) {
@@ -5116,6 +5110,7 @@ export const useProfileStore = reuseHotStore(
             cityList: json?.cities,
             active_city: json?.city,
             chooseAddrStreet: json?.this_info ?? {},
+            choose_street: '',
             center_map: {
               center: mapCenter,
               zoom: 11.5,
@@ -5211,7 +5206,11 @@ export const useProfileStore = reuseHotStore(
             return;
           }
 
-          set({ chooseAddrStreet: {}, street_id: 0 });
+          set({
+            chooseAddrStreet: {},
+            street_id: 0,
+            choose_street: getAddressLabel({ street, home }),
+          });
 
           if (!String(home ?? '').trim()) {
             useHeaderStoreNew
@@ -5294,6 +5293,7 @@ export const useProfileStore = reuseHotStore(
 
         setClearAddr: () => {
           set({
+            choose_street: '',
             chooseAddrStreet: {},
           });
         },
@@ -5508,6 +5508,7 @@ export const useProfileStore = reuseHotStore(
         },
         clearAddr: () => {
           set({
+            choose_street: '',
             chooseAddrStreet: {},
             infoAboutAddr: null,
           });
