@@ -25,6 +25,7 @@ export default function LoginSMS({ isMobileAuth = false }) {
     loginLogin,
     createProfile,
     navigate,
+    preTypeLogin,
     setTimer,
     setActiveModalAlert,
   ] = useHeaderStoreNew((state) => [
@@ -32,6 +33,7 @@ export default function LoginSMS({ isMobileAuth = false }) {
     state?.loginLogin,
     state?.createProfile,
     state?.navigate,
+    state?.preTypeLogin,
     state?.setTimer,
     state?.setActiveModalAlert,
   ]);
@@ -39,8 +41,11 @@ export default function LoginSMS({ isMobileAuth = false }) {
 
   const [token, setToken] = useState('');
   const [captchaError, setCaptchaError] = useState('');
+  const [captchaKey, setCaptchaKey] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const captchaContainerRef = useRef(null);
+  const captchaSiteKey = process.env.NEXT_PUBLIC_SMARTCAPTCHA_SITE_KEY || '';
+  const isResend = preTypeLogin === 'loginSMSCode';
 
   const canSubmit = useMemo(
     () =>
@@ -74,12 +79,13 @@ export default function LoginSMS({ isMobileAuth = false }) {
     };
 
     const markWidgetReady = () => {
-      if (
-        hasCaptchaWidget() &&
-        captchaError ===
+      if (hasCaptchaWidget()) {
+        setCaptchaError((currentError) =>
+          currentError ===
           'Не удалось загрузить капчу. Проверьте интернет и попробуйте ещё раз.'
-      ) {
-        setCaptchaError('');
+            ? ''
+            : currentError
+        );
       }
     };
 
@@ -89,13 +95,11 @@ export default function LoginSMS({ isMobileAuth = false }) {
     observer.observe(root, { childList: true, subtree: true });
 
     const timeoutId = window.setTimeout(() => {
-      if (
-        !hasCaptchaWidget() &&
-        token.length === 0 &&
-        captchaError.length === 0
-      ) {
+      if (!hasCaptchaWidget()) {
         setCaptchaError(
-          'Не удалось загрузить капчу. Проверьте интернет и попробуйте ещё раз.'
+          (currentError) =>
+            currentError ||
+            'Не удалось загрузить капчу. Проверьте интернет и попробуйте ещё раз.'
         );
       }
     }, 8000);
@@ -104,7 +108,7 @@ export default function LoginSMS({ isMobileAuth = false }) {
       observer.disconnect();
       window.clearTimeout(timeoutId);
     };
-  }, [captchaError, token]);
+  }, [captchaKey]);
 
   const handleCaptchaSuccess = (captchaToken) => {
     setCaptchaError('');
@@ -118,17 +122,26 @@ export default function LoginSMS({ isMobileAuth = false }) {
     );
   };
 
+  const resetCaptcha = () => {
+    setToken('');
+    setCaptchaError('');
+    setCaptchaKey((currentKey) => currentKey + 1);
+  };
+
   const handleNavigate = async () => {
     if (isSubmitting) {
       return;
     }
 
     setIsSubmitting(true);
+    const captchaToken = token;
+    setToken('');
 
     try {
-      const isSent = await createProfile(token);
+      const isSent = await createProfile(captchaToken);
 
       if (!isSent) {
+        setCaptchaKey((currentKey) => currentKey + 1);
         return;
       }
 
@@ -153,7 +166,7 @@ export default function LoginSMS({ isMobileAuth = false }) {
 
     setActiveModalAlert(
       true,
-      'Укажите телефон и подтвердите что вы не робот',
+      'Укажите телефон и подтвердите, что вы не робот',
       false
     );
   };
@@ -165,7 +178,9 @@ export default function LoginSMS({ isMobileAuth = false }) {
   return (
     <div className={matches ? 'modalLoginStartMobile' : 'modalLoginStartPC'}>
       <div className="resetText">
-        Укажите свой номер телефона, мы отправим смс
+        {isResend
+          ? 'Подтвердите, что вы не робот, чтобы отправить код ещё раз'
+          : 'Укажите свой номер телефона, мы отправим смс'}
       </div>
 
       <FormattedInputs
@@ -188,20 +203,39 @@ export default function LoginSMS({ isMobileAuth = false }) {
 
       <div className="captchaWrapSMS">
         <div className="captchaScaleSMS" ref={captchaContainerRef}>
-          <SmartCaptcha
-            sitekey={process.env.NEXT_PUBLIC_SMARTCAPTCHA_SITE_KEY || ''}
-            webview={isAppWebView}
-            onSuccess={handleCaptchaSuccess}
-            onNetworkError={handleCaptchaFailure}
-            onJavascriptError={handleCaptchaFailure}
-            onTokenExpired={() => setToken('')}
-          />
+          {captchaSiteKey ? (
+            <SmartCaptcha
+              key={captchaKey}
+              sitekey={captchaSiteKey}
+              webview={isAppWebView}
+              onSuccess={handleCaptchaSuccess}
+              onNetworkError={handleCaptchaFailure}
+              onJavascriptError={handleCaptchaFailure}
+              onTokenExpired={() => setToken('')}
+            />
+          ) : null}
         </div>
       </div>
 
       {captchaError ? (
         <div className="resetText" style={{ color: '#DD1A32', marginTop: 8 }}>
-          {captchaError}
+          <div>{captchaError}</div>
+          <button
+            type="button"
+            onClick={resetCaptcha}
+            style={{
+              marginTop: 8,
+              padding: 0,
+              border: 0,
+              background: 'transparent',
+              color: '#DD1A32',
+              textDecoration: 'underline',
+              cursor: 'pointer',
+              font: 'inherit',
+            }}
+          >
+            Повторить загрузку
+          </button>
         </div>
       ) : null}
 
@@ -213,7 +247,7 @@ export default function LoginSMS({ isMobileAuth = false }) {
             : () =>
                 setActiveModalAlert(
                   true,
-                  'Укажите телефон и подтвердите что вы не робот',
+                  'Укажите телефон и подтвердите, что вы не робот',
                   false
                 )
         }

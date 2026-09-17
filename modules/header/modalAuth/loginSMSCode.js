@@ -22,25 +22,21 @@ export default function LoginSMSCode({ isMobileAuth = false }) {
 
   const [
     changeCode,
-    createProfile,
     checkCode,
     navigate,
     loginLogin,
     preTypeLogin,
     code,
     timerPage,
-    setTimer,
     typeAuth,
   ] = useHeaderStoreNew((state) => [
     state?.changeCode,
-    state?.createProfile,
     state?.checkCode,
     state?.navigate,
     state?.loginLogin,
     state?.preTypeLogin,
     state?.code,
     state?.timerPage,
-    state?.setTimer,
     state.typeAuth,
   ]);
   const matches = isMobileAuth;
@@ -63,18 +59,12 @@ export default function LoginSMSCode({ isMobileAuth = false }) {
     }
   }, [changeCode, timerPage]);
 
-  const reSendSMS = async () => {
-    const isSent = await createProfile();
-
-    if (!isSent) {
-      return;
-    }
-
-    setTimer(89);
+  const reSendSMS = () => {
     if (!matches) {
       inputRef.current?.clear?.();
     }
     changeCode('');
+    navigate('loginSMS');
   };
 
   const changeNumber = () => {
