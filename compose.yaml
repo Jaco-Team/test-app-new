@@ -29,7 +29,7 @@ services:
       CLIENT_FEEDBACK_EXPERIMENT_ENABLED: '${CLIENT_FEEDBACK_EXPERIMENT_ENABLED:-false}'
       CLIENT_FEEDBACK_EXPERIMENT_USE_MOCKS: '${CLIENT_FEEDBACK_EXPERIMENT_USE_MOCKS:-true}'
       SENTRY_DSN: '${SENTRY_DSN:-}'
-      TRACKING_API_ENDPOINT: '${TRACKING_API_ENDPOINT:-https://apichef.jacochef.ru/api/first-visit}'
+      TRACKING_API_ENDPOINT: '${TRACKING_API_ENDPOINT:-https://jacofood.ru/backend/api/first-visit}'
       TRACKING_API_TOKEN: '${TRACKING_API_TOKEN:-}'
     extra_hosts:
       - 'host.docker.internal:host-gateway'

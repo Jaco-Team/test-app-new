@@ -428,7 +428,7 @@ export async function proxy(request) {
 
     const endpoint =
       process.env.TRACKING_API_ENDPOINT ||
-      'https://laravel.example.com/api/visit';
+      'https://jacofood.ru/backend/api/first-visit';
     const token = process.env.TRACKING_API_TOKEN || '';
 
     // короткий таймаут, чтобы не блокировать TTFB
