@@ -10,6 +10,7 @@ dayjs.extend(isoWeek);
 dayjs.locale('ru');
 
 import { api, apiAddress } from './api.js';
+import { buildStreetAddress } from '@/utils/streetAddress';
 
 import useYandexMetrika from './useYandexMetrika';
 import { getClientNetworkContext } from '@/utils/clientMonitoring';
@@ -4719,26 +4720,17 @@ export const useProfileStore = reuseHotStore(
           if (addr && addr?.full) {
             useHeaderStoreNew.getState().showLoad(true);
 
-            let this_addr = {
-              dop_name: '',
-              street: '',
-              home: '',
-            };
-
-            addr?.full?.address?.component.map((item) => {
-              if (item.kind[0] === 'STREET' || item.kind[0] === 'LOCALITY') {
-                this_addr.street = item.name;
-              }
-              if (item.kind[0] === 'HOUSE') {
-                this_addr.home = item.name;
-              }
-              if (item.kind[0] === 'DISTRICT') {
-                this_addr.dop_name = item.name;
-              }
-            });
+            const cityName = [
+              ...(get().cityList ?? []),
+              ...(useCitiesStore.getState().thisCityList ?? []),
+            ].find(({ id }) => Number(id) === Number(get().active_city))?.name;
+            const this_addr = buildStreetAddress(
+              addr.full.address?.component,
+              cityName
+            );
 
             get().checkStreet(
-              this_addr.dop_name + ' ' + this_addr.street,
+              this_addr.street,
               this_addr.home,
               pd,
               get().active_city
@@ -5212,7 +5204,16 @@ export const useProfileStore = reuseHotStore(
         },
 
         checkStreet: async (street, home, pd, city_id) => {
-          if (home?.length == 0 || home == '') {
+          if (get().is_fetch === true) {
+            setTimeout(() => {
+              get().checkStreet(street, home, pd, city_id);
+            }, 500);
+            return;
+          }
+
+          set({ chooseAddrStreet: {}, street_id: 0 });
+
+          if (!String(home ?? '').trim()) {
             useHeaderStoreNew
               .getState()
               .setActiveModalAlert(
@@ -5224,45 +5225,32 @@ export const useProfileStore = reuseHotStore(
             return;
           }
 
-          if (get().is_fetch === true) {
-            setTimeout(() => {
-              get().checkStreet(street, home, pd, city_id);
-            }, 500);
+          set({ is_fetch: true });
 
-            return;
-          } else {
-            set({
-              is_fetch: true,
-              //chooseAddrStreet: {}
+          try {
+            const json = await api('profile', {
+              type: 'check_street',
+              city_id,
+              street: String(street ?? '').trim(),
+              pd,
+              home,
             });
-          }
 
-          let data = {
-            type: 'check_street',
-            city_id: city_id,
-            street: street,
-            pd: pd,
-            home: home,
-          };
+            if (json?.st === false) {
+              showCheckoutApiError(
+                json,
+                'Сейчас не удаётся проверить адрес. Пожалуйста, попробуйте чуть позже.'
+              );
+              return;
+            }
 
-          let zoomSize;
+            if (json?.addrs?.length === 1) {
+              const address = json.addrs[0];
 
-          if (window.innerWidth < 601) {
-            zoomSize = 10.6;
-          } else {
-            zoomSize = 11.5;
-          }
-
-          let json = await api('profile', data);
-
-          useHeaderStoreNew.getState().showLoad(false);
-
-          if (json?.addrs?.length == 1) {
-            json.addrs = json?.addrs[0];
-
-            if (pd?.length > 0) {
-              if (json?.addrs?.addressLine?.includes('подъезд')) {
-              } else {
+              if (
+                pd?.length > 0 &&
+                !address?.addressLine?.includes('подъезд')
+              ) {
                 useHeaderStoreNew
                   .getState()
                   .setActiveModalAlert(
@@ -5271,44 +5259,37 @@ export const useProfileStore = reuseHotStore(
                     false
                   );
               }
-            }
 
-            set({
-              chooseAddrStreet: json?.addrs,
-              center_map: {
-                center: [json?.addrs?.xy[0], json?.addrs?.xy[1]],
-                zoom: zoomSize,
-                controls: [],
-              },
-              openModalGetAddress: false,
-              choose_street: '',
-              street_id: Number(json?.addrs?.id),
-            });
-          } else {
-            if (json?.addrs?.length === 0) {
-              useHeaderStoreNew
-                .getState()
-                .setActiveModalAlert(
-                  true,
-                  'Адрес не найден, или указан не точно',
-                  false
-                );
-            }
-
-            if (json?.addrs?.length > 1) {
+              set({
+                chooseAddrStreet: address,
+                center_map: {
+                  center: [address?.xy[0], address?.xy[1]],
+                  zoom: window.innerWidth < 601 ? 10.6 : 11.5,
+                  controls: [],
+                },
+                openModalGetAddress: false,
+                choose_street: '',
+                street_id: Number(address?.id),
+              });
+            } else if (json?.addrs?.length > 1) {
               useHeaderStoreNew
                 .getState()
                 .setActiveModalSelectAddress(true, json.addrs);
+            } else {
+              showCheckoutApiError(
+                json,
+                'Адрес не найден, или указан не точно'
+              );
             }
-
-            set({
-              chooseAddrStreet: {},
-            });
+          } catch {
+            showCheckoutApiError(
+              null,
+              'Сейчас не удаётся проверить адрес. Пожалуйста, попробуйте чуть позже.'
+            );
+          } finally {
+            set({ is_fetch: false });
+            useHeaderStoreNew.getState().showLoad(false);
           }
-
-          set({
-            is_fetch: false,
-          });
         },
 
         setClearAddr: () => {
