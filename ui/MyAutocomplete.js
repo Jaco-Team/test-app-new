@@ -7,30 +7,56 @@ import Autocomplete from '@mui/material/Autocomplete';
 //import Autocomplete, { createFilterOptions } from '@mui/material/Autocomplete';
 //const filter = createFilterOptions();
 
-export default function MyAutocomplete({data, placeholder, onChange, val, func , variant, inputAdornment, matches, className, name}) {
-  const [value, setValue] = useState( val );
+export default function MyAutocomplete({
+  data,
+  placeholder,
+  onChange,
+  val,
+  func,
+  variant,
+  inputAdornment,
+  matches,
+  className,
+  name,
+  inputValue,
+  onInputValueChange,
+  onCommit,
+}) {
+  const [value, setValue] = useState(val);
+  const controlledInput = onInputValueChange !== undefined;
 
-  useEffect( () => {
+  useEffect(() => {
     setValue(val);
-  }, [val] )
+  }, [val]);
 
   return (
     <Autocomplete
-
+      inputValue={controlledInput ? inputValue : undefined}
       onInputChange={(event, value, reason) => {
+        if (controlledInput) {
+          if (reason === 'input' || reason === 'clear')
+            onInputValueChange(value);
+          return;
+        }
 
-        if(reason === 'reset') {
+        if (reason === 'reset') {
           func('');
         }
 
-        if(reason === 'input') {
+        if (reason === 'input') {
           func(value);
         }
       }}
 
-      value={value}
+      value={controlledInput ? inputValue || null : value}
 
       onChange={(event, newValue, reason) => {
+        if (controlledInput) {
+          if (newValue && typeof newValue === 'object' && !newValue.inputValue)
+            onChange(newValue);
+          else if (reason !== 'clear') onCommit?.();
+          return;
+        }
         if (typeof newValue === 'string') {
           setValue({
             name: newValue,
@@ -41,16 +67,29 @@ export default function MyAutocomplete({data, placeholder, onChange, val, func ,
           setValue({
             name: newValue.inputValue,
           });
-          onChange(newValue.inputValue)
+          onChange(newValue.inputValue);
         } else {
           setValue(newValue);
-          onChange(newValue)
+          onChange(newValue);
         }
       }}
-      onBlur={ (event, newValue) => {
-        onChange(event.target.value)
-      } }
+      onBlur={(event, newValue) => {
+        if (controlledInput) {
+          if (event.target.tagName === 'INPUT') onCommit?.();
+        } else onChange(event.target.value);
+      }}
 
+      onKeyDown={(event) => {
+        if (
+          controlledInput &&
+          event.key === 'Enter' &&
+          !event.target.getAttribute('aria-activedescendant')
+        ) {
+          event.preventDefault();
+          event.defaultMuiPrevented = true;
+          onCommit?.();
+        }
+      }}
       filterOptions={(x) => x}
       // clearIcon={matches ? false : <ClearIcon />}
 
@@ -87,35 +126,39 @@ export default function MyAutocomplete({data, placeholder, onChange, val, func ,
         // Regular option
         return option.name;
       }}
-      // renderOption={(props, option) => <li className='itemAutocomplited' {...props}>{option.name}</li>}
+      // renderOption={({ key, ...props }, option) => <li className='itemAutocomplited' {...props}>{option.name}</li>}
 
-      renderOption={(props, option) =>
-        <div key={props?.key} className={matches ? 'autocompleteMobile' : 'autocompletePC'}>
+      renderOption={({ key, ...props }, option) => (
+        <div
+          key={key}
+          className={matches ? 'autocompleteMobile' : 'autocompletePC'}
+        >
           <li {...props}>
             <span>{option.name}</span>
-            {option.title && option.title.length > 0 && <span>{option.title}</span>}
+            {option.title && option.title.length > 0 && (
+              <span>{option.title}</span>
+            )}
           </li>
         </div>
-      }
+      )}
 
       freeSolo
       name={name ?? 'customField'}
-      autocomplete={name ?? 'customField'}
+      autoComplete={name ?? 'customField'}
       renderInput={(params) => (
-        <TextField {...params} 
-          placeholder={placeholder} 
-          variant={variant} 
+        <TextField
+          {...params}
+          placeholder={placeholder}
+          variant={variant}
           classes={className}
           name={name ?? 'customField'}
-          autocomplete={name ?? 'customField'}
+          autoComplete={name ?? 'customField'}
           InputProps={{
             ...params.InputProps,
             startAdornment: inputAdornment,
           }}
         />
       )}
-
-      
 
       // PopperComponent={customPopper}
       // componentsProps={stylePaper}

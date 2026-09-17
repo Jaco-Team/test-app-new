@@ -10,7 +10,7 @@ import Button from '@mui/material/Button';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import MyTextInput from '@/ui/MyTextInput';
-import { getAddressStreet, getAddressLabel } from '@/utils/streetAddress';
+import useAddressInput from '@/ui/useAddressInput';
 import { roboto } from '@/ui/Font.js';
 import {
   EditPencilMobile,
@@ -43,10 +43,8 @@ export default function AddressModalMobile({ city }) {
 
   const [
     chooseAddrStreet,
-    choose_street,
     center_map,
     zones,
-    checkStreet,
     saveNewAddr,
     infoAboutAddr,
     active_city,
@@ -54,10 +52,8 @@ export default function AddressModalMobile({ city }) {
     delAddr,
   ] = useProfileStore((state) => [
     state.chooseAddrStreet,
-    state.choose_street,
     state.center_map,
     state.zones,
-    state.checkStreet,
     state.saveNewAddr,
     state.infoAboutAddr,
     state.active_city,
@@ -68,7 +64,10 @@ export default function AddressModalMobile({ city }) {
   // const [ street, setStreet ] = useState('');
   // const [ street_, setStreet_ ] = useState('');
   // const [ home, setHome ] = useState( '' );
-  const [pd, setPd] = useState('');
+  const { addressInput, pd, changeEntrance, commit, cancel } = useAddressInput(
+    openModalAddress,
+    active_city
+  );
   const [domophome, setDomophome] = useState(true);
   const [et, setEt] = useState('');
   const [kv, setKv] = useState('');
@@ -77,17 +76,10 @@ export default function AddressModalMobile({ city }) {
   const [nameAddr, setNameAddr] = useState('');
   const [cityID, setCityID] = useState(active_city);
 
-  /*useEffect(() => {
-    if (chooseAddrStreet?.street && chooseAddrStreet?.street?.length > 0 && chooseAddrStreet?.home?.length > 0) {
-      checkStreet(getAddressStreet(chooseAddrStreet), chooseAddrStreet?.home, pd, cityID);
-    }
-  }, [pd]);*/
-
   function clearAddress() {
     // setHome('');
     // setStreet('');
     // setStreet_('')
-    setPd('');
     setEt('');
     setKv('');
     setComment('');
@@ -100,7 +92,6 @@ export default function AddressModalMobile({ city }) {
       // setStreet_(infoAboutAddr.street);
       // setStreet({id: infoAboutAddr?.id, name: infoAboutAddr?.street });
       // setHome(infoAboutAddr.home);
-      setPd(infoAboutAddr.pd);
       setDomophome(parseInt(infoAboutAddr.domophome) == 1 ? true : false);
       setEt(infoAboutAddr.et);
       setKv(infoAboutAddr.kv);
@@ -112,7 +103,6 @@ export default function AddressModalMobile({ city }) {
       // setHome('');
       // setStreet('');
       // setStreet_('')
-      setPd('');
       setEt('');
       setKv('');
       setComment('');
@@ -123,13 +113,13 @@ export default function AddressModalMobile({ city }) {
 
   // без этого при смене города, не меняется карта города
   useEffect(() => {
-    if (openModalAddress === true) {
-      setActiveAddressModal(true, 0, city);
-    }
-
+    cancel();
     clearAddress();
     setClearAddr();
     clearAddr();
+    if (openModalAddress === true) {
+      setActiveAddressModal(true, 0, city);
+    }
   }, [city]);
 
   useEffect(() => {
@@ -141,7 +131,6 @@ export default function AddressModalMobile({ city }) {
       // setStreet('');
       // setStreet_('')
       // setHome('');
-      setPd('');
       setEt('');
       setKv('');
       setComment('');
@@ -202,30 +191,14 @@ export default function AddressModalMobile({ city }) {
     }
   };
 
-  const changePD = (event) => {
-    const pd = event?.target?.value ?? event;
-
-    setPd(pd);
-
-    if (
-      chooseAddrStreet?.street &&
-      chooseAddrStreet?.street?.length > 0 &&
-      chooseAddrStreet?.home?.length > 0
-    ) {
-      checkStreet(
-        getAddressStreet(chooseAddrStreet),
-        chooseAddrStreet?.home,
-        pd,
-        cityID
-      );
-    }
-  };
-
   return (
     <SwipeableDrawer
       anchor={'bottom'}
       open={openModalAddress}
-      onClose={() => setActiveAddressModal(false, 0, '')}
+      onClose={() => {
+        cancel();
+        setActiveAddressModal(false, 0, '');
+      }}
       onOpen={() => {}}
       id="AddressModalmodile"
       className={roboto.variable}
@@ -303,9 +276,7 @@ export default function AddressModalMobile({ city }) {
               setActiveGetAddressModal(true);
             }}
           >
-            <span>
-              {getAddressLabel(chooseAddrStreet) || choose_street || ''}
-            </span>
+            <span>{addressInput || 'Улица и номер дома'}</span>
             <VectorRightMobile />
           </div>
 
@@ -320,7 +291,7 @@ export default function AddressModalMobile({ city }) {
             <MyTextInput
               value={pd}
               name="pd"
-              placeholder="Подьезд"
+              placeholder="Подъезд"
               type="number"
               func={ e => setPd(e.target.value) }
             />
@@ -330,9 +301,10 @@ export default function AddressModalMobile({ city }) {
             <MyTextInput
               value={pd}
               name="pd"
-              placeholder="Подьезд"
+              placeholder="Подъезд"
               type="number"
-              func={(e) => changePD(e)}
+              func={changeEntrance}
+              onBlur={commit}
             />
             <MyTextInput
               value={et}

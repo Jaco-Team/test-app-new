@@ -1,6 +1,4 @@
-import { useEffect } from 'react';
-
-import { useProfileStore, useHeaderStoreNew } from '@/components/store.js';
+import { useProfileStore } from '@/components/store.js';
 
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
@@ -12,76 +10,66 @@ import { roboto } from '@/ui/Font.js';
 import { IconClose } from '@/ui/Icons.js';
 import { BREAKPOINTS } from '@/utils/breakpoints';
 
-import MyAutocomplete_test from '@/ui/MyAutocomplete_test';
-
-const debounce = (func, delay) => {
-  let timeoutId;
-
-  return (...args) => {
-    clearTimeout(timeoutId);
-
-    timeoutId = setTimeout(() => {
-      func.apply(this, args);
-    }, delay);
-  };
-};
+import MyAutocomplete from '@/ui/MyAutocomplete';
+import useAddressInput from '@/ui/useAddressInput';
 
 export default function GetAddress() {
+  const isMobileAutocomplete = useMediaQuery(
+    `screen and (max-width: ${BREAKPOINTS.mobileMax}px)`
+  );
 
-  const isMobileAutocomplete = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
+  const [openModalGetAddress, setActiveGetAddressModal, street_list] =
+    useProfileStore((state) => [
+      state.openModalGetAddress,
+      state.setActiveGetAddressModal,
+      state.street_list,
+    ]);
 
-  const [openModalGetAddress, setActiveGetAddressModal, getAddrList, street_list, chooseStreet, choose_street] = useProfileStore(state => [state.openModalGetAddress, state.setActiveGetAddressModal, state.getAddrList, state.street_list, state.chooseStreet, state.choose_street]);
-
-  const fetchSearchResults = async (term) => {
-    try {
-      getAddrList(term);
-      
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      //setLoading(false);
-    }
-  };
-
-  const debouncedSearch = debounce(fetchSearchResults, 700);
-
-  useEffect(() => {
-    if(!openModalGetAddress){
-      getAddrList('');
-    }
-  }, [openModalGetAddress]);
+  const [activeCity] = useProfileStore((state) => [state.active_city]);
+  const { addressInput, changeInput, select, commit, cancel } = useAddressInput(
+    openModalGetAddress,
+    activeCity
+  );
 
   return (
     <Dialog
-    onClose={() => setActiveGetAddressModal(false)}
-    className={'modalGetAddrPC ' + roboto.variable}
-    open={openModalGetAddress}
-    slots={Backdrop}
-    slotProps={{ timeout: 500 }}
-  >
-    <DialogContent>
-      <div className="container">
+      onClose={() => {
+        cancel();
+        setActiveGetAddressModal(false);
+      }}
+      className={'modalGetAddrPC ' + roboto.variable}
+      open={openModalGetAddress}
+      slots={Backdrop}
+      slotProps={{ timeout: 500 }}
+    >
+      <DialogContent>
+        <div className="container">
+          <IconButton
+            className="closeButton"
+            onClick={() => {
+              cancel();
+              setActiveGetAddressModal(false);
+            }}
+          >
+            <IconClose />
+          </IconButton>
 
-        <IconButton className="closeButton" onClick={() => setActiveGetAddressModal(false)}>
-          <IconClose />
-        </IconButton>
+          <span>Адрес доставки</span>
 
-        <span>Адрес доставки</span>
-           
-        <div className='street'>
-          <MyAutocomplete_test 
-            placeholder={'Улица и номер дома'} 
-            data={street_list} 
-            func={event => debouncedSearch(event)} 
-            variant={'standard'} 
-            setStreet={chooseStreet}
-            matches={isMobileAutocomplete}
-            value={choose_street}
-          />
+          <div className="street">
+            <MyAutocomplete
+              placeholder={'Улица и номер дома'}
+              data={street_list}
+              onInputValueChange={changeInput}
+              onCommit={commit}
+              variant={'standard'}
+              onChange={select}
+              matches={isMobileAutocomplete}
+              inputValue={addressInput || ''}
+            />
+          </div>
         </div>
-
-      </div>
-    </DialogContent>
-  </Dialog>
+      </DialogContent>
+    </Dialog>
   );
 }

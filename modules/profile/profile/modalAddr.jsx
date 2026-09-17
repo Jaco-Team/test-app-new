@@ -18,8 +18,8 @@ import {
 } from '@/ui/Icons.js';
 import { BREAKPOINTS } from '@/utils/breakpoints';
 import MyTextInput from '@/ui/MyTextInput';
-import { getAddressStreet, getAddressLabel } from '@/utils/streetAddress';
 import MyAutocomplete from '@/ui/MyAutocomplete';
+import useAddressInput from '@/ui/useAddressInput';
 import MySelect from '@/ui/MySelect';
 
 import {
@@ -28,63 +28,39 @@ import {
   useCitiesStore,
 } from '@/components/store.js';
 
-const debounce = (func, delay) => {
-  let timeoutId;
-
-  return (...args) => {
-    clearTimeout(timeoutId);
-
-    timeoutId = setTimeout(() => {
-      func.apply(this, args);
-    }, delay);
-  };
-};
-
 export default function ModalAddr() {
   const ref2 = useRef();
 
   const [
     clearAddr,
     chooseAddrStreet,
-    choose_street,
     center_map,
     zones,
     isOpenModalAddr,
     closeModalAddr,
-    allStreets,
-    checkStreet,
     saveNewAddr,
     infoAboutAddr,
     cityList,
-    updateStreetList,
     active_city,
     updateAddr,
     setClearAddr,
     openModalAddr,
-    getAddrList,
     street_list,
-    chooseStreet,
   ] = useProfileStore((state) => [
     state.clearAddr,
     state.chooseAddrStreet,
-    state.choose_street,
     state.center_map,
     state.zones,
     state.isOpenModalAddr,
     state.closeModalAddr,
-    state.allStreets,
-    state.checkStreet,
     state.saveNewAddr,
     state.infoAboutAddr,
     state.cityList,
-    state.updateStreetList,
     state.active_city,
     state.updateAddr,
     state.setClearAddr,
     state.openModalAddr,
-    state.getAddrList,
     state.street_list,
-    state.chooseStreet,
   ]);
 
   const [thisCityList] = useCitiesStore((state) => [state.thisCityList]);
@@ -96,7 +72,15 @@ export default function ModalAddr() {
   // const [ street, setStreet ] = useState('');
   // const [ street_, setStreet_ ] = useState('');
   // const [ home, setHome ] = useState( '' );
-  const [pd, setPd] = useState('');
+  const {
+    addressInput,
+    pd,
+    changeInput,
+    changeEntrance,
+    select,
+    commit,
+    cancel,
+  } = useAddressInput(isOpenModalAddr, active_city);
   const [domophome, setDomophome] = useState(true);
   const [et, setEt] = useState('');
   const [kv, setKv] = useState('');
@@ -106,26 +90,10 @@ export default function ModalAddr() {
   const [cityID, setCityID] = useState(active_city);
 
   useEffect(() => {
-    if (
-      chooseAddrStreet?.street &&
-      chooseAddrStreet?.street?.length > 0 &&
-      chooseAddrStreet?.home?.length > 0
-    ) {
-      checkStreet(
-        getAddressStreet(chooseAddrStreet),
-        chooseAddrStreet?.home,
-        pd,
-        cityID
-      );
-    }
-  }, [pd]);
-
-  useEffect(() => {
     if (infoAboutAddr) {
       // setStreet_(infoAboutAddr.street);
       // setStreet({id: infoAboutAddr?.id, name: infoAboutAddr?.street });
       // setHome(infoAboutAddr.home);
-      setPd(infoAboutAddr.pd);
       setDomophome(parseInt(infoAboutAddr.domophome) == 1 ? true : false);
       setEt(infoAboutAddr.et);
       setKv(infoAboutAddr.kv);
@@ -137,7 +105,6 @@ export default function ModalAddr() {
       // setHome('');
       // setStreet('');
       // setStreet_('')
-      setPd('');
       setDomophome(true);
       setEt('');
       setKv('');
@@ -146,22 +113,18 @@ export default function ModalAddr() {
     }
   }, [infoAboutAddr]);
 
-  // useEffect( () => {
-  //   updateStreetList(cityID);
-  // }, [cityID] )
-
   function changeCity(city) {
+    cancel();
     const city_id = thisCityList.find(
       ({ id }) => parseInt(id) === parseInt(city)
     );
 
+    setClearAddr();
+    clearAddr();
+    setCityID(city);
     if (city_id) {
       openModalAddr(0, city_id?.link);
     }
-
-    setClearAddr();
-    setCityID(city);
-    clearAddr();
   }
 
   useEffect(() => {
@@ -173,7 +136,6 @@ export default function ModalAddr() {
       // setStreet('');
       // setStreet_('')
       // setHome('');
-      setPd('');
       setDomophome(true);
       setEt('');
       setKv('');
@@ -225,21 +187,12 @@ export default function ModalAddr() {
     }
   };
 
-  const fetchSearchResults = async (term) => {
-    try {
-      getAddrList(term);
-    } catch (error) {
-      console.error('Error fetching data:', error);
-    } finally {
-      //setLoading(false);
-    }
-  };
-
-  const debouncedSearch = debounce(fetchSearchResults, 350);
-
   return (
     <Dialog
-      onClose={closeModalAddr}
+      onClose={() => {
+        cancel();
+        closeModalAddr();
+      }}
       className={'modalAddrPC ' + roboto.variable}
       open={isOpenModalAddr}
       slots={Backdrop}
@@ -247,7 +200,13 @@ export default function ModalAddr() {
     >
       <DialogContent>
         <div className="container">
-          <IconButton className="closeButton" onClick={closeModalAddr}>
+          <IconButton
+            className="closeButton"
+            onClick={() => {
+              cancel();
+              closeModalAddr();
+            }}
+          >
             <IconClose />
           </IconButton>
 
@@ -310,14 +269,14 @@ export default function ModalAddr() {
                 />
               </div>
               <div className="street">
-                {/* <MyTextInput variant="standard" placeholder={'Улица и номер дома'} value={getAddressLabel(chooseAddrStreet) || choose_street || ''} readOnly/> */}
                 <MyAutocomplete
                   placeholder={'Улица и номер дома'}
                   variant={'standard'}
                   data={street_list}
-                  val={getAddressLabel(chooseAddrStreet) || choose_street || ''}
-                  onChange={(event) => chooseStreet(event, pd)}
-                  func={(event) => debouncedSearch(event)}
+                  inputValue={addressInput || ''}
+                  onInputValueChange={changeInput}
+                  onChange={select}
+                  onCommit={commit}
                   matches={isMobileAutocomplete}
                 />
               </div>
@@ -328,7 +287,8 @@ export default function ModalAddr() {
                   value={pd}
                   placeholder={'Подъезд'}
                   type={'number'}
-                  func={(e) => setPd(e.target.value)}
+                  func={changeEntrance}
+                  onBlur={commit}
                 />
                 <MyTextInput
                   variant="standard"

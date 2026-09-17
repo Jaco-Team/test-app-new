@@ -29,10 +29,10 @@ vi.mock('@/ui/MySwitch.js', () => ({ SwitchContactsMobile: () => null }));
 vi.mock('@/ui/MySelect', () => ({ default: () => null }));
 vi.mock('@/ui/MyTextInput', () => ({ default: () => null }));
 vi.mock('@/ui/MyAutocomplete', () => ({
-  default: ({ val }) =>
+  default: ({ inputValue }) =>
     React.createElement('input', {
       'aria-label': 'Адрес',
-      value: val,
+      value: inputValue,
       readOnly: true,
     }),
 }));
@@ -63,6 +63,8 @@ beforeEach(() => {
     active_city: 1,
     chooseAddrStreet: {},
     choose_street: '',
+    addressInput: '',
+    addressEntrance: '',
     infoAboutAddr: null,
   };
 });
@@ -77,6 +79,7 @@ describe.each([375, 768, 1280])('рендер форм адреса при ши�
         street: '12-й квартал, бульвар Гая',
         home: '4',
       };
+      fixtures.profile.addressInput = '12-й квартал, бульвар Гая, 4';
       const html = renderToStaticMarkup(React.createElement(Component));
       expect(html).toContain('12-й квартал, бульвар Гая, 4');
       expect(html.match(/12-й квартал/g)).toHaveLength(1);
@@ -88,6 +91,7 @@ describe.each([375, 768, 1280])('рендер форм адреса при ши�
     (Component) => {
       fixtures.width = width;
       fixtures.profile.choose_street = '12-й квартал, бульвар Гая, 4';
+      fixtures.profile.addressInput = '12-й квартал, бульвар Гая, 4';
       const html = renderToStaticMarkup(React.createElement(Component));
       expect(html).toContain('12-й квартал, бульвар Гая, 4');
     }

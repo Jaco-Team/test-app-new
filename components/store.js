@@ -10,7 +10,13 @@ dayjs.extend(isoWeek);
 dayjs.locale('ru');
 
 import { api, apiAddress } from './api.js';
-import { buildStreetAddress, getAddressLabel } from '@/utils/streetAddress';
+import {
+  buildStreetAddress,
+  getAddressLabel,
+  parseAddressInput,
+  addressVerificationKey,
+  sameAddressHouse,
+} from '@/utils/streetAddress';
 
 import useYandexMetrika from './useYandexMetrika';
 import { getClientNetworkContext } from '@/utils/clientMonitoring';
@@ -4671,6 +4677,14 @@ export const useProfileStore = reuseHotStore(
         openModalGetAddress: false,
         street_list: [],
         choose_street: '',
+        addressInput: '',
+        addressEntrance: '',
+        addressRevision: 0,
+        addressSuggestionRevision: 0,
+        addressInitRevision: 0,
+        addressVerifiedKey: null,
+        addressPending: null,
+        addressCandidates: null,
 
         count_promo: 0,
         count_orders: 0,
@@ -4681,67 +4695,131 @@ export const useProfileStore = reuseHotStore(
         securityNotice: null,
         securityNoticeUserId: null,
 
-        // получение адресов в модалке выбора адреса доставки
+        // Изменение видимого текста немедленно отменяет подтверждение старого адреса.
+        setAddressInput: (value) => {
+          const addressInput = String(value ?? '');
+          if (addressInput === get().addressInput) return;
+          set({
+            addressInput,
+            choose_street: addressInput,
+            chooseAddrStreet: {},
+            street_id: 0,
+            street_list: [],
+            addressRevision: get().addressRevision + 1,
+            addressSuggestionRevision: get().addressSuggestionRevision + 1,
+            addressVerifiedKey: null,
+            addressPending: null,
+            addressCandidates: null,
+            is_fetch: false,
+          });
+          useHeaderStoreNew.getState().setActiveModalSelectAddress(false, []);
+          useHeaderStoreNew.getState().showLoad(false);
+        },
+
+        setAddressEntrance: (value) => {
+          const entrance = String(value ?? '');
+          if (entrance === get().addressEntrance) return;
+          set({
+            addressEntrance: entrance,
+            chooseAddrStreet: {},
+            street_id: 0,
+            addressRevision: get().addressRevision + 1,
+            addressVerifiedKey: null,
+            addressPending: null,
+            addressCandidates: null,
+            is_fetch: false,
+          });
+          useHeaderStoreNew.getState().setActiveModalSelectAddress(false, []);
+          useHeaderStoreNew.getState().showLoad(false);
+        },
+
         getAddrList: async (value) => {
-          if (!value || value.length == 0) {
+          const revision = get().addressSuggestionRevision + 1;
+          const cityId = get().active_city;
+          const addressRevision = get().addressRevision;
+          set({ addressSuggestionRevision: revision });
+          const current = () =>
+            get().addressSuggestionRevision === revision &&
+            get().addressRevision === addressRevision &&
+            get().active_city === cityId;
+          if (!String(value ?? '').trim()) {
             set({ street_list: [] });
-          } else {
-            const city_list = useCitiesStore.getState().thisCityList;
-            const city = city_list.find(
-              ({ id }) => parseInt(id) === parseInt(get().active_city)
-            )?.name;
-
-            if (city) {
-              const res = await apiAddress(city, value);
-
-              const street_list = res?.results?.map(
-                (str) =>
-                  (str = {
-                    name: str?.title?.text,
-                    title: str?.subtitle?.text,
-                    full: str,
-                  })
-              );
-
-              set({
-                street_list: street_list ?? [],
-              });
-            }
+            return;
+          }
+          const city = [
+            ...(get().cityList ?? []),
+            ...(useCitiesStore.getState().thisCityList ?? []),
+          ].find(({ id }) => Number(id) === Number(cityId))?.name;
+          if (!city) return;
+          try {
+            const res = await apiAddress(city, value);
+            if (!current()) return;
+            set({
+              street_list: (res?.results ?? []).map((str) => ({
+                name: str?.title?.text,
+                title: str?.subtitle?.text,
+                full: str,
+              })),
+            });
+          } catch {
+            if (current()) set({ street_list: [] });
           }
         },
 
-        //очистить инпут модалку выбора адреса доставки
-        // setStreet: () => {
-        //   set({openModalGetAddress: false, street_list: [], choose_street: ''});
-        // },
-
-        // выбор улицы в модалке выбора адреса доставки
-        chooseStreet: (addr, pd) => {
-          if (addr && addr?.full) {
-            useHeaderStoreNew.getState().showLoad(true);
-
-            const cityName = [
-              ...(get().cityList ?? []),
-              ...(useCitiesStore.getState().thisCityList ?? []),
-            ].find(({ id }) => Number(id) === Number(get().active_city))?.name;
-            const this_addr = buildStreetAddress(
-              addr.full.address?.component,
-              cityName
+        chooseStreet: (addr, pd = get().addressEntrance) => {
+          if (!addr?.full) {
+            get().setAddressInput(
+              typeof addr === 'string' ? addr : (addr?.name ?? '')
             );
-
-            get().checkStreet(
-              this_addr.street,
-              this_addr.home,
-              pd,
-              get().active_city
-            );
+            return get().verifyAddressInput();
           }
+          const cityName = [
+            ...(get().cityList ?? []),
+            ...(useCitiesStore.getState().thisCityList ?? []),
+          ].find(({ id }) => Number(id) === Number(get().active_city))?.name;
+          const address = buildStreetAddress(
+            addr.full.address?.component,
+            cityName
+          );
+          get().setAddressInput(getAddressLabel(address));
+          get().setAddressEntrance(pd);
+          set({ street_list: [] });
+          return get().checkStreet(
+            address.street,
+            address.home,
+            get().addressEntrance,
+            get().active_city
+          );
+        },
 
-          if (addr && addr?.name) {
-            set({ street_list: [], choose_street: addr.name });
-          } else {
-            set({ street_list: [], choose_street: addr });
+        verifyAddressInput: () => {
+          const state = get();
+          const key = addressVerificationKey(
+            state.addressInput,
+            state.addressEntrance,
+            state.active_city
+          );
+          if (state.addressVerifiedKey === key && state.street_id > 0)
+            return Promise.resolve(true);
+          if (state.addressPending?.key === key)
+            return state.addressPending.promise;
+          const address = parseAddressInput(state.addressInput);
+          if (!address || !Number(state.active_city)) {
+            useHeaderStoreNew
+              .getState()
+              .setActiveModalAlert(
+                true,
+                'Укажите улицу и номер дома, например: улица Маршала Жукова, 58',
+                false
+              );
+            return Promise.resolve(false);
           }
+          return get().checkStreet(
+            address.street,
+            address.home,
+            state.addressEntrance,
+            state.active_city
+          );
         },
 
         // открытие/закрытие модалки для выбора Адреса доставки
@@ -4788,6 +4866,7 @@ export const useProfileStore = reuseHotStore(
 
             get().getMapMobile(id, city);
           } else {
+            get().clearAddr();
             set({
               openModalAddress: active,
               streetId: 0,
@@ -4800,6 +4879,10 @@ export const useProfileStore = reuseHotStore(
 
         // карта для модалки выбора адреса доставки в мобильной версии
         getMapMobile: async (id, city = '') => {
+          get().clearAddr();
+          const initRevision = get().addressInitRevision + 1;
+          set({ addressInitRevision: initRevision, active_city: 0 });
+          const initialDraftRevision = get().addressRevision;
           let data = {
             type: 'get_data_for_streets',
             city_id: city ? city : get().city,
@@ -4807,6 +4890,8 @@ export const useProfileStore = reuseHotStore(
           };
 
           let json = await api('profile', data);
+          if (get().addressInitRevision !== initRevision) return;
+          const untouched = get().addressRevision === initialDraftRevision;
           const mapCenter = getStreetMapCenterFromJson(json);
 
           if (!mapCenter && shouldReportMissingStreetMapCenter(id)) {
@@ -4827,8 +4912,16 @@ export const useProfileStore = reuseHotStore(
             infoAboutAddr: json?.this_info,
             cityList: json?.cities,
             active_city: json?.city,
-            chooseAddrStreet: json?.this_info ?? {},
-            choose_street: '',
+            chooseAddrStreet: untouched ? (json?.this_info ?? {}) : {},
+            choose_street: untouched ? '' : get().choose_street,
+            addressInput: untouched
+              ? getAddressLabel(json?.this_info)
+              : get().addressInput,
+            addressEntrance: untouched
+              ? String(json?.this_info?.pd ?? '')
+              : get().addressEntrance,
+            street_id: untouched ? Number(json?.this_info?.street_id ?? 0) : 0,
+            addressVerifiedKey: null,
             center_map: {
               center: mapCenter,
               zoom: 11.5,
@@ -5072,12 +5165,17 @@ export const useProfileStore = reuseHotStore(
           });
         },
         closeModalAddr: () => {
+          get().clearAddr();
           set({
             isOpenModalAddr: false,
             openModalAddress: false,
           });
         },
         openModalAddr: async (id, city = '') => {
+          get().clearAddr();
+          const initRevision = get().addressInitRevision + 1;
+          set({ addressInitRevision: initRevision, active_city: 0 });
+          const initialDraftRevision = get().addressRevision;
           let data = {
             type: 'get_data_for_streets',
             city_id: city ? city : get().city,
@@ -5085,6 +5183,8 @@ export const useProfileStore = reuseHotStore(
           };
 
           let json = await api('profile', data);
+          if (get().addressInitRevision !== initRevision) return;
+          const untouched = get().addressRevision === initialDraftRevision;
 
           const mapCenter = getStreetMapCenterFromJson(json);
 
@@ -5109,15 +5209,22 @@ export const useProfileStore = reuseHotStore(
             infoAboutAddr: json?.this_info,
             cityList: json?.cities,
             active_city: json?.city,
-            chooseAddrStreet: json?.this_info ?? {},
-            choose_street: '',
+            chooseAddrStreet: untouched ? (json?.this_info ?? {}) : {},
+            choose_street: untouched ? '' : get().choose_street,
+            addressInput: untouched
+              ? getAddressLabel(json?.this_info)
+              : get().addressInput,
+            addressEntrance: untouched
+              ? String(json?.this_info?.pd ?? '')
+              : get().addressEntrance,
+            street_id: untouched ? Number(json?.this_info?.street_id ?? 0) : 0,
+            addressVerifiedKey: null,
             center_map: {
               center: mapCenter,
               zoom: 11.5,
               controls: [],
             },
             zones: json?.zones,
-            street_id: Number(json?.this_info?.street_id),
           });
         },
         orderDel: async (this_module, userToken, text) => {
@@ -5176,126 +5283,179 @@ export const useProfileStore = reuseHotStore(
           }
         },
 
-        // установить выбранный адрес, если похожих адресов больше одного
-        setAddress: (chooseAddrStreet) => {
-          let zoomSize;
-
-          if (window.innerWidth < 601) {
-            zoomSize = 10.6;
-          } else {
-            zoomSize = 11.5;
-          }
-
+        // Принимать можно только варианты последней проверки текущего черновика.
+        setAddress: (address) => {
+          const candidates = get().addressCandidates;
+          if (
+            !candidates ||
+            candidates.revision !== get().addressRevision ||
+            !candidates.addrs.includes(address)
+          )
+            return false;
+          const addressInput = getAddressLabel(address);
           set({
-            chooseAddrStreet,
+            chooseAddrStreet: address,
+            addressInput,
+            choose_street: '',
             center_map: {
-              center: [chooseAddrStreet?.xy[0], chooseAddrStreet?.xy[1]],
-              zoom: zoomSize,
+              center: address?.xy,
+              zoom: window.innerWidth < 601 ? 10.6 : 11.5,
               controls: [],
             },
+            street_id: Number(address?.id),
             openModalGetAddress: false,
-            street_id: Number(chooseAddrStreet?.id),
+            addressVerifiedKey: addressVerificationKey(
+              addressInput,
+              get().addressEntrance,
+              get().active_city
+            ),
+            addressCandidates: null,
           });
+          return true;
         },
 
-        checkStreet: async (street, home, pd, city_id) => {
-          if (get().is_fetch === true) {
-            setTimeout(() => {
-              get().checkStreet(street, home, pd, city_id);
-            }, 500);
-            return;
-          }
-
+        checkStreet: (street, home, pd, city_id) => {
+          const label = getAddressLabel({ street, home });
+          get().setAddressInput(label);
+          get().setAddressEntrance(pd);
+          const key = addressVerificationKey(label, pd, city_id);
+          if (get().addressPending?.key === key)
+            return get().addressPending.promise;
+          const revision = get().addressRevision + 1;
           set({
+            addressRevision: revision,
             chooseAddrStreet: {},
             street_id: 0,
-            choose_street: getAddressLabel({ street, home }),
+            addressVerifiedKey: null,
+            addressCandidates: null,
+            addressSuggestionRevision: get().addressSuggestionRevision + 1,
+            street_list: [],
+            choose_street: label,
+            is_fetch: false,
           });
-
-          if (!String(home ?? '').trim()) {
+          if (!String(home ?? '').trim() || !String(street ?? '').trim()) {
             useHeaderStoreNew
               .getState()
               .setActiveModalAlert(
                 true,
-                'Надо ввести улицу и номер дома, например: 40 лет победы 55',
+                'Укажите улицу и номер дома, например: улица Маршала Жукова, 58',
                 false
               );
             useHeaderStoreNew.getState().showLoad(false);
-            return;
+            return Promise.resolve(false);
           }
-
+          const city = get().active_city;
+          const current = () =>
+            get().addressRevision === revision && get().active_city === city;
           set({ is_fetch: true });
-
-          try {
-            const json = await api('profile', {
-              type: 'check_street',
-              city_id,
-              street: String(street ?? '').trim(),
-              pd,
-              home,
-            });
-
-            if (json?.st === false) {
-              showCheckoutApiError(
-                json,
-                'Сейчас не удаётся проверить адрес. Пожалуйста, попробуйте чуть позже.'
-              );
-              return;
-            }
-
-            if (json?.addrs?.length === 1) {
-              const address = json.addrs[0];
-
-              if (
-                pd?.length > 0 &&
-                !address?.addressLine?.includes('подъезд')
-              ) {
+          useHeaderStoreNew.getState().showLoad(true);
+          const promise = (async () => {
+            try {
+              const json = await api('profile', {
+                type: 'check_street',
+                city_id,
+                street: String(street).trim(),
+                pd: String(pd ?? '').trim(),
+                home,
+              });
+              if (!current()) return false;
+              if (json?.st === false) {
+                showCheckoutApiError(
+                  json,
+                  'Сейчас не удаётся проверить адрес. Пожалуйста, попробуйте чуть позже.'
+                );
+                return false;
+              }
+              const addrs = json?.addrs ?? [];
+              if (addrs.length === 1) {
+                const address = addrs[0];
+                if (address.home && !sameAddressHouse(home, address.home)) {
+                  showCheckoutApiError(
+                    null,
+                    'Найден другой номер дома. Проверьте адрес и уточните номер дома.'
+                  );
+                  return false;
+                }
+                const addressInput = getAddressLabel(address) || label;
+                if (
+                  String(pd ?? '').trim() &&
+                  !address?.addressLine?.includes('подъезд')
+                ) {
+                  useHeaderStoreNew
+                    .getState()
+                    .setActiveModalAlert(
+                      true,
+                      'Дом найден. Точное расположение подъезда на карте не определено — указанный номер сохранится.',
+                      false
+                    );
+                }
+                set({
+                  chooseAddrStreet: address,
+                  addressInput,
+                  choose_street: '',
+                  center_map: {
+                    center: address?.xy,
+                    zoom: window.innerWidth < 601 ? 10.6 : 11.5,
+                    controls: [],
+                  },
+                  openModalGetAddress: false,
+                  street_id: Number(address?.id),
+                  addressVerifiedKey: addressVerificationKey(
+                    addressInput,
+                    pd,
+                    city_id
+                  ),
+                });
+                return Number(address?.id) > 0;
+              }
+              if (addrs.length > 1) {
+                set({ addressCandidates: { revision, addrs } });
                 useHeaderStoreNew
                   .getState()
-                  .setActiveModalAlert(
-                    true,
-                    'Адрес найден, но мы не смогли найти подъезд',
-                    false
-                  );
+                  .setActiveModalSelectAddress(true, addrs);
+              } else {
+                showCheckoutApiError(
+                  json,
+                  'Адрес не найден, или указан не точно'
+                );
               }
-
-              set({
-                chooseAddrStreet: address,
-                center_map: {
-                  center: [address?.xy[0], address?.xy[1]],
-                  zoom: window.innerWidth < 601 ? 10.6 : 11.5,
-                  controls: [],
-                },
-                openModalGetAddress: false,
-                choose_street: '',
-                street_id: Number(address?.id),
-              });
-            } else if (json?.addrs?.length > 1) {
-              useHeaderStoreNew
-                .getState()
-                .setActiveModalSelectAddress(true, json.addrs);
-            } else {
-              showCheckoutApiError(
-                json,
-                'Адрес не найден, или указан не точно'
-              );
+              return false;
+            } catch {
+              if (current())
+                showCheckoutApiError(
+                  null,
+                  'Сейчас не удаётся проверить адрес. Пожалуйста, попробуйте чуть позже.'
+                );
+              return false;
+            } finally {
+              if (current()) {
+                set({ is_fetch: false, addressPending: null });
+                useHeaderStoreNew.getState().showLoad(false);
+              }
             }
-          } catch {
-            showCheckoutApiError(
-              null,
-              'Сейчас не удаётся проверить адрес. Пожалуйста, попробуйте чуть позже.'
-            );
-          } finally {
-            set({ is_fetch: false });
-            useHeaderStoreNew.getState().showLoad(false);
-          }
+          })();
+          set({ addressPending: { key, promise } });
+          return promise;
         },
 
         setClearAddr: () => {
           set({
             choose_street: '',
+            addressInput: '',
+            addressEntrance: '',
             chooseAddrStreet: {},
+            street_id: 0,
+            street_list: [],
+            addressRevision: get().addressRevision + 1,
+            addressSuggestionRevision: get().addressSuggestionRevision + 1,
+            addressInitRevision: get().addressInitRevision + 1,
+            addressVerifiedKey: null,
+            addressPending: null,
+            addressCandidates: null,
+            is_fetch: false,
           });
+          useHeaderStoreNew.getState().setActiveModalSelectAddress(false, []);
+          useHeaderStoreNew.getState().showLoad(false);
         },
 
         saveNewAddr: async (
@@ -5313,76 +5473,70 @@ export const useProfileStore = reuseHotStore(
             return;
           }
 
-          if (
-            get().is_fetch === true ||
-            Object.keys(get().chooseAddrStreet).length == 0
-          ) {
-            setTimeout(() => {
-              get().saveNewAddr(
-                pd,
-                domophome,
-                et,
-                kv,
-                comment,
-                token,
-                is_main,
-                nameAddr,
-                city_id
-              );
-            }, 455);
+          set({ is_fetch_save_new_addr: true });
+          try {
+            if (Number(city_id) !== Number(get().active_city)) return;
+            get().setAddressEntrance(pd);
+            if (!(await get().verifyAddressInput())) return;
+            const verified = get();
+            const verificationKey = addressVerificationKey(
+              verified.addressInput,
+              verified.addressEntrance,
+              city_id
+            );
+            if (
+              verified.addressVerifiedKey !== verificationKey ||
+              !(verified.street_id > 0)
+            )
+              return;
+            const selectedAddress = verified.chooseAddrStreet;
+            let data = {
+              type: 'save_new_addr',
+              token: token,
+              city_id: city_id,
+              street: JSON.stringify({ id: verified.street_id }), //JSON.stringify( get().chooseAddrStreet ),
+              pd: verified.addressEntrance,
+              domophome: domophome === true ? 1 : 0,
+              et: et,
+              kv: kv,
+              comment: comment,
+              is_main: is_main === true ? 1 : 0,
+              nameAddr: nameAddr,
+            };
 
-            return;
-          }
+            let json = await api('profile', data);
 
-          set({
-            is_fetch_save_new_addr: true,
-          });
+            if (json?.st === true) {
+              if (json?.addr) {
+                useCartStore.getState().setAddrDiv(json?.addr);
+                useCartStore.getState().setSummDiv(json?.addr?.sum_div);
+                useCartStore.getState().setActiveMenuCart(false, null);
+              }
 
-          let data = {
-            type: 'save_new_addr',
-            token: token,
-            city_id: city_id,
-            street: JSON.stringify({ id: get().street_id }), //JSON.stringify( get().chooseAddrStreet ),
-            pd: pd,
-            domophome: domophome === true ? 1 : 0,
-            et: et,
-            kv: kv,
-            comment: comment,
-            is_main: is_main === true ? 1 : 0,
-            nameAddr: nameAddr,
-          };
+              get().closeModalAddr();
+              get().getUserInfo('profile', get().city, token);
 
-          let json = await api('profile', data);
+              set({
+                openModalAddress: false,
+              });
 
-          if (json?.st === true) {
-            if (json?.addr) {
-              useCartStore.getState().setAddrDiv(json?.addr);
-              useCartStore.getState().setSummDiv(json?.addr?.sum_div);
-              useCartStore.getState().setActiveMenuCart(false, null);
+              useCartStore.getState().getMySavedAddr(city_id, {
+                street: selectedAddress.street,
+                home: selectedAddress.home,
+              });
+            } else {
+              useHeaderStoreNew
+                .getState()
+                .setActiveModalAlert(true, json?.text, false);
             }
-
-            get().closeModalAddr();
-            get().getUserInfo('profile', get().city, token);
-
-            set({
-              openModalAddress: false,
-            });
-
-            useCartStore.getState().getMySavedAddr(city_id, {
-              street: get().chooseAddrStreet.street,
-              home: get().chooseAddrStreet.home,
-            });
-          } else {
-            useHeaderStoreNew
-              .getState()
-              .setActiveModalAlert(true, json?.text, false);
+          } catch {
+            showCheckoutApiError(
+              null,
+              'Не удалось сохранить адрес. Пожалуйста, попробуйте ещё раз.'
+            );
+          } finally {
+            set({ is_fetch_save_new_addr: false });
           }
-
-          setTimeout(() => {
-            set({
-              is_fetch_save_new_addr: false,
-            });
-          }, 500);
         },
         updateAddr: async (
           pd,
@@ -5399,78 +5553,65 @@ export const useProfileStore = reuseHotStore(
             return;
           }
 
-          if (
-            get().is_fetch === true ||
-            Object.keys(get().chooseAddrStreet).length == 0
-          ) {
-            setTimeout(() => {
-              get().updateAddr(
-                pd,
-                domophome,
-                et,
-                kv,
-                comment,
-                token,
-                is_main,
-                nameAddr,
-                city_id
-              );
-            }, 455);
+          set({ is_fetch_save_new_addr: true });
+          try {
+            if (Number(city_id) !== Number(get().active_city)) return;
+            get().setAddressEntrance(pd);
+            if (!(await get().verifyAddressInput())) return;
+            const verified = get();
+            const verificationKey = addressVerificationKey(
+              verified.addressInput,
+              verified.addressEntrance,
+              city_id
+            );
+            if (
+              verified.addressVerifiedKey !== verificationKey ||
+              !(verified.street_id > 0)
+            )
+              return;
+            const selectedAddress = verified.chooseAddrStreet;
+            let data = {
+              type: 'update_addr',
+              token: token,
+              city_id: city_id,
+              street: JSON.stringify({ street_id: verified.street_id }),
+              pd: verified.addressEntrance,
+              domophome: domophome === true ? 1 : 0,
+              et: et,
+              kv: kv,
+              id: get().infoAboutAddr.id,
+              comment: comment,
+              is_main: is_main === true ? 1 : 0,
+              nameAddr: nameAddr,
+            };
 
-            return;
+            let json = await api('profile', data);
+
+            if (json?.st === true) {
+              get().closeModalAddr();
+              get().getUserInfo('profile', get().city, token);
+
+              set({
+                openModalAddress: false,
+              });
+
+              useCartStore.getState().getMySavedAddr(city_id, {
+                street: selectedAddress.street,
+                home: selectedAddress.home,
+              });
+            } else {
+              useHeaderStoreNew
+                .getState()
+                .setActiveModalAlert(true, json?.text, false);
+            }
+          } catch {
+            showCheckoutApiError(
+              null,
+              'Не удалось сохранить адрес. Пожалуйста, попробуйте ещё раз.'
+            );
+          } finally {
+            set({ is_fetch_save_new_addr: false });
           }
-
-          if (Object.keys(get().chooseAddrStreet).length == 0) {
-            return;
-          }
-
-          set({
-            is_fetch_save_new_addr: true,
-          });
-
-          //let street = get().chooseAddrStreet;
-          //street.street_id = street.id;
-
-          let data = {
-            type: 'update_addr',
-            token: token,
-            city_id: city_id,
-            street: JSON.stringify({ street_id: get().street_id }),
-            pd: pd,
-            domophome: domophome === true ? 1 : 0,
-            et: et,
-            kv: kv,
-            id: get().infoAboutAddr.id,
-            comment: comment,
-            is_main: is_main === true ? 1 : 0,
-            nameAddr: nameAddr,
-          };
-
-          let json = await api('profile', data);
-
-          if (json?.st === true) {
-            get().closeModalAddr();
-            get().getUserInfo('profile', get().city, token);
-
-            set({
-              openModalAddress: false,
-            });
-
-            useCartStore.getState().getMySavedAddr(city_id, {
-              street: get().chooseAddrStreet.street,
-              home: get().chooseAddrStreet.home,
-            });
-          } else {
-            useHeaderStoreNew
-              .getState()
-              .setActiveModalAlert(true, json?.text, false);
-          }
-
-          setTimeout(() => {
-            set({
-              is_fetch_save_new_addr: false,
-            });
-          }, 500);
         },
         delAddr: async (addr_id, token) => {
           let data = {
@@ -5507,11 +5648,8 @@ export const useProfileStore = reuseHotStore(
           //get().setMapZone(json.zones, json.city_center)
         },
         clearAddr: () => {
-          set({
-            choose_street: '',
-            chooseAddrStreet: {},
-            infoAboutAddr: null,
-          });
+          get().setClearAddr();
+          set({ infoAboutAddr: null });
         },
 
         setMapZone: (zones, city_center) => {

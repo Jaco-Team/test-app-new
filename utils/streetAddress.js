@@ -63,3 +63,54 @@ export function getAddressLabel(address) {
     .filter(Boolean)
     .join(', ');
 }
+
+// Дом выделяем только в конце строки: числа в названии улицы/квартала сохраняются.
+export function parseAddressInput(value) {
+  const text = String(value ?? '')
+    .trim()
+    .replace(/\s+/g, ' ');
+  const match = text.match(
+    /^(.+?)(?:,\s*|\s+)(?:д(?:ом)?\.?\s*)?(\d+[а-яa-z]?(?:[/-]\d+[а-яa-z]?)?(?:\s*(?:к(?:орпус|орп)?\.?|с(?:троение|тр)?\.?)\s*\d+[а-яa-z]?)?)$/iu
+  );
+  if (!match) return null;
+  const street = match[1].replace(/[,\s]+$/, '').trim();
+  if (!street || /^(?:дом|д\.?|квартал|корпус|строение)$/iu.test(street))
+    return null;
+  return { street, home: match[2] };
+}
+
+export function addressVerificationKey(text, entrance, city) {
+  return JSON.stringify([
+    String(text ?? '').trim(),
+    String(entrance ?? '').trim(),
+    String(city ?? ''),
+  ]);
+}
+
+export function sameAddressHouse(first, second) {
+  const normalize = (value) =>
+    String(value ?? '')
+      .toLocaleLowerCase('ru')
+      .replace(/корпус|корп\.?/g, 'к')
+      .replace(/строение|стр\.?/g, 'с')
+      .replace(/[\s.]+/g, '')
+      .replace(
+        /[abcehkmoptxy]/g,
+        (letter) =>
+          ({
+            a: 'а',
+            b: 'в',
+            c: 'с',
+            e: 'е',
+            h: 'н',
+            k: 'к',
+            m: 'м',
+            o: 'о',
+            p: 'р',
+            t: 'т',
+            x: 'х',
+            y: 'у',
+          })[letter]
+      );
+  return normalize(first) === normalize(second);
+}
