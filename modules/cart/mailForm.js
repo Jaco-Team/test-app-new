@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 
 import {
   useCartStore,
@@ -17,6 +17,7 @@ import { IconClose } from '@/ui/Icons';
 import { roboto } from '@/ui/Font.js';
 import MyTextInput from '@/ui/MyTextInput';
 import { BREAKPOINTS } from '@/utils/breakpoints';
+import { isValidEmail, normalizeEmail } from '@/utils/email';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
@@ -24,6 +25,7 @@ export default function MailForm({ cityName }) {
   // console.log('render MailForm');
 
   const [mail, setMail] = useState('');
+  const [mailError, setMailError] = useState('');
 
   const [userInfo, setUser, updateUser] = useProfileStore((state) => [
     state.userInfo,
@@ -40,18 +42,25 @@ export default function MailForm({ cityName }) {
   ]);
 
   const changeMail = (event) => {
-    if (event === '') {
-      setMail(event);
-    } else {
-      const mail = event?.target?.value ?? event;
-      setMail(mail);
-    }
+    const nextMail = event?.target?.value ?? event ?? '';
+    setMail(nextMail);
+    if (mailError && isValidEmail(nextMail)) setMailError('');
   };
 
   const saveData = async () => {
-    userInfo.mail = mail;
+    const normalizedMail = normalizeEmail(mail);
+    if (!normalizedMail) {
+      setMailError('Введите электронную почту');
+      return;
+    }
+    if (!isValidEmail(normalizedMail)) {
+      setMailError('Введите корректный email, например name@example.ru');
+      return;
+    }
 
-    setUser(userInfo);
+    const updatedUser = { ...userInfo, mail: normalizedMail };
+
+    setUser(updatedUser);
 
     await updateUser('profile', cityName, token);
 
@@ -60,8 +69,21 @@ export default function MailForm({ cityName }) {
 
   const handleClose = () => {
     setMail('');
+    setMailError('');
     setMailForm(false);
   };
+
+  useEffect(() => {
+    if (!openMailForm) return;
+
+    const currentMail = normalizeEmail(userInfo?.mail);
+    setMail(currentMail);
+    setMailError(
+      currentMail && !isValidEmail(currentMail)
+        ? 'Сохранённое значение не похоже на email'
+        : ''
+    );
+  }, [openMailForm, userInfo?.mail]);
 
   return (
     <>
@@ -94,8 +116,13 @@ export default function MailForm({ cityName }) {
                 value={mail}
                 type="email"
                 className="mail"
-                autoComplete="off"
+                autoComplete="email"
               />
+              {mailError ? (
+                <span className="mailError" role="alert">
+                  {mailError}
+                </span>
+              ) : null}
             </div>
 
             <Button
@@ -138,8 +165,13 @@ export default function MailForm({ cityName }) {
                 value={mail}
                 type="email"
                 className="mail"
-                autoComplete="off"
+                autoComplete="email"
               />
+              {mailError ? (
+                <span className="mailError" role="alert">
+                  {mailError}
+                </span>
+              ) : null}
             </div>
 
             <button className="mailBTN" onClick={saveData}>

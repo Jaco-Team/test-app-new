@@ -60,6 +60,18 @@ function showCheckoutApiError(response, fallbackText) {
   useHeaderStoreNew.getState().setActiveModalAlert(true, text, false);
 }
 
+function getPaymentWidgetErrorText(error) {
+  const code = String(
+    error?.error?.code || error?.code || error?.status || error?.type || ''
+  ).toLowerCase();
+
+  if (code === 'internal_service_error') {
+    return 'Сервис оплаты временно недоступен. Попробуйте ещё раз через несколько минут.';
+  }
+
+  return 'Не удалось открыть форму оплаты. Попробуйте ещё раз или выберите другой способ оплаты.';
+}
+
 function getStreetMapCenterFromJson(json) {
   const xy = json?.this_info?.xy;
 
@@ -2556,6 +2568,14 @@ export const useCartStore = reuseHotStore(
               });
 
               let checkout;
+              let widgetErrorShown = false;
+              const showWidgetError = (text) => {
+                if (widgetErrorShown) return;
+                widgetErrorShown = true;
+                useHeaderStoreNew
+                  .getState()
+                  .setActiveModalAlert(true, text, false);
+              };
               try {
                 checkout = new YooMoneyCheckoutWidget({
                   confirmation_token:
@@ -2577,6 +2597,7 @@ export const useCartStore = reuseHotStore(
                         .toLowerCase()
                         .slice(0, 64),
                     });
+                    showWidgetError(getPaymentWidgetErrorText(error));
                   },
                 });
                 trackPaymentClientEvent('widget_constructed', {
@@ -2641,6 +2662,9 @@ export const useCartStore = reuseHotStore(
                 });
                 checkout.destroy();
                 endPaymentFlow();
+                showWidgetError(
+                  'Оплата не прошла. Попробуйте ещё раз или выберите другой способ оплаты.'
+                );
                 return 'nothing';
               });
 
@@ -2670,15 +2694,19 @@ export const useCartStore = reuseHotStore(
                         outcome: 'success',
                       })
                     )
-                    .catch(() =>
+                    .catch(() => {
                       trackPaymentClientEvent('widget_render_failed', {
                         ...paymentEventBase,
                         payment_action: 'widget',
                         widget_target: targetId,
                         outcome: 'error',
                         reason: 'widget_callback',
-                      })
-                    );
+                      });
+                      showWidgetError(
+                        'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.'
+                      );
+                      endPaymentFlow();
+                    });
                 } catch {
                   trackPaymentClientEvent('widget_render_failed', {
                     ...paymentEventBase,
@@ -2687,6 +2715,10 @@ export const useCartStore = reuseHotStore(
                     outcome: 'error',
                     reason: 'widget_callback',
                   });
+                  showWidgetError(
+                    'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.'
+                  );
+                  endPaymentFlow();
                 }
                 return true;
               };
@@ -2704,6 +2736,10 @@ export const useCartStore = reuseHotStore(
                     outcome: 'error',
                     reason: 'widget_timeout',
                   });
+                  showWidgetError(
+                    'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.'
+                  );
+                  endPaymentFlow();
                 }
               }, 300);
             }

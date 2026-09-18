@@ -62,6 +62,7 @@
       .mailInput {
         margin-top: $MyScale60;
         margin-bottom: $MyScale60;
+        text-align: center;
 
         .mail {
           margin: 0;
@@ -96,6 +97,13 @@
               }
             }
           }
+        }
+
+        .mailError {
+          display: block;
+          margin-top: $MyScale10;
+          color: #d32f2f;
+          @include font22_400();
         }
       }
 
@@ -191,6 +199,10 @@
               }
             }
           }
+
+          .mailError {
+            margin-top: tablet-vw(10);
+          }
         }
 
         .mailBTN {
@@ -264,6 +276,7 @@
 
       & .mailInput {
         margin-bottom: $MyScale160_mobile;
+        text-align: center;
 
         .mail {
           margin: 0;
@@ -298,6 +311,14 @@
               }
             }
           }
+        }
+
+        .mailError {
+          display: block;
+          width: $MyScale920_mobile;
+          margin-top: $MyScale20_mobile;
+          color: #d32f2f;
+          @include font30_400();
         }
       }
 

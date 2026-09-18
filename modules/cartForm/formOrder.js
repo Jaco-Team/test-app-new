@@ -42,6 +42,7 @@ import ExpandMoreIcon from '@mui/icons-material/ExpandMore';
 import { roboto } from '@/ui/Font.js';
 
 import dayjs from 'dayjs';
+import { isValidEmail } from '@/utils/email';
 import 'dayjs/locale/ru';
 
 import Cookies from 'js-cookie';
@@ -419,7 +420,7 @@ export default function FormOrder({ cityName }) {
   useEffect(() => {
     if (!continueCheckoutAfterEmail) return;
     if (openMailForm) return;
-    if (!userInfo?.mail) {
+    if (!isValidEmail(userInfo?.mail)) {
       setContinueCheckoutAfterEmail(false);
       return;
     }
@@ -654,7 +655,10 @@ export default function FormOrder({ cityName }) {
       return;
     }
 
-    if (typePay.id === 'online' && !userInfo.mail) {
+    if (
+      ['online', 'pay_page', 'sbp'].includes(typePay.id) &&
+      !isValidEmail(userInfo?.mail)
+    ) {
       setContinueCheckoutAfterEmail(true);
       setMailForm(true);
       return;
