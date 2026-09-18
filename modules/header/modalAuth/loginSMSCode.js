@@ -1,5 +1,6 @@
 import { useRef, useEffect } from 'react';
 import { useHeaderStoreNew } from '@/components/store';
+import { trackAuthClientEvent } from '@/components/api';
 
 import { ClearAuthMobile, VectorRightAuthMobile } from '@/ui/Icons';
 
@@ -40,6 +41,13 @@ export default function LoginSMSCode({ isMobileAuth = false }) {
     state.typeAuth,
   ]);
   const matches = isMobileAuth;
+
+  useEffect(() => {
+    trackAuthClientEvent('otp_screen_opened', {
+      screen: 'otp',
+      number: loginLogin,
+    });
+  }, [loginLogin]);
 
   const authMessageByType = {
     sms: 'Введите 4 цифры из смс',

@@ -3,15 +3,32 @@ import dynamic from 'next/dynamic';
 import * as Sentry from '@sentry/nextjs';
 
 import { useHeaderStoreNew } from '@/components/store';
+import {
+  beginAuthFlow,
+  endAuthFlow,
+  trackAuthClientEvent,
+} from '@/components/api';
 import { importWithRetry } from '@/utils/importWithRetry';
 import { getClientNetworkContext } from '@/utils/clientMonitoring';
 
-const Start = dynamic(() => importWithRetry(() => import('./start'), { retries: 1, delayMs: 400 }));
-const Create = dynamic(() => importWithRetry(() => import('./create'), { retries: 1, delayMs: 400 }));
-const LoginSMSCode = dynamic(() => importWithRetry(() => import('./loginSMSCode'), { retries: 1, delayMs: 400 }));
-const ResetPWD = dynamic(() => importWithRetry(() => import('./resetPWD'), { retries: 1, delayMs: 400 }));
-const LoginSMS = dynamic(() => importWithRetry(() => import('./loginSMS'), { retries: 1, delayMs: 400 }));
-const Finish = dynamic(() => importWithRetry(() => import('./finish'), { retries: 1, delayMs: 400 }));
+const Start = dynamic(() =>
+  importWithRetry(() => import('./start'), { retries: 1, delayMs: 400 })
+);
+const Create = dynamic(() =>
+  importWithRetry(() => import('./create'), { retries: 1, delayMs: 400 })
+);
+const LoginSMSCode = dynamic(() =>
+  importWithRetry(() => import('./loginSMSCode'), { retries: 1, delayMs: 400 })
+);
+const ResetPWD = dynamic(() =>
+  importWithRetry(() => import('./resetPWD'), { retries: 1, delayMs: 400 })
+);
+const LoginSMS = dynamic(() =>
+  importWithRetry(() => import('./loginSMS'), { retries: 1, delayMs: 400 })
+);
+const Finish = dynamic(() =>
+  importWithRetry(() => import('./finish'), { retries: 1, delayMs: 400 })
+);
 
 import IconButton from '@mui/material/IconButton';
 import Dialog from '@mui/material/Dialog';
@@ -42,6 +59,11 @@ class AuthModalBoundary extends React.Component {
   }
 
   componentDidCatch(error, errorInfo) {
+    trackAuthClientEvent('modal_error', {
+      screen: this.props.authType === 'loginSMSCode' ? 'otp' : 'start',
+      outcome: 'error',
+    });
+
     Sentry.withScope((scope) => {
       scope.setTag('surface', 'auth-modal');
       scope.setTag('auth_type', this.props.authType || 'unknown');
@@ -75,7 +97,13 @@ function AuthModalFallback({ isMobileAuth, onClose, onRetry }) {
         gap: isMobileAuth ? '4vw' : '16px',
       }}
     >
-      <div style={{ fontSize: isMobileAuth ? '5.1vw' : 24, fontWeight: 700, textAlign: 'center' }}>
+      <div
+        style={{
+          fontSize: isMobileAuth ? '5.1vw' : 24,
+          fontWeight: 700,
+          textAlign: 'center',
+        }}
+      >
         Авторизация временно недоступна
       </div>
       <div
@@ -86,7 +114,8 @@ function AuthModalFallback({ isMobileAuth, onClose, onRetry }) {
           color: 'rgba(0, 0, 0, 0.6)',
         }}
       >
-        Форма входа открылась с ошибкой. Попробуйте открыть ее еще раз или обновить страницу.
+        Форма входа открылась с ошибкой. Попробуйте открыть ее еще раз или
+        обновить страницу.
       </div>
       <div
         style={{
@@ -96,8 +125,12 @@ function AuthModalFallback({ isMobileAuth, onClose, onRetry }) {
           flexWrap: 'wrap',
         }}
       >
-        <Button variant="contained" onClick={onRetry}>Попробовать снова</Button>
-        <Button variant="outlined" onClick={onClose}>Закрыть</Button>
+        <Button variant="contained" onClick={onRetry}>
+          Попробовать снова
+        </Button>
+        <Button variant="outlined" onClick={onClose}>
+          Закрыть
+        </Button>
       </div>
     </div>
   );
@@ -105,26 +138,63 @@ function AuthModalFallback({ isMobileAuth, onClose, onRetry }) {
 
 export default function ModalAuth({ city }) {
   const [form, setForm] = useState(false);
-  const isMobileAuth = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
+  const authModalWasOpen = React.useRef(false);
+  const isMobileAuth = useMediaQuery(
+    `screen and (max-width: ${BREAKPOINTS.mobileMax}px)`
+  );
 
-  const [openAuthModal, closeModalAuth, typeLogin, navigate, isAuth, yandexAuthCheck] = useHeaderStoreNew((state) => [state?.openAuthModal, state?.closeModalAuth, state?.typeLogin, state?.navigate, state?.isAuth, state?.yandexAuthCheck]);
+  const [
+    openAuthModal,
+    closeModalAuth,
+    typeLogin,
+    navigate,
+    isAuth,
+    yandexAuthCheck,
+  ] = useHeaderStoreNew((state) => [
+    state?.openAuthModal,
+    state?.closeModalAuth,
+    state?.typeLogin,
+    state?.navigate,
+    state?.isAuth,
+    state?.yandexAuthCheck,
+  ]);
 
-  useEffect( () => {
+  useEffect(() => {
+    if (openAuthModal && !authModalWasOpen.current) {
+      const flowId = beginAuthFlow();
+      trackAuthClientEvent('auth_screen_opened', {
+        flow_id: flowId,
+        screen: 'start',
+      });
+    } else if (!openAuthModal && authModalWasOpen.current) {
+      trackAuthClientEvent('modal_closed', {
+        screen: typeLogin === 'loginSMSCode' ? 'otp' : 'start',
+      });
+      endAuthFlow();
+    }
+
+    authModalWasOpen.current = openAuthModal;
+  }, [openAuthModal, typeLogin]);
+
+  useEffect(() => {
     let search = window.location.search;
     let checkItem = search.split('?code=');
-                    
-    if( checkItem[1] ){
-        
+
+    if (checkItem[1]) {
       window.history.replaceState(null, null, window?.location.pathname);
 
       yandexAuthCheck(checkItem[1]);
     }
-  }, [] )
+  }, []);
 
   const changeForm = (checked) => {
     setForm(checked);
 
-    if (typeLogin === 'start' || typeLogin === 'resetPWD' || typeLogin === 'loginSMS') {
+    if (
+      typeLogin === 'start' ||
+      typeLogin === 'resetPWD' ||
+      typeLogin === 'loginSMS'
+    ) {
       navigate('create');
     } else {
       navigate('start');
@@ -140,12 +210,22 @@ export default function ModalAuth({ city }) {
     navigate('start');
   };
 
-  if( isAuth == 'auth' && openAuthModal === true ){
-    closeModal()
+  if (isAuth == 'auth' && openAuthModal === true) {
+    closeModal();
   }
 
-  const login = typeLogin === 'loginSMSCode' ? 'Проверочный код' : typeLogin === 'resetPWD' ? 'Новый пароль' : typeLogin === 'createPWD' ? 'Придумайте пароль' : typeLogin === 'finish' ? 'Всё получилось!' : typeLogin === 'loginSMS' 
-  ? 'Вход по СМС' : 'Мой Жако';
+  const login =
+    typeLogin === 'loginSMSCode'
+      ? 'Проверочный код'
+      : typeLogin === 'resetPWD'
+        ? 'Новый пароль'
+        : typeLogin === 'createPWD'
+          ? 'Придумайте пароль'
+          : typeLogin === 'finish'
+            ? 'Всё получилось!'
+            : typeLogin === 'loginSMS'
+              ? 'Вход по СМС'
+              : 'Мой Жако';
 
   if (isMobileAuth) {
     return (
@@ -157,9 +237,15 @@ export default function ModalAuth({ city }) {
         className={'modalAuthMobile ' + roboto.variable}
         disableSwipeToOpen
       >
-        <Fade in={openAuthModal} style={{ overflow: isMobileAuth ? 'auto' : 'hidden' }}>
-          <Box className={isMobileAuth ? 'ContainerModalAuthMobile' : 'ContainerModalAuthPC'}>
-
+        <Fade
+          in={openAuthModal}
+          style={{ overflow: isMobileAuth ? 'auto' : 'hidden' }}
+        >
+          <Box
+            className={
+              isMobileAuth ? 'ContainerModalAuthMobile' : 'ContainerModalAuthPC'
+            }
+          >
             {isMobileAuth ? (
               <div className="Line" />
             ) : (
@@ -170,33 +256,60 @@ export default function ModalAuth({ city }) {
 
             <div className="authLogin">{login}</div>
 
-            {typeLogin === 'start' || typeLogin === 'create' ?
-              <Stack className='stack'>
-                {isMobileAuth ?
-                  <MySwitchMobile onClick={(event) => changeForm(event.target.checked)} checked={form} />
-                  :
-                  <MySwitchPC onClick={(event) => changeForm(event.target.checked)} checked={form} />
-                }
+            {typeLogin === 'start' || typeLogin === 'create' ? (
+              <Stack className="stack">
+                {isMobileAuth ? (
+                  <MySwitchMobile
+                    onClick={(event) => changeForm(event.target.checked)}
+                    checked={form}
+                  />
+                ) : (
+                  <MySwitchPC
+                    onClick={(event) => changeForm(event.target.checked)}
+                    checked={form}
+                  />
+                )}
               </Stack>
-            : null}
+            ) : null}
 
             <AuthModalBoundary
               authType={typeLogin}
               resetKey={`${openAuthModal}-${typeLogin}-${isMobileAuth}`}
-              fallback={<AuthModalFallback isMobileAuth={isMobileAuth} onClose={closeModal} onRetry={retryAuthModal} />}
+              fallback={
+                <AuthModalFallback
+                  isMobileAuth={isMobileAuth}
+                  onClose={closeModal}
+                  onRetry={retryAuthModal}
+                />
+              }
             >
-              {typeLogin === 'start' ? <Start isMobileAuth={isMobileAuth} /> : null}
-              {typeLogin === 'resetPWD' ? <ResetPWD isMobileAuth={isMobileAuth} /> : null}
-              {typeLogin === 'loginSMS' ? <LoginSMS isMobileAuth={isMobileAuth} /> : null}
-              {typeLogin === 'create' ? <Create city={city} closeModal={closeModal} isMobileAuth={isMobileAuth} /> : null}
-              {typeLogin === 'loginSMSCode' ? <LoginSMSCode isMobileAuth={isMobileAuth} /> : null}
-              {typeLogin === 'finish' ? <Finish closeModal={closeModal} isMobileAuth={isMobileAuth} /> : null}
+              {typeLogin === 'start' ? (
+                <Start isMobileAuth={isMobileAuth} />
+              ) : null}
+              {typeLogin === 'resetPWD' ? (
+                <ResetPWD isMobileAuth={isMobileAuth} />
+              ) : null}
+              {typeLogin === 'loginSMS' ? (
+                <LoginSMS isMobileAuth={isMobileAuth} />
+              ) : null}
+              {typeLogin === 'create' ? (
+                <Create
+                  city={city}
+                  closeModal={closeModal}
+                  isMobileAuth={isMobileAuth}
+                />
+              ) : null}
+              {typeLogin === 'loginSMSCode' ? (
+                <LoginSMSCode isMobileAuth={isMobileAuth} />
+              ) : null}
+              {typeLogin === 'finish' ? (
+                <Finish closeModal={closeModal} isMobileAuth={isMobileAuth} />
+              ) : null}
             </AuthModalBoundary>
-
           </Box>
         </Fade>
       </SwipeableDrawer>
-    )
+    );
   }
 
   return (
@@ -207,9 +320,15 @@ export default function ModalAuth({ city }) {
       slots={Backdrop}
       slotProps={{ timeout: 500 }}
     >
-      <Fade in={openAuthModal} style={{ overflow: isMobileAuth ? 'auto' : 'hidden' }}>
-        <Box className={isMobileAuth ? 'ContainerModalAuthMobile' : 'ContainerModalAuthPC'}>
-
+      <Fade
+        in={openAuthModal}
+        style={{ overflow: isMobileAuth ? 'auto' : 'hidden' }}
+      >
+        <Box
+          className={
+            isMobileAuth ? 'ContainerModalAuthMobile' : 'ContainerModalAuthPC'
+          }
+        >
           {isMobileAuth ? (
             <div className="Line" />
           ) : (
@@ -220,29 +339,56 @@ export default function ModalAuth({ city }) {
 
           <div className="authLogin">{login}</div>
 
-          {typeLogin === 'start' || typeLogin === 'create' ?
-              <Stack className='stack'>
-                 {isMobileAuth ?
-                  <MySwitchMobile onClick={(event) => changeForm(event.target.checked)} checked={form} />
-                  :
-                  <MySwitchPC onClick={(event) => changeForm(event.target.checked)} checked={form} />
-                 }
-              </Stack>
-          : null}
+          {typeLogin === 'start' || typeLogin === 'create' ? (
+            <Stack className="stack">
+              {isMobileAuth ? (
+                <MySwitchMobile
+                  onClick={(event) => changeForm(event.target.checked)}
+                  checked={form}
+                />
+              ) : (
+                <MySwitchPC
+                  onClick={(event) => changeForm(event.target.checked)}
+                  checked={form}
+                />
+              )}
+            </Stack>
+          ) : null}
 
           <AuthModalBoundary
             authType={typeLogin}
             resetKey={`${openAuthModal}-${typeLogin}-${isMobileAuth}`}
-            fallback={<AuthModalFallback isMobileAuth={isMobileAuth} onClose={closeModal} onRetry={retryAuthModal} />}
+            fallback={
+              <AuthModalFallback
+                isMobileAuth={isMobileAuth}
+                onClose={closeModal}
+                onRetry={retryAuthModal}
+              />
+            }
           >
-            {typeLogin === 'start' ? <Start isMobileAuth={isMobileAuth} /> : null}
-            {typeLogin === 'resetPWD' ? <ResetPWD isMobileAuth={isMobileAuth} /> : null}
-            {typeLogin === 'loginSMS' ? <LoginSMS isMobileAuth={isMobileAuth} /> : null}
-            {typeLogin === 'create' ? <Create city={city} closeModal={closeModal} isMobileAuth={isMobileAuth} /> : null}
-            {typeLogin === 'loginSMSCode' ? <LoginSMSCode isMobileAuth={isMobileAuth} /> : null}
-            {typeLogin === 'finish' ? <Finish closeModal={closeModal} isMobileAuth={isMobileAuth} /> : null}
+            {typeLogin === 'start' ? (
+              <Start isMobileAuth={isMobileAuth} />
+            ) : null}
+            {typeLogin === 'resetPWD' ? (
+              <ResetPWD isMobileAuth={isMobileAuth} />
+            ) : null}
+            {typeLogin === 'loginSMS' ? (
+              <LoginSMS isMobileAuth={isMobileAuth} />
+            ) : null}
+            {typeLogin === 'create' ? (
+              <Create
+                city={city}
+                closeModal={closeModal}
+                isMobileAuth={isMobileAuth}
+              />
+            ) : null}
+            {typeLogin === 'loginSMSCode' ? (
+              <LoginSMSCode isMobileAuth={isMobileAuth} />
+            ) : null}
+            {typeLogin === 'finish' ? (
+              <Finish closeModal={closeModal} isMobileAuth={isMobileAuth} />
+            ) : null}
           </AuthModalBoundary>
-
         </Box>
       </Fade>
     </Dialog>

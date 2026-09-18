@@ -2,6 +2,7 @@ import { useEffect, useMemo, useRef, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import { useHeaderStoreNew } from '@/components/store';
+import { trackAuthClientEvent } from '@/components/api';
 import { importWithRetry } from '@/utils/importWithRetry';
 
 import { FormattedInputs } from '@/ui/MyTextInput';
@@ -44,6 +45,7 @@ export default function LoginSMS({ isMobileAuth = false }) {
   const [captchaKey, setCaptchaKey] = useState(0);
   const [isSubmitting, setIsSubmitting] = useState(false);
   const captchaContainerRef = useRef(null);
+  const captchaReadyReportedRef = useRef(false);
   const captchaSiteKey = process.env.NEXT_PUBLIC_SMARTCAPTCHA_SITE_KEY || '';
   const isResend = preTypeLogin === 'loginSMSCode';
 
@@ -70,6 +72,8 @@ export default function LoginSMS({ isMobileAuth = false }) {
       return undefined;
     }
 
+    captchaReadyReportedRef.current = false;
+
     const hasCaptchaWidget = () => {
       return Boolean(
         root.querySelector(
@@ -80,6 +84,13 @@ export default function LoginSMS({ isMobileAuth = false }) {
 
     const markWidgetReady = () => {
       if (hasCaptchaWidget()) {
+        if (!captchaReadyReportedRef.current) {
+          captchaReadyReportedRef.current = true;
+          trackAuthClientEvent('captcha_rendered', {
+            screen: 'login_sms',
+          });
+        }
+
         setCaptchaError((currentError) =>
           currentError ===
           'Не удалось загрузить капчу. Проверьте интернет и попробуйте ещё раз.'
@@ -96,6 +107,11 @@ export default function LoginSMS({ isMobileAuth = false }) {
 
     const timeoutId = window.setTimeout(() => {
       if (!hasCaptchaWidget()) {
+        trackAuthClientEvent('captcha_error', {
+          screen: 'login_sms',
+          outcome: 'error',
+          reason: 'widget_timeout',
+        });
         setCaptchaError(
           (currentError) =>
             currentError ||
@@ -113,10 +129,21 @@ export default function LoginSMS({ isMobileAuth = false }) {
   const handleCaptchaSuccess = (captchaToken) => {
     setCaptchaError('');
     setToken(captchaToken || '');
+    trackAuthClientEvent('captcha_solved', {
+      screen: 'login_sms',
+      outcome: 'success',
+      number: loginLogin,
+    });
   };
 
-  const handleCaptchaFailure = () => {
+  const handleCaptchaFailure = (reason) => {
     setToken('');
+    trackAuthClientEvent('captcha_error', {
+      screen: 'login_sms',
+      outcome: 'error',
+      reason,
+      number: loginLogin,
+    });
     setCaptchaError(
       'Капча временно недоступна. Проверьте интернет и попробуйте ещё раз.'
     );
@@ -125,6 +152,7 @@ export default function LoginSMS({ isMobileAuth = false }) {
   const resetCaptcha = () => {
     setToken('');
     setCaptchaError('');
+    captchaReadyReportedRef.current = false;
     setCaptchaKey((currentKey) => currentKey + 1);
   };
 
@@ -136,6 +164,10 @@ export default function LoginSMS({ isMobileAuth = false }) {
     setIsSubmitting(true);
     const captchaToken = token;
     setToken('');
+    trackAuthClientEvent('phone_submitted', {
+      screen: 'login_sms',
+      number: loginLogin,
+    });
 
     try {
       const isSent = await createProfile(captchaToken);
@@ -164,11 +196,21 @@ export default function LoginSMS({ isMobileAuth = false }) {
       return;
     }
 
+    handleBlockedSubmit();
+  };
+
+  const handleBlockedSubmit = () => {
     setActiveModalAlert(
       true,
       'Укажите телефон и подтвердите, что вы не робот',
       false
     );
+    trackAuthClientEvent('phone_submitted', {
+      screen: 'login_sms',
+      outcome: 'failure',
+      reason: 'submit_blocked',
+      number: loginLogin,
+    });
   };
 
   // <div className="loginErr">
@@ -209,9 +251,17 @@ export default function LoginSMS({ isMobileAuth = false }) {
               sitekey={captchaSiteKey}
               webview={isAppWebView}
               onSuccess={handleCaptchaSuccess}
-              onNetworkError={handleCaptchaFailure}
-              onJavascriptError={handleCaptchaFailure}
-              onTokenExpired={() => setToken('')}
+              onNetworkError={() => handleCaptchaFailure('network_error')}
+              onJavascriptError={() => handleCaptchaFailure('javascript_error')}
+              onTokenExpired={() => {
+                setToken('');
+                trackAuthClientEvent('captcha_expired', {
+                  screen: 'login_sms',
+                  outcome: 'failure',
+                  reason: 'token_expired',
+                  number: loginLogin,
+                });
+              }}
             />
           ) : null}
         </div>
@@ -241,16 +291,7 @@ export default function LoginSMS({ isMobileAuth = false }) {
 
       <div
         className="loginLogin"
-        onClick={
-          canSubmit
-            ? handleNavigate
-            : () =>
-                setActiveModalAlert(
-                  true,
-                  'Укажите телефон и подтвердите, что вы не робот',
-                  false
-                )
-        }
+        onClick={canSubmit ? handleNavigate : handleBlockedSubmit}
         style={{
           backgroundColor: canSubmit ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)',
           marginTop: matches ? '10.25641025641vw' : 20,

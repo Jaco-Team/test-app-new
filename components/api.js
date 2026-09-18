@@ -41,6 +41,112 @@ const NON_IDEMPOTENT_TYPES = new Set([
   'order_true',
 ]);
 const SAFE_MUTATION_RETRY_TYPES = new Set(['site_login', 'checkauthyandex']);
+const AUTH_FLOW_STORAGE_KEY = 'jaco_auth_flow_id';
+const TRACKED_AUTH_TYPES = new Set([
+  'site_login',
+  'create_profile',
+  'check_profile',
+  'sendsmsrp',
+  'getyalinkauth',
+  'checkauthyandex',
+]);
+
+function createAuthFlowId() {
+  if (
+    typeof crypto !== 'undefined' &&
+    typeof crypto.randomUUID === 'function'
+  ) {
+    return crypto.randomUUID();
+  }
+
+  return `auth-${Date.now().toString(36)}-${Math.random()
+    .toString(36)
+    .slice(2, 14)}`;
+}
+
+export function getAuthFlowId({ renew = false } = {}) {
+  if (typeof window === 'undefined') {
+    return '';
+  }
+
+  try {
+    let flowId = renew
+      ? ''
+      : window.sessionStorage.getItem(AUTH_FLOW_STORAGE_KEY);
+
+    if (!flowId) {
+      flowId = createAuthFlowId();
+      window.sessionStorage.setItem(AUTH_FLOW_STORAGE_KEY, flowId);
+    }
+
+    return flowId;
+  } catch {
+    return createAuthFlowId();
+  }
+}
+
+export function beginAuthFlow() {
+  return getAuthFlowId({ renew: true });
+}
+
+export function endAuthFlow() {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  try {
+    window.sessionStorage.removeItem(AUTH_FLOW_STORAGE_KEY);
+  } catch {
+    // Storage can be unavailable in private/restricted browser contexts.
+  }
+}
+
+function authScreenForAction(action) {
+  if (action === 'create_profile' || action === 'sendsmsrp') return 'login_sms';
+  if (action === 'check_profile') return 'otp';
+  if (action === 'site_login') return 'password';
+  if (action === 'getyalinkauth' || action === 'checkauthyandex')
+    return 'yandex';
+
+  return 'start';
+}
+
+export function trackAuthClientEvent(clientStage, details = {}) {
+  if (typeof window === 'undefined') {
+    return;
+  }
+
+  const connection = window.navigator?.connection;
+  const payload = {
+    type: 'client_event',
+    client_stage: clientStage,
+    flow_id: details.flow_id || getAuthFlowId(),
+    auth_action: details.auth_action,
+    screen: details.screen,
+    outcome: details.outcome,
+    reason: details.reason,
+    duration_ms: details.duration_ms,
+    http_status: details.http_status,
+    network_code: details.network_code,
+    backend_request_id: details.backend_request_id,
+    number: details.number,
+    online: window.navigator?.onLine,
+    effective_type: connection?.effectiveType,
+    path: window.location?.pathname || '/',
+    ts: Math.floor(Date.now() / 1000),
+  };
+  const body = qs.stringify(
+    Object.fromEntries(
+      Object.entries(payload).filter(
+        ([, value]) => value !== undefined && value !== null && value !== ''
+      )
+    )
+  );
+
+  void axios
+    .post(`${DEFAULT_API_BASE_URL}auth`, body, { timeout: 3000 })
+    .catch(() => undefined);
+}
 
 function normalizeBoundedInt(value, min, max, fallback) {
   const num = Number(value);
@@ -286,8 +392,24 @@ export function api(module = '', data = {}) {
   const now = Math.floor(Date.now() / 1000);
   const requestConfig = data && typeof data === 'object' ? data : {};
   const safeData = stripInternalRequestKeys(requestConfig);
+  const requestType = getRequestType(safeData);
+  const trackAuthRequest =
+    String(module || '').toLowerCase() === 'auth' &&
+    TRACKED_AUTH_TYPES.has(requestType);
+  const flowId = trackAuthRequest ? getAuthFlowId() : '';
+  const requestData = flowId ? { ...safeData, flow_id: flowId } : safeData;
+  const authStartedAt = trackAuthRequest ? Date.now() : 0;
 
-  const payload = { ...safeData, ts: now };
+  if (trackAuthRequest) {
+    trackAuthClientEvent('request_started', {
+      flow_id: flowId,
+      auth_action: requestType,
+      screen: authScreenForAction(requestType),
+      number: safeData?.number,
+    });
+  }
+
+  const payload = { ...requestData, ts: now };
   const bodyStr = qs.stringify(payload);
 
   const sig = CryptoJS.HmacSHA256(now + bodyStr, 'jaco—food').toString(
@@ -298,6 +420,22 @@ export function api(module = '', data = {}) {
 
   return postWithRetry({ module, body, data: requestConfig })
     .then(({ response }) => {
+      if (trackAuthRequest) {
+        const requestFailed =
+          typeof response?.data === 'string' || response?.data?.st === false;
+        trackAuthClientEvent('request_finished', {
+          flow_id: flowId,
+          auth_action: requestType,
+          screen: authScreenForAction(requestType),
+          number: safeData?.number,
+          outcome: requestFailed ? 'failure' : 'success',
+          reason: requestFailed ? 'backend_rejected' : undefined,
+          duration_ms: Date.now() - authStartedAt,
+          http_status: response?.status,
+          backend_request_id: response?.headers?.['x-request-id'],
+        });
+      }
+
       if (typeof response.data == 'string') {
         return {
           st: false,
@@ -316,6 +454,21 @@ export function api(module = '', data = {}) {
       const responseStatus = error?.response?.status ?? null;
       const errorCode = String(error?.code || '').toUpperCase() || null;
       const isRetryable = isRetryableApiError(error);
+
+      if (trackAuthRequest) {
+        trackAuthClientEvent('request_network_error', {
+          flow_id: flowId,
+          auth_action: requestType,
+          screen: authScreenForAction(requestType),
+          number: safeData?.number,
+          outcome: 'error',
+          reason: 'request_exception',
+          duration_ms: Date.now() - authStartedAt,
+          http_status: responseStatus,
+          network_code: errorCode,
+          backend_request_id: error?.response?.headers?.['x-request-id'],
+        });
+      }
 
       if (shouldCaptureApiError(safeData)) {
         captureApiError({
