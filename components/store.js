@@ -9,7 +9,14 @@ import * as Sentry from '@sentry/nextjs';
 dayjs.extend(isoWeek);
 dayjs.locale('ru');
 
-import { api, apiAddress } from './api.js';
+import {
+  api,
+  apiAddress,
+  beginPaymentFlow,
+  endPaymentFlow,
+  getPaymentFlowId,
+  trackPaymentClientEvent,
+} from './api.js';
 import {
   buildStreetAddress,
   getAddressLabel,
@@ -1607,6 +1614,22 @@ export const useCartStore = reuseHotStore(
         const dopListConfirm = get().dopListCart?.filter((it) => it.count);
 
         if (active === false) {
+          const paymentFlowId = getPaymentFlowId({ create: false });
+          if (paymentFlowId) {
+            trackPaymentClientEvent('payment_form_closed', {
+              payment_flow_id: paymentFlowId,
+              payment_action: 'widget',
+              payment_method: String(get().typePay?.id || ''),
+              point_id:
+                get().checkNewOrder?.order?.point_id ??
+                get().orderAddr?.point_id,
+              order_id: get().checkNewOrder?.order?.order_id,
+              outcome: 'cancelled',
+              reason: 'user_closed',
+            });
+            endPaymentFlow();
+          }
+
           if (get().global_checkout !== null) {
             get().global_checkout.destroy();
 
@@ -1621,6 +1644,23 @@ export const useCartStore = reuseHotStore(
 
       // открытие/закрытие формы оплаты онлайн
       setPayForm: (active) => {
+        if (active === false) {
+          const paymentFlowId = getPaymentFlowId({ create: false });
+          if (paymentFlowId) {
+            trackPaymentClientEvent('payment_form_closed', {
+              payment_flow_id: paymentFlowId,
+              payment_action: 'widget',
+              payment_method: String(get().typePay?.id || ''),
+              point_id:
+                get().checkNewOrder?.order?.point_id ??
+                get().orderAddr?.point_id,
+              order_id: get().checkNewOrder?.order?.order_id,
+              outcome: 'cancelled',
+              reason: 'user_closed',
+            });
+            endPaymentFlow();
+          }
+        }
         set({ openPayForm: active });
       },
 
@@ -2306,6 +2346,7 @@ export const useCartStore = reuseHotStore(
         }
 
         let data;
+        let paymentFlowId = '';
         const typeOrder = get().typeOrder;
         //const promoName = sessionStorage.getItem('promo_name');
         const promoNameCandidate = Cookies.get('promo_name');
@@ -2370,6 +2411,23 @@ export const useCartStore = reuseHotStore(
           };
         }
 
+        const paymentMethod = String(get().typePay?.id || '').toLowerCase();
+        if (['online', 'pay_page', 'sbp'].includes(paymentMethod)) {
+          paymentFlowId = beginPaymentFlow();
+          data.payment_flow_id = paymentFlowId;
+          trackPaymentClientEvent('checkout_started', {
+            payment_flow_id: paymentFlowId,
+            payment_action: 'create_order_pre',
+            payment_method: paymentMethod,
+            point_id: data.point_id,
+            amount_minor: Math.max(
+              0,
+              Math.round(Number(get().allPrice || 0) * 100)
+            ),
+            outcome: 'pending',
+          });
+        }
+
         const json = await api('cart', data);
 
         setTimeout(() => {
@@ -2377,6 +2435,26 @@ export const useCartStore = reuseHotStore(
         }, 300);
 
         if (json?.st === true) {
+          const paymentEventBase = {
+            payment_flow_id: paymentFlowId,
+            payment_action: 'create_order_pre',
+            payment_method: paymentMethod,
+            point_id: json?.check?.order?.point_id ?? data?.point_id,
+            order_id: json?.check?.order?.order_id ?? json?.order_id,
+            amount_minor: Math.max(
+              0,
+              Math.round(Number(get().allPrice || 0) * 100)
+            ),
+          };
+
+          if (paymentFlowId) {
+            trackPaymentClientEvent('order_created', {
+              ...paymentEventBase,
+              outcome: 'success',
+              has_payment_session: Boolean(json?.pay?.pay?.confirmation),
+            });
+          }
+
           set({
             checkNewOrder: json?.check,
           });
@@ -2391,26 +2469,58 @@ export const useCartStore = reuseHotStore(
                 linkPaySBP: json?.pay?.pay?.confirmation?.confirmation_data,
               });
 
+              trackPaymentClientEvent('status_poll_started', {
+                ...paymentEventBase,
+                payment_action: 'check_pay_order',
+                outcome: 'pending',
+              });
+
               let timerId = setInterval(async () => {
                 const data = {
                   type: 'check_pay_order',
                   order_id: json?.check?.order?.order_id,
                   point_id: json?.check?.order?.point_id,
+                  payment_flow_id: paymentFlowId,
                 };
 
                 const res = await api('cart', data);
 
+                trackPaymentClientEvent('status_poll_result', {
+                  ...paymentEventBase,
+                  payment_action: 'check_pay_order',
+                  outcome: res?.st === true ? 'success' : 'pending',
+                });
+
                 if (res?.st === true) {
                   clearInterval(timerId);
+                  endPaymentFlow();
                   funcClose?.();
                 }
               }, 3000);
             }
 
             if (get().typePay.id == 'online') {
+              trackPaymentClientEvent('provider_payment_created', {
+                ...paymentEventBase,
+                outcome: 'success',
+                has_payment_session: Boolean(
+                  json?.pay?.pay?.confirmation?.confirmation_token
+                ),
+              });
+              trackPaymentClientEvent('widget_script_started', {
+                ...paymentEventBase,
+                payment_action: 'widget',
+                outcome: 'pending',
+              });
               const YooMoneyCheckoutWidget =
                 await ensureYooMoneyCheckoutWidget();
               if (!YooMoneyCheckoutWidget) {
+                trackPaymentClientEvent('widget_script_failed', {
+                  ...paymentEventBase,
+                  payment_action: 'widget',
+                  outcome: 'error',
+                  reason: 'script_error',
+                });
                 useHeaderStoreNew
                   .getState()
                   .setActiveModalAlert(
@@ -2435,32 +2545,102 @@ export const useCartStore = reuseHotStore(
                   }
                 );
 
+                endPaymentFlow();
                 return 'wait_payment';
               }
 
-              const checkout = new YooMoneyCheckoutWidget({
-                confirmation_token:
-                  json.pay.pay.confirmation.confirmation_token,
-
-                error_callback: function (error) {
-                  console.log(error);
-                },
+              trackPaymentClientEvent('widget_script_loaded', {
+                ...paymentEventBase,
+                payment_action: 'widget',
+                outcome: 'success',
               });
+
+              let checkout;
+              try {
+                checkout = new YooMoneyCheckoutWidget({
+                  confirmation_token:
+                    json.pay.pay.confirmation.confirmation_token,
+
+                  error_callback: function (error) {
+                    trackPaymentClientEvent('widget_error', {
+                      ...paymentEventBase,
+                      payment_action: 'widget',
+                      outcome: 'error',
+                      reason: 'widget_callback',
+                      provider_status: String(
+                        error?.error?.code ||
+                          error?.code ||
+                          error?.status ||
+                          error?.type ||
+                          ''
+                      )
+                        .toLowerCase()
+                        .slice(0, 64),
+                    });
+                  },
+                });
+                trackPaymentClientEvent('widget_constructed', {
+                  ...paymentEventBase,
+                  payment_action: 'widget',
+                  outcome: 'success',
+                });
+              } catch (error) {
+                trackPaymentClientEvent('widget_error', {
+                  ...paymentEventBase,
+                  payment_action: 'widget',
+                  outcome: 'error',
+                  reason: 'constructor_error',
+                });
+                Sentry.captureException(error, {
+                  tags: { kind: 'payment_widget_constructor_error' },
+                });
+                useHeaderStoreNew
+                  .getState()
+                  .setActiveModalAlert(
+                    true,
+                    'Не удалось открыть форму оплаты. Попробуйте снова.',
+                    false
+                  );
+                endPaymentFlow();
+                return 'wait_payment';
+              }
 
               set({
                 global_checkout: checkout,
               });
 
               checkout.on('success', () => {
+                trackPaymentClientEvent('widget_success', {
+                  ...paymentEventBase,
+                  payment_action: 'widget',
+                  outcome: 'success',
+                });
                 useProfileStore
                   .getState()
                   .saveUserActions('true_pay_online_order', '', get().allPrice);
                 checkout.destroy();
+                endPaymentFlow();
                 funcClose?.();
               });
 
-              checkout.on('fail', () => {
+              checkout.on('fail', (error) => {
+                trackPaymentClientEvent('widget_fail', {
+                  ...paymentEventBase,
+                  payment_action: 'widget',
+                  outcome: 'failure',
+                  reason: 'widget_callback',
+                  provider_status: String(
+                    error?.error?.code ||
+                      error?.code ||
+                      error?.status ||
+                      error?.type ||
+                      ''
+                  )
+                    .toLowerCase()
+                    .slice(0, 64),
+                });
                 checkout.destroy();
+                endPaymentFlow();
                 return 'nothing';
               });
 
@@ -2474,15 +2654,56 @@ export const useCartStore = reuseHotStore(
                   : 'payment-form';
                 const el = document.getElementById(targetId);
                 if (!el) return false;
-                checkout.render(targetId);
+                trackPaymentClientEvent('widget_render_started', {
+                  ...paymentEventBase,
+                  payment_action: 'widget',
+                  widget_target: targetId,
+                  outcome: 'pending',
+                });
+                try {
+                  Promise.resolve(checkout.render(targetId))
+                    .then(() =>
+                      trackPaymentClientEvent('widget_rendered', {
+                        ...paymentEventBase,
+                        payment_action: 'widget',
+                        widget_target: targetId,
+                        outcome: 'success',
+                      })
+                    )
+                    .catch(() =>
+                      trackPaymentClientEvent('widget_render_failed', {
+                        ...paymentEventBase,
+                        payment_action: 'widget',
+                        widget_target: targetId,
+                        outcome: 'error',
+                        reason: 'widget_callback',
+                      })
+                    );
+                } catch {
+                  trackPaymentClientEvent('widget_render_failed', {
+                    ...paymentEventBase,
+                    payment_action: 'widget',
+                    widget_target: targetId,
+                    outcome: 'error',
+                    reason: 'widget_callback',
+                  });
+                }
                 return true;
               };
 
               let tries = 0;
               const timer = setInterval(() => {
                 tries += 1;
-                if (renderCheckout(checkout) || tries >= 20) {
+                if (renderCheckout(checkout)) {
                   clearInterval(timer);
+                } else if (tries >= 20) {
+                  clearInterval(timer);
+                  trackPaymentClientEvent('widget_render_timeout', {
+                    ...paymentEventBase,
+                    payment_action: 'widget',
+                    outcome: 'error',
+                    reason: 'widget_timeout',
+                  });
                 }
               }, 300);
             }
@@ -2506,6 +2727,9 @@ export const useCartStore = reuseHotStore(
             return 'to_cart';
           }
         } else {
+          if (paymentFlowId) {
+            endPaymentFlow();
+          }
           //показать ошибку
           useHeaderStoreNew
             .getState()

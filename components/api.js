@@ -42,6 +42,8 @@ const NON_IDEMPOTENT_TYPES = new Set([
 ]);
 const SAFE_MUTATION_RETRY_TYPES = new Set(['site_login', 'checkauthyandex']);
 const AUTH_FLOW_STORAGE_KEY = 'jaco_auth_flow_id';
+const PAYMENT_FLOW_STORAGE_KEY = 'jaco_payment_flow_id';
+let paymentFlowMemory = '';
 const TRACKED_AUTH_TYPES = new Set([
   'site_login',
   'create_profile',
@@ -49,6 +51,12 @@ const TRACKED_AUTH_TYPES = new Set([
   'sendsmsrp',
   'getyalinkauth',
   'checkauthyandex',
+]);
+const TRACKED_PAYMENT_TYPES = new Set([
+  'create_order_pre',
+  'check_pay_order',
+  'check_pay_order_card',
+  'order_true',
 ]);
 
 function createAuthFlowId() {
@@ -99,6 +107,123 @@ export function endAuthFlow() {
   } catch {
     // Storage can be unavailable in private/restricted browser contexts.
   }
+}
+
+function createPaymentFlowId() {
+  if (
+    typeof crypto !== 'undefined' &&
+    typeof crypto.randomUUID === 'function'
+  ) {
+    return crypto.randomUUID();
+  }
+
+  return `payment-${Date.now().toString(36)}-${Math.random()
+    .toString(36)
+    .slice(2, 14)}`;
+}
+
+export function getPaymentFlowId({ renew = false, create = true } = {}) {
+  if (typeof window === 'undefined') return '';
+
+  try {
+    let flowId = renew
+      ? ''
+      : window.sessionStorage.getItem(PAYMENT_FLOW_STORAGE_KEY) ||
+        paymentFlowMemory;
+
+    if (!flowId && create) {
+      flowId = createPaymentFlowId();
+      window.sessionStorage.setItem(PAYMENT_FLOW_STORAGE_KEY, flowId);
+    }
+
+    paymentFlowMemory = flowId || '';
+
+    return flowId || '';
+  } catch {
+    if (renew) paymentFlowMemory = '';
+    if (!paymentFlowMemory && create) paymentFlowMemory = createPaymentFlowId();
+
+    return paymentFlowMemory;
+  }
+}
+
+export function beginPaymentFlow() {
+  return getPaymentFlowId({ renew: true });
+}
+
+export function endPaymentFlow() {
+  if (typeof window === 'undefined') return;
+
+  paymentFlowMemory = '';
+
+  try {
+    window.sessionStorage.removeItem(PAYMENT_FLOW_STORAGE_KEY);
+  } catch {
+    // Storage can be unavailable in private/restricted browser contexts.
+  }
+}
+
+export function trackPaymentClientEvent(clientStage, details = {}) {
+  if (typeof window === 'undefined') return;
+
+  const connection = window.navigator?.connection;
+  const payload = {
+    type: 'payment_event',
+    client_stage: clientStage,
+    payment_flow_id: details.payment_flow_id || getPaymentFlowId(),
+    payment_action: details.payment_action,
+    payment_method: details.payment_method,
+    outcome: details.outcome,
+    reason: details.reason,
+    duration_ms: details.duration_ms,
+    http_status: details.http_status,
+    network_code: details.network_code,
+    backend_request_id: details.backend_request_id,
+    point_id: details.point_id,
+    order_id: details.order_id,
+    amount_minor: details.amount_minor,
+    provider_status: details.provider_status,
+    widget_target: details.widget_target,
+    has_payment_session: details.has_payment_session,
+    online: window.navigator?.onLine,
+    effective_type: connection?.effectiveType,
+    path: window.location?.pathname || '/',
+    ts: Math.floor(Date.now() / 1000),
+  };
+  const body = qs.stringify(
+    Object.fromEntries(
+      Object.entries(payload).filter(
+        ([, value]) => value !== undefined && value !== null && value !== ''
+      )
+    )
+  );
+
+  void axios
+    .post(`${DEFAULT_API_BASE_URL}cart`, body, { timeout: 3000 })
+    .catch(() => undefined);
+}
+
+function shouldTrackPaymentRequest(module, requestType, data = {}) {
+  if (
+    String(module || '').toLowerCase() !== 'cart' ||
+    !TRACKED_PAYMENT_TYPES.has(requestType)
+  ) {
+    return false;
+  }
+
+  if (requestType === 'create_order_pre') {
+    return ['online', 'pay_page', 'sbp'].includes(
+      String(data?.typePay || '').toLowerCase()
+    );
+  }
+
+  if (requestType === 'order_true') {
+    return Boolean(
+      data?.payment_flow_id || getPaymentFlowId({ create: false })
+    );
+  }
+
+  return true;
 }
 
 function authScreenForAction(action) {
@@ -396,9 +521,22 @@ export function api(module = '', data = {}) {
   const trackAuthRequest =
     String(module || '').toLowerCase() === 'auth' &&
     TRACKED_AUTH_TYPES.has(requestType);
+  const trackPaymentRequest = shouldTrackPaymentRequest(
+    module,
+    requestType,
+    safeData
+  );
   const flowId = trackAuthRequest ? getAuthFlowId() : '';
-  const requestData = flowId ? { ...safeData, flow_id: flowId } : safeData;
+  const paymentFlowId = trackPaymentRequest
+    ? safeData?.payment_flow_id || getPaymentFlowId()
+    : '';
+  const requestData = {
+    ...safeData,
+    ...(flowId ? { flow_id: flowId } : {}),
+    ...(paymentFlowId ? { payment_flow_id: paymentFlowId } : {}),
+  };
   const authStartedAt = trackAuthRequest ? Date.now() : 0;
+  const paymentStartedAt = trackPaymentRequest ? Date.now() : 0;
 
   if (trackAuthRequest) {
     trackAuthClientEvent('request_started', {
@@ -406,6 +544,17 @@ export function api(module = '', data = {}) {
       auth_action: requestType,
       screen: authScreenForAction(requestType),
       number: safeData?.number,
+    });
+  }
+
+  if (trackPaymentRequest) {
+    trackPaymentClientEvent('request_started', {
+      payment_flow_id: paymentFlowId,
+      payment_action: requestType,
+      payment_method: safeData?.typePay,
+      point_id: safeData?.point_id,
+      order_id: safeData?.order_id,
+      outcome: 'pending',
     });
   }
 
@@ -431,6 +580,28 @@ export function api(module = '', data = {}) {
           outcome: requestFailed ? 'failure' : 'success',
           reason: requestFailed ? 'backend_rejected' : undefined,
           duration_ms: Date.now() - authStartedAt,
+          http_status: response?.status,
+          backend_request_id: response?.headers?.['x-request-id'],
+        });
+      }
+
+      if (trackPaymentRequest) {
+        const requestFailed =
+          typeof response?.data === 'string' || response?.data?.st === false;
+        trackPaymentClientEvent('request_finished', {
+          payment_flow_id: paymentFlowId,
+          payment_action: requestType,
+          payment_method: safeData?.typePay,
+          point_id:
+            response?.data?.check?.order?.point_id ?? safeData?.point_id,
+          order_id:
+            response?.data?.check?.order?.order_id ??
+            response?.data?.order_id ??
+            safeData?.order_id,
+          has_payment_session: Boolean(response?.data?.pay),
+          outcome: requestFailed ? 'failure' : 'success',
+          reason: requestFailed ? 'backend_rejected' : undefined,
+          duration_ms: Date.now() - paymentStartedAt,
           http_status: response?.status,
           backend_request_id: response?.headers?.['x-request-id'],
         });
@@ -464,6 +635,22 @@ export function api(module = '', data = {}) {
           outcome: 'error',
           reason: 'request_exception',
           duration_ms: Date.now() - authStartedAt,
+          http_status: responseStatus,
+          network_code: errorCode,
+          backend_request_id: error?.response?.headers?.['x-request-id'],
+        });
+      }
+
+      if (trackPaymentRequest) {
+        trackPaymentClientEvent('request_network_error', {
+          payment_flow_id: paymentFlowId,
+          payment_action: requestType,
+          payment_method: safeData?.typePay,
+          point_id: safeData?.point_id,
+          order_id: safeData?.order_id,
+          outcome: 'error',
+          reason: 'request_exception',
+          duration_ms: Date.now() - paymentStartedAt,
           http_status: responseStatus,
           network_code: errorCode,
           backend_request_id: error?.response?.headers?.['x-request-id'],
