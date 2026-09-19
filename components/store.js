@@ -2892,10 +2892,14 @@ export const useCartStore = reuseHotStore(
         const itemsCount = items.reduce((all, item) => all + item.count, 0);
 
         if (checkPromo?.st === true) {
-          if (promoInfo?.promo_action === '2') {
-            let itemsWithPromo = get().itemsWithPromo;
+          if (parseInt(promoInfo?.promo_action) === 2) {
+            const itemsWithPromo = get().itemsWithPromo;
+            const promoItemsCount = itemsWithPromo.reduce(
+              (all, item) => all + parseInt(item?.count || 0),
+              0
+            );
 
-            let itemsWithPromo__ = [...items, ...itemsWithPromo];
+            const itemsWithPromo__ = [...items, ...itemsWithPromo];
 
             const allPriceWithoutPromo = itemsWithPromo__.reduce(
               (all, it) => all + it.count * it.one_price,
@@ -2903,7 +2907,7 @@ export const useCartStore = reuseHotStore(
             );
 
             set({
-              itemsCount: itemsCount + promoInfo.items_add.length,
+              itemsCount: itemsCount + promoItemsCount,
               itemsWithPromo,
               allPriceWithoutPromo,
             });
@@ -3751,33 +3755,27 @@ export const useCartStore = reuseHotStore(
           }
 
           if (promo_info.limits.type_order) {
-            if (
-              parseInt(promo_info.limits.type_order) == 1 ||
-              (parseInt(promo_info.limits.type_order) == 3 &&
-                type_order == 0) ||
-              (parseInt(promo_info.limits.type_order) == 2 && type_order == 1)
-            ) {
-            } else {
-              if (parseInt(promo_info.limits.type_order) == 1) {
-                return {
-                  st: false,
-                  text: 'Вот незадача! Этот промокод действует только на доставку.',
-                };
-              }
+            const promoTypeOrder = parseInt(promo_info.limits.type_order);
 
-              if (parseInt(promo_info.limits.type_order) == 2) {
-                return {
-                  st: false,
-                  text: 'Вот незадача! Этот промокод действует только на самовывоз.',
-                };
-              }
+            if (promoTypeOrder === 2 && type_order !== 1) {
+              return {
+                st: false,
+                text: 'Вот незадача! Этот промокод действует только на самовывоз.',
+              };
+            }
 
-              if (parseInt(promo_info.limits.type_order) == 3) {
-                return {
-                  st: false,
-                  text: 'Вот незадача! Этот промокод действует только при заказе в кафе.',
-                };
-              }
+            if (promoTypeOrder === 3 && type_order !== 0) {
+              return {
+                st: false,
+                text: 'Вот незадача! Этот промокод действует только на доставку.',
+              };
+            }
+
+            if (promoTypeOrder === 4) {
+              return {
+                st: false,
+                text: 'Вот незадача! Этот промокод действует только при заказе в кафе.',
+              };
             }
           }
 
