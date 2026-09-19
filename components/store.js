@@ -20,6 +20,7 @@ import {
 import {
   buildStreetAddress,
   getAddressLabel,
+  hasDeliveryCoordinates,
   parseAddressInput,
   addressVerificationKey,
   sameAddressHouse,
@@ -2360,6 +2361,22 @@ export const useCartStore = reuseHotStore(
         let data;
         let paymentFlowId = '';
         const typeOrder = get().typeOrder;
+
+        if (typeOrder !== 'pic' && !hasDeliveryCoordinates(get().orderAddr)) {
+          set({
+            DBClick: false,
+            orderAddr: null,
+            summDiv: 0,
+          });
+          useHeaderStoreNew
+            .getState()
+            .setActiveModalAlert(
+              true,
+              'Не удалось определить адрес доставки. Пожалуйста, выберите адрес из списка ещё раз.',
+              false
+            );
+          return 'nothing';
+        }
         //const promoName = sessionStorage.getItem('promo_name');
         const promoNameCandidate = Cookies.get('promo_name');
         const promoName = get().checkPromo?.st ? promoNameCandidate : '';

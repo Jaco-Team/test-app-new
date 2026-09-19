@@ -3,6 +3,7 @@ import {
   buildStreetAddress,
   getAddressStreet,
   getAddressLabel,
+  hasDeliveryCoordinates,
 } from '../../utils/streetAddress';
 
 const part = (kind, name) => ({ kind: [kind], name });
@@ -147,5 +148,28 @@ describe('адрес из ответа бэкенда', () => {
     expect(getAddressLabel({ city_name_dop: '12-й квартал' })).toBe('');
     expect(getAddressLabel({ street: 'бульвар Гая' })).toBe('бульвар Гая');
     expect(getAddressLabel()).toBe('');
+  });
+});
+
+describe('координаты выбранного адреса', () => {
+  it.each([
+    [{ xy: [53.5, 49.3] }],
+    [{ xy: '[53.5,49.3]' }],
+    [{ xy: ['53.5', '49.3'] }],
+  ])('принимает валидные координаты %#', (address) => {
+    expect(hasDeliveryCoordinates(address)).toBe(true);
+  });
+
+  it.each([
+    [null],
+    [{}],
+    [{ name: '' }],
+    [{ xy: '' }],
+    [{ xy: 'not-json' }],
+    [{ xy: [53.5] }],
+    [{ xy: ['north', 49.3] }],
+    [{ xy: [null, 49.3] }],
+  ])('отклоняет неполный адрес %#', (address) => {
+    expect(hasDeliveryCoordinates(address)).toBe(false);
   });
 });

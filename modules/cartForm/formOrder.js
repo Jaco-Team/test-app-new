@@ -47,6 +47,7 @@ import 'dayjs/locale/ru';
 
 import Cookies from 'js-cookie';
 import { BREAKPOINTS } from '@/utils/breakpoints';
+import { hasDeliveryCoordinates } from '@/utils/streetAddress';
 
 import {
   buildPurchasePayload,
@@ -639,8 +640,14 @@ export default function FormOrder({ cityName }) {
     }
 
     if (typeOrder == 'dev') {
-      if (!orderAddr) {
-        setActiveModalAlert(true, 'Необходимо выбрать Адрес доставки', false);
+      if (!hasDeliveryCoordinates(orderAddr)) {
+        setAddrDiv(null);
+        setSummDiv(0);
+        setActiveModalAlert(
+          true,
+          'Не удалось определить адрес доставки. Пожалуйста, выберите адрес из списка ещё раз.',
+          false
+        );
         return;
       }
     }

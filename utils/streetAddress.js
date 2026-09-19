@@ -64,6 +64,29 @@ export function getAddressLabel(address) {
     .join(', ');
 }
 
+export function hasDeliveryCoordinates(address) {
+  let coordinates = address?.xy;
+
+  if (typeof coordinates === 'string') {
+    try {
+      coordinates = JSON.parse(coordinates);
+    } catch {
+      return false;
+    }
+  }
+
+  return (
+    Array.isArray(coordinates) &&
+    coordinates.length >= 2 &&
+    coordinates
+      .slice(0, 2)
+      .every(
+        (value) =>
+          value !== null && value !== '' && Number.isFinite(Number(value))
+      )
+  );
+}
+
 // Дом выделяем только в конце строки: числа в названии улицы/квартала сохраняются.
 export function parseAddressInput(value) {
   const text = String(value ?? '')
