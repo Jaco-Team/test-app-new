@@ -67,6 +67,8 @@ jobs:
 
             NEXT_PUBLIC_RECOMMENDATIONS_ENABLED=false
 
+            NEXT_PUBLIC_SBP_ENABLED=${{ vars.NEXT_PUBLIC_SBP_ENABLED == 'true' && 'true' || 'false' }}
+
             NEXT_PUBLIC_SENTRY_CUSTOM_MONITORING_ENABLED=false
 
             NEXT_PUBLIC_SENTRY_DSN=${{ vars.NEXT_PUBLIC_SENTRY_DSN }}
