@@ -165,14 +165,14 @@ export default memo(function CardItem({ item, count }) {
             </picture>
 
             <div className="badgecontainer">
-              {parseInt(item.is_hit) == 1 ? (
-                <BadgeItem size={'big'} type={'hit'} view={'pc'} />
+              {parseInt(item.is_new) == 1 ? (
+                <BadgeItem size={'big'} type={'new'} view={'pc'} />
               ) : (
                 false
               )}
 
-              {parseInt(item.is_new) == 1 ? (
-                <BadgeItem size={'big'} type={'new'} view={'pc'} />
+              {parseInt(item.is_hit) == 1 ? (
+                <BadgeItem size={'big'} type={'hit'} view={'pc'} />
               ) : (
                 false
               )}

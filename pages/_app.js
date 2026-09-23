@@ -4,6 +4,7 @@ import '@fontsource/roboto/400.css';
 import '@fontsource/roboto/500.css';
 import '@fontsource/roboto/700.css';
 import '@fontsource/roboto/900.css';
+import '@fontsource/roboto-condensed/500.css';
 
 import '../styles/globals.scss';
 
@@ -520,7 +521,7 @@ export default function MyApp({ Component, pageProps }) {
 
   const appContent = isOnlyPayPage ? (
     <ClientMetricaProvider>
-      <Component {...pageProps} />
+      <Component key={pageProps?.data1?.city || 'standalone'} {...pageProps} />
     </ClientMetricaProvider>
   ) : (
     <>
@@ -646,7 +647,10 @@ export default function MyApp({ Component, pageProps }) {
       )}
 
       <ClientMetricaProvider>
-        <Component {...pageProps} />
+        <Component
+          key={pageProps?.data1?.city || 'standalone'}
+          {...pageProps}
+        />
       </ClientMetricaProvider>
     </>
   );

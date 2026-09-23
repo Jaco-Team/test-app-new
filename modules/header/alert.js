@@ -15,13 +15,20 @@ import { roboto } from '@/ui/Font.js';
 
 export default function ModalAlert() {
   const [progress, setProgress] = useState(0);
-  const isMobileAlert = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
+  const isMobileAlert = useMediaQuery(
+    `screen and (max-width: ${BREAKPOINTS.mobileMax}px)`
+  );
 
-  const [openModalAlert, setActiveModalAlert, textAlert, statusAlert] = useHeaderStoreNew((state) => [state?.openModalAlert, state.setActiveModalAlert, state?.textAlert, state?.statusAlert]);
+  const [openModalAlert, setActiveModalAlert, textAlert, statusAlert] =
+    useHeaderStoreNew((state) => [
+      state?.openModalAlert,
+      state.setActiveModalAlert,
+      state?.textAlert,
+      state?.statusAlert,
+    ]);
 
   useEffect(() => {
-
-    if(openModalAlert) {
+    if (openModalAlert) {
       const timer = setInterval(() => {
         setProgress((oldProgress) => {
           if (oldProgress === 100) {
@@ -32,39 +39,43 @@ export default function ModalAlert() {
           }
         });
       }, 400);
-  
+
       return () => {
         clearInterval(timer);
       };
-
     } else {
       setProgress(0);
     }
-
   }, [openModalAlert]);
 
   useEffect(() => {
-
-    if(!progress) {
+    if (openModalAlert && progress === 100) {
       setActiveModalAlert(false, '', false);
     }
-
-  }, [progress, setActiveModalAlert]);
+  }, [openModalAlert, progress, setActiveModalAlert]);
 
   return (
-    <Dialog 
+    <Dialog
       onClose={() => setActiveModalAlert(false, '', false)}
-      className={isMobileAlert ? 'modalAlertMobile ' + roboto.variable : 'modalAlertPC ' + roboto.variable}
+      className={
+        isMobileAlert
+          ? 'modalAlertMobile ' + roboto.variable
+          : 'modalAlertPC ' + roboto.variable
+      }
       open={openModalAlert}
       slots={Backdrop}
       slotProps={{ timeout: 500 }}
       fullWidth
     >
-      <DialogContent style={{ backgroundColor: statusAlert ? 'rgb(46, 125, 50)' : '#dd1a32' }}>
+      <DialogContent
+        style={{
+          backgroundColor: statusAlert ? 'rgb(46, 125, 50)' : '#dd1a32',
+        }}
+      >
         <IconButton onClick={() => setActiveModalAlert(false, '', false)}>
           <IconClose />
         </IconButton>
-        <div className='containerAlert'>
+        <div className="containerAlert">
           <span>{textAlert}</span>
           <LinearProgress variant="determinate" size="sm" value={progress} />
         </div>

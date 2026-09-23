@@ -38,6 +38,15 @@ import {
   setLocalStorageItem,
   setSessionStorageItem,
 } from '@/utils/browserStorage';
+import { reconcileCartItems } from '@/utils/cityCart';
+import { updateRouteQuery } from '@/utils/routeQuery';
+import {
+  clearPendingSbpOrder,
+  getPendingSbpOrder,
+  isSbpPaymentConfirmed,
+  savePendingSbpOrder,
+  sbpConfirmationUrl,
+} from '@/utils/sbpPayment';
 
 import Cookies from 'js-cookie';
 
@@ -1489,7 +1498,9 @@ export const useCartStore = reuseHotStore(
 
       promoName: '',
 
-      linkPaySBP: '',
+      pendingSbpOrder: null,
+      sbpPaymentState: 'idle',
+      sbpPaymentUrl: null,
 
       ya_metrik: {
         togliatti: 47085879,
@@ -1527,8 +1538,6 @@ export const useCartStore = reuseHotStore(
 
           openPayForm: false,
           openConfirmForm: false,
-
-          linkPaySBP: '',
         });
 
         if (get().global_checkout !== null) {
@@ -1652,7 +1661,11 @@ export const useCartStore = reuseHotStore(
           }
         }
 
-        set({ openConfirmForm: active, promoName, dopListConfirm });
+        set({
+          openConfirmForm: active,
+          promoName,
+          dopListConfirm,
+        });
       },
 
       // открытие/закрытие формы оплаты онлайн
@@ -1729,131 +1742,144 @@ export const useCartStore = reuseHotStore(
         get().setCartLocalStorage();
       },
 
-      // получение данных корзины и оформления заказа
+      // Восстановление корзины по каталогу города из текущего маршрута.
       getCartLocalStorage: () => {
-        const promoName = Cookies.get('promo_name');
+        const cart = getLocalStorageJson('setCart');
         const allItems = get().allItems;
+        if (!cart || !Array.isArray(allItems) || allItems.length === 0) return;
 
-        let cart = getLocalStorageItem('setCart');
+        const cityLink =
+          useCitiesStore.getState().thisCity ||
+          getLocalStorageJson('setCity')?.link;
+        if (!cityLink) return;
 
-        if (cart && cart.length > 0) {
-          try {
-            cart = JSON.parse(cart);
-          } catch (e) {
-            return;
-          }
-        } else {
-          return;
-        }
-
-        if (allItems.length == 0) {
-          return;
-        }
-
-        // 3 дня от последнего обновления (updatedAt)
-        const TTL_MS = 3 * 24 * 60 * 60 * 1000;
+        const changedCity = cityLink !== cart?.city?.link;
+        const reconciled = reconcileCartItems(cart.items, allItems);
         const updatedAt = Number(cart?.updatedAt || 0);
+        const expired =
+          !updatedAt || Date.now() - updatedAt > 3 * 24 * 60 * 60 * 1000;
 
-        // если updatedAt нет (старая корзина) — считаем её "протухшей" для адреса/оплаты/времени
-        const expired = !updatedAt || Date.now() - updatedAt > TTL_MS;
-
-        // сохраним updatedAt в state
-        set({ cartUpdatedAt: updatedAt || 0 });
-
-        const city = getLocalStorageJson('setCity');
-
-        if (city?.link) {
-          if (city?.link === cart?.city?.link) {
-            let this_item = null;
-
-            cart.items = cart?.items?.reduce((newItems, item) => {
-              this_item = allItems?.find(
-                (it) => parseInt(it.id) === parseInt(item.item_id)
-              );
-
-              if (this_item) {
-                item.one_price = this_item?.price;
-                item.all_price =
-                  parseInt(this_item?.price) * parseInt(item.count);
-                newItems.push(item);
+        set({
+          items: reconciled.items,
+          itemsCount: reconciled.itemsCount,
+          allPriceWithoutPromo: reconciled.total,
+          cartUpdatedAt: updatedAt || 0,
+          ...(changedCity
+            ? {
+                promoInfo: null,
+                checkPromo: null,
+                itemsWithPromo: [],
+                itemsPromo: [],
+                allPrice: 0,
+                addrList: [],
+                pointList: [],
+                cartRecommendations: [],
+                cartRecommendationsRecUuid: '',
               }
+            : {}),
+        });
 
-              return newItems;
-            }, []);
+        get().getItems();
+        get().check_need_dops();
 
-            const allPriceWithoutPromo = cart.items.reduce(
-              (all, it) => all + it.count * it.one_price,
-              0
-            );
-            const itemsCount = cart.items.reduce(
-              (all, item) => all + item.count,
-              0
-            );
-
-            set({ items: cart.items, allPriceWithoutPromo, itemsCount });
-
-            if (promoName) {
-              get().getInfoPromo(promoName, city?.link);
-
-              get().getItems();
-              get().check_need_dops();
-            } else {
-              get().getItems();
-              get().check_need_dops();
-            }
-
-            // если корзина протухла — сбрасываем данные оформления и выходим,
-            // чтобы НЕ применить старый адрес/оплату/дату/коммент ниже.
-            if (expired) {
-              get().clearCheckoutData({ touch: true });
-              return;
-            }
-
-            if (cart?.orderAddr) {
-              set({ orderAddr: cart?.orderAddr });
-
-              if (cart?.orderAddr?.free_drive) {
-                set({ free_drive: cart?.orderAddr?.free_drive });
-              }
-            }
-
-            if (cart?.orderPic) {
-              set({ orderPic: cart?.orderPic });
-            }
-
-            if (cart?.comment) {
-              set({ comment: cart?.comment });
-            }
-
-            if (cart?.typePay) {
-              set({ typePay: cart?.typePay });
-            }
-
-            if (cart?.sdacha) {
-              set({ sdacha: cart?.sdacha });
-            }
-
-            if (cart?.typeOrder) {
-              set({ typeOrder: cart?.typeOrder });
-            }
-
-            if (cart?.dateTimeOrder) {
-              set({ dateTimeOrder: cart?.dateTimeOrder });
-            }
-
-            // чтобы 0 тоже применялось корректно
-            if (cart?.summDiv !== undefined && cart?.summDiv !== null) {
-              set({ summDiv: cart?.summDiv });
-            }
-          }
+        if (changedCity || expired) {
+          get().clearCheckoutData({ touch: changedCity });
+          set({ typeOrder: 'dev' });
+          get().setCartLocalStorage({ touch: changedCity });
+        } else {
+          set({
+            orderAddr: cart.orderAddr ?? null,
+            orderPic: cart.orderPic ?? 0,
+            comment: cart.comment ?? '',
+            typePay: cart.typePay ?? null,
+            sdacha: cart.sdacha ?? '',
+            typeOrder: cart.typeOrder ?? 'dev',
+            dateTimeOrder: cart.dateTimeOrder ?? null,
+            summDiv: cart.summDiv ?? 0,
+            free_drive: cart.orderAddr?.free_drive ?? 0,
+          });
+          get().setCartLocalStorage({ touch: false });
         }
+
+        if (changedCity && reconciled.removed.length) {
+          const names = reconciled.removed.map(
+            (item) => item?.name || `Товар №${item?.item_id ?? item?.id}`
+          );
+          useHeaderStoreNew
+            .getState()
+            .setActiveModalAlert(
+              true,
+              `В меню выбранного города нет: ${names.join(', ')}. Эти товары удалены из корзины.`,
+              false
+            );
+        }
+
+        const promoName = Cookies.get('promo_name');
+        if (promoName) {
+          void get()
+            .getInfoPromo(promoName, cityLink)
+            .catch(() => {
+              get().promoCheck();
+            });
+        } else {
+          get().promoCheck();
+        }
+      },
+
+      applyCityCatalog: (catalog) => {
+        const saved = getLocalStorageJson('setCart');
+        const sourceItems = get().items.length ? get().items : saved?.items;
+        const reconciled = reconcileCartItems(sourceItems, catalog.all_items);
+
+        set({
+          items: reconciled.items,
+          itemsCount: reconciled.itemsCount,
+          allPriceWithoutPromo: reconciled.total,
+          allPrice: 0,
+          allItems: catalog.all_items,
+          freeItems: catalog.free_items ?? [],
+          needDops: catalog.need_dop ?? {},
+          promoInfo: null,
+          checkPromo: null,
+          itemsWithPromo: [],
+          itemsPromo: [],
+          cartRecommendations: [],
+          cartRecommendationsRecUuid: '',
+          orderAddr: null,
+          orderPic: 0,
+          point_id: null,
+          dateTimeOrder: null,
+          typePay: null,
+          typeOrder: 'dev',
+          comment: '',
+          sdacha: '',
+          summDiv: 0,
+          free_drive: 0,
+          addrList: [],
+          pointList: [],
+          openPayForm: false,
+          openConfirmForm: false,
+          openMenuCart: false,
+          global_checkout: null,
+          checkNewOrder: null,
+        });
+
+        get().getItems();
+        get().setDataPromoBasket();
+        get().check_need_dops();
+        get().setCartLocalStorage();
+        return reconciled.removed;
       },
 
       // сохранить заполненные/выбранные данные корзины в localStorage
       setCartLocalStorage: (opts = { touch: true }) => {
         if (typeof window === 'undefined') return;
 
-        const city = getLocalStorageJson('setCity');
+        const cityState = useCitiesStore.getState();
+        const city =
+          cityState.thisCityList.find(
+            (item) => item?.link === cityState.thisCity
+          ) || getLocalStorageJson('setCity');
 
         // прошлый updatedAt (чтобы при touch:false не обновлять корзину)
         let prevUpdatedAt = get().cartUpdatedAt || 0;
@@ -2317,6 +2343,81 @@ export const useCartStore = reuseHotStore(
         return json;
       },
 
+      restorePendingSbpOrder: (city) => {
+        const pending = getPendingSbpOrder();
+        set({ pendingSbpOrder: pending });
+        return pending;
+      },
+
+      checkSbpPaymentStatus: async (token, onSuccess) => {
+        const pending = get().pendingSbpOrder || getPendingSbpOrder();
+        if (!pending || !token) return 'missing';
+        if (!get().pendingSbpOrder) set({ pendingSbpOrder: pending });
+
+        let response;
+        try {
+          response = await api('cart', {
+            type: 'sbpPaymentStatus',
+            order_id: pending.orderId,
+            point_id: pending.pointId,
+            sbp_retry_token: pending.retryToken,
+            token,
+          });
+        } catch {
+          return 'unavailable';
+        }
+        if (response?.st !== true) return 'unavailable';
+        if (get().pendingSbpOrder?.orderId !== pending.orderId)
+          return response.status;
+
+        if (isSbpPaymentConfirmed(response)) {
+          clearPendingSbpOrder();
+          set({
+            pendingSbpOrder: null,
+            sbpPaymentState: 'succeeded',
+            sbpPaymentUrl: null,
+          });
+          endPaymentFlow();
+          onSuccess?.();
+        } else if (response.status === 'canceled') {
+          set({ sbpPaymentState: 'canceled', sbpPaymentUrl: null });
+        } else {
+          set({ sbpPaymentState: response.status || 'pending' });
+        }
+        return response.status;
+      },
+
+      startSbpRedirect: (confirmationUrl) => {
+        const url = sbpConfirmationUrl(confirmationUrl || get().sbpPaymentUrl);
+        if (!url || typeof window === 'undefined') {
+          set({ sbpPaymentState: 'error' });
+          useHeaderStoreNew
+            .getState()
+            .setActiveModalAlert(
+              true,
+              'ЮKassa не вернула ссылку на оплату СБП. Для новой попытки оформите заказ заново.',
+              false
+            );
+          return 'error';
+        }
+
+        try {
+          set({ sbpPaymentState: 'pending' });
+          window.location.assign(url);
+          return 'pending';
+        } catch {
+          set({ sbpPaymentState: 'error' });
+          useHeaderStoreNew
+            .getState()
+            .setActiveModalAlert(
+              true,
+              'Не удалось открыть страницу оплаты СБП. Для новой попытки оформите заказ заново.',
+              false
+            );
+          return 'error';
+        }
+      },
+
       // создание заказа
       createOrder: async (token, city_id, funcClose) => {
         if (!token || token?.length == 0) {
@@ -2494,38 +2595,30 @@ export const useCartStore = reuseHotStore(
             //})
 
             if (get().typePay.id == 'sbp') {
+              const paymentUrl = sbpConfirmationUrl(
+                json?.pay?.pay?.confirmation?.confirmation_url
+              );
+              const pending = savePendingSbpOrder({
+                orderId: json?.check?.order?.order_id ?? json?.order_id,
+                pointId: json?.check?.order?.point_id ?? data.point_id,
+                city: city_id,
+                retryToken: json?.sbp_retry_token,
+                check: json?.check,
+              });
               set({
-                linkPaySBP: json?.pay?.pay?.confirmation?.confirmation_data,
+                pendingSbpOrder: pending,
+                sbpPaymentState: paymentUrl ? 'ready' : 'error',
+                sbpPaymentUrl: paymentUrl,
               });
-
-              trackPaymentClientEvent('status_poll_started', {
-                ...paymentEventBase,
-                payment_action: 'check_pay_order',
-                outcome: 'pending',
-              });
-
-              let timerId = setInterval(async () => {
-                const data = {
-                  type: 'check_pay_order',
-                  order_id: json?.check?.order?.order_id,
-                  point_id: json?.check?.order?.point_id,
-                  payment_flow_id: paymentFlowId,
-                };
-
-                const res = await api('cart', data);
-
-                trackPaymentClientEvent('status_poll_result', {
-                  ...paymentEventBase,
-                  payment_action: 'check_pay_order',
-                  outcome: res?.st === true ? 'success' : 'pending',
-                });
-
-                if (res?.st === true) {
-                  clearInterval(timerId);
-                  endPaymentFlow();
-                  funcClose?.();
-                }
-              }, 3000);
+              if (!paymentUrl) {
+                useHeaderStoreNew
+                  .getState()
+                  .setActiveModalAlert(
+                    true,
+                    'ЮKassa не вернула ссылку на оплату СБП. Для новой попытки оформите заказ заново.',
+                    false
+                  );
+              }
             }
 
             if (get().typePay.id == 'online') {
@@ -6293,7 +6386,13 @@ export const useHomeStore = reuseHotStore(
       closeItemModal: () => {
         let state = {},
           title = '',
-          url = window.location.pathname;
+          url = updateRouteQuery(
+            window.location.pathname +
+              window.location.search +
+              window.location.hash,
+            'item',
+            null
+          );
 
         window.history.pushState(state, title, url);
 
@@ -6489,7 +6588,13 @@ export const useHomeStore = reuseHotStore(
         if (active == false) {
           let state = {},
             title = '',
-            url = window.location.pathname;
+            url = updateRouteQuery(
+              window.location.pathname +
+                window.location.search +
+                window.location.hash,
+              'item',
+              null
+            );
 
           window.history.pushState(state, title, url);
 
@@ -7016,7 +7121,13 @@ export const useHomeStore = reuseHotStore(
         if (json?.link && !options?.stackCurrentItem) {
           let state = { item_id: item_id, item_name: json?.name },
             title = json?.name,
-            url = window.location.pathname + '?item=' + json?.link;
+            url = updateRouteQuery(
+              window.location.pathname +
+                window.location.search +
+                window.location.hash,
+              'item',
+              json.link
+            );
 
           window.history.pushState(state, title, url);
         } else if (!options?.stackCurrentItem) {
@@ -7085,7 +7196,13 @@ export const useHomeStore = reuseHotStore(
           if (prevItem?.link) {
             let state = { item_id: prevItem?.id, item_name: prevItem?.name },
               title = prevItem?.name,
-              url = window.location.pathname + '?item=' + prevItem.link;
+              url = updateRouteQuery(
+                window.location.pathname +
+                  window.location.search +
+                  window.location.hash,
+                'item',
+                prevItem.link
+              );
 
             window.history.pushState(state, title, url);
           }
@@ -7103,7 +7220,13 @@ export const useHomeStore = reuseHotStore(
 
         let state = {},
           title = '',
-          url = window.location.pathname;
+          url = updateRouteQuery(
+            window.location.pathname +
+              window.location.search +
+              window.location.hash,
+            'item',
+            null
+          );
 
         window.history.pushState(state, title, url);
 

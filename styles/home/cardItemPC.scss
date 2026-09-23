@@ -75,54 +75,16 @@
       left: calc(54px - 1.444045vw);
     }
 
-    & .badge.container.pc > .shadow.big {
-      border-radius: 7px;
-      top: 2px;
-      left: 2px;
-    }
-
-    & .badge.container.pc > .box.big {
-      width: fit-content;
-      min-height: 39px;
-      border-radius: 7px;
-      padding: 7px 10px;
-    }
-
-    & .badge.container.pc > .box.big > .MuiTypography-root {
-      width: fit-content;
-      min-height: 25px;
-      font-size: 21px !important;
-      font-weight: 500;
-      line-height: 1 !important;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 !important;
-    }
-
-    & .badge.container.pc > .shadow.bigshort {
-      border-radius: 7px;
-      top: 2px;
-      left: 2px;
-    }
-
+    & .badge.container.pc > .box.big,
     & .badge.container.pc > .box.bigshort {
-      width: fit-content;
-      min-height: 39px;
       border-radius: 7px;
       padding: 7px 10px;
     }
 
+    & .badge.container.pc > .box.big > .MuiTypography-root,
     & .badge.container.pc > .box.bigshort > .MuiTypography-root {
-      width: fit-content;
-      min-height: 25px;
-      font-size: 21px !important;
-      font-weight: 500;
-      line-height: 1 !important;
-      display: flex;
-      align-items: center;
-      justify-content: center;
-      margin: 0 !important;
+      font-size: 21px;
+      line-height: 25px;
     }
   }
 
@@ -969,32 +931,16 @@
         left: tablet-vw(14);
       }
 
-      & .badge.container.pc > .shadow.big,
-      & .badge.container.pc > .shadow.bigshort {
-        border-radius: tablet-vw(7);
-        top: tablet-vw(2);
-        left: tablet-vw(2);
-      }
-
       & .badge.container.pc > .box.big,
       & .badge.container.pc > .box.bigshort {
-        width: fit-content;
-        min-height: tablet-vw(39);
-        border-radius: tablet-vw(7);
-        padding: tablet-vw(7) tablet-vw(10);
+        border-radius: 5px;
+        padding: 5px 7px;
       }
 
       & .badge.container.pc > .box.big > .MuiTypography-root,
       & .badge.container.pc > .box.bigshort > .MuiTypography-root {
-        width: fit-content;
-        min-height: tablet-vw(25);
-        font-size: tablet-font-vw(21) !important;
-        font-weight: 500;
-        line-height: 1 !important;
-        display: flex;
-        align-items: center;
-        justify-content: center;
-        margin: 0 !important;
+        font-size: 16px;
+        line-height: 19px;
       }
     }
 

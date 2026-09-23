@@ -238,14 +238,14 @@ export default function ModalItemPC() {
                 </picture>
 
                 <div className="badgecontainer">
-                  {parseInt(item_card?.is_hit) == 1 ? (
-                    <BadgeItem size={'big'} type={'hit'} view={'pc'} />
+                  {parseInt(item_card?.is_new) == 1 ? (
+                    <BadgeItem size={'big'} type={'new'} view={'pc'} />
                   ) : (
                     false
                   )}
 
-                  {parseInt(item_card?.is_new) == 1 ? (
-                    <BadgeItem size={'big'} type={'new'} view={'pc'} />
+                  {parseInt(item_card?.is_hit) == 1 ? (
+                    <BadgeItem size={'big'} type={'hit'} view={'pc'} />
                   ) : (
                     false
                   )}

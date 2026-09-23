@@ -59,6 +59,8 @@ import {
   removeLocalStorageItem,
   setLocalStorageItem,
 } from '@/utils/browserStorage';
+import { switchCity } from '@/utils/switchCity';
+import { isSbpEnabled } from '@/utils/sbpPayment';
 
 const dopText = {
   rolly: 'Не забудьте про соусы, приправы и приборы',
@@ -71,7 +73,8 @@ const dopText_2 =
 const reviewOrderLabel = 'Проверить заказ';
 
 export default function FormOrder({ cityName }) {
-  const { push } = useRouter();
+  const router = useRouter();
+  const { push } = router;
 
   const [promo, setPromo] = useState('');
   const [list, setList] = useState([]);
@@ -83,11 +86,12 @@ export default function FormOrder({ cityName }) {
   const type_pay_pic_new = [
     { id: 'cash', name: 'В кафе' },
     { id: 'online', name: 'Картой на сайте' },
+    ...(isSbpEnabled() ? [{ id: 'sbp', name: 'СБП на сайте' }] : []),
   ];
   const type_pay_div = [
     { id: 'cash', name: 'Наличными курьеру' },
-    //{ id: 'sbp', name: 'СБП на сайте' },
     { id: 'online', name: 'Картой на сайте' },
+    ...(isSbpEnabled() ? [{ id: 'sbp', name: 'СБП на сайте' }] : []),
   ];
   const type_pred = [
     { name: 'В ближайшее время', id: -1 },
@@ -548,26 +552,10 @@ export default function FormOrder({ cityName }) {
     }
   };
 
-  const chooseItem = (item) => {
+  const chooseItem = async (item) => {
     if (nameList === 'city') {
-      setLocalStorageItem('setCity', JSON.stringify(item));
-      Cookies.set('city', thisCity || '', {
-        expires: 365,
-        path: '/',
-        sameSite: 'Lax',
-      });
-      // setThisCityRu(item.name);
-      // setAnchorEl(null);
-      push(`/${item.link}`);
-      // setPoint(null);
-      // setAddrDiv(null);
-      // setSummDiv(0);
-      // getMySavedAddr(item.link);
-      // getNewPriceItems(item.link)
-
-      setTimeout(() => {
-        window.location.reload();
-      }, 1000);
+      if (await switchCity(item, router)) setAnchorEl(null);
+      return;
     }
 
     if (nameList === 'point') {
@@ -722,19 +710,30 @@ export default function FormOrder({ cityName }) {
 
     setTimeout(() => {
       try {
+        const confirmedOrder = useCartStore.getState().checkNewOrder;
+        const confirmedPayment = useCartStore.getState().typePay;
+        const confirmedTypeOrder =
+          confirmedPayment?.id === 'sbp'
+            ? Number(confirmedOrder?.order?.type_order_) === 2
+              ? 'pic'
+              : 'dev'
+            : typeOrder;
         const ym_data = {
           city: thisCityRu,
-          type_pay: typePay?.name,
+          type_pay: confirmedPayment?.name,
           //summ: allPrice,
-          typeOrder: typeOrder == 'pic' ? 'Самовывоз' : 'Доставка',
+          typeOrder: confirmedTypeOrder == 'pic' ? 'Самовывоз' : 'Доставка',
         };
 
         // Метрика: основной + городской
         reachGoal('pay_order', ym_data);
-        reachGoal('pay_order_' + typeOrder + '_' + typePay?.id, ym_data);
+        reachGoal(
+          'pay_order_' + confirmedTypeOrder + '_' + confirmedPayment?.id,
+          ym_data
+        );
         tgp('event', 'HbWMUPHc-UVXQB2SU');
 
-        const items = (checkNewOrder?.items ?? []).map((item, index) => ({
+        const items = (confirmedOrder?.items ?? []).map((item, index) => ({
           id: item?.id ?? 0,
           name: item?.name ?? '',
           price: item?.price ?? 0,
@@ -745,7 +744,7 @@ export default function FormOrder({ cityName }) {
 
         trackPurchase(
           buildPurchasePayload({
-            order: checkNewOrder?.order,
+            order: confirmedOrder?.order,
             items,
             goalParams: ym_data,
           })

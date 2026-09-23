@@ -1,12 +1,8 @@
 import React, { useState, useRef, useEffect, useMemo } from 'react';
 
-import Link from 'next/link';
+import { useRouter } from 'next/router';
 
-import {
-  useContactStore,
-  useCitiesStore,
-  useHeaderStoreNew,
-} from '@/components/store.js';
+import { useContactStore, useCitiesStore } from '@/components/store.js';
 import { api, apiAddress } from '@/components/api';
 
 import { MapPointIcon } from '@/ui/Icons.js';
@@ -33,9 +29,8 @@ import Divider from '@mui/material/Divider';
 
 import MySwitch from '@/ui/Switch.js';
 
-import Cookies from 'js-cookie';
-import { setLocalStorageItem } from '@/utils/browserStorage';
 import { BREAKPOINTS } from '@/utils/breakpoints';
+import { switchCity } from '@/utils/switchCity';
 
 const ContactsMapCanvas = React.memo(function ContactsMapCanvas({
   instanceRef,
@@ -112,18 +107,16 @@ const ContactsMapCanvas = React.memo(function ContactsMapCanvas({
 });
 
 export default function ContactsPagePC({ heading = '' }) {
+  const router = useRouter();
   const ref = useRef();
   const suggestionRequestRef = useRef(0);
   const suppressNextSuggestRef = useRef(false);
 
-  const [thisCityList, thisCityRu, setThisCityRu, setThisCity, thisCity] =
-    useCitiesStore((state) => [
-      state.thisCityList,
-      state.thisCityRu,
-      state.setThisCityRu,
-      state.setThisCity,
-      state.thisCity,
-    ]);
+  const [thisCityList, thisCityRu, thisCity] = useCitiesStore((state) => [
+    state.thisCityList,
+    state.thisCityRu,
+    state.thisCity,
+  ]);
 
   const [
     myAddr,
@@ -132,7 +125,6 @@ export default function ContactsPagePC({ heading = '' }) {
     disable,
     center_map,
     zones,
-    getMap,
     points_zone,
     changePointClick,
     changePointNotHover,
@@ -143,13 +135,10 @@ export default function ContactsPagePC({ heading = '' }) {
     state.disable,
     state.center_map,
     state.zones,
-    state.getMap,
     state.points_zone,
     state.changePointClick,
     state.changePointNotHover,
   ]);
-
-  const [activePage] = useHeaderStoreNew((state) => [state?.activePage]);
 
   const [anchorEl, setAnchorEl] = useState(null);
   const [searchValue, setSearchValue] = useState('');
@@ -333,18 +322,10 @@ export default function ContactsPagePC({ heading = '' }) {
     setSearchStatus('');
   };
 
-  const chooseCity = (city) => {
-    setLocalStorageItem('setCity', JSON.stringify(city));
-    Cookies.set('city', city?.link || '', {
-      expires: 365,
-      path: '/',
-      sameSite: 'Lax',
-    });
-    setThisCityRu(city.name);
-    setThisCity(city.link);
-    setAnchorEl(null);
-    clearSearch();
-    getMap(activePage, city.link);
+  const chooseCity = async (city) => {
+    if (await switchCity(city, router)) {
+      setAnchorEl(null);
+    }
   };
 
   useEffect(() => {
@@ -410,14 +391,9 @@ export default function ContactsPagePC({ heading = '' }) {
           open={open}
           onClose={() => setAnchorEl(null)}
         >
-          {thisCityList.map((city, key) => (
-            <MenuItem key={key}>
-              <Link
-                href={`/${city.link}/${activePage}`}
-                onClick={() => chooseCity(city)}
-              >
-                {city.name}
-              </Link>
+          {thisCityList.map((city) => (
+            <MenuItem key={city.link} onClick={() => chooseCity(city)}>
+              {city.name}
             </MenuItem>
           ))}
         </Menu>

@@ -34,6 +34,7 @@ const NON_IDEMPOTENT_TYPES = new Set([
   'checkauthyandex',
   'create_order',
   'create_order_pre',
+  'retry_sbp_payment',
   'create_profile',
   'sendsmsrp',
   'site_login',

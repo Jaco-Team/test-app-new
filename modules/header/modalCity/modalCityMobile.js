@@ -7,70 +7,47 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 import { roboto } from '@/ui/Font.js';
-import { useHeaderStoreNew, useCitiesStore, useCartStore, useContactStore, useHomeStore } from '@/components/store.js';
+import { useHeaderStoreNew, useCitiesStore } from '@/components/store.js';
 
 import Cookies from 'js-cookie';
-import { getSessionStorageItem, setLocalStorageItem } from '@/utils/browserStorage';
+import { setLocalStorageItem } from '@/utils/browserStorage';
+import { switchCity } from '@/utils/switchCity';
 
 export default function ModalCityMobile() {
-  const { push } = useRouter();
+  const router = useRouter();
 
-  const [thisCityList, thisCityRu, setThisCityRu, setThisCity, thisCity] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu, state.setThisCity, state.thisCity]);
+  const [thisCityList, thisCityRu] = useCitiesStore((state) => [
+    state.thisCityList,
+    state.thisCityRu,
+  ]);
 
-  const [openCityModal, openCityModalList, setActiveModalCity, setActiveModalCityList, activePage, token] = useHeaderStoreNew((state) => [state?.openCityModal, state?.openCityModalList, state?.setActiveModalCity, state?.setActiveModalCityList, state?.activePage, state?.token]);
-
-  const [getMySavedAddr, setPoint, setAddrDiv, getNewPriceItems, getInfoPromo] = useCartStore((state) => [state.getMySavedAddr, state.setPoint, state.setAddrDiv, state.getNewPriceItems, state.getInfoPromo]);
-
-  // const [setActiveFilter] = useHomeStore( state => [state.setActiveFilter] )
-
-  // const [getMap] = useContactStore(state => [state.getMap]);
+  const [
+    openCityModal,
+    openCityModalList,
+    setActiveModalCity,
+    setActiveModalCityList,
+  ] = useHeaderStoreNew((state) => [
+    state?.openCityModal,
+    state?.openCityModalList,
+    state?.setActiveModalCity,
+    state?.setActiveModalCityList,
+  ]);
 
   const rightCity = () => {
     setActiveModalCity(false);
     const city = thisCityList.find((city) => city.name === thisCityRu);
     setLocalStorageItem('setCity', JSON.stringify(city));
-    Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
+    Cookies.set('city', city?.link || '', {
+      expires: 365,
+      path: '/',
+      sameSite: 'Lax',
+    });
   };
 
-  function replaceCity(path, city) {
-    const parts = path.split('/').filter(Boolean);
-    parts[0] = city;
-    return '/' + parts.join('/');
-  }
-
-  const chooseCity = (city) => {
-    setLocalStorageItem('setCity', JSON.stringify(city));
-    Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
-    // setActiveModalCityList(false);
-    // setThisCityRu(city.name);
-    // setThisCity(city.link);
-
-    // getMap('contacts', city.link);
-    // setPoint(null);
-    // setAddrDiv(null);
-    // getMySavedAddr(thisCity);
-
-    // setActiveFilter(false);
-
-    // getNewPriceItems(city.link);
-
-    let new_path = replaceCity(window.location.pathname, city.link);
-
-    // if(activePage && activePage !== 'home') {
-    //   push(`/${city.link}/${activePage}`);
-    // } else {
-    //   push(`/${city.link}`);
-    // }
-
-    push(new_path);
-
-    setTimeout( () => {
-      window.location.reload()
-    }, 1000 )
-
-    const promoName = getSessionStorageItem('promo_name');
-    if(promoName?.length > 0){
-      getInfoPromo(promoName, city.link)
+  const chooseCity = async (city) => {
+    if (await switchCity(city, router)) {
+      setActiveModalCityList(false);
+      setActiveModalCity(false);
     }
   };
 
@@ -107,16 +84,33 @@ export default function ModalCityMobile() {
 
           <div
             className="loginCity"
-            style={{ marginBottom: thisCityRu.length > 12 ? '2.991452991453vw' : '13.247863247863vw', height: thisCityRu.length > 12 ? '20.512820512821vw' : '10.25641025641vw'}}
+            style={{
+              marginBottom:
+                thisCityRu.length > 12
+                  ? '2.991452991453vw'
+                  : '13.247863247863vw',
+              height:
+                thisCityRu.length > 12
+                  ? '20.512820512821vw'
+                  : '10.25641025641vw',
+            }}
           >
             <Typography component="span">{thisCityRu}</Typography>
           </div>
 
           <Button className="buttons" onClick={rightCity}>
-            <Typography variant="h5" component="span">Да, верно</Typography>
+            <Typography variant="h5" component="span">
+              Да, верно
+            </Typography>
           </Button>
 
-          <Button className="buttons choose" onClick={() => { setActiveModalCityList(true); setActiveModalCity(false)}}>
+          <Button
+            className="buttons choose"
+            onClick={() => {
+              setActiveModalCityList(true);
+              setActiveModalCity(false);
+            }}
+          >
             <Typography variant="h5" component="span">
               Нет, выберу город
             </Typography>
@@ -141,7 +135,14 @@ export default function ModalCityMobile() {
           </div>
           <List>
             {thisCityList.map((city, key) => (
-              <ListItem onClick={() => chooseCity(city)} key={key} style={{ background: thisCityRu === city.name ? 'rgba(0, 0, 0, 0.05)' : null }}>
+              <ListItem
+                onClick={() => chooseCity(city)}
+                key={key}
+                style={{
+                  background:
+                    thisCityRu === city.name ? 'rgba(0, 0, 0, 0.05)' : null,
+                }}
+              >
                 <span>{city.name}</span>
               </ListItem>
             ))}

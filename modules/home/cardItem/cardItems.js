@@ -21,6 +21,7 @@ import {
   removeLocalStorageItem,
 } from '@/utils/browserStorage';
 import { isHomeCatalogItemVisible } from '@/utils/homeCatalogFilter';
+import { updateRouteQuery } from '@/utils/routeQuery';
 
 const NOVINKI_BADGE_ID = 2;
 const NOVINKI_SCROLL_DELAY_MS = 2500;
@@ -423,14 +424,27 @@ export default React.memo(function CatItems({ showCategoryHeadings = false }) {
               search_category?.length > 0 &&
               typeof replaceRoute === 'function'
             ) {
-              replaceRoute(window.location.pathname, undefined, {
-                shallow: true,
-                scroll: false,
-              });
+              replaceRoute(
+                updateRouteQuery(
+                  window.location.pathname +
+                    window.location.search +
+                    window.location.hash,
+                  'category',
+                  null
+                ),
+                undefined,
+                {
+                  shallow: true,
+                  scroll: false,
+                }
+              );
             } else {
               let state = {},
                 title = '',
-                url = window.location.pathname;
+                url =
+                  window.location.pathname +
+                  window.location.search +
+                  window.location.hash;
 
               window.history.pushState(state, title, url);
             }
@@ -523,7 +537,17 @@ export default React.memo(function CatItems({ showCategoryHeadings = false }) {
         pathname &&
         Object.prototype.hasOwnProperty.call(router.query, 'novinki')
       ) {
-        replaceRoute(pathname, undefined, { shallow: true, scroll: false });
+        replaceRoute(
+          updateRouteQuery(
+            window.location.pathname +
+              window.location.search +
+              window.location.hash,
+            'novinki',
+            null
+          ),
+          undefined,
+          { shallow: true, scroll: false }
+        );
       }
     };
 

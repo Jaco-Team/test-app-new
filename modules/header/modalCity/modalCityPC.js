@@ -16,20 +16,23 @@ import KeyboardArrowUpIcon from '@mui/icons-material/KeyboardArrowUp';
 
 import { roboto } from '@/ui/Font.js';
 import { IconClose } from '@/ui/Icons.js';
-import { useHeaderStoreNew, useCitiesStore, useContactStore, useCartStore, useHomeStore } from '@/components/store.js';
+import { useHeaderStoreNew, useCitiesStore } from '@/components/store.js';
 
 import Cookies from 'js-cookie';
 import { setLocalStorageItem } from '@/utils/browserStorage';
+import { switchCity } from '@/utils/switchCity';
 
 export default function ModalCityPC() {
+  const router = useRouter();
 
-  const { push } = useRouter();
-
-  const [thisCityList, thisCityRu, setThisCityRu, setThisCity] = useCitiesStore((state) => [state.thisCityList, state.thisCityRu, state.setThisCityRu, state.setThisCity]);
-  const [openCityModal, setActiveModalCity, activePage] = useHeaderStoreNew((state) => [state?.openCityModal, state?.setActiveModalCity, state?.activePage]);
-  //const [getMap] = useContactStore((state) => [state.getMap]);
-  //const [getNewPriceItems] = useCartStore( state => [state.getNewPriceItems] )
-  //const [resetFilter] = useHomeStore( state => [state.resetFilter] )
+  const [thisCityList, thisCityRu] = useCitiesStore((state) => [
+    state.thisCityList,
+    state.thisCityRu,
+  ]);
+  const [openCityModal, setActiveModalCity] = useHeaderStoreNew((state) => [
+    state?.openCityModal,
+    state?.setActiveModalCity,
+  ]);
 
   const [anchorEl, setAnchorEl] = useState(null);
 
@@ -41,37 +44,18 @@ export default function ModalCityPC() {
     setActiveModalCity(false);
     const city = thisCityList.find((city) => city.name === thisCityRu);
     setLocalStorageItem('setCity', JSON.stringify(city));
-    Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
+    Cookies.set('city', city?.link || '', {
+      expires: 365,
+      path: '/',
+      sameSite: 'Lax',
+    });
   };
 
-  function replaceCity(path, city) {
-    const parts = path.split('/').filter(Boolean);
-    parts[0] = city;
-    return '/' + parts.join('/');
-  }
-
-  const chooseCity = (city) => {
-    setLocalStorageItem('setCity', JSON.stringify(city));
-    Cookies.set('city', city?.link || '', { expires: 365, path: '/', sameSite: 'Lax' });
-    // setThisCityRu(city.name);
-    // setAnchorEl(null);
-    // setActiveModalCity(false);
-    // setThisCity(city.link);
-    // getNewPriceItems(city.link)
-    // getMap('contacts', city.link);
-    // resetFilter();
-
-    let new_path = replaceCity(window.location.pathname, city.link);
-
-    // if(activePage && activePage !== 'home') {
-    //   push(`/${city.link}/${activePage}`);
-    // } else {
-      push(new_path);
-    //}
-
-    setTimeout( () => {
-      window.location.reload()
-    }, 1000 )
+  const chooseCity = async (city) => {
+    if (await switchCity(city, router)) {
+      setAnchorEl(null);
+      setActiveModalCity(false);
+    }
   };
 
   return (
@@ -83,12 +67,19 @@ export default function ModalCityPC() {
       slotProps={{ timeout: 500 }}
     >
       <DialogContent>
-        <Box component="div" className='modalCityPC'>
-          <IconButton className='closeButton' onClick={() => setActiveModalCity(false)}>
-            <IconClose/>
+        <Box component="div" className="modalCityPC">
+          <IconButton
+            className="closeButton"
+            onClick={() => setActiveModalCity(false)}
+          >
+            <IconClose />
           </IconButton>
 
-          <div className={'loginIMG' + (thisCityRu?.length > 12 ? ' loginIMG--long' : '')}>
+          <div
+            className={
+              'loginIMG' + (thisCityRu?.length > 12 ? ' loginIMG--long' : '')
+            }
+          >
             <img
               alt="Город"
               src="/Favicon_city.png"
@@ -107,21 +98,43 @@ export default function ModalCityPC() {
             <Typography component="span">Вы в городе</Typography>
           </div>
 
-          <div className={'loginCity' + (thisCityRu?.length > 12 ? ' loginCity--long' : '')}>
+          <div
+            className={
+              'loginCity' + (thisCityRu?.length > 12 ? ' loginCity--long' : '')
+            }
+          >
             <Typography component="span">{thisCityRu}</Typography>
           </div>
 
-          <Button className='buttons'  onClick={rightCity}>
-            <Typography variant="h5" component="span">Да, верно</Typography>
+          <Button className="buttons" onClick={rightCity}>
+            <Typography variant="h5" component="span">
+              Да, верно
+            </Typography>
           </Button>
 
-          <Button className='buttons choose' onClick={openMenu} endIcon={open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />} 
-            style={{  backgroundColor: open ? 'rgba(0, 0, 0, 0.05)' : '#fff'}}>
-            <Typography variant="h5" component="span">Нет, выберу город</Typography>
+          <Button
+            className="buttons choose"
+            onClick={openMenu}
+            endIcon={open ? <KeyboardArrowUpIcon /> : <KeyboardArrowDownIcon />}
+            style={{ backgroundColor: open ? 'rgba(0, 0, 0, 0.05)' : '#fff' }}
+          >
+            <Typography variant="h5" component="span">
+              Нет, выберу город
+            </Typography>
           </Button>
 
-          <Menu id={'chooseCityModal'} className={roboto.variable} anchorEl={anchorEl} open={open} onClose={() => setAnchorEl(null)}>
-            {thisCityList.map((city, key) => <MenuItem key={key} onClick={() => chooseCity(city)}>{city.name}</MenuItem>)}
+          <Menu
+            id={'chooseCityModal'}
+            className={roboto.variable}
+            anchorEl={anchorEl}
+            open={open}
+            onClose={() => setAnchorEl(null)}
+          >
+            {thisCityList.map((city, key) => (
+              <MenuItem key={key} onClick={() => chooseCity(city)}>
+                {city.name}
+              </MenuItem>
+            ))}
           </Menu>
         </Box>
       </DialogContent>

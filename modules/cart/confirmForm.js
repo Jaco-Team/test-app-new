@@ -4,7 +4,12 @@ import { useRouter } from 'next/router';
 
 import Script from 'next/script';
 
-import {useCartStore, useHeaderStoreNew, useCitiesStore, useProfileStore } from '@/components/store.js';
+import {
+  useCartStore,
+  useHeaderStoreNew,
+  useCitiesStore,
+  useProfileStore,
+} from '@/components/store.js';
 
 import Dialog from '@mui/material/Dialog';
 import DialogContent from '@mui/material/DialogContent';
@@ -12,14 +17,24 @@ import IconButton from '@mui/material/IconButton';
 import Backdrop from '@mui/material/Backdrop';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import { IconClose, ArrowLeftMobile, Cloud, TimeConfirm, CheckAuthMobile } from '@/ui/Icons';
+import {
+  IconClose,
+  ArrowLeftMobile,
+  Cloud,
+  TimeConfirm,
+  CheckAuthMobile,
+} from '@/ui/Icons';
 import { roboto } from '@/ui/Font.js';
 
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import CartConfirmMap from '@/modules/cart/cartConfirmMap';
 
-import { buildPurchasePayload, reachGoal, trackPurchase } from '@/utils/metrika';
+import {
+  buildPurchasePayload,
+  reachGoal,
+  trackPurchase,
+} from '@/utils/metrika';
 import { BREAKPOINTS } from '@/utils/breakpoints';
 
 const confirmOrderTitle = 'Проверьте заказ';
@@ -27,15 +42,30 @@ const confirmOrderLabel = 'Подтвердить заказ';
 
 export default function ConfirmForm() {
   const { push } = useRouter();
-  const isMobileConfirm = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
+  const isMobileConfirm = useMediaQuery(
+    `screen and (max-width: ${BREAKPOINTS.mobileMax}px)`
+  );
 
   const [getOrderList] = useProfileStore((state) => [state.getOrderList]);
 
-  const [token, showLoad, setActiveModalAlert] = useHeaderStoreNew((state) => [state?.token, state?.showLoad, state.setActiveModalAlert]);
+  const [token, showLoad, setActiveModalAlert] = useHeaderStoreNew((state) => [
+    state?.token,
+    state?.showLoad,
+    state.setActiveModalAlert,
+  ]);
 
-  const [thisCity, thisCityRu] = useCitiesStore((state) => [state.thisCity, state.thisCityRu]);
+  const [thisCity, thisCityRu] = useCitiesStore((state) => [
+    state.thisCity,
+    state.thisCityRu,
+  ]);
 
-  const [openPayForm, linkPaySBP] = useCartStore((state) => [state.openPayForm, state.linkPaySBP]);
+  const [openPayForm, sbpPaymentState, sbpPaymentUrl, startSbpRedirect] =
+    useCartStore((state) => [
+      state.openPayForm,
+      state.sbpPaymentState,
+      state.sbpPaymentUrl,
+      state.startSbpRedirect,
+    ]);
 
   const [
     trueOrderCash,
@@ -79,7 +109,12 @@ export default function ConfirmForm() {
 
   function getWord(int, array) {
     return (
-      (array = array || ['позиция', 'позиции', 'позиций']) && array[int % 100 > 4 && int % 100 < 20 ? 2 : [2, 0, 1, 1, 1, 2][int % 10 < 5 ? int % 10 : 5]]
+      (array = array || ['позиция', 'позиции', 'позиций']) &&
+      array[
+        int % 100 > 4 && int % 100 < 20
+          ? 2
+          : [2, 0, 1, 1, 1, 2][int % 10 < 5 ? int % 10 : 5]
+      ]
     );
   }
 
@@ -87,7 +122,11 @@ export default function ConfirmForm() {
     showLoad(true);
 
     //const res = await createOrder(token, thisCity, trueOrderCLose);
-    const res = await trueOrderCash(token, checkNewOrder?.order?.point_id, checkNewOrder?.order?.order_id);
+    const res = await trueOrderCash(
+      token,
+      checkNewOrder?.order?.point_id,
+      checkNewOrder?.order?.order_id
+    );
 
     showLoad(false);
 
@@ -110,8 +149,8 @@ export default function ConfirmForm() {
       // 1) цели: основной + городской
       reachGoal('pay_order', ym_data);
       reachGoal(`pay_order_${typeOrder}_${typePay.id}`, ym_data);
-      tgp('event','HbWMUPHc-UVXQB2SU');
-      
+      tgp('event', 'HbWMUPHc-UVXQB2SU');
+
       const items = (checkNewOrder?.items ?? []).map((item, index) => ({
         id: item?.id ?? 0,
         name: item?.name ?? '',
@@ -128,7 +167,7 @@ export default function ConfirmForm() {
           goalParams: ym_data,
         })
       );
- 
+
       try {
         if (thisCityRu == 'Самара') {
           // roistat.event.send('pay_order_samara');
@@ -145,7 +184,6 @@ export default function ConfirmForm() {
       } catch (e) {
         console.log(e);
       }
-
     } catch (e) {
       console.log(e);
     }
@@ -163,6 +201,26 @@ export default function ConfirmForm() {
     }, 2000);
     //}, 300);
   }
+
+  const sbpStatus =
+    typePay?.id === 'sbp' ? (
+      <div className="sbpPaymentAction" role="status" aria-live="polite">
+        {sbpPaymentState === 'processing'
+          ? 'Банк подтвердил платёж. Ожидаем подтверждения заказа.'
+          : sbpPaymentState === 'canceled' || sbpPaymentState === 'error'
+            ? 'Не удалось открыть оплату СБП. Для новой попытки оформите заказ заново.'
+            : 'Проверьте заказ и перейдите к оплате через СБП.'}
+        {sbpPaymentState === 'ready' && sbpPaymentUrl && (
+          <button
+            type="button"
+            className="confirmBTN"
+            onClick={() => startSbpRedirect()}
+          >
+            Оплатить СБП
+          </button>
+        )}
+      </div>
+    ) : null;
 
   // const openFormOrder = () => {
   //   setConfirmForm(false);
@@ -220,7 +278,11 @@ export default function ConfirmForm() {
       closed = true;
 
       if (reason === 'cutoff') {
-        setActiveModalAlert(true, 'Сегодня заказы больше не принимаются!', false);
+        setActiveModalAlert(
+          true,
+          'Сегодня заказы больше не принимаются!',
+          false
+        );
       }
 
       setConfirmForm(false);
@@ -270,15 +332,21 @@ export default function ConfirmForm() {
 
   //<span className="confirmText">Чтобы всё прошло по плану, проверьте, пожалуйста, условия получения и состав вашего заказа:</span>
 
-  let price1 = itemsOffDops.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
-  let price2 = dopListCart.reduce((all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price), 0);
+  let price1 = itemsOffDops.reduce(
+    (all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price),
+    0
+  );
+  let price2 = dopListCart.reduce(
+    (all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price),
+    0
+  );
 
   let allPriceWithoutPromo_new = price1 + price2;
 
-  let NewSummDiv = typeOrder == 'pic' ? 0 : orderAddr?.sum_div ?? 0;
+  let NewSummDiv = typeOrder == 'pic' ? 0 : (orderAddr?.sum_div ?? 0);
 
-  if(parseInt(free_drive) == 1) {
-    if(parseInt(allPriceWithoutPromo_new) > 0 || parseInt(allPrice) > 0) {
+  if (parseInt(free_drive) == 1) {
+    if (parseInt(allPriceWithoutPromo_new) > 0 || parseInt(allPrice) > 0) {
       NewSummDiv = 0;
     } else {
       NewSummDiv = 1;
@@ -293,58 +361,78 @@ export default function ConfirmForm() {
           open={openConfirmForm}
           onClose={() => setConfirmForm(false)}
           onOpen={() => setConfirmForm(true)}
-          className={(typePay?.id === 'cash' ? 'cartConfirmFormMobile_cash ' : 'cartConfirmFormMobile ') + roboto.variable}
+          className={
+            (typePay?.id === 'cash'
+              ? 'cartConfirmFormMobile_cash '
+              : 'cartConfirmFormMobile ') +
+            (typePay?.id === 'sbp' ? 'cartConfirmFormMobile_sbp ' : '') +
+            roboto.variable
+          }
           disableSwipeToOpen
         >
-          {typePay?.id === 'cash' ?
+          {typePay?.id === 'cash' ? (
             <div className="container">
-
               <div className="confirmHeaderBlock">
-
                 {/* { openPayForm === false ? false :
                   <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
                 } */}
 
                 <div className="line" />
                 <span className="confirmHeader">{confirmOrderTitle}</span>
-                
 
-                { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ? 
+                {parseInt(checkNewOrder?.order?.type_order_) == 1 ? (
                   <div className="confirmAddr">
                     <span>Доставим по адресу:</span>
-                    <span>{thisCityRu + ', ' + checkNewOrder?.order?.street + ', ' + checkNewOrder?.order?.home + ', кв ' + checkNewOrder?.order?.kv}</span>
+                    <span>
+                      {thisCityRu +
+                        ', ' +
+                        checkNewOrder?.order?.street +
+                        ', ' +
+                        checkNewOrder?.order?.home +
+                        ', кв ' +
+                        checkNewOrder?.order?.kv}
+                    </span>
                   </div>
-                    :
+                ) : (
                   <div className="confirmAddr">
                     <span>Приготовим по адресу:</span>
-                    <span>{thisCityRu + ', ' + checkNewOrder?.order?.point_name}</span>
+                    <span>
+                      {thisCityRu + ', ' + checkNewOrder?.order?.point_name}
+                    </span>
                   </div>
-                }
-      
+                )}
+
                 <span className="confirmTime">
-                  { checkNewOrder?.order?.max_time_order }
+                  {checkNewOrder?.order?.max_time_order}
                 </span>
-                
+
                 <span className="confirmText_2"></span>
 
-                { parseInt( checkNewOrder?.order?.type_order_ ) == 1 && parseInt( checkNewOrder?.order?.is_pred ) == 1 ? 
+                {parseInt(checkNewOrder?.order?.type_order_) == 1 &&
+                parseInt(checkNewOrder?.order?.is_pred) == 1 ? (
                   <div className="confirmMessage">
                     <TimeConfirm style={{ fill: '#fff' }} />
 
-                    <span>Пожалуйста, будьте по адресу в указанный промежуток времени.</span>
+                    <span>
+                      Пожалуйста, будьте по адресу в указанный промежуток
+                      времени.
+                    </span>
                   </div>
-                    :
+                ) : (
                   false
-                }
+                )}
 
-                { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ?
+                {parseInt(checkNewOrder?.order?.type_order_) == 1 ? (
                   <div className="confirmMessage">
                     <Cloud />
-                    <span>Из-за погодных условий сегодня курьер может ехать дольше, чем обычно</span>
+                    <span>
+                      Из-за погодных условий сегодня курьер может ехать дольше,
+                      чем обычно
+                    </span>
                   </div>
-                    :
+                ) : (
                   false
-                }
+                )}
 
                 <CartConfirmMap
                   open={openConfirmForm}
@@ -352,129 +440,133 @@ export default function ConfirmForm() {
                 />
 
                 <div className="cofirmDivider" />
-
               </div>
 
               <div className="confirmScroll">
-
                 <div className={'cofirmTable'}>
                   {checkNewOrder?.items?.map((item, key) => (
                     <div key={key}>
                       <span>{item.name}</span>
                       <span>{item.count}</span>
-                      <span>{new Intl.NumberFormat('ru-RU').format(item.price)}{' '}₽</span>
+                      <span>
+                        {new Intl.NumberFormat('ru-RU').format(item.price)} ₽
+                      </span>
                     </div>
                   ))}
                 </div>
-
               </div>
 
               <div className="confirmFooter">
-
                 <div className="cofirmDivider" />
 
                 {typeOrder == 'pic' ? null : (
                   <div className="confirmDelivery">
                     <span>Доставка:</span>
-                    <span>{new Intl.NumberFormat('ru-RU').format(NewSummDiv)} ₽</span>
+                    <span>
+                      {new Intl.NumberFormat('ru-RU').format(NewSummDiv)} ₽
+                    </span>
                   </div>
                 )}
 
                 <div className="confirmTotal">
-                  <span>Итого: {itemsCount} {getWord(itemsCount)}</span>
                   <span>
-                    {new Intl.NumberFormat('ru-RU').format( checkNewOrder?.order?.sum_order )}{' '}₽
+                    Итого: {itemsCount} {getWord(itemsCount)}
+                  </span>
+                  <span>
+                    {new Intl.NumberFormat('ru-RU').format(
+                      checkNewOrder?.order?.sum_order
+                    )}{' '}
+                    ₽
                   </span>
                 </div>
 
-                {checkNewOrder?.order?.promo_name?.length > 0 ?
+                {checkNewOrder?.order?.promo_name?.length > 0 ? (
                   <div className="confirmPromo promo">
                     <CheckAuthMobile />
                     <span>{`Применили промокод ${checkNewOrder?.order?.promo_name}`}</span>
                   </div>
-                    : 
-                  null
-                }
+                ) : null}
 
-                { parseInt(checkNewOrder?.order?.sdacha) > 0 ?
+                {parseInt(checkNewOrder?.order?.sdacha) > 0 ? (
                   <div className={'confirmPromo promo'}>
                     <CheckAuthMobile />
                     <span>{`Привезём сдачу с ${checkNewOrder?.order?.sdacha} ₽`}</span>
                   </div>
-                    : 
-                  null
-                }
+                ) : null}
 
                 {/* <div className="ContainerCart" style={{width: '100%'}}>
                   <div className="Line"></div>
                   <div id="payment-form-confirm" />
                 </div> */}
 
-                {/* { typePay?.id == 'sbp' ? 
-                  <iframe
-                    src={linkPaySBP}
-                    width='100%'
-                    height={900}
-                    style={{marginTop: 20}}
-                    loading="lazy"
-                  ></iframe>
-                    :
-                  false
-                } */}
-
                 {/* { typePay?.id == 'online' || typePay?.id == 'sbp' ? false : */}
-                  <button className="confirmBTN" onClick={ () => create_order() }>{confirmOrderLabel}</button>
+                <button className="confirmBTN" onClick={() => create_order()}>
+                  {confirmOrderLabel}
+                </button>
                 {/* } */}
               </div>
-
             </div>
-          :
-
+          ) : (
             <div className="container">
-
-              { openPayForm === false ? false :
+              {openPayForm && typePay?.id === 'online' ? (
                 <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
-              }
+              ) : null}
 
               <div className="line" />
               <span className="confirmHeader">{confirmOrderTitle}</span>
 
-              { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ? 
+              {parseInt(checkNewOrder?.order?.type_order_) == 1 ? (
                 <div className="confirmAddr">
                   <span>Доставим по адресу:</span>
-                  <span>{thisCityRu + ', ' + checkNewOrder?.order?.street + ', ' + checkNewOrder?.order?.home + ', кв ' + checkNewOrder?.order?.kv}</span>
+                  <span>
+                    {thisCityRu +
+                      ', ' +
+                      checkNewOrder?.order?.street +
+                      ', ' +
+                      checkNewOrder?.order?.home +
+                      ', кв ' +
+                      checkNewOrder?.order?.kv}
+                  </span>
                 </div>
-                  :
+              ) : (
                 <div className="confirmAddr">
                   <span>Приготовим по адресу:</span>
-                  <span>{thisCityRu + ', ' + checkNewOrder?.order?.point_name}</span>
+                  <span>
+                    {thisCityRu + ', ' + checkNewOrder?.order?.point_name}
+                  </span>
                 </div>
-              }
-    
+              )}
+
               <span className="confirmTime">
-                { checkNewOrder?.order?.max_time_order }
+                {checkNewOrder?.order?.max_time_order}
               </span>
-              
+
               <span className="confirmText_2"></span>
 
-              { parseInt( checkNewOrder?.order?.type_order_ ) == 1 && parseInt( checkNewOrder?.order?.is_pred ) == 1 ? 
+              {parseInt(checkNewOrder?.order?.type_order_) == 1 &&
+              parseInt(checkNewOrder?.order?.is_pred) == 1 ? (
                 <div className="confirmMessage">
                   <TimeConfirm style={{ fill: '#fff' }} />
 
-                  <span>Пожалуйста, будьте по адресу в указанный промежуток времени.</span>
+                  <span>
+                    Пожалуйста, будьте по адресу в указанный промежуток времени.
+                  </span>
                 </div>
-                  :
+              ) : (
                 false
-              }
+              )}
 
-              { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ?
+              {parseInt(checkNewOrder?.order?.type_order_) == 1 ? (
                 <div className="confirmMessage">
                   <Cloud />
-                  <span>Из-за погодных условий сегодня курьер может ехать дольше, чем обычно</span>
+                  <span>
+                    Из-за погодных условий сегодня курьер может ехать дольше,
+                    чем обычно
+                  </span>
                 </div>
-                  :
+              ) : (
                 false
-              }
+              )}
 
               <CartConfirmMap
                 open={openConfirmForm}
@@ -488,7 +580,9 @@ export default function ConfirmForm() {
                   <div key={key}>
                     <span>{item.name}</span>
                     <span>{item.count}</span>
-                    <span>{new Intl.NumberFormat('ru-RU').format(item.price)}{' '}₽</span>
+                    <span>
+                      {new Intl.NumberFormat('ru-RU').format(item.price)} ₽
+                    </span>
                   </div>
                 ))}
               </div>
@@ -498,264 +592,131 @@ export default function ConfirmForm() {
               {typeOrder == 'pic' ? null : (
                 <div className="confirmDelivery">
                   <span>Доставка:</span>
-                  <span>{new Intl.NumberFormat('ru-RU').format(NewSummDiv)} ₽</span>
+                  <span>
+                    {new Intl.NumberFormat('ru-RU').format(NewSummDiv)} ₽
+                  </span>
                 </div>
               )}
 
               <div className="confirmTotal">
-                <span>Итого: {itemsCount} {getWord(itemsCount)}</span>
                 <span>
-                  {new Intl.NumberFormat('ru-RU').format( checkNewOrder?.order?.sum_order )}{' '}₽
+                  Итого: {itemsCount} {getWord(itemsCount)}
+                </span>
+                <span>
+                  {new Intl.NumberFormat('ru-RU').format(
+                    checkNewOrder?.order?.sum_order
+                  )}{' '}
+                  ₽
                 </span>
               </div>
 
-              {checkNewOrder?.order?.promo_name?.length > 0 ?
+              {checkNewOrder?.order?.promo_name?.length > 0 ? (
                 <div className="confirmPromo promo">
                   <CheckAuthMobile />
                   <span>{`Применили промокод ${checkNewOrder?.order?.promo_name}`}</span>
                 </div>
-                  : 
-                null
-              }
+              ) : null}
 
-              { parseInt(checkNewOrder?.order?.sdacha) > 0 ?
+              {parseInt(checkNewOrder?.order?.sdacha) > 0 ? (
                 <div className={'confirmPromo promo'}>
                   <CheckAuthMobile />
                   <span>{`Привезём сдачу с ${checkNewOrder?.order?.sdacha} ₽`}</span>
                 </div>
-                  : 
-                null
-              }
+              ) : null}
 
-              <div className="ContainerCart" style={{width: '100%'}}>
-                <div className="Line"></div>
-                <div id="payment-form-confirm" />
-              </div>
+              {typePay?.id === 'online' && (
+                <div className="ContainerCart" style={{ width: '100%' }}>
+                  <div className="Line"></div>
+                  <div id="payment-form-confirm" />
+                </div>
+              )}
 
-              { typePay?.id == 'sbp' ? 
-                <iframe
-                  src={linkPaySBP}
-                  width='100%'
-                  height={900}
-                  style={{marginTop: 20}}
-                  loading="lazy"
-                ></iframe>
-                  :
-                false
-              }
+              {sbpStatus}
 
               {/* { typePay?.id == 'online' || typePay?.id == 'sbp' ? false :
                 <button className="confirmBTN" onClick={ () => create_order() }>{confirmOrderLabel}</button>
               } */}
-
             </div>
-          }
-
+          )}
         </SwipeableDrawer>
-      ) : (
-        typePay?.id === 'cash' ?
-          <Dialog
-            onClose={() => setConfirmForm(false)}
-            className={'cartConfirmFormPC_cash ' + roboto.variable}
-            open={openConfirmForm}
-            slots={Backdrop}
-            slotProps={{ timeout: 500 }}
-          >
-            <DialogContent>
-              <IconButton className="closeButton" onClick={() => setConfirmForm(false)}>
-                <IconClose />
-              </IconButton>
+      ) : typePay?.id === 'cash' ? (
+        <Dialog
+          onClose={() => setConfirmForm(false)}
+          className={'cartConfirmFormPC_cash ' + roboto.variable}
+          open={openConfirmForm}
+          slots={Backdrop}
+          slotProps={{ timeout: 500 }}
+        >
+          <DialogContent>
+            <IconButton
+              className="closeButton"
+              onClick={() => setConfirmForm(false)}
+            >
+              <IconClose />
+            </IconButton>
 
-              {/* 
+            {/* 
               { openPayForm === false ? false :
                 <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
               } */}
 
-              <div className="confirmHeaderBlock">
-
-                <div className="confirmHeader">
-                  <span>{confirmOrderTitle}</span>
-                </div>
-
-                { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ? 
-                  <div className="confirmAddr">
-                    <span>Доставим по адресу:</span>
-                    <span>{thisCityRu + ', ' + checkNewOrder?.order?.street + ', ' + checkNewOrder?.order?.home + ', кв ' + checkNewOrder?.order?.kv}</span>
-                  </div>
-                    :
-                  <div className="confirmAddr">
-                    <span>Приготовим по адресу:</span>
-                    <span>{thisCityRu + ', ' + checkNewOrder?.order?.point_name}</span>
-                  </div>
-                }
-                
-                <span className="confirmTime">
-                  { checkNewOrder?.order?.max_time_order }
-                </span>
-                
-                <span className="confirmText_2"></span>
-
-                { parseInt( checkNewOrder?.order?.type_order_ ) == 1 && parseInt( checkNewOrder?.order?.is_pred ) == 1 ? 
-                  <div className="confirmMessage">
-                    <TimeConfirm style={{ fill: '#fff' }} />
-
-                    <span>Пожалуйста, будьте по адресу в указанный промежуток времени.</span>
-                  </div>
-                    :
-                  false
-                }
-
-                { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ?
-                  <div className="confirmMessage">
-                    <Cloud />
-                    <span>Из-за погодных условий сегодня курьер может ехать дольше, чем обычно</span>
-                  </div>
-                    :
-                  false
-                }
-
-                <CartConfirmMap
-                  open={openConfirmForm}
-                  checkNewOrder={checkNewOrder}
-                />
-
-                <div className="cofirmDivider" />
-
-              </div>
-
-              <div className="confirmScroll">
-
-                <div className={'cofirmTable'}>
-                  {checkNewOrder?.items?.map((item, key) => (
-                    <div key={key}>
-                      <span>{item.name}</span>
-                      <span>{item.count}</span>
-                      <span>{new Intl.NumberFormat('ru-RU').format(item.price)}{' '}₽</span>
-                    </div>
-                  ))}
-                </div>
-
-              </div>
-
-              <div className="confirmFooter">
-
-                <div className="cofirmDivider" />
-
-                {typeOrder == 'pic' ? null : (
-                  <div className="confirmDelivery">
-                    <span>Доставка:</span>
-                    <span>{new Intl.NumberFormat('ru-RU').format(NewSummDiv)} ₽</span>
-                  </div>
-                )}
-
-                <div className="confirmTotal">
-                  <span>Итого: {itemsCount} {getWord(itemsCount)}</span>
-                  <span>
-                    {new Intl.NumberFormat('ru-RU').format( checkNewOrder?.order?.sum_order )}{' '}₽
-                  </span>
-                </div>
-
-                {checkNewOrder?.order?.promo_name?.length > 0 ?
-                  <div className="confirmPromo promo">
-                    <CheckAuthMobile />
-                    <span>{`Применили промокод ${checkNewOrder?.order?.promo_name}`}</span>
-                  </div>
-                    : 
-                  null
-                }
-
-                { parseInt(checkNewOrder?.order?.sdacha) > 0 ?
-                  <div className={'confirmPromo promo'}>
-                    <CheckAuthMobile />
-                    <span>{`Привезём сдачу с ${checkNewOrder?.order?.sdacha} ₽`}</span>
-                  </div>
-                    : 
-                  null
-                }
-
-                {/* <div className="ContainerCart" style={{width: '100%'}}>
-                  <div className="Line"></div>
-                  <div id="payment-form-confirm" />
-                </div> */}
-
-                {/* { typePay?.id == 'sbp' ? 
-                  <iframe
-                    src={linkPaySBP}
-                    width='100%'
-                    height={900}
-                    style={{marginTop: 20}}
-                    loading="lazy"
-                  ></iframe>
-                    :
-                  false
-                } */}
-
-                {/* { typePay?.id == 'online' || typePay?.id == 'sbp' ? false : */}
-                  <button className="confirmBTN" onClick={ () => create_order() }>{confirmOrderLabel}</button>
-                {/* } */}
-
-              </div>
-
-            </DialogContent>
-          </Dialog>
-          :
-          <Dialog
-            onClose={() => setConfirmForm(false)}
-            className={'cartConfirmFormPC ' + roboto.variable}
-            open={openConfirmForm}
-            slots={Backdrop}
-            slotProps={{ timeout: 500 }}
-            scroll="body"
-          >
-            <DialogContent>
-              <IconButton className="closeButton" onClick={() => setConfirmForm(false)}>
-                <IconClose />
-              </IconButton>
-
-              { openPayForm === false ? false :
-                <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
-              }
-
+            <div className="confirmHeaderBlock">
               <div className="confirmHeader">
                 <span>{confirmOrderTitle}</span>
               </div>
 
-              { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ? 
+              {parseInt(checkNewOrder?.order?.type_order_) == 1 ? (
                 <div className="confirmAddr">
                   <span>Доставим по адресу:</span>
-                  <span>{thisCityRu + ', ' + checkNewOrder?.order?.street + ', ' + checkNewOrder?.order?.home + ', кв ' + checkNewOrder?.order?.kv}</span>
+                  <span>
+                    {thisCityRu +
+                      ', ' +
+                      checkNewOrder?.order?.street +
+                      ', ' +
+                      checkNewOrder?.order?.home +
+                      ', кв ' +
+                      checkNewOrder?.order?.kv}
+                  </span>
                 </div>
-                  :
+              ) : (
                 <div className="confirmAddr">
                   <span>Приготовим по адресу:</span>
-                  <span>{thisCityRu + ', ' + checkNewOrder?.order?.point_name}</span>
+                  <span>
+                    {thisCityRu + ', ' + checkNewOrder?.order?.point_name}
+                  </span>
                 </div>
-              }
-              
+              )}
+
               <span className="confirmTime">
-                { checkNewOrder?.order?.max_time_order }
+                {checkNewOrder?.order?.max_time_order}
               </span>
-              
+
               <span className="confirmText_2"></span>
 
-              { parseInt( checkNewOrder?.order?.type_order_ ) == 1 && parseInt( checkNewOrder?.order?.is_pred ) == 1 ? 
+              {parseInt(checkNewOrder?.order?.type_order_) == 1 &&
+              parseInt(checkNewOrder?.order?.is_pred) == 1 ? (
                 <div className="confirmMessage">
                   <TimeConfirm style={{ fill: '#fff' }} />
 
-                  <span>Пожалуйста, будьте по адресу в указанный промежуток времени.</span>
+                  <span>
+                    Пожалуйста, будьте по адресу в указанный промежуток времени.
+                  </span>
                 </div>
-                  :
+              ) : (
                 false
-              }
+              )}
 
-              { parseInt( checkNewOrder?.order?.type_order_ ) == 1 ?
+              {parseInt(checkNewOrder?.order?.type_order_) == 1 ? (
                 <div className="confirmMessage">
                   <Cloud />
-                  <span>Из-за погодных условий сегодня курьер может ехать дольше, чем обычно</span>
+                  <span>
+                    Из-за погодных условий сегодня курьер может ехать дольше,
+                    чем обычно
+                  </span>
                 </div>
-                  :
+              ) : (
                 false
-              }
+              )}
 
               <CartConfirmMap
                 open={openConfirmForm}
@@ -763,75 +724,221 @@ export default function ConfirmForm() {
               />
 
               <div className="cofirmDivider" />
+            </div>
 
+            <div className="confirmScroll">
               <div className={'cofirmTable'}>
                 {checkNewOrder?.items?.map((item, key) => (
                   <div key={key}>
                     <span>{item.name}</span>
                     <span>{item.count}</span>
-                    <span>{new Intl.NumberFormat('ru-RU').format(item.price)}{' '}₽</span>
+                    <span>
+                      {new Intl.NumberFormat('ru-RU').format(item.price)} ₽
+                    </span>
                   </div>
                 ))}
               </div>
+            </div>
 
+            <div className="confirmFooter">
               <div className="cofirmDivider" />
 
               {typeOrder == 'pic' ? null : (
                 <div className="confirmDelivery">
                   <span>Доставка:</span>
-                  <span>{new Intl.NumberFormat('ru-RU').format(NewSummDiv)} ₽</span>
+                  <span>
+                    {new Intl.NumberFormat('ru-RU').format(NewSummDiv)} ₽
+                  </span>
                 </div>
               )}
 
               <div className="confirmTotal">
-                <span>Итого: {itemsCount} {getWord(itemsCount)}</span>
                 <span>
-                  {new Intl.NumberFormat('ru-RU').format( checkNewOrder?.order?.sum_order )}{' '}₽
+                  Итого: {itemsCount} {getWord(itemsCount)}
+                </span>
+                <span>
+                  {new Intl.NumberFormat('ru-RU').format(
+                    checkNewOrder?.order?.sum_order
+                  )}{' '}
+                  ₽
                 </span>
               </div>
 
-              {checkNewOrder?.order?.promo_name?.length > 0 ?
+              {checkNewOrder?.order?.promo_name?.length > 0 ? (
                 <div className="confirmPromo promo">
                   <CheckAuthMobile />
                   <span>{`Применили промокод ${checkNewOrder?.order?.promo_name}`}</span>
                 </div>
-                  : 
-                null
-              }
+              ) : null}
 
-              { parseInt(checkNewOrder?.order?.sdacha) > 0 ?
+              {parseInt(checkNewOrder?.order?.sdacha) > 0 ? (
                 <div className={'confirmPromo promo'}>
                   <CheckAuthMobile />
                   <span>{`Привезём сдачу с ${checkNewOrder?.order?.sdacha} ₽`}</span>
                 </div>
-                  : 
-                null
-              }
+              ) : null}
 
-              <div className="ContainerCart" style={{width: '100%'}}>
+              {/* <div className="ContainerCart" style={{width: '100%'}}>
+                  <div className="Line"></div>
+                  <div id="payment-form-confirm" />
+                </div> */}
+
+              {/* { typePay?.id == 'online' || typePay?.id == 'sbp' ? false : */}
+              <button className="confirmBTN" onClick={() => create_order()}>
+                {confirmOrderLabel}
+              </button>
+              {/* } */}
+            </div>
+          </DialogContent>
+        </Dialog>
+      ) : (
+        <Dialog
+          onClose={() => setConfirmForm(false)}
+          className={'cartConfirmFormPC ' + roboto.variable}
+          open={openConfirmForm}
+          slots={Backdrop}
+          slotProps={{ timeout: 500 }}
+          scroll="body"
+        >
+          <DialogContent>
+            <IconButton
+              className="closeButton"
+              onClick={() => setConfirmForm(false)}
+            >
+              <IconClose />
+            </IconButton>
+
+            {openPayForm && typePay?.id === 'online' ? (
+              <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
+            ) : null}
+
+            <div className="confirmHeader">
+              <span>{confirmOrderTitle}</span>
+            </div>
+
+            {parseInt(checkNewOrder?.order?.type_order_) == 1 ? (
+              <div className="confirmAddr">
+                <span>Доставим по адресу:</span>
+                <span>
+                  {thisCityRu +
+                    ', ' +
+                    checkNewOrder?.order?.street +
+                    ', ' +
+                    checkNewOrder?.order?.home +
+                    ', кв ' +
+                    checkNewOrder?.order?.kv}
+                </span>
+              </div>
+            ) : (
+              <div className="confirmAddr">
+                <span>Приготовим по адресу:</span>
+                <span>
+                  {thisCityRu + ', ' + checkNewOrder?.order?.point_name}
+                </span>
+              </div>
+            )}
+
+            <span className="confirmTime">
+              {checkNewOrder?.order?.max_time_order}
+            </span>
+
+            <span className="confirmText_2"></span>
+
+            {parseInt(checkNewOrder?.order?.type_order_) == 1 &&
+            parseInt(checkNewOrder?.order?.is_pred) == 1 ? (
+              <div className="confirmMessage">
+                <TimeConfirm style={{ fill: '#fff' }} />
+
+                <span>
+                  Пожалуйста, будьте по адресу в указанный промежуток времени.
+                </span>
+              </div>
+            ) : (
+              false
+            )}
+
+            {parseInt(checkNewOrder?.order?.type_order_) == 1 ? (
+              <div className="confirmMessage">
+                <Cloud />
+                <span>
+                  Из-за погодных условий сегодня курьер может ехать дольше, чем
+                  обычно
+                </span>
+              </div>
+            ) : (
+              false
+            )}
+
+            <CartConfirmMap
+              open={openConfirmForm}
+              checkNewOrder={checkNewOrder}
+            />
+
+            <div className="cofirmDivider" />
+
+            <div className={'cofirmTable'}>
+              {checkNewOrder?.items?.map((item, key) => (
+                <div key={key}>
+                  <span>{item.name}</span>
+                  <span>{item.count}</span>
+                  <span>
+                    {new Intl.NumberFormat('ru-RU').format(item.price)} ₽
+                  </span>
+                </div>
+              ))}
+            </div>
+
+            <div className="cofirmDivider" />
+
+            {typeOrder == 'pic' ? null : (
+              <div className="confirmDelivery">
+                <span>Доставка:</span>
+                <span>
+                  {new Intl.NumberFormat('ru-RU').format(NewSummDiv)} ₽
+                </span>
+              </div>
+            )}
+
+            <div className="confirmTotal">
+              <span>
+                Итого: {itemsCount} {getWord(itemsCount)}
+              </span>
+              <span>
+                {new Intl.NumberFormat('ru-RU').format(
+                  checkNewOrder?.order?.sum_order
+                )}{' '}
+                ₽
+              </span>
+            </div>
+
+            {checkNewOrder?.order?.promo_name?.length > 0 ? (
+              <div className="confirmPromo promo">
+                <CheckAuthMobile />
+                <span>{`Применили промокод ${checkNewOrder?.order?.promo_name}`}</span>
+              </div>
+            ) : null}
+
+            {parseInt(checkNewOrder?.order?.sdacha) > 0 ? (
+              <div className={'confirmPromo promo'}>
+                <CheckAuthMobile />
+                <span>{`Привезём сдачу с ${checkNewOrder?.order?.sdacha} ₽`}</span>
+              </div>
+            ) : null}
+
+            {typePay?.id === 'online' && (
+              <div className="ContainerCart" style={{ width: '100%' }}>
                 <div className="Line"></div>
                 <div id="payment-form-confirm" />
               </div>
+            )}
 
-              { typePay?.id == 'sbp' ? 
-                <iframe
-                  src={linkPaySBP}
-                  width='100%'
-                  height={900}
-                  style={{marginTop: 20}}
-                  loading="lazy"
-                ></iframe>
-                  :
-                false
-              }
+            {sbpStatus}
 
-              {/* { typePay?.id == 'online' || typePay?.id == 'sbp' ? false :
+            {/* { typePay?.id == 'online' || typePay?.id == 'sbp' ? false :
                 <button className="confirmBTN" onClick={ () => create_order() }>{confirmOrderLabel}</button>
               } */}
-
-            </DialogContent>
-          </Dialog>
-        
+          </DialogContent>
+        </Dialog>
       )}
     </>
   );

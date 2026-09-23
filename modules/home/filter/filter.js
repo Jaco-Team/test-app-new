@@ -21,15 +21,15 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 import { roboto } from '@/ui/Font';
 
 const badges = [
-  /*{
-    id: '1',
-    name: 'Хит',
-    bg: 'rgb(175, 0, 219)',
-  },*/
   {
     id: '2',
     name: 'Новинка',
     bg: '#F68D02',
+  },
+  {
+    id: '1',
+    name: 'Хит',
+    bg: '#A63DD3',
   },
   /*{
     id: '3',
@@ -38,11 +38,20 @@ const badges = [
   },*/
 ];
 
+const getAvailableHomeBadges = (items) =>
+  badges.filter(
+    (badge) =>
+      badge.id !== '1' ||
+      items?.some((item) => parseInt(item?.is_hit, 10) === 1)
+  );
+
 export default function Filter() {
   const [tags, setTags] = useState([]);
 
   // список доступных badges (на category будем фильтровать)
-  const [badgesAvailable, setBadgesAvailable] = useState(badges);
+  const [badgesAvailable, setBadgesAvailable] = useState(() =>
+    getAvailableHomeBadges([])
+  );
 
   const [
     filterActive,
@@ -153,7 +162,7 @@ export default function Filter() {
 
     if (!all_tags?.length) {
       setTags([]);
-      setBadgesAvailable(badges);
+      setBadgesAvailable(getAvailableHomeBadges(allItems));
       return;
     }
 
@@ -165,7 +174,7 @@ export default function Filter() {
         }))
       );
 
-      setBadgesAvailable(badges);
+      setBadgesAvailable(getAvailableHomeBadges(allItems));
       return;
     }
 
@@ -176,7 +185,7 @@ export default function Filter() {
           active: Number(t.id) === Number(tag_filter),
         }))
       );
-      setBadgesAvailable(badges);
+      setBadgesAvailable(getAvailableHomeBadges(allItems));
       return;
     }
 
@@ -199,8 +208,9 @@ export default function Filter() {
             availableBadges.add('2');
           }
 
-          // если вернуть "Хит"
-          // if (parseInt(item.is_hit) === 1) availableBadges.add('1');
+          if (parseInt(item.is_hit, 10) === 1) {
+            availableBadges.add('1');
+          }
         }
       });
 
@@ -243,7 +253,7 @@ export default function Filter() {
                 active: Number(t.id) === Number(tag_filter),
               }))
             );
-            setBadgesAvailable(badges);
+            setBadgesAvailable(getAvailableHomeBadges(allItems));
           }
         }
       }, 100);

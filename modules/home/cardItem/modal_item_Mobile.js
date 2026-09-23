@@ -223,14 +223,14 @@ export default function ModalItemMobile() {
                 </picture>
 
                 <div className="badgecontainer">
-                  {parseInt(item_card?.is_hit) == 1 ? (
-                    <BadgeItem size={'small'} type={'hit'} view={'mobile'} />
+                  {parseInt(item_card?.is_new) == 1 ? (
+                    <BadgeItem size={'small'} type={'new'} view={'mobile'} />
                   ) : (
                     false
                   )}
 
-                  {parseInt(item_card?.is_new) == 1 ? (
-                    <BadgeItem size={'small'} type={'new'} view={'mobile'} />
+                  {parseInt(item_card?.is_hit) == 1 ? (
+                    <BadgeItem size={'small'} type={'hit'} view={'mobile'} />
                   ) : (
                     false
                   )}

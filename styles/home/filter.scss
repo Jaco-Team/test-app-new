@@ -14,10 +14,9 @@
     align-items: center;
 
     & .tag {
-      height: $MyScale70 !important;
       width: fit-content;
-      border-radius: 100px;
-      padding: 0 $MyScale38;
+      border-radius: $MyScale13;
+      padding: $MyScale10 $MyScale38;
       cursor: pointer;
       border: $MyScale3 solid transparent;
 
@@ -222,9 +221,8 @@
 
     & .search_clear {
       & .tag {
-        height: tablet-vw(70) !important;
-        border-radius: tablet-vw(100);
-        padding: 0 tablet-vw(38);
+        border-radius: tablet-vw(9);
+        padding: tablet-vw(10) tablet-vw(38);
         margin-top: tablet-vw(40);
         margin-left: tablet-vw(24);
         border: tablet-vw(3) solid transparent;
@@ -385,7 +383,7 @@
       row-gap: $MyScale40_mobile;
 
       & .tag {
-        border-radius: $MyScale48_mobile;
+        border-radius: 4px;
         //border-color: rgba(0, 0, 0, 0.05);
 
         & span {
@@ -422,7 +420,7 @@
 
       & .tag {
         border: $MyScale3_mobile solid rgba(0, 0, 0, 0.125);
-        border-radius: $MyScale48_mobile;
+        border-radius: 4px;
         background-color: #fff;
         display: flex;
         flex-direction: row;
@@ -434,7 +432,7 @@
           align-items: center;
           justify-content: center;
           height: $MyScale96_mobile;
-          border-radius: $MyScale48_mobile;
+          border-radius: 4px;
           @include font40_400();
           padding: 0 $MyScale63_mobile;
           color: rgba(0, 0, 0, 0.9) !important;
@@ -472,6 +470,7 @@
       }
       & .search_clear.tag {
         background-color: rgb(221, 26, 50);
+        border-color: transparent;
         & span {
           color: #fff !important;
           background-color: rgb(221, 26, 50) !important;
@@ -479,14 +478,14 @@
       }
       & .tag_ {
         border: $MyScale3_mobile solid transparent;
-        border-radius: $MyScale48_mobile;
+        border-radius: 4px;
 
         & span {
           display: flex;
           align-items: center;
           justify-content: center;
           height: $MyScale96_mobile;
-          border-radius: $MyScale48_mobile;
+          border-radius: 4px;
           //background-color: #fff;
           @include font40_400();
           padding: 0 $MyScale63_mobile;

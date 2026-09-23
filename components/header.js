@@ -25,6 +25,7 @@ import ModalPointClose_mobile from '@/modules/header/modalPointClose/modalPointC
 import ModalSamaraEntranceWorks_pc from '@/modules/header/modalSamaraEntranceWorks/modalSamaraEntranceWorks_pc';
 import ModalSamaraEntranceWorks_mobile from '@/modules/header/modalSamaraEntranceWorks/modalSamaraEntranceWorks_mobile';
 import SecurityIncidentNotice from '@/modules/profile/securityIncidentNotice/SecurityIncidentNotice';
+import SbpReturnHandler from '@/modules/cart/sbpReturnHandler';
 
 import Backdrop from '@mui/material/Backdrop';
 import CircularProgress from '@mui/material/CircularProgress';
@@ -39,7 +40,11 @@ import { useRouter } from 'next/router';
 
 import dayjs from 'dayjs';
 import 'dayjs/locale/ru';
-import { setLocalStorageItem } from '@/utils/browserStorage';
+import Cookies from 'js-cookie';
+import {
+  getLocalStorageJson,
+  setLocalStorageItem,
+} from '@/utils/browserStorage';
 import { BREAKPOINTS, LEGACY_BREAKPOINTS } from '@/utils/breakpoints';
 
 export default React.memo(function header({ city, city_list, cats }) {
@@ -57,6 +62,16 @@ export default React.memo(function header({ city, city_list, cats }) {
     : null;
 
   const thisCityRU = currentCity?.name ?? '';
+
+  useEffect(() => {
+    if (!currentCity) return;
+    if (getLocalStorageJson('setCity')?.link !== city) {
+      setLocalStorageItem('setCity', JSON.stringify(currentCity));
+    }
+    if (Cookies.get('city') !== city) {
+      Cookies.set('city', city, { expires: 365, path: '/', sameSite: 'Lax' });
+    }
+  }, [city, currentCity]);
 
   if (!Array.isArray(city_list) || city_list.length === 0) {
     return null;
@@ -275,6 +290,7 @@ export default React.memo(function header({ city, city_list, cats }) {
 
       <ModalAuth city={city} />
       <ModalAlert />
+      <SbpReturnHandler city={city} />
       <SelectAddress />
       <SecurityIncidentNotice city={city} pathname={router.pathname} />
     </div>
