@@ -48,8 +48,33 @@ export default function MenuCatMobile({ city }) {
   const activeID = useCheckCat(category);
   const activeIdNum = Number(activeID?.id) || 0;
   const activeParentIdNum = Number(activeID?.parent_id) || 0;
-  const resolvedActiveCatId = pressedCatId;
-  const resolvedActiveSubId = pressedSubId;
+  const routeCategorySlug =
+    router.pathname === '/[city]/menu/[category]' &&
+    typeof router.query?.category === 'string'
+      ? router.query.category
+      : '';
+  const routeParentCategory = routeCategorySlug
+    ? category.find(
+        (item) =>
+          item.link === routeCategorySlug ||
+          (Array.isArray(item.cats) &&
+            item.cats.some((sub) => sub.link === routeCategorySlug))
+      )
+    : null;
+  const routeSubcategory = Array.isArray(routeParentCategory?.cats)
+    ? routeParentCategory.cats.find((sub) => sub.link === routeCategorySlug)
+    : null;
+  const resolvedActiveCatId = routeCategorySlug
+    ? Number(routeParentCategory?.id) || null
+    : pressedCatId;
+  const resolvedActiveSubId = routeCategorySlug
+    ? Number(routeSubcategory?.id) || null
+    : pressedSubId;
+  const displayedSubcategories = routeCategorySlug
+    ? Array.isArray(routeParentCategory?.cats)
+      ? routeParentCategory.cats
+      : []
+    : catDopMenu;
 
   useEffect(() => {
     if (!activeIdNum && !activeParentIdNum) {
@@ -121,7 +146,7 @@ export default function MenuCatMobile({ city }) {
         behavior: 'smooth',
       });
     }
-  }, [resolvedActiveSubId, catDopMenu.length]);
+  }, [resolvedActiveSubId, displayedSubcategories.length]);
 
   if (city == '') return null;
 
@@ -241,7 +266,9 @@ export default function MenuCatMobile({ city }) {
         className="menuCat"
         style={{
           marginBottom:
-            catDopMenu.length == 0 ? '1.7094017094017vw' : '2.5641025641026vw',
+            displayedSubcategories.length == 0
+              ? '1.7094017094017vw'
+              : '2.5641025641026vw',
         }}
       >
         {category.map((item) => (
@@ -252,6 +279,7 @@ export default function MenuCatMobile({ city }) {
               resolvedActiveCatId === Number(item.id) ? 'Cat active' : 'Cat'
             }
             id={'link_' + item.id}
+            aria-current={routeCategorySlug === item.link ? 'page' : undefined}
             onClick={(event) => handleCategoryClick(event, item, chooseCat)}
           >
             <span>{item.name}</span>
@@ -266,12 +294,12 @@ export default function MenuCatMobile({ city }) {
           <Filter />
         </div>
       </div>
-      {catDopMenu.length == 0 ? (
+      {displayedSubcategories.length == 0 ? (
         false
       ) : (
         <div className="menuCatDopContainer">
           <div className="menuCatDop" id="menuCatDop">
-            {catDopMenu.map((cat, key, arr) => (
+            {displayedSubcategories.map((cat, key, arr) => (
               <Link
                 key={cat.id}
                 href={categoryHref(city, cat.link) || `/${city}/menu`}
@@ -291,6 +319,9 @@ export default function MenuCatMobile({ city }) {
                     cat === arr[arr.length - 1] ? '3.4188034188vw' : 0,
                 }}
                 id={'linkDOP_' + cat.id}
+                aria-current={
+                  routeCategorySlug === cat.link ? 'page' : undefined
+                }
                 onClick={(event) =>
                   handleCategoryClick(event, cat, chooseDopCat)
                 }
