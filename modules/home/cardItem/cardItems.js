@@ -211,6 +211,7 @@ export default React.memo(function CatItems({ showCategoryHeadings = false }) {
 
   let catygory = '';
   const skipMenuCategoryOnce =
+    !isCategoryRoute &&
     typeof window !== 'undefined' &&
     getLocalStorageItem('ignoreMenuCategoryOnce') === '1';
 

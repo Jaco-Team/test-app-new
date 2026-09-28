@@ -13,7 +13,7 @@
 
 @media (min-width: $bp-mobile-min) and (max-width: $bp-mobile-max) {
   .homeDeliveryTitle {
-    font-size: $MyScale39_mobile;
+    font-size: max(13px, #{$MyScale39_mobile});
     margin-top: $MyScale8_mobile;
     margin-bottom: 0;
   }

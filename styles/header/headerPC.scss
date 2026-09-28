@@ -756,7 +756,8 @@ html:not([data-scroll='0']) .headerNew::after {
   }
 }
 
-#chooseHeaderCat {
+#chooseHeaderCat,
+.chooseHeaderCat {
   & div.MuiPaper-root.MuiMenu-paper {
     border-radius: $MyScale20;
     width: $MyScale400;
@@ -803,7 +804,8 @@ html:not([data-scroll='0']) .headerNew::after {
 }
 
 @media (min-width: 668px) and (max-width: 990px) {
-  #chooseHeaderCat {
+  #chooseHeaderCat,
+  .chooseHeaderCat {
     & div.MuiPaper-root.MuiMenu-paper {
       border-radius: tablet-vw(20);
       width: tablet-vw(400);

@@ -1,14 +1,19 @@
+import { loadHeaderCategories } from '@/utils/serverHeaderCategories';
 import React, { useEffect } from 'react';
 import useMediaQuery from '@mui/material/useMediaQuery';
 
-import dynamic from 'next/dynamic'
+import dynamic from 'next/dynamic';
 
-import Footer from '@/components/footer.js'
-const DynamicPage = dynamic(() => import('@/modules/profile/account/page'))
+import Footer from '@/components/footer.js';
+const DynamicPage = dynamic(() => import('@/modules/profile/account/page'));
 
 import { api } from '@/components/api.js';
-import { useCitiesStore, useHeaderStoreNew, useCartStore } from '@/components/store.js';
-import { roboto } from '@/ui/Font.js'
+import {
+  useCitiesStore,
+  useHeaderStoreNew,
+  useCartStore,
+} from '@/components/store.js';
+import { roboto } from '@/ui/Font.js';
 import { getLocalStorageItem } from '@/utils/browserStorage';
 
 import { useRouter } from 'next/router';
@@ -20,16 +25,38 @@ import { getCookie } from '@/utils/getCookie';
 import { BREAKPOINTS } from '@/utils/breakpoints';
 
 export default function Account(props) {
-
   const { push } = useRouter();
 
-  const { city, cats, cities, page, all_items, free_items, need_dop, links } = props.data1;
+  const { city, cats, cities, page, all_items, free_items, need_dop, links } =
+    props.data1;
 
-  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
+  const [
+    setAllItems,
+    setFreeItems,
+    allItems,
+    changeAllItems,
+    setNeedDops,
+    getCartLocalStorage,
+  ] = useCartStore((state) => [
+    state.setAllItems,
+    state.setFreeItems,
+    state.allItems,
+    state.changeAllItems,
+    state.setNeedDops,
+    state.getCartLocalStorage,
+  ]);
 
-  const [thisCity, setThisCity, setThisCityRu, setThisCityList] = useCitiesStore(state => [ state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList ]);
+  const [thisCity, setThisCity, setThisCityRu, setThisCityList] =
+    useCitiesStore((state) => [
+      state.thisCity,
+      state.setThisCity,
+      state.setThisCityRu,
+      state.setThisCityList,
+    ]);
   const [setActivePage] = useHeaderStoreNew((state) => [state.setActivePage]);
-  const isMobileAccountRoute = useMediaQuery(`screen and (max-width: ${BREAKPOINTS.mobileMax}px)`);
+  const isMobileAccountRoute = useMediaQuery(
+    `screen and (max-width: ${BREAKPOINTS.mobileMax}px)`
+  );
 
   useEffect(() => {
     if (!isMobileAccountRoute && city.length > 0) {
@@ -38,22 +65,24 @@ export default function Account(props) {
   }, [isMobileAccountRoute, city, push]);
 
   useEffect(() => {
-    if( thisCity != city ){
+    if (thisCity != city) {
       setThisCity(city);
       //setThisCityRu( cities.find( item => item.link == city )['name'] );
 
-      const found = Array.isArray(cities) ? cities.find(item => item?.link == city) : null;
-      setThisCityRu( found?.name ?? '' );
+      const found = Array.isArray(cities)
+        ? cities.find((item) => item?.link == city)
+        : null;
+      setThisCityRu(found?.name ?? '');
 
-      setThisCityList(cities)
+      setThisCityList(cities);
       setAllItems(all_items);
-      
+
       setTimeout(() => {
         changeAllItems();
       }, 300);
     }
 
-    if( allItems.length == 0 ){
+    if (allItems.length == 0) {
       setAllItems(all_items);
     }
 
@@ -62,12 +91,12 @@ export default function Account(props) {
 
     getCartLocalStorage();
 
-    setActivePage(this_module)
+    setActivePage(this_module);
 
     if (typeof window !== 'undefined') {
       const token = getLocalStorageItem('token');
 
-      if( (!token || token == '') && city.length > 0 ){
+      if ((!token || token == '') && city.length > 0) {
         push(`/${city}`);
       }
     }
@@ -83,9 +112,15 @@ export default function Account(props) {
 }
 
 export async function getServerSideProps({ req, res, query }) {
-  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=60');
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=60, stale-while-revalidate=60'
+  );
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
@@ -115,6 +150,8 @@ export async function getServerSideProps({ req, res, query }) {
 
   data1.links = footer?.page || {};
   data1.city = city;
+
+  data1.headerCategories = await loadHeaderCategories(city, data1.cats);
 
   return { props: { data1 } };
 }

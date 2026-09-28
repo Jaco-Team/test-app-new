@@ -7,6 +7,8 @@ import Cookies from 'js-cookie';
 
 import { api } from '@/components/api';
 import Meta from '@/components/meta';
+import StructuredData from '@/components/structuredData';
+import { organizationSchema } from '@/utils/structuredData';
 import { roboto } from '@/ui/Font';
 import {
   getLocalStorageItem,
@@ -77,7 +79,11 @@ const getSavedCity = () => {
   }
 };
 
-export default function CitySelectionPage({ page, initialSearch = '' }) {
+export default function CitySelectionPage({
+  page,
+  initialSearch = '',
+  schema,
+}) {
   const router = useRouter();
   const redirectAttemptedRef = useRef(false);
   const [urlSuffix, setUrlSuffix] = useState(initialSearch);
@@ -127,6 +133,7 @@ export default function CitySelectionPage({ page, initialSearch = '' }) {
   return (
     <>
       <Meta title={title} description={description} canonicalPath="/" />
+      <StructuredData data={schema} />
 
       <main
         className={`${styles.page} ${
@@ -207,17 +214,21 @@ export async function getServerSideProps({ res, resolvedUrl = '/' }) {
     'public, s-maxage=60, stale-while-revalidate=60'
   );
 
-  const data = await api('home', {
-    type: 'get_page_info',
-    city_id: -1,
-    page: '/',
-  });
+  const [data, footer] = await Promise.all([
+    api('home', { type: 'get_page_info', city_id: -1, page: '/' }),
+    api('contacts', {
+      type: 'get_page_info',
+      city_id: 'togliatti',
+      page: 'info',
+    }),
+  ]);
   const page = data?.page && typeof data.page === 'object' ? data.page : null;
 
   return {
     props: {
       page,
       initialSearch,
+      schema: organizationSchema(footer?.page),
     },
   };
 }

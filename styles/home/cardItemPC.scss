@@ -1590,8 +1590,6 @@
           height: 100%;
           border-radius: $MyScale48;
           border: none;
-          background-color: rgba(0, 0, 0, 0.05);
-          color: rgba(0, 0, 0, 0.8) !important;
           padding: 0;
           @include font32_400();
           display: flex;
@@ -1599,7 +1597,12 @@
           justify-content: center;
           white-space: nowrap;
 
-          &:hover {
+          &:not(.MuiButton-contained) {
+            background-color: rgba(0, 0, 0, 0.05);
+            color: rgba(0, 0, 0, 0.8) !important;
+          }
+
+          &:not(.MuiButton-contained):hover {
             background-color: rgba(0, 0, 0, 0.07) !important;
           }
         }
@@ -1821,8 +1824,6 @@
             height: 100%;
             border-radius: tablet-vw(52.8);
             border: none;
-            background-color: rgba(0, 0, 0, 0.05);
-            color: rgba(0, 0, 0, 0.8) !important;
             padding: 0;
             font-size: tablet-font-vw(35.2) !important;
             font-family: var(--inter-font) !important;
@@ -1832,7 +1833,12 @@
             justify-content: center;
             white-space: nowrap;
 
-            &:hover {
+            &:not(.MuiButton-contained) {
+              background-color: rgba(0, 0, 0, 0.05);
+              color: rgba(0, 0, 0, 0.8) !important;
+            }
+
+            &:not(.MuiButton-contained):hover {
               background-color: rgba(0, 0, 0, 0.07) !important;
             }
           }

@@ -267,12 +267,9 @@ export default function FooterMobile({ cityName, active_page, links }) {
               <Link href={'/' + cityName + '/about'}>О Компании</Link>
               <Link href={'/' + cityName + '/company-details'}>Реквизиты</Link>
               <Link href={'/' + cityName + '/contacts'}>Контакты</Link>
-              <Link
-                href={'/' + cityName + '/dostavka'}
-                style={{ marginBottom: 0 }}
-              >
-                Доставка
-              </Link>
+              <Link href={'/' + cityName + '/dostavka'}>Доставка</Link>
+              <Link {...ext('https://franchise.jacofood.ru')}>Франшиза</Link>
+              <Link {...ext('https://invest.jacofood.ru')}>Инвестиции</Link>
             </div>
             <div className="column">
               <Typography component="span">Документы</Typography>
@@ -318,15 +315,6 @@ export default function FooterMobile({ cityName, active_page, links }) {
             >
               <Typography component="span">Работа в жако</Typography>
               <Link href={'/' + cityName + '/jobs'}>Вакансии</Link>
-            </div>
-            <div className="column">
-              <Typography component="span">Франшиза</Typography>
-              <Link {...ext('https://franchise.jacofood.ru')}>
-                Сайт франшизы
-              </Link>
-              <Link {...ext('https://invest.jacofood.ru')}>
-                Сайт для инвестиций
-              </Link>
             </div>
           </div>
 

@@ -100,6 +100,8 @@ export default React.memo(function FooterPC({ cityName, active_page, links }) {
             <Link href={'/' + cityName + '/company-details'}>Реквизиты</Link>
             <Link href={'/' + cityName + '/contacts'}>Контакты</Link>
             <Link href={'/' + cityName + '/dostavka'}>Доставка</Link>
+            <Link {...ext('https://franchise.jacofood.ru')}>Франшиза</Link>
+            <Link {...ext('https://invest.jacofood.ru')}>Инвестиции</Link>
           </div>
           <div className="column">
             <Typography component="span">Документы</Typography>
@@ -128,13 +130,6 @@ export default React.memo(function FooterPC({ cityName, active_page, links }) {
           <div className="column">
             <Typography component="span">Работа в жако</Typography>
             <Link href={'/' + cityName + '/jobs'}>Вакансии</Link>
-          </div>
-          <div className="column">
-            <Typography component="span">Франшиза</Typography>
-            <Link {...ext('https://franchise.jacofood.ru')}>Сайт франшизы</Link>
-            <Link {...ext('https://invest.jacofood.ru')}>
-              Сайт для инвестиций
-            </Link>
           </div>
           <div className="container">
             <div

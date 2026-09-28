@@ -1,4 +1,6 @@
 import React, { useState, useEffect } from 'react';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
 import { useHomeStore } from '@/components/store.js';
 import Box from '@mui/material/Box';
 
@@ -6,9 +8,15 @@ import { Filter } from '@/ui/Icons.js';
 
 import useCheckCat from '../hooks';
 
-import { setLocalStorageItem } from '@/utils/browserStorage';
+import {
+  categoryHref,
+  isCityHomePath,
+  isPlainCategoryClick,
+} from '@/utils/categoryNavigation';
 
 export default function MenuCatMobile({ city }) {
+  const router = useRouter();
+  const isHome = isCityHomePath(router.asPath, city);
   const [
     category,
     cat_position,
@@ -118,7 +126,6 @@ export default function MenuCatMobile({ city }) {
   if (city == '') return null;
 
   const chooseCat = (id, scroll) => {
-    setLocalStorageItem('goTo', id);
     setPressedCatId(Number(id) || null);
 
     resetFilter();
@@ -154,7 +161,6 @@ export default function MenuCatMobile({ city }) {
   };
 
   const chooseDopCat = (id, scroll) => {
-    setLocalStorageItem('goTo', id);
     setPressedSubId(Number(id) || null);
 
     const selectedSub = category
@@ -211,6 +217,19 @@ export default function MenuCatMobile({ city }) {
     }
   };
 
+  const handleCategoryClick = (event, selectedCategory, choose) => {
+    if (!isPlainCategoryClick(event)) return;
+
+    if (isHome) {
+      event.preventDefault();
+      choose(selectedCategory.id, 'scroll');
+      return;
+    }
+
+    resetFilter();
+    setActiveFilter(false);
+  };
+
   return (
     <Box
       id="homeCatalogMenu"
@@ -225,17 +244,18 @@ export default function MenuCatMobile({ city }) {
             catDopMenu.length == 0 ? '1.7094017094017vw' : '2.5641025641026vw',
         }}
       >
-        {category.map((item, key) => (
-          <div
-            key={key}
+        {category.map((item) => (
+          <Link
+            key={item.id}
+            href={categoryHref(city, item.link) || `/${city}/menu`}
             className={
               resolvedActiveCatId === Number(item.id) ? 'Cat active' : 'Cat'
             }
             id={'link_' + item.id}
-            onClick={() => chooseCat(item.id, 'scroll')}
+            onClick={(event) => handleCategoryClick(event, item, chooseCat)}
           >
             <span>{item.name}</span>
-          </div>
+          </Link>
         ))}
         <div
           className={
@@ -252,8 +272,9 @@ export default function MenuCatMobile({ city }) {
         <div className="menuCatDopContainer">
           <div className="menuCatDop" id="menuCatDop">
             {catDopMenu.map((cat, key, arr) => (
-              <div
-                key={key}
+              <Link
+                key={cat.id}
+                href={categoryHref(city, cat.link) || `/${city}/menu`}
                 className={
                   resolvedActiveSubId === Number(cat.id)
                     ? 'CatDop active'
@@ -270,10 +291,12 @@ export default function MenuCatMobile({ city }) {
                     cat === arr[arr.length - 1] ? '3.4188034188vw' : 0,
                 }}
                 id={'linkDOP_' + cat.id}
-                onClick={() => chooseDopCat(cat.id, 'scroll')}
+                onClick={(event) =>
+                  handleCategoryClick(event, cat, chooseDopCat)
+                }
               >
                 <span>{cat.short_name}</span>
-              </div>
+              </Link>
             ))}
           </div>
         </div>

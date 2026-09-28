@@ -135,16 +135,19 @@
             width: $MyScale410_mobile;
             height: $MyScale110_mobile;
             border-radius: $MyScale55_mobile;
-            background-color: rgba(0, 0, 0, 0.05);
             border: none;
             padding: 0;
             @include font44_400();
-            color: rgba(0, 0, 0, 0.6) !important;
             display: flex;
             align-items: center;
             justify-content: center;
             white-space: nowrap;
             position: relative;
+
+            &:not(.MuiButton-contained) {
+              background-color: rgba(0, 0, 0, 0.05);
+              color: rgba(0, 0, 0, 0.8) !important;
+            }
 
             & > span:last-child {
               position: absolute;
@@ -206,7 +209,7 @@
 
 .CardItemMobile.active {
   & > div {
-    background-color: rgba(0, 0, 0, 0.05) !important;
+    background-color: rgba(242, 242, 242, 0.5) !important;
     & img {
       mix-blend-mode: multiply;
     }

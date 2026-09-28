@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 
 import Link from 'next/link';
+import { useRouter } from 'next/router';
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -16,6 +17,7 @@ import {
 } from '@/ui/Icons.js';
 
 import { Link as ScrollLink } from 'react-scroll';
+import { scroller } from 'react-scroll';
 
 import {
   useHeaderStoreNew,
@@ -30,21 +32,12 @@ import BasketIconHeaderPC from '../basket/basketIconHeaderPC.js';
 import ProfileIconHeaderPC from '../profile/profileIconHeaderPC.js';
 
 import { reachGoal } from '@/utils/metrika';
+import { getLocalStorageJson } from '@/utils/browserStorage';
 import {
-  getLocalStorageJson,
-  setLocalStorageItem,
-} from '@/utils/browserStorage';
-
-const buildCategoryHref = (city, categoryLink = '') => {
-  const safeCity = String(city ?? '').trim();
-  const safeCategoryLink = String(categoryLink ?? '').trim();
-
-  if (safeCategoryLink.length > 0) {
-    return `/${safeCity}?category=${encodeURIComponent(safeCategoryLink)}`;
-  }
-
-  return `/${safeCity}`;
-};
+  categoryHref,
+  isCityHomePath,
+  isPlainCategoryClick,
+} from '@/utils/categoryNavigation';
 
 const MenuBurger = React.memo(function MenuBurger({
   anchorEl,
@@ -116,46 +109,31 @@ const MenuCat = React.memo(function MenuCat({
   city,
   isOpen,
   onClose,
-  chooseCat,
+  onCategoryClick,
   list,
-  active_page,
+  parentId,
 }) {
-  const thisChooseCat = (name, id, link = '') => {
-    chooseCat(name, id, link);
-    onClose();
-  };
-
   return (
     <Menu
-      id="chooseHeaderCat"
+      id={`chooseHeaderCat-${parentId}`}
+      className="chooseHeaderCat"
       anchorEl={anchorEl}
       open={isOpen}
       onClose={onClose}
+      keepMounted
+      disablePortal
       anchorOrigin={{ vertical: 'bottom', horizontal: 'center' }}
       transformOrigin={{ vertical: 'top', horizontal: 'center' }}
       autoFocus={false}
     >
-      {list.map((cat, key) => (
-        <MenuItem key={key}>
-          {active_page === 'home' ? (
-            <ScrollLink
-              to={'cat' + cat.id}
-              spy={true}
-              isDynamic={true}
-              smooth={false}
-              offset={-70}
-              onClick={() => thisChooseCat(cat.name, cat.id)}
-            >
-              <span id={'link_' + cat.id}>{cat.name}</span>
-            </ScrollLink>
-          ) : (
-            <Link
-              href={buildCategoryHref(city, cat?.link)}
-              onClick={() => chooseCat(cat.name, cat.id, cat?.link)}
-            >
-              <span>{cat.name}</span>
-            </Link>
-          )}
+      {list.map((cat) => (
+        <MenuItem key={cat.id}>
+          <Link
+            href={categoryHref(city, cat?.link) || `/${city}/menu`}
+            onClick={(event) => onCategoryClick(event, cat)}
+          >
+            <span id={'link_' + cat.id}>{cat.name}</span>
+          </Link>
         </MenuItem>
       ))}
     </Menu>
@@ -185,8 +163,10 @@ const MemoLogo = React.memo(function MemoLogo({ city, activePage }) {
   );
 });
 
-export default React.memo(function NavBarPC({ city, cityRu }) {
+export default React.memo(function NavBarPC({ city, cityRu, catList = [] }) {
   useScroll();
+  const router = useRouter();
+  const isHome = isCityHomePath(router.asPath, city);
 
   const [
     setActiveBasket,
@@ -204,14 +184,17 @@ export default React.memo(function NavBarPC({ city, cityRu }) {
     state?.openCityModal,
   ]);
   const [thisCityRu] = useCitiesStore((state) => [state.thisCityRu]);
-  const [category, setCategory, setActiveFilter, isOpenFilter, resetFilter] =
-    useHomeStore((state) => [
-      state.category,
-      state.setCategory,
-      state.setActiveFilter,
-      state.isOpenFilter,
-      state.resetFilter,
-    ]);
+  const [category, itemsCatCity, resetFilter] = useHomeStore((state) => [
+    state.category,
+    state.itemsCatCity,
+    state.resetFilter,
+  ]);
+  const navigationCategories =
+    itemsCatCity === city && Array.isArray(category) && category.length > 0
+      ? category
+      : Array.isArray(catList)
+        ? catList
+        : [];
 
   const [getCountPromos_Orders] = useProfileStore((state) => [
     state.getCountPromos_Orders,
@@ -222,33 +205,9 @@ export default React.memo(function NavBarPC({ city, cityRu }) {
   if (city == '') return null;
 
   const [anchorEl, setAnchorEl] = useState(null);
+  const [categoryAnchorEl, setCategoryAnchorEl] = useState(null);
   const [isOpenburger, setIsOpenburger] = useState(false);
-  const [isOpenCat, setIsOpenCat] = useState(false);
-  const [list, setList] = useState([]);
-
-  // useEffect(() => {
-  //   if (typeof window !== "undefined") {
-  //     if( category.length > 0 && search_category.length > 0 ) {
-  //       //console.log( 'search_category', search_category, category )
-
-  //       category.map( main_cat => {
-  //         if( main_cat.cats.length > 0 ){
-  //           main_cat.cats.map( cat => {
-  //             if( cat.link === search_category ){
-  //               console.log( 'go_to', cat.name, cat.id )
-  //               chooseCat(cat.name, cat.id)
-  //             }
-  //           })
-  //         }else{
-  //           if( main_cat.link === search_category ){
-  //             console.log( 'go_to', main_cat.name, main_cat.id )
-  //             chooseCat(main_cat.name, main_cat.id)
-  //           }
-  //         }
-  //       } )
-  //     }
-  //   }
-  // }, [search_category, category]);
+  const [openCategoryId, setOpenCategoryId] = useState(null);
 
   useEffect(() => {
     if (
@@ -271,16 +230,8 @@ export default React.memo(function NavBarPC({ city, cityRu }) {
   }, [isAuth]);
 
   const openMenu = (event, id) => {
-    setIsOpenCat(true);
-    setAnchorEl(event.currentTarget);
-    category.forEach((cat) => {
-      if (parseInt(cat.id) === parseInt(id)) {
-        cat.expanded = anchorEl ? false : true;
-        setList(cat.cats);
-      }
-    });
-
-    setCategory(category);
+    setCategoryAnchorEl(event.currentTarget);
+    setOpenCategoryId(id);
   };
 
   function openMenuBurger(event) {
@@ -293,34 +244,30 @@ export default React.memo(function NavBarPC({ city, cityRu }) {
   }
 
   const closeMenu = () => {
-    setAnchorEl(null);
-    category.forEach((cat) => {
-      if (cat.expanded) {
-        cat.expanded = false;
-      }
-    });
-    setList([]);
-    setIsOpenCat(false);
-
-    setCategory(category);
+    setCategoryAnchorEl(null);
+    setOpenCategoryId(null);
     resetFilter();
   };
 
-  function chooseCat(id, link = '') {
-    const safeLink = String(link ?? '').trim();
+  const handleCategoryClick = (event, item) => {
+    if (!isPlainCategoryClick(event)) return;
 
-    if (safeLink.length > 0) {
-      setLocalStorageItem('goToCategoryLink', safeLink);
-      setLocalStorageItem('ignoreMenuCategoryOnce', '1');
-    }
-
-    if (parseInt(id) > 0 && safeLink.length === 0) {
-      setLocalStorageItem('goTo', id);
-    }
-
-    resetFilter();
+    reachGoal(`Категория ${item.name}`);
     closeMenu();
-  }
+
+    if (!isHome) return;
+
+    event.preventDefault();
+    requestAnimationFrame(() => {
+      scroller.scrollTo(`cat${item.id}`, {
+        duration: 200,
+        delay: 0,
+        smooth: 'easeInOutQuart',
+        offset: -70,
+        isDynamic: true,
+      });
+    });
+  };
 
   const handleClose = () => {
     if (openBasket) {
@@ -353,21 +300,6 @@ export default React.memo(function NavBarPC({ city, cityRu }) {
     }
   }
 
-  const thisChooseCat = (cat_name, cat_id, cat_link = '') => {
-    reachGoal(`Категория ${cat_name}`);
-
-    if (String(cat_link ?? '').trim().length > 0) {
-      chooseCat(cat_id, cat_link);
-      return;
-    }
-
-    if (parseInt(cat_id) > 0) {
-      chooseCat(cat_id);
-    } else {
-      resetFilter();
-    }
-  };
-
   const goToPage = (page) => {
     reachGoal(`Клик в шапке ${page}`);
   };
@@ -384,50 +316,37 @@ export default React.memo(function NavBarPC({ city, cityRu }) {
           <div>
             <MemoLogo city={city} activePage={activePage} />
 
-            {category.map((item, key) =>
-              item.cats.length > 0 ? (
+            {navigationCategories.map((item, key) =>
+              Array.isArray(item.cats) && item.cats.length > 0 ? (
                 <div
-                  key={key}
+                  key={item.id}
                   className={
-                    item?.expanded ? 'headerCat activeCat' : 'headerCat'
+                    openCategoryId === item.id
+                      ? 'headerCat activeCat'
+                      : 'headerCat'
                   }
                   onClick={(event) => openMenu(event, item.id)}
                 >
                   <span>
                     {item.name}{' '}
-                    {item?.expanded ? (
+                    {openCategoryId === item.id ? (
                       <ArrowUpHeaderPC />
                     ) : (
                       <ArrowDownHeaderPC />
                     )}
                   </span>
                 </div>
-              ) : activePage === 'home' ? (
-                <ScrollLink
-                  key={key}
-                  className={
-                    'headerCat ' + (key + 1 == category.length ? 'last' : '')
-                  }
-                  to={'cat' + item.id}
-                  spy={true}
-                  isDynamic={true}
-                  smooth={false}
-                  offset={-70}
-                  onClick={() => thisChooseCat(item.name, -1)}
-                  //style={{marginRight: item.name === 'Пицца' ? 0 : '18.050541516245vw', width: item.name === 'Напитки' ? '7.2202166064982vw' : '5.7761732851986vw'}}
-                >
-                  <span id={'link_' + item.id}>{item.name}</span>
-                </ScrollLink>
               ) : (
                 <Link
-                  href={buildCategoryHref(city, item?.link)}
-                  onClick={() => thisChooseCat(item.name, item.id, item?.link)}
-                  key={key}
+                  href={categoryHref(city, item?.link) || `/${city}/menu`}
+                  onClick={(event) => handleCategoryClick(event, item)}
+                  key={item.id}
                   className={
-                    'headerCat ' + (key + 1 == category.length ? 'last' : '')
+                    'headerCat ' +
+                    (key + 1 === navigationCategories.length ? 'last' : '')
                   }
                 >
-                  <span>{item.name}</span>
+                  <span id={'link_' + item.id}>{item.name}</span>
                 </Link>
               )
             )}
@@ -478,15 +397,22 @@ export default React.memo(function NavBarPC({ city, cityRu }) {
 
             <BasketIconHeaderPC />
 
-            <MenuCat
-              anchorEl={anchorEl}
-              isOpen={isOpenCat}
-              onClose={closeMenu}
-              chooseCat={thisChooseCat}
-              city={city}
-              list={list}
-              active_page={activePage}
-            />
+            {navigationCategories
+              .filter(
+                (item) => Array.isArray(item.cats) && item.cats.length > 0
+              )
+              .map((item) => (
+                <MenuCat
+                  key={item.id}
+                  parentId={item.id}
+                  anchorEl={categoryAnchorEl}
+                  isOpen={openCategoryId === item.id}
+                  onClose={closeMenu}
+                  onCategoryClick={handleCategoryClick}
+                  city={city}
+                  list={item.cats}
+                />
+              ))}
             <MenuBurger
               anchorEl={anchorEl}
               isOpen={isOpenburger}

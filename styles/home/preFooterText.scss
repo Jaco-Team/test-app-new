@@ -163,7 +163,8 @@
   }
 
   .homePreFooterText__content {
-    font-size: 3.75vw; // 12 / 320 * 100
+    font-size: max(13px, 3.75vw);
+    line-height: 1.2;
 
     p,
     ul,
@@ -187,7 +188,8 @@
 
   .homePreFooterText__toggle {
     margin-top: 2.5vw; // 8 / 320 * 100
-    font-size: 3.75vw; // 12 / 320 * 100
+    font-size: max(13px, 3.75vw);
+    line-height: 1.2;
     gap: 2.5vw; // 8 / 320 * 100
 
     .homePreFooterText__toggleIcon {

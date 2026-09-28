@@ -37,7 +37,7 @@
       font-style: normal;
       font-weight: 400;
       font-family: var(--inter-font);
-      font-size: $MyScale39_mobile;
+      font-size: max(13px, #{$MyScale39_mobile});
       word-break: break-word;
     }
 

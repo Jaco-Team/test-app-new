@@ -13,10 +13,6 @@
     display: flex;
     align-items: flex-start;
 
-    & .column:nth-child(4) {
-      margin-right: $MyScale210;
-    }
-
     & .column {
       display: flex;
       flex-direction: column;
@@ -173,10 +169,6 @@
       width: calc(100% - #{tablet-home-side-total()});
       margin-left: tablet-home-side();
       margin-right: tablet-home-side();
-
-      & .column:nth-child(4) {
-        margin-right: tablet-vw(210);
-      }
 
       & .column {
         width: tablet-vw(440);

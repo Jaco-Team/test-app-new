@@ -6,6 +6,8 @@ import dynamic from 'next/dynamic';
 
 const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'));
 import Footer from '@/components/footer.js';
+import StructuredData from '@/components/structuredData';
+import { restaurantSchema } from '@/utils/structuredData';
 
 import { roboto } from '@/ui/Font.js';
 import { api } from '@/components/api.js';
@@ -156,6 +158,7 @@ export default function Home(props) {
   return (
     <div className={roboto.variable}>
       <DynamicHomePage page={page} city={city} showCategoryH2={true} />
+      <StructuredData data={props.data1.schema} />
 
       <Footer cityName={city} active_page={this_module} links={links} />
     </div>
@@ -184,7 +187,7 @@ export async function getServerSideProps({ req, res, query }) {
     return { redirect: { destination: `/${city}`, permanent: false } }; // 307
   }
 
-  const [data1, footer] = await Promise.all([
+  const [data1, footer, locations, headerCatalog] = await Promise.all([
     api(this_module, {
       type: 'get_page_info',
       city_id: city,
@@ -195,6 +198,8 @@ export async function getServerSideProps({ req, res, query }) {
       city_id: city,
       page: 'info',
     }),
+    api('contacts', { type: 'get_addr_zone_web', city_id: city }),
+    api('home', { type: 'get_items_cat', city_id: city }),
   ]);
 
   // если бэк не отдал — фоллбек на дефолт, без лупа
@@ -207,6 +212,14 @@ export async function getServerSideProps({ req, res, query }) {
 
   data1.links = footer?.page || {};
   data1.city = city;
+  data1.headerCategories = Array.isArray(headerCatalog?.main_cat)
+    ? headerCatalog.main_cat
+    : data1.cats;
+  data1.schema = restaurantSchema(
+    city,
+    locations?.points || locations?.zones,
+    footer?.page
+  );
 
   return { props: { data1 } };
 }

@@ -1,3 +1,4 @@
+import { loadHeaderCategories } from '@/utils/serverHeaderCategories';
 import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
@@ -145,6 +146,8 @@ export async function getServerSideProps({ req, res, query }) {
 
   data1.links = footer?.page || {};
   data1.city = city;
+
+  data1.headerCategories = await loadHeaderCategories(city, data1.cats);
 
   return { props: { data1 } };
 }

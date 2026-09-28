@@ -641,7 +641,7 @@ export default function MyApp({ Component, pageProps }) {
       !pageProps?.data1?.page ? null : (
         <Header
           city={pageProps?.data1?.city}
-          cats={pageProps?.data1?.cats}
+          cats={pageProps?.data1?.headerCategories || pageProps?.data1?.cats}
           city_list={pageProps?.data1?.cities}
         />
       )}

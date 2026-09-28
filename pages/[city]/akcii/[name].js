@@ -1,8 +1,11 @@
+import { loadHeaderCategories } from '@/utils/serverHeaderCategories';
 import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
 
 import Footer from '@/components/footer.js';
+import StructuredData from '@/components/structuredData';
+import { promotionSchema } from '@/utils/structuredData';
 const DynamicHomePage = dynamic(() => import('@/modules/akcii/page.js'));
 
 import { roboto } from '@/ui/Font.js';
@@ -132,6 +135,7 @@ export default function Home(props) {
   return (
     <div className={roboto.variable}>
       <DynamicHomePage page={page} city={city} banner={props.json.banner} />
+      <StructuredData data={props.data1.schema} />
 
       <Footer cityName={city} active_page={this_module} links={links} />
     </div>
@@ -206,6 +210,14 @@ export async function getServerSideProps({ req, res, query }) {
       robots: 'noindex, nofollow',
     };
   }
+
+  data1.schema = promotionSchema(
+    city,
+    json.banner,
+    Boolean(data1.page?.robots)
+  );
+
+  data1.headerCategories = await loadHeaderCategories(city, data1.cats);
 
   return { props: { data1, json } };
 }

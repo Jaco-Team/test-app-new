@@ -79,6 +79,12 @@
   .badge.container.mobile {
     left: 0;
   }
+
+  .badge.container .box.small > .MuiTypography-root,
+  .badge.container .box.smallshort > .MuiTypography-root {
+    font-size: 13px;
+    line-height: 16px;
+  }
 }
 
 @include tablet-only {

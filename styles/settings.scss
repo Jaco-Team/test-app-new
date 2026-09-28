@@ -481,15 +481,19 @@ $MyScale1300_mobile: 111.11111111111vw;
 $MyScale1320_mobile: 112.82051282051vw;
 $MyScale1871_mobile: 159.91452991453vw;
 
-$FontMinMobile: 12px;
+$FontMinMobile: 13px;
 
 @mixin fonsNew($size: 1rem, $family: $Roboto) {
   font-size: $size !important;
   font-family: $family !important;
   color: $colorText;
 
-  @media (max-width: $MyMaxWidth) {
+  @media (max-width: $bp-mobile-max) {
     font-size: clamp($FontMinMobile, $size, 9999px) !important;
+  }
+
+  @media (min-width: $bp-tablet-min) and (max-width: $MyMaxWidth) {
+    font-size: clamp(12px, $size, 9999px) !important;
   }
 }
 

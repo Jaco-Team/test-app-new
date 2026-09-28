@@ -24,7 +24,7 @@ import ModalPointClose_mobile from '@/modules/header/modalPointClose/modalPointC
 
 import ModalSamaraEntranceWorks_pc from '@/modules/header/modalSamaraEntranceWorks/modalSamaraEntranceWorks_pc';
 import ModalSamaraEntranceWorks_mobile from '@/modules/header/modalSamaraEntranceWorks/modalSamaraEntranceWorks_mobile';
-import SecurityIncidentNotice from '@/modules/profile/securityIncidentNotice/SecurityIncidentNotice';
+import SecurityIncidentNotice from '@/modules/profile/securityIncidentNotice/SecurityIncidentNotice.jsx';
 import SbpReturnHandler from '@/modules/cart/sbpReturnHandler';
 
 import Backdrop from '@mui/material/Backdrop';

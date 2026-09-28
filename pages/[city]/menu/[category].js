@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 import Footer from '@/components/footer.js';
+import StructuredData from '@/components/structuredData';
+import { categorySchema } from '@/utils/structuredData';
 const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'));
 
 import { roboto } from '@/ui/Font.js';
@@ -149,6 +151,7 @@ export default function Home(props) {
         city={city}
         showCategoryH2={showCategoryH2}
       />
+      <StructuredData data={props.data1.schema} />
 
       <Footer cityName={city} active_page={this_module} links={links} />
     </div>
@@ -179,11 +182,10 @@ export async function getServerSideProps({ req, res, query }) {
 
   const category = String(query?.category || '').trim();
 
-  const data1 = await api('home', {
-    type: 'get_page_info',
-    city_id: city,
-    page: category,
-  });
+  const [data1, catalog] = await Promise.all([
+    api('home', { type: 'get_page_info', city_id: city, page: category }),
+    api('home', { type: 'get_items_cat', city_id: city }),
+  ]);
 
   if (!data1 || data1?.page == null) {
     // console.log('!data1 || data1?.page')
@@ -210,6 +212,10 @@ export async function getServerSideProps({ req, res, query }) {
   data1.links = footer?.page || {};
   data1.city = city;
   data1.category = category;
+  data1.headerCategories = Array.isArray(catalog?.main_cat)
+    ? catalog.main_cat
+    : data1.cats;
+  data1.schema = categorySchema(city, category, catalog);
 
   return { props: { data1 } };
 }

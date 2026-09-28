@@ -28,7 +28,7 @@ import {
 
 import useYandexMetrika from './useYandexMetrika';
 import { getClientNetworkContext } from '@/utils/clientMonitoring';
-import { reachGoal, setUserIdAll } from '@/utils/metrika';
+import { reachGoal, reachGoalMain, setUserIdAll } from '@/utils/metrika';
 import { isRecommendationsEnabled } from '@/utils/recommendations';
 import {
   getLocalStorageItem,
@@ -6455,6 +6455,11 @@ export const useHomeStore = reuseHotStore(
             const cityId = useCitiesStore.getState().thisCity;
             reachGoal('choose_tag', { tag: 'Новинка' }, cityId);
             reachGoal('Тэг Новинка', { tag: 'Новинка' }, cityId);
+            reachGoalMain('click_tag_novinka');
+          }
+
+          if (parseInt(res) === 1) {
+            reachGoalMain('click_tag_hit');
           }
 
           if (!skipScroll) {

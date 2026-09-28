@@ -3,6 +3,8 @@ import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 import Footer from '@/components/footer.js';
+import StructuredData from '@/components/structuredData';
+import { menuSchema } from '@/utils/structuredData';
 const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'));
 
 import { roboto } from '@/ui/Font.js';
@@ -141,6 +143,7 @@ export default function Home(props) {
   return (
     <div className={roboto.variable}>
       <DynamicHomePage page={page} city={city} showCategoryH2={true} />
+      <StructuredData data={props.data1.schema} />
 
       <Footer cityName={city} active_page={this_module} links={links} />
     </div>
@@ -175,7 +178,10 @@ export async function getServerSideProps({ req, res, query }) {
     page: 'menu',
   };
 
-  const data1 = await api(this_module, data);
+  const [data1, headerCatalog] = await Promise.all([
+    api(this_module, data),
+    api('home', { type: 'get_items_cat', city_id: city }),
+  ]);
 
   // если бэк не отдал страницу — тоже уводим в /{city}
   if (!data1?.page) {
@@ -190,6 +196,10 @@ export async function getServerSideProps({ req, res, query }) {
 
   data1.links = footer?.page || {};
   data1.city = city;
+  data1.headerCategories = Array.isArray(headerCatalog?.main_cat)
+    ? headerCatalog.main_cat
+    : data1.cats;
+  data1.schema = menuSchema(city, data1.cats);
 
   return { props: { data1 } };
 }

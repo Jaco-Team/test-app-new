@@ -1,3 +1,4 @@
+import { loadHeaderCategories } from '@/utils/serverHeaderCategories';
 import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
@@ -11,6 +12,8 @@ import {
 } from '@/components/store.js';
 
 import Footer from '@/components/footer.js';
+import StructuredData from '@/components/structuredData';
+import { deliverySchema } from '@/utils/structuredData';
 const DynamicPage = dynamic(() => import('@/modules/pageText'));
 
 const this_module = 'contacts';
@@ -86,6 +89,7 @@ export default React.memo(function Instpayorders(props) {
         classNameMobile="PageTextMobile"
         cityName={city}
       />
+      <StructuredData data={props.data1.schema} />
 
       <Footer cityName={city} links={links} />
     </div>
@@ -133,6 +137,7 @@ export async function getServerSideProps({ req, res, query }) {
 
   data1.links = footer?.page || {};
   data1.city = city;
+  data1.schema = deliverySchema(city, data1.page);
 
   // фикс относительных ссылок в html-контенте
   const rawContent = data1?.page?.content ?? '';
@@ -140,6 +145,8 @@ export async function getServerSideProps({ req, res, query }) {
     ...(data1.page ?? {}),
     content: rawContent.replace(/<a href=\"\//g, `<a href="/${city}/`),
   };
+
+  data1.headerCategories = await loadHeaderCategories(city, data1.cats);
 
   return { props: { data1 } };
 }

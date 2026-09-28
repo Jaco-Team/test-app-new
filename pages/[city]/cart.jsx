@@ -1,13 +1,18 @@
+import { loadHeaderCategories } from '@/utils/serverHeaderCategories';
 import React, { useEffect } from 'react';
 
 import dynamic from 'next/dynamic';
 
-import Footer from '@/components/footer.js'
+import Footer from '@/components/footer.js';
 const CartPage = dynamic(() => import('@/modules/cart/page'));
 const LoadMap = dynamic(() => import('@/components/loadMap'));
 
 import { roboto } from '@/ui/Font.js';
-import { useCitiesStore, useHeaderStoreNew, useCartStore } from '@/components/store.js';
+import {
+  useCitiesStore,
+  useHeaderStoreNew,
+  useCartStore,
+} from '@/components/store.js';
 import { api } from '@/components/api.js';
 
 // import { useRouter } from 'next/router';
@@ -18,36 +23,56 @@ import { normalizeCity } from '@/utils/normalizeCity';
 import { getCookie } from '@/utils/getCookie';
 
 export default React.memo(function Cart(props) {
-
   // const { push } = useRouter();
 
-  const { city, cats, cities, page, all_items, free_items, need_dop, links } = props.data1;
+  const { city, cats, cities, page, all_items, free_items, need_dop, links } =
+    props.data1;
 
-  const [setAllItems, setFreeItems, allItems, changeAllItems, setNeedDops, getCartLocalStorage] = useCartStore((state) => [state.setAllItems, state.setFreeItems, state.allItems, state.changeAllItems, state.setNeedDops, state.getCartLocalStorage]);
+  const [
+    setAllItems,
+    setFreeItems,
+    allItems,
+    changeAllItems,
+    setNeedDops,
+    getCartLocalStorage,
+  ] = useCartStore((state) => [
+    state.setAllItems,
+    state.setFreeItems,
+    state.allItems,
+    state.changeAllItems,
+    state.setNeedDops,
+    state.getCartLocalStorage,
+  ]);
 
   const [thisCity, setThisCity, setThisCityRu, setThisCityList] =
-    useCitiesStore((state) => [state.thisCity, state.setThisCity, state.setThisCityRu, state.setThisCityList]);
+    useCitiesStore((state) => [
+      state.thisCity,
+      state.setThisCity,
+      state.setThisCityRu,
+      state.setThisCityList,
+    ]);
 
   const [setActivePage] = useHeaderStoreNew((state) => [state.setActivePage]);
 
   useEffect(() => {
-
     if (thisCity != city) {
       setThisCity(city);
       //setThisCityRu(cities.find((item) => item.link == city)['name']);
 
-      const found = Array.isArray(cities) ? cities.find(item => item?.link == city) : null;
-      setThisCityRu( found?.name ?? '' );
+      const found = Array.isArray(cities)
+        ? cities.find((item) => item?.link == city)
+        : null;
+      setThisCityRu(found?.name ?? '');
 
       setThisCityList(cities);
       setAllItems(all_items);
-      
+
       setTimeout(() => {
         changeAllItems();
       }, 300);
     }
-    
-    if( allItems.length == 0 ){
+
+    if (allItems.length == 0) {
       setAllItems(all_items);
     }
 
@@ -55,9 +80,9 @@ export default React.memo(function Cart(props) {
     setNeedDops(need_dop);
 
     getCartLocalStorage();
-    
+
     setActivePage('cart');
-    
+
     // if (typeof window !== 'undefined') {
     //   const token = localStorage.getItem('token');
 
@@ -66,13 +91,10 @@ export default React.memo(function Cart(props) {
     //   }
     // }
   }, []);
- 
+
   return (
     <div className={roboto.variable}>
-
-      { city == '' ? false :
-        <LoadMap city={city} />
-      }
+      {city == '' ? false : <LoadMap city={city} />}
 
       <CartPage page={page} cityName={city} />
 
@@ -82,9 +104,15 @@ export default React.memo(function Cart(props) {
 });
 
 export async function getServerSideProps({ req, res, query }) {
-  res.setHeader('Cache-Control', 'public, s-maxage=60, stale-while-revalidate=60');
+  res.setHeader(
+    'Cache-Control',
+    'public, s-maxage=60, stale-while-revalidate=60'
+  );
   res.setHeader('Access-Control-Allow-Origin', '*');
-  res.setHeader('Access-Control-Allow-Headers', 'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version');
+  res.setHeader(
+    'Access-Control-Allow-Headers',
+    'X-CSRF-Token, X-Requested-With, Accept, Accept-Version, Content-Length, Content-MD5, Content-Type, Date, X-Api-Version'
+  );
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
@@ -114,6 +142,8 @@ export async function getServerSideProps({ req, res, query }) {
 
   data1.links = footer?.page || {};
   data1.city = city;
+
+  data1.headerCategories = await loadHeaderCategories(city, data1.cats);
 
   return { props: { data1 } };
 }

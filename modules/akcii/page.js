@@ -21,7 +21,7 @@ import { useSearchParams } from 'next/navigation';
 
 let click = false;
 
-export default memo(function AkciiPage({ page, banner }) {
+export default memo(function AkciiPage({ page, banner, initialBanners = [] }) {
   const isMobileAkciiLayout = useMediaQuery(
     `screen and (max-width: ${BREAKPOINTS.mobileMax}px)`
   );
@@ -118,13 +118,13 @@ export default memo(function AkciiPage({ page, banner }) {
     <Meta title={page?.title ?? ''} description={page?.description ?? ''}>
       {isMobileAkciiLayout ? (
         <>
-          <AkciiMobile />
+          <AkciiMobile initialBanners={initialBanners} />
           <ModalItemMobile />
           <ModalCardItemMobile />
         </>
       ) : (
         <>
-          <AkciiPC />
+          <AkciiPC initialBanners={initialBanners} />
           <ModalCardItemPC />
           <ModalItemPC />
         </>
