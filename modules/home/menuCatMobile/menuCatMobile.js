@@ -64,16 +64,26 @@ export default function MenuCatMobile({ city }) {
   const routeSubcategory = Array.isArray(routeParentCategory?.cats)
     ? routeParentCategory.cats.find((sub) => sub.link === routeCategorySlug)
     : null;
+  const routeSubcategories = Array.isArray(routeParentCategory?.cats)
+    ? routeParentCategory.cats
+    : [];
+  const visibleRouteSubcategory = routeSubcategories.find(
+    (sub) => Number(sub.id) === activeIdNum
+  );
   const resolvedActiveCatId = routeCategorySlug
     ? Number(routeParentCategory?.id) || null
     : pressedCatId;
   const resolvedActiveSubId = routeCategorySlug
-    ? Number(routeSubcategory?.id) || null
+    ? Number(
+        routeSubcategory?.id ||
+          visibleRouteSubcategory?.id ||
+          (routeParentCategory?.link === routeCategorySlug
+            ? routeSubcategories[0]?.id
+            : null)
+      ) || null
     : pressedSubId;
   const displayedSubcategories = routeCategorySlug
-    ? Array.isArray(routeParentCategory?.cats)
-      ? routeParentCategory.cats
-      : []
+    ? routeSubcategories
     : catDopMenu;
 
   useEffect(() => {
