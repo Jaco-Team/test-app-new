@@ -8,6 +8,10 @@ import {
 } from '../../utils/cleaningSchedules.js';
 
 const locations = Object.keys(CLEANING_SCHEDULES);
+const locationSlugs = locations.flatMap((location) => [
+  location,
+  location.replaceAll('-', '_'),
+]);
 
 function response() {
   const headers = new Map();
@@ -34,7 +38,7 @@ afterEach(() => vi.unstubAllGlobals());
 describe('графики уборки', () => {
   it('разрешает ровно семь известных кафе и соответствующие PDF', () => {
     expect(locations).toHaveLength(7);
-    expect(getCleaningSchedulePaths()).toHaveLength(7);
+    expect(getCleaningSchedulePaths()).toHaveLength(14);
     for (const location of locations) {
       const schedule = getCleaningSchedule(location, 'guest-toilet');
       expect(schedule).toMatchObject({
@@ -47,6 +51,34 @@ describe('графики уборки', () => {
     }
     expect(getCleaningSchedule('../other', 'guest-toilet')).toBeNull();
     expect(getCleaningSchedule('kuybysheva-113', 'private')).toBeNull();
+    expect(getCleaningSchedule('kuybysheva-113', 'toString')).toBeNull();
+  });
+
+  it.each(locations)(
+    'ссылка с подчёркиванием открывает тот же график %s',
+    (location) => {
+      const alias = location.replaceAll('-', '_');
+      expect(getCleaningSchedule(alias, 'guest-toilet')).toEqual(
+        getCleaningSchedule(location, 'guest-toilet')
+      );
+      expect(getCleaningSchedulePaths()).toContainEqual({
+        params: { location: alias, document: 'guest-toilet' },
+      });
+    }
+  );
+
+  it('каждый статический маршрут соответствует известному графику', () => {
+    const paths = getCleaningSchedulePaths();
+    expect(
+      new Set(
+        paths.map(({ params }) => `${params.location}/${params.document}`)
+      ).size
+    ).toBe(paths.length);
+    for (const { params } of paths) {
+      expect(
+        getCleaningSchedule(params.location, params.document)
+      ).not.toBeNull();
+    }
   });
 
   it('возвращает 404 для неизвестного кафе или документа, не вызывая S3', async () => {
@@ -57,6 +89,8 @@ describe('графики уборки', () => {
       { location: 'unknown', document: 'guest-toilet' },
       { location: 'kuybysheva-113', document: 'unknown' },
       { location: 'https://example.com', document: 'guest-toilet' },
+      { location: 'unknown_47', document: 'guest-toilet' },
+      { location: 'kuybysheva_113', document: 'toString' },
     ]) {
       const res = response();
       await handler({ method: 'GET', query }, res);
@@ -83,7 +117,7 @@ describe('графики уборки', () => {
     expect(fetchMock).not.toHaveBeenCalled();
   });
 
-  it.each(locations)(
+  it.each(locationSlugs)(
     'отдаёт PDF для %s с запретом кеширования',
     async (location) => {
       const bytes = new Uint8Array([37, 80, 68, 70, 45]);
@@ -107,7 +141,9 @@ describe('графики уборки', () => {
       expect(res.body).toEqual(Buffer.from(bytes));
       const [sourceUrl, options] = fetchMock.mock.calls[0];
       expect(sourceUrl.hostname).toBe('storage.yandexcloud.net');
-      expect(sourceUrl.pathname).toContain(`/${location}/guest-toilet.pdf`);
+      expect(sourceUrl.pathname).toContain(
+        `/${getCleaningSchedule(location, 'guest-toilet').location}/guest-toilet.pdf`
+      );
       expect(sourceUrl.searchParams.has('viewer_version')).toBe(true);
       expect(options.cache).toBe('no-store');
     }

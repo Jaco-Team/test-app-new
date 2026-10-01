@@ -75,13 +75,21 @@ export const CLEANING_SCHEDULES = {
 };
 
 export function getCleaningSchedule(location, documentSlug) {
-  const cafe = CLEANING_SCHEDULES[location];
-  const document = cafe?.documents?.[documentSlug];
+  // Ссылки с подчёркиванием и дефисом ведут к одному графику кафе.
+  const canonicalLocation =
+    typeof location === 'string' ? location.replaceAll('_', '-') : '';
+  const cafe = Object.hasOwn(CLEANING_SCHEDULES, canonicalLocation)
+    ? CLEANING_SCHEDULES[canonicalLocation]
+    : null;
+  const document =
+    cafe && Object.hasOwn(cafe.documents, documentSlug)
+      ? cafe.documents[documentSlug]
+      : null;
 
   if (!cafe || !document) return null;
 
   return {
-    location,
+    location: canonicalLocation,
     documentSlug,
     cafeName: cafe.cafeName,
     title: document.title,
@@ -91,9 +99,15 @@ export function getCleaningSchedule(location, documentSlug) {
 }
 
 export function getCleaningSchedulePaths() {
-  return Object.entries(CLEANING_SCHEDULES).flatMap(([location, cafe]) =>
-    Object.keys(cafe.documents).map((documentSlug) => ({
-      params: { location, document: documentSlug },
-    }))
-  );
+  return Object.entries(CLEANING_SCHEDULES).flatMap(([location, cafe]) => {
+    const locationSlugs = [
+      ...new Set([location, location.replaceAll('-', '_')]),
+    ];
+
+    return Object.keys(cafe.documents).flatMap((documentSlug) =>
+      locationSlugs.map((locationSlug) => ({
+        params: { location: locationSlug, document: documentSlug },
+      }))
+    );
+  });
 }
