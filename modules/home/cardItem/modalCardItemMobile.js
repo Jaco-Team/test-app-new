@@ -777,10 +777,6 @@ export default function ModalCardItemMobile() {
         disableSwipeToOpen
       >
         <div className="ContainerModalCardMobileValue">
-          {shadowValue ? (
-            <div className="blockShadowModalCardItemValue" />
-          ) : null}
-
           <div className="lineModalCardMobileValue"></div>
 
           <div className="TitleModalCardModileValue">
@@ -828,6 +824,12 @@ export default function ModalCardItemMobile() {
           </div>
 
           {isMany ? <div className="lineModalCardMobileValue2"></div> : null}
+
+          <div className="ValueScrollBoundary" aria-hidden="true">
+            {shadowValue ? (
+              <div className="blockShadowModalCardItemValue" />
+            ) : null}
+          </div>
 
           <div
             className="ContainerValue"

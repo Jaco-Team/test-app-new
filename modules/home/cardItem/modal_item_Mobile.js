@@ -377,10 +377,6 @@ export default function ModalItemMobile() {
         style={{ zIndex: 3000 }}
       >
         <div className="ContainerModalCardMobileValue">
-          {shadowValue ? (
-            <div className="blockShadowModalCardItemValue" />
-          ) : null}
-
           <div className="lineModalCardMobileValue"></div>
 
           <div className="TitleModalCardModileValue">
@@ -416,6 +412,12 @@ export default function ModalItemMobile() {
           {item_card?.items.length > 1 ? (
             <div className="lineModalCardMobileValue2"></div>
           ) : null}
+
+          <div className="ValueScrollBoundary" aria-hidden="true">
+            {shadowValue ? (
+              <div className="blockShadowModalCardItemValue" />
+            ) : null}
+          </div>
 
           <div
             className="ContainerValue"

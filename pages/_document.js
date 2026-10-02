@@ -1,10 +1,15 @@
-import { Html, Head, Main, NextScript } from "next/document";
-import { roboto } from "@/ui/Font.js";
+import { Html, Head, Main, NextScript } from 'next/document';
+import { roboto } from '@/ui/Font.js';
+import { earlyCategoryClickScript } from '@/utils/earlyCategoryClick';
 
 export default function Document() {
   return (
     <Html lang="ru" data-scroll="0">
       <Head>
+        <script
+          id="early-category-click-guard"
+          dangerouslySetInnerHTML={{ __html: earlyCategoryClickScript }}
+        />
         {/* datalayer должен быть в head ДО ym-init */}
         <script
           dangerouslySetInnerHTML={{
@@ -13,7 +18,11 @@ export default function Document() {
         />
 
         {/* VK openapi в head + init по onload */}
-        <script id="vk-openapi" async src="https://vk.com/js/api/openapi.js?162"></script>
+        <script
+          id="vk-openapi"
+          async
+          src="https://vk.com/js/api/openapi.js?162"
+        ></script>
         <script
           dangerouslySetInnerHTML={{
             __html: `

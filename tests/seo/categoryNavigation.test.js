@@ -23,6 +23,9 @@ describe('ссылки на категории', () => {
       false
     );
     expect(isCityHomePath('/togliatti', 'samara')).toBe(false);
+    expect(isCityHomePath('/SAMARA/#menu', 'samara')).toBe(true);
+    expect(isCityHomePath('/%73amara', 'samara')).toBe(true);
+    expect(isCityHomePath('/%FF', 'samara')).toBe(false);
   });
 
   it('не перехватывает открытие ссылки в новой вкладке', () => {

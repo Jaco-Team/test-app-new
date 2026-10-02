@@ -1,7 +1,6 @@
 import React, { useState, useEffect } from 'react';
 
 import Link from 'next/link';
-import { useRouter } from 'next/router';
 
 import AppBar from '@mui/material/AppBar';
 import Toolbar from '@mui/material/Toolbar';
@@ -33,6 +32,8 @@ import ProfileIconHeaderPC from '../profile/profileIconHeaderPC.js';
 
 import { reachGoal } from '@/utils/metrika';
 import { getLocalStorageJson } from '@/utils/browserStorage';
+import { useCategoryClickReady } from '@/utils/useCategoryClickReady';
+import { isEarlyCategoryClick } from '@/utils/earlyCategoryClick';
 import {
   categoryHref,
   isCityHomePath,
@@ -112,6 +113,7 @@ const MenuCat = React.memo(function MenuCat({
   onCategoryClick,
   list,
   parentId,
+  categoryClickReady,
 }) {
   return (
     <Menu
@@ -130,6 +132,9 @@ const MenuCat = React.memo(function MenuCat({
         <MenuItem key={cat.id}>
           <Link
             href={categoryHref(city, cat?.link) || `/${city}/menu`}
+            data-home-category={city}
+            data-category-target={`cat${cat.id}`}
+            data-category-ready={categoryClickReady ? 'true' : undefined}
             onClick={(event) => onCategoryClick(event, cat)}
           >
             <span id={'link_' + cat.id}>{cat.name}</span>
@@ -165,8 +170,7 @@ const MemoLogo = React.memo(function MemoLogo({ city, activePage }) {
 
 export default React.memo(function NavBarPC({ city, cityRu, catList = [] }) {
   useScroll();
-  const router = useRouter();
-  const isHome = isCityHomePath(router.asPath, city);
+  const categoryClickReady = useCategoryClickReady();
 
   const [
     setActiveBasket,
@@ -250,14 +254,20 @@ export default React.memo(function NavBarPC({ city, cityRu, catList = [] }) {
   };
 
   const handleCategoryClick = (event, item) => {
+    if (isEarlyCategoryClick(event)) {
+      closeMenu();
+      return;
+    }
     if (!isPlainCategoryClick(event)) return;
+
+    const isHome = isCityHomePath(window.location.pathname, city);
+    if (isHome) event.preventDefault();
 
     reachGoal(`Категория ${item.name}`);
     closeMenu();
 
     if (!isHome) return;
 
-    event.preventDefault();
     requestAnimationFrame(() => {
       scroller.scrollTo(`cat${item.id}`, {
         duration: 200,
@@ -339,6 +349,9 @@ export default React.memo(function NavBarPC({ city, cityRu, catList = [] }) {
               ) : (
                 <Link
                   href={categoryHref(city, item?.link) || `/${city}/menu`}
+                  data-home-category={city}
+                  data-category-target={`cat${item.id}`}
+                  data-category-ready={categoryClickReady ? 'true' : undefined}
                   onClick={(event) => handleCategoryClick(event, item)}
                   key={item.id}
                   className={
@@ -411,6 +424,7 @@ export default React.memo(function NavBarPC({ city, cityRu, catList = [] }) {
                   onCategoryClick={handleCategoryClick}
                   city={city}
                   list={item.cats}
+                  categoryClickReady={categoryClickReady}
                 />
               ))}
             <MenuBurger

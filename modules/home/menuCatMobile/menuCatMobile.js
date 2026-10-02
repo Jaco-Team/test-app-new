@@ -7,6 +7,8 @@ import Box from '@mui/material/Box';
 import { Filter } from '@/ui/Icons.js';
 
 import useCheckCat from '../hooks';
+import { useCategoryClickReady } from '@/utils/useCategoryClickReady';
+import { isEarlyCategoryClick } from '@/utils/earlyCategoryClick';
 
 import {
   categoryHref,
@@ -16,7 +18,7 @@ import {
 
 export default function MenuCatMobile({ city }) {
   const router = useRouter();
-  const isHome = isCityHomePath(router.asPath, city);
+  const categoryClickReady = useCategoryClickReady();
   const [
     category,
     cat_position,
@@ -253,9 +255,14 @@ export default function MenuCatMobile({ city }) {
   };
 
   const handleCategoryClick = (event, selectedCategory, choose) => {
+    if (isEarlyCategoryClick(event)) {
+      resetFilter();
+      setActiveFilter(false);
+      return;
+    }
     if (!isPlainCategoryClick(event)) return;
 
-    if (isHome) {
+    if (isCityHomePath(window.location.pathname, city)) {
       event.preventDefault();
       choose(selectedCategory.id, 'scroll');
       return;
@@ -285,6 +292,9 @@ export default function MenuCatMobile({ city }) {
           <Link
             key={item.id}
             href={categoryHref(city, item.link) || `/${city}/menu`}
+            data-home-category={city}
+            data-category-target={`cat${item.cats?.[0]?.id || item.id}`}
+            data-category-ready={categoryClickReady ? 'true' : undefined}
             className={
               resolvedActiveCatId === Number(item.id) ? 'Cat active' : 'Cat'
             }
@@ -313,6 +323,9 @@ export default function MenuCatMobile({ city }) {
               <Link
                 key={cat.id}
                 href={categoryHref(city, cat.link) || `/${city}/menu`}
+                data-home-category={city}
+                data-category-target={`cat${cat.id}`}
+                data-category-ready={categoryClickReady ? 'true' : undefined}
                 className={
                   resolvedActiveSubId === Number(cat.id)
                     ? 'CatDop active'

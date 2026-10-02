@@ -23,6 +23,7 @@ const this_module = 'home';
 
 import { normalizeCity } from '@/utils/normalizeCity';
 import { getCookie } from '@/utils/getCookie';
+import { hasHomeCategorySelection } from '@/utils/earlyCategoryClick';
 
 export default function Home(props) {
   const router = useRouter();
@@ -114,7 +115,7 @@ export default function Home(props) {
   useEffect(() => {
     if (!hasNovinkiQuery && !openedWithNovinkiRef.current) {
       setTimeout(() => {
-        window.scrollTo(0, 0);
+        if (!hasHomeCategorySelection(city)) window.scrollTo(0, 0);
       }, 100);
     }
 

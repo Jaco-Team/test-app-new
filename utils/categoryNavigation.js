@@ -8,10 +8,21 @@ export function categoryHref(city, link) {
 }
 
 export function isCityHomePath(asPath, city) {
-  const pathname = String(asPath ?? '')
-    .split(/[?#]/, 1)[0]
-    .replace(/\/+$/, '');
-  return pathname === `/${String(city ?? '').trim()}`;
+  try {
+    const pathname = decodeURIComponent(
+      String(asPath ?? '').split(/[?#]/, 1)[0]
+    )
+      .replace(/\/+$/, '')
+      .toLowerCase();
+    return (
+      pathname ===
+      `/${String(city ?? '')
+        .trim()
+        .toLowerCase()}`
+    );
+  } catch {
+    return false;
+  }
 }
 
 export function isPlainCategoryClick(event) {
