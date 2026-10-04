@@ -203,7 +203,7 @@ function sanitizePathname(pathname) {
 export const config = {
   // Не перехватываем статику/служебные файлы
   matcher: [
-    '/((?!monitoring|_next|favicon.ico|robots.txt|sitemap.xml|images|fonts|static).*)',
+    '/((?!api(?:/|$)|monitoring|_next|favicon.ico|robots.txt|sitemap.xml|images|fonts|static|.*\\.[a-zA-Z0-9]+$).*)',
   ],
 };
 
@@ -211,7 +211,12 @@ export async function proxy(request) {
   //const response = NextResponse.next()
   const { nextUrl } = request;
 
-  if (nextUrl.pathname === '/api/health') {
+  // Оптимизатор запрашивает public-файлы без заголовков внешнего запроса.
+  // Для них нельзя применять HTTPS-редиректы, очистку URL и трекинг сессий.
+  if (
+    /^\/api(?:\/|$)/.test(nextUrl.pathname) ||
+    /\.[a-zA-Z0-9]+$/.test(nextUrl.pathname)
+  ) {
     return NextResponse.next();
   }
 

@@ -397,18 +397,19 @@ export function isIgnoredInjectedScriptError(event, originalException) {
 }
 
 export function maybeReloadAfterChunkError(context = {}) {
-  if (typeof window === 'undefined' || typeof sessionStorage === 'undefined') {
+  if (typeof window === 'undefined') {
     return false;
   }
 
   const storageKey = `jaco:chunk-reload:${window.location.pathname}`;
 
-  if (sessionStorage.getItem(storageKey)) {
-    return false;
-  }
-
   try {
-    sessionStorage.setItem(
+    const storage = window.sessionStorage;
+    if (!storage || storage.getItem(storageKey)) {
+      return false;
+    }
+
+    storage.setItem(
       storageKey,
       JSON.stringify({
         ts: Date.now(),
@@ -416,7 +417,8 @@ export function maybeReloadAfterChunkError(context = {}) {
       })
     );
   } catch {
-    // Ignore storage failures and still try to recover with reload.
+    // Без сохранённой отметки перезагрузка может повторяться бесконечно.
+    return false;
   }
 
   window.location.reload();

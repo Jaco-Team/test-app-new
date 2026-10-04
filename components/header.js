@@ -252,15 +252,15 @@ export default React.memo(function header({ city, city_list, cats }) {
     <div className={roboto.variable} style={{ overflow: 'auto' }}>
       <Script
         src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
       />
       <Script
         src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-with-polyfills-latest.js"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
       />
       <Script
         src="https://yastatic.net/s3/passport-sdk/autofill/v1/sdk-suggest-token-with-polyfills-latest.js"
-        strategy="lazyOnload"
+        strategy="afterInteractive"
       />
 
       <Backdrop sx={{ color: '#fff', zIndex: 5000 }} open={isShowLoad}>

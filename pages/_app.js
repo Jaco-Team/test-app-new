@@ -589,24 +589,25 @@ export default function MyApp({ Component, pageProps }) {
         `}
       </Script>
 
+      {/* Очередь событий готова сразу; внешний пиксель не задерживает загрузку страницы. */}
       <Script id="telegram-pixel" strategy="afterInteractive">
         {`
-          (function(t,l,g,r,m){
+          (function(t,g){
             t[g] || (
               g = t[g] = function() {
                 g.run ? g.run.apply(g, arguments) : g.queue.push(arguments);
               },
-              g.queue = [],
-              t = l.createElement(r),
-              t.async = true,
-              t.src = m,
-              l = l.getElementsByTagName(r)[0],
-              l.parentNode.insertBefore(t, l)
+              g.queue = []
             );
-          })(window, document, 'tgp', 'script', 'https://telegram.org/js/pixel.js');
+          })(window, 'tgp');
           tgp('init', 'HbWMUPHc');
         `}
       </Script>
+      <Script
+        id="telegram-pixel-sdk"
+        src="https://telegram.org/js/pixel.js"
+        strategy="lazyOnload"
+      />
 
       {/* карты */}
       <Script
