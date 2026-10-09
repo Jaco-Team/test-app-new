@@ -53,8 +53,9 @@ next-env.d.ts
 #Roman task
 public/cron/
 
-# Codex local config
+# AI local config
 .codex/
+.cursor/
 
 # Local server security audit inputs and reports
 /scripts/server-audit/*.local.json

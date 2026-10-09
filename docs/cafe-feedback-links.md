@@ -1,9 +1,15 @@
 # Ссылки QR-отзывов для кафе
 
-Один токен кафе работает на двух маршрутах: со звёздами и со смайликами.
-Ссылки многоразовые и не привязаны к городу.
+Ниже сохранены исторические длинные ссылки для проверки обратной
+совместимости. Они не являются шаблоном генерации новых QR и не должны
+сокращаться или переиспользоваться для новых зон.
 
-## Действующие ссылки
+## Исторические длинные ссылки
+
+Список ниже сохранён для совместимости и регрессионной проверки. Нельзя считать
+эти ссылки активными без проверки их текущего состояния в модуле `cafe_reviews`
+в ШЕФе: ссылка могла быть отозвана, заменена или остаться только исторической
+записью.
 
 ### 1. Ленинградская, 47
 
@@ -45,51 +51,22 @@
 - Звёзды: https://jacofood.ru/feedback/stars/injacatwggpcw35sc226lauxpio45irlezurg4toglxsjwsqcxutbdhz4xkg7kxnzz7jzmbksgawhftymwul34wekuzgnjk7i6qvibnvao7uvdj2xwvce7yn6mcwppwjxq7yv5zknkegchsk2q4k3zymjqlrvh47l56jgty6tr2fbcz2ers7l5afkqf5qiqbuib4sadqtbqhs
 - Смайлики: https://jacofood.ru/feedback/emoji/injacatwggpcw35sc226lauxpio45irlezurg4toglxsjwsqcxutbdhz4xkg7kxnzz7jzmbksgawhftymwul34wekuzgnjk7i6qvibnvao7uvdj2xwvce7yn6mcwppwjxq7yv5zknkegchsk2q4k3zymjqlrvh47l56jgty6tr2fbcz2ers7l5afkqf5qiqbuib4sadqtbqhs
 
-## Как сгенерировать новую ссылку
+## Как генерируются новые ссылки
 
-Команда выполняется в корне backend:
+Новые QR выпускаются менеджером в модуле `cafe_reviews` в ШЕФе для конкретной
+пары `point_id + zone_code` (например, `toilet` или `handwasher`). Повторный
+выпуск для той же зоны атомарно отзывает предыдущую активную ссылку. Для новой
+ссылки создаются новый случайный внутренний токен и отдельный короткий код;
+исторические длинные токены в этот процесс не входят.
 
-```bash
-cd /var/www/api2.jacochef.ru/site
-php src/cafe_review/bin/generate_links.php <ID_КАФЕ> qr
-```
+Chef BE возвращает короткий код и канонические URL `/feedback/stars/{code}` и
+`/feedback/emoji/{code}`. Роуты сайта принимают короткие коды и старый длинный
+формат только для обратной совместимости.
 
-Например, для кафе с ID `7`:
-
-```bash
-php src/cafe_review/bin/generate_links.php 7 qr
-```
-
-Команда проверяет активность кафе, регистрирует SHA-256 токена в
-`cafe_review_links` и печатает две ссылки: `/feedback/stars/` и
-`/feedback/emoji/`.
-
-Для всех восьми кафе:
-
-```bash
-for id in 1 2 3 4 5 6 7 8; do
-  printf 'CAFE_ID=%s\n' "$id"
-  php src/cafe_review/bin/generate_links.php "$id" qr || exit 1
-done
-```
-
-Для генерации должны быть заданы:
+Конфигурация генератора находится в Chef BE:
 
 ```env
-CAFE_REVIEW_LINK_KEYS='{"v1":"BASE64_КЛЮЧ_32_БАЙТА"}'
-CAFE_REVIEW_LINK_ACTIVE_KID=v1
-CAFE_REVIEW_FRONTEND_BASE_URL=https://jacofood.ru
-CAFE_REVIEW_DB_SESSION_WAIT_TIMEOUT_SECONDS=600
+CAFE_REVIEWS_SHORT_BASE_URL=https://jacofood.ru/feedback
+CAFE_REVIEWS_SHORT_CODE_LENGTH=10
+CAFE_REVIEWS_LINK_ACTIVE_KID=v1
 ```
-
-Новый 32-байтовый ключ:
-
-```bash
-php -r 'echo base64_encode(random_bytes(32)), PHP_EOL;'
-```
-
-Важно: генератор добавляет новую активную ссылку и не отзывает предыдущую.
-Перед выпуском нового QR старую запись необходимо отдельно деактивировать.
-
-Эти ссылки уже появлялись в истории разработки. Перед финальным production
-выпуском их нужно перевыпустить и отозвать старые, чтобы исключить злоупотребление.
