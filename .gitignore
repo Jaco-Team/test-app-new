@@ -67,3 +67,4 @@ public/cron/
 /scripts/server-audit/**/*.pyc
 .playwright-cli/
 scripts/
+!/.github/scripts/
