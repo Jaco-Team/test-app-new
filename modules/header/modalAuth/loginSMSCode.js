@@ -51,6 +51,8 @@ export default function LoginSMSCode({ isMobileAuth = false }) {
 
   const authMessageByType = {
     sms: 'Введите 4 цифры из смс',
+    telegram: 'Введите 4 цифры из Telegram',
+    voice: 'Введите 4 цифры из звонка',
     FLASHCALL:
       'Введите последние 4 цифры номера, с которого поступит входящий звонок - отвечать не нужно',
     TELEGRAM: 'Введите 4 цифры из Telegram',
