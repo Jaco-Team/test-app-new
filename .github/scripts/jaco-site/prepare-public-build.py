@@ -1,5 +1,7 @@
 #!/usr/bin/env python3
 """Validate an OpenBao-origin public snapshot; never contact OpenBao from CI."""
+from __future__ import annotations
+
 import hashlib
 import json
 import os
