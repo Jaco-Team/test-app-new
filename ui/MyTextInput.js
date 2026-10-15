@@ -2,6 +2,7 @@ import React from 'react';
 import TextField from '@mui/material/TextField';
 
 import { IMaskInput } from 'react-imask';
+import { prepareRussianPhoneInput } from '@/utils/phoneMask.mjs';
 
 
 
@@ -12,6 +13,7 @@ const TextMaskCustomNew = React.forwardRef(
       <IMaskInput
         {...other}
         mask="8 (000) 000-00-00"
+        prepare={prepareRussianPhoneInput}
         
         inputRef={ref}
         onAccept={(value) => onChange({ target: { value } })}
