@@ -1,7 +1,8 @@
-@use "../settings" as *;
+@use '../settings' as *;
 
 .modalAuthMobile {
-  & .MuiDialog-paper, .MuiDrawer-paper {
+  & .MuiDialog-paper,
+  .MuiDrawer-paper {
     border-radius: $MyScale80_mobile $MyScale80_mobile 0 0;
     margin: 0;
     padding: 0;
@@ -72,7 +73,7 @@
           & .MuiOutlinedInput-notchedOutline {
             border: $MyScale2_mobile solid rgba(0, 0, 0, 0.2);
           }
-          
+
           & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
             & .MuiOutlinedInput-notchedOutline {
               border: $MyScale3_mobile solid rgba(0, 0, 0, 0.4);
@@ -83,17 +84,17 @@
             color: rgba(0, 0, 0, 0.4) !important;
             @include font50_400();
             padding-left: $MyScale40_mobile;
-            top:  $MyScale15_mobile;
+            top: $MyScale15_mobile;
           }
 
           & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
             color: rgba(0, 0, 0, 0.6) !important;
             @include font50_400();
             padding-left: $MyScale60_mobile;
-            top:  -$MyScale3_mobile;
+            top: -$MyScale3_mobile;
           }
 
-          & .MuiInputBase-root.MuiOutlinedInput-root{
+          & .MuiInputBase-root.MuiOutlinedInput-root {
             width: $MyScale960_mobile;
             border-radius: $MyScale40_mobile;
             //height: 100%;
@@ -136,7 +137,6 @@
                 height: $MyScale80_mobile;
               }
             }
-
           }
         }
 
@@ -150,7 +150,7 @@
           & .MuiOutlinedInput-notchedOutline {
             border: $MyScale2_mobile solid rgba(0, 0, 0, 0.2);
           }
-          
+
           & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
             & .MuiOutlinedInput-notchedOutline {
               border: $MyScale3_mobile solid rgba(0, 0, 0, 0.4);
@@ -161,17 +161,17 @@
             color: rgba(0, 0, 0, 0.4) !important;
             @include font50_400();
             padding-left: $MyScale60_mobile;
-            top:  -$MyScale3_mobile;
+            top: -$MyScale3_mobile;
           }
 
           & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
             color: rgba(0, 0, 0, 0.6) !important;
             @include font50_400();
             padding-left: $MyScale60_mobile;
-            top:  -$MyScale3_mobile;
+            top: -$MyScale3_mobile;
           }
 
-          & .MuiInputBase-root.MuiOutlinedInput-root{
+          & .MuiInputBase-root.MuiOutlinedInput-root {
             width: $MyScale960_mobile;
             border-radius: $MyScale40_mobile;
             //height: 100%;
@@ -263,6 +263,42 @@
           @include font40_400();
           text-align: center;
           margin-top: $MyScale30_mobile;
+        }
+
+        & .authDeliveryChannel {
+          width: $MyScale960_mobile;
+          margin-top: $MyScale30_mobile;
+          margin-bottom: $MyScale30_mobile;
+
+          & .MuiFormLabel-root,
+          & .MuiFormControlLabel-label {
+            @include font40_400();
+          }
+
+          & .MuiFormLabel-root {
+            margin-bottom: $MyScale16_mobile;
+          }
+
+          & .MuiRadioGroup-root {
+            flex-wrap: wrap;
+          }
+
+          & .MuiFormControlLabel-root {
+            margin: 0 $MyScale40_mobile 0 0;
+
+            &:last-child {
+              margin-right: 0;
+            }
+          }
+
+          & .MuiRadio-root {
+            padding: $MyScale16_mobile;
+
+            & svg {
+              width: $MyScale60_mobile;
+              height: $MyScale60_mobile;
+            }
+          }
         }
 
         & .loginLosePWD {
@@ -361,7 +397,7 @@
           & .MuiOutlinedInput-notchedOutline {
             border: $MyScale2_mobile solid rgba(0, 0, 0, 0.2);
           }
-          
+
           & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
             & .MuiOutlinedInput-notchedOutline {
               border: $MyScale3_mobile solid rgba(0, 0, 0, 0.4);
@@ -372,17 +408,17 @@
             color: rgba(0, 0, 0, 0.4) !important;
             @include font50_400();
             padding-left: $MyScale40_mobile;
-            top:  $MyScale15_mobile;
+            top: $MyScale15_mobile;
           }
 
           & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
             color: rgba(0, 0, 0, 0.6) !important;
             @include font50_400();
             padding-left: $MyScale60_mobile;
-            top:  -$MyScale3_mobile;
+            top: -$MyScale3_mobile;
           }
 
-          & .MuiInputBase-root.MuiOutlinedInput-root{
+          & .MuiInputBase-root.MuiOutlinedInput-root {
             width: $MyScale960_mobile;
             border-radius: $MyScale40_mobile;
             //height: 100%;
@@ -425,7 +461,6 @@
                 height: $MyScale80_mobile;
               }
             }
-
           }
         }
 
@@ -439,7 +474,7 @@
           & .MuiOutlinedInput-notchedOutline {
             border: $MyScale2_mobile solid rgba(0, 0, 0, 0.2);
           }
-          
+
           & .MuiInputBase-root.MuiOutlinedInput-root.Mui-focused {
             & .MuiOutlinedInput-notchedOutline {
               border: $MyScale3_mobile solid rgba(0, 0, 0, 0.4);
@@ -450,17 +485,17 @@
             color: rgba(0, 0, 0, 0.4) !important;
             @include font50_400();
             padding-left: $MyScale60_mobile;
-            top:  -$MyScale3_mobile;
+            top: -$MyScale3_mobile;
           }
 
           & .MuiFormLabel-root.MuiInputLabel-root.Mui-focused {
             color: rgba(0, 0, 0, 0.6) !important;
             @include font50_400();
             padding-left: $MyScale60_mobile;
-            top:  -$MyScale3_mobile;
+            top: -$MyScale3_mobile;
           }
 
-          & .MuiInputBase-root.MuiOutlinedInput-root{
+          & .MuiInputBase-root.MuiOutlinedInput-root {
             width: $MyScale960_mobile;
             border-radius: $MyScale40_mobile;
             //height: 100%;
@@ -682,35 +717,35 @@
           //   display: flex;
           //   flex-direction: row;
 
-            & input {
-              margin-bottom: $MyScale20_mobile;
-              // width: $MyScale75_mobile;
-              width: $MyScale300_mobile;
-              height: $MyScale75_mobile;
-              padding: 0;
-              padding-left: $MyScale40_mobile;
-              text-align: center;
-              letter-spacing: $MyScale30_mobile;
-              //margin-right: $MyScale12_mobile;
-              @include font75_700();
-              border: none;
-              background-clip: padding-box;
-              background-color: #fff;
+          & input {
+            margin-bottom: $MyScale20_mobile;
+            // width: $MyScale75_mobile;
+            width: $MyScale300_mobile;
+            height: $MyScale75_mobile;
+            padding: 0;
+            padding-left: $MyScale40_mobile;
+            text-align: center;
+            letter-spacing: $MyScale30_mobile;
+            //margin-right: $MyScale12_mobile;
+            @include font75_700();
+            border: none;
+            background-clip: padding-box;
+            background-color: #fff;
 
-              text-align: left;
+            text-align: left;
 
-              &:focus {
-                appearance: none;
-                outline: 0;
-              }
+            &:focus {
+              appearance: none;
+              outline: 0;
             }
+          }
 
-            & > input::placeholder {
-              letter-spacing: 0;
-              transform: translate3d($MyScale20_mobile, $MyScale10_mobile, 0);
-              font-size: $MyScale100_mobile;
-              color: rgba(0, 0, 0, 0.2) !important;
-            }
+          & > input::placeholder {
+            letter-spacing: 0;
+            transform: translate3d($MyScale20_mobile, $MyScale10_mobile, 0);
+            font-size: $MyScale100_mobile;
+            color: rgba(0, 0, 0, 0.2) !important;
+          }
           // }
 
           & .loginSvg {
@@ -742,7 +777,7 @@
         & .loginTimer {
           height: $MyScale60_mobile;
           margin-bottom: $MyScale60_mobile;
-    
+
           & span {
             @include font40_400();
             color: rgba(0, 0, 0, 0.4) !important;

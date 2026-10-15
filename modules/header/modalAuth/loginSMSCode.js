@@ -52,13 +52,15 @@ export default function LoginSMSCode({ isMobileAuth = false }) {
   const authMessageByType = {
     sms: 'Введите 4 цифры из смс',
     telegram: 'Введите 4 цифры из Telegram',
-    voice: 'Введите 4 цифры из звонка',
+    voice: 'Введите 4 продиктованные цифры',
     FLASHCALL:
       'Введите последние 4 цифры номера, с которого поступит входящий звонок - отвечать не нужно',
     TELEGRAM: 'Введите 4 цифры из Telegram',
   };
 
   const authMessage = authMessageByType[typeAuth] ?? authMessageByType.sms;
+  const resendLabel =
+    typeAuth === 'voice' ? 'Позвонить еще раз' : 'Отправить код еще раз';
 
   useEffect(() => {
     if (timerPage) {
@@ -74,7 +76,7 @@ export default function LoginSMSCode({ isMobileAuth = false }) {
       inputRef.current?.clear?.();
     }
     changeCode('');
-    navigate('loginSMS');
+    navigate(preTypeLogin);
   };
 
   const changeNumber = () => {
@@ -194,7 +196,7 @@ export default function LoginSMSCode({ isMobileAuth = false }) {
               cursor: 'pointer',
             }}
           >
-            Отправить код еще раз
+            {resendLabel}
           </Typography>
         </div>
       ) : (

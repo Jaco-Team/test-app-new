@@ -5,6 +5,7 @@ import { useHeaderStoreNew } from '@/components/store';
 import { importWithRetry } from '@/utils/importWithRetry';
 
 import MyTextInput, { FormattedInputs } from '@/ui/MyTextInput';
+import MyRadioGroup from '@/ui/MyRadioGroup';
 import {
   EyeShow_modalOrder,
   EyeHide_modalOrder,
@@ -25,8 +26,17 @@ const SmartCaptcha = dynamic(
 );
 
 export default function ResetPWD({ isMobileAuth = false }) {
+  const [typeAuth, preTypeLogin] = useHeaderStoreNew((state) => [
+    state.typeAuth,
+    state.preTypeLogin,
+  ]);
   const [showPassword, setShowPassword] = useState(false);
-  const [deliveryChannel, setDeliveryChannel] = useState('sms');
+  const [deliveryChannel, setDeliveryChannel] = useState(() =>
+    preTypeLogin === 'loginSMSCode' &&
+    ['sms', 'telegram', 'voice'].includes(typeAuth)
+      ? typeAuth
+      : 'sms'
+  );
   const [captchaToken, setCaptchaToken] = useState('');
   const [captchaKey, setCaptchaKey] = useState(0);
 
@@ -133,23 +143,20 @@ export default function ResetPWD({ isMobileAuth = false }) {
         }
       />
 
-      <label
-        className="resetText"
-        htmlFor="password-recovery-channel"
-        style={{ display: 'block', marginTop: 16 }}
-      >
-        Получить код
-      </label>
-      <select
-        id="password-recovery-channel"
-        value={deliveryChannel}
-        onChange={(event) => setDeliveryChannel(event.target.value)}
-        style={{ width: '100%', minHeight: 44, marginTop: 8, marginBottom: 16 }}
-      >
-        <option value="sms">СМС</option>
-        <option value="telegram">Telegram</option>
-        <option value="voice">Звонок</option>
-      </select>
+      <div className="authDeliveryChannel">
+        <MyRadioGroup
+          label="Способ получения кода"
+          value={deliveryChannel}
+          onChange={(event) => setDeliveryChannel(event.target.value)}
+          name="password-recovery-channel"
+          row
+          options={[
+            { value: 'sms', label: 'СМС' },
+            { value: 'telegram', label: 'Telegram' },
+            { value: 'voice', label: 'Звонок' },
+          ]}
+        />
+      </div>
 
       {captchaSiteKey ? (
         <SmartCaptcha
