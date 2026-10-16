@@ -1,0 +1,44 @@
+---
+description: New core preview + design system rebuild context and constraints
+alwaysApply: true
+---
+
+# Preview DS rebuild
+
+## Active work
+
+- **New core:** `src/` (FSD) + `app/preview/` (App Router at `/preview/{city}`).
+- **DS source of truth:** `src/shared/ui/**` with colocated `*.stories.tsx`.
+- **Legacy core** (`pages/`, `modules/`, `components/`, `styles/`) — production at `/samara`; do not refactor unless the task explicitly targets legacy.
+- **`stories/`** — archived failed Storybook-first attempt; reference only, no new DS work.
+
+## Parity target
+
+Design and UX must match legacy (`/samara`) and https://jacofood.ru/samara at **100%**. Read old code/styles for reference; implement in `src/`.
+
+## Responsive (required for all components)
+
+| Mode | Range |
+|------|-------|
+| compact (mobile) | 320–667 px |
+| regular (tablet) | 668–990 px |
+| expanded (desktop) | ≥ 991 px |
+
+Tablet is a separate design target, not stretched mobile.
+
+## Pixel-first → vw formulas
+
+Layout uses fluid SCSS (`ui-fluid-compact/regular/expanded` in `src/shared/ui/foundation/_formulas.scss`). Reference captures (Chrome MCP, Playwright) must use **fixed pixel viewports** (320, 668, 991); measure computed px, then derive formula arguments. See `docs/tablet-adaptation-guide.md`.
+
+## Visual verification
+
+- Preview: `http://localhost:3000/preview/samara`
+- Legacy: `http://localhost:3000/samara`
+- Use **cursor-ide-browser** MCP for localhost smoke/screenshots; Playwright for scripted snapshots.
+- Do not run lint/format/typecheck unless requested.
+
+## Docs
+
+- Master plan: `TODO-NEW.md`
+- Adaptive workflow: `docs/tablet-adaptation-guide.md`
+- New core map: `src/CORE.md`
