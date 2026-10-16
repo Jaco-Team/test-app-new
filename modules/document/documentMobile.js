@@ -101,6 +101,20 @@ export default function DocumentPageMobile({ cityName }) {
               <ArrowRightMobile />
             </div>
           </Link>
+
+          <Link
+            href={
+              '/' + cityName + '/sroki_godnosti_i_usloviia_hraneniia_gotovyh_bliud'
+            }
+            onClick={() =>
+              goToPage('Сроки годности и условия хранения готовых блюд')
+            }
+          >
+            <div className="linkDocumentMobile">
+              <span>Сроки годности и условия хранения готовых блюд</span>
+              <ArrowRightMobile />
+            </div>
+          </Link>
         </div>
       </div>
     </Grid>

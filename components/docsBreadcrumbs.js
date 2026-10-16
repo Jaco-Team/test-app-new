@@ -113,6 +113,27 @@ export default function DocsBreadcrumbs() {
                 Памятка по сохранению здоровья
               </Link>
             </li>
+
+            <li
+              className={
+                activePage === 'sroki_godnosti_i_usloviia_hraneniia_gotovyh_bliud'
+                  ? 'activeMarker'
+                  : ''
+              }
+            >
+              <Link
+                className={
+                  activePage === 'sroki_godnosti_i_usloviia_hraneniia_gotovyh_bliud'
+                    ? 'active'
+                    : ''
+                }
+                href={
+                  '/' + thisCity + '/sroki_godnosti_i_usloviia_hraneniia_gotovyh_bliud'
+                }
+              >
+                Сроки годности и условия хранения готовых блюд
+              </Link>
+            </li>
           </ul>
         )}
       </div>
