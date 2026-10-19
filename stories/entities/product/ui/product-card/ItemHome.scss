@@ -18,10 +18,14 @@
     mix-blend-mode: multiply;
     position: relative;
 
-    & > img {
+    & > .ResponsiveImage {
       width: calcSize(600);
       height: calcSize(600);
       cursor: pointer;
+
+      img {
+        object-fit: contain;
+      }
     }
 
     & > .badge {
@@ -128,7 +132,7 @@
     }
 
     & .BlockIMG {
-      & > img {
+      & > .ResponsiveImage {
         width: calcSize_pad(450);
         height: calcSize_pad(450);
       }
@@ -205,11 +209,14 @@
       width: calcSize_mobile(220);
       height: calcSize_mobile(220);
 
-      & > img {
+      & > .ResponsiveImage {
         width: 100%;
         height: 100%;
-        object-fit: cover;
         border-radius: calcSize_mobile(12);
+
+        img {
+          object-fit: cover;
+        }
       }
 
       & > .badge {

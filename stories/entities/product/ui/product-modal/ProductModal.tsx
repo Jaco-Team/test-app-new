@@ -1,11 +1,13 @@
 import React, { useEffect, useState } from 'react';
-import Image from 'next/image';
 import './ProductModal.scss';
+import { placeholder_img } from '@/public/placeholder_img';
+import { createProductImageSources } from '@stories/entities/product/model/productImage';
 import { ModalItemValue } from '@stories/entities/product/ui/nutrition/ModalItemValue';
 import {
   ProductModalProps,
   RollItem,
 } from '@stories/entities/product/ui/product-modal/model/types';
+import { ResponsiveImage } from '@stories/shared/ui/responsive-image/ResponsiveImage';
 
 const defaultRollsData: RollItem[] = [
   {
@@ -134,15 +136,19 @@ export const ProductModal: React.FC<ProductModalProps> = ({
 
   if (!isOpen) return null;
 
+  const heroImage = createProductImageSources(productImage, 'hero');
+
   const renderMainView = () => (
     <>
       <div className="ProductModal-image">
-        <Image
-          src={productImage}
+        <ResponsiveImage
+          {...heroImage}
           alt={productName}
-          width={585}
-          height={585}
-          priority
+          width={732}
+          height={732}
+          fallbackSrc={placeholder_img}
+          loading="eager"
+          fetchPriority="high"
           className="ProductModal-image-main"
         />
       </div>
@@ -228,25 +234,30 @@ export const ProductModal: React.FC<ProductModalProps> = ({
       </div>
 
       <div className="ProductModal-rolls-list">
-        {rollsData.map((roll, index) => (
-          <div key={roll.id} className="ProductModal-roll-item">
-            <span className="ProductModal-roll-number">{index + 1}.</span>
-            <div className="ProductModal-roll-image">
-              <Image
-                src={roll.image}
-                alt={roll.name}
-                width={120}
-                height={120}
-              />
+        {rollsData.map((roll, index) => {
+          const rollImage = createProductImageSources(roll.image, 'thumbnail');
+
+          return (
+            <div key={roll.id} className="ProductModal-roll-item">
+              <span className="ProductModal-roll-number">{index + 1}.</span>
+              <div className="ProductModal-roll-image">
+                <ResponsiveImage
+                  {...rollImage}
+                  alt={roll.name}
+                  width={366}
+                  height={366}
+                  fallbackSrc={placeholder_img}
+                />
+              </div>
+              <div className="ProductModal-roll-content">
+                <h3 className="ProductModal-roll-name">{roll.name}</h3>
+                <p className="ProductModal-roll-description">
+                  {roll.description}
+                </p>
+              </div>
             </div>
-            <div className="ProductModal-roll-content">
-              <h3 className="ProductModal-roll-name">{roll.name}</h3>
-              <p className="ProductModal-roll-description">
-                {roll.description}
-              </p>
-            </div>
-          </div>
-        ))}
+          );
+        })}
       </div>
     </div>
   );

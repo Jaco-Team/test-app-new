@@ -1,12 +1,9 @@
-import React from 'react';
-import Image from 'next/image';
-
 import './ItemHome.scss';
 import { placeholder_img } from '@/public/placeholder_img';
+import { createProductImageSources } from '@stories/entities/product/model/productImage';
+import { ResponsiveImage } from '@stories/shared/ui/responsive-image/ResponsiveImage';
 import { Badge } from '../badge/Badge';
 import { ProductItem } from '@stories/entities/product/ui/product-card/model/types';
-import { useEffect, useState } from 'react';
-import { ProductModal } from '@stories/entities/product/ui/product-modal/ProductModal';
 
 export const ItemHome = ({
   name,
@@ -21,24 +18,17 @@ export const ItemHome = ({
 }: ProductItem) => {
   const itemCount = Number.parseInt(count || '0', 10) || 0;
   const itemPrice = Number.parseInt(price || '0', 10) || 0;
+  const productImage = createProductImageSources(img_app, 'card');
 
   return (
     <div className={['ItemHomePc', itemCount > 0 ? 'active' : ''].join(' ')}>
       <div className="BlockIMG">
-        <Image
+        <ResponsiveImage
+          {...productImage}
           alt={name}
-          src={
-            img_app?.length > 0
-              ? 'https://cdnimg.jacofood.ru/' + img_app + '_732x732.jpg'
-              : placeholder_img
-          }
-          width={732}
-          height={732}
-          priority={false}
-          quality={75}
-          loading={'lazy'}
-          placeholder="blur"
-          blurDataURL={placeholder_img}
+          width={585}
+          height={585}
+          fallbackSrc={placeholder_img}
         />
 
         {parseInt(is_new) == 0 ? (

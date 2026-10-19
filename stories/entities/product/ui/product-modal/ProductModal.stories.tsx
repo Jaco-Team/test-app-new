@@ -31,7 +31,8 @@ export const Default = Template.bind({});
 Default.args = {
   isOpen: true,
   onClose: () => console.log('Close modal'),
-  productImage: '/images/sushi-product.jpg',
+  productImage:
+    'https://mainimg.jacofood.ru/Filadelfiia_opalionnaia_732x732.webp',
   productName: 'Филадельфия опалённая',
   rollsCount: 4,
   piecesCount: 32,
