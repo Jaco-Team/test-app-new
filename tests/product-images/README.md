@@ -39,3 +39,19 @@ PSNR нужен для первичного ранжирования, но не 
 - AVIF может дать меньший файл ценой более долгого кодирования или декодирования.
 - Ошибочный `Content-Type` фиксируется как предупреждение и должен исправляться в metadata объектов отдельной backend/infrastructure задачей.
 - Загрузка результатов в S3 данным набором скриптов не поддерживается намеренно.
+
+## Browser-проверки
+
+Playwright проверяет выбор `currentSrc`, состояния skeleton/error, геометрию карточки и модалки на viewport 500, 800 и 1400 пикселей при DPR 2:
+
+```bash
+npm run test:images:e2e
+```
+
+Если Storybook уже запущен на другом порту, его можно использовать без запуска второго процесса:
+
+```bash
+IMAGE_STORYBOOK_URL=http://localhost:6008 npm run test:images:e2e
+```
+
+К каждому сценарию прикладывается JSON с выбранным URL, CSS-размером, DPR и доступными Resource Timing. Из-за отсутствия `Timing-Allow-Origin` у текущего CDN browser-поля `transferSize` и `encodedBodySize` могут быть пустыми; точный размер проверяется read-only CDN-аудитом.
