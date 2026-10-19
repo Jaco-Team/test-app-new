@@ -25,12 +25,12 @@ export const PRODUCT_IMAGE_PROFILES: Record<
   ProductImageProfile
 > = {
   card: {
-    widths: [366, 466, 585, 732, 875],
+    widths: [366, 466, 585, 732, 1168],
     sizes: '(max-width: 800px) 25vw, (max-width: 1000px) 44vw, 22vw',
     fallbackWidth: 585,
   },
   hero: {
-    widths: [585, 732, 875, 1168, 1420],
+    widths: [585, 732, 1168, 1420],
     sizes:
       '(max-width: 768px) 100vw, (max-width: 959px) 90vw, (max-width: 1444px) 50vw, 715px',
     fallbackWidth: 732,

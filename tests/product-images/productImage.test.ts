@@ -9,6 +9,11 @@ import {
   parseProductImageLocation,
   PRODUCT_IMAGE_PROFILES,
 } from '@stories/entities/product/model/productImage';
+import {
+  calculateMse,
+  calculatePsnr,
+  formatBenchmarkCsv,
+} from './tools/imageMetrics.mjs';
 
 describe('responsive image source contract', () => {
   it('uses the actual file width in every srcset descriptor', () => {
@@ -31,7 +36,7 @@ describe('responsive image source contract', () => {
 
     expect(selectImageCandidateWidth(widths, 214, 2)).toBe(466);
     expect(selectImageCandidateWidth(widths, 303, 2)).toBe(732);
-    expect(selectImageCandidateWidth(widths, 416, 2)).toBe(875);
+    expect(selectImageCandidateWidth(widths, 416, 2)).toBe(1168);
   });
 
   it('uses the largest candidate only when no candidate covers the slot', () => {
@@ -80,4 +85,36 @@ describe('responsive image source contract', () => {
       });
     }
   );
+});
+
+describe('image benchmark metrics', () => {
+  it('calculates deterministic MSE and PSNR values', () => {
+    const reference = Buffer.from([0, 10, 20, 30]);
+    const candidate = Buffer.from([0, 12, 18, 30]);
+    const mse = calculateMse(reference, candidate);
+
+    expect(mse).toBe(2);
+    expect(calculatePsnr(mse)).toBeCloseTo(45.1205, 4);
+    expect(calculatePsnr(0)).toBe(Number.POSITIVE_INFINITY);
+  });
+
+  it('rejects buffers that cannot be compared', () => {
+    expect(() => calculateMse(Buffer.from([1]), Buffer.from([1, 2]))).toThrow(
+      'Буферы должны иметь одинаковую ненулевую длину'
+    );
+  });
+
+  it('serializes benchmark rows without corrupting CSV cells', () => {
+    const csv = formatBenchmarkCsv([
+      {
+        source: 'товар, тест.jpg',
+        width: 466,
+        format: 'webp',
+        quality: 80,
+        bytes: 1000,
+      },
+    ]);
+
+    expect(csv).toContain('"товар, тест.jpg",466,webp,80,1000');
+  });
 });

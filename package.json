@@ -6,6 +6,8 @@
     "dev": "next dev",
     "build": "next build",
     "analyze": "ANALYZE=true npm run build",
+    "images:audit": "node tests/product-images/tools/audit-product-images.mjs",
+    "images:benchmark": "node tests/product-images/tools/benchmark-product-images.mjs",
     "start": "next start",
     "lint": "eslint . --quiet || true",
     "typecheck": "tsc --noEmit",
