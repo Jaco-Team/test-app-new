@@ -1,6 +1,10 @@
 import { describe, expect, it } from 'vitest';
 
 import {
+  GENERATED_ITEM_IMAGE_WIDTHS,
+  ITEM_IMAGE_WIDTHS_BY_ROLE,
+} from '@/utils/itemImageWidths';
+import {
   buildImageSrcSet,
   selectImageCandidateWidth,
 } from '@stories/shared/lib/image/responsiveImage';
@@ -14,6 +18,7 @@ import {
   calculatePsnr,
   formatBenchmarkCsv,
 } from './tools/imageMetrics.mjs';
+import { getItemImageSrcSet } from '@/utils/itemImage';
 
 describe('responsive image source contract', () => {
   it('uses the actual file width in every srcset descriptor', () => {
@@ -37,6 +42,30 @@ describe('responsive image source contract', () => {
     expect(selectImageCandidateWidth(widths, 214, 2)).toBe(466);
     expect(selectImageCandidateWidth(widths, 303, 2)).toBe(732);
     expect(selectImageCandidateWidth(widths, 416, 2)).toBe(1168);
+  });
+
+  it('uses only real generated image widths for every display role', () => {
+    Object.values(ITEM_IMAGE_WIDTHS_BY_ROLE)
+      .flat()
+      .forEach((width) => {
+        expect(GENERATED_ITEM_IMAGE_WIDTHS).toContain(width);
+      });
+  });
+
+  it('does not repeat or mislabel generated variants in legacy srcsets', () => {
+    const srcSet = getItemImageSrcSet(
+      'Vodopad_set',
+      'webp',
+      'hero',
+      'https://mainimg.jacofood.ru/'
+    );
+
+    expect(srcSet?.split(', ')).toEqual(
+      ITEM_IMAGE_WIDTHS_BY_ROLE.hero.map(
+        (width) =>
+          `https://mainimg.jacofood.ru/Vodopad_set_${width}x${width}.webp ${width}w`
+      )
+    );
   });
 
   it('uses the largest candidate only when no candidate covers the slot', () => {

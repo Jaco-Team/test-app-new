@@ -1,11 +1,40 @@
 import type { Meta, StoryObj } from '@storybook/react';
 
 import { placeholder_img } from '@/public/placeholder_img';
-import { createProductImageSources } from '@stories/entities/product/model/productImage';
+import {
+  buildImageSrcSet,
+  buildImageVariantUrl,
+} from '@stories/shared/lib/image/responsiveImage';
 
 import { ResponsiveImage } from './ResponsiveImage';
 
-const defaultImage = createProductImageSources('Vodopad_set', 'card');
+const location = {
+  baseUrl: 'https://mainimg.jacofood.ru',
+  imageId: 'Vodopad_set',
+};
+const widths = [366, 466, 585, 732];
+const defaultImage = {
+  src: buildImageVariantUrl({
+    ...location,
+    width: 585,
+    format: 'jpg' as const,
+  }),
+  sizes: '(max-width: 800px) 50vw, 420px',
+  sources: [
+    {
+      type: 'image/webp',
+      srcSet: buildImageSrcSet({
+        ...location,
+        widths,
+        format: 'webp',
+      }),
+    },
+    {
+      type: 'image/jpeg',
+      srcSet: buildImageSrcSet({ ...location, widths, format: 'jpg' }),
+    },
+  ],
+};
 
 const meta = {
   title: 'Общие элементы / Адаптивное изображение',

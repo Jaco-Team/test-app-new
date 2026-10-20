@@ -12,6 +12,7 @@ const storyUrl = (storyId) =>
 const matrix = [
   { name: 'mobile', width: 500, height: 900, dpr: 2, cardWidth: 366 },
   { name: 'tablet', width: 800, height: 900, dpr: 2, cardWidth: 466 },
+  { name: 'large-tablet', width: 900, height: 900, dpr: 2, cardWidth: 1168 },
   { name: 'desktop', width: 1400, height: 900, dpr: 2, cardWidth: 732 },
 ];
 
@@ -57,6 +58,12 @@ const collectImageMetric = async (image) =>
     };
   });
 
+const expectSquareGeometry = (metric) => {
+  expect(metric.cssWidth).toBeGreaterThan(0);
+  expect(metric.cssHeight).toBeGreaterThan(0);
+  expect(Math.abs(metric.cssWidth - metric.cssHeight)).toBeLessThanOrEqual(1);
+};
+
 test.describe('responsive product images', () => {
   for (const scenario of matrix) {
     test(`card selects the ${scenario.cardWidth}px candidate at ${scenario.name}`, async ({
@@ -79,17 +86,19 @@ test.describe('responsive product images', () => {
       expect(
         scenario.cardWidth / (metric.cssWidth * metric.devicePixelRatio)
       ).toBeLessThanOrEqual(1.5);
+      expectSquareGeometry(metric);
+
+      const cardBounds = await page.locator('.ItemHomePc').boundingBox();
+      expect(cardBounds).not.toBeNull();
+      expect(cardBounds.width).toBeLessThanOrEqual(scenario.width);
+      expect(cardBounds.x).toBeGreaterThanOrEqual(0);
+      expect(cardBounds.x + cardBounds.width).toBeLessThanOrEqual(
+        scenario.width + 1
+      );
       await testInfo.attach(`card-${scenario.name}-metrics`, {
         body: JSON.stringify(metric, null, 2),
         contentType: 'application/json',
       });
-      await expect(page.locator('.ItemHomePc')).toHaveScreenshot(
-        `card-${scenario.name}.png`,
-        {
-          mask: [page.locator('.ResponsiveImage img')],
-          maskColor: '#e9e9e9',
-        }
-      );
 
       await context.close();
     });
@@ -108,6 +117,30 @@ test.describe('responsive product images', () => {
     const heroMetric = await collectImageMetric(hero);
 
     expect(heroMetric.currentSrc).toContain('_1168x1168.webp');
+    expect(heroMetric.cssWidth).toBeGreaterThan(0);
+    expect(heroMetric.cssHeight).toBeGreaterThan(0);
+    expect(heroMetric.cssWidth).toBeLessThanOrEqual(scenario.width);
+    expect(heroMetric.cssHeight).toBeLessThanOrEqual(350);
+    await expect(hero).toHaveCSS('object-fit', 'cover');
+
+    const heroContainerBounds = await page
+      .locator('.ProductModal-image')
+      .boundingBox();
+    expect(heroContainerBounds).not.toBeNull();
+    expect(
+      Math.abs(heroContainerBounds.width - heroMetric.cssWidth)
+    ).toBeLessThanOrEqual(1);
+    expect(
+      Math.abs(heroContainerBounds.height - heroMetric.cssHeight)
+    ).toBeLessThanOrEqual(1);
+
+    const modalBounds = await page.locator('.ProductModal').boundingBox();
+    expect(modalBounds).not.toBeNull();
+    expect(modalBounds.width).toBeLessThanOrEqual(scenario.width);
+    expect(modalBounds.x).toBeGreaterThanOrEqual(0);
+    expect(modalBounds.x + modalBounds.width).toBeLessThanOrEqual(
+      scenario.width + 1
+    );
     await page.getByRole('button', { name: '4 ролла' }).click();
 
     const thumbnail = page.locator('.ProductModal-roll-image img').first();
@@ -116,6 +149,20 @@ test.describe('responsive product images', () => {
     const thumbnailMetric = await collectImageMetric(thumbnail);
 
     expect(thumbnailMetric.currentSrc).toContain('_466x466.webp');
+    expect(thumbnailMetric.cssWidth).toBeGreaterThan(0);
+    expect(thumbnailMetric.cssHeight).toBeGreaterThan(0);
+    await expect(thumbnail).toHaveCSS('object-fit', 'cover');
+
+    const thumbnailContainer = page.locator('.ProductModal-roll-image').first();
+    const thumbnailContainerBounds = await thumbnailContainer.boundingBox();
+    expect(thumbnailContainerBounds).not.toBeNull();
+    expect(
+      Math.abs(thumbnailContainerBounds.width - thumbnailMetric.cssWidth)
+    ).toBeLessThanOrEqual(1);
+    expect(
+      Math.abs(thumbnailContainerBounds.height - thumbnailMetric.cssHeight)
+    ).toBeLessThanOrEqual(1);
+    await expect(thumbnailContainer).toHaveCSS('overflow', 'hidden');
     await testInfo.attach('modal-mobile-metrics', {
       body: JSON.stringify(
         { hero: heroMetric, thumbnail: thumbnailMetric },
@@ -124,13 +171,6 @@ test.describe('responsive product images', () => {
       ),
       contentType: 'application/json',
     });
-    await expect(page.locator('.ProductModal')).toHaveScreenshot(
-      'modal-mobile-rolls.png',
-      {
-        mask: [page.locator('.ResponsiveImage img')],
-        maskColor: '#e9e9e9',
-      }
-    );
 
     await context.close();
   });
@@ -158,8 +198,20 @@ test.describe('responsive product images', () => {
     await expect(root).toHaveAttribute('data-image-state', 'loading');
     await expect(root.locator('.ResponsiveImage-skeleton')).toBeVisible();
     await expect(root.locator('img')).toHaveCSS('opacity', '0');
+    const loadingBounds = await root.boundingBox();
+    expect(loadingBounds).not.toBeNull();
+    expect(loadingBounds.width).toBeGreaterThan(0);
+    expect(loadingBounds.height).toBeGreaterThan(0);
     await expect(root).toHaveAttribute('data-image-state', 'loaded');
     await expect(root.locator('.ResponsiveImage-skeleton')).toHaveCount(0);
+    const loadedBounds = await root.boundingBox();
+    expect(loadedBounds).not.toBeNull();
+    expect(
+      Math.abs(loadedBounds.width - loadingBounds.width)
+    ).toBeLessThanOrEqual(1);
+    expect(
+      Math.abs(loadedBounds.height - loadingBounds.height)
+    ).toBeLessThanOrEqual(1);
 
     await context.close();
   });
@@ -176,7 +228,10 @@ test.describe('responsive product images', () => {
 
     await expect(root).toHaveAttribute('data-image-state', 'error');
     await expect(root.locator('.ResponsiveImage-skeleton')).toHaveCount(0);
-    await expect(root.locator('img')).toHaveAttribute('src', /^data:image\//);
+    await expect(root.locator('img')).toHaveAttribute(
+      'src',
+      /^data:image\/jpeg;base64,/
+    );
 
     await context.close();
   });

@@ -63,11 +63,35 @@
     height: 44.7655vw;
     margin: 1.444045vw;
 
+    &_loading {
+      overflow: hidden;
+      background: #f1f1f1;
+
+      &::before {
+        content: '';
+        position: absolute;
+        inset: 0;
+        background: linear-gradient(
+          100deg,
+          #ececec 25%,
+          #f7f7f7 45%,
+          #ececec 65%
+        );
+        background-size: 200% 100%;
+        animation: item-image-loading 1.25s ease-in-out infinite;
+      }
+
+      & img {
+        opacity: 0;
+      }
+    }
+
     & img {
       object-fit: contain;
       image-rendering: auto;
       width: 100%;
       height: auto;
+      transition: opacity 180ms ease;
     }
 
     & .badgecontainer {
@@ -879,6 +903,26 @@
     line-height: 100%;
     text-align: center;
     min-width: $MyScale80;
+  }
+}
+
+@keyframes item-image-loading {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ImgItem_loading::before {
+    animation: none;
+  }
+
+  .ImgItem img {
+    transition: none;
   }
 }
 

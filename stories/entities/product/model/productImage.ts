@@ -3,6 +3,7 @@ import {
   buildImageVariantUrl,
   ImageVariantLocation,
 } from '@stories/shared/lib/image/responsiveImage';
+import { ITEM_IMAGE_WIDTHS_BY_ROLE } from '@/utils/itemImageWidths';
 
 export type ProductImageRole = 'card' | 'hero' | 'thumbnail';
 
@@ -25,18 +26,21 @@ export const PRODUCT_IMAGE_PROFILES: Record<
   ProductImageProfile
 > = {
   card: {
-    widths: [366, 466, 585, 732, 1168],
-    sizes: '(max-width: 800px) 25vw, (max-width: 1000px) 44vw, 22vw',
+    widths: ITEM_IMAGE_WIDTHS_BY_ROLE.card,
+    // Mirrors ItemHome.scss: 220/870vw (<=800), 450*0.09765625vw
+    // (<=1000), then 600/2770vw. Keep this FSD layout separate from legacy.
+    sizes:
+      '(max-width: 800px) 25.28736vw, (max-width: 1000px) 43.94531vw, 21.66065vw',
     fallbackWidth: 585,
   },
   hero: {
-    widths: [585, 732, 1168, 1420],
+    widths: ITEM_IMAGE_WIDTHS_BY_ROLE.hero,
     sizes:
-      '(max-width: 768px) 100vw, (max-width: 959px) 90vw, (max-width: 1444px) 50vw, 715px',
+      '(max-width: 768px) 100vw, (max-width: 959px) 90vw, (max-width: 1444px) 49.5vw, 715px',
     fallbackWidth: 732,
   },
   thumbnail: {
-    widths: [366, 466],
+    widths: ITEM_IMAGE_WIDTHS_BY_ROLE.thumbnail,
     sizes: '(max-width: 600px) 200px, (max-width: 960px) 100px, 140px',
     fallbackWidth: 366,
   },

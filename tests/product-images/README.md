@@ -55,3 +55,5 @@ IMAGE_STORYBOOK_URL=http://localhost:6008 npm run test:images:e2e
 ```
 
 К каждому сценарию прикладывается JSON с выбранным URL, CSS-размером, DPR и доступными Resource Timing. Из-за отсутствия `Timing-Allow-Origin` у текущего CDN browser-поля `transferSize` и `encodedBodySize` могут быть пустыми; точный размер проверяется read-only CDN-аудитом.
+
+Бинарные baseline-изображения в репозитории не используются. Устойчивая геометрия проверяется через размеры DOM до и после загрузки, а скриншоты при падении остаются локальными артефактами Playwright в игнорируемой директории.
