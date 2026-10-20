@@ -10,7 +10,7 @@
     "lint": "eslint . --quiet || true",
     "typecheck": "tsc --noEmit",
     "test:storybook": "vitest --project storybook",
-    "test:core": "node --test utils/cityCart.test.mjs utils/routeQuery.test.mjs && vitest run --config tests/city-switch/vitest.config.mjs && vitest run --config tests/cleaning/vitest.config.mjs && vitest run --config tests/sbp/vitest.config.mjs && npm run test:resources",
+    "test:core": "node --test utils/cityCart.test.mjs utils/cityPageRoute.test.mjs utils/routeQuery.test.mjs && vitest run --config tests/city-switch/vitest.config.mjs && vitest run --config tests/cleaning/vitest.config.mjs && vitest run --config tests/sbp/vitest.config.mjs && npm run test:resources",
     "test:resources": "vitest run --config tests/proxy/vitest.config.mjs && vitest run --config tests/monitoring/vitest.config.mjs",
     "test:backend-contract": "node --test tests/contracts/site-catalog.test.mjs",
     "test:e2e:recent": "playwright test tests/smoke/recent-routes.spec.js",
