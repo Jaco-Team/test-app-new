@@ -9,10 +9,11 @@ export function createSentryBuildOptions(env = {}) {
     if (!/^jacofood-web@[a-f0-9]{40}$/.test(release || '')) throw new Error('SENTRY_COMMIT_RELEASE_REQUIRED');
   }
   return {
-    url: SENTRY_URL,
+    sentryUrl: SENTRY_URL,
     org: SENTRY_ORG,
     project: SENTRY_PROJECT,
     ...(upload ? { authToken: env.SENTRY_AUTH_TOKEN } : {}),
+    ...(upload ? { errorHandler(error) { throw error; } } : {}),
     telemetry: false,
     silent: !env.CI,
     widenClientFileUpload: true,

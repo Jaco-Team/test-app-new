@@ -36,7 +36,7 @@ export function sanitizeSentryEvent(event) {
   }
   if (event.extra) {
     event.extra = { ...event.extra };
-    for (const key of ['pageUrl', 'requestUrl', 'resourceUrl']) {
+    for (const key of ['pageUrl', 'requestUrl', 'resourceUrl', 'rawResourceUrl', 'documentReferrer', 'elementBaseURI']) {
       if (key in event.extra) event.extra[key] = cleanMonitoringUrl(event.extra[key]);
     }
   }

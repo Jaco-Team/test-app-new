@@ -1,6 +1,8 @@
 import { afterEach, describe, expect, it, vi } from 'vitest';
 import { execFileSync } from 'node:child_process';
 import { fileURLToPath } from 'node:url';
+import { createRequire } from 'node:module';
+import { dirname, join } from 'node:path';
 import { isSiteSentryDsn, SENTRY_URL } from '../../utils/sentryEndpoint.mjs';
 import { createSentryBuildOptions } from '../../utils/sentryBuild.mjs';
 import { sanitizeSentryEvent, sanitizeSentryBreadcrumb, SENTRY_DATA_COLLECTION } from '../../utils/sentryPrivacy';
@@ -17,7 +19,7 @@ describe('self-hosted Sentry сайта', () => {
   it.each(invalidDsns)('отклоняет неподходящий DSN %s', value => expect(isSiteSentryDsn(value)).toBe(false));
   it('локальная сборка не создаёт releases и не загружает карты', () => {
     const options = createSentryBuildOptions({ SENTRY_AUTH_TOKEN: 'old-cloud-token' });
-    expect(options.url).toBe(SENTRY_URL);
+    expect(options.sentryUrl).toBe(SENTRY_URL);
     expect(options.authToken).toBeUndefined();
     expect(options.telemetry).toBe(false);
     expect(options.sourcemaps.disable).toBe(true);
@@ -26,7 +28,24 @@ describe('self-hosted Sentry сайта', () => {
   });
   it('production upload привязан к собственному серверу, проекту и полному коммиту', () => {
     const options = createSentryBuildOptions(env);
-    expect(options).toMatchObject({ url: SENTRY_URL, org: 'sentry', project: 'jacofood-web', authToken: 'synthetic-test-token', sourcemaps: { disable: false, deleteSourcemapsAfterUpload: true }, release: { name: release, create: true, finalize: true, setCommits: false } });
+    expect(options).toMatchObject({ sentryUrl: SENTRY_URL, org: 'sentry', project: 'jacofood-web', authToken: 'synthetic-test-token', sourcemaps: { disable: false, deleteSourcemapsAfterUpload: true }, release: { name: release, create: true, finalize: true, setCommits: false } });
+  });
+  it('установленный SDK передаёт загрузчику self-hosted URL и отказ при ошибке', () => {
+    const require = createRequire(import.meta.url);
+    const { getBuildPluginOptions } = require(join(dirname(require.resolve('@sentry/nextjs')), 'config/getBuildPluginOptions.js'));
+    const options = getBuildPluginOptions({
+      sentryBuildOptions: createSentryBuildOptions(env), releaseName: release,
+      distDirAbsPath: join(process.cwd(), '.next'), buildTool: 'after-production-compile-turbopack',
+    });
+    expect(options.url).toBe(SENTRY_URL);
+    expect(options.authToken).toBe(env.SENTRY_AUTH_TOKEN);
+    expect(options.org).toBe('sentry');
+    expect(options.project).toBe('jacofood-web');
+    expect(() => options.errorHandler(new Error('Synthetic upload failure'))).toThrow('Synthetic upload failure');
+  });
+  it('ошибка загрузки карт останавливает production build', () => {
+    const error = new Error('Synthetic upload failure');
+    expect(() => createSentryBuildOptions(env).errorHandler(error)).toThrow(error);
   });
   it.each([
     ['SENTRY_AUTH_TOKEN', '', 'SENTRY_UPLOAD_TOKEN_REQUIRED'],
@@ -51,6 +70,14 @@ describe('данные событий Sentry', () => {
     expect(event.spans[0].data['http.url']).toBe('/backend/auth');
   });
   it('не отправляет содержимое console breadcrumbs', () => expect(sanitizeSentryBreadcrumb({ category: 'console', message: 'user input' })).toBeNull());
+  it('очищает исходные URL из расширенной диагностики ресурсов', () => {
+    const event = sanitizeSentryEvent({ extra: {
+      rawResourceUrl: 'https://cdn.example.test/script.js?token=private',
+      documentReferrer: 'https://jacofood.ru/?phone=private',
+      elementBaseURI: 'https://jacofood.ru/samara?token=private#private',
+    } });
+    expect(JSON.stringify(event)).not.toContain('private');
+  });
 });
 
 describe('публичный snapshot CI', () => {
