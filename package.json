@@ -16,6 +16,7 @@
     "test:resources": "vitest run --config tests/proxy/vitest.config.mjs && vitest run --config tests/monitoring/vitest.config.mjs",
     "test:backend-contract": "node --test tests/contracts/site-catalog.test.mjs",
     "test:images": "vitest run --config tests/product-images/vitest.config.mjs",
+    "test:images:browser": "vitest run --config tests/product-images/vitest.browser.config.mjs",
     "test:images:e2e": "playwright test --config playwright.images.config.js",
     "test:e2e:recent": "playwright test tests/smoke/recent-routes.spec.js",
     "prepare": "husky",

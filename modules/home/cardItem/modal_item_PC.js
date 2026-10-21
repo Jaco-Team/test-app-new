@@ -170,7 +170,7 @@ export default function ModalItemPC() {
   const imageState = useItemImageState(
     mainImageSrc,
     hasMainImage,
-    Boolean(item_card?.id)
+    Boolean(item_card?.id) && openItemCard
   );
 
   return (

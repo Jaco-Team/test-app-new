@@ -154,7 +154,7 @@ export default function ModalCardItemMobile() {
   const imageState = useItemImageState(
     mainImageSrc,
     hasMainImage,
-    Boolean(openItem?.id)
+    Boolean(openItem?.id) && isOpenModal
   );
 
   const add_to_cart = () => {

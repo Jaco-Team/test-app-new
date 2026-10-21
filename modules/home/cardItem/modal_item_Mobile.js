@@ -92,7 +92,7 @@ export default function ModalItemMobile() {
   const imageState = useItemImageState(
     mainImageSrc,
     hasMainImage,
-    Boolean(item_card?.id)
+    Boolean(item_card?.id) && openItemCard
   );
 
   const add_to_cart = () => {

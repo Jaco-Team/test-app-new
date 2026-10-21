@@ -253,7 +253,7 @@ export default function ModalCardItemPC() {
   const imageState = useItemImageState(
     mainImageSrc,
     hasMainImage,
-    Boolean(openItem?.id)
+    Boolean(openItem?.id) && isOpenModal
   );
   const recommendations = Array.isArray(openItem?.recommendations)
     ? openItem.recommendations.slice(0, 3)
