@@ -81,6 +81,12 @@ test('keeps legacy presentation exceptions while defaulting new CMS pages', () =
   });
   assert.equal(getCityTextPagePresentation('legal').classNamePC, 'PAGELegal');
   assert.equal(getCityTextPagePresentation('dostavka').schemaType, 'delivery');
+  assert.match(
+    getCityTextPagePresentation(
+      'sroki_godnosti_i_usloviia_hraneniia_gotovyh_bliud'
+    ).classNamePC,
+    /PageStorageConditions/
+  );
   assert.equal(
     getCityTextPagePresentation('company-details').rootClass,
     'companyDetailsTabletPage'
