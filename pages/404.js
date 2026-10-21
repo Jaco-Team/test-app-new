@@ -1,25 +1,25 @@
-import Head from 'next/head'
-import Link from 'next/link'
-import { useRouter } from 'next/router'
-import { useEffect, useState, useRef } from 'react'
-import * as Sentry from "@sentry/nextjs"; // правка 18.03.26 для glitchtip
+import Head from 'next/head';
+import Link from 'next/link';
+import { useRouter } from 'next/router';
+import { useEffect, useState, useRef } from 'react';
+import * as Sentry from '@sentry/nextjs'; // правка 18.03.26 для glitchtip
 import { getLocalStorageItem } from '@/utils/browserStorage';
 export function Custom404() {
   useEffect(() => {
     const path = window.location.pathname;
 
     if (
-      !path.startsWith("/_next/") &&
-      !path.endsWith(".js") &&
-      !path.endsWith(".css") &&
-      !path.endsWith(".png") &&
-      !path.endsWith(".jpg") &&
-      !path.endsWith(".svg")
+      !path.startsWith('/_next/') &&
+      !path.endsWith('.js') &&
+      !path.endsWith('.css') &&
+      !path.endsWith('.png') &&
+      !path.endsWith('.jpg') &&
+      !path.endsWith('.svg')
     ) {
-      Sentry.captureMessage("404 page opened", {
-        level: "warning",
+      Sentry.captureMessage('404 page opened', {
+        level: 'warning',
         tags: {
-          kind: "not_found",
+          kind: 'not_found',
         },
         extra: {
           path,
@@ -33,8 +33,8 @@ export function Custom404() {
 }
 
 export default function NotFoundPage() {
- // для Sentry
- const sentRef = useRef(false);
+  // для Sentry
+  const sentRef = useRef(false);
 
   useEffect(() => {
     if (sentRef.current) return;
@@ -43,56 +43,56 @@ export default function NotFoundPage() {
     const path = window.location.pathname;
 
     if (
-      !path.startsWith("/_next/") &&
+      !path.startsWith('/_next/') &&
       !path.match(/\.(js|css|png|jpg|jpeg|svg|ico|webp)$/)
     ) {
       // ❗ теперь это ОШИБКА, а не warning
-      Sentry.captureException(
-        new Error(`404 page opened: ${path}`),
-        {
-          tags: {
-            kind: "not_found",
-          },
-          extra: {
-            path,
-            url: window.location.href,
-            referrer: document.referrer,
-            userAgent: navigator.userAgent,
-          },
-        }
-      );
+      Sentry.captureException(new Error(`404 page opened: ${path}`), {
+        tags: {
+          kind: 'not_found',
+        },
+        extra: {
+          path,
+          url: window.location.href,
+          referrer: document.referrer,
+          userAgent: navigator.userAgent,
+        },
+      });
     }
   }, []);
 
-  const router = useRouter()
-  const [homeHref, setHomeHref] = useState('/samara')
+  const router = useRouter();
+  const [homeHref, setHomeHref] = useState('/samara');
 
   // Если история пустая, кнопка "Назад" поведёт на главную
   const goBack = () => {
     if (typeof window !== 'undefined' && window.history.length > 1) {
-      router.back()
+      router.back();
     } else {
-      router.push(homeHref) // если истории нет — ведём на "/{city}" или "/"
+      router.push(homeHref); // если истории нет — ведём на "/{city}" или "/"
     }
-  }
+  };
 
   // (необязательно) убираем фокус с активных элементов после монтирования
   useEffect(() => {
-    if (typeof document !== 'undefined') document.activeElement?.blur?.()
-  }, [])
+    if (typeof document !== 'undefined') document.activeElement?.blur?.();
+  }, []);
 
   useEffect(() => {
     try {
-      const raw = getLocalStorageItem('myCity')
+      const raw = getLocalStorageItem('myCity');
       if (raw) {
         // чуть-чуть санитайза, чтобы не получить странные символы
-        const city = String(raw).trim().toLowerCase().replace(/[^a-z0-9_-]/gi, '')
-        if (city) setHomeHref(`/${city}`)
+        const city = String(raw)
+          .trim()
+          .toLowerCase()
+          .replace(/[^a-z0-9_-]/gi, '');
+        if (city) setHomeHref(`/${city}`);
       }
     } catch {}
     // снимаем фокус с активных элементов (необязательно)
-    document.activeElement?.blur?.()
-  }, [])
+    document.activeElement?.blur?.();
+  }, []);
 
   return (
     <>
@@ -107,14 +107,21 @@ export default function NotFoundPage() {
           <div className="code">404</div>
           <h1 id="notfound-title">Страница не найдена</h1>
           <p className="desc">
-            К сожалению, такой страницы нет. Проверьте адрес или воспользуйтесь кнопками ниже.
+            К сожалению, такой страницы нет. Проверьте адрес или воспользуйтесь
+            кнопками ниже.
           </p>
 
           <div className="actions">
-            <button className="btn secondary" onClick={goBack}>
+            <button
+              className="notFoundButton notFoundButtonSecondary"
+              onClick={goBack}
+            >
               ← Назад
             </button>
-            <Link href={homeHref} className="btn primary">
+            <Link
+              href={homeHref}
+              className="notFoundButton notFoundButtonPrimary"
+            >
               На главную
             </Link>
           </div>
@@ -128,8 +135,16 @@ export default function NotFoundPage() {
           place-items: center;
           padding: 24px;
           background:
-            radial-gradient(1200px 600px at 10% -10%, rgba(204, 0, 51, 0.08), transparent 60%),
-            radial-gradient(1000px 500px at 110% 110%, rgba(0, 0, 0, 0.06), transparent 60%),
+            radial-gradient(
+              1200px 600px at 10% -10%,
+              rgba(204, 0, 51, 0.08),
+              transparent 60%
+            ),
+            radial-gradient(
+              1000px 500px at 110% 110%,
+              rgba(0, 0, 0, 0.06),
+              transparent 60%
+            ),
             var(--bg);
         }
         :global(html) {
@@ -141,7 +156,7 @@ export default function NotFoundPage() {
           --primary-contrast: #ffffff;
           --border: #e5e7eb;
         }
-        
+
         .card {
           max-width: 680px;
           width: 100%;
@@ -176,7 +191,7 @@ export default function NotFoundPage() {
           flex-wrap: wrap;
           align-items: center;
         }
-        .btn {
+        :global(.notFoundButton) {
           appearance: none;
           border: 1px solid var(--border);
           border-radius: 999px;
@@ -185,28 +200,31 @@ export default function NotFoundPage() {
           cursor: pointer;
           text-decoration: none;
           line-height: 1;
-          transition: transform 0.05s ease, background 0.2s ease, border-color 0.2s ease;
+          transition:
+            transform 0.05s ease,
+            background 0.2s ease,
+            border-color 0.2s ease;
           user-select: none;
         }
-        .btn:active {
+        :global(.notFoundButton:active) {
           transform: translateY(1px);
         }
-        .btn.primary {
+        :global(.notFoundButtonPrimary) {
           background: var(--primary);
           color: var(--primary-contrast);
           border-color: var(--primary);
         }
-        .btn.primary:hover {
+        :global(.notFoundButtonPrimary:hover) {
           filter: brightness(1.05);
         }
-        .btn.secondary {
+        :global(.notFoundButtonSecondary) {
           background: transparent;
           color: var(--text);
         }
-        .btn.secondary:hover {
+        :global(.notFoundButtonSecondary:hover) {
           border-color: #cbd5e1;
         }
       `}</style>
     </>
-  )
+  );
 }
