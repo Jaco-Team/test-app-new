@@ -11,8 +11,8 @@ Production `jacofood.ru` получает frontend только как неиз�
   запроса. `.github/scripts/jaco-site/prepare-public-build.py` проверяет
   точный набор ключей, домены и отпечаток, после чего значения передаются
   в Docker как build args. Repository variables/secrets для настроек
-  приложения не используются; `SENTRY_AUTH_TOKEN` остаётся build secret
-  только для загрузки sourcemaps.
+  приложения не используются; Actions secret `SENTRY_SITE_AUTH_TOKEN` передаётся
+  как BuildKit secret `SENTRY_AUTH_TOKEN` только для загрузки sourcemaps.
 - Образ: `ghcr.io/jaco-team/jaco-site-frontend:sha-<commit>` с меткой
   `io.jaco.site.public-config-sha256`. Артефакт `image-metadata` содержит
   digest для контроллера.
@@ -24,3 +24,6 @@ Production `jacofood.ru` получает frontend только как неиз�
 затрагивает. Файлы `.github/workflows/production-image.yml` и
 `.github/scripts/jaco-site/*` проверяются контроллером по SHA256: любое
 изменение требует обновления доверенных хешей на контроллере.
+
+Настройка self-hosted Sentry и порядок миграции публичного DSN описаны в
+[`sentry-self-hosted.md`](sentry-self-hosted.md).
