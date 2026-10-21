@@ -39,6 +39,7 @@ const type_pay_div = [
 ];
 
 export default function CartMenuMobile({ cityName }) {
+  const [pointListLoadState, loadPointList] = useCartStore((state) => [state.pointListLoadState, state.loadPointList]);
   const [list, setList] = useState([]);
   const [id, setId] = useState(null);
 
@@ -96,19 +97,17 @@ export default function CartMenuMobile({ cityName }) {
 
   useEffect(() => {
     if (nameList === 'point') {
-      let points = pointList.filter((point) => point.name_ru === thisCityRu);
+      let points = (Array.isArray(pointList) ? pointList : []).filter((point) => point.name_ru === thisCityRu);
 
       points.push({ name: 'Выбрать на карте', id: points.length + 1 });
 
       setId(orderPic?.id);
       setList(points);
-
-      getMapCart('contacts', cityName);
     }
 
     if (nameList === 'addr') {
       setId(orderAddr?.id);
-      setList(addrList);
+      setList(Array.isArray(addrList) ? addrList : []);
     }
 
     if (nameList === 'time') {
@@ -126,7 +125,11 @@ export default function CartMenuMobile({ cityName }) {
         setList(type_pay_div);
       }
     }
-  }, [nameList, thisCityRu, orderPic, orderAddr, addrList, userInfo?.id]);
+  }, [nameList, thisCityRu, orderPic, orderAddr, addrList, pointList, typeOrder, userInfo?.id]);
+
+  useEffect(() => {
+    if (openMenuCart && nameList === 'point') getMapCart('contacts', cityName);
+  }, [openMenuCart, nameList, cityName, getMapCart]);
 
   const chooseMenuItem = (item) => {
     if (nameList === 'point' && item.name !== 'Выбрать на карте') {
@@ -180,7 +183,7 @@ export default function CartMenuMobile({ cityName }) {
       thisCity &&
       thisCity?.length > 0 &&
       nameList == 'addr' &&
-      addrList.length == 0
+      Array.isArray(addrList) && addrList.length == 0
     ) {
       getMySavedAddr(thisCity);
     }
@@ -223,7 +226,14 @@ export default function CartMenuMobile({ cityName }) {
           </Typography>
         </div>
 
-        {nameList !== 'message' ? (
+        {nameList === 'point' && pointListLoadState === 'loading' ? (
+          <p role="status">Загружаем список кафе…</p>
+        ) : nameList === 'point' && pointListLoadState === 'error' ? (
+          <div role="alert" style={{ padding: 16 }}>
+            <p>Не удалось загрузить список кафе.</p>
+            <Button onClick={() => loadPointList()}>Повторить</Button>
+          </div>
+        ) : nameList !== 'message' ? (
           <List>
             {(list ?? []).map((item, idx, arr) => {
               const isLast = idx === (arr?.length ?? 0) - 1;

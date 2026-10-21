@@ -46,10 +46,12 @@ export default function NotFoundPage() {
       !path.startsWith("/_next/") &&
       !path.match(/\.(js|css|png|jpg|jpeg|svg|ico|webp)$/)
     ) {
-      // ❗ теперь это ОШИБКА, а не warning
-      Sentry.captureException(
-        new Error(`404 page opened: ${path}`),
+      // Несуществующий адрес сам по себе не означает падение приложения.
+      Sentry.captureMessage(
+        '404 page opened',
         {
+          level: 'warning',
+          fingerprint: ['page-not-found'],
           tags: {
             kind: "not_found",
           },
@@ -57,7 +59,6 @@ export default function NotFoundPage() {
             path,
             url: window.location.href,
             referrer: document.referrer,
-            userAgent: navigator.userAgent,
           },
         }
       );

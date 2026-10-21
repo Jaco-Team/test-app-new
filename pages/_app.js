@@ -88,6 +88,9 @@ import '../styles/cart/cartConfirmForm.scss';
 import '../styles/cart/cartMailForm.scss';
 
 import '../styles/sitemap.scss';
+import '../styles/recommendations.scss';
+import '../styles/recommendationLayout.scss';
+import '../styles/recommendationToast.scss';
 
 import { useEffect, useRef, useState } from 'react';
 import * as Sentry from '@sentry/nextjs';
@@ -100,12 +103,13 @@ import {
 } from 'yandex-metrica-ab-react';
 
 import Header from '@/components/header';
+import RecommendationToast from '@/modules/recommendations/recommendationToast';
 import { useProfileStore } from '@/components/store';
 import {
   INTERNET_ISSUE_EVENT_NAME,
   getClientNetworkContext,
   isCustomSentryMonitoringEnabled,
-  isChunkLoadError,
+  isRecoverableNavigationError,
   maybeReloadAfterChunkError,
 } from '@/utils/clientMonitoring';
 import { hitAll, reachGoal } from '@/utils/metrika';
@@ -424,7 +428,7 @@ export default function MyApp({ Component, pageProps }) {
 
   useEffect(() => {
     const handleRouteChangeError = (error, url) => {
-      if (!isChunkLoadError(error)) {
+      if (error?.cancelled || !isRecoverableNavigationError(error)) {
         return;
       }
 
@@ -653,6 +657,7 @@ export default function MyApp({ Component, pageProps }) {
           {...pageProps}
         />
       </ClientMetricaProvider>
+      <RecommendationToast />
     </>
   );
 

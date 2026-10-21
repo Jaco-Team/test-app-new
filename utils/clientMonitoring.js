@@ -153,6 +153,10 @@ const IGNORED_RESOURCE_LOAD_URL_PATTERNS = [
   /^https?:\/\/(?:[^/]+\.)?telegram\.org\/js\/pixel\.js(?:[?#]|$)/i,
   /^https?:\/\/mc\.yandex\.ru\//i,
   /^https?:\/\/abt\.s3\.yandex\.net\//i,
+  /^https?:\/\/mc\.yandex\.by\//i,
+  /^https?:\/\/top-fwz1\.mail\.ru\/js\/(?:code|dyn-goal-config)\.js(?:[?#]|$)/i,
+  /^https?:\/\/privacy-cs\.mail\.ru\/static\/sync-loader\.js(?:[?#]|$)/i,
+  /^https?:\/\/vk\.com\/js\/api\/openapi\.js(?:[?#]|$)/i,
 ];
 
 function matchesIgnoredResourceHost(resourceHost) {
@@ -330,7 +334,7 @@ export function isChunkLoadError(value) {
     errorText.includes('failed to load chunk') ||
     errorText.includes('failed to fetch dynamically imported module') ||
     errorText.includes('importing a module script failed') ||
-    errorText.includes('/_next/static/')
+    /failed to load next\.js asset:.*\/_next\/static\//i.test(errorText)
   );
 }
 
@@ -396,10 +400,35 @@ export function isIgnoredInjectedScriptError(event, originalException) {
   return hasInjectedFrame && hasInjectedError;
 }
 
+// Next.js получает этот invariant при ошибке данных старой сборки на том же URL.
+export function isStaleNavigationError(value) {
+  return getErrorText(value).includes('Invariant: attempted to hard navigate to the same URL');
+}
+
+export function isRecoverableNavigationError(value) {
+  return isChunkLoadError(value) || isStaleNavigationError(value);
+}
+
+export function shouldRecoverResource(target, resourceUrl) {
+  if (typeof window === 'undefined') return false;
+  try {
+    const url = new URL(resourceUrl, window.location.origin);
+    if (url.origin !== window.location.origin || !url.pathname.startsWith('/_next/static/')) return false;
+    const tag = String(target?.tagName || '').toLowerCase();
+    // Предзагрузка будущей страницы не должна сбрасывать текущую форму.
+    return tag === 'script' || (tag === 'link' && String(target?.rel || '').toLowerCase() === 'stylesheet');
+  } catch {
+    return false;
+  }
+}
+
 export function maybeReloadAfterChunkError(context = {}) {
   if (typeof window === 'undefined') {
     return false;
   }
+
+  if (typeof navigator !== 'undefined' && navigator.onLine === false) return false;
+  if (typeof document !== 'undefined' && document.visibilityState === 'hidden') return false;
 
   const storageKey = `jaco:chunk-reload:${window.location.pathname}`;
 
@@ -517,10 +546,12 @@ export function installGlobalSentryHandlers(Sentry) {
             fingerprint: ['chunk-load-error', normalizedResourceUrl],
           });
 
-          maybeReloadAfterChunkError({
-            source: 'resource_error',
-            resourceUrl: normalizedResourceUrl,
-          });
+          if (shouldRecoverResource(target, normalizedResourceUrl)) {
+            maybeReloadAfterChunkError({
+              source: 'resource_error',
+              resourceUrl: normalizedResourceUrl,
+            });
+          }
 
           emitInternetIssue({
             type: 'chunk_asset_failed',
@@ -591,7 +622,7 @@ export function installGlobalSentryHandlers(Sentry) {
         return;
       }
 
-      if (isChunkLoadError(event?.error || event?.message || event?.filename)) {
+      if (isRecoverableNavigationError(event?.error || event?.message)) {
         emitInternetIssue({
           type: 'chunk_runtime_error',
           source: 'window_error',
@@ -610,7 +641,7 @@ export function installGlobalSentryHandlers(Sentry) {
   );
 
   window.addEventListener('unhandledrejection', (event) => {
-    if (!isChunkLoadError(event?.reason)) {
+    if (!isRecoverableNavigationError(event?.reason)) {
       return;
     }
 
@@ -631,57 +662,35 @@ export function waitForYMapsReady({
   timeoutMs = 12000,
   pollIntervalMs = 250,
 } = {}) {
-  if (typeof window === 'undefined') {
-    return Promise.resolve(false);
-  }
-
-  const hasReadyApi = () =>
-    Boolean(window.ymaps && typeof window.ymaps.ready === 'function');
-
-  const waitForReadyCallback = () =>
-    new Promise((resolve) => {
-      try {
-        window.ymaps.ready(() => resolve(true));
-      } catch {
-        resolve(false);
-      }
-    });
-
-  if (hasReadyApi()) {
-    return waitForReadyCallback();
-  }
+  if (typeof window === 'undefined') return Promise.resolve(false);
 
   return new Promise((resolve) => {
-    const startedAt = Date.now();
-    let timerId = null;
-
-    const finish = (result) => {
-      if (timerId) {
-        window.clearTimeout(timerId);
-      }
-
-      resolve(result);
+    let pollTimer = null;
+    let finished = false;
+    const finish = (ready) => {
+      if (finished) return;
+      finished = true;
+      window.clearTimeout(pollTimer);
+      window.clearTimeout(deadlineTimer);
+      resolve(ready);
     };
-
+    // Один срок ожидания: появление ymaps и вызов его ready callback.
+    const deadlineTimer = window.setTimeout(() => finish(false), Math.max(0, timeoutMs));
     const tick = () => {
       if (window.__JACO_YMAPS_FAILED) {
         finish(false);
         return;
       }
-
-      if (hasReadyApi()) {
-        waitForReadyCallback().then(finish);
+      if (window.ymaps && typeof window.ymaps.ready === 'function') {
+        try {
+          window.ymaps.ready(() => finish(true), () => finish(false));
+        } catch {
+          finish(false);
+        }
         return;
       }
-
-      if (Date.now() - startedAt >= timeoutMs) {
-        finish(false);
-        return;
-      }
-
-      timerId = window.setTimeout(tick, pollIntervalMs);
+      pollTimer = window.setTimeout(tick, Math.max(1, pollIntervalMs));
     };
-
     tick();
   });
 }

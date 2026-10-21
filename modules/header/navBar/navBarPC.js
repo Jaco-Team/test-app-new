@@ -152,7 +152,6 @@ const MemoLogo = React.memo(function MemoLogo({ city, activePage }) {
         <ScrollLink
           className="logoHeaderPC"
           to={'BannerPC'}
-          spy={true}
           isDynamic={true}
           smooth={false}
           offset={-200}
@@ -231,7 +230,7 @@ export default React.memo(function NavBarPC({ city, cityRu, catList = [] }) {
 
     // Очистка интервала при размонтировании компонента
     return () => clearInterval(intervalId);
-  }, [isAuth]);
+  }, [isAuth, city, getCountPromos_Orders]);
 
   const openMenu = (event, id) => {
     setCategoryAnchorEl(event.currentTarget);

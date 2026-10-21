@@ -547,14 +547,16 @@ export default function ModalCardItemMobile() {
                 <span>{desc}</span>
               </div>
 
-              <RecommendationMobileList
-                recommendations={recommendations}
-                limit={3}
-                onOpen={openRecommendationItem}
-                onAdd={addRecommendationItem}
-                onRemove={removeRecommendationItem}
-                getCount={getRecommendationCount}
-              />
+              {count > 0 ? (
+                <RecommendationMobileList
+                  recommendations={recommendations}
+                  limit={3}
+                  onOpen={openRecommendationItem}
+                  onAdd={addRecommendationItem}
+                  onRemove={removeRecommendationItem}
+                  getCount={getRecommendationCount}
+                />
+              ) : null}
             </div>
           </div>
 

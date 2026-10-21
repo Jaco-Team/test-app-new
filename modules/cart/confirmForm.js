@@ -1,8 +1,6 @@
 import { useEffect } from 'react';
-
 import { useRouter } from 'next/router';
 
-import Script from 'next/script';
 
 import {
   useCartStore,
@@ -42,6 +40,7 @@ const confirmOrderLabel = 'Подтвердить заказ';
 
 export default function ConfirmForm() {
   const { push } = useRouter();
+  useEffect(() => () => useCartStore.getState().cancelCardPayment(), []);
   const isMobileConfirm = useMediaQuery(
     `screen and (max-width: ${BREAKPOINTS.mobileMax}px)`
   );
@@ -201,6 +200,21 @@ export default function ConfirmForm() {
     }, 2000);
     //}, 300);
   }
+
+  const [cardPaymentState, retryCardPayment] = useCartStore((state) => [state.cardPaymentState, state.retryCardPayment]);
+  const cardPaymentStatus = typePay?.id === 'online' ? (
+    <div role="status" aria-live="polite">
+      {cardPaymentState === 'loading' ? 'Загружаем форму оплаты…' : null}
+      {cardPaymentState === 'error' ? (
+        <div>
+          <p>Не удалось открыть форму оплаты.</p>
+          <button type="button" className="confirmBTN" onClick={() => retryCardPayment?.()}>
+            Повторить загрузку формы оплаты
+          </button>
+        </div>
+      ) : null}
+    </div>
+  ) : null;
 
   const sbpStatus =
     typePay?.id === 'sbp' ? (
@@ -374,7 +388,6 @@ export default function ConfirmForm() {
             <div className="container">
               <div className="confirmHeaderBlock">
                 {/* { openPayForm === false ? false :
-                  <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
                 } */}
 
                 <div className="line" />
@@ -508,9 +521,6 @@ export default function ConfirmForm() {
             </div>
           ) : (
             <div className="container">
-              {openPayForm && typePay?.id === 'online' ? (
-                <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
-              ) : null}
 
               <div className="line" />
               <span className="confirmHeader">{confirmOrderTitle}</span>
@@ -631,6 +641,7 @@ export default function ConfirmForm() {
                 </div>
               )}
 
+              {cardPaymentStatus}
               {sbpStatus}
 
               {/* { typePay?.id == 'online' || typePay?.id == 'sbp' ? false :
@@ -657,7 +668,6 @@ export default function ConfirmForm() {
 
             {/* 
               { openPayForm === false ? false :
-                <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
               } */}
 
             <div className="confirmHeaderBlock">
@@ -808,10 +818,6 @@ export default function ConfirmForm() {
               <IconClose />
             </IconButton>
 
-            {openPayForm && typePay?.id === 'online' ? (
-              <Script src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js" />
-            ) : null}
-
             <div className="confirmHeader">
               <span>{confirmOrderTitle}</span>
             </div>
@@ -932,6 +938,7 @@ export default function ConfirmForm() {
               </div>
             )}
 
+            {cardPaymentStatus}
             {sbpStatus}
 
             {/* { typePay?.id == 'online' || typePay?.id == 'sbp' ? false :

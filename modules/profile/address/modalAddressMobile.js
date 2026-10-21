@@ -1,3 +1,4 @@
+import { hasDeliveryCoordinates } from '@/utils/streetAddress';
 import { useEffect, useState, useRef } from 'react';
 import {
   useProfileStore,
@@ -21,6 +22,10 @@ import { SwitchContactsMobile as MySwitch } from '@/ui/MySwitch.js';
 
 export default function AddressModalMobile({ city }) {
   const ref2 = useRef();
+  const [addressLoadState, addressLoadCity, getMapMobile, streetId] = useProfileStore((state) => [
+    state.addressLoadState, state.addressLoadCity, state.getMapMobile, state.streetId,
+  ]);
+
 
   const [token, setActiveModalCityList] = useHeaderStoreNew((state) => [
     state?.token,
@@ -145,20 +150,16 @@ export default function AddressModalMobile({ city }) {
     }
   }, [openModalAddress]);
 
-  let new_zone = [];
-
-  zones.map((item, key) => {
-    new_zone.push(item.zone);
-  });
+  const new_zone = (Array.isArray(zones) ? zones : [])
+    .map((item) => item?.zone)
+    .filter(Array.isArray);
+  const hasMapCenter = hasDeliveryCoordinates({ xy: center_map?.center });
 
   useEffect(() => {
-    if (ref2.current && center_map?.center) {
-      ref2.current.setCenter([
-        zones[0].xy_center_map['latitude'],
-        zones[0].xy_center_map['longitude'],
-      ]);
+    if (ref2.current && hasMapCenter) {
+      ref2.current.setCenter(center_map.center.map(Number));
     }
-  }, [zones, center_map]);
+  }, [center_map, hasMapCenter]);
 
   useEffect(() => {
     if (ref2.current && chooseAddrStreet?.xy) {
@@ -205,7 +206,15 @@ export default function AddressModalMobile({ city }) {
       disableSwipeToOpen
     >
       <div className="ContainerAddressModal">
-        {!center_map ? null : (
+        {addressLoadState === 'loading' ? <p role="status">Загружаем адреса…</p> : null}
+        {addressLoadState === 'error' ? (
+          <div role="alert" style={{ padding: 16 }}>
+            <p>Не удалось загрузить адреса. Проверьте интернет и попробуйте ещё раз.</p>
+            <button type="button" onClick={() => getMapMobile(streetId, addressLoadCity)}>Повторить</button>
+          </div>
+        ) : null}
+
+        {!hasMapCenter ? null : (
           <div className="map" style={{ minHeight: '93.162393162393vw' }}>
             <YMaps
               query={{
@@ -375,6 +384,7 @@ export default function AddressModalMobile({ city }) {
 
           <Button
             className="address_button"
+            disabled={addressLoadState === 'loading' || addressLoadState === 'error'}
             style={{
               marginBottom:
                 infoAboutAddr !== null

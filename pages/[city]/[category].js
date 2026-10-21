@@ -1,19 +1,14 @@
 import { api } from '@/components/api.js';
-import { normalizeCity } from '@/utils/normalizeCity';
+import { catalogRoute } from '@/utils/catalogRoute';
 
 export default function LegacyCategoryRoute() {
   return null;
 }
 
-export async function getServerSideProps({ query }) {
-  const city = normalizeCity(query?.city);
-  const category = String(query?.category || '')
-    .trim()
-    .toLowerCase();
-
-  if (!city || !category) {
-    return { notFound: true };
-  }
+export async function getServerSideProps({ params, query }) {
+  const route = catalogRoute((params || query)?.city, (params || query)?.category);
+  if (!route) return { notFound: true };
+  const { city, category } = route;
 
   const data = await api('home', {
     type: 'get_page_info',

@@ -21,6 +21,8 @@ import MoneyIcon from '@mui/icons-material/Money';
 import MyTextInput from '@/ui/MyTextInput';
 import CartItemMobile from '@/modules/cart/cartItemsMobile';
 import RecommendationMobileList from '@/modules/recommendations/recommendationMobileList';
+import { notifyRecommendationAdded } from '@/utils/recommendationFeedback';
+import { getCartExtraGroups, getExtraCount, getExtraItemId } from '@/utils/cartExtras';
 import { SwitchBasketPC as MySwitchPC } from '@/ui/MySwitch.js';
 import { SwitchBasketMobile as MySwitchMobile } from '@/ui/MySwitch.js';
 import {
@@ -61,12 +63,6 @@ import {
 } from '@/utils/browserStorage';
 import { switchCity } from '@/utils/switchCity';
 import { isSbpEnabled } from '@/utils/sbpPayment';
-
-const dopText = {
-  rolly: 'Не забудьте про соусы, приправы и приборы',
-  pizza: 'Попробуйте необычное сочетание пиццы и соуса',
-  all: 'Не забудьте про соусы, приправы и приборы',
-};
 
 const dopText_2 =
   'Блюда могут содержать ингредиенты, обладающие аллергенными свойствами. Если у вас есть аллергия на какой-либо продукт, пожалуйста, уточняйте состав в меню или на кассе. Обратите внимание, что мы не можем исключить или заменить ингредиенты, но с удовольствием поможем выбрать блюдо с подходящим составом.';
@@ -175,7 +171,6 @@ export default function FormOrder({ cityName }) {
     sdacha,
     setSdacha,
     check_need_dops,
-    cart_is,
     free_drive,
     setConfirmForm,
     getNewPriceItems,
@@ -227,7 +222,6 @@ export default function FormOrder({ cityName }) {
     state.sdacha,
     state.setSdacha,
     state.check_need_dops,
-    state.cart_is,
     state.free_drive,
     state.setConfirmForm,
     state.getNewPriceItems,
@@ -250,6 +244,30 @@ export default function FormOrder({ cityName }) {
 
   const [saveUserActions] = useProfileStore((state) => [state.saveUserActions]);
   const [getItem] = useHomeStore((state) => [state.getItem]);
+
+  const [allItems, plus, minus] = useCartStore((state) => [
+    state.allItems,
+    state.plus,
+    state.minus,
+  ]);
+  const cartExtraGroups = useMemo(
+    () => getCartExtraGroups(dopListCart, items, allItems, itemsOffDops),
+    [dopListCart, items, allItems, itemsOffDops, itemsCount, cartUpdatedAt]
+  );
+  const getSauceCount = (item) => getExtraCount(items, getExtraItemId(item));
+  const addSauce = (item) => {
+    const id = getExtraItemId(item);
+    const before = getExtraCount(useCartStore.getState().items, id);
+    plus(id);
+    if (getExtraCount(useCartStore.getState().items, id) > before) {
+      notifyRecommendationAdded();
+    }
+  };
+  const removeSauce = (item) => minus(getExtraItemId(item));
+  const openSauce = (item) => {
+    const id = getExtraItemId(item);
+    getItem?.('home', thisCity, id, null, { forgetCurrentItem: true });
+  };
 
   const cartRecommendationKey = useMemo(
     () =>
@@ -276,10 +294,11 @@ export default function FormOrder({ cityName }) {
           const recommendationId =
             recommendation?.item_id ?? recommendation?.id;
 
-          return !cartRecommendationIds.has(String(recommendationId));
+          return !cartRecommendationIds.has(String(recommendationId)) &&
+            !cartExtraGroups.ids.has(Number(recommendationId));
         }
       ),
-    [cartRecommendations, cartRecommendationIds]
+    [cartRecommendations, cartRecommendationIds, cartExtraGroups]
   );
 
   useEffect(() => {
@@ -820,7 +839,7 @@ export default function FormOrder({ cityName }) {
     (all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price),
     0
   );
-  let price2 = dopListCart.reduce(
+  let price2 = [...cartExtraGroups.utensils, ...cartExtraGroups.sauces].reduce(
     (all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price),
     0
   );
@@ -1105,28 +1124,42 @@ export default function FormOrder({ cityName }) {
             />
           ))}
 
-          <RecommendationMobileList
-            recommendations={visibleCartRecommendations}
-            limit={5}
-            onOpen={openCartRecommendation}
-            onAdd={addCartRecommendation}
-          />
-
-          {dopListCart.length ? (
+          {cartExtraGroups.utensils.length ? (
             <>
-              <div className="CartItemDopText">
-                <span>{dopText[cart_is]}</span>
+              <div className="CartItemDopText CartExtrasHeading">
+                <span>Не забудьте про приборы</span>
               </div>
-              {dopListCart.map((item, key) => (
+              {cartExtraGroups.utensils.map((item) => (
                 <CartItemMobile
-                  key={key}
+                  key={item.item_id}
                   count={item.count}
                   item={item}
-                  last={''}
+                  last=""
                 />
               ))}
             </>
           ) : null}
+
+          <RecommendationMobileList
+            recommendations={cartExtraGroups.sauces}
+            limit={cartExtraGroups.sauces.length}
+            title="Добавим соусы и приправы?"
+            variant="cart"
+            requiresRecommendationsEnabled={false}
+            onOpen={openSauce}
+            onAdd={addSauce}
+            onRemove={removeSauce}
+            getCount={getSauceCount}
+          />
+
+          <RecommendationMobileList
+            recommendations={visibleCartRecommendations}
+            limit={5}
+            title="Подобрали для вас"
+            variant="cart"
+            onOpen={openCartRecommendation}
+            onAdd={addCartRecommendation}
+          />
 
           {typeOrder == 'pic' ? null : (
             <div className="CartDelivery">

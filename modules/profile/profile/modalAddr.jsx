@@ -1,3 +1,4 @@
+import { hasDeliveryCoordinates } from '@/utils/streetAddress';
 import React, { useEffect, useState, useRef } from 'react';
 
 import MySwitch from '@/ui/Switch.js';
@@ -30,6 +31,10 @@ import {
 
 export default function ModalAddr() {
   const ref2 = useRef();
+  const [addressLoadState, addressLoadCity, getMapMobile, streetId] = useProfileStore((state) => [
+    state.addressLoadState, state.addressLoadCity, state.getMapMobile, state.streetId,
+  ]);
+
 
   const [
     clearAddr,
@@ -146,20 +151,16 @@ export default function ModalAddr() {
     }
   }, [isOpenModalAddr]);
 
-  let new_zone = [];
-
-  zones.map((item, key) => {
-    new_zone.push(item.zone);
-  });
+  const new_zone = (Array.isArray(zones) ? zones : [])
+    .map((item) => item?.zone)
+    .filter(Array.isArray);
+  const hasMapCenter = hasDeliveryCoordinates({ xy: center_map?.center });
 
   useEffect(() => {
-    if (ref2.current && center_map?.center) {
-      ref2.current.setCenter([
-        zones[0].xy_center_map['latitude'],
-        zones[0].xy_center_map['longitude'],
-      ]);
+    if (ref2.current && hasMapCenter) {
+      ref2.current.setCenter(center_map.center.map(Number));
     }
-  }, [zones]);
+  }, [center_map, hasMapCenter]);
 
   useEffect(() => {
     if (ref2.current && chooseAddrStreet?.xy) {
@@ -210,9 +211,17 @@ export default function ModalAddr() {
             <IconClose />
           </IconButton>
 
+
+        {addressLoadState === 'loading' ? <p role="status">Загружаем адреса…</p> : null}
+        {addressLoadState === 'error' ? (
+          <div role="alert" style={{ padding: 16 }}>
+            <p>Не удалось загрузить адреса. Проверьте интернет и попробуйте ещё раз.</p>
+            <button type="button" onClick={() => getMapMobile(streetId, addressLoadCity)}>Повторить</button>
+          </div>
+        ) : null}
           <div className="mainGrid">
             <div className="map">
-              <YMaps
+              {hasMapCenter ? <YMaps
                 query={{
                   lang: 'ru_RU',
                   apikey: process.env.NEXT_PUBLIC_YANDEX_TOKEN_MAP,
@@ -247,7 +256,7 @@ export default function ModalAddr() {
                     }}
                   />
                 </Map>
-              </YMaps>
+              </YMaps> : null}
             </div>
             <div className="form">
               <div className="nameAddr">
@@ -342,7 +351,10 @@ export default function ModalAddr() {
               </div>
               <div className="btnSave">
                 <div
+                  role="button"
+                  aria-disabled={addressLoadState === 'loading' || addressLoadState === 'error'}
                   onClick={() => {
+                    if (addressLoadState === 'loading' || addressLoadState === 'error') return;
                     infoAboutAddr != null
                       ? updateAddr(
                           pd,

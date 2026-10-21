@@ -16,6 +16,9 @@ describe.each(runtimes)('SDK %s', (name, load) => {
     expect(options.beforeSendLog({ message: 'sensitive log' })).toBeNull();
     expect(options).not.toHaveProperty('enableLogs');
     expect(options).not.toHaveProperty('sendDefaultPii');
+    expect(options).not.toHaveProperty('beforeSendTransaction');
+    const span = options.beforeSendSpan({ name: 'GET /cart?token=private', attributes: { 'http.url': '/cart?token=private' } });
+    expect(JSON.stringify(span)).not.toContain('private');
   });
   it('не отправляет события в прежний облачный Sentry', async () => {
     vi.stubEnv('NEXT_PUBLIC_SENTRY_DSN', `https://${'a'.repeat(32)}@o1.ingest.sentry.io/4`);

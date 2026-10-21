@@ -19,8 +19,7 @@ import {
 
 const this_module = 'category';
 
-import { normalizeCity } from '@/utils/normalizeCity';
-import { getCookie } from '@/utils/getCookie';
+import { catalogRoute } from '@/utils/catalogRoute';
 import { shouldShowCategoryHeadings } from '@/utils/seoHeadings';
 
 export default function Home(props) {
@@ -158,7 +157,10 @@ export default function Home(props) {
   );
 }
 
-export async function getServerSideProps({ req, res, query }) {
+export async function getServerSideProps({ res, params, query }) {
+  const route = catalogRoute((params || query)?.city, (params || query)?.category);
+  if (!route) return { notFound: true };
+  const { city, category } = route;
   res.setHeader(
     'Cache-Control',
     'public, s-maxage=60, stale-while-revalidate=60'
@@ -170,17 +172,6 @@ export async function getServerSideProps({ req, res, query }) {
   );
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
-
-  const cityFromPath = normalizeCity(query?.city);
-  const savedCity = normalizeCity(getCookie(req, 'city'));
-  const city = cityFromPath || savedCity || 'togliatti';
-
-  if (!cityFromPath) {
-    // console.log('!cityFromPath')
-    return { redirect: { destination: `/${city}`, permanent: false } };
-  }
-
-  const category = String(query?.category || '').trim();
 
   const [data1, catalog] = await Promise.all([
     api('home', { type: 'get_page_info', city_id: city, page: category }),

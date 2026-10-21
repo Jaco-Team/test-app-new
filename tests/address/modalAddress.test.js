@@ -97,3 +97,14 @@ describe.each([375, 768, 1280])('рендер форм адреса при ши�
     }
   );
 });
+
+describe.each([375, 768, 1280])('защита адресной формы при ширине %s', (width) => {
+  it.each([ModalAddr, AddressModalMobile])('не падает на повреждённых зонах в %s', (Component) => {
+    fixtures.width = width;
+    fixtures.profile.zones = undefined;
+    fixtures.profile.addressLoadState = 'error';
+    const html = renderToStaticMarkup(React.createElement(Component));
+    expect(html).toContain('Не удалось загрузить адреса');
+    expect(html).toContain('Повторить');
+  });
+});

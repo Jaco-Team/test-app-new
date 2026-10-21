@@ -27,7 +27,6 @@ const MemoLogo = memo(function MemoLogo({city, activePage}){
       {activePage === 'home' ?
         <ScrollLink
           to={'BannerMobile'}
-          spy={true}
           isDynamic={true}
           smooth={false}
           offset={-200}
@@ -78,7 +77,7 @@ export default memo(function NavBarMobile({ city, cityRu }) {
 
     // Очистка интервала при размонтировании компонента
     return () => clearInterval(intervalId);
-  }, [isAuth]);
+  }, [isAuth, city, getCountPromos_Orders]);
 
   const goToPage = (page) => {
     reachGoal('Клик в шапке ' + page);

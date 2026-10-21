@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/nextjs';
 import { isSiteSentryDsn } from './utils/sentryEndpoint.mjs';
-import { SENTRY_DATA_COLLECTION, sanitizeSentryBreadcrumb, sanitizeSentryEvent } from './utils/sentryPrivacy';
+import { SENTRY_DATA_COLLECTION, sanitizeSentryBreadcrumb, sanitizeSentryEvent, sanitizeSentrySpan } from './utils/sentryPrivacy';
 
 const dsn = isSiteSentryDsn(process.env.SENTRY_DSN)
   ? process.env.SENTRY_DSN
@@ -16,6 +16,6 @@ Sentry.init({
   initialScope: { tags: { app: 'jacofood-web', runtime: 'nodejs' } },
   beforeBreadcrumb: sanitizeSentryBreadcrumb,
   beforeSend: sanitizeSentryEvent,
-  beforeSendTransaction: sanitizeSentryEvent,
+  beforeSendSpan: sanitizeSentrySpan,
   beforeSendLog: () => null,
 });

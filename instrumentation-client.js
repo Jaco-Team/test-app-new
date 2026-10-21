@@ -1,6 +1,6 @@
 import * as Sentry from '@sentry/nextjs';
 import { isSiteSentryDsn } from './utils/sentryEndpoint.mjs';
-import { SENTRY_DATA_COLLECTION, sanitizeSentryBreadcrumb, sanitizeSentryEvent } from './utils/sentryPrivacy';
+import { SENTRY_DATA_COLLECTION, sanitizeSentryBreadcrumb, sanitizeSentryEvent, sanitizeSentrySpan } from './utils/sentryPrivacy';
 import {
   getClientNetworkContext,
   installGlobalSentryHandlers,
@@ -48,7 +48,7 @@ Sentry.init({
   },
   dataCollection: SENTRY_DATA_COLLECTION,
   beforeBreadcrumb: sanitizeSentryBreadcrumb,
-  beforeSendTransaction: sanitizeSentryEvent,
+  beforeSendSpan: sanitizeSentrySpan,
   beforeSendLog: () => null,
   replaysSessionSampleRate: 0,
   replaysOnErrorSampleRate: 0,

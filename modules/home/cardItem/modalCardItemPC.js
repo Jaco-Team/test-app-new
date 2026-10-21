@@ -323,7 +323,7 @@ export default function ModalCardItemPC() {
   };
 
   const hasRecommendations =
-    typeModal === 'start' && recommendations.length > 0;
+    typeModal === 'start' && count > 0 && recommendations.length > 0;
 
   const handleCloseModal = (event, reason) => {
     if (openItemCard) {
@@ -906,16 +906,6 @@ export default function ModalCardItemPC() {
             </ClickAwayListener>
           </Grid>
 
-          {hasRecommendations ? (
-            <RecommendationMobileList
-              recommendations={recommendations}
-              limit={3}
-              onOpen={openRecommendationItem}
-              onAdd={addRecommendationItem}
-              onRemove={removeRecommendationItem}
-              getCount={getRecommendationCount}
-            />
-          ) : null}
         </Box>
       </DialogContent>
     </Dialog>

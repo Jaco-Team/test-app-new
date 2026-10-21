@@ -1,0 +1,181 @@
+// При появлении ленты содержимое правой колонки остаётся в потоке:
+// длинное описание прокручивается отдельно и не перекрывает кнопку корзины.
+.modalCardItemPC .MuiDialog-paper:has(.modalItemPC_hasRecommendations) {
+  height: auto;
+  max-height: calc(100dvh - 48px);
+}
+
+.modalCardItemPC .modalDialogContent_hasRecommendations {
+  height: auto;
+  min-height: 0;
+}
+
+.modalItemPC.modalItemPC_hasRecommendations {
+  &::after {
+    display: none;
+  }
+
+  > .MuiGrid-root {
+    align-items: center;
+  }
+
+  .SecondItem.SecondItem_hasRecommendations {
+    height: auto;
+    min-height: 520px;
+    margin-top: 48px;
+    margin-bottom: 48px;
+
+    .desc {
+      flex: 0 1 auto;
+      max-height: 180px;
+      margin-bottom: 0;
+      font-size: max(13px, 1.083vw);
+      line-height: 1.35;
+    }
+
+    .dop {
+      flex-shrink: 0;
+      height: auto;
+      min-height: 24px;
+
+      .dop_text > span {
+        font-size: max(13px, 0.9vw);
+      }
+    }
+
+    .RecommendationModalCardPCInline {
+      min-width: 0;
+      margin: 18px 0 24px;
+
+      .RecommendationModalCardMobile {
+        margin-top: 0;
+      }
+    }
+
+    .containerBTN {
+      position: relative;
+      bottom: auto;
+      margin-top: auto;
+      flex-shrink: 0;
+
+      > div,
+      > button {
+        min-height: 38px;
+      }
+
+      > div > span {
+        font-size: max(17px, 1.2vw);
+      }
+    }
+  }
+
+  @media (min-width: 668px) and (max-width: 990px) {
+    .SecondItem.SecondItem_hasRecommendations {
+      min-height: 480px;
+      margin-top: 24px;
+      margin-bottom: 24px;
+
+      h1 {
+        font-size: 21px;
+        line-height: 1.2;
+      }
+
+      .dop .dop_text {
+        width: calc(100% - 24px);
+        flex-wrap: wrap;
+        gap: 4px;
+
+        > span {
+          padding: 0;
+          width: auto;
+          height: auto;
+          font-size: 13px;
+          line-height: 18px;
+        }
+      }
+
+      .desc {
+        font-size: 13px;
+        max-height: 120px;
+      }
+    }
+  }
+}
+
+:is(.CartMobile, #simple-popover) .CartExtrasHeading {
+  margin: 18px 0 8px;
+  color: #333333;
+  font-size: 15px;
+  line-height: 1.3;
+  font-weight: 500;
+  text-align: left;
+}
+
+.CartMobile .CartItemDopText.CartExtrasHeading {
+  min-height: 0;
+  height: auto;
+  padding: 0;
+  border-radius: 0;
+  background: transparent;
+  justify-content: flex-start;
+
+  span {
+    padding: 0;
+    text-align: left;
+    font-size: 15px !important;
+    line-height: 1.3;
+    font-weight: 500;
+  }
+}
+
+// Flex-колонка корзины не должна расширяться до полной длины ленты.
+.CartMobile .CartMobileContainer {
+  width: 100%;
+  min-width: 0;
+  max-width: 100%;
+
+  > .RecommendationModalCardMobile[data-recommendation-variant] {
+    width: calc(100% - 24px) !important;
+  }
+}
+
+// Лента занимает свою высоту целиком внутри прокручиваемой flex-корзины.
+#simple-popover .basketRecommendations {
+  flex: 0 0 auto;
+  min-height: 0;
+  margin-top: 0;
+  margin-bottom: 24px;
+  padding: 0;
+  overflow: visible;
+}
+
+#simple-popover .MuiPaper-root.MuiPopover-paper .TableMini.TableMiniDops .dopText.CartExtrasHeading th {
+  height: auto;
+  padding: 18px 0 8px;
+  background: transparent;
+  border-radius: 0;
+  color: #333333;
+  font-size: 21px !important;
+  font-weight: 500;
+  line-height: 1.3;
+  text-align: left;
+
+  @media (min-width: 668px) and (max-width: 990px) {
+    font-size: 18px !important;
+  }
+}
+
+#simple-popover .MuiPaper-root.MuiPopover-paper .TableMini.TableMiniDops tr.dopText.CartExtrasHeading {
+  height: auto !important;
+  min-height: 0;
+  padding: 0 !important;
+  background: transparent;
+  border-radius: 0;
+  justify-content: flex-start;
+}
+
+@media (min-width: 991px) {
+  #simple-popover .CartExtrasHeading {
+    font-size: 21px;
+  }
+}

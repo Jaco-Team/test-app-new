@@ -7,44 +7,12 @@ function getRecommendationImageSrcSet(imageName, format) {
   return getItemImageSrcSet(imageName, format, 'thumbnail');
 }
 
-function getRecommendationMetaItems(item) {
-  const catId = parseInt(item?.cat_id);
-  const itemId = parseInt(item?.id ?? item?.item_id);
-  const metaItems = [];
-  const countPartNew = String(item?.count_part_new ?? '').trim();
-  const countPart = String(item?.count_part ?? '').trim();
-  const sizePizza = String(item?.size_pizza ?? '').trim();
-  const weight = item?.weight;
-  const hasHiddenSize = [5, 6, 7, 15].includes(catId);
-
-  if (countPartNew && countPartNew !== countPart) {
-    metaItems.push(countPartNew);
-  }
-
-  if (!hasHiddenSize) {
-    const sizeValue = catId === 14 ? sizePizza : countPart;
-
-    if (sizeValue) {
-      metaItems.push(`${sizeValue} ${catId === 14 ? 'см' : 'шт.'}`);
-    }
-  }
-
-  if (weight) {
-    const weightUnit =
-      itemId === 17 || itemId === 237 ? 'шт.' : catId === 6 ? 'л' : 'г';
-
-    metaItems.push(
-      `${new Intl.NumberFormat('ru-RU').format(weight)} ${weightUnit}`
-    );
-  }
-
-  return metaItems;
-}
-
 export default function RecommendationMobileList({
   recommendations = [],
   limit = 3,
-  title = 'Добавим к заказу?',
+  title = 'С этим блюдом заказывают',
+  variant = 'product',
+  requiresRecommendationsEnabled = true,
   onSelect,
   onOpen,
   onAdd,
@@ -56,7 +24,9 @@ export default function RecommendationMobileList({
     dragging: false,
     pointerId: null,
     startX: 0,
+    startY: 0,
     lastX: 0,
+    lastY: 0,
     scrollLeft: 0,
   });
   const suppressClickUntilRef = useRef(0);
@@ -64,23 +34,15 @@ export default function RecommendationMobileList({
     ? recommendations.slice(0, limit)
     : [];
 
-  if (!isRecommendationsEnabled() || !list.length) {
+  if (
+    (requiresRecommendationsEnabled && !isRecommendationsEnabled()) ||
+    !list.length
+  ) {
     return null;
   }
 
   const suppressClicksFor = (event, delay) => {
     suppressClickUntilRef.current = event.timeStamp + delay;
-  };
-
-  const handleKeyDown = (event, recommendation, position) => {
-    if (event.target !== event.currentTarget) {
-      return;
-    }
-
-    if (event.key === 'Enter' || event.key === ' ') {
-      event.preventDefault();
-      handleRecommendationOpen(event, recommendation, position);
-    }
   };
 
   const stopListDrag = (listNode, shouldReleasePointer = true) => {
@@ -101,7 +63,9 @@ export default function RecommendationMobileList({
       dragging: false,
       pointerId: null,
       startX: 0,
+      startY: 0,
       lastX: 0,
+      lastY: 0,
       scrollLeft: 0,
     };
   };
@@ -110,12 +74,13 @@ export default function RecommendationMobileList({
     const listNode = event.currentTarget;
     const isInteractiveTarget = Boolean(
       event.target?.closest?.(
-        '.RecommendationModalCardMobilePrice, .RecommendationModalCardMobileCounter, button'
+        '.RecommendationModalCardMobilePrice, .RecommendationModalCardMobileCounter'
       )
     );
 
     if (
       isInteractiveTarget ||
+      event.isPrimary === false ||
       (event.button !== undefined && event.button !== 0) ||
       listNode.scrollWidth <= listNode.clientWidth
     ) {
@@ -127,7 +92,9 @@ export default function RecommendationMobileList({
       dragging: false,
       pointerId: event.pointerId,
       startX: event.clientX,
+      startY: event.clientY,
       lastX: event.clientX,
+      lastY: event.clientY,
       scrollLeft: listNode.scrollLeft,
     };
   };
@@ -135,13 +102,19 @@ export default function RecommendationMobileList({
   const handleListPointerMove = (event) => {
     const dragState = dragStateRef.current;
 
-    if (!dragState.active) {
+    if (!dragState.active || dragState.pointerId !== event.pointerId) {
       return;
     }
 
     const listNode = event.currentTarget;
     const deltaX = event.clientX - dragState.startX;
     dragState.lastX = event.clientX;
+    dragState.lastY = event.clientY;
+
+    // На сенсорном экране браузер сам прокручивает ленту и страницу.
+    if (event.pointerType === 'touch') {
+      return;
+    }
 
     if (Math.abs(deltaX) < 8 && !dragState.dragging) {
       return;
@@ -161,19 +134,25 @@ export default function RecommendationMobileList({
   const handleListPointerUp = (event) => {
     const dragState = dragStateRef.current;
 
-    if (!dragState.active) {
+    if (!dragState.active || dragState.pointerId !== event.pointerId) {
       return;
     }
 
-    const totalDeltaX = Math.abs(
-      (dragState.lastX || event.clientX) - dragState.startX
-    );
-    const wasDragging = dragState.dragging || totalDeltaX > 8;
+    const totalDeltaX = Math.abs(dragState.lastX - dragState.startX);
+    const totalDeltaY = Math.abs(dragState.lastY - dragState.startY);
+    const wasDragging =
+      dragState.dragging || totalDeltaX > 8 || totalDeltaY > 8;
 
     stopListDrag(event.currentTarget);
 
     if (wasDragging) {
       suppressClicksFor(event, 350);
+    }
+  };
+
+  const handleListPointerLeave = (event) => {
+    if (dragStateRef.current.active && !dragStateRef.current.dragging) {
+      stopListDrag(event.currentTarget);
     }
   };
 
@@ -230,8 +209,13 @@ export default function RecommendationMobileList({
   };
 
   return (
-    <div className="RecommendationModalCardMobile">
-      <div className="RecommendationModalCardMobileTitle">{title}</div>
+    <div
+      className="RecommendationModalCardMobile"
+      data-recommendation-variant={variant === 'cart' ? 'cart' : 'product'}
+    >
+      <div className="RecommendationModalCardMobileTitle" role="heading" aria-level={3}>
+        {title}
+      </div>
 
       <div
         className="RecommendationModalCardMobileList"
@@ -239,6 +223,7 @@ export default function RecommendationMobileList({
         onPointerMove={handleListPointerMove}
         onPointerUp={handleListPointerUp}
         onPointerCancel={handleListPointerUp}
+        onPointerLeave={handleListPointerLeave}
         onLostPointerCapture={handleListLostPointerCapture}
         onScroll={handleListScroll}
         onDragStart={preventNativeDrag}
@@ -256,79 +241,77 @@ export default function RecommendationMobileList({
           )
             ? new Intl.NumberFormat('ru-RU').format(recommendationPriceValue)
             : '';
-          const recommendationMetaItems =
-            getRecommendationMetaItems(recommendation);
+          const recommendationCount = Math.max(
+            0, Number(getCount?.(recommendation) ?? 0) || 0
+          );
+          const isSelected = recommendationCount > 0;
           const position = index + 1;
 
           return (
             <div
-              className="RecommendationModalCardMobileItem"
+              className={`RecommendationModalCardMobileItem${isSelected ? ' RecommendationModalCardMobileItemSelected' : ''}`}
+              data-selected={isSelected}
+              aria-label={`Блюдо «${recommendationName}»${isSelected ? `, в корзине: ${recommendationCount}` : ''}`}
               key={recommendationId ?? index}
-              role="button"
-              tabIndex={0}
-              onClick={(event) =>
-                handleRecommendationOpen(event, recommendation, position)
-              }
-              onKeyDown={(event) =>
-                handleKeyDown(event, recommendation, position)
-              }
+              role="group"
               onDragStart={preventNativeDrag}
             >
-              <div className="RecommendationModalCardMobileImage">
-                <picture>
-                  <source
-                    type="image/webp"
-                    srcSet={getRecommendationImageSrcSet(
-                      recommendationImage,
-                      'webp'
-                    )}
-                    sizes="31.6239vw"
-                  />
-                  <source
-                    type="image/jpeg"
-                    srcSet={getRecommendationImageSrcSet(
-                      recommendationImage,
-                      'jpg'
-                    )}
-                    sizes="31.6239vw"
-                  />
-                  <img
-                    alt={recommendationName || 'Рекомендованное блюдо'}
-                    src={getItemImageUrl(recommendationImage, '366x366', 'jpg')}
-                    loading="lazy"
-                    draggable={false}
-                  />
-                </picture>
-              </div>
+              <button
+                className="RecommendationModalCardMobileOpen"
+                type="button"
+                aria-label={`Открыть блюдо «${recommendationName}»`}
+                onClick={(event) =>
+                  handleRecommendationOpen(event, recommendation, position)
+                }
+              >
+                <span className="RecommendationModalCardMobileImage">
+                  <picture>
+                    <source
+                      type="image/webp"
+                      srcSet={getRecommendationImageSrcSet(
+                        recommendationImage,
+                        'webp'
+                      )}
+                      sizes="(max-width: 667px) 116px, (max-width: 990px) 112px, 111px"
+                    />
+                    <source
+                      type="image/jpeg"
+                      srcSet={getRecommendationImageSrcSet(
+                        recommendationImage,
+                        'jpg'
+                      )}
+                      sizes="(max-width: 667px) 116px, (max-width: 990px) 112px, 111px"
+                    />
+                    <img
+                      alt={recommendationName || 'Рекомендованное блюдо'}
+                      src={getItemImageUrl(recommendationImage, '366x366', 'jpg')}
+                      width={116}
+                      height={116}
+                      loading="lazy"
+                      decoding="async"
+                      draggable={false}
+                    />
+                  </picture>
+                </span>
 
-              <div className="RecommendationModalCardMobileInfo">
-                <div className="RecommendationModalCardMobileName">
-                  <span>{recommendationName}</span>
-                </div>
+                <span className="RecommendationModalCardMobileInfo">
+                  <span className="RecommendationModalCardMobileName">
+                    <span>{recommendationName}</span>
+                  </span>
+                </span>
+              </button>
 
-                <div className="RecommendationModalCardMobileMeta">
-                  {recommendationMetaItems.map((metaItem, metaIndex) => (
-                    <React.Fragment key={`${metaItem}-${metaIndex}`}>
-                      {metaIndex > 0 ? (
-                        <span className="RecommendationModalCardMobileDivider">
-                          |
-                        </span>
-                      ) : null}
-
-                      <span>{metaItem}</span>
-                    </React.Fragment>
-                  ))}
-                </div>
-              </div>
-
-              {Number(getCount?.(recommendation) ?? 0) > 0 ? (
+              {isSelected ? (
                 <div
                   className="RecommendationModalCardMobileCounter"
+                  role="group"
+                  aria-label={`Количество блюда «${recommendationName}» в корзине`}
                   onClick={(event) => event.stopPropagation()}
                 >
                   <button
                     className="RecommendationModalCardMobileCounterButton"
                     type="button"
+                    aria-label={`Уменьшить количество «${recommendationName}»`}
                     onClick={(event) =>
                       handleRecommendationRemove(
                         event,
@@ -341,13 +324,14 @@ export default function RecommendationMobileList({
                     –
                   </button>
 
-                  <span className="RecommendationModalCardMobileCounterValue">
-                    {Number(getCount?.(recommendation) ?? 0)}
+                  <span className="RecommendationModalCardMobileCounterValue" aria-live="polite">
+                    {recommendationCount}
                   </span>
 
                   <button
                     className="RecommendationModalCardMobileCounterButton"
                     type="button"
+                    aria-label={`Добавить «${recommendationName}» в корзину`}
                     onClick={(event) =>
                       handleRecommendationAdd(event, recommendation, position)
                     }
@@ -360,6 +344,7 @@ export default function RecommendationMobileList({
                 <button
                   className="RecommendationModalCardMobilePrice"
                   type="button"
+                  aria-label={`Добавить «${recommendationName}» в корзину${recommendationPriceText ? ` за ${recommendationPriceText} ₽` : ''}`}
                   onClick={(event) =>
                     handleRecommendationAdd(event, recommendation, position)
                   }
