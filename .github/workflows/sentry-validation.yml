@@ -1,0 +1,45 @@
+name: Site Sentry validation
+on:
+  push:
+    branches: [setup/site-sentry-selfhost]
+  workflow_dispatch:
+permissions:
+  contents: read
+concurrency:
+  group: site-sentry-validation-${{ github.ref }}
+  cancel-in-progress: true
+env:
+  HUSKY: '0'
+  NEXT_TELEMETRY_DISABLED: '1'
+  NEXT_PUBLIC_SENTRY_DSN: https://0e7d8a795af83e2ad2ec447a2d1da9c6@sentry.jacochef.ru/4
+  NEXT_PUBLIC_SENTRY_CUSTOM_MONITORING_ENABLED: 'true'
+  SENTRY_RELEASE: jacofood-web@${{ github.sha }}
+jobs:
+  validate:
+    if: github.repository == 'Jaco-Team/test-app-new' && (github.ref == 'refs/heads/setup/site-sentry-selfhost' || (github.event_name == 'workflow_dispatch' && github.ref == 'refs/heads/main'))
+    runs-on: ubuntu-24.04
+    timeout-minutes: 20
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: '24'
+          cache: npm
+      - run: npm ci
+      - run: npm run typecheck
+      - run: npm run test:core
+      - name: Build and upload source maps without publishing an image
+        run: npm run build
+        env:
+          SENTRY_UPLOAD_SOURCEMAPS: 'true'
+          SENTRY_AUTH_TOKEN: ${{ secrets.SENTRY_SITE_AUTH_TOKEN }}
+      - name: Send a synthetic source map check (no application API calls)
+        run: node tests/monitoring/sendSourcemapCheck.mjs
+      - name: Verify browser maps are not served
+        run: |
+          if find .next/static -type f -name '*.map' -print -quit | grep -q .; then
+            echo 'Source maps remain in public assets'
+            exit 1
+          fi

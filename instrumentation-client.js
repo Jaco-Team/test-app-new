@@ -1,32 +1,6 @@
-// This file configures the initialization of Sentry on the client.
-// The config you add here will be used whenever a users loads a page in their browser.
-// https://docs.sentry.io/platforms/javascript/guides/nextjs/
-
-// import * as Sentry from "@sentry/nextjs";
-
-// Sentry.init({
-//   dsn: "https://7ce2cfe591e41713764963222cf849f4@sentry.jacochef.ru/5",
-
-//   // Add optional integrations for additional features
-//   integrations: [
-//     Sentry.replayIntegration(),
-//   ],
-
-//   // Define how likely traces are sampled. Adjust this value in production, or use tracesSampler for greater control.
-//   tracesSampleRate: 1,
-
-//   // Define how likely Replay events are sampled.
-//   // This sets the sample rate to be 10%. You may want this to be 100% while
-//   // in development and sample at a lower rate in production
-//   replaysSessionSampleRate: 0.1,
-
-//   // Define how likely Replay events are sampled when an error occurs.
-//   replaysOnErrorSampleRate: 1.0,
-
-//   // Setting this option to true will print useful information to the console while you're setting up Sentry.
-//   debug: false,
-// });
 import * as Sentry from '@sentry/nextjs';
+import { isSiteSentryDsn } from './utils/sentryEndpoint.mjs';
+import { SENTRY_DATA_COLLECTION, sanitizeSentryBreadcrumb, sanitizeSentryEvent } from './utils/sentryPrivacy';
 import {
   getClientNetworkContext,
   installGlobalSentryHandlers,
@@ -36,47 +10,12 @@ import {
   isIgnoredResourceLoadError,
 } from './utils/clientMonitoring';
 
-function getEnvNumber(
-  name,
-  fallback,
-  { min = Number.NEGATIVE_INFINITY, max = Number.POSITIVE_INFINITY } = {}
-) {
-  const rawValue = process.env[name];
-
-  if (rawValue == null || rawValue === '') {
-    return fallback;
-  }
-
-  const parsed = Number(rawValue);
-
-  if (!Number.isFinite(parsed)) {
-    return fallback;
-  }
-
-  return Math.min(Math.max(parsed, min), max);
-}
-
-function getEnvBoolean(name, fallback) {
-  const rawValue = process.env[name];
-
-  if (rawValue == null || rawValue === '') {
-    return fallback;
-  }
-
-  return ['1', 'true', 'yes', 'on'].includes(String(rawValue).toLowerCase());
-}
-
-const hasSentryDsn = Boolean(process.env.NEXT_PUBLIC_SENTRY_DSN);
+const hasSentryDsn = isSiteSentryDsn(process.env.NEXT_PUBLIC_SENTRY_DSN);
 const sentryEnabled =
   hasSentryDsn &&
-  getEnvBoolean('NEXT_PUBLIC_SENTRY_ENABLED', process.env.NODE_ENV !== 'test');
+  process.env.NODE_ENV !== 'test' &&
+  process.env.NEXT_PUBLIC_SENTRY_ENABLED !== 'false';
 const tracesSampleRate = 0.1;
-const profilesSampleRate = 0.1;
-const replaysSessionSampleRate = 0.1;
-const replaysOnErrorSampleRate = 0.1;
-const enableLogs = 0.1;
-const enableReplay =
-  replaysSessionSampleRate > 0 || replaysOnErrorSampleRate > 0;
 const ignoredClientSpans = [
   {
     op: 'http.client',
@@ -90,9 +29,8 @@ Sentry.init({
   dsn: process.env.NEXT_PUBLIC_SENTRY_DSN,
   environment: process.env.NODE_ENV,
   enabled: sentryEnabled,
-  sampleRate: 0.1,
+  sampleRate: 1,
   tracesSampleRate,
-  enableLogs,
   debug: process.env.NODE_ENV === 'development',
   attachStacktrace: true,
   maxBreadcrumbs: 200,
@@ -108,25 +46,12 @@ Sentry.init({
 
     return scope;
   },
-  integrations: enableReplay
-    ? [
-        Sentry.replayIntegration({
-          // Keep form values masked, but make the page itself readable in Replay.
-          maskAllInputs: true,
-          maskAllText: false,
-          blockAllMedia: false,
-          mask: [
-            '[data-sentry-mask]',
-            '.sentry-mask',
-            "[data-sensitive='true']",
-          ],
-          block: ['[data-sentry-block]', '.sentry-block'],
-        }),
-      ]
-    : [],
-  ...(profilesSampleRate > 0 ? { profilesSampleRate } : {}),
-  replaysSessionSampleRate,
-  replaysOnErrorSampleRate,
+  dataCollection: SENTRY_DATA_COLLECTION,
+  beforeBreadcrumb: sanitizeSentryBreadcrumb,
+  beforeSendTransaction: sanitizeSentryEvent,
+  beforeSendLog: () => null,
+  replaysSessionSampleRate: 0,
+  replaysOnErrorSampleRate: 0,
   beforeSend(event, hint) {
     const network = getClientNetworkContext();
     const originalException = hint?.originalException;
@@ -219,7 +144,7 @@ Sentry.init({
       event.tags.error_source = 'browser_extension';
     }
 
-    return event;
+    return sanitizeSentryEvent(event);
   },
 });
 

@@ -1,0 +1,377 @@
+{
+  "title": "Клиентский сайт · jacofood.ru",
+  "projects": [
+    4
+  ],
+  "environment": [
+    "production"
+  ],
+  "period": "7d",
+  "is_favorited": true,
+  "widgets": [
+    {
+      "title": "Ошибки по времени",
+      "displayType": "line",
+      "widgetType": "error-events",
+      "interval": "1h",
+      "queries": [
+        {
+          "name": "",
+          "fields": [
+            "count()"
+          ],
+          "aggregates": [
+            "count()"
+          ],
+          "columns": [],
+          "fieldAliases": [],
+          "conditions": "environment:production !monitoring_check:true",
+          "orderby": "count()"
+        }
+      ],
+      "layout": {
+        "x": 0,
+        "y": 0,
+        "w": 3,
+        "h": 2,
+        "minH": 2
+      }
+    },
+    {
+      "title": "Всего ошибок",
+      "displayType": "big_number",
+      "widgetType": "error-events",
+      "interval": "1h",
+      "queries": [
+        {
+          "name": "",
+          "fields": [
+            "count()"
+          ],
+          "aggregates": [
+            "count()"
+          ],
+          "columns": [],
+          "fieldAliases": [],
+          "conditions": "environment:production !monitoring_check:true",
+          "orderby": ""
+        }
+      ],
+      "layout": {
+        "x": 3,
+        "y": 0,
+        "w": 3,
+        "h": 2,
+        "minH": 2
+      }
+    },
+    {
+      "title": "Частые ошибки",
+      "displayType": "table",
+      "widgetType": "error-events",
+      "interval": "1h",
+      "queries": [
+        {
+          "name": "",
+          "fields": [
+            "count()",
+            "issue",
+            "title"
+          ],
+          "aggregates": [
+            "count()"
+          ],
+          "columns": [
+            "issue",
+            "title"
+          ],
+          "fieldAliases": [],
+          "conditions": "environment:production !monitoring_check:true",
+          "orderby": "-count()"
+        }
+      ],
+      "layout": {
+        "x": 0,
+        "y": 2,
+        "w": 3,
+        "h": 2,
+        "minH": 2
+      }
+    },
+    {
+      "title": "Ошибки по страницам",
+      "displayType": "table",
+      "widgetType": "error-events",
+      "interval": "1h",
+      "queries": [
+        {
+          "name": "",
+          "fields": [
+            "count()",
+            "route"
+          ],
+          "aggregates": [
+            "count()"
+          ],
+          "columns": [
+            "route"
+          ],
+          "fieldAliases": [],
+          "conditions": "environment:production !monitoring_check:true",
+          "orderby": "-count()"
+        }
+      ],
+      "layout": {
+        "x": 3,
+        "y": 2,
+        "w": 3,
+        "h": 2,
+        "minH": 2
+      }
+    },
+    {
+      "title": "Браузеры и ОС",
+      "displayType": "table",
+      "widgetType": "error-events",
+      "interval": "1h",
+      "queries": [
+        {
+          "name": "",
+          "fields": [
+            "count()",
+            "browser.name",
+            "os.name"
+          ],
+          "aggregates": [
+            "count()"
+          ],
+          "columns": [
+            "browser.name",
+            "os.name"
+          ],
+          "fieldAliases": [],
+          "conditions": "environment:production !monitoring_check:true",
+          "orderby": "-count()"
+        }
+      ],
+      "layout": {
+        "x": 0,
+        "y": 4,
+        "w": 3,
+        "h": 2,
+        "minH": 2
+      }
+    },
+    {
+      "title": "Ошибки браузера и сервера",
+      "displayType": "table",
+      "widgetType": "error-events",
+      "interval": "1h",
+      "queries": [
+        {
+          "name": "",
+          "fields": [
+            "count()",
+            "runtime"
+          ],
+          "aggregates": [
+            "count()"
+          ],
+          "columns": [
+            "runtime"
+          ],
+          "fieldAliases": [],
+          "conditions": "environment:production !monitoring_check:true",
+          "orderby": "-count()"
+        }
+      ],
+      "layout": {
+        "x": 3,
+        "y": 4,
+        "w": 3,
+        "h": 2,
+        "minH": 2
+      }
+    },
+    {
+      "title": "Сбои API по модулям",
+      "displayType": "table",
+      "widgetType": "error-events",
+      "interval": "1h",
+      "queries": [
+        {
+          "name": "",
+          "fields": [
+            "count()",
+            "api_module"
+          ],
+          "aggregates": [
+            "count()"
+          ],
+          "columns": [
+            "api_module"
+          ],
+          "fieldAliases": [],
+          "conditions": "environment:production !monitoring_check:true kind:api_request_failed",
+          "orderby": "-count()"
+        }
+      ],
+      "layout": {
+        "x": 0,
+        "y": 6,
+        "w": 3,
+        "h": 2,
+        "minH": 2
+      }
+    },
+    {
+      "title": "Ошибки загрузки ресурсов",
+      "displayType": "table",
+      "widgetType": "error-events",
+      "interval": "1h",
+      "queries": [
+        {
+          "name": "",
+          "fields": [
+            "count()",
+            "kind"
+          ],
+          "aggregates": [
+            "count()"
+          ],
+          "columns": [
+            "kind"
+          ],
+          "fieldAliases": [],
+          "conditions": "environment:production !monitoring_check:true kind:[chunk_load_error,resource_load_error,resource_invalid_url]",
+          "orderby": "-count()"
+        }
+      ],
+      "layout": {
+        "x": 3,
+        "y": 6,
+        "w": 3,
+        "h": 2,
+        "minH": 2
+      }
+    },
+    {
+      "title": "Запросы и переходы (выборка 10%)",
+      "displayType": "line",
+      "widgetType": "spans",
+      "interval": "1h",
+      "queries": [
+        {
+          "name": "",
+          "fields": [
+            "count()"
+          ],
+          "aggregates": [
+            "count()"
+          ],
+          "columns": [],
+          "fieldAliases": [],
+          "conditions": "environment:production !monitoring_check:true is_transaction:true",
+          "orderby": "count()"
+        }
+      ],
+      "layout": {
+        "x": 0,
+        "y": 8,
+        "w": 3,
+        "h": 2,
+        "minH": 2
+      }
+    },
+    {
+      "title": "Время ответа p95, мс",
+      "displayType": "line",
+      "widgetType": "spans",
+      "interval": "1h",
+      "queries": [
+        {
+          "name": "",
+          "fields": [
+            "p95(span.duration)"
+          ],
+          "aggregates": [
+            "p95(span.duration)"
+          ],
+          "columns": [],
+          "fieldAliases": [],
+          "conditions": "environment:production !monitoring_check:true is_transaction:true",
+          "orderby": "p95(span.duration)"
+        }
+      ],
+      "layout": {
+        "x": 3,
+        "y": 8,
+        "w": 3,
+        "h": 2,
+        "minH": 2
+      }
+    },
+    {
+      "title": "Медленные страницы и запросы",
+      "displayType": "table",
+      "widgetType": "spans",
+      "interval": "1h",
+      "queries": [
+        {
+          "name": "",
+          "fields": [
+            "p95(span.duration)",
+            "span.name"
+          ],
+          "aggregates": [
+            "p95(span.duration)"
+          ],
+          "columns": [
+            "span.name"
+          ],
+          "fieldAliases": [],
+          "conditions": "environment:production !monitoring_check:true is_transaction:true",
+          "orderby": "-p95(span.duration)"
+        }
+      ],
+      "layout": {
+        "x": 0,
+        "y": 10,
+        "w": 3,
+        "h": 2,
+        "minH": 2
+      }
+    },
+    {
+      "title": "Медленные обращения к API",
+      "displayType": "table",
+      "widgetType": "spans",
+      "interval": "1h",
+      "queries": [
+        {
+          "name": "",
+          "fields": [
+            "p95(span.duration)",
+            "span.name"
+          ],
+          "aggregates": [
+            "p95(span.duration)"
+          ],
+          "columns": [
+            "span.name"
+          ],
+          "fieldAliases": [],
+          "conditions": "environment:production !monitoring_check:true span.op:http.client",
+          "orderby": "-p95(span.duration)"
+        }
+      ],
+      "layout": {
+        "x": 3,
+        "y": 10,
+        "w": 3,
+        "h": 2,
+        "minH": 2
+      }
+    }
+  ]
+}
