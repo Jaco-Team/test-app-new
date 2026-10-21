@@ -31,7 +31,8 @@ export const Default = Template.bind({});
 Default.args = {
   isOpen: true,
   onClose: () => console.log('Close modal'),
-  productImage: '/images/sushi-product.jpg',
+  productImage:
+    'https://mainimg.jacofood.ru/Filadelfiia_opalionnaia_732x732.webp',
   productName: 'Филадельфия опалённая',
   rollsCount: 4,
   piecesCount: 32,
@@ -45,7 +46,7 @@ Default.args = {
       name: 'Цезарь с курицей запечённый унаги',
       description:
         'Куринное филе, запечённое со специями, салат айсберг, творожный сыр, румяная сырная шапочка с унаги и кунжутом',
-      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
+      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_732x732.jpg',
       calories: 191,
       ingredients:
         'куриное филе, салат айсберг, творожный сыр, соус с сыром, соус унаги, кунжут',
@@ -60,7 +61,7 @@ Default.args = {
       name: 'Филадельфия Лайт',
       description:
         'Нежное сочетание тающего во рту слабосолёного лосося и творожного сыра с приятным сливочным послевкусием',
-      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
+      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_732x732.jpg',
       calories: 175,
       ingredients: 'слабосолёный лосось, творожный сыр',
       nutrition: {
@@ -74,7 +75,7 @@ Default.args = {
       name: 'Аквиланг запечённый унаги',
       description:
         'Отборная креветка, нежный творожный сыр, румяная сырная шапочка с сладким унаги и ароматным кунжутом',
-      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
+      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_732x732.jpg',
       calories: 220,
       ingredients:
         'отборная креветка, творожный сыр, соус с сыром, соус унаги, кунжут',
@@ -89,7 +90,7 @@ Default.args = {
       name: 'Калифорния с лососем Люкс',
       description:
         'Классический ролл с лососем, авокадо и огурцом в икре тобико',
-      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_292x292.jpg',
+      image: 'https://mainimg.jacofood.ru/Filadelfiia_Lait_732x732.jpg',
       calories: 185,
       ingredients: 'лосось, авокадо, огурец, икра тобико, рис, нори',
       nutrition: {

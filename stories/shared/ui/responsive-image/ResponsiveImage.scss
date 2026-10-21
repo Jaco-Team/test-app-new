@@ -1,0 +1,62 @@
+.ResponsiveImage {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: var(--responsive-image-ratio);
+  overflow: hidden;
+  background: #f1f1f1;
+
+  picture,
+  img,
+  &-skeleton {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+  }
+
+  img {
+    display: block;
+    object-fit: cover;
+    opacity: 1;
+    transition: opacity 180ms ease;
+  }
+
+  &[data-image-state='loading'] img {
+    opacity: 0;
+  }
+
+  &-skeleton {
+    background: linear-gradient(100deg, #ececec 25%, #f7f7f7 45%, #ececec 65%);
+    background-size: 200% 100%;
+    animation: responsive-image-loading 1.25s ease-in-out infinite;
+  }
+
+  &[data-image-state='error'] img,
+  &[data-image-state='missing'] img {
+    object-fit: contain;
+    padding: 12%;
+  }
+}
+
+@keyframes responsive-image-loading {
+  from {
+    background-position: 100% 0;
+  }
+
+  to {
+    background-position: -100% 0;
+  }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .ResponsiveImage {
+    img {
+      transition: none;
+    }
+
+    &-skeleton {
+      animation: none;
+    }
+  }
+}

@@ -8,11 +8,11 @@ export default {
   component: ItemHome,
   tags: ['autodocs'],
   argTypes: {
-    title: {
+    name: {
       type: 'string',
       description: 'Название товара',
     },
-    img: {
+    img_app: {
       type: 'string',
       description: 'Название картинки',
     },
@@ -20,7 +20,7 @@ export default {
       type: 'string',
       description: 'Объемы',
     },
-    description: {
+    marc_desc: {
       type: 'string',
       description: 'Описание или состав товара',
     },
@@ -53,10 +53,11 @@ export const LongText = Template.bind({});
 export const Badge = Template.bind({});
 
 Default.args = {
-  title: 'Водопад сет',
-  img: 'Vodopad_set',
-  weight: '5 роллов | 40 шт. | 1 311 г',
-  description:
+  name: 'Водопад сет',
+  img_app: 'Vodopad_set',
+  count_part: '40',
+  weight: '1 311',
+  marc_desc:
     'Сёрфинг запечённый, Цезарь с курицей, Цезарь с курицей запечённый, Каравелла, Ролл Жако',
   price: '1129',
   count: '0',
@@ -64,59 +65,31 @@ Default.args = {
   is_hit: '0',
 };
 Active.args = {
-  title: 'Водопад сет',
-  img: 'Vodopad_set',
-  weight: '5 роллов | 40 шт. | 1 311 г',
-  description:
-    'Сёрфинг запечённый, Цезарь с курицей, Цезарь с курицей запечённый, Каравелла, Ролл Жако',
-  price: '1129',
+  ...Default.args,
   count: '1',
-  is_new: '0',
-  is_hit: '0',
 };
 PlaceholderImgActive.args = {
-  title: 'Водопад сет',
-  img: '',
-  weight: '5 роллов | 40 шт. | 1 311 г',
-  description:
-    'Сёрфинг запечённый, Цезарь с курицей, Цезарь с курицей запечённый, Каравелла, Ролл Жако',
-  price: '1129',
+  ...Default.args,
+  img_app: '',
   count: '1',
-  is_new: '0',
-  is_hit: '0',
 };
 PlaceholderImg.args = {
-  title: 'Водопад сет',
-  img: '',
-  weight: '5 роллов | 40 шт. | 1 311 г',
-  description:
-    'Сёрфинг запечённый, Цезарь с курицей, Цезарь с курицей запечённый, Каравелла, Ролл Жако',
-  price: '1129',
-  count: '0',
-  is_new: '0',
-  is_hit: '0',
+  ...Default.args,
+  img_app: '',
 };
 LongText.args = {
-  title: 'Цезарь с курицей запечённый унаги',
-  img: 'Cezar_s_kuricei_zapechionnyi_unagi',
-  weight: '8 шт. | 287 г',
-  description:
+  ...Default.args,
+  name: 'Цезарь с курицей запечённый унаги',
+  img_app: 'Cezar_s_kuricei_zapechionnyi_unagi',
+  count_part: '8',
+  weight: '287',
+  marc_desc:
     'Куриное филе, запечённое со специями, салат айсберг, творожный сыр, румяная сырная шапочка с унаги и кунжутом и еще текст и еще какой-то текст',
   price: '229',
-  count: '0',
-  is_new: '0',
-  is_hit: '0',
 };
 Badge.args = {
-  title: 'Водопад сет',
-  img: 'Vodopad_set',
-  weight: '5 роллов | 40 шт. | 1 311 г',
-  description:
-    'Сёрфинг запечённый, Цезарь с курицей, Цезарь с курицей запечённый, Каравелла, Ролл Жако',
-  price: '1129',
-  count: '0',
+  ...Default.args,
   is_new: '1',
-  is_hit: '0',
 };
 
 export const Mobile = Template.bind({});

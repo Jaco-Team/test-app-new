@@ -1,31 +1,10 @@
 import React, { useRef } from 'react';
 
-import { getItemImageUrl, hasItemImage } from '@/utils/itemImage';
+import { getItemImageSrcSet, getItemImageUrl } from '@/utils/itemImage';
 import { isRecommendationsEnabled } from '@/utils/recommendations';
 
-const RECOMMENDATION_IMAGE_SIZES = [
-  ['292x292', 138],
-  ['366x366', 146],
-  ['466x466', 183],
-  ['585x585', 233],
-  ['732x732', 292],
-  ['1168x1168', 366],
-  ['1420x1420', 584],
-  ['2000x2000', 760],
-  ['2000x2000', 1875],
-];
-
-const RECOMMENDATION_IMAGE_SOURCE_SIZES =
-  '(max-width=1439px) 233px, (max-width=1279px) 218px, 292px';
-
 function getRecommendationImageSrcSet(imageName, format) {
-  if (!hasItemImage(imageName)) {
-    return undefined;
-  }
-
-  return RECOMMENDATION_IMAGE_SIZES.map(
-    ([size, width]) => `${getItemImageUrl(imageName, size, format)} ${width}w`
-  ).join(', ');
+  return getItemImageSrcSet(imageName, format, 'thumbnail');
 }
 
 function getRecommendationMetaItems(item) {
@@ -303,7 +282,7 @@ export default function RecommendationMobileList({
                       recommendationImage,
                       'webp'
                     )}
-                    sizes={RECOMMENDATION_IMAGE_SOURCE_SIZES}
+                    sizes="31.6239vw"
                   />
                   <source
                     type="image/jpeg"
@@ -311,11 +290,11 @@ export default function RecommendationMobileList({
                       recommendationImage,
                       'jpg'
                     )}
-                    sizes={RECOMMENDATION_IMAGE_SOURCE_SIZES}
+                    sizes="31.6239vw"
                   />
                   <img
                     alt={recommendationName || 'Рекомендованное блюдо'}
-                    src={getItemImageUrl(recommendationImage, '292x292', 'jpg')}
+                    src={getItemImageUrl(recommendationImage, '366x366', 'jpg')}
                     loading="lazy"
                     draggable={false}
                   />

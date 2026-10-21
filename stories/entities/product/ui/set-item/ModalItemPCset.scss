@@ -15,13 +15,13 @@
     color: rgba(0, 0, 0, 0.6) !important;
   }
 
-  & picture {
+  & > .ResponsiveImage {
     width: calcSize(240);
-    & img {
+    height: calcSize(240);
+
+    img {
       object-fit: contain;
       image-rendering: auto;
-      width: 100%;
-      height: auto;
     }
   }
 

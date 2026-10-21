@@ -14,8 +14,9 @@ import {
 import BadgeItem from './badge';
 import CartCtaButton from '@/ui/CartCtaButton';
 import { reachGoalSplit } from '@/utils/metrika';
+import { getItemImageSrcSet } from '@/utils/itemImage';
 
-export default memo(function CardItem({ item, count }) {
+export default memo(function CardItem({ item, count, isPriority = false }) {
   const [getItem] = useHomeStore((state) => [state.getItem]);
   const [thisCity, thisCityRu] = useCitiesStore((state) => [
     state.thisCity,
@@ -128,37 +129,22 @@ export default memo(function CardItem({ item, count }) {
             <picture>
               <source
                 type="image/webp"
-                srcSet={`
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_366x366.webp 138w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_466x466.webp 146w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_585x585.webp 183w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_585x585.webp 233w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_585x585.webp 292w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_732x732.webp 366w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1168x1168.webp 584w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1168x1168.webp 760w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1420x1420.webp 1875w`}
-                sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px"
+                srcSet={getItemImageSrcSet(item.img_app, 'webp', 'card')}
+                sizes="(max-width: 990px) 30vw, 21.66065vw"
               />
               <source
                 type="image/jpeg"
-                srcSet={`
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_366x366.jpg 138w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_466x466.jpg 146w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_585x585.jpg 183w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_585x585.jpg 233w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_585x585.jpg 292w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_732x732.jpg 366w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1168x1168.jpg 584w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1168x1168.jpg 760w,
-                  ${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_1420x1420.jpg 1875w`}
-                sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px"
+                srcSet={getItemImageSrcSet(item.img_app, 'jpg', 'card')}
+                sizes="(max-width: 990px) 30vw, 21.66065vw"
               />
               <img
                 alt={item?.name}
-                src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_292x292.jpg`}
-                //src={`https://cdnimg.jacofood.ru/${item.img_app}_292x292.jpg`}
-                loading="lazy"
+                src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_585x585.jpg`}
+                width={2000}
+                height={2000}
+                loading={isPriority ? 'eager' : 'lazy'}
+                fetchPriority={isPriority ? 'high' : 'auto'}
+                decoding="async"
                 onClick={() => getItem('home', thisCity, item.id)}
                 style={{ cursor: 'pointer' }}
               />
