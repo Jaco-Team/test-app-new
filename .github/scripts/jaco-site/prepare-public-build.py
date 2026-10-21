@@ -75,8 +75,9 @@ def validate_public_config(data: object) -> dict[str, str]:
     if dsn:
         try:
             url = urlsplit(dsn)
-            valid = url.scheme == "https" and (url.hostname or "").endswith((".ingest.sentry.io", ".ingest.us.sentry.io", ".ingest.de.sentry.io")) \
-                and re.fullmatch(r"/[0-9]+", url.path) is not None and not url.query and not url.fragment and url.password is None
+            valid = url.scheme == "https" and url.hostname == "sentry.jacochef.ru" and url.port is None \
+                and re.fullmatch(r"[a-f0-9]{32}", url.username or "") is not None \
+                and url.path == "/4" and not url.query and not url.fragment and url.password is None
         except ValueError:
             valid = False
         if not valid:

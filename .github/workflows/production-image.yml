@@ -123,6 +123,8 @@ jobs:
             org.opencontainers.image.revision=${{ github.sha }}
             io.jaco.site.public-config-sha256=${{ env.VALIDATED_PUBLIC_CONFIG_SHA256 }}
           build-args: |
+            SENTRY_RELEASE=jacofood-web@${{ github.sha }}
+            SENTRY_UPLOAD_SOURCEMAPS=true
             NEXT_PUBLIC_SITE_API_BASE_URL=${{ env.NEXT_PUBLIC_SITE_API_BASE_URL }}
             NEXT_PUBLIC_CAFE_REVIEW_API_URL=${{ env.NEXT_PUBLIC_CAFE_REVIEW_API_URL }}
             NEXT_PUBLIC_RECOMMENDATIONS_ENABLED=${{ env.NEXT_PUBLIC_RECOMMENDATIONS_ENABLED }}
@@ -137,7 +139,7 @@ jobs:
             NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST=${{ env.NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST }}
             NEXT_PUBLIC_SMARTCAPTCHA_SITE_KEY=${{ env.NEXT_PUBLIC_SMARTCAPTCHA_SITE_KEY }}
           secrets: |
-            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_AUTH_TOKEN }}
+            SENTRY_AUTH_TOKEN=${{ secrets.SENTRY_SITE_AUTH_TOKEN }}
           provenance: mode=min
           sbom: true
           cache-from: type=gha,scope=site-frontend-production
