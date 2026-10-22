@@ -26,7 +26,7 @@ vi.mock('zustand/middleware', async (importOriginal) => ({
 }));
 
 import { api } from '../../components/api.js';
-import { useCartStore, useHeaderStoreNew } from '../../components/store.js';
+import { useCartStore, useHeaderStoreNew, useProfileStore } from '../../components/store.js';
 import {
   clearPendingSbpOrder,
   savePendingSbpOrder,
@@ -277,5 +277,99 @@ describe('оплата СБП с переходом на страницу ЮKass
     useCartStore.getState().restorePendingSbpOrder('samara');
     useCartStore.getState().setConfirmForm(false);
     expect(useCartStore.getState().pendingSbpOrder?.orderId).toBe(123);
+  });
+});
+
+describe('восстановление встроенной карточной формы', () => {
+  it('повторяет render с тем же токеном, не создавая ещё один заказ', async () => {
+    window.localStorage.setItem('setCart', JSON.stringify({ updatedAt: Date.now() }));
+    useCartStore.setState({
+      typeOrder: 'pic', orderPic: { id: 5 },
+      typePay: { id: 'online', name: 'Картой на сайте' }, items: [{ item_id: 1, count: 1 }],
+    });
+    api.mockResolvedValueOnce({ st: true, order_id: 123, check: pending.check, pay: { pay: { confirmation: { confirmation_token: 'same-card-token' } } } });
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    widgets[0].render.mockRejectedValueOnce(new Error('render failed'));
+    await vi.advanceTimersByTimeAsync(301);
+    expect(useCartStore.getState().cardPaymentState).toBe('error');
+    await useCartStore.getState().retryCardPayment();
+    await vi.advanceTimersByTimeAsync(301);
+    expect(widgets).toHaveLength(2);
+    expect(widgets[1].options.confirmation_token).toBe('same-card-token');
+    expect(widgets[0].destroy).toHaveBeenCalled();
+    expect(useCartStore.getState().cardPaymentState).toBe('ready');
+    expect(api).toHaveBeenCalledTimes(1);
+  });
+  it('зависший render завершается состоянием ошибки и допускает ручной повтор', async () => {
+    await useCartStore.getState().showCardPayment('same-card-token', {});
+    widgets[0].render.mockReturnValueOnce(new Promise(() => {}));
+    await vi.advanceTimersByTimeAsync(12301);
+    expect(useCartStore.getState().cardPaymentState).toBe('error');
+    expect(useCartStore.getState().retryCardPayment).toBeTypeOf('function');
+    expect(api).not.toHaveBeenCalled();
+  });
+  it('закрытие формы отменяет отложенный render и удаляет возможность повтора', async () => {
+    await useCartStore.getState().showCardPayment('same-card-token', {});
+    useCartStore.getState().setConfirmForm(false);
+    await vi.advanceTimersByTimeAsync(1000);
+    expect(widgets[0].render).not.toHaveBeenCalled();
+    expect(useCartStore.getState()).toMatchObject({ cardPaymentState: 'idle', retryCardPayment: null, global_checkout: null });
+  });
+});
+
+describe('отмена старой платёжной формы', () => {
+  it('success до завершения render остаётся окончательным состоянием', async () => {
+    const original = useProfileStore.getState().saveUserActions;
+    useProfileStore.setState({ saveUserActions: vi.fn() });
+    try {
+      await useCartStore.getState().showCardPayment('same-card-token', {});
+      widgets[0].render.mockReturnValueOnce(new Promise(() => {}));
+      await vi.advanceTimersByTimeAsync(301);
+      const success = widgets[0].on.mock.calls.find(([event]) => event === 'success')[1];
+      success();
+      await vi.advanceTimersByTimeAsync(15000);
+      expect(useCartStore.getState()).toMatchObject({ cardPaymentState: 'complete', retryCardPayment: null, cardRenderTimer: null });
+    } finally {
+      useProfileStore.setState({ saveUserActions: original });
+    }
+  });
+  it.each(['clearCheckoutData', 'applyCityCatalog'])('%s отменяет незавершённую загрузку скрипта', async (action) => {
+    delete window.YooMoneyCheckoutWidget;
+    const script = new EventTarget();
+    script.remove = vi.fn();
+    document.querySelector = () => script;
+    const close = vi.fn();
+    const opening = useCartStore.getState().showCardPayment('old-token', {}, close);
+    if (action === 'clearCheckoutData') useCartStore.getState().clearCheckoutData();
+    else useCartStore.getState().applyCityCatalog({ all_items: [], free_items: [], need_dop: {} });
+    window.YooMoneyCheckoutWidget = FakeWidget;
+    script.dispatchEvent(new Event('load'));
+    await opening;
+    expect(widgets).toHaveLength(0);
+    expect(useCartStore.getState()).toMatchObject({ cardPaymentState: 'idle', retryCardPayment: null });
+    expect(close).not.toHaveBeenCalled();
+  });
+  it('сброс оформления отменяет поздний success старого виджета', async () => {
+    const close = vi.fn();
+    await useCartStore.getState().showCardPayment('old-token', {}, close);
+    const success = widgets[0].on.mock.calls.find(([event]) => event === 'success')[1];
+    useCartStore.getState().clearCheckoutData();
+    useCartStore.setState({ items: [{ item_id: 999, count: 1 }] });
+    success();
+    expect(close).not.toHaveBeenCalled();
+    expect(useCartStore.getState().items).toEqual([{ item_id: 999, count: 1 }]);
+  });
+  it('поздний ответ создания заказа после сброса не открывает виджет', async () => {
+    window.localStorage.setItem('setCart', JSON.stringify({ updatedAt: Date.now() }));
+    useCartStore.setState({ typeOrder: 'pic', orderPic: { id: 5 }, typePay: { id: 'online' }, items: [{ item_id: 1, count: 1 }] });
+    let resolve;
+    api.mockReturnValueOnce(new Promise((r) => { resolve = r; }));
+    const creating = useCartStore.getState().createOrder('user-token', 'samara');
+    useCartStore.getState().clearCheckoutData();
+    resolve({ st: true, order_id: 123, check: pending.check, pay: { pay: { confirmation: { confirmation_token: 'old-token' } } } });
+    expect(await creating).toBe('nothing');
+    expect(widgets).toHaveLength(0);
+    expect(useCartStore.getState().typePay).toBe(null);
+    expect(api).toHaveBeenCalledTimes(1);
   });
 });

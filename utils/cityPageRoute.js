@@ -37,13 +37,8 @@ export function normalizeCityPageSlug(value) {
     .toLowerCase();
 
   if (
-    !slug ||
-    slug === 'null' ||
-    slug === 'undefined' ||
-    slug === 'nan' ||
-    slug.includes('/') ||
-    slug.includes('\\') ||
-    slug.length > 120
+    ['null', 'undefined', 'nan'].includes(slug) ||
+    !/^[a-z0-9][a-z0-9_-]{0,190}$/.test(slug)
   ) {
     return '';
   }

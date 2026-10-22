@@ -3,6 +3,7 @@ import qs from 'query-string';
 import axios from 'axios';
 import CryptoJS from 'crypto-js';
 import * as Sentry from '@sentry/nextjs';
+import { apiErrorContext } from '@/utils/apiErrorContext';
 
 import {
   emitInternetIssue,
@@ -346,6 +347,11 @@ function shouldRetryRequest(data = {}) {
     return false;
   }
 
+  // Потерянный ответ не доказывает, что заказ/СМС не были созданы.
+  if (NON_IDEMPOTENT_TYPES.has(requestType) && !SAFE_MUTATION_RETRY_TYPES.has(requestType)) {
+    return false;
+  }
+
   if (data?.__forceRetry === true) {
     return true;
   }
@@ -428,33 +434,19 @@ function captureApiError({ module, requestUrl, requestMeta, error, source }) {
     return;
   }
 
+  const context = apiErrorContext({ module, source, requestMeta, error });
+  if (context.skip) return;
   Sentry.withScope((scope) => {
-    const status = error?.response?.status ?? null;
-    const code = error?.code ?? null;
-
-    scope.setTag('kind', 'api_request_failed');
-    scope.setTag('api_module', module || 'root');
-    scope.setTag('api_source', source);
-
-    if (status) {
-      scope.setTag('http_status', String(status));
-    }
-
-    if (code) {
-      scope.setTag('error_code', String(code));
-    }
+    for (const [key, value] of Object.entries(context.tags)) scope.setTag(key, value);
+    scope.setLevel(context.level);
 
     scope.setContext('network', getClientNetworkContext());
     scope.setExtra('requestUrl', requestUrl);
     scope.setExtra('requestMeta', requestMeta);
     scope.setExtra('attemptMeta', error?.jacoAttemptMeta || null);
     scope.setExtra('responseDataType', typeof error?.response?.data);
-    scope.setFingerprint([
-      'api-request-failed',
-      source,
-      module || 'root',
-      String(status || code || 'unknown'),
-    ]);
+    if (context.requestId) scope.setExtra('backend_request_id', context.requestId);
+    scope.setFingerprint(context.fingerprint);
 
     Sentry.captureException(error);
   });
@@ -466,6 +458,7 @@ async function postWithRetry({ module, body, data }) {
   const canRetry = shouldRetryRequest(data);
   const attemptsCount = canRetry ? getRetryAttempts(data) : 1;
   let lastError = null;
+  const startedAt = Date.now();
 
   for (let attempt = 1; attempt <= attemptsCount; attempt += 1) {
     try {
@@ -501,6 +494,8 @@ async function postWithRetry({ module, body, data }) {
         requestUrl,
         retryableError,
         canRetry,
+        timeoutMs: requestTimeout,
+        durationMs: Date.now() - startedAt,
       });
 
       if (!canRetry || !retryableError || !hasAttemptsLeft) {

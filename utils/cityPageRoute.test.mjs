@@ -8,6 +8,17 @@ import {
   resolveCityPage,
   rewriteCityRelativeLinks,
 } from './cityPageRoute.js';
+import { catalogRoute } from './catalogRoute.js';
+
+test('applies the catalog route boundary to dynamic city pages', () => {
+  assert.deepEqual(catalogRoute('samara', 'firmennye-rolly'), {
+    city: 'samara',
+    category: 'firmennye-rolly',
+  });
+  assert.equal(catalogRoute('unknown-city', 'jobs'), null);
+  assert.equal(catalogRoute('samara', 'rolly&sa=u'), null);
+  assert.equal(catalogRoute('samara', '../menu'), null);
+});
 
 test('normalizes a route slug and rejects empty or path-like values', () => {
   assert.equal(normalizeCityPageSlug(' Legal '), 'legal');
@@ -15,7 +26,9 @@ test('normalizes a route slug and rejects empty or path-like values', () => {
   assert.equal(normalizeCityPageSlug(''), '');
   assert.equal(normalizeCityPageSlug('null'), '');
   assert.equal(normalizeCityPageSlug('../jobs'), '');
-  assert.equal(normalizeCityPageSlug('a'.repeat(121)), '');
+  assert.equal(normalizeCityPageSlug('a'.repeat(121)), 'a'.repeat(121));
+  assert.equal(normalizeCityPageSlug('a'.repeat(191)), 'a'.repeat(191));
+  assert.equal(normalizeCityPageSlug('a'.repeat(192)), '');
 });
 
 test('loads a text page with one CMS lookup', async () => {

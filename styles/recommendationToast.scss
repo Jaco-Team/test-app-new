@@ -1,0 +1,42 @@
+.RecommendationAddedToast {
+  position: fixed;
+  z-index: 1600;
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  box-sizing: border-box;
+  width: max-content;
+  max-width: calc(100vw - 32px);
+  min-height: 52px;
+  padding: 16px 28px;
+  border-radius: 33px;
+  background: #dbf6c0;
+  color: #333333;
+  font: 400 17px/20px 'Roboto', Arial, sans-serif;
+  pointer-events: none;
+
+  picture {
+    display: flex;
+    flex-shrink: 0;
+  }
+
+  @media (min-width: 668px) and (max-width: 990px) {
+    font-size: 15px;
+    padding: 14px 20px;
+    min-height: 48px;
+  }
+
+  @media (max-width: 667px) {
+    top: 0;
+    left: 0;
+    width: 100%;
+    max-width: none;
+    min-height: 45px;
+    gap: 6px;
+    justify-content: center;
+    padding: 12px;
+    border-radius: 0;
+    font-size: 13px;
+    line-height: 18px;
+  }
+}

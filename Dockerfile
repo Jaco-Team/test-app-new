@@ -13,6 +13,9 @@ FROM base AS builder
 COPY --from=dependencies /app/node_modules ./node_modules
 COPY . .
 
+ARG SENTRY_RELEASE=
+ARG SENTRY_UPLOAD_SOURCEMAPS=false
+
 ARG NEXT_PUBLIC_SITE_API_BASE_URL=https://api2.jacochef.ru/site/public/index.php/
 ARG NEXT_PUBLIC_CAFE_REVIEW_API_URL=https://api2.jacochef.ru/site/public/index.php/cafe_review
 ARG NEXT_PUBLIC_RECOMMENDATIONS_ENABLED=false
@@ -41,7 +44,9 @@ ENV NEXT_PUBLIC_YANDEX_TOKEN_MAP=$NEXT_PUBLIC_YANDEX_TOKEN_MAP
 ENV NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST=$NEXT_PUBLIC_YANDEX_TOKEN_SUGGEST
 ENV NEXT_PUBLIC_SMARTCAPTCHA_SITE_KEY=$NEXT_PUBLIC_SMARTCAPTCHA_SITE_KEY
 
-RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN,env=SENTRY_AUTH_TOKEN npm run build
+RUN --mount=type=secret,id=SENTRY_AUTH_TOKEN,env=SENTRY_AUTH_TOKEN \
+    SENTRY_RELEASE="$SENTRY_RELEASE" SENTRY_UPLOAD_SOURCEMAPS="$SENTRY_UPLOAD_SOURCEMAPS" npm run build \
+    && find .next -type f -name '*.map' -delete
 
 FROM base AS runner
 ENV NODE_ENV=production

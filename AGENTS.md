@@ -52,8 +52,13 @@
 
 ## Language
 
-- Chat with the user in English by default.
+- Reply in the language used in the user's latest prompt unless they explicitly request another language.
 - Write documentation, code comments, UI labels, and Storybook titles in Russian unless the surrounding file clearly uses another language.
+
+## Commit Messages
+
+- Use the format `<type>: <short description>`, where `<type>` is `feat`, `fix`, `refactor`, or `docs`.
+- Keep the description concise and lowercase; avoid title case, filler, and verbose summaries.
 
 ## Local Notes
 

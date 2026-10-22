@@ -28,7 +28,13 @@ import CartCtaButton from '@/ui/CartCtaButton';
 
 import { reachGoalSplit } from '@/utils/metrika';
 
-import { getItemImageUrl, hasItemImage } from '@/utils/itemImage';
+import {
+  DEFAULT_ITEM_IMAGE_SRC,
+  getItemImageSrcSet,
+  getItemImageUrl,
+  hasItemImage,
+} from '@/utils/itemImage';
+import useItemImageState from './useItemImageState';
 
 export default function ModalItemPC() {
   const [
@@ -160,7 +166,12 @@ export default function ModalItemPC() {
 
   const img_name = item_card?.img_app;
   const hasMainImage = hasItemImage(img_name);
-  const mainImageSrc = getItemImageUrl(img_name, '292x292', 'jpg');
+  const mainImageSrc = getItemImageUrl(img_name, '732x732', 'jpg');
+  const imageState = useItemImageState(
+    mainImageSrc,
+    hasMainImage,
+    Boolean(item_card?.id) && openItemCard
+  );
 
   return (
     <Dialog
@@ -188,52 +199,45 @@ export default function ModalItemPC() {
 
           <Grid container>
             {typeModal_dop !== 'start' ? null : (
-              <div className="ImgItem">
+              <div
+                className={`ImgItem${imageState.isLoading ? ' ImgItem_loading' : ''}`}
+                aria-busy={imageState.isLoading}
+              >
                 <picture>
                   <source
                     type="image/webp"
                     srcSet={
-                      hasMainImage
-                        ? `
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_366x366.webp 138w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_466x466.webp 146w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_585x585.webp 183w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_1168x1168.webp 233w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_1420x1420.webp 292w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.webp 366w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.webp 584w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.webp 760w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.webp 1875w`
+                      hasMainImage && !imageState.hasError
+                        ? getItemImageSrcSet(img_name, 'webp', 'hero')
                         : undefined
                     }
-                    sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px"
+                    sizes="(max-width: 990px) 56.3636vw, 44.7655vw"
                   />
                   <source
                     type="image/jpeg"
                     srcSet={
-                      hasMainImage
-                        ? `
-
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_366x366.jpg 138w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_466x466.jpg 146w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_585x585.jpg 183w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_1168x1168.jpg 233w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_1420x1420.jpg 292w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.jpg 366w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.jpg 584w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.jpg 760w,
-                      ${process.env.NEXT_PUBLIC_YANDEX_IMG}${img_name}_2000x2000.jpg 1875w`
+                      hasMainImage && !imageState.hasError
+                        ? getItemImageSrcSet(img_name, 'jpg', 'hero')
                         : undefined
                     }
-                    sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px"
+                    sizes="(max-width: 990px) 56.3636vw, 44.7655vw"
                   />
 
                   <img
                     alt={item_card?.name || 'Изображение блюда'}
-                    src={mainImageSrc}
-                    //src={`https://cdnimg.jacofood.ru/${img_name}_292x292.jpg`}
+                    src={
+                      imageState.hasError
+                        ? DEFAULT_ITEM_IMAGE_SRC
+                        : mainImageSrc
+                    }
 
-                    loading="lazy"
+                    loading="eager"
+                    onLoad={
+                      hasMainImage && !imageState.hasError
+                        ? imageState.onLoad
+                        : undefined
+                    }
+                    onError={hasMainImage ? imageState.onError : undefined}
                   />
                 </picture>
 

@@ -30,6 +30,7 @@ import useYandexMetrika from './useYandexMetrika';
 import { getClientNetworkContext } from '@/utils/clientMonitoring';
 import { reachGoal, reachGoalMain, setUserIdAll } from '@/utils/metrika';
 import { isRecommendationsEnabled } from '@/utils/recommendations';
+import { notifyRecommendationAdded } from '@/utils/recommendationFeedback';
 import {
   getLocalStorageItem,
   getLocalStorageJson,
@@ -49,6 +50,7 @@ import {
 } from '@/utils/sbpPayment';
 
 import Cookies from 'js-cookie';
+import { ensureYooMoneyCheckoutWidget } from '@/utils/checkoutWidgetLoader';
 
 function captureMapStateIssue(message, extra = {}) {
   Sentry.captureMessage(message, {
@@ -83,94 +85,19 @@ function getPaymentWidgetErrorText(error) {
 }
 
 function getStreetMapCenterFromJson(json) {
-  const xy = json?.this_info?.xy;
-
-  if (Array.isArray(xy) && xy.length >= 2 && xy[0] != null && xy[1] != null) {
-    return [xy[0], xy[1]];
+  const zone = Array.isArray(json?.zones) ? json.zones[0]?.xy_center_map : null;
+  for (const xy of [json?.this_info?.xy, json?.city_center, zone ? [zone.latitude, zone.longitude] : null]) {
+    if (hasDeliveryCoordinates({ xy })) {
+      const coordinates = typeof xy === 'string' ? JSON.parse(xy) : xy;
+      const center = coordinates.slice(0, 2).map(Number);
+      if (Math.abs(center[0]) <= 90 && Math.abs(center[1]) <= 180) return center;
+    }
   }
-
-  const cityCenter = json?.city_center;
-
-  if (
-    Array.isArray(cityCenter) &&
-    cityCenter.length >= 2 &&
-    cityCenter[0] != null &&
-    cityCenter[1] != null
-  ) {
-    return [cityCenter[0], cityCenter[1]];
-  }
-
-  const zoneCenter = json?.zones?.[0]?.xy_center_map;
-
-  if (zoneCenter?.latitude != null && zoneCenter?.longitude != null) {
-    return [zoneCenter.latitude, zoneCenter.longitude];
-  }
-
   return null;
 }
 
 function shouldReportMissingStreetMapCenter(streetId) {
   return Number(streetId) > 0;
-}
-
-function loadScriptOnce(src) {
-  if (typeof document === 'undefined') {
-    return Promise.resolve(false);
-  }
-
-  const existing = document.querySelector(`script[src="${src}"]`);
-  if (existing) {
-    if (existing.dataset.loaded === 'true') {
-      return Promise.resolve(true);
-    }
-
-    return new Promise((resolve) => {
-      existing.addEventListener(
-        'load',
-        () => {
-          existing.dataset.loaded = 'true';
-          resolve(true);
-        },
-        { once: true }
-      );
-      existing.addEventListener('error', () => resolve(false), { once: true });
-    });
-  }
-
-  return new Promise((resolve) => {
-    const script = document.createElement('script');
-    script.src = src;
-    script.async = true;
-    script.onload = () => {
-      script.dataset.loaded = 'true';
-      resolve(true);
-    };
-    script.onerror = () => resolve(false);
-    document.head.appendChild(script);
-  });
-}
-
-async function ensureYooMoneyCheckoutWidget(maxAttempts = 15, delayMs = 150) {
-  if (typeof window === 'undefined') {
-    return null;
-  }
-
-  if (typeof window.YooMoneyCheckoutWidget === 'function') {
-    return window.YooMoneyCheckoutWidget;
-  }
-
-  await loadScriptOnce(
-    'https://yookassa.ru/checkout-widget/v1/checkout-widget.js'
-  );
-
-  for (let attempt = 0; attempt < maxAttempts; attempt += 1) {
-    if (typeof window.YooMoneyCheckoutWidget === 'function') {
-      return window.YooMoneyCheckoutWidget;
-    }
-    await new Promise((resolve) => setTimeout(resolve, delayMs));
-  }
-
-  return null;
 }
 
 function syncSentryUser(user, city = null) {
@@ -1423,8 +1350,10 @@ export const useCartStore = reuseHotStore(
 
       checkNewOrder: null,
 
-      zones: null,
+      zones: [],
       center_map: null,
+      cartMapRevision: 0,
+      cartMapLoadState: 'idle',
 
       //0 - доставка / 1 - самовывоз
       typeOrder: 'dev',
@@ -1464,6 +1393,9 @@ export const useCartStore = reuseHotStore(
 
       // список точек для оформления заказа
       pointList: [],
+      pointListCity: '',
+      pointListLoadState: 'idle',
+      pointListRequestId: 0,
 
       // список адресов досткаи для оформления заказа
       addrList: [],
@@ -1508,6 +1440,10 @@ export const useCartStore = reuseHotStore(
       },
 
       global_checkout: null,
+      cardPaymentState: 'idle',
+      cardPaymentRevision: 0,
+      cardRenderTimer: null,
+      retryCardPayment: null,
 
       show_checkFreeDrive: false,
 
@@ -1519,10 +1455,23 @@ export const useCartStore = reuseHotStore(
       // timestamp последнего обновления корзины
       cartUpdatedAt: 0,
 
+      cancelCardPayment: () => {
+        clearInterval(get().cardRenderTimer);
+        const checkout = get().global_checkout;
+        set({
+          cardPaymentRevision: get().cardPaymentRevision + 1,
+          cardPaymentState: 'idle', cardRenderTimer: null,
+          retryCardPayment: null, global_checkout: null,
+        });
+        try { checkout?.destroy(); } catch {}
+      },
+
       // очистить только данные оформления (чтобы не заказать на старый адрес)
       // товары НЕ трогаем
       clearCheckoutData: (opts = { touch: true }) => {
+        get().cancelCardPayment();
         set({
+          cartMapRevision: get().cartMapRevision + 1,
           orderAddr: null,
           orderPic: 0,
           point_id: null,
@@ -1636,6 +1585,7 @@ export const useCartStore = reuseHotStore(
         const dopListConfirm = get().dopListCart?.filter((it) => it.count);
 
         if (active === false) {
+          get().cancelCardPayment();
           const paymentFlowId = getPaymentFlowId({ create: false });
           if (paymentFlowId) {
             trackPaymentClientEvent('payment_form_closed', {
@@ -1671,6 +1621,7 @@ export const useCartStore = reuseHotStore(
       // открытие/закрытие формы оплаты онлайн
       setPayForm: (active) => {
         if (active === false) {
+          get().cancelCardPayment();
           const paymentFlowId = getPaymentFlowId({ create: false });
           if (paymentFlowId) {
             trackPaymentClientEvent('payment_form_closed', {
@@ -1827,6 +1778,8 @@ export const useCartStore = reuseHotStore(
       },
 
       applyCityCatalog: (catalog) => {
+        get().cancelCardPayment();
+        set({ cartMapRevision: get().cartMapRevision + 1 });
         const saved = getLocalStorageJson('setCart');
         const sourceItems = get().items.length ? get().items : saved?.items;
         const reconciled = reconcileCartItems(sourceItems, catalog.all_items);
@@ -2135,32 +2088,40 @@ export const useCartStore = reuseHotStore(
         set({ openDataTimePicker: active });
       },
 
-      // открытие/закрытие меню Корзины в мобильной версии
-      setActiveMenuCart: async (active, nameList) => {
-        if (active) {
-          const data = {
-            type: 'get_point_list',
-          };
-
-          const json = await api('cart', data);
-          set({ pointList: json?.points });
+      loadPointList: async () => {
+        const city = useCitiesStore.getState().thisCity || '';
+        const requestId = get().pointListRequestId + 1;
+        set({
+          pointListRequestId: requestId,
+          pointListLoadState: 'loading',
+          pointList: get().pointListCity === city && Array.isArray(get().pointList) ? get().pointList : [],
+          pointListCity: city,
+        });
+        let json;
+        try { json = await api('cart', { type: 'get_point_list', city_id: city }); }
+        catch { json = null; }
+        if (get().pointListRequestId !== requestId || (useCitiesStore.getState().thisCity || '') !== city) return false;
+        if (json?.st === false || !Array.isArray(json?.points)) {
+          set({ pointListLoadState: 'error' });
+          showCheckoutApiError(json, 'Не удалось загрузить список кафе. Проверьте интернет и попробуйте ещё раз.');
+          return false;
         }
-
-        set({ openMenuCart: active, nameList });
+        set({ pointList: json.points, pointListCity: city, pointListLoadState: 'ready' });
+        return true;
       },
 
-      // модалка Корзины для оформления/оплаты заказа на ПК
+      // Подменю оплаты и времени не требуют повторной загрузки списка кафе.
+      setActiveMenuCart: async (active, nameList) => {
+        set({ openMenuCart: active, nameList });
+        if (active && nameList === 'point') await get().loadPointList();
+        if (!active) set({ pointListRequestId: get().pointListRequestId + 1 });
+      },
+
+      // Ответ запроса обновляет данные, но не открывает уже закрытое окно.
       setActiveModalBasket: async (active) => {
-        if (active) {
-          const data = {
-            type: 'get_point_list',
-          };
-
-          const json = await api('cart', data);
-          set({ pointList: json?.points });
-        }
-
         set({ openModalBasket: active });
+        if (active) await get().loadPointList();
+        else set({ pointListRequestId: get().pointListRequestId + 1 });
       },
 
       // получение дат заказа в оформлении заказа
@@ -2418,6 +2379,94 @@ export const useCartStore = reuseHotStore(
         }
       },
 
+      // Повтор открывает форму уже созданного платежа и не создаёт новый заказ.
+      showCardPayment: async (confirmationToken, paymentEventBase, funcClose) => {
+        get().cancelCardPayment();
+        const revision = get().cardPaymentRevision + 1;
+        const current = () => get().cardPaymentRevision === revision;
+        set({
+          cardPaymentRevision: revision, cardPaymentState: 'loading', global_checkout: null, cardRenderTimer: null,
+          retryCardPayment: () => get().showCardPayment(confirmationToken, paymentEventBase, funcClose),
+        });
+        const track = (name, values) => trackPaymentClientEvent(name, {
+          ...paymentEventBase, payment_action: 'widget', ...values,
+        });
+        const fail = (name, reason, text) => {
+          if (!current() || get().cardPaymentState === 'error' || get().cardPaymentState === 'complete') return;
+          clearInterval(get().cardRenderTimer);
+          set({ cardPaymentState: 'error', cardRenderTimer: null });
+          track(name, { outcome: 'error', reason });
+          useHeaderStoreNew.getState().setActiveModalAlert(true, text, false);
+        };
+        track('widget_script_started', { outcome: 'pending' });
+        const Widget = await ensureYooMoneyCheckoutWidget();
+        if (!current()) return;
+        if (!Widget || !confirmationToken) {
+          fail('widget_script_failed', 'script_error', 'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.');
+          return;
+        }
+        track('widget_script_loaded', { outcome: 'success' });
+        let checkout;
+        try {
+          checkout = new Widget({
+            confirmation_token: confirmationToken,
+            error_callback: (error) => fail('widget_error', 'widget_callback', getPaymentWidgetErrorText(error)),
+          });
+        } catch {
+          fail('widget_error', 'constructor_error', 'Не удалось открыть форму оплаты. Попробуйте снова.');
+          return;
+        }
+        if (get().cardPaymentState === 'error') { checkout.destroy(); return; }
+        set({ global_checkout: checkout });
+        track('widget_constructed', { outcome: 'success' });
+        checkout.on('success', () => {
+          if (!current()) return;
+          clearInterval(get().cardRenderTimer);
+          set({ cardPaymentState: 'complete', retryCardPayment: null, cardRenderTimer: null });
+          track('widget_success', { outcome: 'success' });
+          useProfileStore.getState().saveUserActions('true_pay_online_order', '', get().allPrice);
+          try { checkout.destroy(); } catch {}
+          set({ global_checkout: null });
+          endPaymentFlow();
+          funcClose?.();
+        });
+        checkout.on('fail', (error) => {
+          fail('widget_fail', 'widget_callback', getPaymentWidgetErrorText(error));
+        });
+        let tries = 0;
+        const timer = setInterval(() => {
+          if (!current()) { clearInterval(timer); return; }
+          tries += 1;
+          const targetId = document.getElementById('payment-form-confirm') ? 'payment-form-confirm' : 'payment-form';
+          if (!document.getElementById(targetId)) {
+            if (tries >= 20) {
+              clearInterval(timer);
+              set({ cardRenderTimer: null });
+              fail('widget_render_timeout', 'widget_timeout', 'Не удалось загрузить форму оплаты. Попробуйте снова.');
+            }
+            return;
+          }
+          clearInterval(timer);
+          set({ cardRenderTimer: null });
+          track('widget_render_started', { widget_target: targetId, outcome: 'pending' });
+          const renderDeadline = setTimeout(() => {
+            if (!current()) return;
+            set({ cardRenderTimer: null });
+            fail('widget_render_timeout', 'widget_timeout', 'Не удалось загрузить форму оплаты. Попробуйте снова.');
+          }, 12000);
+          set({ cardRenderTimer: renderDeadline });
+          Promise.resolve().then(() => checkout.render(targetId)).then(() => {
+            if (!current() || get().cardPaymentState === 'error' || get().cardPaymentState === 'complete') return;
+            set({ cardPaymentState: 'ready' });
+            track('widget_rendered', { widget_target: targetId, outcome: 'success' });
+          }).catch(() => fail('widget_render_failed', 'widget_callback', 'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.')).finally(() => {
+            clearTimeout(renderDeadline);
+            if (current()) set({ cardRenderTimer: null });
+          });
+        }, 300);
+        set({ cardRenderTimer: timer });
+      },
+
       // создание заказа
       createOrder: async (token, city_id, funcClose) => {
         if (!token || token?.length == 0) {
@@ -2458,6 +2507,9 @@ export const useCartStore = reuseHotStore(
         } else {
           set({ DBClick: true });
         }
+        get().cancelCardPayment();
+        const checkoutRevision = get().cardPaymentRevision;
+        const checkoutCity = useCitiesStore.getState().thisCity;
 
         let data;
         let paymentFlowId = '';
@@ -2560,6 +2612,15 @@ export const useCartStore = reuseHotStore(
 
         const json = await api('cart', data);
 
+        if (
+          get().cardPaymentRevision !== checkoutRevision ||
+          useCitiesStore.getState().thisCity !== checkoutCity ||
+          String(get().typePay?.id || '').toLowerCase() !== paymentMethod
+        ) {
+          set({ DBClick: false });
+          return 'nothing';
+        }
+
         setTimeout(() => {
           set({ DBClick: false });
         }, 300);
@@ -2589,12 +2650,12 @@ export const useCartStore = reuseHotStore(
             checkNewOrder: json?.check,
           });
 
-          if (get().typePay.id == 'online' || get().typePay.id == 'sbp') {
+          if (paymentMethod === 'online' || paymentMethod === 'sbp') {
             //set({
             //  openPayForm: true
             //})
 
-            if (get().typePay.id == 'sbp') {
+            if (paymentMethod === 'sbp') {
               const paymentUrl = sbpConfirmationUrl(
                 json?.pay?.pay?.confirmation?.confirmation_url
               );
@@ -2621,237 +2682,13 @@ export const useCartStore = reuseHotStore(
               }
             }
 
-            if (get().typePay.id == 'online') {
+            if (paymentMethod === 'online') {
               trackPaymentClientEvent('provider_payment_created', {
                 ...paymentEventBase,
                 outcome: 'success',
-                has_payment_session: Boolean(
-                  json?.pay?.pay?.confirmation?.confirmation_token
-                ),
+                has_payment_session: Boolean(json?.pay?.pay?.confirmation?.confirmation_token),
               });
-              trackPaymentClientEvent('widget_script_started', {
-                ...paymentEventBase,
-                payment_action: 'widget',
-                outcome: 'pending',
-              });
-              const YooMoneyCheckoutWidget =
-                await ensureYooMoneyCheckoutWidget();
-              if (!YooMoneyCheckoutWidget) {
-                trackPaymentClientEvent('widget_script_failed', {
-                  ...paymentEventBase,
-                  payment_action: 'widget',
-                  outcome: 'error',
-                  reason: 'script_error',
-                });
-                useHeaderStoreNew
-                  .getState()
-                  .setActiveModalAlert(
-                    true,
-                    'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.',
-                    false
-                  );
-
-                Sentry.captureMessage(
-                  'YooMoney checkout widget constructor is unavailable',
-                  {
-                    level: 'error',
-                    tags: {
-                      kind: 'payment_widget_error',
-                    },
-                    extra: {
-                      paymentType: get()?.typePay?.id || null,
-                      hasToken: Boolean(
-                        json?.pay?.pay?.confirmation?.confirmation_token
-                      ),
-                    },
-                  }
-                );
-
-                endPaymentFlow();
-                return 'wait_payment';
-              }
-
-              trackPaymentClientEvent('widget_script_loaded', {
-                ...paymentEventBase,
-                payment_action: 'widget',
-                outcome: 'success',
-              });
-
-              let checkout;
-              let widgetErrorShown = false;
-              const showWidgetError = (text) => {
-                if (widgetErrorShown) return;
-                widgetErrorShown = true;
-                useHeaderStoreNew
-                  .getState()
-                  .setActiveModalAlert(true, text, false);
-              };
-              try {
-                checkout = new YooMoneyCheckoutWidget({
-                  confirmation_token:
-                    json.pay.pay.confirmation.confirmation_token,
-
-                  error_callback: function (error) {
-                    trackPaymentClientEvent('widget_error', {
-                      ...paymentEventBase,
-                      payment_action: 'widget',
-                      outcome: 'error',
-                      reason: 'widget_callback',
-                      provider_status: String(
-                        error?.error?.code ||
-                          error?.code ||
-                          error?.status ||
-                          error?.type ||
-                          ''
-                      )
-                        .toLowerCase()
-                        .slice(0, 64),
-                    });
-                    showWidgetError(getPaymentWidgetErrorText(error));
-                  },
-                });
-                trackPaymentClientEvent('widget_constructed', {
-                  ...paymentEventBase,
-                  payment_action: 'widget',
-                  outcome: 'success',
-                });
-              } catch (error) {
-                trackPaymentClientEvent('widget_error', {
-                  ...paymentEventBase,
-                  payment_action: 'widget',
-                  outcome: 'error',
-                  reason: 'constructor_error',
-                });
-                Sentry.captureException(error, {
-                  tags: { kind: 'payment_widget_constructor_error' },
-                });
-                useHeaderStoreNew
-                  .getState()
-                  .setActiveModalAlert(
-                    true,
-                    'Не удалось открыть форму оплаты. Попробуйте снова.',
-                    false
-                  );
-                endPaymentFlow();
-                return 'wait_payment';
-              }
-
-              set({
-                global_checkout: checkout,
-              });
-
-              checkout.on('success', () => {
-                trackPaymentClientEvent('widget_success', {
-                  ...paymentEventBase,
-                  payment_action: 'widget',
-                  outcome: 'success',
-                });
-                useProfileStore
-                  .getState()
-                  .saveUserActions('true_pay_online_order', '', get().allPrice);
-                checkout.destroy();
-                endPaymentFlow();
-                funcClose?.();
-              });
-
-              checkout.on('fail', (error) => {
-                trackPaymentClientEvent('widget_fail', {
-                  ...paymentEventBase,
-                  payment_action: 'widget',
-                  outcome: 'failure',
-                  reason: 'widget_callback',
-                  provider_status: String(
-                    error?.error?.code ||
-                      error?.code ||
-                      error?.status ||
-                      error?.type ||
-                      ''
-                  )
-                    .toLowerCase()
-                    .slice(0, 64),
-                });
-                checkout.destroy();
-                endPaymentFlow();
-                showWidgetError(
-                  'Оплата не прошла. Попробуйте ещё раз или выберите другой способ оплаты.'
-                );
-                return 'nothing';
-              });
-
-              // setTimeout( () => {
-              //   checkout.render('payment-form');
-              // }, 300 )
-
-              const renderCheckout = (checkout) => {
-                const targetId = document.getElementById('payment-form-confirm')
-                  ? 'payment-form-confirm'
-                  : 'payment-form';
-                const el = document.getElementById(targetId);
-                if (!el) return false;
-                trackPaymentClientEvent('widget_render_started', {
-                  ...paymentEventBase,
-                  payment_action: 'widget',
-                  widget_target: targetId,
-                  outcome: 'pending',
-                });
-                try {
-                  Promise.resolve(checkout.render(targetId))
-                    .then(() =>
-                      trackPaymentClientEvent('widget_rendered', {
-                        ...paymentEventBase,
-                        payment_action: 'widget',
-                        widget_target: targetId,
-                        outcome: 'success',
-                      })
-                    )
-                    .catch(() => {
-                      trackPaymentClientEvent('widget_render_failed', {
-                        ...paymentEventBase,
-                        payment_action: 'widget',
-                        widget_target: targetId,
-                        outcome: 'error',
-                        reason: 'widget_callback',
-                      });
-                      showWidgetError(
-                        'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.'
-                      );
-                      endPaymentFlow();
-                    });
-                } catch {
-                  trackPaymentClientEvent('widget_render_failed', {
-                    ...paymentEventBase,
-                    payment_action: 'widget',
-                    widget_target: targetId,
-                    outcome: 'error',
-                    reason: 'widget_callback',
-                  });
-                  showWidgetError(
-                    'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.'
-                  );
-                  endPaymentFlow();
-                }
-                return true;
-              };
-
-              let tries = 0;
-              const timer = setInterval(() => {
-                tries += 1;
-                if (renderCheckout(checkout)) {
-                  clearInterval(timer);
-                } else if (tries >= 20) {
-                  clearInterval(timer);
-                  trackPaymentClientEvent('widget_render_timeout', {
-                    ...paymentEventBase,
-                    payment_action: 'widget',
-                    outcome: 'error',
-                    reason: 'widget_timeout',
-                  });
-                  showWidgetError(
-                    'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.'
-                  );
-                  endPaymentFlow();
-                }
-              }, 300);
+              await get().showCardPayment(json?.pay?.pay?.confirmation?.confirmation_token, paymentEventBase, funcClose);
             }
 
             return 'wait_payment';
@@ -2923,6 +2760,7 @@ export const useCartStore = reuseHotStore(
       },
 
       clearCartData: () => {
+        get().cancelCardPayment();
         removeLocalStorageItem('setCart');
         removeSessionStorageItem('promo_name');
         Cookies.remove('promo_name');
@@ -3532,6 +3370,7 @@ export const useCartStore = reuseHotStore(
         }, 0);
 
         if (countAfter > countBefore) {
+          notifyRecommendationAdded();
           sendRecommendationAction({
             city: context?.city,
             itemId,
@@ -4317,17 +4156,19 @@ export const useCartStore = reuseHotStore(
 
       // получение данных для карты
       getMapCart: async (this_module, city) => {
-        if (!city) return;
-
-        const data = {
-          type: 'get_addr_zone_web',
-          city_id: city,
-        };
-
-        const json = await api(this_module, data);
-
-        if (!Array.isArray(json?.zones) || json.zones.length === 0) {
-          captureMapStateIssue('Cart map response does not contain zones', {
+        if (!city) return false;
+        const initialCity = useCitiesStore.getState().thisCity;
+        if (initialCity && initialCity !== city) return false;
+        const revision = get().cartMapRevision + 1;
+        const current = () => get().cartMapRevision === revision && useCitiesStore.getState().thisCity === initialCity;
+        set({ cartMapRevision: revision, cartMapLoadState: 'loading', center_map: null, zones: [], points: [] });
+        let json;
+        try { json = await api(this_module, { type: 'get_addr_zone_web', city_id: city }); }
+        catch { json = null; }
+        if (!current()) return false;
+        const center = getStreetMapCenterFromJson(json);
+        if (json?.st === false || !Array.isArray(json?.zones) || !json.zones.length || !Array.isArray(json?.points) || !center) {
+          captureMapStateIssue('Cart map response is incomplete', {
             source: 'useCartStore.getMapCart',
             city,
             module: this_module,
@@ -4335,41 +4176,30 @@ export const useCartStore = reuseHotStore(
           });
 
           set({
+            cartMapLoadState: 'error',
             center_map: null,
             zones: [],
             points: [],
           });
 
-          return;
+          return false;
         }
-
-        json?.zones.map((point) => (point.image = 'default#image'));
-        json?.points.map((point) => (point.image = 'default#image'));
-
-        let zoomSize;
-
-        if (window.innerWidth < 601) {
-          zoomSize = 10.6;
-        } else {
-          zoomSize = 11.5;
-        }
-
+        const validObjects = (items) => items.filter((item) => item && typeof item === 'object').map((item) => ({ ...item, image: 'default#image' }));
         set({
+          cartMapLoadState: 'ready',
           center_map: {
-            center: [
-              json?.zones[0].xy_center_map.latitude,
-              json?.zones[0].xy_center_map.longitude,
-            ],
-            zoom: zoomSize,
+            center,
+            zoom: typeof window !== 'undefined' && window.innerWidth < 601 ? 10.6 : 11.5,
             controls: [],
           },
-          zones: json?.zones,
-          points: json?.points,
+          zones: validObjects(json.zones),
+          points: validObjects(json.points),
         });
 
         setTimeout(() => {
-          get().changePointClick(get().orderPic?.name ?? '', { touch: false });
+          if (current()) get().changePointClick(get().orderPic?.name ?? '', { touch: false });
         }, 100);
+        return true;
       },
 
       // изменение состояния точки по клику на Карте
@@ -5050,12 +4880,15 @@ export const useProfileStore = reuseHotStore(
         addressRevision: 0,
         addressSuggestionRevision: 0,
         addressInitRevision: 0,
+        addressLoadState: 'idle',
+        addressLoadCity: '',
         addressVerifiedKey: null,
         addressPending: null,
         addressCandidates: null,
 
         count_promo: 0,
         count_orders: 0,
+        countsPending: null,
 
         street_id: 0,
 
@@ -5249,54 +5082,50 @@ export const useProfileStore = reuseHotStore(
         getMapMobile: async (id, city = '') => {
           get().clearAddr();
           const initRevision = get().addressInitRevision + 1;
-          set({ addressInitRevision: initRevision, active_city: 0 });
+          const requestedCity = city || get().city;
+          set({
+            addressInitRevision: initRevision, active_city: 0,
+            addressLoadState: 'loading', addressLoadCity: requestedCity,
+            zones: [], center_map: null, allStreets: [], cityList: [],
+          });
           const initialDraftRevision = get().addressRevision;
-          let data = {
-            type: 'get_data_for_streets',
-            city_id: city ? city : get().city,
-            street_id: id,
-          };
-
-          let json = await api('profile', data);
-          if (get().addressInitRevision !== initRevision) return;
+          let json;
+          try {
+            json = await api('profile', {
+              type: 'get_data_for_streets', city_id: requestedCity, street_id: id,
+            });
+          } catch { json = null; }
+          if (get().addressInitRevision !== initRevision) return false;
+          if (json?.st === false || !Array.isArray(json?.zones) || !Number(json?.city)) {
+            set({ addressLoadState: 'error' });
+            showCheckoutApiError(json, 'Не удалось загрузить адреса. Проверьте интернет и попробуйте ещё раз.');
+            return false;
+          }
           const untouched = get().addressRevision === initialDraftRevision;
           const mapCenter = getStreetMapCenterFromJson(json);
-
           if (!mapCenter && shouldReportMissingStreetMapCenter(id)) {
-            captureMapStateIssue(
-              'Street map response does not contain map center',
-              {
-                source: 'useProfileStore.getMapMobile',
-                city: city || get().city,
-                streetId: id,
-                hasThisInfoXy: Boolean(json?.this_info?.xy),
-                hasCityCenter: json?.city_center != null,
-              }
-            );
+            captureMapStateIssue('Street map response does not contain map center', {
+              source: 'useProfileStore.getMapMobile', city: requestedCity,
+              streetId: id, hasThisInfoXy: Boolean(json?.this_info?.xy),
+              hasCityCenter: json?.city_center != null,
+            });
           }
-
           set({
-            allStreets: json?.streets,
-            infoAboutAddr: json?.this_info,
-            cityList: json?.cities,
-            active_city: json?.city,
-            chooseAddrStreet: untouched ? (json?.this_info ?? {}) : {},
+            addressLoadState: 'ready',
+            allStreets: Array.isArray(json.streets) ? json.streets : [],
+            infoAboutAddr: json.this_info ?? null,
+            cityList: Array.isArray(json.cities) ? json.cities : [],
+            active_city: Number(json.city),
+            chooseAddrStreet: untouched ? (json.this_info ?? {}) : {},
             choose_street: untouched ? '' : get().choose_street,
-            addressInput: untouched
-              ? getAddressLabel(json?.this_info)
-              : get().addressInput,
-            addressEntrance: untouched
-              ? String(json?.this_info?.pd ?? '')
-              : get().addressEntrance,
-            street_id: untouched ? Number(json?.this_info?.street_id ?? 0) : 0,
+            addressInput: untouched ? getAddressLabel(json.this_info) : get().addressInput,
+            addressEntrance: untouched ? String(json.this_info?.pd ?? '') : get().addressEntrance,
+            street_id: untouched ? Number(json.this_info?.street_id ?? 0) : 0,
             addressVerifiedKey: null,
-            center_map: {
-              center: mapCenter,
-              zoom: 11.5,
-              controls: [],
-            },
-            zones: json?.zones,
+            center_map: mapCenter ? { center: mapCenter, zoom: 11.5, controls: [] } : null,
+            zones: json.zones,
           });
+          return true;
         },
 
         // открытие/закрытие модалки в Профиле в мобильной версии
@@ -5412,23 +5241,26 @@ export const useProfileStore = reuseHotStore(
           }
         },
 
-        getCountPromos_Orders: async (city) => {
-          if (useHeaderStoreNew.getState().token.length == 0) {
-            return;
-          }
-
-          let data = {
-            type: 'get_my_count_orders_promos',
-            city_id: city,
-            user_id: useHeaderStoreNew.getState().token,
-          };
-
-          let json = await api('zakazy', data);
-
-          set({
-            count_promo: parseInt(json?.count_promo),
-            count_orders: parseInt(json?.count_orders),
-          });
+        getCountPromos_Orders: (city) => {
+          const token = useHeaderStoreNew.getState().token;
+          if (!token || (typeof document !== 'undefined' && document.visibilityState === 'hidden')) return Promise.resolve();
+          const pending = get().countsPending;
+          if (pending?.token === token && pending?.city === city) return pending.promise;
+          const promise = (async () => {
+            try {
+              const json = await api('zakazy', { type: 'get_my_count_orders_promos', city_id: city, user_id: token });
+              if (useHeaderStoreNew.getState().token !== token || get().countsPending?.promise !== promise || json?.st === false) return;
+              const promo = Number.parseInt(json?.count_promo, 10);
+              const orders = Number.parseInt(json?.count_orders, 10);
+              if (Number.isFinite(promo) && Number.isFinite(orders)) set({ count_promo: promo, count_orders: orders });
+            } catch {
+              // Сбой фонового счётчика не должен прерывать работу страницы.
+            } finally {
+              if (get().countsPending?.promise === promise) set({ countsPending: null });
+            }
+          })();
+          set({ countsPending: { token, city, promise } });
+          return promise;
         },
 
         setUser: (user) => {
@@ -5540,60 +5372,8 @@ export const useProfileStore = reuseHotStore(
           });
         },
         openModalAddr: async (id, city = '') => {
-          get().clearAddr();
-          const initRevision = get().addressInitRevision + 1;
-          set({ addressInitRevision: initRevision, active_city: 0 });
-          const initialDraftRevision = get().addressRevision;
-          let data = {
-            type: 'get_data_for_streets',
-            city_id: city ? city : get().city,
-            street_id: id,
-          };
-
-          let json = await api('profile', data);
-          if (get().addressInitRevision !== initRevision) return;
-          const untouched = get().addressRevision === initialDraftRevision;
-
-          const mapCenter = getStreetMapCenterFromJson(json);
-
-          if (!mapCenter && shouldReportMissingStreetMapCenter(id)) {
-            captureMapStateIssue(
-              'Street map response does not contain map center',
-              {
-                source: 'useProfileStore.openModalAddr',
-                city: city || get().city,
-                streetId: id,
-                hasThisInfoXy: Boolean(json?.this_info?.xy),
-                hasCityCenter: json?.city_center != null,
-              }
-            );
-          }
-
-          set({
-            // allStreets: [],
-
-            isOpenModalAddr: true,
-            allStreets: json?.streets,
-            infoAboutAddr: json?.this_info,
-            cityList: json?.cities,
-            active_city: json?.city,
-            chooseAddrStreet: untouched ? (json?.this_info ?? {}) : {},
-            choose_street: untouched ? '' : get().choose_street,
-            addressInput: untouched
-              ? getAddressLabel(json?.this_info)
-              : get().addressInput,
-            addressEntrance: untouched
-              ? String(json?.this_info?.pd ?? '')
-              : get().addressEntrance,
-            street_id: untouched ? Number(json?.this_info?.street_id ?? 0) : 0,
-            addressVerifiedKey: null,
-            center_map: {
-              center: mapCenter,
-              zoom: 11.5,
-              controls: [],
-            },
-            zones: json?.zones,
-          });
+          set({ isOpenModalAddr: true, streetId: id });
+          return get().getMapMobile(id, city);
         },
         orderDel: async (this_module, userToken, text) => {
           if (!text || !text.trim()) {
@@ -5817,6 +5597,7 @@ export const useProfileStore = reuseHotStore(
             addressRevision: get().addressRevision + 1,
             addressSuggestionRevision: get().addressSuggestionRevision + 1,
             addressInitRevision: get().addressInitRevision + 1,
+            addressLoadState: 'idle',
             addressVerifiedKey: null,
             addressPending: null,
             addressCandidates: null,
@@ -6008,8 +5789,8 @@ export const useProfileStore = reuseHotStore(
           let json = await api('profile', data);
 
           set({
-            allStreets: json?.streets,
-            zones: json?.zones,
+            allStreets: Array.isArray(json?.streets) ? json.streets : [],
+            zones: Array.isArray(json?.zones) ? json.zones : [],
             //chooseAddrStreet: {}
           });
 

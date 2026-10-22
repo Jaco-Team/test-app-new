@@ -25,7 +25,9 @@ export default function Meta({
   children,
 }) {
   const router = useRouter();
-  const safeTitle = title ?? 'Жако роллы и пицца';
+  const safeTitle = typeof title === 'string' && title.trim()
+    ? title.trim()
+    : 'Жако роллы и пицца';
   const safeDesc = description ?? '';
   const safeRobots = typeof robots === 'string' ? robots.trim() : '';
 
@@ -49,6 +51,25 @@ export default function Meta({
         <meta name="yandex-verification" content="7e7652cb40b75404" />
         <meta name="yandex-verification" content="d4f3544393d9106d" />
 
+        <meta property="og:title" content={safeTitle} key="og:title" />
+        <meta property="og:type" content="website" key="og:type" />
+        <meta property="og:url" content={canonicalUrl} key="og:url" />
+        <meta
+          property="og:image"
+          content={`${SITE_ORIGIN}/jaco-logo.png`}
+          key="og:image"
+        />
+        <meta
+          property="og:image:alt"
+          content="Жако роллы и пицца"
+          key="og:image:alt"
+        />
+        <meta
+          property="og:site_name"
+          content="Жако роллы и пицца"
+          key="og:site_name"
+        />
+
         {hasDesc && !isNoindex ? (
           <link rel="canonical" href={canonicalUrl} />
         ) : null}
@@ -56,10 +77,7 @@ export default function Meta({
         {hasDesc ? (
           <>
             <meta name="description" content={safeDesc} />
-            <meta name="og:title" content={safeTitle} />
-            <meta name="og:description" content={safeDesc} />
-            <meta name="og:site_name" content="Жако роллы и пицца" />
-            <meta name="og:type" content="website" />
+            <meta property="og:description" content={safeDesc} key="og:description" />
           </>
         ) : null}
 

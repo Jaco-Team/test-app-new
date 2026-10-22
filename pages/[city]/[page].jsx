@@ -6,6 +6,7 @@ import CityTextPage from '@/modules/cityTextPage';
 import { articleSchema, deliverySchema } from '@/utils/structuredData';
 import { getCookie } from '@/utils/getCookie';
 import { normalizeCity } from '@/utils/normalizeCity';
+import { catalogRoute } from '@/utils/catalogRoute';
 import {
   getCityTextPagePresentation,
   normalizeCityPageSlug,
@@ -23,7 +24,7 @@ export default function CityPage({ data1, slug }) {
   );
 }
 
-export async function getServerSideProps({ req, res, query }) {
+export async function getServerSideProps({ req, res, params, query }) {
   res.setHeader(
     'Cache-Control',
     'public, s-maxage=60, stale-while-revalidate=60'
@@ -36,18 +37,16 @@ export async function getServerSideProps({ req, res, query }) {
   res.setHeader('Access-Control-Allow-Credentials', 'true');
   res.setHeader('Access-Control-Allow-Methods', 'GET,DELETE,PATCH,POST,PUT');
 
-  const cityFromPath = normalizeCity(query?.city);
+  const route = catalogRoute(
+    params?.city ?? query?.city,
+    params?.page ?? query?.page
+  );
+  const cityFromPath = route?.city ?? '';
   const savedCity = normalizeCity(getCookie(req, 'city'));
   const city = cityFromPath || savedCity || 'togliatti';
-  const slug = normalizeCityPageSlug(query?.page);
+  const slug = normalizeCityPageSlug(route?.category);
 
-  if (!cityFromPath || !slug) {
-    if (!cityFromPath) {
-      return { redirect: { destination: `/${city}`, permanent: false } };
-    }
-
-    return { notFound: true };
-  }
+  if (!cityFromPath || !slug) return { notFound: true };
 
   const resolution = await resolveCityPage({
     city,

@@ -197,6 +197,9 @@ export function promotionSchema(city, banner, noindex = false) {
   const pageUrl = cityUrl(city, `/akcii/${encodeURIComponent(banner.link)}`);
   const description = plainText(banner.text);
   if (!description) return null;
+  // Конкурс проходит во ВКонтакте без очной площадки. Даты баннера не описывают
+  // отдельное мероприятие, поэтому разметка Event здесь неприменима.
+  if (clean(banner.link).toLowerCase() === 'konkurs_otzivov') return null;
   const startDate = isoDate(banner.date_start);
   const endDate = isoDate(banner.date_end);
   const shared = {
@@ -205,16 +208,6 @@ export function promotionSchema(city, banner, noindex = false) {
     url: pageUrl,
     ...(description ? { description } : {}),
   };
-  if (clean(banner.link).toLowerCase() === 'konkurs_otzivov') {
-    if (!startDate || !endDate) return null;
-    return {
-      ...shared,
-      '@type': 'Event',
-      '@id': `${pageUrl}#event`,
-      startDate,
-      endDate,
-    };
-  }
   return {
     ...shared,
     '@type': 'Offer',

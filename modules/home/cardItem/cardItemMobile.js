@@ -15,8 +15,13 @@ import BadgeItem from './badge';
 import CartCtaButton from '@/ui/CartCtaButton';
 
 import { reachGoalSplit } from '@/utils/metrika';
+import { getItemImageSrcSet } from '@/utils/itemImage';
 
-export default React.memo(function CardItemMobile({ item, count }) {
+export default React.memo(function CardItemMobile({
+  item,
+  count,
+  isPriority = false,
+}) {
   const [getItem] = useHomeStore((state) => [state.getItem]);
   const [thisCity, thisCityRu] = useCitiesStore((state) => [
     state.thisCity,
@@ -123,37 +128,33 @@ export default React.memo(function CardItemMobile({ item, count }) {
             <picture>
               <source
                 type="image/webp"
-                srcSet={`
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_366x366.webp 138w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_466x466.webp 146w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_585x585.webp 183w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_585x585.webp 233w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_585x585.webp 292w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_732x732.webp 366w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_732x732.webp 584w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_732x732.webp 760w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_1168x1168.webp 1875w`}
-                sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px"
+                srcSet={getItemImageSrcSet(
+                  item.img_app,
+                  'webp',
+                  'card',
+                  process.env.NEXT_PUBLIC_VK_IMG
+                )}
+                sizes="42.735vw"
               />
               <source
                 type="image/jpeg"
-                srcSet={`
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_366x366.jpg 138w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_466x466.jpg 146w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_585x585.jpg 183w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_585x585.jpg 233w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_585x585.jpg 292w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_585x585.jpg 366w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_732x732.jpg 584w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_732x732.jpg 760w,
-                  ${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_1168x1168.jpg 1875w`}
-                sizes="(max-width=1439px) 233px, (max-width=1279px) 218px, 292px"
+                srcSet={getItemImageSrcSet(
+                  item.img_app,
+                  'jpg',
+                  'card',
+                  process.env.NEXT_PUBLIC_VK_IMG
+                )}
+                sizes="42.735vw"
               />
 
               <img
                 alt={item?.name}
-                src={`${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_292x292.jpg`}
-                loading="lazy"
+                src={`${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_585x585.jpg`}
+                width={2000}
+                height={2000}
+                loading={isPriority ? 'eager' : 'lazy'}
+                fetchPriority={isPriority ? 'high' : 'auto'}
+                decoding="async"
                 onClick={() => getItem('home', thisCity, item.id)}
                 style={{ cursor: 'pointer' }}
               />

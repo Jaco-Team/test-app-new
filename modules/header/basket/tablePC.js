@@ -9,12 +9,8 @@ import {
 
 import RowPC from './rowPC';
 import RecommendationMobileList from '@/modules/recommendations/recommendationMobileList';
-
-const dopText = {
-  rolly: 'Не забудьте про соусы, приправы и приборы',
-  pizza: 'Попробуйте необычное сочетание пиццы и соуса',
-  all: 'Не забудьте про соусы, приправы и приборы',
-};
+import { notifyRecommendationAdded } from '@/utils/recommendationFeedback';
+import { getCartExtraGroups, getExtraCount, getExtraItemId } from '@/utils/cartExtras';
 
 export default function TablePC() {
   const [
@@ -22,7 +18,6 @@ export default function TablePC() {
     itemsCount,
     itemsOffDops,
     dopListCart,
-    cart_is,
     checkPromo,
     cartUpdatedAt,
     getCartRecommendations,
@@ -35,7 +30,6 @@ export default function TablePC() {
     state.itemsCount,
     state.itemsOffDops,
     state.dopListCart,
-    state.cart_is,
     state.checkPromo,
     state.cartUpdatedAt,
     state.getCartRecommendations,
@@ -50,6 +44,31 @@ export default function TablePC() {
     state?.setActiveBasket,
   ]);
   const [getItem] = useHomeStore((state) => [state.getItem]);
+
+  const [allItems, plus, minus] = useCartStore((state) => [
+    state.allItems,
+    state.plus,
+    state.minus,
+  ]);
+  const cartExtraGroups = useMemo(
+    () => getCartExtraGroups(dopListCart, items, allItems, itemsOffDops),
+    [dopListCart, items, allItems, itemsOffDops, itemsCount, cartUpdatedAt]
+  );
+  const getSauceCount = (item) => getExtraCount(items, getExtraItemId(item));
+  const addSauce = (item) => {
+    const id = getExtraItemId(item);
+    const before = getExtraCount(useCartStore.getState().items, id);
+    plus(id);
+    if (getExtraCount(useCartStore.getState().items, id) > before) {
+      notifyRecommendationAdded();
+    }
+  };
+  const removeSauce = (item) => minus(getExtraItemId(item));
+  const openSauce = (item) => {
+    const id = getExtraItemId(item);
+    setActiveBasket?.(false);
+    getItem?.('home', thisCity, id, null, { forgetCurrentItem: true });
+  };
 
   const cartRecommendationKey = useMemo(
     () =>
@@ -76,10 +95,11 @@ export default function TablePC() {
           const recommendationId =
             recommendation?.item_id ?? recommendation?.id;
 
-          return !cartRecommendationIds.has(String(recommendationId));
+          return !cartRecommendationIds.has(String(recommendationId)) &&
+            !cartExtraGroups.ids.has(Number(recommendationId));
         }
       ),
-    [cartRecommendations, cartRecommendationIds]
+    [cartRecommendations, cartRecommendationIds, cartExtraGroups]
   );
 
   useEffect(() => {
@@ -140,7 +160,7 @@ export default function TablePC() {
     (all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price),
     0
   );
-  let price2 = dopListCart.reduce(
+  let price2 = [...cartExtraGroups.utensils, ...cartExtraGroups.sauces].reduce(
     (all, it) => parseInt(all) + parseInt(it.count) * parseInt(it.one_price),
     0
   );
@@ -160,11 +180,42 @@ export default function TablePC() {
         </tbody>
       </table>
 
+      {cartExtraGroups.utensils.length ? (
+        <table className="TableMini TableMiniDops">
+          <tbody>
+            <tr className="dopText CartExtrasHeading">
+              <th colSpan={2}>Не забудьте про приборы</th>
+            </tr>
+            {cartExtraGroups.utensils.map((item) => (
+              <RowPC key={item.item_id} count={item.count} item={item} last="" />
+            ))}
+          </tbody>
+        </table>
+      ) : null}
+
+      {cartExtraGroups.sauces.length ? (
+        <div className="basketRecommendations">
+          <RecommendationMobileList
+            recommendations={cartExtraGroups.sauces}
+            limit={cartExtraGroups.sauces.length}
+            title="Добавим соусы и приправы?"
+            variant="cart"
+            requiresRecommendationsEnabled={false}
+            onOpen={openSauce}
+            onAdd={addSauce}
+            onRemove={removeSauce}
+            getCount={getSauceCount}
+          />
+        </div>
+      ) : null}
+
       {visibleCartRecommendations.length ? (
         <div className="basketRecommendations">
           <RecommendationMobileList
             recommendations={visibleCartRecommendations}
             limit={5}
+            title="Подобрали для вас"
+            variant="cart"
             onOpen={openCartRecommendation}
             onAdd={addCartRecommendation}
           />
@@ -172,20 +223,6 @@ export default function TablePC() {
       ) : null}
 
       <table className="TableMini TableMiniDops">
-        <tbody>
-          {dopListCart.length ? (
-            <>
-              <tr className="dopText">
-                <th>{dopText[cart_is]}</th>
-              </tr>
-
-              {dopListCart.map((item, key) => (
-                <RowPC key={key} count={item.count} item={item} last="" />
-              ))}
-            </>
-          ) : null}
-        </tbody>
-
         <tfoot>
           <tr>
             <td>

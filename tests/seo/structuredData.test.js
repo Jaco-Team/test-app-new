@@ -75,8 +75,11 @@ describe('разметка страниц Жако', () => {
     expect(offer.price).toBeUndefined();
     expect(offer.validThrough).toBe('2026-12-31');
     expect(promotionSchema('samara', banners[0], true)).toBeNull();
+  });
+
+  it.each(['samara', 'togliatti'])('не выдаёт онлайн-конкурс %s за очное мероприятие', (city) => {
     expect(
-      promotionSchema('samara', {
+      promotionSchema(city, {
         link: 'konkurs_otzivov',
         title: 'Конкурс',
         text: '<p>Конкурс отзывов</p>',
@@ -84,8 +87,11 @@ describe('разметка страниц Жако', () => {
         is_active_actii: 1,
         date_start: '2026-01-01',
         date_end: '2026-12-31',
-      })['@type']
-    ).toBe('Event');
+      })
+    ).toBeNull();
+    expect(promotionListSchema(city, [{
+      link: 'konkurs_otzivov', title: 'Конкурс', is_active: 1, is_active_actii: 1,
+    }]).itemListElement[0].url).toBe(`https://jacofood.ru/${city}/akcii/konkurs_otzivov`);
   });
 
   it('использует адреса точек, текст статьи и данные доставки без вымышленных полей', () => {

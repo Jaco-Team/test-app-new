@@ -12,7 +12,7 @@ export const BoxItemHome = ({ cards }: Record<string, any>) => {
       <ProductModal
         isOpen={isOpenModal}
         onClose={() => setIsOpenModal(false)}
-        productImage="https://mainimg.jacofood.ru/Atlantida_set_292x292.jpg"
+        productImage="https://mainimg.jacofood.ru/Atlantida_set_585x585.jpg"
       />
       <div className="containerItemHomePC" onClick={() => setIsOpenModal(true)}>
         {cards.map((item, key) => (

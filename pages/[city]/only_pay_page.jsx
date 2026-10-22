@@ -1,7 +1,6 @@
 import { useState, useEffect } from 'react';
-
-import Script from 'next/script';
-import { usePathname, useSearchParams } from 'next/navigation';
+import { useSearchParams } from 'next/navigation';
+import { ensureYooMoneyCheckoutWidget } from '@/utils/checkoutWidgetLoader';
 import {
   beginPaymentFlow,
   endPaymentFlow,
@@ -12,164 +11,89 @@ import {
 export default function OnlyPayPage() {
   const searchParams = useSearchParams();
   const token = searchParams.get('token');
+  const [attempt, setAttempt] = useState(0);
+  const [state, setState] = useState('loading');
 
-  //console.log( 'token', token )
-
-  function onLoadFunc(token) {
-    //console.log( 'token 11', token, searchParams.get('token') )
-    if (token?.length > 8 && typeof window != 'undefined') {
-      const paymentFlowId =
-        getPaymentFlowId({ create: false }) || beginPaymentFlow();
-      const eventBase = {
-        payment_flow_id: paymentFlowId,
-        payment_action: 'widget',
-        payment_method: 'pay_page',
-      };
-      trackPaymentClientEvent('widget_script_loaded', {
-        ...eventBase,
-        outcome: 'success',
-      });
-
-      //console.log( 'token 55', token )
-
-      if (typeof window.YooMoneyCheckoutWidget !== 'function') {
-        trackPaymentClientEvent('widget_script_failed', {
-          ...eventBase,
-          outcome: 'error',
-          reason: 'script_error',
-        });
-        endPaymentFlow();
+  useEffect(() => {
+    if (!token || token.length <= 8) return undefined;
+    let cancelled = false;
+    let failed = false;
+    let succeeded = false;
+    let checkout;
+    let renderDeadline;
+    const paymentFlowId = getPaymentFlowId({ create: false }) || beginPaymentFlow();
+    const eventBase = {
+      payment_flow_id: paymentFlowId,
+      payment_action: 'widget',
+      payment_method: 'pay_page',
+    };
+    const fail = (event, reason) => {
+      if (cancelled || failed || succeeded) return;
+      failed = true;
+      setState('error');
+      trackPaymentClientEvent(event, { ...eventBase, outcome: 'error', reason });
+      endPaymentFlow();
+    };
+    setState('loading');
+    trackPaymentClientEvent('widget_script_started', { ...eventBase, outcome: 'pending' });
+    (async () => {
+      const Widget = await ensureYooMoneyCheckoutWidget();
+      if (cancelled) return;
+      if (!Widget) {
+        fail('widget_script_failed', 'script_error');
         return;
       }
-
-      let checkout;
+      trackPaymentClientEvent('widget_script_loaded', { ...eventBase, outcome: 'success' });
       try {
-        checkout = new window.YooMoneyCheckoutWidget({
+        checkout = new Widget({
           confirmation_token: token,
-
-          error_callback: function (error) {
-            trackPaymentClientEvent('widget_error', {
-              ...eventBase,
-              outcome: 'error',
-              reason: 'widget_callback',
-              provider_status: String(
-                error?.error?.code ||
-                  error?.code ||
-                  error?.status ||
-                  error?.type ||
-                  ''
-              )
-                .toLowerCase()
-                .slice(0, 64),
-            });
-          },
+          error_callback: () => fail('widget_error', 'widget_callback'),
         });
-        trackPaymentClientEvent('widget_constructed', {
-          ...eventBase,
-          outcome: 'success',
+        if (failed) { checkout.destroy(); return; }
+        trackPaymentClientEvent('widget_constructed', { ...eventBase, outcome: 'success' });
+        checkout.on('success', () => {
+          if (cancelled) return;
+          succeeded = true;
+          clearTimeout(renderDeadline);
+          setState('complete');
+          trackPaymentClientEvent('widget_success', { ...eventBase, outcome: 'success' });
+          try { checkout.destroy(); } catch {}
+          endPaymentFlow();
         });
+        checkout.on('fail', () => fail('widget_fail', 'widget_callback'));
+        trackPaymentClientEvent('widget_render_started', { ...eventBase, widget_target: 'payment-form', outcome: 'pending' });
+        await Promise.race([
+          Promise.resolve(checkout.render('payment-form')),
+          new Promise((_, reject) => {
+            renderDeadline = setTimeout(() => reject(new Error('widget_render_timeout')), 12000);
+          }),
+        ]);
+        if (cancelled || failed || succeeded) return;
+        setState('ready');
+        trackPaymentClientEvent('widget_rendered', { ...eventBase, widget_target: 'payment-form', outcome: 'success' });
       } catch {
-        trackPaymentClientEvent('widget_error', {
-          ...eventBase,
-          outcome: 'error',
-          reason: 'constructor_error',
-        });
-        endPaymentFlow();
-        return;
+        fail('widget_render_failed', 'widget_callback');
+      } finally {
+        clearTimeout(renderDeadline);
       }
+    })();
+    return () => {
+      cancelled = true;
+      clearTimeout(renderDeadline);
+      try { checkout?.destroy(); } catch {}
+    };
+  }, [token, attempt]);
 
-      checkout.on('success', () => {
-        trackPaymentClientEvent('widget_success', {
-          ...eventBase,
-          outcome: 'success',
-        });
-        checkout.destroy();
-        endPaymentFlow();
-        //funcClose();
-
-        console.log('success');
-      });
-
-      checkout.on('fail', (error) => {
-        trackPaymentClientEvent('widget_fail', {
-          ...eventBase,
-          outcome: 'failure',
-          reason: 'widget_callback',
-          provider_status: String(
-            error?.error?.code ||
-              error?.code ||
-              error?.status ||
-              error?.type ||
-              ''
-          )
-            .toLowerCase()
-            .slice(0, 64),
-        });
-        checkout.destroy();
-        endPaymentFlow();
-        //return 'nothing';
-
-        console.log('fail');
-      });
-
-      setTimeout(() => {
-        trackPaymentClientEvent('widget_render_started', {
-          ...eventBase,
-          widget_target: 'payment-form',
-          outcome: 'pending',
-        });
-        try {
-          Promise.resolve(checkout.render('payment-form'))
-            .then(() =>
-              trackPaymentClientEvent('widget_rendered', {
-                ...eventBase,
-                widget_target: 'payment-form',
-                outcome: 'success',
-              })
-            )
-            .catch(() =>
-              trackPaymentClientEvent('widget_render_failed', {
-                ...eventBase,
-                widget_target: 'payment-form',
-                outcome: 'error',
-                reason: 'widget_callback',
-              })
-            );
-        } catch {
-          trackPaymentClientEvent('widget_render_failed', {
-            ...eventBase,
-            widget_target: 'payment-form',
-            outcome: 'error',
-            reason: 'widget_callback',
-          });
-        }
-      }, 300);
-    }
-  }
-
-  if (!token) {
-    return false;
-  }
-
+  if (!token || token.length <= 8) return null;
   return (
     <>
-      <Script
-        src="https://yookassa.ru/checkout-widget/v1/checkout-widget.js"
-        onLoad={() => onLoadFunc(token)}
-        onError={() => {
-          const paymentFlowId =
-            getPaymentFlowId({ create: false }) || beginPaymentFlow();
-          trackPaymentClientEvent('widget_script_failed', {
-            payment_flow_id: paymentFlowId,
-            payment_action: 'widget',
-            payment_method: 'pay_page',
-            outcome: 'error',
-            reason: 'script_error',
-          });
-          endPaymentFlow();
-        }}
-      />
-
+      {state === 'loading' ? <p role="status">Загружаем форму оплаты…</p> : null}
+      {state === 'error' ? (
+        <div role="alert">
+          <p>Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте ещё раз.</p>
+          <button type="button" onClick={() => setAttempt((value) => value + 1)}>Повторить</button>
+        </div>
+      ) : null}
       <div id="payment-form" />
     </>
   );

@@ -622,7 +622,12 @@ export default React.memo(function CatItems({ showCategoryHeadings = false }) {
           ) : null}
 
           {cat.items.map((it, k) => (
-            <CardItemMobile key={k} item={it} count={it.count} />
+            <CardItemMobile
+              key={k}
+              item={it}
+              count={it.count}
+              isPriority={key === 0 && k === 0}
+            />
           ))}
         </Grid>
       );
@@ -650,7 +655,12 @@ export default React.memo(function CatItems({ showCategoryHeadings = false }) {
         ) : null}
 
         {cat.items.map((it, k) => (
-          <CardItemPc key={k} item={it} count={it.count} />
+          <CardItemPc
+            key={k}
+            item={it}
+            count={it.count}
+            isPriority={key === 0 && k === 0}
+          />
         ))}
       </Grid>
     );
