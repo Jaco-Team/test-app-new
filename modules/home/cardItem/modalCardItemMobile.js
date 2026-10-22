@@ -378,7 +378,7 @@ export default function ModalCardItemMobile() {
                 className={`ImgModalCardMobile${imageState.isLoading ? ' ImgModalCardMobile_loading' : ''}`}
                 aria-busy={imageState.isLoading}
               >
-                <picture>
+                <picture className="ImgItem_picture">
                   <source
                     type="image/webp"
                     srcSet={
@@ -404,6 +404,13 @@ export default function ModalCardItemMobile() {
                       imageState.hasError
                         ? DEFAULT_ITEM_IMAGE_SRC
                         : mainImageSrc
+                    }
+                    className={
+                      imageState.isHeroLoaded ||
+                      imageState.hasError ||
+                      !hasMainImage
+                        ? 'ImgItem_image_visible'
+                        : ''
                     }
 
                     //style={{ minHeight: GRID * 1.125, minWidth: GRID * 1.125 }}

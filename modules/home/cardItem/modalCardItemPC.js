@@ -379,7 +379,7 @@ export default function ModalCardItemPC() {
                 className={`ImgItem${imageState.isLoading ? ' ImgItem_loading' : ''}`}
                 aria-busy={imageState.isLoading}
               >
-                <picture>
+                <picture className="ImgItem_picture">
                   <source
                     type="image/webp"
                     srcSet={
@@ -412,6 +412,13 @@ export default function ModalCardItemPC() {
                     loading="eager"
                     fetchPriority="high"
                     decoding="async"
+                    className={
+                      imageState.isHeroLoaded ||
+                      imageState.hasError ||
+                      !hasMainImage
+                        ? 'ImgItem_image_visible'
+                        : ''
+                    }
                     onLoad={
                       hasMainImage && !imageState.hasError
                         ? imageState.onLoad
@@ -905,7 +912,6 @@ export default function ModalCardItemPC() {
               </Grid>
             </ClickAwayListener>
           </Grid>
-
         </Box>
       </DialogContent>
     </Dialog>

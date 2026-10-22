@@ -13,7 +13,7 @@ export default function useItemImageState(src, shouldLoad, itemReady) {
     result.shouldLoad === shouldLoad &&
     result.itemReady === itemReady;
 
-  // Сбрасываем результат до отрисовки новой картинки, включая повторное открытие.
+  // Reset image state when another item opens, even if it uses the same URL.
   if (!isCurrentAttempt) {
     setResult({
       src,
@@ -24,7 +24,8 @@ export default function useItemImageState(src, shouldLoad, itemReady) {
     });
   }
 
-  const status = isCurrentAttempt ? result.status : null;
+  const currentResult = isCurrentAttempt ? result : { status: null };
+
   const settle = (status) =>
     setResult((current) =>
       current.attempt === result.attempt && current.status !== status
@@ -32,10 +33,31 @@ export default function useItemImageState(src, shouldLoad, itemReady) {
         : current
     );
 
+  const onLoad = (event) => {
+    const image = event?.currentTarget;
+    const markLoaded = () => settle('loaded');
+
+    if (typeof image?.decode === 'function') {
+      image
+        .decode()
+        .then(markLoaded)
+        .catch(() => {
+          if (image.complete && image.naturalWidth > 0) markLoaded();
+        });
+      return;
+    }
+
+    markLoaded();
+  };
+
+  const status = currentResult.status;
+  const hasError = shouldLoad && status === 'error';
+
   return {
     isLoading: !itemReady || (shouldLoad && status === null),
-    hasError: shouldLoad && status === 'error',
-    onLoad: () => settle('loaded'),
+    hasError,
+    isHeroLoaded: shouldLoad && status === 'loaded',
+    onLoad,
     onError: () => settle('error'),
   };
 }
