@@ -196,6 +196,10 @@ export default function NotFoundPage() {
           border: 1px solid var(--border);
           border-radius: 999px;
           padding: 10px 16px;
+          box-sizing: border-box;
+          display: inline-flex;
+          align-items: center;
+          justify-content: center;
           font-weight: 600;
           cursor: pointer;
           text-decoration: none;
@@ -218,6 +222,7 @@ export default function NotFoundPage() {
           filter: brightness(1.05);
         }
         :global(.notFoundButtonSecondary) {
+          min-width: 121px;
           background: transparent;
           color: var(--text);
         }

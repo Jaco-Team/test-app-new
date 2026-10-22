@@ -62,10 +62,10 @@ test('returns not found for an unknown slug', async () => {
   assert.deepEqual(result, { type: 'notFound' });
 });
 
-test('does not classify a failed CMS request as an unknown route', async () => {
+test('does not treat a CMS request failure as a missing page', async () => {
   const result = await resolveCityPage({
     city: 'samara',
-    slug: 'jobs',
+    slug: 'sss',
     loadPage: async () => ({ st: false }),
   });
 

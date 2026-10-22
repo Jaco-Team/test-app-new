@@ -203,6 +203,10 @@ export async function getServerSideProps({ req, res, query }) {
     api('home', { type: 'get_items_cat', city_id: city }),
   ]);
 
+  if (data1?.st === false) {
+    throw new Error('Unable to resolve city home page: CMS API unavailable');
+  }
+
   // если бэк не отдал — фоллбек на дефолт, без лупа
   if (!data1 || data1?.page == null) {
     if (city !== 'togliatti') {

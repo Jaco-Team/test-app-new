@@ -62,9 +62,7 @@ export function cityPageIsCatalogCategory(data, slug) {
 export async function resolveCityPage({ city, slug, loadPage }) {
   const data = await loadPage(city, slug);
 
-  if (data?.st === false) {
-    return { type: 'unavailable' };
-  }
+  if (data?.st === false) return { type: 'unavailable' };
 
   if (cityPageIsCatalogCategory(data, slug)) {
     return {
