@@ -275,7 +275,20 @@ export default function OrderReviewController({ order, token }) {
           aria-labelledby="order-review-title"
           disableEscapeKeyDown={phase === 'submitting'}
           fullWidth
-          maxWidth="sm"
+          maxWidth="md"
+          slotProps={{
+            paper: {
+              sx: {
+                width: '100%',
+                maxWidth: 760,
+                borderRadius: 'clamp(12px, 1.4vw, 20px)',
+                overflow: 'hidden',
+              },
+            },
+            backdrop: {
+              sx: { backgroundColor: 'rgba(18, 20, 24, 0.38)' },
+            },
+          }}
           onClose={requestClose}
           open={open}
           scroll="paper"

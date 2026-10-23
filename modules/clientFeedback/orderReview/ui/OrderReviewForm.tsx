@@ -269,12 +269,21 @@ export function OrderReviewForm({
           sx={{
             display: 'flex',
             gap: 1,
-            overflowX: 'auto',
+            overflowX: { xs: 'auto', sm: 'visible' },
+            flexWrap: { xs: 'nowrap', sm: 'wrap' },
+            px: 0.5,
+            scrollbarWidth: 'none',
+            '&::-webkit-scrollbar': { display: 'none' },
             pb: 0.5,
           }}
         >
           {form.targets.map((target) => (
             <Chip
+              sx={{
+                flexShrink: 0,
+                borderRadius: '999px',
+                fontWeight: currentTargetId === target.target_id ? 600 : 400,
+              }}
               aria-current={
                 target.target_id === currentTarget.target_id
                   ? 'page'
