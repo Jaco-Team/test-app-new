@@ -1,4 +1,4 @@
-import { normalizeCity } from './normalizeCity';
+import { normalizeCity } from './normalizeCity.js';
 
 // Города действующего клиентского каталога. Технические пути не являются городами.
 const CATALOG_CITIES = new Set(['samara', 'togliatti']);
