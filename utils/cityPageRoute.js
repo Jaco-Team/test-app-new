@@ -55,6 +55,9 @@ export function cityPageIsCatalogCategory(data, slug) {
 }
 
 export async function resolveCityPage({ city, slug, loadPage }) {
+  // API использует info для данных подвала, а не для CMS-страницы.
+  if (slug === 'info') return { type: 'notFound' };
+
   const data = await loadPage(city, slug);
 
   if (data?.st === false) return { type: 'unavailable' };
@@ -87,5 +90,15 @@ export function getCityTextPagePresentation(slug) {
 export function rewriteCityRelativeLinks(content, city) {
   if (typeof content !== 'string') return '';
 
-  return content.replace(/<a href="\//g, `<a href="/${city}/`);
+  return content.replace(
+    /(<a\b[^>]*?\s+href\s*=\s*)(["'])(\/[^"']*)\2/gi,
+    (link, prefix, quote, href) => {
+      // Внешние ссылки и явный выбор города уже имеют готовый адрес.
+      if (/^\/\//.test(href) || /^\/(samara|togliatti)(?:[/?#]|$)/i.test(href)) {
+        return link;
+      }
+
+      return `${prefix}${quote}/${city}${href}${quote}`;
+    }
+  );
 }
