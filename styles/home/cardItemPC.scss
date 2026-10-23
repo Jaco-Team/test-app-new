@@ -935,12 +935,12 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ImgItem_loading::before {
-    animation: none;
+    animation: none !important;
   }
 
   .ImgItem::before,
   .ImgItem_picture img {
-    transition: none;
+    transition: none !important;
   }
 }
 

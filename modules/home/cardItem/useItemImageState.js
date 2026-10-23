@@ -13,7 +13,7 @@ export default function useItemImageState(src, shouldLoad, itemReady) {
     result.shouldLoad === shouldLoad &&
     result.itemReady === itemReady;
 
-  // Reset image state when another item opens, even if it uses the same URL.
+  // Новое открытие начинает отдельную попытку загрузки, даже при том же URL.
   if (!isCurrentAttempt) {
     setResult({
       src,
@@ -28,7 +28,9 @@ export default function useItemImageState(src, shouldLoad, itemReady) {
 
   const settle = (status) =>
     setResult((current) =>
-      current.attempt === result.attempt && current.status !== status
+      current.attempt === result.attempt &&
+      current.status !== 'error' &&
+      current.status !== status
         ? { ...current, status }
         : current
     );
@@ -42,7 +44,7 @@ export default function useItemImageState(src, shouldLoad, itemReady) {
         .decode()
         .then(markLoaded)
         .catch(() => {
-          if (image.complete && image.naturalWidth > 0) markLoaded();
+          settle(image.complete && image.naturalWidth > 0 ? 'loaded' : 'error');
         });
       return;
     }

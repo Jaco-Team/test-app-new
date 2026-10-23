@@ -36,6 +36,69 @@ afterEach(async () => {
 });
 
 describe('повторная загрузка изображения товара', () => {
+  const pendingDecode = () => {
+    let resolve!: () => void;
+    let reject!: (error: Error) => void;
+    const promise = new Promise<void>((done, fail) => {
+      resolve = done;
+      reject = fail;
+    });
+    const target = { decode: () => promise, complete: true, naturalWidth: 732 };
+    return { target, resolve, reject };
+  };
+
+  it('показывает скелетон до завершения декодирования', async () => {
+    await render();
+    const decode = pendingDecode();
+    await act(async () => image.onLoad({ currentTarget: decode.target }));
+    expect(image.isLoading).toBe(true);
+    expect(image.isHeroLoaded).toBe(false);
+    await act(async () => decode.resolve());
+    expect(image.isLoading).toBe(false);
+    expect(image.isHeroLoaded).toBe(true);
+  });
+
+  it('запоздавшее декодирование не отменяет заглушку после ошибки', async () => {
+    await render();
+    const decode = pendingDecode();
+    await act(async () => image.onLoad({ currentTarget: decode.target }));
+    await act(async () => image.onError());
+    await act(async () => decode.resolve());
+    expect(image.hasError).toBe(true);
+    expect(image.isHeroLoaded).toBe(false);
+    expect(image.isLoading).toBe(false);
+  });
+
+  it('результат декодирования прежнего товара не скрывает новый скелетон', async () => {
+    await render();
+    const decode = pendingDecode();
+    await act(async () => image.onLoad({ currentTarget: decode.target }));
+    await render({ src: '/other-product.jpg' });
+    await act(async () => decode.resolve());
+    expect(image.isLoading).toBe(true);
+    expect(image.isHeroLoaded).toBe(false);
+  });
+
+  it('при отказе decode показывает уже загруженное допустимое изображение', async () => {
+    await render();
+    const decode = pendingDecode();
+    await act(async () => image.onLoad({ currentTarget: decode.target }));
+    await act(async () => decode.reject(new Error('decode failed')));
+    expect(image.isHeroLoaded).toBe(true);
+    expect(image.hasError).toBe(false);
+  });
+
+  it('при отказе decode без пригодного изображения завершает загрузку ошибкой', async () => {
+    await render();
+    const decode = pendingDecode();
+    decode.target.complete = false;
+    decode.target.naturalWidth = 0;
+    await act(async () => image.onLoad({ currentTarget: decode.target }));
+    await act(async () => decode.reject(new Error('decode failed')));
+    expect(image.hasError).toBe(true);
+    expect(image.isLoading).toBe(false);
+  });
+
   it('после ошибки повторное открытие того же товара начинает новую загрузку', async () => {
     await render();
     await act(async () => image.onError());

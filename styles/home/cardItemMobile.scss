@@ -735,12 +735,12 @@
 
 @media (prefers-reduced-motion: reduce) {
   .ImgModalCardMobile_loading::before {
-    animation: none;
+    animation: none !important;
   }
 
   .ImgModalCardMobile::before,
   .ImgModalCardMobile .ImgItem_picture img {
-    transition: none;
+    transition: none !important;
   }
 }
 

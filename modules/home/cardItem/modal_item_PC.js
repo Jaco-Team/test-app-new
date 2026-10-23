@@ -203,7 +203,7 @@ export default function ModalItemPC() {
                 className={`ImgItem${imageState.isLoading ? ' ImgItem_loading' : ''}`}
                 aria-busy={imageState.isLoading}
               >
-                <picture>
+                <picture className="ImgItem_picture">
                   <source
                     type="image/webp"
                     srcSet={
@@ -232,6 +232,13 @@ export default function ModalItemPC() {
                     }
 
                     loading="eager"
+                    className={
+                      imageState.isHeroLoaded ||
+                      imageState.hasError ||
+                      !hasMainImage
+                        ? 'ImgItem_image_visible'
+                        : ''
+                    }
                     onLoad={
                       hasMainImage && !imageState.hasError
                         ? imageState.onLoad
