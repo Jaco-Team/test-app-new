@@ -13,10 +13,10 @@
 
 ## Текущее состояние
 
-- `modules/clientFeedback` уже содержит API-клиент и скрытый env-эксперимент `FeedbackExperience`, который обращается к Site Backend.
-- Эксперимент показывает искусственный `OrderHistoryBackground` и не встроен в настоящую историю.
-- Реальная desktop/mobile история находится в `modules/profile/zakazy`; store уже предоставляет `token`, `point_id`, `order_id`.
-- Приложение использует MUI `Dialog` на desktop и `SwipeableDrawer`/bottom sheet на mobile.
+- Production controller и API-клиент находятся в `modules/clientFeedback` и обращаются только к Site Backend.
+- Entry point встроен в реальные desktop/mobile детали заказа в `modules/profile/zakazy` и использует `token`, `point_id`, `order_id` из действующего flow.
+- Production presentation вынесен в типизированный slice `modules/clientFeedback/orderReview`; Storybook импортирует его без обратной production-зависимости.
+- Скрытый эксперимент, fake history shell, mock-режим и связанные env-флаги удалены.
 
 ## Объём Frontend
 
@@ -54,5 +54,4 @@
 ## Зависимости
 
 - Стабильный совместимый контракт Site Backend и тестовые fixtures.
-- Продуктовые решения по объёму FE launch, месту CTA, окну доступности и судьбе скрытого эксперимента.
-- Rollout и метрики координируются с Backend; frontend сам не определяет eligibility и не содержит Chef fallback.
+- Rollout и метрики координируются с Backend; frontend сам не определяет окончательную eligibility и не содержит Chef fallback.

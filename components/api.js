@@ -348,7 +348,10 @@ function shouldRetryRequest(data = {}) {
   }
 
   // Потерянный ответ не доказывает, что заказ/СМС не были созданы.
-  if (NON_IDEMPOTENT_TYPES.has(requestType) && !SAFE_MUTATION_RETRY_TYPES.has(requestType)) {
+  if (
+    NON_IDEMPOTENT_TYPES.has(requestType) &&
+    !SAFE_MUTATION_RETRY_TYPES.has(requestType)
+  ) {
     return false;
   }
 
@@ -437,7 +440,8 @@ function captureApiError({ module, requestUrl, requestMeta, error, source }) {
   const context = apiErrorContext({ module, source, requestMeta, error });
   if (context.skip) return;
   Sentry.withScope((scope) => {
-    for (const [key, value] of Object.entries(context.tags)) scope.setTag(key, value);
+    for (const [key, value] of Object.entries(context.tags))
+      scope.setTag(key, value);
     scope.setLevel(context.level);
 
     scope.setContext('network', getClientNetworkContext());
@@ -445,7 +449,8 @@ function captureApiError({ module, requestUrl, requestMeta, error, source }) {
     scope.setExtra('requestMeta', requestMeta);
     scope.setExtra('attemptMeta', error?.jacoAttemptMeta || null);
     scope.setExtra('responseDataType', typeof error?.response?.data);
-    if (context.requestId) scope.setExtra('backend_request_id', context.requestId);
+    if (context.requestId)
+      scope.setExtra('backend_request_id', context.requestId);
     scope.setFingerprint(context.fingerprint);
 
     Sentry.captureException(error);
@@ -686,9 +691,19 @@ export function api(module = '', data = {}) {
         });
       }
 
+      const responseText =
+        typeof error?.response?.data === 'string'
+          ? error.response.data
+          : error?.response?.data?.text;
+
       return {
         st: false,
-        text: 'Сервис временно недоступен. Проверьте интернет и попробуйте еще раз.',
+        text:
+          requestConfig.__preserveErrorText === true &&
+          typeof responseText === 'string' &&
+          responseText.trim()
+            ? responseText.trim()
+            : 'Сервис временно недоступен. Проверьте интернет и попробуйте еще раз.',
       };
     });
 }

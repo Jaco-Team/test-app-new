@@ -2,6 +2,8 @@
 
 Backend-план и контракт являются каноническими для eligibility, формы, данных, безопасности, идемпотентности и rollout: `laravel-api-site/app/Site/Client_feedback/PLAN.md`. Этот документ описывает только presentation, интеграцию с историей и клиентскую проверку.
 
+Статус реализации: production entry point встроен в детали заказа, tablet и desktop используют центрированный `Dialog`, mobile — `SwipeableDrawer`; экспериментальный маршрут, mock-режим и фото удалены.
+
 ## Целевой пользовательский поток
 
 1. Пользователь видит CTA у подходящего завершённого неудалённого заказа в настоящей истории.
@@ -14,14 +16,14 @@ Backend-план и контракт являются каноническими
 
 ### 1. Инвентаризация без расширения scope
 
-- Зафиксировать текущие `clientFeedback` API/types, env-gate и состояния `FeedbackExperience`.
+- Зафиксировать текущие `clientFeedback` API/types и состояния production flow до удаления временного experiment shell.
 - Исследовать настоящие desktop/mobile компоненты `modules/profile/zakazy`, источники `token/point_id/order_id`, правила status/deleted и существующие Dialog/Drawer паттерны.
 - Сопоставить browser contract с Backend `CONTRACT.md`; не добавлять поля и не переносить eligibility на клиент.
 - Отдельно зафиксировать, что `OrderHistoryBackground` — demo shell, а не основа интеграции.
 
 ### 2. Storybook-first presentation
 
-- Спроектировать FSD+TypeScript slice в подходящих `stories/{features,entities,shared}` с однонаправленными зависимостями.
+- Спроектировать TypeScript presentation slice в `modules/clientFeedback/orderReview` с однонаправленной зависимостью Storybook от production-кода.
 - Отделить renderer формы, field adapters, validation messages, submit/status panel и modal/sheet content от API/store/history shell.
 - Создать stories для loading, empty/unavailable, каждого поддержанного типа, mixed long form, validation, submitting, submitted, server/network error и retry.
 - Не показывать фото/upload controls до появления отдельного контракта.
@@ -52,18 +54,18 @@ Backend-план и контракт являются каноническими
 
 ## Rollout и deployment rollback
 
-- Если релиз backend-only, новый entry point остаётся выключенным, но Storybook slice может быть подготовлен и проверен независимо.
-- При FE launch использовать существующий или явно согласованный feature/env gate; единственный API route ведёт в Site, без прямого или резервного обращения в Chef.
+- FE и Backend выпускаются как единый Site flow; отдельного экспериментального env-gate нет.
+- Единственный API route ведёт в Site, без прямого или резервного обращения в Chef.
 - Наблюдать open/get success, empty/unavailable, submit success/error, latency и retry без PII/содержимого ответов.
 - При превышении согласованных порогов выключить FE entry point и при необходимости откатить deployment Site по Backend-плану; runtime fallback в Chef отсутствует.
-- После стабильного окна удалить устаревший demo entry point только отдельным осознанным изменением.
+- Устаревший demo entry point удалён вместе с mock/env/photo assets; возвращать второй flow нельзя.
 
-## Открытые продуктовые решения и последствия
+## Решённые и открытые продуктовые вопросы
 
-- **FE launch в `44127` или backend-only.** Первый вариант требует end-to-end acceptance и rollout UI; второй ограничивает задачу переносом Backend и подготовкой presentation без production entry point.
-- **Место CTA.** Карточка заказа проще и заметнее; детали заказа дают больше контекста; оба места требуют единого состояния и защиты от дублей.
-- **Скрытый эксперимент.** Сохранение полезно только как временный sandbox; его production retention создаст второй flow. Рекомендуется переиспользовать пригодную presentation-логику, а fake shell удалить после интеграции.
-- **Фото.** Рекомендация — полностью скрыть UI до отдельного backend/storage/security контракта.
+- **FE launch в `44127`:** production integration входит в задачу.
+- **Место CTA:** детали заказа.
+- **Скрытый эксперимент:** удалён, второго flow нет.
+- **Фото:** UI отсутствует до отдельного backend/storage/security контракта.
 - **Окно доступности.** Текущее наблюдаемое правило — любой завершённый неудалённый заказ среди последних десяти. Ограничение по времени/количеству должно быть продуктово утверждено и применяться сервером; FE лишь отражает результат.
-- **Tablet container.** Нужно утвердить Dialog или bottom sheet для `668–990`; решение влияет на interaction tests и дизайн states.
+- **Tablet container:** центрированный `Dialog` для `668–990`.
 - **Наблюдаемость.** До запуска нужны численные пороги get/submit ошибок, latency, владелец мониторинга и длительность стабильного окна.
