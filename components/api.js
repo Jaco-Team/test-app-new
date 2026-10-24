@@ -55,6 +55,7 @@ const TRACKED_AUTH_TYPES = new Set([
   'checkauthyandex',
 ]);
 const TRACKED_PAYMENT_TYPES = new Set([
+  'confirm_paid_order',
   'create_order_pre',
   'check_pay_order',
   'check_pay_order_card',

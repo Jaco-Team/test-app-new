@@ -7,6 +7,7 @@ import ProfileBreadcrumbs from '@/modules/profile/profileBreadcrumbs.jsx';
 import ModalOrder from './modalOrder.jsx';
 import ModalOrderDelete from './modalOrderDelete.jsx';
 import OrdersList from './ordersList.jsx';
+import OrderHistoryStatus from '../orderHistoryStatus';
 
 import { useProfileStore, useHeaderStoreNew } from '@/components/store.js';
 
@@ -49,6 +50,7 @@ export default function OrderPC({ this_module, city }) {
         </Grid>
 
         <Grid size={12} className="blockTable">
+          <OrderHistoryStatus city={city} this_module={this_module} />
           <OrdersList token={token} this_module={this_module} city={city} />
         </Grid>
       </Grid>

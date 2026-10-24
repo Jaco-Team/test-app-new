@@ -7,6 +7,7 @@ import { useProfileStore, useHeaderStoreNew } from '@/components/store.js';
 import Box from '@mui/material/Box';
 
 import OrdersItemMobile from './orderItemMobile';
+import OrderHistoryStatus from '../orderHistoryStatus';
 
 import ModalOrderMobileDelete from './modalOrderMobileDelete';
 
@@ -71,6 +72,7 @@ export default function OrderMobile({ city, this_module }) {
           <span>дата</span>
           <span>стоимость</span>
         </div>
+        <OrderHistoryStatus city={city} this_module={this_module} />
         {(orderList ?? [])?.map((order, ykey) => (
           <OrdersItemMobile
             key={order.__debugKey ?? `${order?.order_id}-${ykey}`}

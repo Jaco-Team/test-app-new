@@ -3,7 +3,6 @@ import {
   getSessionStorageJson,
   removeLocalStorageItem,
   removeSessionStorageItem,
-  setLocalStorageItem,
   setSessionStorageItem,
 } from '@/utils/browserStorage';
 
@@ -44,16 +43,13 @@ export function savePendingSbpOrder(order) {
     orderId: Number(order?.orderId),
     pointId: Number(order?.pointId),
     city: String(order?.city || ''),
-    retryToken: String(order?.retryToken || ''),
-    check: order?.check || null,
     createdAt: Date.now(),
   };
-  if (!pending.orderId || !pending.pointId || !pending.retryToken) {
+  if (!pending.orderId || !pending.pointId) {
     return null;
   }
-  if (!setLocalStorageItem(STORAGE_KEY, JSON.stringify(pending))) {
-    setSessionStorageItem(STORAGE_KEY, JSON.stringify(pending));
-  }
+  removeLocalStorageItem(STORAGE_KEY);
+  setSessionStorageItem(STORAGE_KEY, JSON.stringify(pending));
   return pending;
 }
 
@@ -64,8 +60,6 @@ export function getPendingSbpOrder() {
     !pending ||
     !Number.isSafeInteger(pending.orderId) ||
     !Number.isSafeInteger(pending.pointId) ||
-    typeof pending.retryToken !== 'string' ||
-    !pending.retryToken ||
     !['samara', 'togliatti'].includes(pending.city) ||
     !Number.isFinite(pending.createdAt) ||
     Date.now() - pending.createdAt > MAX_AGE_MS
@@ -74,7 +68,11 @@ export function getPendingSbpOrder() {
     removeSessionStorageItem(STORAGE_KEY);
     return null;
   }
-  return pending;
+  // Старые записи переносятся без платёжного токена, состава и адреса.
+  const safe = { orderId: pending.orderId, pointId: pending.pointId, city: pending.city, createdAt: pending.createdAt };
+  removeLocalStorageItem(STORAGE_KEY);
+  setSessionStorageItem(STORAGE_KEY, JSON.stringify(safe));
+  return safe;
 }
 
 export function clearPendingSbpOrder() {

@@ -709,7 +709,7 @@ export default function FormOrder({ cityName }) {
     //} else {
     showLoad(true);
 
-    const res = await createOrder(token, thisCity, trueOrderCLose);
+    const res = await createOrder(token, thisCity);
 
     showLoad(false);
 
@@ -805,7 +805,7 @@ export default function FormOrder({ cityName }) {
       }, 1800);
 
       setTimeout(() => {
-        getOrderList('zakazy', thisCity, token);
+        getOrderList('zakazy', thisCity, token, { force: true });
 
         showLoad(false);
 

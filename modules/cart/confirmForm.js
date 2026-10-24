@@ -27,6 +27,7 @@ import { roboto } from '@/ui/Font.js';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import CartConfirmMap from '@/modules/cart/cartConfirmMap';
+import PaidOrderStatus from './paidOrderStatus';
 
 import {
   buildPurchasePayload,
@@ -40,6 +41,12 @@ const confirmOrderLabel = 'Подтвердить заказ';
 
 export default function ConfirmForm() {
   const { push } = useRouter();
+  const paidConfirmationState = useCartStore((state) => state.paidConfirmationState);
+  const closeConfirmation = () => {
+    const store = useCartStore.getState();
+    store.setConfirmForm(false);
+    if (store.pendingPaidOrder && store.paidConfirmationState !== 'idle') void push(`/${store.pendingPaidOrder.city}/zakazy`);
+  };
   useEffect(() => () => useCartStore.getState().cancelCardPayment(), []);
   const isMobileConfirm = useMediaQuery(
     `screen and (max-width: ${BREAKPOINTS.mobileMax}px)`
@@ -148,7 +155,7 @@ export default function ConfirmForm() {
       // 1) цели: основной + городской
       reachGoal('pay_order', ym_data);
       reachGoal(`pay_order_${typeOrder}_${typePay.id}`, ym_data);
-      tgp('event', 'HbWMUPHc-UVXQB2SU');
+      if (typeof window?.tgp === 'function') window.tgp('event', 'HbWMUPHc-UVXQB2SU');
 
       const items = (checkNewOrder?.items ?? []).map((item, index) => ({
         id: item?.id ?? 0,
@@ -195,7 +202,7 @@ export default function ConfirmForm() {
     }, 1800);
 
     setTimeout(() => {
-      getOrderList('zakazy', thisCity, token);
+      getOrderList('zakazy', thisCity, token, { force: true });
       showLoad(false);
     }, 2000);
     //}, 300);
@@ -204,8 +211,9 @@ export default function ConfirmForm() {
   const [cardPaymentState, retryCardPayment] = useCartStore((state) => [state.cardPaymentState, state.retryCardPayment]);
   const cardPaymentStatus = typePay?.id === 'online' ? (
     <div role="status" aria-live="polite">
+      {paidConfirmationState !== 'idle' ? <PaidOrderStatus /> : null}
       {cardPaymentState === 'loading' ? 'Загружаем форму оплаты…' : null}
-      {cardPaymentState === 'error' ? (
+      {cardPaymentState === 'error' && paidConfirmationState === 'idle' ? (
         <div>
           <p>Не удалось открыть форму оплаты.</p>
           <button type="button" className="confirmBTN" onClick={() => retryCardPayment?.()}>
@@ -373,7 +381,7 @@ export default function ConfirmForm() {
         <SwipeableDrawer
           anchor={'bottom'}
           open={openConfirmForm}
-          onClose={() => setConfirmForm(false)}
+          onClose={closeConfirmation}
           onOpen={() => setConfirmForm(true)}
           className={
             (typePay?.id === 'cash'
@@ -652,7 +660,7 @@ export default function ConfirmForm() {
         </SwipeableDrawer>
       ) : typePay?.id === 'cash' ? (
         <Dialog
-          onClose={() => setConfirmForm(false)}
+          onClose={closeConfirmation}
           className={'cartConfirmFormPC_cash ' + roboto.variable}
           open={openConfirmForm}
           slots={Backdrop}
@@ -661,7 +669,7 @@ export default function ConfirmForm() {
           <DialogContent>
             <IconButton
               className="closeButton"
-              onClick={() => setConfirmForm(false)}
+              onClick={closeConfirmation}
             >
               <IconClose />
             </IconButton>
@@ -803,7 +811,7 @@ export default function ConfirmForm() {
         </Dialog>
       ) : (
         <Dialog
-          onClose={() => setConfirmForm(false)}
+          onClose={closeConfirmation}
           className={'cartConfirmFormPC ' + roboto.variable}
           open={openConfirmForm}
           slots={Backdrop}
@@ -813,7 +821,7 @@ export default function ConfirmForm() {
           <DialogContent>
             <IconButton
               className="closeButton"
-              onClick={() => setConfirmForm(false)}
+              onClick={closeConfirmation}
             >
               <IconClose />
             </IconButton>

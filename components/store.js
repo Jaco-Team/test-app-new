@@ -28,12 +28,15 @@ import {
 
 import useYandexMetrika from './useYandexMetrika';
 import { getClientNetworkContext } from '@/utils/clientMonitoring';
-import { reachGoal, reachGoalMain, setUserIdAll } from '@/utils/metrika';
+import { reachGoal, reachGoalMain, setUserIdAll, buildPurchasePayload, trackPurchase } from '@/utils/metrika';
+import { createPaidOrderConfirmation, paidCartKey } from '@/utils/paidOrderConfirmation';
+import { createOrderHistoryActions } from '@/utils/orderHistory';
 import { isRecommendationsEnabled } from '@/utils/recommendations';
 import { notifyRecommendationAdded } from '@/utils/recommendationFeedback';
 import {
   getLocalStorageItem,
   getLocalStorageJson,
+  getSessionStorageItem,
   removeLocalStorageItem,
   removeSessionStorageItem,
   setLocalStorageItem,
@@ -939,6 +942,10 @@ export const useHeaderStoreNew = reuseHotStore(
       signOut: (city) => {
         useProfileStore.getState().saveUserActions('user_log_out', '');
         useProfileStore.getState().clearSecurityNotice();
+        useCartStore.getState().resetPaidConfirmation();
+        clearPendingSbpOrder();
+        useCartStore.setState({ pendingSbpOrder: null });
+        useProfileStore.getState().clearOrderList();
         syncSentryUser(null, city);
 
         removeLocalStorageItem('token');
@@ -1429,6 +1436,51 @@ export const useCartStore = reuseHotStore(
       cart_is: 'all',
 
       promoName: '',
+
+      ...createPaidOrderConfirmation({
+        set, get, request: api,
+        getToken: () => useHeaderStoreNew.getState().token,
+        getCity: () => useCitiesStore.getState().thisCity,
+        onConfirmed: async (pending, token, check) => {
+          const stillCurrent = () => useHeaderStoreNew.getState().token === token &&
+            get().pendingPaidOrder === pending && useCitiesStore.getState().thisCity === pending.city;
+          if (!stillCurrent()) return;
+          clearPendingSbpOrder();
+          set({ pendingSbpOrder: null, sbpPaymentState: 'succeeded', sbpPaymentUrl: null });
+          endPaymentFlow();
+          const checkoutOrder = get().checkNewOrder?.order;
+          const matchesOrder = Number(checkoutOrder?.order_id) === pending.orderId && Number(checkoutOrder?.point_id) === pending.pointId;
+          const savedCart = getLocalStorageJson('setCart');
+          const cartItems = get().items.length ? get().items : savedCart?.city?.link === pending.city ? savedCart.items : get().items;
+          const matchingCheckout = pending.cartKey && paidCartKey(cartItems) === pending.cartKey && (!checkoutOrder || matchesOrder);
+          if (matchingCheckout) get().clearCartData();
+          if (matchesOrder) set({ openConfirmForm: false, openPayForm: false, openModalBasket: false });
+          void useProfileStore.getState().getOrderList('zakazy', pending.city, token, { force: true });
+          void useProfileStore.getState().getCountPromos_Orders(pending.city, { force: true });
+          // После перезагрузки состав заново читается с сервера, а не из хранилища браузера.
+          let details = check;
+          if (!details?.order) {
+            try {
+              const response = await api('zakazy', { type: 'get_order', city_id: pending.city, user_id: token, point_id: pending.pointId, order_id: pending.orderId });
+              if (response?.order) details = { order: { ...response.order, order_id: pending.orderId }, items: response.order_items || response.items_order || [] };
+            } catch {}
+          }
+          if (!stillCurrent()) return;
+          const analyticsKey = `jaco_confirmed_purchase_${pending.pointId}_${pending.orderId}`;
+          if (!getSessionStorageItem(analyticsKey) && details?.order) {
+            setSessionStorageItem(analyticsKey, '1');
+            if (pending.method === 'online') void useProfileStore.getState().saveUserActions('true_pay_online_order', '', details.order.sum_order).catch(() => {});
+            const typeOrder = Number(details.order.type_order_ ?? details.order.type_order) === 2 ? 'pic' : 'dev';
+            const params = { city: pending.city === 'samara' ? 'Самара' : 'Тольятти', type_pay: pending.method === 'sbp' ? 'СБП' : 'Картой на сайте', typeOrder: typeOrder === 'pic' ? 'Самовывоз' : 'Доставка' };
+            try {
+              reachGoal('pay_order', params);
+              reachGoal(`pay_order_${typeOrder}_${pending.method}`, params);
+              trackPurchase(buildPurchasePayload({ order: details.order, items: (details.items || []).map((item) => ({ id: item.item_id ?? item.id, name: item.name, price: item.price, category: item.cat_name, quantity: item.count })), goalParams: params }));
+              if (typeof window?.tgp === 'function') window.tgp('event', 'HbWMUPHc-UVXQB2SU');
+            } catch { /* Аналитика не влияет на подтверждение заказа. */ }
+          }
+        },
+      }),
 
       pendingSbpOrder: null,
       sbpPaymentState: 'idle',
@@ -2310,42 +2362,16 @@ export const useCartStore = reuseHotStore(
         return pending;
       },
 
+      // Старый интерфейс фронта сохранён; подтверждение использует общий серверный метод.
       checkSbpPaymentStatus: async (token, onSuccess) => {
-        const pending = get().pendingSbpOrder || getPendingSbpOrder();
-        if (!pending || !token) return 'missing';
-        if (!get().pendingSbpOrder) set({ pendingSbpOrder: pending });
-
-        let response;
-        try {
-          response = await api('cart', {
-            type: 'sbpPaymentStatus',
-            order_id: pending.orderId,
-            point_id: pending.pointId,
-            sbp_retry_token: pending.retryToken,
-            token,
-          });
-        } catch {
-          return 'unavailable';
-        }
-        if (response?.st !== true) return 'unavailable';
-        if (get().pendingSbpOrder?.orderId !== pending.orderId)
-          return response.status;
-
-        if (isSbpPaymentConfirmed(response)) {
-          clearPendingSbpOrder();
-          set({
-            pendingSbpOrder: null,
-            sbpPaymentState: 'succeeded',
-            sbpPaymentUrl: null,
-          });
-          endPaymentFlow();
-          onSuccess?.();
-        } else if (response.status === 'canceled') {
-          set({ sbpPaymentState: 'canceled', sbpPaymentUrl: null });
-        } else {
-          set({ sbpPaymentState: response.status || 'pending' });
-        }
-        return response.status;
+        const sbp = get().pendingSbpOrder || getPendingSbpOrder();
+        if (!get().pendingPaidOrder && sbp) get().registerPaidOrder({ ...sbp, method: 'sbp' }, token);
+        if (!get().pendingPaidOrder || !token) return 'missing';
+        const wasConfirmed = get().paidConfirmationState === 'confirmed';
+        const status = await get().checkPaidOrder();
+        if (status === 'confirmed' && !wasConfirmed) onSuccess?.();
+        if (status === 'canceled') set({ sbpPaymentState: 'canceled', sbpPaymentUrl: null });
+        return status === 'confirmed' ? 'succeeded' : status;
       },
 
       startSbpRedirect: (confirmationUrl) => {
@@ -2392,7 +2418,7 @@ export const useCartStore = reuseHotStore(
           ...paymentEventBase, payment_action: 'widget', ...values,
         });
         const fail = (name, reason, text) => {
-          if (!current() || get().cardPaymentState === 'error' || get().cardPaymentState === 'complete') return;
+          if (!current() || get().cardPaymentState === 'error' || ['complete', 'confirming'].includes(get().cardPaymentState)) return;
           clearInterval(get().cardRenderTimer);
           set({ cardPaymentState: 'error', cardRenderTimer: null });
           track(name, { outcome: 'error', reason });
@@ -2422,13 +2448,11 @@ export const useCartStore = reuseHotStore(
         checkout.on('success', () => {
           if (!current()) return;
           clearInterval(get().cardRenderTimer);
-          set({ cardPaymentState: 'complete', retryCardPayment: null, cardRenderTimer: null });
+          set({ cardPaymentState: 'confirming', retryCardPayment: null, cardRenderTimer: null });
           track('widget_success', { outcome: 'success' });
-          useProfileStore.getState().saveUserActions('true_pay_online_order', '', get().allPrice);
           try { checkout.destroy(); } catch {}
           set({ global_checkout: null });
-          endPaymentFlow();
-          funcClose?.();
+          void get().startPaidConfirmation();
         });
         checkout.on('fail', (error) => {
           fail('widget_fail', 'widget_callback', getPaymentWidgetErrorText(error));
@@ -2456,7 +2480,7 @@ export const useCartStore = reuseHotStore(
           }, 12000);
           set({ cardRenderTimer: renderDeadline });
           Promise.resolve().then(() => checkout.render(targetId)).then(() => {
-            if (!current() || get().cardPaymentState === 'error' || get().cardPaymentState === 'complete') return;
+            if (!current() || get().cardPaymentState === 'error' || ['complete', 'confirming'].includes(get().cardPaymentState)) return;
             set({ cardPaymentState: 'ready' });
             track('widget_rendered', { widget_target: targetId, outcome: 'success' });
           }).catch(() => fail('widget_render_failed', 'widget_callback', 'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.')).finally(() => {
@@ -2651,6 +2675,12 @@ export const useCartStore = reuseHotStore(
           });
 
           if (paymentMethod === 'online' || paymentMethod === 'sbp') {
+            get().registerPaidOrder({
+              orderId: json?.check?.order?.order_id ?? json?.order_id,
+              pointId: json?.check?.order?.point_id ?? data.point_id,
+              city: city_id, method: paymentMethod, cartKey: paidCartKey(get().items),
+            }, token, json?.check);
+
             //set({
             //  openPayForm: true
             //})
@@ -2663,8 +2693,6 @@ export const useCartStore = reuseHotStore(
                 orderId: json?.check?.order?.order_id ?? json?.order_id,
                 pointId: json?.check?.order?.point_id ?? data.point_id,
                 city: city_id,
-                retryToken: json?.sbp_retry_token,
-                check: json?.check,
               });
               set({
                 pendingSbpOrder: pending,
@@ -2749,6 +2777,9 @@ export const useCartStore = reuseHotStore(
 
         if (json?.st === true) {
           removeLocalStorageItem('freeDrive');
+          const city = useCitiesStore.getState().thisCity;
+          void useProfileStore.getState().getOrderList('zakazy', city, token, { force: true });
+          void useProfileStore.getState().getCountPromos_Orders(city, { force: true });
         } else {
           //показать ошибку
           useHeaderStoreNew
@@ -5185,25 +5216,10 @@ export const useProfileStore = reuseHotStore(
             city: city,
           });
         },
-        getOrderList: async (this_module, city, userToken) => {
-          let data = {
-            type: 'get_my_orders_new_',
-            city_id: city,
-            user_id: userToken,
-          };
-
-          let json = await api(this_module, data);
-
-          set({
-            orderList: json?.order_list,
-            city: city,
-          });
-        },
-        clearOrderList: () => {
-          set({
-            orderList: [],
-          });
-        },
+        ...createOrderHistoryActions({ set, get, request: api,
+          getToken: () => useHeaderStoreNew.getState().token,
+          getCity: () => useCitiesStore.getState().thisCity,
+        }),
         getUserInfo: async (this_module, city, userID) => {
           if (userID && userID?.length > 0) {
             let data = {
@@ -5241,15 +5257,15 @@ export const useProfileStore = reuseHotStore(
           }
         },
 
-        getCountPromos_Orders: (city) => {
+        getCountPromos_Orders: (city, { force = false } = {}) => {
           const token = useHeaderStoreNew.getState().token;
-          if (!token || (typeof document !== 'undefined' && document.visibilityState === 'hidden')) return Promise.resolve();
+          if (!token || (!force && typeof document !== 'undefined' && document.visibilityState === 'hidden')) return Promise.resolve();
           const pending = get().countsPending;
-          if (pending?.token === token && pending?.city === city) return pending.promise;
+          if (!force && pending?.token === token && pending?.city === city) return pending.promise;
           const promise = (async () => {
             try {
               const json = await api('zakazy', { type: 'get_my_count_orders_promos', city_id: city, user_id: token });
-              if (useHeaderStoreNew.getState().token !== token || get().countsPending?.promise !== promise || json?.st === false) return;
+              if (useHeaderStoreNew.getState().token !== token || get().countsPending?.promise !== promise || useCitiesStore.getState().thisCity !== city || json?.st === false) return;
               const promo = Number.parseInt(json?.count_promo, 10);
               const orders = Number.parseInt(json?.count_orders, 10);
               if (Number.isFinite(promo) && Number.isFinite(orders)) set({ count_promo: promo, count_orders: orders });
@@ -7245,3 +7261,19 @@ export const useHomeStore = reuseHotStore(
     shallow
   )
 );
+
+// Смена аккаунта/города инвалидирует ответы уже отправленных запросов.
+useHeaderStoreNew.subscribe((state, previous) => {
+  if (state.token === previous.token || !previous.token) return;
+  useCartStore.getState().cancelCardPayment();
+  useCartStore.getState().resetPaidConfirmation();
+  clearPendingSbpOrder();
+  useCartStore.setState({ pendingSbpOrder: null });
+  useProfileStore.getState().clearOrderList();
+});
+useCitiesStore.subscribe((state, previous) => {
+  if (state.thisCity === previous.thisCity) return;
+  useCartStore.getState().cancelCardPayment();
+  useCartStore.getState().pausePaidConfirmation();
+  useProfileStore.getState().clearOrderList();
+});

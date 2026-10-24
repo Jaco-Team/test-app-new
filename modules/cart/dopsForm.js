@@ -46,7 +46,7 @@ export default function DopsForm() {
 
     showLoad(true);
 
-    createOrder(token, thisCity, trueOrderCLose).then(res => {
+    createOrder(token, thisCity).then(res => {
       showLoad(false);
 
       if (res === 'to_cart' || res === 'wait_payment') {
@@ -125,7 +125,7 @@ export default function DopsForm() {
       }, 1800)
 
       setTimeout(() => {
-        getOrderList('zakazy', thisCity, token);
+        getOrderList('zakazy', thisCity, token, { force: true });
 
         showLoad(false);
 

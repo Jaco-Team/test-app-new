@@ -11,10 +11,12 @@ vi.mock('../../components/api.js', () => ({
   getPaymentFlowId: vi.fn(),
   trackPaymentClientEvent: vi.fn(),
 }));
-vi.mock('../../components/useYandexMetrika', () => ({ default: vi.fn() }));
+vi.mock('../../components/useYandexMetrika', () => ({ default: vi.fn(() => vi.fn()) }));
 vi.mock('@sentry/nextjs', () => ({ captureMessage: vi.fn() }));
 vi.mock('@/utils/metrika', () => ({
   reachGoal: vi.fn(),
+  buildPurchasePayload: vi.fn((value) => value),
+  trackPurchase: vi.fn(),
   setUserIdAll: vi.fn(),
 }));
 vi.mock('@/utils/clientMonitoring', () => ({
@@ -26,7 +28,7 @@ vi.mock('zustand/middleware', async (importOriginal) => ({
 }));
 
 import { api } from '../../components/api.js';
-import { useCartStore, useHeaderStoreNew, useProfileStore } from '../../components/store.js';
+import { useCartStore, useHeaderStoreNew, useProfileStore, useCitiesStore } from '../../components/store.js';
 import {
   clearPendingSbpOrder,
   savePendingSbpOrder,
@@ -78,7 +80,9 @@ beforeEach(() => {
   vi.stubGlobal('document', {
     getElementById: (id) => (id === 'payment-form-confirm' ? {} : null),
   });
-  useHeaderStoreNew.setState({ setActiveModalAlert: vi.fn() });
+  useCitiesStore.setState({ thisCity: 'samara' });
+  useHeaderStoreNew.setState({ token: 'user-token', setActiveModalAlert: vi.fn() });
+  useCartStore.getState().resetPaidConfirmation();
   useCartStore.setState({
     pendingSbpOrder: null,
     sbpPaymentState: 'idle',
@@ -89,6 +93,7 @@ beforeEach(() => {
 });
 
 afterEach(() => {
+  useCartStore.getState().resetPaidConfirmation();
   useCartStore.getState().setConfirmForm(false);
   clearPendingSbpOrder();
   vi.clearAllTimers();
@@ -205,13 +210,13 @@ describe('оплата СБП с переходом на страницу ЮKass
     expect(useCartStore.getState().checkNewOrder).toBe(currentOrder);
     const onSuccess = vi.fn();
     api
-      .mockResolvedValueOnce({ st: true, status: 'processing' })
-      .mockResolvedValueOnce({ st: true, status: 'succeeded' });
+      .mockResolvedValueOnce({ st: true, status: 'pending' })
+      .mockResolvedValueOnce({ st: true, status: 'confirmed' });
     expect(
       await useCartStore
         .getState()
         .checkSbpPaymentStatus('user-token', onSuccess)
-    ).toBe('processing');
+    ).toBe('pending');
     expect(onSuccess).not.toHaveBeenCalled();
     expect(
       await useCartStore
@@ -328,7 +333,7 @@ describe('отмена старой платёжной формы', () => {
       const success = widgets[0].on.mock.calls.find(([event]) => event === 'success')[1];
       success();
       await vi.advanceTimersByTimeAsync(15000);
-      expect(useCartStore.getState()).toMatchObject({ cardPaymentState: 'complete', retryCardPayment: null, cardRenderTimer: null });
+      expect(useCartStore.getState()).toMatchObject({ cardPaymentState: 'confirming', retryCardPayment: null, cardRenderTimer: null });
     } finally {
       useProfileStore.setState({ saveUserActions: original });
     }
@@ -371,5 +376,79 @@ describe('отмена старой платёжной формы', () => {
     expect(widgets).toHaveLength(0);
     expect(useCartStore.getState().typePay).toBe(null);
     expect(api).toHaveBeenCalledTimes(1);
+  });
+});
+
+describe('подтверждение онлайн-заказа после виджета', () => {
+  async function openCard({ restore = false } = {}) {
+    window.localStorage.setItem('setCart', JSON.stringify({ updatedAt: Date.now() }));
+    useCartStore.setState({ typeOrder: 'pic', orderPic: { id: 5 }, typePay: { id: 'online', name: 'Картой на сайте' }, items: [{ item_id: 1, count: 1 }] });
+    let confirmed = false;
+    api.mockImplementation(async (module, data) => {
+      if (data.type === 'create_order_pre') return { st: true, order_id: 123, check: { order: { order_id: 123, point_id: 5, type_order_: 2, sum_order: 100 }, items: [{ id: 1, name: 'Товар', count: 1, price: 100 }] }, pay: { pay: { confirmation: { confirmation_token: 'card-token' } } } };
+      if (data.type === 'confirm_paid_order') return { st: true, status: confirmed ? 'confirmed' : 'pending' };
+      if (data.type === 'get_my_orders_new_') return { order_list: [{ order_id: 123 }] };
+      if (data.type === 'get_my_count_orders_promos') return { count_orders: 1, count_promo: 0 };
+      if (data.type === 'get_order') return { order: { order_id: 123, type_order_: 2, sum_order: 100 }, order_items: [{ id: 888, item_id: 1, name: 'Товар', count: 1, price: 100 }] };
+      return { st: true };
+    });
+    const callback = vi.fn();
+    await useCartStore.getState().createOrder('user-token', 'samara', callback);
+    const success = widgets[0].on.mock.calls.find(([event]) => event === 'success')[1];
+    success(); await vi.advanceTimersByTimeAsync(1);
+    expect(useCartStore.getState().paidConfirmationState).toBe('checking');
+    expect(callback).not.toHaveBeenCalled();
+    return { confirm: () => { confirmed = true; }, callback, success };
+  }
+  it('закрытие модалки продолжает проверку, после confirmed сразу обновляет историю', async () => {
+    const h = await openCard();
+    useCartStore.getState().setConfirmForm(false);
+    h.confirm(); await vi.advanceTimersByTimeAsync(3000);
+    expect(useCartStore.getState().paidConfirmationState).toBe('confirmed');
+    expect(useProfileStore.getState().orderList).toEqual([{ order_id: 123 }]);
+    expect(useProfileStore.getState().count_orders).toBe(1);
+    expect(api.mock.calls.filter(([, data]) => data.type === 'create_order_pre')).toHaveLength(1);
+  });
+  it('позднее подтверждение не удаляет новые товары из корзины', async () => {
+    const h = await openCard(); useCartStore.getState().setConfirmForm(false);
+    useCartStore.setState({ items: [{ item_id: 999, count: 1 }] });
+    h.confirm(); await vi.advanceTimersByTimeAsync(3000);
+    expect(useCartStore.getState().items).toEqual([{ item_id: 999, count: 1 }]);
+  });
+  it('после восстановления читает серверный состав и отправляет аналитику один раз', async () => {
+    const { trackPurchase } = await import('@/utils/metrika');
+    const h = await openCard(); useCartStore.getState().pausePaidConfirmation();
+    useCartStore.setState({ pendingPaidOrder: null, checkNewOrder: null });
+    useCartStore.getState().restorePaidOrder('samara'); h.confirm();
+    await useCartStore.getState().startPaidConfirmation();
+    expect(trackPurchase).toHaveBeenCalledTimes(1);
+    expect(trackPurchase).toHaveBeenCalledWith(expect.objectContaining({ items: [expect.objectContaining({ id: 1, name: 'Товар', price: 100, quantity: 1 })] }));
+    await useCartStore.getState().checkPaidOrder();
+    expect(trackPurchase).toHaveBeenCalledTimes(1);
+    expect(useCartStore.getState().items).toEqual([]);
+  });
+  it('смена аккаунта после виджета отменяет позднее подтверждение и очищает контекст', async () => {
+    const h = await openCard(); useHeaderStoreNew.setState({ token: 'another-account' });
+    h.confirm(); await vi.advanceTimersByTimeAsync(6000);
+    expect(useCartStore.getState().pendingPaidOrder).toBeNull();
+    expect(window.sessionStorage.getItem('jaco_pending_paid_order')).toBeNull();
+    expect(useProfileStore.getState().orderList).toEqual([]);
+  });
+});
+
+describe('подтверждение оплаты при получении', () => {
+  it.each(['togliatti', 'samara'])('сразу обновляет историю и счётчик в городе %s', async (city) => {
+    useCitiesStore.setState({ thisCity: city });
+    api.mockImplementation(async (module, data) => {
+      if (data.type === 'order_true') return { st: true };
+      if (data.type === 'get_my_orders_new_') return { order_list: [{ order_id: 321 }] };
+      if (data.type === 'get_my_count_orders_promos') return { count_orders: 1, count_promo: 0 };
+      return { st: true };
+    });
+    expect(await useCartStore.getState().trueOrderCash('user-token', 2, 321)).toBe(true);
+    await vi.advanceTimersByTimeAsync(1);
+    expect(useProfileStore.getState().orderList).toEqual([{ order_id: 321 }]);
+    expect(useProfileStore.getState().count_orders).toBe(1);
+    expect(api).not.toHaveBeenCalledWith('cart', expect.objectContaining({ type: 'confirm_paid_order' }));
   });
 });

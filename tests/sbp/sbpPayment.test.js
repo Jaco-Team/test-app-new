@@ -74,8 +74,9 @@ describe('СБП на фронтенде', () => {
       orderId: 123,
       pointId: 5,
       city: 'samara',
-      retryToken: 'signed',
     });
+    expect(getPendingSbpOrder()).not.toHaveProperty('retryToken');
+    expect(window.localStorage.getItem('jaco_pending_sbp_order')).toBeNull();
     clearPendingSbpOrder();
     expect(getPendingSbpOrder()).toBeNull();
   });
