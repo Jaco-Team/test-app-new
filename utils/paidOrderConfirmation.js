@@ -19,6 +19,7 @@ export function savePendingPaidOrder(value) {
     startedAt: Number.isFinite(value?.startedAt) && value.startedAt <= Date.now() ? value.startedAt : 0,
     cartKey: typeof value?.cartKey === 'string' && /^[a-f0-9]{64}$/.test(value.cartKey) ? value.cartKey : '',
     ownerKey: typeof value?.ownerKey === 'string' && /^[a-f0-9]{64}$/.test(value.ownerKey) ? value.ownerKey : '',
+    trackPurchase: value?.trackPurchase !== false,
   };
   if (!Number.isSafeInteger(pending.orderId) || pending.orderId <= 0 ||
       !Number.isSafeInteger(pending.pointId) || pending.pointId <= 0 ||

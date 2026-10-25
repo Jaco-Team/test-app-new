@@ -14,6 +14,7 @@ import {
 } from '@/components/store.js';
 import { roboto } from '@/ui/Font.js';
 import { getLocalStorageItem } from '@/utils/browserStorage';
+import { readSbpReturn } from '@/utils/sbpReturn';
 
 import { useRouter } from 'next/router';
 
@@ -23,7 +24,8 @@ import { normalizeCity } from '@/utils/normalizeCity';
 import { getCookie } from '@/utils/getCookie';
 
 export default function Zakazy(props) {
-  const { push } = useRouter();
+  const router = useRouter();
+  const { push } = router;
 
   const { city, cats, cities, page, all_items, free_items, need_dop, links } =
     props.data1;
@@ -86,7 +88,7 @@ export default function Zakazy(props) {
     if (typeof window !== 'undefined') {
       const token = getLocalStorageItem('token');
 
-      if ((!token || token == '') && city.length > 0) {
+      if ((!token || token == '') && city.length > 0 && !readSbpReturn(router.query, router.asPath).requested) {
         push(`/${city}`);
       }
     }

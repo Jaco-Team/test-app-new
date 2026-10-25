@@ -1457,6 +1457,8 @@ export const useCartStore = reuseHotStore(
           if (matchesOrder) set({ openConfirmForm: false, openPayForm: false, openModalBasket: false });
           void useProfileStore.getState().getOrderList('zakazy', pending.city, token, { force: true });
           void useProfileStore.getState().getCountPromos_Orders(pending.city, { force: true });
+          // Повторный возврат/новая вкладка не доказывают новую покупку для аналитики.
+          if (pending.trackPurchase === false) return;
           // После перезагрузки состав заново читается с сервера, а не из хранилища браузера.
           let details = check;
           if (!details?.order) {

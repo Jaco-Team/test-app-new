@@ -380,6 +380,20 @@ describe('отмена старой платёжной формы', () => {
 });
 
 describe('подтверждение онлайн-заказа после виджета', () => {
+  it('восстановление только по URL не очищает корзину и не повторяет аналитику покупки', async () => {
+    const { trackPurchase } = await import('@/utils/metrika');
+    useCartStore.setState({ items: [{ item_id: 999, count: 2 }], checkNewOrder: null });
+    useCartStore.getState().registerPaidOrder({ orderId: 123, pointId: 5, city: 'samara', method: 'sbp', trackPurchase: false }, 'user-token');
+    useCartStore.setState({ pendingPaidOrder: null });
+    useCartStore.getState().restorePaidOrder('samara');
+    api.mockImplementation(async (module, data) => data.type === 'confirm_paid_order' ? { st: true, status: 'confirmed' } :
+      data.type === 'get_my_orders_new_' ? { order_list: [{ order_id: 123 }] } : { count_orders: 1, count_promo: 0 });
+    await useCartStore.getState().startPaidConfirmation();
+    expect(useCartStore.getState().paidConfirmationState).toBe('confirmed');
+    expect(useCartStore.getState().items).toEqual([{ item_id: 999, count: 2 }]);
+    expect(trackPurchase).not.toHaveBeenCalled();
+    expect(api.mock.calls.some(([, data]) => data.type === 'get_order' || data.type === 'create_order_pre')).toBe(false);
+  });
   async function openCard({ restore = false } = {}) {
     window.localStorage.setItem('setCart', JSON.stringify({ updatedAt: Date.now() }));
     useCartStore.setState({ typeOrder: 'pic', orderPic: { id: 5 }, typePay: { id: 'online', name: 'Картой на сайте' }, items: [{ item_id: 1, count: 1 }] });
