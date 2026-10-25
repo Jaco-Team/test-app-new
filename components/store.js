@@ -1187,7 +1187,7 @@ export const useHeaderStoreNew = reuseHotStore(
 
       // защита
       // подтвреждение новой регистрации/изменения в существующий аккаунт
-      sendsmsNewLogin: async () => {
+      sendsmsNewLogin: async ({ deliveryChannel, captchaToken } = {}) => {
         if (get().doubleClickSMS === true) {
           return;
         }
@@ -1195,11 +1195,6 @@ export const useHeaderStoreNew = reuseHotStore(
         set({
           doubleClickSMS: true,
         });
-
-        if (get().typeLogin !== 'loginSMSCode') {
-          set({ timerPage: false, timer: 89 });
-          get().navigate('loginSMSCode');
-        }
 
         let login = get().loginLogin;
 
@@ -1213,32 +1208,48 @@ export const useHeaderStoreNew = reuseHotStore(
           type: 'sendsmsrp',
           number: login,
           pwd: get().pwdLogin,
-          //checkSpam: get().checkSpam === true ? 1 : 0
+          ...(deliveryChannel ? { delivery_channel: deliveryChannel } : {}),
+          ...(captchaToken ? { token: captchaToken } : {}),
         };
 
-        const json = await api('auth', data);
+        try {
+          const json = await api('auth', data);
 
-        if (json?.st === true) {
-          set({
-            errTextAuth: '',
-            errTitle: '',
-            errText1: '',
-            errText2: '',
-            typeAuth: json?.type,
-          });
-        } else {
-          set({
-            errTextAuth: json?.text,
-          });
+          if (json?.st === true) {
+            set({
+              errTextAuth: '',
+              errTitle: '',
+              errText1: '',
+              errText2: '',
+              typeAuth: json?.type,
+            });
 
-          get().setActiveModalAlert(true, json.text, false);
+            if (get().typeLogin !== 'loginSMSCode') {
+              set({ timerPage: false, timer: 89 });
+              get().navigate('loginSMSCode');
+            }
+
+            return true;
+          }
+
+          const message =
+            json?.text || 'Не удалось отправить код. Попробуйте позже.';
+          set({ errTextAuth: message });
+          get().setActiveModalAlert(true, message, false);
+
+          return false;
+        } catch {
+          const message =
+            'Не удалось отправить код. Проверьте соединение и попробуйте позже.';
+          set({ errTextAuth: message });
+          get().setActiveModalAlert(true, message, false);
+
+          return false;
+        } finally {
+          setTimeout(() => {
+            set({ doubleClickSMS: false });
+          }, 300);
         }
-
-        setTimeout(() => {
-          set({
-            doubleClickSMS: false,
-          });
-        }, 300);
       },
 
       getYandexLinkAuth: async (city) => {
