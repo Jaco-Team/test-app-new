@@ -18,6 +18,7 @@
     "test:images": "vitest run --config tests/product-images/vitest.config.mjs",
     "test:images:browser": "vitest run --config tests/product-images/vitest.browser.config.mjs",
     "test:images:e2e": "playwright test --config playwright.images.config.js",
+    "test:client-feedback": "vitest run --config tests/client-feedback/vitest.config.mjs",
     "test:e2e:recent": "playwright test tests/smoke/recent-routes.spec.js",
     "prepare": "husky",
     "oxc": "npx oxlint@latest",
