@@ -335,14 +335,18 @@ export async function proxy(request) {
   // }
 
   // ---------------------- ТРЕКИНГ СЕССИЙ (визитов) ----------------------
-  // vid — посетитель на 1 год
+  // vid — посетитель на 1 год. Не httpOnly: фронт передаёт vid/sid с заказом и
+  // как distinct id в Umami (utils/umami.js); это случайный id, не секрет.
   let vid = request.cookies.get('vid')?.value;
   if (!vid) {
     vid = crypto.randomUUID();
+  }
+  // Обновляем флаги и у прежнего UUID: старый HttpOnly cookie иначе не прочитает JS.
+  if (/^[0-9a-f]{8}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{4}-[0-9a-f]{12}$/i.test(vid)) {
     response.cookies.set('vid', vid, {
       path: '/',
       maxAge: 60 * 60 * 24 * 365,
-      httpOnly: true,
+      httpOnly: false,
       sameSite: 'Lax',
       secure: true,
     });
@@ -379,7 +383,7 @@ export async function proxy(request) {
   response.cookies.set('sid', sid, {
     path: '/',
     maxAge: 60 * 30,
-    httpOnly: true,
+    httpOnly: false,
     sameSite: 'Lax',
     secure: true,
   });
