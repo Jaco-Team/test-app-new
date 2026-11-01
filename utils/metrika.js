@@ -1,5 +1,6 @@
 import { useCitiesStore } from '@/components/store.js';
 import { getLocalStorageItem, setLocalStorageItem } from './browserStorage';
+import { trackUmami } from './umami';
 
 const MAIN_COUNTER_ID = 47085879;
 const CITY_COUNTER_ID_BY_CITY = {
@@ -167,6 +168,7 @@ export function hitAll(url, options = {}) {
  */
 export function reachGoal(goal, params) {
   if (typeof window === 'undefined') return;
+  trackUmami(goal, params);
 
   try {
     runWhenYmReady(() => {
@@ -216,6 +218,7 @@ export function reachGoalSplit(goal, paramsMain, paramsCity) {
 
   const safeMain = isObj(paramsMain) ? paramsMain : {};
   const safeCity = isObj(paramsCity) ? paramsCity : safeMain;
+  trackUmami(goal, safeMain);
 
   try {
     if (goal == 'add_to_cart') {
@@ -240,6 +243,7 @@ export function reachGoalSplit(goal, paramsMain, paramsCity) {
 // новое событие "Покупка" только в основной счетчик 47085879
 export function reachGoalMain(goal, params, cb) {
   if (typeof window === 'undefined') return;
+  trackUmami(goal, params);
 
   try {
     runWhenYmReady(() => {
@@ -257,6 +261,7 @@ export function reachGoalMain(goal, params, cb) {
 /** Отправляет одну цель в основной счётчик и оба городских счётчика. */
 export function reachGoalAllCounters(goal, params) {
   if (typeof window === 'undefined') return;
+  trackUmami(goal, params);
 
   try {
     runWhenYmReady(() => {
@@ -348,6 +353,8 @@ export function trackPurchase({ orderId, goalParams, ecommerceData }) {
   if (normalizedOrderId) {
     writePurchaseState(normalizedOrderId, 'pending');
   }
+
+  trackUmami('purchase', finalGoalParams);
 
   let finalized = false;
   const finalize = () => {

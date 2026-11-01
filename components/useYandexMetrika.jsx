@@ -1,4 +1,5 @@
 import { reachGoal, vkTmrReachGoal } from '@/utils/metrika';
+import { trackUmami } from '@/utils/umami';
 
 function useYandexMetrika(city) {
   const trackEvent = (event, params = {}) => {
@@ -6,6 +7,12 @@ function useYandexMetrika(city) {
       // открытие карточки товара
       case 'open_item': {
         reachGoal('open_item', { tovar: params.productId });
+        // Воронка товаров «Маркетинг» в Chef: одинаковые item_id/tovar у просмотра и добавления.
+        trackUmami('product_view', {
+          item_id: Number(params.item_id) || undefined,
+          tovar: params.productId,
+          price: Number(params.price) || undefined,
+        });
 
         if (city === 'samara') {
           vkTmrReachGoal('product', {
@@ -76,6 +83,12 @@ function useYandexMetrika(city) {
 
       // добавление товара в корзину
       case 'add_item': {
+        trackUmami('product_add', {
+          item_id: Number(params.item_id) || undefined,
+          tovar: params.productId,
+          price: Number(params.price) || undefined,
+        });
+
         if (city === 'samara') {
           vkTmrReachGoal('korzina', {
             city,

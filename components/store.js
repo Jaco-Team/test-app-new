@@ -31,6 +31,7 @@ import { getClientNetworkContext } from '@/utils/clientMonitoring';
 import { reachGoal, reachGoalMain, setUserIdAll, buildPurchasePayload, trackPurchase } from '@/utils/metrika';
 import { createPaidOrderConfirmation, paidCartKey } from '@/utils/paidOrderConfirmation';
 import { createOrderHistoryActions } from '@/utils/orderHistory';
+import { getVisitIds } from '@/utils/umami';
 import { isRecommendationsEnabled } from '@/utils/recommendations';
 import { notifyRecommendationAdded } from '@/utils/recommendationFeedback';
 import {
@@ -2591,6 +2592,7 @@ export const useCartStore = reuseHotStore(
             ytoken: ytoken,
             //rtoken: typeof window !== "undefined" ? window?.roistat?.getVisit?.() || 0 : 0,
             rtoken: 0,
+            ...getVisitIds(),
           };
         } else {
           data = {
@@ -2616,6 +2618,7 @@ export const useCartStore = reuseHotStore(
             ytoken: ytoken,
             //rtoken: typeof window !== "undefined" ? window?.roistat?.getVisit?.() || 0 : 0,
             rtoken: 0,
+            ...getVisitIds(),
           };
         }
 

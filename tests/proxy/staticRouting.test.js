@@ -89,9 +89,33 @@ describe('страницы городов и уборки', () => {
     expect(response.headers.has('location')).toBe(false);
     expect(response.cookies.get('vid')?.value).toBeTruthy();
     expect(response.cookies.get('sid')?.value).toBeTruthy();
+    // vid/sid читает фронт: заказ и distinct id Umami (utils/umami.js).
+    expect(response.cookies.get('vid')?.httpOnly).toBe(false);
+    expect(response.cookies.get('sid')?.httpOnly).toBe(false);
+    expect(response.cookies.get('sid_ts')?.httpOnly).toBe(true);
     expect(fetchMock).toHaveBeenCalledTimes(1);
     const payload = JSON.parse(fetchMock.mock.calls[0][1].body);
     expect(payload.landing_path).toBe(path);
+  });
+
+  it('переиздаёт прежний vid для JS, сохраняя UUID и ограничения cookie', async () => {
+    const vid = '6f1c2b3a-1111-4222-8333-944455556666';
+    const request = pageRequest('/samara');
+    request.cookies.set('vid', vid);
+
+    const response = await proxy(request);
+
+    expect(response.cookies.get('vid')).toMatchObject({
+      value: vid,
+      httpOnly: false,
+      secure: true,
+      sameSite: 'Lax',
+      path: '/',
+      maxAge: 60 * 60 * 24 * 365,
+    });
+    expect(response.cookies.get('sid_ts')?.httpOnly).toBe(true);
+    const payload = JSON.parse(fetchMock.mock.calls[0][1].body);
+    expect(payload.vid).toBe(vid);
   });
 
   it('оставляет старые category и UTM-параметры', async () => {
