@@ -32,6 +32,9 @@ import {
 import LinearProgress from '@mui/material/LinearProgress';
 
 import { roboto } from '@/ui/Font';
+import OrderReviewController, {
+  isOrderReviewEligible,
+} from '@/modules/clientFeedback/OrderReviewController';
 
 // Определение задержки заказа
 function isOrderLate(order) {
@@ -451,6 +454,19 @@ export default React.memo(function ModalOrder() {
                 false
               )}
             </Grid>
+
+            {isOrderReviewEligible(modalOrder?.order) ? (
+              <Box
+                sx={{
+                  display: 'flex',
+                  justifyContent: 'center',
+                  mt: 4,
+                  '& .MuiButton-root': { borderRadius: 999, minWidth: 240 },
+                }}
+              >
+                <OrderReviewController order={modalOrder.order} token={token} />
+              </Box>
+            ) : null}
 
             <Grid size={12} className="header_btn">
               {parseInt(modalOrder?.order?.status_order) > 0 &&
