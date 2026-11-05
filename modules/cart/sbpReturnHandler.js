@@ -77,7 +77,7 @@ export default function SbpReturnHandler({ city }) {
         void verifySeparateReference(returnInfo.reference);
         return;
       }
-      if (!order) order = store.registerPaidOrder({ ...returnInfo.reference, city, method: 'sbp', trackPurchase: false }, token);
+      if (!order) order = store.registerPaidOrder({ ...returnInfo.reference, city, method: returnInfo.method || 'sbp', trackPurchase: false }, token);
     } else if (returned && returnInfo.legacy && !order) {
       const legacy = store.restorePendingSbpOrder(city);
       if (legacy?.city === city) order = store.registerPaidOrder({ ...legacy, method: 'sbp', trackPurchase: false }, token);

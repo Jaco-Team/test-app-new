@@ -76,6 +76,17 @@ describe.each(['togliatti', 'samara'])('возврат СБП в городе %s
   });
 });
 
+it.each([375, 768, 1440])('возврат hosted-карты проверяет тот же заказ на ширине %s', async (width) => {
+  await page.viewport(width, 900);
+  route('/samara/zakazy?payment_return=1&point_id=8&order_id=180351&utm_source=bank');
+  await render(); await flush();
+  expect(fixture.request).toHaveBeenCalledWith('cart', expect.objectContaining({ type: 'confirm_paid_order', point_id: 8, order_id: 180351, token: 'browser-test-owner' }));
+  expect(fixture.request.mock.calls.some(([, data]) => data.type === 'create_order_pre')).toBe(false);
+  expect(useCartStore.getState().pendingPaidOrder.method).toBe('online');
+  expect(fixture.router.asPath).toBe('/samara/zakazy?utm_source=bank');
+  expect(trackPurchase).not.toHaveBeenCalled();
+});
+
 it('старый generic URL без контекста обновляет историю и не выбирает последний заказ', async () => {
   route('/samara/zakazy?sbp_return=1&utm_source=a%20b#details'); await render(); await flush();
   expect(host.textContent).toContain('Актуальный статус ваших заказов указан в истории');

@@ -4,6 +4,20 @@ import { readSbpReturn, samePaidOrder, sbpOrdersPath } from '@/utils/sbpReturn';
 const query = { sbp_return: '1', point_id: '8', order_id: '180351' };
 const path = '/samara/zakazy?sbp_return=1&point_id=8&order_id=180351';
 describe('ссылка возврата СБП', () => {
+  it('принимает отдельный маркер hosted-карты и сохраняет точную ссылку заказа', () => {
+    const data = { payment_return: '1', point_id: '8', order_id: '180351' };
+    expect(readSbpReturn(data, '/samara/zakazy?payment_return=1&point_id=8&order_id=180351')).toMatchObject({
+      requested: true, method: 'online', reference: { pointId: 8, orderId: 180351 }, legacy: false, invalid: false,
+    });
+    expect(sbpOrdersPath('/samara/zakazy?payment_return=1&point_id=8&order_id=180351&utm_source=bank#details', 'samara', true)).toBe('/samara/zakazy?utm_source=bank#details');
+  });
+  it.each([
+    [{ payment_return: '1' }, '/samara/zakazy?payment_return=1'],
+    [{ payment_return: ['1', '1'], point_id: '8', order_id: '180351' }, '/samara/zakazy?payment_return=1&payment_return=1&point_id=8&order_id=180351'],
+    [{ payment_return: '1', sbp_return: '1', point_id: '8', order_id: '180351' }, '/samara/zakazy?payment_return=1&sbp_return=1&point_id=8&order_id=180351'],
+  ])('не принимает неполный или неоднозначный hosted-возврат', (data, url) => {
+    expect(readSbpReturn(data, url)).toMatchObject({ requested: true, reference: null, legacy: false, invalid: true });
+  });
   it('содержит точный заказ без зависимости от браузерного хранилища', () => {
     expect(readSbpReturn(query, path)).toEqual({ requested: true, reference: { pointId: 8, orderId: 180351 }, legacy: false, invalid: false });
   });

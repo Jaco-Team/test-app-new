@@ -27,7 +27,8 @@ vi.mock('zustand/middleware', async (importOriginal) => ({
   persist: (initializer) => initializer,
 }));
 
-import { api } from '../../components/api.js';
+import { api, trackPaymentClientEvent } from '../../components/api.js';
+import { clearCardCheckoutRequest, readCardCheckoutRequest } from '@/utils/cardCheckout';
 import { useCartStore, useHeaderStoreNew, useProfileStore, useCitiesStore } from '../../components/store.js';
 import {
   clearPendingSbpOrder,
@@ -82,6 +83,9 @@ beforeEach(() => {
   });
   useCitiesStore.setState({ thisCity: 'samara' });
   useHeaderStoreNew.setState({ token: 'user-token', setActiveModalAlert: vi.fn() });
+  clearCardCheckoutRequest('user-token');
+  clearCardCheckoutRequest('another-account');
+  useCartStore.getState().resetCardPreflight();
   useCartStore.getState().resetPaidConfirmation();
   useCartStore.setState({
     pendingSbpOrder: null,
@@ -285,7 +289,210 @@ describe('оплата СБП с переходом на страницу ЮKass
   });
 });
 
+describe('проверка формы до создания карточного платежа', () => {
+  const hostedUrl = 'https://yookassa.ru/payments/hosted-first';
+  function checkout() {
+    window.localStorage.setItem('setCart', JSON.stringify({ updatedAt: Date.now() }));
+    useCartStore.setState({
+      typeOrder: 'pic', orderPic: { id: 5 }, typePay: { id: 'online' },
+      items: [{ item_id: 1, count: 1 }], allPrice: 100,
+    });
+  }
+  function failingScript() {
+    delete window.YooMoneyCheckoutWidget;
+    const script = new EventTarget();
+    script.remove = vi.fn(); document.querySelector = () => script;
+    return script;
+  }
+  async function failAttempt() {
+    const script = failingScript();
+    const opening = useCartStore.getState().createOrder('user-token', 'samara');
+    script.dispatchEvent(new Event('error'));
+    expect(await opening).toBe('wait_payment');
+  }
+  function successResponse(confirmation = { confirmation_token: 'card-token' }) {
+    return { st: true, order_id: 123, check: pending.check, pay: { pay: { confirmation } } };
+  }
+
+  it('две ошибки загрузки не создают заказ и разрешают переход на страницу провайдера', async () => {
+    checkout(); await failAttempt();
+    expect(useCartStore.getState()).toMatchObject({ cardPreflightState: 'error', cardScriptFailures: 1 });
+    await failAttempt();
+    expect(useCartStore.getState()).toMatchObject({ cardPreflightState: 'error', cardScriptFailures: 2 });
+    expect(api).not.toHaveBeenCalled();
+    expect(readCardCheckoutRequest('user-token')).toBeNull();
+  });
+
+  it('после повторной успешной загрузки создаёт один прежний embedded-платёж', async () => {
+    checkout(); await failAttempt(); window.YooMoneyCheckoutWidget = FakeWidget;
+    api.mockResolvedValueOnce(successResponse());
+    await useCartStore.getState().cardPreflightRetry();
+    expect(api).toHaveBeenCalledTimes(1);
+    expect(api.mock.calls[0][1]).not.toHaveProperty('payment_confirmation');
+    expect(useCartStore.getState().cardPreflightState).toBe('idle');
+    expect(widgets).toHaveLength(1);
+  });
+
+  it('двойное нажатие hosted создаёт первый платёж один раз и повторно открывает тот же URL', async () => {
+    checkout(); await failAttempt(); await failAttempt();
+    let resolve;
+    api.mockReturnValueOnce(new Promise((done) => { resolve = done; }));
+    const select = useCartStore.getState().cardPreflightHosted;
+    const first = select(); const second = select();
+    expect(api).toHaveBeenCalledTimes(1);
+    expect(api.mock.calls[0][1]).toMatchObject({ typePay: 'online', payment_confirmation: 'redirect' });
+    resolve(successResponse({ type: 'redirect', confirmation_url: hostedUrl }));
+    await first; await second;
+    expect(widgets).toHaveLength(0);
+    expect(redirect).toHaveBeenCalledWith(hostedUrl);
+    await select();
+    expect(api).toHaveBeenCalledTimes(1);
+    expect(useCartStore.getState().pendingPaidOrder).toMatchObject({ orderId: 123, pointId: 5, method: 'online' });
+  });
+
+  it.each(['отказ', 'отклонённый Promise'])('не повторяет отправленный POST после неоднозначного результата: %s', async (kind) => {
+    checkout();
+    if (kind === 'отказ') api.mockResolvedValueOnce({ st: false, text: 'Сервис временно недоступен' });
+    else api.mockRejectedValueOnce(new Error('network response lost'));
+    expect(await useCartStore.getState().createOrder('user-token', 'samara')).toBe('wait_payment');
+    expect(useCartStore.getState()).toMatchObject({ DBClick: false, cardPreflightState: 'uncertain' });
+    useCartStore.getState().setConfirmForm(false);
+    useCartStore.getState().clearCheckoutData(); checkout();
+    expect(await useCartStore.getState().createOrder('user-token', 'samara')).toBe('wait_payment');
+    expect(api).toHaveBeenCalledTimes(1);
+  });
+
+  it('из ошибки сервера с payment_order восстанавливает только проверку того же заказа', async () => {
+    checkout(); await failAttempt(); await failAttempt();
+    api.mockResolvedValueOnce({ st: false, text: 'Не удалось подготовить оплату', payment_order: { point_id: 5, order_id: 123 } });
+    await useCartStore.getState().cardPreflightHosted();
+    expect(useCartStore.getState()).toMatchObject({ cardPreflightState: 'existing', cardPreflightMessage: 'Не удалось подготовить оплату' });
+    expect(useCartStore.getState().pendingPaidOrder).toMatchObject({ pointId: 5, orderId: 123 });
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    expect(api).toHaveBeenCalledTimes(1);
+    expect(redirect).not.toHaveBeenCalled();
+  });
+
+  it('позволяет исправить данные только при явном подтверждении сервера, что запись не начиналась', async () => {
+    checkout(); api.mockResolvedValueOnce({ st: false, text: 'Проверьте email', checkout_attempt: 'not_started' });
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    expect(api.mock.calls[0][1].checkout_guard).toBe(1);
+    expect(readCardCheckoutRequest('user-token')).toBeNull();
+    expect(useCartStore.getState().cardPreflightState).toBe('rejected');
+    useCartStore.getState().setConfirmForm(false);
+    api.mockResolvedValueOnce(successResponse());
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    expect(api).toHaveBeenCalledTimes(2);
+  });
+
+  it('не создаёт hosted-платёж, если маркер нельзя сохранить для перезагрузки', async () => {
+    checkout(); await failAttempt(); await failAttempt();
+    window.sessionStorage.setItem = () => { throw new Error('storage blocked'); };
+    await useCartStore.getState().cardPreflightHosted();
+    expect(useCartStore.getState().cardPreflightState).toBe('storage_error');
+    expect(api).not.toHaveBeenCalled();
+    expect(readCardCheckoutRequest('user-token')).toBeNull();
+  });
+
+  it.each(['account', 'city', 'method', 'address', 'items', 'date'])('поздняя загрузка после изменения %s не отправляет POST', async (change) => {
+    checkout(); const script = failingScript();
+    const preparing = useCartStore.getState().createOrder('user-token', 'samara');
+    if (change === 'account') useHeaderStoreNew.setState({ token: 'another-account' });
+    if (change === 'city') useCitiesStore.setState({ thisCity: 'togliatti' });
+    if (change === 'method') useCartStore.setState({ typePay: { id: 'cash' } });
+    if (change === 'address') useCartStore.setState({ orderPic: { id: 7 } });
+    if (change === 'items') useCartStore.setState({ items: [{ item_id: 99, count: 2 }] });
+    if (change === 'date') useCartStore.setState({ dateTimeOrder: { date: '2026-12-01' } });
+    window.YooMoneyCheckoutWidget = FakeWidget; script.dispatchEvent(new Event('load'));
+    expect(await preparing).toBe('nothing');
+    expect(api).not.toHaveBeenCalled();
+  });
+
+  it('не заменяет уже созданный embedded-платёж hosted-платежом', async () => {
+    checkout(); api.mockResolvedValueOnce(successResponse());
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    await vi.advanceTimersByTimeAsync(301);
+    useCartStore.setState({ cardScriptFailures: 2 });
+    await useCartStore.getState().createOrder('user-token', 'samara', undefined, { confirmation: 'redirect' });
+    expect(api).toHaveBeenCalledTimes(1);
+    expect(widgets).toHaveLength(2);
+    expect(widgets[1].options.confirmation_token).toBe('card-token');
+  });
+
+  it('закрытие и повторное открытие продолжают тот же embedded-платёж без нового POST', async () => {
+    checkout(); api.mockResolvedValueOnce(successResponse());
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    useCartStore.getState().setConfirmForm(false);
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    expect(api).toHaveBeenCalledTimes(1);
+    expect(widgets).toHaveLength(2);
+    expect(widgets[1].options.confirmation_token).toBe('card-token');
+  });
+
+  it('старый preflight не снимает блокировку нового аккаунта с выполняющимся POST', async () => {
+    checkout(); const script = failingScript();
+    const old = useCartStore.getState().createOrder('user-token', 'samara');
+    useHeaderStoreNew.setState({ token: 'another-account' });
+    checkout(); window.YooMoneyCheckoutWidget = FakeWidget;
+    let resolve; api.mockReturnValueOnce(new Promise((done) => { resolve = done; }));
+    const current = useCartStore.getState().createOrder('another-account', 'samara');
+    await Promise.resolve(); await Promise.resolve();
+    expect(useCartStore.getState()).toMatchObject({ DBClick: true, cardPreflightState: 'creating' });
+    script.dispatchEvent(new Event('error')); await old;
+    expect(useCartStore.getState()).toMatchObject({ DBClick: true, cardPreflightState: 'creating' });
+    resolve(successResponse()); await current;
+  });
+
+  it('старый callback после смены аккаунта не подменяет чужой pending-заказ', async () => {
+    checkout(); await failAttempt();
+    const oldRetry = useCartStore.getState().cardPreflightRetry;
+    const oldHosted = useCartStore.getState().cardPreflightHosted;
+    useHeaderStoreNew.setState({ token: 'another-account' });
+    useCartStore.getState().registerPaidOrder({ orderId: 777, pointId: 7, city: 'samara', method: 'online' }, 'another-account');
+    const current = useCartStore.getState().pendingPaidOrder;
+    await oldRetry(); await oldHosted();
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    expect(useCartStore.getState().pendingPaidOrder).toBe(current);
+    expect(api).not.toHaveBeenCalled();
+  });
+
+  it.each(['confirmed', 'canceled'])('после проверенного %s старый pending не блокирует новое оформление', async (state) => {
+    checkout(); useCartStore.getState().registerPaidOrder({ ...pending, method: 'online' }, 'user-token');
+    useCartStore.setState({ paidConfirmationState: state });
+    api.mockResolvedValueOnce(successResponse());
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    expect(api).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe('восстановление встроенной карточной формы', () => {
+  it('записывает адрес скрипта и время ожидания при ошибке загрузки', async () => {
+    delete window.YooMoneyCheckoutWidget;
+    const script = new EventTarget();
+    script.remove = vi.fn();
+    document.querySelector = () => script;
+    const opening = useCartStore.getState().showCardPayment('card-token', {
+      payment_flow_id: 'payment-flow', point_id: 5, order_id: 123,
+    });
+    await vi.advanceTimersByTimeAsync(12000);
+    await opening;
+    expect(trackPaymentClientEvent).toHaveBeenCalledWith('widget_script_failed', expect.objectContaining({
+      payment_flow_id: 'payment-flow', point_id: 5, order_id: 123,
+      script_host: 'yookassa.ru', script_path: '/checkout-widget/v1/checkout-widget.js',
+      duration_ms: 12000, outcome: 'error', reason: 'script_timeout',
+    }));
+    expect(api).not.toHaveBeenCalled();
+  });
+
+  it('передаёт безопасный код callback без сырых данных виджета', async () => {
+    await useCartStore.getState().showCardPayment('card-token', { payment_flow_id: 'payment-flow' });
+    widgets[0].options.error_callback({ error: { code: 'token_expired' }, confirmation_token: 'private' });
+    expect(trackPaymentClientEvent).toHaveBeenCalledWith('widget_error', expect.objectContaining({
+      provider_error_code: 'token_expired', outcome: 'error', reason: 'widget_callback',
+    }));
+    expect(JSON.stringify(trackPaymentClientEvent.mock.calls)).not.toContain('private');
+  });
+
   it('повторяет render с тем же токеном, не создавая ещё один заказ', async () => {
     window.localStorage.setItem('setCart', JSON.stringify({ updatedAt: Date.now() }));
     useCartStore.setState({
@@ -370,6 +577,8 @@ describe('отмена старой платёжной формы', () => {
     let resolve;
     api.mockReturnValueOnce(new Promise((r) => { resolve = r; }));
     const creating = useCartStore.getState().createOrder('user-token', 'samara');
+    await Promise.resolve(); await Promise.resolve();
+    expect(api).toHaveBeenCalledTimes(1);
     useCartStore.getState().clearCheckoutData();
     resolve({ st: true, order_id: 123, check: pending.check, pay: { pay: { confirmation: { confirmation_token: 'old-token' } } } });
     expect(await creating).toBe('nothing');

@@ -10,8 +10,11 @@ function positiveId(value) {
 export function readSbpReturn(query = {}, asPath = '') {
   const raw = new URL(asPath || '/', 'https://jacofood.ru').searchParams;
   const owns = (name) => Object.prototype.hasOwnProperty.call(query, name);
-  const requested = raw.has('sbp_return') || owns('sbp_return');
-  const validFlag = query.sbp_return === '1' && raw.getAll('sbp_return').length === 1 && raw.get('sbp_return') === '1';
+  const cardReturn = raw.has('payment_return') || owns('payment_return');
+  const sbpReturn = raw.has('sbp_return') || owns('sbp_return');
+  const flag = cardReturn ? 'payment_return' : 'sbp_return';
+  const requested = cardReturn || sbpReturn;
+  const validFlag = !(cardReturn && sbpReturn) && query[flag] === '1' && raw.getAll(flag).length === 1 && raw.get(flag) === '1';
   const hasIds = raw.has('point_id') || raw.has('order_id') || owns('point_id') || owns('order_id');
   const pointId = positiveId(query.point_id);
   const orderId = positiveId(query.order_id);
@@ -19,9 +22,10 @@ export function readSbpReturn(query = {}, asPath = '') {
     raw.get('point_id') === query.point_id && raw.get('order_id') === query.order_id;
   return {
     requested,
-    legacy: requested && validFlag && !hasIds,
+    ...(cardReturn ? { method: 'online' } : {}),
+    legacy: requested && validFlag && !hasIds && !cardReturn,
     reference: requested && validFlag && validIds ? { pointId, orderId } : null,
-    invalid: requested && (!validFlag || (hasIds && !validIds)),
+    invalid: requested && (!validFlag || (hasIds && !validIds) || (cardReturn && !hasIds)),
   };
 }
 
@@ -33,6 +37,6 @@ export function sbpOrdersPath(asPath, city, clean = false) {
   const path = String(asPath || '/');
   const suffixIndex = path.search(/[?#]/);
   let target = `/${city}/zakazy${suffixIndex === -1 ? '' : path.slice(suffixIndex)}`;
-  if (clean) for (const name of ['sbp_return', 'point_id', 'order_id']) target = updateRouteQuery(target, name, null);
+  if (clean) for (const name of ['sbp_return', 'payment_return', 'point_id', 'order_id']) target = updateRouteQuery(target, name, null);
   return target;
 }

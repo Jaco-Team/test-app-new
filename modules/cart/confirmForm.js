@@ -28,6 +28,7 @@ import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import CartConfirmMap from '@/modules/cart/cartConfirmMap';
 import PaidOrderStatus from './paidOrderStatus';
+import CardPaymentPreflight from './cardPaymentPreflight';
 
 import {
   buildPurchasePayload,
@@ -42,6 +43,7 @@ const confirmOrderLabel = 'Подтвердить заказ';
 export default function ConfirmForm() {
   const { push } = useRouter();
   const paidConfirmationState = useCartStore((state) => state.paidConfirmationState);
+  const cardPreflightState = useCartStore((state) => state.cardPreflightState);
   const closeConfirmation = () => {
     const store = useCartStore.getState();
     store.setConfirmForm(false);
@@ -373,6 +375,10 @@ export default function ConfirmForm() {
     } else {
       NewSummDiv = 1;
     }
+  }
+
+  if (typePay?.id === 'online' && cardPreflightState !== 'idle') {
+    return <CardPaymentPreflight open={openConfirmForm} onClose={closeConfirmation} />;
   }
 
   return (

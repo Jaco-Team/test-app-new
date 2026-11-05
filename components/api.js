@@ -1,9 +1,15 @@
 //import queryString from 'query-string';
 import qs from 'query-string';
 import axios from 'axios';
+import Cookies from 'js-cookie';
 import CryptoJS from 'crypto-js';
 import * as Sentry from '@sentry/nextjs';
 import { apiErrorContext } from '@/utils/apiErrorContext';
+import { getLocalStorageItem } from '@/utils/browserStorage';
+import {
+  CHECKOUT_WIDGET_SCRIPT_CONTEXT,
+  getPaymentWidgetErrorCode,
+} from '@/utils/checkoutWidgetLoader';
 
 import {
   emitInternetIssue,
@@ -167,15 +173,33 @@ export function endPaymentFlow() {
 }
 
 export function trackPaymentClientEvent(clientStage, details = {}) {
+  try { sendPaymentClientEvent(clientStage, details); } catch {}
+}
+
+function sendPaymentClientEvent(clientStage, details) {
   if (typeof window === 'undefined') return;
 
+  let token;
+  try { token = Cookies.get('token'); } catch {}
+  if (!token) token = getLocalStorageItem('token');
   const connection = window.navigator?.connection;
+  const path = window.location?.pathname || '/';
+  const routeCity = path.split('/')[1];
+  const requestedCity = details.city_id;
+  const cityId = ['samara', 'togliatti'].includes(requestedCity) ||
+    (Number.isSafeInteger(requestedCity) && requestedCity > 0)
+    ? requestedCity
+    : ['samara', 'togliatti'].includes(routeCity) ? routeCity : undefined;
   const payload = {
     type: 'payment_event',
+    token,
+    city_id: cityId,
     client_stage: clientStage,
     payment_flow_id: details.payment_flow_id || getPaymentFlowId(),
     payment_action: details.payment_action,
     payment_method: details.payment_method,
+    payment_confirmation: ['embedded', 'redirect'].includes(details.payment_confirmation)
+      ? details.payment_confirmation : undefined,
     outcome: details.outcome,
     reason: details.reason,
     duration_ms: details.duration_ms,
@@ -188,9 +212,16 @@ export function trackPaymentClientEvent(clientStage, details = {}) {
     provider_status: details.provider_status,
     widget_target: details.widget_target,
     has_payment_session: details.has_payment_session,
+    provider_error_code: details.provider_error_code
+      ? getPaymentWidgetErrorCode(details.provider_error_code)
+      : undefined,
+    script_host: details.script_host === CHECKOUT_WIDGET_SCRIPT_CONTEXT.script_host
+      ? details.script_host : undefined,
+    script_path: details.script_path === CHECKOUT_WIDGET_SCRIPT_CONTEXT.script_path
+      ? details.script_path : undefined,
     online: window.navigator?.onLine,
     effective_type: connection?.effectiveType,
-    path: window.location?.pathname || '/',
+    path,
     ts: Math.floor(Date.now() / 1000),
   };
   const body = qs.stringify(

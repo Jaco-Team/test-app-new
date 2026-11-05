@@ -54,7 +54,18 @@ import {
 } from '@/utils/sbpPayment';
 
 import Cookies from 'js-cookie';
-import { ensureYooMoneyCheckoutWidget } from '@/utils/checkoutWidgetLoader';
+import {
+  CHECKOUT_WIDGET_SCRIPT_CONTEXT,
+  ensureYooMoneyCheckoutWidget,
+  getPaymentWidgetErrorCode,
+} from '@/utils/checkoutWidgetLoader';
+import {
+  cardCheckoutFingerprint,
+  readCardCheckoutRequest,
+  saveCardCheckoutRequest,
+  clearCardCheckoutRequest,
+  hostedCardConfirmationUrl,
+} from '@/utils/cardCheckout';
 
 function captureMapStateIssue(message, extra = {}) {
   Sentry.captureMessage(message, {
@@ -1499,6 +1510,31 @@ export const useCartStore = reuseHotStore(
       cardPaymentRevision: 0,
       cardRenderTimer: null,
       retryCardPayment: null,
+      cardPreflightState: 'idle',
+      cardScriptFailures: 0,
+      cardPreflightRetry: null,
+      cardPreflightHosted: null,
+      cardHostedUrl: null,
+      cardPreflightMessage: '',
+      cardEmbeddedContext: null,
+      cardHostedContext: null,
+
+      resetCardPreflight: () => set({
+        DBClick: false, cardPreflightState: 'idle', cardScriptFailures: 0,
+        cardPreflightRetry: null, cardPreflightHosted: null, cardHostedUrl: null, cardPreflightMessage: '',
+      }),
+
+      startHostedCardRedirect: () => {
+        const url = hostedCardConfirmationUrl(get().cardHostedUrl);
+        const token = useHeaderStoreNew.getState().token;
+        const request = readCardCheckoutRequest(token);
+        const context = get().cardHostedContext;
+        if (!url || !request?.reference || request.confirmation !== 'redirect' ||
+            request.city !== useCitiesStore.getState().thisCity || context?.owner !== request.owner ||
+            context.pointId !== request.reference.pointId || context.orderId !== request.reference.orderId ||
+            context.url !== url) return false;
+        try { window.location.assign(url); return true; } catch { return false; }
+      },
 
       show_checkFreeDrive: false,
 
@@ -1525,6 +1561,7 @@ export const useCartStore = reuseHotStore(
       // товары НЕ трогаем
       clearCheckoutData: (opts = { touch: true }) => {
         get().cancelCardPayment();
+        get().resetCardPreflight();
         set({
           cartMapRevision: get().cartMapRevision + 1,
           orderAddr: null,
@@ -1641,6 +1678,7 @@ export const useCartStore = reuseHotStore(
 
         if (active === false) {
           get().cancelCardPayment();
+          get().resetCardPreflight();
           const paymentFlowId = getPaymentFlowId({ create: false });
           if (paymentFlowId) {
             trackPaymentClientEvent('payment_form_closed', {
@@ -1834,6 +1872,7 @@ export const useCartStore = reuseHotStore(
 
       applyCityCatalog: (catalog) => {
         get().cancelCardPayment();
+        get().resetCardPreflight();
         set({ cartMapRevision: get().cartMapRevision + 1 });
         const saved = getLocalStorageJson('setCart');
         const sourceItems = get().items.length ? get().items : saved?.items;
@@ -2420,29 +2459,40 @@ export const useCartStore = reuseHotStore(
         const track = (name, values) => trackPaymentClientEvent(name, {
           ...paymentEventBase, payment_action: 'widget', ...values,
         });
-        const fail = (name, reason, text) => {
+        const fail = (name, reason, text, details = {}) => {
           if (!current() || get().cardPaymentState === 'error' || ['complete', 'confirming'].includes(get().cardPaymentState)) return;
           clearInterval(get().cardRenderTimer);
           set({ cardPaymentState: 'error', cardRenderTimer: null });
-          track(name, { outcome: 'error', reason });
+          track(name, { ...details, outcome: 'error', reason });
           useHeaderStoreNew.getState().setActiveModalAlert(true, text, false);
         };
-        track('widget_script_started', { outcome: 'pending' });
-        const Widget = await ensureYooMoneyCheckoutWidget();
+        const scriptStartedAt = Date.now();
+        let scriptFailure = 'script_error';
+        track('widget_script_started', { ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, outcome: 'pending' });
+        const Widget = await ensureYooMoneyCheckoutWidget(12000, (reason) => { scriptFailure = reason; });
         if (!current()) return;
         if (!Widget || !confirmationToken) {
-          fail('widget_script_failed', 'script_error', 'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.');
+          fail('widget_script_failed', scriptFailure, 'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.', {
+            ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, duration_ms: Date.now() - scriptStartedAt,
+            has_payment_session: Boolean(confirmationToken),
+          });
           return;
         }
-        track('widget_script_loaded', { outcome: 'success' });
+        track('widget_script_loaded', {
+          ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, duration_ms: Date.now() - scriptStartedAt, outcome: 'success',
+        });
         let checkout;
         try {
           checkout = new Widget({
             confirmation_token: confirmationToken,
-            error_callback: (error) => fail('widget_error', 'widget_callback', getPaymentWidgetErrorText(error)),
+            error_callback: (error) => fail('widget_error', 'widget_callback', getPaymentWidgetErrorText(error), {
+              provider_error_code: getPaymentWidgetErrorCode(error),
+            }),
           });
-        } catch {
-          fail('widget_error', 'constructor_error', 'Не удалось открыть форму оплаты. Попробуйте снова.');
+        } catch (error) {
+          fail('widget_error', 'constructor_error', 'Не удалось открыть форму оплаты. Попробуйте снова.', {
+            provider_error_code: getPaymentWidgetErrorCode(error),
+          });
           return;
         }
         if (get().cardPaymentState === 'error') { checkout.destroy(); return; }
@@ -2451,14 +2501,16 @@ export const useCartStore = reuseHotStore(
         checkout.on('success', () => {
           if (!current()) return;
           clearInterval(get().cardRenderTimer);
-          set({ cardPaymentState: 'confirming', retryCardPayment: null, cardRenderTimer: null });
+          set({ cardPaymentState: 'confirming', retryCardPayment: null, cardRenderTimer: null, cardEmbeddedContext: null });
           track('widget_success', { outcome: 'success' });
           try { checkout.destroy(); } catch {}
           set({ global_checkout: null });
           void get().startPaidConfirmation();
         });
         checkout.on('fail', (error) => {
-          fail('widget_fail', 'widget_callback', getPaymentWidgetErrorText(error));
+          fail('widget_fail', 'widget_callback', getPaymentWidgetErrorText(error), {
+            provider_error_code: getPaymentWidgetErrorCode(error),
+          });
         });
         let tries = 0;
         const timer = setInterval(() => {
@@ -2495,7 +2547,7 @@ export const useCartStore = reuseHotStore(
       },
 
       // создание заказа
-      createOrder: async (token, city_id, funcClose) => {
+      createOrder: async (token, city_id, funcClose, options = {}) => {
         if (!token || token?.length == 0) {
           useHeaderStoreNew.getState().setActiveModalAuth(true);
 
@@ -2503,6 +2555,8 @@ export const useCartStore = reuseHotStore(
 
           return;
         }
+        if (String(get().typePay?.id || '').toLowerCase() === 'online' &&
+            (useHeaderStoreNew.getState().token !== token || useCitiesStore.getState().thisCity !== city_id)) return 'nothing';
 
         // =========================================================
         // NEW (Шаг 4): страховка от “старого оформления”
@@ -2623,8 +2677,54 @@ export const useCartStore = reuseHotStore(
         }
 
         const paymentMethod = String(get().typePay?.id || '').toLowerCase();
+        const cardConfirmation = options.confirmation === 'redirect' ? 'redirect' : 'embedded';
+        const checkoutFingerprint = paymentMethod === 'online' ? cardCheckoutFingerprint(get(), token, city_id) : '';
+        if (paymentMethod === 'online') data.checkout_guard = 1;
+        const currentPreparation = () => get().cardPaymentRevision === checkoutRevision &&
+          useHeaderStoreNew.getState().token === token && useCitiesStore.getState().thisCity === checkoutCity &&
+          String(get().typePay?.id || '').toLowerCase() === paymentMethod &&
+          cardCheckoutFingerprint(get(), token, city_id) === checkoutFingerprint;
+        if (paymentMethod === 'online') {
+          const existing = readCardCheckoutRequest(token);
+          const pending = get().pendingPaidOrder || get().restorePaidOrder(city_id);
+          if (existing || (pending?.method === 'online' && !['confirmed', 'canceled'].includes(get().paidConfirmationState))) {
+            if (existing?.reference && !pending) get().registerPaidOrder({
+              ...existing.reference, city: existing.city, method: 'online', trackPurchase: false,
+            }, token);
+            const embedded = get().cardEmbeddedContext;
+            const hosted = get().cardHostedContext;
+            const owns = (context) => existing?.reference && context?.owner === existing.owner &&
+              context.city === city_id && context.pointId === existing.reference.pointId && context.orderId === existing.reference.orderId;
+            if (existing?.confirmation === 'embedded' && owns(embedded) && get().paidConfirmationState === 'idle') {
+              set({ DBClick: false, cardPreflightState: 'idle', checkNewOrder: embedded.check });
+              await get().showCardPayment(embedded.confirmationToken, embedded.eventBase, funcClose);
+              return 'wait_payment';
+            }
+            const hostedUrl = owns(hosted) ? hosted.url : null;
+            set({
+              DBClick: false,
+              cardHostedUrl: hostedUrl,
+              cardPreflightState: existing && !existing.reference ? 'uncertain' : hostedUrl ? 'hosted' : 'existing',
+            });
+            return 'wait_payment';
+          }
+          set({
+            cardPreflightRetry: () => currentPreparation() ? get().createOrder(token, city_id, funcClose) : 'nothing',
+            cardPreflightHosted: async () => {
+              if (!currentPreparation()) return 'nothing';
+              const result = await get().createOrder(token, city_id, funcClose, { confirmation: 'redirect' });
+              if (result === 'wait_payment' && get().cardPreflightState === 'hosted') get().startHostedCardRedirect();
+            },
+          });
+          if (cardConfirmation === 'redirect' && get().cardScriptFailures < 2) {
+            set({ DBClick: false, cardPreflightState: 'error' });
+            return 'wait_payment';
+          }
+        }
         if (['online', 'pay_page', 'sbp'].includes(paymentMethod)) {
-          paymentFlowId = beginPaymentFlow();
+          paymentFlowId = paymentMethod === 'online'
+            ? getPaymentFlowId({ create: false }) || beginPaymentFlow()
+            : beginPaymentFlow();
           data.payment_flow_id = paymentFlowId;
           trackPaymentClientEvent('checkout_started', {
             payment_flow_id: paymentFlowId,
@@ -2639,20 +2739,98 @@ export const useCartStore = reuseHotStore(
           });
         }
 
-        const json = await api('cart', data);
+        if (paymentMethod === 'online') {
+          const preflightBase = { payment_flow_id: paymentFlowId, payment_action: 'widget', payment_method: 'online', payment_confirmation: cardConfirmation };
+          if (cardConfirmation === 'embedded') {
+            set({ cardPreflightState: 'loading' });
+            const startedAt = Date.now();
+            let failure = 'script_error';
+            trackPaymentClientEvent('widget_script_started', { ...preflightBase, ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, outcome: 'pending' });
+            const Widget = await ensureYooMoneyCheckoutWidget(12000, (reason) => { failure = reason; });
+            if (!currentPreparation()) {
+              if (get().cardPaymentRevision === checkoutRevision && useHeaderStoreNew.getState().token === token && useCitiesStore.getState().thisCity === checkoutCity) {
+                set({ DBClick: false, cardPreflightState: 'idle' });
+              }
+              return 'nothing';
+            }
+            trackPaymentClientEvent(Widget ? 'widget_script_loaded' : 'widget_script_failed', {
+              ...preflightBase, ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, duration_ms: Date.now() - startedAt,
+              outcome: Widget ? 'success' : 'error', ...(!Widget ? { reason: failure } : {}),
+            });
+            if (!Widget) {
+              set({ DBClick: false, cardPreflightState: 'error', cardScriptFailures: get().cardScriptFailures + 1 });
+              return 'wait_payment';
+            }
+            set({ cardScriptFailures: 0 });
+          } else {
+            trackPaymentClientEvent('hosted_payment_selected', { ...preflightBase, outcome: 'pending' });
+            data.payment_confirmation = 'redirect';
+          }
+          if (!checkoutFingerprint || !currentPreparation()) { set({ DBClick: false, cardPreflightState: 'idle' }); return 'nothing'; }
+          const marker = saveCardCheckoutRequest(token, {
+            fingerprint: checkoutFingerprint, city: city_id, confirmation: cardConfirmation,
+          }, { requirePersistence: cardConfirmation === 'redirect' });
+          if (!marker) {
+            set({ DBClick: false, cardPreflightState: 'storage_error' });
+            return 'wait_payment';
+          }
+          set({ cardPreflightState: 'creating', cardPreflightMessage: '' });
+        }
+        let json;
+        try { json = await api('cart', data); }
+        catch (error) {
+          if (paymentMethod !== 'online') throw error;
+          json = { st: false, text: 'Не удалось получить ответ о создании заказа. Проверьте историю заказов.' };
+        }
+
+        if (paymentMethod === 'online') {
+          const pointId = Number(json?.check?.order?.point_id ?? json?.payment_order?.point_id);
+          const orderId = Number(json?.check?.order?.order_id ?? json?.order_id ?? json?.payment_order?.order_id);
+          if (Number.isSafeInteger(pointId) && pointId > 0 && Number.isSafeInteger(orderId) && orderId > 0) {
+            saveCardCheckoutRequest(token, {
+              fingerprint: checkoutFingerprint, city: city_id, confirmation: cardConfirmation,
+              reference: { pointId, orderId },
+            });
+          }
+        }
 
         if (
           get().cardPaymentRevision !== checkoutRevision ||
           useCitiesStore.getState().thisCity !== checkoutCity ||
-          String(get().typePay?.id || '').toLowerCase() !== paymentMethod
+          String(get().typePay?.id || '').toLowerCase() !== paymentMethod ||
+          (paymentMethod === 'online' && !currentPreparation())
         ) {
-          set({ DBClick: false });
+          if (paymentMethod !== 'online' || (get().cardPaymentRevision === checkoutRevision &&
+              useHeaderStoreNew.getState().token === token && useCitiesStore.getState().thisCity === checkoutCity)) set({ DBClick: false });
           return 'nothing';
         }
 
-        setTimeout(() => {
-          set({ DBClick: false });
-        }, 300);
+        if (paymentMethod === 'online') set({ DBClick: false });
+        else setTimeout(() => { set({ DBClick: false }); }, 300);
+
+        if (paymentMethod === 'online' && json?.st !== true) {
+          const marker = readCardCheckoutRequest(token);
+          if (json?.st === false && json?.checkout_attempt === 'not_started' && !marker?.reference && marker?.fingerprint === checkoutFingerprint) {
+            clearCardCheckoutRequest(token);
+            set({
+              DBClick: false, cardPreflightState: 'rejected',
+              cardPreflightMessage: typeof json?.text === 'string' ? json.text.slice(0, 500) : 'Проверьте данные заказа и попробуйте ещё раз.',
+            });
+            return 'wait_payment';
+          }
+          if (marker?.reference) get().registerPaidOrder({
+            ...marker.reference, city: marker.city, method: 'online', trackPurchase: false,
+          }, token);
+          set({
+            DBClick: false, cardPreflightState: marker?.reference ? 'existing' : 'uncertain',
+            cardPreflightMessage: typeof json?.text === 'string' ? json.text.slice(0, 500) : '',
+          });
+          return 'wait_payment';
+        }
+        if (paymentMethod === 'online' && !readCardCheckoutRequest(token)?.reference) {
+          set({ DBClick: false, cardPreflightState: 'uncertain' });
+          return 'wait_payment';
+        }
 
         if (json?.st === true) {
           const paymentEventBase = {
@@ -2721,7 +2899,24 @@ export const useCartStore = reuseHotStore(
                 outcome: 'success',
                 has_payment_session: Boolean(json?.pay?.pay?.confirmation?.confirmation_token),
               });
-              await get().showCardPayment(json?.pay?.pay?.confirmation?.confirmation_token, paymentEventBase, funcClose);
+              if (cardConfirmation === 'redirect') {
+                const hostedUrl = hostedCardConfirmationUrl(json?.pay?.pay?.confirmation?.confirmation_url);
+                const request = readCardCheckoutRequest(token);
+                set({
+                  DBClick: false, cardHostedUrl: hostedUrl, cardPreflightState: hostedUrl ? 'hosted' : 'existing',
+                  cardHostedContext: hostedUrl && request?.reference ? { ...request.reference, owner: request.owner, city: city_id, url: hostedUrl } : null,
+                });
+              } else {
+                const request = readCardCheckoutRequest(token);
+                set({
+                  cardPreflightState: 'idle', cardHostedUrl: null,
+                  cardEmbeddedContext: request?.reference ? {
+                    ...request.reference, owner: request.owner, city: city_id, check: json?.check,
+                    confirmationToken: json?.pay?.pay?.confirmation?.confirmation_token, eventBase: paymentEventBase,
+                  } : null,
+                });
+                await get().showCardPayment(json?.pay?.pay?.confirmation?.confirmation_token, paymentEventBase, funcClose);
+              }
             }
 
             return 'wait_payment';
@@ -2797,6 +2992,7 @@ export const useCartStore = reuseHotStore(
 
       clearCartData: () => {
         get().cancelCardPayment();
+        get().resetCardPreflight();
         removeLocalStorageItem('setCart');
         removeSessionStorageItem('promo_name');
         Cookies.remove('promo_name');
@@ -7271,6 +7467,8 @@ export const useHomeStore = reuseHotStore(
 useHeaderStoreNew.subscribe((state, previous) => {
   if (state.token === previous.token || !previous.token) return;
   useCartStore.getState().cancelCardPayment();
+  useCartStore.getState().resetCardPreflight();
+  useCartStore.setState({ cardEmbeddedContext: null, cardHostedContext: null });
   useCartStore.getState().resetPaidConfirmation();
   clearPendingSbpOrder();
   useCartStore.setState({ pendingSbpOrder: null });
@@ -7279,6 +7477,16 @@ useHeaderStoreNew.subscribe((state, previous) => {
 useCitiesStore.subscribe((state, previous) => {
   if (state.thisCity === previous.thisCity) return;
   useCartStore.getState().cancelCardPayment();
+  useCartStore.getState().resetCardPreflight();
   useCartStore.getState().pausePaidConfirmation();
   useProfileStore.getState().clearOrderList();
+});
+
+useCartStore.subscribe((state, previous) => {
+  if (state.paidConfirmationState === previous.paidConfirmationState ||
+      !['confirmed', 'canceled'].includes(state.paidConfirmationState)) return;
+  const token = useHeaderStoreNew.getState().token;
+  const request = readCardCheckoutRequest(token);
+  if (request?.reference && request.reference.orderId === state.pendingPaidOrder?.orderId &&
+      request.reference.pointId === state.pendingPaidOrder?.pointId) clearCardCheckoutRequest(token);
 });

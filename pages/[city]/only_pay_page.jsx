@@ -1,6 +1,10 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
-import { ensureYooMoneyCheckoutWidget } from '@/utils/checkoutWidgetLoader';
+import {
+  CHECKOUT_WIDGET_SCRIPT_CONTEXT,
+  ensureYooMoneyCheckoutWidget,
+  getPaymentWidgetErrorCode,
+} from '@/utils/checkoutWidgetLoader';
 import {
   beginPaymentFlow,
   endPaymentFlow,
@@ -27,27 +31,35 @@ export default function OnlyPayPage() {
       payment_action: 'widget',
       payment_method: 'pay_page',
     };
-    const fail = (event, reason) => {
+    const fail = (event, reason, details = {}) => {
       if (cancelled || failed || succeeded) return;
       failed = true;
       setState('error');
-      trackPaymentClientEvent(event, { ...eventBase, outcome: 'error', reason });
+      trackPaymentClientEvent(event, { ...eventBase, ...details, outcome: 'error', reason });
       endPaymentFlow();
     };
     setState('loading');
-    trackPaymentClientEvent('widget_script_started', { ...eventBase, outcome: 'pending' });
+    const scriptStartedAt = Date.now();
+    let scriptFailure = 'script_error';
+    trackPaymentClientEvent('widget_script_started', { ...eventBase, ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, outcome: 'pending' });
     (async () => {
-      const Widget = await ensureYooMoneyCheckoutWidget();
+      const Widget = await ensureYooMoneyCheckoutWidget(12000, (reason) => { scriptFailure = reason; });
       if (cancelled) return;
       if (!Widget) {
-        fail('widget_script_failed', 'script_error');
+        fail('widget_script_failed', scriptFailure, {
+          ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, duration_ms: Date.now() - scriptStartedAt,
+        });
         return;
       }
-      trackPaymentClientEvent('widget_script_loaded', { ...eventBase, outcome: 'success' });
+      trackPaymentClientEvent('widget_script_loaded', {
+        ...eventBase, ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, duration_ms: Date.now() - scriptStartedAt, outcome: 'success',
+      });
       try {
         checkout = new Widget({
           confirmation_token: token,
-          error_callback: () => fail('widget_error', 'widget_callback'),
+          error_callback: (error) => fail('widget_error', 'widget_callback', {
+            provider_error_code: getPaymentWidgetErrorCode(error),
+          }),
         });
         if (failed) { checkout.destroy(); return; }
         trackPaymentClientEvent('widget_constructed', { ...eventBase, outcome: 'success' });
@@ -60,7 +72,9 @@ export default function OnlyPayPage() {
           try { checkout.destroy(); } catch {}
           endPaymentFlow();
         });
-        checkout.on('fail', () => fail('widget_fail', 'widget_callback'));
+        checkout.on('fail', (error) => fail('widget_fail', 'widget_callback', {
+          provider_error_code: getPaymentWidgetErrorCode(error),
+        }));
         trackPaymentClientEvent('widget_render_started', { ...eventBase, widget_target: 'payment-form', outcome: 'pending' });
         await Promise.race([
           Promise.resolve(checkout.render('payment-form')),
