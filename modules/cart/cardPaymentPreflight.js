@@ -29,7 +29,7 @@ export default function CardPaymentPreflight({ open, onClose }) {
         {state === 'storage_error' ? <p>Не удалось безопасно подготовить переход к оплате. Попробуйте загрузить форму ещё раз или выберите другой способ оплаты.</p> : null}
         {state === 'uncertain' ? <p>{message || 'Ответ о создании заказа не получен. Чтобы не создать повторный заказ, проверьте историю.'}</p> : null}
         {state === 'rejected' ? <p>{message || 'Проверьте данные заказа и попробуйте ещё раз.'}</p> : null}
-        {existing ? <><p>{message || 'Заказ уже подготовлен. Проверьте его оплату — новый заказ создавать не нужно.'}</p><PaidOrderStatus /></> : null}
+        {existing ? <><p>{message || 'Оплата текущего заказа подготовлена.'}</p><PaidOrderStatus /></> : null}
       </div>
       {(state === 'error' || state === 'storage_error') && retry ? (
         <Button fullWidth variant="outlined" sx={{ mt: 1, minHeight: 44 }} onClick={() => { void retry(); }}>

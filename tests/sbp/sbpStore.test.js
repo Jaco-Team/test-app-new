@@ -28,7 +28,7 @@ vi.mock('zustand/middleware', async (importOriginal) => ({
 }));
 
 import { api, trackPaymentClientEvent } from '../../components/api.js';
-import { clearCardCheckoutRequest, readCardCheckoutRequest } from '@/utils/cardCheckout';
+import { clearCardCheckoutRequest, readCardCheckoutRequest, saveCardCheckoutRequest, cardCheckoutFingerprint } from '@/utils/cardCheckout';
 import { useCartStore, useHeaderStoreNew, useProfileStore, useCitiesStore } from '../../components/store.js';
 import {
   clearPendingSbpOrder,
@@ -267,7 +267,7 @@ describe('оплата СБП с переходом на страницу ЮKass
       'cart',
       expect.objectContaining({ type: 'create_order_pre' })
     );
-    expect(useCartStore.getState().pendingSbpOrder?.orderId).toBe(123);
+    expect(useCartStore.getState().pendingSbpOrder).toBeNull();
   });
 
   it('при отказе банка сохраняет заказ для проверки статуса', async () => {
@@ -356,8 +356,6 @@ describe('проверка формы до создания карточного
     else api.mockRejectedValueOnce(new Error('network response lost'));
     expect(await useCartStore.getState().createOrder('user-token', 'samara')).toBe('wait_payment');
     expect(useCartStore.getState()).toMatchObject({ DBClick: false, cardPreflightState: 'uncertain' });
-    useCartStore.getState().setConfirmForm(false);
-    useCartStore.getState().clearCheckoutData(); checkout();
     expect(await useCartStore.getState().createOrder('user-token', 'samara')).toBe('wait_payment');
     expect(api).toHaveBeenCalledTimes(1);
   });
@@ -419,14 +417,98 @@ describe('проверка формы до создания карточного
     expect(widgets[1].options.confirmation_token).toBe('card-token');
   });
 
-  it('закрытие и повторное открытие продолжают тот же embedded-платёж без нового POST', async () => {
+  it('после закрытия формы новое оформление создаёт новый embedded-платёж', async () => {
     checkout(); api.mockResolvedValueOnce(successResponse());
     await useCartStore.getState().createOrder('user-token', 'samara');
     useCartStore.getState().setConfirmForm(false);
+    api.mockResolvedValueOnce({ ...successResponse(), check: { order: { point_id: 5, order_id: 124 } } });
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    expect(api).toHaveBeenCalledTimes(2);
+    expect(widgets).toHaveLength(2);
+    expect(useCartStore.getState().pendingPaidOrder.orderId).toBe(124);
+  });
+
+  it.each(['idle', 'checking', 'timeout', 'canceled'])('старый платёж %s и восстановленный маркер не блокируют новый заказ', async (state) => {
+    checkout();
+    useCartStore.getState().registerPaidOrder({ ...pending, method: 'online' }, 'user-token');
+    useCartStore.setState({ paidConfirmationState: state });
+    saveCardCheckoutRequest('user-token', {
+      city: 'samara', confirmation: 'embedded',
+      fingerprint: cardCheckoutFingerprint(useCartStore.getState(), 'user-token', 'samara'),
+      reference: { pointId: 5, orderId: 123 },
+    });
+    api.mockResolvedValueOnce({ ...successResponse(), check: { order: { point_id: 5, order_id: 124 } } });
     await useCartStore.getState().createOrder('user-token', 'samara');
     expect(api).toHaveBeenCalledTimes(1);
-    expect(widgets).toHaveLength(2);
-    expect(widgets[1].options.confirmation_token).toBe('card-token');
+    expect(api.mock.calls[0][1].type).toBe('create_order_pre');
+    expect(useCartStore.getState().pendingPaidOrder.orderId).toBe(124);
+  });
+
+  it.each(['cash', 'sbp'])('старое подтверждение не относится к новому заказу с оплатой %s', async (method) => {
+    checkout();
+    useCartStore.getState().registerPaidOrder({ ...pending, method: 'online' }, 'user-token');
+    useCartStore.setState({ paidConfirmationState: 'timeout', typePay: { id: method } });
+    api.mockResolvedValueOnce({ st: true, check: { order: { point_id: 5, order_id: 124 } },
+      pay: { pay: { confirmation: { confirmation_url: 'https://yoomoney.ru/checkout/payments/v2/contract?orderId=new' } } } });
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    expect(api).toHaveBeenCalledTimes(1);
+    expect(useCartStore.getState().paidConfirmationState).toBe('idle');
+    expect(useCartStore.getState().pendingPaidOrder?.orderId ?? null).toBe(method === 'sbp' ? 124 : null);
+  });
+
+  it('поздний ответ старой проверки не очищает корзину нового оформления', async () => {
+    checkout();
+    let finish;
+    useCartStore.getState().registerPaidOrder({ ...pending, method: 'online' }, 'user-token');
+    api.mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));
+    const old = useCartStore.getState().startPaidConfirmation();
+    await Promise.resolve();
+    api.mockResolvedValueOnce({ ...successResponse(), check: { order: { point_id: 5, order_id: 124 } } });
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    finish({ st: true, status: 'confirmed' }); await old;
+    expect(useCartStore.getState().pendingPaidOrder.orderId).toBe(124);
+    expect(useCartStore.getState().items).toEqual([{ item_id: 1, count: 1 }]);
+    expect(useCartStore.getState().paidConfirmationState).toBe('idle');
+  });
+
+  it('сброс оформления не допускает второй запрос, пока первый POST ещё выполняется', async () => {
+    checkout(); let finish;
+    api.mockReturnValueOnce(new Promise((resolve) => { finish = resolve; }));
+    const first = useCartStore.getState().createOrder('user-token', 'samara');
+    await Promise.resolve(); await Promise.resolve();
+    expect(api).toHaveBeenCalledTimes(1);
+    useCartStore.getState().clearCheckoutData(); checkout();
+    expect(await useCartStore.getState().createOrder('user-token', 'samara')).toBe('nothing');
+    expect(api).toHaveBeenCalledTimes(1);
+    finish(successResponse()); await first;
+    api.mockResolvedValueOnce(successResponse());
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    expect(api).toHaveBeenCalledTimes(2);
+  });
+
+  it.each([false, true])('повтор из истории отделяет старую попытку оплаты, мобильный режим %s', async (mobile) => {
+    checkout(); api.mockResolvedValueOnce(successResponse());
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    const original = useCartStore.getState();
+    const profile = useProfileStore.getState();
+    const header = useHeaderStoreNew.getState();
+    useCartStore.setState({ allItems: [{ id: 1, price: 100 }], getInfoPromo: vi.fn(), getItems: vi.fn() });
+    useProfileStore.setState({ closeOrder: vi.fn(), saveUserActions: vi.fn() });
+    useHeaderStoreNew.setState({ matches: mobile, setActiveBasket: vi.fn() });
+    try {
+      useCartStore.getState().repeatOrder({ order: { order_id: 123, point_id: 5, type_order_: 2, pic_info: { id: 5 } }, order_items: [{ item_id: 1, count: 1 }] });
+      expect(useCartStore.getState().cardCheckoutAttemptActive).toBe(false);
+      expect(useCartStore.getState().pendingPaidOrder).toBeNull();
+      expect(readCardCheckoutRequest('user-token')).toBeNull();
+      api.mockResolvedValueOnce({ ...successResponse(), check: { order: { point_id: 5, order_id: 124 } } });
+      await useCartStore.getState().createOrder('user-token', 'samara');
+      expect(api.mock.calls.filter(([, data]) => data.type === 'create_order_pre')).toHaveLength(2);
+      expect(useCartStore.getState().pendingPaidOrder.orderId).toBe(124);
+    } finally {
+      useCartStore.setState({ getInfoPromo: original.getInfoPromo, getItems: original.getItems });
+      useProfileStore.setState({ closeOrder: profile.closeOrder, saveUserActions: profile.saveUserActions });
+      useHeaderStoreNew.setState({ matches: header.matches, setActiveBasket: header.setActiveBasket });
+    }
   });
 
   it('старый preflight не снимает блокировку нового аккаунта с выполняющимся POST', async () => {

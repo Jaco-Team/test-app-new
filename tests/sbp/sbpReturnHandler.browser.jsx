@@ -61,6 +61,34 @@ afterEach(async () => {
   useCartStore.getState().resetPaidConfirmation();
 });
 
+describe.each([375, 768, 1440])('старые платежи на ширине %s', (width) => {
+  it.each(['/samara', '/samara/cart', '/samara/zakazy'])('не показывает плашку на %s', async (path) => {
+    await page.viewport(width, 900);
+    useCartStore.getState().registerPaidOrder({ orderId: 607461, pointId: 8, city: 'samara', method: 'online', startedAt: Date.now() - 120000 }, 'browser-test-owner');
+    useCartStore.setState({ paidConfirmationState: 'timeout', paidConfirmationMessage: 'Пока не удалось подтвердить заказ' });
+    route(path); await render(); await flush();
+    expect(host.textContent).toBe('');
+    expect(fixture.replace).not.toHaveBeenCalled();
+    expect(fixture.request.mock.calls.some(([, data]) => data.type === 'create_order_pre')).toBe(false);
+  });
+});
+
+it('позднее подтверждение старого заказа не переадресует открытую новую корзину', async () => {
+  let finish;
+  useCartStore.getState().registerPaidOrder({ orderId: 607461, pointId: 8, city: 'samara', method: 'online' }, 'browser-test-owner');
+  fixture.request.mockImplementation(async (module, data) => data.type === 'confirm_paid_order'
+    ? new Promise((resolve) => { finish = resolve; }) : { order_list: [], count_orders: 0, count_promo: 0 });
+  route('/samara/zakazy'); await render(); await flush();
+  let checking;
+  await act(async () => { checking = useCartStore.getState().startPaidConfirmation(); }); await flush();
+  await act(async () => route('/samara/cart')); await flush();
+  await act(async () => { finish({ st: true, status: 'confirmed' }); await checking; }); await flush();
+  expect(fixture.replace).not.toHaveBeenCalled();
+  expect(fixture.router.asPath).toBe('/samara/cart');
+  expect(host.textContent).toBe('');
+  expect(useCartStore.getState().items).toEqual([{ item_id: 999, count: 1 }]);
+});
+
 describe.each(['togliatti', 'samara'])('возврат СБП в городе %s', (city) => {
   it.each([375, 768, 1440])('в новой вкладке проверяет точный заказ на ширине %s', async (width) => {
     await page.viewport(width, 900); useCitiesStore.setState({ thisCity: city });

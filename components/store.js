@@ -1462,11 +1462,13 @@ export const useCartStore = reuseHotStore(
           endPaymentFlow();
           const checkoutOrder = get().checkNewOrder?.order;
           const matchesOrder = Number(checkoutOrder?.order_id) === pending.orderId && Number(checkoutOrder?.point_id) === pending.pointId;
+          const ownsOpenCheckout = matchesOrder && get().openConfirmForm;
+          set({ paidConfirmationNavigate: Boolean(ownsOpenCheckout) });
           const savedCart = getLocalStorageJson('setCart');
           const cartItems = get().items.length ? get().items : savedCart?.city?.link === pending.city ? savedCart.items : get().items;
           const matchingCheckout = pending.cartKey && paidCartKey(cartItems) === pending.cartKey && (!checkoutOrder || matchesOrder);
           if (matchingCheckout) get().clearCartData();
-          if (matchesOrder) set({ openConfirmForm: false, openPayForm: false, openModalBasket: false });
+          if (ownsOpenCheckout) set({ openConfirmForm: false, openPayForm: false, openModalBasket: false });
           void useProfileStore.getState().getOrderList('zakazy', pending.city, token, { force: true });
           void useProfileStore.getState().getCountPromos_Orders(pending.city, { force: true });
           // Повторный возврат/новая вкладка не доказывают новую покупку для аналитики.
@@ -1518,9 +1520,12 @@ export const useCartStore = reuseHotStore(
       cardPreflightMessage: '',
       cardEmbeddedContext: null,
       cardHostedContext: null,
+      // Защита относится к открытой попытке, а не ко всем заказам аккаунта.
+      cardCheckoutAttemptActive: false,
+      orderCreationInFlight: null,
 
       resetCardPreflight: () => set({
-        DBClick: false, cardPreflightState: 'idle', cardScriptFailures: 0,
+        DBClick: false, cardPreflightState: 'idle', cardScriptFailures: 0, cardCheckoutAttemptActive: false,
         cardPreflightRetry: null, cardPreflightHosted: null, cardHostedUrl: null, cardPreflightMessage: '',
       }),
 
@@ -2548,6 +2553,7 @@ export const useCartStore = reuseHotStore(
 
       // создание заказа
       createOrder: async (token, city_id, funcClose, options = {}) => {
+        if (token && get().orderCreationInFlight?.token === token) return 'nothing';
         if (!token || token?.length == 0) {
           useHeaderStoreNew.getState().setActiveModalAuth(true);
 
@@ -2679,6 +2685,19 @@ export const useCartStore = reuseHotStore(
         const paymentMethod = String(get().typePay?.id || '').toLowerCase();
         const cardConfirmation = options.confirmation === 'redirect' ? 'redirect' : 'embedded';
         const checkoutFingerprint = paymentMethod === 'online' ? cardCheckoutFingerprint(get(), token, city_id) : '';
+        const savedRequest = paymentMethod === 'online' ? readCardCheckoutRequest(token) : null;
+        const sameAttempt = get().cardCheckoutAttemptActive && savedRequest?.city === city_id &&
+          savedRequest.fingerprint === checkoutFingerprint &&
+          !['confirmed', 'canceled'].includes(get().paidConfirmationState);
+        if (!sameAttempt) {
+          // Новое оформление не зависит от старого платежа. Его по-прежнему обрабатывает сервер.
+          get().resetPaidConfirmation();
+          clearPendingSbpOrder();
+          clearCardCheckoutRequest(token);
+          endPaymentFlow();
+          set({ pendingSbpOrder: null, checkNewOrder: null, cardEmbeddedContext: null,
+            cardHostedContext: null, cardHostedUrl: null, cardCheckoutAttemptActive: false });
+        }
         if (paymentMethod === 'online') data.checkout_guard = 1;
         const currentPreparation = () => get().cardPaymentRevision === checkoutRevision &&
           useHeaderStoreNew.getState().token === token && useCitiesStore.getState().thisCity === checkoutCity &&
@@ -2686,8 +2705,8 @@ export const useCartStore = reuseHotStore(
           cardCheckoutFingerprint(get(), token, city_id) === checkoutFingerprint;
         if (paymentMethod === 'online') {
           const existing = readCardCheckoutRequest(token);
-          const pending = get().pendingPaidOrder || get().restorePaidOrder(city_id);
-          if (existing || (pending?.method === 'online' && !['confirmed', 'canceled'].includes(get().paidConfirmationState))) {
+          const pending = get().pendingPaidOrder;
+          if (sameAttempt && existing) {
             if (existing?.reference && !pending) get().registerPaidOrder({
               ...existing.reference, city: existing.city, method: 'online', trackPurchase: false,
             }, token);
@@ -2774,13 +2793,17 @@ export const useCartStore = reuseHotStore(
             set({ DBClick: false, cardPreflightState: 'storage_error' });
             return 'wait_payment';
           }
-          set({ cardPreflightState: 'creating', cardPreflightMessage: '' });
+          set({ cardPreflightState: 'creating', cardPreflightMessage: '', cardCheckoutAttemptActive: true });
         }
         let json;
+        const creation = { token };
+        set({ orderCreationInFlight: creation });
         try { json = await api('cart', data); }
         catch (error) {
           if (paymentMethod !== 'online') throw error;
           json = { st: false, text: 'Не удалось получить ответ о создании заказа. Проверьте историю заказов.' };
+        } finally {
+          if (get().orderCreationInFlight === creation) set({ orderCreationInFlight: null });
         }
 
         if (paymentMethod === 'online') {
@@ -4597,6 +4620,13 @@ export const useCartStore = reuseHotStore(
 
         // "повтор заказа" = пользователь обновил корзину.
         // Поэтому обновляем updatedAt (touch:true).
+        get().cancelCardPayment();
+        get().resetCardPreflight();
+        get().resetPaidConfirmation();
+        clearCardCheckoutRequest(useHeaderStoreNew.getState().token);
+        clearPendingSbpOrder();
+        set({ pendingSbpOrder: null, checkNewOrder: null, cardEmbeddedContext: null,
+          cardHostedContext: null, cardHostedUrl: null });
         get().setCartLocalStorage({ touch: true });
 
         get().getItems();

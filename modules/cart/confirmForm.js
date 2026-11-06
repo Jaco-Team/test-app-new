@@ -47,9 +47,17 @@ export default function ConfirmForm() {
   const closeConfirmation = () => {
     const store = useCartStore.getState();
     store.setConfirmForm(false);
-    if (store.pendingPaidOrder && store.paidConfirmationState !== 'idle') void push(`/${store.pendingPaidOrder.city}/zakazy`);
+    const pending = store.pendingPaidOrder;
+    const current = store.checkNewOrder?.order;
+    if (['online', 'sbp'].includes(store.typePay?.id) && pending &&
+        pending.pointId === Number(current?.point_id) && pending.orderId === Number(current?.order_id) &&
+        store.paidConfirmationState !== 'idle') void push(`/${pending.city}/zakazy`);
   };
-  useEffect(() => () => useCartStore.getState().cancelCardPayment(), []);
+  useEffect(() => () => {
+    const store = useCartStore.getState();
+    store.cancelCardPayment();
+    store.resetCardPreflight();
+  }, []);
   const isMobileConfirm = useMediaQuery(
     `screen and (max-width: ${BREAKPOINTS.mobileMax}px)`
   );

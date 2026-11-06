@@ -70,6 +70,8 @@ export default function SbpReturnHandler({ city }) {
       void router.replace(sbpOrdersPath(router.asPath, city));
       return;
     }
+    // Ожидание старого платежа не вмешивается в корзину и новое оформление.
+    if (!returned && pathname !== ordersPath) return;
     const restored = !store.pendingPaidOrder;
     let order = store.restorePaidOrder(city);
     if (returned && returnInfo.reference) {
@@ -110,6 +112,8 @@ export default function SbpReturnHandler({ city }) {
 
   const loginRequired = returned && !token;
   const activeNotice = notice?.reference && (!returned || !samePaidOrder({ ...notice.reference, city }, returnInfo.reference, city)) ? null : notice;
+  // Общая плашка о старом неоплаченном заказе больше не показывается.
+  if (!returned && !activeNotice) return null;
   if (dismissed || openConfirmForm || (!activeNotice && !loginRequired && (!pending || pending.city !== city || state === 'idle'))) return null;
   return (
     <Alert severity={(activeNotice ? activeNotice.status === 'confirmed' : state === 'confirmed') ? 'success' : 'info'} variant="outlined" icon={false} role="status"
