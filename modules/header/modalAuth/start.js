@@ -67,7 +67,7 @@ export default function Start({ isMobileAuth = false }) {
           Не помню пароль
         </Typography>
         <Typography component="span" onClick={() => navigate('loginSMS')}>
-          Вход по СМС
+          Войти без пароля
         </Typography>
       </div>
 

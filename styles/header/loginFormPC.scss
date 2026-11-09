@@ -2,6 +2,14 @@
 
 .modalAuthPC {
   & .MuiDialog-paper {
+    // Обёртка Fade (div) растягивается на высоту окна, чтобы шаги могли прижать кнопки к низу.
+    & > div {
+      flex: 1 1 auto;
+      min-height: 0;
+      display: flex;
+      flex-direction: column;
+    }
+
     overflow: visible;
     margin: 0 !important;
     max-width: none !important;
@@ -10,6 +18,72 @@
     height: $MyScale800;
 
     & .ContainerModalAuthPC {
+      flex: 1 1 auto;
+      min-height: 0;
+      box-sizing: border-box;
+      padding-bottom: $MyScale40;
+
+      // Восстановление пароля: шаг занимает всю высоту окна, кнопки прижаты к низу.
+      & .modalLoginStartPC.resetStep,
+      & .modalLoginFinishPC.resetStep {
+        flex: 1 1 auto;
+        min-height: 0;
+      }
+
+      & .resetStep .resetActions {
+        margin-top: auto;
+        width: 100%;
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        gap: $MyScale10;
+        padding-top: $MyScale20;
+      }
+
+      & .resetStep .resetRules {
+        width: $MyScale510;
+        margin: $MyScale16 0 0;
+        padding: 0;
+        list-style: none;
+        display: flex;
+        flex-direction: column;
+        gap: $MyScale8;
+
+        & li {
+          display: flex;
+          align-items: center;
+          gap: $MyScale10;
+          @include font18_400();
+          color: #6b6b6b;
+
+          & .ruleIcon {
+            width: $MyScale20;
+            height: $MyScale20;
+            opacity: 0.35;
+          }
+
+          &.ok {
+            color: #15803d;
+
+            & .ruleIcon {
+              opacity: 1;
+            }
+          }
+        }
+      }
+
+      & .visuallyHidden {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        margin: -1px;
+        padding: 0;
+        overflow: hidden;
+        clip: rect(0, 0, 0, 0);
+        white-space: nowrap;
+        border: 0;
+      }
+
       display: flex;
       flex-direction: column;
       align-items: center;
@@ -102,7 +176,7 @@
             & fieldset {
               padding-left: $MyScale30;
               & legend {
-                width: $MyScale125;
+                width: calc(#{$MyScale125} * var(--legend-k, 1));
               }
             }
           }
@@ -157,7 +231,7 @@
             & fieldset {
               padding-left: $MyScale30;
               & legend {
-                width: $MyScale125;
+                width: calc(#{$MyScale125} * var(--legend-k, 1));
               }
             }
           }
@@ -273,37 +347,138 @@
 
         & .authDeliveryChannel {
           width: $MyScale510;
-          margin-top: $MyScale20;
-          margin-bottom: $MyScale20;
+          margin-bottom: $MyScale30;
 
-          & .MuiFormLabel-root,
-          & .MuiFormControlLabel-label {
+          & .authDeliveryLabel {
+            display: block;
             @include font22_400();
+            color: #5a5a5a;
+            margin-bottom: $MyScale10;
           }
 
-          & .MuiFormLabel-root {
-            margin-bottom: $MyScale8;
-          }
+          & .authDeliverySeg {
+            display: grid;
+            grid-template-columns: repeat(3, minmax(0, 1fr));
+            gap: $MyScale6;
+            padding: $MyScale6;
+            border-radius: $MyScale20;
+            background: #f2f2f2;
 
-          & .MuiRadioGroup-root {
-            flex-wrap: wrap;
-          }
+            & button {
+              height: $MyScale60;
+              border: 0;
+              border-radius: $MyScale15;
+              background: transparent;
+              color: #4a4a4a;
+              font-family: inherit;
+              @include font22_400();
+              cursor: pointer;
 
-          & .MuiFormControlLabel-root {
-            margin: 0 $MyScale24 0 0;
+              &.active {
+                background: #fff;
+                color: #dd1a32;
+                font-weight: 500;
+                box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+              }
 
-            &:last-child {
-              margin-right: 0;
+              &:focus-visible {
+                outline: 2px solid #dd1a32;
+                outline-offset: 2px;
+              }
             }
           }
+        }
 
-          & .MuiRadio-root {
-            padding: $MyScale8;
+        & .captchaNote {
+          margin-top: $MyScale16;
+          @include font18_400();
+          color: #6b6b6b;
+          text-align: center;
+        }
 
-            & svg {
-              width: $MyScale30;
-              height: $MyScale30;
-            }
+        & .resetVerified {
+          display: flex;
+          align-items: center;
+          gap: $MyScale10;
+          padding: $MyScale8 $MyScale16;
+          margin-bottom: $MyScale30;
+          border-radius: $MyScale20;
+          background: #eaf6ee;
+          color: #1f6b37;
+          @include font22_400();
+
+          & .check_icon {
+            width: $MyScale24;
+            height: $MyScale24;
+          }
+        }
+
+        & .resetHint {
+          width: $MyScale510;
+          margin-top: $MyScale10;
+          @include font18_400();
+          color: #6b6b6b;
+        }
+
+        & .resetCodePhone {
+          @include font30_500();
+          color: #1f1f1f;
+          text-align: center;
+          margin-bottom: $MyScale12;
+        }
+
+        & .resetCodeHint {
+          @include font22_400();
+          color: #555;
+          text-align: center;
+          margin-bottom: $MyScale30;
+        }
+
+        & .resetCodeCells {
+          display: flex;
+          justify-content: center;
+          gap: $MyScale16;
+          margin-bottom: $MyScale30;
+        }
+
+        & .resetCodeCell {
+          width: $MyScale80;
+          height: $MyScale90;
+          box-sizing: border-box;
+          border: 1.5px solid #d6d6d6;
+          border-radius: $MyScale16;
+          text-align: center;
+          font-family: inherit;
+          @include font30_500();
+          color: #1f1f1f;
+          background: #fff;
+          outline: none;
+
+          &:focus {
+            border-color: #dd1a32;
+          }
+        }
+
+        & .resetCodeTimer {
+          @include font22_400();
+          color: #6b6b6b;
+          text-align: center;
+          min-height: $MyScale30;
+        }
+
+        & .resetCodeBottom {
+          margin-top: $MyScale40;
+          text-align: center;
+        }
+
+        & .resetCodeLink {
+          @include font22_400();
+          color: #4a4a4a;
+          text-decoration: underline;
+          cursor: pointer;
+
+          &.active {
+            color: #dd1a32;
           }
         }
 
@@ -412,7 +587,7 @@
             & fieldset {
               padding-left: $MyScale30;
               & legend {
-                width: $MyScale125;
+                width: calc(#{$MyScale125} * var(--legend-k, 1));
               }
             }
           }
@@ -500,7 +675,7 @@
             & fieldset {
               padding-left: $MyScale30;
               & legend {
-                width: $MyScale125;
+                width: calc(#{$MyScale125} * var(--legend-k, 1));
               }
             }
           }
@@ -960,6 +1135,14 @@
 @include tablet-only {
   .modalAuthPC {
     & .MuiDialog-paper {
+      // Обёртка Fade (div) растягивается на высоту окна, чтобы шаги могли прижать кнопки к низу.
+      & > div {
+        flex: 1 1 auto;
+        min-height: 0;
+        display: flex;
+        flex-direction: column;
+      }
+
       overflow: visible;
       margin: 0 !important;
       max-width: none !important;
@@ -968,6 +1151,72 @@
       height: tablet-vw(800);
 
       & .ContainerModalAuthPC {
+        flex: 1 1 auto;
+        min-height: 0;
+        box-sizing: border-box;
+        padding-bottom: tablet-vw(40);
+
+        // Восстановление пароля: шаг занимает всю высоту окна, кнопки прижаты к низу.
+        & .modalLoginStartPC.resetStep,
+        & .modalLoginFinishPC.resetStep {
+          flex: 1 1 auto;
+          min-height: 0;
+        }
+
+        & .resetStep .resetActions {
+          margin-top: auto;
+          width: 100%;
+          display: flex;
+          flex-direction: column;
+          align-items: center;
+          gap: tablet-vw(10);
+          padding-top: tablet-vw(20);
+        }
+
+        & .resetStep .resetRules {
+          width: tablet-vw(510);
+          margin: tablet-vw(16) 0 0;
+          padding: 0;
+          list-style: none;
+          display: flex;
+          flex-direction: column;
+          gap: tablet-vw(8);
+
+          & li {
+            display: flex;
+            align-items: center;
+            gap: tablet-vw(10);
+            @include font18_400();
+            color: #6b6b6b;
+
+            & .ruleIcon {
+              width: tablet-vw(20);
+              height: tablet-vw(20);
+              opacity: 0.35;
+            }
+
+            &.ok {
+              color: #15803d;
+
+              & .ruleIcon {
+                opacity: 1;
+              }
+            }
+          }
+        }
+
+        & .visuallyHidden {
+          position: absolute;
+          width: 1px;
+          height: 1px;
+          margin: -1px;
+          padding: 0;
+          overflow: hidden;
+          clip: rect(0, 0, 0, 0);
+          white-space: nowrap;
+          border: 0;
+        }
+
         display: flex;
         flex-direction: column;
         align-items: center;
@@ -1060,7 +1309,7 @@
               & fieldset {
                 padding-left: tablet-vw(30);
                 & legend {
-                  width: tablet-vw(125);
+                  width: calc(tablet-vw(125) * var(--legend-k, 1));
                 }
               }
             }
@@ -1115,7 +1364,7 @@
               & fieldset {
                 padding-left: tablet-vw(30);
                 & legend {
-                  width: tablet-vw(125);
+                  width: calc(tablet-vw(125) * var(--legend-k, 1));
                 }
               }
             }
@@ -1231,37 +1480,138 @@
 
           & .authDeliveryChannel {
             width: tablet-vw(510);
-            margin-top: tablet-vw(20);
-            margin-bottom: tablet-vw(20);
+            margin-bottom: tablet-vw(30);
 
-            & .MuiFormLabel-root,
-            & .MuiFormControlLabel-label {
+            & .authDeliveryLabel {
+              display: block;
               @include font22_400();
+              color: #5a5a5a;
+              margin-bottom: tablet-vw(10);
             }
 
-            & .MuiFormLabel-root {
-              margin-bottom: tablet-vw(8);
-            }
+            & .authDeliverySeg {
+              display: grid;
+              grid-template-columns: repeat(3, minmax(0, 1fr));
+              gap: tablet-vw(6);
+              padding: tablet-vw(6);
+              border-radius: tablet-vw(20);
+              background: #f2f2f2;
 
-            & .MuiRadioGroup-root {
-              flex-wrap: wrap;
-            }
+              & button {
+                height: tablet-vw(60);
+                border: 0;
+                border-radius: tablet-vw(15);
+                background: transparent;
+                color: #4a4a4a;
+                font-family: inherit;
+                @include font22_400();
+                cursor: pointer;
 
-            & .MuiFormControlLabel-root {
-              margin: 0 tablet-vw(24) 0 0;
+                &.active {
+                  background: #fff;
+                  color: #dd1a32;
+                  font-weight: 500;
+                  box-shadow: 0 1px 3px rgba(0, 0, 0, 0.12);
+                }
 
-              &:last-child {
-                margin-right: 0;
+                &:focus-visible {
+                  outline: 2px solid #dd1a32;
+                  outline-offset: 2px;
+                }
               }
             }
+          }
 
-            & .MuiRadio-root {
-              padding: tablet-vw(8);
+          & .captchaNote {
+            margin-top: tablet-vw(16);
+            @include font18_400();
+            color: #6b6b6b;
+            text-align: center;
+          }
 
-              & svg {
-                width: tablet-vw(30);
-                height: tablet-vw(30);
-              }
+          & .resetVerified {
+            display: flex;
+            align-items: center;
+            gap: tablet-vw(10);
+            padding: tablet-vw(8) tablet-vw(16);
+            margin-bottom: tablet-vw(30);
+            border-radius: tablet-vw(20);
+            background: #eaf6ee;
+            color: #1f6b37;
+            @include font22_400();
+
+            & .check_icon {
+              width: tablet-vw(24);
+              height: tablet-vw(24);
+            }
+          }
+
+          & .resetHint {
+            width: tablet-vw(510);
+            margin-top: tablet-vw(10);
+            @include font18_400();
+            color: #6b6b6b;
+          }
+
+          & .resetCodePhone {
+            @include font30_500();
+            color: #1f1f1f;
+            text-align: center;
+            margin-bottom: tablet-vw(12);
+          }
+
+          & .resetCodeHint {
+            @include font22_400();
+            color: #555;
+            text-align: center;
+            margin-bottom: tablet-vw(30);
+          }
+
+          & .resetCodeCells {
+            display: flex;
+            justify-content: center;
+            gap: tablet-vw(16);
+            margin-bottom: tablet-vw(30);
+          }
+
+          & .resetCodeCell {
+            width: tablet-vw(80);
+            height: tablet-vw(90);
+            box-sizing: border-box;
+            border: 1.5px solid #d6d6d6;
+            border-radius: tablet-vw(16);
+            text-align: center;
+            font-family: inherit;
+            @include font30_500();
+            color: #1f1f1f;
+            background: #fff;
+            outline: none;
+
+            &:focus {
+              border-color: #dd1a32;
+            }
+          }
+
+          & .resetCodeTimer {
+            @include font22_400();
+            color: #6b6b6b;
+            text-align: center;
+            min-height: tablet-vw(30);
+          }
+
+          & .resetCodeBottom {
+            margin-top: tablet-vw(40);
+            text-align: center;
+          }
+
+          & .resetCodeLink {
+            @include font22_400();
+            color: #4a4a4a;
+            text-decoration: underline;
+            cursor: pointer;
+
+            &.active {
+              color: #dd1a32;
             }
           }
 
@@ -1370,7 +1720,7 @@
               & fieldset {
                 padding-left: tablet-vw(30);
                 & legend {
-                  width: tablet-vw(125);
+                  width: calc(tablet-vw(125) * var(--legend-k, 1));
                 }
               }
             }
@@ -1458,7 +1808,7 @@
               & fieldset {
                 padding-left: tablet-vw(30);
                 & legend {
-                  width: tablet-vw(125);
+                  width: calc(tablet-vw(125) * var(--legend-k, 1));
                 }
               }
             }
@@ -1918,4 +2268,13 @@
       }
     }
   }
+}
+
+// Длинные подписи полей (восстановление пароля): шире вырез в рамке под подпись.
+.legendWide12 {
+  --legend-k: 1.75;
+}
+
+.legendWide16 {
+  --legend-k: 2.3;
 }
