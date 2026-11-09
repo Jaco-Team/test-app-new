@@ -1,14 +1,35 @@
 import React, { useState, useEffect } from 'react';
-import { useProfileStore, useCartStore, useHeaderStoreNew, useCitiesStore } from '@/components/store';
+import {
+  useProfileStore,
+  useCartStore,
+  useHeaderStoreNew,
+  useCitiesStore,
+} from '@/components/store';
 
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import { roboto } from '@/ui/Font.js';
+import OrderReviewController, {
+  isOrderReviewEligible,
+} from '@/modules/clientFeedback/OrderReviewController';
 
-import { CartModalOrderIcon, CookModalOrderIcon, DeliveryModalOrderIcon, HomeModalOrderIcon, PicupModalOrderIcon,
-  MyAddrLocationIcon, StoreOrderMobileModal, SharpIcon, CalendarIcon, AddrDotsModalOrderIcon, EyeShow_modalOrder, EyeHide_modalOrder } from '@/ui/Icons.js';
+import {
+  CartModalOrderIcon,
+  CookModalOrderIcon,
+  DeliveryModalOrderIcon,
+  HomeModalOrderIcon,
+  PicupModalOrderIcon,
+  MyAddrLocationIcon,
+  StoreOrderMobileModal,
+  SharpIcon,
+  CalendarIcon,
+  AddrDotsModalOrderIcon,
+  EyeShow_modalOrder,
+  EyeHide_modalOrder,
+} from '@/ui/Icons.js';
 
 // Определение задержки заказа
 function isOrderLate(order) {
@@ -21,7 +42,8 @@ function isOrderLate(order) {
   deadline.setHours(hour, minute, 0, 0);
 
   const isActive =
-    (parseInt(order.status_order) >= 1 && parseInt(order.status_order) <= 5) &&
+    parseInt(order.status_order) >= 1 &&
+    parseInt(order.status_order) <= 5 &&
     parseInt(order.is_delete) === 0;
 
   const now = new Date();
@@ -31,7 +53,6 @@ function isOrderLate(order) {
 
 // Получение статуса заказа
 function getOrderStatusText(order) {
-
   if (!order) return '';
 
   if (parseInt(order?.is_delete) === 1) {
@@ -39,7 +60,10 @@ function getOrderStatusText(order) {
   }
 
   if (parseInt(order?.type_order_) === 1) {
-    if (parseInt(order?.status_order) >= 1 && parseInt(order?.status_order) <= 5) {
+    if (
+      parseInt(order?.status_order) >= 1 &&
+      parseInt(order?.status_order) <= 5
+    ) {
       if (isOrderLate(order)) {
         return 'Ваш заказ задерживается, но мы делаем всё возможное, чтобы вы скорее его получили. Благодарим за ожидание!';
       }
@@ -52,7 +76,10 @@ function getOrderStatusText(order) {
       return `Доставили в ${order?.close_date_time}`;
     }
   } else {
-    if (parseInt(order?.status_order) >= 1 && parseInt(order?.status_order) <= 3) {
+    if (
+      parseInt(order?.status_order) >= 1 &&
+      parseInt(order?.status_order) <= 3
+    ) {
       if (isOrderLate(order)) {
         return 'Ваш заказ задерживается, но мы делаем всё возможное, чтобы вы скорее его получили. Благодарим за ожидание!';
       }
@@ -74,48 +101,85 @@ function getOrderStatusText(order) {
 function ModalOrderStatusIconDelivery({ types }) {
   return (
     <div className="zakazySvgGroup" style={{ width: '78.632478632479vw' }}>
-      <div className="zakazyCircle"
-        style={{ background: parseInt(types?.type1) == 1 || parseInt(types?.type1) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}
+      <div
+        className="zakazyCircle"
+        style={{
+          background:
+            parseInt(types?.type1) == 1 || parseInt(types?.type1) == 0
+              ? '#DD1A32'
+              : 'rgba(0, 0, 0, 0.20)',
+        }}
       >
         <CartModalOrderIcon fill={'#fff'} />
       </div>
       {parseInt(types?.type2) == 1 || parseInt(types?.type2) == -1 ? (
-        <LinearProgress variant="determinate" style={{ background: parseInt(types?.type2) == -1 ? '' : '#DD1A32' }} value={parseInt(types?.type2) == 1 ? 100 : 0}/>
+        <LinearProgress
+          variant="determinate"
+          style={{ background: parseInt(types?.type2) == -1 ? '' : '#DD1A32' }}
+          value={parseInt(types?.type2) == 1 ? 100 : 0}
+        />
       ) : (
         <LinearProgress />
       )}
 
-      <div className="zakazyCircle"
-        style={{ background: parseInt(types?.type2) == 1 || parseInt(types?.type2) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
+      <div
+        className="zakazyCircle"
+        style={{
+          background:
+            parseInt(types?.type2) == 1 || parseInt(types?.type2) == 0
+              ? '#DD1A32'
+              : 'rgba(0, 0, 0, 0.20)',
+        }}
+      >
         <CookModalOrderIcon fill={'#fff'} />
       </div>
       {parseInt(types?.type3) == 1 || parseInt(types?.type3) == -1 ? (
         <LinearProgress
           variant="determinate"
-          style={{ background: parseInt(types?.type3) == -1 ? 'rgba(0, 0, 0, 0.20)' : '#DD1A32' }}
+          style={{
+            background:
+              parseInt(types?.type3) == -1 ? 'rgba(0, 0, 0, 0.20)' : '#DD1A32',
+          }}
           value={parseInt(types?.type3) == 1 ? 100 : 0}
         />
       ) : (
         <LinearProgress />
       )}
 
-      <div className="zakazyCircle"
-        style={{ background: parseInt(types?.type3) == 1 || parseInt(types?.type3) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
+      <div
+        className="zakazyCircle"
+        style={{
+          background:
+            parseInt(types?.type3) == 1 || parseInt(types?.type3) == 0
+              ? '#DD1A32'
+              : 'rgba(0, 0, 0, 0.20)',
+        }}
+      >
         <DeliveryModalOrderIcon fill={'#fff'} />
       </div>
 
       {parseInt(types?.type4) == 1 || parseInt(types?.type4) == -1 ? (
         <LinearProgress
           variant="determinate"
-          style={{ background: parseInt(types?.type4) == -1 ? 'rgba(0, 0, 0, 0.20)' : '#DD1A32' }}
+          style={{
+            background:
+              parseInt(types?.type4) == -1 ? 'rgba(0, 0, 0, 0.20)' : '#DD1A32',
+          }}
           value={parseInt(types?.type4) == 1 ? 100 : 0}
         />
       ) : (
         <LinearProgress />
       )}
 
-      <div className="zakazyCircle"
-        style={{ background: parseInt(types?.type4) == 1 || parseInt(types?.type4) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
+      <div
+        className="zakazyCircle"
+        style={{
+          background:
+            parseInt(types?.type4) == 1 || parseInt(types?.type4) == 0
+              ? '#DD1A32'
+              : 'rgba(0, 0, 0, 0.20)',
+        }}
+      >
         <HomeModalOrderIcon fill={'#fff'} />
       </div>
     </div>
@@ -125,32 +189,60 @@ function ModalOrderStatusIconDelivery({ types }) {
 function ModalOrderStatusIconPicup({ types }) {
   return (
     <div className="zakazySvgGroup" style={{ width: '56.837606837607vw' }}>
-      <div className="zakazyCircle"
-        style={{ background: parseInt(types?.type1) == 1 || parseInt(types?.type1) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}
+      <div
+        className="zakazyCircle"
+        style={{
+          background:
+            parseInt(types?.type1) == 1 || parseInt(types?.type1) == 0
+              ? '#DD1A32'
+              : 'rgba(0, 0, 0, 0.20)',
+        }}
       >
         <CartModalOrderIcon fill={'#fff'} />
       </div>
       {parseInt(types?.type2) == 1 || parseInt(types?.type2) == -1 ? (
-        <LinearProgress variant="determinate" style={{ background: parseInt(types?.type2) == -1 ? '' : '#DD1A32' }} value={parseInt(types?.type2) == 1 ? 100 : 0} />
+        <LinearProgress
+          variant="determinate"
+          style={{ background: parseInt(types?.type2) == -1 ? '' : '#DD1A32' }}
+          value={parseInt(types?.type2) == 1 ? 100 : 0}
+        />
       ) : (
         <LinearProgress />
       )}
 
-      <div className="zakazyCircle"
-        style={{ background: parseInt(types?.type2) == 1 || parseInt(types?.type2) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
+      <div
+        className="zakazyCircle"
+        style={{
+          background:
+            parseInt(types?.type2) == 1 || parseInt(types?.type2) == 0
+              ? '#DD1A32'
+              : 'rgba(0, 0, 0, 0.20)',
+        }}
+      >
         <CookModalOrderIcon fill={'#fff'} />
       </div>
       {parseInt(types?.type3) == 1 || parseInt(types?.type3) == -1 ? (
-        <LinearProgress variant="determinate"
-          style={{ background: parseInt(types?.type3) == -1 ? 'rgba(0, 0, 0, 0.20)' : '#DD1A32' }}
+        <LinearProgress
+          variant="determinate"
+          style={{
+            background:
+              parseInt(types?.type3) == -1 ? 'rgba(0, 0, 0, 0.20)' : '#DD1A32',
+          }}
           value={parseInt(types?.type3) == 1 ? 100 : 0}
         />
       ) : (
         <LinearProgress />
       )}
 
-      <div className="zakazyCircle"
-        style={{ background: parseInt(types?.type3) == 1 || parseInt(types?.type3) == 0 ? '#DD1A32' : 'rgba(0, 0, 0, 0.20)' }}>
+      <div
+        className="zakazyCircle"
+        style={{
+          background:
+            parseInt(types?.type3) == 1 || parseInt(types?.type3) == 0
+              ? '#DD1A32'
+              : 'rgba(0, 0, 0, 0.20)',
+        }}
+      >
         <PicupModalOrderIcon fill={'#fff'} />
       </div>
     </div>
@@ -159,185 +251,274 @@ function ModalOrderStatusIconPicup({ types }) {
 
 export default React.memo(function ModalOrderMobile() {
   const [isShowAddr, setShowAddr] = useState(false);
-  const [ showTimeWarn, setShowTimeWarn ] = useState(false);
+  const [showTimeWarn, setShowTimeWarn] = useState(false);
 
-  const [openModal, closeOrder, modalOrder, openModalDel, getOrder, getOrderRefresh] = useProfileStore((state) => [state.openModal, state.closeOrder, state.modalOrder, state.openModalDel, state.getOrder, state.getOrderRefresh]);
+  const [
+    openModal,
+    closeOrder,
+    modalOrder,
+    openModalDel,
+    getOrder,
+    getOrderRefresh,
+  ] = useProfileStore((state) => [
+    state.openModal,
+    state.closeOrder,
+    state.modalOrder,
+    state.openModalDel,
+    state.getOrder,
+    state.getOrderRefresh,
+  ]);
 
-  const [ repeatOrder ] = useCartStore( state => [ state.repeatOrder ])
+  const [repeatOrder] = useCartStore((state) => [state.repeatOrder]);
 
-  const [ token ] = useHeaderStoreNew( state => [ state.token ] )
-  const [ thisCity ] = useCitiesStore( state => [ state.thisCity ] )
+  const [token] = useHeaderStoreNew((state) => [state.token]);
+  const [thisCity] = useCitiesStore((state) => [state.thisCity]);
 
   const text_status = getOrderStatusText(modalOrder?.order);
 
-  useEffect( () => {
-    if( openModal == true ){
+  useEffect(() => {
+    if (openModal == true) {
       const timer = setInterval(() => {
-        if( token && token?.length > 0 ) {
+        if (token && token?.length > 0) {
           //getOrder('zakazy', thisCity, token, modalOrder?.order?.order_id, modalOrder?.order?.point_id)
-          getOrderRefresh('zakazy', thisCity, token, modalOrder?.order?.order_id, modalOrder?.order?.point_id)
+          getOrderRefresh(
+            'zakazy',
+            thisCity,
+            token,
+            modalOrder?.order?.order_id,
+            modalOrder?.order?.point_id
+          );
         }
       }, 30 * 1000);
-      
+
       return () => clearInterval(timer);
     }
-  }, [openModal] )
+  }, [openModal]);
 
-  useEffect( () => {
-    if( modalOrder ){
-      if( parseInt(modalOrder?.order?.type_order_) == 2 && modalOrder?.order?.max_time_order_time && modalOrder?.order?.max_time_order_time.length > 3 ){
+  useEffect(() => {
+    if (modalOrder) {
+      if (
+        parseInt(modalOrder?.order?.type_order_) == 2 &&
+        modalOrder?.order?.max_time_order_time &&
+        modalOrder?.order?.max_time_order_time.length > 3
+      ) {
         let max_time_order = modalOrder?.order?.max_time_order_time.split(':');
 
-        if( parseInt(max_time_order[0]) >= 21 && parseInt(modalOrder?.order?.status_order) >= 1 && parseInt(modalOrder?.order?.status_order) <= 5 && parseInt(modalOrder?.order?.is_delete) == 0 ){
-          setShowTimeWarn( true )
-        } 
+        if (
+          parseInt(max_time_order[0]) >= 21 &&
+          parseInt(modalOrder?.order?.status_order) >= 1 &&
+          parseInt(modalOrder?.order?.status_order) <= 5 &&
+          parseInt(modalOrder?.order?.is_delete) == 0
+        ) {
+          setShowTimeWarn(true);
+        }
       }
     }
-  }, [modalOrder] )
+  }, [modalOrder]);
 
   return (
-      <SwipeableDrawer
-        anchor={'bottom'}
-        open={openModal}
-        onClose={closeOrder}
-        onOpen={() => {}}
-        id="ZakazyModalOrder"
-        className={roboto.variable}
-        disableSwipeToOpen
-      >
-        <div className="ContainerZakazyModalOrder">
-          <div className="Line" />
+    <SwipeableDrawer
+      anchor={'bottom'}
+      open={openModal}
+      onClose={closeOrder}
+      onOpen={() => {}}
+      id="ZakazyModalOrder"
+      className={roboto.variable}
+      disableSwipeToOpen
+    >
+      <div className="ContainerZakazyModalOrder">
+        <div className="Line" />
 
-          <div className="zakazyLogin">
-            <span>Заказ {modalOrder?.order?.this_status_order}</span>
+        <div className="zakazyLogin">
+          <span>Заказ {modalOrder?.order?.this_status_order}</span>
+        </div>
+
+        <div className="zakazyTimeText">
+          <span>{text_status}</span>
+        </div>
+
+        {parseInt(modalOrder?.order?.status_order) === 6 ||
+        parseInt(modalOrder?.order?.status_order) === 1 ? null : parseInt(
+            modalOrder?.order?.type_order_
+          ) === 1 ? (
+          <ModalOrderStatusIconDelivery types={modalOrder?.order?.types} />
+        ) : (
+          <ModalOrderStatusIconPicup types={modalOrder?.order?.types} />
+        )}
+
+        {showTimeWarn ? (
+          <div className="header_warning_time">
+            <span>
+              Пожалуйста, заберите заказ в кафе до 22:00. В праздничные дни
+              время получения заказа может быть увеличено до 22:30. Обращайте
+              внимание на время, указанное после оформления заказа. Спасибо!
+            </span>
           </div>
+        ) : (
+          false
+        )}
 
-          <div className="zakazyTimeText">
-            <span>{text_status}</span>
-          </div>
+        <div className="zakazyDivider" />
 
-          {parseInt(modalOrder?.order?.status_order) === 6 || parseInt(modalOrder?.order?.status_order) === 1 ? null : 
-            parseInt(modalOrder?.order?.type_order_) === 1 ?
-            <ModalOrderStatusIconDelivery types={modalOrder?.order?.types} />
-            :
-            <ModalOrderStatusIconPicup types={modalOrder?.order?.types} />
-          }
+        <div className="zakazy_dop_1">
+          <SharpIcon />
+          <span>{modalOrder?.order?.order_id}</span>
+          <CalendarIcon />
+          <span>{modalOrder?.order?.date_time_order_new}</span>
+        </div>
 
-          { showTimeWarn ?
-            <div className='header_warning_time'>
-              <span>
-                Пожалуйста, заберите заказ в кафе до 22:00. В праздничные дни время получения заказа может быть увеличено до 22:30. Обращайте внимание на время, указанное после оформления заказа. Спасибо!
-              </span>
-            </div>
-              :
-            false
-          }
-
-          <div className="zakazyDivider" />
-
-          <div className="zakazy_dop_1">
-            <SharpIcon />
-            <span>{modalOrder?.order?.order_id}</span>
-            <CalendarIcon />
-            <span>{modalOrder?.order?.date_time_order_new}</span>
-          </div>
-
-          <div className="zakazy_dop_2">
-
-            {parseInt(modalOrder?.order?.type_order_) === 1 ? <MyAddrLocationIcon /> : <StoreOrderMobileModal />}
-
-            {parseInt(modalOrder?.order?.type_order_) === 1 ? (
-               <>
-                {isShowAddr ?
-                  <span>
-                    {modalOrder?.order?.city_name},{' '}
-                    {modalOrder?.order?.street + ', ' + modalOrder?.order?.home + ', кв. ' + modalOrder?.order?.kv}
-                  </span>
-                   :
-                  <div className='divGroup'>
-                    <span>{modalOrder?.order?.city_name}</span>
-                    <AddrDotsModalOrderIcon className="svgGroup" />
-                  </div>
-                }
-                {isShowAddr ?
-                  <EyeShow_modalOrder className="svgEye" onClick={ () => {setShowAddr(false)} } />
-                    :
-                  <EyeHide_modalOrder className="svgEye" onClick={ () => {setShowAddr(true)} } />
-                }
-              </>
-            ) : 
-              <div style={{ maxWidth: '68.376068376068vw' }}>
-                <span>{modalOrder?.order?.city_name},{' '}</span>
-                {/* адрес точки надо указать */}
-                <span>{ modalOrder?.order?.point_name }</span>
-              </div>
-            }
-            
-          </div>
-
-          <div className="zakazyDivider" style={{ marginBottom: '6.3247863247863vw' }}/>
-
-          <div className="zakazySum">
-            <span>Состав заказа и стоимость:</span>
-            <span>{new Intl.NumberFormat('ru-RU').format(modalOrder?.order?.sum_order)}{' '}₽</span>
-          </div>
-
-          {modalOrder?.order_items?.map((order, idx) => {
-            const len = modalOrder?.order_items?.length ?? 0;
-            const isLast = idx === len - 1;
-            return (
-              <div
-                key={idx}
-                className="zakazyOrder"
-                style={{
-                  marginBottom:
-                    isLast && parseInt(modalOrder?.order?.type_order_) !== 1
-                      ? '8.5470085470085vw'
-                      : null,
-                  height: (order?.name?.length ?? 0) > 28
-                    ? '11.111111111111vw'
-                    : '6.8376068376068vw'
-                }}
-              >
-                <span>{order?.count ?? 0}</span>
-                <span>{order?.name ?? ''}</span>
-                <span>{new Intl.NumberFormat('ru-RU').format(order?.price ?? 0)} ₽</span>
-              </div>
-            );
-          })}
-
-          { parseInt(modalOrder?.order?.type_order_) == 1 ?
-            <div 
-              className="zakazyOrder"
-              style={{ 
-                marginBottom: '8.5470085470085vw',
-                height: '6.8376068376068vw' 
-              }}
-            >
-              <span>1</span>
-              <span>Доставка</span>
-              <span>{new Intl.NumberFormat('ru-RU').format(modalOrder?.order?.sum_div)}{' '}₽</span>
-            </div>
-              :
-            false
-          }
-
-          { parseInt(modalOrder?.order?.is_delete) == 0 && parseInt(modalOrder?.order?.status_order) != 6 ? (
-            <Button 
-              className="zakazyBTN" 
-              variant="outlined" 
-              onClick={() => openModalDel(modalOrder?.order?.order_id, modalOrder?.order?.point_id)}
-            >
-              <span>Отменить заказ</span>
-            </Button>
+        <div className="zakazy_dop_2">
+          {parseInt(modalOrder?.order?.type_order_) === 1 ? (
+            <MyAddrLocationIcon />
           ) : (
-            <Button className="zakazyRepeat" variant="contained"
-              onClick={ () => repeatOrder(modalOrder) }
-            >
-              <span>Повторить заказ</span>
-            </Button>
+            <StoreOrderMobileModal />
+          )}
+
+          {parseInt(modalOrder?.order?.type_order_) === 1 ? (
+            <>
+              {isShowAddr ? (
+                <span>
+                  {modalOrder?.order?.city_name},{' '}
+                  {modalOrder?.order?.street +
+                    ', ' +
+                    modalOrder?.order?.home +
+                    ', кв. ' +
+                    modalOrder?.order?.kv}
+                </span>
+              ) : (
+                <div className="divGroup">
+                  <span>{modalOrder?.order?.city_name}</span>
+                  <AddrDotsModalOrderIcon className="svgGroup" />
+                </div>
+              )}
+              {isShowAddr ? (
+                <EyeShow_modalOrder
+                  className="svgEye"
+                  onClick={() => {
+                    setShowAddr(false);
+                  }}
+                />
+              ) : (
+                <EyeHide_modalOrder
+                  className="svgEye"
+                  onClick={() => {
+                    setShowAddr(true);
+                  }}
+                />
+              )}
+            </>
+          ) : (
+            <div style={{ maxWidth: '68.376068376068vw' }}>
+              <span>{modalOrder?.order?.city_name}, </span>
+              {/* адрес точки надо указать */}
+              <span>{modalOrder?.order?.point_name}</span>
+            </div>
           )}
         </div>
-      </SwipeableDrawer>
+
+        <div
+          className="zakazyDivider"
+          style={{ marginBottom: '6.3247863247863vw' }}
+        />
+
+        <div className="zakazySum">
+          <span>Состав заказа и стоимость:</span>
+          <span>
+            {new Intl.NumberFormat('ru-RU').format(
+              modalOrder?.order?.sum_order
+            )}{' '}
+            ₽
+          </span>
+        </div>
+
+        {modalOrder?.order_items?.map((order, idx) => {
+          const len = modalOrder?.order_items?.length ?? 0;
+          const isLast = idx === len - 1;
+          return (
+            <div
+              key={idx}
+              className="zakazyOrder"
+              style={{
+                marginBottom:
+                  isLast && parseInt(modalOrder?.order?.type_order_) !== 1
+                    ? '8.5470085470085vw'
+                    : null,
+                height:
+                  (order?.name?.length ?? 0) > 28
+                    ? '11.111111111111vw'
+                    : '6.8376068376068vw',
+              }}
+            >
+              <span>{order?.count ?? 0}</span>
+              <span>{order?.name ?? ''}</span>
+              <span>
+                {new Intl.NumberFormat('ru-RU').format(order?.price ?? 0)} ₽
+              </span>
+            </div>
+          );
+        })}
+
+        {parseInt(modalOrder?.order?.type_order_) == 1 ? (
+          <div
+            className="zakazyOrder"
+            style={{
+              marginBottom: '8.5470085470085vw',
+              height: '6.8376068376068vw',
+            }}
+          >
+            <span>1</span>
+            <span>Доставка</span>
+            <span>
+              {new Intl.NumberFormat('ru-RU').format(
+                modalOrder?.order?.sum_div
+              )}{' '}
+              ₽
+            </span>
+          </div>
+        ) : (
+          false
+        )}
+
+        {isOrderReviewEligible(modalOrder?.order) ? (
+          <Box
+            sx={{
+              mb: 2,
+              mx: '5.1282051282051vw',
+              '& .MuiButton-root': {
+                borderRadius: 999,
+                minHeight: 48,
+                width: '100%',
+              },
+            }}
+          >
+            <OrderReviewController order={modalOrder.order} token={token} />
+          </Box>
+        ) : null}
+
+        {parseInt(modalOrder?.order?.is_delete) == 0 &&
+        parseInt(modalOrder?.order?.status_order) != 6 ? (
+          <Button
+            className="zakazyBTN"
+            variant="outlined"
+            onClick={() =>
+              openModalDel(
+                modalOrder?.order?.order_id,
+                modalOrder?.order?.point_id
+              )
+            }
+          >
+            <span>Отменить заказ</span>
+          </Button>
+        ) : (
+          <Button
+            className="zakazyRepeat"
+            variant="contained"
+            onClick={() => repeatOrder(modalOrder)}
+          >
+            <span>Повторить заказ</span>
+          </Button>
+        )}
+      </div>
+    </SwipeableDrawer>
   );
-})
+});
