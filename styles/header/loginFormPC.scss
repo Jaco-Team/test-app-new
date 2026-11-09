@@ -40,6 +40,27 @@
         padding-top: $MyScale20;
       }
 
+      // Регистрация: над формой ещё переключатель «Вход / Регистрация» — плотнее отступы.
+      & .regStep .inputLogin.margin_bottom_30 {
+        margin-bottom: $MyScale20;
+      }
+
+      & .regStep .authDeliveryChannel {
+        margin-bottom: $MyScale16;
+      }
+
+      & .regStep .authConsents {
+        margin-bottom: $MyScale8;
+      }
+
+      & .regStep .resetActions {
+        padding-top: $MyScale8;
+      }
+
+      & .regStep .captchaNote {
+        margin-top: $MyScale8;
+      }
+
       & .resetStep .resetRules {
         width: $MyScale510;
         margin: $MyScale16 0 0;
@@ -394,6 +415,36 @@
           @include font18_400();
           color: #6b6b6b;
           text-align: center;
+        }
+
+        & .authConsents {
+          width: $MyScale510;
+          display: flex;
+          flex-direction: column;
+          gap: $MyScale12;
+          margin-bottom: $MyScale20;
+        }
+
+        & .authConsent {
+          display: flex;
+          align-items: flex-start;
+          gap: $MyScale12;
+          @include font18_400();
+          color: #4a4a4a;
+          cursor: pointer;
+
+          & input {
+            flex: none;
+            width: $MyScale22;
+            height: $MyScale22;
+            margin: $MyScale2 0 0;
+            accent-color: #dd1a32;
+            cursor: pointer;
+          }
+
+          & a {
+            color: #dd1a32;
+          }
         }
 
         & .resetVerified {
@@ -1173,6 +1224,27 @@
           padding-top: tablet-vw(20);
         }
 
+        // Регистрация: над формой ещё переключатель «Вход / Регистрация» — плотнее отступы.
+        & .regStep .inputLogin.margin_bottom_30 {
+          margin-bottom: tablet-vw(20);
+        }
+
+        & .regStep .authDeliveryChannel {
+          margin-bottom: tablet-vw(16);
+        }
+
+        & .regStep .authConsents {
+          margin-bottom: tablet-vw(8);
+        }
+
+        & .regStep .resetActions {
+          padding-top: tablet-vw(8);
+        }
+
+        & .regStep .captchaNote {
+          margin-top: tablet-vw(8);
+        }
+
         & .resetStep .resetRules {
           width: tablet-vw(510);
           margin: tablet-vw(16) 0 0;
@@ -1527,6 +1599,36 @@
             @include font18_400();
             color: #6b6b6b;
             text-align: center;
+          }
+
+          & .authConsents {
+            width: tablet-vw(510);
+            display: flex;
+            flex-direction: column;
+            gap: tablet-vw(12);
+            margin-bottom: tablet-vw(20);
+          }
+
+          & .authConsent {
+            display: flex;
+            align-items: flex-start;
+            gap: tablet-vw(12);
+            @include font18_400();
+            color: #4a4a4a;
+            cursor: pointer;
+
+            & input {
+              flex: none;
+              width: tablet-vw(22);
+              height: tablet-vw(22);
+              margin: tablet-vw(2) 0 0;
+              accent-color: #dd1a32;
+              cursor: pointer;
+            }
+
+            & a {
+              color: #dd1a32;
+            }
           }
 
           & .resetVerified {

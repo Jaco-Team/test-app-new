@@ -369,6 +369,36 @@
           text-align: center;
         }
 
+        & .authConsents {
+          width: $MyScale960_mobile;
+          display: flex;
+          flex-direction: column;
+          gap: $MyScale20_mobile;
+          margin-bottom: $MyScale40_mobile;
+        }
+
+        & .authConsent {
+          display: flex;
+          align-items: flex-start;
+          gap: $MyScale20_mobile;
+          @include font32_400();
+          color: #4a4a4a;
+          cursor: pointer;
+
+          & input {
+            flex: none;
+            width: $MyScale40_mobile;
+            height: $MyScale40_mobile;
+            margin: $MyScale4_mobile 0 0;
+            accent-color: #dd1a32;
+            cursor: pointer;
+          }
+
+          & a {
+            color: #dd1a32;
+          }
+        }
+
         & .resetVerified {
           display: flex;
           align-items: center;

@@ -1,4 +1,4 @@
-import { useState } from 'react';
+import { useEffect, useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import { useHeaderStoreNew } from '@/components/store';
@@ -39,6 +39,7 @@ export default function ResetPWD({ isMobileAuth = false }) {
     typeAuth,
     sendRecoveryCode,
     setActiveModalAlert,
+    setAuthIntent,
   ] = useHeaderStoreNew((state) => [
     state?.navigate,
     state?.changeLogin,
@@ -46,7 +47,12 @@ export default function ResetPWD({ isMobileAuth = false }) {
     state?.typeAuth,
     state?.sendRecoveryCode,
     state?.setActiveModalAlert,
+    state?.setAuthIntent,
   ]);
+
+  useEffect(() => {
+    setAuthIntent('recovery');
+  }, [setAuthIntent]);
 
   const [deliveryChannel, setDeliveryChannel] = useState(() =>
     CHANNELS.some((channel) => channel.value === typeAuth) ? typeAuth : 'sms'
@@ -64,6 +70,7 @@ export default function ResetPWD({ isMobileAuth = false }) {
     setIsSending(true);
 
     try {
+      setAuthIntent('recovery');
       await sendRecoveryCode({ deliveryChannel, captchaToken });
     } finally {
       setIsSending(false);

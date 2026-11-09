@@ -673,6 +673,9 @@ export const useHeaderStoreNew = reuseHotStore(
       timerPage: false,
       smsResendTimer: 89,
       recoveryResetToken: '',
+      // 'recovery' | 'register': общий сценарий «сначала код, потом пароль» (восстановление и регистрация).
+      authIntent: 'recovery',
+      setAuthIntent: (authIntent) => set({ authIntent }),
 
       preTypeLogin: '',
       loginLogin: '',
@@ -1192,6 +1195,21 @@ export const useHeaderStoreNew = reuseHotStore(
           }, 300);
 
           return true;
+        } else if (json?.code_sent === true) {
+          // Код на этот номер уже отправлен и ещё действует — сразу к вводу кода с оставшимся таймером.
+          set({
+            errTextAuth: '',
+            typeAuth: deliveryChannel || get().typeAuth,
+            smsResendTimer: smsResendSeconds(json),
+          });
+
+          setTimeout(() => {
+            set({
+              doubleClickSMS: false,
+            });
+          }, 300);
+
+          return true;
         } else {
           set({
             errTextAuth: json?.text,
@@ -1291,6 +1309,7 @@ export const useHeaderStoreNew = reuseHotStore(
           number: authNumber(get().loginLogin),
           delivery_channel: deliveryChannel || 'sms',
           ...(captchaToken ? { token: captchaToken } : {}),
+          ...(get().authIntent === 'register' ? { intent: 'register' } : {}),
         };
 
         try {
@@ -1306,6 +1325,23 @@ export const useHeaderStoreNew = reuseHotStore(
               timer: seconds,
               timerPage: false,
               recoveryResetToken: '',
+              code: '',
+            });
+            get().navigate('resetCode');
+
+            return true;
+          }
+
+          if (json?.code_sent === true) {
+            // Код уже отправлен и ещё действует — открываем ввод кода с оставшимся таймером.
+            const seconds = smsResendSeconds(json);
+
+            set({
+              errTextAuth: '',
+              typeAuth: deliveryChannel || get().typeAuth,
+              smsResendTimer: seconds,
+              timer: seconds,
+              timerPage: false,
               code: '',
             });
             get().navigate('resetCode');
@@ -1339,6 +1375,7 @@ export const useHeaderStoreNew = reuseHotStore(
           type: 'check_recovery_code',
           number: authNumber(get().loginLogin),
           cod: code,
+          ...(get().authIntent === 'register' ? { intent: 'register' } : {}),
         });
 
         if (res?.st === true && res?.reset_token) {
@@ -1362,6 +1399,7 @@ export const useHeaderStoreNew = reuseHotStore(
           number: authNumber(get().loginLogin),
           reset_token: get().recoveryResetToken,
           pwd: get().pwdLogin,
+          ...(get().authIntent === 'register' ? { intent: 'register' } : {}),
         };
 
         if (Cookies.get('isSpecialUser')) {
@@ -1377,7 +1415,7 @@ export const useHeaderStoreNew = reuseHotStore(
 
           if (String(message).includes('Запросите код')) {
             set({ recoveryResetToken: '', code: '' });
-            get().navigate('resetPWD');
+            get().navigate(get().authIntent === 'register' ? 'create' : 'resetPWD');
           }
 
           return false;

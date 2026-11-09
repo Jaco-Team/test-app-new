@@ -1,142 +1,253 @@
-import { useState } from 'react';
-
+import { useEffect, useState } from 'react';
+import dynamic from 'next/dynamic';
 import Link from 'next/link';
 
 import { useHeaderStoreNew } from '@/components/store';
+import { importWithRetry } from '@/utils/importWithRetry';
+import { trackUmami } from '@/utils/umami';
 
-import MyTextInput, { FormattedInputs } from '@/ui/MyTextInput';
-import {Check, DoneAuthMobile, EyeShow_modalOrder, EyeHide_modalOrder, VectorRightAuthMobile } from '@/ui/Icons';
+import { FormattedInputs } from '@/ui/MyTextInput';
+import { Check } from '@/ui/Icons';
 
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 
-//import { SmartCaptcha } from '@yandex/smart-captcha';
+// Невидимая капча: задание показывается только если Яндекс сомневается.
+const InvisibleSmartCaptcha = dynamic(
+  () =>
+    importWithRetry(
+      () =>
+        import('@yandex/smart-captcha').then(
+          (mod) => mod.InvisibleSmartCaptcha
+        ),
+      { retries: 1, delayMs: 600 }
+    ),
+  { ssr: false }
+);
 
+const CHANNELS = [
+  { value: 'sms', label: 'СМС' },
+  { value: 'telegram', label: 'Telegram' },
+  { value: 'voice', label: 'Звонок' },
+];
+
+// Регистрация, шаг 1 из 3: телефон, согласия и канал кода.
+// Дальше тот же путь, что у восстановления: код (resetCode) → пароль (resetNewPwd) → готово (resetDone),
+// запросы помечены intent=register.
 export default function Create({ city, isMobileAuth = false }) {
-  //const [token, setToken] = useState('');
+  const [
+    changeLogin,
+    loginLogin,
+    typeAuth,
+    sendRecoveryCode,
+    setAuthIntent,
+    setActiveModalAlert,
+  ] = useHeaderStoreNew((state) => [
+    state?.changeLogin,
+    state?.loginLogin,
+    state?.typeAuth,
+    state?.sendRecoveryCode,
+    state?.setAuthIntent,
+    state?.setActiveModalAlert,
+  ]);
 
+  const [deliveryChannel, setDeliveryChannel] = useState(() =>
+    CHANNELS.some((channel) => channel.value === typeAuth) ? typeAuth : 'sms'
+  );
   const [checkPolitika, setCheckPolitika] = useState(false);
   const [checkAccord, setCheckAccord] = useState(false);
-  //const [checkSpam, setCheckSpam] = useState(false);
-  const [showPassword, setShowPassword] = useState(false);
+  const [captchaVisible, setCaptchaVisible] = useState(false);
+  const [captchaKey, setCaptchaKey] = useState(0);
+  const [isSending, setIsSending] = useState(false);
 
-  const [changeLogin, loginLogin, checkLoginKey, sendsmsNewLogin, setPwdLogin, pwdLogin, setActiveModalAlert, checkSpam, setCheckSpam] = useHeaderStoreNew((state) => [state?.changeLogin, state?.loginLogin, state?.checkLoginKey, state?.sendsmsNewLogin, state?.setPwdLogin, state?.pwdLogin, state?.setActiveModalAlert, state?.checkSpam, state?.setCheckSpam]);
   const matches = isMobileAuth;
+  const captchaSiteKey = process.env.NEXT_PUBLIC_SMARTCAPTCHA_SITE_KEY || '';
+  const phoneReady = loginLogin.length === 17;
+  const consentsReady = checkPolitika && checkAccord;
+  const canSubmit = phoneReady && consentsReady && !isSending;
 
-  // <div className="datareklama">
-  //         {checkSpam ? (
-  //           <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckSpam(!checkSpam)}>
-  //             <DoneAuthMobile />
-  //           </span>
-  //         ) : (
-  //           <span onClick={() => setCheckSpam(!checkSpam)} style={{ backgroundColor: loginLogin.length === 17 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)' }}></span>
-  //         )}
-  //         <Typography component="span" onClick={() => setCheckSpam(!checkSpam)} style={{ lineHeight: matches ? '2.5641025641026vw' : '1.4440433212996vw' }}>
-  //           Хочу быть в курсе акций
-  //         </Typography>
-  //       </div>
+  useEffect(() => {
+    setAuthIntent('register');
+  }, [setAuthIntent]);
+
+  const send = async (captchaToken = '') => {
+    setIsSending(true);
+
+    try {
+      setAuthIntent('register');
+      await sendRecoveryCode({ deliveryChannel, captchaToken });
+    } finally {
+      setIsSending(false);
+    }
+  };
+
+  const submit = () => {
+    if (isSending) {
+      return;
+    }
+
+    if (!phoneReady || !consentsReady) {
+      setActiveModalAlert(
+        true,
+        'Укажите номер телефона и подтвердите согласия',
+        false
+      );
+      return;
+    }
+
+    if (captchaSiteKey) {
+      setIsSending(true);
+      setCaptchaVisible(true);
+      return;
+    }
+
+    void send();
+  };
+
+  const handleCaptchaSuccess = (token) => {
+    setCaptchaVisible(false);
+    setCaptchaKey((key) => key + 1);
+    void send(token || '');
+  };
+
+  const handleCaptchaCancel = () => {
+    setCaptchaVisible(false);
+    setIsSending(false);
+  };
+
+  const handleCaptchaFailure = () => {
+    handleCaptchaCancel();
+    setCaptchaKey((key) => key + 1);
+    setActiveModalAlert(
+      true,
+      'Не удалось пройти проверку. Попробуйте ещё раз.',
+      false
+    );
+  };
+
+  const handleEnter = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      submit();
+    }
+  };
 
   return (
-    <div className={matches ? 'modalLoginCreateMobile' : 'modalLoginCreatePC'}>
-      <div className="loginInfo">
-        <Typography component="h2">Укажите свой номер телефона</Typography>
-      </div>
-
+    <div
+      className={
+        (matches ? 'modalLoginStartMobile' : 'modalLoginStartPC') + ' resetStep regStep'
+      }
+    >
       <FormattedInputs
         type="text"
         placeholder="8 (000) 000-00-00"
         value={loginLogin}
         func={(event) => changeLogin(event)}
-        onKeyDown={(event) => checkLoginKey(1, event)}
-        //className={loginLogin.length > 0 ? "inputLogin margin_bottom_30" : "inputLogin lable_position margin_bottom_30"}
-        className={loginLogin.length > 0 ? "inputLogin margin_bottom_30" : "inputLogin lable_position margin_bottom_30"}
+        onKeyDown={handleEnter}
+        className={
+          loginLogin.length > 0
+            ? 'inputLogin margin_bottom_30'
+            : 'inputLogin lable_position margin_bottom_30'
+        }
         mask={true}
         label="Телефон"
-        autoComplete="true"
-        onBlur={(event) => changeLogin(event)}
         inputAdornment={
           <InputAdornment position="end">
-            {matches ? (
-               loginLogin.length === 17 ? <Check className="check_icon" /> : null
-            ) : (
-              <div className="vectorInput" style={{ backgroundColor: loginLogin.length === 17 && checkAccord && checkPolitika && pwdLogin.length > 4 ? '#DD1A32' : '#e5e5e5' }}>
-                {loginLogin.length === 17 && checkAccord && checkPolitika && pwdLogin.length > 4 ? (
-                  <VectorRightAuthMobile className="vectorSvg"
-                    onClick={ loginLogin.length === 17 && checkAccord && checkPolitika && pwdLogin.length > 4 ? sendsmsNewLogin : null}
-                  />
-                ) : (
-                  <VectorRightAuthMobile className="vectorSvg_dis"
-                    onClick={ loginLogin.length === 17 && checkAccord && checkPolitika && pwdLogin.length > 4 ? sendsmsNewLogin : null}
-                  />
-                )}
-              </div>
-            )}
+            {phoneReady ? <Check className="check_icon" /> : null}
           </InputAdornment>
         }
       />
 
-      <MyTextInput
-        type={showPassword ? 'text' : 'password'}
-        placeholder="••••••••"
-        value={pwdLogin}
-        func={(event) => setPwdLogin(event)}
-        onKeyDown={(event) => checkLoginKey(1, event)}
-        className={pwdLogin.length > 0 ? "inputLogin margin_bottom_30" : "inputLogin lable_position margin_bottom_30"}
-        label="Пароль"
-        inputAdornment={
-          <InputAdornment position="end">
-            {showPassword ? (
-              <div className="eye_icon" onClick={() => setShowPassword(false)}>
-                <EyeShow_modalOrder />
-              </div>
-            ) : (
-              <div className="eye_icon" onClick={() => setShowPassword(true)}>
-                <EyeHide_modalOrder />
-              </div>
-            )}
-          </InputAdornment>
-        }
-      /> 
-
-      <div className="loginData">
-        <div className="data" style={{ marginBottom: matches ? '3.4188034188034vw' : '0.72202166064982vw' }}>
-          {checkPolitika ? (
-            <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckPolitika(!checkPolitika)}>
-              <DoneAuthMobile />
-            </span>
-          ) : (
-            <span onClick={() => setCheckPolitika(!checkPolitika)} style={{ backgroundColor: loginLogin.length === 17 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)'}}></span>
-          )}
-          <Typography component="span" onClick={() => setCheckPolitika(!checkPolitika)}>
-            Я даю <Link href={'/' + city + '/legal'}>Согласие</Link> на обработку моих персональных данных в соответствии с Политикой, а также даю согласие на рекламную рассылку, от которой можно отказаться в любой момент
-          </Typography>
+      <div className="authDeliveryChannel">
+        <span className="authDeliveryLabel" id="register-channel-label">
+          Куда прислать код
+        </span>
+        <div
+          className="authDeliverySeg"
+          role="radiogroup"
+          aria-labelledby="register-channel-label"
+        >
+          {CHANNELS.map((channel) => (
+            <button
+              key={channel.value}
+              type="button"
+              role="radio"
+              aria-checked={deliveryChannel === channel.value}
+              className={deliveryChannel === channel.value ? 'active' : ''}
+              onClick={() => setDeliveryChannel(channel.value)}
+            >
+              {channel.label}
+            </button>
+          ))}
         </div>
-
-        <div className="data">
-          {checkAccord ? (
-            <span style={{ backgroundColor: '#DD1A32' }} onClick={() => setCheckAccord(!checkAccord)}>
-              <DoneAuthMobile />
-            </span>
-          ) : (
-            <span onClick={() => setCheckAccord(!checkAccord)} style={{ backgroundColor: loginLogin.length === 17 ? 'rgba(221, 26, 50, 0.40)' : 'rgba(0, 0, 0, 0.10)' }}></span>
-          )}
-          <Typography component="span" onClick={() => setCheckAccord(!checkAccord)} style={{ lineHeight: matches ? '2.5641025641026vw' : '1.4440433212996vw' }}>
-            Я даю согласие с <Link href={'/' + city + '/politika-konfidencialnosti'}>Офертой</Link>
-          </Typography>
-        </div>
-
-        
       </div>
 
-      {!matches ? null : (
-        <div className="loginLogin" onClick={ loginLogin.length >= 11 && checkAccord && checkPolitika && pwdLogin.length > 4 ? sendsmsNewLogin : () => setActiveModalAlert(true, 'Укажите телефон, пароль (минимум 5 символов, без пробелов) и согласие с указанными документами', false)}
-          style={{backgroundColor: loginLogin.length >= 11 && checkAccord && checkPolitika && pwdLogin.length > 4 ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)'}}>
+      <div className="authConsents">
+        <label className="authConsent">
+          <input
+            type="checkbox"
+            checked={checkPolitika}
+            onChange={(event) => setCheckPolitika(event.target.checked)}
+          />
+          <span>
+            Я даю <Link href={'/' + city + '/legal'}>согласие</Link> на
+            обработку персональных данных в соответствии с Политикой, а также
+            согласие на рекламную рассылку, от которой можно отказаться в любой
+            момент
+          </span>
+        </label>
+        <label className="authConsent">
+          <input
+            type="checkbox"
+            checked={checkAccord}
+            onChange={(event) => setCheckAccord(event.target.checked)}
+          />
+          <span>
+            Я принимаю условия{' '}
+            <Link href={'/' + city + '/politika-konfidencialnosti'}>
+              оферты
+            </Link>
+          </span>
+        </label>
+      </div>
+
+      {captchaSiteKey ? (
+        <InvisibleSmartCaptcha
+          key={captchaKey}
+          sitekey={captchaSiteKey}
+          language="ru"
+          hideShield
+          visible={captchaVisible}
+          onSuccess={handleCaptchaSuccess}
+          onChallengeVisible={() =>
+            trackUmami('auth_captcha_challenge', { screen: 'create' })
+          }
+          onChallengeHidden={handleCaptchaCancel}
+          onNetworkError={handleCaptchaFailure}
+          onJavascriptError={handleCaptchaFailure}
+        />
+      ) : null}
+
+      <div className="resetActions">
+        <div
+          className="loginLogin"
+          role="button"
+          tabIndex={0}
+          onClick={submit}
+          onKeyDown={handleEnter}
+          style={{
+            backgroundColor: canSubmit ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)',
+          }}
+        >
           <Typography component="span">
-            Отправить
+            {isSending ? 'Отправляем…' : 'Получить код'}
           </Typography>
         </div>
-      )}
 
+        {captchaSiteKey ? (
+          <div className="captchaNote">Защищено Yandex SmartCaptcha</div>
+        ) : null}
+      </div>
     </div>
   );
 }

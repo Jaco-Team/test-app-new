@@ -1,9 +1,12 @@
+import { useHeaderStoreNew } from '@/components/store';
 import { CheckAuthMobile } from '@/ui/Icons';
 import Typography from '@mui/material/Typography';
 
 // Восстановление пароля: финальный экран внутри окна (пароль сохранён, пользователь вошёл).
 export default function ResetDone({ closeModal, isMobileAuth = false }) {
   const matches = isMobileAuth;
+  const authIntent = useHeaderStoreNew((state) => state?.authIntent);
+  const isRegister = authIntent === 'register';
 
   return (
     <div
@@ -19,7 +22,9 @@ export default function ResetDone({ closeModal, isMobileAuth = false }) {
       <div className="loginSubHeader">
         <Typography component="span">Вы вошли в аккаунт.</Typography>
         <Typography component="span">
-          Новый пароль работает на сайте и в приложении.
+          {isRegister
+            ? 'Теперь можно сохранять адреса и повторять прежние заказы.'
+            : 'Новый пароль работает на сайте и в приложении.'}
         </Typography>
       </div>
 

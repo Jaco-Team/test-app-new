@@ -160,6 +160,7 @@ export default function ModalAuth({ city }) {
     navigate,
     isAuth,
     yandexAuthCheck,
+    authIntent,
   ] = useHeaderStoreNew((state) => [
     state?.openAuthModal,
     state?.closeModalAuth,
@@ -167,6 +168,7 @@ export default function ModalAuth({ city }) {
     state?.navigate,
     state?.isAuth,
     state?.yandexAuthCheck,
+    state?.authIntent,
   ]);
 
   useEffect(() => {
@@ -250,9 +252,13 @@ export default function ModalAuth({ city }) {
       : typeLogin === 'resetPWD'
         ? 'Восстановление пароля'
         : typeLogin === 'resetNewPwd'
-          ? 'Новый пароль'
+          ? authIntent === 'register'
+            ? 'Придумайте пароль'
+            : 'Новый пароль'
           : typeLogin === 'resetDone'
-            ? 'Пароль обновлён'
+            ? authIntent === 'register'
+              ? 'Аккаунт создан'
+              : 'Пароль обновлён'
             : typeLogin === 'createPWD'
               ? 'Придумайте пароль'
               : typeLogin === 'finish'

@@ -25,6 +25,7 @@ export default function ResetCode({ isMobileAuth = false, flow = 'recovery' }) {
     checkRecoveryCode,
     checkCode,
     navigate,
+    authIntent,
   ] = useHeaderStoreNew((state) => [
     state?.loginLogin,
     state?.typeAuth,
@@ -34,6 +35,7 @@ export default function ResetCode({ isMobileAuth = false, flow = 'recovery' }) {
     state?.checkRecoveryCode,
     state?.checkCode,
     state?.navigate,
+    state?.authIntent,
   ]);
 
   const inputRef = useRef(null);
@@ -88,7 +90,9 @@ export default function ResetCode({ isMobileAuth = false, flow = 'recovery' }) {
   };
 
   const backToChannel = () => {
-    navigate(isLogin ? 'loginSMS' : 'resetPWD');
+    navigate(
+      isLogin ? 'loginSMS' : authIntent === 'register' ? 'create' : 'resetPWD'
+    );
   };
 
   return (
