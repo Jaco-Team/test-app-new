@@ -271,6 +271,42 @@
           margin-bottom: $MyScale40;
         }
 
+        & .authDeliveryChannel {
+          width: $MyScale510;
+          margin-top: $MyScale20;
+          margin-bottom: $MyScale20;
+
+          & .MuiFormLabel-root,
+          & .MuiFormControlLabel-label {
+            @include font22_400();
+          }
+
+          & .MuiFormLabel-root {
+            margin-bottom: $MyScale8;
+          }
+
+          & .MuiRadioGroup-root {
+            flex-wrap: wrap;
+          }
+
+          & .MuiFormControlLabel-root {
+            margin: 0 $MyScale24 0 0;
+
+            &:last-child {
+              margin-right: 0;
+            }
+          }
+
+          & .MuiRadio-root {
+            padding: $MyScale8;
+
+            & svg {
+              width: $MyScale30;
+              height: $MyScale30;
+            }
+          }
+        }
+
         & .captchaWrapSMS {
           width: $MyScale510;
           margin-top: $MyScale20;
@@ -1191,6 +1227,42 @@
             @include font22_400();
             text-align: center;
             margin-bottom: tablet-vw(40);
+          }
+
+          & .authDeliveryChannel {
+            width: tablet-vw(510);
+            margin-top: tablet-vw(20);
+            margin-bottom: tablet-vw(20);
+
+            & .MuiFormLabel-root,
+            & .MuiFormControlLabel-label {
+              @include font22_400();
+            }
+
+            & .MuiFormLabel-root {
+              margin-bottom: tablet-vw(8);
+            }
+
+            & .MuiRadioGroup-root {
+              flex-wrap: wrap;
+            }
+
+            & .MuiFormControlLabel-root {
+              margin: 0 tablet-vw(24) 0 0;
+
+              &:last-child {
+                margin-right: 0;
+              }
+            }
+
+            & .MuiRadio-root {
+              padding: tablet-vw(8);
+
+              & svg {
+                width: tablet-vw(30);
+                height: tablet-vw(30);
+              }
+            }
           }
 
           & .captchaWrapSMS {
