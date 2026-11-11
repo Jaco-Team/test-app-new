@@ -100,6 +100,11 @@ function showCheckoutApiError(response, fallbackText) {
   useHeaderStoreNew.getState().setActiveModalAlert(true, text, false);
 }
 
+// Загрузка слотов предзаказа: номер последнего запроса (ответы более ранних
+// не применяются) и запрос, который ещё выполняется (такой же не дублируем).
+let timesPredRequestId = 0;
+let timesPredPending = null;
+
 function getPaymentWidgetErrorText(error) {
   const code = String(
     error?.error?.code || error?.code || error?.status || error?.type || ''
@@ -2621,85 +2626,90 @@ export const useCartStore = reuseHotStore(
       },
 
       // получение времени заказа в оформлении заказа
-      getTimesPred: async (point_id, date, typeOrder, cart) => {
-        const my_cart = get().items;
-
-        let my_cart_ = my_cart.map((item) => {
-          return {
+      getTimesPred: (point_id, date, typeOrder, cart) => {
+        const pointId = point_id ?? get().point_id;
+        const type_order = get().typeOrder == 'pic' ? 1 : 0;
+        const cartJson = JSON.stringify(
+          (get().items ?? []).map((item) => ({
             id: item?.id ?? item?.item_id,
             item_id: item?.id ?? item?.item_id,
             count: item.count,
-          };
-        });
-
-        const setDate = date ?? dayjs().format('YYYY-MM-DD');
+          }))
+        );
 
         const today = dayjs().format('YYYY-MM-DD');
+        const setDate = date ?? today;
+        const key = [pointId, setDate, type_order, cartJson].join('|');
 
-        const data = {
-          type: 'get_times_pred',
-          date: setDate,
-          point_id: point_id ?? get().point_id,
-          type_order: get().typeOrder == 'pic' ? 1 : 0,
-          cart: JSON.stringify(my_cart_),
-        };
+        // Такой же запрос ещё выполняется — второй не отправляем.
+        if (timesPredPending?.key === key) return timesPredPending.promise;
 
-        let json = await api('cart', data);
+        timesPredRequestId += 1;
+        const requestId = timesPredRequestId;
+        // Ответ применяем, только пока после этого запроса не начали новый.
+        const isCurrent = () => timesPredRequestId === requestId;
 
-        if (json?.st === false) {
-          showCheckoutApiError(json, 'Не удалось загрузить время заказа.');
-          set({ timePreOrder: [] });
-          return;
-        }
-
-        if (!Array.isArray(json)) {
-          showCheckoutApiError(
-            json,
-            'Не удалось загрузить время заказа. Проверьте интернет и попробуйте еще раз.'
-          );
-          set({ timePreOrder: [] });
-          return;
-        }
-
-        json = json.filter((time) => time.name !== 'В ближайшее время');
-
-        if (setDate === today && json.length === 0) {
-          let tomorrow = new Date();
-          tomorrow.setDate(tomorrow.getDate() + 1);
-          tomorrow = dayjs(tomorrow).format('YYYY-MM-DD');
-
+        const loadTimes = async (day) => {
           const data = {
             type: 'get_times_pred',
-            date: tomorrow,
-            point_id: point_id ?? get().point_id,
-            type_order: get().typeOrder == 'pic' ? 1 : 0,
-            cart: JSON.stringify(my_cart_),
+            date: day,
+            point_id: pointId,
+            type_order,
+            cart: cartJson,
           };
 
           let json = await api('cart', data);
 
-          if (json?.st === false) {
-            showCheckoutApiError(json, 'Не удалось загрузить время заказа.');
-            set({
-              timePreOrder: [],
-              point_id: point_id ?? get().point_id,
-            });
-            return;
+          // Отказ бэкенда — обычно разовый сбой его связи с сервисом очереди,
+          // поэтому один раз повторяем. Сетевые сбои повторяет сам api().
+          if (!Array.isArray(json) && !json?.transport_error && isCurrent()) {
+            json = await api('cart', data);
           }
+
+          return json;
+        };
+
+        const reject = (json, values = {}) => {
+          showCheckoutApiError(
+            json,
+            json?.st === false
+              ? 'Не удалось загрузить время заказа.'
+              : 'Не удалось загрузить время заказа. Проверьте интернет и попробуйте еще раз.'
+          );
+          set({ timePreOrder: [], ...values });
+        };
+
+        const withoutNearest = (times) =>
+          times.filter((time) => time.name !== 'В ближайшее время');
+
+        const run = async () => {
+          let json = await loadTimes(setDate);
+
+          if (!isCurrent()) return;
 
           if (!Array.isArray(json)) {
-            showCheckoutApiError(
-              json,
-              'Не удалось загрузить время заказа. Проверьте интернет и попробуйте еще раз.'
-            );
-            set({
-              timePreOrder: [],
-              point_id: point_id ?? get().point_id,
-            });
+            reject(json);
             return;
           }
 
-          json = json.filter((time) => time.name !== 'В ближайшее время');
+          json = withoutNearest(json);
+
+          if (setDate !== today || json.length > 0) {
+            set({ timePreOrder: json, point_id: pointId });
+            return;
+          }
+
+          // На сегодня слотов нет: показываем завтрашние и убираем «Сегодня» из дат.
+          const tomorrow = dayjs().add(1, 'day').format('YYYY-MM-DD');
+
+          json = await loadTimes(tomorrow);
+
+          if (!isCurrent()) return;
+
+          if (!Array.isArray(json)) {
+            reject(json, { point_id: pointId });
+            return;
+          }
 
           let datePreOrder = get().datePreOrder;
           datePreOrder = Array.isArray(datePreOrder)
@@ -2707,16 +2717,19 @@ export const useCartStore = reuseHotStore(
             : [];
 
           set({
-            timePreOrder: json,
-            point_id: point_id ?? get().point_id,
+            timePreOrder: withoutNearest(json),
+            point_id: pointId,
             datePreOrder,
           });
-        } else {
-          set({
-            timePreOrder: json,
-            point_id: point_id ?? get().point_id,
-          });
-        }
+        };
+
+        const promise = run().finally(() => {
+          if (timesPredPending?.promise === promise) timesPredPending = null;
+        });
+
+        timesPredPending = { key, promise };
+
+        return promise;
       },
 
       // получение адресов доставки в оформлении заказа

@@ -1,8 +1,7 @@
-import { useEffect, useState, useCallback } from 'react';
+import { useEffect, useRef, useState, useCallback } from 'react';
 
 import useEmblaCarousel from 'embla-carousel-react';
 import { WheelGesturesPlugin } from 'embla-carousel-wheel-gestures';
-import { flushSync } from 'react-dom';
 
 import { useCartStore } from '@/components/store.js';
 import useMediaQuery from '@mui/material/useMediaQuery';
@@ -335,50 +334,51 @@ const DataTime = ({
     [WheelGesturesPlugin()]
   );
 
-  const onSelect = useCallback((emblaApi) => {
-    if (!emblaApi) return;
+  // Событие колеса вызывает обработчик родителя из последней отрисовки,
+  // а не тот, что был при первом показе окна.
+  const chooseItemRef = useRef(chooseItem);
 
-    setActive(emblaApi.selectedScrollSnap());
-    chooseItem(emblaApi.selectedScrollSnap(), data);
-  }, []);
+  useEffect(() => {
+    chooseItemRef.current = chooseItem;
+  });
 
-  const onScroll = useCallback(
-    (emblaApi) => {
-      if (!emblaApi) return;
+  // Одна подписка на всё время жизни колеса. Раньше обработчики добавлялись при
+  // каждой смене строки, и каждая следующая прокрутка даты отправляла на один
+  // запрос времени больше.
+  useEffect(() => {
+    if (!emblaApi) return undefined;
 
-      setActive(emblaApi.selectedScrollSnap());
-      chooseItem(emblaApi.selectedScrollSnap(), data);
-    },
-    [emblaApi]
-  );
+    const onChange = (carousel) => {
+      const index = carousel.selectedScrollSnap();
+
+      setActive(index);
+      chooseItemRef.current(index, data);
+    };
+
+    emblaApi.on('select', onChange);
+    emblaApi.on('reInit', onChange);
+
+    return () => {
+      emblaApi.off('select', onChange);
+      emblaApi.off('reInit', onChange);
+    };
+  }, [emblaApi, data]);
 
   useEffect(() => {
     if (emblaApi) {
-      emblaApi.on('select', onSelect);
       emblaApi.scrollTo(activeData);
-
-      onScroll();
-      emblaApi.on('scroll', () => {
-        flushSync(() => onScroll());
-      });
-
-      emblaApi.on('reInit', onScroll);
-      emblaApi.on('reInit', onSelect);
     }
 
     setActive(activeData);
-  }, [emblaApi, activeData, onSelect, onScroll]);
+  }, [emblaApi, activeData]);
 
+  // О новой строке родителю сообщает событие select — отдельный вызов не нужен.
   const scrollPrev = useCallback(() => {
-    emblaApi && emblaApi.scrollPrev();
-    setActive(emblaApi.selectedScrollSnap());
-    chooseItem(emblaApi.selectedScrollSnap(), data);
+    emblaApi?.scrollPrev();
   }, [emblaApi]);
 
   const scrollNext = useCallback(() => {
-    emblaApi && emblaApi.scrollNext();
-    setActive(emblaApi.selectedScrollSnap());
-    chooseItem(emblaApi.selectedScrollSnap(), data);
+    emblaApi?.scrollNext();
   }, [emblaApi]);
 
   const handleData = (index) => {
