@@ -10,6 +10,7 @@ import {
 } from '@/components/api';
 import { importWithRetry } from '@/utils/importWithRetry';
 import { getClientNetworkContext } from '@/utils/clientMonitoring';
+import { trackUmami } from '@/utils/umami';
 
 const Start = dynamic(() =>
   importWithRetry(() => import('./start'), { retries: 1, delayMs: 400 })
@@ -25,6 +26,15 @@ const ResetPWD = dynamic(() =>
 );
 const LoginSMS = dynamic(() =>
   importWithRetry(() => import('./loginSMS'), { retries: 1, delayMs: 400 })
+);
+const ResetCode = dynamic(() =>
+  importWithRetry(() => import('./resetCode'), { retries: 1, delayMs: 400 })
+);
+const ResetDone = dynamic(() =>
+  importWithRetry(() => import('./resetDone'), { retries: 1, delayMs: 400 })
+);
+const ResetNewPWD = dynamic(() =>
+  importWithRetry(() => import('./resetNewPWD'), { retries: 1, delayMs: 400 })
 );
 const Finish = dynamic(() =>
   importWithRetry(() => import('./finish'), { retries: 1, delayMs: 400 })
@@ -150,6 +160,7 @@ export default function ModalAuth({ city }) {
     navigate,
     isAuth,
     yandexAuthCheck,
+    authIntent,
   ] = useHeaderStoreNew((state) => [
     state?.openAuthModal,
     state?.closeModalAuth,
@@ -157,6 +168,7 @@ export default function ModalAuth({ city }) {
     state?.navigate,
     state?.isAuth,
     state?.yandexAuthCheck,
+    state?.authIntent,
   ]);
 
   useEffect(() => {
@@ -175,6 +187,23 @@ export default function ModalAuth({ city }) {
 
     authModalWasOpen.current = openAuthModal;
   }, [openAuthModal, typeLogin]);
+
+  // Umami: каждый показанный экран окна авторизации и закрытие окна (docs/AUTH_METRICS.md).
+  const lastUmamiScreen = React.useRef('');
+  useEffect(() => {
+    if (openAuthModal) {
+      if (lastUmamiScreen.current !== typeLogin) {
+        trackUmami('auth_screen', { screen: typeLogin });
+        lastUmamiScreen.current = typeLogin;
+      }
+    } else if (lastUmamiScreen.current) {
+      trackUmami('auth_close', {
+        screen: lastUmamiScreen.current,
+        authorized: isAuth === 'auth',
+      });
+      lastUmamiScreen.current = '';
+    }
+  }, [openAuthModal, typeLogin, isAuth]);
 
   useEffect(() => {
     let search = window.location.search;
@@ -210,22 +239,33 @@ export default function ModalAuth({ city }) {
     navigate('start');
   };
 
-  if (isAuth == 'auth' && openAuthModal === true) {
+  // Экран «Пароль обновлён» показывается уже после входа — его не закрываем автоматически.
+  if (isAuth == 'auth' && openAuthModal === true && typeLogin !== 'resetDone') {
     closeModal();
   }
 
   const login =
-    typeLogin === 'loginSMSCode'
+    typeLogin === 'loginSMSCode' ||
+    typeLogin === 'resetCode' ||
+    typeLogin === 'loginCode'
       ? 'Проверочный код'
       : typeLogin === 'resetPWD'
-        ? 'Новый пароль'
-        : typeLogin === 'createPWD'
-          ? 'Придумайте пароль'
-          : typeLogin === 'finish'
-            ? 'Всё получилось!'
-            : typeLogin === 'loginSMS'
-              ? 'Вход по СМС'
-              : 'Мой Жако';
+        ? 'Восстановление пароля'
+        : typeLogin === 'resetNewPwd'
+          ? authIntent === 'register'
+            ? 'Придумайте пароль'
+            : 'Новый пароль'
+          : typeLogin === 'resetDone'
+            ? authIntent === 'register'
+              ? 'Аккаунт создан'
+              : 'Пароль обновлён'
+            : typeLogin === 'createPWD'
+              ? 'Придумайте пароль'
+              : typeLogin === 'finish'
+                ? 'Всё получилось!'
+                : typeLogin === 'loginSMS'
+                  ? 'Вход без пароля'
+                  : 'Мой Жако';
 
   if (isMobileAuth) {
     return (
@@ -301,6 +341,21 @@ export default function ModalAuth({ city }) {
               ) : null}
               {typeLogin === 'loginSMSCode' ? (
                 <LoginSMSCode isMobileAuth={isMobileAuth} />
+              ) : null}
+              {typeLogin === 'resetCode' ? (
+                <ResetCode isMobileAuth={isMobileAuth} />
+              ) : null}
+              {typeLogin === 'loginCode' ? (
+                <ResetCode isMobileAuth={isMobileAuth} flow="login" />
+              ) : null}
+              {typeLogin === 'resetNewPwd' ? (
+                <ResetNewPWD isMobileAuth={isMobileAuth} />
+              ) : null}
+              {typeLogin === 'resetDone' ? (
+                <ResetDone
+                  closeModal={closeModal}
+                  isMobileAuth={isMobileAuth}
+                />
               ) : null}
               {typeLogin === 'finish' ? (
                 <Finish closeModal={closeModal} isMobileAuth={isMobileAuth} />
@@ -384,6 +439,18 @@ export default function ModalAuth({ city }) {
             ) : null}
             {typeLogin === 'loginSMSCode' ? (
               <LoginSMSCode isMobileAuth={isMobileAuth} />
+            ) : null}
+            {typeLogin === 'resetCode' ? (
+              <ResetCode isMobileAuth={isMobileAuth} />
+            ) : null}
+            {typeLogin === 'loginCode' ? (
+              <ResetCode isMobileAuth={isMobileAuth} flow="login" />
+            ) : null}
+            {typeLogin === 'resetNewPwd' ? (
+              <ResetNewPWD isMobileAuth={isMobileAuth} />
+            ) : null}
+            {typeLogin === 'resetDone' ? (
+              <ResetDone closeModal={closeModal} isMobileAuth={isMobileAuth} />
             ) : null}
             {typeLogin === 'finish' ? (
               <Finish closeModal={closeModal} isMobileAuth={isMobileAuth} />

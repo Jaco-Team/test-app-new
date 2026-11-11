@@ -53,6 +53,10 @@ import {
   setSessionStorageItem,
 } from '@/utils/browserStorage';
 import { reconcileCartItems } from '@/utils/cityCart';
+import { smsResendSeconds } from '@/utils/authRetryAfter.mjs';
+
+// Телефон из маски «8 (000) 000-00-00» → «80000000000».
+const authNumber = (value = '') => String(value).replace(/[\s()_-]/g, '');
 import { updateRouteQuery } from '@/utils/routeQuery';
 import {
   clearPendingSbpOrder,
@@ -681,6 +685,11 @@ export const useHeaderStoreNew = reuseHotStore(
 
       timer: 89,
       timerPage: false,
+      smsResendTimer: 89,
+      recoveryResetToken: '',
+      // 'recovery' | 'register': общий сценарий «сначала код, потом пароль» (восстановление и регистрация).
+      authIntent: 'recovery',
+      setAuthIntent: (authIntent) => set({ authIntent }),
 
       preTypeLogin: '',
       loginLogin: '',
@@ -863,7 +872,7 @@ export const useHeaderStoreNew = reuseHotStore(
 
               if (isSent) {
                 get().navigate('loginSMSCode');
-                get().setTimer(89);
+                get().setTimer(get().smsResendTimer);
               }
             })();
           }
@@ -905,7 +914,7 @@ export const useHeaderStoreNew = reuseHotStore(
       // },
 
       // проверка логина, кода при регистрации/логировании
-      checkCode: async () => {
+      checkCode: async (codeArg) => {
         let login = get().loginLogin;
 
         login = login.split(' ').join('');
@@ -919,7 +928,7 @@ export const useHeaderStoreNew = reuseHotStore(
         let data = {
           type: 'check_profile',
           number: login,
-          cod: get().code,
+          cod: codeArg ?? get().code,
         };
 
         if (isSpecialUser) {
@@ -934,6 +943,8 @@ export const useHeaderStoreNew = reuseHotStore(
           });
 
           get().setActiveModalAlert(true, res.text, false);
+
+          return false;
         } else {
           set({
             errTextAuth: '',
@@ -962,6 +973,8 @@ export const useHeaderStoreNew = reuseHotStore(
             setLocalStorageItem('token', res?.token);
             Cookies.set('token', res?.token, { expires: 60 }); //expires 7 days
           }
+
+          return true;
         }
       },
 
@@ -1147,7 +1160,7 @@ export const useHeaderStoreNew = reuseHotStore(
 
       // защита
       // создание нового аккаунта или получения смс кода для действующего аккаунта
-      createProfile: async (token) => {
+      createProfile: async (token, deliveryChannel) => {
         if (get().doubleClickSMS === true) {
           return false;
         }
@@ -1170,6 +1183,7 @@ export const useHeaderStoreNew = reuseHotStore(
           type: 'create_profile',
           number: login,
           token: token,
+          ...(deliveryChannel ? { delivery_channel: deliveryChannel } : {}),
         };
 
         if (isSpecialUser) {
@@ -1185,6 +1199,22 @@ export const useHeaderStoreNew = reuseHotStore(
             errText1: '',
             errText2: '',
             typeAuth: json?.type,
+            smsResendTimer: smsResendSeconds(json),
+          });
+
+          setTimeout(() => {
+            set({
+              doubleClickSMS: false,
+            });
+          }, 300);
+
+          return true;
+        } else if (json?.code_sent === true) {
+          // Код на этот номер уже отправлен и ещё действует — сразу к вводу кода с оставшимся таймером.
+          set({
+            errTextAuth: '',
+            typeAuth: deliveryChannel || get().typeAuth,
+            smsResendTimer: smsResendSeconds(json),
           });
 
           setTimeout(() => {
@@ -1213,7 +1243,7 @@ export const useHeaderStoreNew = reuseHotStore(
 
       // защита
       // подтвреждение новой регистрации/изменения в существующий аккаунт
-      sendsmsNewLogin: async () => {
+      sendsmsNewLogin: async ({ deliveryChannel, captchaToken } = {}) => {
         if (get().doubleClickSMS === true) {
           return;
         }
@@ -1221,11 +1251,6 @@ export const useHeaderStoreNew = reuseHotStore(
         set({
           doubleClickSMS: true,
         });
-
-        if (get().typeLogin !== 'loginSMSCode') {
-          set({ timerPage: false, timer: 89 });
-          get().navigate('loginSMSCode');
-        }
 
         let login = get().loginLogin;
 
@@ -1239,32 +1264,193 @@ export const useHeaderStoreNew = reuseHotStore(
           type: 'sendsmsrp',
           number: login,
           pwd: get().pwdLogin,
-          //checkSpam: get().checkSpam === true ? 1 : 0
+          ...(deliveryChannel ? { delivery_channel: deliveryChannel } : {}),
+          ...(captchaToken ? { token: captchaToken } : {}),
         };
 
-        const json = await api('auth', data);
+        try {
+          const json = await api('auth', data);
 
-        if (json?.st === true) {
-          set({
-            errTextAuth: '',
-            errTitle: '',
-            errText1: '',
-            errText2: '',
-            typeAuth: json?.type,
-          });
-        } else {
-          set({
-            errTextAuth: json?.text,
-          });
+          if (json?.st === true) {
+            set({
+              errTextAuth: '',
+              errTitle: '',
+              errText1: '',
+              errText2: '',
+              typeAuth: json?.type,
+              smsResendTimer: smsResendSeconds(json),
+            });
 
-          get().setActiveModalAlert(true, json.text, false);
+            set({ timerPage: false, timer: smsResendSeconds(json) });
+
+            if (get().typeLogin !== 'loginSMSCode') {
+              get().navigate('loginSMSCode');
+            }
+
+            return true;
+          }
+
+          const message =
+            json?.text || 'Не удалось отправить код. Попробуйте позже.';
+          set({ errTextAuth: message });
+          get().setActiveModalAlert(true, message, false);
+
+          return false;
+        } catch {
+          const message =
+            'Не удалось отправить код. Проверьте соединение и попробуйте позже.';
+          set({ errTextAuth: message });
+          get().setActiveModalAlert(true, message, false);
+
+          return false;
+        } finally {
+          setTimeout(() => {
+            set({ doubleClickSMS: false });
+          }, 300);
+        }
+      },
+
+      // Восстановление пароля «сначала код, потом пароль», шаг 1: код без пароля.
+      sendRecoveryCode: async ({ deliveryChannel, captchaToken } = {}) => {
+        if (get().doubleClickSMS === true) {
+          return false;
         }
 
-        setTimeout(() => {
-          set({
-            doubleClickSMS: false,
-          });
-        }, 300);
+        set({ doubleClickSMS: true });
+
+        const data = {
+          type: 'sendsmsrp',
+          number: authNumber(get().loginLogin),
+          delivery_channel: deliveryChannel || 'sms',
+          ...(captchaToken ? { token: captchaToken } : {}),
+          ...(get().authIntent === 'register' ? { intent: 'register' } : {}),
+        };
+
+        try {
+          const json = await api('auth', data);
+
+          if (json?.st === true) {
+            const seconds = smsResendSeconds(json);
+
+            set({
+              errTextAuth: '',
+              typeAuth: json?.type || deliveryChannel,
+              smsResendTimer: seconds,
+              timer: seconds,
+              timerPage: false,
+              recoveryResetToken: '',
+              code: '',
+            });
+            get().navigate('resetCode');
+
+            return true;
+          }
+
+          if (json?.code_sent === true) {
+            // Код уже отправлен и ещё действует — открываем ввод кода с оставшимся таймером.
+            const seconds = smsResendSeconds(json);
+
+            set({
+              errTextAuth: '',
+              typeAuth: deliveryChannel || get().typeAuth,
+              smsResendTimer: seconds,
+              timer: seconds,
+              timerPage: false,
+              code: '',
+            });
+            get().navigate('resetCode');
+
+            return true;
+          }
+
+          const message =
+            json?.text || 'Не удалось отправить код. Попробуйте позже.';
+          set({ errTextAuth: message });
+          get().setActiveModalAlert(true, message, false);
+
+          return false;
+        } catch {
+          const message =
+            'Не удалось отправить код. Проверьте соединение и попробуйте позже.';
+          set({ errTextAuth: message });
+          get().setActiveModalAlert(true, message, false);
+
+          return false;
+        } finally {
+          setTimeout(() => {
+            set({ doubleClickSMS: false });
+          }, 300);
+        }
+      },
+
+      // Шаг 2: проверяем код, пароль не меняется; бэкенд выдаёт одноразовый reset_token.
+      checkRecoveryCode: async (code = get().code) => {
+        const res = await api('auth', {
+          type: 'check_recovery_code',
+          number: authNumber(get().loginLogin),
+          cod: code,
+          ...(get().authIntent === 'register' ? { intent: 'register' } : {}),
+        });
+
+        if (res?.st === true && res?.reset_token) {
+          set({ errTextAuth: '', recoveryResetToken: res.reset_token });
+          get().navigate('resetNewPwd');
+
+          return true;
+        }
+
+        const message = res?.text || 'Код не подходит. Попробуйте ещё раз.';
+        set({ errTextAuth: message });
+        get().setActiveModalAlert(true, message, false);
+
+        return false;
+      },
+
+      // Шаг 3: сохраняем новый пароль и входим в аккаунт.
+      setRecoveryPwd: async () => {
+        const data = {
+          type: 'set_recovery_pwd',
+          number: authNumber(get().loginLogin),
+          reset_token: get().recoveryResetToken,
+          pwd: get().pwdLogin,
+          ...(get().authIntent === 'register' ? { intent: 'register' } : {}),
+        };
+
+        if (Cookies.get('isSpecialUser')) {
+          data.isSpecialUser = true;
+        }
+
+        const res = await api('auth', data);
+
+        if (res?.st !== true) {
+          const message = res?.text || 'Не удалось сохранить пароль.';
+          set({ errTextAuth: message });
+          get().setActiveModalAlert(true, message, false);
+
+          if (String(message).includes('Запросите код')) {
+            set({ recoveryResetToken: '', code: '' });
+            get().navigate(get().authIntent === 'register' ? 'create' : 'resetPWD');
+          }
+
+          return false;
+        }
+
+        get().navigate('resetDone');
+
+        set({
+          errTextAuth: '',
+          recoveryResetToken: '',
+          token: res?.token,
+          userName: get().setNameUser(res?.name),
+          isAuth: 'auth',
+        });
+
+        if (typeof window !== 'undefined') {
+          setLocalStorageItem('token', res?.token);
+          Cookies.set('token', res?.token, { expires: 60 });
+        }
+
+        return true;
       },
 
       getYandexLinkAuth: async (city) => {

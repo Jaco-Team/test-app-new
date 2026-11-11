@@ -1,9 +1,10 @@
-import { useEffect, useMemo, useRef, useState } from 'react';
+import { useState } from 'react';
 import dynamic from 'next/dynamic';
 
 import { useHeaderStoreNew } from '@/components/store';
 import { trackAuthClientEvent } from '@/components/api';
 import { importWithRetry } from '@/utils/importWithRetry';
+import { trackUmami } from '@/utils/umami';
 
 import { FormattedInputs } from '@/ui/MyTextInput';
 import { Check } from '@/ui/Icons';
@@ -11,296 +12,231 @@ import { Check } from '@/ui/Icons';
 import Typography from '@mui/material/Typography';
 import InputAdornment from '@mui/material/InputAdornment';
 
-const SmartCaptcha = dynamic(
+// Невидимая капча: задание показывается только если Яндекс сомневается.
+const InvisibleSmartCaptcha = dynamic(
   () =>
     importWithRetry(
-      () => import('@yandex/smart-captcha').then((mod) => mod.SmartCaptcha),
+      () =>
+        import('@yandex/smart-captcha').then(
+          (mod) => mod.InvisibleSmartCaptcha
+        ),
       { retries: 1, delayMs: 600 }
     ),
   { ssr: false }
 );
 
+const CHANNELS = [
+  { value: 'sms', label: 'СМС' },
+  { value: 'telegram', label: 'Telegram' },
+  { value: 'voice', label: 'Звонок' },
+];
+
+// «Войти без пароля», шаг 1 из 2: телефон и канал кода. Шаг 2 — экран кода (resetCode.js, flow="login").
 export default function LoginSMS({ isMobileAuth = false }) {
   const [
+    navigate,
     changeLogin,
     loginLogin,
+    typeAuth,
     createProfile,
-    navigate,
-    preTypeLogin,
     setTimer,
     setActiveModalAlert,
   ] = useHeaderStoreNew((state) => [
+    state?.navigate,
     state?.changeLogin,
     state?.loginLogin,
+    state?.typeAuth,
     state?.createProfile,
-    state?.navigate,
-    state?.preTypeLogin,
     state?.setTimer,
     state?.setActiveModalAlert,
   ]);
-  const matches = isMobileAuth;
 
-  const [token, setToken] = useState('');
-  const [captchaError, setCaptchaError] = useState('');
-  const [captchaKey, setCaptchaKey] = useState(0);
-  const [isSubmitting, setIsSubmitting] = useState(false);
-  const captchaContainerRef = useRef(null);
-  const captchaReadyReportedRef = useRef(false);
-  const captchaSiteKey = process.env.NEXT_PUBLIC_SMARTCAPTCHA_SITE_KEY || '';
-  const isResend = preTypeLogin === 'loginSMSCode';
-
-  const canSubmit = useMemo(
-    () =>
-      loginLogin.length === 17 &&
-      token.length > 0 &&
-      captchaError.length === 0 &&
-      !isSubmitting,
-    [loginLogin.length, token, captchaError, isSubmitting]
+  const [deliveryChannel, setDeliveryChannel] = useState(() =>
+    CHANNELS.some((channel) => channel.value === typeAuth) ? typeAuth : 'sms'
   );
+  const [captchaVisible, setCaptchaVisible] = useState(false);
+  const [captchaKey, setCaptchaKey] = useState(0);
+  const [isSending, setIsSending] = useState(false);
 
-  const isAppWebView =
-    typeof window !== 'undefined' &&
-    !/^https?:$/.test(window.location.protocol);
+  const matches = isMobileAuth;
+  const captchaSiteKey = process.env.NEXT_PUBLIC_SMARTCAPTCHA_SITE_KEY || '';
+  const phoneReady = loginLogin.length === 17;
+  const canSubmit = phoneReady && !isSending;
 
-  useEffect(() => {
-    if (typeof window === 'undefined') {
-      return undefined;
-    }
-
-    const root = captchaContainerRef.current;
-    if (!root) {
-      return undefined;
-    }
-
-    captchaReadyReportedRef.current = false;
-
-    const hasCaptchaWidget = () => {
-      return Boolean(
-        root.querySelector(
-          'iframe, input[name=\"smart-token\"], [data-smart-captcha], .smart-captcha'
-        ) || root.childElementCount > 0
-      );
-    };
-
-    const markWidgetReady = () => {
-      if (hasCaptchaWidget()) {
-        if (!captchaReadyReportedRef.current) {
-          captchaReadyReportedRef.current = true;
-          trackAuthClientEvent('captcha_rendered', {
-            screen: 'login_sms',
-          });
-        }
-
-        setCaptchaError((currentError) =>
-          currentError ===
-          'Не удалось загрузить капчу. Проверьте интернет и попробуйте ещё раз.'
-            ? ''
-            : currentError
-        );
-      }
-    };
-
-    markWidgetReady();
-
-    const observer = new MutationObserver(markWidgetReady);
-    observer.observe(root, { childList: true, subtree: true });
-
-    const timeoutId = window.setTimeout(() => {
-      if (!hasCaptchaWidget()) {
-        trackAuthClientEvent('captcha_error', {
-          screen: 'login_sms',
-          outcome: 'error',
-          reason: 'widget_timeout',
-        });
-        setCaptchaError(
-          (currentError) =>
-            currentError ||
-            'Не удалось загрузить капчу. Проверьте интернет и попробуйте ещё раз.'
-        );
-      }
-    }, 8000);
-
-    return () => {
-      observer.disconnect();
-      window.clearTimeout(timeoutId);
-    };
-  }, [captchaKey]);
-
-  const handleCaptchaSuccess = (captchaToken) => {
-    setCaptchaError('');
-    setToken(captchaToken || '');
-    trackAuthClientEvent('captcha_solved', {
-      screen: 'login_sms',
-      outcome: 'success',
-      number: loginLogin,
-    });
-  };
-
-  const handleCaptchaFailure = (reason) => {
-    setToken('');
-    trackAuthClientEvent('captcha_error', {
-      screen: 'login_sms',
-      outcome: 'error',
-      reason,
-      number: loginLogin,
-    });
-    setCaptchaError(
-      'Капча временно недоступна. Проверьте интернет и попробуйте ещё раз.'
-    );
-  };
-
-  const resetCaptcha = () => {
-    setToken('');
-    setCaptchaError('');
-    captchaReadyReportedRef.current = false;
-    setCaptchaKey((currentKey) => currentKey + 1);
-  };
-
-  const handleNavigate = async () => {
-    if (isSubmitting) {
-      return;
-    }
-
-    setIsSubmitting(true);
-    const captchaToken = token;
-    setToken('');
+  const send = async (captchaToken = '') => {
+    setIsSending(true);
     trackAuthClientEvent('phone_submitted', {
       screen: 'login_sms',
       number: loginLogin,
     });
 
     try {
-      const isSent = await createProfile(captchaToken);
+      const sent = await createProfile(captchaToken, deliveryChannel);
 
-      if (!isSent) {
-        setCaptchaKey((currentKey) => currentKey + 1);
-        return;
+      if (sent) {
+        navigate('loginCode');
+        setTimer(useHeaderStoreNew.getState().smsResendTimer);
       }
-
-      navigate('loginSMSCode');
-      setTimer(89);
     } finally {
-      setIsSubmitting(false);
+      setIsSending(false);
     }
   };
 
-  const handlePhoneEnter = (event) => {
-    if (event.key !== 'Enter') {
+  const submit = () => {
+    if (isSending) {
       return;
     }
 
-    event.preventDefault();
-
-    if (canSubmit) {
-      handleNavigate();
+    if (!phoneReady) {
+      setActiveModalAlert(true, 'Укажите номер телефона', false);
       return;
     }
 
-    handleBlockedSubmit();
+    if (captchaSiteKey) {
+      setIsSending(true);
+      setCaptchaVisible(true);
+      return;
+    }
+
+    void send();
   };
 
-  const handleBlockedSubmit = () => {
-    setActiveModalAlert(
-      true,
-      'Укажите телефон и подтвердите, что вы не робот',
-      false
-    );
-    trackAuthClientEvent('phone_submitted', {
+  const handleCaptchaSuccess = (token) => {
+    setCaptchaVisible(false);
+    setCaptchaKey((key) => key + 1);
+    trackAuthClientEvent('captcha_solved', {
       screen: 'login_sms',
-      outcome: 'failure',
-      reason: 'submit_blocked',
+      outcome: 'success',
       number: loginLogin,
     });
+    void send(token || '');
   };
 
-  // <div className="loginErr">
-  //   <Typography component="span">{errTextAuth}</Typography>
-  // </div>
+  const handleCaptchaCancel = () => {
+    setCaptchaVisible(false);
+    setIsSending(false);
+  };
+
+  const handleCaptchaFailure = (reason) => {
+    handleCaptchaCancel();
+    setCaptchaKey((key) => key + 1);
+    trackAuthClientEvent('captcha_error', {
+      screen: 'login_sms',
+      outcome: 'error',
+      reason,
+      number: loginLogin,
+    });
+    setActiveModalAlert(
+      true,
+      'Не удалось пройти проверку. Попробуйте ещё раз.',
+      false
+    );
+  };
+
+  const handleEnter = (event) => {
+    if (event.key === 'Enter') {
+      event.preventDefault();
+      submit();
+    }
+  };
 
   return (
-    <div className={matches ? 'modalLoginStartMobile' : 'modalLoginStartPC'}>
-      <div className="resetText">
-        {isResend
-          ? 'Подтвердите, что вы не робот, чтобы отправить код ещё раз'
-          : 'Укажите свой номер телефона, мы отправим смс'}
-      </div>
+    <div
+      className={
+        (matches ? 'modalLoginStartMobile' : 'modalLoginStartPC') + ' resetStep'
+      }
+    >
+      <div className="resetText">Пришлём код — пароль не понадобится</div>
 
       <FormattedInputs
         type="text"
         placeholder="8 (000) 000-00-00"
         value={loginLogin}
         func={(event) => changeLogin(event)}
-        onKeyDown={handlePhoneEnter}
+        onKeyDown={handleEnter}
         className={
-          loginLogin.length > 0 ? 'inputLogin' : 'inputLogin lable_position'
+          loginLogin.length > 0
+            ? 'inputLogin margin_bottom_30'
+            : 'inputLogin lable_position margin_bottom_30'
         }
         mask={true}
         label="Телефон"
         inputAdornment={
           <InputAdornment position="end">
-            {loginLogin.length === 17 ? <Check className="check_icon" /> : null}
+            {phoneReady ? <Check className="check_icon" /> : null}
           </InputAdornment>
         }
       />
 
-      <div className="captchaWrapSMS">
-        <div className="captchaScaleSMS" ref={captchaContainerRef}>
-          {captchaSiteKey ? (
-            <SmartCaptcha
-              key={captchaKey}
-              sitekey={captchaSiteKey}
-              webview={isAppWebView}
-              onSuccess={handleCaptchaSuccess}
-              onNetworkError={() => handleCaptchaFailure('network_error')}
-              onJavascriptError={() => handleCaptchaFailure('javascript_error')}
-              onTokenExpired={() => {
-                setToken('');
-                trackAuthClientEvent('captcha_expired', {
-                  screen: 'login_sms',
-                  outcome: 'failure',
-                  reason: 'token_expired',
-                  number: loginLogin,
-                });
-              }}
-            />
-          ) : null}
+      <div className="authDeliveryChannel">
+        <span className="authDeliveryLabel" id="login-channel-label">
+          Куда прислать код
+        </span>
+        <div
+          className="authDeliverySeg"
+          role="radiogroup"
+          aria-labelledby="login-channel-label"
+        >
+          {CHANNELS.map((channel) => (
+            <button
+              key={channel.value}
+              type="button"
+              role="radio"
+              aria-checked={deliveryChannel === channel.value}
+              className={deliveryChannel === channel.value ? 'active' : ''}
+              onClick={() => setDeliveryChannel(channel.value)}
+            >
+              {channel.label}
+            </button>
+          ))}
         </div>
       </div>
 
-      {captchaError ? (
-        <div className="resetText" style={{ color: '#DD1A32', marginTop: 8 }}>
-          <div>{captchaError}</div>
-          <button
-            type="button"
-            onClick={resetCaptcha}
-            style={{
-              marginTop: 8,
-              padding: 0,
-              border: 0,
-              background: 'transparent',
-              color: '#DD1A32',
-              textDecoration: 'underline',
-              cursor: 'pointer',
-              font: 'inherit',
-            }}
-          >
-            Повторить загрузку
-          </button>
-        </div>
+      {captchaSiteKey ? (
+        <InvisibleSmartCaptcha
+          key={captchaKey}
+          sitekey={captchaSiteKey}
+          language="ru"
+          hideShield
+          visible={captchaVisible}
+          onSuccess={handleCaptchaSuccess}
+          onChallengeVisible={() =>
+            trackUmami('auth_captcha_challenge', { screen: 'loginSMS' })
+          }
+          onChallengeHidden={handleCaptchaCancel}
+          onNetworkError={() => handleCaptchaFailure('network_error')}
+          onJavascriptError={() => handleCaptchaFailure('javascript_error')}
+        />
       ) : null}
 
-      <div
-        className="loginLogin"
-        onClick={canSubmit ? handleNavigate : handleBlockedSubmit}
-        style={{
-          backgroundColor: canSubmit ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)',
-          marginTop: matches ? '10.25641025641vw' : 20,
-          marginBottom: 20,
-        }}
-      >
-        <Typography component="span">
-          {isSubmitting ? 'Отправляем...' : 'Получить СМС'}
-        </Typography>
+      <div className="resetActions">
+        <div
+          className="loginLogin"
+          role="button"
+          tabIndex={0}
+          onClick={submit}
+          onKeyDown={handleEnter}
+          style={{
+            backgroundColor: canSubmit ? '#DD1A32' : 'rgba(0, 0, 0, 0.1)',
+          }}
+        >
+          <Typography component="span">
+            {isSending ? 'Отправляем…' : 'Получить код'}
+          </Typography>
+        </div>
+
+        <div className="loginBox">
+          <Typography component="span" onClick={() => navigate('start')}>
+            Войти с паролем
+          </Typography>
+          <Typography component="span" onClick={() => navigate('resetPWD')}>
+            Не помню пароль
+          </Typography>
+        </div>
+
+        {captchaSiteKey ? (
+          <div className="captchaNote">Защищено Yandex SmartCaptcha</div>
+        ) : null}
       </div>
     </div>
   );

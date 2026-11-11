@@ -5,6 +5,7 @@ import Cookies from 'js-cookie';
 import CryptoJS from 'crypto-js';
 import * as Sentry from '@sentry/nextjs';
 import { apiErrorContext } from '@/utils/apiErrorContext';
+import { getVisitIds, trackUmami } from '@/utils/umami';
 import { getLocalStorageItem } from '@/utils/browserStorage';
 import {
   CHECKOUT_WIDGET_SCRIPT_CONTEXT,
@@ -44,6 +45,8 @@ const NON_IDEMPOTENT_TYPES = new Set([
   'retry_sbp_payment',
   'create_profile',
   'sendsmsrp',
+  'check_recovery_code',
+  'set_recovery_pwd',
   'site_login',
   'trueordercash',
   'order_true',
@@ -56,6 +59,8 @@ const TRACKED_AUTH_TYPES = new Set([
   'site_login',
   'create_profile',
   'check_profile',
+  'check_recovery_code',
+  'set_recovery_pwd',
   'sendsmsrp',
   'getyalinkauth',
   'checkauthyandex',
@@ -262,7 +267,9 @@ function shouldTrackPaymentRequest(module, requestType, data = {}) {
 
 function authScreenForAction(action) {
   if (action === 'create_profile' || action === 'sendsmsrp') return 'login_sms';
-  if (action === 'check_profile') return 'otp';
+  if (action === 'check_profile' || action === 'check_recovery_code')
+    return 'otp';
+  if (action === 'set_recovery_pwd') return 'password';
   if (action === 'site_login') return 'password';
   if (action === 'getyalinkauth' || action === 'checkauthyandex')
     return 'yandex';
@@ -561,6 +568,8 @@ export function api(module = '', data = {}) {
   const requestData = {
     ...safeData,
     ...(flowId ? { flow_id: flowId } : {}),
+    // vid/sid визита: бэкенд кладёт их в auth.attempt, Chef склеивает с Umami.
+    ...(trackAuthRequest ? getVisitIds() : {}),
     ...(paymentFlowId ? { payment_flow_id: paymentFlowId } : {}),
   };
   const authStartedAt = trackAuthRequest ? Date.now() : 0;
@@ -610,6 +619,18 @@ export function api(module = '', data = {}) {
           duration_ms: Date.now() - authStartedAt,
           http_status: response?.status,
           backend_request_id: response?.headers?.['x-request-id'],
+        });
+        // Umami: результат шага авторизации (docs/AUTH_METRICS.md в laravel-api-site).
+        trackUmami('auth_result', {
+          action: requestType,
+          ok: !requestFailed,
+          error_code: requestFailed
+            ? String(response?.data?.error_code || 'backend_rejected')
+            : undefined,
+          channel:
+            typeof response?.data?.type === 'string' && response.data.type !== 'text'
+              ? response.data.type.toLowerCase()
+              : undefined,
         });
       }
 
@@ -666,6 +687,11 @@ export function api(module = '', data = {}) {
           http_status: responseStatus,
           network_code: errorCode,
           backend_request_id: error?.response?.headers?.['x-request-id'],
+        });
+        trackUmami('auth_result', {
+          action: requestType,
+          ok: false,
+          error_code: 'network_error',
         });
       }
 
