@@ -4477,10 +4477,9 @@ export const useCartStore = reuseHotStore(
 
         if (promo_info) {
           if (promo_info.status_promo === false) {
-            console.log(promo_info);
             const promoMessage =
               promoResponseText(promo_info) ||
-              'Не можем найти промокод. Может, его уже кто-то активировал?';
+              'Промокод не найден. Возможно, его уже активировали.';
 
             set({
               promoInfo: {
