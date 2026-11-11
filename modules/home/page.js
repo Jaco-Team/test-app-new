@@ -16,7 +16,12 @@ import Meta from '@/components/meta.js';
 
 import { useHomeMobileLayout } from '@/utils/useHomeMobileLayout';
 
-export default function HomePage({ page, city, showCategoryH2 = false }) {
+export default function HomePage({
+  page,
+  city,
+  showCategoryH2 = false,
+  initialCatalog = null,
+}) {
   const isHomeMobile = useHomeMobileLayout();
   //console.log('JACO DEPLOY TEST: 2026-09-17 v8');
   return (
@@ -51,7 +56,10 @@ export default function HomePage({ page, city, showCategoryH2 = false }) {
 
         <Filter />
 
-        <CardItems showCategoryHeadings={showCategoryH2} />
+        <CardItems
+          showCategoryHeadings={showCategoryH2}
+          initialCatsItems={initialCatalog}
+        />
         <PreFooterText htmlContent={page?.content} />
       </div>
     </Meta>

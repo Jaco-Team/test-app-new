@@ -8,7 +8,11 @@ import Cookies from 'js-cookie';
 import { api } from '@/components/api';
 import Meta from '@/components/meta';
 import StructuredData from '@/components/structuredData';
-import { organizationSchema } from '@/utils/structuredData';
+import {
+  organizationSchema,
+  schemaGraph,
+  websiteSchema,
+} from '@/utils/structuredData';
 import { roboto } from '@/ui/Font';
 import {
   getLocalStorageItem,
@@ -228,7 +232,10 @@ export async function getServerSideProps({ res, resolvedUrl = '/' }) {
     props: {
       page,
       initialSearch,
-      schema: organizationSchema(footer?.page),
+      schema: schemaGraph(
+        organizationSchema(footer?.page, page),
+        websiteSchema(page)
+      ),
     },
   };
 }

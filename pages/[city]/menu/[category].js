@@ -4,7 +4,13 @@ import dynamic from 'next/dynamic';
 
 import Footer from '@/components/footer.js';
 import StructuredData from '@/components/structuredData';
-import { categorySchema } from '@/utils/structuredData';
+import {
+  breadcrumbSchema,
+  categoryName,
+  categorySchema,
+  schemaGraph,
+} from '@/utils/structuredData';
+import { initialCatalog } from '@/utils/initialCatalog';
 const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'));
 
 import { roboto } from '@/ui/Font.js';
@@ -149,6 +155,7 @@ export default function Home(props) {
         page={page}
         city={city}
         showCategoryH2={showCategoryH2}
+        initialCatalog={props.data1.initialCatalog}
       />
       <StructuredData data={props.data1.schema} />
 
@@ -206,7 +213,17 @@ export async function getServerSideProps({ res, params, query }) {
   data1.headerCategories = Array.isArray(catalog?.main_cat)
     ? catalog.main_cat
     : data1.cats;
-  data1.schema = categorySchema(city, category, catalog);
+  data1.schema = schemaGraph(
+    categorySchema(city, category, catalog),
+    breadcrumbSchema(city, [
+      { name: 'Меню', path: '/menu' },
+      {
+        name: categoryName(catalog, category),
+        path: `/menu/${encodeURIComponent(category)}`,
+      },
+    ])
+  );
+  data1.initialCatalog = initialCatalog(catalog, category);
 
   return { props: { data1 } };
 }

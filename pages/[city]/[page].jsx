@@ -3,7 +3,7 @@ import React from 'react';
 
 import { api } from '@/components/api.js';
 import CityTextPage from '@/modules/cityTextPage';
-import { articleSchema, deliverySchema } from '@/utils/structuredData';
+import { cityTextPageSchema } from '@/utils/structuredData';
 import { getCookie } from '@/utils/getCookie';
 import { normalizeCity } from '@/utils/normalizeCity';
 import { catalogRoute } from '@/utils/catalogRoute';
@@ -98,11 +98,13 @@ export async function getServerSideProps({ req, res, params, query }) {
     };
   }
 
-  if (presentation.schemaType === 'delivery') {
-    data1.schema = deliverySchema(city, data1.page);
-  } else if (presentation.schemaType === 'article') {
-    data1.schema = articleSchema(city, data1.page);
-  }
+  // Разметку получает каждая текстовая страница; тип уточняет utils/cityPageRoute.js.
+  data1.schema = cityTextPageSchema(
+    city,
+    slug,
+    data1.page,
+    presentation.schemaType
+  );
 
   return { props: { data1, slug } };
 }

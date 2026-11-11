@@ -20,6 +20,7 @@ const TEXT_PAGE_OVERRIDES = {
   sroki_godnosti_i_usloviia_hraneniia_gotovyh_bliud: {
     classNamePC: 'PageTextPC PageTextInfo PageStorageConditions',
     classNameMobile: 'PageTextMobile PageTextInfo PageStorageConditions',
+    schemaType: 'storage',
   },
   'company-details': {
     contentWrapperClass: 'companyDetailsTabletPageContent',

@@ -4,7 +4,12 @@ import dynamic from 'next/dynamic';
 
 import Footer from '@/components/footer.js';
 import StructuredData from '@/components/structuredData';
-import { menuSchema } from '@/utils/structuredData';
+import {
+  breadcrumbSchema,
+  menuSchema,
+  schemaGraph,
+} from '@/utils/structuredData';
+import { initialCatalog } from '@/utils/initialCatalog';
 const DynamicHomePage = dynamic(() => import('@/modules/home/page.js'));
 
 import { roboto } from '@/ui/Font.js';
@@ -142,7 +147,12 @@ export default function Home(props) {
 
   return (
     <div className={roboto.variable}>
-      <DynamicHomePage page={page} city={city} showCategoryH2={true} />
+      <DynamicHomePage
+        page={page}
+        city={city}
+        showCategoryH2={true}
+        initialCatalog={props.data1.initialCatalog}
+      />
       <StructuredData data={props.data1.schema} />
 
       <Footer cityName={city} active_page={this_module} links={links} />
@@ -199,7 +209,11 @@ export async function getServerSideProps({ req, res, query }) {
   data1.headerCategories = Array.isArray(headerCatalog?.main_cat)
     ? headerCatalog.main_cat
     : data1.cats;
-  data1.schema = menuSchema(city, data1.cats);
+  data1.schema = schemaGraph(
+    menuSchema(city, data1.cats, headerCatalog),
+    breadcrumbSchema(city, [{ name: 'Меню', path: '/menu' }])
+  );
+  data1.initialCatalog = initialCatalog(headerCatalog);
 
   return { props: { data1 } };
 }

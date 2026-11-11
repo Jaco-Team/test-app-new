@@ -5,7 +5,12 @@ import dynamic from 'next/dynamic';
 
 import Footer from '@/components/footer.js';
 import StructuredData from '@/components/structuredData';
-import { contactLocationsSchema } from '@/utils/structuredData';
+import {
+  breadcrumbSchema,
+  contactLocationsSchema,
+  schemaGraph,
+  webPageSchema,
+} from '@/utils/structuredData';
 const ContactsPage = dynamic(() => import('@/modules/contacts/page'));
 const LoadMap = dynamic(() => import('@/components/loadMap'));
 
@@ -134,9 +139,12 @@ export async function getServerSideProps({ req, res, query }) {
 
   data1.links = footer?.page || {};
   data1.city = city;
-  data1.schema = contactLocationsSchema(
-    city,
-    locations?.points || locations?.zones
+  data1.schema = schemaGraph(
+    contactLocationsSchema(city, locations?.points || locations?.zones),
+    webPageSchema(city, 'contacts', data1.page, 'ContactPage'),
+    breadcrumbSchema(city, [
+      { name: data1.page?.page_h || 'Контакты', path: '/contacts' },
+    ])
   );
 
   data1.headerCategories = await loadHeaderCategories(city, data1.cats);

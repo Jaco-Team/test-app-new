@@ -4,6 +4,12 @@ import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic';
 
 import Footer from '@/components/footer.js';
+import StructuredData from '@/components/structuredData';
+import {
+  breadcrumbSchema,
+  schemaGraph,
+  webPageSchema,
+} from '@/utils/structuredData';
 const AboutPage = dynamic(() => import('@/modules/about/aboutPage'));
 
 import { roboto } from '@/ui/Font.js';
@@ -20,8 +26,17 @@ import { normalizeCity } from '@/utils/normalizeCity';
 import { getCookie } from '@/utils/getCookie';
 
 export default React.memo(function About(props) {
-  const { city, cats, cities, page, all_items, free_items, need_dop, links } =
-    props.data1;
+  const {
+    city,
+    cats,
+    cities,
+    page,
+    all_items,
+    free_items,
+    need_dop,
+    links,
+    schema,
+  } = props.data1;
 
   const [
     setAllItems,
@@ -82,6 +97,7 @@ export default React.memo(function About(props) {
   return (
     <div className={roboto.variable}>
       <AboutPage page={page} cityName={city} />
+      <StructuredData data={schema} />
 
       <Footer cityName={city} active_page={'about'} links={links} />
     </div>
@@ -135,6 +151,12 @@ export async function getServerSideProps({ req, res, query }) {
   });
 
   data1.links = footer?.page || {};
+  data1.schema = schemaGraph(
+    webPageSchema(city, 'about', data1.page, 'AboutPage'),
+    breadcrumbSchema(city, [
+      { name: data1.page?.page_h || 'О компании', path: '/about' },
+    ])
+  );
 
   data1.headerCategories = await loadHeaderCategories(city, data1.cats);
 

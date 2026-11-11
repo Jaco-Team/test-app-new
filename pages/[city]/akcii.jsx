@@ -5,7 +5,11 @@ import dynamic from 'next/dynamic';
 
 import Footer from '@/components/footer.js';
 import StructuredData from '@/components/structuredData';
-import { promotionListSchema } from '@/utils/structuredData';
+import {
+  breadcrumbSchema,
+  promotionListSchema,
+  schemaGraph,
+} from '@/utils/structuredData';
 const DynamicPage = dynamic(() => import('@/modules/akcii/page.js'));
 
 import { roboto } from '@/ui/Font.js';
@@ -136,7 +140,10 @@ export async function getServerSideProps({ req, res, query }) {
           Number(banner?.is_active_actii) === 1
       )
     : [];
-  data1.schema = promotionListSchema(city, banners);
+  data1.schema = schemaGraph(
+    promotionListSchema(city, banners),
+    breadcrumbSchema(city, [{ name: 'Акции', path: '/akcii' }])
+  );
 
   data1.headerCategories = await loadHeaderCategories(city, data1.cats);
 

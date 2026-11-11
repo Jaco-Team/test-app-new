@@ -28,6 +28,7 @@ const NOVINKI_SCROLL_DELAY_MS = 2500;
 const NOVINKI_SCROLL_EXTRA_MS = 150;
 const NOVINKI_SCROLL_DURATION_MS = 200;
 const HOME_CATALOG_MENU_ID = 'homeCatalogMenu';
+const EMPTY_CATALOG = [];
 
 const findNovinkiTagId = (allTags) => {
   if (!Array.isArray(allTags)) {
@@ -185,7 +186,10 @@ const normalizeCategoryLink = (value) => {
   }
 };
 
-export default React.memo(function CatItems({ showCategoryHeadings = false }) {
+export default React.memo(function CatItems({
+  showCategoryHeadings = false,
+  initialCatsItems = null,
+}) {
   const novinkiScrollStopRef = useRef(null);
   const router = useRouter();
   const isRouterReady = router.isReady;
@@ -298,16 +302,28 @@ export default React.memo(function CatItems({ showCategoryHeadings = false }) {
     return result;
   }, [category]);
 
+  // Пока стор пуст (серверная отрисовка и первый кадр в браузере), карточки строятся
+  // из пропсов страницы: так названия, состав и цены попадают в HTML без JavaScript.
+  const sourceCatsItems = useMemo(
+    () =>
+      Array.isArray(CatsItems) && CatsItems.length > 0
+        ? CatsItems
+        : Array.isArray(initialCatsItems)
+          ? initialCatsItems
+          : EMPTY_CATALOG,
+    [CatsItems, initialCatsItems]
+  );
+
   const cats = useMemo(
     () =>
-      (CatsItems || []).map((cat) => ({
+      sourceCatsItems.map((cat) => ({
         ...cat,
         items: (cat?.items || []).map((item) => ({
           ...item,
           count: cartCountById.get(Number(item?.id)) || 0,
         })),
       })),
-    [CatsItems, cartCountById]
+    [sourceCatsItems, cartCountById]
   );
 
   const visibleCats = useMemo(() => {
