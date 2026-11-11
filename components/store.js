@@ -1793,6 +1793,11 @@ export const useCartStore = reuseHotStore(
       cardPaymentRevision: 0,
       cardRenderTimer: null,
       retryCardPayment: null,
+      // Причина, по которой встроенная форма не открылась; пока она есть,
+      // заказ можно оплатить на странице ЮKassa.
+      cardHostedFallback: null,
+      // Счётчик показов встроенной формы одного заказа — для статистики повторов.
+      cardFormAttempt: null,
       cardPreflightState: 'idle',
       cardScriptFailures: 0,
       cardPreflightRetry: null,
@@ -1808,6 +1813,7 @@ export const useCartStore = reuseHotStore(
       resetCardPreflight: () =>
         set({
           DBClick: false,
+          cardFormAttempt: null,
           cardPreflightState: 'idle',
           cardScriptFailures: 0,
           cardCheckoutAttemptActive: false,
@@ -1859,11 +1865,44 @@ export const useCartStore = reuseHotStore(
           cardPaymentState: 'idle',
           cardRenderTimer: null,
           retryCardPayment: null,
+          cardHostedFallback: null,
           global_checkout: null,
         });
         try {
           checkout?.destroy();
         } catch {}
+      },
+
+      // Встроенная форма не открылась: закрываем эту попытку, как при закрытии формы,
+      // и создаём новый заказ с оплатой на странице ЮKassa.
+      payCardOnHostedPage: async () => {
+        const reason = get().cardHostedFallback;
+        if (
+          !reason ||
+          get().cardPaymentState !== 'error' ||
+          get().paidConfirmationState !== 'idle' ||
+          get().DBClick === true
+        )
+          return 'nothing';
+        const formAttempt = get().cardFormAttempt;
+        get().cancelCardPayment();
+        set({ cardCheckoutAttemptActive: false });
+        const result = await get().createOrder(
+          useHeaderStoreNew.getState().token,
+          useCitiesStore.getState().thisCity,
+          undefined,
+          { confirmation: 'redirect', formFailure: reason, formAttempt }
+        );
+        if (result === 'wait_payment' && get().cardPreflightState === 'hosted')
+          get().startHostedCardRedirect();
+        // Заказ не создан и показывать нечего — возвращаем клиента к оформлению.
+        else if (
+          get().cardPreflightState === 'idle' &&
+          get().cardPaymentState === 'idle' &&
+          !get().checkNewOrder
+        )
+          get().setConfirmForm(false);
+        return result;
       },
 
       // очистить только данные оформления (чтобы не заказать на старый адрес)
@@ -2788,9 +2827,22 @@ export const useCartStore = reuseHotStore(
         get().cancelCardPayment();
         const revision = get().cardPaymentRevision + 1;
         const current = () => get().cardPaymentRevision === revision;
+        // Первый показ формы заказа — 1, каждый повтор для того же заказа — на единицу больше.
+        const formKey = `${paymentEventBase?.point_id ?? ''}_${paymentEventBase?.order_id ?? ''}`;
+        const formAttempt =
+          get().cardFormAttempt?.key === formKey
+            ? get().cardFormAttempt.count + 1
+            : 1;
         set({
+          cardFormAttempt: {
+            key: formKey,
+            count: formAttempt,
+            point_id: paymentEventBase?.point_id,
+            order_id: paymentEventBase?.order_id,
+          },
           cardPaymentRevision: revision,
           cardPaymentState: 'loading',
+          cardHostedFallback: null,
           global_checkout: null,
           cardRenderTimer: null,
           retryCardPayment: () =>
@@ -2804,6 +2856,7 @@ export const useCartStore = reuseHotStore(
           trackPaymentClientEvent(name, {
             ...paymentEventBase,
             payment_action: 'widget',
+            widget_attempt: formAttempt,
             ...values,
           });
         const fail = (name, reason, text, details = {}) => {
@@ -2814,7 +2867,18 @@ export const useCartStore = reuseHotStore(
           )
             return;
           clearInterval(get().cardRenderTimer);
-          set({ cardPaymentState: 'error', cardRenderTimer: null });
+          // Отказ банка и ошибки самого платежа страницей ЮKassa не обойти —
+          // её предлагаем, только когда форма не загрузилась.
+          const formNotLoaded =
+            name === 'widget_script_failed' ||
+            name === 'widget_render_timeout' ||
+            name === 'widget_render_failed' ||
+            reason === 'constructor_error';
+          set({
+            cardPaymentState: 'error',
+            cardRenderTimer: null,
+            cardHostedFallback: formNotLoaded ? reason : null,
+          });
           track(name, { ...details, outcome: 'error', reason });
           useHeaderStoreNew.getState().setActiveModalAlert(true, text, false);
         };
@@ -3110,6 +3174,12 @@ export const useCartStore = reuseHotStore(
         const paymentMethod = String(get().typePay?.id || '').toLowerCase();
         const cardConfirmation =
           options.confirmation === 'redirect' ? 'redirect' : 'embedded';
+        // Причина сбоя встроенной формы, после которого клиент выбрал страницу ЮKassa.
+        const formFailure =
+          cardConfirmation === 'redirect' &&
+          typeof options.formFailure === 'string'
+            ? options.formFailure
+            : '';
         const checkoutFingerprint =
           paymentMethod === 'online'
             ? cardCheckoutFingerprint(get(), token, city_id)
@@ -3216,7 +3286,11 @@ export const useCartStore = reuseHotStore(
                 get().startHostedCardRedirect();
             },
           });
-          if (cardConfirmation === 'redirect' && get().cardScriptFailures < 2) {
+          if (
+            cardConfirmation === 'redirect' &&
+            !formFailure &&
+            get().cardScriptFailures < 2
+          ) {
             set({ DBClick: false, cardPreflightState: 'error' });
             return 'wait_payment';
           }
@@ -3295,6 +3369,16 @@ export const useCartStore = reuseHotStore(
             trackPaymentClientEvent('hosted_payment_selected', {
               ...preflightBase,
               outcome: 'pending',
+              // Уход после сбоя формы: причина, число неудачных показов и заказ,
+              // у которого форма не открылась (новый заказ ещё не создан).
+              ...(formFailure
+                ? {
+                    reason: formFailure,
+                    widget_attempt: options.formAttempt?.count,
+                    point_id: options.formAttempt?.point_id,
+                    order_id: options.formAttempt?.order_id,
+                  }
+                : {}),
             });
             data.payment_confirmation = 'redirect';
           }

@@ -216,6 +216,7 @@ function sendPaymentClientEvent(clientStage, details) {
     amount_minor: details.amount_minor,
     provider_status: details.provider_status,
     widget_target: details.widget_target,
+    widget_attempt: details.widget_attempt,
     has_payment_session: details.has_payment_session,
     provider_error_code: details.provider_error_code
       ? getPaymentWidgetErrorCode(details.provider_error_code)
