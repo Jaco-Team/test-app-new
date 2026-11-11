@@ -15,6 +15,12 @@ import { buildCityDestination, isSupportedCity } from '@/utils/cityCart';
 
 let activeSwitch = null;
 
+// Пока город переключается, кука уже новая, а страница ещё старая:
+// проверка сохранённого города в шапке в этот момент не должна вмешиваться.
+export function isCitySwitchActive() {
+  return activeSwitch !== null;
+}
+
 function restoreStorage(key, value) {
   if (value == null) removeLocalStorageItem(key);
   else setLocalStorageItem(key, value);
