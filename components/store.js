@@ -28,8 +28,17 @@ import {
 
 import useYandexMetrika from './useYandexMetrika';
 import { getClientNetworkContext } from '@/utils/clientMonitoring';
-import { reachGoal, reachGoalMain, setUserIdAll, buildPurchasePayload, trackPurchase } from '@/utils/metrika';
-import { createPaidOrderConfirmation, paidCartKey } from '@/utils/paidOrderConfirmation';
+import {
+  reachGoal,
+  reachGoalMain,
+  setUserIdAll,
+  buildPurchasePayload,
+  trackPurchase,
+} from '@/utils/metrika';
+import {
+  createPaidOrderConfirmation,
+  paidCartKey,
+} from '@/utils/paidOrderConfirmation';
 import { createOrderHistoryActions } from '@/utils/orderHistory';
 import { getVisitIds } from '@/utils/umami';
 import { isRecommendationsEnabled } from '@/utils/recommendations';
@@ -101,11 +110,16 @@ function getPaymentWidgetErrorText(error) {
 
 function getStreetMapCenterFromJson(json) {
   const zone = Array.isArray(json?.zones) ? json.zones[0]?.xy_center_map : null;
-  for (const xy of [json?.this_info?.xy, json?.city_center, zone ? [zone.latitude, zone.longitude] : null]) {
+  for (const xy of [
+    json?.this_info?.xy,
+    json?.city_center,
+    zone ? [zone.latitude, zone.longitude] : null,
+  ]) {
     if (hasDeliveryCoordinates({ xy })) {
       const coordinates = typeof xy === 'string' ? JSON.parse(xy) : xy;
       const center = coordinates.slice(0, 2).map(Number);
-      if (Math.abs(center[0]) <= 90 && Math.abs(center[1]) <= 180) return center;
+      if (Math.abs(center[0]) <= 90 && Math.abs(center[1]) <= 180)
+        return center;
     }
   }
   return null;
@@ -1343,6 +1357,20 @@ export const useHeaderStoreNew = reuseHotStore(
   )
 );
 
+function promoResponseText(promo) {
+  if (!promo || typeof promo !== 'object') return '';
+
+  const direct = typeof promo.text === 'string' ? promo.text.trim() : '';
+  if (direct) return direct;
+
+  const byStatus =
+    promo.status_promo === false
+      ? promo.promo_text?.false
+      : promo.promo_text?.true;
+
+  return typeof byStatus === 'string' ? byStatus.trim() : '';
+}
+
 export const useCartStore = reuseHotStore(
   'cart',
   createWithEqualityFn(
@@ -1450,50 +1478,117 @@ export const useCartStore = reuseHotStore(
       promoName: '',
 
       ...createPaidOrderConfirmation({
-        set, get, request: api,
+        set,
+        get,
+        request: api,
         getToken: () => useHeaderStoreNew.getState().token,
         getCity: () => useCitiesStore.getState().thisCity,
         onConfirmed: async (pending, token, check) => {
-          const stillCurrent = () => useHeaderStoreNew.getState().token === token &&
-            get().pendingPaidOrder === pending && useCitiesStore.getState().thisCity === pending.city;
+          const stillCurrent = () =>
+            useHeaderStoreNew.getState().token === token &&
+            get().pendingPaidOrder === pending &&
+            useCitiesStore.getState().thisCity === pending.city;
           if (!stillCurrent()) return;
           clearPendingSbpOrder();
-          set({ pendingSbpOrder: null, sbpPaymentState: 'succeeded', sbpPaymentUrl: null });
+          set({
+            pendingSbpOrder: null,
+            sbpPaymentState: 'succeeded',
+            sbpPaymentUrl: null,
+          });
           endPaymentFlow();
           const checkoutOrder = get().checkNewOrder?.order;
-          const matchesOrder = Number(checkoutOrder?.order_id) === pending.orderId && Number(checkoutOrder?.point_id) === pending.pointId;
+          const matchesOrder =
+            Number(checkoutOrder?.order_id) === pending.orderId &&
+            Number(checkoutOrder?.point_id) === pending.pointId;
           const ownsOpenCheckout = matchesOrder && get().openConfirmForm;
           set({ paidConfirmationNavigate: Boolean(ownsOpenCheckout) });
           const savedCart = getLocalStorageJson('setCart');
-          const cartItems = get().items.length ? get().items : savedCart?.city?.link === pending.city ? savedCart.items : get().items;
-          const matchingCheckout = pending.cartKey && paidCartKey(cartItems) === pending.cartKey && (!checkoutOrder || matchesOrder);
+          const cartItems = get().items.length
+            ? get().items
+            : savedCart?.city?.link === pending.city
+              ? savedCart.items
+              : get().items;
+          const matchingCheckout =
+            pending.cartKey &&
+            paidCartKey(cartItems) === pending.cartKey &&
+            (!checkoutOrder || matchesOrder);
           if (matchingCheckout) get().clearCartData();
-          if (ownsOpenCheckout) set({ openConfirmForm: false, openPayForm: false, openModalBasket: false });
-          void useProfileStore.getState().getOrderList('zakazy', pending.city, token, { force: true });
-          void useProfileStore.getState().getCountPromos_Orders(pending.city, { force: true });
+          if (ownsOpenCheckout)
+            set({
+              openConfirmForm: false,
+              openPayForm: false,
+              openModalBasket: false,
+            });
+          void useProfileStore
+            .getState()
+            .getOrderList('zakazy', pending.city, token, { force: true });
+          void useProfileStore
+            .getState()
+            .getCountPromos_Orders(pending.city, { force: true });
           // Повторный возврат/новая вкладка не доказывают новую покупку для аналитики.
           if (pending.trackPurchase === false) return;
           // После перезагрузки состав заново читается с сервера, а не из хранилища браузера.
           let details = check;
           if (!details?.order) {
             try {
-              const response = await api('zakazy', { type: 'get_order', city_id: pending.city, user_id: token, point_id: pending.pointId, order_id: pending.orderId });
-              if (response?.order) details = { order: { ...response.order, order_id: pending.orderId }, items: response.order_items || response.items_order || [] };
+              const response = await api('zakazy', {
+                type: 'get_order',
+                city_id: pending.city,
+                user_id: token,
+                point_id: pending.pointId,
+                order_id: pending.orderId,
+              });
+              if (response?.order)
+                details = {
+                  order: { ...response.order, order_id: pending.orderId },
+                  items: response.order_items || response.items_order || [],
+                };
             } catch {}
           }
           if (!stillCurrent()) return;
           const analyticsKey = `jaco_confirmed_purchase_${pending.pointId}_${pending.orderId}`;
           if (!getSessionStorageItem(analyticsKey) && details?.order) {
             setSessionStorageItem(analyticsKey, '1');
-            if (pending.method === 'online') void useProfileStore.getState().saveUserActions('true_pay_online_order', '', details.order.sum_order).catch(() => {});
-            const typeOrder = Number(details.order.type_order_ ?? details.order.type_order) === 2 ? 'pic' : 'dev';
-            const params = { city: pending.city === 'samara' ? 'Самара' : 'Тольятти', type_pay: pending.method === 'sbp' ? 'СБП' : 'Картой на сайте', typeOrder: typeOrder === 'pic' ? 'Самовывоз' : 'Доставка' };
+            if (pending.method === 'online')
+              void useProfileStore
+                .getState()
+                .saveUserActions(
+                  'true_pay_online_order',
+                  '',
+                  details.order.sum_order
+                )
+                .catch(() => {});
+            const typeOrder =
+              Number(details.order.type_order_ ?? details.order.type_order) ===
+              2
+                ? 'pic'
+                : 'dev';
+            const params = {
+              city: pending.city === 'samara' ? 'Самара' : 'Тольятти',
+              type_pay: pending.method === 'sbp' ? 'СБП' : 'Картой на сайте',
+              typeOrder: typeOrder === 'pic' ? 'Самовывоз' : 'Доставка',
+            };
             try {
               reachGoal('pay_order', params);
               reachGoal(`pay_order_${typeOrder}_${pending.method}`, params);
-              trackPurchase(buildPurchasePayload({ order: details.order, items: (details.items || []).map((item) => ({ id: item.item_id ?? item.id, name: item.name, price: item.price, category: item.cat_name, quantity: item.count })), goalParams: params }));
-              if (typeof window?.tgp === 'function') window.tgp('event', 'HbWMUPHc-UVXQB2SU');
-            } catch { /* Аналитика не влияет на подтверждение заказа. */ }
+              trackPurchase(
+                buildPurchasePayload({
+                  order: details.order,
+                  items: (details.items || []).map((item) => ({
+                    id: item.item_id ?? item.id,
+                    name: item.name,
+                    price: item.price,
+                    category: item.cat_name,
+                    quantity: item.count,
+                  })),
+                  goalParams: params,
+                })
+              );
+              if (typeof window?.tgp === 'function')
+                window.tgp('event', 'HbWMUPHc-UVXQB2SU');
+            } catch {
+              /* Аналитика не влияет на подтверждение заказа. */
+            }
           }
         },
       }),
@@ -1524,21 +1619,40 @@ export const useCartStore = reuseHotStore(
       cardCheckoutAttemptActive: false,
       orderCreationInFlight: null,
 
-      resetCardPreflight: () => set({
-        DBClick: false, cardPreflightState: 'idle', cardScriptFailures: 0, cardCheckoutAttemptActive: false,
-        cardPreflightRetry: null, cardPreflightHosted: null, cardHostedUrl: null, cardPreflightMessage: '',
-      }),
+      resetCardPreflight: () =>
+        set({
+          DBClick: false,
+          cardPreflightState: 'idle',
+          cardScriptFailures: 0,
+          cardCheckoutAttemptActive: false,
+          cardPreflightRetry: null,
+          cardPreflightHosted: null,
+          cardHostedUrl: null,
+          cardPreflightMessage: '',
+        }),
 
       startHostedCardRedirect: () => {
         const url = hostedCardConfirmationUrl(get().cardHostedUrl);
         const token = useHeaderStoreNew.getState().token;
         const request = readCardCheckoutRequest(token);
         const context = get().cardHostedContext;
-        if (!url || !request?.reference || request.confirmation !== 'redirect' ||
-            request.city !== useCitiesStore.getState().thisCity || context?.owner !== request.owner ||
-            context.pointId !== request.reference.pointId || context.orderId !== request.reference.orderId ||
-            context.url !== url) return false;
-        try { window.location.assign(url); return true; } catch { return false; }
+        if (
+          !url ||
+          !request?.reference ||
+          request.confirmation !== 'redirect' ||
+          request.city !== useCitiesStore.getState().thisCity ||
+          context?.owner !== request.owner ||
+          context.pointId !== request.reference.pointId ||
+          context.orderId !== request.reference.orderId ||
+          context.url !== url
+        )
+          return false;
+        try {
+          window.location.assign(url);
+          return true;
+        } catch {
+          return false;
+        }
       },
 
       show_checkFreeDrive: false,
@@ -1556,10 +1670,14 @@ export const useCartStore = reuseHotStore(
         const checkout = get().global_checkout;
         set({
           cardPaymentRevision: get().cardPaymentRevision + 1,
-          cardPaymentState: 'idle', cardRenderTimer: null,
-          retryCardPayment: null, global_checkout: null,
+          cardPaymentState: 'idle',
+          cardRenderTimer: null,
+          retryCardPayment: null,
+          global_checkout: null,
         });
-        try { checkout?.destroy(); } catch {}
+        try {
+          checkout?.destroy();
+        } catch {}
       },
 
       // очистить только данные оформления (чтобы не заказать на старый адрес)
@@ -2024,11 +2142,15 @@ export const useCartStore = reuseHotStore(
           };
 
           const json = await api('cart', data);
+          const promoInfo =
+            json && typeof json === 'object'
+              ? { ...json, text: promoResponseText(json) }
+              : json;
 
           useProfileStore.getState().saveUserActions('check_promo', promoName);
 
           set({
-            promoInfo: json,
+            promoInfo,
             allPrice: 0,
             allPriceWithoutPromo: null,
           });
@@ -2193,19 +2315,36 @@ export const useCartStore = reuseHotStore(
         set({
           pointListRequestId: requestId,
           pointListLoadState: 'loading',
-          pointList: get().pointListCity === city && Array.isArray(get().pointList) ? get().pointList : [],
+          pointList:
+            get().pointListCity === city && Array.isArray(get().pointList)
+              ? get().pointList
+              : [],
           pointListCity: city,
         });
         let json;
-        try { json = await api('cart', { type: 'get_point_list', city_id: city }); }
-        catch { json = null; }
-        if (get().pointListRequestId !== requestId || (useCitiesStore.getState().thisCity || '') !== city) return false;
+        try {
+          json = await api('cart', { type: 'get_point_list', city_id: city });
+        } catch {
+          json = null;
+        }
+        if (
+          get().pointListRequestId !== requestId ||
+          (useCitiesStore.getState().thisCity || '') !== city
+        )
+          return false;
         if (json?.st === false || !Array.isArray(json?.points)) {
           set({ pointListLoadState: 'error' });
-          showCheckoutApiError(json, 'Не удалось загрузить список кафе. Проверьте интернет и попробуйте ещё раз.');
+          showCheckoutApiError(
+            json,
+            'Не удалось загрузить список кафе. Проверьте интернет и попробуйте ещё раз.'
+          );
           return false;
         }
-        set({ pointList: json.points, pointListCity: city, pointListLoadState: 'ready' });
+        set({
+          pointList: json.points,
+          pointListCity: city,
+          pointListLoadState: 'ready',
+        });
         return true;
       },
 
@@ -2412,12 +2551,14 @@ export const useCartStore = reuseHotStore(
       // Старый интерфейс фронта сохранён; подтверждение использует общий серверный метод.
       checkSbpPaymentStatus: async (token, onSuccess) => {
         const sbp = get().pendingSbpOrder || getPendingSbpOrder();
-        if (!get().pendingPaidOrder && sbp) get().registerPaidOrder({ ...sbp, method: 'sbp' }, token);
+        if (!get().pendingPaidOrder && sbp)
+          get().registerPaidOrder({ ...sbp, method: 'sbp' }, token);
         if (!get().pendingPaidOrder || !token) return 'missing';
         const wasConfirmed = get().paidConfirmationState === 'confirmed';
         const status = await get().checkPaidOrder();
         if (status === 'confirmed' && !wasConfirmed) onSuccess?.();
-        if (status === 'canceled') set({ sbpPaymentState: 'canceled', sbpPaymentUrl: null });
+        if (status === 'canceled')
+          set({ sbpPaymentState: 'canceled', sbpPaymentUrl: null });
         return status === 'confirmed' ? 'succeeded' : status;
       },
 
@@ -2453,19 +2594,39 @@ export const useCartStore = reuseHotStore(
       },
 
       // Повтор открывает форму уже созданного платежа и не создаёт новый заказ.
-      showCardPayment: async (confirmationToken, paymentEventBase, funcClose) => {
+      showCardPayment: async (
+        confirmationToken,
+        paymentEventBase,
+        funcClose
+      ) => {
         get().cancelCardPayment();
         const revision = get().cardPaymentRevision + 1;
         const current = () => get().cardPaymentRevision === revision;
         set({
-          cardPaymentRevision: revision, cardPaymentState: 'loading', global_checkout: null, cardRenderTimer: null,
-          retryCardPayment: () => get().showCardPayment(confirmationToken, paymentEventBase, funcClose),
+          cardPaymentRevision: revision,
+          cardPaymentState: 'loading',
+          global_checkout: null,
+          cardRenderTimer: null,
+          retryCardPayment: () =>
+            get().showCardPayment(
+              confirmationToken,
+              paymentEventBase,
+              funcClose
+            ),
         });
-        const track = (name, values) => trackPaymentClientEvent(name, {
-          ...paymentEventBase, payment_action: 'widget', ...values,
-        });
+        const track = (name, values) =>
+          trackPaymentClientEvent(name, {
+            ...paymentEventBase,
+            payment_action: 'widget',
+            ...values,
+          });
         const fail = (name, reason, text, details = {}) => {
-          if (!current() || get().cardPaymentState === 'error' || ['complete', 'confirming'].includes(get().cardPaymentState)) return;
+          if (
+            !current() ||
+            get().cardPaymentState === 'error' ||
+            ['complete', 'confirming'].includes(get().cardPaymentState)
+          )
+            return;
           clearInterval(get().cardRenderTimer);
           set({ cardPaymentState: 'error', cardRenderTimer: null });
           track(name, { ...details, outcome: 'error', reason });
@@ -2473,87 +2634,161 @@ export const useCartStore = reuseHotStore(
         };
         const scriptStartedAt = Date.now();
         let scriptFailure = 'script_error';
-        track('widget_script_started', { ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, outcome: 'pending' });
-        const Widget = await ensureYooMoneyCheckoutWidget(12000, (reason) => { scriptFailure = reason; });
+        track('widget_script_started', {
+          ...CHECKOUT_WIDGET_SCRIPT_CONTEXT,
+          outcome: 'pending',
+        });
+        const Widget = await ensureYooMoneyCheckoutWidget(12000, (reason) => {
+          scriptFailure = reason;
+        });
         if (!current()) return;
         if (!Widget || !confirmationToken) {
-          fail('widget_script_failed', scriptFailure, 'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.', {
-            ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, duration_ms: Date.now() - scriptStartedAt,
-            has_payment_session: Boolean(confirmationToken),
-          });
+          fail(
+            'widget_script_failed',
+            scriptFailure,
+            'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.',
+            {
+              ...CHECKOUT_WIDGET_SCRIPT_CONTEXT,
+              duration_ms: Date.now() - scriptStartedAt,
+              has_payment_session: Boolean(confirmationToken),
+            }
+          );
           return;
         }
         track('widget_script_loaded', {
-          ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, duration_ms: Date.now() - scriptStartedAt, outcome: 'success',
+          ...CHECKOUT_WIDGET_SCRIPT_CONTEXT,
+          duration_ms: Date.now() - scriptStartedAt,
+          outcome: 'success',
         });
         let checkout;
         try {
           checkout = new Widget({
             confirmation_token: confirmationToken,
-            error_callback: (error) => fail('widget_error', 'widget_callback', getPaymentWidgetErrorText(error), {
-              provider_error_code: getPaymentWidgetErrorCode(error),
-            }),
+            error_callback: (error) =>
+              fail(
+                'widget_error',
+                'widget_callback',
+                getPaymentWidgetErrorText(error),
+                {
+                  provider_error_code: getPaymentWidgetErrorCode(error),
+                }
+              ),
           });
         } catch (error) {
-          fail('widget_error', 'constructor_error', 'Не удалось открыть форму оплаты. Попробуйте снова.', {
-            provider_error_code: getPaymentWidgetErrorCode(error),
-          });
+          fail(
+            'widget_error',
+            'constructor_error',
+            'Не удалось открыть форму оплаты. Попробуйте снова.',
+            {
+              provider_error_code: getPaymentWidgetErrorCode(error),
+            }
+          );
           return;
         }
-        if (get().cardPaymentState === 'error') { checkout.destroy(); return; }
+        if (get().cardPaymentState === 'error') {
+          checkout.destroy();
+          return;
+        }
         set({ global_checkout: checkout });
         track('widget_constructed', { outcome: 'success' });
         checkout.on('success', () => {
           if (!current()) return;
           clearInterval(get().cardRenderTimer);
-          set({ cardPaymentState: 'confirming', retryCardPayment: null, cardRenderTimer: null, cardEmbeddedContext: null });
+          set({
+            cardPaymentState: 'confirming',
+            retryCardPayment: null,
+            cardRenderTimer: null,
+            cardEmbeddedContext: null,
+          });
           track('widget_success', { outcome: 'success' });
-          try { checkout.destroy(); } catch {}
+          try {
+            checkout.destroy();
+          } catch {}
           set({ global_checkout: null });
           void get().startPaidConfirmation();
         });
         checkout.on('fail', (error) => {
-          fail('widget_fail', 'widget_callback', getPaymentWidgetErrorText(error), {
-            provider_error_code: getPaymentWidgetErrorCode(error),
-          });
+          fail(
+            'widget_fail',
+            'widget_callback',
+            getPaymentWidgetErrorText(error),
+            {
+              provider_error_code: getPaymentWidgetErrorCode(error),
+            }
+          );
         });
         let tries = 0;
         const timer = setInterval(() => {
-          if (!current()) { clearInterval(timer); return; }
+          if (!current()) {
+            clearInterval(timer);
+            return;
+          }
           tries += 1;
-          const targetId = document.getElementById('payment-form-confirm') ? 'payment-form-confirm' : 'payment-form';
+          const targetId = document.getElementById('payment-form-confirm')
+            ? 'payment-form-confirm'
+            : 'payment-form';
           if (!document.getElementById(targetId)) {
             if (tries >= 20) {
               clearInterval(timer);
               set({ cardRenderTimer: null });
-              fail('widget_render_timeout', 'widget_timeout', 'Не удалось загрузить форму оплаты. Попробуйте снова.');
+              fail(
+                'widget_render_timeout',
+                'widget_timeout',
+                'Не удалось загрузить форму оплаты. Попробуйте снова.'
+              );
             }
             return;
           }
           clearInterval(timer);
           set({ cardRenderTimer: null });
-          track('widget_render_started', { widget_target: targetId, outcome: 'pending' });
+          track('widget_render_started', {
+            widget_target: targetId,
+            outcome: 'pending',
+          });
           const renderDeadline = setTimeout(() => {
             if (!current()) return;
             set({ cardRenderTimer: null });
-            fail('widget_render_timeout', 'widget_timeout', 'Не удалось загрузить форму оплаты. Попробуйте снова.');
+            fail(
+              'widget_render_timeout',
+              'widget_timeout',
+              'Не удалось загрузить форму оплаты. Попробуйте снова.'
+            );
           }, 12000);
           set({ cardRenderTimer: renderDeadline });
-          Promise.resolve().then(() => checkout.render(targetId)).then(() => {
-            if (!current() || get().cardPaymentState === 'error' || ['complete', 'confirming'].includes(get().cardPaymentState)) return;
-            set({ cardPaymentState: 'ready' });
-            track('widget_rendered', { widget_target: targetId, outcome: 'success' });
-          }).catch(() => fail('widget_render_failed', 'widget_callback', 'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.')).finally(() => {
-            clearTimeout(renderDeadline);
-            if (current()) set({ cardRenderTimer: null });
-          });
+          Promise.resolve()
+            .then(() => checkout.render(targetId))
+            .then(() => {
+              if (
+                !current() ||
+                get().cardPaymentState === 'error' ||
+                ['complete', 'confirming'].includes(get().cardPaymentState)
+              )
+                return;
+              set({ cardPaymentState: 'ready' });
+              track('widget_rendered', {
+                widget_target: targetId,
+                outcome: 'success',
+              });
+            })
+            .catch(() =>
+              fail(
+                'widget_render_failed',
+                'widget_callback',
+                'Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте снова.'
+              )
+            )
+            .finally(() => {
+              clearTimeout(renderDeadline);
+              if (current()) set({ cardRenderTimer: null });
+            });
         }, 300);
         set({ cardRenderTimer: timer });
       },
 
       // создание заказа
       createOrder: async (token, city_id, funcClose, options = {}) => {
-        if (token && get().orderCreationInFlight?.token === token) return 'nothing';
+        if (token && get().orderCreationInFlight?.token === token)
+          return 'nothing';
         if (!token || token?.length == 0) {
           useHeaderStoreNew.getState().setActiveModalAuth(true);
 
@@ -2561,8 +2796,12 @@ export const useCartStore = reuseHotStore(
 
           return;
         }
-        if (String(get().typePay?.id || '').toLowerCase() === 'online' &&
-            (useHeaderStoreNew.getState().token !== token || useCitiesStore.getState().thisCity !== city_id)) return 'nothing';
+        if (
+          String(get().typePay?.id || '').toLowerCase() === 'online' &&
+          (useHeaderStoreNew.getState().token !== token ||
+            useCitiesStore.getState().thisCity !== city_id)
+        )
+          return 'nothing';
 
         // =========================================================
         // NEW (Шаг 4): страховка от “старого оформления”
@@ -2683,10 +2922,17 @@ export const useCartStore = reuseHotStore(
         }
 
         const paymentMethod = String(get().typePay?.id || '').toLowerCase();
-        const cardConfirmation = options.confirmation === 'redirect' ? 'redirect' : 'embedded';
-        const checkoutFingerprint = paymentMethod === 'online' ? cardCheckoutFingerprint(get(), token, city_id) : '';
-        const savedRequest = paymentMethod === 'online' ? readCardCheckoutRequest(token) : null;
-        const sameAttempt = get().cardCheckoutAttemptActive && savedRequest?.city === city_id &&
+        const cardConfirmation =
+          options.confirmation === 'redirect' ? 'redirect' : 'embedded';
+        const checkoutFingerprint =
+          paymentMethod === 'online'
+            ? cardCheckoutFingerprint(get(), token, city_id)
+            : '';
+        const savedRequest =
+          paymentMethod === 'online' ? readCardCheckoutRequest(token) : null;
+        const sameAttempt =
+          get().cardCheckoutAttemptActive &&
+          savedRequest?.city === city_id &&
           savedRequest.fingerprint === checkoutFingerprint &&
           !['confirmed', 'canceled'].includes(get().paidConfirmationState);
         if (!sameAttempt) {
@@ -2695,44 +2941,93 @@ export const useCartStore = reuseHotStore(
           clearPendingSbpOrder();
           clearCardCheckoutRequest(token);
           endPaymentFlow();
-          set({ pendingSbpOrder: null, checkNewOrder: null, cardEmbeddedContext: null,
-            cardHostedContext: null, cardHostedUrl: null, cardCheckoutAttemptActive: false });
+          set({
+            pendingSbpOrder: null,
+            checkNewOrder: null,
+            cardEmbeddedContext: null,
+            cardHostedContext: null,
+            cardHostedUrl: null,
+            cardCheckoutAttemptActive: false,
+          });
         }
         if (paymentMethod === 'online') data.checkout_guard = 1;
-        const currentPreparation = () => get().cardPaymentRevision === checkoutRevision &&
-          useHeaderStoreNew.getState().token === token && useCitiesStore.getState().thisCity === checkoutCity &&
+        const currentPreparation = () =>
+          get().cardPaymentRevision === checkoutRevision &&
+          useHeaderStoreNew.getState().token === token &&
+          useCitiesStore.getState().thisCity === checkoutCity &&
           String(get().typePay?.id || '').toLowerCase() === paymentMethod &&
-          cardCheckoutFingerprint(get(), token, city_id) === checkoutFingerprint;
+          cardCheckoutFingerprint(get(), token, city_id) ===
+            checkoutFingerprint;
         if (paymentMethod === 'online') {
           const existing = readCardCheckoutRequest(token);
           const pending = get().pendingPaidOrder;
           if (sameAttempt && existing) {
-            if (existing?.reference && !pending) get().registerPaidOrder({
-              ...existing.reference, city: existing.city, method: 'online', trackPurchase: false,
-            }, token);
+            if (existing?.reference && !pending)
+              get().registerPaidOrder(
+                {
+                  ...existing.reference,
+                  city: existing.city,
+                  method: 'online',
+                  trackPurchase: false,
+                },
+                token
+              );
             const embedded = get().cardEmbeddedContext;
             const hosted = get().cardHostedContext;
-            const owns = (context) => existing?.reference && context?.owner === existing.owner &&
-              context.city === city_id && context.pointId === existing.reference.pointId && context.orderId === existing.reference.orderId;
-            if (existing?.confirmation === 'embedded' && owns(embedded) && get().paidConfirmationState === 'idle') {
-              set({ DBClick: false, cardPreflightState: 'idle', checkNewOrder: embedded.check });
-              await get().showCardPayment(embedded.confirmationToken, embedded.eventBase, funcClose);
+            const owns = (context) =>
+              existing?.reference &&
+              context?.owner === existing.owner &&
+              context.city === city_id &&
+              context.pointId === existing.reference.pointId &&
+              context.orderId === existing.reference.orderId;
+            if (
+              existing?.confirmation === 'embedded' &&
+              owns(embedded) &&
+              get().paidConfirmationState === 'idle'
+            ) {
+              set({
+                DBClick: false,
+                cardPreflightState: 'idle',
+                checkNewOrder: embedded.check,
+              });
+              await get().showCardPayment(
+                embedded.confirmationToken,
+                embedded.eventBase,
+                funcClose
+              );
               return 'wait_payment';
             }
             const hostedUrl = owns(hosted) ? hosted.url : null;
             set({
               DBClick: false,
               cardHostedUrl: hostedUrl,
-              cardPreflightState: existing && !existing.reference ? 'uncertain' : hostedUrl ? 'hosted' : 'existing',
+              cardPreflightState:
+                existing && !existing.reference
+                  ? 'uncertain'
+                  : hostedUrl
+                    ? 'hosted'
+                    : 'existing',
             });
             return 'wait_payment';
           }
           set({
-            cardPreflightRetry: () => currentPreparation() ? get().createOrder(token, city_id, funcClose) : 'nothing',
+            cardPreflightRetry: () =>
+              currentPreparation()
+                ? get().createOrder(token, city_id, funcClose)
+                : 'nothing',
             cardPreflightHosted: async () => {
               if (!currentPreparation()) return 'nothing';
-              const result = await get().createOrder(token, city_id, funcClose, { confirmation: 'redirect' });
-              if (result === 'wait_payment' && get().cardPreflightState === 'hosted') get().startHostedCardRedirect();
+              const result = await get().createOrder(
+                token,
+                city_id,
+                funcClose,
+                { confirmation: 'redirect' }
+              );
+              if (
+                result === 'wait_payment' &&
+                get().cardPreflightState === 'hosted'
+              )
+                get().startHostedCardRedirect();
             },
           });
           if (cardConfirmation === 'redirect' && get().cardScriptFailures < 2) {
@@ -2741,9 +3036,10 @@ export const useCartStore = reuseHotStore(
           }
         }
         if (['online', 'pay_page', 'sbp'].includes(paymentMethod)) {
-          paymentFlowId = paymentMethod === 'online'
-            ? getPaymentFlowId({ create: false }) || beginPaymentFlow()
-            : beginPaymentFlow();
+          paymentFlowId =
+            paymentMethod === 'online'
+              ? getPaymentFlowId({ create: false }) || beginPaymentFlow()
+              : beginPaymentFlow();
           data.payment_flow_id = paymentFlowId;
           trackPaymentClientEvent('checkout_started', {
             payment_flow_id: paymentFlowId,
@@ -2759,59 +3055,121 @@ export const useCartStore = reuseHotStore(
         }
 
         if (paymentMethod === 'online') {
-          const preflightBase = { payment_flow_id: paymentFlowId, payment_action: 'widget', payment_method: 'online', payment_confirmation: cardConfirmation };
+          const preflightBase = {
+            payment_flow_id: paymentFlowId,
+            payment_action: 'widget',
+            payment_method: 'online',
+            payment_confirmation: cardConfirmation,
+          };
           if (cardConfirmation === 'embedded') {
             set({ cardPreflightState: 'loading' });
             const startedAt = Date.now();
             let failure = 'script_error';
-            trackPaymentClientEvent('widget_script_started', { ...preflightBase, ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, outcome: 'pending' });
-            const Widget = await ensureYooMoneyCheckoutWidget(12000, (reason) => { failure = reason; });
+            trackPaymentClientEvent('widget_script_started', {
+              ...preflightBase,
+              ...CHECKOUT_WIDGET_SCRIPT_CONTEXT,
+              outcome: 'pending',
+            });
+            const Widget = await ensureYooMoneyCheckoutWidget(
+              12000,
+              (reason) => {
+                failure = reason;
+              }
+            );
             if (!currentPreparation()) {
-              if (get().cardPaymentRevision === checkoutRevision && useHeaderStoreNew.getState().token === token && useCitiesStore.getState().thisCity === checkoutCity) {
+              if (
+                get().cardPaymentRevision === checkoutRevision &&
+                useHeaderStoreNew.getState().token === token &&
+                useCitiesStore.getState().thisCity === checkoutCity
+              ) {
                 set({ DBClick: false, cardPreflightState: 'idle' });
               }
               return 'nothing';
             }
-            trackPaymentClientEvent(Widget ? 'widget_script_loaded' : 'widget_script_failed', {
-              ...preflightBase, ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, duration_ms: Date.now() - startedAt,
-              outcome: Widget ? 'success' : 'error', ...(!Widget ? { reason: failure } : {}),
-            });
+            trackPaymentClientEvent(
+              Widget ? 'widget_script_loaded' : 'widget_script_failed',
+              {
+                ...preflightBase,
+                ...CHECKOUT_WIDGET_SCRIPT_CONTEXT,
+                duration_ms: Date.now() - startedAt,
+                outcome: Widget ? 'success' : 'error',
+                ...(!Widget ? { reason: failure } : {}),
+              }
+            );
             if (!Widget) {
-              set({ DBClick: false, cardPreflightState: 'error', cardScriptFailures: get().cardScriptFailures + 1 });
+              set({
+                DBClick: false,
+                cardPreflightState: 'error',
+                cardScriptFailures: get().cardScriptFailures + 1,
+              });
               return 'wait_payment';
             }
             set({ cardScriptFailures: 0 });
           } else {
-            trackPaymentClientEvent('hosted_payment_selected', { ...preflightBase, outcome: 'pending' });
+            trackPaymentClientEvent('hosted_payment_selected', {
+              ...preflightBase,
+              outcome: 'pending',
+            });
             data.payment_confirmation = 'redirect';
           }
-          if (!checkoutFingerprint || !currentPreparation()) { set({ DBClick: false, cardPreflightState: 'idle' }); return 'nothing'; }
-          const marker = saveCardCheckoutRequest(token, {
-            fingerprint: checkoutFingerprint, city: city_id, confirmation: cardConfirmation,
-          }, { requirePersistence: cardConfirmation === 'redirect' });
+          if (!checkoutFingerprint || !currentPreparation()) {
+            set({ DBClick: false, cardPreflightState: 'idle' });
+            return 'nothing';
+          }
+          const marker = saveCardCheckoutRequest(
+            token,
+            {
+              fingerprint: checkoutFingerprint,
+              city: city_id,
+              confirmation: cardConfirmation,
+            },
+            { requirePersistence: cardConfirmation === 'redirect' }
+          );
           if (!marker) {
             set({ DBClick: false, cardPreflightState: 'storage_error' });
             return 'wait_payment';
           }
-          set({ cardPreflightState: 'creating', cardPreflightMessage: '', cardCheckoutAttemptActive: true });
+          set({
+            cardPreflightState: 'creating',
+            cardPreflightMessage: '',
+            cardCheckoutAttemptActive: true,
+          });
         }
         let json;
         const creation = { token };
         set({ orderCreationInFlight: creation });
-        try { json = await api('cart', data); }
-        catch (error) {
+        try {
+          json = await api('cart', data);
+        } catch (error) {
           if (paymentMethod !== 'online') throw error;
-          json = { st: false, text: 'Не удалось получить ответ о создании заказа. Проверьте историю заказов.' };
+          json = {
+            st: false,
+            text: 'Не удалось получить ответ о создании заказа. Проверьте историю заказов.',
+          };
         } finally {
-          if (get().orderCreationInFlight === creation) set({ orderCreationInFlight: null });
+          if (get().orderCreationInFlight === creation)
+            set({ orderCreationInFlight: null });
         }
 
         if (paymentMethod === 'online') {
-          const pointId = Number(json?.check?.order?.point_id ?? json?.payment_order?.point_id);
-          const orderId = Number(json?.check?.order?.order_id ?? json?.order_id ?? json?.payment_order?.order_id);
-          if (Number.isSafeInteger(pointId) && pointId > 0 && Number.isSafeInteger(orderId) && orderId > 0) {
+          const pointId = Number(
+            json?.check?.order?.point_id ?? json?.payment_order?.point_id
+          );
+          const orderId = Number(
+            json?.check?.order?.order_id ??
+              json?.order_id ??
+              json?.payment_order?.order_id
+          );
+          if (
+            Number.isSafeInteger(pointId) &&
+            pointId > 0 &&
+            Number.isSafeInteger(orderId) &&
+            orderId > 0
+          ) {
             saveCardCheckoutRequest(token, {
-              fingerprint: checkoutFingerprint, city: city_id, confirmation: cardConfirmation,
+              fingerprint: checkoutFingerprint,
+              city: city_id,
+              confirmation: cardConfirmation,
               reference: { pointId, orderId },
             });
           }
@@ -2823,34 +3181,63 @@ export const useCartStore = reuseHotStore(
           String(get().typePay?.id || '').toLowerCase() !== paymentMethod ||
           (paymentMethod === 'online' && !currentPreparation())
         ) {
-          if (paymentMethod !== 'online' || (get().cardPaymentRevision === checkoutRevision &&
-              useHeaderStoreNew.getState().token === token && useCitiesStore.getState().thisCity === checkoutCity)) set({ DBClick: false });
+          if (
+            paymentMethod !== 'online' ||
+            (get().cardPaymentRevision === checkoutRevision &&
+              useHeaderStoreNew.getState().token === token &&
+              useCitiesStore.getState().thisCity === checkoutCity)
+          )
+            set({ DBClick: false });
           return 'nothing';
         }
 
         if (paymentMethod === 'online') set({ DBClick: false });
-        else setTimeout(() => { set({ DBClick: false }); }, 300);
+        else
+          setTimeout(() => {
+            set({ DBClick: false });
+          }, 300);
 
         if (paymentMethod === 'online' && json?.st !== true) {
           const marker = readCardCheckoutRequest(token);
-          if (json?.st === false && json?.checkout_attempt === 'not_started' && !marker?.reference && marker?.fingerprint === checkoutFingerprint) {
+          if (
+            json?.st === false &&
+            json?.checkout_attempt === 'not_started' &&
+            !marker?.reference &&
+            marker?.fingerprint === checkoutFingerprint
+          ) {
             clearCardCheckoutRequest(token);
             set({
-              DBClick: false, cardPreflightState: 'rejected',
-              cardPreflightMessage: typeof json?.text === 'string' ? json.text.slice(0, 500) : 'Проверьте данные заказа и попробуйте ещё раз.',
+              DBClick: false,
+              cardPreflightState: 'rejected',
+              cardPreflightMessage:
+                typeof json?.text === 'string'
+                  ? json.text.slice(0, 500)
+                  : 'Проверьте данные заказа и попробуйте ещё раз.',
             });
             return 'wait_payment';
           }
-          if (marker?.reference) get().registerPaidOrder({
-            ...marker.reference, city: marker.city, method: 'online', trackPurchase: false,
-          }, token);
+          if (marker?.reference)
+            get().registerPaidOrder(
+              {
+                ...marker.reference,
+                city: marker.city,
+                method: 'online',
+                trackPurchase: false,
+              },
+              token
+            );
           set({
-            DBClick: false, cardPreflightState: marker?.reference ? 'existing' : 'uncertain',
-            cardPreflightMessage: typeof json?.text === 'string' ? json.text.slice(0, 500) : '',
+            DBClick: false,
+            cardPreflightState: marker?.reference ? 'existing' : 'uncertain',
+            cardPreflightMessage:
+              typeof json?.text === 'string' ? json.text.slice(0, 500) : '',
           });
           return 'wait_payment';
         }
-        if (paymentMethod === 'online' && !readCardCheckoutRequest(token)?.reference) {
+        if (
+          paymentMethod === 'online' &&
+          !readCardCheckoutRequest(token)?.reference
+        ) {
           set({ DBClick: false, cardPreflightState: 'uncertain' });
           return 'wait_payment';
         }
@@ -2881,11 +3268,17 @@ export const useCartStore = reuseHotStore(
           });
 
           if (paymentMethod === 'online' || paymentMethod === 'sbp') {
-            get().registerPaidOrder({
-              orderId: json?.check?.order?.order_id ?? json?.order_id,
-              pointId: json?.check?.order?.point_id ?? data.point_id,
-              city: city_id, method: paymentMethod, cartKey: paidCartKey(get().items),
-            }, token, json?.check);
+            get().registerPaidOrder(
+              {
+                orderId: json?.check?.order?.order_id ?? json?.order_id,
+                pointId: json?.check?.order?.point_id ?? data.point_id,
+                city: city_id,
+                method: paymentMethod,
+                cartKey: paidCartKey(get().items),
+              },
+              token,
+              json?.check
+            );
 
             //set({
             //  openPayForm: true
@@ -2920,25 +3313,51 @@ export const useCartStore = reuseHotStore(
               trackPaymentClientEvent('provider_payment_created', {
                 ...paymentEventBase,
                 outcome: 'success',
-                has_payment_session: Boolean(json?.pay?.pay?.confirmation?.confirmation_token),
+                has_payment_session: Boolean(
+                  json?.pay?.pay?.confirmation?.confirmation_token
+                ),
               });
               if (cardConfirmation === 'redirect') {
-                const hostedUrl = hostedCardConfirmationUrl(json?.pay?.pay?.confirmation?.confirmation_url);
+                const hostedUrl = hostedCardConfirmationUrl(
+                  json?.pay?.pay?.confirmation?.confirmation_url
+                );
                 const request = readCardCheckoutRequest(token);
                 set({
-                  DBClick: false, cardHostedUrl: hostedUrl, cardPreflightState: hostedUrl ? 'hosted' : 'existing',
-                  cardHostedContext: hostedUrl && request?.reference ? { ...request.reference, owner: request.owner, city: city_id, url: hostedUrl } : null,
+                  DBClick: false,
+                  cardHostedUrl: hostedUrl,
+                  cardPreflightState: hostedUrl ? 'hosted' : 'existing',
+                  cardHostedContext:
+                    hostedUrl && request?.reference
+                      ? {
+                          ...request.reference,
+                          owner: request.owner,
+                          city: city_id,
+                          url: hostedUrl,
+                        }
+                      : null,
                 });
               } else {
                 const request = readCardCheckoutRequest(token);
                 set({
-                  cardPreflightState: 'idle', cardHostedUrl: null,
-                  cardEmbeddedContext: request?.reference ? {
-                    ...request.reference, owner: request.owner, city: city_id, check: json?.check,
-                    confirmationToken: json?.pay?.pay?.confirmation?.confirmation_token, eventBase: paymentEventBase,
-                  } : null,
+                  cardPreflightState: 'idle',
+                  cardHostedUrl: null,
+                  cardEmbeddedContext: request?.reference
+                    ? {
+                        ...request.reference,
+                        owner: request.owner,
+                        city: city_id,
+                        check: json?.check,
+                        confirmationToken:
+                          json?.pay?.pay?.confirmation?.confirmation_token,
+                        eventBase: paymentEventBase,
+                      }
+                    : null,
                 });
-                await get().showCardPayment(json?.pay?.pay?.confirmation?.confirmation_token, paymentEventBase, funcClose);
+                await get().showCardPayment(
+                  json?.pay?.pay?.confirmation?.confirmation_token,
+                  paymentEventBase,
+                  funcClose
+                );
               }
             }
 
@@ -3001,8 +3420,12 @@ export const useCartStore = reuseHotStore(
         if (json?.st === true) {
           removeLocalStorageItem('freeDrive');
           const city = useCitiesStore.getState().thisCity;
-          void useProfileStore.getState().getOrderList('zakazy', city, token, { force: true });
-          void useProfileStore.getState().getCountPromos_Orders(city, { force: true });
+          void useProfileStore
+            .getState()
+            .getOrderList('zakazy', city, token, { force: true });
+          void useProfileStore
+            .getState()
+            .getCountPromos_Orders(city, { force: true });
         } else {
           //показать ошибку
           useHeaderStoreNew
@@ -3868,9 +4291,21 @@ export const useCartStore = reuseHotStore(
 
         if (promo_info) {
           if (promo_info.status_promo === false) {
+            console.log(promo_info);
+            const promoMessage =
+              promoResponseText(promo_info) ||
+              'Не можем найти промокод. Может, его уже кто-то активировал?';
+
+            set({
+              promoInfo: {
+                ...promo_info,
+                text: promoMessage,
+              },
+            });
+
             return {
               st: false,
-              text: 'Не можем найти промокод. Может, его уже кто-то активировал?',
+              text: promoMessage,
             };
           }
 
@@ -4415,14 +4850,34 @@ export const useCartStore = reuseHotStore(
         const initialCity = useCitiesStore.getState().thisCity;
         if (initialCity && initialCity !== city) return false;
         const revision = get().cartMapRevision + 1;
-        const current = () => get().cartMapRevision === revision && useCitiesStore.getState().thisCity === initialCity;
-        set({ cartMapRevision: revision, cartMapLoadState: 'loading', center_map: null, zones: [], points: [] });
+        const current = () =>
+          get().cartMapRevision === revision &&
+          useCitiesStore.getState().thisCity === initialCity;
+        set({
+          cartMapRevision: revision,
+          cartMapLoadState: 'loading',
+          center_map: null,
+          zones: [],
+          points: [],
+        });
         let json;
-        try { json = await api(this_module, { type: 'get_addr_zone_web', city_id: city }); }
-        catch { json = null; }
+        try {
+          json = await api(this_module, {
+            type: 'get_addr_zone_web',
+            city_id: city,
+          });
+        } catch {
+          json = null;
+        }
         if (!current()) return false;
         const center = getStreetMapCenterFromJson(json);
-        if (json?.st === false || !Array.isArray(json?.zones) || !json.zones.length || !Array.isArray(json?.points) || !center) {
+        if (
+          json?.st === false ||
+          !Array.isArray(json?.zones) ||
+          !json.zones.length ||
+          !Array.isArray(json?.points) ||
+          !center
+        ) {
           captureMapStateIssue('Cart map response is incomplete', {
             source: 'useCartStore.getMapCart',
             city,
@@ -4439,12 +4894,18 @@ export const useCartStore = reuseHotStore(
 
           return false;
         }
-        const validObjects = (items) => items.filter((item) => item && typeof item === 'object').map((item) => ({ ...item, image: 'default#image' }));
+        const validObjects = (items) =>
+          items
+            .filter((item) => item && typeof item === 'object')
+            .map((item) => ({ ...item, image: 'default#image' }));
         set({
           cartMapLoadState: 'ready',
           center_map: {
             center,
-            zoom: typeof window !== 'undefined' && window.innerWidth < 601 ? 10.6 : 11.5,
+            zoom:
+              typeof window !== 'undefined' && window.innerWidth < 601
+                ? 10.6
+                : 11.5,
             controls: [],
           },
           zones: validObjects(json.zones),
@@ -4452,7 +4913,10 @@ export const useCartStore = reuseHotStore(
         });
 
         setTimeout(() => {
-          if (current()) get().changePointClick(get().orderPic?.name ?? '', { touch: false });
+          if (current())
+            get().changePointClick(get().orderPic?.name ?? '', {
+              touch: false,
+            });
         }, 100);
         return true;
       },
@@ -4625,8 +5089,13 @@ export const useCartStore = reuseHotStore(
         get().resetPaidConfirmation();
         clearCardCheckoutRequest(useHeaderStoreNew.getState().token);
         clearPendingSbpOrder();
-        set({ pendingSbpOrder: null, checkNewOrder: null, cardEmbeddedContext: null,
-          cardHostedContext: null, cardHostedUrl: null });
+        set({
+          pendingSbpOrder: null,
+          checkNewOrder: null,
+          cardEmbeddedContext: null,
+          cardHostedContext: null,
+          cardHostedUrl: null,
+        });
         get().setCartLocalStorage({ touch: true });
 
         get().getItems();
@@ -5346,31 +5815,52 @@ export const useProfileStore = reuseHotStore(
           const initRevision = get().addressInitRevision + 1;
           const requestedCity = city || get().city;
           set({
-            addressInitRevision: initRevision, active_city: 0,
-            addressLoadState: 'loading', addressLoadCity: requestedCity,
-            zones: [], center_map: null, allStreets: [], cityList: [],
+            addressInitRevision: initRevision,
+            active_city: 0,
+            addressLoadState: 'loading',
+            addressLoadCity: requestedCity,
+            zones: [],
+            center_map: null,
+            allStreets: [],
+            cityList: [],
           });
           const initialDraftRevision = get().addressRevision;
           let json;
           try {
             json = await api('profile', {
-              type: 'get_data_for_streets', city_id: requestedCity, street_id: id,
+              type: 'get_data_for_streets',
+              city_id: requestedCity,
+              street_id: id,
             });
-          } catch { json = null; }
+          } catch {
+            json = null;
+          }
           if (get().addressInitRevision !== initRevision) return false;
-          if (json?.st === false || !Array.isArray(json?.zones) || !Number(json?.city)) {
+          if (
+            json?.st === false ||
+            !Array.isArray(json?.zones) ||
+            !Number(json?.city)
+          ) {
             set({ addressLoadState: 'error' });
-            showCheckoutApiError(json, 'Не удалось загрузить адреса. Проверьте интернет и попробуйте ещё раз.');
+            showCheckoutApiError(
+              json,
+              'Не удалось загрузить адреса. Проверьте интернет и попробуйте ещё раз.'
+            );
             return false;
           }
           const untouched = get().addressRevision === initialDraftRevision;
           const mapCenter = getStreetMapCenterFromJson(json);
           if (!mapCenter && shouldReportMissingStreetMapCenter(id)) {
-            captureMapStateIssue('Street map response does not contain map center', {
-              source: 'useProfileStore.getMapMobile', city: requestedCity,
-              streetId: id, hasThisInfoXy: Boolean(json?.this_info?.xy),
-              hasCityCenter: json?.city_center != null,
-            });
+            captureMapStateIssue(
+              'Street map response does not contain map center',
+              {
+                source: 'useProfileStore.getMapMobile',
+                city: requestedCity,
+                streetId: id,
+                hasThisInfoXy: Boolean(json?.this_info?.xy),
+                hasCityCenter: json?.city_center != null,
+              }
+            );
           }
           set({
             addressLoadState: 'ready',
@@ -5380,11 +5870,17 @@ export const useProfileStore = reuseHotStore(
             active_city: Number(json.city),
             chooseAddrStreet: untouched ? (json.this_info ?? {}) : {},
             choose_street: untouched ? '' : get().choose_street,
-            addressInput: untouched ? getAddressLabel(json.this_info) : get().addressInput,
-            addressEntrance: untouched ? String(json.this_info?.pd ?? '') : get().addressEntrance,
+            addressInput: untouched
+              ? getAddressLabel(json.this_info)
+              : get().addressInput,
+            addressEntrance: untouched
+              ? String(json.this_info?.pd ?? '')
+              : get().addressEntrance,
             street_id: untouched ? Number(json.this_info?.street_id ?? 0) : 0,
             addressVerifiedKey: null,
-            center_map: mapCenter ? { center: mapCenter, zoom: 11.5, controls: [] } : null,
+            center_map: mapCenter
+              ? { center: mapCenter, zoom: 11.5, controls: [] }
+              : null,
             zones: json.zones,
           });
           return true;
@@ -5447,7 +5943,10 @@ export const useProfileStore = reuseHotStore(
             city: city,
           });
         },
-        ...createOrderHistoryActions({ set, get, request: api,
+        ...createOrderHistoryActions({
+          set,
+          get,
+          request: api,
           getToken: () => useHeaderStoreNew.getState().token,
           getCity: () => useCitiesStore.getState().thisCity,
         }),
@@ -5490,20 +5989,39 @@ export const useProfileStore = reuseHotStore(
 
         getCountPromos_Orders: (city, { force = false } = {}) => {
           const token = useHeaderStoreNew.getState().token;
-          if (!token || (!force && typeof document !== 'undefined' && document.visibilityState === 'hidden')) return Promise.resolve();
+          if (
+            !token ||
+            (!force &&
+              typeof document !== 'undefined' &&
+              document.visibilityState === 'hidden')
+          )
+            return Promise.resolve();
           const pending = get().countsPending;
-          if (!force && pending?.token === token && pending?.city === city) return pending.promise;
+          if (!force && pending?.token === token && pending?.city === city)
+            return pending.promise;
           const promise = (async () => {
             try {
-              const json = await api('zakazy', { type: 'get_my_count_orders_promos', city_id: city, user_id: token });
-              if (useHeaderStoreNew.getState().token !== token || get().countsPending?.promise !== promise || useCitiesStore.getState().thisCity !== city || json?.st === false) return;
+              const json = await api('zakazy', {
+                type: 'get_my_count_orders_promos',
+                city_id: city,
+                user_id: token,
+              });
+              if (
+                useHeaderStoreNew.getState().token !== token ||
+                get().countsPending?.promise !== promise ||
+                useCitiesStore.getState().thisCity !== city ||
+                json?.st === false
+              )
+                return;
               const promo = Number.parseInt(json?.count_promo, 10);
               const orders = Number.parseInt(json?.count_orders, 10);
-              if (Number.isFinite(promo) && Number.isFinite(orders)) set({ count_promo: promo, count_orders: orders });
+              if (Number.isFinite(promo) && Number.isFinite(orders))
+                set({ count_promo: promo, count_orders: orders });
             } catch {
               // Сбой фонового счётчика не должен прерывать работу страницы.
             } finally {
-              if (get().countsPending?.promise === promise) set({ countsPending: null });
+              if (get().countsPending?.promise === promise)
+                set({ countsPending: null });
             }
           })();
           set({ countsPending: { token, city, promise } });
@@ -7513,10 +8031,17 @@ useCitiesStore.subscribe((state, previous) => {
 });
 
 useCartStore.subscribe((state, previous) => {
-  if (state.paidConfirmationState === previous.paidConfirmationState ||
-      !['confirmed', 'canceled'].includes(state.paidConfirmationState)) return;
+  if (
+    state.paidConfirmationState === previous.paidConfirmationState ||
+    !['confirmed', 'canceled'].includes(state.paidConfirmationState)
+  )
+    return;
   const token = useHeaderStoreNew.getState().token;
   const request = readCardCheckoutRequest(token);
-  if (request?.reference && request.reference.orderId === state.pendingPaidOrder?.orderId &&
-      request.reference.pointId === state.pendingPaidOrder?.pointId) clearCardCheckoutRequest(token);
+  if (
+    request?.reference &&
+    request.reference.orderId === state.pendingPaidOrder?.orderId &&
+    request.reference.pointId === state.pendingPaidOrder?.pointId
+  )
+    clearCardCheckoutRequest(token);
 });

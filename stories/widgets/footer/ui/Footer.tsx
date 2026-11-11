@@ -63,6 +63,15 @@ export const Footer: React.FC<FooterProps> = ({
             <Link href={`/${cityName}/politika-legal`}>
               Политика в отношении обработки метрических данных
             </Link>
+            <Link
+              href={
+                '/' +
+                cityName +
+                '/sroki_godnosti_i_usloviia_hraneniia_gotovyh_bliud'
+              }
+            >
+              Сроки годности и условия хранения готовых блюд
+            </Link>
             <Link href={`/${cityName}/instpayorders`}>Правила оплаты</Link>
           </div>
 
