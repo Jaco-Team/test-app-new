@@ -14,17 +14,31 @@ const clean = (value) => String(value ?? '').trim();
 const url = (path) => `${SITE}${path}`;
 const cityUrl = (city, path = '') => url(`/${city}${path}`);
 
+// Именованные HTML-сущности, которые редактор CMS оставляет в текстах страниц.
+const ENTITIES = {
+  laquo: '«',
+  raquo: '»',
+  mdash: '—',
+  ndash: '–',
+  minus: '−',
+  plusmn: '±',
+  deg: '°',
+  times: '×',
+  hellip: '…',
+  bull: '•',
+  quot: '"',
+  apos: "'",
+  lt: '<',
+  gt: '>',
+  amp: '&',
+};
+
 function plainText(html) {
   return clean(html)
     .replace(/<(?:script|style)\b[^>]*>[\s\S]*?<\/(?:script|style)>/gi, ' ')
     .replace(/<[^>]+>/g, ' ')
     .replace(/&(?:nbsp|thinsp);/gi, ' ')
-    .replace(/&laquo;/gi, '«')
-    .replace(/&raquo;/gi, '»')
-    .replace(/&mdash;/gi, '—')
-    .replace(/&ndash;/gi, '–')
-    .replace(/&amp;/gi, '&')
-    .replace(/&quot;/gi, '"')
+    .replace(/&([a-z]+);/gi, (match, name) => ENTITIES[name.toLowerCase()] ?? match)
     .replace(/&#(\d+);/g, (match, code) => {
       const point = Number(code);
       return point >= 0 && point <= 0x10ffff

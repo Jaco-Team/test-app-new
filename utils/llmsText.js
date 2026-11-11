@@ -5,16 +5,30 @@ const SITE = 'https://jacofood.ru';
 
 const clean = (value) => String(value ?? '').trim();
 
+// Именованные HTML-сущности, которые редактор CMS оставляет в текстах.
+const ENTITIES = {
+  laquo: '«',
+  raquo: '»',
+  mdash: '—',
+  ndash: '–',
+  minus: '−',
+  plusmn: '±',
+  deg: '°',
+  times: '×',
+  hellip: '…',
+  bull: '•',
+  quot: '"',
+  apos: "'",
+  lt: '<',
+  gt: '>',
+  amp: '&',
+};
+
 function plain(html) {
   return clean(html)
     .replace(/<[^>]+>/g, ' ')
     .replace(/&(?:nbsp|thinsp);/gi, ' ')
-    .replace(/&laquo;/gi, '«')
-    .replace(/&raquo;/gi, '»')
-    .replace(/&mdash;/gi, '—')
-    .replace(/&ndash;/gi, '–')
-    .replace(/&amp;/gi, '&')
-    .replace(/&quot;/gi, '"')
+    .replace(/&([a-z]+);/gi, (match, name) => ENTITIES[name.toLowerCase()] ?? match)
     .replace(/\s+/g, ' ')
     .trim();
 }

@@ -154,7 +154,7 @@ describe('разметка для ИИ-ботов', () => {
         <tr><td><p>Продукция</p></td><td>Сроки годности и условия хранения</td></tr>
         <tr><td rowspan="2">Роллы в ассортименте</td><td>(4 ± 2) °C, срок хранения 24 часа</td></tr>
         <tr><td>(18 ± 5) °C, срок хранения не более 3 часов</td></tr>
-        <tr><td>Салаты</td><td>(4 ± 2) °C, срок хранения 12 часов</td></tr>
+        <tr><td>Салаты</td><td>(4 &plusmn; 2) &deg;C, срок хранения 12 часов</td></tr>
       </tbody></table>`,
     };
     const list = storageConditionsSchema('samara', 'sroki', page);
@@ -167,6 +167,10 @@ describe('разметка для ИИ-ботов', () => {
       description:
         '(4 ± 2) °C, срок хранения 24 часа; (18 ± 5) °C, срок хранения не более 3 часов',
     });
+    // Сущности редактора (&plusmn;, &deg;) в разметку попадают символами.
+    expect(list.itemListElement[1].description).toBe(
+      '(4 ± 2) °C, срок хранения 12 часов'
+    );
     expect(storageConditionsSchema('samara', 'sroki', { content: '<p>Без таблицы</p>' })).toBeNull();
 
     const graph = cityTextPageSchema('samara', 'sroki', page, 'storage');
