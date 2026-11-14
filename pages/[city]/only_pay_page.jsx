@@ -1,6 +1,7 @@
 import { useState, useEffect } from 'react';
 import { useSearchParams } from 'next/navigation';
 import {
+  CARD_SCRIPT_TIMEOUT_MS,
   CHECKOUT_WIDGET_SCRIPT_CONTEXT,
   ensureYooMoneyCheckoutWidget,
   getPaymentWidgetErrorCode,
@@ -25,7 +26,8 @@ export default function OnlyPayPage() {
     let succeeded = false;
     let checkout;
     let renderDeadline;
-    const paymentFlowId = getPaymentFlowId({ create: false }) || beginPaymentFlow();
+    const paymentFlowId =
+      getPaymentFlowId({ create: false }) || beginPaymentFlow();
     const eventBase = {
       payment_flow_id: paymentFlowId,
       payment_action: 'widget',
@@ -35,56 +37,99 @@ export default function OnlyPayPage() {
       if (cancelled || failed || succeeded) return;
       failed = true;
       setState('error');
-      trackPaymentClientEvent(event, { ...eventBase, ...details, outcome: 'error', reason });
+      trackPaymentClientEvent(event, {
+        ...eventBase,
+        ...details,
+        outcome: 'error',
+        reason,
+      });
       endPaymentFlow();
     };
     setState('loading');
     const scriptStartedAt = Date.now();
     let scriptFailure = 'script_error';
-    trackPaymentClientEvent('widget_script_started', { ...eventBase, ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, outcome: 'pending' });
+    trackPaymentClientEvent('widget_script_started', {
+      ...eventBase,
+      ...CHECKOUT_WIDGET_SCRIPT_CONTEXT,
+      outcome: 'pending',
+    });
     (async () => {
-      const Widget = await ensureYooMoneyCheckoutWidget(12000, (reason) => { scriptFailure = reason; });
+      const Widget = await ensureYooMoneyCheckoutWidget(
+        CARD_SCRIPT_TIMEOUT_MS,
+        (reason) => {
+          scriptFailure = reason;
+        }
+      );
       if (cancelled) return;
       if (!Widget) {
         fail('widget_script_failed', scriptFailure, {
-          ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, duration_ms: Date.now() - scriptStartedAt,
+          ...CHECKOUT_WIDGET_SCRIPT_CONTEXT,
+          duration_ms: Date.now() - scriptStartedAt,
         });
         return;
       }
       trackPaymentClientEvent('widget_script_loaded', {
-        ...eventBase, ...CHECKOUT_WIDGET_SCRIPT_CONTEXT, duration_ms: Date.now() - scriptStartedAt, outcome: 'success',
+        ...eventBase,
+        ...CHECKOUT_WIDGET_SCRIPT_CONTEXT,
+        duration_ms: Date.now() - scriptStartedAt,
+        outcome: 'success',
       });
       try {
         checkout = new Widget({
           confirmation_token: token,
-          error_callback: (error) => fail('widget_error', 'widget_callback', {
-            provider_error_code: getPaymentWidgetErrorCode(error),
-          }),
+          error_callback: (error) =>
+            fail('widget_error', 'widget_callback', {
+              provider_error_code: getPaymentWidgetErrorCode(error),
+            }),
         });
-        if (failed) { checkout.destroy(); return; }
-        trackPaymentClientEvent('widget_constructed', { ...eventBase, outcome: 'success' });
+        if (failed) {
+          checkout.destroy();
+          return;
+        }
+        trackPaymentClientEvent('widget_constructed', {
+          ...eventBase,
+          outcome: 'success',
+        });
         checkout.on('success', () => {
           if (cancelled) return;
           succeeded = true;
           clearTimeout(renderDeadline);
           setState('complete');
-          trackPaymentClientEvent('widget_success', { ...eventBase, outcome: 'success' });
-          try { checkout.destroy(); } catch {}
+          trackPaymentClientEvent('widget_success', {
+            ...eventBase,
+            outcome: 'success',
+          });
+          try {
+            checkout.destroy();
+          } catch {}
           endPaymentFlow();
         });
-        checkout.on('fail', (error) => fail('widget_fail', 'widget_callback', {
-          provider_error_code: getPaymentWidgetErrorCode(error),
-        }));
-        trackPaymentClientEvent('widget_render_started', { ...eventBase, widget_target: 'payment-form', outcome: 'pending' });
+        checkout.on('fail', (error) =>
+          fail('widget_fail', 'widget_callback', {
+            provider_error_code: getPaymentWidgetErrorCode(error),
+          })
+        );
+        trackPaymentClientEvent('widget_render_started', {
+          ...eventBase,
+          widget_target: 'payment-form',
+          outcome: 'pending',
+        });
         await Promise.race([
           Promise.resolve(checkout.render('payment-form')),
           new Promise((_, reject) => {
-            renderDeadline = setTimeout(() => reject(new Error('widget_render_timeout')), 12000);
+            renderDeadline = setTimeout(
+              () => reject(new Error('widget_render_timeout')),
+              12000
+            );
           }),
         ]);
         if (cancelled || failed || succeeded) return;
         setState('ready');
-        trackPaymentClientEvent('widget_rendered', { ...eventBase, widget_target: 'payment-form', outcome: 'success' });
+        trackPaymentClientEvent('widget_rendered', {
+          ...eventBase,
+          widget_target: 'payment-form',
+          outcome: 'success',
+        });
       } catch {
         fail('widget_render_failed', 'widget_callback');
       } finally {
@@ -94,18 +139,30 @@ export default function OnlyPayPage() {
     return () => {
       cancelled = true;
       clearTimeout(renderDeadline);
-      try { checkout?.destroy(); } catch {}
+      try {
+        checkout?.destroy();
+      } catch {}
     };
   }, [token, attempt]);
 
   if (!token || token.length <= 8) return null;
   return (
     <>
-      {state === 'loading' ? <p role="status">Загружаем форму оплаты…</p> : null}
+      {state === 'loading' ? (
+        <p role="status">Загружаем форму оплаты…</p>
+      ) : null}
       {state === 'error' ? (
         <div role="alert">
-          <p>Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте ещё раз.</p>
-          <button type="button" onClick={() => setAttempt((value) => value + 1)}>Повторить</button>
+          <p>
+            Не удалось загрузить форму оплаты. Проверьте интернет и попробуйте
+            ещё раз.
+          </p>
+          <button
+            type="button"
+            onClick={() => setAttempt((value) => value + 1)}
+          >
+            Повторить
+          </button>
         </div>
       ) : null}
       <div id="payment-form" />

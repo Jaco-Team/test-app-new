@@ -1,8 +1,15 @@
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
-import { ensureYooMoneyCheckoutWidget, getPaymentWidgetErrorCode } from '../../utils/checkoutWidgetLoader';
+import {
+  CARD_SCRIPT_TIMEOUT_MS,
+  ensureYooMoneyCheckoutWidget,
+  getPaymentWidgetErrorCode,
+  preloadYooMoneyCheckoutWidget,
+} from '../../utils/checkoutWidgetLoader';
 let scripts;
 class Script extends EventTarget {
-  remove() { scripts = scripts.filter((script) => script !== this); }
+  remove() {
+    scripts = scripts.filter((script) => script !== this);
+  }
 }
 beforeEach(() => {
   vi.useFakeTimers();
@@ -22,10 +29,52 @@ afterEach(() => {
 describe('загрузчик платёжного виджета', () => {
   it('сохраняет только документированный код ошибки и не копирует сырой callback', () => {
     expect(getPaymentWidgetErrorCode('token_expired')).toBe('token_expired');
-    expect(getPaymentWidgetErrorCode({ error: { code: 'INVALID_TOKEN' }, token: 'private' })).toBe('invalid_token');
-    expect(getPaymentWidgetErrorCode({ code: 'internal_service_error', message: 'private' })).toBe('internal_service_error');
+    expect(
+      getPaymentWidgetErrorCode({
+        error: { code: 'INVALID_TOKEN' },
+        token: 'private',
+      })
+    ).toBe('invalid_token');
+    expect(
+      getPaymentWidgetErrorCode({
+        code: 'internal_service_error',
+        message: 'private',
+      })
+    ).toBe('internal_service_error');
     expect(getPaymentWidgetErrorCode('private-token-or-error')).toBe('unknown');
     expect(getPaymentWidgetErrorCode(undefined)).toBe('unknown');
+  });
+  it('по умолчанию ждёт скрипт 5 секунд', async () => {
+    const onFailure = vi.fn();
+    const loading = ensureYooMoneyCheckoutWidget(undefined, onFailure);
+    expect(CARD_SCRIPT_TIMEOUT_MS).toBe(5000);
+    await vi.advanceTimersByTimeAsync(4999);
+    expect(onFailure).not.toHaveBeenCalled();
+    await vi.advanceTimersByTimeAsync(1);
+    expect(await loading).toBe(null);
+    expect(onFailure).toHaveBeenCalledWith('script_timeout');
+  });
+  it('ранняя загрузка при открытии оформления: к оплате скрипт уже готов и второй не создаётся', async () => {
+    preloadYooMoneyCheckoutWidget();
+    expect(scripts).toHaveLength(1);
+    const Widget = function () {};
+    window.YooMoneyCheckoutWidget = Widget;
+    scripts[0].dispatchEvent(new Event('load'));
+    await vi.advanceTimersByTimeAsync(0);
+    expect(await ensureYooMoneyCheckoutWidget()).toBe(Widget);
+    expect(scripts).toHaveLength(1);
+  });
+  it('сбой ранней загрузки не мешает загрузить скрипт при оплате', async () => {
+    preloadYooMoneyCheckoutWidget();
+    scripts[0].dispatchEvent(new Event('error'));
+    await vi.advanceTimersByTimeAsync(0);
+    expect(scripts).toHaveLength(0);
+    const loading = ensureYooMoneyCheckoutWidget();
+    expect(scripts).toHaveLength(1);
+    const Widget = function () {};
+    window.YooMoneyCheckoutWidget = Widget;
+    scripts[0].dispatchEvent(new Event('load'));
+    expect(await loading).toBe(Widget);
   });
   it('одновременно загружает только один script и делится результатом', async () => {
     const first = ensureYooMoneyCheckoutWidget();
@@ -64,13 +113,17 @@ describe('загрузчик платёжного виджета', () => {
     expect(scripts).toHaveLength(0);
   });
   it('возвращает null при исключении DOM вместо необработанного rejection', async () => {
-    document.querySelector = () => { throw new Error('DOM unavailable'); };
+    document.querySelector = () => {
+      throw new Error('DOM unavailable');
+    };
     const onFailure = vi.fn();
     expect(await ensureYooMoneyCheckoutWidget(12000, onFailure)).toBe(null);
     expect(onFailure).toHaveBeenCalledExactlyOnceWith('script_dom_error');
   });
   it('ошибка диагностического callback не влияет на результат загрузки', async () => {
-    const waiting = ensureYooMoneyCheckoutWidget(500, () => { throw new Error('telemetry unavailable'); });
+    const waiting = ensureYooMoneyCheckoutWidget(500, () => {
+      throw new Error('telemetry unavailable');
+    });
     await vi.advanceTimersByTimeAsync(500);
     expect(await waiting).toBe(null);
   });
