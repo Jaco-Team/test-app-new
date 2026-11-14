@@ -5,7 +5,11 @@ import dynamic from 'next/dynamic';
 
 import Footer from '@/components/footer.js';
 import StructuredData from '@/components/structuredData';
-import { promotionSchema } from '@/utils/structuredData';
+import {
+  breadcrumbSchema,
+  promotionSchema,
+  schemaGraph,
+} from '@/utils/structuredData';
 const DynamicHomePage = dynamic(() => import('@/modules/akcii/page.js'));
 
 import { roboto } from '@/ui/Font.js';
@@ -211,11 +215,24 @@ export async function getServerSideProps({ req, res, query }) {
     };
   }
 
-  data1.schema = promotionSchema(
+  const promotion = promotionSchema(
     city,
     json.banner,
     Boolean(data1.page?.robots)
   );
+  // Скрытые и неиндексируемые акции остаются без разметки, в том числе без крошек.
+  data1.schema = promotion
+    ? schemaGraph(
+        promotion,
+        breadcrumbSchema(city, [
+          { name: 'Акции', path: '/akcii' },
+          {
+            name: json.banner?.title,
+            path: `/akcii/${encodeURIComponent(json.banner?.link ?? actName)}`,
+          },
+        ])
+      )
+    : null;
 
   data1.headerCategories = await loadHeaderCategories(city, data1.cats);
 

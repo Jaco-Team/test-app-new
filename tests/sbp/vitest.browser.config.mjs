@@ -9,7 +9,7 @@ export default defineConfig({
     if (id.startsWith(root) && !id.includes('/node_modules/') && /\.(js|jsx)$/.test(id)) return transformWithOxc(code, id, { lang: 'jsx', jsx: { runtime: 'automatic' } });
   } }],
   resolve: { alias: { '@': root } },
-  optimizeDeps: { noDiscovery: true, include: ['react', 'react-dom/client', 'react/jsx-runtime', '@testing-library/dom', '@mui/material/Alert', '@mui/material/Button', '@mui/material/Dialog', '@mui/material/DialogContent', '@mui/material/SwipeableDrawer', '@mui/material/useMediaQuery', 'prop-types', 'crypto-js/sha256', 'dayjs', 'dayjs/locale/ru', 'dayjs/plugin/isoWeek', 'zustand/traditional', 'zustand/shallow', 'zustand/middleware'] },
+  optimizeDeps: { noDiscovery: true, include: ['react', 'react-dom/client', 'react/jsx-runtime', '@testing-library/dom', '@mui/material/Alert', '@mui/material/Backdrop', '@mui/material/Box', '@mui/material/Button', '@mui/material/Dialog', '@mui/material/DialogContent', '@mui/material/IconButton', '@mui/material/SwipeableDrawer', '@mui/material/useMediaQuery', '@mui/icons-material/ArrowBackIosNew', 'embla-carousel-react', 'embla-carousel-wheel-gestures', 'prop-types', 'crypto-js/sha256', 'dayjs', 'dayjs/locale/ru', 'dayjs/plugin/isoWeek', 'zustand/traditional', 'zustand/shallow', 'zustand/middleware'] },
   test: {
     attachmentsDir: '.codex/sbp-return-test-attachments', include: ['tests/sbp/*.browser.jsx'],
     browser: { enabled: true, headless: true, provider: playwright({ launchOptions: { channel: process.env.SBP_BROWSER_CHANNEL || undefined } }), instances: [{ browser: 'chromium' }] },

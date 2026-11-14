@@ -46,6 +46,8 @@ import {
   setLocalStorageItem,
 } from '@/utils/browserStorage';
 import { BREAKPOINTS, LEGACY_BREAKPOINTS } from '@/utils/breakpoints';
+import { savedCityAction } from '@/utils/savedCity';
+import { isCitySwitchActive } from '@/utils/switchCity';
 
 export default React.memo(function header({ city, city_list, cats }) {
   const router = useRouter();
@@ -63,15 +65,42 @@ export default React.memo(function header({ city, city_list, cats }) {
 
   const thisCityRU = currentCity?.name ?? '';
 
+  // Сохранённый город один на все вкладки. Если его сменили в другой вкладке,
+  // эта страница уходит в сохранённый город; если города ещё нет — запоминаем
+  // тот, на который пришли по ссылке.
+  const currentCityLink = currentCity?.link;
   useEffect(() => {
     if (!currentCity) return;
-    if (getLocalStorageJson('setCity')?.link !== city) {
-      setLocalStorageItem('setCity', JSON.stringify(currentCity));
-    }
-    if (Cookies.get('city') !== city) {
-      Cookies.set('city', city, { expires: 365, path: '/', sameSite: 'Lax' });
-    }
-  }, [city, currentCity]);
+
+    const syncCity = () => {
+      if (isCitySwitchActive()) return;
+      const action = savedCityAction(city, Cookies.get('city'), window.location);
+      if (action.redirect) {
+        window.location.replace(action.redirect);
+        return;
+      }
+      if (!action.save) return;
+      if (getLocalStorageJson('setCity')?.link !== city) {
+        setLocalStorageItem('setCity', JSON.stringify(currentCity));
+      }
+      if (Cookies.get('city') !== city) {
+        Cookies.set('city', city, { expires: 365, path: '/', sameSite: 'Lax' });
+      }
+    };
+    const onVisible = () => {
+      if (document.visibilityState === 'visible') syncCity();
+    };
+
+    syncCity();
+    document.addEventListener('visibilitychange', onVisible);
+    window.addEventListener('pageshow', syncCity);
+    window.addEventListener('focus', syncCity);
+    return () => {
+      document.removeEventListener('visibilitychange', onVisible);
+      window.removeEventListener('pageshow', syncCity);
+      window.removeEventListener('focus', syncCity);
+    };
+  }, [city, currentCityLink]);
 
   if (!Array.isArray(city_list) || city_list.length === 0) {
     return null;

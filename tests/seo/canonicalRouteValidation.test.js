@@ -2,7 +2,13 @@ import { beforeEach, describe, expect, it, vi } from 'vitest';
 vi.mock('@/components/api.js', () => ({ api: vi.fn() }));
 vi.mock('@/components/footer.js', () => ({ default: () => null }));
 vi.mock('@/components/structuredData', () => ({ default: () => null }));
-vi.mock('@/utils/structuredData', () => ({ categorySchema: () => null }));
+vi.mock('@/utils/structuredData', () => ({
+  breadcrumbSchema: () => null,
+  categoryName: () => '',
+  categorySchema: () => null,
+  schemaGraph: () => null,
+}));
+vi.mock('@/utils/initialCatalog', () => ({ initialCatalog: () => [] }));
 vi.mock('next/dynamic', () => ({ default: () => () => null }));
 vi.mock('@/ui/Font.js', () => ({ roboto: { variable: 'test' } }));
 vi.mock('@/components/store.js', () => ({ useHomeStore: vi.fn(), useCitiesStore: vi.fn(), useHeaderStoreNew: vi.fn(), useCartStore: vi.fn() }));

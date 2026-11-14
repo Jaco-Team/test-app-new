@@ -218,15 +218,29 @@ export default function ConfirmForm() {
     //}, 300);
   }
 
-  const [cardPaymentState, retryCardPayment] = useCartStore((state) => [state.cardPaymentState, state.retryCardPayment]);
+  const [cardPaymentState, retryCardPayment, cardHostedFallback, payCardOnHostedPage] = useCartStore((state) => [
+    state.cardPaymentState, state.retryCardPayment, state.cardHostedFallback, state.payCardOnHostedPage,
+  ]);
   const cardPaymentStatus = typePay?.id === 'online' ? (
     <div role="status" aria-live="polite">
       {paidConfirmationState !== 'idle' ? <PaidOrderStatus /> : null}
       {cardPaymentState === 'loading' ? 'Загружаем форму оплаты…' : null}
       {cardPaymentState === 'error' && paidConfirmationState === 'idle' ? (
-        <div>
-          <p>Не удалось открыть форму оплаты.</p>
-          <button type="button" className="confirmBTN" onClick={() => retryCardPayment?.()}>
+        <div className="cardPaymentFallback">
+          <p>
+            Не удалось открыть форму оплаты.
+            {cardHostedFallback ? ' Можно оплатить заказ на защищённой странице ЮKassa.' : ''}
+          </p>
+          {cardHostedFallback ? (
+            <button type="button" className="confirmBTN" onClick={() => { void payCardOnHostedPage(); }}>
+              Оплатить на сайте ЮKassa
+            </button>
+          ) : null}
+          <button
+            type="button"
+            className={cardHostedFallback ? 'confirmBTN cardPaymentFallback__secondary' : 'confirmBTN'}
+            onClick={() => retryCardPayment?.()}
+          >
             Повторить загрузку формы оплаты
           </button>
         </div>

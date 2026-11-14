@@ -1,6 +1,7 @@
 // proxy.js
 import { NextResponse } from 'next/server';
 import { normalizeCity } from '@/utils/normalizeCity';
+import { savedCityPath } from '@/utils/savedCity';
 
 function isLowerCase(str) {
   return str === str.toLowerCase();
@@ -280,6 +281,23 @@ export async function proxy(request) {
     target.search = '';
     changed = true;
     redirectStatus = 307; // ВАЖНО: не permanent
+  }
+
+  // 3.2) Город сохранён и отличается от города в адресе — ведём в сохранённый.
+  // Без сохранённого города остаёмся там, куда пришли по ссылке.
+  const savedCityTarget = savedCityPath(
+    target.pathname,
+    target.search,
+    request.cookies.get('city')?.value
+  );
+  if (savedCityTarget) {
+    // Запрос данных страницы несёт город маршрута ещё и параметром — старый убираем.
+    if (target.searchParams.get('city') === parts[0]) {
+      target.searchParams.delete('city');
+    }
+    target.pathname = savedCityTarget;
+    changed = true;
+    redirectStatus = 307; // зависит от куки — не permanent и не в кеш
   }
 
   // 4) Чистим "мусорные" query (UTM не трогаем)

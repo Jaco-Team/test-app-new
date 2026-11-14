@@ -611,6 +611,123 @@ describe('восстановление встроенной карточной �
   });
 });
 
+describe('страница ЮKassa, когда встроенная форма не открылась', () => {
+  const hostedUrl = 'https://yookassa.ru/payments/hosted-after-form';
+  const embedded = { st: true, order_id: 123, check: pending.check, pay: { pay: { confirmation: { confirmation_token: 'card-token' } } } };
+  const hosted = {
+    st: true, order_id: 124, check: { order: { point_id: 5, order_id: 124 } },
+    pay: { pay: { confirmation: { type: 'redirect', confirmation_url: hostedUrl } } },
+  };
+  async function openForm({ hung }) {
+    window.localStorage.setItem('setCart', JSON.stringify({ updatedAt: Date.now() }));
+    useCartStore.setState({
+      typeOrder: 'pic', orderPic: { id: 5 }, typePay: { id: 'online' },
+      items: [{ item_id: 1, count: 1 }], allPrice: 100,
+    });
+    if (hung) {
+      window.YooMoneyCheckoutWidget = class extends FakeWidget {
+        constructor(options) { super(options); this.render = vi.fn(() => new Promise(() => {})); }
+      };
+    }
+    api.mockResolvedValueOnce(embedded);
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    await vi.advanceTimersByTimeAsync(hung ? 12301 : 301);
+  }
+
+  it('зависшая форма предлагает страницу ЮKassa и создаёт для неё новый заказ', async () => {
+    await openForm({ hung: true });
+    expect(useCartStore.getState()).toMatchObject({ cardPaymentState: 'error', cardHostedFallback: 'widget_timeout' });
+    api.mockResolvedValueOnce(hosted);
+    expect(await useCartStore.getState().payCardOnHostedPage()).toBe('wait_payment');
+    expect(api).toHaveBeenCalledTimes(2);
+    expect(api.mock.calls[0][1]).not.toHaveProperty('payment_confirmation');
+    expect(api.mock.calls[1][1]).toMatchObject({ type: 'create_order_pre', typePay: 'online', payment_confirmation: 'redirect' });
+    expect(widgets).toHaveLength(1);
+    expect(widgets[0].destroy).toHaveBeenCalled();
+    expect(redirect).toHaveBeenCalledWith(hostedUrl);
+    expect(useCartStore.getState().pendingPaidOrder).toMatchObject({ orderId: 124, pointId: 5, method: 'online' });
+    expect(trackPaymentClientEvent).toHaveBeenCalledWith('widget_render_timeout', expect.objectContaining({
+      order_id: 123, reason: 'widget_timeout', widget_attempt: 1,
+    }));
+    // Уход на страницу ЮKassa: причина, число неудачных показов и заказ со сбоем формы.
+    expect(trackPaymentClientEvent).toHaveBeenCalledWith('hosted_payment_selected', expect.objectContaining({
+      payment_confirmation: 'redirect', reason: 'widget_timeout', widget_attempt: 1, point_id: 5, order_id: 123,
+    }));
+  });
+
+  it('повтор, который тоже не открылся, и уход после него получают номер попытки 2', async () => {
+    await openForm({ hung: true });
+    await useCartStore.getState().retryCardPayment();
+    await vi.advanceTimersByTimeAsync(12301);
+    expect(useCartStore.getState()).toMatchObject({ cardPaymentState: 'error', cardHostedFallback: 'widget_timeout' });
+    const timeouts = trackPaymentClientEvent.mock.calls.filter(([stage]) => stage === 'widget_render_timeout');
+    expect(timeouts.map(([, details]) => details.widget_attempt)).toEqual([1, 2]);
+    expect(trackPaymentClientEvent).toHaveBeenCalledWith('widget_render_started', expect.objectContaining({ widget_attempt: 2 }));
+    api.mockResolvedValueOnce(hosted);
+    await useCartStore.getState().payCardOnHostedPage();
+    expect(trackPaymentClientEvent).toHaveBeenCalledWith('hosted_payment_selected', expect.objectContaining({
+      reason: 'widget_timeout', widget_attempt: 2, order_id: 123,
+    }));
+    expect(api).toHaveBeenCalledTimes(2);
+  });
+
+  it('форма нового заказа снова считается первой попыткой', async () => {
+    await openForm({ hung: true });
+    useCartStore.getState().setConfirmForm(false);
+    api.mockResolvedValueOnce({ ...embedded, order_id: 124, check: { order: { point_id: 5, order_id: 124 } } });
+    await useCartStore.getState().createOrder('user-token', 'samara');
+    await vi.advanceTimersByTimeAsync(12301);
+    const timeouts = trackPaymentClientEvent.mock.calls.filter(([stage]) => stage === 'widget_render_timeout');
+    expect(timeouts.map(([, details]) => [details.order_id, details.widget_attempt])).toEqual([[123, 1], [124, 1]]);
+  });
+
+  it('двойное нажатие создаёт один заказ со страницей ЮKassa', async () => {
+    await openForm({ hung: true });
+    let resolve;
+    api.mockReturnValueOnce(new Promise((done) => { resolve = done; }));
+    const first = useCartStore.getState().payCardOnHostedPage();
+    expect(await useCartStore.getState().payCardOnHostedPage()).toBe('nothing');
+    resolve(hosted); await first;
+    expect(api).toHaveBeenCalledTimes(2);
+    expect(redirect).toHaveBeenCalledTimes(1);
+  });
+
+  it('повтор загрузки формы убирает предложение до нового сбоя', async () => {
+    await openForm({ hung: true });
+    void useCartStore.getState().retryCardPayment();
+    expect(useCartStore.getState()).toMatchObject({ cardPaymentState: 'loading', cardHostedFallback: null });
+    expect(await useCartStore.getState().payCardOnHostedPage()).toBe('nothing');
+    expect(api).toHaveBeenCalledTimes(1);
+  });
+
+  it('отказ банка в открытой форме страницу ЮKassa не предлагает', async () => {
+    await openForm({ hung: false });
+    expect(useCartStore.getState().cardPaymentState).toBe('ready');
+    widgets[0].on.mock.calls.find(([event]) => event === 'fail')[1]({});
+    expect(useCartStore.getState()).toMatchObject({ cardPaymentState: 'error', cardHostedFallback: null });
+    expect(await useCartStore.getState().payCardOnHostedPage()).toBe('nothing');
+    expect(api).toHaveBeenCalledTimes(1);
+    expect(redirect).not.toHaveBeenCalled();
+  });
+
+  it('без надёжного хранилища заказ для страницы ЮKassa не создаётся', async () => {
+    await openForm({ hung: true });
+    window.sessionStorage.setItem = () => { throw new Error('storage blocked'); };
+    await useCartStore.getState().payCardOnHostedPage();
+    expect(useCartStore.getState().cardPreflightState).toBe('storage_error');
+    expect(api).toHaveBeenCalledTimes(1);
+    expect(redirect).not.toHaveBeenCalled();
+  });
+
+  it('закрытие формы убирает предложение', async () => {
+    await openForm({ hung: true });
+    useCartStore.getState().setConfirmForm(false);
+    expect(useCartStore.getState().cardHostedFallback).toBeNull();
+    expect(await useCartStore.getState().payCardOnHostedPage()).toBe('nothing');
+    expect(api).toHaveBeenCalledTimes(1);
+  });
+});
+
 describe('отмена старой платёжной формы', () => {
   it('success до завершения render остаётся окончательным состоянием', async () => {
     const original = useProfileStore.getState().saveUserActions;
