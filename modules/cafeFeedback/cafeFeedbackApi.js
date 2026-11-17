@@ -276,10 +276,13 @@ async function postFormData(entries) {
   return parseResponse(response);
 }
 
-export function getCafeFeedbackForm(token) {
+// The variant lets the backend refuse a link issued for the other form
+// (stars vs emoji) before the visitor starts filling it in.
+export function getCafeFeedbackForm(token, uiVariant) {
   return postFormData({
     type: 'get_form',
     token,
+    ui_variant: uiVariant,
   });
 }
 

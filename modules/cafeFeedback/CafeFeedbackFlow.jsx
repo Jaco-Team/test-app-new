@@ -1101,7 +1101,9 @@ export default function CafeFeedbackFlow({ token, uiVariant }) {
     setLoading(true);
     setFatalError(null);
     try {
-      const result = normalizeFeedbackForm(await getCafeFeedbackForm(token));
+      const result = normalizeFeedbackForm(
+        await getCafeFeedbackForm(token, uiVariant)
+      );
       if (
         !result.form_token ||
         !result.cafe ||
@@ -1132,7 +1134,7 @@ export default function CafeFeedbackFlow({ token, uiVariant }) {
     } finally {
       setLoading(false);
     }
-  }, [showSemanticCooldown, token]);
+  }, [showSemanticCooldown, token, uiVariant]);
 
   useEffect(() => {
     loadForm();

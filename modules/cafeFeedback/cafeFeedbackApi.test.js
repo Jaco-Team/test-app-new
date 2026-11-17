@@ -168,6 +168,30 @@ describe('cafeFeedbackApi semantic cooldown', () => {
   });
 });
 
+describe('cafeFeedbackApi form variant', () => {
+  it('передаёт вариант формы при загрузке и не шлёт пустое значение', async () => {
+    const storage = {
+      getItem: vi.fn().mockReturnValue('11111111111111111111111111111111'),
+      setItem: vi.fn(),
+    };
+    const fetchMock = vi
+      .fn()
+      .mockResolvedValue(jsonResponse(200, { st: true }));
+
+    vi.stubGlobal('localStorage', storage);
+    vi.stubGlobal('document', cookieDocument('').document);
+    vi.stubGlobal('location', { protocol: 'https:' });
+    vi.stubGlobal('fetch', fetchMock);
+    const api = await loadApi();
+
+    await api.getCafeFeedbackForm('test-token', 'emoji');
+    await api.getCafeFeedbackForm('test-token');
+
+    expect(fetchMock.mock.calls[0][1].body.get('ui_variant')).toBe('emoji');
+    expect(fetchMock.mock.calls[1][1].body.has('ui_variant')).toBe(false);
+  });
+});
+
 describe('cafeFeedbackApi browser ID persistence', () => {
   it('предпочитает localStorage и синхронизирует cookie', async () => {
     const storedId = '11111111111111111111111111111111';
