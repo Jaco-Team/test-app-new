@@ -1,0 +1,194 @@
+.health-reminder {
+  --health-accent: #c81934;
+  --health-divider: #dedbd8;
+  --health-ink: #29272a;
+  --health-muted: #4d494b;
+  --health-gap: 24px;
+  width: 100%;
+  max-width: 980px;
+  margin: 0 0 24px;
+  font-family: var(--inter-font, Arial), sans-serif;
+  color: var(--health-ink);
+  box-sizing: border-box;
+}
+
+.health-reminder .health-reminder__intro {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr) clamp(58px, 18vw, 100px);
+  gap: 14px;
+  align-items: center;
+  padding: 12px 0 22px;
+  border-bottom: 2px solid var(--health-accent);
+}
+
+.health-reminder .health-reminder__title {
+  --health-title-size: clamp(26px, 7.6vw, 38px);
+  width: auto;
+  max-width: 17ch;
+  margin: 0;
+  padding: 0;
+  color: var(--health-accent);
+  /* Общий шаблон CMS назначает размер шрифта h2, p и li через !important. */
+  font-size: var(--health-title-size) !important;
+  font-weight: 700;
+  line-height: 1.04;
+  letter-spacing: -0.045em;
+  text-align: left;
+  text-wrap: balance;
+}
+
+.health-reminder .health-reminder__shield,
+.health-reminder .health-reminder__illustration {
+  display: block;
+  width: 100%;
+  height: auto;
+  margin: 0;
+  border-radius: 0;
+}
+
+.health-reminder .health-reminder__tips {
+  display: grid;
+  grid-template-columns: minmax(0, 1fr);
+  column-gap: var(--health-gap);
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  counter-reset: health-tip;
+}
+
+.health-reminder .health-reminder__tips > li {
+  min-width: 0;
+  margin: 0;
+  border-bottom: 1px solid var(--health-divider);
+  padding: 20px 0;
+  counter-increment: health-tip;
+}
+
+.health-reminder .health-reminder__tips h3 {
+  display: flex;
+  align-items: baseline;
+  gap: 9px;
+  margin: 0 0 8px;
+  color: var(--health-ink);
+  font: 700 19px/1.22 var(--inter-font, Arial), sans-serif;
+  letter-spacing: -0.025em;
+}
+
+.health-reminder .health-reminder__tips h3::before {
+  content: counter(health-tip);
+  content: counter(health-tip) / '';
+  flex: none;
+  width: 23px;
+  border-radius: 50%;
+  background: var(--health-accent);
+  color: white;
+  font: 700 14px/23px var(--inter-font, Arial), sans-serif;
+  letter-spacing: 0;
+  text-align: center;
+}
+
+.health-reminder .health-reminder__tips p,
+.health-reminder .health-reminder__tips ul > li,
+.health-reminder .health-reminder__closing p {
+  margin: 0;
+  padding: 0;
+  color: var(--health-muted);
+  font-size: var(--health-copy-size, 16px) !important;
+  font-weight: 400;
+  line-height: 1.5;
+  overflow-wrap: break-word;
+}
+
+.health-reminder .health-reminder__columns {
+  display: grid;
+  gap: 12px var(--health-gap);
+}
+
+.health-reminder .health-reminder__columns p:first-child {
+  margin: 0;
+}
+
+.health-reminder .health-reminder__tips ul {
+  margin: 6px 0 0;
+  padding-left: 1.2em;
+  list-style: disc outside;
+}
+
+.health-reminder .health-reminder__tips ul > li::marker {
+  color: var(--health-accent);
+}
+
+.health-reminder .health-reminder__illustration {
+  max-width: 480px;
+  margin: 16px 0 0;
+}
+
+.health-reminder .health-reminder__closing {
+  padding-top: 22px;
+}
+
+.health-reminder .health-reminder__closing h3 {
+  margin: 0 0 6px;
+  font: 700 22px/1.22 var(--inter-font, Arial), sans-serif;
+  letter-spacing: -0.03em;
+}
+
+.health-reminder .health-reminder__closing p {
+  --health-copy-size: 14px;
+  max-width: 66ch;
+}
+
+@media (min-width: 668px) and (max-width: 990px) {
+  .health-reminder .health-reminder__intro {
+    grid-template-columns: minmax(0, 1fr) 104px;
+    gap: 18px;
+    padding-bottom: 24px;
+  }
+
+  .health-reminder .health-reminder__title {
+    --health-title-size: 36px;
+  }
+
+  .health-reminder .health-reminder__tips > li {
+    padding-left: 35px;
+  }
+
+  .health-reminder .health-reminder__tips h3 {
+    margin-left: -35px;
+    gap: 12px;
+  }
+}
+
+@media (min-width: 991px) {
+  .health-reminder {
+    --health-gap: clamp(22px, 2.3vw, 40px);
+    margin-bottom: 32px;
+  }
+
+  .health-reminder .health-reminder__intro {
+    grid-template-columns: minmax(0, 1fr) clamp(110px, 10vw, 160px);
+    padding: 14px 0 24px;
+  }
+
+  .health-reminder .health-reminder__title {
+    --health-title-size: clamp(40px, 3.6vw, 54px);
+  }
+
+  .health-reminder .health-reminder__tips,
+  .health-reminder .health-reminder__columns {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+
+  .health-reminder .health-reminder__tips > li {
+    padding: 24px 0;
+  }
+
+  .health-reminder .health-reminder__illustrated,
+  .health-reminder .health-reminder__tips > li:last-child {
+    grid-column: 1 / -1;
+  }
+
+  .health-reminder .health-reminder__illustration {
+    margin-top: 20px;
+  }
+}

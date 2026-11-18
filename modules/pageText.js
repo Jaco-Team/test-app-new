@@ -20,6 +20,7 @@ export default function PageText({
   classNamePC,
   classNameMobile,
   cityName,
+  showHealthReminderDownload,
 }) {
   const [activePage] = useHeaderStoreNew((state) => [state.activePage]);
   const isMobilePageText = useMediaQuery(
@@ -96,10 +97,11 @@ export default function PageText({
             />
           ) : null}
 
-          {activePage == 'pamiatka_po_sohraneniiu_zdorovia' && (
+          {showHealthReminderDownload && (
             <Grid size={12} style={{ paddingBottom: 15 }}>
               <a
                 className="download"
+                aria-label="Скачать памятку в PDF"
                 style={
                   !isMobilePageText
                     ? isTabletPageText

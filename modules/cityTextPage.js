@@ -1,5 +1,6 @@
 import React, { useEffect } from 'react';
 import dynamic from 'next/dynamic';
+import Head from 'next/head';
 
 import Footer from '@/components/footer.js';
 import StructuredData from '@/components/structuredData';
@@ -15,6 +16,7 @@ const DynamicPage = dynamic(() => import('@/modules/pageText'));
 export default function CityTextPage({ data1, slug, presentation }) {
   const { city, cities, page, all_items, free_items, need_dop, links, schema } =
     data1;
+  const isHealthReminder = slug === 'pamiatka_po_sohraneniiu_zdorovia';
 
   const [
     setAllItems,
@@ -72,8 +74,14 @@ export default function CityTextPage({ data1, slug, presentation }) {
 
   const pageContent = (
     <>
+      {isHealthReminder && (
+        <Head>
+          <link rel="stylesheet" href="/health-reminder/health-reminder.css" />
+        </Head>
+      )}
       <DynamicPage
         page={page}
+        showHealthReminderDownload={isHealthReminder}
         classNamePC={presentation.classNamePC}
         classNameMobile={presentation.classNameMobile}
         cityName={city}
