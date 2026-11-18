@@ -322,11 +322,11 @@ $line: #e6e6e6;
 }
 
 .tag {
-  min-height: 44px;
-  padding: 10px 13px;
-  color: $muted;
-  background: #ffffff;
-  border: 1px solid #cccccc;
+  min-height: 40px;
+  padding: 9px 14px;
+  color: $text;
+  background: #f2f2f2;
+  border: 1px solid transparent;
   border-radius: 999px;
   font: inherit;
   font-size: 14px;
@@ -338,8 +338,8 @@ $line: #e6e6e6;
 }
 
 .tagSelected {
-  color: $red;
-  background: rgba($red, 0.04);
+  color: #ffffff;
+  background: $red;
   border-color: $red;
 }
 

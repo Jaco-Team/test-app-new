@@ -68,6 +68,7 @@ import {
 
 import Cookies from 'js-cookie';
 import {
+  CARD_SCRIPT_TIMEOUT_MS,
   CHECKOUT_WIDGET_SCRIPT_CONTEXT,
   ensureYooMoneyCheckoutWidget,
   getPaymentWidgetErrorCode,
@@ -1434,7 +1435,9 @@ export const useHeaderStoreNew = reuseHotStore(
 
           if (String(message).includes('Запросите код')) {
             set({ recoveryResetToken: '', code: '' });
-            get().navigate(get().authIntent === 'register' ? 'create' : 'resetPWD');
+            get().navigate(
+              get().authIntent === 'register' ? 'create' : 'resetPWD'
+            );
           }
 
           return false;
@@ -1845,6 +1848,18 @@ export const useCartStore = reuseHotStore(
         )
           return false;
         try {
+          trackPaymentClientEvent(
+            'payment_redirect_started',
+            {
+              payment_action: 'widget',
+              payment_method: 'online',
+              payment_confirmation: 'redirect',
+              point_id: context.pointId,
+              order_id: context.orderId,
+              outcome: 'pending',
+            },
+            { beacon: true }
+          );
           window.location.assign(url);
           return true;
         } catch {
@@ -2816,6 +2831,19 @@ export const useCartStore = reuseHotStore(
 
         try {
           set({ sbpPaymentState: 'pending' });
+          const sbpOrder = get().pendingSbpOrder || get().pendingPaidOrder;
+          trackPaymentClientEvent(
+            'payment_redirect_started',
+            {
+              payment_action: 'widget',
+              payment_method: 'sbp',
+              payment_confirmation: 'redirect',
+              point_id: sbpOrder?.pointId,
+              order_id: sbpOrder?.orderId,
+              outcome: 'pending',
+            },
+            { beacon: true }
+          );
           window.location.assign(url);
           return 'pending';
         } catch {
@@ -2901,9 +2929,12 @@ export const useCartStore = reuseHotStore(
           ...CHECKOUT_WIDGET_SCRIPT_CONTEXT,
           outcome: 'pending',
         });
-        const Widget = await ensureYooMoneyCheckoutWidget(12000, (reason) => {
-          scriptFailure = reason;
-        });
+        const Widget = await ensureYooMoneyCheckoutWidget(
+          CARD_SCRIPT_TIMEOUT_MS,
+          (reason) => {
+            scriptFailure = reason;
+          }
+        );
         if (!current()) return;
         if (!Widget || !confirmationToken) {
           fail(
@@ -3205,11 +3236,17 @@ export const useCartStore = reuseHotStore(
           savedRequest.fingerprint === checkoutFingerprint &&
           !['confirmed', 'canceled'].includes(get().paidConfirmationState);
         if (!sameAttempt) {
+          // Повтор после сбоя загрузки скрипта (и уход на страницу ЮKassa) — та же попытка
+          // оплаты: её события остаются в одной цепочке и видно, чем она закончилась.
+          const retryAfterScriptFailure =
+            paymentMethod === 'online' &&
+            get().cardPreflightState === 'error' &&
+            get().cardScriptFailures > 0;
           // Новое оформление не зависит от старого платежа. Его по-прежнему обрабатывает сервер.
           get().resetPaidConfirmation();
           clearPendingSbpOrder();
           clearCardCheckoutRequest(token);
-          endPaymentFlow();
+          if (!retryAfterScriptFailure) endPaymentFlow();
           set({
             pendingSbpOrder: null,
             checkNewOrder: null,
@@ -3302,7 +3339,7 @@ export const useCartStore = reuseHotStore(
           if (
             cardConfirmation === 'redirect' &&
             !formFailure &&
-            get().cardScriptFailures < 2
+            get().cardScriptFailures < 1
           ) {
             set({ DBClick: false, cardPreflightState: 'error' });
             return 'wait_payment';
@@ -3344,7 +3381,7 @@ export const useCartStore = reuseHotStore(
               outcome: 'pending',
             });
             const Widget = await ensureYooMoneyCheckoutWidget(
-              12000,
+              CARD_SCRIPT_TIMEOUT_MS,
               (reason) => {
                 failure = reason;
               }

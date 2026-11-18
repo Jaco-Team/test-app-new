@@ -1,4 +1,5 @@
 import { useState, useEffect, useMemo } from 'react';
+import { preloadYooMoneyCheckoutWidget } from '@/utils/checkoutWidgetLoader';
 
 import {
   useCartStore,
@@ -22,7 +23,11 @@ import MyTextInput from '@/ui/MyTextInput';
 import CartItemMobile from '@/modules/cart/cartItemsMobile';
 import RecommendationMobileList from '@/modules/recommendations/recommendationMobileList';
 import { notifyRecommendationAdded } from '@/utils/recommendationFeedback';
-import { getCartExtraGroups, getExtraCount, getExtraItemId } from '@/utils/cartExtras';
+import {
+  getCartExtraGroups,
+  getExtraCount,
+  getExtraItemId,
+} from '@/utils/cartExtras';
 import { SwitchBasketPC as MySwitchPC } from '@/ui/MySwitch.js';
 import { SwitchBasketMobile as MySwitchMobile } from '@/ui/MySwitch.js';
 import {
@@ -69,6 +74,11 @@ const dopText_2 =
 const reviewOrderLabel = 'Проверить заказ';
 
 export default function FormOrder({ cityName }) {
+  // Скрипт формы оплаты начинаем загружать при открытии оформления, а не после «Оплатить».
+  useEffect(() => {
+    preloadYooMoneyCheckoutWidget();
+  }, []);
+
   const router = useRouter();
   const { push } = router;
 
@@ -294,8 +304,10 @@ export default function FormOrder({ cityName }) {
           const recommendationId =
             recommendation?.item_id ?? recommendation?.id;
 
-          return !cartRecommendationIds.has(String(recommendationId)) &&
-            !cartExtraGroups.ids.has(Number(recommendationId));
+          return (
+            !cartRecommendationIds.has(String(recommendationId)) &&
+            !cartExtraGroups.ids.has(Number(recommendationId))
+          );
         }
       ),
     [cartRecommendations, cartRecommendationIds, cartExtraGroups]

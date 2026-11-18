@@ -7,6 +7,7 @@ import * as Sentry from '@sentry/nextjs';
 import { apiErrorContext } from '@/utils/apiErrorContext';
 import { getVisitIds, trackUmami } from '@/utils/umami';
 import { getLocalStorageItem } from '@/utils/browserStorage';
+import { deviceType } from '@/utils/deviceType';
 import {
   CHECKOUT_WIDGET_SCRIPT_CONTEXT,
   getPaymentWidgetErrorCode,
@@ -177,24 +178,37 @@ export function endPaymentFlow() {
   }
 }
 
-export function trackPaymentClientEvent(clientStage, details = {}) {
-  try { sendPaymentClientEvent(clientStage, details); } catch {}
+// beacon: событие отправляется прямо перед уходом со страницы (переход в банк), и обычный
+// запрос браузер может оборвать.
+export function trackPaymentClientEvent(
+  clientStage,
+  details = {},
+  options = {}
+) {
+  try {
+    sendPaymentClientEvent(clientStage, details, options);
+  } catch {}
 }
 
-function sendPaymentClientEvent(clientStage, details) {
+function sendPaymentClientEvent(clientStage, details, options = {}) {
   if (typeof window === 'undefined') return;
 
   let token;
-  try { token = Cookies.get('token'); } catch {}
+  try {
+    token = Cookies.get('token');
+  } catch {}
   if (!token) token = getLocalStorageItem('token');
   const connection = window.navigator?.connection;
   const path = window.location?.pathname || '/';
   const routeCity = path.split('/')[1];
   const requestedCity = details.city_id;
-  const cityId = ['samara', 'togliatti'].includes(requestedCity) ||
+  const cityId =
+    ['samara', 'togliatti'].includes(requestedCity) ||
     (Number.isSafeInteger(requestedCity) && requestedCity > 0)
-    ? requestedCity
-    : ['samara', 'togliatti'].includes(routeCity) ? routeCity : undefined;
+      ? requestedCity
+      : ['samara', 'togliatti'].includes(routeCity)
+        ? routeCity
+        : undefined;
   const payload = {
     type: 'payment_event',
     token,
@@ -203,8 +217,11 @@ function sendPaymentClientEvent(clientStage, details) {
     payment_flow_id: details.payment_flow_id || getPaymentFlowId(),
     payment_action: details.payment_action,
     payment_method: details.payment_method,
-    payment_confirmation: ['embedded', 'redirect'].includes(details.payment_confirmation)
-      ? details.payment_confirmation : undefined,
+    payment_confirmation: ['embedded', 'redirect'].includes(
+      details.payment_confirmation
+    )
+      ? details.payment_confirmation
+      : undefined,
     outcome: details.outcome,
     reason: details.reason,
     duration_ms: details.duration_ms,
@@ -221,12 +238,17 @@ function sendPaymentClientEvent(clientStage, details) {
     provider_error_code: details.provider_error_code
       ? getPaymentWidgetErrorCode(details.provider_error_code)
       : undefined,
-    script_host: details.script_host === CHECKOUT_WIDGET_SCRIPT_CONTEXT.script_host
-      ? details.script_host : undefined,
-    script_path: details.script_path === CHECKOUT_WIDGET_SCRIPT_CONTEXT.script_path
-      ? details.script_path : undefined,
+    script_host:
+      details.script_host === CHECKOUT_WIDGET_SCRIPT_CONTEXT.script_host
+        ? details.script_host
+        : undefined,
+    script_path:
+      details.script_path === CHECKOUT_WIDGET_SCRIPT_CONTEXT.script_path
+        ? details.script_path
+        : undefined,
     online: window.navigator?.onLine,
     effective_type: connection?.effectiveType,
+    device_type: deviceType(window.navigator),
     path,
     ts: Math.floor(Date.now() / 1000),
   };
@@ -237,6 +259,18 @@ function sendPaymentClientEvent(clientStage, details) {
       )
     )
   );
+
+  if (options.beacon && typeof window.navigator?.sendBeacon === 'function') {
+    try {
+      const sent = window.navigator.sendBeacon(
+        `${DEFAULT_API_BASE_URL}cart`,
+        new Blob([body], { type: 'application/x-www-form-urlencoded' })
+      );
+      if (sent) return;
+    } catch {
+      // Ниже — обычный запрос.
+    }
+  }
 
   void axios
     .post(`${DEFAULT_API_BASE_URL}cart`, body, { timeout: 3000 })
@@ -388,7 +422,10 @@ function shouldRetryRequest(data = {}) {
   }
 
   // Потерянный ответ не доказывает, что заказ/СМС не были созданы.
-  if (NON_IDEMPOTENT_TYPES.has(requestType) && !SAFE_MUTATION_RETRY_TYPES.has(requestType)) {
+  if (
+    NON_IDEMPOTENT_TYPES.has(requestType) &&
+    !SAFE_MUTATION_RETRY_TYPES.has(requestType)
+  ) {
     return false;
   }
 
@@ -477,7 +514,8 @@ function captureApiError({ module, requestUrl, requestMeta, error, source }) {
   const context = apiErrorContext({ module, source, requestMeta, error });
   if (context.skip) return;
   Sentry.withScope((scope) => {
-    for (const [key, value] of Object.entries(context.tags)) scope.setTag(key, value);
+    for (const [key, value] of Object.entries(context.tags))
+      scope.setTag(key, value);
     scope.setLevel(context.level);
 
     scope.setContext('network', getClientNetworkContext());
@@ -485,7 +523,8 @@ function captureApiError({ module, requestUrl, requestMeta, error, source }) {
     scope.setExtra('requestMeta', requestMeta);
     scope.setExtra('attemptMeta', error?.jacoAttemptMeta || null);
     scope.setExtra('responseDataType', typeof error?.response?.data);
-    if (context.requestId) scope.setExtra('backend_request_id', context.requestId);
+    if (context.requestId)
+      scope.setExtra('backend_request_id', context.requestId);
     scope.setFingerprint(context.fingerprint);
 
     Sentry.captureException(error);
@@ -629,7 +668,8 @@ export function api(module = '', data = {}) {
             ? String(response?.data?.error_code || 'backend_rejected')
             : undefined,
           channel:
-            typeof response?.data?.type === 'string' && response.data.type !== 'text'
+            typeof response?.data?.type === 'string' &&
+            response.data.type !== 'text'
               ? response.data.type.toLowerCase()
               : undefined,
         });

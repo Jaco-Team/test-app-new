@@ -32,6 +32,7 @@ import {
 import LinearProgress from '@mui/material/LinearProgress';
 
 import { roboto } from '@/ui/Font';
+import OrderFeedback from '@/modules/clientFeedback/OrderFeedback';
 
 // Определение задержки заказа
 function isOrderLate(order) {
@@ -319,6 +320,8 @@ export default React.memo(function ModalOrder() {
       slots={Backdrop}
       slotProps={{ timeout: 500 }}
       scroll="body"
+      // Оценка заказа открывается поверх модалки порталом и должна получать фокус.
+      disableEnforceFocus
     >
       <DialogContent
         style={{ padding: 0, borderRadius: '1.444045vw', overflow: 'hidden' }}
@@ -345,6 +348,8 @@ export default React.memo(function ModalOrder() {
             ) : (
               <ModalOrderStatusIconPicup types={modalOrder?.order?.types} />
             )}
+
+            <OrderFeedback order={modalOrder?.order} />
 
             {showTimeWarn ? (
               <div className="header_warning_time">
