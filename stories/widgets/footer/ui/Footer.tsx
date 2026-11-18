@@ -45,7 +45,7 @@ export const Footer: React.FC<FooterProps> = ({
 
           <div className="column">
             <Typography component="span">Меню</Typography>
-            <Link href={'/' + cityName + '/menu/sety'}>Роллы</Link>
+            <Link href={'/' + cityName + '/menu/rolly'}>Роллы</Link>
             <Link href={'/' + cityName + '/menu/pizza'}>Пицца</Link>
             <Link href={'/' + cityName + '/menu/pasta'}>Паста</Link>
             <Link href={'/' + cityName + '/menu/salaty'}>Салаты</Link>
