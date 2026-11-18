@@ -35,9 +35,18 @@ describe('маршрут изображений каталога', () => {
     expect(routing.getCdnHostname(`https://${products}/a.jpg`)).toBe(products);
     expect(routing.getCdnHostname(`https://${banners}/a.webp`)).toBe(banners);
     for (const src of ['/jaco-logo.png', '/_next/image', 'https://example.com/img',
-      `http://${products}/a`, `https://${products}:8000/a`]) {
+      `https://${products}.example.com/a`, `https://${banners}@example.com/a`,
+      `http://${products}/a`, `https://${products}:8000/a`, `https://user@${products}/a`]) {
       expect(routing.getCdnHostname(src)).toBeNull();
+      expect(routing.getStorageImageUrl(src)).toBeNull();
     }
+  });
+
+  it('переводит фото и баннер в свои бакеты с исходным ключом, размером и версией', () => {
+    expect(routing.getStorageImageUrl(`https://${products}/menu/a%20b_366x366.webp?v=2%2B1#photo`))
+      .toBe('https://storage.yandexcloud.net/site-img/menu/a%20b_366x366.webp?v=2%2B1#photo');
+    expect(routing.getStorageImageUrl(`https://${banners}/vkusno_tlt_3700x1000.jpg`))
+      .toBe('https://storage.yandexcloud.net/site-home-img/vkusno_tlt_3700x1000.jpg');
   });
 
   it('считает разные размеры одного фото одним сбоем и разделяет хосты', () => {

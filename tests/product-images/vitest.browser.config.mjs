@@ -3,20 +3,16 @@ import { defineConfig } from 'vitest/config';
 import { playwright } from '@vitest/browser-playwright';
 
 const root = fileURLToPath(new URL('../../', import.meta.url));
-const imageRoutes = /^(https:\/\/(mainimg|topimg)\.jacofood\.ru\/|https?:\/\/[^/]+\/(?:_next\/image\?|jaco-logo\.png))/;
+const imageRoutes = /^(https:\/\/(?:(?:mainimg|topimg)\.jacofood\.ru|storage\.yandexcloud\.net)\/|https?:\/\/[^/]+\/(?:_next\/image\?|jaco-logo\.png))/;
 const imageRequests = new WeakMap();
-const pixel = Buffer.from('R0lGODlhAQABAIAAAAAAAP///ywAAAAAAQABAAACAUwAOw==', 'base64');
+// Изображение 32 × 32 сохраняет ненулевую naturalWidth и при масштабировании srcset.
+const sampleImage = Buffer.from('iVBORw0KGgoAAAANSUhEUgAAACAAAAAgCAAAAABWESUoAAAAEklEQVR4nGNgGAWjYBSMAuwAAAQgAAGGsz1EAAAAAElFTkSuQmCC', 'base64');
 
 export default defineConfig({
   root,
   resolve: { alias: { '@': root } },
-  define: {
-    'process.env.__NEXT_IMAGE_OPTS': 'undefined',
-    'process.env.NEXT_DEPLOYMENT_ID': 'undefined',
-    'process.env.NEXT_SUPPORTS_IMMUTABLE_ASSETS': 'false',
-  },
   optimizeDeps: {
-    include: ['react', 'react-dom/client', 'next/image'],
+    include: ['react', 'react-dom/client'],
   },
   test: {
     include: ['tests/product-images/*.browser.{ts,jsx}'],
@@ -33,15 +29,14 @@ export default defineConfig({
           imageRequests.set(page, requests);
           await page.route(imageRoutes, (route) => {
             const url = new URL(route.request().url());
-            const optimizer = url.pathname === '/_next/image';
-            const path = optimizer ? new URL(url.searchParams.get('url')).pathname : url.pathname;
+            const cdn = url.hostname === 'mainimg.jacofood.ru' || url.hostname === 'topimg.jacofood.ru';
             requests.push(url.href);
             // Незавершённый запрос останется под контролем Playwright до окончания теста.
-            if (!optimizer && path.includes('/slow-')) return;
-            if (path.includes('/missing-') || (!optimizer && path.includes('/offline-'))) {
+            if (cdn && url.pathname.includes('/slow-')) return;
+            if (url.pathname.includes('/missing-') || (cdn && url.pathname.includes('/offline-'))) {
               return route.abort('failed');
             }
-            return route.fulfill({ contentType: 'image/gif', body: pixel });
+            return route.fulfill({ contentType: 'image/png', body: sampleImage });
           });
         },
         catalogImageRequests({ page }) {

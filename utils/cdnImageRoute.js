@@ -5,24 +5,37 @@ import {
 } from './browserStorage';
 import { trackUmami } from './umami';
 
-const CDN_HOSTS = new Set(['mainimg.jacofood.ru', 'topimg.jacofood.ru']);
+const CDN_BUCKETS = new Map([
+  ['mainimg.jacofood.ru', 'site-img'],
+  ['topimg.jacofood.ru', 'site-home-img'],
+]);
 const COOLDOWN_MS = 5 * 60_000;
 const routes = new Map();
 const reportedReasons = new Set();
 
-export function getCdnHostname(src) {
+function parseCdnUrl(src) {
   try {
     const url = new URL(src);
     if (
       url.protocol === 'https:' && !url.port && !url.username && !url.password &&
-      CDN_HOSTS.has(url.hostname)
+      CDN_BUCKETS.has(url.hostname)
     ) {
-      return url.hostname;
+      return url;
     }
   } catch {
     // Локальные картинки и заглушки загружаются как обычно.
   }
   return null;
+}
+
+export function getCdnHostname(src) {
+  return parseCdnUrl(src)?.hostname ?? null;
+}
+
+export function getStorageImageUrl(src) {
+  const url = parseCdnUrl(src);
+  if (!url) return null;
+  return `https://storage.yandexcloud.net/${CDN_BUCKETS.get(url.hostname)}${url.pathname}${url.search}${url.hash}`;
 }
 
 const storageKey = (host) => `jaco.image-cdn.until.${host}`;
@@ -49,7 +62,7 @@ function rememberFallback(host, state) {
 }
 
 export function isCdnFallbackPreferred(host) {
-  return CDN_HOSTS.has(host) && getRouteState(host).until > 0;
+  return CDN_BUCKETS.has(host) && getRouteState(host).until > 0;
 }
 
 export function chooseCdnRoute(host, identity) {
@@ -78,7 +91,7 @@ export function confirmCdnDirect(host, identity, route) {
 }
 
 export function confirmCdnFallback(host, identity, route) {
-  if (!CDN_HOSTS.has(host) || (route !== 'direct' && route !== 'probe')) return;
+  if (!CDN_BUCKETS.has(host) || (route !== 'direct' && route !== 'probe')) return;
   const state = getRouteState(host);
   if (route === 'probe' && state.probe === identity) {
     rememberFallback(host, state);

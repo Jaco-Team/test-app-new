@@ -8,19 +8,19 @@ import React, {
   useState,
   useSyncExternalStore,
 } from 'react';
-import { getImageProps } from 'next/image';
 import { DEFAULT_ITEM_IMAGE_SRC } from '@/utils/itemImage';
 import {
   chooseCdnRoute,
   confirmCdnDirect,
   confirmCdnFallback,
   getCdnHostname,
+  getStorageImageUrl,
   isCdnFallbackPreferred,
   releaseCdnProbe,
   reportCdnFallback,
 } from '@/utils/cdnImageRoute';
 
-const DIRECT_TIMEOUT = 4000;
+const DIRECT_TIMEOUT = 3000;
 const subscribe = () => () => {};
 const clientSnapshot = () => true;
 const serverSnapshot = () => false;
@@ -42,43 +42,34 @@ function observeImage(node, callback) {
   };
 }
 
-function optimizerSource(node, host, identity, children) {
-  // При ошибке img может сжаться до ширины alt, а карточка ещё анимирует scale.
-  const picture = node.closest('picture');
-  const slot = picture?.clientWidth || (picture || node).parentElement?.clientWidth || node.clientWidth;
-  const declaredWidth = Number(node.getAttribute('width'));
-  const width = Math.min(slot || declaredWidth || 384, declaredWidth || Infinity);
-  let src = node.currentSrc;
-  if (getCdnHostname(src) !== host) {
-    // При запомненном сбое браузер ещё не выбирал исходник из srcset.
-    const source = Children.toArray(children).find(child =>
-      child?.type === 'source' && child.props.srcSet &&
-      (!child.props.media || window.matchMedia(child.props.media).matches)
-    );
-    const candidates = (source?.props.srcSet || '').split(',').map(entry => {
-      const [url, descriptor] = entry.trim().split(/\s+/);
-      return { url, width: Number.parseInt(descriptor, 10) || 0 };
-    }).filter(candidate => getCdnHostname(candidate.url) === host);
-    const targetWidth = width * Math.min(window.devicePixelRatio || 1, 2);
-    src = candidates.find(candidate => candidate.width >= targetWidth)?.url
-      || candidates[candidates.length - 1]?.url || identity;
+function storageSrcSet(srcSet) {
+  if (!srcSet) return undefined;
+  const candidates = [];
+  // Внутри URL допустимы запятые. Дескриптор (366w, 2x) заканчивается у разделителя.
+  const urls = /[^\s,]\S*/g;
+  let match;
+  while ((match = urls.exec(srcSet))) {
+    const url = match[0].replace(/,+$/, '');
+    let descriptor = '';
+    if (url === match[0]) {
+      const comma = srcSet.indexOf(',', urls.lastIndex);
+      const end = comma === -1 ? srcSet.length : comma;
+      descriptor = srcSet.slice(urls.lastIndex, end).trim();
+      urls.lastIndex = end;
+    }
+    const src = getStorageImageUrl(url);
+    if (src) candidates.push(descriptor ? `${src} ${descriptor}` : src);
   }
-  const { props } = getImageProps({
-    src,
-    width,
-    height: width,
-    alt: '',
-  });
-  return { src: props.src, srcSet: props.srcSet };
+  return candidates.join(', ') || undefined;
 }
 
 function ManagedImage({ image, host, children, pictureProps }) {
   const identity = image.props.src;
   const clientRender = useSyncExternalStore(subscribe, clientSnapshot, serverSnapshot);
-  const [request, setRequest] = useState(() => ({
+  const [kind, setKind] = useState(() =>
     // Прямые ссылки в серверной разметке остаются рабочими до гидрации.
-    kind: clientRender && isCdnFallbackPreferred(host) ? 'deferred' : 'direct',
-  }));
+    clientRender && isCdnFallbackPreferred(host) ? 'deferred' : 'direct'
+  );
   const nodeRef = useRef(null);
   const route = useRef(null);
   const lastLoaded = useRef(null);
@@ -90,7 +81,6 @@ function ManagedImage({ image, host, children, pictureProps }) {
   }, [externalRef]);
   const notifyLoad = useEffectEvent((event) => image.props.onLoad?.(event));
   const notifyError = useEffectEvent((event) => image.props.onError?.(event));
-  const optimizedSourceFor = useEffectEvent(node => optimizerSource(node, host, identity, children));
 
   const abandonProbe = useCallback(() => {
     if (route.current === 'probe') {
@@ -102,7 +92,7 @@ function ManagedImage({ image, host, children, pictureProps }) {
 
   useEffect(() => {
     const node = nodeRef.current;
-    if (request.kind === 'placeholder') return;
+    if (kind === 'placeholder') return;
     let inViewport = null;
     let failed = false;
     let transitioning = false;
@@ -113,9 +103,9 @@ function ManagedImage({ image, host, children, pictureProps }) {
       clearTimeout(timer);
       failed = false;
       lastLoaded.current = node.currentSrc;
-      if (request.kind === 'direct') {
+      if (kind === 'direct') {
         confirmCdnDirect(host, identity, route.current ?? 'direct');
-      } else if (request.kind === 'fallback' && route.current && route.current !== 'fallback') {
+      } else if (kind === 'fallback' && route.current && route.current !== 'fallback') {
         confirmCdnFallback(host, identity, route.current);
       }
       if (route.current === 'probe') route.current = null;
@@ -126,14 +116,14 @@ function ManagedImage({ image, host, children, pictureProps }) {
       transitioning = true;
       clearTimeout(timer);
       reportCdnFallback(host, reason);
-      setRequest({ kind: 'fallback', ...optimizedSourceFor(node) });
+      setKind('fallback');
     }
 
     function showPlaceholder(event) {
       transitioning = true;
       clearTimeout(timer);
       abandonProbe();
-      setRequest({ kind: 'placeholder', src: DEFAULT_ITEM_IMAGE_SRC });
+      setKind('placeholder');
       notifyError(event);
     }
 
@@ -145,18 +135,18 @@ function ManagedImage({ image, host, children, pictureProps }) {
         if (inViewport === false || document.hidden) abandonProbe();
         return;
       }
-      if (request.kind !== 'deferred' && node.complete && node.naturalWidth > 0) {
+      if (kind !== 'deferred' && node.complete && node.naturalWidth > 0) {
         if (lastLoaded.current !== node.currentSrc) node.dispatchEvent(new Event('load'));
         return;
       }
       // Резервная загрузка может быть медленной. Ждём ответа или сетевой ошибки.
-      if (request.kind === 'fallback') return;
+      if (kind === 'fallback') return;
       route.current ??= chooseCdnRoute(host, identity);
       if (route.current === 'fallback') {
         startFallback('remembered');
-      } else if (request.kind === 'deferred') {
+      } else if (kind === 'deferred') {
         transitioning = true;
-        setRequest({ kind: 'direct' });
+        setKind('direct');
       } else if (failed || (node.complete && node.naturalWidth === 0)) {
         startFallback('error');
       } else {
@@ -170,9 +160,9 @@ function ManagedImage({ image, host, children, pictureProps }) {
 
     function errored(event) {
       if (transitioning) return;
-      if (request.kind === 'fallback') {
+      if (kind === 'fallback') {
         showPlaceholder(event);
-      } else if (request.kind === 'direct') {
+      } else if (kind === 'direct') {
         lastLoaded.current = null;
         failed = true;
         update();
@@ -184,7 +174,7 @@ function ManagedImage({ image, host, children, pictureProps }) {
     // До гидрации или подключения слушателя загрузка могла уже завершиться.
     if (node.complete && node.naturalWidth > 0 && lastLoaded.current !== node.currentSrc) {
       node.dispatchEvent(new Event('load'));
-    } else if (request.kind === 'fallback' && node.complete && node.currentSrc && !node.naturalWidth) {
+    } else if (kind === 'fallback' && node.complete && node.currentSrc && !node.naturalWidth) {
       node.dispatchEvent(new Event('error'));
     }
     const unobserve = observeImage(node, (visible) => {
@@ -200,22 +190,34 @@ function ManagedImage({ image, host, children, pictureProps }) {
       node.removeEventListener('load', loaded);
       node.removeEventListener('error', errored);
     };
-  }, [request, host, identity, abandonProbe]);
+  }, [kind, host, identity, abandonProbe]);
 
-  const direct = request.kind === 'direct';
+  let requestProps;
+  if (kind === 'fallback') {
+    requestProps = { src: getStorageImageUrl(identity), srcSet: storageSrcSet(image.props.srcSet) };
+  } else if (kind !== 'direct') {
+    requestProps = {
+      src: kind === 'placeholder' ? DEFAULT_ITEM_IMAGE_SRC : undefined,
+      srcSet: undefined,
+      sizes: undefined,
+    };
+  }
   const displayedImage = cloneElement(image, {
-    key: request.kind,
+    key: kind,
     ref: attach,
     onLoad: undefined,
     onError: undefined,
-    ...(!direct && { src: request.src, srcSet: request.srcSet, sizes: undefined }),
+    ...requestProps,
   });
   if (!pictureProps) return displayedImage;
   return (
-    <picture {...pictureProps}>
+    <picture {...pictureProps} key={kind}>
       {Children.map(children, (child) => {
         if (child?.type === 'img') return displayedImage;
-        if (child?.type === 'source' && !direct) return null;
+        if (child?.type === 'source' && kind !== 'direct') {
+          const srcSet = kind === 'fallback' && storageSrcSet(child.props.srcSet);
+          return srcSet ? cloneElement(child, { srcSet }) : null;
+        }
         return child;
       })}
     </picture>

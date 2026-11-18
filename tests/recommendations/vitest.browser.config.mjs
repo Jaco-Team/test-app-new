@@ -20,7 +20,7 @@ export default defineConfig({
   resolve: { alias: { '@': root } },
   optimizeDeps: {
     noDiscovery: true,
-    include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', 'next/image', '@testing-library/dom'],
+    include: ['react', 'react-dom', 'react-dom/client', 'react/jsx-runtime', '@testing-library/dom'],
   },
   test: {
     include: ['tests/recommendations/*.browser.jsx'],
