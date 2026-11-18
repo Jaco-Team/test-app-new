@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import CdnPicture from '@/components/CdnPicture';
 //import Image from 'next/image';
 import { useHomeStore, useCartStore, useHeaderStoreNew, useCitiesStore } from '@/components/store';
 
@@ -9,6 +10,7 @@ import Typography from '@mui/material/Typography';
 import Button from '@mui/material/Button';
 
 import { reachGoal, reachGoalSplit } from '@/utils/metrika';
+import { hasItemImage } from '@/utils/itemImage';
 
 const getValidBannerMediaKey = (banner) => {
   const raw = String(banner?.img ?? "").trim();
@@ -162,8 +164,8 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
       <span className="itemNumber">{data_key + 1}.</span>
 
       <div className="itemImg">
-       {thisItem?.img_app ? 
-          <picture>
+       {hasItemImage(thisItem?.img_app) ?
+          <CdnPicture>
             <source 
               type="image/webp" 
               srcSet={`
@@ -199,7 +201,7 @@ function CartItemPromo({ item, data_key, promo, typePromo, isAuth, bannerTitle }
               loading="lazy"
               onClick={() => getItem('home', thisCity, thisItem?.id)}
             />
-          </picture>
+          </CdnPicture>
             : 
           false
         }
@@ -279,7 +281,7 @@ export default function AkciiItemPC({ actia, is_one_actia }) {
   return (
     <Grid container className="containerAccia" id={data?.banner?.link} name={data?.banner?.link}>
       {bannerMediaKey ? (
-        <picture>
+        <CdnPicture>
           <source 
             type="image/webp" 
             srcSet={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${bannerMediaKey}_3700x1000.webp`} 
@@ -294,7 +296,7 @@ export default function AkciiItemPC({ actia, is_one_actia }) {
             src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}${bannerMediaKey}_3700x1000.jpg`} 
             loading="lazy"
           />
-        </picture>
+        </CdnPicture>
       ) : null}
 
       <Grid className="DescItem">

@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import CdnPicture from '@/components/CdnPicture';
 import { useHomeStore } from '../../../components/store.js';
 
 import 'swiper/css';
@@ -784,7 +785,7 @@ export default function BannersPC() {
                   />
                 </video>
               ) : (
-                <picture>
+                <CdnPicture>
                   <source 
                     type="image/webp" 
                     srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.mediaKey+"_3700x1000.webp"} 
@@ -800,7 +801,7 @@ export default function BannersPC() {
                     loading="lazy"
                     style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }}
                   />
-                </picture>
+                </CdnPicture>
               )}
             </SwiperSlide>
           ))}

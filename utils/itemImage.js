@@ -24,14 +24,20 @@ export function hasItemImage(imageName) {
   return Boolean(normalizeItemImageName(imageName));
 }
 
-export function getItemImageUrl(imageName, size = '366x366', format = 'jpg') {
+export function getItemImageUrl(
+  imageName,
+  size = '366x366',
+  format = 'jpg',
+  baseUrl = process.env.NEXT_PUBLIC_YANDEX_IMG || ''
+) {
   const normalized = normalizeItemImageName(imageName);
 
   if (!normalized) {
     return DEFAULT_ITEM_IMAGE_SRC;
   }
 
-  return `${process.env.NEXT_PUBLIC_YANDEX_IMG || ''}${normalized}_${size}.${format}`;
+  const prefix = baseUrl.endsWith('/') || !baseUrl ? baseUrl : `${baseUrl}/`;
+  return `${prefix}${normalized}_${size}.${format}`;
 }
 
 export function getItemImageSrcSet(

@@ -1,4 +1,5 @@
 import React from 'react';
+import CdnPicture from '@/components/CdnPicture';
 
 import { motion } from 'framer-motion';
 
@@ -15,7 +16,7 @@ import BadgeItem from './badge';
 import CartCtaButton from '@/ui/CartCtaButton';
 
 import { reachGoalSplit } from '@/utils/metrika';
-import { getItemImageSrcSet } from '@/utils/itemImage';
+import { getItemImageSrcSet, getItemImageUrl } from '@/utils/itemImage';
 
 export default React.memo(function CardItemMobile({
   item,
@@ -125,7 +126,7 @@ export default React.memo(function CardItemMobile({
       >
         <div className="CardContainer">
           <div className="CardImg">
-            <picture>
+            <CdnPicture>
               <source
                 type="image/webp"
                 srcSet={getItemImageSrcSet(
@@ -149,7 +150,12 @@ export default React.memo(function CardItemMobile({
 
               <img
                 alt={item?.name}
-                src={`${process.env.NEXT_PUBLIC_VK_IMG}${item.img_app}_585x585.jpg`}
+                src={getItemImageUrl(
+                  item.img_app,
+                  '585x585',
+                  'jpg',
+                  process.env.NEXT_PUBLIC_VK_IMG
+                )}
                 width={2000}
                 height={2000}
                 loading={isPriority ? 'eager' : 'lazy'}
@@ -158,7 +164,7 @@ export default React.memo(function CardItemMobile({
                 onClick={() => getItem('home', thisCity, item.id)}
                 style={{ cursor: 'pointer' }}
               />
-            </picture>
+            </CdnPicture>
 
             <div className="badgecontainer">
               {parseInt(item.is_new) == 1 ? (

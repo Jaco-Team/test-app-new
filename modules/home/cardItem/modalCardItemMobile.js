@@ -1,4 +1,5 @@
 import React, { useState, useEffect, useRef } from 'react';
+import CdnPicture from '@/components/CdnPicture';
 import { shallow } from 'zustand/shallow';
 
 //import Image from 'next/image';
@@ -378,7 +379,7 @@ export default function ModalCardItemMobile() {
                 className={`ImgModalCardMobile${imageState.isLoading ? ' ImgModalCardMobile_loading' : ''}`}
                 aria-busy={imageState.isLoading}
               >
-                <picture className="ImgItem_picture">
+                <CdnPicture className="ImgItem_picture">
                   <source
                     type="image/webp"
                     srcSet={
@@ -422,7 +423,7 @@ export default function ModalCardItemMobile() {
                     }
                     onError={hasMainImage ? imageState.onError : undefined}
                   />
-                </picture>
+                </CdnPicture>
 
                 <div className="badgecontainer">
                   {parseInt(openItem?.is_new) == 1 ? (
@@ -688,7 +689,7 @@ export default function ModalCardItemMobile() {
                       </div>
 
                       <div className="ImgSet">
-                        <picture>
+                        <CdnPicture>
                           <source
                             type="image/webp"
                             srcSet={
@@ -727,7 +728,7 @@ export default function ModalCardItemMobile() {
                               getItem('home', thisCity, item.id, 'set')
                             }
                           />
-                        </picture>
+                        </CdnPicture>
                       </div>
 
                       <div

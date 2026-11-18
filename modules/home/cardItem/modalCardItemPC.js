@@ -1,4 +1,5 @@
 import { useState, useEffect, useRef } from 'react';
+import CdnPicture from '@/components/CdnPicture';
 
 //import Image from 'next/image';
 import Link from 'next/link';
@@ -379,7 +380,7 @@ export default function ModalCardItemPC() {
                 className={`ImgItem${imageState.isLoading ? ' ImgItem_loading' : ''}`}
                 aria-busy={imageState.isLoading}
               >
-                <picture className="ImgItem_picture">
+                <CdnPicture className="ImgItem_picture">
                   <source
                     type="image/webp"
                     srcSet={
@@ -426,7 +427,7 @@ export default function ModalCardItemPC() {
                     }
                     onError={hasMainImage ? imageState.onError : undefined}
                   />
-                </picture>
+                </CdnPicture>
 
                 <div className="badgecontainer">
                   {parseInt(openItem?.is_new) == 1 ? (
@@ -493,7 +494,7 @@ export default function ModalCardItemPC() {
                           </div>
 
                           <div className="itemImg">
-                            <picture>
+                            <CdnPicture>
                               <source
                                 type="image/webp"
                                 srcSet={
@@ -532,7 +533,7 @@ export default function ModalCardItemPC() {
                                   getItem('home', thisCity, item.id, 'set')
                                 }
                               />
-                            </picture>
+                            </CdnPicture>
                           </div>
 
                           <div

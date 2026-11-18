@@ -1,4 +1,5 @@
 import React, { useRef } from 'react';
+import CdnPicture from '@/components/CdnPicture';
 
 import { getItemImageSrcSet, getItemImageUrl } from '@/utils/itemImage';
 import { isRecommendationsEnabled } from '@/utils/recommendations';
@@ -265,7 +266,7 @@ export default function RecommendationMobileList({
                 }
               >
                 <span className="RecommendationModalCardMobileImage">
-                  <picture>
+                  <CdnPicture>
                     <source
                       type="image/webp"
                       srcSet={getRecommendationImageSrcSet(
@@ -291,7 +292,7 @@ export default function RecommendationMobileList({
                       decoding="async"
                       draggable={false}
                     />
-                  </picture>
+                  </CdnPicture>
                 </span>
 
                 <span className="RecommendationModalCardMobileInfo">

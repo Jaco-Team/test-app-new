@@ -1,4 +1,5 @@
 import React, { useState, useEffect } from 'react';
+import CdnPicture from '@/components/CdnPicture';
 
 import Link from 'next/link';
 
@@ -187,7 +188,7 @@ export default function ModalItemMobile() {
                 className={`ImgModalCardMobile${imageState.isLoading ? ' ImgModalCardMobile_loading' : ''}`}
                 aria-busy={imageState.isLoading}
               >
-                <picture className="ImgItem_picture">
+                <CdnPicture className="ImgItem_picture">
                   <source
                     type="image/webp"
                     srcSet={
@@ -231,7 +232,7 @@ export default function ModalItemMobile() {
                     }
                     onError={hasMainImage ? imageState.onError : undefined}
                   />
-                </picture>
+                </CdnPicture>
 
                 <div className="badgecontainer">
                   {parseInt(item_card?.is_new) == 1 ? (
