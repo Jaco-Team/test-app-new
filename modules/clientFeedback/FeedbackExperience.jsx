@@ -1,12 +1,8 @@
 import { useEffect, useMemo, useRef, useState } from 'react';
 import Image from 'next/image';
 
-import { getLocalStorageItem } from '@/utils/browserStorage';
-import {
-  getClientFeedbackForm,
-  submitClientFeedback,
-} from './clientFeedbackApi';
 import { mockOrderHistory } from './mockFeedback';
+import { useClientFeedback } from './useClientFeedback';
 import styles from './FeedbackExperience.module.scss';
 
 const ratingLabels = ['Ужасно', 'Плохо', 'Можно лучше', 'Хорошо', 'Отлично'];
@@ -97,7 +93,7 @@ function orderTypePresentation(target) {
   );
 }
 
-function StarRating({ value = 0, onChange, label }) {
+export function StarRating({ value = 0, onChange, label }) {
   return (
     <fieldset className={styles.ratingFieldset}>
       <legend className={styles.visuallyHidden}>{label}</legend>
@@ -246,28 +242,35 @@ function ElementField({ element, target, rating, value, onChange }) {
   }
 
   if (element.type === 'checkboxGroup') {
+    // По макету причины — «таблетки», как теги; в ответ уходят выбранные param.
     const selected = Array.isArray(value) ? value : [];
     return (
-      <fieldset className={styles.checkboxFieldset}>
+      <fieldset className={styles.tagsFieldset}>
         <legend>
           {dataText(data, ['title', 'label'], 'Выберите варианты')}
         </legend>
-        {checkboxOptions(element).map((option) => (
-          <label className={styles.checkboxLabel} key={option.param}>
-            <input
-              checked={selected.includes(option.param)}
-              onChange={(event) =>
-                onChange(
-                  event.target.checked
-                    ? [...new Set([...selected, option.param])]
-                    : selected.filter((item) => item !== option.param)
-                )
-              }
-              type="checkbox"
-            />
-            <span>{option.label}</span>
-          </label>
-        ))}
+        <div className={styles.tags}>
+          {checkboxOptions(element).map((option) => {
+            const isSelected = selected.includes(option.param);
+            return (
+              <button
+                aria-pressed={isSelected}
+                className={`${styles.tag} ${isSelected ? styles.tagSelected : ''}`}
+                key={option.param}
+                onClick={() =>
+                  onChange(
+                    isSelected
+                      ? selected.filter((item) => item !== option.param)
+                      : [...new Set([...selected, option.param])]
+                  )
+                }
+                type="button"
+              >
+                {option.label}
+              </button>
+            );
+          })}
+        </div>
       </fieldset>
     );
   }
@@ -392,8 +395,34 @@ function TargetCards({ targets, currentTarget, onSelect }) {
   );
 }
 
-function FeedbackDialog({ form, onClose, onSubmit, submitting }) {
-  const [answers, setAnswers] = useState({});
+export function initialAnswers(form, initialRating) {
+  const rating = Number(initialRating);
+  if (!Number.isInteger(rating) || rating < 1 || rating > 5) return {};
+
+  const overall = form?.targets?.find(
+    (target) => target.target_type === 'order'
+  );
+  const ratingElement = overall?.elements?.find(
+    (element) => element.type === 'rating' && element.answerable
+  );
+  return ratingElement
+    ? { [answerKey(overall.target_id, ratingElement.id)]: rating }
+    : {};
+}
+
+export function FeedbackDialog({
+  form,
+  onClose,
+  onSubmit,
+  submitting,
+  initialRating = 0,
+  // API Шефа пока не принимает фото: в настоящем заказе поле скрыто,
+  // чтобы клиент не прикладывал снимки, которые никуда не уйдут.
+  allowPhotos = true,
+}) {
+  const [answers, setAnswers] = useState(() =>
+    initialAnswers(form, initialRating)
+  );
   const [photos, setPhotos] = useState({});
   const [currentTargetId, setCurrentTargetId] = useState(
     form.targets.find((target) => target.target_type === 'order')?.target_id ??
@@ -565,7 +594,7 @@ function FeedbackDialog({ form, onClose, onSubmit, submitting }) {
             />
           ))}
 
-          {ratingValue ? (
+          {allowPhotos && ratingValue ? (
             <PhotoField
               onChange={(value) =>
                 setPhotos((current) => ({
@@ -675,57 +704,13 @@ function OrderHistoryBackground({ onOpen, orderId }) {
 }
 
 export default function FeedbackExperience({ orderId, pointId, useMocks }) {
-  const [form, setForm] = useState(null);
-  const [loading, setLoading] = useState(true);
-  const [error, setError] = useState('');
   const [isOpen, setIsOpen] = useState(true);
-  const [submitting, setSubmitting] = useState(false);
-  const [success, setSuccess] = useState(null);
-
-  const loadForm = async () => {
-    setLoading(true);
-    setError('');
-    try {
-      const result = await getClientFeedbackForm({
-        pointId,
-        orderId,
-        token: getLocalStorageItem('token') || '',
-        useMocks,
-      });
-      if (!Array.isArray(result.targets) || result.targets.length === 0) {
-        throw new Error('Для этого заказа пока нет активной формы отзыва');
-      }
-      setForm(result);
-      setSuccess(result.submitted ? { already_existed: true } : null);
-    } catch (requestError) {
-      setError(requestError.message || 'Не удалось загрузить форму');
-    } finally {
-      setLoading(false);
-    }
-  };
+  const { form, loading, error, submitting, success, loadForm, submit } =
+    useClientFeedback({ pointId, orderId, useMocks });
 
   useEffect(() => {
     loadForm();
   }, [orderId, pointId, useMocks]);
-
-  const submit = async (responses) => {
-    setSubmitting(true);
-    setError('');
-    try {
-      const result = await submitClientFeedback({
-        pointId,
-        orderId,
-        responses,
-        token: getLocalStorageItem('token') || '',
-        useMocks,
-      });
-      setSuccess(result);
-    } catch (requestError) {
-      setError(requestError.message || 'Не удалось отправить отзыв');
-    } finally {
-      setSubmitting(false);
-    }
-  };
 
   return (
     <>
