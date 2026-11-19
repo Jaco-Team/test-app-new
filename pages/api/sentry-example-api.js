@@ -9,6 +9,10 @@ class SentryExampleAPIError extends Error {
 }
 // A faulty API route to test Sentry's error monitoring
 export default function handler(_req, res) {
+  if (process.env.NODE_ENV === "production") {
+    return res.status(404).end();
+  }
+
   Sentry.logger.info("Sentry example API called");
   const error = new SentryExampleAPIError(
     "This error is raised on the backend called by the example page.",
