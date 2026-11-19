@@ -10,17 +10,9 @@ const fixture = vi.hoisted(() => ({ request: vi.fn() }));
 vi.mock('@/components/api', () => ({
   api: (...args) => fixture.request(...args),
 }));
-vi.mock('@/utils/browserStorage', () => ({
-  getLocalStorageItem: () => 'user-token',
-}));
-vi.mock('next/image', () => ({
-  default: ({ alt, src }) => (
-    <img alt={alt} src={typeof src === 'string' ? src : ''} />
-  ),
-}));
 
-import OrderFeedback from '@/modules/clientFeedback/OrderFeedback';
-import { mockFeedbackForm } from '@/modules/clientFeedback/mockFeedback';
+import OrderReviewController from '@/modules/clientFeedback/OrderReviewController';
+import { orderReviewFixture } from '@/stories/features/order-review/model/fixtures';
 
 // Скриншоты для ручной сверки с макетом; падений не проверяет.
 const order = (submitted) => ({
@@ -29,6 +21,7 @@ const order = (submitted) => ({
   type_order_: 1,
   date_time_order_new: '15 января 12:30',
   status_order: 6,
+  is_delete: 0,
   feedback: { available: true, submitted },
 });
 let container;
@@ -36,11 +29,12 @@ let root;
 
 describe.each([
   ['mobile', 414, 896],
+  ['tablet', 768, 1024],
   ['desktop', 1280, 800],
 ])('вёрстка %s', (name, width, height) => {
   beforeEach(async () => {
     fixture.request.mockResolvedValue({
-      ...mockFeedbackForm,
+      ...orderReviewFixture,
       submitted: false,
     });
     await page.viewport(width, height);
@@ -55,8 +49,12 @@ describe.each([
     document.body.innerHTML = '';
   });
 
-  it('карточка, лист и форма', async () => {
-    await act(async () => root.render(<OrderFeedback order={order(false)} />));
+  it('кнопка оценки и форма', async () => {
+    await act(async () =>
+      root.render(
+        <OrderReviewController token="user-token" order={order(false)} />
+      )
+    );
     await page.screenshot({
       path: `../../.codex/client-feedback-shots/${name}-1-card.png`,
     });
@@ -65,19 +63,23 @@ describe.each([
     );
     await act(async () => new Promise((r) => setTimeout(r, 50)));
     await page.screenshot({
-      path: `../../.codex/client-feedback-shots/${name}-2-intro.png`,
+      path: `../../.codex/client-feedback-shots/${name}-2-form.png`,
     });
     await act(async () =>
-      getByRole(document.body, 'button', { name: '5 из 5' }).click()
+      getByRole(document.body, 'radio', { name: '5 из 5, Отлично' }).click()
     );
     await act(async () => new Promise((r) => setTimeout(r, 50)));
     await page.screenshot({
-      path: `../../.codex/client-feedback-shots/${name}-3-form.png`,
+      path: `../../.codex/client-feedback-shots/${name}-3-rated.png`,
     });
   });
 
   it('уже оценён', async () => {
-    await act(async () => root.render(<OrderFeedback order={order(true)} />));
+    await act(async () =>
+      root.render(
+        <OrderReviewController token="user-token" order={order(true)} />
+      )
+    );
     await page.screenshot({
       path: `../../.codex/client-feedback-shots/${name}-4-mine.png`,
     });

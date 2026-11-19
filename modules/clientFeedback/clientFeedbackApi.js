@@ -1,16 +1,4 @@
 import { api } from '@/components/api';
-import { createMockSubmitResult, mockFeedbackForm } from './mockFeedback';
-
-function cloneMockForm(pointId, orderId) {
-  return {
-    ...mockFeedbackForm,
-    order: {
-      ...mockFeedbackForm.order,
-      point_id: pointId,
-      order_id: orderId,
-    },
-  };
-}
 
 function assertSuccessfulResponse(result) {
   if (!result || result.st !== true) {
@@ -20,22 +8,13 @@ function assertSuccessfulResponse(result) {
   return result;
 }
 
-export async function getClientFeedbackForm({
-  pointId,
-  orderId,
-  token,
-  useMocks,
-}) {
-  if (useMocks) {
-    await new Promise((resolve) => setTimeout(resolve, 250));
-    return cloneMockForm(pointId, orderId);
-  }
-
+export async function getClientFeedbackForm({ pointId, orderId, token }) {
   const result = await api('client_feedback', {
     type: 'get_form',
     point_id: pointId,
     order_id: orderId,
     token,
+    __preserveErrorText: true,
   });
 
   return assertSuccessfulResponse(result);
@@ -46,13 +25,7 @@ export async function submitClientFeedback({
   orderId,
   responses,
   token,
-  useMocks,
 }) {
-  if (useMocks) {
-    await new Promise((resolve) => setTimeout(resolve, 450));
-    return createMockSubmitResult();
-  }
-
   const result = await api('client_feedback', {
     type: 'submit_feedback',
     point_id: pointId,
@@ -60,6 +33,7 @@ export async function submitClientFeedback({
     responses: JSON.stringify(responses),
     token,
     __disableRetry: true,
+    __preserveErrorText: true,
   });
 
   return assertSuccessfulResponse(result);

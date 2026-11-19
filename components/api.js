@@ -785,9 +785,19 @@ export function api(module = '', data = {}) {
         });
       }
 
+      const responseText =
+        typeof error?.response?.data === 'string'
+          ? error.response.data
+          : error?.response?.data?.text;
+
       return {
         st: false,
-        text: 'Сервис временно недоступен. Проверьте интернет и попробуйте еще раз.',
+        text:
+          requestConfig.__preserveErrorText === true &&
+          typeof responseText === 'string' &&
+          responseText.trim()
+            ? responseText.trim()
+            : 'Сервис временно недоступен. Проверьте интернет и попробуйте еще раз.',
         // Запрос не дошёл или не получил ответа; повторы уже сделаны выше.
         transport_error: true,
       };

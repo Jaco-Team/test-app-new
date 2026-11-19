@@ -7,11 +7,14 @@ import {
 } from '@/components/store';
 
 import Button from '@mui/material/Button';
+import Box from '@mui/material/Box';
 import LinearProgress from '@mui/material/LinearProgress';
 import SwipeableDrawer from '@mui/material/SwipeableDrawer';
 
 import { roboto } from '@/ui/Font.js';
-import OrderFeedback from '@/modules/clientFeedback/OrderFeedback';
+import OrderReviewController, {
+  isOrderReviewEligible,
+} from '@/modules/clientFeedback/OrderReviewController';
 
 import {
   CartModalOrderIcon,
@@ -345,8 +348,6 @@ export default React.memo(function ModalOrderMobile() {
           <ModalOrderStatusIconPicup types={modalOrder?.order?.types} />
         )}
 
-        <OrderFeedback order={modalOrder?.order} />
-
         {showTimeWarn ? (
           <div className="header_warning_time">
             <span>
@@ -479,6 +480,26 @@ export default React.memo(function ModalOrderMobile() {
         ) : (
           false
         )}
+
+        {isOrderReviewEligible(modalOrder?.order) ? (
+          <Box
+            sx={{
+              mb: 2,
+              mx: '5.1282051282051vw',
+              '& .MuiButton-root': {
+                borderRadius: 999,
+                minHeight: 48,
+                width: '100%',
+              },
+            }}
+          >
+            <OrderReviewController
+              key={`${modalOrder.order.point_id}:${modalOrder.order.order_id}`}
+              order={modalOrder.order}
+              token={token}
+            />
+          </Box>
+        ) : null}
 
         {parseInt(modalOrder?.order?.is_delete) == 0 &&
         parseInt(modalOrder?.order?.status_order) != 6 ? (
