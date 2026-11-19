@@ -1,7 +1,7 @@
 import Image from 'next/image';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Scrollbar } from 'swiper';
+import { Autoplay, Scrollbar } from 'swiper/modules';
 import 'swiper/css';
 
 import Typography from '@mui/material/Typography';

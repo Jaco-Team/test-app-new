@@ -4,7 +4,7 @@ import { useHomeStore } from '../../../components/store.js';
 
 import Box from '@mui/material/Box';
 
-import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper';
+import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';

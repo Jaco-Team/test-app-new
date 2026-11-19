@@ -415,13 +415,6 @@
   z-index: 1 !important;
   position: absolute !important;
   margin-top: 0 !important;
-
-  & svg {
-    width: $MyScale50_67;
-    height: $MyScale50_67;
-    border-radius: $MyScale50_67;
-    background-color: rgba(0, 0, 0, 0.4);
-  }
 }
 
 .swiper-button-next {
@@ -433,12 +426,18 @@
   z-index: 1 !important;
   position: absolute !important;
   margin-top: 0 !important;
+}
 
-  & svg {
-    width: $MyScale50_67;
-    height: $MyScale50_67;
-    border-radius: $MyScale50_67;
-    background-color: rgba(0, 0, 0, 0.4);
+.BannerPC :is(.swiper-button-prev, .swiper-button-next) > svg {
+  width: $MyScale50_67;
+  height: $MyScale50_67;
+  fill: none;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.4);
+
+  @media (min-width: $bp-tablet-min) and (max-width: $bp-tablet-max) {
+    width: tablet-vw(50.67);
+    height: tablet-vw(50.67);
   }
 }
 
@@ -513,13 +512,6 @@
 
   .swiper-button-next {
     padding-right: tablet-vw(40) !important;
-  }
-
-  .swiper-button-prev svg,
-  .swiper-button-next svg {
-    width: tablet-vw(50.67);
-    height: tablet-vw(50.67);
-    border-radius: tablet-vw(50.67);
   }
 
   .modalBannerPC {

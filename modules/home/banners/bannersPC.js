@@ -9,7 +9,7 @@ import 'swiper/css/pagination';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
-import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper';
+import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { reachGoal } from '@/utils/metrika';

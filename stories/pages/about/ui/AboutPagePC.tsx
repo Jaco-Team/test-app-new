@@ -3,7 +3,7 @@ import Image from 'next/image';
 import { BreadCrumbs } from '@stories/shared/ui/breadcrumbs/BreadСrumbs';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Scrollbar } from 'swiper';
+import { Autoplay, Scrollbar } from 'swiper/modules';
 import 'swiper/css';
 
 import './AboutPagePC.scss';
