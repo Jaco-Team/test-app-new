@@ -6,7 +6,7 @@ import { BreadСrumbsPC } from '../BreadСrumbsPC/BreadСrumbsPC';
 import { FooterPC } from '../../widgets/Footer/Footer';
 
 import { Swiper, SwiperSlide } from 'swiper/react';
-import { Autoplay, Scrollbar } from 'swiper';
+import { Autoplay, Scrollbar } from 'swiper/modules';
 import 'swiper/css';
 
 import './AboutPagePC.scss';

@@ -74,20 +74,29 @@ test('график уборки остаётся на сайте и закрыт
   expect(unknown.status()).toBe(404);
 });
 
+// Эталонные цены берём в отдельной сессии, чтобы выбор города в ней
+// не запускал переадресацию во время подготовки самарской корзины.
+async function readTogliattiCatalog(browser, baseURL) {
+  const catalogPage = await browser.newPage({ baseURL });
+  try {
+    await catalogPage.goto('/togliatti', { waitUntil: 'domcontentloaded' });
+    return await catalogPage.evaluate(
+      () => window.__NEXT_DATA__.props.pageProps.data1.all_items
+    );
+  } finally {
+    await catalogPage.close();
+  }
+}
+
 test('корзина переживает смену города без полной перезагрузки', async ({
   page,
-  context,
+  browser,
+  baseURL,
 }) => {
   test.setTimeout(90_000);
   await page.setViewportSize({ width: 1280, height: 900 });
 
-  await page.goto('/togliatti', { waitUntil: 'domcontentloaded' });
-  const togliattiItems = await page.evaluate(
-    () => window.__NEXT_DATA__.props.pageProps.data1.all_items
-  );
-  await context.addCookies([
-    { name: 'city', value: 'samara', url: page.url() },
-  ]);
+  const togliattiItems = await readTogliattiCatalog(browser, baseURL);
   await page.goto('/samara', { waitUntil: 'domcontentloaded' });
   const samaraItems = await page.evaluate(
     () => window.__NEXT_DATA__.props.pageProps.data1.all_items
@@ -180,17 +189,12 @@ test('корзина переживает смену города без пол�
 
 test('мобильное меню переключает город и сохраняет корзину', async ({
   page,
-  context,
+  browser,
+  baseURL,
 }) => {
   test.setTimeout(60_000);
   await page.setViewportSize({ width: 375, height: 812 });
-  await page.goto('/togliatti', { waitUntil: 'domcontentloaded' });
-  const togliattiItems = await page.evaluate(
-    () => window.__NEXT_DATA__.props.pageProps.data1.all_items
-  );
-  await context.addCookies([
-    { name: 'city', value: 'samara', url: page.url() },
-  ]);
+  const togliattiItems = await readTogliattiCatalog(browser, baseURL);
   await page.goto('/samara', { waitUntil: 'domcontentloaded' });
   const samaraItems = await page.evaluate(
     () => window.__NEXT_DATA__.props.pageProps.data1.all_items

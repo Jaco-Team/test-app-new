@@ -121,11 +121,9 @@ describe('графики уборки', () => {
     'отдаёт PDF для %s с запретом кеширования',
     async (location) => {
       const bytes = new Uint8Array([37, 80, 68, 70, 45]);
-      const fetchMock = vi.fn().mockResolvedValue({
-        ok: true,
-        headers: { get: () => 'application/pdf' },
-        arrayBuffer: async () => bytes.buffer,
-      });
+      const fetchMock = vi.fn().mockResolvedValue(
+        new Response(bytes, { headers: { 'Content-Type': 'application/pdf' } })
+      );
       vi.stubGlobal('fetch', fetchMock);
       const res = response();
 
@@ -166,6 +164,72 @@ describe('графики уборки', () => {
 
     expect(res.statusCode).toBe(502);
     expect(res.send).not.toHaveBeenCalled();
+  });
+
+  const maxBytes = 5 * 1024 * 1024;
+  async function readSchedule(upstream) {
+    vi.stubGlobal('fetch', vi.fn().mockResolvedValue(upstream));
+    const res = response();
+    await handler(
+      { method: 'GET', query: { location: locations[0], document: 'guest-toilet' } },
+      res
+    );
+    return res;
+  }
+
+  it('отменяет загрузку до первого чтения при превышении Content-Length', async () => {
+    const source = { pull: vi.fn(), cancel: vi.fn() };
+    const res = await readSchedule(new Response(
+      new ReadableStream(source, { highWaterMark: 0 }),
+      { headers: { 'Content-Type': 'application/pdf', 'Content-Length': String(maxBytes + 1) } }
+    ));
+
+    expect(res.statusCode).toBe(502);
+    expect(res.body).toEqual({ error: 'Invalid Document' });
+    expect(source.pull).not.toHaveBeenCalled();
+    expect(source.cancel).toHaveBeenCalledOnce();
+  });
+
+  it.each([undefined, '1'])(
+    'прерывает поток свыше 5 МиБ при Content-Length %s',
+    async (declaredLength) => {
+      const headers = new Headers({ 'Content-Type': 'application/pdf' });
+      if (declaredLength !== undefined) headers.set('Content-Length', declaredLength);
+      const source = {
+        pull: vi.fn()
+          .mockImplementationOnce(controller => controller.enqueue(new Uint8Array(maxBytes)))
+          .mockImplementationOnce(controller => controller.enqueue(new Uint8Array(1)))
+          .mockImplementation(controller => controller.close()),
+        cancel: vi.fn(),
+      };
+      const res = await readSchedule(new Response(
+        new ReadableStream(source, { highWaterMark: 0 }), { headers }
+      ));
+
+      expect(res.statusCode).toBe(502);
+      expect(res.body).toEqual({ error: 'Invalid Document' });
+      expect(res.send).not.toHaveBeenCalled();
+      expect(source.pull).toHaveBeenCalledTimes(2);
+      expect(source.cancel).toHaveBeenCalledOnce();
+    }
+  );
+
+  it('сохраняет PDF размером ровно 5 МиБ и сообщает его фактическую длину', async () => {
+    const body = new ReadableStream({
+      start(controller) {
+        controller.enqueue(new Uint8Array(maxBytes - 1));
+        controller.enqueue(Uint8Array.of(42));
+        controller.close();
+      },
+    });
+    const res = await readSchedule(new Response(body, {
+      headers: { 'Content-Type': 'application/pdf' }
+    }));
+
+    expect(res.statusCode).toBe(200);
+    expect(res.headers.get('content-length')).toBe(String(maxBytes));
+    expect(res.body.length).toBe(maxBytes);
+    expect(res.body.at(-1)).toBe(42);
   });
 
   it('возвращает контролируемую ошибку при сбое S3', async () => {

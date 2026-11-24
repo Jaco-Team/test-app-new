@@ -1,4 +1,5 @@
 import { memo } from 'react';
+import CdnPicture from '@/components/CdnPicture';
 
 import { motion } from 'framer-motion';
 
@@ -14,7 +15,7 @@ import {
 import BadgeItem from './badge';
 import CartCtaButton from '@/ui/CartCtaButton';
 import { reachGoalSplit } from '@/utils/metrika';
-import { getItemImageSrcSet } from '@/utils/itemImage';
+import { getItemImageSrcSet, getItemImageUrl } from '@/utils/itemImage';
 
 export default memo(function CardItem({ item, count, isPriority = false }) {
   const [getItem] = useHomeStore((state) => [state.getItem]);
@@ -126,7 +127,7 @@ export default memo(function CardItem({ item, count, isPriority = false }) {
       >
         <div>
           <div className="imgItem">
-            <picture>
+            <CdnPicture>
               <source
                 type="image/webp"
                 srcSet={getItemImageSrcSet(item.img_app, 'webp', 'card')}
@@ -139,7 +140,7 @@ export default memo(function CardItem({ item, count, isPriority = false }) {
               />
               <img
                 alt={item?.name}
-                src={`${process.env.NEXT_PUBLIC_YANDEX_IMG}${item.img_app}_585x585.jpg`}
+                src={getItemImageUrl(item.img_app, '585x585')}
                 width={2000}
                 height={2000}
                 loading={isPriority ? 'eager' : 'lazy'}
@@ -148,7 +149,7 @@ export default memo(function CardItem({ item, count, isPriority = false }) {
                 onClick={() => getItem('home', thisCity, item.id)}
                 style={{ cursor: 'pointer' }}
               />
-            </picture>
+            </CdnPicture>
 
             <div className="badgecontainer">
               {parseInt(item.is_new) == 1 ? (

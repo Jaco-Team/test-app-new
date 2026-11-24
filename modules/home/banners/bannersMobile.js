@@ -1,9 +1,10 @@
 import React, { useEffect, useMemo, useRef, useCallback } from "react";
+import CdnPicture from '@/components/CdnPicture';
 import { useHomeStore } from '../../../components/store.js';
 
 import Box from '@mui/material/Box';
 
-import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper';
+import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';
@@ -454,7 +455,7 @@ export default function BannersMobile() {
               {/* <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + s.item.img + '_video_1080x1920.webm'} type="video/webm" /> */}
             </video>
           ) : (
-            <picture>
+            <CdnPicture>
                <source 
                  type="image/webp" 
                  srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.mediaKey + '_1000x500.jpg'} 
@@ -470,7 +471,7 @@ export default function BannersMobile() {
                  loading="lazy"
                  className="item_banner_image"
                />
-             </picture>
+             </CdnPicture>
           )}
         </SwiperSlide>
       ))}

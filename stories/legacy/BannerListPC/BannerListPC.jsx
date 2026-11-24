@@ -1,7 +1,7 @@
 import PropTypes from 'prop-types';
 import './BannerListPC.scss';
 
-import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper';
+import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import 'swiper/css';

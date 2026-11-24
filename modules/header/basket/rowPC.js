@@ -1,4 +1,5 @@
 import { memo, useState } from 'react';
+import { CdnImage } from '@/components/CdnPicture';
 
 //import Image from 'next/image';
 
@@ -182,7 +183,7 @@ export default memo(function RowPC({ item, count, last }) {
     <tr className={`basketRow ${last ? 'last' : ''}`}>
       <td className="CellPic">
         {/* <Image alt={item?.name} src={ process.env.NEXT_PUBLIC_YANDEX_IMG + item?.img_app + '_584x584.jpg'} width={584} height={584} priority={true}/> */}
-        <img
+        <CdnImage
           alt={item?.name}
           src={getItemImageUrl(item?.img_app, '584x584', 'jpg')}
           loading="lazy"

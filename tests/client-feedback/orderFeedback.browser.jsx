@@ -1,11 +1,6 @@
 import React, { act } from 'react';
 import { createRoot } from 'react-dom/client';
-import {
-  getByRole,
-  getByText,
-  queryByRole,
-  queryByText,
-} from '@testing-library/dom';
+import { getByRole, getByText, queryByText } from '@testing-library/dom';
 import { afterEach, beforeEach, describe, expect, it, vi } from 'vitest';
 
 globalThis.IS_REACT_ACT_ENVIRONMENT = true;
@@ -15,17 +10,9 @@ const fixture = vi.hoisted(() => ({ request: vi.fn() }));
 vi.mock('@/components/api', () => ({
   api: (...args) => fixture.request(...args),
 }));
-vi.mock('@/utils/browserStorage', () => ({
-  getLocalStorageItem: () => 'user-token',
-}));
-vi.mock('next/image', () => ({
-  default: ({ alt, src }) => (
-    <img alt={alt} src={typeof src === 'string' ? src : ''} />
-  ),
-}));
 
-import OrderFeedback from '@/modules/clientFeedback/OrderFeedback';
-import { mockFeedbackForm } from '@/modules/clientFeedback/mockFeedback';
+import OrderReviewController from '@/modules/clientFeedback/OrderReviewController';
+import { orderReviewFixture } from '@/stories/features/order-review/model/fixtures';
 
 let container;
 let root;
@@ -37,6 +24,7 @@ function order(feedback) {
     type_order_: 1,
     date_time_order_new: '15 января 12:30',
     status_order: 6,
+    is_delete: 0,
     feedback,
   };
 }
@@ -79,11 +67,16 @@ describe('оценка заказа в модалке заказа', () => {
 
   it('не показывается, если бэк не разрешил оценку', async () => {
     await render(
-      <OrderFeedback order={order({ available: false, submitted: false })} />
+      <OrderReviewController
+        token="user-token"
+        order={order({ available: false, submitted: false })}
+      />
     );
     expect(container.textContent).toBe('');
 
-    await render(<OrderFeedback order={order(undefined)} />);
+    await render(
+      <OrderReviewController token="user-token" order={order(undefined)} />
+    );
     expect(container.textContent).toBe('');
   });
 
@@ -92,7 +85,7 @@ describe('оценка заказа в модалке заказа', () => {
     fixture.request.mockImplementation((module, params) => {
       expect(module).toBe('client_feedback');
       if (params.type === 'get_form')
-        return Promise.resolve({ ...mockFeedbackForm, submitted: false });
+        return Promise.resolve({ ...orderReviewFixture, submitted: false });
       return new Promise((resolve) => {
         resolveSubmit = () =>
           resolve({ st: true, feedback_ids: [501], already_existed: false });
@@ -100,15 +93,13 @@ describe('оценка заказа в модалке заказа', () => {
     });
 
     await render(
-      <OrderFeedback order={order({ available: true, submitted: false })} />
+      <OrderReviewController
+        token="user-token"
+        order={order({ available: true, submitted: false })}
+      />
     );
-    expect(
-      getByText(container, 'Доставлен курьером 15 января 12:30')
-    ).toBeTruthy();
+    expect(fixture.request).not.toHaveBeenCalled();
     await click(getByRole(container, 'button', { name: 'Оценить заказ' }));
-
-    // Лист «Вам понравился заказ?», форма грузится заранее.
-    expect(getByText(document.body, 'Вам понравился заказ?')).toBeTruthy();
     await settle();
     expect(calls('get_form')).toHaveLength(1);
     expect(calls('get_form')[0][1]).toMatchObject({
@@ -117,14 +108,12 @@ describe('оценка заказа в модалке заказа', () => {
       token: 'user-token',
     });
 
-    await click(getByRole(document.body, 'button', { name: '4 из 5' }));
-    await settle();
-
-    // Форма открылась с уже выбранной оценкой — «Отправить» активна.
-    const dialog = getByRole(document.body, 'dialog', { name: 'Форма отзыва' });
-    expect(getByText(dialog, 'Хорошо')).toBeTruthy();
-    expect(queryByText(dialog, 'Добавить фото')).toBeNull();
-    const send = getByRole(dialog, 'button', { name: 'Отправить' });
+    await click(getByRole(document.body, 'radio', { name: '4 из 5, Хорошо' }));
+    expect(getByText(document.body, 'Хорошо')).toBeTruthy();
+    expect(queryByText(document.body, 'Добавить фото')).toBeNull();
+    const send = getByRole(document.body, 'button', {
+      name: 'Отправить отзыв',
+    });
     expect(send.disabled).toBe(false);
 
     // Двойной клик: второй игнорируется, пока первый запрос идёт.
@@ -136,7 +125,7 @@ describe('оценка заказа в модалке заказа', () => {
     const responses = JSON.parse(calls('submit_feedback')[0][1].responses);
     expect(responses).toContainEqual({
       target_id: -100,
-      element_id: 'site-order-rating',
+      element_id: 'order-rating',
       value: 4,
     });
     expect(calls('submit_feedback')[0][1].__disableRetry).toBe(true);
@@ -145,46 +134,54 @@ describe('оценка заказа в модалке заказа', () => {
     await settle();
 
     expect(getByText(document.body, 'Спасибо за отзыв!')).toBeTruthy();
-    expect(
-      getByText(document.body, 'Отправим ваш отзыв в отдел контроля качества.')
-    ).toBeTruthy();
-    expect(
+    await click(
+      getByRole(document.body, 'button', { name: 'Закрыть форму отзыва' })
+    );
+    const mine = await vi.waitFor(() =>
       getByRole(container, 'button', { name: 'Моя оценка заказа' })
-    ).toBeTruthy();
+    );
+    await click(mine);
+    expect(getByText(document.body, 'Отзыв уже отправлен')).toBeTruthy();
+    expect(calls('get_form')).toHaveLength(1);
     expect(calls('submit_feedback')).toHaveLength(1);
   });
 
   it('для уже оценённого заказа показывает «Моя оценка заказа» без запросов', async () => {
     await render(
-      <OrderFeedback order={order({ available: true, submitted: true })} />
+      <OrderReviewController
+        token="user-token"
+        order={order({ available: true, submitted: true })}
+      />
     );
 
     await click(getByRole(container, 'button', { name: 'Моя оценка заказа' }));
-    expect(getByText(document.body, 'Спасибо за отзыв!')).toBeTruthy();
+    expect(getByText(document.body, 'Отзыв уже отправлен')).toBeTruthy();
     expect(fixture.request).not.toHaveBeenCalled();
 
     await click(getByRole(document.body, 'button', { name: 'Закрыть' }));
-    expect(queryByText(document.body, 'Спасибо за отзыв!')).toBeNull();
+    await vi.waitFor(() =>
+      expect(queryByText(document.body, 'Отзыв уже отправлен')).toBeNull()
+    );
   });
 
   it('если отзыв уже отправлен с другого устройства, сразу благодарит', async () => {
     fixture.request.mockResolvedValue({
-      ...mockFeedbackForm,
+      ...orderReviewFixture,
       submitted: true,
       feedback_ids: [9],
     });
 
     await render(
-      <OrderFeedback order={order({ available: true, submitted: false })} />
+      <OrderReviewController
+        token="user-token"
+        order={order({ available: true, submitted: false })}
+      />
     );
     await click(getByRole(container, 'button', { name: 'Оценить заказ' }));
-    await click(getByRole(document.body, 'button', { name: '5 из 5' }));
     await settle();
 
-    expect(getByText(document.body, 'Спасибо за отзыв!')).toBeTruthy();
-    expect(
-      queryByRole(document.body, 'dialog', { name: 'Форма отзыва' })
-    ).toBeNull();
+    expect(getByText(document.body, 'Отзыв уже отправлен')).toBeTruthy();
+    expect(queryByText(document.body, 'Отправить отзыв')).toBeNull();
     expect(calls('submit_feedback')).toHaveLength(0);
   });
 
@@ -194,10 +191,13 @@ describe('оценка заказа в модалке заказа', () => {
         st: false,
         text: 'Оценка заказов сейчас недоступна',
       })
-      .mockResolvedValueOnce({ ...mockFeedbackForm, submitted: false });
+      .mockResolvedValueOnce({ ...orderReviewFixture, submitted: false });
 
     await render(
-      <OrderFeedback order={order({ available: true, submitted: false })} />
+      <OrderReviewController
+        token="user-token"
+        order={order({ available: true, submitted: false })}
+      />
     );
     await click(getByRole(container, 'button', { name: 'Оценить заказ' }));
     await settle();
@@ -205,12 +205,12 @@ describe('оценка заказа в модалке заказа', () => {
       getByText(document.body, 'Оценка заказов сейчас недоступна')
     ).toBeTruthy();
 
-    await click(getByRole(document.body, 'button', { name: 'Повторить' }));
-    await settle();
-    await click(getByRole(document.body, 'button', { name: '5 из 5' }));
+    await click(
+      getByRole(document.body, 'button', { name: 'Попробовать снова' })
+    );
     await settle();
     expect(
-      getByRole(document.body, 'dialog', { name: 'Форма отзыва' })
+      getByRole(document.body, 'button', { name: 'Отправить отзыв' })
     ).toBeTruthy();
   });
 });

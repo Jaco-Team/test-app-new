@@ -1,4 +1,5 @@
 import React, { useCallback, useEffect, useMemo, useRef } from "react";
+import CdnPicture from '@/components/CdnPicture';
 import { useHomeStore } from '../../../components/store.js';
 
 import 'swiper/css';
@@ -8,7 +9,7 @@ import 'swiper/css/pagination';
 import Box from '@mui/material/Box';
 import Grid from '@mui/material/Grid';
 
-import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper';
+import { Navigation, Pagination, A11y, EffectCreative, Autoplay } from 'swiper/modules';
 import { Swiper, SwiperSlide } from 'swiper/react';
 
 import { reachGoal } from '@/utils/metrika';
@@ -784,7 +785,7 @@ export default function BannersPC() {
                   />
                 </video>
               ) : (
-                <picture>
+                <CdnPicture>
                   <source 
                     type="image/webp" 
                     srcSet={ process.env.NEXT_PUBLIC_YANDEX_STORAGE + s.mediaKey+"_3700x1000.webp"} 
@@ -800,7 +801,7 @@ export default function BannersPC() {
                     loading="lazy"
                     style={{ width: '100%', height: 'auto', borderRadius: '1.1552346570397vw' }}
                   />
-                </picture>
+                </CdnPicture>
               )}
             </SwiperSlide>
           ))}

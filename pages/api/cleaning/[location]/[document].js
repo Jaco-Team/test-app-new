@@ -1,6 +1,25 @@
 import { getCleaningSchedule } from '@/utils/cleaningSchedules';
 
 const PDF_FETCH_TIMEOUT_MS = 12000;
+const MAX_PDF_BYTES = 5 * 1024 * 1024;
+
+async function readPdf(response) {
+  if (Number(response.headers.get('content-length')) > MAX_PDF_BYTES) {
+    await response.body?.cancel();
+    return null;
+  }
+  if (!response.body) return Buffer.alloc(0);
+
+  let totalBytes = 0;
+  const chunks = [];
+  for await (const chunk of response.body) {
+    totalBytes += chunk.byteLength;
+    // При досрочном выходе async-итератор ReadableStream отменяет чтение.
+    if (totalBytes > MAX_PDF_BYTES) return null;
+    chunks.push(chunk);
+  }
+  return Buffer.concat(chunks, totalBytes);
+}
 
 export default async function handler(req, res) {
   if (req.method !== 'GET') {
@@ -27,16 +46,21 @@ export default async function handler(req, res) {
     });
 
     if (!response.ok) {
+      await response.body?.cancel();
       return res.status(502).json({ error: 'Document Is Unavailable' });
     }
 
     const contentType = response.headers.get('content-type') || '';
 
     if (!contentType.toLowerCase().includes('application/pdf')) {
+      await response.body?.cancel();
       return res.status(502).json({ error: 'Invalid Document' });
     }
 
-    const pdf = Buffer.from(await response.arrayBuffer());
+    const pdf = await readPdf(response);
+    if (pdf === null) {
+      return res.status(502).json({ error: 'Invalid Document' });
+    }
 
     res.setHeader('Content-Type', 'application/pdf');
     res.setHeader('Content-Length', String(pdf.length));

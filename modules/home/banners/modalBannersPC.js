@@ -1,4 +1,5 @@
 import React, { useEffect, useState } from 'react';
+import CdnPicture from '@/components/CdnPicture';
 
 //import Image from 'next/image';
 
@@ -25,7 +26,7 @@ import { Close as CloseIcon } from '@/ui/Icons';
 import { roboto } from '@/ui/Font';
 
 import { reachGoalSplit, reachGoal } from '@/utils/metrika';
-import { getItemImageSrcSet } from '@/utils/itemImage';
+import { getItemImageSrcSet, hasItemImage } from '@/utils/itemImage';
 
 const getValidBannerMediaKey = (item) => {
   const raw = String(item?.img ?? '').trim();
@@ -208,7 +209,7 @@ function CartItemPromo({
       </div>
 
       <div className="itemImg">
-        {thisItem?.img_app ? (
+        {hasItemImage(thisItem?.img_app) ? (
           // <Image alt={item?.name} src={'${process.env.NEXT_PUBLIC_YANDEX_IMG}' + thisItem?.img_app + '_1420x1420.jpg'}
 
           // <Image alt={item?.name} src={'https://cdnimg.jacofood.ru/' + thisItem?.img_app + '_1420x1420.jpg'}
@@ -216,7 +217,7 @@ function CartItemPromo({
           //   height={1420}
           //   priority={true}
           // />
-          <picture>
+          <CdnPicture>
             <source
               type="image/webp"
               srcSet={getItemImageSrcSet(thisItem.img_app, 'webp', 'thumbnail')}
@@ -237,7 +238,7 @@ function CartItemPromo({
               loading="lazy"
               onClick={() => getItem('home', thisCity, thisItem?.id)}
             />
-          </picture>
+          </CdnPicture>
         ) : (
           false
         )}
@@ -404,7 +405,7 @@ export default function ModalBannerPC() {
                   {/* <source src={`${process.env.NEXT_PUBLIC_YANDEX_STORAGE}` + banner?.img + '_video_1920x1080.webm'} type="video/webm" /> */}
                 </video>
               ) : showImage ? (
-                <picture>
+                <CdnPicture>
                   <source
                     type="image/webp"
                     srcSet={
@@ -433,7 +434,7 @@ export default function ModalBannerPC() {
                     }
                     loading="lazy"
                   />
-                </picture>
+                </CdnPicture>
               ) : null}
               <Typography
                 className="ItemOther"
