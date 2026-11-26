@@ -3,6 +3,7 @@ import {
   buildStreetAddress,
   getAddressStreet,
   getAddressLabel,
+  getDeliveryCoordinates,
   hasDeliveryCoordinates,
 } from '../../utils/streetAddress';
 
@@ -156,8 +157,18 @@ describe('координаты выбранного адреса', () => {
     [{ xy: [53.5, 49.3] }],
     [{ xy: '[53.5,49.3]' }],
     [{ xy: ['53.5', '49.3'] }],
-  ])('принимает валидные координаты %#', (address) => {
+    [{ xy: '[" 5.35e1 ","+49.3"]' }],
+  ])('возвращает числовую пару для адреса %#', (address) => {
+    expect(getDeliveryCoordinates(address)).toEqual([53.5, 49.3]);
     expect(hasDeliveryCoordinates(address)).toBe(true);
+  });
+
+  it.each([
+    [[-90, -180]],
+    [[90, 180]],
+    [[0, 0]],
+  ])('принимает ноль и граничные значения %#', (xy) => {
+    expect(getDeliveryCoordinates({ xy })).toEqual(xy);
   });
 
   it.each([
@@ -169,7 +180,16 @@ describe('координаты выбранного адреса', () => {
     [{ xy: [53.5] }],
     [{ xy: ['north', 49.3] }],
     [{ xy: [null, 49.3] }],
-  ])('отклоняет неполный адрес %#', (address) => {
+    [{ xy: [true, 49.3] }],
+    [{ xy: ['  ', 49.3] }],
+    [{ xy: [[], 49.3] }],
+    [{ xy: ['0x35', 49.3] }],
+    [{ xy: [Infinity, 49.3] }],
+    [{ xy: [53.5, NaN] }],
+    [{ xy: [91, 49.3] }],
+    [{ xy: [53.5, -181] }],
+    [{ xy: [53.5, 49.3, 1] }],
+  ])('отклоняет некорректный адрес %#', (address) => {
     expect(hasDeliveryCoordinates(address)).toBe(false);
   });
 });
