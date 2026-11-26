@@ -64,27 +64,35 @@ export function getAddressLabel(address) {
     .join(', ');
 }
 
-export function hasDeliveryCoordinates(address) {
-  let coordinates = address?.xy;
+const decimalCoordinate = /^[+-]?(?:\d+(?:\.\d*)?|\.\d+)(?:[eE][+-]?\d+)?$/;
 
+export function getDeliveryCoordinates(address) {
+  let coordinates = address?.xy;
   if (typeof coordinates === 'string') {
     try {
       coordinates = JSON.parse(coordinates);
     } catch {
-      return false;
+      return null;
     }
   }
 
-  return (
-    Array.isArray(coordinates) &&
-    coordinates.length >= 2 &&
-    coordinates
-      .slice(0, 2)
-      .every(
-        (value) =>
-          value !== null && value !== '' && Number.isFinite(Number(value))
-      )
-  );
+  if (!Array.isArray(coordinates) || coordinates.length !== 2) return null;
+
+  const pair = [];
+  for (let value of coordinates) {
+    if (typeof value === 'string' && decimalCoordinate.test(value.trim())) {
+      value = Number(value);
+    }
+    if (!Number.isFinite(value)) return null;
+    pair.push(value);
+  }
+
+  const [latitude, longitude] = pair;
+  return Math.abs(latitude) <= 90 && Math.abs(longitude) <= 180 ? pair : null;
+}
+
+export function hasDeliveryCoordinates(address) {
+  return getDeliveryCoordinates(address) !== null;
 }
 
 // Дом выделяем только в конце строки: числа в названии улицы/квартала сохраняются.

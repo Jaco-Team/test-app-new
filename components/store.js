@@ -20,7 +20,7 @@ import {
 import {
   buildStreetAddress,
   getAddressLabel,
-  hasDeliveryCoordinates,
+  getDeliveryCoordinates,
   parseAddressInput,
   addressVerificationKey,
   sameAddressHouse,
@@ -125,12 +125,8 @@ function getStreetMapCenterFromJson(json) {
     json?.city_center,
     zone ? [zone.latitude, zone.longitude] : null,
   ]) {
-    if (hasDeliveryCoordinates({ xy })) {
-      const coordinates = typeof xy === 'string' ? JSON.parse(xy) : xy;
-      const center = coordinates.slice(0, 2).map(Number);
-      if (Math.abs(center[0]) <= 90 && Math.abs(center[1]) <= 180)
-        return center;
-    }
+    const center = getDeliveryCoordinates({ xy });
+    if (center) return center;
   }
   return null;
 }
@@ -3135,7 +3131,9 @@ export const useCartStore = reuseHotStore(
         let paymentFlowId = '';
         const typeOrder = get().typeOrder;
 
-        if (typeOrder !== 'pic' && !hasDeliveryCoordinates(get().orderAddr)) {
+        const orderAddr = get().orderAddr;
+        const xy = typeOrder === 'pic' ? null : getDeliveryCoordinates(orderAddr);
+        if (typeOrder !== 'pic' && !xy) {
           set({
             DBClick: false,
             orderAddr: null,
@@ -3194,8 +3192,8 @@ export const useCartStore = reuseHotStore(
             city_id,
             promoName: promoName ?? '',
             sdacha: sdacha,
-            addr: JSON.stringify(get().orderAddr),
-            point_id: get().orderAddr.point_id,
+            addr: JSON.stringify({ ...orderAddr, xy }),
+            point_id: orderAddr.point_id,
             comment: get().comment,
             typePay: get().typePay.id,
             typeOrder: 0,

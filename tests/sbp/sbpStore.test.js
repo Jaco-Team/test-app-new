@@ -124,6 +124,68 @@ afterEach(() => {
   vi.unstubAllGlobals();
 });
 
+describe('адрес в запросе оформления доставки', () => {
+  it.each([[[53.5, 49.3]], ['["53.5","49.3"]']])(
+    'отправляет числовую пару и сохраняет выбранный адрес %#',
+    async (xy) => {
+      window.localStorage.setItem(
+        'setCart',
+        JSON.stringify({ updatedAt: Date.now() })
+      );
+      const orderAddr = { point_id: 5, street: 'Тестовая', home: '12', kv: '4', xy };
+      useCartStore.setState({
+        typeOrder: 'dev',
+        orderAddr,
+        typePay: { id: 'sbp' },
+        items: [{ item_id: 1, count: 1 }],
+      });
+      api.mockResolvedValueOnce({
+        st: true,
+        order_id: 123,
+        check: pending.check,
+        pay: {
+          pay: {
+            confirmation: {
+              confirmation_url: 'https://yoomoney.ru/payments/external/confirmation?orderId=123',
+            },
+          },
+        },
+      });
+
+      const result = await useCartStore.getState().createOrder('user-token', 'samara');
+
+      expect(result).toBe('wait_payment');
+      expect(api).toHaveBeenCalledWith(
+        'cart',
+        expect.objectContaining({
+          type: 'create_order_pre',
+          typeOrder: 0,
+          point_id: 5,
+          addr: JSON.stringify({ ...orderAddr, xy: [53.5, 49.3] }),
+        })
+      );
+      expect(useCartStore.getState().orderAddr.xy).toBe(xy);
+    }
+  );
+
+  it('запрашивает повторный выбор адреса при недопустимой широте', async () => {
+    window.localStorage.setItem(
+      'setCart',
+      JSON.stringify({ updatedAt: Date.now() })
+    );
+    useCartStore.setState({
+      typeOrder: 'dev',
+      orderAddr: { point_id: 5, xy: '[91,49.3]' },
+    });
+
+    const result = await useCartStore.getState().createOrder('user-token', 'samara');
+
+    expect(result).toBe('nothing');
+    expect(api).not.toHaveBeenCalled();
+    expect(useCartStore.getState()).toMatchObject({ orderAddr: null, DBClick: false });
+  });
+});
+
 describe('оплата СБП с переходом на страницу ЮKassa', () => {
   it('после создания заказа СБП показывает ссылку для подтверждения, не уводя с проверки', async () => {
     const url =
@@ -157,6 +219,7 @@ describe('оплата СБП с переходом на страницу ЮKass
         point_id: 5,
       })
     );
+    expect(api.mock.calls[0][1]).not.toHaveProperty('addr');
     expect(redirect).not.toHaveBeenCalled();
     expect(useCartStore.getState().pendingSbpOrder?.orderId).toBe(123);
     expect(useCartStore.getState().sbpPaymentUrl).toBe(url);
